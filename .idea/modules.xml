@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/PipelineTool.iml" filepath="$PROJECT_DIR$/.idea/PipelineTool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../mayaModules/.idea/mayaModules.iml" filepath="$PROJECT_DIR$/../mayaModules/.idea/mayaModules.iml" />
     </modules>
   </component>
 </project>
