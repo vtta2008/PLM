@@ -1,0 +1,67 @@
+"""
+Script Name: InitTool.py
+Author: Do Trinh/Jimmy - TD artist
+
+Description:
+    It basically checkes all the files in folder to makes ure everthing is there. Then copy some files to folders
+    as required like userSetup.py or saving the path of DAMG tool folder to sys.path for next use.
+"""
+
+# -------------------------------------------------------------------------------------------------------------
+# IMPORT MAYA PYTHON MODULES
+# -------------------------------------------------------------------------------------------------------------
+from maya import cmds # Maya Python command
+import logging, os, sys, shutil, stat, json
+from modules import MayaVariables as var
+
+NAMES = var.MAINVAR
+SCRPTH = var.SCRPTH
+
+# We can configure the current level to make it disable certain logs when we don't want it.
+logging.basicConfig()
+logger = logging.getLogger(NAMES['id'][13])
+logger.setLevel(logging.DEBUG)
+
+# ----------------------------------------------------------------------------------------------------------- #
+"""                          MAIN CLASS: INITTOOL - DAMG PIPELINE DATA INSTALLATION                         """
+# ----------------------------------------------------------------------------------------------------------- #
+class InitTool(object):
+
+    def __init__(self):
+        super(InitTool, self).__init__()
+        self.createMayaSysPth()
+
+    def createMayaSysPth(self):
+        pth = os.path.join(SCRPTH, NAMES['maya'][2])
+
+        if not os.path.exists(pth):
+            envKeys = {}
+            for key in os.environ.keys():
+                envKeys[key] = os.getenv(key)
+            with open(pth, 'w') as f:
+                json.dump(envKeys, f, indent=4)
+
+        self.MayaPythonProc()
+
+    def MayaPythonProc(self):
+        from modules import MayaPythonProc
+        reload(MayaPythonProc)
+        MayaPythonProc.MayaPythonProc()
+        self.OsPythonProc()
+
+    def OsPythonProc(self):
+        from modules import OsPythonProc
+        reload( OsPythonProc )
+        OsPythonProc.OsPythonProc()
+        self.MayaMainUI()
+
+    def MayaMainUI(self):
+        from modules import MayaMainUI
+        reload( MayaMainUI )
+        MayaMainUI.MayaMainUI()
+
+def initilize():
+    InitTool()
+
+if __name__=='__main__':
+    initilize()
