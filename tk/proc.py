@@ -16,14 +16,13 @@ from tk import encode
 # ------------------------------------------------------
 # DEFAULT VARIABLES
 # ------------------------------------------------------
-ID = 'proc'
 PLUGIN = var.MAIN_PLUGIN
 PACKAGE = var.MAIN_PACKPAGE
 NAMES = var.MAIN_NAMES
 USER = var.USERNAME
 
 logging.basicConfig()
-logger = logging.getLogger(ID)
+logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
 # ----------------------------------------------------------------------------------------------------------- #
@@ -36,7 +35,8 @@ class Proc():
     dt = datetime.datetime
 
     def __init__(self):
-        logger.info('Start procedural')
+        # logger.info('Start procedural')
+        pass
 
     def getDate(self):
         t = datetime.datetime.timetuple( datetime.datetime.now() )
@@ -55,7 +55,7 @@ class Proc():
         :param path: path to python file
         :return: executing in command prompt
         """
-        logger.info( 'Executing %s from %s' % (name, path) )
+        # logger.info( 'Executing %s from %s' % (name, path) )
         pth = os.path.join(path, name)
         if os.path.exists(pth):
             subprocess.call([sys.executable, pth])
@@ -66,7 +66,7 @@ class Proc():
         :param name: name of component
         :return:
         """
-        logger.info( 'Using pip install %s' % name )
+        # logger.info( 'Using pip install %s' % name )
         os.system('pip install %s' % name)
 
     def checkPlugin(self, name):
@@ -75,7 +75,7 @@ class Proc():
         :param name:
         :return:
         """
-        logger.info( 'Trying to import %s' % name )
+        # logger.info( 'Trying to import %s' % name )
         try:
             import name
         except ImportError:
@@ -97,7 +97,7 @@ def decoding(message):
     return output
 
 def logRecord(event):
-    logger.info('Log created')
+    # logger.info('Log created')
     output = Proc().createLog(event=event)
     return output
 

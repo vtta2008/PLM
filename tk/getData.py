@@ -12,7 +12,7 @@ Description:
 import os, sys, json, platform, re, logging, winshell
 
 logging.basicConfig()
-logger = logging.getLogger('getData')
+logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
 from tk import defaultVariable as var
@@ -213,11 +213,11 @@ class GetData( object ):
         """
         # Take app info return from function
         self.appInfo = self.getAllAppInfo(package)
-        logger.info(self.appInfo)
+        # logger.info(self.appInfo)
         # filter 1: find .exe path
         keys = [k for k in self.appInfo if not self.appInfo[k].endswith(package['ext'][0])]
         self.appInfo = self.deleteKey(keys, '1')
-        logger.info(self.appInfo)
+        # logger.info(self.appInfo)
         # filter 2: filter app name
         jobs = []
         for key in package['job']:
@@ -235,13 +235,13 @@ class GetData( object ):
         for k in sorted(keys):
             self.appInfo[k] = pth[keys.index(k)]
 
-        logger.info(self.appInfo )
+        # logger.info(self.appInfo )
         # filter 3: filter keywords
 
         for k in package['filter']:
             for key in keys:
                 if k in key:
-                    logger.info('%s: %s' % (k, key))
+                    # logger.info('%s: %s' % (k, key))
                     del self.appInfo[key]
         #return
         return self.appInfo
@@ -255,41 +255,41 @@ class GetData( object ):
         info = {}
         # check if info folder exists, if not, create one
         scrPth = package['appData']
-        logger.info('Checking path available: %s' % scrPth)
+        # logger.info('Checking path available: %s' % scrPth)
         if not os.path.exists(package['appData']):
-            logger.info('False, creating path %s' % package['appData'])
+            # logger.info('False, creating path %s' % package['appData'])
             os.mkdir(package['appData'])
         # take info return from modules
-        logger.info('collecting modules pth')
+        # logger.info('collecting modules pth')
         info['modules'] = self.getModuleInfo(package)
         # take info reuturn from icons
-        logger.info( 'collecting info pth' )
+        # logger.info( 'collecting info pth' )
         iconInfo = self.getIconInfo(package, names)
         # take info return from image
-        logger.info( 'collecting images and icons pth' )
+        # logger.info( 'collecting images and icons pth' )
         info['image'] = self.getImgInfo(package)
         # take info return from sys
-        logger.info( 'collecting local computer configuration pth' )
+        # logger.info( 'collecting local computer configuration pth' )
         info['sys'] = self.getPCinfo(package)
         # take info return from all apps
-        logger.info('collecting installed apps pth')
+        # logger.info('collecting installed apps pth')
         info['apps'] = self.getAllAppInfo(package)
         # take info return from apps
-        logger.info( 'collecting pipeline package apps pth' )
+        # logger.info( 'collecting pipeline package apps pth' )
         self.appInfo = self.getPackageAppInfo(package, names)
-        logger.info( 'Fix paths which is not corrected' )
+        # logger.info( 'Fix paths which is not corrected' )
         for key in self.appInfo:
             # fix nukeX path
             if 'NukeX' in key:
-                logger.info( 'Fix Nukex path' )
+                # logger.info( 'Fix Nukex path' )
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --nukex"
             # fix Hiero path
             if 'Hiero' in key:
-                logger.info( 'Fix Hiero path' )
+                # logger.info( 'Fix Hiero path' )
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --hiero"
             # fix UVLayout path
             if 'UVLayout' in key:
-                logger.info( 'Fix UVLayout path' )
+                # logger.info( 'Fix UVLayout path' )
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " -launch"
         # take info and arrange them to pipeline
         trackKeys = {}
@@ -297,7 +297,7 @@ class GetData( object ):
             for key in self.appInfo:
                 if icon in key:
                     trackKeys[icon] = [key, iconInfo[icon], self.appInfo[key]]
-                    logger.info('%s, %s' % (key, icon))
+                    # logger.info('%s, %s' % (key, icon))
 
         # insert info which is not in installed apps
         trackKeys['Logo'] = ['pipeline manager', iconInfo['Logo'], '']
@@ -313,9 +313,9 @@ class GetData( object ):
         info['pipeline'] = trackKeys
         info['icon'] = iconInfo
         # Save all info to directory
-        logger.info( 'creating Info file' )
+        # logger.info( 'creating Info file' )
         self.createInfo(info, names, package)
-        logger.info( 'creating environment variable file' )
+        # logger.info( 'creating environment variable file' )
         self.getSysPth(package=PACKAGE, names=NAMES)
 
     def getSysPth(self, package, names):
@@ -324,7 +324,7 @@ class GetData( object ):
             envKeys[key] = os.getenv(key)
 
         pth = os.path.join(package['appData'], names['sysEnv'])
-        logger.info('Saving file to %s' % pth)
+        # logger.info('Saving file to %s' % pth)
         with open(pth, 'w') as f:
             json.dump(envKeys, f, indent=4)
 

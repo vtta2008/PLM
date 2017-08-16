@@ -10,7 +10,6 @@ Description:
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
 import unicodedata
-
 from tk import defaultVariable as var
 
 # ------------------------------------------------------

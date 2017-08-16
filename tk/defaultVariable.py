@@ -27,12 +27,12 @@ MAIN_NAMES = dict( info='apps.pipeline',
                    web='webs.pipeline',
                    maya='maya.pipeline',
                    mayaEnv = 'env.maya',
-                   appdata=['appData', 'PipelineInfo'],
+                   appdata=['appData', 'scrInfo'],
                    sysEnv = 'env.os',
                    )
 
 def createInfo():
-    appDir = os.getenv('LOCALAPPDATA' ).split( 'Local' )[0]
+    appDir = os.getenv('PIPELINE_TOOL')
     infoDir = os.path.join( appDir, MAIN_NAMES['appdata'][1])
     if not os.path.exists( infoDir ):
         os.makedirs( infoDir )
