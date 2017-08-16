@@ -5,48 +5,76 @@ Author: Do Trinh/Jimmy - TD artist
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import maya.cmds as cmds
-import json
-import sys
-import os
+from maya import cmds
+import maya.utils as mu
+import os, sys, json, logging
+from modules import MayaVariables as var
 
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
-VERSION = int(cmds.about(v=True))
+# We can configure the current level to make it disable certain logs when we don't want it.
+NAMES = var.MAINVAR
+SCRPTH = var.SCRPTH
+MESSAGE = var.MESSAGE
+ID = 'UserSetup'
+KEY = 'PYTHONPATH'
 
-# *********************************************************************************************************** #
+logging.basicConfig()
+logger = logging.getLogger(NAMES['id'][6])
+logger.setLevel(logging.DEBUG)
+
 # ----------------------------------------------------------------------------------------------------------- #
-"""                        MAIN CLASS: DAMG USER SETUP - UPDATE ALL PATHS                                   """
+"""                                      USER SETUP - UPDATE ALL PATHS                                      """
 # ----------------------------------------------------------------------------------------------------------- #
-# *********************************************************************************************************** #
-class DAMGuserSetup(object):
 
-    scrData = cmds.internalVar( upd=True ) + 'scripts/infoPath.json'
-
-    paths = {}
+class InitUserSetup(object):
 
     def __init__(self):
-        if os.path.exists(self.scrData):
-            with open( self.scrData, 'r' ) as f:
-                self.paths = json.load( f )
+        super(InitUserSetup, self).__init__()
 
-            self.findModulePath()
+        # hello = 'Hello %s, just wait for a quick setup' % NAMES['user']
 
-        self.openCommandPort()
+        # cmds.confirmDialog(t='Welcome', m=hello, b='OK')
 
-    def findModulePath(self):
-        for path in self.paths:
-            if os.path.exists( self.paths[path] ):
-                if not self.paths[path ] in sys.path:
-                    sys.path.append( self.paths[path ] )
-                else:
-                    pass
+        var.createLog('maya')
+
+        SCR = os.path.join( SCRPTH, NAMES['os'][0] )
+        PTH = os.path.join( SCRPTH, NAMES['maya'][1] )
+
+        if os.path.exists( SCR ):
+            logger.info( 'Start updateing sys path' )
+            self.updatePathFromUser(SCR)
+            self.updatePathFromUser(PTH)
+        else:
+            if not os.path.exists(PTH):
+                self.loadPathAndUI()
             else:
-                continue
+                self.updatePathFromUser(PTH)
+            self.adviceToInstallAnanconda()
 
-    def openCommandPort(self, port=':4344'):
-        if not cmds.commandPort(port, q=True):
-            cmds.commandPort(n=port)
+    def adviceToInstallAnanconda(self):
+        title = 'No Ananconda installed'
+        message = MESSAGE[ 'NoPythonInstall' ]
+        logger.info( message )
+        cmds.warning( message )
+        cmds.confirmDialog( t=title, m=message, b='OK' )
 
-user = DAMGuserSetup()
+    def updatePathFromUser(self, scr):
+
+        with open(scr, 'r') as f:
+            env = json.load(f)
+
+        for k in env:
+            lnks = str(env[k]).split(';')
+            for lnk in lnks:
+                if os.path.exists(lnk):
+                    if not lnk in sys.path:
+                        sys.path.append(lnk)
+                        logger.info('Updated system path: %s' % lnk)
+
+mu.executeDeferred(InitUserSetup())
+
+# ----------------------------------------------------------------------------------------------------------- #
+"""                                                 END OF CODE                                             """
+# ----------------------------------------------------------------------------------------------------------- #
