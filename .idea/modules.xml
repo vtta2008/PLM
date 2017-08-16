@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/PipelineTool.iml" filepath="$PROJECT_DIR$/.idea/PipelineTool.iml" />
       <module fileurl="file://$PROJECT_DIR$/../mayaModules/.idea/mayaModules.iml" filepath="$PROJECT_DIR$/../mayaModules/.idea/mayaModules.iml" />
+      <module fileurl="file://$USER_HOME$/Documents/maya/2017/scripts/.idea/scripts.iml" filepath="$USER_HOME$/Documents/maya/2017/scripts/.idea/scripts.iml" />
     </modules>
   </component>
 </project>
