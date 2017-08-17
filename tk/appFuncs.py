@@ -7,17 +7,34 @@ Description:
     This script will find all the path of modules, icons, images ans store them to a file
 """
 
-import os, sys, logging, json, subprocess
-from tk import defaultVariable as var
+import os, sys, logging, json, subprocess, pip
 
-NAMES = var.MAIN_NAMES
-PACKAGE = var.MAIN_PACKPAGE
-USERNAME = var.USERNAME
-MESSAGE = var.MAIN_MESSAGE
+DATA_KEY = "PIPELINE_TOOL"
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
+
+def getAllInstalledPythonPackage(*args):
+    pyPkgs = {}
+
+    pyPkgs['__mynote__'] = 'import pip; pip.get_installed_distributions()'
+
+    for package in pip.get_installed_distributions():
+        name = package.project_name # SQLAlchemy, Django, Flask-OAuthlib
+        key = package.key # sqlalchemy, django, flask-oauthlib
+        module_name = package._get_metadata("top_level.txt") # sqlalchemy, django, flask_oauthlib
+        location = package.location # virtualenv lib directory etc.
+        version = package.version # version number
+
+        pyPkgs[name] = [key, version, location]
+
+    pkgInfo = os.path.join(os.getenv(DATA_KEY), os.path.join('scrInfo', 'packages.info'))
+
+    with open(pkgInfo, 'w') as f:
+        json.dump(pyPkgs, f, indent=4)
+
+    return pyPkgs
 
 # Execute a python file
 def executing(name, path, *args):
@@ -33,15 +50,15 @@ def executing(name, path, *args):
         subprocess.call([sys.executable, pth])
 
 # Install package via pip command (cmd)
-def pip(name, *args):
+def install_package(name, *args):
     """
     Install python component via command prompt
     :param name: name of component
     :return:
     """
-    logger.info( 'Using pip install %s' % name )
+    logger.info( 'Using pip to install %s' % name )
 
-    subprocess.Popen('pip install %s' % name)
+    subprocess.Popen('pip install %s' % name, shell=True).wait()
 
 # Check plugin is installed or not
 def checkPlugin(name, *args):
@@ -51,13 +68,14 @@ def checkPlugin(name, *args):
     :return:
     """
     # logger.info( 'Trying to import %s' % name )
-    try:
-        import name
-    except ImportError:
-        logger.debug('ImportError, plugin is not installed')
-        pip(name)
+    allPkgs = getAllInstalledPythonPackage()
+
+    if name in allPkgs:
+        logger.info('package "%s" is already installed' % name)
     else:
-        pass
+        logger.info('package "%s" is not installed, execute package installation procedural' % name)
+        install_package(name)
+
 
 # Create environment variable by custom key
 def createKey(key, scrInstall, toolName, *args):
@@ -103,13 +121,14 @@ def avatar(userName, *args):
 
 # Save information of current log in user account for next time.
 def saveCurrentUserLogin(userName, *args):
-    userDataPth = os.path.join(os.getenv(NAMES['key']), os.path.join('scrInfo', 'user.info'))
+    userDataPth = os.path.join(os.getenv(DATA_KEY), os.path.join('scrInfo', 'user.info'))
+
     with open(userDataPth, 'r') as f:
         userData = json.load(f)
 
     curUser = {}
     curUser[userName] = userData[userName]
-    currentUserLoginPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog')
+    currentUserLoginPth = os.path.join(os.getenv(DATA_KEY), 'user.tempLog')
     with open(currentUserLoginPth, 'w') as f:
         json.dump(curUser, f, indent=4)
 

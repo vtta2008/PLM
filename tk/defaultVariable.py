@@ -37,7 +37,15 @@ MAIN_NAMES = dict( info='apps.pipeline',
 USER_CLASS = ['', 'Admin','Supervisor','Artist']
 
 def createInfo():
-    appDir = os.getenv('PIPELINE_TOOL')
+    key = 'PIPELINE_TOOL'
+    toolName = 'Pipeline Tool'
+    scrInstall = os.getenv('PROGRAMDATA')
+
+    from tk import appFuncs as func
+    func.checkEnvKey(key, scrInstall, toolName)
+
+    appDir = os.getenv(key)
+
     infoDir = os.path.join( appDir, MAIN_NAMES['appdata'][1])
     if not os.path.exists( infoDir ):
         os.makedirs( infoDir )
