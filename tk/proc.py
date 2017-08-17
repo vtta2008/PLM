@@ -48,40 +48,6 @@ class Proc():
         timeOutput = '%s:%s' % (str(t.tm_hour), str(t.tm_min))
         return timeOutput
 
-    def executing(self, name, path):
-        """
-        Executing a python file
-        :param name: python file name
-        :param path: path to python file
-        :return: executing in command prompt
-        """
-        # logger.info( 'Executing %s from %s' % (name, path) )
-        pth = os.path.join(path, name)
-        if os.path.exists(pth):
-            subprocess.call([sys.executable, pth])
-
-    def pip(self, name):
-        """
-        Install python component via command prompt
-        :param name: name of component
-        :return:
-        """
-        # logger.info( 'Using pip install %s' % name )
-        subprocess.Popen('pip install %s' % name)
-
-    def checkPlugin(self, name):
-        """
-        check python component, if false, it will install component
-        :param name:
-        :return:
-        """
-        # logger.info( 'Trying to import %s' % name )
-        try:
-            import name
-        except ImportError:
-            logger.info('ImportError')
-            self.pip(PLUGIN[name])
-
     def createLog(self, event='Create Log', names=NAMES, package=PACKAGE):
         log = {}
         log[proc('date')] = event
@@ -106,13 +72,7 @@ def proc(operation=None, name=NAMES['log'], path=PACKAGE['info']):
     d = Proc().getDate()
     u = USER
 
-    if operation == 'exe':
-        output = Proc().executing( name, path )
-    elif operation == 'pip':
-        output = Proc().pip(name)
-    elif operation == 'plug':
-        output = Proc().checkPlugin( name )
-    elif operation == 'date':
+    if operation == 'date':
         output = Proc().getDate()
     elif operation == 'time':
         output = Proc().getTime()

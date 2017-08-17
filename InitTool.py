@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os, sys, logging, subprocess, json
+from tk import appFuncs as func
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
@@ -9,33 +10,6 @@ logger.setLevel(logging.DEBUG)
 key = 'PIPELINE_TOOL'
 toolName = 'Pipeline Tool'
 scrInstall = os.getenv('PROGRAMDATA')
-
-def createKey(key, scrInstall, toolName):
-    logger.debug('install new environment variable')
-    toolPth = os.path.join(scrInstall, toolName)
-    if not os.path.exists(toolPth):
-        os.mkdir(toolPth)
-    os.environ[key] = toolPth
-
-try:
-    pth = os.getenv(key)
-    if pth == None:
-        createKey(key, scrInstall, toolName)
-except KeyError:
-    createKey(key, scrInstall, toolName)
-else:
-    pass
-finally:
-    pass
-
-from tk import defaultVariable as var
-from tk import proc
-
-def avatar(userName):
-    img = userName + '.avatar.jpg'
-    imgPth = os.path.join(os.getcwd(), 'imgs')
-    avatarPth = os.path.join(imgPth, img)
-    return avatarPth
 
 try:
     import winshell
@@ -53,11 +27,14 @@ except ImportError:
 else:
     pass
 
-TrinhPass = 'adsadsa'
+from tk import proc
+from tk import defaultVariable as var
 
 userInfo = {}
 
-userInfo['TrinhDo'] = [proc.endconding(TrinhPass), var.USER_CLASS[1], avatar('TrinhDo'),]
+userInfo['TrinhDo'] = [proc.endconding('adsadsa'), var.USER_CLASS[1], func.avatar('TrinhDo'),]
+userInfo['Arjun'] = [proc.endconding('123456'), var.USER_CLASS[3], func.avatar('Arjun'),]
+userInfo['Annie'] = [proc.endconding('123123'), var.USER_CLASS[3], func.avatar('Annie'),]
 
 userDataPth = os.path.join(os.getenv(key), os.path.join(var.MAIN_NAMES['appdata'][1], var.MAIN_NAMES['login']))
 

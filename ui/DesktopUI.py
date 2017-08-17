@@ -1,16 +1,10 @@
+# coding=utf-8
 """
 Script Name: desktopUI.py
-Author: Do Trinh/Jimmy - 3D artist, leader DAMG team.
+Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
     This script is main file to store everything for the pipeline app
-
-Reference:
-        Managing shortcuts - winshell 0.6.4a documentation. (n.d.). Retrieved from:
-        http://winshell.readthedocs.io/en/lartest/cookbook/shortcuts.html
-
-        GitHub - mottosso/Qt.py: Minimal Python 2 & 3 shim around all Qt bindings - PySide,
-        PySide2, PyQt4 and PyQt5. (n.d.). Retrieved from https://github.com/mottosso/Qt.py
 
 for any question or feedback, feel free to email me: dot@damgteam.com or damgteam@gmail.com
 """
@@ -21,6 +15,14 @@ import os, sys, subprocess, json, webbrowser, logging
 from functools import partial
 from tk import getData, proc
 from tk import defaultVariable as var
+from tk import appFuncs as func
+
+# -------------------------------------------------------------------------------------------------------------
+# IMPORT PTQT5 ELEMENT TO MAKE UI
+# -------------------------------------------------------------------------------------------------------------
+from PyQt5.QtWidgets import *
+from PyQt5.QtGui import *
+from PyQt5.QtCore import *
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
@@ -47,6 +49,27 @@ MAINID = var.MAIN_ID
 PACKAGE = var.MAIN_PACKPAGE
 TITLE = var.MAIN_ID['LogIn']
 USERNAME = var.USERNAME
+
+# UI variables preset for layout customizing
+# Dimension
+W = 330
+H = 120
+AVATAR_SIZE = 100
+
+# Margin
+M1 = [0,5,5,5,5]
+
+# Base unit of position to be using in QGridlayout
+X = 0
+Y = 0
+XW = 1
+XH = 1
+GRID_TOTAL = 9
+
+# Alignment attribute from PyQt5
+__center__ = Qt.AlignCenter
+__right__ = Qt.AlignRight
+__left__ = Qt.AlignLeft
 
 # Get icon path
 pthInfo = PACKAGE['appData']
@@ -75,31 +98,6 @@ for f in prodContent:
         info = json.load(f)
     prodLst.append(info['name'])
 
-# -------------------------------------------------------------------------------------------------------------
-# IMPORT PTQT5 ELEMENT TO MAKE UI
-# -------------------------------------------------------------------------------------------------------------
-from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
-
-def getIcon(name):
-    iconName = name + '.icon.png'
-    rootPth = os.getcwd().split('ui')[0]
-    iconPth = os.path.join(os.path.join(rootPth, 'icons'), iconName)
-    return iconPth
-
-def avatar(userName):
-    img = userName + '.avatar.jpg'
-    imgPth = os.path.join(os.getcwd(), 'imgs')
-    avatarPth = os.path.join(imgPth, img)
-    return avatarPth
-
-def getCurrentUserLogin(userName):
-    curUser = {}
-    curUser[userName] = userData[userName]
-    currentUserLoginPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog')
-    with open(currentUserLoginPth, 'w') as f:
-        json.dump(curUser, f, indent=4)
 # ----------------------------------------------------------------------------------------------------------- #
 """                                       SUB CLASS: USER LOGIN UI                                          """
 # ----------------------------------------------------------------------------------------------------------- #
@@ -111,7 +109,7 @@ class LoginUI(QDialog):
 
         self.setWindowTitle(TITLE)
 
-        self.setWindowIcon(QIcon(getIcon('Logo')))
+        self.setWindowIcon(QIcon(func.getIcon('Logo')))
 
         self.buildUI()
 
@@ -119,41 +117,90 @@ class LoginUI(QDialog):
 
     def buildUI(self):
 
+        x1 = X
+        y1 = Y
+        xh1 = XH
+        xw1 = 2*XW
+
+        x2 = x1
+        y2 = xw1
+        xh2 = xh1
+        xw2 = GRID_TOTAL - xw1
+
+        x3 = x1 + xh1
+        y3 = y1
+        xh3 = xh2
+        xw3 = xw1
+
+        x4 = x3
+        y4 = xw3
+        xh4 = xh3
+        xw4 = GRID_TOTAL - xw3
+
+        x5 = x3 + xh3
+        y5 = y3
+        xh5 = xh4
+        xw5 = xw3
+
+        x6 = x5
+        y6 = xw5
+        xh6 = xh5
+        xw6 = XW
+
+        x7 = x6
+        y7 = xw5 + xw6
+        xh7 = xh6
+        xw7 = (GRID_TOTAL - (xw5 + xw6))/2
+
+        x8 = x7
+        y8 = y7 + xw7
+        xh8 = xh7
+        xw8 = xw7
+
+        pos1 = [0, x1, y1, xh1, xw1]
+        pos2 = [0, x2, y2, xh2, xw2]
+        pos3 = [0, x3, y3, xh3, xw3]
+        pos4 = [0, x4, y4, xh4, xw4]
+        pos5 = [0, x5, y5, xh5, xw5]
+        pos6 = [0, x6, y6, xh6, xw6]
+        pos7 = [0, x7, y7, xh7, xw7]
+        pos8 = [0, x8, y8, xh8, xw8]
+
         self.mainFrame = QGroupBox(self)
         self.mainFrame.setTitle('User Account')
-        self.mainFrame.setFixedSize(300,125)
+        self.mainFrame.setFixedSize(W,H)
 
         hbox = QHBoxLayout()
 
         self.layout = QGridLayout()
-        self.layout.setContentsMargins(5,5,5,5)
+        self.layout.setContentsMargins(M1[1],M1[2],M1[3],M1[4])
 
         loginText = QLabel('User Name: ')
-        self.layout.addWidget(loginText, 0,0,1,2)
+        self.layout.addWidget(loginText, pos1[1], pos1[2], pos1[3], pos1[4])
 
         self.userName = QLineEdit()
-        self.layout.addWidget(self.userName, 0,2,1,7)
+        self.layout.addWidget(self.userName, pos2[1], pos2[2], pos2[3], pos2[4])
 
         passText = QLabel('Password: ')
-        self.layout.addWidget(passText, 1,0,1,2)
+        self.layout.addWidget(passText, pos3[1], pos3[2], pos3[3], pos3[4])
 
         self.passWord = QLineEdit()
         self.passWord.setEchoMode(QLineEdit.Password)
-        self.layout.addWidget(self.passWord, 1,2,1,7)
+        self.layout.addWidget(self.passWord, pos4[1],pos4[2],pos4[3],pos4[4])
 
         rememberCheck = QLabel('Remember Me')
-        self.layout.addWidget(rememberCheck, 2,0,1,2)
+        self.layout.addWidget(rememberCheck, pos5[1],pos5[2],pos5[3],pos5[4])
 
         self.rememberCheckBox = QCheckBox()
-        self.layout.addWidget(self.rememberCheckBox, 2,2,1,1)
+        self.layout.addWidget(self.rememberCheckBox, pos6[1],pos6[2],pos6[3],pos6[4])
 
         self.loginBtn = QPushButton('Login')
         self.loginBtn.clicked.connect(self.checkLogin)
-        self.layout.addWidget(self.loginBtn, 2,3,1,3)
+        self.layout.addWidget(self.loginBtn, pos7[1],pos7[2],pos7[3],pos7[4])
 
         self.cancelBtn = QPushButton('Cancel')
         self.cancelBtn.clicked.connect(qApp.quit)
-        self.layout.addWidget(self.cancelBtn, 2,6,1,3)
+        self.layout.addWidget(self.cancelBtn, pos8[1],pos8[2],pos8[3],pos8[4])
 
         hbox.addLayout(self.layout)
         self.mainFrame.setLayout(hbox)
@@ -165,9 +212,10 @@ class LoginUI(QDialog):
         if user_name == "":
             QMessageBox.information(self, 'Login Failed', 'Username can not be blank')
         elif userData[user_name] != None and pass_word == userData[user_name][0]:
-            QMessageBox.information(self, 'Login Successful', 'Username and Password are corrected')
+            QMessageBox.information(self, 'Login Successful', "Welcome back %s\n "
+                                    "Now it's the time to make amazing thing to the world !!!" % user_name)
             self.close()
-            getCurrentUserLogin(user_name)
+            func.saveCurrentUserLogin(user_name)
         else:
             QMessageBox.information(self, 'Login Failed', 'Username or Password is incorrected')
 
@@ -188,7 +236,7 @@ class TabWidget( QWidget ):
         self.tabs = QTabWidget()
         # self.tabs.setDocumentMode(True)
         # self.tabs.setTabPosition(QTabWidget.West)
-        self.tab1 = QWidget()
+        self.tab1 = QGroupBox(self)
         self.tab2 = QWidget()
         self.tab3 = QWidget()
         # self.tabs.resize(package['geo'][1], package['geo'][2])
@@ -207,6 +255,53 @@ class TabWidget( QWidget ):
         self.setLayout(self.layout)
 
     def tab1Layout(self):
+
+        alignL = __right__
+        alignR = __left__
+
+        x1 = X
+        y1 = Y
+        xh1 = 3*XH
+        xw1 = 3*XW
+
+        x2 = x1
+        y2 = xw1
+        xh2 = XH
+        xw2 = 3*XW
+
+        x3 = x2
+        y3 = xw1 + xw2
+        xh3 = xh2
+        xw3 = GRID_TOTAL - (xw1 + xw2)
+
+        x4 = x2 + xh2
+        y4 = y2
+        xh4 = xh3
+        xw4 = xw2
+
+        x5 = x4
+        y5 = y3
+        xh5 = xh4
+        xw5 = xw3
+
+        x6 = x4 + xh4
+        y6 = y4
+        xh6 = xh5
+        xw6 = xw4
+
+        x7 = x6
+        y7 = y5
+        xh7 = xh6
+        xw7 = xw5
+
+        pos1 = [0, x1, y1, xh1, xw1]
+        pos2 = [0, x2, y2, xh2, xw2]
+        pos3 = [0, x3, y3, xh3, xw3]
+        pos4 = [0, x4, y4, xh4, xw4]
+        pos5 = [0, x5, y5, xh5, xw5]
+        pos6 = [0, x6, y6, xh6, xw6]
+        pos7 = [0, x7, y7, xh7, xw7]
+
         with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog'), 'r') as f:
             curUserData = json.load(f)
 
@@ -214,41 +309,50 @@ class TabWidget( QWidget ):
 
         # Create Layout for Tab 1
 
-        self.tab1.layout = QGridLayout(self)
+        self.tab1.setTitle('Hello ' + curUser)
+        self.tab1.setFixedSize(W, H)
 
-        userImg = QPixmap(avatar(curUser))
-        userImg.scaled(QSize(100,100))
+        hboxLayout = QHBoxLayout()
+
+        self.gridLayout = QGridLayout()
+
+        userImg = QPixmap(func.avatar(curUser))
         userAvatar = QLabel()
         userAvatar.setPixmap(userImg)
-        userAvatar.setFixedSize(100,100)
-        self.tab1.layout.addWidget(userAvatar)
+        userAvatar.setScaledContents(True)
+        userAvatar.setFixedSize(AVATAR_SIZE,AVATAR_SIZE)
+        self.gridLayout.addWidget(userAvatar, pos1[1],pos1[2],pos1[3],pos1[4])
 
 
-        userNameLabel = QLabel(curUser)
-        userNameLabel.setAlignment(Qt.AlignCenter)
-        self.tab1.layout.addWidget(userNameLabel, 0,3,1,6)
+        userNameLabel = QLabel('Artist Name: ')
+        userNameLabel.setAlignment(alignL)
+        self.gridLayout.addWidget(userNameLabel, pos2[1],pos2[2],pos2[3],pos2[4])
+
+        userNameArtist = QLabel(curUser)
+        userNameArtist.setAlignment(alignR)
+        self.gridLayout.addWidget(userNameArtist, pos3[1],pos3[2],pos3[3],pos3[4])
+
+        titleLabel = QLabel('Class: ')
+        titleLabel.setAlignment(alignL)
+        self.gridLayout.addWidget(titleLabel, pos4[1],pos4[2],pos4[3],pos4[4])
+
+        classLabel = QLabel(curUserData[curUser][1])
+        classLabel.setAlignment(alignR)
+        self.gridLayout.addWidget(classLabel, pos5[1],pos5[2],pos5[3],pos5[4])
 
         prodLabel = QLabel('Production: ')
-        self.tab1.layout.addWidget(prodLabel, 1,3,1,2)
+        prodLabel.setAlignment(alignL)
+        self.gridLayout.addWidget(prodLabel, pos6[1],pos6[2],pos6[3],pos6[4])
 
         self.productionList = QComboBox()
         for prod in prodLst:
             self.productionList.addItem(prod)
-        self.tab1.layout.addWidget(self.productionList, 1,5,1,4)
+        self.gridLayout.addWidget(self.productionList, pos7[1],pos7[2],pos7[3],pos7[4])
 
-        titleLabel = QLabel('Class: ')
-        self.tab1.layout.addWidget(titleLabel, 2,3,1,3)
+        # self.tab1.layout.setMaximumSized(100,100)
+        hboxLayout.addLayout(self.gridLayout)
 
-        classLabel = QLabel(curUserData[curUser][1])
-        self.tab1.layout.addWidget(classLabel, 2,6,1,3)
-
-        self.tab1.setLayout(self.tab1.layout)
-
-    def paintEvent(self, QPaintEvent):
-        painter = QPainter()
-        painter.begin(self)
-        self.drawText(QPaintEvent, painter)
-        painter.end()
+        self.tab1.setLayout(hboxLayout)
 
     def tab2Layout(self):
         # Create Layout for Tab 2
@@ -293,7 +397,6 @@ class WindowDialog(QDialog):
         self.layout.addWidget(btn)
 
         self.setLayout(self.layout)
-
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                          MAIN CLASS: DESKTOP UI APPLICATIONS: PIPELINE TOOL                             """
@@ -483,7 +586,6 @@ class DesktopUI( QMainWindow ):
             event.accept()
         else:
             event.ignore()
-
 
 def initialize(mainID=MAINID, appInfo=APPINFO, package=PACKAGE, message=MESSAGE, names=NAMES, url=URL):
 

@@ -301,7 +301,7 @@ class GetData( object ):
         trackKeys['Sep'] = ['separator', iconInfo['Sep'], 'separator']
         trackKeys['File'] = ['File', iconInfo['File'], '']
         trackKeys['Exit'] = ['Exit application', iconInfo['Exit'], '']
-        trackKeys['About'] = ['About DAMG pipeline', iconInfo['About'], 'About DAMG pipeline']
+        trackKeys['About'] = ['About pipeline tool', iconInfo['About'], 'About pipeline tool']
         trackKeys['Credit'] = ['Credit', iconInfo['Credit'], 'Thanks to all of you']
         trackKeys['Help'] = ['Introduction', iconInfo['Help'], '']
         # make a loop to store all info to files one by one
