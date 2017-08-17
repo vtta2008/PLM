@@ -1,7 +1,7 @@
 # coding=utf-8
 """
 Script Name: defaultVariable.py
-Author: Do Trinh/Jimmy - 3D artist, leader DAMG team.
+Author: Do Trinh/Jimmy - 3D artist, pipelineTD artist.
 
 Description:
     This script is the place that all the variables will be referenced from here
@@ -23,13 +23,18 @@ OPERATION = dict( encode=[ 'hex', 'string' ], pathInfo=[ 'create', 'read', 'modi
 
 # getData.py
 MAIN_NAMES = dict( info='apps.pipeline',
+                   prod='prod.content',
                    log='log.pipeline',
+                   login='user.info',
                    web='webs.pipeline',
                    maya='maya.pipeline',
                    mayaEnv = 'env.maya',
                    appdata=['appData', 'scrInfo'],
                    sysEnv = 'env.os',
+                   key = 'PIPELINE_TOOL',
                    )
+
+USER_CLASS = ['', 'Admin','Supervisor','Artist']
 
 def createInfo():
     appDir = os.getenv('PIPELINE_TOOL')
@@ -42,9 +47,10 @@ inforDir = createInfo()
 
 USERNAME = platform.node()
 
-MAIN_ID = dict( Main='Pipeline Manager',
-                About='About pipeline application',
-                Credit='Credit')
+MAIN_ID = dict( Main='Tools Manager',
+                LogIn = 'Log in',
+                About='About Pipeline Tool',
+                Credit='From Author')
 
 APPDATA = [inforDir, os.path.join(os.getcwd().split('ui')[0], MAIN_NAMES['appdata'][0]),]
 
@@ -52,11 +58,11 @@ MAIN_MESSAGE = dict( About=message.MAIN_ABOUT,
                      Credit=message.MAIN_CREDIT,
                      status='Pipeline Application', )
 
-MAIN_TABID = ['', 'Production Info', 'Sub Tools', 'Tool Box']
+MAIN_TABID = ['', 'Profile', 'Tools', 'Tool Box']
 
-MAIN_PLUGIN = dict( winshell='winshell' )
+MAIN_PLUGIN = dict(winshell='winshell')
 
-MAIN_URL = dict( Help='https://github.com/vtta2008/DAMGpipeline', )
+MAIN_URL = dict( Help='https://dot.damgteam.com/', )
 
 MAIN_PACKPAGE = dict( job=[ 'TD', 'Comp', 'Design', 'Office', 'UV', 'Sound' ],
                       TD=[ 'Maya', '3Ds max', 'Mudbox', 'Houdini FX', 'ZBrush', 'Mari' ],
@@ -68,7 +74,7 @@ MAIN_PACKPAGE = dict( job=[ 'TD', 'Comp', 'Design', 'Office', 'UV', 'Sound' ],
                       instruction=[ 'documentation' ],
                       website=[ 'doc' ],
                       image=[ 'icons', 'imgs' ],
-                      py=[ 'tk', 'ui', 'plugins', '' ],
+                      py=[ 'tk', 'ui',],
                       ext=[ '.exe', 'InitTool.py', '.lnk' ],
                       sysOpts=[ "Host Name", "OS Name", "OS Version", "Product ID", "System Manufacturer",
                                 "System Model",

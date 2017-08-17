@@ -1,5 +1,5 @@
 """
-Script Name: application.py
+Script Name: desktopUI.py
 Author: Do Trinh/Jimmy - 3D artist, leader DAMG team.
 
 Description:
@@ -22,10 +22,8 @@ from functools import partial
 from tk import getData, proc
 from tk import defaultVariable as var
 
-ID = 'DestopUI'
-
 logging.basicConfig()
-logger = logging.getLogger(ID)
+logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
 # ------------------------------------------------------
@@ -35,7 +33,7 @@ def updateInfo():
     getData.initialize()
 
 updateInfo()
-logger.info('Updating data')
+# logger.info('Updating data')
 
 # ------------------------------------------------------
 # DEFAULT VARIABLES
@@ -47,6 +45,8 @@ URL = var.MAIN_URL
 NAMES = var.MAIN_NAMES
 MAINID = var.MAIN_ID
 PACKAGE = var.MAIN_PACKPAGE
+TITLE = var.MAIN_ID['LogIn']
+USERNAME = var.USERNAME
 
 # Get icon path
 pthInfo = PACKAGE['appData']
@@ -54,10 +54,27 @@ pthInfo = PACKAGE['appData']
 infoData = NAMES['info']
 with open(os.path.join(pthInfo, infoData), 'r') as f:
     info = json.load(f)
+
 # Get app path
 logger.info('Loading information...')
 APPINFO = info['pipeline']
 logger.info('Loading pipeline manager UI')
+
+userDataPth = os.path.join(os.getenv(NAMES['key']), os.path.join('scrInfo', 'user.info'))
+with open(userDataPth, 'r') as f:
+    userData = json.load(f)
+
+prodInfoFolder = os.path.join(os.getenv(NAMES['key']), os.path.join(NAMES['appdata'][1], 'prodInfo'))
+
+prodContent = [f for f in os.listdir(prodInfoFolder) if f.endswith('.prod')]
+
+prodLst = []
+
+for f in prodContent:
+    with open(os.path.join(prodInfoFolder, f), 'r') as f:
+        info = json.load(f)
+    prodLst.append(info['name'])
+
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PTQT5 ELEMENT TO MAKE UI
 # -------------------------------------------------------------------------------------------------------------
@@ -65,6 +82,98 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5.QtCore import *
 
+def getIcon(name):
+    iconName = name + '.icon.png'
+    rootPth = os.getcwd().split('ui')[0]
+    iconPth = os.path.join(os.path.join(rootPth, 'icons'), iconName)
+    return iconPth
+
+def avatar(userName):
+    img = userName + '.avatar.jpg'
+    imgPth = os.path.join(os.getcwd(), 'imgs')
+    avatarPth = os.path.join(imgPth, img)
+    return avatarPth
+
+def getCurrentUserLogin(userName):
+    curUser = {}
+    curUser[userName] = userData[userName]
+    currentUserLoginPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog')
+    with open(currentUserLoginPth, 'w') as f:
+        json.dump(curUser, f, indent=4)
+# ----------------------------------------------------------------------------------------------------------- #
+"""                                       SUB CLASS: USER LOGIN UI                                          """
+# ----------------------------------------------------------------------------------------------------------- #
+class LoginUI(QDialog):
+
+    def __init__(self):
+
+        super(LoginUI, self).__init__()
+
+        self.setWindowTitle(TITLE)
+
+        self.setWindowIcon(QIcon(getIcon('Logo')))
+
+        self.buildUI()
+
+        # self.setCentralWidget(self.mainFrame)
+
+    def buildUI(self):
+
+        self.mainFrame = QGroupBox(self)
+        self.mainFrame.setTitle('User Account')
+        self.mainFrame.setFixedSize(300,125)
+
+        hbox = QHBoxLayout()
+
+        self.layout = QGridLayout()
+        self.layout.setContentsMargins(5,5,5,5)
+
+        loginText = QLabel('User Name: ')
+        self.layout.addWidget(loginText, 0,0,1,2)
+
+        self.userName = QLineEdit()
+        self.layout.addWidget(self.userName, 0,2,1,7)
+
+        passText = QLabel('Password: ')
+        self.layout.addWidget(passText, 1,0,1,2)
+
+        self.passWord = QLineEdit()
+        self.passWord.setEchoMode(QLineEdit.Password)
+        self.layout.addWidget(self.passWord, 1,2,1,7)
+
+        rememberCheck = QLabel('Remember Me')
+        self.layout.addWidget(rememberCheck, 2,0,1,2)
+
+        self.rememberCheckBox = QCheckBox()
+        self.layout.addWidget(self.rememberCheckBox, 2,2,1,1)
+
+        self.loginBtn = QPushButton('Login')
+        self.loginBtn.clicked.connect(self.checkLogin)
+        self.layout.addWidget(self.loginBtn, 2,3,1,3)
+
+        self.cancelBtn = QPushButton('Cancel')
+        self.cancelBtn.clicked.connect(qApp.quit)
+        self.layout.addWidget(self.cancelBtn, 2,6,1,3)
+
+        hbox.addLayout(self.layout)
+        self.mainFrame.setLayout(hbox)
+
+    def checkLogin(self):
+        user_name = str(self.userName.text())
+        pass_word = str(proc.endconding(self.passWord.text()))
+
+        if user_name == "":
+            QMessageBox.information(self, 'Login Failed', 'Username can not be blank')
+        elif userData[user_name] != None and pass_word == userData[user_name][0]:
+            QMessageBox.information(self, 'Login Successful', 'Username and Password are corrected')
+            self.close()
+            getCurrentUserLogin(user_name)
+        else:
+            QMessageBox.information(self, 'Login Failed', 'Username or Password is incorrected')
+
+# ----------------------------------------------------------------------------------------------------------- #
+"""                                       SUB CLASS: TAB LAYOUT                                             """
+# ----------------------------------------------------------------------------------------------------------- #
 class TabWidget( QWidget ):
 
     def __init__(self, parent, package=PACKAGE, tabid=TABID):
@@ -98,19 +207,48 @@ class TabWidget( QWidget ):
         self.setLayout(self.layout)
 
     def tab1Layout(self):
+        with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog'), 'r') as f:
+            curUserData = json.load(f)
+
+        curUser = [f for f in curUserData][0]
+
         # Create Layout for Tab 1
+
         self.tab1.layout = QGridLayout(self)
-        self.tab1.layout.setContentsMargins(0,0,0,0)
-        vboxWidget = QWidget()
-        vboxLayout = QHBoxLayout(vboxWidget)
-        self.tab1.layout.addWidget(vboxWidget, 0, 0)
-        self.tab1.setLayout( self.tab1.layout )
 
-        tab1btn1 = QPushButton('Project Data')
-        vboxLayout.addWidget( tab1btn1 )
+        userImg = QPixmap(avatar(curUser))
+        userImg.scaled(QSize(100,100))
+        userAvatar = QLabel()
+        userAvatar.setPixmap(userImg)
+        userAvatar.setFixedSize(100,100)
+        self.tab1.layout.addWidget(userAvatar)
 
-        tab1btn2 = QPushButton ('Project Manager')
-        vboxLayout.addWidget(tab1btn2)
+
+        userNameLabel = QLabel(curUser)
+        userNameLabel.setAlignment(Qt.AlignCenter)
+        self.tab1.layout.addWidget(userNameLabel, 0,3,1,6)
+
+        prodLabel = QLabel('Production: ')
+        self.tab1.layout.addWidget(prodLabel, 1,3,1,2)
+
+        self.productionList = QComboBox()
+        for prod in prodLst:
+            self.productionList.addItem(prod)
+        self.tab1.layout.addWidget(self.productionList, 1,5,1,4)
+
+        titleLabel = QLabel('Class: ')
+        self.tab1.layout.addWidget(titleLabel, 2,3,1,3)
+
+        classLabel = QLabel(curUserData[curUser][1])
+        self.tab1.layout.addWidget(classLabel, 2,6,1,3)
+
+        self.tab1.setLayout(self.tab1.layout)
+
+    def paintEvent(self, QPaintEvent):
+        painter = QPainter()
+        painter.begin(self)
+        self.drawText(QPaintEvent, painter)
+        painter.end()
 
     def tab2Layout(self):
         # Create Layout for Tab 2
@@ -128,6 +266,9 @@ class TabWidget( QWidget ):
         tab3btn1 = QPushButton('Just For Test 3')
         self.tab3.layout.addWidget(tab3btn1)
 
+# ----------------------------------------------------------------------------------------------------------- #
+"""                                SUB CLASS: CUSTOM WINDOW POP UP LAYOUT                                   """
+# ----------------------------------------------------------------------------------------------------------- #
 class WindowDialog(QDialog):
 
     def __init__(self, id, message, icon):
@@ -153,6 +294,10 @@ class WindowDialog(QDialog):
 
         self.setLayout(self.layout)
 
+
+# ----------------------------------------------------------------------------------------------------------- #
+"""                          MAIN CLASS: DESKTOP UI APPLICATIONS: PIPELINE TOOL                             """
+# ----------------------------------------------------------------------------------------------------------- #
 class DesktopUI( QMainWindow ):
 
     def __init__(self, mainID, appInfo, package, message, names, url):
@@ -164,13 +309,15 @@ class DesktopUI( QMainWindow ):
         self.setWindowIcon(QIcon(appInfo['Logo'][1]))
         # Build UI
         self.buildUI(appInfo, package, message, mainID, names, url)
+        # User log in identification
+        login = LoginUI()
+        login.exec_()
         # Create Tabs
-        self.tabWidget = TabWidget( self )
+        self.tabWidget = TabWidget(self)
         # Put tabs to center of main UI
         self.setCentralWidget(self.tabWidget)
         # ShowUI
         proc.proc('log in')
-        self.show()
 
     def buildUI(self, appInfo, package, message, mainID, names, url):
         self.layout = self.setGeometry(package['geo'][1], package['geo'][2], package['geo'][3], package['geo'][4])
@@ -196,7 +343,7 @@ class DesktopUI( QMainWindow ):
         # VFX Tool Bar
         self.compToolBar = self.toolBarComp(appInfo)
         # support ToolBar
-        self.supportApps = self.supApps( appInfo )
+        # self.supportApps = self.supApps( appInfo )
 
     def addMenuToolBar(self, appInfo, mainid, message, url):
         # Exit action
@@ -330,16 +477,23 @@ class DesktopUI( QMainWindow ):
         webbrowser.open(url)
 
     def closeEvent(self, event):
-        proc.proc('log out')
+        reply = QMessageBox.question(self, 'Message', "Are you sure?", QMessageBox.Yes|QMessageBox.No, QMessageBox.No)
+
+        if reply == QMessageBox.Yes:
+            event.accept()
+        else:
+            event.ignore()
+
 
 def initialize(mainID=MAINID, appInfo=APPINFO, package=PACKAGE, message=MESSAGE, names=NAMES, url=URL):
-    proc.proc('restart')
+
     app = QApplication(sys.argv)
-    DesktopUI(mainID, appInfo, package, message, names, url)
+    window = DesktopUI(MAINID, APPINFO, PACKAGE, MESSAGE, NAMES, URL)
+    window.show()
     sys.exit(app.exec_())
 
 if __name__=='__main__':
-    initialize(MAINID, APPINFO, PACKAGE, MESSAGE, NAMES, URL)
+    initialize()
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                                                END OF CODE                                              """

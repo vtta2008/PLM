@@ -99,9 +99,6 @@ class GetData( object ):
         # ui path
         moduleInfo['app ui'] = os.path.join(package['root'], package['py'][1])
         #self.createLog('adding %s to moduleInfo' % moduleInfo['app ui'])
-        # plugin path
-        moduleInfo['app plugin'] = os.path.join(package['root'], package['py'][2])
-        #self.createLog('adding %s to moduleInfo' % moduleInfo['app plugin'])
         # loop to store all the python files found root's content to dictionary
         for pyFol in package['py']:
             pyPth = os.path.join(package['root'], pyFol)
@@ -308,7 +305,7 @@ class GetData( object ):
         trackKeys['Credit'] = ['Credit', iconInfo['Credit'], 'Thanks to all of you']
         trackKeys['Help'] = ['Introduction', iconInfo['Help'], '']
         # make a loop to store all info to files one by one
-        logger.info(iconInfo)
+        # logger.info(iconInfo)
 
         info['pipeline'] = trackKeys
         info['icon'] = iconInfo

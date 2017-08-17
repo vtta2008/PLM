@@ -67,7 +67,7 @@ class Proc():
         :return:
         """
         # logger.info( 'Using pip install %s' % name )
-        os.system('pip install %s' % name)
+        subprocess.Popen('pip install %s' % name)
 
     def checkPlugin(self, name):
         """
