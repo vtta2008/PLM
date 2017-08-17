@@ -52,9 +52,9 @@ USERNAME = var.USERNAME
 
 # UI variables preset for layout customizing
 # Dimension
-W = 330
-H = 120
-AVATAR_SIZE = 100
+W = 310
+H = 100
+AVATAR_SIZE = 80
 
 # Margin
 M1 = [0,5,5,5,5]
@@ -249,7 +249,6 @@ class TabWidget( QWidget ):
         # Add Tabs
         self.tabs.addTab(self.tab1, tabid[1])
         self.tabs.addTab(self.tab2, tabid[2])
-
         if self.curUserData[self.curUser][1]=='Admin':
             self.tabs.addTab(self.tab3, tabid[3])
         else:
@@ -262,6 +261,7 @@ class TabWidget( QWidget ):
         self.tab3Layout()
         # Add Tab to Widget
         self.layout.addWidget(self.tabs)
+        # Set main layout
         self.setLayout(self.layout)
 
     def tab1Layout(self):
@@ -327,7 +327,6 @@ class TabWidget( QWidget ):
         userAvatar.setFixedSize(AVATAR_SIZE,AVATAR_SIZE)
         self.gridLayout.addWidget(userAvatar, pos1[1],pos1[2],pos1[3],pos1[4])
 
-
         userNameLabel = QLabel('Artist Name: ')
         userNameLabel.setAlignment(alignL)
         self.gridLayout.addWidget(userNameLabel, pos2[1],pos2[2],pos2[3],pos2[4])
@@ -374,6 +373,12 @@ class TabWidget( QWidget ):
         tab3btn1 = QPushButton('Just For Test 3')
         self.tab3.layout.addWidget(tab3btn1)
 
+    def filterClassAllowance(self, func):
+        if self.curUserData[self.curUser][1] == 'Admin':
+            func()
+        else:
+            pass
+
 # ----------------------------------------------------------------------------------------------------------- #
 """                                SUB CLASS: CUSTOM WINDOW POP UP LAYOUT                                   """
 # ----------------------------------------------------------------------------------------------------------- #
@@ -410,6 +415,12 @@ class DesktopUI( QMainWindow ):
     def __init__(self, mainID, appInfo, package, message, names, url):
 
         super( DesktopUI, self ).__init__()
+
+        with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog'), 'r') as f:
+            self.curUserData = json.load(f)
+
+        self.curUser = [f for f in self.curUserData][0]
+
         # Set window title
         self.setWindowTitle(mainID['Main'])
         # Set window icon
@@ -470,7 +481,7 @@ class DesktopUI( QMainWindow ):
     def fileMenuToolBar(self, appInfo, mainid, message, url):
         # Exit action
         exitAction = QAction(QIcon(appInfo['Exit'][1]), appInfo['Exit'][0], self)
-        exitAction.setStatusTip( appInfo['Exit'][0])
+        exitAction.setStatusTip(appInfo['Exit'][0])
         exitAction.triggered.connect(qApp.quit)
 
         return exitAction
@@ -498,12 +509,12 @@ class DesktopUI( QMainWindow ):
         toolBarTD = self.addToolBar('TD')
         # Maya_tk 2017
         if 'Maya 2017' in appInfo:
-            maya2017 = self.createAction(appInfo, 'Maya_tk 2017')
+            maya2017 = self.createAction(appInfo, 'Maya 2017')
             toolBarTD.addAction(maya2017)
             pass
         # Maya_tk 2016
         elif 'Maya 2016' in appInfo:
-            maya2016 = self.createAction(appInfo, 'Maya_tk 2016')
+            maya2016 = self.createAction(appInfo, 'Maya 2016')
             toolBarTD.addAction(maya2016)
         # ZBrush 4R8
         if 'ZBrush 4R8' in appInfo:
@@ -516,11 +527,11 @@ class DesktopUI( QMainWindow ):
             toolBarTD.addAction(zbrush4R7)
         # Houdini_tk FX
         if 'Houdini FX' in appInfo:
-            houdiniFX = self.createAction(appInfo, 'Houdini_tk FX')
+            houdiniFX = self.createAction(appInfo, 'Houdini FX')
             toolBarTD.addAction( houdiniFX )
         # Mari_tk
         if 'Mari' in appInfo:
-            mari = self.createAction(appInfo, 'Mari_tk')
+            mari = self.createAction(appInfo, 'Mari')
             toolBarTD.addAction(mari)
         # Photoshop CS6
         if 'Photoshop CS6' in appInfo:
@@ -581,8 +592,13 @@ class DesktopUI( QMainWindow ):
             uvlayout = self.createAction(appInfo, 'UVLayout')
             supAppsToolBar.addAction(uvlayout)
 
-
         return supAppsToolBar
+
+    def filterClassAllowance(self, func):
+        if self.curUserData[self.curUser][1]=='Admin':
+            func()
+        else:
+            pass
 
     def createAction(self, appInfo, key):
         action = QAction(QIcon(appInfo[key][1]), appInfo[key][0], self)

@@ -1,6 +1,6 @@
 # coding=utf-8
 """
-Script Name: maya_toolkit.py
+Script Name: maya_tk.py
 Author: Do Trinh/Jimmy - 3D artist, leader DAMG team.
 
 Description:
