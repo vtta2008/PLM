@@ -61,7 +61,7 @@ def install_package(name, *args):
     subprocess.Popen('pip install %s' % name, shell=True).wait()
 
 # Check plugin is installed or not
-def checkPlugin(name, *args):
+def checkPackageInstall(name, *args):
     """
     check python component, if false, it will install component
     :param name:
@@ -73,9 +73,9 @@ def checkPlugin(name, *args):
     if name in allPkgs:
         logger.info('package "%s" is already installed' % name)
     else:
-        logger.info('package "%s" is not installed, execute package installation procedural' % name)
+        logger.info('package "%s" is not installed, '
+                    'execute package installation procedural' % name)
         install_package(name)
-
 
 # Create environment variable by custom key
 def createKey(key, scrInstall, toolName, *args):

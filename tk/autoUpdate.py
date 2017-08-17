@@ -1,6 +1,6 @@
 # coding=utf-8
 """
-Script Name: dataUpdate.py
+Script Name: autoUpdate.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -17,10 +17,11 @@ logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
-def createTempData():
-    key = 'PIPELINE_TOOL'
-    toolName = 'Pipeline Tool'
-    scrInstall = os.getenv('PROGRAMDATA')
+key = 'PIPELINE_TOOL'
+toolName = 'Pipeline Tool'
+scrInstall = os.getenv('PROGRAMDATA')
+
+def createTempUser():
 
     userInfo = {}
 
@@ -32,6 +33,9 @@ def createTempData():
 
     with open(userDataPth, 'w+') as f:
         json.dump(userInfo, f, indent=4)
+
+
+def createTempProduction():
 
     prodInfoFolder = os.path.join(os.getenv(key), os.path.join(var.MAIN_NAMES['appdata'][1], 'prodInfo'))
     if not os.path.exists(prodInfoFolder):

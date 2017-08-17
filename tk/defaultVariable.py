@@ -66,7 +66,7 @@ MAIN_MESSAGE = dict( About=message.MAIN_ABOUT,
                      Credit=message.MAIN_CREDIT,
                      status='Pipeline Application', )
 
-MAIN_TABID = ['', 'Profile', 'Tools', 'Tool Box']
+MAIN_TABID = ['', 'Profile', 'Tools', 'Developer']
 
 MAIN_PLUGIN = dict(winshell='winshell')
 
@@ -83,7 +83,7 @@ MAIN_PACKPAGE = dict( job=[ 'TD', 'Comp', 'Design', 'Office', 'UV', 'Sound' ],
                       website=[ 'doc' ],
                       image=[ 'icons', 'imgs' ],
                       py=[ 'tk', 'ui',],
-                      ext=[ '.exe', 'InitTool.py', '.lnk' ],
+                      ext=[ '.exe', 'PipelineTool.py', '.lnk' ],
                       sysOpts=[ "Host Name", "OS Name", "OS Version", "Product ID", "System Manufacturer",
                                 "System Model",
                                 "System type", "BIOS Version", "Domain", "Windows Directory", "Total Physical Memory",

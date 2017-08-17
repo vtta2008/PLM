@@ -50,7 +50,7 @@ MAINVAR = dict(
 
     mayaLayout = ['pipelineTool.json', 'shelf_pipelineTool.mel'],
 
-    mayaRoot = ['userSetup.py', 'InitTool.py'],
+    mayaRoot = ['userSetup.py', 'PipelineTool.py'],
 
     mayaModule = ['ChannelBox.py', 'MayaFuncs.py', 'MayaMainUI.py', 'MayaPythonProc.py', 'MayaVariables.py',
                   'OsPythonProc.py', 'ProdFolder.py', 'ProjectManager.py', 'toolBoxI.py', 'toolBoxII.py',

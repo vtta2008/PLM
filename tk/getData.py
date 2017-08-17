@@ -104,14 +104,14 @@ class GetData( object ):
             pyPth = os.path.join(package['root'], pyFol)
             if os.path.exists(pyPth):
                 sys.path.append(pyPth)
-            files = [f for f in os.listdir(pyPth) if f.endswith('InitTool.py')]
+            files = [f for f in os.listdir(pyPth) if f.endswith('PipelineTool.py')]
             for file in files:
                 # do not need __init__.py
                 if '__init__' in file:
                     pass
                 else:
                     pth = os.path.join( pyPth, file )
-                    moduleInfo[file.split('InitTool.py')[0]] = pth
+                    moduleInfo[file.split('PipelineTool.py')[0]] = pth
         # return the dictionary
         return moduleInfo
 

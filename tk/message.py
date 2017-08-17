@@ -1,4 +1,5 @@
 MAIN_ABOUT = """
+
 PIPELINE TOOL TO MAKE A SHORT FILM
 
 This application is built to handle and manage productions as a pipeline tool.
@@ -15,6 +16,7 @@ For feedback or questions, feel free to email me: damgteam@gmail.com or dot@damg
 """
 
 MAIN_CREDIT = """
+
 Special thank to lectures and students in Media Design School:
 
     Lecture:
@@ -34,4 +36,17 @@ Also thank to:
 
         Dhruv Govil, Ardit Sulce, Vasandkumar Kunasekaran - from udemy.com
         
+"""
+
+WAIT_FOR_UPDATE = """
+
+this function is currenly under construction, please wait for next update.             
+JimJim  
+
+"""
+
+NOT_ALLOW = """
+
+Sorry, but only Admin can do this function, please contact JimJim for details.
+
 """

@@ -223,9 +223,9 @@ def warningFunc(key, *args):
     logger.info(message)
 
 def reloadDataMainUI(*args):
-    import InitTool
-    reload( InitTool )
-    InitTool.InitTool()
+    import PipelineTool
+    reload(PipelineTool)
+    PipelineTool.InitTool()
 
 def refreshMainUI(*args):
     from modules import MayaMainUI
