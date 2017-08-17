@@ -53,7 +53,7 @@ USERNAME = var.USERNAME
 # UI variables preset for layout customizing
 # Dimension
 W = 310
-H = 100
+H = 125
 AVATAR_SIZE = 80
 
 # Margin
@@ -362,7 +362,8 @@ class TabWidget( QWidget ):
         self.tab2.layout = QVBoxLayout( self )
         self.tab2.setLayout(self.tab2.layout)
         # Content tab 2
-        tab2btn1 = QPushButton( 'Just For Test 2' )
+        tab2btn1 = QPushButton( 'English Dictionary' )
+        tab2btn1.clicked.connect(self.englishDict)
         self.tab2.layout.addWidget( tab2btn1 )
 
     def tab3Layout(self):
@@ -372,6 +373,12 @@ class TabWidget( QWidget ):
         # Content tab 3
         tab3btn1 = QPushButton('Just For Test 3')
         self.tab3.layout.addWidget(tab3btn1)
+
+    def englishDict(self):
+        from ui import englishDict
+        reload(englishDict)
+        engDict = englishDict.EnglishDict()
+        engDict.exec_()
 
     def filterClassAllowance(self, func):
         if self.curUserData[self.curUser][1] == 'Admin':

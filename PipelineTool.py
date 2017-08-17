@@ -20,7 +20,7 @@ scrInstall = os.getenv('PROGRAMDATA')
 
 func.checkEnvKey(key, scrInstall, toolName)
 
-packages = ['pywinauto', 'winshell']
+packages = ['pywinauto', 'winshell', 'pandas']
 
 for pkg in packages:
     func.checkPackageInstall(pkg)

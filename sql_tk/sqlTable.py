@@ -1,7 +1,6 @@
-from PyQt5.QtCore import Qt
-from PyQt5.QtSql import QSqlTableModel
-from PyQt5.QtWidgets import (QApplication, QDialog, QDialogButtonBox,
-                             QHBoxLayout, QMessageBox, QPushButton, QTableView)
+from PyQt5.QtCore import *
+from PyQt5.QtSql import *
+from PyQt5.QtWidgets import *
 
 from sql_tk import connection
 
