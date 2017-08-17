@@ -66,3 +66,10 @@ def createTempProduction():
 
     with open(os.path.join(prodInfoFolder, 'mwm.prod'), 'w') as f:
         json.dump(mwm, f, indent=4)
+
+def createTempData():
+    createTempUser()
+    createTempProduction()
+
+if __name__=='__main__':
+    createTempData()

@@ -53,15 +53,15 @@ else:
     from Qt.QtCore import Signal
 
 
-# Convert PyQt window to Maya window
+# Convert PyQt window to Maya_tk window
 def getMayaMainWindow():
     """
-    Since Maya is Qt, we can parent our UIs to it.
-    This means that we don't have to manage our UI and can leave it to Maya.
+    Since Maya_tk is Qt, we can parent our UIs to it.
+    This means that we don't have to manage our UI and can leave it to Maya_tk.
     Returns:
-        QtWidgets.QMainWindow: The Maya MainWindow
+        QtWidgets.QMainWindow: The Maya_tk MainWindow
     """
-    # Use the OpenMayaUI API to get a reference to Maya's MainWindow
+    # Use the OpenMayaUI API to get a reference to Maya_tk's MainWindow
     win = omui.MQtUtil_mainWindow()
     # Use the wrapInstance method to convert it to something python can understand (QMainWindow)
     ptr = wrapInstance(long(win), QtWidgets.QMainWindow)
@@ -71,7 +71,7 @@ def getMayaMainWindow():
 def getDock(name='Pipeline Tool', label='Pipeline Tool', version = VERSION):
     """
     This function creates a dock with the given name.
-    It's an example of how we can mix Maya's UI elements with Qt elements
+    It's an example of how we can mix Maya_tk's UI elements with Qt elements
     Args:
         name: The name of the dock to create
     Returns:
@@ -79,7 +79,7 @@ def getDock(name='Pipeline Tool', label='Pipeline Tool', version = VERSION):
     """
     # Delete any conflicting docks
     deleteDock( name )
-    # Create a workspaceControl dock using Maya's UI tools
+    # Create a workspaceControl dock using Maya_tk's UI tools
     if version>=2017:
         ctrl = cmds.workspaceControl(name,label=label, clp=False, fl=True)
     else:

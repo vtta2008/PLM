@@ -25,7 +25,7 @@ packages = ['pywinauto', 'winshell']
 for pkg in packages:
     func.checkPackageInstall(pkg)
 
-update.createTempUser()
+update.createTempData()
 
 #login UI
 from ui import DesktopUI

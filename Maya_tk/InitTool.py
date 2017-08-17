@@ -10,8 +10,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-from maya import cmds # Maya Python command
-import logging, os, sys, shutil, stat, json
+import json
+import logging
+import os
+
 from modules import MayaVariables as var
 
 NAMES = var.MAINVAR
@@ -51,13 +53,13 @@ class InitTool(object):
 
     def OsPythonProc(self):
         from modules import OsPythonProc
-        reload( OsPythonProc )
+        reload(OsPythonProc)
         OsPythonProc.OsPythonProc()
         self.MayaMainUI()
 
     def MayaMainUI(self):
         from modules import MayaMainUI
-        reload( MayaMainUI )
+        reload(MayaMainUI)
         MayaMainUI.MayaMainUI()
 
 def initilize():

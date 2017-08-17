@@ -23,9 +23,9 @@ Reference:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-from maya import cmds, mel # Maya Python command
+from maya import cmds, mel # Maya_tk Python command
 from functools import partial # partial module can store variables to method
-import maya.OpenMayaUI as omui # the extent of the internal Maya API
+import maya.OpenMayaUI as omui # the extent of the internal Maya_tk API
 import pymel.core as pm # Pymel command for maya
 import json, logging, os, sys # to read and write info & data
 import maya.app.renderSetup.views.renderSetupButton as marv #very nice symbol button
@@ -90,12 +90,12 @@ def deleteDock(name=NAMES['id'][9], version=VERSION):
 
 def getMayaMainWindow():
     """
-    Since Maya is Qt, we can parent our UIs to it.
-    This means that we don't have to manage our UI and can leave it to Maya.
+    Since Maya_tk is Qt, we can parent our UIs to it.
+    This means that we don't have to manage our UI and can leave it to Maya_tk.
     Returns:
-        QtWidgets.QMainWindow: The Maya MainWindow
+        QtWidgets.QMainWindow: The Maya_tk MainWindow
     """
-    # Use the OpenMayaUI API to get a reference to Maya's MainWindow
+    # Use the OpenMayaUI API to get a reference to Maya_tk's MainWindow
     win = omui.MQtUtil_mainWindow()
     # Use the wrapInstance method to convert it to something python can understand (QMainWindow)
     ptr = wrapInstance(long(win), QtWidgets.QMainWindow)
@@ -105,7 +105,7 @@ def getMayaMainWindow():
 def getDock(name='DAMGtoolBoxIIDock', version = VERSION):
     """
     This function creates a dock with the given name.
-    It's an example of how we can mix Maya's UI elements with Qt elements
+    It's an example of how we can mix Maya_tk's UI elements with Qt elements
     Args:
         name: The name of the dock to create
     Returns:
@@ -113,7 +113,7 @@ def getDock(name='DAMGtoolBoxIIDock', version = VERSION):
     """
     # Delete any conflicting docks
     deleteDock( name )
-    # Create a workspaceControl dock using Maya's UI tools
+    # Create a workspaceControl dock using Maya_tk's UI tools
     if version >= 2017:
         ctrl = cmds.workspaceControl(name, label=NAMES['mayaLabel'][9])
     else:
@@ -332,7 +332,7 @@ class ControllerLibrary( dict ):
                        showOrnaments=False, startTime=cf, endTime=cf, viewer=False)
         return path
 
-# A Maya channel box UI with a few modify
+# A Maya_tk channel box UI with a few modify
 # ------------------------------------------------------
 class ChanelBox(QtWidgets.QWidget):
 

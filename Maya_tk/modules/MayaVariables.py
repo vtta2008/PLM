@@ -1,7 +1,7 @@
 from maya import cmds
 import os, sys, logging, platform, datetime, json
 
-MAYAENVPTH = os.path.join(cmds.internalVar(usd=True).split('scripts')[0], 'Maya.env')
+MAYAENVPTH = os.path.join(cmds.internalVar(usd=True).split('scripts')[0], 'Maya_tk.env')
 
 MAYAVERSION = int(cmds.about(v=True))
 
@@ -13,7 +13,7 @@ MAINVAR = dict(
 
     url = ['https://www.continuum.io/downloads', ],
 
-    TD=[ 'Maya', '3Ds max', 'Mudbox', 'Houdini FX', 'ZBrush', 'Mari' ],
+    TD=[ 'Maya_tk', '3Ds max', 'Mudbox', 'Houdini_tk FX', 'ZBrush', 'Mari_tk' ],
 
     UV=[ 'UVLayout' ],
 
@@ -58,8 +58,8 @@ MAINVAR = dict(
 
     mayaPlugin = ['Qt.py',],
 
-    mayaIcon = ['After Effects CC.icon.png', 'Hiero.icon.png', 'Houdini FX.icon.png', 'Illustrator CC.icon.png',
-                      'Mari.icon.png', 'Mudbox 2017.icon.png', 'NukeX.icon.png', 'Photoshop CC.icon.png',
+    mayaIcon = ['After Effects CC.icon.png', 'Hiero.icon.png', 'Houdini_tk FX.icon.png', 'Illustrator CC.icon.png',
+                      'Mari_tk.icon.png', 'Mudbox 2017.icon.png', 'NukeX.icon.png', 'Photoshop CC.icon.png',
                       'Premiere Pro CC.icon.png', 'ZBrush 4R7.icon.png', 'cam.icon.png', 'clock.icon.png',
                       'createMayaFolder.icon.png', 'toolboxIV.icon.png', 'graphEditor.icon.png', 'hypershader.icon.png',
                       'nodeEditor.icon.png', 'obj.icon.png','openLoad.icon.png', 'openProjectFolder.icon.png',

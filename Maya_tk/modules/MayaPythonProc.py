@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-from maya import cmds # Maya Python command
+from maya import cmds # Maya_tk Python command
 import os, sys, json, shutil, getpass, platform, re, logging
 
 from modules import MayaVariables as var

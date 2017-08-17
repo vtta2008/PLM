@@ -24,7 +24,7 @@ OPERATION = dict( encode=[ 'hex', 'string' ], pathInfo=[ 'create', 'read', 'modi
 # getData.py
 MAIN_NAMES = dict( info='apps.pipeline',
                    prod='prod.content',
-                   log='log.pipeline',
+                   log='user.timelog',
                    login='user.info',
                    web='webs.pipeline',
                    maya='maya.pipeline',

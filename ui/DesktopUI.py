@@ -225,7 +225,13 @@ class LoginUI(QDialog):
 class TabWidget( QWidget ):
 
     def __init__(self, parent, package=PACKAGE, tabid=TABID):
+        
         super( TabWidget, self ).__init__( parent )
+
+        with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog'), 'r') as f:
+            self.curUserData = json.load(f)
+
+        self.curUser = [f for f in self.curUserData][0]
 
         self.buildUI(package, tabid)
 
@@ -243,7 +249,11 @@ class TabWidget( QWidget ):
         # Add Tabs
         self.tabs.addTab(self.tab1, tabid[1])
         self.tabs.addTab(self.tab2, tabid[2])
-        self.tabs.addTab(self.tab3, tabid[3])
+
+        if self.curUserData[self.curUser][1]=='Admin':
+            self.tabs.addTab(self.tab3, tabid[3])
+        else:
+            pass
         # Create Tab 1 layout
         self.tab1Layout()
         # Create Tab 2 layout
@@ -302,21 +312,15 @@ class TabWidget( QWidget ):
         pos6 = [0, x6, y6, xh6, xw6]
         pos7 = [0, x7, y7, xh7, xw7]
 
-        with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog'), 'r') as f:
-            curUserData = json.load(f)
-
-        curUser = [f for f in curUserData][0]
-
         # Create Layout for Tab 1
-
-        self.tab1.setTitle('Hello ' + curUser)
+        self.tab1.setTitle('Hello ' + self.curUser)
         self.tab1.setFixedSize(W, H)
 
         hboxLayout = QHBoxLayout()
 
         self.gridLayout = QGridLayout()
 
-        userImg = QPixmap(func.avatar(curUser))
+        userImg = QPixmap(func.avatar(self.curUser))
         userAvatar = QLabel()
         userAvatar.setPixmap(userImg)
         userAvatar.setScaledContents(True)
@@ -328,7 +332,7 @@ class TabWidget( QWidget ):
         userNameLabel.setAlignment(alignL)
         self.gridLayout.addWidget(userNameLabel, pos2[1],pos2[2],pos2[3],pos2[4])
 
-        userNameArtist = QLabel(curUser)
+        userNameArtist = QLabel(self.curUser)
         userNameArtist.setAlignment(alignR)
         self.gridLayout.addWidget(userNameArtist, pos3[1],pos3[2],pos3[3],pos3[4])
 
@@ -336,7 +340,7 @@ class TabWidget( QWidget ):
         titleLabel.setAlignment(alignL)
         self.gridLayout.addWidget(titleLabel, pos4[1],pos4[2],pos4[3],pos4[4])
 
-        classLabel = QLabel(curUserData[curUser][1])
+        classLabel = QLabel(self.curUserData[self.curUser][1])
         classLabel.setAlignment(alignR)
         self.gridLayout.addWidget(classLabel, pos5[1],pos5[2],pos5[3],pos5[4])
 
@@ -424,23 +428,38 @@ class DesktopUI( QMainWindow ):
 
     def buildUI(self, appInfo, package, message, mainID, names, url):
         self.layout = self.setGeometry(package['geo'][1], package['geo'][2], package['geo'][3], package['geo'][4])
+
         # Status bar viewing message
         self.statusBar().showMessage(message['status'])
-        # Menu Tool Bar
-        exitAction, aboutAction, creditAction, helpAction = self.addMenuToolBar(appInfo, mainID, message, url)
-        # File menu
+
+        #----------------------------------------------
+        # Menu Tool Bar sections
         menubar = self.menuBar()
+
+        # File menu
         fileMenu = menubar.addMenu('File')
+        # Extract actions
+        exitAction = self.fileMenuToolBar(appInfo, mainID, message, url)
         separator1 = self.createSeparatorAction(appInfo)
+        # Put actions into file menu
         fileMenu.addAction(separator1)
         fileMenu.addAction(exitAction)
+
         # Tool Menu
         toolMenu = menubar.addMenu('Tool')
+
+
         # Help Menu
         helpMenu = menubar.addMenu('Help')
+        # Extract actions
+        aboutAction, creditAction, helpAction = self.helpMenuToolBar(appInfo, mainID, message, url)
+        # Put actions into help menu
         helpMenu.addAction(aboutAction)
         helpMenu.addAction(creditAction)
         helpMenu.addAction(helpAction)
+
+        #----------------------------------------------
+        # Shelf toolbar sections
         # TD Tool Bar
         self.tdToolBar = self.toolBarTD(appInfo)
         # VFX Tool Bar
@@ -448,11 +467,18 @@ class DesktopUI( QMainWindow ):
         # support ToolBar
         # self.supportApps = self.supApps( appInfo )
 
-    def addMenuToolBar(self, appInfo, mainid, message, url):
+    def fileMenuToolBar(self, appInfo, mainid, message, url):
         # Exit action
         exitAction = QAction(QIcon(appInfo['Exit'][1]), appInfo['Exit'][0], self)
         exitAction.setStatusTip( appInfo['Exit'][0])
         exitAction.triggered.connect(qApp.quit)
+
+        return exitAction
+
+    def toolMenuToolBar(self, appInfo, mainid, message, url):
+        pass
+
+    def helpMenuToolBar(self, appInfo, mainid, message, url):
         # About action
         about = QAction(QIcon(appInfo['About'][1]), appInfo['About'][0], self)
         about.setStatusTip(appInfo['About'][0] )
@@ -465,19 +491,19 @@ class DesktopUI( QMainWindow ):
         helpAction = QAction( QIcon(appInfo['Help'][1]), appInfo['Help'][0], self)
         helpAction.setStatusTip( (appInfo['Help'][0]) )
         helpAction.triggered.connect( partial( self.openURL, url[ 'Help' ] ) )
-        return exitAction, about, credit, helpAction
+        return about, credit, helpAction
 
     def toolBarTD(self, appInfo):
         # TD Tool Bar
         toolBarTD = self.addToolBar('TD')
-        # Maya 2017
+        # Maya_tk 2017
         if 'Maya 2017' in appInfo:
-            maya2017 = self.createAction(appInfo, 'Maya 2017')
+            maya2017 = self.createAction(appInfo, 'Maya_tk 2017')
             toolBarTD.addAction(maya2017)
             pass
-        # Maya 2016
+        # Maya_tk 2016
         elif 'Maya 2016' in appInfo:
-            maya2016 = self.createAction(appInfo, 'Maya 2016')
+            maya2016 = self.createAction(appInfo, 'Maya_tk 2016')
             toolBarTD.addAction(maya2016)
         # ZBrush 4R8
         if 'ZBrush 4R8' in appInfo:
@@ -488,13 +514,13 @@ class DesktopUI( QMainWindow ):
         elif 'ZBrush 4R7' in appInfo:
             zbrush4R7 = self.createAction(appInfo, 'ZBrush 4R7')
             toolBarTD.addAction(zbrush4R7)
-        # Houdini FX
+        # Houdini_tk FX
         if 'Houdini FX' in appInfo:
-            houdiniFX = self.createAction(appInfo, 'Houdini FX')
+            houdiniFX = self.createAction(appInfo, 'Houdini_tk FX')
             toolBarTD.addAction( houdiniFX )
-        # Mari
+        # Mari_tk
         if 'Mari' in appInfo:
-            mari = self.createAction(appInfo, 'Mari')
+            mari = self.createAction(appInfo, 'Mari_tk')
             toolBarTD.addAction(mari)
         # Photoshop CS6
         if 'Photoshop CS6' in appInfo:

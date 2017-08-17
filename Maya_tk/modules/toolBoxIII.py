@@ -39,12 +39,12 @@ else:
 
 def getMayaMainWindow():
     """
-    Since Maya is Qt, we can parent our UIs to it.
-    This means that we don't have to manage our UI and can leave it to Maya.
+    Since Maya_tk is Qt, we can parent our UIs to it.
+    This means that we don't have to manage our UI and can leave it to Maya_tk.
     Returns:
-        QtWidgets.QMainWindow: The Maya MainWindow
+        QtWidgets.QMainWindow: The Maya_tk MainWindow
     """
-    # Use the OpenMayaUI API to get a reference to Maya's MainWindow
+    # Use the OpenMayaUI API to get a reference to Maya_tk's MainWindow
     win = omui.MQtUtil_mainWindow()
 
     # Use the wrapInstance method to convert it to something python can understand (QMainWindow)
@@ -56,7 +56,7 @@ def getMayaMainWindow():
 def getDock(name='DAMGtoolBoxIIIDock'):
     """
     This function creates a dock with the given name.
-    It's an example of how we can mix Maya's UI elements with Qt elements
+    It's an example of how we can mix Maya_tk's UI elements with Qt elements
     Args:
         name: The name of the dock to create
     Returns:
@@ -65,7 +65,7 @@ def getDock(name='DAMGtoolBoxIIIDock'):
     # Delete any conflicting docks
     deleteDock( name )
 
-    # Create a workspaceControl dock using Maya's UI tools
+    # Create a workspaceControl dock using Maya_tk's UI tools
     ctrl = cmds.workspaceControl(name, label='DAMG Tool Box III - All About Lighting')
 
     # Use the OpenMayaUI API to get the actual Qt widget associated with the name
@@ -355,9 +355,9 @@ class toolBoxIII( QtWidgets.QWidget ):
         iconBtnWidget = QtWidgets.QWidget()
         self.iconBtnLayout = QtWidgets.QHBoxLayout(iconBtnWidget)
         self.layout.addWidget(iconBtnWidget, 0,0)
-        self.iconBtnLayout.addWidget( QtWidgets.QLabel( "Maya: " ) )
+        self.iconBtnLayout.addWidget( QtWidgets.QLabel( "Maya_tk: " ) )
 
-        # self.mayaLightTB = QtWidgets.QToolBar('Maya Light')
+        # self.mayaLightTB = QtWidgets.QToolBar('Maya_tk Light')
         self.getMayaLight()
 
         self.getVrayLight()

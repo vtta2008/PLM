@@ -3,7 +3,7 @@
 # -------------------------------------------------------------------------------------------------------------
 import maya.cmds as cmds
 import maya.mel as mel
-import maya.OpenMayaUI as omui # the extent of the internal Maya API
+import maya.OpenMayaUI as omui # the extent of the internal Maya_tk API
 import logging, os
 from functools import partial # partial module can store variables to method
 
@@ -55,12 +55,12 @@ else:
 
 def getMayaMainWindow():
     """
-    Since Maya is Qt, we can parent our UIs to it.
-    This means that we don't have to manage our UI and can leave it to Maya.
+    Since Maya_tk is Qt, we can parent our UIs to it.
+    This means that we don't have to manage our UI and can leave it to Maya_tk.
     Returns:
-        QtWidgets.QMainWindow: The Maya MainWindow
+        QtWidgets.QMainWindow: The Maya_tk MainWindow
     """
-    # Use the OpenMayaUI API to get a reference to Maya's MainWindow
+    # Use the OpenMayaUI API to get a reference to Maya_tk's MainWindow
     win = omui.MQtUtil_mainWindow()
 
     # Use the wrapInstance method to convert it to something python can understand (QMainWindow)
@@ -72,7 +72,7 @@ def getMayaMainWindow():
 def getDock(name='Channel Box', label='Channel Box', version=VERSION):
     """
     This function creates a dock with the given name.
-    It's an example of how we can mix Maya's UI elements with Qt elements
+    It's an example of how we can mix Maya_tk's UI elements with Qt elements
     Args:
         name: The name of the dock to create
     Returns:
@@ -80,7 +80,7 @@ def getDock(name='Channel Box', label='Channel Box', version=VERSION):
     """
     # Delete any conflicting docks
     deleteDock( name )
-    # Create a workspaceControl dock using Maya's UI tools
+    # Create a workspaceControl dock using Maya_tk's UI tools
     if version>=2017:
         ctrl = cmds.workspaceControl(name,label=label)
     else:

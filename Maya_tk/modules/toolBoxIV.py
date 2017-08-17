@@ -71,7 +71,7 @@ class toolBoxIV( object ):
         sys.exit()
 
     def buildUI(self):
-        apps = [ 'ZBrush 4R8', 'Mudbox 2017', 'Mari', 'Houdini FX', 'NukeX', 'Hiero',
+        apps = [ 'ZBrush 4R8', 'Mudbox 2017', 'Mari_tk', 'Houdini_tk FX', 'NukeX', 'Hiero',
                  'Photoshop CC', 'Illustrator CC', 'Premiere Pro CC', 'After Effects CC' ]
 
         with open(self.scrApps, 'r') as f:

@@ -6,7 +6,7 @@
 # -------------------------------------------------------------------------------------------------------------
 import maya.cmds as cmds
 import maya.mel as mel
-import maya.OpenMayaUI as omui # the extent of the internal Maya API
+import maya.OpenMayaUI as omui # the extent of the internal Maya_tk API
 import logging, os
 from functools import partial # partial module can store variables to method
 
