@@ -52,9 +52,11 @@ USERNAME = var.USERNAME
 
 # UI variables preset for layout customizing
 # Dimension
-W = 310
-H = 125
-AVATAR_SIZE = 80
+W = 350
+H = 150
+AVATAR_SIZE = 100
+ICON_SIZE = 30
+BUFFER = 3
 
 # Margin
 M1 = [0,5,5,5,5]
@@ -111,7 +113,17 @@ class LoginUI(QDialog):
 
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
 
-        self.buildUI()
+        prevUserLogin = os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog')
+
+        with open(prevUserLogin, 'r') as f:
+            prevUserData = json.load(f)
+
+        userName = [f for f in prevUserData][0]
+
+        if prevUserData[userName][3]==0:
+            self.buildUI()
+        else:
+            self.autoLogin(userName)
 
         # self.setCentralWidget(self.mainFrame)
 
@@ -205,7 +217,12 @@ class LoginUI(QDialog):
         hbox.addLayout(self.layout)
         self.mainFrame.setLayout(hbox)
 
-    def checkLogin(self):
+    def autoLogin(self, userName, *args):
+        QMessageBox.information(self, 'Login Successful', "Welcome back %s\n "
+                                                          "Now it's the time to make amazing thing to the world !!!" % userName)
+        # self.close()
+
+    def checkLogin(self, *args):
         user_name = str(self.userName.text())
         pass_word = str(proc.endconding(self.passWord.text()))
 
@@ -215,7 +232,7 @@ class LoginUI(QDialog):
             QMessageBox.information(self, 'Login Successful', "Welcome back %s\n "
                                     "Now it's the time to make amazing thing to the world !!!" % user_name)
             self.close()
-            func.saveCurrentUserLogin(user_name)
+            func.saveCurrentUserLogin(user_name, self.rememberCheckBox.checkState())
         else:
             QMessageBox.information(self, 'Login Failed', 'Username or Password is incorrected')
 
@@ -243,8 +260,8 @@ class TabWidget( QWidget ):
         # self.tabs.setDocumentMode(True)
         # self.tabs.setTabPosition(QTabWidget.West)
         self.tab1 = QGroupBox(self)
-        self.tab2 = QWidget()
-        self.tab3 = QWidget()
+        self.tab2 = QGroupBox(self)
+        self.tab3 = QGroupBox(self)
         # self.tabs.resize(package['geo'][1], package['geo'][2])
         # Add Tabs
         self.tabs.addTab(self.tab1, tabid[1])
@@ -271,13 +288,13 @@ class TabWidget( QWidget ):
 
         x1 = X
         y1 = Y
-        xh1 = 3*XH
-        xw1 = 3*XW
+        xh1 = 5*XH
+        xw1 = 5*XW
 
         x2 = x1
         y2 = xw1
         xh2 = XH
-        xw2 = 3*XW
+        xw2 = XW
 
         x3 = x2
         y3 = xw1 + xw2
@@ -313,66 +330,109 @@ class TabWidget( QWidget ):
         pos7 = [0, x7, y7, xh7, xw7]
 
         # Create Layout for Tab 1
-        self.tab1.setTitle('Hello ' + self.curUser)
+        self.tab1.setTitle(self.curUser)
         self.tab1.setFixedSize(W, H)
 
         hboxLayout = QHBoxLayout()
 
-        self.gridLayout = QGridLayout()
+        self.tab1GridLayout = QGridLayout()
 
         userImg = QPixmap(func.avatar(self.curUser))
         userAvatar = QLabel()
         userAvatar.setPixmap(userImg)
         userAvatar.setScaledContents(True)
         userAvatar.setFixedSize(AVATAR_SIZE,AVATAR_SIZE)
-        self.gridLayout.addWidget(userAvatar, pos1[1],pos1[2],pos1[3],pos1[4])
+        self.tab1GridLayout.addWidget(userAvatar, pos1[1],pos1[2],pos1[3],pos1[4])
 
-        userNameLabel = QLabel('Artist Name: ')
+        userNameLabel = QLabel('AKA: ')
         userNameLabel.setAlignment(alignL)
-        self.gridLayout.addWidget(userNameLabel, pos2[1],pos2[2],pos2[3],pos2[4])
+        self.tab1GridLayout.addWidget(userNameLabel, pos2[1],pos2[2],pos2[3],pos2[4])
 
-        userNameArtist = QLabel(self.curUser)
+        userNameArtist = QLabel('JimJim')
         userNameArtist.setAlignment(alignR)
-        self.gridLayout.addWidget(userNameArtist, pos3[1],pos3[2],pos3[3],pos3[4])
+        self.tab1GridLayout.addWidget(userNameArtist, pos3[1],pos3[2],pos3[3],pos3[4])
 
-        titleLabel = QLabel('Class: ')
+        titleLabel = QLabel('Group: ')
         titleLabel.setAlignment(alignL)
-        self.gridLayout.addWidget(titleLabel, pos4[1],pos4[2],pos4[3],pos4[4])
+        self.tab1GridLayout.addWidget(titleLabel, pos4[1],pos4[2],pos4[3],pos4[4])
 
         classLabel = QLabel(self.curUserData[self.curUser][1])
         classLabel.setAlignment(alignR)
-        self.gridLayout.addWidget(classLabel, pos5[1],pos5[2],pos5[3],pos5[4])
+        self.tab1GridLayout.addWidget(classLabel, pos5[1],pos5[2],pos5[3],pos5[4])
 
-        prodLabel = QLabel('Production: ')
+        prodLabel = QLabel('Title: ')
         prodLabel.setAlignment(alignL)
-        self.gridLayout.addWidget(prodLabel, pos6[1],pos6[2],pos6[3],pos6[4])
+        self.tab1GridLayout.addWidget(prodLabel, pos6[1],pos6[2],pos6[3],pos6[4])
 
-        self.productionList = QComboBox()
-        for prod in prodLst:
-            self.productionList.addItem(prod)
-        self.gridLayout.addWidget(self.productionList, pos7[1],pos7[2],pos7[3],pos7[4])
+        self.productionList = QLabel('PipelineTD')
+        # for prod in prodLst:
+        #     self.productionList.addItem(prod)
+        self.tab1GridLayout.addWidget(self.productionList, pos7[1],pos7[2],pos7[3],pos7[4])
 
         # self.tab1.layout.setMaximumSized(100,100)
-        hboxLayout.addLayout(self.gridLayout)
+        hboxLayout.addLayout(self.tab1GridLayout)
 
         self.tab1.setLayout(hboxLayout)
 
     def tab2Layout(self):
         # Create Layout for Tab 2
-        self.tab2.layout = QVBoxLayout( self )
-        self.tab2.setLayout(self.tab2.layout)
+        self.tab2.setTitle('Extra Tool')
+        self.tab2.setFixedSize(W,H)
+
+        hboxLayout = QHBoxLayout()
+
+        self.tab2GridLayout = QGridLayout()
         # Content tab 2
-        tab2btn1 = QPushButton( 'English Dictionary' )
-        tab2btn1.clicked.connect(self.englishDict)
-        self.tab2.layout.addWidget( tab2btn1 )
+        illusBtn = self.makeIconButton('Illustrator CC')
+        self.tab2GridLayout.addWidget(illusBtn, 0,0,1,1)
+
+        indesignBtn = self.makeIconButton('InDesign CC')
+        self.tab2GridLayout.addWidget(indesignBtn, 0,1,1,1)
+
+        mudboxBtn = self.makeIconButton('Mudbox 2017')
+        self.tab2GridLayout.addWidget(mudboxBtn, 0,2,1,1)
+
+        uvLayoutBtn = self.makeIconButton('UVLayout')
+        self.tab2GridLayout.addWidget(uvLayoutBtn, 0,3,1,1)
+
+        dictBtn = QPushButton( 'English Dictionary' )
+        dictBtn.clicked.connect(self.englishDict)
+        self.tab2GridLayout.addWidget(dictBtn, 1,0,1,3)
+
+        hboxLayout.addLayout(self.tab2GridLayout)
+
+        self.tab2.setLayout(hboxLayout)
 
     def tab3Layout(self):
         # Create Layout for Tab 2
-        self.tab3.layout = QVBoxLayout(self)
-        self.tab3.setLayout(self.tab3.layout)
+        self.tab3.setTitle('Management Tool')
+        self.tab3.setFixedSize(W,H)
+
+        hboxLayout = QHBoxLayout()
+
+        self.tab3GridLayout = QGridLayout()
+
         # Content tab 3
-        tab3btn1 = QPushButton('Just For Test 3')
-        self.tab3.layout.addWidget(tab3btn1)
+        sqlPeopleBtn = QPushButton('Members')
+        self.tab3GridLayout.addWidget(sqlPeopleBtn, 0,0,1,1)
+
+        hboxLayout.addLayout(self.tab3GridLayout)
+
+        self.tab3.setLayout(hboxLayout)
+
+    def makeIconButton(self, name):
+
+        icon = QIcon(APPINFO[name][1])
+        iconBtn = QPushButton()
+        iconBtn.setToolTip(APPINFO[name][0])
+        iconBtn.setIcon(icon)
+        iconBtn.setFixedSize(ICON_SIZE, ICON_SIZE)
+        iconBtn.setIconSize(QSize(ICON_SIZE-BUFFER, ICON_SIZE-BUFFER))
+        iconBtn.clicked.connect(partial(self.openApps, APPINFO[name][2]))
+        return iconBtn
+
+    def openApps(self, pth):
+        subprocess.Popen(pth)
 
     def englishDict(self):
         from ui import englishDict
@@ -640,6 +700,7 @@ def initialize(mainID=MAINID, appInfo=APPINFO, package=PACKAGE, message=MESSAGE,
 
     app = QApplication(sys.argv)
     window = DesktopUI(MAINID, APPINFO, PACKAGE, MESSAGE, NAMES, URL)
+    # window.setFixedWidth(W)
     window.show()
     sys.exit(app.exec_())
 

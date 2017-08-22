@@ -120,11 +120,13 @@ def avatar(userName, *args):
     return avatarPth
 
 # Save information of current log in user account for next time.
-def saveCurrentUserLogin(userName, *args):
+def saveCurrentUserLogin(userName, remember=False, *args):
     userDataPth = os.path.join(os.getenv(DATA_KEY), os.path.join('scrInfo', 'user.info'))
 
     with open(userDataPth, 'r') as f:
         userData = json.load(f)
+
+    userData[userName].append(remember)
 
     curUser = {}
     curUser[userName] = userData[userName]

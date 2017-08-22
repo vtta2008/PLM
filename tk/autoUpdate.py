@@ -26,6 +26,7 @@ def createTempUser():
     userInfo = {}
 
     userInfo['TrinhDo'] = [proc.endconding('adsadsa'), var.USER_CLASS[1], func.avatar('TrinhDo'),]
+    userInfo['DucDM'] = [proc.endconding('ducdudao'), var.USER_CLASS[1], func.avatar('DucDM'),]
     userInfo['Arjun'] = [proc.endconding('123456'), var.USER_CLASS[3], func.avatar('Arjun'),]
     userInfo['Annie'] = [proc.endconding('123123'), var.USER_CLASS[3], func.avatar('Annie'),]
 
