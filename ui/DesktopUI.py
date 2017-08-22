@@ -77,8 +77,13 @@ __left__ = Qt.AlignLeft
 pthInfo = PACKAGE['appData']
 
 infoData = NAMES['info']
-with open(os.path.join(pthInfo, infoData), 'r') as f:
-    info = json.load(f)
+
+filePath = os.path.join(pthInfo, infoData)
+
+info = func.dataHandle(filePath, 'r')
+
+# with open(os.path.join(pthInfo, infoData), 'r') as f:
+#     info = json.load(f)
 
 # Get app path
 logger.info('Loading information...')
@@ -86,8 +91,11 @@ APPINFO = info['pipeline']
 logger.info('Loading pipeline manager UI')
 
 userDataPth = os.path.join(os.getenv(NAMES['key']), os.path.join('scrInfo', 'user.info'))
-with open(userDataPth, 'r') as f:
-    userData = json.load(f)
+
+userData = func.dataHandle(userDataPth, 'r')
+
+# with open(userDataPth, 'r') as f:
+#     userData = json.load(f)
 
 prodInfoFolder = os.path.join(os.getenv(NAMES['key']), os.path.join(NAMES['appdata'][1], 'prodInfo'))
 

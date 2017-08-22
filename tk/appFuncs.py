@@ -9,11 +9,34 @@ Description:
 
 import os, sys, logging, json, subprocess, pip
 
-DATA_KEY = "PIPELINE_TOOL"
+PIPELINETOOL_KEY = "PIPELINE_TOOL"
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
+
+def dataHandle(filePath, mode, indent=4, *args):
+    """
+    json functions: read, write, edit... etc
+    """
+
+    if mode=='r' or mode=='r+':
+        if not os.path.exists(filePath):
+            logger.debug('file is not exists')
+            sys.exit()
+        else:
+            with open(filePath, mode) as f:
+                return json.load(f)
+    elif mode == 'a' or mode == 'a+':
+        if not os.path.exists(filePath):
+            logger.debug('file is not exists')
+            sys.exit()
+        else:
+            with open(filePath, mode) as f:
+                return json.dump(filePath, f, indent=indent)
+    elif mode == 'w' or mode =='w+':
+        with open(filePath, mode) as f:
+            return json.dump(filePath, f, indent=indent)
 
 def getAllInstalledPythonPackage(*args):
     pyPkgs = {}
@@ -29,7 +52,7 @@ def getAllInstalledPythonPackage(*args):
 
         pyPkgs[name] = [key, version, location]
 
-    pkgInfo = os.path.join(os.getenv(DATA_KEY), os.path.join('scrInfo', 'packages.info'))
+    pkgInfo = os.path.join(os.getenv(PIPELINETOOL_KEY), os.path.join('scrInfo', 'packages.info'))
 
     with open(pkgInfo, 'w') as f:
         json.dump(pyPkgs, f, indent=4)
@@ -121,7 +144,7 @@ def avatar(userName, *args):
 
 # Save information of current log in user account for next time.
 def saveCurrentUserLogin(userName, remember=False, *args):
-    userDataPth = os.path.join(os.getenv(DATA_KEY), os.path.join('scrInfo', 'user.info'))
+    userDataPth = os.path.join(os.getenv(PIPELINETOOL_KEY), os.path.join('scrInfo', 'user.info'))
 
     with open(userDataPth, 'r') as f:
         userData = json.load(f)
@@ -130,7 +153,7 @@ def saveCurrentUserLogin(userName, remember=False, *args):
 
     curUser = {}
     curUser[userName] = userData[userName]
-    currentUserLoginPth = os.path.join(os.getenv(DATA_KEY), 'user.tempLog')
+    currentUserLoginPth = os.path.join(os.getenv(PIPELINETOOL_KEY), 'user.tempLog')
     with open(currentUserLoginPth, 'w') as f:
         json.dump(curUser, f, indent=4)
 
