@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Dialog</class>
+ <widget class="QDialog" name="Dialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>477</width>
+    <height>267</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <weight>50</weight>
+    <bold>false</bold>
+   </font>
+  </property>
+  <property name="windowTitle">
+   <string>User Login</string>
+  </property>
+  <property name="autoFillBackground">
+   <bool>false</bool>
+  </property>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
+  </property>
+  <widget class="QWidget" name="gridLayoutWidget">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>10</y>
+     <width>471</width>
+     <height>181</height>
+    </rect>
+   </property>
+   <layout class="QGridLayout" name="layout">
+    <item row="0" column="0">
+     <widget class="QGroupBox" name="widget">
+      <property name="title">
+       <string>Login</string>
+      </property>
+      <widget class="QLineEdit" name="userTf">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>30</y>
+         <width>301</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="pwdTf">
+       <property name="geometry">
+        <rect>
+         <x>160</x>
+         <y>70</y>
+         <width>301</width>
+         <height>20</height>
+        </rect>
+       </property>
+      </widget>
+      <widget class="QLabel" name="userLabel">
+       <property name="geometry">
+        <rect>
+         <x>6</x>
+         <y>30</y>
+         <width>151</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Username</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="pwdLabel">
+       <property name="geometry">
+        <rect>
+         <x>6</x>
+         <y>70</y>
+         <width>151</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Password</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="loginBtn">
+       <property name="geometry">
+        <rect>
+         <x>150</x>
+         <y>110</y>
+         <width>153</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Login</string>
+       </property>
+      </widget>
+      <widget class="QPushButton" name="closeBtn">
+       <property name="geometry">
+        <rect>
+         <x>310</x>
+         <y>110</y>
+         <width>151</width>
+         <height>23</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Quit</string>
+       </property>
+      </widget>
+      <widget class="QCheckBox" name="rememberCb">
+       <property name="geometry">
+        <rect>
+         <x>40</x>
+         <y>110</y>
+         <width>101</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Remember Me</string>
+       </property>
+      </widget>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QGroupBox" name="groupBox">
+   <property name="geometry">
+    <rect>
+     <x>-1</x>
+     <y>199</y>
+     <width>471</width>
+     <height>61</height>
+    </rect>
+   </property>
+   <property name="title">
+    <string>Important Note</string>
+   </property>
+   <widget class="QLabel" name="noteLabel">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>20</y>
+      <width>451</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>This app is for specific user only, if you do not have login account, please contact JimJim.</string>
+    </property>
+   </widget>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -50,3 +50,14 @@ NOT_ALLOW = """
 Sorry, but only Admin can do this function, please contact JimJim for details.
 
 """
+
+LOGIN_NOTE = """
+
+Dear User,
+
+This app is for specific user only, if you do not have login account, 
+that means you are not a part of this, or you do not have permission yet.
+
+Please contact JimJim if you have any question: dot@damgteam.com
+
+"""

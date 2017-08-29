@@ -1,4 +1,4 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
 """
 Script Name: desktopUI.py
 Author: Do Trinh/Jimmy - 3D artist.
@@ -123,15 +123,18 @@ class LoginUI(QDialog):
 
         prevUserLogin = os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog')
 
-        with open(prevUserLogin, 'r') as f:
-            prevUserData = json.load(f)
-
-        userName = [f for f in prevUserData][0]
-
-        if prevUserData[userName][3]==0:
+        if not os.path.exists(prevUserLogin):
             self.buildUI()
         else:
-            self.autoLogin(userName)
+            with open(prevUserLogin, 'r') as f:
+                prevUserData = json.load(f)
+
+            userName = [f for f in prevUserData][0]
+
+            if prevUserData[userName][3]==0:
+                self.buildUI()
+            else:
+                self.autoLogin(userName)
 
         # self.setCentralWidget(self.mainFrame)
 
@@ -491,10 +494,13 @@ class DesktopUI( QMainWindow ):
 
         super( DesktopUI, self ).__init__()
 
-        with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog'), 'r') as f:
-            self.curUserData = json.load(f)
+        if not os.path.exists(os.getenv('PIPELINE_TOOL')):
+            os.mkdir(os.getenv('PIPELINE_TOOL'))
 
-        self.curUser = [f for f in self.curUserData][0]
+            with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog'), 'r') as f:
+                self.curUserData = json.load(f)
+
+            self.curUser = [f for f in self.curUserData][0]
 
         # Set window title
         self.setWindowTitle(mainID['Main'])

@@ -7,13 +7,17 @@ Description:
     This script will find all the path of modules, icons, images ans store them to a file
 """
 
-import os, sys, logging, json, subprocess, pip
+import os, sys, logging, json, subprocess, pip, uuid
 
 PIPELINETOOL_KEY = "PIPELINE_TOOL"
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
+
+def createToken():
+    token = uuid.uuid4()
+    return token
 
 def dataHandle(filePath, mode, indent=4, *args):
     """
