@@ -11,18 +11,18 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import os, sys, subprocess, json, webbrowser, logging
-from functools import partial
-from tk import getData, proc, message
-from tk import defaultVariable as var
-from tk import appFuncs as func
+import logging
 
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PTQT5 ELEMENT TO MAKE UI
 # -------------------------------------------------------------------------------------------------------------
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
+
+from tk import appFuncs as func
+from tk import defaultVariable as var
+from tk import message
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
@@ -31,10 +31,8 @@ logger.setLevel(logging.DEBUG)
 # ------------------------------------------------------
 # GET INFO DATA BEFORE START
 # Update local pc info
-def updateInfo():
-    getData.initialize()
 
-updateInfo()
+func.updateInfo()
 # logger.info('Updating data')
 
 # ------------------------------------------------------

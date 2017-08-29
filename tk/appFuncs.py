@@ -6,16 +6,32 @@ Author: Do Trinh/Jimmy - 3D artist.
 Description:
     This script will find all the path of modules, icons, images ans store them to a file
 """
+# -------------------------------------------------------------------------------------------------------------
+# IMPORT PYTHON MODULES
+# -------------------------------------------------------------------------------------------------------------
+import os, sys, logging, json, subprocess, pip, uuid, unicodedata, datetime
+from tk import defaultVariable as var
 
-import os, sys, logging, json, subprocess, pip, uuid
-
+# ------------------------------------------------------
+# DEFAULT VARIABLES
+# ------------------------------------------------------
 PIPELINETOOL_KEY = "PIPELINE_TOOL"
+PLUGIN = var.MAIN_PLUGIN
+PACKAGE = var.MAIN_PACKPAGE
+NAMES = var.MAIN_NAMES
+USER = var.USERNAME
+# example of a normal string (English, readable)
+STRINPUT = var.STRINPUT
+# example of a string in hexadecimal code
+HEXINPUT = var.HEXINPUT
+# list of keywords to run script by user
+OPERATION = var.OPERATION['encode']
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
-def createToken():
+def createToken(*args):
     token = uuid.uuid4()
     return token
 
@@ -162,3 +178,150 @@ def saveCurrentUserLogin(userName, remember=False, *args):
         json.dump(curUser, f, indent=4)
 
     logger.info('save file to %s' % currentUserLoginPth)
+
+# ----------------------------------------------------------------------------------------------------------- #
+"""                        MAIN CLASS 1: ENDCODE - ENCODE STRING TO HEXADECIMAL                             """
+# ----------------------------------------------------------------------------------------------------------- #
+class Encode():
+    """
+    This is the main class with function to encode a string to hexadecimal or revert.
+    """
+    def ascii(self, rawInput):
+        """
+        convert another type of unicode to be compatible in python
+        :param rawInput: input
+        :return: unicode string
+        """
+        outPut = unicodedata.normalize('NFKD', rawInput).encode('ascii', 'ignore').decode('ascii')
+
+        return outPut
+
+    def utf8(self, rawInput):
+        outPut = rawInput.encode('utf-8')
+        return outPut
+
+    def typeToStr(self, rawInput):
+        """
+        convert to string
+        :param rawInput: input which may not be a string type
+        :return: string type input
+        """
+        if type(rawInput) is not 'string':
+            rawStr = str(rawInput)
+        else:
+            rawStr = rawInput
+
+        return rawStr
+
+    def strToHex(self, strInput):
+        """
+        convert string to hexadecimal
+        :param strInput: string input
+        :return: hexadecimal
+        """
+        self.outPut = ''.join ( ["%02X" % ord (x) for x in strInput] )
+        return self.outPut
+
+    def hexToStr(self, hexInput):
+        """
+        convert a hexadecimal string to a string which could be readable
+        :param hexInput: hexadecimal string
+        :return: readable string
+        """
+        bytes = []
+        hexStr = ''.join( hexInput.split(" ") )
+        for i in range(0, len(hexStr), 2):
+            bytes.append( chr( int (hexStr[i:i+2], 16 ) ) )
+
+        self.outPut = ''.join( bytes )
+        return self.outPut
+
+# ------------------------------------------------------
+# FUNCTION TO OPERATE THE ENCODING
+# ------------------------------------------------------
+def encode(input=STRINPUT, mode=OPERATION[0]):
+    """
+    Base on given mode it will tells script what to do
+    :param input: type of input, string by default
+    :param mode: given mode to convert string to hexadecimal or revert.
+    :return: string
+    """
+    if mode == 'hex':
+       output = Encode().strToHex( input )
+    elif mode == 'str':
+        output = Encode().hexToStr( input )
+    elif mode== 'ascii':
+        output = Encode().ascii( input )
+    else:
+        output = Encode().utf8(input)
+
+    return output
+
+
+# ----------------------------------------------------------------------------------------------------------- #
+"""                MAIN CLASS 2: GET MODULE INFO - GET ALL INFO OF MODULES, ICONS, IMAGES                   """
+# ----------------------------------------------------------------------------------------------------------- #
+class Proc():
+    """
+    This is some function that will use many time
+    """
+    dt = datetime.datetime
+
+    def __init__(self):
+        # logger.info('Start procedural')
+        pass
+
+    def getDate(self):
+        t = datetime.datetime.timetuple( datetime.datetime.now() )
+        dateOutput = '%s/%s/%s' % (str(t.tm_mday), str(t.tm_mon), str(t.tm_year))
+        return dateOutput
+
+    def getTime(self):
+        t = datetime.datetime.timetuple(datetime.datetime.now() )
+        timeOutput = '%s:%s' % (str(t.tm_hour), str(t.tm_min))
+        return timeOutput
+
+    def createLog(self, event='Create Log', names=NAMES, package=PACKAGE):
+        log = {}
+        log[proc('date')] = event
+        with open( os.path.join(package['appData'], names['log']), 'a+') as f:
+            json.dump(log, f, indent=4)
+
+def endconding(message):
+    output = encode.encode(message, mode='hex')
+    return output
+
+def decoding(message):
+    output = encode.encode(message, mode='str')
+    return output
+
+def logRecord(event):
+    # logger.info('Log created')
+    output = Proc().createLog(event=event)
+    return output
+
+def proc(operation=None, name=NAMES['log'], path=PACKAGE['info']):
+    t = Proc().getTime()
+    d = Proc().getDate()
+    u = USER
+
+    if operation == 'date':
+        output = Proc().getDate()
+    elif operation == 'time':
+        output = Proc().getTime()
+    elif operation == 'log out':
+        output = logRecord('User %s logged out at %s' % (u,t))
+    elif operation == 'log in':
+        output = logRecord('User %s logged in at %s' % (u,t))
+    elif operation == 'update':
+        output = logRecord('Update data at %s' % t)
+    elif operation == 'restart':
+        output = logRecord('User %s restart app at %s' % (u, t) )
+    else:
+        output=None
+
+    return output
+
+# --------------------------------------------------------------------------------------------------------
+"""                                                END OF CODE                                         """
+# --------------------------------------------------------------------------------------------------------

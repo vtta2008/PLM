@@ -9,8 +9,12 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import os, sys, winshell, platform
+import os, sys, winshell, platform, logging
 from tk import message
+
+logging.basicConfig()
+logger = logging.getLogger(__file__)
+logger.setLevel(logging.DEBUG)
 
 # ------------------------------------------------------
 # DEFAULT VARIABLES
@@ -36,13 +40,39 @@ MAIN_NAMES = dict( info='apps.pipeline',
 
 USER_CLASS = ['', 'Admin','Supervisor','Artist']
 
+# Create environment variable by custom key
+def createKey(key, scrInstall, toolName, *args):
+    """
+    Create custom enviroment Key in sys.
+    all of those keys are temporary,
+    it will be none once pipeline tool shut down.
+    :param key: name of the key
+    :param scrInstall: source scripts of pipline tool app
+    :param toolName: name of the folder where contains the tool
+    :return: a teamporary environment variable.
+    """
+    logger.info('install new environment variable')
+    toolPth = os.path.join(scrInstall, toolName)
+    if not os.path.exists(toolPth):
+        os.mkdir(toolPth)
+    os.environ[key] = toolPth
+
+def checkEnvKey(key, scrInstall, toolName, *args):
+    try:
+        pth = os.getenv(key)
+        if pth == None or pth == '':
+            createKey(key, scrInstall, toolName)
+    except KeyError:
+        createKey(key, scrInstall, toolName)
+    else:
+        pass
+
 def createInfo():
     key = 'PIPELINE_TOOL'
     toolName = 'Pipeline Tool'
     scrInstall = os.getenv('PROGRAMDATA')
 
-    from tk import appFuncs as func
-    func.checkEnvKey(key, scrInstall, toolName)
+    checkEnvKey(key, scrInstall, toolName)
 
     appDir = os.getenv(key)
 

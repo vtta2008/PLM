@@ -9,14 +9,14 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import os, sys, json, platform, re, logging, winshell
+import json, logging, os, sys, re, platform, winshell
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
 from tk import defaultVariable as var
-from tk import proc, encode
+from tk import appFuncs as func
 
 # ------------------------------------------------------
 # DEFAULT VARIABLES
@@ -37,12 +37,12 @@ class GetData( object ):
         """
         Initialize the main class functions
         :param package: the package of many information stored from default variable
-        :param names: the dictionsary of names stored from default variable
+        :param names: the dictionary of names stored from default variable
         :returns: all installed app info, package app info, icon info, image info, pc info.
         """
         logger.info('Updating data paths')
 
-        proc.proc('')
+        func.proc('')
 
         self.createAllInfoFiles(package, names)
 
@@ -86,7 +86,7 @@ class GetData( object ):
         """
         Get all the info of modules
         :param package: the package of many information stored from default variable
-        :param names: the dictionsary of names stored from default variable
+        :param names: the dictionary of names stored from default variable
         :return: modules.info
         """
         # Create info module dictionary
@@ -195,8 +195,8 @@ class GetData( object ):
         # fix the encoding convention
         for name in appName:
             pth = appPth[appName.index(name)]
-            pth = encode.encode(pth, 'utf8')
-            name = encode.encode(name, 'utf8')
+            pth = func.encode(pth, 'utf8')
+            name = func.encode(name, 'utf8')
             appInfo[name] = pth
         # return data
         return appInfo
@@ -259,7 +259,7 @@ class GetData( object ):
         # take info return from modules
         # logger.info('collecting modules pth')
         info['modules'] = self.getModuleInfo(package)
-        # take info reuturn from icons
+        # take info return from icons
         # logger.info( 'collecting info pth' )
         iconInfo = self.getIconInfo(package, names)
         # take info return from image
@@ -325,7 +325,7 @@ class GetData( object ):
         with open(pth, 'w') as f:
             json.dump(envKeys, f, indent=4)
 
-        proc.proc('update')
+        func.proc('update')
 
     def deleteKey(self, keys, n):
         for key in keys:

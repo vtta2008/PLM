@@ -8,10 +8,13 @@ Description:
     will be released out from admins.
 """
 
-import os, sys, json, logging
-from tk import proc
-from tk import defaultVariable as var
+import json
+import logging
+import os
+
+from bak import proc
 from tk import appFuncs as func
+from tk import defaultVariable as var
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
@@ -25,10 +28,10 @@ def createTempUser():
 
     userInfo = {}
 
-    userInfo['TrinhDo'] = [proc.endconding('adsadsa'), var.USER_CLASS[1], func.avatar('TrinhDo'),]
-    userInfo['DucDM'] = [proc.endconding('ducdudao'), var.USER_CLASS[1], func.avatar('DucDM'),]
-    userInfo['Arjun'] = [proc.endconding('123456'), var.USER_CLASS[3], func.avatar('Arjun'),]
-    userInfo['Annie'] = [proc.endconding('123123'), var.USER_CLASS[3], func.avatar('Annie'),]
+    userInfo['TrinhDo'] = [proc.endconding('adsadsa'), var.USER_CLASS[1], func.avatar('TrinhDo'), ]
+    userInfo['DucDM'] = [proc.endconding('ducdudao'), var.USER_CLASS[1], func.avatar('DucDM'), ]
+    userInfo['Arjun'] = [proc.endconding('123456'), var.USER_CLASS[3], func.avatar('Arjun'), ]
+    userInfo['Annie'] = [proc.endconding('123123'), var.USER_CLASS[3], func.avatar('Annie'), ]
 
     userDataPth = os.path.join(os.getenv(key), os.path.join(var.MAIN_NAMES['appdata'][1], var.MAIN_NAMES['login']))
 
