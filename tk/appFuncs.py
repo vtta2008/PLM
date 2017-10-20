@@ -287,12 +287,12 @@ class Proc():
         with open( os.path.join(package['appData'], names['log']), 'a+') as f:
             json.dump(log, f, indent=4)
 
-def endconding(message):
-    output = encode.encode(message, mode='hex')
+def encoding(message):
+    output = encode(message, mode='hex')
     return output
 
 def decoding(message):
-    output = encode.encode(message, mode='str')
+    output = encode(message, mode='str')
     return output
 
 def logRecord(event):

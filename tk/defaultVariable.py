@@ -38,7 +38,7 @@ MAIN_NAMES = dict( info='apps.pipeline',
                    key = 'PIPELINE_TOOL',
                    )
 
-USER_CLASS = ['', 'Admin','Supervisor','Artist']
+USER_CLASS = ['', 'Admin','Supervisor','Artist', 'tester']
 
 # Create environment variable by custom key
 def createKey(key, scrInstall, toolName, *args):

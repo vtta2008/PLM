@@ -13,7 +13,7 @@ Description:
 from maya import cmds # Maya_tk Python command
 import os, sys, json, shutil, getpass, platform, re, logging
 
-from modules import MayaVariables as var
+from Maya_tk.modules import MayaVariables as var
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
@@ -29,7 +29,7 @@ logger.setLevel(logging.DEBUG)
 # ----------------------------------------------------------------------------------------------------------- #
 class MayaPythonProc( object ):
     #file list in Installation folder
-    icons_lst = [f for f in os.listdir(os.path.join(NAMES['mayaRootDir'], 'icons')) if f.endswith('.png') or f.endswith('.jpg')]
+    icons_lst = [f for f in os.listdir(NAMES['mayaIconDir']) if f.endswith('.png') or f.endswith('.jpg')]
     modules_lst = [f for f in os.listdir(os.path.join(NAMES['mayaRootDir'], 'modules')) if f.endswith('.py')]
     scrRoot_lst = [f for f in os.listdir(NAMES['mayaRootDir']) if f.endswith( '.py' )]
     #---------------------------------------------------------

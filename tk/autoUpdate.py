@@ -8,11 +8,7 @@ Description:
     will be released out from admins.
 """
 
-import json
-import logging
-import os
-
-from bak import proc
+import json, logging, os
 from tk import appFuncs as func
 from tk import defaultVariable as var
 
@@ -28,10 +24,12 @@ def createTempUser():
 
     userInfo = {}
 
-    userInfo['TrinhDo'] = [proc.endconding('adsadsa'), var.USER_CLASS[1], func.avatar('TrinhDo'), ]
-    userInfo['DucDM'] = [proc.endconding('ducdudao'), var.USER_CLASS[1], func.avatar('DucDM'), ]
-    userInfo['Arjun'] = [proc.endconding('123456'), var.USER_CLASS[3], func.avatar('Arjun'), ]
-    userInfo['Annie'] = [proc.endconding('123123'), var.USER_CLASS[3], func.avatar('Annie'), ]
+    userInfo['TrinhDo'] = [13, func.encoding('adsadsa'), var.USER_CLASS[1], func.avatar('TrinhDo'), ]
+    userInfo['OliverHilbert'] = [3, func.encoding('123456'), var.USER_CLASS[1], func.avatar('OliverHilbert')]
+    userInfo['DucDM'] = [1, func.encoding('123456'), var.USER_CLASS[1], func.avatar('DucDM'), ]
+    userInfo['HarryHe'] = [2, func.encoding('123456'), var.USER_CLASS[1], func.avatar('HarryHe')]
+    userInfo['Arjun'] = [4, func.encoding('123456'), var.USER_CLASS[3], func.avatar('Arjun'), ]
+    userInfo['Annie'] = [5, func.encoding('123456'), var.USER_CLASS[3], func.avatar('Annie'), ]
 
     userDataPth = os.path.join(os.getenv(key), os.path.join(var.MAIN_NAMES['appdata'][1], var.MAIN_NAMES['login']))
 

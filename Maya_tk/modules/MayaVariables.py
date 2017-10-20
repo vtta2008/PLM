@@ -99,6 +99,8 @@ MAINVAR = dict(
 
     mayaRootDir = cmds.internalVar(usd=True),
 
+    mayaIconDir = cmds.internalVar(ubd=True),
+
     mayaEnvPth = MAYAENVPTH,
 )
 

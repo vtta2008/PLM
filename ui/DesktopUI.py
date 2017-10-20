@@ -109,141 +109,143 @@ for f in prodContent:
 # ----------------------------------------------------------------------------------------------------------- #
 """                                       SUB CLASS: USER LOGIN UI                                          """
 # ----------------------------------------------------------------------------------------------------------- #
-# class LoginUI(QDialog):
-#
-#     def __init__(self):
-#
-#         super(LoginUI, self).__init__()
-#
-#         self.setWindowTitle(TITLE)
-#
-#         self.setWindowIcon(QIcon(func.getIcon('Logo')))
-#
-#         prevUserLogin = os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog')
-#
-#         if not os.path.exists(prevUserLogin):
-#             self.buildUI()
-#         else:
-#             with open(prevUserLogin, 'r') as f:
-#                 prevUserData = json.load(f)
-#
-#             userName = [f for f in prevUserData][0]
-#
-#             if prevUserData[userName][3]==0:
-#                 self.buildUI()
-#             else:
-#                 self.autoLogin(userName)
-#
-#         # self.setCentralWidget(self.mainFrame)
-#
-#     def buildUI(self):
-#
-#         x1 = X
-#         y1 = Y
-#         xh1 = XH
-#         xw1 = 2*XW
-#
-#         x2 = x1
-#         y2 = xw1
-#         xh2 = xh1
-#         xw2 = GRID_TOTAL - xw1
-#
-#         x3 = x1 + xh1
-#         y3 = y1
-#         xh3 = xh2
-#         xw3 = xw1
-#
-#         x4 = x3
-#         y4 = xw3
-#         xh4 = xh3
-#         xw4 = GRID_TOTAL - xw3
-#
-#         x5 = x3 + xh3
-#         y5 = y3
-#         xh5 = xh4
-#         xw5 = xw3
-#
-#         x6 = x5
-#         y6 = xw5
-#         xh6 = xh5
-#         xw6 = XW
-#
-#         x7 = x6
-#         y7 = xw5 + xw6
-#         xh7 = xh6
-#         xw7 = (GRID_TOTAL - (xw5 + xw6))/2
-#
-#         x8 = x7
-#         y8 = y7 + xw7
-#         xh8 = xh7
-#         xw8 = xw7
-#
-#         pos1 = [0, x1, y1, xh1, xw1]
-#         pos2 = [0, x2, y2, xh2, xw2]
-#         pos3 = [0, x3, y3, xh3, xw3]
-#         pos4 = [0, x4, y4, xh4, xw4]
-#         pos5 = [0, x5, y5, xh5, xw5]
-#         pos6 = [0, x6, y6, xh6, xw6]
-#         pos7 = [0, x7, y7, xh7, xw7]
-#         pos8 = [0, x8, y8, xh8, xw8]
-#
-#         self.mainFrame = QGroupBox(self)
-#         self.mainFrame.setTitle('User Account')
-#         self.mainFrame.setFixedSize(W,H)
-#
-#         hbox = QHBoxLayout()
-#
-#         self.layout = QGridLayout()
-#         self.layout.setContentsMargins(M1[1],M1[2],M1[3],M1[4])
-#
-#         loginText = QLabel('User Name: ')
-#         self.layout.addWidget(loginText, pos1[1], pos1[2], pos1[3], pos1[4])
-#
-#         self.userName = QLineEdit()
-#         self.layout.addWidget(self.userName, pos2[1], pos2[2], pos2[3], pos2[4])
-#
-#         passText = QLabel('Password: ')
-#         self.layout.addWidget(passText, pos3[1], pos3[2], pos3[3], pos3[4])
-#
-#         self.passWord = QLineEdit()
-#         self.passWord.setEchoMode(QLineEdit.Password)
-#         self.layout.addWidget(self.passWord, pos4[1],pos4[2],pos4[3],pos4[4])
-#
-#         rememberCheck = QLabel('Remember Me')
-#         self.layout.addWidget(rememberCheck, pos5[1],pos5[2],pos5[3],pos5[4])
-#
-#         self.rememberCheckBox = QCheckBox()
-#         self.layout.addWidget(self.rememberCheckBox, pos6[1],pos6[2],pos6[3],pos6[4])
-#
-#         self.loginBtn = QPushButton('Login')
-#         self.loginBtn.clicked.connect(self.checkLogin)
-#         self.layout.addWidget(self.loginBtn, pos7[1],pos7[2],pos7[3],pos7[4])
-#
-#         self.cancelBtn = QPushButton('Cancel')
-#         self.cancelBtn.clicked.connect(qApp.quit)
-#         self.layout.addWidget(self.cancelBtn, pos8[1],pos8[2],pos8[3],pos8[4])
-#
-#         hbox.addLayout(self.layout)
-#         self.mainFrame.setLayout(hbox)
-#
-#     def autoLogin(self, userName, *args):
-#         QMessageBox.information(self, 'Login Successful', "Welcome back %s\n "
-#                                                           "Now it's the time to make amazing thing to the world !!!" % userName)
-#         # self.close()
-#
-#     def checkLogin(self, *args):
-#         user_name = str(self.userName.text())
-#         pass_word = str(func.endconding(self.passWord.text()))
-#
-#         if user_name == "":
-#             QMessageBox.information(self, 'Login Failed', 'Username can not be blank')
-#         elif userData[user_name] != None and pass_word == userData[user_name][0]:
-#             QMessageBox.information(self, 'Login Successful', "Welcome back %s\n "
-#                                     "Now it's the time to make amazing thing to the world !!!" % user_name)
-#             self.close()
-#             func.saveCurrentUserLogin(user_name, self.rememberCheckBox.checkState())
-#         else:
-#             QMessageBox.information(self, 'Login Failed', 'Username or Password is incorrected')
+class LoginUI(QDialog):
+
+    tempPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'user.setting')
+    appDataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'scrInfo/apps.pipeline')
+
+    def __init__(self, parent=None):
+
+        super(LoginUI, self).__init__()
+
+        self.setWindowTitle(TITLE)
+        self.setWindowIcon(QIcon(func.getIcon('Logo')))
+
+        prevUserLogin = os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog')
+
+        if not os.path.exists(prevUserLogin):
+            self.buildUI()
+        else:
+            with open(prevUserLogin, 'r') as f:
+                prevUserData = json.load(f)
+
+            userName = [f for f in prevUserData][0]
+
+            if prevUserData[userName][3]==0:
+                self.buildUI()
+            else:
+                self.autoLogin(userName)
+
+        # self.setCentralWidget(self.mainFrame)
+
+    def buildUI(self):
+
+        x1 = X
+        y1 = Y
+        xh1 = XH
+        xw1 = 2*XW
+
+        x2 = x1
+        y2 = xw1
+        xh2 = xh1
+        xw2 = GRID_TOTAL - xw1
+
+        x3 = x1 + xh1
+        y3 = y1
+        xh3 = xh2
+        xw3 = xw1
+
+        x4 = x3
+        y4 = xw3
+        xh4 = xh3
+        xw4 = GRID_TOTAL - xw3
+
+        x5 = x3 + xh3
+        y5 = y3
+        xh5 = xh4
+        xw5 = xw3
+
+        x6 = x5
+        y6 = xw5
+        xh6 = xh5
+        xw6 = XW
+
+        x7 = x6
+        y7 = xw5 + xw6
+        xh7 = xh6
+        xw7 = (GRID_TOTAL - (xw5 + xw6))/2
+
+        x8 = x7
+        y8 = y7 + xw7
+        xh8 = xh7
+        xw8 = xw7
+
+        pos1 = [0, x1, y1, xh1, xw1]
+        pos2 = [0, x2, y2, xh2, xw2]
+        pos3 = [0, x3, y3, xh3, xw3]
+        pos4 = [0, x4, y4, xh4, xw4]
+        pos5 = [0, x5, y5, xh5, xw5]
+        pos6 = [0, x6, y6, xh6, xw6]
+        pos7 = [0, x7, y7, xh7, xw7]
+        pos8 = [0, x8, y8, xh8, xw8]
+
+        self.mainFrame = QGroupBox(self)
+        self.mainFrame.setTitle('User Account')
+        self.mainFrame.setFixedSize(W,H)
+
+        hbox = QHBoxLayout()
+
+        self.layout = QGridLayout()
+        self.layout.setContentsMargins(M1[1],M1[2],M1[3],M1[4])
+
+        loginText = QLabel('User Name: ')
+        self.layout.addWidget(loginText, pos1[1], pos1[2], pos1[3], pos1[4])
+
+        self.userName = QLineEdit()
+        self.layout.addWidget(self.userName, pos2[1], pos2[2], pos2[3], pos2[4])
+
+        passText = QLabel('Password: ')
+        self.layout.addWidget(passText, pos3[1], pos3[2], pos3[3], pos3[4])
+
+        self.passWord = QLineEdit()
+        self.passWord.setEchoMode(QLineEdit.Password)
+        self.layout.addWidget(self.passWord, pos4[1],pos4[2],pos4[3],pos4[4])
+
+        rememberCheck = QLabel('Remember Me')
+        self.layout.addWidget(rememberCheck, pos5[1],pos5[2],pos5[3],pos5[4])
+
+        self.rememberCheckBox = QCheckBox()
+        self.layout.addWidget(self.rememberCheckBox, pos6[1],pos6[2],pos6[3],pos6[4])
+
+        self.loginBtn = QPushButton('Login')
+        self.loginBtn.clicked.connect(self.checkLogin)
+        self.layout.addWidget(self.loginBtn, pos7[1],pos7[2],pos7[3],pos7[4])
+
+        self.cancelBtn = QPushButton('Cancel')
+        self.cancelBtn.clicked.connect(qApp.quit)
+        self.layout.addWidget(self.cancelBtn, pos8[1],pos8[2],pos8[3],pos8[4])
+
+        hbox.addLayout(self.layout)
+        self.mainFrame.setLayout(hbox)
+
+    def autoLogin(self, userName, *args):
+        QMessageBox.information(self, 'Login Successful', "Welcome back %s\n "
+                                                          "Now it's the time to make amazing thing to the world !!!" % userName)
+        # self.close()
+
+    def checkLogin(self, *args):
+        user_name = str(self.userName.text())
+        pass_word = str(func.encoding(self.passWord.text()))
+
+        if user_name == "":
+            QMessageBox.information(self, 'Login Failed', 'Username can not be blank')
+        elif userData[user_name] != None and pass_word == userData[user_name][1]:
+            QMessageBox.information(self, 'Login Successful', "Welcome back %s\n "
+                                    "Now it's the time to make amazing thing to the world !!!" % user_name)
+            self.close()
+            func.saveCurrentUserLogin(user_name, self.rememberCheckBox.checkState())
+        else:
+            QMessageBox.information(self, 'Login Failed', 'Username or Password is incorrected')
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                                       SUB CLASS: TAB LAYOUT                                             """
@@ -275,7 +277,7 @@ class TabWidget( QWidget ):
         # Add Tabs
         self.tabs.addTab(self.tab1, tabid[1])
         self.tabs.addTab(self.tab2, tabid[2])
-        if self.curUserData[self.curUser][1]=='Admin':
+        if self.curUserData[self.curUser][2]=='Admin':
             self.tabs.addTab(self.tab3, tabid[3])
         else:
             pass
@@ -365,7 +367,7 @@ class TabWidget( QWidget ):
         titleLabel.setAlignment(alignL)
         self.tab1GridLayout.addWidget(titleLabel, pos4[1],pos4[2],pos4[3],pos4[4])
 
-        classLabel = QLabel(self.curUserData[self.curUser][1])
+        classLabel = QLabel(self.curUserData[self.curUser][2])
         classLabel.setAlignment(alignR)
         self.tab1GridLayout.addWidget(classLabel, pos5[1],pos5[2],pos5[3],pos5[4])
 
@@ -507,8 +509,8 @@ class DesktopUI( QMainWindow ):
         # Build UI
         self.buildUI(appInfo, package, message, mainID, names, url)
         # User log in identification
-        # login = LoginUI()
-        # login.exec_()
+        login = LoginUI()
+        login.exec_()
         # Create Tabs
         self.tabWidget = TabWidget(self)
         # Put tabs to center of main UI

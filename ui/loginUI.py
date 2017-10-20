@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Script Name: login.py
+Script Name: loginUI.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -11,18 +11,18 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import logging
+import json, logging, os, subprocess, sys, webbrowser
+from functools import partial
+from tk import appFuncs as func
+from tk import defaultVariable as var
+from tk import getData, message
 
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PTQT5 ELEMENT TO MAKE UI
 # -------------------------------------------------------------------------------------------------------------
 from PyQt5.QtWidgets import *
-
-from tk import appFuncs as func
-from tk import defaultVariable as var
-from tk import message
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
@@ -31,29 +31,67 @@ logger.setLevel(logging.DEBUG)
 # ------------------------------------------------------
 # GET INFO DATA BEFORE START
 # Update local pc info
-
-func.updateInfo()
-# logger.info('Updating data')
+getData.initialize()
 
 # ------------------------------------------------------
 # DEFAULT VARIABLES
 # ------------------------------------------------------
 MESSAGE = message.LOGIN_NOTE
 TITLE = var.MAIN_ID['LogIn']
+NAMES = var.MAIN_NAMES
+MAINID = var.MAIN_ID
+PACKAGE = var.MAIN_PACKPAGE
 
 # UI variables preset for layout customizing
 # Dimension
 W = 400
 H = 260
+AVATAR_SIZE = 100
+ICON_SIZE = 30
+BUFFER = 3
 
 # Margin
 M = [0,5,5,5,5]
 
-class Login(QDialog):
+# Alignment attribute from PyQt5
+__center__ = Qt.AlignCenter
+__right__ = Qt.AlignRight
+__left__ = Qt.AlignLeft
+
+# Get icon path
+pthInfo = PACKAGE['appData']
+infoData = NAMES['info']
+filePath = os.path.join(pthInfo, infoData)
+info = func.dataHandle(filePath, 'r')
+
+# Get app path
+logger.info('Loading information...')
+APPINFO = info['pipeline']
+logger.info('Loading pipeline manager UI')
+
+userDataPth = os.path.join(os.getenv(NAMES['key']), os.path.join('scrInfo', 'user.info'))
+
+userData = func.dataHandle(userDataPth, 'r')
+
+prodInfoFolder = os.path.join(os.getenv(NAMES['key']), os.path.join(NAMES['appdata'][1], 'prodInfo'))
+
+prodContent = [f for f in os.listdir(prodInfoFolder) if f.endswith('.prod')]
+
+prodLst = []
+
+for f in prodContent:
+    with open(os.path.join(prodInfoFolder, f), 'r') as f:
+        info = json.load(f)
+    prodLst.append(info['name'])
+
+class LoginUI(QDialog):
+
+    tempPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'user.temp')
+    appDataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'scrInfo/apps.pipeline')
 
     def __init__(self, parent=None):
 
-        super(Login, self).__init__()
+        super(LoginUI, self).__init__()
 
         self.setWindowTitle(TITLE)
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
@@ -61,7 +99,7 @@ class Login(QDialog):
         self.layout = QVBoxLayout(self)
         self.layout.setContentsMargins(M[1], M[2], M[3], M[4])
 
-        self.buildUI()
+        self.checkTempUser()
 
     def buildUI(self):
 
@@ -88,6 +126,7 @@ class Login(QDialog):
 
         # Login and close buttons
         loginBtn = QPushButton('Login')
+        loginBtn.clicked.connect(self.checkLogin)
 
         closeBtn = QPushButton('Close')
         closeBtn.clicked.connect(self.closeEvent)
@@ -131,6 +170,25 @@ class Login(QDialog):
         # Add layout to main
         self.layout.addWidget(self.widgetNote)
 
+    def checkTempUser(self):
+        if not os.path.exists(self.tempPth):
+
+            logger.info('This is the first time user login')
+
+            infoData = func.dataHandle(self.appDataPth, 'r')
+            self.userUid = infoData['sys']['Product ID']
+            self.userToken = func.createToken()
+
+            self.buildUI()
+        else:
+            userLogin = func.dataHandle(self.tempPth, 'r')
+            userName = [f for f in userLogin][0]
+
+            if userLogin[userName][3] == 0:
+                self.buildUI()
+            else:
+                pass
+
     def closeEvent(self, event):
         reply = QMessageBox.question(self, 'Warning', "Are you sure?", QMessageBox.Yes|QMessageBox.No, QMessageBox.No)
 
@@ -139,15 +197,32 @@ class Login(QDialog):
         else:
             event.ignore()
 
-    def LoginCheck(self):
+    def checkLogin(self, *args):
+
         # Check if it is the first time of log in in local machine
-        pass
+        user_name = str(self.userName.text())
+        pass_word = str(func.encoding(self.passWord.text()))
 
+        print 'start here'
 
-if __name__ == "__main__":
-    import sys
+        # if user_name == "":
+        #     logger.info('username blank')
+        #
+        #     QMessageBox.information(self, 'Login Failed', 'Username can not be blank')
+        #
+        # elif userData[user_name] != None and pass_word == userData[user_name][0]:
+        #     QMessageBox.information(self, 'Login Successful', "Welcome back %s\n "
+        #                                                       "Now it's the time to make amazing thing to the world !!!" % user_name)
+        #     self.close()
+        #     func.saveCurrentUserLogin(user_name, self.rememberCheckBox.checkState())
+        # else:
+        #     QMessageBox.information(self, 'Login Failed', 'Username or Password is incorrected')
+
+def initialize():
     app = QApplication(sys.argv)
-    ui = Login()
-    ui.show()
+    loginUI = LoginUI()
+    loginUI.show()
     sys.exit(app.exec_())
 
+if __name__ == "__main__":
+    initialize()
