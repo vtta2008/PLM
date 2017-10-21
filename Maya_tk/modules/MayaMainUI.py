@@ -4,7 +4,8 @@
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-from maya import cmds, mel
+from maya import cmds
+import maya.mel as mel
 from functools import partial
 import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
@@ -13,7 +14,7 @@ import os, sys, time, datetime, json, logging
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
-from modules import MayaVariables as var
+from Maya_tk.modules import MayaVariables as var
 NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE
 TITLE = var.TITLE
@@ -28,8 +29,8 @@ WIDTH = 450
 ICONWIDTH = 30
 
 # FIX VERSION CONVENTION
-import Qt
-from Qt import QtWidgets, QtCore, QtGui
+from Maya_tk.plugins import Qt
+from Maya_tk.plugins.Qt import QtWidgets, QtCore, QtGui
 
 # We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()
@@ -42,15 +43,15 @@ logger.setLevel(logging.DEBUG)
 if Qt.__binding__=='PySide':
     logger.debug('Using PySide with shiboken')
     from shiboken import wrapInstance
-    from Qt.QtCore import Signal
+    from Maya_tk.plugins.Qt.QtCore import Signal
 elif Qt.__binding__.startswith('PyQt'):
     logger.debug('Using PyQt with sip')
     from sip import wrapinstance as wrapInstance
-    from Qt.QtCore import pyqtSignal as Signal
+    from Maya_tk.plugins.Qt.QtCore import pyqtSignal as Signal
 else:
     logger.debug('Using PySide2 with shiboken2')
     from shiboken2 import wrapInstance
-    from Qt.QtCore import Signal
+    from Maya_tk.plugins.Qt.QtCore import Signal
 
 
 # Convert PyQt window to Maya_tk window
@@ -81,7 +82,7 @@ def getDock(name='Pipeline Tool', label='Pipeline Tool', version = VERSION):
     deleteDock( name )
     # Create a workspaceControl dock using Maya_tk's UI tools
     if version>=2017:
-        ctrl = cmds.workspaceControl(name,label=label, clp=False, fl=True)
+        ctrl = cmds.workspaceControl(name,label=label, cl=False, fl=True)
     else:
         ctrl = cmds.dockControl(name, label=label)
     # Use the OpenMayaUI API to get the actual Qt widget associated with the name
@@ -105,9 +106,13 @@ def deleteDock(name='Pipeline Tool', version=VERSION):
 
 # get button functions data
 def importBTS():
-    from modules import MayaFuncs
+    from Maya_tk.modules import MayaFuncs
     reload( MayaFuncs )
     return MayaFuncs
+
+def geticon(icon):
+    iconPth = os.path.join(os.getcwd(), 'icons')
+    return os.path.join(iconPth, icon)
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                        MAIN CLASS: MAYA MASTER UI - ALL ABOUT CONTROLLER UI                             """
@@ -304,7 +309,7 @@ class MayaMainUI( QtWidgets.QWidget ):
         mlo = cmds.rowColumnLayout(nc=nc2, cw=cw2)
 
         cmds.columnLayout()
-        self.bts.iconButton(ann='reloadUI', icon='Logo.icon.png', command=self.bts.refreshMainUI)
+        self.bts.iconButton(ann='reloadUI', icon=geticon('Logo.icon.png'), command=self.bts.refreshMainUI)
         self.bts.makeSeparator( h=5, w=ICONWIDTH )
         self.bts.setIconButton(anns, commands, icons)
         self.bts.makeSeparator(h=5, w=ICONWIDTH)

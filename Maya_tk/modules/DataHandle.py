@@ -9,9 +9,10 @@ logger = logging.getLogger('DataHandle')
 logger.setLevel(logging.DEBUG)
 
 def importBTS():
-    from modules import MayaFuncs
+    from Maya_tk.modules import MayaFuncs
     reload( MayaFuncs )
     return MayaFuncs
+
 IMAGESIZE = (900, 540)
 W1 = IMAGESIZE[0]/3
 W2 = IMAGESIZE[0]

@@ -28,10 +28,11 @@ logger.setLevel(logging.DEBUG)
 """                   AIN CLASS: MAYA EXECUTE PYTHON - DAMG PIPELINE TOOL INSTALLATION                      """
 # ----------------------------------------------------------------------------------------------------------- #
 class MayaPythonProc( object ):
+
     #file list in Installation folder
-    icons_lst = [f for f in os.listdir(NAMES['mayaIconDir']) if f.endswith('.png') or f.endswith('.jpg')]
-    modules_lst = [f for f in os.listdir(os.path.join(NAMES['mayaRootDir'], 'modules')) if f.endswith('.py')]
-    scrRoot_lst = [f for f in os.listdir(NAMES['mayaRootDir']) if f.endswith( '.py' )]
+    icons_lst = [f for f in os.listdir(os.path.join(os.getcwd(), 'Maya_tk/icons')) if f.endswith('.png') or f.endswith('.jpg')]
+    modules_lst = [f for f in os.listdir(os.path.join(os.getcwd(), 'Maya_tk/modules')) if f.endswith('.py')]
+    scrRoot_lst = [f for f in os.listdir(os.path.join(os.getcwd(), 'Maya_tk')) if f.endswith( '.py' )]
     #---------------------------------------------------------
     # List file names for CHECK LIST
     checkList = dict(icons=NAMES['mayaIcon'], modules=NAMES['mayaModule'], master=NAMES['mayaRoot'])
@@ -42,6 +43,11 @@ class MayaPythonProc( object ):
 
     def __init__(self):
         super( MayaPythonProc, self ).__init__()
+
+        print self.icons_lst
+        print self.modules_lst
+        print self.scrRoot_lst
+
         self.checkAllFiles()
 
     def checkAllFiles(self):

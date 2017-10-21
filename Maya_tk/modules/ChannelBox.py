@@ -1,13 +1,13 @@
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA MODULES
 # -------------------------------------------------------------------------------------------------------------
-import maya.cmds as cmds
+from maya import cmds
 import maya.mel as mel
 import maya.OpenMayaUI as omui # the extent of the internal Maya_tk API
 import logging, os
 from functools import partial # partial module can store variables to method
 
-from modules import MayaVariables as var
+from Maya_tk.modules import MayaVariables as var
 NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE
 TITLE = var.TITLE
@@ -20,8 +20,8 @@ ICONS = var.ICONS
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT QT MODULES
 # -------------------------------------------------------------------------------------------------------------
-from QtPlugin import Qt # plugin module go with DAMGtool to make UI
-from QtPlugin.Qt import QtWidgets, QtCore, QtGui
+from Maya_tk.plugins import Qt # plugin module go with DAMGtool to make UI
+from Maya_tk.plugins.Qt import QtWidgets, QtCore, QtGui
 
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION
@@ -39,15 +39,15 @@ logger.setLevel(logging.DEBUG)
 if Qt.__binding__=='PySide':
     logger.debug('Using PySide with shiboken')
     from shiboken import wrapInstance
-    from Qt.QtCore import Signal
+    from Maya_tk.plugins.Qt.QtCore import Signal
 elif Qt.__binding__.startswith('PyQt'):
     logger.debug('Using PyQt with sip')
     from sip import wrapinstance as wrapInstance
-    from Qt.QtCore import pyqtSignal as Signal
+    from Maya_tk.plugins.Qt.QtCore import pyqtSignal as Signal
 else:
     logger.debug('Using PySide2 with shiboken2')
     from shiboken2 import wrapInstance
-    from Qt.QtCore import Signal
+    from Maya_tk.plugins.Qt.QtCore import Signal
 
 # -------------------------------------------------------------------------------------------------------------
 # SHOW UI - MAKE UI IS DOCKABLE INSIDE MAYA

@@ -14,7 +14,7 @@ import json
 import logging
 import os
 
-from modules import MayaVariables as var
+from Maya_tk.modules import MayaVariables as var
 
 NAMES = var.MAINVAR
 SCRPTH = var.SCRPTH

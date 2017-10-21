@@ -4,7 +4,7 @@ from functools import partial
 
 import os, sys, logging, shutil
 
-from modules import MayaVariables as var
+from Maya_tk.modules import MayaVariables as var
 NAMES = var.MAINVAR
 SRCPTH = var.SCRPTH
 ICONS = var.ICONS
@@ -17,6 +17,11 @@ ICONWIDTH = 30
 logging.basicConfig()
 logger = logging.getLogger(NAMES['id'][1])
 logger.setLevel(logging.DEBUG)
+
+def geticon(icon):
+    iconPth = os.path.join(os.getcwd(), 'Maya_tk/icons')
+    path = os.path.join(iconPth, icon)
+    return path
 
 def clearOptionMenu(name, *args):
     #Option menus are tiresome because you have to use its full name as parent name
@@ -84,7 +89,7 @@ def openScriptEditor(*args):
         mel.eval('ScriptEditor;')
 
 def customViewer(*args):
-    from modules import CustomViewer
+    from Maya_tk.modules import CustomViewer
     reload( CustomViewer )
 
     resolution = {'HD 720': [1280, 720], 'HD 1080': [1920, 1080], 'HD 540': [960, 540]}
@@ -96,7 +101,7 @@ def customViewer(*args):
     CustomViewer.CustomViewer(cam, w, h)
 
 def layerManagerUI(*args):
-    from modules import LayerManager
+    from Maya_tk.modules import LayerManager
     reload(LayerManager)
     LayerManager.LayerManager()
 
@@ -117,7 +122,7 @@ def setSymbolCheckable(ids, anns, ccs, types, icons, w=ICONWIDTH, *args):
     """
     for i in range(len(ids)):
         # get icon path from default path
-        icon = os.path.join(ICONS, icons[i])
+        icon = geticon(icons[i])
         cmd = ccs[i]
         var = types[i]
         cc = partial(cmd, var)
@@ -147,7 +152,7 @@ def iconButton(ann, icon, command, wh=ICONWIDTH, *args):
     :param wh: width and high
     :return: an icon button
     """
-    image = os.path.join(ICONS, icon)
+    image = geticon(icon)
     cmds.symbolButton(ann=ann, i=image, c=command, h=wh, w=wh)
 
 def setIconButton(anns, commands, icons, width=ICONWIDTH, *args):
@@ -162,7 +167,7 @@ def setIconButton(anns, commands, icons, width=ICONWIDTH, *args):
     num = len(anns)
     for i in range(num):
         command = commands[i]
-        iconButton(anns[i], icons[i], command, width)
+        iconButton(anns[i], geticon(icons[i]), command, width)
         i+=1
 
 def makeAcoolButton(ann, label, cmd, *args):
@@ -183,7 +188,7 @@ def setCoolButton(anns, commands, labels, *args):
         i+=1
 
 def refreshBtn(command, wh=25, *args):
-    iconButton("Refresh", 'refresh.icon.png', command, wh=wh)
+    iconButton("Refresh", geticon('refresh.icon.png'), command, wh=wh)
 
 def cwE(nc, w, adj, *args):
     """
@@ -223,72 +228,72 @@ def warningFunc(key, *args):
     logger.info(message)
 
 def reloadDataMainUI(*args):
-    import PipelineTool
-    reload(PipelineTool)
-    PipelineTool.InitTool()
+    from Maya_tk import InitTool
+    reload(InitTool)
+    InitTool.initilize()
 
 def refreshMainUI(*args):
-    from modules import MayaMainUI
+    from Maya_tk.modules import MayaMainUI
     reload(MayaMainUI)
     MayaMainUI.MayaMainUI()
 
 def newProd(*args):
-    from modules import ProdFolder
+    from Maya_tk.modules import ProdFolder
     reload( ProdFolder )
     ProdFolder.ProdFolder()
 
 def lightManager(*args):
-    from modules import toolBoxIII
+    from Maya_tk.modules import toolBoxIII
     reload( toolBoxIII )
     toolBoxIII.showUI()
 
 def channelBoxUI(*args):
-    from modules import ChannelBox
+    from Maya_tk.modules import ChannelBox
     reload(ChannelBox)
     ChannelBox.ChannelBox()
 
 def toolBoxI(*args):
-    from modules import toolBoxI
+    from Maya_tk.modules import toolBoxI
     reload( toolBoxI )
     toolBoxI.DAMGtoolBoxI()
 
 def createGear(*args):
-    from modules.modeling import gearCreator
+    from Maya_tk.modules.modeling import gearCreator
     reload(gearCreator)
     gearCreator.gear()
 
 def toolBoxII(*args):
-    from modules import toolBoxII
+    from Maya_tk.modules import toolBoxII
     reload( toolBoxII )
     toolBoxII.DAMGtoolBoxII()
 
 def toolBoxIII(*args):
-    from modules import toolBoxIII
+    from Maya_tk.modules import toolBoxIII
     reload( toolBoxIII )
     toolBoxIII.toolBoxIII()
 
 def toolBoxIV(*args):
-    from modules import toolBoxIV
+    from Maya_tk.modules import toolBoxIV
     reload( toolBoxIV )
     toolBoxIV.toolBoxIV()
 
 def publishUI(*args):
-    from modules import DataHandle
+    from Maya_tk.modules import DataHandle
     reload( DataHandle )
     DataHandle.DataHandle().publishUI()
 
 def loaderUI(*args):
-    from modules import DataHandle
+    from Maya_tk.modules import DataHandle
     reload( DataHandle )
     DataHandle.DataHandle().loaderUI()
 
 def snapshotUI(*args):
-    from modules import DataHandle
+    from Maya_tk.modules import DataHandle
     reload( DataHandle )
     DataHandle.DataHandle().snapshotUI()
 
 def projManagerUI(*args):
-    from modules import ProjectManager
+    from Maya_tk.modules import ProjectManager
     reload( ProjectManager )
     ProjectManager.projectManager()
 

@@ -10,14 +10,13 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-from maya import cmds
-import maya.mel as mel
+from maya import cmds, mel
 import os, sys, json, shutil, logging, webbrowser
 
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
-from modules import MayaVariables as var
+from Maya_tk.modules import MayaVariables as var
 NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE
 SCRPTH = var.SCRPTH

@@ -13,7 +13,7 @@ MAINVAR = dict(
 
     url = ['https://www.continuum.io/downloads', ],
 
-    TD=[ 'Maya_tk', '3Ds max', 'Mudbox', 'Houdini_tk FX', 'ZBrush', 'Mari_tk' ],
+    TD=[ 'Maya', '3Ds max', 'Mudbox', 'Houdini FX', 'ZBrush', 'Mari' ],
 
     UV=[ 'UVLayout' ],
 
@@ -50,7 +50,7 @@ MAINVAR = dict(
 
     mayaLayout = ['pipelineTool.json', 'shelf_pipelineTool.mel'],
 
-    mayaRoot = ['userSetup.py', 'PipelineTool.py'],
+    mayaRoot = ['userSetup.py', 'InitTool.py'],
 
     mayaModule = ['ChannelBox.py', 'MayaFuncs.py', 'MayaMainUI.py', 'MayaPythonProc.py', 'MayaVariables.py',
                   'OsPythonProc.py', 'ProdFolder.py', 'ProjectManager.py', 'toolBoxI.py', 'toolBoxII.py',
@@ -58,8 +58,8 @@ MAINVAR = dict(
 
     mayaPlugin = ['Qt.py',],
 
-    mayaIcon = ['After Effects CC.icon.png', 'Hiero.icon.png', 'Houdini_tk FX.icon.png', 'Illustrator CC.icon.png',
-                      'Mari_tk.icon.png', 'Mudbox 2017.icon.png', 'NukeX.icon.png', 'Photoshop CC.icon.png',
+    mayaIcon = ['After Effects CC.icon.png', 'Hiero.icon.png', 'Houdini FX.icon.png', 'Illustrator CC.icon.png',
+                      'Mari.icon.png', 'Mudbox 2017.icon.png', 'NukeX.icon.png', 'Photoshop CC.icon.png',
                       'Premiere Pro CC.icon.png', 'ZBrush 4R7.icon.png', 'cam.icon.png', 'clock.icon.png',
                       'createMayaFolder.icon.png', 'toolboxIV.icon.png', 'graphEditor.icon.png', 'hypershader.icon.png',
                       'nodeEditor.icon.png', 'obj.icon.png','openLoad.icon.png', 'openProjectFolder.icon.png',
@@ -72,24 +72,24 @@ MAINVAR = dict(
                       'setup.shelf.icon.png', 'snapshot.shelf.icon.png', 'toolboxI.shelf.icon.png',
                       'toolboxII.shelf.icon.png', 'toolboxIII.shelf.icon.png', 'tool.shelf.icon.png',
                       'axisRotation.icon.png', 'twoAxisRotation.icon.png', 'twoDboldCircle.icon.png',
-                       'twoDcircleArrow.icon.png', 'twoDirections.icon.png', 'twoDstyleArrow.icon.png',
-                       'threeDcircleArrow.icon.png', 'threeDstyleArrow.icon.png', 'fourSidesArrow.icon.png',
-                       'fiveWingsFan.icon.png', 'arrowBothSide.icon.png', 'arrowCurve.icon.png',
-                       'bearFootControl.icon.png', 'boldPlusNurbs.icon.png', 'circlePlus.icon.png',
-                       'clockArrowDown.icon.png', 'clockArrowUp.icon.png', 'crossControl.icon.png',
-                       'crownCurve.icon.png', 'cubeCurve.icon.png', 'cubeOnBase.icon.png',
-                       'cylinderCurve.icon.png', 'diamond.icon.png', 'earControl.icon.png',
-                       'eyeControl.icon.png', 'femaleSymbol.icon.png', 'fishNail.icon.png',
-                       'fistCurve.icon.png', 'footControl1.icon.png', 'footControl2.icon.png',
-                       'halfSphere.icon.png', 'handNurbs.icon.png', 'headJawControl.icon.png',
-                       'lipControl.icon.png', 'locatorControl.icon.png', 'maleSymbol.icon.png',
-                       'masterControl.icon.png', 'moveControl1.icon.png', 'moveControl2.icon.png',
-                       'nailArrowDown.icon.png', 'nailArrowUp.icon.png', 'orginControl.icon.png',
-                       'plusNurbs.icon.png', 'pointNote.icon.png', 'pyramid.icon.png',
-                       'rotationControl.icon.png', 'singleRotateControl.icon.png', 'sliderControl.icon.png',
-                       'sphereControl.icon.png', 'sphereSquare.icon.png', 'spikeCrossControl.icon.png',
-                       'tongueControl.icon.png', 'twoWayArrow.icon.png', 'upperLipControl.icon.png',
-                       'zigZagCircle.icon.png', 'spreadsheet.icon.png','channelBox.icon.png',],
+                      'twoDcircleArrow.icon.png', 'twoDirections.icon.png', 'twoDstyleArrow.icon.png',
+                      'threeDcircleArrow.icon.png', 'threeDstyleArrow.icon.png', 'fourSidesArrow.icon.png',
+                      'fiveWingsFan.icon.png', 'arrowBothSide.icon.png', 'arrowCurve.icon.png',
+                      'bearFootControl.icon.png', 'boldPlusNurbs.icon.png', 'circlePlus.icon.png',
+                      'clockArrowDown.icon.png', 'clockArrowUp.icon.png', 'crossControl.icon.png',
+                      'crownCurve.icon.png', 'cubeCurve.icon.png', 'cubeOnBase.icon.png',
+                      'cylinderCurve.icon.png', 'diamond.icon.png', 'earControl.icon.png',
+                      'eyeControl.icon.png', 'femaleSymbol.icon.png', 'fishNail.icon.png',
+                      'fistCurve.icon.png', 'footControl1.icon.png', 'footControl2.icon.png',
+                      'halfSphere.icon.png', 'handNurbs.icon.png', 'headJawControl.icon.png',
+                      'lipControl.icon.png', 'locatorControl.icon.png', 'maleSymbol.icon.png',
+                      'masterControl.icon.png', 'moveControl1.icon.png', 'moveControl2.icon.png',
+                      'nailArrowDown.icon.png', 'nailArrowUp.icon.png', 'orginControl.icon.png',
+                      'plusNurbs.icon.png', 'pointNote.icon.png', 'pyramid.icon.png',
+                      'rotationControl.icon.png', 'singleRotateControl.icon.png', 'sliderControl.icon.png',
+                      'sphereControl.icon.png', 'sphereSquare.icon.png', 'spikeCrossControl.icon.png',
+                      'tongueControl.icon.png', 'twoWayArrow.icon.png', 'upperLipControl.icon.png',
+                      'zigZagCircle.icon.png', 'spreadsheet.icon.png','channelBox.icon.png',],
 
     mayaExt = ['.png', '.jpg', '.py', '.mel', '.ma', '.psd', '.exr'],
 
