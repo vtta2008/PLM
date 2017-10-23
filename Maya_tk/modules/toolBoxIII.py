@@ -11,8 +11,8 @@ import  mtoa.utils as mutils
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
-from modules import MayaVariables as var
-from modules import toolBoxIIfuncs
+from Maya_tk.modules import MayaVariables as var
+from Maya_tk.modules import toolBoxIIfuncs
 
 NAMES = var.MAINVAR
 SCRPTH = var.SCRPTH
@@ -22,20 +22,20 @@ logging.basicConfig()
 logger = logging.getLogger('toolBoxIII')
 logger.setLevel(logging.DEBUG)
 
-import Qt
-from Qt import QtWidgets, QtCore, QtGui
+from Maya_tk.plugins import Qt
+from Maya_tk.plugins.Qt import QtWidgets, QtCore, QtGui
 
 if Qt.__binding__.startswith('PyQt'):
     logger.debug('Using sip')
     from sip import wrapinstance as wrapInstance
-    from Qt.QtCore import pyqtSignal as Signal
+    from Maya_tk.plugins.Qt.QtCore import pyqtSignal as Signal
 elif Qt.__binding__ == 'PySide':
     from shiboken import wrapInstance
-    from Qt.QtCore import Signal
+    from Maya_tk.plugins.Qt.QtCore import Signal
 else:
     logger.debug('Using shiboken2')
     from shiboken2 import wrapInstance
-    from Qt.QtCore import Signal
+    from Maya_tk.plugins.Qt.QtCore import Signal
 
 def getMayaMainWindow():
     """
@@ -85,9 +85,9 @@ def deleteDock(name='DAMGtoolBoxIIIdock'):
         cmds.deleteUI(name)
 
 
-from Qt.QtWidgets import *
-from Qt.QtGui import *
-from Qt.QtCore import *
+from Maya_tk.plugins.Qt.QtWidgets import *
+from Maya_tk.plugins.Qt.QtGui import *
+from Maya_tk.plugins.Qt.QtCore import *
 
 class LightManager( QtWidgets.QWidget ):
 

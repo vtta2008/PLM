@@ -10,7 +10,7 @@ import maya.OpenMayaUI as omui # the extent of the internal Maya_tk API
 import logging, os
 from functools import partial # partial module can store variables to method
 
-from modules import MayaVariables as var
+from Maya_tk.modules import MayaVariables as var
 NAMES = var.MAINVAR
 ICONS = var.ICONS
 VERSION = NAMES['mayaVersion']
@@ -81,7 +81,7 @@ logger.setLevel(logging.DEBUG)
 #             cmds.deleteUI(name)
 
 def importBTS():
-    from modules import MayaFuncs
+    from Maya_tk.modules import MayaFuncs
     reload( MayaFuncs )
     return MayaFuncs
 

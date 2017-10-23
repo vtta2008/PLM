@@ -168,16 +168,13 @@ class MayaMainUI( QtWidgets.QWidget ):
     def personalModeVar(self):
         self.prodName = os.path.basename( os.path.normpath( self.curPth ) )
         self.prodPth = self.curPth.split( self.prodName )[ 0 ]
-        self.projPth, self.assetsPth = self.curPth
+        self.projPth = self.curPth
+        self.assetsPth = os.path.join(self.curPth, 'scenes/assets')
         self.assetsList = [ f.split(".ma")[0] for f in os.listdir( self.assetsPth ) if f.endswith(".ma") ]
-        self.assetsTaskList = ["None"]
-        self.assetsTaskPth = "None"
-        self.sequencesPth = "None"
-        self.sequencesList = ["None"]
-        self.stageText = "None"
-        self.stageName = "None"
-        self.curTask = "None"
-        self.curTaskPth = "None"
+        self.assetsTaskPth = os.path.join(self.assetsPth, self.assetsList[0])
+
+        self.sequencesPth = os.path.join(self.curPth, 'scenes/sequences')
+
 
     def groupModeVar(self):
         self.prodName = os.path.basename( os.path.normpath( self.curPth ))
@@ -227,10 +224,8 @@ class MayaMainUI( QtWidgets.QWidget ):
             self.assetsPth = self.prodPth + self.prodList[ self.prodList.index( 'assets' ) ] + '/'
         self.assetsList = [ f for f in os.listdir( self.assetsPth ) if os.path.isdir( self.assetsPth + f ) ]
         self.assetsTaskPth = self.assetsPth + self.assetsList[ 0 ] + '/'
-        self.assetsTaskList = [ f for f in os.listdir( self.assetsTaskPth ) if
-                                os.path.isdir( self.assetsTaskPth + f ) ]
-        self.sequencesList = [ f for f in os.listdir( self.sequencesPth ) if
-                               os.path.isdir( self.sequencesPth + f ) ]
+        self.assetsTaskList = [ f for f in os.listdir( self.assetsTaskPth ) if os.path.isdir( self.assetsTaskPth + f ) ]
+        self.sequencesList = [ f for f in os.listdir( self.sequencesPth ) if os.path.isdir( self.sequencesPth + f ) ]
         self.sequencesTaskPth = self.sequencesPth + self.sequencesList[0] + '/'
         self.sequencesTaskList = [ f for f in os.listdir( self.sequencesTaskPth ) if
                                    os.path.isdir( self.sequencesTaskPth + f ) ]

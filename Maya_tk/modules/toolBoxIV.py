@@ -1,9 +1,9 @@
 from maya import cmds
 import os, sys, logging, subprocess, json, shutil
 from functools import partial
-from QtPlugin import Qt
+from Maya_tk.plugins import Qt
 
-from modules import MayaVariables as var
+from Maya_tk.modules import MayaVariables as var
 
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
@@ -32,15 +32,15 @@ logger.setLevel(logging.DEBUG)
 if Qt.__binding__=='PySide':
     logger.debug('Using PySide with shiboken')
     from shiboken import wrapInstance
-    from Qt.QtCore import Signal
+    from Maya_tk.plugins.Qt.QtCore import Signal
 elif Qt.__binding__.startswith('PyQt'):
     logger.debug('Using PyQt with sip')
     from sip import wrapinstance as wrapInstance
-    from Qt.QtCore import pyqtSignal as Signal
+    from Maya_tk.plugins.Qt.QtCore import pyqtSignal as Signal
 else:
     logger.debug('Using PySide2 with shiboken2')
     from shiboken2 import wrapInstance
-    from Qt.QtCore import Signal
+    from Maya_tk.plugins.Qt.QtCore import Signal
 
 
 
@@ -61,7 +61,7 @@ class toolBoxIV( object ):
 
         self.scrApps = os.path.join(SCRPTH, 'apps.pipeline')
         if not os.path.exists(self.scrApps):
-            self.warningMessage(MESSAGE)
+            self.warningMessage(MESSAGE['canNotFindIt'])
         else:
             self.buildUI()
 

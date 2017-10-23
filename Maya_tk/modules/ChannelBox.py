@@ -106,7 +106,7 @@ def deleteDock(name='Channel Box', version=VERSION):
 
 # get button functions data
 def importBTS():
-    from modules import MayaFuncs
+    from Maya_tk.modules import MayaFuncs
     reload( MayaFuncs )
     return MayaFuncs
 
