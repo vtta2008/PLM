@@ -1,5 +1,7 @@
+# -*-coding:utf-8 -*
+
 """
-Script Name: DAMGtoolBoxII
+Script Name: toolBoxII
 Author: Do Trinh/Jimmy - TD artist
 
 Warning: This is the most complex code structure I have build, it is using more advanced maya features alongside

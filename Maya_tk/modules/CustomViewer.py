@@ -1,6 +1,9 @@
+# -*-coding:utf-8 -*
+
 """
 
 """
+
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA MODULES
 # -------------------------------------------------------------------------------------------------------------
@@ -9,6 +12,10 @@ import maya.mel as mel
 import maya.OpenMayaUI as omui # the extent of the internal Maya_tk API
 import logging, os
 from functools import partial # partial module can store variables to method
+
+# -------------------------------------------------------------------------------------------------------------
+# IMPORT MAYA MODULES
+# -------------------------------------------------------------------------------------------------------------
 
 from Maya_tk.modules import MayaVariables as var
 NAMES = var.MAINVAR

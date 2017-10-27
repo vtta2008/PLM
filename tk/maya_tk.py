@@ -13,4 +13,4 @@ logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
-print os.getenv('PIPELINE_MAYA_TOOLKIT')
+print os.getenv('PIPELINE_TOOL')

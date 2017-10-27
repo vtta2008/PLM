@@ -1,3 +1,10 @@
+# -*-coding:utf-8 -*
+
+"""
+
+
+"""
+
 from maya import cmds
 import os, sys, json, unicodedata
 

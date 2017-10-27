@@ -1,3 +1,10 @@
+# -*-coding:utf-8 -*
+
+"""
+
+
+"""
+
 from maya import cmds
 import os, sys, logging, platform, datetime, json
 
@@ -162,7 +169,7 @@ for any question or feedback, email me at: dot@damgteam.com
 
 
 
-ICONS = os.path.join(MAINVAR['mayaRootDir'], 'icons')
+ICONS = os.path.join(os.getcwd(), 'icons')
 
 # We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()

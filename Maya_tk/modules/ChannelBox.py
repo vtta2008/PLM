@@ -1,3 +1,15 @@
+# -*-coding:utf-8 -*
+
+"""
+
+Script Name: ChannelBox
+Author: Do Trinh/Jimmy - TD artist
+
+Description:
+    This script makes a new Channel box UI with new menu. It easier for me to use channel box in this way.
+
+"""
+
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA MODULES
 # -------------------------------------------------------------------------------------------------------------
@@ -8,6 +20,10 @@ import logging, os
 from functools import partial # partial module can store variables to method
 
 from Maya_tk.modules import MayaVariables as var
+
+# ------------------------------------------------------
+# VARIALBES ARE USED BY ALL CLASSES
+# ------------------------------------------------------
 NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE
 TITLE = var.TITLE
@@ -111,7 +127,7 @@ def importBTS():
     return MayaFuncs
 
 # ----------------------------------------------------------------------------------------------------------- #
-"""                                        SUB CLASS: CHANNELBOX UI                                        """
+"""                                        MAIN CLASS: CHANNELBOX UI                                        """
 # ----------------------------------------------------------------------------------------------------------- #
 class ChannelBox( QtWidgets.QWidget ):
 
@@ -389,4 +405,6 @@ class ChannelBox( QtWidgets.QWidget ):
                                  "Email me: dot@damgteam.com\n"),
                                 b="Close")
 
-# -----------------------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------------------- #
+"""                                              END OF CODE                                                """
+# ----------------------------------------------------------------------------------------------------------- #

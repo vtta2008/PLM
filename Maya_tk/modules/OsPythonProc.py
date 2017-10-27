@@ -1,3 +1,5 @@
+# -*-coding:utf-8 -*
+
 """
 Script Name: OsPythonProc.py
 Author: Do Trinh/Jimmy - TD artist

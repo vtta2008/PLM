@@ -53,6 +53,13 @@ class InitUserSetup(object):
                 self.updatePathFromUser(PTH)
             self.adviceToInstallAnanconda()
 
+        from Maya_tk import InitTool
+        reload(InitTool)
+        InitTool.initilize()
+
+    def loadPathAndUI(self):
+        pass
+
     def adviceToInstallAnanconda(self):
         title = 'No Ananconda installed'
         message = MESSAGE[ 'NoPythonInstall' ]

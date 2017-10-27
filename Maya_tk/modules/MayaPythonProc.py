@@ -1,3 +1,5 @@
+# -*-coding:utf-8 -*
+
 """
 Script Name: DAMGsetup.py
 Author: Do Trinh/Jimmy - TD artist
@@ -43,10 +45,6 @@ class MayaPythonProc( object ):
 
     def __init__(self):
         super( MayaPythonProc, self ).__init__()
-
-        print self.icons_lst
-        print self.modules_lst
-        print self.scrRoot_lst
 
         self.checkAllFiles()
 

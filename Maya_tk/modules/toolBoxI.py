@@ -1,3 +1,10 @@
+# -*-coding:utf-8 -*
+
+"""
+
+
+"""
+
 import maya.cmds as cmds
 from functools import partial
 import maya.mel as mel
