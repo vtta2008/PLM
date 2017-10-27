@@ -14,7 +14,7 @@ MAYAVERSION = int(cmds.about(v=True))
 
 MAINVAR = dict(
 
-    dir = 'PipelineInfo',
+    dir = 'Pipeline Tool/scrInfo',
 
     user = platform.node(),
 
@@ -32,7 +32,7 @@ MAINVAR = dict(
 
     Office=[ 'Word', 'Excel', 'PowerPoint' ],
 
-    envKey = ['LOCALAPPDATA', 'SYSTEMINFO', 'PYTHONHOME'],
+    envKey = ['LOCALAPPDATA', 'SYSTEMINFO', 'PYTHONHOME', 'PROGRAMDATA'],
 
     subKey = 'Local',
 
@@ -180,8 +180,11 @@ logger.info('Hello %s' % MAINVAR['user'])
 
 # Get common data directory for every apps
 def getScrPth(mainVar):
-    localAppDir = os.getenv( mainVar[ 'envKey' ][0 ] ).split( mainVar[ 'subKey' ] )[0 ]
-    pipelineDataPth = os.path.join( localAppDir, mainVar[ 'dir' ] )
+    localAppDir = os.getenv( mainVar[ 'envKey' ][3])
+
+    print 'localAppDir: %s' % localAppDir
+
+    pipelineDataPth = os.path.join( localAppDir, mainVar['dir'] )
     if not os.path.exists( pipelineDataPth ):
         os.mkdir( pipelineDataPth )
     return pipelineDataPth

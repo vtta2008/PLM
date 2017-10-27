@@ -10,7 +10,7 @@ from Maya_tk.modules import MayaVariables as var
 # ------------------------------------------------------
 NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE
-SCRPTH = var.SCRPTH
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
 
 WINID = 'AppsManager'
 SUBID = 'Chosing version'

@@ -20,7 +20,7 @@ from Maya_tk.modules import MayaVariables as var
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
 NAMES = var.MAINVAR
-SCRPTH = var.SCRPTH
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
 # We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()
 logger = logging.getLogger(NAMES['id'][4])

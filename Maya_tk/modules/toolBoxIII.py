@@ -15,7 +15,7 @@ from Maya_tk.modules import MayaVariables as var
 from Maya_tk.modules import toolBoxIIfuncs
 
 NAMES = var.MAINVAR
-SCRPTH = var.SCRPTH
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
 VERSION = var.MAYAVERSION
 DIRECTORY = os.path.join(cmds.internalVar(usd=True), 'userLibrary')
 logging.basicConfig()

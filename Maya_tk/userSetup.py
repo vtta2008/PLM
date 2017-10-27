@@ -8,14 +8,14 @@ Author: Do Trinh/Jimmy - TD artist
 from maya import cmds
 import maya.utils as mu
 import os, sys, json, logging
-from modules import MayaVariables as var
+from Maya_tk.modules import MayaVariables as var
 
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
 # We can configure the current level to make it disable certain logs when we don't want it.
 NAMES = var.MAINVAR
-SCRPTH = var.SCRPTH
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
 MESSAGE = var.MESSAGE
 ID = 'UserSetup'
 KEY = 'PYTHONPATH'
@@ -33,13 +33,14 @@ class InitUserSetup(object):
     def __init__(self):
         super(InitUserSetup, self).__init__()
 
-        # hello = 'Hello %s, just wait for a quick setup' % NAMES['user']
+        hello = 'Hello %s, just wait for a quick setup' % NAMES['user']
 
-        # cmds.confirmDialog(t='Welcome', m=hello, b='OK')
+        cmds.confirmDialog(t='Welcome', m=hello, b='OK')
 
         var.createLog('maya')
 
         SCR = os.path.join( SCRPTH, NAMES['os'][0] )
+
         PTH = os.path.join( SCRPTH, NAMES['maya'][1] )
 
         if os.path.exists( SCR ):

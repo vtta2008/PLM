@@ -17,7 +17,7 @@ import os
 from Maya_tk.modules import MayaVariables as var
 
 NAMES = var.MAINVAR
-SCRPTH = var.SCRPTH
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
 
 # We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()
@@ -35,6 +35,8 @@ class InitTool(object):
 
     def createMayaSysPth(self):
         pth = os.path.join(SCRPTH, NAMES['maya'][2])
+
+        logger.info(pth)
 
         if not os.path.exists(pth):
             envKeys = {}

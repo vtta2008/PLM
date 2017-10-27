@@ -310,9 +310,9 @@ class GetData( object ):
         info['pipeline'] = trackKeys
         info['icon'] = iconInfo
         # Save all info to directory
-        # logger.info( 'creating Info file' )
+        logger.info( 'creating Info file' )
         self.createInfo(info, names, package)
-        # logger.info( 'creating environment variable file' )
+        logger.info( 'creating environment variable file' )
         self.getSysPth(package=PACKAGE, names=NAMES)
 
     def getSysPth(self, package, names):
@@ -321,7 +321,7 @@ class GetData( object ):
             envKeys[key] = os.getenv(key)
 
         pth = os.path.join(package['appData'], names['sysEnv'])
-        # logger.info('Saving file to %s' % pth)
+        logger.info('Saving file to %s' % pth)
         with open(pth, 'w') as f:
             json.dump(envKeys, f, indent=4)
 
