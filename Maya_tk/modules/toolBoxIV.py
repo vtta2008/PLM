@@ -1,10 +1,10 @@
 from maya import cmds
 import os, sys, logging, subprocess, json, shutil
 from functools import partial
-from Maya_tk.plugins import Qt
-
 from Maya_tk.modules import MayaVariables as var
 
+from Maya_tk.plugins import Qt
+from Maya_tk.plugins.Qt import QtWidgets, QtCore, QtGui
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------

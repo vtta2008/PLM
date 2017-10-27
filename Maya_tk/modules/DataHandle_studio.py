@@ -24,18 +24,18 @@ logger.setLevel(logging.DEBUG)
 # -------------------------------------------------------------------------------------------------------------
 # While Qt.py lets us abstract the actual Qt library, there are a few things it cannot do yet
 # and a few support libraries we need that we have to import manually.
-if Qt.__binding__=='PySide':
-    logger.debug('Using PySide with shiboken')
-    from shiboken import wrapInstance
-    from Maya_tk.plugins.Qt.QtCore import Signal
-elif Qt.__binding__.startswith('PyQt'):
-    logger.debug('Using PyQt with sip')
-    from sip import wrapinstance as wrapInstance
-    from Maya_tk.plugins.Qt.QtCore import pyqtSignal as Signal
-else:
-    logger.debug('Using PySide2 with shiboken2')
-    from shiboken2 import wrapInstance
-    from Maya_tk.plugins.Qt.QtCore import Signal
+# if Qt.__binding__=='PySide':
+#     logger.debug('Using PySide with shiboken')
+#     from shiboken import wrapInstance
+#     from Maya_tk.plugins.Qt.QtCore import Signal
+# elif Qt.__binding__.startswith('PyQt'):
+#     logger.debug('Using PyQt with sip')
+#     from sip import wrapinstance as wrapInstance
+#     from Maya_tk.plugins.Qt.QtCore import pyqtSignal as Signal
+# else:
+#     logger.debug('Using PySide2 with shiboken2')
+#     from shiboken2 import wrapInstance
+#     from Maya_tk.plugins.Qt.QtCore import Signal
 
 def importBTS():
     from Maya_tk.modules import MayaFuncs
@@ -57,12 +57,13 @@ class DataHandle( object ):
         self.workPth = os.path.join(self.curPth, "scenes")
         self.filePth = cmds.file(q=True, loc=True)
 
-        if 'work' in self.curPth:
-            self.curMode = 'Studio Mode'
-            self.snapShotPth, self.publishPth = self.studioModeVar()
-        elif 'assets' in self.workPth or 'sequences' in self.workPth:
-            self.curMode = 'Group Mode'
-            self.groupModeVar()
+        self.snapShotPth = os.path.join(self.curPth, "scenes/snapShot")
+        if not os.path.exists(self.snapShotPth):
+            cmds.sysFile(self.snapShotPth, md=True)
+
+        self.publishPth = os.path.join(self.curPth.split('work')[0], "publish/maya/")
+        if not os.path.exists(self.publishPth):
+            cmds.sysFile(self.publishPth, md=True)
 
         numOfSectInPth = len( (self.curPth.split( "work" )[ 0 ]).split( "/" ) )
         self.assetName = (self.curPth.split( "work" )[ 0 ]).split( "/" )[ (numOfSectInPth - 3) ]
@@ -116,21 +117,6 @@ class DataHandle( object ):
         self.imageSnapShotPth = os.path.join( self.snapShotPth,  self.snapShotImageName )
 
         self.imagepublishPth = os.path.join( self.snapShotPth, publishImageName )
-
-    def groupModeVar(self):
-        self.fileName = str(os.path.basename(os.path.normpath(cmds.file(q=True, loc=True))))
-        self.workingPth = self.filePth.split(self.fileName)[0]
-
-    def studioModeVar(self):
-        snapShotPth = os.path.join(self.curPth, "scenes/snapShot")
-        if not os.path.exists(snapShotPth ):
-            cmds.sysFile( snapShotPth, md=True )
-
-        publishPth = os.path.join(self.curPth.split('work')[0], "publish/maya/")
-        if not os.path.exists(publishPth ):
-            cmds.sysFile(publishPth, md=True)
-
-        return snapShotPth, publishPth
 
     def snapshotUI(self):
         title='Snapshot'

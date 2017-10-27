@@ -34,18 +34,18 @@ logger.setLevel(logging.DEBUG)
 # -------------------------------------------------------------------------------------------------------------
 # While Qt.py lets us abstract the actual Qt library, there are a few things it cannot do yet
 # and a few support libraries we need that we have to import manually.
-if Qt.__binding__=='PySide':
-    logger.debug('Using PySide with shiboken')
-    from shiboken import wrapInstance
-    from Maya_tk.plugins.Qt.QtCore import Signal
-elif Qt.__binding__.startswith('PyQt'):
-    logger.debug('Using PyQt with sip')
-    from sip import wrapinstance as wrapInstance
-    from Maya_tk.plugins.Qt.QtCore import pyqtSignal as Signal
-else:
-    logger.debug('Using PySide2 with shiboken2')
-    from shiboken2 import wrapInstance
-    from Maya_tk.plugins.Qt.QtCore import Signal
+# if Qt.__binding__=='PySide':
+#     logger.debug('Using PySide with shiboken')
+#     from shiboken import wrapInstance
+#     from Maya_tk.plugins.Qt.QtCore import Signal
+# elif Qt.__binding__.startswith('PyQt'):
+#     logger.debug('Using PyQt with sip')
+#     from sip import wrapinstance as wrapInstance
+#     from Maya_tk.plugins.Qt.QtCore import pyqtSignal as Signal
+# else:
+#     logger.debug('Using PySide2 with shiboken2')
+#     from shiboken2 import wrapInstance
+#     from Maya_tk.plugins.Qt.QtCore import Signal
 
 def geticon(icon):
     iconPth = os.path.join(os.getcwd(), 'Maya_tk/icons')
@@ -306,20 +306,35 @@ def toolBoxIV(*args):
     reload( toolBoxIV )
     toolBoxIV.toolBoxIV()
 
-def publishUI(*args):
-    from Maya_tk.modules import DataHandle_studio
-    reload(DataHandle_studio)
-    DataHandle_studio.DataHandle().publishUI()
+def publishUI(mode, *args):
+    if mode=='Studio Mode':
+        from Maya_tk.modules import DataHandle_studio
+        reload(DataHandle_studio)
+        DataHandle_studio.DataHandle().publishUI()
+    elif mode=='Group Mode':
+        from Maya_tk.modules import DataHandle_group
+        reload(DataHandle_group)
+        DataHandle_group.DataHandle().publishUI()
 
-def loaderUI(*args):
-    from Maya_tk.modules import DataHandle_studio
-    reload(DataHandle_studio)
-    DataHandle_studio.DataHandle().loaderUI()
+def loaderUI(mode, *args):
+    if mode=='Studio Mode':
+        from Maya_tk.modules import DataHandle_studio
+        reload(DataHandle_studio)
+        DataHandle_studio.DataHandle().loaderUI()
+    elif mode=='Group Mode':
+        from Maya_tk.modules import DataHandle_group
+        reload(DataHandle_group)
+        DataHandle_group.DataHandle().loaderUI()
 
-def snapshotUI(*args):
-    from Maya_tk.modules import DataHandle_studio
-    reload(DataHandle_studio)
-    DataHandle_studio.DataHandle().snapshotUI()
+def snapshotUI(mode, *args):
+    if mode=='Studio Mode':
+        from Maya_tk.modules import DataHandle_studio
+        reload(DataHandle_studio)
+        DataHandle_studio.DataHandle().snapshotUI()
+    elif mode=='Group Mode':
+        from Maya_tk.modules import DataHandle_group
+        reload(DataHandle_group)
+        DataHandle_group.DataHandle().snapshotUI()
 
 def projManagerUI(*args):
     from Maya_tk.modules import ProjectManager
