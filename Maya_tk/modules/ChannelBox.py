@@ -44,7 +44,7 @@ from Maya_tk.plugins.Qt import QtWidgets, QtCore, QtGui
 # -------------------------------------------------------------------------------------------------------------
 # We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()
-logger = logging.getLogger(NAMES['id'][0])
+logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------------------

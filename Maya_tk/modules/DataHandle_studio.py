@@ -11,10 +11,31 @@ import maya.OpenMaya as om
 import maya.OpenMayaUI as omui
 import os, json, shutil, logging
 
+# -------------------------------------------------------------------------------------------------------------
+# MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION
+# -------------------------------------------------------------------------------------------------------------
 # We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()
-logger = logging.getLogger('DataHandle')
+logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
+
+# -------------------------------------------------------------------------------------------------------------
+# CHECK THE CORRECT BINDING THAT BE USING UNDER QT.PY
+# -------------------------------------------------------------------------------------------------------------
+# While Qt.py lets us abstract the actual Qt library, there are a few things it cannot do yet
+# and a few support libraries we need that we have to import manually.
+if Qt.__binding__=='PySide':
+    logger.debug('Using PySide with shiboken')
+    from shiboken import wrapInstance
+    from Maya_tk.plugins.Qt.QtCore import Signal
+elif Qt.__binding__.startswith('PyQt'):
+    logger.debug('Using PyQt with sip')
+    from sip import wrapinstance as wrapInstance
+    from Maya_tk.plugins.Qt.QtCore import pyqtSignal as Signal
+else:
+    logger.debug('Using PySide2 with shiboken2')
+    from shiboken2 import wrapInstance
+    from Maya_tk.plugins.Qt.QtCore import Signal
 
 def importBTS():
     from Maya_tk.modules import MayaFuncs
@@ -42,9 +63,6 @@ class DataHandle( object ):
         elif 'assets' in self.workPth or 'sequences' in self.workPth:
             self.curMode = 'Group Mode'
             self.groupModeVar()
-        else:
-            self.curMode = 'Pesonal Mode'
-            self.personalModeVar()
 
         numOfSectInPth = len( (self.curPth.split( "work" )[ 0 ]).split( "/" ) )
         self.assetName = (self.curPth.split( "work" )[ 0 ]).split( "/" )[ (numOfSectInPth - 3) ]
@@ -98,9 +116,6 @@ class DataHandle( object ):
         self.imageSnapShotPth = os.path.join( self.snapShotPth,  self.snapShotImageName )
 
         self.imagepublishPth = os.path.join( self.snapShotPth, publishImageName )
-
-    def personalModeVar(self):
-        pass
 
     def groupModeVar(self):
         self.fileName = str(os.path.basename(os.path.normpath(cmds.file(q=True, loc=True))))

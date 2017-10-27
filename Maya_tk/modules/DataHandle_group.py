@@ -3,11 +3,12 @@
 """
 
 
-
 """
 
-from maya import cmds
-import logging
+import maya.cmds as cmds
+import maya.OpenMaya as om
+import maya.OpenMayaUI as omui
+import os, json, shutil, logging
 
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION

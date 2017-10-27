@@ -21,7 +21,7 @@ TITLE = 'Apps Manager'
 # -------------------------------------------------------------------------------------------------------------
 # We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()
-logger = logging.getLogger(WINID)
+logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------------------

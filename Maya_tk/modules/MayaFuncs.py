@@ -21,9 +21,31 @@ MESSAGE = var.MESSAGE
 WIDTH = 450
 ICONWIDTH = 30
 
+# -------------------------------------------------------------------------------------------------------------
+# MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION
+# -------------------------------------------------------------------------------------------------------------
+# We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()
-logger = logging.getLogger(NAMES['id'][1])
+logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
+
+# -------------------------------------------------------------------------------------------------------------
+# CHECK THE CORRECT BINDING THAT BE USING UNDER QT.PY
+# -------------------------------------------------------------------------------------------------------------
+# While Qt.py lets us abstract the actual Qt library, there are a few things it cannot do yet
+# and a few support libraries we need that we have to import manually.
+if Qt.__binding__=='PySide':
+    logger.debug('Using PySide with shiboken')
+    from shiboken import wrapInstance
+    from Maya_tk.plugins.Qt.QtCore import Signal
+elif Qt.__binding__.startswith('PyQt'):
+    logger.debug('Using PyQt with sip')
+    from sip import wrapinstance as wrapInstance
+    from Maya_tk.plugins.Qt.QtCore import pyqtSignal as Signal
+else:
+    logger.debug('Using PySide2 with shiboken2')
+    from shiboken2 import wrapInstance
+    from Maya_tk.plugins.Qt.QtCore import Signal
 
 def geticon(icon):
     iconPth = os.path.join(os.getcwd(), 'Maya_tk/icons')
@@ -285,19 +307,19 @@ def toolBoxIV(*args):
     toolBoxIV.toolBoxIV()
 
 def publishUI(*args):
-    from Maya_tk.modules import DataHandle
-    reload( DataHandle )
-    DataHandle.DataHandle().publishUI()
+    from Maya_tk.modules import DataHandle_studio
+    reload(DataHandle_studio)
+    DataHandle_studio.DataHandle().publishUI()
 
 def loaderUI(*args):
-    from Maya_tk.modules import DataHandle
-    reload( DataHandle )
-    DataHandle.DataHandle().loaderUI()
+    from Maya_tk.modules import DataHandle_studio
+    reload(DataHandle_studio)
+    DataHandle_studio.DataHandle().loaderUI()
 
 def snapshotUI(*args):
-    from Maya_tk.modules import DataHandle
-    reload( DataHandle )
-    DataHandle.DataHandle().snapshotUI()
+    from Maya_tk.modules import DataHandle_studio
+    reload(DataHandle_studio)
+    DataHandle_studio.DataHandle().snapshotUI()
 
 def projManagerUI(*args):
     from Maya_tk.modules import ProjectManager

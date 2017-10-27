@@ -34,12 +34,17 @@ ICONWIDTH = 30
 from Maya_tk.plugins import Qt
 from Maya_tk.plugins.Qt import QtWidgets, QtCore, QtGui
 
+# -------------------------------------------------------------------------------------------------------------
+# MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION
+# -------------------------------------------------------------------------------------------------------------
 # We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()
-logger = logging.getLogger(NAMES['id'][2])
+logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
+# -------------------------------------------------------------------------------------------------------------
 # CHECK THE CORRECT BINDING THAT BE USING UNDER QT.PY
+# -------------------------------------------------------------------------------------------------------------
 # While Qt.py lets us abstract the actual Qt library, there are a few things it cannot do yet
 # and a few support libraries we need that we have to import manually.
 if Qt.__binding__=='PySide':
@@ -167,9 +172,10 @@ class MayaMainUI( QtWidgets.QWidget ):
 
     def groupModeVar(self):
         self.prodName = os.path.basename( os.path.normpath( self.curPth ))
-        self.prodPth = self.curPth.split( self.prodName )[ 0 ]
+        self.prodPth = self.curPth
         self.projPth = self.curPth
         self.assetsPth = self.curPth + 'scenes/assets/'
+        self.projPthParts = self.projPth.split('/')
 
         if not os.path.exists(self.assetsPth):
             cmds.sysFile(self.assetsPth, md=True)
@@ -177,13 +183,18 @@ class MayaMainUI( QtWidgets.QWidget ):
         self.assetsList = [ f for f in os.listdir( self.assetsPth ) if os.path.isdir( self.assetsPth + f ) ]
 
         if self.assetsList == []:
+            # Create demo assets
+            assetsSection = ['character', 'environment','props']
             assetsItem = 'assets001'
-            assetsItemPth = os.path.join(self.assetsPth, assetsItem)
-            cmds.sysFile(assetsItemPth, md=True)
             task = ['art', 'modeling', 'rigging', 'surfacing']
-            for i in task:
-                assetsItemTaskPth = os.path.join(assetsItemPth, i)
-                cmds.sysFile(assetsItemTaskPth, md=True)
+            for i in assetsSection:
+                assetsSectionPth = os.path.join(self.assetsPth, i)
+                cmds.sysFile(assetsSectionPth, md=True)
+                assetsItemPth = os.path.join(assetsSectionPth, assetsItem)
+                cmds.sysFile(assetsItemPth, md=True)
+                for i in task:
+                    assetsItemTaskPth = os.path.join(assetsItemPth, i)
+                    cmds.sysFile(assetsItemTaskPth, md=True)
 
             self.assetsList = [f for f in os.listdir(self.assetsPth) if os.path.isdir(self.assetsPth + f)]
 
@@ -212,7 +223,7 @@ class MayaMainUI( QtWidgets.QWidget ):
         self.curTask = "NA"
         self.curTaskPth = "NA"
         self.reviewPth = os.path.join(self.curPth, 'movies/review')
-        self.projPthParts = self.projPth.split('/')
+
         self.curStage = self.projPthParts[1]
 
 
