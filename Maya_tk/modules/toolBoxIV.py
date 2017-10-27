@@ -43,14 +43,15 @@ else:
     from Maya_tk.plugins.Qt.QtCore import Signal
 
 
+def geticon(icon):
+    iconPth = os.path.join(os.getcwd(), 'icons')
+    return os.path.join(iconPth, icon)
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                        MAIN CLASS: APPSMANAGER - GET ALL APPS INSTALLED IN MAYA                         """
 # ----------------------------------------------------------------------------------------------------------- #
 
 class toolBoxIV( object ):
-
-    scrIcons = os.path.join(cmds.internalVar(usd=True), 'icons')
 
     def __init__(self):
         super( toolBoxIV, self ).__init__()
@@ -90,7 +91,7 @@ class toolBoxIV( object ):
         for app in apps:
             if app in keys:
                 icon = app + '.icon.png'
-                iconPth = os.path.join(self.scrIcons, icon)
+                iconPth = geticon(icon)
                 if not os.path.exists(iconPth):
                     shutil.copy2(appInfo[app][1], iconPth)
 
@@ -112,7 +113,7 @@ class toolBoxIV( object ):
         subprocess.Popen(path)
 
     def makeACoolButton(self, ann, image, command, *args):
-        icon = os.path.join(self.scrIcons, image)
+        icon = geticon(image)
         cmds.frameLayout(borderVisible=True, labelVisible=False)
         cmds.symbolButton(ann=ann, i=icon, c=command, h=40, w=40)
         cmds.setParent('..')

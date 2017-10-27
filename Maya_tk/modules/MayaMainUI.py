@@ -158,24 +158,11 @@ class MayaMainUI( QtWidgets.QWidget ):
         if 'work' in self.curPth or 'sequences' in self.curPth:
             self.curMode = 'Studio Mode'
             self.studioModeVar()
-        elif 'assets' in os.listdir( self.curPth + "scenes/" ) or 'sequences' in os.listdir( self.curPth + "scenes/" ):
+        else:
             self.curMode = 'Group Mode'
             self.groupModeVar()
-        else:
-            self.curMode = 'Pesonal Mode'
-            self.personalModeVar()
 
         return self.curMode
-
-    def personalModeVar(self):
-        self.prodName = os.path.basename( os.path.normpath( self.curPth ) )
-        self.prodPth = self.curPth.split( self.prodName )[ 0 ]
-        self.projPth = self.curPth
-        self.assetsPth = os.path.join(self.curPth, 'scenes/assets')
-        self.assetsList = [ f.split(".ma")[0] for f in os.listdir( self.assetsPth ) if f.endswith(".ma") ]
-        self.assetsTaskPth = os.path.join(self.assetsPth, self.assetsList[0])
-
-        self.sequencesPth = os.path.join(self.curPth, 'scenes/sequences')
 
 
     def groupModeVar(self):
@@ -183,13 +170,31 @@ class MayaMainUI( QtWidgets.QWidget ):
         self.prodPth = self.curPth.split( self.prodName )[ 0 ]
         self.projPth = self.curPth
         self.assetsPth = self.curPth + 'scenes/assets/'
+
+        if not os.path.exists(self.assetsPth):
+            cmds.sysFile(self.assetsPth, md=True)
+
         self.assetsList = [ f for f in os.listdir( self.assetsPth ) if os.path.isdir( self.assetsPth + f ) ]
-        self.assetsTaskPth = self.assetsPth + self.assetsList[ 0 ] + '/'
-        self.assetsTaskList = [ f for f in os.listdir( self.assetsTaskPth ) if
-                                os.path.isdir( self.assetsTaskPth + f ) ]
+
+        if self.assetsList == []:
+            assetsItem = 'assets001'
+            assetsItemPth = os.path.join(self.assetsPth, assetsItem)
+            cmds.sysFile(assetsItemPth, md=True)
+            task = ['art', 'modeling', 'rigging', 'surfacing']
+            for i in task:
+                assetsItemTaskPth = os.path.join(assetsItemPth, i)
+                cmds.sysFile(assetsItemTaskPth, md=True)
+
+            self.assetsList = [f for f in os.listdir(self.assetsPth) if os.path.isdir(self.assetsPth + f)]
+
+        self.assetsTaskPth = os.path.join(self.assetsPth, self.assetsList[0])
+
+        self.assetsTaskList = [ f for f in os.listdir( self.assetsTaskPth ) if os.path.isdir(self.assetsTaskPth + f)]
         self.sequencesPth = self.curPth + 'scenes/sequences/'
+
         if not os.path.exists( self.sequencesPth ):
             cmds.sysFile( self.sequencesPth, md=True )
+
         self.sequencesList = [ f for f in os.listdir( self.sequencesPth ) if
                                os.path.isdir( self.sequencesPth + f ) ]
         if self.sequencesList == [ ]:
@@ -202,10 +207,14 @@ class MayaMainUI( QtWidgets.QWidget ):
             self.sequencesTaskPth = self.sequencesPth + self.sequencesList[ 0 ] + '/'
             self.sequencesTaskList = [ f for f in os.listdir( self.sequencesTaskPth ) if
                                        os.path.isdir( self.sequencesTaskPth + f ) ]
-        self.stageText = "None"
-        self.stageName = "None"
-        self.curTask = "None"
-        self.curTaskPth = "None"
+        self.stageText = "NA"
+        self.stageName = "MA"
+        self.curTask = "NA"
+        self.curTaskPth = "NA"
+        self.reviewPth = os.path.join(self.curPth, 'movies/review')
+        self.projPthParts = self.projPth.split('/')
+        self.curStage = self.projPthParts[1]
+
 
     def studioModeVar(self):
         if 'assets' in self.curPthParts:
@@ -231,7 +240,7 @@ class MayaMainUI( QtWidgets.QWidget ):
         self.sequencesTaskPth = self.sequencesPth + self.sequencesList[0] + '/'
         self.sequencesTaskList = [ f for f in os.listdir( self.sequencesTaskPth ) if
                                    os.path.isdir( self.sequencesTaskPth + f ) ]
-        self.curStage = self.projPthParts[ 1 ]
+        self.curStage = self.projPthParts[1]
         if self.curStage == 'assets':
             self.curStagePth = self.assetsPth
             self.curTask = self.projPthParts[ 4 ]
@@ -330,7 +339,6 @@ class MayaMainUI( QtWidgets.QWidget ):
 
         cmds.menuItem(l="Studio Mode", p=self.setCurModeMenu)
         cmds.menuItem(l="Group Mode", p=self.setCurModeMenu)
-        cmds.menuItem(l="Personal Mode", p=self.setCurModeMenu)
 
         self.refreshCheckMode()
 

@@ -5,8 +5,7 @@ Author: Do Trinh/Jimmy - TD artist
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-from maya import cmds
-import maya.utils as mu
+from maya import cmds, mel
 import os, sys, json, logging
 from Maya_tk.modules import MayaVariables as var
 
@@ -30,36 +29,35 @@ logger.setLevel(logging.DEBUG)
 
 class InitUserSetup(object):
 
+    """
+    This class is to make a menu in main layout for whenever you want to load the UI
+    """
+
     def __init__(self):
         super(InitUserSetup, self).__init__()
-
-        hello = 'Hello %s, just wait for a quick setup' % NAMES['user']
-
-        cmds.confirmDialog(t='Welcome', m=hello, b='OK')
+        # First greeting to user
+        self.greetings()
 
         var.createLog('maya')
 
         SCR = os.path.join( SCRPTH, NAMES['os'][0] )
 
-        PTH = os.path.join( SCRPTH, NAMES['maya'][1] )
-
         if os.path.exists( SCR ):
             logger.info( 'Start updateing sys path' )
             self.updatePathFromUser(SCR)
-            self.updatePathFromUser(PTH)
         else:
-            if not os.path.exists(PTH):
-                self.loadPathAndUI()
-            else:
-                self.updatePathFromUser(PTH)
             self.adviceToInstallAnanconda()
 
-        from Maya_tk import InitTool
-        reload(InitTool)
-        InitTool.initilize()
+        self.makePipelineMenu()
 
-    def loadPathAndUI(self):
-        pass
+        self.mayaMainUI()
+
+    def makePipelineMenu(self):
+        # Make menu in main Maya layout
+        mainMenu = cmds.menu(l='Pipeline Tool', p='MayaWindow')
+        # Menu item of main menu
+        cmds.menuItem(l='Load UI', p=mainMenu, c=self.mayaMainUI)
+        cmds.menuItem(l='About', p=mainMenu, c=self.aboutMainUI)
 
     def adviceToInstallAnanconda(self):
         title = 'No Ananconda installed'
@@ -81,7 +79,65 @@ class InitUserSetup(object):
                         sys.path.append(lnk)
                         logger.info('Updated system path: %s' % lnk)
 
-mu.executeDeferred(InitUserSetup())
+    def mayaMainUI(self, *args):
+        from Maya_tk import InitTool
+        reload(InitTool)
+        InitTool.initilize()
+
+    def aboutMainUI(self, *args):
+        aboutWindow = 'aboutWindow'
+
+        if cmds.window(aboutWindow, q=True, exists=True):
+            cmds.deleteUI(aboutWindow)
+
+        cmds.window(aboutWindow, t='About')
+        cmds.rowColumnLayout(nc=3, cw=[(1,25),(2,250),(3,25)])
+        cmds.text(l='')
+        cmds.text(l=var.MESSAGE['mainUIabout'])
+        cmds.text(l='')
+        cmds.showWindow(aboutWindow)
+
+    def loadLayout(self):
+        # Get list current layout
+        listLayout = cmds.workspaceLayoutManager(q=True, lul=True)
+
+        # Check Layout exists, if not, import pipeline layout from source data
+        if not 'PipelineTool' in listLayout:
+            # Path of layout file from source data by default
+            layoutPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'Maya_tk/layout/PipelineTool.json')
+
+            # Check if it is not there, it may happen because the file might be moved or deleted
+            if os.path.exists(layoutPth):
+               cmds.workspaceLayoutManager(i = layoutPth)
+               mel.eval('onSetCurrentLayout "pipelineTool";')
+            else:
+                logger.info('%s is not exists' % layoutPth)
+                pass
+        # If the file is already there, dont need to import, change layout then.
+        else:
+            mel.eval('onSetCurrentLayout "pipelineTool";')
+
+    def greetings(self):
+
+        hello = 'Hello %s' % NAMES['user']
+
+        welcomeID = 'welcomeID'
+        welcomeTitle = 'Welcome'
+
+        if cmds.window(welcomeID, q=True, exists=True):
+            cmds.deleteUI(welcomeID)
+
+        cmds.window(welcomeID, t=welcomeTitle)
+
+        cmds.rowColumnLayout(nc=3, cw=[(1, 25), (2, 150), (3, 25)])
+        cmds.text(l='')
+        cmds.text(l=hello)
+        cmds.text(l='')
+
+        cmds.showWindow(welcomeID)
+
+
+cmds.evalDeferred('InitUserSetup()')
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                                                 END OF CODE                                             """

@@ -41,7 +41,7 @@ from Maya_tk.modules import toolBoxIIfuncs
 NAMES = var.MAINVAR
 SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
 VERSION = var.MAYAVERSION
-DIRECTORY = os.path.join(cmds.internalVar(usd=True), 'userLibrary')
+DIRECTORY = os.path.join(os.getcwd(), 'Maya_tk/userLibrary')
 CHANNELBOX_ID = 'ChannelBoxID'
 
 # -------------------------------------------------------------------------------------------------------------
@@ -131,12 +131,15 @@ def getDock(name='DAMGtoolBoxIIDock', version = VERSION):
 # ------------------------------------- #
 # Controller Manager UI when create something
 # ------------------------------------------------------
+
+def geticon(icon):
+    iconPth = os.path.join(os.getcwd(), 'icons')
+    return os.path.join(iconPth, icon)
+
 class ControllerManager( QtWidgets.QWidget ):
 
     onSolo = Signal(bool)
     tfW=200
-
-    scrIcons = os.path.join(NAMES['mayaRootDir'], 'icons')
 
     def __init__(self, nurbs):
         super( ControllerManager, self ).__init__()
@@ -705,7 +708,7 @@ class DAMGtoolBoxII( QtWidgets.QWidget ):
     scrData = os.path.join(SCRPTH, NAMES['maya'][1])
     with open( scrData, 'r' ) as f:
         scrPth = json.load( f )
-    scrIcons = os.path.join(cmds.internalVar(usd=True), 'icons')
+    scrIcons = os.path.join(os.getcwd(), 'Maya_tk/icons')
 
     def __init__(self, dock=True):
         if dock:
@@ -1099,6 +1102,8 @@ class DAMGtoolBoxII( QtWidgets.QWidget ):
                     count2D.append( '%s,%s' % (x, y) )
                     nurbsType = nurbs2Dnames[index]
                     iconPth = os.path.join(self.scrIcons, self.nurbsType2D[ nurbsType ])
+                    # print iconPth
+                    # print os.path.exists(iconPth)
                     icon = QtGui.QIcon( iconPth )
                     toolTip = "Create a new " + nurbsType
                     button = marv.RenderSetupButton( self, icon, mid1[ 'size' ][ 2 ] )
@@ -1134,6 +1139,8 @@ class DAMGtoolBoxII( QtWidgets.QWidget ):
                     count3D.append( '%s,%s' % (x, y) )
                     nurbsType = nurbs3Dnames[index]
                     iconPth = os.path.join(self.scrIcons, self.nurbsType3D[ nurbsType ])
+                    # print iconPth
+                    # print os.path.exists(iconPth)
                     icon = QtGui.QIcon( iconPth )
                     toolTip = "Create a new " + nurbsType
                     button = marv.RenderSetupButton( self, icon, mid1[ 'size' ][ 2 ] )
