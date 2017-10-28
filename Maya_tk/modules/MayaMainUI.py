@@ -425,9 +425,9 @@ class MayaMainUI( QtWidgets.QWidget ):
         # file
         cmds.menu( p=parent, label='File', tearOff=True )
         cmds.menuItem( label='New', c='cmds.file(f=True,new=True)' )
-        cmds.menuItem( label='Open/Load', c=self.bts.loaderUI )
-        cmds.menuItem( label='SnapShot', c=self.bts.snapshotUI )
-        cmds.menuItem( label='Publish', c=self.bts.publishUI )
+        cmds.menuItem( label='Open/Load', c=partial(self.bts.loaderUI, self.curMode))
+        cmds.menuItem( label='SnapShot', c=partial(self.bts.snapshotUI, self.curMode))
+        cmds.menuItem( label='Publish', c=partial(self.bts.publishUI, self.curMode))
         cmds.menuItem( divider=True )
         cmds.menuItem(label='Reload tool', c=self.bts.reloadDataMainUI)
         cmds.menuItem( divider=True )
@@ -537,10 +537,10 @@ class MayaMainUI( QtWidgets.QWidget ):
 
         nc = 5
         cmds.rowColumnLayout( nc=nc, cw=self.bts.cwE(nc=nc, w=w, adj=adj))
-        cmds.button( l="Open/Load", c=self.bts.loaderUI )
-        cmds.button( l="Snap Shot", c=self.bts.snapshotUI )
+        cmds.button( l="Open/Load", c=partial(self.bts.loaderUI, self.curMode))
+        cmds.button( l="Snap Shot", c=partial(self.bts.snapshotUI, self.curMode))
         cmds.button( l="Review Daily", c=self.bts.waitforupdate)
-        cmds.button( l="Publish File", c=self.bts.publishUI )
+        cmds.button( l="Publish File", c=partial(self.bts.publishUI, self.curMode))
         cmds.button( l="Info Detail", c=self.infoDetailUI)
         cmds.setParent( self.projt1 )
 

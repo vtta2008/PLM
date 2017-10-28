@@ -49,4 +49,29 @@ class DataHandle(object):
         self.curPth = cmds.workspace(q=True, rd=True)
         self.workPth = os.path.join(self.curPth, 'scenes')
         self.filePth = cmds.file(q=True, loc=True)
-        print self.filePth
+
+        if self.filePth == 'unknown':
+            self.setStartPointUI()
+
+    def setStartPointUI(self):
+        mes1 = 'It seems to be like you have not done anything yet, please choose your start'
+
+        mes2 = 'Or, you can create a new project'
+
+        winID = 'Choose Start Point'
+        winTitle = winID
+
+        if cmds.window(winID, q=True, exists=True):
+            cmds.deleteUI(winID)
+
+        cmds.window(winID, t=winTitle)
+        cmds.rowColumnLayout()
+
+    def snapshotUI(self):
+        print 'snapshotUI group mode'
+
+    def publishUI(self):
+        print 'publishUI group mode'
+
+    def loaderUI(self):
+        print 'loaderUI group mode'
