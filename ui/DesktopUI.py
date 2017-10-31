@@ -606,6 +606,7 @@ class DesktopUI( QMainWindow ):
         elif 'ZBrush 4R7' in appInfo:
             zbrush4R7 = self.createAction(appInfo, 'ZBrush 4R7')
             toolBarTD.addAction(zbrush4R7)
+
         # Houdini_tk FX
         if 'Houdini FX' in appInfo:
             houdiniFX = self.createAction(appInfo, 'Houdini FX')
