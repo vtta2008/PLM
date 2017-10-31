@@ -60,7 +60,6 @@ else:
     from shiboken2 import wrapInstance
     from Maya_tk.plugins.Qt.QtCore import Signal
 
-
 # Convert PyQt window to Maya_tk window
 def getMayaMainWindow():
     """
@@ -114,7 +113,7 @@ def deleteDock(name='Pipeline Tool', version=VERSION):
 # get button functions data
 def importBTS():
     from Maya_tk.modules import MayaFuncs
-    reload( MayaFuncs )
+    reload(MayaFuncs)
     return MayaFuncs
 
 def geticon(icon):
@@ -168,7 +167,6 @@ class MayaMainUI( QtWidgets.QWidget ):
             self.groupModeVar()
 
         return self.curMode
-
 
     def groupModeVar(self):
         self.prodName = os.path.basename( os.path.normpath( self.curPth ))
@@ -225,7 +223,6 @@ class MayaMainUI( QtWidgets.QWidget ):
         self.reviewPth = os.path.join(self.curPth, 'movies/review')
 
         self.curStage = self.projPthParts[1]
-
 
     def studioModeVar(self):
         if 'assets' in self.curPthParts:
@@ -403,7 +400,7 @@ class MayaMainUI( QtWidgets.QWidget ):
         cmds.setParent( self.tabControls )
 
         t4 = cmds.columnLayout( parent=self.tabControls )
-        self.bts.makeAcoolButton("Demo buttons",  'Surfacing', self.bts.waitforupdate )
+        self.surfacingTab()
         cmds.setParent( self.tabControls )
 
         t5 = cmds.columnLayout(parent=self.tabControls )
@@ -420,6 +417,9 @@ class MayaMainUI( QtWidgets.QWidget ):
         # Create appropriate labels for the ts
         cmds.tabLayout( self.tabControls, edit=True, tabLabel=(
             (t1, "Project"), (t2, "Model"), (t3, "Rig"), (t4, "Surface"), (t5, "FX"), (t6, "Anim"), (t7, "Light")) )
+
+    def surfacingTab(self):
+        self.bts.makeAcoolButton("Vray Material Presets", "Vray Presets", self.bts.vmmApps)
 
     def menuSection(self, parent, *args):
         # file

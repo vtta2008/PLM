@@ -9,7 +9,7 @@ from maya import cmds, mel
 import maya.OpenMaya as om
 from functools import partial
 
-import os, sys, logging, shutil
+import os, sys, logging, shutil, subprocess
 
 from Maya_tk.modules import MayaVariables as var
 NAMES = var.MAINVAR
@@ -46,6 +46,15 @@ logger.setLevel(logging.DEBUG)
 #     logger.debug('Using PySide2 with shiboken2')
 #     from shiboken2 import wrapInstance
 #     from Maya_tk.plugins.Qt.QtCore import Signal
+
+def vmmApps(*args):
+    vmmDir = os.path.join(os.getcwd(), "Maya_tk/apps/vmpp")
+    vmmPth = os.path.join(vmmDir, "VMPPmaya.exe")
+
+    if not os.path.exists(vmmPth):
+        cmds.confirmDialog(m="%s not exists" % vmmPth, b="OK")
+    else:
+        subprocess.Popen(vmmPth)
 
 def geticon(icon):
     iconPth = os.path.join(os.getcwd(), 'Maya_tk/icons')

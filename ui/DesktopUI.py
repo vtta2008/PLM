@@ -592,37 +592,48 @@ class DesktopUI( QMainWindow ):
         if 'Maya 2017' in appInfo:
             maya2017 = self.createAction(appInfo, 'Maya 2017')
             toolBarTD.addAction(maya2017)
-            pass
         # Maya_tk 2016
         elif 'Maya 2016' in appInfo:
             maya2016 = self.createAction(appInfo, 'Maya 2016')
             toolBarTD.addAction(maya2016)
+        else:
+            pass
+
         # ZBrush 4R8
         if 'ZBrush 4R8' in appInfo:
             zbrush4R8 = self.createAction(appInfo, 'ZBrush 4R8')
             toolBarTD.addAction(zbrush4R8)
-            pass
         # ZBrush 4R7
         elif 'ZBrush 4R7' in appInfo:
             zbrush4R7 = self.createAction(appInfo, 'ZBrush 4R7')
             toolBarTD.addAction(zbrush4R7)
+        else:
+            pass
 
-        # Houdini_tk FX
+        # Houdini FX
         if 'Houdini FX' in appInfo:
             houdiniFX = self.createAction(appInfo, 'Houdini FX')
             toolBarTD.addAction( houdiniFX )
+        else:
+            pass
         # Mari_tk
         if 'Mari' in appInfo:
             mari = self.createAction(appInfo, 'Mari')
             toolBarTD.addAction(mari)
-        # Photoshop CS6
-        if 'Photoshop CS6' in appInfo:
-            ptsCS6 = self.createAction(appInfo, 'Photoshop CS6')
-            toolBarTD.addAction(ptsCS6)
+        else:
+            pass
+
         # Photoshop CC
         if 'Photoshop CC' in appInfo:
-            ptsCC = self.createAction(appInfo, 'Photoshop CC')
+            ptsCS6 = self.createAction(appInfo, 'Photoshop CC')
+            toolBarTD.addAction(ptsCS6)
+        # Photoshop CS6
+        elif 'Photoshop CS6' in appInfo:
+            ptsCC = self.createAction(appInfo, 'Photoshop CS6')
             toolBarTD.addAction(ptsCC)
+        else:
+            pass
+
         # return Tool Bar
         return toolBarTD
 
@@ -664,15 +675,18 @@ class DesktopUI( QMainWindow ):
         if 'Illustrator CC' in appInfo:
             illusCC = self.createAction(appInfo, 'Illustrator CC')
             supAppsToolBar.addAction(illusCC)
-            pass
         # Illustrator CS6
         elif 'Illustrator CS6' in appInfo:
             illusCS6 = self.createAction(appInfo, 'Illustrator CS6')
             supAppsToolBar.addAction(illusCS6)
+        else:
+            pass
         # Headus UV Layout Pro
         if 'UVLayout' in appInfo:
             uvlayout = self.createAction(appInfo, 'UVLayout')
             supAppsToolBar.addAction(uvlayout)
+        else:
+            pass
 
         return supAppsToolBar
 
