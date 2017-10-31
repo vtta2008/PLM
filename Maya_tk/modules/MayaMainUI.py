@@ -319,7 +319,7 @@ class MayaMainUI( QtWidgets.QWidget ):
 
         self.layout = QtWidgets.QGridLayout(self)
 
-        cmds.columnLayout('masterLayout', w=w)
+        cmds.scrollLayout('masterLayout', w=w+16)
         mlo = cmds.rowColumnLayout(nc=nc2, cw=cw2)
 
         cmds.columnLayout()
@@ -586,12 +586,6 @@ class MayaMainUI( QtWidgets.QWidget ):
 
         columnStyle3 = self.bts.styleColumn121(ann4, label4, command4, adj/nc, w/nc)
 
-        # self.bts.makeAcoolButton( 'Display joints orientation', 'Join On', self.bts.JointOn )
-        # self.bts.makeAcoolButton( 'Display joints orientation','Display off joints orientation', 'Join Off', self.bts.JointOff )
-        # self.bts.makeAcoolButton( 'Open namespace editor', 'Namespace', 'cmds.NamespaceEditor()' )
-        # self.bts.makeAcoolButton( "Clean unused Node", 'Clean Nodes', 'mel.eval("MLdeleteUnused;")' )
-        # self.bts.makeAcoolButton( 'Chop out surface selected', 'Chop', self.bts.Chop )
-
         cmds.setParent(commonSection1)
         self.bts.makeSeparator(2,w)
         nc = (w-2*adj)/30
@@ -615,8 +609,7 @@ class MayaMainUI( QtWidgets.QWidget ):
         # Panels tab
         adj = 5
         wid = (WIDTH/2)-adj
-        mess ="""MAKE SELECTED CAMERA
-        ONLY PANEL VISIBLE """
+        mess ="MAKE SELECTED CAMERA \n ONLY PANEL VISIBLE"
         resolution = ['HD 540', 'HD 720', 'HD 1080']
 
         cmds.columnLayout(adj=True)

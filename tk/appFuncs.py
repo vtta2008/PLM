@@ -72,7 +72,7 @@ def getAllInstalledPythonPackage(*args):
 
         pyPkgs[name] = [key, version, location]
 
-    pkgInfo = os.path.join(os.getenv(PIPELINETOOL_KEY), os.path.join('scrInfo', 'packages.info'))
+    pkgInfo = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo/packages.info')
 
     with open(pkgInfo, 'w') as f:
         json.dump(pyPkgs, f, indent=4)
@@ -141,8 +141,10 @@ def createKey(key, scrInstall, toolName, *args):
 def checkEnvKey(key, scrInstall, toolName, *args):
     try:
         pth = os.getenv(key)
+
         if pth == None or pth == '':
             createKey(key, scrInstall, toolName)
+
     except KeyError:
         createKey(key, scrInstall, toolName)
     else:
@@ -164,7 +166,7 @@ def avatar(userName, *args):
 
 # Save information of current log in user account for next time.
 def saveCurrentUserLogin(userName, remember=False, *args):
-    userDataPth = os.path.join(os.getenv(PIPELINETOOL_KEY), os.path.join('scrInfo', 'user.info'))
+    userDataPth = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo/user.info')
 
     with open(userDataPth, 'r') as f:
         userData = json.load(f)
@@ -173,7 +175,7 @@ def saveCurrentUserLogin(userName, remember=False, *args):
 
     curUser = {}
     curUser[userName] = userData[userName]
-    currentUserLoginPth = os.path.join(os.getenv(PIPELINETOOL_KEY), 'user.tempLog')
+    currentUserLoginPth = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/user.tempLog')
     with open(currentUserLoginPth, 'w') as f:
         json.dump(curUser, f, indent=4)
 

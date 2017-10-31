@@ -19,7 +19,7 @@ logger.setLevel(logging.DEBUG)
 
 key = 'PIPELINE_TOOL'
 toolName = 'Pipeline Tool'
-scrInstall = os.getenv('PROGRAMDATA')
+scrInstall = os.getcwd()
 
 func.checkEnvKey(key, scrInstall, toolName)
 

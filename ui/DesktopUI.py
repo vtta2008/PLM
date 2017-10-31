@@ -88,14 +88,14 @@ logger.info('Loading information...')
 APPINFO = info['pipeline']
 logger.info('Loading pipeline manager UI')
 
-userDataPth = os.path.join(os.getenv(NAMES['key']), os.path.join('scrInfo', 'user.info'))
+userDataPth = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo/user.info')
 
 userData = func.dataHandle(userDataPth, 'r')
 
 # with open(userDataPth, 'r') as f:
 #     userData = json.load(f)
 
-prodInfoFolder = os.path.join(os.getenv(NAMES['key']), os.path.join(NAMES['appdata'][1], 'prodInfo'))
+prodInfoFolder = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo/prodInfo')
 
 prodContent = [f for f in os.listdir(prodInfoFolder) if f.endswith('.prod')]
 
@@ -256,7 +256,7 @@ class TabWidget( QWidget ):
         
         super( TabWidget, self ).__init__( parent )
 
-        with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog'), 'r') as f:
+        with open(os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/user.tempLog'), 'r') as f:
             self.curUserData = json.load(f)
 
         self.curUser = [f for f in self.curUserData][0]

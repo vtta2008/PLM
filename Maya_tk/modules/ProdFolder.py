@@ -15,6 +15,7 @@ for any question or feedback, feel free to email me: dot@damgteam.com or damgtea
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
 from maya import cmds
+from functools import partial
 import os, sys, json, logging
 
 # -------------------------------------------------------------------------------------------------------------
@@ -23,7 +24,7 @@ import os, sys, json, logging
 DESKTOPPTH = os.path.join( os.environ['HOMEPATH'], 'desktop' )
 
 PRODPROFILE = dict( name=[ 'mwm', 'Midea Wasing Machine' ] )
-WINPROFILE = dict( prodpthUI=[ 'ProdPthUI', 'Production directory', 'Quick Folder Setup' ] )
+WINPROFILE = dict( prodpthUI=[ 'ProdPthUI', 'Create New Project', 'SET UP NEW PROJECT' ] )
 
 APPS = [ 'maya', 'zbrush', 'mari', 'nuke', 'photoshop', 'houdini', 'after effects' ]
 
@@ -67,6 +68,12 @@ logger.setLevel(logging.DEBUG)
 #     from shiboken2 import wrapInstance
 #     from Maya_tk.plugins.Qt.QtCore import Signal
 
+# get button functions data
+def importBTS():
+    from Maya_tk.modules import MayaFuncs
+    reload(MayaFuncs)
+    return MayaFuncs
+
 # ----------------------------------------------------------------------------------------------------------- #
 """                                MAIN CLASS: CREATE PRODUCTION FOLDER HIERARCHY                           """
 # ----------------------------------------------------------------------------------------------------------- #
@@ -77,6 +84,9 @@ class ProdFolder( object ):
     winid = WINPROFILE['prodpthUI'][0]
     title = WINPROFILE['prodpthUI'][1]
     label = WINPROFILE['prodpthUI'][2]
+    bts = importBTS()
+
+    h1 = 200
 
     def __init__(self):
 
@@ -84,10 +94,9 @@ class ProdFolder( object ):
         infoFile = PRODPROFILE['name'][0] + '.production'
         self.infoPth = os.path.join(self.infoDir, infoFile)
 
-        if not os.path.exists( self.infoPth ):
-            self.newInfo()
-        else:
-            cmds.confirmDialog(t='Warning', m='This produciton is already created', b='OK')
+        print self.infoPth
+
+        self.newInfo()
 
     def newInfo(self, *args):
         self.buildUI()
@@ -97,39 +106,200 @@ class ProdFolder( object ):
         Main UI just to confirm very basic info of production
         :return:
         """
+
+        w=500
+        h = 30
+
         # Production name by default
-        prodName = PRODPROFILE['name'][0]
+        prodName = "VoxelPicture"
         # Check if UI exists
         if cmds.window( self.winid, q=True, exists=True ):
             cmds.deleteUI( self.winid )
         # Create UI
-        cmds.window( self.winid, t=self.title )
+        cmds.window( self.winid, t=self.title, rtf=True, wh=(w, 25*h))
         # Main layout
-        cmds.columnLayout('main')
-        cmds.text( l=self.label, h=30, w=315, align='center')
-        # Line 1
-        cmds.rowColumnLayout( nc=9, cw=self.cw( nc=5, wi=75, w=75 ) )
-        self.Txt("Prod Name" )
-        self.prodName = cmds.textField( tx=prodName )
-        self.Txt('Sequenes')
-        self.numShots = cmds.intField( v=9 )
-        self.blankParent()
-        # Line 2
-        cmds.rowColumnLayout( nc=5, cw=self.cw( nc=5, wi=210, w=105 ) )
-        self.TxtField('ProdPth', DESKTOPPTH)
-        cmds.button( l='Set Path', c=self.setPth )
-        self.blankParent()
-        # Line 3
-        cmds.rowColumnLayout( nc=5, cw=self.cw( nc=5, wi=210, w=105 ) )
-        self.TxtField('ProdName', prodName)
-        cmds.button(l='Create folders', c=self.prodFolders)
-        self.blankParent()
-        # Show window
-        cmds.showWindow( self.winid )
+        mainLayout = cmds.scrollLayout('main', hst=15, vst=15)
+
+        # Title
+        self.bts.makeSeparator(h=h/6, w=w)
+        cmds.text(l=self.label, h=h, w=w, align='center')
+        self.bts.makeSeparator(h=h/6, w=w)
+
+        # Content
+        nc = 7
+        w1 = (nc-2)*(w/30)
+        adj1 = nc - 2
+
+        cmds.rowColumnLayout(nc=nc, cw=self.bts.cwCustomize(nc, [w1, w1, adj1, w1, adj1, w-(3*w1)-(3*adj1), adj1]))
+
+        cmds.text(l='Project Name', align='center')
+
+        self.prodName = cmds.textField(tx=prodName)
+        cmds.text(l="")
+        cmds.button(l='Set Path', c=self.setPth)
+        cmds.text(l="")
+        self.setPath = cmds.textField(tx = "E:/")
+
+        cmds.setParent(mainLayout)
+
+        cmds.text(l="")
+        cmds.text(l="DUE TO THE POSSIBILITY TO USE RENDER FARM SERVICE \n SETTING PATH TO E DRIVE IS ALWAYS PREFERABLE",
+                  align='center', w=w, h=h, bgc=(0,.5,1), fn="boldLabelFont")
+        cmds.text(l="")
+
+        nc = 9
+        w2 = (w-(5*adj1))/(nc-5)
+
+        cmds.rowColumnLayout(nc=nc, cw=self.bts.cwCustomize(nc, [adj1, w2, adj1, w2, adj1, w2, adj1, w2, adj1]))
+
+        cmds.text(l="")
+        cmds.text(l="Project Mode")
+        cmds.text(l="")
+        self.setMode = cmds.optionMenu()
+        cmds.menuItem(l="Group Mode", p=self.setMode)
+        cmds.menuItem(l="Production Mode", p=self.setMode)
+        cmds.text(l="")
+        cmds.text(l="Sequences")
+        cmds.text(l="")
+        self.numShot = cmds.intField(v=1)
+        cmds.text(l="")
+        cmds.setParent(mainLayout)
+        cmds.text(l="")
+
+        nc = 13
+        w3 = (w-(7*adj1))/(nc-7)
+
+        cmds.rowColumnLayout(nc=nc, cw=self.bts.cwCustomize(nc, [adj1, w3, adj1, w3, adj1, w3, adj1, w3, adj1, w3, adj1, w3, adj1]))
+
+        cmds.text(l="")
+        cmds.text(l="Character:")
+        cmds.text(l="")
+        self.numChar = cmds.intField(v=1, cc=partial(self.charNameColumn, (w-(4*adj1))/3))
+        cmds.text(l="")
+        cmds.text(l="Environment")
+        cmds.text(l="")
+        self.numEnv = cmds.intField(v=1, cc=partial(self.envNameColumn, (w-(4*adj1))/3))
+        cmds.text(l="")
+        cmds.text(l="Props")
+        cmds.text(l="")
+        self.numProps = cmds.intField(v=1, cc=partial(self.propsNameColumn, (w-(4*adj1))/3))
+        cmds.text(l="")
+
+        cmds.setParent(mainLayout)
+        cmds.text(l="")
+
+        nc = 7
+        w4 = (w-(4*adj1))/(nc-4)
+
+        cmds.rowColumnLayout(nc=3, cw=[(1,w/3),(2,w/3),(3,w/3)])
+        cmds.text(l="Characters Name")
+        cmds.text(l="Envs Name")
+        cmds.text(l="Props Name")
+
+
+        cmds.setParent(mainLayout)
+        cmds.text(l="")
+
+        self.editableColumnsLayout = cmds.rowColumnLayout(nc=nc, cw=self.bts.cwCustomize(nc, [adj1, w4, adj1, w4, adj1, w4, adj1]))
+
+        cmds.text(l="")
+        self.charColumn = cmds.columnLayout(w=w4)
+        self.firstCharColumn = cmds.columnLayout(w=w4)
+        cmds.textField(p=self.firstCharColumn, w=w4-10)
+        cmds.setParent(self.editableColumnsLayout)
+
+        cmds.text(l="")
+        self.envColumn = cmds.columnLayout(w=w4)
+        self.firstEnvColumn = cmds.columnLayout(w=w4)
+        cmds.textField(p = self.firstEnvColumn, w=w4-10)
+        cmds.setParent(self.editableColumnsLayout)
+
+        cmds.text(l="")
+        self.propsColumn = cmds.columnLayout(w=w4)
+        self.firstPropsColumn = cmds.columnLayout(w=w)
+        cmds.textField(p=self.firstPropsColumn, w=w4-10)
+        cmds.setParent(self.editableColumnsLayout)
+        cmds.text(l="")
+
+        cmds.setParent(mainLayout)
+
+        self.bts.makeSeparator(h=10, w=w)
+
+        cmds.rowColumnLayout(nc=3, cw=[(1,w/3),(2,w/3),(3,w/3)])
+        cmds.text(l="")
+        cmds.button(l="CREATE PROJECT", c=self.createProject)
+        cmds.text(l="")
+
+        cmds.setParent(mainLayout)
+        cmds.text(l="")
+
+
+        cmds.showWindow(self.winid)
+
+    def charNameColumn(self, w, *args):
+        if cmds.columnLayout(self.firstCharColumn, q=True, exists=True):
+            cmds.deleteUI(self.firstCharColumn)
+
+        if cmds.scrollLayout('charNameColumn', q=True, exists=True):
+            cmds.deleteUI('charNameColumn')
+
+        charNameColumn = cmds.scrollLayout('charNameColumn', p = self.charColumn, w=w, h=self.h1, hst=15, vst=15)
+        chars = cmds.intField(self.numChar, q=True, v=True)
+
+        for i in range(chars):
+            id = "char" + str(i + 1)
+            cmds.textField(id, w=w-10)
+            i += 1
+
+        return charNameColumn
+
+    def envNameColumn(self, w, *args):
+
+        if cmds.columnLayout(self.firstEnvColumn, q=True, exists=True):
+            cmds.deleteUI(self.firstEnvColumn)
+
+        if cmds.scrollLayout('envNameColumn', q=True, exists=True):
+            cmds.deleteUI('envNameColumn')
+
+        envNameColumn = cmds.scrollLayout('envNameColumn', p=self.envColumn, w=w, h=self.h1, hst=15, vst=15)
+        envs = cmds.intField(self.numEnv, q=True, v=True)
+
+        for i in range(envs):
+            id = 'env' + str(i+1)
+            cmds.textField(id, w=w-10)
+            i+=1
+
+        return envNameColumn
+
+    def propsNameColumn(self, w, *args):
+
+        if cmds.columnLayout(self.firstPropsColumn, q=True, exists=True):
+            cmds.deleteUI(self.firstPropsColumn)
+
+        if cmds.scrollLayout('propsNameColumn', q=True, exists=True):
+            cmds.deleteUI('propsNameColumn')
+
+        propsNameColumn = cmds.scrollLayout('propsNameColumn', p=self.propsColumn, w=w, h=self.h1, hst=15, vst=15)
+        props = cmds.intField(self.numProps, q=True, v=True)
+
+        for i in range(props):
+            id = 'props' + str(i+1)
+            cmds.textField(id, w=w-10)
+            i+=1
+
+        return propsNameColumn
+
+    def setPth(self, *args):
+        pth = cmds.fileDialog2(cap='set production path', fm=3, okc='Set')
+        dir = self.getDirFromUnicode(pth[0])
+        cmds.textField(self.setPath, edit=True, tx=dir)
+
+    def createProject(self):
+        pass
 
     def Txt(self, txt, *args):
         self.blank()
-        cmds.text(l=txt)
+        cmds.text(l=txt, align='center')
         self.blank()
 
     def TxtField(self, id, txt, *args):
@@ -138,27 +308,6 @@ class ProdFolder( object ):
     def blankParent(self, *args):
         self.blank(10)
         cmds.setParent('..')
-
-    def cw(self, nc=7, bl=5, ids=[2], wi=200, w=100, *args):
-        """
-        calculating column width and return them as flag in rowColumnLayout command
-        :return: cw
-        """
-        cw = [ ]
-        i = 0
-        for i in range( nc ):
-            if (i + 3) % 2 == 0:
-                for id in ids:
-                    if (i + 1) == id:
-                        tump = (i + 1, wi)
-                    else:
-                        tump = (i + 1, w)
-                    cw.append( tump )
-            elif (i + 3) % 2 == 1:
-                tump = (i + 1, bl)
-                cw.append( tump )
-            i += 1
-        return cw
 
     def prodFolders(self, apps = APPS, master = MASTER, assets = ASSETS, steps = STEPS, tasks = TASKS, seqTasks = SEQTASKS, *args):
         """
@@ -263,10 +412,7 @@ class ProdFolder( object ):
         for folder in task:
             cmds.sysFile( os.path.join( mayaPth, folder ), md=True )
 
-    def setPth(self, *args):
-        pth = cmds.fileDialog2( cap='set production path', fm=3, okc='Set' )
-        dir = self.getDirFromUnicode( pth[ 0 ] )
-        cmds.textField('ProdPth', edit=True, tx=dir )
+
 
     def blank(self, h=5, t=1, *args):
         for i in range( t ):

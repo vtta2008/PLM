@@ -18,7 +18,7 @@ logger.setLevel(logging.DEBUG)
 
 key = 'PIPELINE_TOOL'
 toolName = 'Pipeline Tool'
-scrInstall = os.getenv('PROGRAMDATA')
+scrInstall = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool')
 
 def createTempUser():
 
@@ -31,7 +31,7 @@ def createTempUser():
     userInfo['Arjun'] = [4, func.encoding('123456'), var.USER_CLASS[3], func.avatar('Arjun'), ]
     userInfo['Annie'] = [5, func.encoding('123456'), var.USER_CLASS[3], func.avatar('Annie'), ]
 
-    userDataPth = os.path.join(os.getenv(key), os.path.join(var.MAIN_NAMES['appdata'][1], var.MAIN_NAMES['login']))
+    userDataPth = os.path.join(scrInstall, os.path.join(var.MAIN_NAMES['appdata'][1], var.MAIN_NAMES['login']))
 
     with open(userDataPth, 'w+') as f:
         json.dump(userInfo, f, indent=4)
@@ -39,7 +39,7 @@ def createTempUser():
 
 def createTempProduction():
 
-    prodInfoFolder = os.path.join(os.getenv(key), os.path.join(var.MAIN_NAMES['appdata'][1], 'prodInfo'))
+    prodInfoFolder = os.path.join(scrInstall, os.path.join(var.MAIN_NAMES['appdata'][1], 'prodInfo'))
     if not os.path.exists(prodInfoFolder):
         os.mkdir(prodInfoFolder)
 

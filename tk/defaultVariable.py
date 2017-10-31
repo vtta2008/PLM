@@ -70,11 +70,13 @@ def checkEnvKey(key, scrInstall, toolName, *args):
 def createInfo():
     key = 'PIPELINE_TOOL'
     toolName = 'Pipeline Tool'
-    scrInstall = os.getenv('PROGRAMDATA')
+    scrInstall = os.getcwd()
 
     checkEnvKey(key, scrInstall, toolName)
 
-    appDir = os.getenv(key)
+    appDir = os.path.join(os.getenv('PROGRAMDATA'), toolName)
+
+    print appDir
 
     infoDir = os.path.join( appDir, MAIN_NAMES['appdata'][1])
     if not os.path.exists( infoDir ):
