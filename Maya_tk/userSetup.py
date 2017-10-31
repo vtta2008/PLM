@@ -48,15 +48,21 @@ class InitUserSetup(object):
         else:
             self.adviceToInstallAnanconda()
 
+        # Create menu in Maya Layout
         self.makePipelineMenu()
-
+        # Create port for Vray material presets pro
+        cmds.commandPort(n='localhost:7088')
+        # Load pipeline tool UI dockable
         self.mayaMainUI()
+        # Load pipeline tool custom layout
+        self.loadLayout()
 
     def makePipelineMenu(self):
         # Make menu in main Maya layout
         mainMenu = cmds.menu(l='Pipeline Tool', p='MayaWindow')
         # Menu item of main menu
-        cmds.menuItem(l='Load UI', p=mainMenu, c=self.mayaMainUI)
+        cmds.menuItem(l='Load Pipeline Tool', p=mainMenu, c=self.mayaMainUI)
+        cmds.menuItem(l='Change layout', p=mainMenu, c=self.loadLayout)
         cmds.menuItem(l='About', p=mainMenu, c=self.aboutMainUI)
 
     def adviceToInstallAnanconda(self):
@@ -97,9 +103,9 @@ class InitUserSetup(object):
         cmds.text(l='')
         cmds.showWindow(aboutWindow)
 
-    def loadLayout(self):
+    def loadLayout(self, *args):
         # Get list current layout
-        listLayout = cmds.workspaceLayoutManager(q=True, lul=True)
+        listLayout = cmds.workspaceLayoutManager(lul=True)
 
         # Check Layout exists, if not, import pipeline layout from source data
         if not 'PipelineTool' in listLayout:
