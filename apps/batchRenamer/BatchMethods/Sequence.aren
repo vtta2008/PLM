@@ -1,0 +1,13 @@
+[header]
+type=preset
+application=Advanced Renamer 3.20
+application_version=3200000
+
+[namecollision]
+separator=_
+pattern=
+rule=fail
+
+[methods]
+method0000=methodname:"newname"; mask:"<Inc Nr:1>"; applyto:"name";
+

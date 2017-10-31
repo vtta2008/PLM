@@ -1,0 +1,38 @@
+By using or installing any product bundled with this license, you agree to this
+license agreement. If you do not want to agree to this license or if you don't
+understand it, you should stop using and/or uninstall this software at once.
+
+Personal use
+You may use this software for personal use free of charge. Donation is
+encouraged but not required.
+
+Commercial use
+A license must be obtained to use this software for commercial use. The license
+can be obtained from the Advanced Renamer website and will cover life time the
+use for one person. It is allowed to try out the software for a limited time
+before a license is required.
+For automation purposes on multiple servers one license has to be obtained for
+each individual server.
+
+Restrictions
+You may NOT...
+... use this software if you do not agree to this license agreement.
+... remove this license from the software.
+... remove any other files from the software.
+... repackage the software in a different installer.
+... modify, decompile, or disassemble the software.
+... use this product for illegal use.
+... sell this product without prior written permission with the purpose of
+gaining profit. It is allowed to sell this product if the fee is only used for
+administration, shipping or other expenses directly related to selling the
+software. It is also allowed to sell this product if it is a part of a larger
+compilation of different software.
+
+Exceptions to this license
+A per-user license agreement can be made to give certain users special rights.
+The author of the product decides how this is done and who will get it.
+
+Warranty
+You use this software at your own risk. The developers of this product takes no
+responsibility for any damage of any kind. The author of the software can change
+this license agreement at any time without prior notice.

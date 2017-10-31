@@ -1,0 +1,15 @@
+[header]
+type=preset
+application=Advanced Renamer 3.20
+application_version=3200000
+
+[namecollision]
+separator=_
+pattern=
+rule=fail
+
+[methods]
+method0000=methodname:"replace"; replace:".\_"; replacewith:" "; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0001=methodname:"replace"; replace:"[*]"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0002=methodname:"newcase"; casetype:"uppercase_firstletter_word"; applyto:"name"; regularexpressions:"0";
+

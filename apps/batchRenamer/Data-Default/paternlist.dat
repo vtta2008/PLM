@@ -1,0 +1,6 @@
+Prefix_<IncNr:1>.<Ext>
+<IncNr:1>.<Ext>
+<ID3 Artist> - <ID3 Title>.<Ext>
+<ID3 Artist> - <ID3 Track> - <ID3 Title>.<Ext>
+<ID3 Artist> - <ID3 Year> - <ID3 Track> - <ID3 Title>.<Ext>
+<Year Created>-<Month Created>-<Day Created> - <Name>.<Ext>

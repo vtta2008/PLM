@@ -1,0 +1,28 @@
+[header]
+type=preset
+application=Advanced Renamer 3.20
+application_version=3200000
+
+[namecollision]
+separator=_
+pattern=
+rule=fail
+
+[methods]
+method0000=methodname:"newcase"; casetype:"lowercase"; applyto:"nameandextension"; regularexpressions:"0";
+method0001=methodname:"replace"; replace:" "; replacewith:"-"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0002=methodname:"replace"; replace:"/"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0003=methodname:"replace"; replace:"---"; replacewith:"-"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0004=methodname:"replace"; replace:"--"; replacewith:"-"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0005=methodname:"replace"; replace:"å"; replacewith:"aa"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0006=methodname:"replace"; replace:"ø"; replacewith:"oe"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0007=methodname:"replace"; replace:"æ"; replacewith:"ae"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0008=methodname:"replace"; replace:"à\á\â\ã\ä"; replacewith:"a"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0009=methodname:"replace"; replace:"ç"; replacewith:"c"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0010=methodname:"replace"; replace:"è\é\ê\ë"; replacewith:"e"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0011=methodname:"replace"; replace:"ì\í\î\ï"; replacewith:"i"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0012=methodname:"replace"; replace:"ñ"; replacewith:"n"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0013=methodname:"replace"; replace:"ò\ó\ô\õ\ö"; replacewith:"o"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0014=methodname:"replace"; replace:"ù\ú\û\ü"; replacewith:"u"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+method0015=methodname:"replace"; replace:"ý\ÿ"; replacewith:"y"; casesensitive:"0"; regularexpressions:"0"; applyto:"name";
+
