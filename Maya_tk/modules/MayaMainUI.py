@@ -660,8 +660,8 @@ class MayaMainUI( QtWidgets.QWidget ):
         cmds.setParent( 'masterLayout' )
 
     def infoDetailUI(self, *args):
-        h = 960
-        w = 640
+        h = 240
+        w = 320
         self.winID = 'Info Detail'
         self.title = 'Info File'
 
@@ -676,8 +676,8 @@ class MayaMainUI( QtWidgets.QWidget ):
         cmds.separator(style='in', w=w)
         cmds.text(l="")
 
-        self.viewText = cmds.text( 'textViewerMainUI', l="No image", align='center', w=w)
-        self.viewImage = cmds.image('imageViewerMainUI', vis=False)
+        self.viewText = cmds.text( 'textViewerMainUI', l="No image", align='center', w=w, h=h)
+        self.viewImage = cmds.image('imageViewerMainUI', vis=False, w=w, h=h)
 
         cmds.text( l="" )
         cmds.separator(style='in', w=w)
@@ -721,17 +721,17 @@ class MayaMainUI( QtWidgets.QWidget ):
 
     def setProjectToSelectTask(self, *args):
         self.getMode()
-        item1 = cmds.optionMenu( 'assetsMenu', q=True, value=True )
-        item2 = cmds.textScrollList( 'assetsSelectList', q=True, si=True )
+        item1 = cmds.optionMenu('assetsMenu', q=True, value=True )
+        item2 = cmds.textScrollList('assetsSelectList', q=True, si=True )
         item3 = cmds.textScrollList('assetsTaskList', q=True, si=True)
         updatePth = self.assetsPth + item1 + "/" + item2[ 0 ] + "/" + item3[0] + "/work/maya"
         mel.eval( 'setProject \"' + updatePth + '\"' )
         self.updateWhenChangeProPth()
 
     def clearDataList(self, *args):
-        cmds.textScrollList( 'snapShotList', e=True, ra=True )
-        cmds.textScrollList( 'reviewList', e=True, ra=True )
-        cmds.textScrollList( 'publishList', e=True, ra=True )
+        cmds.textScrollList('snapShotList', e=True, ra=True )
+        cmds.textScrollList('reviewList', e=True, ra=True )
+        cmds.textScrollList('publishList', e=True, ra=True )
 
     def refreshProjTab(self, *args):
         if cmds.tabLayout( 'projTabControl', q=True, sti=True ) == 1:
@@ -739,9 +739,9 @@ class MayaMainUI( QtWidgets.QWidget ):
             itemSelect1 = cmds.textScrollList( 'assetsSelectList', q=True, si=True )
             itemSelect2 = cmds.textScrollList( 'assetsTaskList', q=True, si=True )
             if isinstance( itemSelect1, list ) or isinstance( itemSelect2, list ) is False:
-                cmds.textScrollList( 'snapShotList', e=True, ra=True )
-                cmds.textScrollList( 'reviewList', e=True, ra=True )
-                cmds.textScrollList( 'publishList', e=True, ra=True )
+                cmds.textScrollList('snapShotList', e=True, ra=True )
+                cmds.textScrollList('reviewList', e=True, ra=True )
+                cmds.textScrollList('publishList', e=True, ra=True )
             else:
                 self.updateAssetsDetailTask()
 

@@ -82,7 +82,10 @@ class DataHandle( object ):
 
         fileVersion = [f.split( self.baseFileName + '_v' )[ -1 ] for f in saveFilesList ]
 
-        self.maxVer = (str(max([int(f) for f in fileVersion]))).zfill( 3 )
+        if fileVersion == []:
+            self.maxVer = '001'
+        else:
+            self.maxVer = (str(max([int(f) for f in fileVersion]))).zfill( 3 )
 
         self.verFileName = self.baseFileName + '_v' + self.maxVer + '.ma'
 
@@ -203,19 +206,19 @@ class DataHandle( object ):
         self.bts.makeSeparator(h=5, w=W1)
         # -----------------------------------
         cmds.rowColumnLayout( nc=nc, cw=self.bts.cwE( nc=nc, w=W1, adj=(ADJ/2)))
-        self.bts.makeAcoolButton( 'Publish a version', "Publish File", self.publishFile )
-        self.bts.makeAcoolButton( 'Close Publish Window', "Close", self.publishFile )
+        self.bts.makeAcoolButton( 'Publish a version', "Publish File", self.publishFile)
+        self.bts.makeAcoolButton( 'Close Publish Window', "Close", self.publishClose)
         cmds.setParent( '..' )
         self.bts.makeSeparator( h=5, w=W1 )
         # -----------------------------------
         cmds.setParent(mlo_ro2)
         cmds.columnLayout()
-        cmds.image( image=self.imageSnapShotPth, w=W2, h=540 )
+        cmds.image( image=self.imagepublishPth, w=IMAGESIZE[0], h=IMAGESIZE[1] )
         cmds.text( l=self.snapShotImageName, w=W2, align='center' )
         # -----------------------------------
         #show publish UI
         cmds.setParent(publishLayout)
-        self.bts.makeSeparator( h=5, w=W2 )
+        self.bts.makeSeparator(h=5, w=W)
         cmds.showWindow(plWinID)
 
     def loaderUI(self):
@@ -382,9 +385,9 @@ class DataHandle( object ):
         cmds.file(self.snapShotPth + "/" + value, open=True)
         cmds.file(rename=self.verFileName)
         cmds.file(save=True, type='mayaAscii')
-        if cmds.window('openFileUI', exists=True):
-            cmds.deleteUI('openFileUI')
+        if cmds.window('loaderUI', exists=True):
+            cmds.deleteUI('loaderUI')
 
     def closeFile(self, *args):
-        if cmds.window('openFileUI', exists=True):
-            cmds.deleteUI('openFileUI')
+        if cmds.window('loaderUI', exists=True):
+            cmds.deleteUI('loaderUI')

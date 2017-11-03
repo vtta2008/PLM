@@ -90,15 +90,6 @@ class ProdFolder( object ):
 
     def __init__(self):
 
-        self.infoDir = self.createInfo()
-        infoFile = PRODPROFILE['name'][0] + '.production'
-        self.infoPth = os.path.join(self.infoDir, infoFile)
-
-        print self.infoPth
-
-        self.newInfo()
-
-    def newInfo(self, *args):
         self.buildUI()
 
     def buildUI(self):
@@ -126,29 +117,44 @@ class ProdFolder( object ):
         self.bts.makeSeparator(h=h/6, w=w)
 
         # Content
-        nc = 7
-        w1 = (nc-2)*(w/30)
-        adj1 = nc - 2
+        nc = 9
+        adj1 = 5
+        w2 = (w - (5 * adj1)) / (nc - 5)
 
-        cmds.rowColumnLayout(nc=nc, cw=self.bts.cwCustomize(nc, [w1, w1, adj1, w1, adj1, w-(3*w1)-(3*adj1), adj1]))
-
+        cmds.rowColumnLayout(nc=nc, cw=self.bts.cwCustomize(nc, [adj1, w2, adj1, w2, adj1, w2, adj1, w2, adj1]))
+        cmds.text(l="")
         cmds.text(l='Project Name', align='center')
-
+        cmds.text(l="")
         self.prodName = cmds.textField(tx=prodName)
+        cmds.text(l="")
+        cmds.text(l="Abbreviated as", align='center')
+        cmds.text(l="")
+        self.prodShort = cmds.textField(tx='vxp')
+        cmds.text(l="")
+
+        cmds.setParent(mainLayout)
+        cmds.text(l="")
+
+        nc = 5
+        w1 = 100
+
+        cmds.rowColumnLayout(nc=nc,cw=self.bts.cwCustomize(nc, [adj1,w1,adj1,w-(3*adj1+w1),adj1]))
+
         cmds.text(l="")
         cmds.button(l='Set Path', c=self.setPth)
         cmds.text(l="")
         self.setPath = cmds.textField(tx = "E:/")
+        cmds.text(l="")
 
         cmds.setParent(mainLayout)
-
         cmds.text(l="")
-        cmds.text(l="DUE TO THE POSSIBILITY TO USE RENDER FARM SERVICE \n SETTING PATH TO E DRIVE IS ALWAYS PREFERABLE",
-                  align='center', w=w, h=h, bgc=(0,.5,1), fn="boldLabelFont")
+        cmds.text(l="DUE TO THE POSSIBILITY TO USE ONLINE RENDER SERVICE\n"
+                    "SETTING PATH TO E DRIVE IS ALWAYS PREFERABLE\n"
+                    "IF YOU DO NOT USE THAT KIND OF SERVICE, NEVER MIND",
+                  align='center', w=w, h=2*h, bgc=(0,.5,1), fn="boldLabelFont")
         cmds.text(l="")
 
         nc = 9
-        w2 = (w-(5*adj1))/(nc-5)
 
         cmds.rowColumnLayout(nc=nc, cw=self.bts.cwCustomize(nc, [adj1, w2, adj1, w2, adj1, w2, adj1, w2, adj1]))
 
@@ -157,11 +163,11 @@ class ProdFolder( object ):
         cmds.text(l="")
         self.setMode = cmds.optionMenu()
         cmds.menuItem(l="Group Mode", p=self.setMode)
-        cmds.menuItem(l="Production Mode", p=self.setMode)
+        cmds.menuItem(l="Studio Mode", p=self.setMode)
         cmds.text(l="")
         cmds.text(l="Sequences")
         cmds.text(l="")
-        self.numShot = cmds.intField(v=1)
+        self.numShot = cmds.intField(v=1, min=1)
         cmds.text(l="")
         cmds.setParent(mainLayout)
         cmds.text(l="")
@@ -174,15 +180,15 @@ class ProdFolder( object ):
         cmds.text(l="")
         cmds.text(l="Character:")
         cmds.text(l="")
-        self.numChar = cmds.intField(v=1, cc=partial(self.charNameColumn, (w-(4*adj1))/3))
+        self.numChar = cmds.intField(v=1, min=1, cc=partial(self.charNameColumn, (w-(4*adj1))/3))
         cmds.text(l="")
-        cmds.text(l="Environment")
+        cmds.text(l="Environment:")
         cmds.text(l="")
-        self.numEnv = cmds.intField(v=1, cc=partial(self.envNameColumn, (w-(4*adj1))/3))
+        self.numEnv = cmds.intField(v=1, min=1, cc=partial(self.envNameColumn, (w-(4*adj1))/3))
         cmds.text(l="")
-        cmds.text(l="Props")
+        cmds.text(l="Props:")
         cmds.text(l="")
-        self.numProps = cmds.intField(v=1, cc=partial(self.propsNameColumn, (w-(4*adj1))/3))
+        self.numProps = cmds.intField(v=1, min=1, cc=partial(self.propsNameColumn, (w-(4*adj1))/3))
         cmds.text(l="")
 
         cmds.setParent(mainLayout)
@@ -205,19 +211,19 @@ class ProdFolder( object ):
         cmds.text(l="")
         self.charColumn = cmds.columnLayout(w=w4)
         self.firstCharColumn = cmds.columnLayout(w=w4)
-        cmds.textField(p=self.firstCharColumn, w=w4-10)
+        cmds.textField('char1', p=self.firstCharColumn, w=w4-10)
         cmds.setParent(self.editableColumnsLayout)
 
         cmds.text(l="")
         self.envColumn = cmds.columnLayout(w=w4)
         self.firstEnvColumn = cmds.columnLayout(w=w4)
-        cmds.textField(p = self.firstEnvColumn, w=w4-10)
+        cmds.textField('env1', p = self.firstEnvColumn, w=w4-10)
         cmds.setParent(self.editableColumnsLayout)
 
         cmds.text(l="")
         self.propsColumn = cmds.columnLayout(w=w4)
         self.firstPropsColumn = cmds.columnLayout(w=w)
-        cmds.textField(p=self.firstPropsColumn, w=w4-10)
+        cmds.textField('props1', p=self.firstPropsColumn, w=w4-10)
         cmds.setParent(self.editableColumnsLayout)
         cmds.text(l="")
 
@@ -232,7 +238,6 @@ class ProdFolder( object ):
 
         cmds.setParent(mainLayout)
         cmds.text(l="")
-
 
         cmds.showWindow(self.winid)
 
@@ -294,130 +299,193 @@ class ProdFolder( object ):
         dir = self.getDirFromUnicode(pth[0])
         cmds.textField(self.setPath, edit=True, tx=dir)
 
-    def createProject(self):
-        pass
+    def createProject(self, *args):
+        prjName = cmds.textField(self.prodName, q=True, tx=True)
+        setPth = cmds.textField(self.setPath, q=True, tx=True)
+        self.rootPth = os.path.join(setPth, prjName)
 
-    def Txt(self, txt, *args):
-        self.blank()
-        cmds.text(l=txt, align='center')
-        self.blank()
+        if os.path.exists(self.rootPth):
+            cmds.confirmDialog(t='Opps', m='The path: %s\nis NOT EMPTY or:\nthis NAME has been USED for another project\n'
+                                 'please choose another name' % self.rootPth, b='Ok')
+            sys.exit()
 
-    def TxtField(self, id, txt, *args):
-        cmds.textField(id, tx=txt)
+        self.shortName = cmds.textField(self.prodShort, q=True, tx=True)
 
-    def blankParent(self, *args):
-        self.blank(10)
-        cmds.setParent('..')
+        self.modeSetting = cmds.optionMenu(self.setMode, q=True, v=True)
 
-    def prodFolders(self, apps = APPS, master = MASTER, assets = ASSETS, steps = STEPS, tasks = TASKS, seqTasks = SEQTASKS, *args):
-        """
-        Create all folders in productions
-        """
-        dir = str( cmds.textField('ProdPth', q=True, tx=True ) )
-        name = str( cmds.textField('ProdName', q=True, tx=True ) )
-        prodPth = os.path.join( dir, name )
+        self.numSeq = cmds.intField(self.numShot, q=True, v=True)
+        self.numOfChar = cmds.intField(self.numChar, q=True, v=True)
+        self.numOfEnv = cmds.intField(self.numEnv, q=True, v=True)
+        self.numOfProps = cmds.intField(self.numProps, q=True, v=True)
 
-        self.info['name'] = name
-        self.info['dir'] = prodPth
+        # Create content by set mode
+        if self.modeSetting == 'Studio Mode':
+            self.prjStudioMode()
+        elif self.modeSetting == 'Group Mode':
+            self.prjGroupMode()
 
-        if not os.path.exists( prodPth ):
-            cmds.sysFile( prodPth, md=True )
+    def prjStudioMode(self, *args):
+        # Create master folder
+        os.mkdir(self.rootPth)
+        # Create content of master Folder
+        master = ['assets', 'sequences', 'deliverables', 'documents', 'editorial', 'sound', 'resources', 'RnD']
+        steps = ['publish', 'review', 'work']
+        mayaFolders = ['scenes', 'sourceimages', 'images', 'movie', 'alembic', 'reference']
+
 
         for f in master:
-            cmds.sysFile( os.path.join( prodPth, f ), md=True )
+            contentMasterPth = os.path.join(self.rootPth, f)
+            os.mkdir(contentMasterPth)
 
-        assetsPth = os.path.join( prodPth, master[ 0 ] )
-        self.info['assetsPth'] = assetsPth
+        # Assets content
+        assetsTasks = ['art', 'modeling', 'surfacing', 'rigging']
+        assetsSections = ['characters', 'environment', 'props']
 
-        for asset in assets:
-            assetDir = os.path.join( assetsPth, asset )
-            cmds.sysFile( assetDir, md=True )
-            for a in assets[ asset ]:
-                assetPth = os.path.join( assetDir, a)
-                self.info['a'] = assetPth
-                cmds.sysFile( assetPth, md=True )
-                self.taskTreeFolder( apps=apps, pth=assetPth, steps=steps, tasks=tasks )
+        assetsPth = os.path.join(self.rootPth, 'assets')
+        for section in assetsSections:
+            assetsSectionsPth = os.path.join(assetsPth, section)
+            os.mkdir(assetsSectionsPth)
+            if section == 'characters':
+                for i in range(self.numOfChar):
+                    charName = 'char' + str(i+1)
+                    folCharName = cmds.textField(charName, q=True, tx=True)
+                    if folCharName == "" or folCharName == None:
+                        folCharName = 'character_' + str(i+1)
+                    folCharPth = os.path.join(assetsSectionsPth, folCharName)
+                    os.mkdir(folCharPth)
+                    for task in assetsTasks:
+                        assetsTaskPth = os.path.join(folCharPth, task)
+                        os.mkdir(assetsTaskPth)
+                        for step in steps:
+                            assetsTaskStepPth = os.path.join(assetsTaskPth, step)
+                            os.mkdir(assetsTaskStepPth)
+                        assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
+                        if task == 'art':
+                            apps = ['photoshop', 'maya']
+                        elif task == 'modeling':
+                            apps = ['zbrush', 'maya', 'mudbox', 'houdini']
+                        elif task == 'surfacing':
+                            apps = ['mari', 'maya', 'substance', 'photoshop']
+                        elif task == 'rigging':
+                            apps = ['maya']
 
-        if len( assets[ 'environment' ] ) == 0:
-            envPth = os.path.join( assetsPth, 'environment' )
-            self.info['environment'] = envPth
-            self.taskTreeFolder( apps=apps, pth=envPth, steps=steps, tasks=tasks )
-
-        if len( assets[ 'props' ] ) == 0:
-            propsPth = os.path.join( assetsPth, 'props' )
-            self.info['props'] = propsPth
-            self.taskTreeFolder( apps=apps, pth=propsPth, steps=steps, tasks=tasks )
-
-        seqPth = os.path.join( prodPth, master[ 1 ] )
-        self.info['sequences'] = seqPth
-        numOfShots = cmds.intField( self.numShots, q=True, v=True )
-        prodName = cmds.textField( self.prodName, q=True, tx=True )
-
-        for i in range( numOfShots ):
-            shotName = '%s_shot_%s' % (prodName, (i + 1))
-            shotsPth = os.path.join( seqPth, shotName )
-            cmds.sysFile( shotsPth, md=True )
-            self.taskTreeFolder( apps=apps, pth=shotsPth, steps=steps, tasks=seqTasks )
-
-        if cmds.window( self.winid, q=True, exists=True ):
-            cmds.deleteUI( self.winid )
-
-        with open(self.infoPth, 'w') as f:
-            json.dump(self.infoPth, f,indent=4)
-
-    def taskTreeFolder(self, apps, pth, steps, tasks):
-        for task in tasks:
-            taskPth = os.path.join( pth, task )
-            cmds.sysFile( taskPth, md=True )
-            for step in steps:
-                path = os.path.join(taskPth, step)
-                cmds.sysFile( path, md=True )
-                if step == 'work':
-                    if task == 'modeling':
-                        for app in ['maya', 'zbrush']:
-                            cmds.sysFile(os.path.join(path, app), md=True )
+                        for app in apps:
+                            appPth = os.path.join(assetsWorkTaskPth, app)
+                            os.mkdir(appPth)
                             if app == 'maya':
-                                self.mayaFolderTask( path, MODELING )
-                    elif task == 'rigging' or task == 'anim':
-                        cmds.sysFile( os.path.join( path, 'maya' ), md=True )
-                        for folder in RIGGING:
-                            cmds.sysFile( os.path.join( os.path.join( path, 'maya' ), folder ), md=True )
-                    elif task == 'comp':
-                        cmds.sysFile( os.path.join( path, 'nuke' ), md=True )
-                    elif task == 'layout':
-                        for app in ['maya', 'after effects']:
-                            cmds.sysFile( os.path.join( path, app ), md=True )
+                                for f in mayaFolders:
+                                    mayaPth = os.path.join(appPth, f)
+                                    os.mkdir(mayaPth)
+                    i+=1
+            elif section == 'environment':
+                for i in range(self.numOfEnv):
+                    envName = 'env' + str(i+1)
+                    folEnvName = cmds.textField(envName, q=True, tx=True)
+                    if folEnvName=="" or folEnvName == None:
+                        folEnvName = 'env_' + str(i+1)
+                    folEnvPth = os.path.join(assetsSectionsPth, folEnvName)
+                    os.mkdir(folEnvPth)
+                    for task in assetsTasks:
+                        assetsTaskPth = os.path.join(folEnvPth, task)
+                        os.mkdir(assetsTaskPth)
+                        for step in steps:
+                            assetsTaskStepPth = os.path.join(assetsTaskPth, step)
+                            os.mkdir(assetsTaskStepPth)
+                        assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
+                        if task == 'art':
+                            apps = ['photoshop', 'maya']
+                        elif task == 'modeling':
+                            apps = ['zbrush', 'maya', 'mudbox', 'houdini']
+                        elif task == 'surfacing':
+                            apps = ['mari', 'maya', 'substance', 'photoshop']
+                        elif task == 'rigging':
+                            apps = ['maya']
+
+                        for app in apps:
+                            appPth = os.path.join(assetsWorkTaskPth, app)
+                            os.mkdir(appPth)
                             if app == 'maya':
-                                self.mayaFolderTask( path, LAYOUT )
-                    elif task == 'fx':
-                        for app in ['maya', 'houdini']:
-                            cmds.sysFile( os.path.join( path, app ), md=True )
+                                for f in mayaFolders:
+                                    mayaPth = os.path.join(appPth, f)
+                                    os.mkdir(mayaPth)
+                    i+=1
+            elif section == 'props':
+                for i in range(self.numOfProps):
+                    propsName = 'props' + str(i+1)
+                    folPropsName = cmds.textField(propsName, q=True, tx=True)
+                    print type(folPropsName)
+
+                    if folPropsName == "" or folPropsName == None:
+                        folPropsName = 'props_' + str(i+1)
+
+                    folPropsPth = os.path.join(assetsSectionsPth, folPropsName)
+
+                    print folPropsPth + ' 4'
+
+                    os.mkdir(folPropsPth)
+                    for task in assetsTasks:
+                        assetsTaskPth = os.path.join(folPropsPth, task)
+                        os.mkdir(assetsTaskPth)
+                        for step in steps:
+                            assetsTaskStepPth = os.path.join(assetsTaskPth, step)
+                            os.mkdir(assetsTaskStepPth)
+                        assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
+                        if task == 'art':
+                            apps = ['photoshop', 'maya']
+                        elif task == 'modeling':
+                            apps = ['zbrush', 'maya', 'mudbox', 'houdini']
+                        elif task == 'surfacing':
+                            apps = ['mari', 'maya', 'substance', 'photoshop']
+                        elif task == 'rigging':
+                            apps = ['maya']
+
+                        for app in apps:
+                            appPth = os.path.join(assetsWorkTaskPth, app)
+                            os.mkdir(appPth)
                             if app == 'maya':
-                                self.mayaFolderTask( path, FX )
-                    elif task == 'surfacing':
-                        for app in ['maya', 'zbrush', 'mari', 'nuke', 'photoshop']:
-                            appPth = os.path.join( path, app )
-                            cmds.sysFile(appPth, md=True )
-                            if app == 'maya':
-                                self.mayaFolderTask( path, SURFACING )
-                    elif task == 'lighting':
-                        mayaPth = os.path.join( path, 'maya' )
-                        cmds.sysFile(mayaPth, md=True )
-                        for folder in LIGHTING:
-                            folderPth = os.path.join(mayaPth, folder )
-                            cmds.sysFile(folderPth, md=True )
+                                for f in mayaFolders:
+                                    mayaPth = os.path.join(appPth, f)
+                                    os.mkdir(mayaPth)
+                    i+=1
 
-    def mayaFolderTask(self, path, task):
-        mayaPth = os.path.join( path, 'maya' )
-        for folder in task:
-            cmds.sysFile( os.path.join( mayaPth, folder ), md=True )
+        # Sequences content
 
+        seqTask = ['anim', 'comp', 'fx', 'layout', 'lighting']
 
+        sequencesPth = os.path.join(self.rootPth, 'sequences')
+        for i in range(self.numSeq):
+            folName = self.shortName + "_" + "shot_" + str(i+1)
+            seqPth = os.path.join(sequencesPth, folName)
+            os.mkdir(seqPth)
+            for task in seqTask:
+                seqTaskPth = os.path.join(seqPth, task)
+                os.mkdir(seqTaskPth)
+                for step in steps:
+                    seqTaskStepPth = os.path.join(seqTaskPth, step)
+                    os.mkdir(seqTaskStepPth)
+                seqTaskWorkPth = os.path.join(seqTaskPth, 'work')
+                if task == 'anim':
+                    apps = ['maya', 'after effect', 'houdini']
+                elif task == 'comp':
+                    apps = ['nuke', 'after effect', 'photoshop']
+                elif task == 'fx':
+                    apps = ['maya', 'houdini']
+                elif task == 'layout':
+                    apps = ['maya']
+                elif task == 'lighting':
+                    apps = ['maya']
 
-    def blank(self, h=5, t=1, *args):
-        for i in range( t ):
-            cmds.text( l='', h=h )
-            i += 1
+                for app in apps:
+                    appPth = os.path.join(seqTaskWorkPth, app)
+                    os.mkdir(appPth)
+                    if app == 'maya':
+                        for f in mayaFolders:
+                            mayaPth = os.path.join(appPth, f)
+                            os.mkdir(mayaPth)
+            i+=1
+
+    def prjGroupMode(self, *args):
+        pass
 
     def getDirFromUnicode(self, path, *args):
         for dirpath, dirnames, filenames in os.walk( path ):
