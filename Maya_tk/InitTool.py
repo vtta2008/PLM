@@ -1,3 +1,5 @@
+# coding=utf-8
+
 """
 Script Name: InitTool.py
 Author: Do Trinh/Jimmy - TD artist
@@ -10,9 +12,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import json
-import logging
-import os
+import os, sys, logging, json
 
 from Maya_tk.modules import MayaVariables as var
 

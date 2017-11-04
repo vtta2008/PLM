@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 """
+
 Script Name: appFuncs.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
     This script will start some installation then call the main UI of the apps.
+
 """
 
 

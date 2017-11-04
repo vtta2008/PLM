@@ -1,3 +1,5 @@
+# coding=utf-8
+
 """
 Script Name: userSetup.py
 Author: Do Trinh/Jimmy - TD artist
@@ -20,7 +22,7 @@ ID = 'UserSetup'
 KEY = 'PYTHONPATH'
 
 logging.basicConfig()
-logger = logging.getLogger(NAMES['id'][6])
+logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
 # ----------------------------------------------------------------------------------------------------------- #

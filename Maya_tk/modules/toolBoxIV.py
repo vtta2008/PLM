@@ -1,3 +1,11 @@
+# coding=utf-8
+
+"""
+
+
+
+"""
+
 from maya import cmds
 import os, sys, logging, subprocess, json, shutil
 from functools import partial

@@ -1,3 +1,11 @@
+# coding=utf-8
+
+"""
+
+
+
+"""
+
 from maya import cmds
 import pymel.core as pm
 import maya, os, json, pprint, logging, time
