@@ -24,12 +24,14 @@ def createTempUser():
 
     userInfo = {}
 
-    userInfo['TrinhDo'] = [13, func.encoding('adsadsa'), var.USER_CLASS[1], func.avatar('TrinhDo'), ]
+    userInfo['TrinhDo'] = [13, func.encoding('adsadsa'), var.USER_CLASS[1], func.avatar('TrinhDo')]
     userInfo['OliverHilbert'] = [3, func.encoding('123456'), var.USER_CLASS[1], func.avatar('OliverHilbert')]
-    userInfo['DucDM'] = [1, func.encoding('123456'), var.USER_CLASS[1], func.avatar('DucDM'), ]
+    userInfo['DucDM'] = [1, func.encoding('123456'), var.USER_CLASS[1], func.avatar('DucDM')]
     userInfo['HarryHe'] = [2, func.encoding('123456'), var.USER_CLASS[1], func.avatar('HarryHe')]
-    userInfo['Arjun'] = [4, func.encoding('123456'), var.USER_CLASS[3], func.avatar('Arjun'), ]
-    userInfo['Annie'] = [5, func.encoding('123456'), var.USER_CLASS[3], func.avatar('Annie'), ]
+    userInfo['Arjun'] = [4, func.encoding('123456'), var.USER_CLASS[3], func.avatar('Arjun')]
+    userInfo['Annie'] = [5, func.encoding('123456'), var.USER_CLASS[3], func.avatar('Annie')]
+    userInfo['DieuTam'] = [6, func.encoding('123456'), var.USER_CLASS[3], func.avatar('DieuTam')]
+    userInfo['NguyenTho'] = [7, func.encoding('123456'), var.USER_CLASS[3], func.avatar('NguyenTho')]
 
     userDataPth = os.path.join(scrInstall, os.path.join(var.MAIN_NAMES['appdata'][1], var.MAIN_NAMES['login']))
 

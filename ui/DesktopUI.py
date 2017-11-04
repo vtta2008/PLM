@@ -359,9 +359,9 @@ class TabWidget( QWidget ):
         userNameLabel.setAlignment(alignL)
         self.tab1GridLayout.addWidget(userNameLabel, pos2[1],pos2[2],pos2[3],pos2[4])
 
-        userNameArtist = QLabel('JimJim')
-        userNameArtist.setAlignment(alignR)
-        self.tab1GridLayout.addWidget(userNameArtist, pos3[1],pos3[2],pos3[3],pos3[4])
+        # userNameArtist = QLabel('JimJim')
+        # userNameArtist.setAlignment(alignR)
+        # self.tab1GridLayout.addWidget(userNameArtist, pos3[1],pos3[2],pos3[3],pos3[4])
 
         titleLabel = QLabel('Group: ')
         titleLabel.setAlignment(alignL)
@@ -371,14 +371,14 @@ class TabWidget( QWidget ):
         classLabel.setAlignment(alignR)
         self.tab1GridLayout.addWidget(classLabel, pos5[1],pos5[2],pos5[3],pos5[4])
 
-        prodLabel = QLabel('Title: ')
-        prodLabel.setAlignment(alignL)
-        self.tab1GridLayout.addWidget(prodLabel, pos6[1],pos6[2],pos6[3],pos6[4])
-
-        self.productionList = QLabel('PipelineTD')
-        # for prod in prodLst:
-        #     self.productionList.addItem(prod)
-        self.tab1GridLayout.addWidget(self.productionList, pos7[1],pos7[2],pos7[3],pos7[4])
+        # prodLabel = QLabel('Title: ')
+        # prodLabel.setAlignment(alignL)
+        # self.tab1GridLayout.addWidget(prodLabel, pos6[1],pos6[2],pos6[3],pos6[4])
+        #
+        # self.productionList = QLabel('Artist')
+        # # for prod in prodLst:
+        # #     self.productionList.addItem(prod)
+        # self.tab1GridLayout.addWidget(self.productionList, pos7[1],pos7[2],pos7[3],pos7[4])
 
         # self.tab1.layout.setMaximumSized(100,100)
         hboxLayout.addLayout(self.tab1GridLayout)
@@ -393,18 +393,41 @@ class TabWidget( QWidget ):
         hboxLayout = QHBoxLayout()
 
         self.tab2GridLayout = QGridLayout()
+
         # Content tab 2
-        illusBtn = self.makeIconButton('Illustrator CC')
-        self.tab2GridLayout.addWidget(illusBtn, 0,0,1,1)
 
-        indesignBtn = self.makeIconButton('InDesign CC')
-        self.tab2GridLayout.addWidget(indesignBtn, 0,1,1,1)
-
-        mudboxBtn = self.makeIconButton('Mudbox 2017')
-        self.tab2GridLayout.addWidget(mudboxBtn, 0,2,1,1)
-
-        uvLayoutBtn = self.makeIconButton('UVLayout')
-        self.tab2GridLayout.addWidget(uvLayoutBtn, 0,3,1,1)
+        for key in APPINFO:
+            # Illustrator
+            if key == 'Illustrator CC':
+                illusBtn = self.makeIconButton(key)
+                self.tab2GridLayout.addWidget(illusBtn, 0,0,1,1)
+            elif key == 'Illustrator CS6':
+                illusBtn = self.makeIconButton(key)
+                self.tab2GridLayout.addWidget(illusBtn,0,0,1,1)
+            else:
+                pass
+            # InDesign
+            if key == 'InDesign CC':
+                indesignBtn = self.makeIconButton(key)
+                self.tab2GridLayout.addWidget(indesignBtn, 0,1,1,1)
+            elif key == 'InDesign CS6':
+                indesignBtn = self.makeIconButton(key)
+                self.tab2GridLayout.addWidget(indesignBtn, 0,1,1,1)
+            else:
+                pass
+            # Mudbox
+            if key == 'Mudbox 2017':
+                mudboxBtn = self.makeIconButton(key)
+                self.tab2GridLayout.addWidget(mudboxBtn, 0,2,1,1)
+            if key == 'Mudbox 2016':
+                mudboxBtn = self.makeIconButton(key)
+                self.tab2GridLayout.addWidget(mudboxBtn, 0,2,1,1)
+            else:
+                pass
+            #UV layout
+            if key == 'UVLayout':
+                uvLayoutBtn = self.makeIconButton(key)
+                self.tab2GridLayout.addWidget(uvLayoutBtn, 0,3,1,1)
 
         dictBtn = QPushButton( 'English Dictionary' )
         dictBtn.clicked.connect(self.englishDict)
