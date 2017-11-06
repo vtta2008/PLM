@@ -387,12 +387,7 @@ class MayaMainUI( QtWidgets.QWidget ):
         cmds.setParent( mlor_lo1 )
 
         t2 = cmds.columnLayout( parent=self.tabControls, w=w2 )
-        cmds.rowColumnLayout( nc=2, cw=[ (1, 210), (2, 210) ] )
-        cmds.columnLayout()
-        self.bts.makeAcoolButton("Create grear sets" ,'Create Gear', self.bts.createGear )
-        cmds.setParent( '..' )
-        cmds.columnLayout()
-        cmds.frameLayout( bv=True, lv=False )
+        self.modelingTab()
         cmds.setParent( self.tabControls )
 
         t3 = cmds.columnLayout(parent=self.tabControls )
@@ -417,6 +412,9 @@ class MayaMainUI( QtWidgets.QWidget ):
         # Create appropriate labels for the ts
         cmds.tabLayout( self.tabControls, edit=True, tabLabel=(
             (t1, "Project"), (t2, "Model"), (t3, "Rig"), (t4, "Surface"), (t5, "FX"), (t6, "Anim"), (t7, "Light")) )
+
+    def modelingTab(self):
+        self.bts.makeAcoolButton("Create gear sets", 'Create Gear', self.bts.createGear)
 
     def surfacingTab(self):
         self.bts.makeAcoolButton("Vray Material Presets", "Vray Presets", self.bts.vmmApps)
@@ -799,8 +797,9 @@ class MayaMainUI( QtWidgets.QWidget ):
         cmds.textScrollList( 'reviewList', e=True, a=updateReviewList )
         cmds.textScrollList( 'publishList', e=True, a=updatePublishList )
 
-        cmds.image( 'imageViewerMainUI', e=True, vis=False )
-        cmds.text( 'textViewerMainUI', e=True, vis=True )
+        if cmds.window('imageViewerMainUI', q=True, exists=True):
+            cmds.image('imageViewerMainUI', e=True, vis=False)
+            cmds.text('textViewerMainUI', e=True, vis=True)
 
     def updateSequenceSelectTask(self, *args):
         self.getMode()
@@ -846,11 +845,10 @@ class MayaMainUI( QtWidgets.QWidget ):
         cmds.textScrollList( 'reviewList', e=True, a=updateReviewList )
         cmds.textScrollList( 'publishList', e=True, a=updatePublishList )
 
-        if cmds.image( 'imageViewerMainUI', query=True, exists=True):
-            cmds.image( 'imageViewerMainUI', e=True, vis=False )
-            cmds.text( 'textViewerMainUI', e=True, vis=True )
-        else:
-            pass
+        if cmds.image('imageViewerMainUI', query=True, exists=True):
+            cmds.image('imageViewerMainUI', e=True, vis=False)
+            cmds.text('textViewerMainUI', e=True, vis=True)
+
 
     def updateViewer(self, *args):
 
@@ -864,15 +862,15 @@ class MayaMainUI( QtWidgets.QWidget ):
                 itemSelect2 = cmds.textScrollList( 'assetsTaskList', q=True, si=True ) or [ ]
                 self.updatePth = self.assetsPth + menuSelect + '/' + itemSelect1[ 0 ] + '/' + itemSelect2[ 0 ] + '/'
             elif cmds.tabLayout( 'projTabControl', q=True, sti=True ) == 2:
-                menuSelect = cmds.optionMenu( 'sequencesMenu', q=True, value=True ) or [ ]
-                itemSelect = cmds.textScrollList( 'sequencesTaskList', q=True, si=True ) or [ ]
-                self.updatePth = self.sequencesPth + menuSelect + '/' + itemSelect[ 0 ] + '/'
+                menuSelect = cmds.optionMenu('sequencesMenu', q=True, value=True) or []
+                itemSelect = cmds.textScrollList('sequencesTaskList', q=True, si=True) or []
+                self.updatePth = self.sequencesPth + menuSelect + '/' + itemSelect[0] + '/'
 
             if cmds.tabLayout( 'detailTabControl', q=True, sti=True ) == 1:
-                snapShotItem = cmds.textScrollList( 'snapShotList', q=True, si=True ) or [ ]
+                snapShotItem = cmds.textScrollList( 'snapShotList', q=True, si=True) or []
                 if snapShotItem == [ ]:
-                    cmds.image( 'imageViewerMainUI', e=True, vis=False )
-                    cmds.text( 'textViewerMainUI', e=True, vis=True )
+                    cmds.image('imageViewerMainUI', e=True, vis=False)
+                    cmds.text('textViewerMainUI', e=True, vis=True)
                 else:
                     if self.curMode == 'Studio Mode':
                         updateImagePth = self.updatePth + 'work/maya/scenes/snapShot/' + snapShotItem[ 0 ] + '.jpg'
@@ -892,36 +890,36 @@ class MayaMainUI( QtWidgets.QWidget ):
                     self.updateInfoFile(filePth=updateSnapShotPth.split('.png')[0] + '.ma')
 
                     if not os.path.exists( updateImagePth ):
-                        cmds.image( 'imageViewerMainUI', e=True, vis=False )
-                        cmds.text( 'textViewerMainUI', e=True, vis=True )
+                        cmds.image('imageViewerMainUI', e=True, vis=False)
+                        cmds.text('textViewerMainUI', e=True, vis=True)
                         cmds.text('commentMainUI', e=True, l="No comment")
                     else:
-                        cmds.image( 'imageViewerMainUI', e=True, i=updateSnapShotPth, vis=True )
-                        cmds.text( 'textViewerMainUI', e=True, vis=False )
+                        cmds.image('imageViewerMainUI', e=True, i=updateSnapShotPth, vis=True)
+                        cmds.text('textViewerMainUI', e=True, vis=False)
                         self.updateCommentMainUI()
 
-            elif cmds.tabLayout( 'detailTabControl', q=True, sti=True ) == 2:
-                reviewItem = cmds.textScrollList( 'reviewList', q=True, si=True ) or [ ]
+            elif cmds.tabLayout( 'detailTabControl', q=True, sti=True) == 2:
+                reviewItem = cmds.textScrollList( 'reviewList', q=True, si=True) or []
                 if reviewItem == []:
-                    cmds.image( 'imageViewerMainUI', e=True, vis=False )
-                    cmds.text( 'textViewerMainUI', e=True, vis=True )
-                    cmds.text( 'commentMainUI', e=True, l="No comment" )
+                    cmds.image('imageViewerMainUI', e=True, vis=False)
+                    cmds.text('textViewerMainUI', e=True, vis=True )
+                    cmds.text('commentMainUI', e=True, l="No comment")
                 else:
-                    updateReviewPth = self.updatePth + 'review/' + reviewItem[ 0 ]
+                    updateReviewPth = self.updatePth + 'review/' + reviewItem[0]
                     if not os.path.exists( updateReviewPth ):
-                        cmds.image( 'imageViewerMainUI', e=True, vis=False )
-                        cmds.text( 'textViewerMainUI', e=True, vis=True )
-                        cmds.text( 'commentMainUI', e=True, l="No comment" )
+                        cmds.image('imageViewerMainUI', e=True, vis=False)
+                        cmds.text('textViewerMainUI', e=True, vis=True )
+                        cmds.text('commentMainUI', e=True, l="No comment")
                     else:
-                        cmds.image( 'imageViewerMainUI', e=True, i=updateReviewPth, vis=True )
-                        cmds.text( 'textViewerMainUI', e=True, vis=False )
+                        cmds.image('imageViewerMainUI', e=True, i=updateReviewPth, vis=True)
+                        cmds.text('textViewerMainUI', e=True, vis=False)
                         self.updateCommentMainUI()
-            elif cmds.tabLayout( 'detailTabControl', q=True, sti=True ) == 3:
-                publishItem = cmds.textScrollList( 'publishList', q=True, si=True ) or [ ]
+            elif cmds.tabLayout('detailTabControl', q=True, sti=True) == 3:
+                publishItem = cmds.textScrollList( 'publishList', q=True, si=True) or []
                 if publishItem == [ ]:
-                    cmds.image( 'imageViewerMainUI', e=True, vis=False )
-                    cmds.text( 'textViewerMainUI', e=True, vis=True )
-                    cmds.text( 'commentMainUI', e=True, l="No comment" )
+                    cmds.image('imageViewerMainUI', e=True, vis=False)
+                    cmds.text('textViewerMainUI', e=True, vis=True)
+                    cmds.text('commentMainUI', e=True, l="No comment")
                 else:
                     updatePublishPth = self.updatePth + 'work/maya/scenes/snapShot/' + publishItem[ 0 ] + '_r001.jpg'
                     if not os.path.exists( updatePublishPth ):

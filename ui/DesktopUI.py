@@ -111,8 +111,7 @@ for f in prodContent:
 # ----------------------------------------------------------------------------------------------------------- #
 class LoginUI(QDialog):
 
-    tempPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'user.setting')
-    appDataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'scrInfo/apps.pipeline')
+    appDataPth = os.path.join(os.getenv('PROGRAMDATA'), 'scrInfo/apps.pipeline')
 
     def __init__(self, parent=None):
 
@@ -121,17 +120,17 @@ class LoginUI(QDialog):
         self.setWindowTitle(TITLE)
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
 
-        prevUserLogin = os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog')
+        self.prevUserLogin = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/user.tempLog')
 
-        if not os.path.exists(prevUserLogin):
+        if not os.path.exists(self.prevUserLogin):
             self.buildUI()
         else:
-            with open(prevUserLogin, 'r') as f:
+            with open(self.prevUserLogin, 'r') as f:
                 prevUserData = json.load(f)
 
             userName = [f for f in prevUserData][0]
 
-            if prevUserData[userName][3]==0:
+            if prevUserData[userName][6]==0:
                 self.buildUI()
             else:
                 self.autoLogin(userName)
@@ -222,16 +221,18 @@ class LoginUI(QDialog):
         self.layout.addWidget(self.loginBtn, pos7[1],pos7[2],pos7[3],pos7[4])
 
         self.cancelBtn = QPushButton('Cancel')
-        self.cancelBtn.clicked.connect(qApp.quit)
+        self.cancelBtn.clicked.connect(self.cancelLogin)
         self.layout.addWidget(self.cancelBtn, pos8[1],pos8[2],pos8[3],pos8[4])
 
         hbox.addLayout(self.layout)
         self.mainFrame.setLayout(hbox)
 
+    def cancelLogin(self):
+        sys.exit(LoginUI.exec_())
+
     def autoLogin(self, userName, *args):
-        QMessageBox.information(self, 'Login Successful', "Welcome back %s\n "
-                                                          "Now it's the time to make amazing thing to the world !!!" % userName)
-        # self.close()
+        QMessageBox.information(self, 'Auto Login', "Welcome back %s\n"
+                                "Now it's the time to make amazing thing to the world !!!" % userName)
 
     def checkLogin(self, *args):
         user_name = str(self.userName.text())
@@ -240,7 +241,7 @@ class LoginUI(QDialog):
         if user_name == "":
             QMessageBox.information(self, 'Login Failed', 'Username can not be blank')
         elif userData[user_name] != None and pass_word == userData[user_name][1]:
-            QMessageBox.information(self, 'Login Successful', "Welcome back %s\n "
+            QMessageBox.information(self, 'Login Successful', "Welcome %s\n "
                                     "Now it's the time to make amazing thing to the world !!!" % user_name)
             self.close()
             func.saveCurrentUserLogin(user_name, self.rememberCheckBox.checkState())
@@ -342,7 +343,7 @@ class TabWidget( QWidget ):
 
         # Create Layout for Tab 1
         self.tab1.setTitle(self.curUser)
-        self.tab1.setFixedSize(W, H)
+        # self.tab1.setFixedSize(W, H)
 
         hboxLayout = QHBoxLayout()
 
@@ -359,9 +360,9 @@ class TabWidget( QWidget ):
         userNameLabel.setAlignment(alignL)
         self.tab1GridLayout.addWidget(userNameLabel, pos2[1],pos2[2],pos2[3],pos2[4])
 
-        # userNameArtist = QLabel('JimJim')
-        # userNameArtist.setAlignment(alignR)
-        # self.tab1GridLayout.addWidget(userNameArtist, pos3[1],pos3[2],pos3[3],pos3[4])
+        userNameArtist = QLabel(self.curUserData[self.curUser][4])
+        userNameArtist.setAlignment(alignR)
+        self.tab1GridLayout.addWidget(userNameArtist, pos3[1],pos3[2],pos3[3],pos3[4])
 
         titleLabel = QLabel('Group: ')
         titleLabel.setAlignment(alignL)
@@ -371,14 +372,12 @@ class TabWidget( QWidget ):
         classLabel.setAlignment(alignR)
         self.tab1GridLayout.addWidget(classLabel, pos5[1],pos5[2],pos5[3],pos5[4])
 
-        # prodLabel = QLabel('Title: ')
-        # prodLabel.setAlignment(alignL)
-        # self.tab1GridLayout.addWidget(prodLabel, pos6[1],pos6[2],pos6[3],pos6[4])
-        #
-        # self.productionList = QLabel('Artist')
-        # # for prod in prodLst:
-        # #     self.productionList.addItem(prod)
-        # self.tab1GridLayout.addWidget(self.productionList, pos7[1],pos7[2],pos7[3],pos7[4])
+        prodLabel = QLabel('Title: ')
+        prodLabel.setAlignment(alignL)
+        self.tab1GridLayout.addWidget(prodLabel, pos6[1],pos6[2],pos6[3],pos6[4])
+
+        classGroup = QLabel(self.curUserData[self.curUser][5])
+        self.tab1GridLayout.addWidget(classGroup, pos7[1],pos7[2],pos7[3],pos7[4])
 
         # self.tab1.layout.setMaximumSized(100,100)
         hboxLayout.addLayout(self.tab1GridLayout)
@@ -388,7 +387,7 @@ class TabWidget( QWidget ):
     def tab2Layout(self):
         # Create Layout for Tab 2
         self.tab2.setTitle('Extra Tool')
-        self.tab2.setFixedSize(W,H)
+        # self.tab2.setFixedSize(W,H)
 
         hboxLayout = QHBoxLayout()
 
@@ -439,8 +438,8 @@ class TabWidget( QWidget ):
 
     def tab3Layout(self):
         # Create Layout for Tab 2
-        self.tab3.setTitle('Management Tool')
-        self.tab3.setFixedSize(W,H)
+        # self.tab3.setTitle('Management Tool')
+        # self.tab3.setFixedSize(W,H)
 
         hboxLayout = QHBoxLayout()
 
@@ -515,16 +514,7 @@ class DesktopUI( QMainWindow ):
 
     def __init__(self, mainID, appInfo, package, message, names, url):
 
-        super( DesktopUI, self ).__init__()
-
-        if not os.path.exists(os.getenv('PIPELINE_TOOL')):
-            os.mkdir(os.getenv('PIPELINE_TOOL'))
-
-            with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'user.tempLog'), 'r') as f:
-                self.curUserData = json.load(f)
-
-            self.curUser = [f for f in self.curUserData][0]
-
+        super(DesktopUI, self).__init__()
         # Set window title
         self.setWindowTitle(mainID['Main'])
         # Set window icon
@@ -534,6 +524,17 @@ class DesktopUI( QMainWindow ):
         # User log in identification
         login = LoginUI()
         login.exec_()
+
+        tempUser = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/user.tempLog')
+
+        if not os.path.exists(tempUser):
+            sys.exit()
+
+        with open(tempUser, 'r') as f:
+            self.curUserData = json.load(f)
+
+        self.curUser = [f for f in self.curUserData][0]
+
         # Create Tabs
         self.tabWidget = TabWidget(self)
         # Put tabs to center of main UI
@@ -562,7 +563,6 @@ class DesktopUI( QMainWindow ):
 
         # Tool Menu
         toolMenu = menubar.addMenu('Tool')
-
 
         # Help Menu
         helpMenu = menubar.addMenu('Help')

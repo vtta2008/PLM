@@ -22,7 +22,7 @@ ID = 'UserSetup'
 KEY = 'PYTHONPATH'
 
 logging.basicConfig()
-logger = logging.getLogger(__file__)
+logger = logging.getLogger('userSetup.py')
 logger.setLevel(logging.DEBUG)
 
 # ----------------------------------------------------------------------------------------------------------- #

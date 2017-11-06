@@ -41,46 +41,38 @@ MAIN_NAMES = dict( info='apps.pipeline',
 USER_CLASS = ['', 'Admin','Supervisor','Artist', 'tester']
 
 # Create environment variable by custom key
-def createKey(key, scrInstall, toolName, *args):
+def createKey(key, path, *args):
     """
     Create custom enviroment Key in sys.
     all of those keys are temporary,
     it will be none once pipeline tool shut down.
-    :param key: name of the key
-    :param scrInstall: source scripts of pipline tool app
-    :param toolName: name of the folder where contains the tool
-    :return: a teamporary environment variable.
     """
     logger.info('install new environment variable')
-    toolPth = os.path.join(scrInstall, toolName)
-    if not os.path.exists(toolPth):
-        os.mkdir(toolPth)
-    os.environ[key] = toolPth
 
-def checkEnvKey(key, scrInstall, toolName, *args):
+    os.environ[key] = path
+
+def checkEnvKey(key, path, *args):
     try:
         pth = os.getenv(key)
         if pth == None or pth == '':
-            createKey(key, scrInstall, toolName)
+            createKey(key, path)
     except KeyError:
-        createKey(key, scrInstall, toolName)
+        createKey(key, path)
     else:
         pass
 
 def createInfo():
-    key = 'PIPELINE_TOOL'
-    toolName = 'Pipeline Tool'
-    scrInstall = os.getcwd()
+    key = 'PROGRAMDATA'
+    path = os.getcwd()
 
-    checkEnvKey(key, scrInstall, toolName)
+    checkEnvKey(key, path)
 
-    appDir = os.path.join(os.getenv('PROGRAMDATA'), toolName)
+    appDir = os.getenv('PROGRAMDATA')
 
-    print appDir
+    infoDir = os.path.join(appDir, MAIN_NAMES['appdata'][1])
 
-    infoDir = os.path.join( appDir, MAIN_NAMES['appdata'][1])
-    if not os.path.exists( infoDir ):
-        os.makedirs( infoDir )
+    if not os.path.exists(infoDir):
+        os.makedirs(infoDir)
     return infoDir
 
 inforDir = createInfo()

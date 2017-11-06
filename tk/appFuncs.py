@@ -15,7 +15,6 @@ from tk import defaultVariable as var
 # ------------------------------------------------------
 # DEFAULT VARIABLES
 # ------------------------------------------------------
-PIPELINETOOL_KEY = "PIPELINE_TOOL"
 PLUGIN = var.MAIN_PLUGIN
 PACKAGE = var.MAIN_PACKPAGE
 NAMES = var.MAIN_NAMES
@@ -121,7 +120,7 @@ def checkPackageInstall(name, *args):
         install_package(name)
 
 # Create environment variable by custom key
-def createKey(key, scrInstall, toolName, *args):
+def createKey(key, path, *args):
     """
     Create custom enviroment Key in sys.
     all of those keys are temporary,
@@ -132,21 +131,19 @@ def createKey(key, scrInstall, toolName, *args):
     :return: a teamporary environment variable.
     """
     logger.info('install new environment variable')
-    toolPth = os.path.join(scrInstall, toolName)
-    if not os.path.exists(toolPth):
-        os.mkdir(toolPth)
-    os.environ[key] = toolPth
+
+    os.environ[key] = path
 
 # Check the value of environment variable
-def checkEnvKey(key, scrInstall, toolName, *args):
+def checkEnvKey(key, path, *args):
     try:
         pth = os.getenv(key)
 
         if pth == None or pth == '':
-            createKey(key, scrInstall, toolName)
+            createKey(key, path)
 
     except KeyError:
-        createKey(key, scrInstall, toolName)
+        createKey(key, path)
     else:
         pass
 
