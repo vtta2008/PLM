@@ -34,3 +34,25 @@ logger.setLevel(logging.DEBUG)
 #     logger.debug('Using PySide2 with shiboken2')
 #     from shiboken2 import wrapInstance
 #     from Maya_tk.plugins.Qt.QtCore import Signal
+
+textures = cmds.ls(type='file')
+
+winID = 'TexturePathEditor'
+winTitle = 'Texture Path Editor'
+
+if cmds.window(winID, q=True, exists=True):
+    cmds.deleteUI(winID)
+
+cmds.window(winID, title=winTitle, h=500, w=600)
+
+mainLayout = cmds.scrollLayout()
+cmds.rowColumnLayout(nc=2, cw=[(1, 200), (2, 390)])
+
+for i in range(len(textures)):
+    pthId = 'texPth' + str(i + 1)
+    tex = textures[i]
+    cmds.text(l=tex)
+    cmds.textField(pthId, tx=cmds.getAttr("%s.fileTextureName" % tex))
+    i += 1
+
+cmds.showWindow(winID)
