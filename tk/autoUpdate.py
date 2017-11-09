@@ -17,7 +17,7 @@ logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
 toolName = 'Pipeline Tool'
-scrInstall = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool')
+scrInstall = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool')
 
 def createTempUser():
 

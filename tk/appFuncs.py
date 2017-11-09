@@ -39,6 +39,8 @@ def dataHandle(filePath, mode, indent=4, *args):
     json functions: read, write, edit... etc
     """
 
+    print filePath
+
     if mode=='r' or mode=='r+':
         if not os.path.exists(filePath):
             logger.debug('file is not exists')
@@ -71,7 +73,14 @@ def getAllInstalledPythonPackage(*args):
 
         pyPkgs[name] = [key, version, location]
 
-    pkgInfo = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo/packages.info')
+    pkgInfo = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/apps.pipeline')
+
+    print pkgInfo, os.path.exists(pkgInfo)
+
+    if not os.path.exists(pkgInfo):
+        from tk import getData
+        reload(getData)
+        getData.initialize()
 
     with open(pkgInfo, 'w') as f:
         json.dump(pyPkgs, f, indent=4)
@@ -163,7 +172,7 @@ def avatar(userName, *args):
 
 # Save information of current log in user account for next time.
 def saveCurrentUserLogin(userName, remember=False, *args):
-    userDataPth = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo/user.info')
+    userDataPth = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/user.info')
 
     with open(userDataPth, 'r') as f:
         userData = json.load(f)
@@ -172,7 +181,7 @@ def saveCurrentUserLogin(userName, remember=False, *args):
 
     curUser = {}
     curUser[userName] = userData[userName]
-    currentUserLoginPth = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/user.tempLog')
+    currentUserLoginPth = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/user.tempLog')
     with open(currentUserLoginPth, 'w') as f:
         json.dump(curUser, f, indent=4)
 

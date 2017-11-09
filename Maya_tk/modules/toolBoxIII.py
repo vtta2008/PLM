@@ -23,7 +23,6 @@ from Maya_tk.plugins.Qt import QtWidgets, QtCore, QtGui
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
 from Maya_tk.modules import MayaVariables as var
-from Maya_tk.modules import toolBoxIIfuncs
 
 NAMES = var.MAINVAR
 SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
@@ -108,7 +107,7 @@ from Maya_tk.plugins.Qt.QtWidgets import *
 from Maya_tk.plugins.Qt.QtGui import *
 from Maya_tk.plugins.Qt.QtCore import *
 
-class LightManager( QtWidgets.QWidget ):
+class LightManager(QtWidgets.QWidget):
 
     onSolo = QtCore.Signal(bool)
 
@@ -278,7 +277,7 @@ class LightLibrary(dict):
                        showOrnaments=False, startTime=cf, endTime=cf, viewer=False)
         return path
 
-class toolBoxIII( QtWidgets.QWidget ):
+class toolBoxIII(QtWidgets.QWidget):
 
     mayaLightTypes = {
 

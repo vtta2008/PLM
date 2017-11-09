@@ -88,14 +88,14 @@ logger.info('Loading information...')
 APPINFO = info['pipeline']
 logger.info('Loading pipeline manager UI')
 
-userDataPth = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo/user.info')
+userDataPth = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/user.info')
 
 userData = func.dataHandle(userDataPth, 'r')
 
 # with open(userDataPth, 'r') as f:
 #     userData = json.load(f)
 
-prodInfoFolder = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo/prodInfo')
+prodInfoFolder = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/prodInfo')
 
 prodContent = [f for f in os.listdir(prodInfoFolder) if f.endswith('.prod')]
 
@@ -111,7 +111,7 @@ for f in prodContent:
 # ----------------------------------------------------------------------------------------------------------- #
 class LoginUI(QDialog):
 
-    appDataPth = os.path.join(os.getenv('PROGRAMDATA'), 'scrInfo/apps.pipeline')
+    appDataPth = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/apps.pipeline')
 
     def __init__(self, parent=None):
 
@@ -120,7 +120,7 @@ class LoginUI(QDialog):
         self.setWindowTitle(TITLE)
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
 
-        self.prevUserLogin = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/user.tempLog')
+        self.prevUserLogin = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/user.tempLog')
 
         if not os.path.exists(self.prevUserLogin):
             self.buildUI()
@@ -257,7 +257,7 @@ class TabWidget( QWidget ):
         
         super( TabWidget, self ).__init__( parent )
 
-        with open(os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/user.tempLog'), 'r') as f:
+        with open(os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/user.tempLog'), 'r') as f:
             self.curUserData = json.load(f)
 
         self.curUser = [f for f in self.curUserData][0]
@@ -525,7 +525,7 @@ class DesktopUI( QMainWindow ):
         login = LoginUI()
         login.exec_()
 
-        tempUser = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/user.tempLog')
+        tempUser = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/user.tempLog')
 
         if not os.path.exists(tempUser):
             sys.exit()

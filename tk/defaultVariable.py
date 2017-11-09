@@ -69,7 +69,7 @@ def createInfo():
 
     appDir = os.getenv('PROGRAMDATA')
 
-    infoDir = os.path.join(appDir, MAIN_NAMES['appdata'][1])
+    infoDir = os.path.join(appDir, 'PipelineTool/scrInfo')
 
     if not os.path.exists(infoDir):
         os.makedirs(infoDir)
@@ -117,7 +117,7 @@ MAIN_PACKPAGE = dict( job=[ 'TD', 'Comp', 'Design', 'Office', 'UV', 'Sound' ],
                       desktop=winshell.desktop(),
                       current=os.getcwd(),
                       root=os.getcwd().split( 'ui' )[ 0 ],
-                      appData=APPDATA[ 0 ],
+                      appData=APPDATA[0],
                       filter=[ 'Non-commercial', 'Uninstall', 'Verbose', 'License', 'Skype' ],
                       adobe=[ 'CS5', 'CS6', 'CC' ],
                       geo=[ 300, 300, 300, 400, 350], )
