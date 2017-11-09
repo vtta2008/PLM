@@ -16,7 +16,7 @@ from Maya_tk.modules import MayaVariables as var
 # ------------------------------------------------------
 # We can configure the current level to make it disable certain logs when we don't want it.
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
 MESSAGE = var.MESSAGE
 ID = 'UserSetup'
 KEY = 'PYTHONPATH'
