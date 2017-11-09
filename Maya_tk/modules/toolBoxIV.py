@@ -18,7 +18,7 @@ from Maya_tk.plugins.Qt import QtWidgets, QtCore, QtGui
 # ------------------------------------------------------
 NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
 
 WINID = 'AppsManager'
 SUBID = 'Chosing version'

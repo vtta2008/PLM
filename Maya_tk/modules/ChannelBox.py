@@ -28,7 +28,7 @@ NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE
 TITLE = var.TITLE
 VERSION = NAMES['mayaVersion']
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
 
 # Icon directory:
 ICONS = var.ICONS

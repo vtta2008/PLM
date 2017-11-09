@@ -13,7 +13,7 @@ import os, sys, logging, shutil, subprocess
 
 from Maya_tk.modules import MayaVariables as var
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
 ICONS = var.ICONS
 TITLE = var.TITLE
 MESSAGE = var.MESSAGE

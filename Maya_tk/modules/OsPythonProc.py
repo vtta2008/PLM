@@ -21,7 +21,7 @@ import os, sys, json, shutil, logging, webbrowser
 from Maya_tk.modules import MayaVariables as var
 NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
 
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION

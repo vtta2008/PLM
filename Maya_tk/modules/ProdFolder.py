@@ -493,7 +493,7 @@ class ProdFolder( object ):
 
     def createInfo(self, *args):
         appDir = os.getenv( 'PROGRAMDATA' )
-        infoDir = os.path.join( appDir, 'Pipeline Tool/prodInfo' )
+        infoDir = os.path.join( appDir, 'PipelineTool/prodInfo' )
         if not os.path.exists( infoDir ):
             os.makedirs( infoDir )
         return infoDir

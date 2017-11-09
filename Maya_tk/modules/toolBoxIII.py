@@ -25,7 +25,7 @@ from Maya_tk.plugins.Qt import QtWidgets, QtCore, QtGui
 from Maya_tk.modules import MayaVariables as var
 
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
 VERSION = var.MAYAVERSION
 DIRECTORY = os.path.join(os.getcwd(), 'Maya_tk/userLibrary')
 

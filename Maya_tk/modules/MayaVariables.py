@@ -14,7 +14,7 @@ MAYAVERSION = int(cmds.about(v=True))
 
 MAINVAR = dict(
 
-    dir = 'Pipeline Tool/scrInfo',
+    dir = 'PipelineTool/scrInfo',
 
     user = platform.node(),
 
