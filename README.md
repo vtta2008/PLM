@@ -7,6 +7,7 @@ Currently, I am working in Windows, Maya 2017, Mari 3.3, Houdini 16, Nuke 11 and
 Regarding to VFX Reference Platform, we will stay in python 2.7 due to large invention.
 
 It requires Python standalone, so I use Anaconda python 2.7 which is very useful.
+You can download Anaconda installer here:
 
     Anaconda python 2.7: https://www.continuum.io/downloads
 
@@ -25,9 +26,9 @@ Plugin Reference:
 
 Download and extract folder to your pc, remember to rename the folder to 'PipelineTool'.
 
-Run file via command prompt, for example, I put in D:/PipelineTool.
+Run file via command prompt, go to PipelineTool folder in your explorer, hold Shift + right click -> Open PowerShell window here/Open command window here
 
-In command prompt type:
+In Command prompt/WindowShell show up type:
 
     "python PipelineTool.py" then enter to run.
 

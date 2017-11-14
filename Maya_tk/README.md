@@ -1,6 +1,6 @@
 # mayaModules
 
-This is the package which using for maya only.
+This is the package using for maya only.
 
 userLibrary is the place you can save out your work as personal assets could be used in any project. It has 4 types which will be automatically read data individually: Camera, Controller, Modeling, Lighting.
 
