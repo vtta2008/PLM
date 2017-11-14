@@ -2,7 +2,7 @@
 
 This pipeline is to build for a brand new studio. Base on the package: "Maya, Mari, Nuke, ZBrush, Hounidi and Adobe"
 
-Currently, I am working in Windows, Maya 2017, Mari 3.3, Houdini 16, Nuke 11 and Adobe CC.
+Currently, I am working in Windows, Maya 2017, Mari, Houdini, Nuke and Adobe Photoshop.
 
 Regarding to VFX Reference Platform, we will stay in python 2.7 due to large invention.
 
