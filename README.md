@@ -4,12 +4,12 @@ This pipeline is to build for a brand new studio. Base on the package: "Maya, Ma
 
 Currently, I am working in Windows, Maya 2017, Mari, Houdini, Nuke and Adobe Photoshop.
 
-Regarding to VFX Reference Platform, we will stay in python 2.7 due to large invention. We will update everything to python 3 on 2019
+Regarding to VFX Reference Platform, due to large invention we will stay with python 2.7 but will update to python 3 on 2019.
 Details is here:
 
     http://www.vfxplatform.com/
 
-It requires Python standalone, so I use Anaconda python 2.7 which is very useful.
+To run it you need to install Python standalone, so I use Anaconda python 2.7 which is very useful.
 You can download Anaconda installer here:
 
     Anaconda python 2.7: https://www.continuum.io/downloads
@@ -19,11 +19,6 @@ Right now, most of my work is focusing on developing for Maya, I will work on ot
 For Maya plugin required:
 
     Vray 3.6
-
-Plugin Reference:
-    
-    GitHub - mottosso/Qt.py: Minimal Python 2 & 3 shim around all Qt bindings - PySide,
-    PySide2, PyQt4 and PyQt5. (n.d.). Retrieved from https://github.com/mottosso/Qt.py
 
 **INSTALLATION**
 
@@ -36,3 +31,8 @@ In Command prompt/WindowShell show up type:
     "python PipelineTool.py" then enter to run.
 
 A user login window will show up, login with your username and password.
+
+**REFERENCE**
+
+    GitHub - mottosso/Qt.py: Minimal Python 2 & 3 shim around all Qt bindings - PySide,
+    PySide2, PyQt4 and PyQt5. (n.d.). Retrieved from https://github.com/mottosso/Qt.py
