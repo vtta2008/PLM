@@ -20,3 +20,15 @@ Plugin Reference:
     
     GitHub - mottosso/Qt.py: Minimal Python 2 & 3 shim around all Qt bindings - PySide,
     PySide2, PyQt4 and PyQt5. (n.d.). Retrieved from https://github.com/mottosso/Qt.py
+
+**INSTALLATION**
+
+Download and extract folder to your pc, remember to rename the folder to 'PipelineTool'.
+
+Run file via command prompt, for example, I put in D:/PipelineTool.
+
+In command prompt type:
+
+    "python PipelineTool.py" then enter to run.
+
+A user login window will show up, login with your username and password.
