@@ -31,19 +31,6 @@ class InitTool(object):
 
     def __init__(self):
         super(InitTool, self).__init__()
-        self.createMayaSysPth()
-
-    def createMayaSysPth(self):
-        pth = os.path.join(SCRPTH, NAMES['maya'][2])
-
-        logger.info(pth)
-
-        if not os.path.exists(pth):
-            envKeys = {}
-            for key in os.environ.keys():
-                envKeys[key] = os.getenv(key)
-            with open(pth, 'w') as f:
-                json.dump(envKeys, f, indent=4)
 
         self.MayaPythonProc()
 
