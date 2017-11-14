@@ -1,8 +1,9 @@
 ## **SHORT FILM PIPELINE**
 
-This pipeline is to build for a brand new studio. Base on the package: "Maya, Mari, Nuke, ZBrush, Hounidi and Adobe"
+This package: "Maya, Mari, Nuke, ZBrush, Hounidi and Adobe" is to build a pipeline a for brand new studio.
 
-Currently, I am working in Windows 10, Maya 2017, Mari, Houdini, Nuke and Adobe Photoshop.
+It is compatible with Windows 10 (may also work with previous version but I have not tested yet) and will not work with Maya 2016 or lower.
+
 
 Regarding to VFX Reference Platform, due to large invention we will stay with python 2.7 but will update to python 3 on 2019.
 Details is here:
