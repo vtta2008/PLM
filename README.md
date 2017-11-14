@@ -26,13 +26,15 @@ Download and extract folder to your pc, remember to rename the folder to 'Pipeli
 
 Run file via command prompt, go to PipelineTool folder in your explorer, hold Shift + right click -> Open PowerShell window here/Open command window here
 
-In Command prompt/WindowShell show up type:
+In CommandPrompt/WindowShell window type:
 
     "python PipelineTool.py" then enter to run.
 
-A user login window will show up, login with your username and password.
+An user login window will show up, login with your username and password.
 
 **REFERENCE**
+
+Here is Plugins/Files that I use for my code
 
     GitHub - mottosso/Qt.py: Minimal Python 2 & 3 shim around all Qt bindings - PySide,
     PySide2, PyQt4 and PyQt5. (n.d.). Retrieved from https://github.com/mottosso/Qt.py
