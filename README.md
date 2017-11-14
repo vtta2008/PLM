@@ -4,7 +4,10 @@ This pipeline is to build for a brand new studio. Base on the package: "Maya, Ma
 
 Currently, I am working in Windows, Maya 2017, Mari, Houdini, Nuke and Adobe Photoshop.
 
-Regarding to VFX Reference Platform, we will stay in python 2.7 due to large invention.
+Regarding to VFX Reference Platform, we will stay in python 2.7 due to large invention. We will update everything to python 3 on 2019
+Details is here:
+
+    http://www.vfxplatform.com/
 
 It requires Python standalone, so I use Anaconda python 2.7 which is very useful.
 You can download Anaconda installer here:
