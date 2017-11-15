@@ -2,10 +2,9 @@
 
 This package: "Maya, Mari, Nuke, ZBrush, Hounidi and Adobe" is to build a pipeline a for brand new studio.
 
-It is compatible with Windows 10 (may also work with previous version but I have not tested yet) and will not work with Maya 2016 or lower.
+It is compatible with Windows 10 (may also work with earlier version but I have not tested yet) and will not work with Maya 2016 or lower.
 
-
-Regarding to VFX Reference Platform, due to large invention we will stay with python 2.7 but will update to python 3 on 2019.
+Regard to VFX Reference Platform, due to large invention we will stay with python 2.7 but will update to python 3 on 2019.
 Details is here:
 
     http://www.vfxplatform.com/
@@ -23,15 +22,15 @@ For Maya plugin required:
 
 **INSTALLATION**
 
-Download and extract folder to your pc, remember to rename the folder to 'PipelineTool'.
+Download and extract zip file to your pc, remember to rename the folder to 'PipelineTool'.
 
-Run file via command prompt, go to PipelineTool folder in your explorer, hold Shift + right click -> Open PowerShell window here/Open command window here
+Go to PipelineTool folder in your explorer, hold Shift + right-click -> Open PowerShell window here/Open command window here
 
-In CommandPrompt/WindowShell window type:
+In CommandPrompt/WindowShell window:
 
     "python PipelineTool.py" then enter to run.
 
-An user login window will show up, login with your username and password.
+A user login window will show up, login with your username and password.
 
 **REFERENCE**
 
