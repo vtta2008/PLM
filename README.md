@@ -1,6 +1,6 @@
 ## **SHORT FILM PIPELINE**
 
-This package: "Maya, Mari, Nuke, ZBrush, Hounidi and Adobe" is to build a pipeline a for brand new studio.
+This package: "Maya, Mari, Nuke, ZBrush, Hounidi and Adobe" is to build a pipeline for a brand new studio.
 
 It is compatible with Windows 10 (may also work with earlier version but I have not tested yet) and will not work with Maya 2016 or lower.
 
