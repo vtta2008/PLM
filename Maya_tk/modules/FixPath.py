@@ -43,7 +43,7 @@ winID = 'TexturePathEditor'
 winTitle = 'Texture Path Editor'
 CW=[(1, 200), (2, 20), (3, 370), (4, 80)]
 W = 680
-BLUE = (0, 0, .5)
+GREEN = (0, 1, 0)
 RED = (1, 0, 0)
 
 class FixPath(object):
@@ -92,7 +92,7 @@ class FixPath(object):
         fixPth = os.path.join(cmds.workspace(q=True, rd=True), 'sourceimage')
 
         if pth[0:len(fixPth)] == fixPth:
-            bgc = BLUE
+            bgc = GREEN
         else:
             bgc = RED
 
@@ -112,18 +112,18 @@ class FixPath(object):
         if not os.path.exists(scrPth) and os.path.exists(desPth):
             cmds.setAttr("%s.fileTextureName" % tex, desPth, type='string')
             cmds.textField(id, edit=True, tx=desPth)
-            cmds.text(id, edit=True, bgc=BLUE)
+            cmds.text(id, edit=True, bgc=GREEN)
         elif not os.path.exists(scrPth) and not os.path.exists(desPth):
             cmds.confirmDialog(t='Could not find the file', m='texture file: %s is not exists' % scrPth, b='OK')
         elif os.path.exists(desPth):
             cmds.setAttr("%s.fileTextureName" % tex, desPth, type='string')
             cmds.textField(id, edit=True, tx=desPth)
-            cmds.text(id, edit=True, bgc=BLUE)
+            cmds.text(id, edit=True, bgc=GREEN)
         else:
             shutil.copy2(scrPth, desPth)
             cmds.setAttr("%s.fileTextureName" % tex, desPth, type='string')
             cmds.textField(id, edit=True, tx=desPth)
-            cmds.text(id, edit=True, bgc=BLUE)
+            cmds.text(id, edit=True, bgc=GREEN)
 
 def initialize():
     FixPath()
