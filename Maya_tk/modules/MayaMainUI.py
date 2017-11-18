@@ -545,7 +545,7 @@ class MayaMainUI( QtWidgets.QWidget ):
     def commonSectionUI(self, *args):
 
         w = WIDTH
-        adj = 2
+        adj = 3
 
         ann3 = [ 'Tool Box I', 'Tool Box II', 'Tool Box III', 'Tool Box IV', 'Clock and Reminder' ]
         ic3 = ['toolboxI.icon.png', 'toolboxII.icon.png', 'toolboxIII.icon.png', 'toolboxIV.icon.png', 'clock.icon.png']
@@ -654,6 +654,19 @@ class MayaMainUI( QtWidgets.QWidget ):
         cmds.tabLayout( commonLeftTabLayout, edit=True, tabLabel=((mayaWindowTab, 'Panels'), (commonMidTab, 'P.Blast'), (commonRightTab, 'Template')) )
 
         cmds.setParent(commonsection3)
+
+        w=WIDTH/2
+        nc = 2
+
+        cmds.columnLayout()
+        self.bts.makeSeparator(h=5, w=w)
+        cmds.text(l="FINNALIZING SCENE", w=w, align='center')
+        self.bts.makeSeparator(h=5, w=w)
+
+        cmds.rowColumnLayout(nc=nc, cw=self.bts.cwE(nc, w, adj))
+        self.bts.makeAcoolButton('Delete unuse nodes', 'Clean Node', self.bts.deleteUnusedNode)
+        self.bts.makeAcoolButton('Set texture to relative path', 'Fix Tex paths', self.bts.fixTexturePathUI)
+
 
         cmds.setParent( 'masterLayout' )
 
@@ -848,7 +861,6 @@ class MayaMainUI( QtWidgets.QWidget ):
         if cmds.image('imageViewerMainUI', query=True, exists=True):
             cmds.image('imageViewerMainUI', e=True, vis=False)
             cmds.text('textViewerMainUI', e=True, vis=True)
-
 
     def updateViewer(self, *args):
 

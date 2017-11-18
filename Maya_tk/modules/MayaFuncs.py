@@ -47,6 +47,11 @@ logger.setLevel(logging.DEBUG)
 #     from shiboken2 import wrapInstance
 #     from Maya_tk.plugins.Qt.QtCore import Signal
 
+def fixTexturePathUI(*args):
+    from Maya_tk.modules import FixPath
+    reload(FixPath)
+    FixPath.initialize()
+
 def vmmApps(*args):
     vmmDir = os.path.join(os.getcwd(), "Maya_tk/apps/vmpp")
     vmmPth = os.path.join(vmmDir, "VMPPmaya.exe")
@@ -358,6 +363,10 @@ def deleteHis(*args):
     a = cmds.ls( sl=True )
     if (len( a ) > 0):
         cmds.DeleteHistory()
+
+def deleteUnusedNode(*args):
+    logger.info('Delete Unused Nodes')
+    mel.eval('hyperShadePanelMenuCommand("hyperShadePanel1", "deleteUnusedNodes");')
 
 def freezeTransformation(*args):
     a = cmds.ls( sl=True )
