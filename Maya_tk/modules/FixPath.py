@@ -113,8 +113,7 @@ class FixPath(object):
 
     def getbgc(self, pth, *args):
 
-        # Check the path of the texture base on the file name, if it is not relative path, return red color, otherwise return green
-
+        # Check the path of the texture base on the file name, if it is not relative path, return red color, otherwise return green.
         fixPth = os.path.join(cmds.workspace(q=True, rd=True), 'sourceimage')
 
         if pth[0:len(fixPth)] == fixPth:

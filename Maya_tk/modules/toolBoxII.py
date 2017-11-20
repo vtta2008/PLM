@@ -705,7 +705,7 @@ class DAMGtoolBoxII( QtWidgets.QWidget ):
     }
 
     # get the paths of icons folder
-    scrData = os.path.join(SCRPTH, NAMES['maya'][1])
+    scrData = os.path.join(os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo'), NAMES['maya'][1])
     with open( scrData, 'r' ) as f:
         scrPth = json.load( f )
     scrIcons = os.path.join(os.getcwd(), 'Maya_tk/icons')
