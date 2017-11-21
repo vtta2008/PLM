@@ -403,7 +403,7 @@ class MayaMainUI( QtWidgets.QWidget ):
         cmds.setParent( self.tabControls )
 
         t6 = cmds.columnLayout(parent=self.tabControls )
-        self.bts.makeAcoolButton("Demo buttons",  'Animation', self.bts.waitforupdate )
+        self.animationTab()
         cmds.setParent( self.tabControls )
 
         t7 = cmds.columnLayout(parent=self.tabControls )
@@ -412,6 +412,9 @@ class MayaMainUI( QtWidgets.QWidget ):
         # Create appropriate labels for the ts
         cmds.tabLayout( self.tabControls, edit=True, tabLabel=(
             (t1, "Project"), (t2, "Model"), (t3, "Rig"), (t4, "Surface"), (t5, "FX"), (t6, "Anim"), (t7, "Light")) )
+
+    def animationTab(self):
+        self.bts.makeAcoolButton("Animation Tweener", 'Tweener', self.bts.tweenerUI)
 
     def modelingTab(self):
         self.bts.makeAcoolButton("Create gear sets", 'Create Gear', self.bts.createGear)

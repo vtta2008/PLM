@@ -47,6 +47,11 @@ logger.setLevel(logging.DEBUG)
 #     from shiboken2 import wrapInstance
 #     from Maya_tk.plugins.Qt.QtCore import Signal
 
+def tweenerUI(*args):
+    from Maya_tk.modules.animation import Tweener
+    reload(Tweener)
+    Tweener.initialize()
+
 def fixTexturePathUI(*args):
     from Maya_tk.modules import FixPath
     reload(FixPath)
