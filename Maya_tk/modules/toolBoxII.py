@@ -661,7 +661,7 @@ class ChanelBox(QtWidgets.QWidget):
 
 """
 
-class DAMGtoolBoxII( QtWidgets.QWidget ):
+class ToolBoxII(QtWidgets.QWidget):
     """
     The DAMGtoolBoxII is a dialog that lets us save and import controllers, 
     also have functions to help user getting easier to modify or modeling nurbs.
@@ -725,7 +725,7 @@ class DAMGtoolBoxII( QtWidgets.QWidget ):
             parent.setWindowTitle('DAMG Tool Box II - Nurbs/Curver/Controller AIO')
             self.layout = QtWidgets.QVBoxLayout(parent)
 
-        super( DAMGtoolBoxII, self ).__init__(parent=parent)
+        super(ToolBoxII, self).__init__(parent=parent)
         #the library variable points to an instance of our controller library
         self.library = ControllerLibrary()
 
@@ -829,7 +829,7 @@ class DAMGtoolBoxII( QtWidgets.QWidget ):
         self.controllerManagerUI( top2 )
 
         # Channel Box section (TOP3)
-        # self.channelbox()
+        self.channelbox()
 
         # --------------------------------------------------------------------------------------------------------
         # MID SECTION
