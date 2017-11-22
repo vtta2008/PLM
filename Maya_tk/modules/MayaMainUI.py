@@ -387,7 +387,7 @@ class MayaMainUI( QtWidgets.QWidget ):
         cmds.setParent( mlor_lo1 )
 
         t2 = cmds.columnLayout( parent=self.tabControls, w=w2 )
-        self.modelingTab()
+        modelingTabLayout = self.modelingTab()
         cmds.setParent( self.tabControls )
 
         t3 = cmds.columnLayout(parent=self.tabControls )
@@ -395,7 +395,7 @@ class MayaMainUI( QtWidgets.QWidget ):
         cmds.setParent( self.tabControls )
 
         t4 = cmds.columnLayout( parent=self.tabControls )
-        self.surfacingTab()
+        sufacingTabLayout = self.surfacingTab()
         cmds.setParent( self.tabControls )
 
         t5 = cmds.columnLayout(parent=self.tabControls )
@@ -403,7 +403,7 @@ class MayaMainUI( QtWidgets.QWidget ):
         cmds.setParent( self.tabControls )
 
         t6 = cmds.columnLayout(parent=self.tabControls )
-        self.animationTab()
+        animationTabLayout = self.animationTab()
         cmds.setParent( self.tabControls )
 
         t7 = cmds.columnLayout(parent=self.tabControls )
@@ -414,13 +414,32 @@ class MayaMainUI( QtWidgets.QWidget ):
             (t1, "Project"), (t2, "Model"), (t3, "Rig"), (t4, "Surface"), (t5, "FX"), (t6, "Anim"), (t7, "Light")) )
 
     def animationTab(self):
+        animationTabLayout = cmds.columnLayout()
+
         self.bts.makeAcoolButton("Animation Tweener", 'Tweener', self.bts.tweenerUI)
 
+        cmds.setParent(animationTabLayout)
+
+        return animationTabLayout
+
     def modelingTab(self):
+        modelingTabLayout = cmds.columnLayout()
+
         self.bts.makeAcoolButton("Create gear sets", 'Create Gear', self.bts.createGear)
+        self.bts.makeAcoolButton("Objects Randomizer", 'Randomizer', self.bts.randomizer)
+
+        cmds.setParent(modelingTabLayout)
+
+        return modelingTabLayout
 
     def surfacingTab(self):
+        sufacingTabLayout = cmds.columnLayout()
+
         self.bts.makeAcoolButton("Vray Material Presets", "Vray Presets", self.bts.vmmApps)
+
+        cmds.setParent(sufacingTabLayout)
+
+        return sufacingTabLayout
 
     def menuSection(self, parent, *args):
         # file

@@ -5,13 +5,16 @@
 
 """
 
-from maya import cmds, mel
-import maya.OpenMaya as om
+import logging
+import os
+import subprocess
 from functools import partial
 
-import os, sys, logging, shutil, subprocess
+import maya.OpenMaya as om
+from maya import cmds, mel
 
 from Maya_tk.modules import MayaVariables as var
+
 NAMES = var.MAINVAR
 SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
 ICONS = var.ICONS
@@ -28,6 +31,11 @@ ICONWIDTH = 30
 logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
+
+def randomizer(*args):
+    from Maya_tk.modules.modeling import Randomizer
+    reload(Randomizer)
+    Randomizer.initialize()
 
 def userLib(*args):
     from Maya_tk.modules import UserLibrary

@@ -41,7 +41,7 @@ from Maya_tk.modules import toolBoxIIfuncs
 NAMES = var.MAINVAR
 SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
 VERSION = var.MAYAVERSION
-DIRECTORY = os.path.join(os.getcwd(), 'Maya_tk/userLibrary/controllerLibrary')
+DIRECTORY = os.path.join(os.getenv('PIPELINE_TOOL'), 'Maya_tk/userLibrary')
 CHANNELBOX_ID = 'ChannelBoxID'
 
 # -------------------------------------------------------------------------------------------------------------
