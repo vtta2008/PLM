@@ -4,9 +4,9 @@ import random
 def createObjects(mode, numObjects):
     """
     This creates objects. Support Cubes, Spheres, Cylinders and Cones
-    :param mode:
-    :param numObjects:
-    :return:
+    :param mode: To create objects
+    :param numObjects: Number of objects will be created
+    :return: a list of created objects
     """
 
     objList = []
