@@ -7,15 +7,15 @@
 # IMPORT MAYA PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
 from maya import cmds
-
+import sys
 
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
 winID = 'AnimationTweener'
 winTitle = 'Tweener'
-W = 400
-CW = [(1,5),(2,100),(3,5),(4,200),(5,5),(6,80),(7,5)]
+W = 430
+CW = [(1,5),(2,100),(3,5),(4,25),(5,5),(6,200),(7,5),(8,80),(9,5)]
 
 class Tweener(object):
 
@@ -39,14 +39,17 @@ class Tweener(object):
         cmds.text(l="Use this slider to set the tween amount", align='center', w=W)
         cmds.text(l="")
 
-        cmds.rowColumnLayout(nc=7, cw=CW)
+        cmds.rowColumnLayout(nc=9, cw=CW)
 
         cmds.text(l='')
         self.floatField = cmds.floatField(min=0, max=100, v=50, pre=3, cc=self.changeSlider)
         cmds.text(l='')
+        cmds.text(l='%')
+        cmds.text(l='')
         self.slider = cmds.floatSlider(min=0, max=100, v=50, step=1, cc=self.tween)
         cmds.text(l='')
         cmds.button('Reset', c=self.reset)
+        cmds.text(l='')
 
         cmds.showWindow(winID)
 
@@ -66,13 +69,28 @@ class Tweener(object):
 
         self.tween(value)
 
+    def changeFloatField(self, *args):
+
+        value = cmds.floatSlider(self.slider, q=True, v=True)
+
+        cmds.floatField(self.floatField, e=True, v=value)
+
     def tween(self, percentage, obj=None, attrs=None, selection=True, *args):
+
+        self.changeFloatField()
+
         # If obj is not given and selection is set to false error early
         if not obj and not selection:
             raise ValueError('No object given to tween')
         # If no obj is specified, get it from the first selection
         if not obj:
-            obj = cmds.ls(sl=True)[0]
+            curSel = cmds.ls(sl=True)
+
+            if len(curSel)==0:
+                print "There is nothing to tween"
+                sys.exit()
+            else:
+                obj = cmds.ls(sl=True)[0]
 
         if not attrs:
             attrs = cmds.listAttr(obj, keyable=True)

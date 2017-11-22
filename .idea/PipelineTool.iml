@@ -4,7 +4,7 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/lib_tk/TEXTURES" />
     </content>
-    <orderEntry type="jdk" jdkName="Python 2.7.13 (C:\ProgramData\Anaconda2\python.exe)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Maya2017 Python" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
   <component name="TestRunnerService">
