@@ -2,7 +2,11 @@
 
 """
 
+Script Name: ToolBoxIII.py
+Author: Do Trinh/Jimmy - TD artist
 
+Description:
+    The third tool box in my toolboxes collection: lighting manager.
 
 """
 
@@ -633,3 +637,7 @@ class toolBoxIII(QtWidgets.QWidget):
         type = [str(f) for f in self.mayaLights + typeMgr.pluginLights()]
         for light in pm.ls(type=type):
             self.addLight(light)
+
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------

@@ -1,12 +1,13 @@
 # -*-coding:utf-8 -*
-
 """
+
 Script Name: DAMGsetup.py
 Author: Do Trinh/Jimmy - TD artist
 
 Description:
     It basically checkes all the files in folder to makes ure everthing is there. Then copy some files to folders
     as required like userSetup.py or saving the path of DAMG tool folder to sys.path for next use.
+
 """
 
 # -------------------------------------------------------------------------------------------------------------
@@ -168,3 +169,7 @@ class MayaPythonProc( object ):
 
 if __name__=='main':
     MayaPythonProc()
+
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------

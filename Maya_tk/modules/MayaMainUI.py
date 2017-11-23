@@ -1,6 +1,11 @@
 # -*-coding:utf-8 -*
-
 """
+
+Script Name: MayaMainUI.py
+Author: Do Trinh/Jimmy - TD artist
+
+Description:
+    It will create a dock UI for entire my work in Maya.
 
 """
 # -------------------------------------------------------------------------------------------------------------
@@ -1015,4 +1020,6 @@ class MayaMainUI( QtWidgets.QWidget ):
 if __name__=="__main__":
     MayaMainUI()
 
-#End of Main UI
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------

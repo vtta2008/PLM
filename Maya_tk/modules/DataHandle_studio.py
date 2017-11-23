@@ -1,10 +1,21 @@
 # -*-coding:utf-8 -*
-
 """
 
+Script Name: DataHandle_studio.py
+Author: Do Trinh/Jimmy - TD artist
+
+Description:
+    This is the most important tools I have been making ever, it is the set of snapshot, publish and loader.
+
+    Snapshot will capture out your current viewer, also save out your work incrementally with note made by user
+    so that you can comeback to exactly moment you do snapshot via loader tool.
+
+    Publish will publish your current version and automatically save out the next version so you can keep continuing
+    working in your progress. Another artist may use your publish.
+
+    Loader is to load your snapshot.
 
 """
-
 
 import maya.cmds as cmds
 import maya.OpenMaya as om
@@ -391,3 +402,7 @@ class DataHandle( object ):
     def closeFile(self, *args):
         if cmds.window('loaderUI', exists=True):
             cmds.deleteUI('loaderUI')
+
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------

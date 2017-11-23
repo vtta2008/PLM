@@ -1,11 +1,11 @@
 # -*-coding:utf-8 -*
-
 """
 
 Script Name: Randomizer.py
 Author: Do Trinh/Jimmy - TD artist
 
 Description:
+    It will make an simple UI to move objects around randomly base on selection.
 
 """
 
@@ -15,6 +15,9 @@ Description:
 from maya import cmds
 import random
 
+# ------------------------------------------------------
+# VARIALBES ARE USED BY ALL CLASSES
+# ------------------------------------------------------
 winID = 'Randomizer'
 winTitle = 'Objects Randomizer'
 
@@ -128,3 +131,10 @@ class Randomizer(object):
 
 def initialize():
     Randomizer()
+
+if __name__=="__main__":
+    initialize()
+
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------

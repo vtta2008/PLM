@@ -1,7 +1,13 @@
 # -*-coding:utf-8 -*
-
 """
 
+Script Name: MayaVariables.py
+Author: Do Trinh/Jimmy - TD artist
+
+Description:
+    All of the variables being used everywhere inside Maya will be stored in this place.
+    Storing variables here and made it contributing to every scripts is not a bad idea, but it makes me more confusing.
+    So I will not update it anymore but still need it for some reason.
 
 """
 
@@ -60,8 +66,8 @@ MAINVAR = dict(
     mayaRoot = ['userSetup.py', 'InitTool.py'],
 
     mayaModule = ['ChannelBox.py', 'MayaFuncs.py', 'MayaMainUI.py', 'MayaPythonProc.py', 'MayaVariables.py',
-                  'OsPythonProc.py', 'ProdFolder.py', 'ProjectManager.py', 'toolBoxI.py', 'toolBoxII.py',
-                  'toolBoxIII.py', 'toolBoxIV.py','DataHandle_studio.py', ],
+                  'OsPythonProc.py', 'ProdFolder.py', 'ProjectManager.py', 'ToolBoxI.py', 'ToolBoxII.py',
+                  'ToolBoxIII.py', 'ToolBoxIV.py','DataHandle_studio.py', ],
 
     mayaPlugin = ['Qt.py',],
 
@@ -232,3 +238,7 @@ def createLog(apps, event='log in', data=MAINVAR):
 
     with open(log, 'a+' ) as f:
         f.write(content)
+
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------

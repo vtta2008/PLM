@@ -36,7 +36,7 @@ import maya.app.renderSetup.views.renderSetupButton as marv #very nice symbol bu
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
 from Maya_tk.modules import MayaVariables as var
-from Maya_tk.modules import toolBoxIIfuncs
+from Maya_tk.modules import ToolBoxIIfuncs
 
 NAMES = var.MAINVAR
 SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
@@ -1556,7 +1556,7 @@ class ToolBoxII(QtWidgets.QWidget):
         if not nurbsType:
             nurbsType = self.nurbsType2DCB.currentText()
 
-        func = toolBoxIIfuncs.ToolBoxIIfuncs
+        func = ToolBoxIIfuncs.ToolBoxIIfuncs
         func( nurbsType )
         nurbs = cmds.ls(sl=True)[0]
         cmds.rename(nurbs, nurbsType)
@@ -1566,7 +1566,7 @@ class ToolBoxII(QtWidgets.QWidget):
         if not nurbsType:
             nurbsType = self.nurbsType3DCB.currentText()
 
-        func = toolBoxIIfuncs.ToolBoxIIfuncs
+        func = ToolBoxIIfuncs.ToolBoxIIfuncs
         func( nurbsType )
         nurbs = cmds.ls(sl=True)[0]
         cmds.rename(nurbs, nurbsType)

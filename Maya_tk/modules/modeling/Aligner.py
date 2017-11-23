@@ -1,11 +1,11 @@
 # -*-coding:utf-8 -*
-
 """
 
 Script Name: Aligner.py
 Author: Do Trinh/Jimmy - TD artist
 
 Description:
+    It will make a simple UI which contains tools to align things including objects, components base on selection.
 
 """
 
@@ -17,10 +17,11 @@ from maya import cmds
 from functools import partial
 import os
 
+# ------------------------------------------------------
+# VARIALBES ARE USED BY ALL CLASSES
+# ------------------------------------------------------
 winID = 'ALigner'
 winTitle = 'Objects Aligner'
-
-print os.path.join(os.getenv('PIPELINE_TOOL'), 'Maya_tk/icons')
 
 def getIcon(icon):
     iconPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'Maya_tk/icons')
@@ -203,3 +204,10 @@ class Aligner(object):
 
 def initialize():
     Aligner()
+
+if __name__=="__main__":
+    initialize()
+
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------

@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+"""
+Script Name: englishDict.py
+Author: Do Trinh/Jimmy - 3D artist.
+
+Description:
+    It is a very fun english dictionary.
+
+"""
+
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------

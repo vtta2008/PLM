@@ -1,6 +1,11 @@
 # -*-coding:utf-8 -*
-
 """
+
+Script Name: Tweener.py
+Author: Do Trinh/Jimmy - TD artist
+
+Description:
+    It will make a simple UI to tween the animation line between 2 keyframes base on current frame.
 
 """
 # -------------------------------------------------------------------------------------------------------------
@@ -135,3 +140,10 @@ class Tweener(object):
 
 def initialize():
     Tweener()
+
+if __name__ == "__main__":
+    initialize()
+
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------

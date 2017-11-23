@@ -1,7 +1,11 @@
 # -*-coding:utf-8 -*
-
 """
 
+Script Name: ToolBoxI.py
+Author: Do Trinh/Jimmy - TD artist
+
+Description:
+    It will load an UI which can rename and add attributes to object inside Maya.
 
 """
 
@@ -490,3 +494,7 @@ class DAMGtoolBoxI( object ):
                 cmds.addAttr(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
                 item+=1
             i+=1
+
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------

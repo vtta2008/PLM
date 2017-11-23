@@ -1,5 +1,4 @@
 # -*-coding:utf-8 -*
-
 """
 
 Script Name: FixPath.py

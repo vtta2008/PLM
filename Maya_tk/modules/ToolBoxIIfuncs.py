@@ -1,7 +1,11 @@
 # -*-coding:utf-8 -*
-
 """
 
+Script Name: ToolBoxIIfuncs.py
+Author: Do Trinh/Jimmy - TD artist
+
+Description:
+    This file contains all the functions/tool will be used by ToolBoxII.py
 
 """
 
@@ -3483,3 +3487,6 @@ class ToolBoxIIfuncs( object ):
             cmds.delete( list[ x + 1 ] )
         cmds.select( list[ 0 ] )
 
+# --------------------------------------------------------------------------------------------------------
+# END OF CODE
+# --------------------------------------------------------------------------------------------------------

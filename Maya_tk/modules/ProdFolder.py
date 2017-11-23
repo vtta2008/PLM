@@ -8,8 +8,6 @@ Author: Do Trinh/Jimmy - 3D artist, leader DAMG team.
 Description:
     This script is main file to create folder structure in pipeline
 
-for any question or feedback, feel free to email me: dot@damgteam.com or damgteam@gmail.com
-
 """
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES

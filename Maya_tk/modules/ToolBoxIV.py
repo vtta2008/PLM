@@ -1,8 +1,11 @@
 # coding=utf-8
-
 """
 
+Script Name: ToolBoxIV.py
+Author: Do Trinh/Jimmy - TD artist
 
+Description:
+    It is simply load UI for you in order to open other software inside Maya
 
 """
 
@@ -125,3 +128,7 @@ class toolBoxIV( object ):
         cmds.frameLayout(borderVisible=True, labelVisible=False)
         cmds.symbolButton(ann=ann, i=icon, c=command, h=40, w=40)
         cmds.setParent('..')
+
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------

@@ -1,8 +1,11 @@
 # -*-coding:utf-8 -*
-
 """
 
+Script Name: CustomViewer.py
+Author: Do Trinh/Jimmy - TD artist
 
+Description:
+    It will make an individual viewer from chossen camera.
 
 """
 
@@ -308,4 +311,7 @@ class CustomViewer(object):
         cmds.playblast(v=False, frame=currentTime, wh=(w,h), p=100, orn=False, fmt = "image", filename=path)
         cmds.layoutDialog(dismiss="1")
 
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------
 

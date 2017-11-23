@@ -6,8 +6,8 @@ Author: Do Trinh/Jimmy - 3D artist.
 Description:
     This script is main file to store everything for the pipeline app
 
-for any question or feedback, feel free to email me: dot@damgteam.com or damgteam@gmail.com
 """
+
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
