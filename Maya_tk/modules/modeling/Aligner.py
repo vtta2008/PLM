@@ -14,9 +14,23 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 from maya import cmds
+from functools import partial
+import os
 
 winID = 'ALigner'
 winTitle = 'Objects Aligner'
+
+print os.path.join(os.getenv('PIPELINE_TOOL'), 'Maya_tk/icons')
+
+def getIcon(icon):
+    iconPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'Maya_tk/icons')
+    return os.path.join(iconPth, icon)
+
+def createIconButton(icon, command=None):
+    if command:
+        cmds.iconTextButton(image1=getIcon(icon), w=50, h=50, c=command)
+    else:
+        cmds.iconTextButton(image1=getIcon(icon), w=50, h=50)
 
 class Aligner(object):
     
@@ -36,28 +50,45 @@ class Aligner(object):
         # Add radio buttons for axis
         cmds.frameLayout(l='Choose an axis')
 
-        cmds.rowLayout(nc=3)
+        cmds.gridLayout(nc=3, cw=50)
         cmds.radioCollection()
         self.xAxis = cmds.radioButton(l='x', select=True)
         self.yAxis = cmds.radioButton(l='y')
         self.zAxis = cmds.radioButton(l='z')
 
+        createIconButton('XAxis.png', partial(self.onOptionClick, self.xAxis))
+        createIconButton('YAxis.png', partial(self.onOptionClick, self.yAxis))
+        createIconButton('ZAxis.png', partial(self.onOptionClick, self.zAxis))
+
         cmds.setParent(mlo)
 
         # Add radio buttons for mode
         cmds.frameLayout(l='Choose where to algin')
+
         cmds.rowLayout(nc=3)
+
+        cmds.gridLayout(nc=3, cw=50)
         cmds.radioCollection()
         self.minMode = cmds.radioButton(l='Min')
         self.midMode = cmds.radioButton(l='Mid', select=True)
         self.maxMode = cmds.radioButton(l='Max')
 
+        createIconButton('MinAxis.png', partial(self.onOptionClick, self.minMode))
+        createIconButton('MidAxis.png', partial(self.onOptionClick, self.midMode))
+        createIconButton('MaxAxis.png', partial(self.onOptionClick, self.maxMode))
+
         cmds.setParent(mlo)
 
         # Add apply button
-        cmds.button(l='Align', c=self.onApplyClick)
+        cmds.button(l='Align', c=self.onApplyClick, w=150, bgc=(.2,.5,.9))
 
         cmds.showWindow(winID)
+
+        cmds.window(winID, e=True, resizeToFitChildren=True)
+
+    def onOptionClick(self, opt, *args):
+
+        cmds.radioButton(opt, e=True, select=True)
 
     def onApplyClick(self, *args):
         # Get the axis
@@ -87,6 +118,21 @@ class Aligner(object):
         if not nodes:
             cmds.confirmDialog(t='Error', m='Nothing is selected', b='Ok')
 
+        _nodes = []
+
+        for node in nodes:
+            if '.f[' in node:
+                node = cmds.polyListComponentConversion(node, fromFace=True, toVertex=True)
+            elif '.e[' in node:
+                node = cmds.polyListComponentConversion(node, fromEdge=True, toVertex=True)
+
+            cmds.select(node)
+            node = cmds.ls(sl=True, fl=True)
+
+            _nodes.extend(node)
+
+        node = _nodes
+
         # Get the dimensions of our objects
         bboxes = {}
         if axis == 'x':
@@ -105,11 +151,15 @@ class Aligner(object):
         values = []
 
         for node in nodes:
-            bbox = cmds.exactWorldBoundingBox(node)
+            if '.vtx[' in node:
+                ws = cmds.xfrom(node, q=True, t=True, w=True)
+                minValue = midValue = maxValue = ws[start]
+            else:
+                bbox = cmds.exactWorldBoundingBox(node)
 
-            minValue = bbox[start]
-            maxValue = bbox[start+3]
-            midValue = (minValue+maxValue)/2
+                minValue = bbox[start]
+                maxValue = bbox[start+3]
+                midValue = (minValue+maxValue)/2
 
             bboxes[node] = (minValue, midValue, maxValue)
 
