@@ -1,6 +1,6 @@
 # -*-coding:utf-8 -*
-
 """
+
 Script Name: toolBoxII
 Author: Do Trinh/Jimmy - TD artist
 
@@ -11,15 +11,6 @@ Description:
     It makes an UI that you can quickly create nurbs controller for Maya, you can also save it for your own. All
     the data you save will be stored in 'userLibrary' folder inside DAMGpipelinetool folder.
 
-Credit:
-    First, I have attended an online course: "Python For Maya: Artist Friendly Programming" by Dhruv Govil.
-    I would like to thank him for helping me understand how to use PySide2 and Qt5 to make UI, and new
-    knowledge that I did not know before although I have been using Maya for years.
-
-Reference:
-        Dhruv Govil - from udemy.com
-        Mingquan Zhou - from creativecrash.com
-        Karim Kashefy - from creativecrash.com
 """
 
 # -------------------------------------------------------------------------------------------------------------
@@ -74,6 +65,7 @@ else:
     logger.debug('Using PySide2 with shiboken2')
     from shiboken2 import wrapInstance
     from Maya_tk.plugins.Qt.QtCore import Signal
+
 # -------------------------------------------------------------------------------------------------------------
 # SHOW UI - MAKE UI IS DOCKABLE INSIDE MAYA
 # -------------------------------------------------------------------------------------------------------------

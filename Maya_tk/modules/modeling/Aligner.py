@@ -113,10 +113,10 @@ class Aligner(object):
 
     def align(self, nodes=None, axis='x', mode='mid', *args):
         # Default nodes to selection if not provided
-        if not nodes:
-            nodes = cmds.ls(sl=True)
 
-        if not nodes:
+        if nodes == None:
+            nodes = cmds.ls(sl=True)
+        elif not nodes:
             cmds.confirmDialog(t='Error', m='Nothing is selected', b='Ok')
 
         _nodes = []
@@ -134,8 +134,11 @@ class Aligner(object):
 
         node = _nodes
 
+        minMode = mode == 'min'
+        maxMode = mode == 'max'
+        midMode = mode == 'mid'
+
         # Get the dimensions of our objects
-        bboxes = {}
         if axis == 'x':
             start = 0
         elif axis == 'y':
@@ -145,10 +148,7 @@ class Aligner(object):
         else:
             cmds.confirmDialog(t='error', m='Unknown Axis', b='Ok')
 
-        minMode = mode == 'min'
-        maxMode = mode == 'max'
-        midMode = mode == 'mid'
-
+        bboxes = {}
         values = []
 
         for node in nodes:
@@ -185,7 +185,7 @@ class Aligner(object):
 
             minValue, midValue, maxValue = bbox
 
-            ws = cmds.xform(node, q=True, translation = True, ws=True)
+            ws = cmds.xform(node, q=True, t=True, ws=True)
 
             width = maxValue - minValue
 
@@ -199,8 +199,8 @@ class Aligner(object):
                 distance = target - midValue
                 ws[start] = midValue + distance
 
-        # Move objects to the target
-        cmds.xform(node, translation=ws, ws=True)
+            # Move objects to the target
+            cmds.xform(node, translation=ws, ws=True)
 
 def initialize():
     Aligner()

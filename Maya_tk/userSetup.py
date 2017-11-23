@@ -54,10 +54,12 @@ class InitUserSetup(object):
         self.makePipelineMenu()
         # Create port for Vray material presets pro
         cmds.commandPort(n='localhost:7088')
-        # Load pipeline tool UI dockable
-        self.mayaMainUI()
         # Load pipeline tool custom layout
         self.loadLayout()
+        # Load pipeline tool UI dockable
+        self.mayaMainUI()
+        # Load timeline color marker script
+        self.loadTimelineColorMarker()
 
     def makePipelineMenu(self):
         # Make menu in main Maya layout
@@ -124,6 +126,11 @@ class InitUserSetup(object):
         # If the file is already there, dont need to import, change layout then.
         else:
             mel.eval('onSetCurrentLayout "pipelineTool";')
+
+    def loadTimelineColorMarker(self, *args):
+        from Maya_tk.modules import TimelineMarker
+        reload(TimelineMarker)
+        TimelineMarker.initialize()
 
     def greetings(self):
 
