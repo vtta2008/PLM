@@ -39,7 +39,7 @@ def dataHandle(filePath, mode, indent=4, *args):
     json functions: read, write, edit... etc
     """
 
-    print filePath
+    # print filePath
 
     if mode=='r' or mode=='r+':
         if not os.path.exists(filePath):
@@ -75,7 +75,7 @@ def getAllInstalledPythonPackage(*args):
 
     pkgInfo = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/apps.pipeline')
 
-    print pkgInfo, os.path.exists(pkgInfo)
+    # print pkgInfo, os.path.exists(pkgInfo)
 
     if not os.path.exists(pkgInfo):
         from tk import getData

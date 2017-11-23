@@ -340,7 +340,7 @@ class GetData( object ):
 
     def createInfo(self, info, names, package):
 
-        print os.path.join(package['appData'], names['info'])
+        # print os.path.join(package['appData'], names['info'])
 
         with open(os.path.join(package['appData'], names['info']), 'w') as f:
             json.dump(info, f, indent=4)
