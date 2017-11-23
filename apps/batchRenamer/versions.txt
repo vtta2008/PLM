@@ -1,6 +1,29 @@
 Advanced Renamer Version Log:
 
-Advanced Renamer 3.77 - 17. april. 2017
+Advanced Renamer 3.80 - 17. oct. 2017
+ * Improved integration with ExifTool
+ * Optimized performance when testing new file names
+ * Option for not analyzing media files (program settings window)
+
+Advanced Renamer 3.79 - 06. sep. 2017
+ * Folder panel will no longer show zip files as folders
+ * When adding both root and sub folders, the root folders will be added last instead of first
+ + Files are no longer sorted alphabetically when dragged from Windows Explorer
+ + Add files not matching a regular expression
+ + Added option in settings to move the Start Button to the left
+ + Ukranian translation
+
+Advanced Renamer 3.78 - 20. aug. 2017
+ * Better support for high DPI monitors
+ * Various user interface changes
+ + Check/Uncheck all on method list right click popup
+ + Delete old undo jobs
+ * Larger present methods drop down
+ * Fixed status bar some times showing "Got errors" when no errors were found
+ * Updated regular expressions engine
+ * Fixed wrong thumbnail size in list
+
+Advanced Renamer 3.77 - 17. apr. 2017
  + Rename file pairs with the same new filename
  * Make text blue for items with name override (F2 key)
  * Improved error message for error code 101

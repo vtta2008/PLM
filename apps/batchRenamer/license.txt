@@ -8,9 +8,12 @@ encouraged but not required.
 
 Commercial use
 A license must be obtained to use this software for commercial use. The license
-can be obtained from the Advanced Renamer website and will cover life time the
+can be obtained from the Advanced Renamer website and will cover life time
 use for one person. It is allowed to try out the software for a limited time
 before a license is required.
+Any organization that is considered to be a business, government entity, or
+non-profit organization, is considered commercial in regards to this license
+agreement.
 For automation purposes on multiple servers one license has to be obtained for
 each individual server.
 
