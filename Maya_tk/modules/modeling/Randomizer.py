@@ -22,13 +22,13 @@ class Randomizer(object):
         cmds.frameLayout(label='Choose an object type')
 
         cmds.columnLayout()
-        cmds.radioCollection("objectCreationType")
+        self.objType = cmds.radioCollection()
         cmds.radioButton(label='Sphere')
         cmds.radioButton(label='Cube', select=True)
         cmds.radioButton(label='Cone')
         cmds.radioButton(label='Cylinder')
 
-        cmds.intField("numObjects", value=3)
+        self.numOfObjs = cmds.intField(value=3)
 
         cmds.setParent(mlo)
 
@@ -54,17 +54,17 @@ class Randomizer(object):
         cmds.showWindow(winID)
 
     def onCreateClick(self, *args):
-        radio = cmds.radioCollection("objectCreationType", q=True, select=True)
+        radio = cmds.radioCollection(self.objType, q=True, select=True)
         mode = cmds.radioButton(radio, query=True, label=True)
 
-        numObjects = cmds.intField("numObjects", q=True, value=True)
+        numObjects = cmds.intField(self.numOfObjs, q=True, value=True)
 
         self.createObjects(mode, numObjects)
 
         self.onRandomClick()
 
     def onRandomClick(self, *args):
-        radio = cmds.radioCollection("objectCreationType", q=True, select=True)
+        radio = cmds.radioCollection(self.objType, q=True, select=True)
         mode = cmds.radioButton(radio, query=True, label=True)
 
         for axis in 'xyz':
