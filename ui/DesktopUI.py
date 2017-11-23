@@ -403,8 +403,7 @@ class TabWidget( QWidget ):
             elif key == 'Illustrator CS6':
                 illusBtn = self.makeIconButton(key)
                 self.tab2GridLayout.addWidget(illusBtn,0,0,1,1)
-            else:
-                pass
+
             # InDesign
             if key == 'InDesign CC':
                 indesignBtn = self.makeIconButton(key)
@@ -412,8 +411,7 @@ class TabWidget( QWidget ):
             elif key == 'InDesign CS6':
                 indesignBtn = self.makeIconButton(key)
                 self.tab2GridLayout.addWidget(indesignBtn, 0,1,1,1)
-            else:
-                pass
+
             # Mudbox
             if key == 'Mudbox 2017':
                 mudboxBtn = self.makeIconButton(key)
@@ -421,12 +419,21 @@ class TabWidget( QWidget ):
             if key == 'Mudbox 2016':
                 mudboxBtn = self.makeIconButton(key)
                 self.tab2GridLayout.addWidget(mudboxBtn, 0,2,1,1)
-            else:
-                pass
+
             #UV layout
             if key == 'UVLayout':
                 uvLayoutBtn = self.makeIconButton(key)
                 self.tab2GridLayout.addWidget(uvLayoutBtn, 0,3,1,1)
+
+        icon = QIcon(os.path.join(os.getenv('PIPELINE_TOOL'), 'icons/AdvanceRenamer.icon.png'))
+        pth = os.path.join(os.getenv('PIPELINE_TOOL'), 'apps/batchRenamer/ARen.exe')
+        iconBtn = QPushButton()
+        iconBtn.setToolTip('Advance Renamer 3.8')
+        iconBtn.setIcon(icon)
+        iconBtn.setFixedSize(ICON_SIZE, ICON_SIZE)
+        iconBtn.setIconSize(QSize(ICON_SIZE - BUFFER, ICON_SIZE - BUFFER))
+        iconBtn.clicked.connect(partial(self.openApps, pth))
+        self.tab2GridLayout.addWidget(iconBtn, 0,4,1,1)
 
         dictBtn = QPushButton( 'English Dictionary' )
         dictBtn.clicked.connect(self.englishDict)
