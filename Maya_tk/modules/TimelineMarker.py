@@ -5,7 +5,7 @@ Script Name: Tweener.py
 Author: Do Trinh/Jimmy - TD artist
 
 Description:
-    It will make a simple UI to tween the animation line between 2 keyframes base on current frame.
+    It will make a simple UI to tween the Animation line between 2 keyframes base on current frame.
 
 """
 
@@ -215,7 +215,7 @@ class TimelineMarkers(QWidget):
         be called by update and paintEvent function.
         """
 
-        # Get animation range
+        # Get Animation range
         self.start = cmds.playbackOptions(query=True, min=True)
         self.end = cmds.playbackOptions(query=True, max=True)
 

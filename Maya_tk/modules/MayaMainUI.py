@@ -214,7 +214,7 @@ class MayaMainUI( QtWidgets.QWidget ):
         if self.sequencesList == [ ]:
             self.sequencesTaskPth = self.sequencesPth + 'shot_01/'
             cmds.sysFile( self.sequencesTaskPth, md=True )
-            self.sequencesTaskList = [ 'lighting', 'FX', 'layout', 'animation', 'comp' ]
+            self.sequencesTaskList = [ 'lighting', 'FX', 'layout', 'Animation', 'comp' ]
             for i in self.sequencesTaskList:
                 cmds.sysFile( self.sequencesTaskPth + i, md=True )
         else:

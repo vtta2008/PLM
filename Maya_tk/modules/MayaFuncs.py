@@ -57,7 +57,7 @@ def userLib(*args):
     UserLibrary.initialize()
 
 def tweenerUI(*args):
-    from Maya_tk.modules.animation import Tweener
+    from Maya_tk.modules.Animation import Tweener
     reload(Tweener)
     Tweener.initialize()
 

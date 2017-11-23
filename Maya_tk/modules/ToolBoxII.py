@@ -821,7 +821,7 @@ class ToolBoxII(QtWidgets.QWidget):
         self.controllerManagerUI( top2 )
 
         # Channel Box section (TOP3)
-        self.channelbox()
+        # self.channelbox()
 
         # --------------------------------------------------------------------------------------------------------
         # MID SECTION
