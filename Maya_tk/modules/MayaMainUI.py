@@ -423,10 +423,14 @@ class MayaMainUI( QtWidgets.QWidget ):
         return animationTabLayout
 
     def modelingTab(self):
+        w = WIDTH - ICONWIDTH
+
         modelingTabLayout = cmds.columnLayout()
 
+        cmds.rowColumnLayout(nc=5, cw=[(1,80),(2,80),(3,80),(4,80),(4,80),])
         self.bts.makeAcoolButton("Create gear sets", 'Create Gear', self.bts.createGear)
         self.bts.makeAcoolButton("Objects Randomizer", 'Randomizer', self.bts.randomizer)
+        self.bts.makeAcoolButton('Objects Aligner', 'Aligner', self.bts.aligner)
 
         cmds.setParent(modelingTabLayout)
 

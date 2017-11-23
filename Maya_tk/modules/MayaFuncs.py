@@ -32,6 +32,11 @@ logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
+def aligner(*args):
+    from Maya_tk.modules.modeling import Aligner
+    reload(Aligner)
+    Aligner.initialize()
+
 def randomizer(*args):
     from Maya_tk.modules.modeling import Randomizer
     reload(Randomizer)
