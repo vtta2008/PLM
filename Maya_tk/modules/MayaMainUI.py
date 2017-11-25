@@ -436,6 +436,7 @@ class MayaMainUI( QtWidgets.QWidget ):
         self.bts.makeAcoolButton("Create gear sets", 'Create Gear', self.bts.createGear)
         self.bts.makeAcoolButton("Objects Randomizer", 'Randomizer', self.bts.randomizer)
         self.bts.makeAcoolButton('Objects Aligner', 'Aligner', self.bts.aligner)
+        self.bts.makeAcoolButton('Create Wing', 'Create Wing', self.bts.wingCreator)
 
         cmds.setParent(modelingTabLayout)
 

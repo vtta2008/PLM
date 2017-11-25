@@ -1,7 +1,7 @@
 # -*-coding:utf-8 -*
 """
 
-Script Name: ChannelBox
+Script Name: ChannelBox.py
 Author: Do Trinh/Jimmy - TD artist
 
 Description:

@@ -41,6 +41,11 @@ logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
+def wingCreator(*args):
+    from Maya_tk.modules import WingCreator
+    reload(WingCreator)
+    WingCreator.wingCreator()
+
 def aligner(*args):
     from Maya_tk.modules.modeling import Aligner
     reload(Aligner)
