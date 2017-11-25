@@ -26,7 +26,7 @@ def createTempUser():
     userInfo['TrinhDo'] = [13, func.encoding('adsadsa'), var.USER_CLASS[1], func.avatar('TrinhDo'), 'JimJim', 'PipelineTD']
     userInfo['OliverHilbert'] = [3, func.encoding('123456'), var.USER_CLASS[1], func.avatar('OliverHilbert'), 'Oliver Hilbert', 'Lecture']
     userInfo['DucDM'] = [1, func.encoding('123456'), var.USER_CLASS[1], func.avatar('DucDM'), 'Duong Minh Duc']
-    userInfo['HarryHe'] = [2, func.encoding('123456'), var.USER_CLASS[1], func.avatar('HarryHe'), 'Harry He', 'Technical Director']
+    userInfo['HarryHe'] = [2, func.encoding('123456'), var.USER_CLASS[1], func.avatar('HarryHe'), 'Harry He', 'CEO']
     userInfo['Arjun'] = [4, func.encoding('123456'), var.USER_CLASS[3], func.avatar('Arjun'), 'Arjun', 'LightingTD']
     userInfo['Annie'] = [5, func.encoding('123456'), var.USER_CLASS[3], func.avatar('Annie'), 'Annie', 'LookDev']
     userInfo['DieuTam'] = [6, func.encoding('123456'), var.USER_CLASS[3], func.avatar('DieuTam'), 'Nguyen Dieu Tam', '3D artist']
