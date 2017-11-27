@@ -9,7 +9,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import os, sys, logging, json, subprocess, pip, uuid, unicodedata, datetime
+import os, sys, logging, json, subprocess, pip, uuid, unicodedata, datetime, cv2
 from tk import defaultVariable as var
 
 # ------------------------------------------------------
@@ -29,6 +29,64 @@ OPERATION = var.OPERATION['encode']
 logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
+
+def getfilePath(directory=None):
+    """
+        This function will generate the file names in a directory
+        tree by walking the tree either top-down or bottom-up. For each
+        directory in the tree rooted at directory top (including top itself),
+        it yields a 3-tuple (dirpath, dirnames, filenames).
+    """
+    file_paths = []  # List which will store all of the full filepaths.
+
+    if directory is None:
+        print 'you need to give a specific path to inspect'
+        sys.exit()
+
+    if not os.path.exists(directory):
+        print 'the directory is not exists'
+        sys.exit()
+
+    # Walk the tree.
+    for root, directories, files in os.walk(directory):
+        for filename in files:
+            # Join the two strings in order to form the full filepath.
+            filepath = os.path.join(root, filename)
+            file_paths.append(filepath)  # Add it to the list.
+
+    return file_paths  # Self-explanatory.
+
+
+def batchResizeImage(imgDir=None, imgResDir=None, size=[100,100], ext='jpg', mode=1):
+
+    if imgDir==None:
+        sys.exit()
+
+    if not os.path.exists(imgDir):
+        print 'The source folder: %s is not exists' % imgDir
+        sys.exit()
+
+    if imgResDir==None:
+        imgResDir = imgDir
+
+    if not os.path.exists(imgResDir):
+        os.mkdir(imgResDir)
+
+    images = [i for i in os.listdir(imgDir) if i.endswith('.%s' % ext)]
+
+    resized_images = []
+
+    for image in images:
+        imgPth = os.path.join(imgDir, image)
+        resizedName = 'resized_%s' % image
+        resDir = os.path.join(imgResDir, resizedName)
+        img = cv2.imread(imgPth, mode)
+        resized_image = cv2.resize(img, (size[0], size[1]))
+        cv2.imwrite(resDir, resized_image)
+
+        resized_images.append(resDir)
+
+    return images, resized_images
 
 def createToken(*args):
     token = uuid.uuid4()

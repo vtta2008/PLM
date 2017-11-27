@@ -158,7 +158,7 @@ class projectManager( object ):
         curProjPath = cmds.textField('projectPth', query=True, text=True)
         stage_Ls = ['assets', 'deliverables', 'documents', 'editorial', 'reference', 'RnD', 'sequences', 'resources']
         assets_Ls = ['character', 'enviroment', 'props']
-        task_Ls = ['art', 'modeling', 'rigging', 'surfacing', 'lighting', 'FX', 'anim', 'comp', 'layout']
+        task_Ls = ['art', 'Modeling', 'rigging', 'surfacing', 'lighting', 'FX', 'anim', 'comp', 'layout']
         documents_Ls = ['template', 'moodboard', 'schedule', 'script', 'sound', 'storyboard', 'title', 'tools']
         editorial_Ls = ['animatic', 'edit', 'poster']
         resources_Ls = ['lighting', 'camera rig']

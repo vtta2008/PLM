@@ -42,22 +42,22 @@ logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
 def wingCreator(*args):
-    from Maya_tk.modules import WingCreator
+    import WingCreator
     reload(WingCreator)
     WingCreator.wingCreator()
 
 def aligner(*args):
-    from Maya_tk.modules.modeling import Aligner
+    import Aligner
     reload(Aligner)
     Aligner.initialize()
 
 def randomizer(*args):
-    from Maya_tk.modules.modeling import Randomizer
+    import Randomizer
     reload(Randomizer)
     Randomizer.initialize()
 
 def userLib(*args):
-    from Maya_tk.modules import UserLibrary
+    from Maya_tk import UserLibrary
     reload(UserLibrary)
     UserLibrary.initialize()
 
@@ -320,7 +320,7 @@ def toolBoxI(*args):
     ToolBoxI.DAMGtoolBoxI()
 
 def createGear(*args):
-    from Maya_tk.modules.modeling import gearCreator
+    from Maya_tk.modules.Modeling import gearCreator
     reload(gearCreator)
     gearCreator.gear()
 

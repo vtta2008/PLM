@@ -27,7 +27,7 @@ WINPROFILE = dict( prodpthUI=[ 'ProdPthUI', 'Create New Project', 'SET UP NEW PR
 APPS = [ 'maya', 'zbrush', 'mari', 'nuke', 'photoshop', 'houdini', 'after effects' ]
 
 MASTER = [ 'assets', 'sequences', 'deliverables', 'documents', 'editorial', 'sound', 'resources', 'RnD' ]
-TASKS = [ 'art', 'modeling', 'rigging', 'surfacing' ]
+TASKS = [ 'art', 'Modeling', 'rigging', 'surfacing' ]
 SEQTASKS = [ 'anim', 'comp', 'fx', 'layout', 'lighting' ]
 ASSETS = {'heroObj': [ 'washer', 'dryer' ], 'environment': [], 'props': [ ]}
 STEPS = ['publish', 'review', 'work']
@@ -336,7 +336,7 @@ class ProdFolder( object ):
             os.mkdir(contentMasterPth)
 
         # Assets content
-        assetsTasks = ['art', 'modeling', 'surfacing', 'rigging']
+        assetsTasks = ['art', 'Modeling', 'surfacing', 'rigging']
         assetsSections = ['characters', 'environment', 'props']
 
         assetsPth = os.path.join(self.rootPth, 'assets')
@@ -360,7 +360,7 @@ class ProdFolder( object ):
                         assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
                         if task == 'art':
                             apps = ['photoshop', 'maya']
-                        elif task == 'modeling':
+                        elif task == 'Modeling':
                             apps = ['zbrush', 'maya', 'mudbox', 'houdini']
                         elif task == 'surfacing':
                             apps = ['mari', 'maya', 'substance', 'photoshop']
@@ -392,7 +392,7 @@ class ProdFolder( object ):
                         assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
                         if task == 'art':
                             apps = ['photoshop', 'maya']
-                        elif task == 'modeling':
+                        elif task == 'Modeling':
                             apps = ['zbrush', 'maya', 'mudbox', 'houdini']
                         elif task == 'surfacing':
                             apps = ['mari', 'maya', 'substance', 'photoshop']
@@ -430,7 +430,7 @@ class ProdFolder( object ):
                         assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
                         if task == 'art':
                             apps = ['photoshop', 'maya']
-                        elif task == 'modeling':
+                        elif task == 'Modeling':
                             apps = ['zbrush', 'maya', 'mudbox', 'houdini']
                         elif task == 'surfacing':
                             apps = ['mari', 'maya', 'substance', 'photoshop']

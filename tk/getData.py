@@ -157,6 +157,7 @@ class GetData( object ):
         imgInfo = {}
         # store basic info into dictionary
         imgInfo['imgPth'] = os.path.join(package['root'], package['image'][1])
+
         # get list of image files in folder
         imgs = [f for f in os.listdir(imgInfo['imgPth']) if '.img' in f]
         # check if there is no image file

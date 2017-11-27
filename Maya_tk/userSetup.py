@@ -36,9 +36,10 @@ class InitUserSetup(object):
     """
 
     def __init__(self):
+
         super(InitUserSetup, self).__init__()
         # First greeting to user
-        self.greetings()
+        # self.greetings()
 
         var.createLog('maya')
 

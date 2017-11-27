@@ -72,7 +72,7 @@ def createTempProduction():
 
 def createTempData():
     createTempUser()
-    createTempProduction()
+    # createTempProduction()
 
 if __name__=='__main__':
     createTempData()

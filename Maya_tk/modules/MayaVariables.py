@@ -14,7 +14,7 @@ Description:
 from maya import cmds
 import os, sys, logging, platform, datetime, json
 
-MAYAENVPTH = os.path.join(cmds.internalVar(usd=True).split('scripts')[0], 'Maya_tk.env')
+MAYAENVPTH = os.path.join(cmds.internalVar(usd=True).split('scripts')[0], 'Maya.env')
 
 MAYAVERSION = int(cmds.about(v=True))
 

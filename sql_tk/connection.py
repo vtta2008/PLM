@@ -1,7 +1,6 @@
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery
 
-
 def createConnection():
     db = QSqlDatabase.addDatabase('QSQLITE')
     db.setDatabaseName(':memory:')

@@ -189,7 +189,7 @@ class MayaMainUI( QtWidgets.QWidget ):
             # Create demo assets
             assetsSection = ['character', 'environment','props']
             assetsItem = 'assets001'
-            task = ['art', 'modeling', 'rigging', 'surfacing']
+            task = ['art', 'Modeling', 'rigging', 'surfacing']
             for i in assetsSection:
                 assetsSectionPth = os.path.join(self.assetsPth, i)
                 cmds.sysFile(assetsSectionPth, md=True)

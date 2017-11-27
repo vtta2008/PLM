@@ -656,7 +656,7 @@ class ChanelBox(QtWidgets.QWidget):
 class ToolBoxII(QtWidgets.QWidget):
     """
     The DAMGtoolBoxII is a dialog that lets us save and import controllers, 
-    also have functions to help user getting easier to modify or modeling nurbs.
+    also have functions to help user getting easier to modify or Modeling nurbs.
     """
     # --------------------------------------------------------------------------------------------------------
     # DICTIONARY TO STORE DATA TO MAKE CONTROLLERS SHOW IN DAMG CONTROLLER LIBRARY SECTION

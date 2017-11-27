@@ -92,19 +92,17 @@ userDataPth = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/user.
 
 userData = func.dataHandle(userDataPth, 'r')
 
-# with open(userDataPth, 'r') as f:
-#     userData = json.load(f)
 
-prodInfoFolder = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/prodInfo')
-
-prodContent = [f for f in os.listdir(prodInfoFolder) if f.endswith('.prod')]
-
-prodLst = []
-
-for f in prodContent:
-    with open(os.path.join(prodInfoFolder, f), 'r') as f:
-        info = json.load(f)
-    prodLst.append(info['name'])
+# prodInfoFolder = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/prodInfo')
+#
+# prodContent = [f for f in os.listdir(prodInfoFolder) if f.endswith('.prod')]
+#
+# prodLst = []
+#
+# for f in prodContent:
+#     with open(os.path.join(prodInfoFolder, f), 'r') as f:
+#         info = json.load(f)
+#     prodLst.append(info['name'])
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                                       SUB CLASS: USER LOGIN UI                                          """
