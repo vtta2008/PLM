@@ -46,15 +46,23 @@ class InitUserSetup(object):
         SCR = os.path.join( SCRPTH, NAMES['os'][0] )
 
         if os.path.exists( SCR ):
-            logger.info( 'Start updateing sys path' )
+            # logger.info( 'Start updateing sys path' )
             self.updatePathFromUser(SCR)
         else:
-            self.adviceToInstallAnanconda()
+            pass
 
         # Create menu in Maya Layout
         self.makePipelineMenu()
         # Create port for Vray material presets pro
-        cmds.commandPort(n='localhost:7088')
+        try:
+            cmds.commandPort(n = "localhost:7088")
+
+        except RuntimeError:
+            logger.debug('port:7088 already activated')
+
+        else:
+            pass
+
         # Load pipeline tool custom layout
         self.loadLayout()
         # Load pipeline tool UI dockable
@@ -70,12 +78,24 @@ class InitUserSetup(object):
         cmds.menuItem(l='Change layout', p=mainMenu, c=self.loadLayout)
         cmds.menuItem(l='About', p=mainMenu, c=self.aboutMainUI)
 
-    def adviceToInstallAnanconda(self):
-        title = 'No Ananconda installed'
-        message = MESSAGE[ 'NoPythonInstall' ]
-        logger.info( message )
-        cmds.warning( message )
-        cmds.confirmDialog( t=title, m=message, b='OK' )
+        info = {}
+
+        for key in sorted(os.environ.keys()):
+            info[key] = os.getenv(key)
+
+        sysPth = ""
+
+        for pth in sys.path:
+            sysPth += pth
+
+        info['sysPth'] = sysPth
+
+        filePth = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/maya.os')
+
+        with open(filePth, 'w') as f:
+            json.dump(info, f, indent=4)
+
+        # logger.info('saving data to %s' % filePth)
 
     def updatePathFromUser(self, scr):
 
@@ -88,7 +108,7 @@ class InitUserSetup(object):
                 if os.path.exists(lnk):
                     if not lnk in sys.path:
                         sys.path.append(lnk)
-                        logger.info('Updated system path: %s' % lnk)
+                        # logger.info('Updated system path: %s' % lnk)
 
     def mayaMainUI(self, *args):
         from Maya_tk import InitTool

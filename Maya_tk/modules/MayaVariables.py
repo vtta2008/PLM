@@ -42,7 +42,7 @@ MAINVAR = dict(
 
     subKey = 'Local',
 
-    os = ['env.os', 'os.sysEnv', 'apps.pipeline', 'log.pipeline', 'webs.pipeline'],
+    os = ['sys.config', 'os.config', 'path.config', 'timelog.sch', 'webs.pipeline'],
 
     job=[ 'TD', 'Comp', 'Design', 'Office', 'UV', 'Sound'],
 
@@ -59,7 +59,7 @@ MAINVAR = dict(
 
     py=[ 'tk', 'ui', 'plugins', '' ],
 
-    maya = ['maya.userInfo', 'maya.PluginPth', 'maya.sysEnv'],
+    maya = ['maya.user', 'maya.os', 'maya.os'],
 
     mayaLayout = ['pipelineTool.json', 'shelf_pipelineTool.mel'],
 

@@ -71,7 +71,7 @@ class toolBoxIV( object ):
 
     def getAppData(self):
 
-        self.scrApps = os.path.join(SCRPTH, 'apps.pipeline')
+        self.scrApps = os.path.join(SCRPTH, 'apps.config')
         if not os.path.exists(self.scrApps):
             self.warningMessage(MESSAGE['canNotFindIt'])
         else:
@@ -83,7 +83,7 @@ class toolBoxIV( object ):
         sys.exit()
 
     def buildUI(self):
-        apps = [ 'ZBrush 4R8', 'Mudbox 2017', 'Mari_tk', 'Houdini_tk FX', 'NukeX', 'Hiero',
+        apps = [ 'ZBrush 4R8', 'Mudbox 2017', 'Mari', 'Houdini FX', 'NukeX', 'Hiero',
                  'Photoshop CC', 'Illustrator CC', 'Premiere Pro CC', 'After Effects CC' ]
 
         with open(self.scrApps, 'r') as f:

@@ -72,16 +72,18 @@ class MayaPythonProc( object ):
 
     def checkAllFiles(self):
         for part in self.checkList:
-            logger.info('start inspecting %s folder' % part)
+            # logger.info('start inspecting %s folder' % part)
             for file in self.checkList[part]:
                 if file in self.fileList[part]:
-                    logger.info("%s exists, keep seeking..." % file)
+                    # logger.info("%s exists, keep seeking..." % file)
+                    pass
                 else:
                     logger.info("could not find: %s in: %s" % (file, (os.path.join(NAMES['mayaRootDir'], part))))
                     self.message_missing.append("%s in %s" % (file, (os.path.join(NAMES['mayaRootDir'], part))))
 
         if self.message_missing==[]:
-            logger.info("Finish checking, all files are there")
+            # logger.info("Finish checking, all files are there")
+            pass
         else:
             self.showMissing()
 
@@ -100,17 +102,19 @@ class MayaPythonProc( object ):
         with open(userPath, 'w') as f:
             json.dump(infoUser, f, indent=4)
 
-        logger.info('Saving file to %s' % userPath)
+        # logger.info('Saving file to %s' % userPath)
 
-        infoPath = {}
-        toolPath = os.path.join( SCRPTH, '%s' % NAMES[ 'maya' ][1] )
-        for part in ['icons', 'modules', 'packages']:
-            infoPath[part] = os.path.join(NAMES['mayaRootDir'], part)
-
-        with open(toolPath, 'w') as f:
-            json.dump(infoPath, f, indent=4)
-
-        logger.info('Saving file to %s' % toolPath)
+        # infoPath = {}
+        # toolPath = os.path.join( SCRPTH, '%s' % NAMES[ 'maya' ][1] )
+        # for part in ['icons', 'modules', 'packages']:
+        #     infoPath[part] = os.path.join(NAMES['mayaRootDir'], part)
+        #
+        # with open(toolPath, 'w') as f:
+        #     json.dump(infoPath, f, indent=4)
+        #
+        # print 'Fuck toolpath: %s' % toolPath
+        #
+        # logger.info('Saving file to %s' % toolPath)
 
         self.applyToolPathIntoSystem()
 

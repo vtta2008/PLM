@@ -26,7 +26,7 @@ ENCODE = ['hexadecimal', 'ascii', 'unicode']
 OPERATION = dict( encode=[ 'hex', 'string' ], pathInfo=[ 'create', 'read', 'modify' ] )
 
 # getData.py
-MAIN_NAMES = dict( info='apps.pipeline',
+MAIN_NAMES = dict( info='apps.config',
                    prod='prod.content',
                    log='user.timelog',
                    login='user.info',

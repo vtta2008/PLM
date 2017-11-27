@@ -38,7 +38,8 @@ class InitTool(object):
         from modules import MayaPythonProc
         reload(MayaPythonProc)
         MayaPythonProc.MayaPythonProc()
-        self.OsPythonProc()
+        # self.OsPythonProc()
+        self.MayaMainUI()
 
     def OsPythonProc(self):
         from modules import OsPythonProc
