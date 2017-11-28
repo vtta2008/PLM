@@ -14,12 +14,11 @@ class TestSQL(object):
 
         print 'will do it later'
 
-        # userDataPth = os.path.join(self.scrDatabase, 'user.db')
-        # userConnection = sqlite3.connect(userDataPth)
-        # with userConnection:
-        #     cur = userConnection.cursor()
-        #     cur.execute(
-        #         "CREATE TABLE Users(usernme TEXT, ID INT,  passwork TEXT, group TEXT, avatar TEXT, aka TEXT, title TEXT)")
+        userDataPth = os.path.join(self.scrDatabase, 'user.db')
+        userConnection = sqlite3.connect(userDataPth)
+        with userConnection:
+            cur = userConnection.cursor()
+            cur.execute("CREATE TABLE Users(usernme TEXT, ID INT,  passwork TEXT, group TEXT, avatar TEXT, aka TEXT, title TEXT)")
 
 
 def initialize():
