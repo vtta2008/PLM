@@ -16,6 +16,7 @@ from Maya_tk.modules import MayaVariables as var
 
 from Maya_tk.plugins import Qt
 from Maya_tk.plugins.Qt import QtWidgets, QtCore, QtGui
+
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
@@ -40,7 +41,7 @@ logger.setLevel(logging.DEBUG)
 # -------------------------------------------------------------------------------------------------------------
 # While Qt.py lets us abstract the actual Qt library, there are a few things it cannot do yet
 # and a few support libraries we need that we have to import manually.
-if Qt.__binding__=='PySide':
+if Qt.__binding__ == 'PySide':
     logger.debug('Using PySide with shiboken')
     from shiboken import wrapInstance
     from Maya_tk.plugins.Qt.QtCore import Signal
@@ -58,14 +59,16 @@ def geticon(icon):
     iconPth = os.path.join(os.getcwd(), 'icons')
     return os.path.join(iconPth, icon)
 
+
 # ----------------------------------------------------------------------------------------------------------- #
 """                        MAIN CLASS: APPSMANAGER - GET ALL APPS INSTALLED IN MAYA                         """
+
+
 # ----------------------------------------------------------------------------------------------------------- #
 
-class toolBoxIV( object ):
-
+class toolBoxIV(object):
     def __init__(self):
-        super( toolBoxIV, self ).__init__()
+        super(toolBoxIV, self).__init__()
 
         self.getAppData()
 
@@ -78,13 +81,13 @@ class toolBoxIV( object ):
             self.buildUI()
 
     def warningMessage(self, message):
-        cmds.confirmDialog( t='Warning', m=message, b='OK' )
+        cmds.confirmDialog(t='Warning', m=message, b='OK')
         logger.info(message)
         sys.exit()
 
     def buildUI(self):
-        apps = [ 'ZBrush 4R8', 'Mudbox 2017', 'Mari', 'Houdini FX', 'NukeX', 'Hiero',
-                 'Photoshop CC', 'Illustrator CC', 'Premiere Pro CC', 'After Effects CC' ]
+        apps = ['ZBrush 4R8', 'Mudbox 2017', 'Mari', 'Houdini FX', 'NukeX', 'Hiero',
+                'Photoshop CC', 'Illustrator CC', 'Premiere Pro CC', 'After Effects CC']
 
         with open(self.scrApps, 'r') as f:
             info = json.load(f)
@@ -95,7 +98,7 @@ class toolBoxIV( object ):
             cmds.deleteUI(WINID)
 
         cmds.window(WINID, t=TITLE, rtf=True)
-        cmds.rowColumnLayout(nc=5, cw=self.cw(5,45))
+        cmds.rowColumnLayout(nc=5, cw=self.cw(5, 45))
 
         keys = [k for k in appInfo]
 
@@ -115,9 +118,9 @@ class toolBoxIV( object ):
     def cw(self, nc, w, *args):
         cw = []
         for i in range(nc):
-            column = (i+1, w)
+            column = (i + 1, w)
             cw.append(column)
-            i+=1
+            i += 1
         return cw
 
     def openApps(self, path, *args):
@@ -129,6 +132,6 @@ class toolBoxIV( object ):
         cmds.symbolButton(ann=ann, i=icon, c=command, h=40, w=40)
         cmds.setParent('..')
 
-# -------------------------------------------------------------------------------------------------------------
-# END OF CODE
-# -------------------------------------------------------------------------------------------------------------
+        # -------------------------------------------------------------------------------------------------------------
+        # END OF CODE
+        # -------------------------------------------------------------------------------------------------------------

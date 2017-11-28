@@ -18,7 +18,7 @@ from maya.app.renderSetup.views.renderSetupButton import *
 from maya import OpenMayaUI as omui
 import maya.app.renderSetup.views.lightEditor.lightTypeManager as typeMgr
 import maya.app.renderSetup.views.utils as viewsUtils
-import  mtoa.utils as mutils
+import mtoa.utils as mutils
 
 from Maya_tk.plugins import Qt
 from Maya_tk.plugins.Qt import QtWidgets, QtCore, QtGui
@@ -59,6 +59,7 @@ else:
     from shiboken2 import wrapInstance
     from Maya_tk.plugins.Qt.QtCore import Signal
 
+
 def getMayaMainWindow():
     """
     Since Maya_tk is Qt, we can parent our UIs to it.
@@ -75,6 +76,7 @@ def getMayaMainWindow():
     # Return this to whoever wants it
     return ptr
 
+
 def getDock(name='DAMGtoolBoxIIIDock'):
     """
     This function creates a dock with the given name.
@@ -85,7 +87,7 @@ def getDock(name='DAMGtoolBoxIIIDock'):
         QtWidget.QWidget: The dock's widget
     """
     # Delete any conflicting docks
-    deleteDock( name )
+    deleteDock(name)
 
     # Create a workspaceControl dock using Maya_tk's UI tools
     ctrl = cmds.workspaceControl(name, label='DAMG Tool Box III - All About Lighting')
@@ -96,6 +98,7 @@ def getDock(name='DAMGtoolBoxIIIDock'):
     # Use wrapInstance to convert it to something Python can understand (QWidget)
     ptr = wrapInstance(long(qtCtrl), QtWidgets.QWidget)
     return ptr
+
 
 def deleteDock(name='DAMGtoolBoxIIIdock'):
     """
@@ -111,12 +114,12 @@ from Maya_tk.plugins.Qt.QtWidgets import *
 from Maya_tk.plugins.Qt.QtGui import *
 from Maya_tk.plugins.Qt.QtCore import *
 
-class LightManager(QtWidgets.QWidget):
 
+class LightManager(QtWidgets.QWidget):
     onSolo = QtCore.Signal(bool)
 
     def __init__(self, light):
-        super( LightManager, self ).__init__()
+        super(LightManager, self).__init__()
         if isinstance(light, basestring):
             light = pm.PyNode(light)
 
@@ -168,16 +171,16 @@ class LightManager(QtWidgets.QWidget):
 
         assert len(color) == 3, "You must provide a list of 3 colors"
 
-        r,g,b = [c*255 for c in color]
+        r, g, b = [c * 255 for c in color]
 
-        self.colorBtn.setStyleSheet('background-color: rgba(%s, %s, %s, 1.0)' % (r,g,b))
+        self.colorBtn.setStyleSheet('background-color: rgba(%s, %s, %s, 1.0)' % (r, g, b))
 
     def setColor(self):
         lightColor = self.light.color.get()
         color = pm.colorEditor(rgbValue=lightColor)
 
-        r,g,b,a = [float(c) for c in color.split()]
-        color = (r,g,b)
+        r, g, b, a = [float(c) for c in color.split()]
+        color = (r, g, b)
 
         self.light.color.set(color)
         self.setButtonColor(color)
@@ -192,36 +195,36 @@ class LightManager(QtWidgets.QWidget):
 
         pm.delete(self.light.getTransform())
 
-class LightLibrary(dict):
 
+class LightLibrary(dict):
     def createDirectory(selfself, directory=DIRECTORY):
-        if not os.path.exists( directory ):
-            os.mkdir( directory )
+        if not os.path.exists(directory):
+            os.mkdir(directory)
 
     def save(self, name, screenshot=True, directory=DIRECTORY, **info):
 
-        self.createDirectory( directory )
+        self.createDirectory(directory)
 
-        path = os.path.join( directory, '%s.ma' % name )
-        infoFile = os.path.join( directory, '%s.json' % name )
+        path = os.path.join(directory, '%s.ma' % name)
+        infoFile = os.path.join(directory, '%s.json' % name)
 
-        info[ 'name' ] = name
-        info[ 'path' ] = path
+        info['name'] = name
+        info['path'] = path
 
-        cmds.file( rename=path )
+        cmds.file(rename=path)
 
-        if cmds.ls( sl=True ):
-            cmds.file( force=True, type='mayaAscii', exportSelected=True )
+        if cmds.ls(sl=True):
+            cmds.file(force=True, type='mayaAscii', exportSelected=True)
         else:
-            cmds.file( save=True, type='mayaAscii', force=True )
+            cmds.file(save=True, type='mayaAscii', force=True)
 
         if screenshot:
-            info[ 'screenshot' ] = self.saveScreenshot( name, directory=directory )
+            info['screenshot'] = self.saveScreenshot(name, directory=directory)
 
-        with open( infoFile, 'w' ) as f:
-            json.dump( info, f, indent=4 )
+        with open(infoFile, 'w') as f:
+            json.dump(info, f, indent=4)
 
-        self[ name ] = info
+        self[name] = info
 
     def remove(self, name, directory=DIRECTORY):
         mayapath = os.path.join(directory, '%s.ma' % name)
@@ -240,65 +243,65 @@ class LightLibrary(dict):
     def find(self, directory=DIRECTORY):
         self.clear()
 
-        if not os.path.exists( directory ):
+        if not os.path.exists(directory):
             return
 
-        files = os.listdir( directory )
-        mayafiles = [ f for f in files if f.endswith( '.ma' ) ]
+        files = os.listdir(directory)
+        mayafiles = [f for f in files if f.endswith('.ma')]
 
         for ma in mayafiles:
-            name, ext = os.path.splitext( ma )
-            path = os.path.join( directory, ma )
+            name, ext = os.path.splitext(ma)
+            path = os.path.join(directory, ma)
 
             infoFile = '%s.json' % name
             if infoFile in files:
-                infoFile = os.path.join( directory, infoFile )
+                infoFile = os.path.join(directory, infoFile)
 
-                with open( infoFile, 'r' ) as f:
-                    info = json.load( f )
+                with open(infoFile, 'r') as f:
+                    info = json.load(f)
             else:
                 info = {}
 
             screenshot = '%s.jpg' % name
             if screenshot in files:
-                info[ 'screenshot' ] = os.path.join( directory, name )
+                info['screenshot'] = os.path.join(directory, name)
 
-            info[ 'name' ] = name
-            info[ 'path' ] = path
+            info['name'] = name
+            info['path'] = path
 
-            self[ name ] = info
+            self[name] = info
 
     def load(self, name):
-        path = self[ name ][ 'path' ]
-        cmds.file( path, i=True, usingNamespaces=False )
+        path = self[name]['path']
+        cmds.file(path, i=True, usingNamespaces=False)
 
     def saveScreenshot(self, name, directory=DIRECTORY):
         cmds.viewFit()
-        path = os.path.join( directory, '%s.jpg' % name )
+        path = os.path.join(directory, '%s.jpg' % name)
         cmds.setAttr('defaultRenderGlobals.imageFormat', 8)
         cf = cmds.currentTime(q=True)
         cmds.playblast(completeFilename=path, forceOverwrite=True, format='image', width=200, height=200,
                        showOrnaments=False, startTime=cf, endTime=cf, viewer=False)
         return path
 
-class toolBoxIII(QtWidgets.QWidget):
 
+class toolBoxIII(QtWidgets.QWidget):
     mayaLightTypes = {
 
         "pointLight": cmds.pointLight,
         "ambientLight": cmds.ambientLight,
         "spotLight": cmds.spotLight,
         "directionalLight": cmds.directionalLight,
-        "areaLight": partial( cmds.shadingNode, 'areaLight', al=True ),
-        "volumeLight": partial( cmds.shadingNode, 'volumeLight', al=True )
+        "areaLight": partial(cmds.shadingNode, 'areaLight', al=True),
+        "volumeLight": partial(cmds.shadingNode, 'volumeLight', al=True)
     }
 
     vrayLightTypes = {
 
-        "VRayLightRectShape": partial( cmds.shadingNode, 'VRayLightRectShape', al=True ),
-        "VRayLightDomeShape": partial( cmds.shadingNode, 'VRayLightDomeShape', al=True ),
-        "VRayLightSphereShape": partial( cmds.shadingNode, 'VRayLightSphereShape', al=True ),
-        "VRayLightIESShape": partial( cmds.shadingNode, 'VRayLightIESShape', al=True ),
+        "VRayLightRectShape": partial(cmds.shadingNode, 'VRayLightRectShape', al=True),
+        "VRayLightDomeShape": partial(cmds.shadingNode, 'VRayLightDomeShape', al=True),
+        "VRayLightSphereShape": partial(cmds.shadingNode, 'VRayLightSphereShape', al=True),
+        "VRayLightIESShape": partial(cmds.shadingNode, 'VRayLightIESShape', al=True),
         "VRayLightMesh": partial(cmds.shadingNode, 'VRayLightMeshShape', al=True),
         "VRayLightMeshLightLinking": partial(cmds.shadingNode, 'VRayLightMeshLightLinkingShape', al=True),
         "VRayPluginNodeLightShapeShape": partial(cmds.shadingNode, 'VRayPluginNodeLightShapeShape', al=True),
@@ -329,7 +332,7 @@ class toolBoxIII(QtWidgets.QWidget):
 
     }
 
-    BUTTON_SIZE = viewsUtils.dpiScale( 20 )
+    BUTTON_SIZE = viewsUtils.dpiScale(20)
 
     def __init__(self, dock=True):
         if dock:
@@ -348,7 +351,7 @@ class toolBoxIII(QtWidgets.QWidget):
 
             dlgLayout = QtWidgets.QVBoxLayout(parent)
 
-        super( toolBoxIII, self ).__init__( parent=parent )
+        super(toolBoxIII, self).__init__(parent=parent)
 
         self.setWindowTitle('Lighting Manager')
 
@@ -361,10 +364,10 @@ class toolBoxIII(QtWidgets.QWidget):
         if not dock:
             parent.show()
 
-        self.userAppDir = cmds.internalVar( userAppDir=True )
+        self.userAppDir = cmds.internalVar(userAppDir=True)
         self.userLibaryDir = self.userAppDir + 'userLibrary'
-        if not os.path.exists( self.userLibaryDir ):
-            os.mkdir( self.userLibaryDir )
+        if not os.path.exists(self.userLibaryDir):
+            os.mkdir(self.userLibaryDir)
 
     def buildUI(self):
         self.layout = QtWidgets.QGridLayout(self)
@@ -376,8 +379,8 @@ class toolBoxIII(QtWidgets.QWidget):
 
         iconBtnWidget = QtWidgets.QWidget()
         self.iconBtnLayout = QtWidgets.QHBoxLayout(iconBtnWidget)
-        self.layout.addWidget(iconBtnWidget, 0,0)
-        self.iconBtnLayout.addWidget( QtWidgets.QLabel( "Maya_tk: " ) )
+        self.layout.addWidget(iconBtnWidget, 0, 0)
+        self.iconBtnLayout.addWidget(QtWidgets.QLabel("Maya_tk: "))
 
         # self.mayaLightTB = QtWidgets.QToolBar('Maya_tk Light')
         self.getMayaLight()
@@ -386,7 +389,7 @@ class toolBoxIII(QtWidgets.QWidget):
 
         self.getRenderManLight()
 
-        #self.getArnoldLight()
+        # self.getArnoldLight()
 
         self.lightLibraryUI()
 
@@ -397,68 +400,68 @@ class toolBoxIII(QtWidgets.QWidget):
         scrollArea = QtWidgets.QScrollArea()
         scrollArea.setWidgetResizable(True)
         scrollArea.setWidget(scrollWidget)
-        self.layout.addWidget(scrollArea, 1,0,1,5)
+        self.layout.addWidget(scrollArea, 1, 0, 1, 5)
 
     def lightLibraryUI(self):
-        libraryLabel = QtWidgets.QLabel( '')
-        libraryLabel.setAlignment( QtCore.Qt.AlignCenter )
-        self.layout.addWidget( libraryLabel, 0,0,1,4)
+        libraryLabel = QtWidgets.QLabel('')
+        libraryLabel.setAlignment(QtCore.Qt.AlignCenter)
+        self.layout.addWidget(libraryLabel, 0, 0, 1, 4)
 
         libHeaderWidget = QtWidgets.QWidget()
         libHeaderLayout = QtWidgets.QHBoxLayout(libHeaderWidget)
 
         libHeaderScrollArea = QtWidgets.QScrollArea()
-        libHeaderScrollArea.setWidget( libHeaderWidget )
-        libHeaderScrollArea.setWidgetResizable( True )
+        libHeaderScrollArea.setWidget(libHeaderWidget)
+        libHeaderScrollArea.setWidgetResizable(True)
         libHeaderScrollArea.setMaximumHeight(45)
 
-        self.layout.addWidget( libHeaderScrollArea, 2,0,1,5)
+        self.layout.addWidget(libHeaderScrollArea, 2, 0, 1, 5)
         self.saveNameField = QtWidgets.QLineEdit()
-        self.saveNameField.setMinimumWidth( 60)
-        libHeaderLayout.addWidget( self.saveNameField )
+        self.saveNameField.setMinimumWidth(60)
+        libHeaderLayout.addWidget(self.saveNameField)
 
         saveBtn = QtWidgets.QPushButton('Save')
         saveBtn.setMinimumWidth(120)
-        saveBtn.clicked.connect( self.saveItem )
-        libHeaderLayout.addWidget( saveBtn )
+        saveBtn.clicked.connect(self.saveItem)
+        libHeaderLayout.addWidget(saveBtn)
 
         buf = 12
         self.listLibWidget = QtWidgets.QListWidget()
-        self.listLibWidget.setViewMode( QtWidgets.QListWidget.IconMode )
-        self.listLibWidget.setIconSize( QtCore.QSize(60,60) )
-        self.listLibWidget.setResizeMode( QtWidgets.QListWidget.Adjust )
-        self.listLibWidget.setGridSize( QtCore.QSize( 60+ buf,60 + buf ) )
-        self.layout.addWidget( self.listLibWidget, 3, 0, 1, 5)
+        self.listLibWidget.setViewMode(QtWidgets.QListWidget.IconMode)
+        self.listLibWidget.setIconSize(QtCore.QSize(60, 60))
+        self.listLibWidget.setResizeMode(QtWidgets.QListWidget.Adjust)
+        self.listLibWidget.setGridSize(QtCore.QSize(60 + buf, 60 + buf))
+        self.layout.addWidget(self.listLibWidget, 3, 0, 1, 5)
 
         libFooterWidget = QtWidgets.QWidget()
         # libFooterWidget.setSizePolicy( QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum )
-        self.libFooterLayout = QtWidgets.QGridLayout( libFooterWidget )
-        self.libFooterLayout.setContentsMargins( QtCore.QMargins( 2, 2, 2, 2 ) )
+        self.libFooterLayout = QtWidgets.QGridLayout(libFooterWidget)
+        self.libFooterLayout.setContentsMargins(QtCore.QMargins(2, 2, 2, 2))
 
         # Create QScrollArea
         scrollLibArea = QtWidgets.QScrollArea()
-        scrollLibArea.setWidget( libFooterWidget )
-        scrollLibArea.setWidgetResizable( True )
-        scrollLibArea.setMaximumHeight( 45 )
-        self.layout.addWidget( scrollLibArea, 4,0,1,5 )
+        scrollLibArea.setWidget(libFooterWidget)
+        scrollLibArea.setWidgetResizable(True)
+        scrollLibArea.setMaximumHeight(45)
+        self.layout.addWidget(scrollLibArea, 4, 0, 1, 5)
 
         # Create QPlushButton
-        importLibBtn = QtWidgets.QPushButton( 'Import')
-        importLibBtn.setMinimumWidth(120 )
-        importLibBtn.clicked.connect( self.loadItem )
-        self.libFooterLayout.addWidget( importLibBtn, 0, 0 )
+        importLibBtn = QtWidgets.QPushButton('Import')
+        importLibBtn.setMinimumWidth(120)
+        importLibBtn.clicked.connect(self.loadItem)
+        self.libFooterLayout.addWidget(importLibBtn, 0, 0)
 
         # # Create QPlushButton
-        referenceBtn = QtWidgets.QPushButton('Reference' )
-        referenceBtn.setMinimumWidth( 120 )
-        referenceBtn.clicked.connect( self.referenceItem )
-        self.libFooterLayout.addWidget( referenceBtn, 0, 1 )
+        referenceBtn = QtWidgets.QPushButton('Reference')
+        referenceBtn.setMinimumWidth(120)
+        referenceBtn.clicked.connect(self.referenceItem)
+        self.libFooterLayout.addWidget(referenceBtn, 0, 1)
         #
         # Create QPlushButton
-        removeBtn = QtWidgets.QPushButton( 'Remove' )
-        removeBtn.setMinimumWidth( 120 )
-        removeBtn.clicked.connect( self.removeItem )
-        self.libFooterLayout.addWidget( removeBtn, 0, 2 )
+        removeBtn = QtWidgets.QPushButton('Remove')
+        removeBtn.setMinimumWidth(120)
+        removeBtn.clicked.connect(self.removeItem)
+        self.libFooterLayout.addWidget(removeBtn, 0, 2)
 
     def populateAll(self):
         self.populateLibrarySection()
@@ -475,8 +478,8 @@ class toolBoxIII(QtWidgets.QWidget):
 
         for file in files:
             if name in file:
-                cmds.confirmDialog( t='Confirm', m='File %s already exists, override?' % name,
-                                    b=[ 'Yes', 'No' ], db='Yes', cb='No', dismissString='No' )
+                cmds.confirmDialog(t='Confirm', m='File %s already exists, override?' % name,
+                                   b=['Yes', 'No'], db='Yes', cb='No', dismissString='No')
 
         self.library.save(name)
         self.saveNameField.setText('')
@@ -485,7 +488,7 @@ class toolBoxIII(QtWidgets.QWidget):
     def removeItem(self):
         currentItem = self.listLibWidget.currentItem()
         if not currentItem:
-            self.warningFunction( 'You must select something' )
+            self.warningFunction('You must select something')
             return
         self.library.remove(currentItem)
         self.populateAll()
@@ -493,7 +496,7 @@ class toolBoxIII(QtWidgets.QWidget):
     def loadItem(self):
         currentItem = self.listLibWidget.currentItem()
         if not currentItem:
-            self.warningFunction( 'You must select an item' )
+            self.warningFunction('You must select an item')
 
         name = currentItem.text()
         self.library.load(name)
@@ -501,8 +504,8 @@ class toolBoxIII(QtWidgets.QWidget):
 
     def referenceItem(self):
         name = self.listLibWidget.currentItem().text() or ""
-        if name=="":
-            self.warningFunction( 'You must select something' )
+        if name == "":
+            self.warningFunction('You must select something')
             return
 
         self.library.reference(name)
@@ -523,66 +526,66 @@ class toolBoxIII(QtWidgets.QWidget):
 
     def getMayaLight(self):
         for lightType in self.mayaLights:
-            icon = QIcon( typeMgr.getIcon( lightType ) )
-            cmd = partial( self.createNewLight, lightType )
+            icon = QIcon(typeMgr.getIcon(lightType))
+            cmd = partial(self.createNewLight, lightType)
             toolTip = 'Create a new ' + lightType
             # mayaLightAction = self.createAction( lightType, icon, cmd, toolTip)
             # self.mayaLightTB.addAction(mayaLightAction)
-            button = self.iconButton( cmd, icon, toolTip )
-            self.iconBtnLayout.addWidget( button )
-        # self.iconBtnLayout.addWidget(self.mayaLights)
+            button = self.iconButton(cmd, icon, toolTip)
+            self.iconBtnLayout.addWidget(button)
+            # self.iconBtnLayout.addWidget(self.mayaLights)
 
     def getVrayLight(self):
-        self.vrayLightTB = QtWidgets.QToolBar( 'Vray Light' )
-        if len( self.vrayLights ) > 0:
-            self.iconBtnLayout.addWidget( QtWidgets.QLabel( "|" ) )
-            self.iconBtnLayout.addWidget( QtWidgets.QLabel( "Vray: " ) )
+        self.vrayLightTB = QtWidgets.QToolBar('Vray Light')
+        if len(self.vrayLights) > 0:
+            self.iconBtnLayout.addWidget(QtWidgets.QLabel("|"))
+            self.iconBtnLayout.addWidget(QtWidgets.QLabel("Vray: "))
             for lightType in self.vrayLights:
-                icon = QIcon( typeMgr.getIcon( lightType ) )
-                cmd = partial( self.createNewLight, lightType )
+                icon = QIcon(typeMgr.getIcon(lightType))
+                cmd = partial(self.createNewLight, lightType)
                 toolTip = 'Create a new ' + lightType
                 # vrayLightAction = self.createAction( lightType,  icon, cmd, toolTip )
                 # self.vrayLightTB.addAction( vrayLightAction )
-                button = self.iconButton( cmd, icon, toolTip )
-                self.iconBtnLayout.addWidget( button )
+                button = self.iconButton(cmd, icon, toolTip)
+                self.iconBtnLayout.addWidget(button)
         else:
             pass
 
     def getRenderManLight(self):
-        if len( self.renderManLights ) > 0:
-            self.iconBtnLayout.addWidget( QtWidgets.QLabel( "|" ) )
-            self.iconBtnLayout.addWidget( QtWidgets.QLabel( "RenderMan: " ) )
+        if len(self.renderManLights) > 0:
+            self.iconBtnLayout.addWidget(QtWidgets.QLabel("|"))
+            self.iconBtnLayout.addWidget(QtWidgets.QLabel("RenderMan: "))
             for lightType in self.renderManLights:
-                icon = QIcon( typeMgr.getIcon( lightType ) )
-                cmd = partial( self.createNewLight, lightType )
+                icon = QIcon(typeMgr.getIcon(lightType))
+                cmd = partial(self.createNewLight, lightType)
                 toolTip = 'Create a new ' + lightType
                 # renderManLightAction = self.createAction( lightType,  icon, cmd, toolTip )
                 # mayaLightTB.addAction( renderManLightAction )
-                button = self.iconButton( cmd, icon, toolTip )
-                self.iconBtnLayout.addWidget( button )
+                button = self.iconButton(cmd, icon, toolTip)
+                self.iconBtnLayout.addWidget(button)
         else:
             pass
 
     def getArnoldLight(self):
-        if len( self.arnoldLights ) > 0:
-            self.iconBtnLayout.addWidget( QtWidgets.QLabel( "|" ) )
-            self.iconBtnLayout.addWidget( QtWidgets.QLabel( "Arnold: " ) )
+        if len(self.arnoldLights) > 0:
+            self.iconBtnLayout.addWidget(QtWidgets.QLabel("|"))
+            self.iconBtnLayout.addWidget(QtWidgets.QLabel("Arnold: "))
             for lightType in self.arnoldLights:
-                icon = QIcon( typeMgr.getIcon( lightType ) )
-                cmd = partial( self.createNewLight, lightType )
+                icon = QIcon(typeMgr.getIcon(lightType))
+                cmd = partial(self.createNewLight, lightType)
                 toolTip = 'Create a new ' + lightType
                 # arnoldLightAction = self.createAction( lightType, icon, cmd, toolTip )
                 # mayaLightTB.addAction( arnoldLightAction )
-                button = self.iconButton( cmd, icon, toolTip )
-                self.iconBtnLayout.addWidget( button )
+                button = self.iconButton(cmd, icon, toolTip)
+                self.iconBtnLayout.addWidget(button)
         # self.iconBtnLayout.addStretch(1)
         else:
             pass
 
     def iconButton(self, cmd, icon, toolTip):
-        button = RenderSetupButton( self, icon, self.BUTTON_SIZE )
-        button.setToolTip( toolTip )
-        button.clicked.connect( partial( cmd ) )
+        button = RenderSetupButton(self, icon, self.BUTTON_SIZE)
+        button.setToolTip(toolTip)
+        button.clicked.connect(partial(cmd))
         return button
 
     def createAction(self, lightType, icon, cmd, toolTip):
@@ -614,15 +617,15 @@ class toolBoxIII(QtWidgets.QWidget):
 
         light = func()
 
-        self.addLight( light )
+        self.addLight(light)
 
     def addLight(self, light):
-        widget = LightManager( light )
-        self.scrollLayout.addWidget( widget )
+        widget = LightManager(light)
+        self.scrollLayout.addWidget(widget)
         widget.onSolo.connect(self.onSolo)
 
     def onSolo(self, value):
-        lightWidgets = self.findChildren( LightManager )
+        lightWidgets = self.findChildren(LightManager)
         for widget in lightWidgets:
             if widget != self.sender():
                 widget.disableLight(value)
@@ -638,6 +641,6 @@ class toolBoxIII(QtWidgets.QWidget):
         for light in pm.ls(type=type):
             self.addLight(light)
 
-# -------------------------------------------------------------------------------------------------------------
-# END OF CODE
-# -------------------------------------------------------------------------------------------------------------
+            # -------------------------------------------------------------------------------------------------------------
+            # END OF CODE
+            # -------------------------------------------------------------------------------------------------------------

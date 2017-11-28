@@ -27,12 +27,15 @@ NAMES = var.MAIN_NAMES
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                MAIN CLASS: GET MODULE INFO - GET ALL INFO OF MODULES, ICONS, IMAGES                     """
+
+
 # ----------------------------------------------------------------------------------------------------------- #
-class GetData( object ):
+class GetData(object):
     """
     This class will find all the info of python, icon, image files and folders then store them to info files in
     info folder
     """
+
     def __init__(self, package, names):
         """
         Initialize the main class functions
@@ -61,13 +64,13 @@ class GetData( object ):
         # create dictionary to store info in
         sysInfo = {}
         # store python info
-        sysInfo[ 'python' ] = pythonVersion
+        sysInfo['python'] = pythonVersion
         # store os info
-        sysInfo[ 'os' ] = windowOS + "|" + windowVersion
+        sysInfo['os'] = windowOS + "|" + windowVersion
         # check if info folder exists, if not, create one
         values = {}
-        cache = os.popen2( "SYSTEMINFO" )
-        source = cache[ 1 ].read()
+        cache = os.popen2("SYSTEMINFO")
+        source = cache[1].read()
         sysOpts = package['sysOpts']
         sysInfo['artist name'] = platform.node()
         sysInfo['operating system'] = platform.system() + "/" + platform.platform()
@@ -77,7 +80,7 @@ class GetData( object ):
             values[opt] = [item.strip() for item in re.findall("%s:\w*(.*?)\n" % (opt), source, re.IGNORECASE)][0]
 
         for item in values:
-            #self.createLog('stored %s: %s into sysInfo' % (item, values[item]))
+            # self.createLog('stored %s: %s into sysInfo' % (item, values[item]))
             sysInfo[item] = values[item]
 
         return sysInfo
@@ -95,10 +98,10 @@ class GetData( object ):
         moduleInfo['root'] = package['root']
         # module path
         moduleInfo['app module'] = os.path.join(package['root'], package['py'][0])
-        #self.createLog('adding %s to moduleInfo' % moduleInfo['app module'])
+        # self.createLog('adding %s to moduleInfo' % moduleInfo['app module'])
         # ui path
         moduleInfo['app ui'] = os.path.join(package['root'], package['py'][1])
-        #self.createLog('adding %s to moduleInfo' % moduleInfo['app ui'])
+        # self.createLog('adding %s to moduleInfo' % moduleInfo['app ui'])
         # loop to store all the python files found root's content to dictionary
         for pyFol in package['py']:
             pyPth = os.path.join(package['root'], pyFol)
@@ -110,7 +113,7 @@ class GetData( object ):
                 if '__init__' in file:
                     pass
                 else:
-                    pth = os.path.join( pyPth, file )
+                    pth = os.path.join(pyPth, file)
                     moduleInfo[file.split('PipelineTool.py')[0]] = pth
         # return the dictionary
         return moduleInfo
@@ -132,16 +135,16 @@ class GetData( object ):
         # get all the icon file in folder
         icons = [f for f in os.listdir(iconInfo['iconPth']) if '.icon' in f]
         # check if there is no files in folder
-        if len(icons)==0:
+        if len(icons) == 0:
             iconInfo['icons'] = None
         # if there is, make a loop to store them to info file one by one
         else:
             for i in icons:
                 iconInfo[i.split('.icon')[0]] = os.path.join(iconInfo['iconPth'], i)
-        #Get list of icon name
+        # Get list of icon name
         iconNames = [f for f in iconInfo]
         # Create dictionary to story icon name in
-        icons ={}
+        icons = {}
         # Store icon name into it
         icons['name'] = iconNames
         # return icons info
@@ -161,7 +164,7 @@ class GetData( object ):
         # get list of image files in folder
         imgs = [f for f in os.listdir(imgInfo['imgPth']) if '.img' in f]
         # check if there is no image file
-        if len(imgs)==0:
+        if len(imgs) == 0:
             imgInfo['imgs'] = None
         # if there is, store them one by one by a loop to info file
         else:
@@ -183,7 +186,7 @@ class GetData( object ):
         all_programs = winshell.programs(common=1)
         # loop to store info to shortcut, path, filename.
         for dirpath, dirnames, filenames in os.walk(all_programs):
-            relpath = dirpath[1+ len(all_programs):]
+            relpath = dirpath[1 + len(all_programs):]
             shortcuts.setdefault(relpath, []).extend([winshell.shortcut(os.path.join(dirpath, f)) for f in filenames])
         # loop to store all the app names, paths to a dictionary
         for relpath, lnks in sorted(shortcuts.items()):
@@ -191,7 +194,7 @@ class GetData( object ):
                 name, _ = os.path.splitext(os.path.basename(lnk.lnk_filepath))
                 appName.append(name)
                 appPth.append(lnk.path)
-                #self.createLog('Found %s: %s' % (name, lnk.path))
+                # self.createLog('Found %s: %s' % (name, lnk.path))
         appInfo = {}
         # fix the encoding convention
         for name in appName:
@@ -241,7 +244,7 @@ class GetData( object ):
                 if k in key:
                     # logger.info('%s: %s' % (k, key))
                     del self.appInfo[key]
-        #return
+        # return
         return self.appInfo
 
     def createAllInfoFiles(self, package, names):
@@ -311,9 +314,9 @@ class GetData( object ):
         info['pipeline'] = trackKeys
         info['icon'] = iconInfo
         # Save all info to directory
-        logger.info( 'creating Info file' )
+        logger.info('creating Info file')
         self.createInfo(info, names, package)
-        logger.info( 'creating environment variable file' )
+        logger.info('creating environment variable file')
         self.getSysPth(package=PACKAGE, names=NAMES)
 
     def getSysPth(self, package, names):
@@ -346,6 +349,7 @@ class GetData( object ):
         with open(os.path.join(package['appData'], names['info']), 'w') as f:
             json.dump(info, f, indent=4)
 
+
 def initialize(package=PACKAGE, names=NAMES):
     """
     This function will import all the variables which need to run the class
@@ -353,9 +357,10 @@ def initialize(package=PACKAGE, names=NAMES):
     :param names: the dictionsary of names stored from default variable
     :return: info file, log file
     """
-    GetData( package, names )
+    GetData(package, names)
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     initialize(PACKAGE, NAMES)
 
 # ----------------------------------------------------------------------------------------------------------- #

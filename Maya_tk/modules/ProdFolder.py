@@ -19,25 +19,25 @@ import os, sys, json, logging
 # -------------------------------------------------------------------------------------------------------------
 # VARIABLES
 # -------------------------------------------------------------------------------------------------------------
-DESKTOPPTH = os.path.join( os.environ['HOMEPATH'], 'desktop' )
+DESKTOPPTH = os.path.join(os.environ['HOMEPATH'], 'desktop')
 
-PRODPROFILE = dict( name=[ 'mwm', 'Midea Wasing Machine' ] )
-WINPROFILE = dict( prodpthUI=[ 'ProdPthUI', 'Create New Project', 'SET UP NEW PROJECT' ] )
+PRODPROFILE = dict(name=['mwm', 'Midea Wasing Machine'])
+WINPROFILE = dict(prodpthUI=['ProdPthUI', 'Create New Project', 'SET UP NEW PROJECT'])
 
-APPS = [ 'maya', 'zbrush', 'mari', 'nuke', 'photoshop', 'houdini', 'after effects' ]
+APPS = ['maya', 'zbrush', 'mari', 'nuke', 'photoshop', 'houdini', 'after effects']
 
-MASTER = [ 'assets', 'sequences', 'deliverables', 'documents', 'editorial', 'sound', 'resources', 'RnD' ]
-TASKS = [ 'art', 'Modeling', 'rigging', 'surfacing' ]
-SEQTASKS = [ 'anim', 'comp', 'fx', 'layout', 'lighting' ]
-ASSETS = {'heroObj': [ 'washer', 'dryer' ], 'environment': [], 'props': [ ]}
+MASTER = ['assets', 'sequences', 'deliverables', 'documents', 'editorial', 'sound', 'resources', 'RnD']
+TASKS = ['art', 'Modeling', 'rigging', 'surfacing']
+SEQTASKS = ['anim', 'comp', 'fx', 'layout', 'lighting']
+ASSETS = {'heroObj': ['washer', 'dryer'], 'environment': [], 'props': []}
 STEPS = ['publish', 'review', 'work']
 
-MODELING = [ 'scenes', 'fromZ', 'toZ', 'objImport', 'objExport', 'movie' ]
-RIGGING = [ 'scenes', 'reference' ]
+MODELING = ['scenes', 'fromZ', 'toZ', 'objImport', 'objExport', 'movie']
+RIGGING = ['scenes', 'reference']
 SURFACING = ['scenes', 'sourceimages', 'images', 'movie']
-LAYOUT = [ 'scenes', 'sourceimages', 'images', 'movie', 'alembic']
-LIGHTING = [ 'scenes', 'sourceimages', 'images', 'cache', 'reference' ]
-FX = [ 'scenes', 'sourceimages', 'images', 'cache', 'reference', 'alembic' ]
+LAYOUT = ['scenes', 'sourceimages', 'images', 'movie', 'alembic']
+LIGHTING = ['scenes', 'sourceimages', 'images', 'cache', 'reference']
+FX = ['scenes', 'sourceimages', 'images', 'cache', 'reference', 'alembic']
 ANIM = LAYOUT
 
 # -------------------------------------------------------------------------------------------------------------
@@ -47,6 +47,7 @@ ANIM = LAYOUT
 logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
+
 
 # -------------------------------------------------------------------------------------------------------------
 # CHECK THE CORRECT BINDING THAT BE USING UNDER QT.PY
@@ -72,12 +73,14 @@ def importBTS():
     reload(MayaFuncs)
     return MayaFuncs
 
+
 # ----------------------------------------------------------------------------------------------------------- #
 """                                MAIN CLASS: CREATE PRODUCTION FOLDER HIERARCHY                           """
+
+
 # ----------------------------------------------------------------------------------------------------------- #
 
-class ProdFolder( object ):
-
+class ProdFolder(object):
     info = {}
     winid = WINPROFILE['prodpthUI'][0]
     title = WINPROFILE['prodpthUI'][1]
@@ -96,23 +99,23 @@ class ProdFolder( object ):
         :return:
         """
 
-        w=500
+        w = 500
         h = 30
 
         # Production name by default
         prodName = "VoxelPicture"
         # Check if UI exists
-        if cmds.window( self.winid, q=True, exists=True ):
-            cmds.deleteUI( self.winid )
+        if cmds.window(self.winid, q=True, exists=True):
+            cmds.deleteUI(self.winid)
         # Create UI
-        cmds.window( self.winid, t=self.title, rtf=True, wh=(w, 25*h))
+        cmds.window(self.winid, t=self.title, rtf=True, wh=(w, 25 * h))
         # Main layout
         mainLayout = cmds.scrollLayout('main', hst=15, vst=15)
 
         # Title
-        self.bts.makeSeparator(h=h/6, w=w)
+        self.bts.makeSeparator(h=h / 6, w=w)
         cmds.text(l=self.label, h=h, w=w, align='center')
-        self.bts.makeSeparator(h=h/6, w=w)
+        self.bts.makeSeparator(h=h / 6, w=w)
 
         # Content
         nc = 9
@@ -136,12 +139,12 @@ class ProdFolder( object ):
         nc = 5
         w1 = 100
 
-        cmds.rowColumnLayout(nc=nc,cw=self.bts.cwCustomize(nc, [adj1,w1,adj1,w-(3*adj1+w1),adj1]))
+        cmds.rowColumnLayout(nc=nc, cw=self.bts.cwCustomize(nc, [adj1, w1, adj1, w - (3 * adj1 + w1), adj1]))
 
         cmds.text(l="")
         cmds.button(l='Set Path', c=self.setPth)
         cmds.text(l="")
-        self.setPath = cmds.textField(tx = "E:/")
+        self.setPath = cmds.textField(tx="E:/")
         cmds.text(l="")
 
         cmds.setParent(mainLayout)
@@ -149,7 +152,7 @@ class ProdFolder( object ):
         cmds.text(l="DUE TO THE POSSIBILITY TO USE ONLINE RENDER SERVICE\n"
                     "SETTING PATH TO E DRIVE IS ALWAYS PREFERABLE\n"
                     "IF YOU DO NOT USE THAT KIND OF SERVICE, NEVER MIND",
-                  align='center', w=w, h=2*h, bgc=(0,.5,1), fn="boldLabelFont")
+                  align='center', w=w, h=2 * h, bgc=(0, .5, 1), fn="boldLabelFont")
         cmds.text(l="")
 
         nc = 9
@@ -171,57 +174,60 @@ class ProdFolder( object ):
         cmds.text(l="")
 
         nc = 13
-        w3 = (w-(7*adj1))/(nc-7)
+        w3 = (w - (7 * adj1)) / (nc - 7)
 
-        cmds.rowColumnLayout(nc=nc, cw=self.bts.cwCustomize(nc, [adj1, w3, adj1, w3, adj1, w3, adj1, w3, adj1, w3, adj1, w3, adj1]))
+        cmds.rowColumnLayout(nc=nc, cw=self.bts.cwCustomize(nc,
+                                                            [adj1, w3, adj1, w3, adj1, w3, adj1, w3, adj1, w3, adj1, w3,
+                                                             adj1]))
 
         cmds.text(l="")
         cmds.text(l="Character:")
         cmds.text(l="")
-        self.numChar = cmds.intField(v=1, min=1, cc=partial(self.charNameColumn, (w-(4*adj1))/3))
+        self.numChar = cmds.intField(v=1, min=1, cc=partial(self.charNameColumn, (w - (4 * adj1)) / 3))
         cmds.text(l="")
         cmds.text(l="Environment:")
         cmds.text(l="")
-        self.numEnv = cmds.intField(v=1, min=1, cc=partial(self.envNameColumn, (w-(4*adj1))/3))
+        self.numEnv = cmds.intField(v=1, min=1, cc=partial(self.envNameColumn, (w - (4 * adj1)) / 3))
         cmds.text(l="")
         cmds.text(l="Props:")
         cmds.text(l="")
-        self.numProps = cmds.intField(v=1, min=1, cc=partial(self.propsNameColumn, (w-(4*adj1))/3))
+        self.numProps = cmds.intField(v=1, min=1, cc=partial(self.propsNameColumn, (w - (4 * adj1)) / 3))
         cmds.text(l="")
 
         cmds.setParent(mainLayout)
         cmds.text(l="")
 
         nc = 7
-        w4 = (w-(4*adj1))/(nc-4)
+        w4 = (w - (4 * adj1)) / (nc - 4)
 
-        cmds.rowColumnLayout(nc=3, cw=[(1,w/3),(2,w/3),(3,w/3)])
+        cmds.rowColumnLayout(nc=3, cw=[(1, w / 3), (2, w / 3), (3, w / 3)])
         cmds.text(l="Characters Name")
         cmds.text(l="Envs Name")
         cmds.text(l="Props Name")
 
-
         cmds.setParent(mainLayout)
         cmds.text(l="")
 
-        self.editableColumnsLayout = cmds.rowColumnLayout(nc=nc, cw=self.bts.cwCustomize(nc, [adj1, w4, adj1, w4, adj1, w4, adj1]))
+        self.editableColumnsLayout = cmds.rowColumnLayout(nc=nc, cw=self.bts.cwCustomize(nc,
+                                                                                         [adj1, w4, adj1, w4, adj1, w4,
+                                                                                          adj1]))
 
         cmds.text(l="")
         self.charColumn = cmds.columnLayout(w=w4)
         self.firstCharColumn = cmds.columnLayout(w=w4)
-        cmds.textField('char1', p=self.firstCharColumn, w=w4-10)
+        cmds.textField('char1', p=self.firstCharColumn, w=w4 - 10)
         cmds.setParent(self.editableColumnsLayout)
 
         cmds.text(l="")
         self.envColumn = cmds.columnLayout(w=w4)
         self.firstEnvColumn = cmds.columnLayout(w=w4)
-        cmds.textField('env1', p = self.firstEnvColumn, w=w4-10)
+        cmds.textField('env1', p=self.firstEnvColumn, w=w4 - 10)
         cmds.setParent(self.editableColumnsLayout)
 
         cmds.text(l="")
         self.propsColumn = cmds.columnLayout(w=w4)
         self.firstPropsColumn = cmds.columnLayout(w=w)
-        cmds.textField('props1', p=self.firstPropsColumn, w=w4-10)
+        cmds.textField('props1', p=self.firstPropsColumn, w=w4 - 10)
         cmds.setParent(self.editableColumnsLayout)
         cmds.text(l="")
 
@@ -229,7 +235,7 @@ class ProdFolder( object ):
 
         self.bts.makeSeparator(h=10, w=w)
 
-        cmds.rowColumnLayout(nc=3, cw=[(1,w/3),(2,w/3),(3,w/3)])
+        cmds.rowColumnLayout(nc=3, cw=[(1, w / 3), (2, w / 3), (3, w / 3)])
         cmds.text(l="")
         cmds.button(l="CREATE PROJECT", c=self.createProject)
         cmds.text(l="")
@@ -246,12 +252,12 @@ class ProdFolder( object ):
         if cmds.scrollLayout('charNameColumn', q=True, exists=True):
             cmds.deleteUI('charNameColumn')
 
-        charNameColumn = cmds.scrollLayout('charNameColumn', p = self.charColumn, w=w, h=self.h1, hst=15, vst=15)
+        charNameColumn = cmds.scrollLayout('charNameColumn', p=self.charColumn, w=w, h=self.h1, hst=15, vst=15)
         chars = cmds.intField(self.numChar, q=True, v=True)
 
         for i in range(chars):
             id = "char" + str(i + 1)
-            cmds.textField(id, w=w-10)
+            cmds.textField(id, w=w - 10)
             i += 1
 
         return charNameColumn
@@ -268,9 +274,9 @@ class ProdFolder( object ):
         envs = cmds.intField(self.numEnv, q=True, v=True)
 
         for i in range(envs):
-            id = 'env' + str(i+1)
-            cmds.textField(id, w=w-10)
-            i+=1
+            id = 'env' + str(i + 1)
+            cmds.textField(id, w=w - 10)
+            i += 1
 
         return envNameColumn
 
@@ -286,9 +292,9 @@ class ProdFolder( object ):
         props = cmds.intField(self.numProps, q=True, v=True)
 
         for i in range(props):
-            id = 'props' + str(i+1)
-            cmds.textField(id, w=w-10)
-            i+=1
+            id = 'props' + str(i + 1)
+            cmds.textField(id, w=w - 10)
+            i += 1
 
         return propsNameColumn
 
@@ -303,7 +309,8 @@ class ProdFolder( object ):
         self.rootPth = os.path.join(setPth, prjName)
 
         if os.path.exists(self.rootPth):
-            cmds.confirmDialog(t='Opps', m='The path: %s\nis NOT EMPTY or:\nthis NAME has been USED for another project\n'
+            cmds.confirmDialog(t='Opps',
+                               m='The path: %s\nis NOT EMPTY or:\nthis NAME has been USED for another project\n'
                                  'please choose another name' % self.rootPth, b='Ok')
             sys.exit()
 
@@ -330,7 +337,6 @@ class ProdFolder( object ):
         steps = ['publish', 'review', 'work']
         mayaFolders = ['scenes', 'sourceimages', 'images', 'movie', 'alembic', 'reference']
 
-
         for f in master:
             contentMasterPth = os.path.join(self.rootPth, f)
             os.mkdir(contentMasterPth)
@@ -345,10 +351,10 @@ class ProdFolder( object ):
             os.mkdir(assetsSectionsPth)
             if section == 'characters':
                 for i in range(self.numOfChar):
-                    charName = 'char' + str(i+1)
+                    charName = 'char' + str(i + 1)
                     folCharName = cmds.textField(charName, q=True, tx=True)
                     if folCharName == "" or folCharName == None:
-                        folCharName = 'character_' + str(i+1)
+                        folCharName = 'character_' + str(i + 1)
                     folCharPth = os.path.join(assetsSectionsPth, folCharName)
                     os.mkdir(folCharPth)
                     for task in assetsTasks:
@@ -374,13 +380,13 @@ class ProdFolder( object ):
                                 for f in mayaFolders:
                                     mayaPth = os.path.join(appPth, f)
                                     os.mkdir(mayaPth)
-                    i+=1
+                    i += 1
             elif section == 'environment':
                 for i in range(self.numOfEnv):
-                    envName = 'env' + str(i+1)
+                    envName = 'env' + str(i + 1)
                     folEnvName = cmds.textField(envName, q=True, tx=True)
-                    if folEnvName=="" or folEnvName == None:
-                        folEnvName = 'env_' + str(i+1)
+                    if folEnvName == "" or folEnvName == None:
+                        folEnvName = 'env_' + str(i + 1)
                     folEnvPth = os.path.join(assetsSectionsPth, folEnvName)
                     os.mkdir(folEnvPth)
                     for task in assetsTasks:
@@ -406,15 +412,15 @@ class ProdFolder( object ):
                                 for f in mayaFolders:
                                     mayaPth = os.path.join(appPth, f)
                                     os.mkdir(mayaPth)
-                    i+=1
+                    i += 1
             elif section == 'props':
                 for i in range(self.numOfProps):
-                    propsName = 'props' + str(i+1)
+                    propsName = 'props' + str(i + 1)
                     folPropsName = cmds.textField(propsName, q=True, tx=True)
                     print type(folPropsName)
 
                     if folPropsName == "" or folPropsName == None:
-                        folPropsName = 'props_' + str(i+1)
+                        folPropsName = 'props_' + str(i + 1)
 
                     folPropsPth = os.path.join(assetsSectionsPth, folPropsName)
 
@@ -444,7 +450,7 @@ class ProdFolder( object ):
                                 for f in mayaFolders:
                                     mayaPth = os.path.join(appPth, f)
                                     os.mkdir(mayaPth)
-                    i+=1
+                    i += 1
 
         # Sequences content
 
@@ -452,7 +458,7 @@ class ProdFolder( object ):
 
         sequencesPth = os.path.join(self.rootPth, 'sequences')
         for i in range(self.numSeq):
-            folName = self.shortName + "_" + "shot_" + str(i+1)
+            folName = self.shortName + "_" + "shot_" + str(i + 1)
             seqPth = os.path.join(sequencesPth, folName)
             os.mkdir(seqPth)
             for task in seqTask:
@@ -480,24 +486,23 @@ class ProdFolder( object ):
                         for f in mayaFolders:
                             mayaPth = os.path.join(appPth, f)
                             os.mkdir(mayaPth)
-            i+=1
+            i += 1
 
     def prjGroupMode(self, *args):
         pass
 
     def getDirFromUnicode(self, path, *args):
-        for dirpath, dirnames, filenames in os.walk( path ):
+        for dirpath, dirnames, filenames in os.walk(path):
             return dirpath
 
     def createInfo(self, *args):
-        appDir = os.getenv( 'PROGRAMDATA' )
-        infoDir = os.path.join( appDir, 'PipelineTool/prodInfo' )
-        if not os.path.exists( infoDir ):
-            os.makedirs( infoDir )
+        appDir = os.getenv('PROGRAMDATA')
+        infoDir = os.path.join(appDir, 'PipelineTool/prodInfo')
+        if not os.path.exists(infoDir):
+            os.makedirs(infoDir)
         return infoDir
+
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                                               END OF CODE                                               """
 # ----------------------------------------------------------------------------------------------------------- #
-
-

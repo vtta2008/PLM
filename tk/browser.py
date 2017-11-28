@@ -10,6 +10,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtWebKitWidgets import *
 
 from tk import defaultVariable as var
+
 PACKAGE = var.MAIN_PACKPAGE
 NAMES = var.MAIN_NAMES
 CURPTH = var.MAIN_ROOT
@@ -41,8 +42,8 @@ with open(os.path.join(PACKAGE['appData'], NAMES['web']), 'r') as f:
 
 icons = web['icons']
 
-class DAMGwebBrowser(QMainWindow):
 
+class DAMGwebBrowser(QMainWindow):
     def __init__(self, *args, **kwargs):
         super(DAMGwebBrowser, self).__init__(*args, **kwargs)
 
@@ -77,10 +78,10 @@ class DAMGwebBrowser(QMainWindow):
 
         self.urlbar = QLineEdit()
         self.urlbar.returnPressed.connect(self.navigateUrl)
-        urltb.addWidget( self.urlbar )
+        urltb.addWidget(self.urlbar)
 
-        self.addToolBar( navtb )
-        self.addToolBar( urltb )
+        self.addToolBar(navtb)
+        self.addToolBar(urltb)
 
         self.browser.urlChanged.connect(self.updateUrlBar)
 
@@ -91,7 +92,7 @@ class DAMGwebBrowser(QMainWindow):
 
         backBtn = QAction(QIcon(icons['back']), 'Back', self)
         backBtn.setToolTip('Back to previous page')
-        backBtn.triggered.connect( self.browser.back )
+        backBtn.triggered.connect(self.browser.back)
 
         forwardBtn = QAction(QIcon(icons['forward']), 'Forward', self)
         forwardBtn.setToolTip('Forward to next page')
@@ -108,7 +109,7 @@ class DAMGwebBrowser(QMainWindow):
         return homeBtn, backBtn, forwardBtn, reloadBtn, stopBtn
 
     def updateUrlBar(self, q):
-        if q.scheme()=='https':
+        if q.scheme() == 'https':
             self.httpsicon.setPixmap(QPixmap(icons['https']))
         else:
             self.httpsicon.setPixmap(QPixmap(icons['http']))
@@ -127,10 +128,10 @@ class DAMGwebBrowser(QMainWindow):
     def homepage(self):
         self.browser.setUrl(QUrl('https://www.google.com.vn'))
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     web = DAMGwebBrowser()
-
 
     app.exec_()

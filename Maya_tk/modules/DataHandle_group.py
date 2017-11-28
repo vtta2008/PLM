@@ -17,6 +17,7 @@ logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
+
 # -------------------------------------------------------------------------------------------------------------
 # CHECK THE CORRECT BINDING THAT BE USING UNDER QT.PY
 # -------------------------------------------------------------------------------------------------------------
@@ -40,8 +41,8 @@ def importBTS():
     reload(MayaFuncs)
     return MayaFuncs
 
-class DataHandle(object):
 
+class DataHandle(object):
     bts = importBTS()
 
     def __init__(self):

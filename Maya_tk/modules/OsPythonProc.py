@@ -18,6 +18,7 @@ import os, sys, json, shutil, logging, webbrowser
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
 from Maya_tk.modules import MayaVariables as var
+
 NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE
 SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
@@ -50,10 +51,11 @@ logger.setLevel(logging.DEBUG)
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                                   MAIN CLASS: INSPECT DATA                                              """
+
+
 # ----------------------------------------------------------------------------------------------------------- #
 
-class OsPythonProc( object ):
-
+class OsPythonProc(object):
     def __init__(self):
 
         super(OsPythonProc, self).__init__()
@@ -63,21 +65,21 @@ class OsPythonProc( object ):
         logger.info("thank you for using DAMG team product.")
 
     def getExternalPython(self):
-        mayaPth = os.path.join(SCRPTH, NAMES['maya'][ 1 ] )
-        with open( mayaPth, 'r' ) as f:
-            self.toolPth = json.load( f )
+        mayaPth = os.path.join(SCRPTH, NAMES['maya'][1])
+        with open(mayaPth, 'r') as f:
+            self.toolPth = json.load(f)
 
         if not os.path.exists(NAMES['mayaEnvPth']):
             self.writeToMayaEnv(self.toolPth)
 
-        osPth = os.path.join( SCRPTH, 'evn.os' )
+        osPth = os.path.join(SCRPTH, 'evn.os')
         if not os.path.exists(osPth):
             try:
                 import winshell
             except ImportError:
                 ws = os.system('pip install winshell')
                 if ws == 0:
-                    logger.info( 'you have installed winshell')
+                    logger.info('you have installed winshell')
                 else:
                     self.noPythonInstall()
                     pass
@@ -89,21 +91,22 @@ class OsPythonProc( object ):
             self.writeToMayaEnv(self.osTool)
 
     def writeToMayaEnv(self, dictionary):
-        with open( NAMES['mayaEnvPth'], 'a+' ) as f:
+        with open(NAMES['mayaEnvPth'], 'a+') as f:
             for key in dictionary:
-                f.write( key.upper() + ' = ' + dictionary[key] + '\n')
+                f.write(key.upper() + ' = ' + dictionary[key] + '\n')
 
     def noPythonInstall(self):
         title = 'No Python external installed'
         message = MESSAGE['NoPythonInstall']
-        logger.info( message )
-        cmds.warning( message )
-        cmds.confirmDialog(t= title,m = message, b='OK' )
+        logger.info(message)
+        cmds.warning(message)
+        cmds.confirmDialog(t=title, m=message, b='OK')
         webbrowser.open(NAMES['url'][0])
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     OsPythonProc()
 
-# -------------------------------------------------------------------------------------------------------------
-# END OF CODE
-# -------------------------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------------------------
+    # END OF CODE
+    # -------------------------------------------------------------------------------------------------------------

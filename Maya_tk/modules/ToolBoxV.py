@@ -12,7 +12,7 @@ import pymel.core as pm
 import maya, os, json, pprint, logging, time
 from functools import partial
 from maya import OpenMayaUI as omui
-import  mtoa.utils as mutils
+import mtoa.utils as mutils
 
 from Maya_tk.plugins import Qt
 from Maya_tk.plugins.Qt import QtWidgets, QtCore, QtGui
@@ -43,6 +43,7 @@ else:
     from shiboken2 import wrapInstance
     from Maya_tk.plugins.Qt.QtCore import Signal
 
+
 def getMayaMainWindow():
     """
     Since Maya_tk is Qt, we can parent our UIs to it.
@@ -59,6 +60,7 @@ def getMayaMainWindow():
     # Return this to whoever wants it
     return ptr
 
+
 def getDock(name='DAMGtoolBoxIIIDock'):
     """
     This function creates a dock with the given name.
@@ -69,7 +71,7 @@ def getDock(name='DAMGtoolBoxIIIDock'):
         QtWidget.QWidget: The dock's widget
     """
     # Delete any conflicting docks
-    deleteDock( name )
+    deleteDock(name)
 
     # Create a workspaceControl dock using Maya_tk's UI tools
     ctrl = cmds.workspaceControl(name, label='DAMG Tool Box III - All About Lighting')
@@ -81,6 +83,7 @@ def getDock(name='DAMGtoolBoxIIIDock'):
     ptr = wrapInstance(long(qtCtrl), QtWidgets.QWidget)
     return ptr
 
+
 def deleteDock(name='DAMGtoolBoxIIIdock'):
     """
     A simple function to delete the given dock
@@ -90,10 +93,11 @@ def deleteDock(name='DAMGtoolBoxIIIdock'):
     if cmds.workspaceControl(name, query=True, exists=True):
         cmds.deleteUI(name)
 
+
 WINTITLE = 'Lighting Manager'
 
-class LightWidget(QtWidgets.QWidget):
 
+class LightWidget(QtWidgets.QWidget):
     onSolo = QtCore.Signal(bool)
 
     def __init__(self, light):
@@ -110,20 +114,20 @@ class LightWidget(QtWidgets.QWidget):
 
         # Create a layout
         layout = QtWidgets.QGridLayout(self)
-        layout.setContentsMargins(2,2,2,2)
+        layout.setContentsMargins(2, 2, 2, 2)
 
         # Create a check box of light for visibility
         self.name = QtWidgets.QCheckBox(str(self.light.getTransform()))
         self.name.setChecked(self.light.visibility.get())
         self.name.toggled.connect(lambda val: self.light.getTransform().visibility.set(val))
-        layout.addWidget(self.name, 0,0)
+        layout.addWidget(self.name, 0, 0)
 
         # Create a solo button, it will turn on only the light selected, and disable all others
         soloBtn = QtWidgets.QPushButton('Solo')
         soloBtn.setMaximumWidth(40)
         soloBtn.setCheckable(True)
         soloBtn.toggled.connect(lambda val: self.onSolo.emit(val))
-        layout.addWidget(soloBtn, 0,1)
+        layout.addWidget(soloBtn, 0, 1)
 
         # Create delete button, delete the light selected
         deleteBtn = QtWidgets.QPushButton('Delete')
@@ -135,14 +139,14 @@ class LightWidget(QtWidgets.QWidget):
         intensityLight = QtWidgets.QLineEdit(str(self.light.intensity.get()))
         intensityLight.setMaximumWidth(80)
         intensityLight.textChanged.connect(lambda val: self.light.intensity.set(float(val)))
-        layout.addWidget(intensityLight, 0,3)
+        layout.addWidget(intensityLight, 0, 3)
 
         # Change mode of light
         self.colorBtn = QtWidgets.QPushButton()
-        self.colorBtn.setMaximumSize(20,20)
+        self.colorBtn.setMaximumSize(20, 20)
         self.setButtonColor()
         self.colorBtn.clicked.connect(self.setColorLight)
-        layout.addWidget(self.colorBtn, 0,4)
+        layout.addWidget(self.colorBtn, 0, 4)
 
     def setButtonColor(self, color=None):
         if not color:
@@ -150,9 +154,9 @@ class LightWidget(QtWidgets.QWidget):
 
         assert len(color) == 3, "You must provide a list of 3 colors"
 
-        r,g,b = [c*255 for c in color]
+        r, g, b = [c * 255 for c in color]
 
-        self.colorBtn.setStyleSheet('background-color: rgba(%s,,%s,%s,1.0)' % (r,g,b))
+        self.colorBtn.setStyleSheet('background-color: rgba(%s,,%s,%s,1.0)' % (r, g, b))
 
     def setColorLight(self):
 
@@ -162,9 +166,9 @@ class LightWidget(QtWidgets.QWidget):
         color = pm.colorEditor(rgbValue=lightColor)
 
         # Convert color value above to rgba
-        r,g,b,a = [float(c) for c in color.split()]
+        r, g, b, a = [float(c) for c in color.split()]
 
-        color = (r,g,b)
+        color = (r, g, b)
 
         self.light.color.set(color)
         self.setButtonColor(color)
@@ -179,24 +183,24 @@ class LightWidget(QtWidgets.QWidget):
 
         pm.delete(self.light.getTransform())
 
-class ToolBoxV(QtWidgets.QDialog):
 
+class ToolBoxV(QtWidgets.QDialog):
     mayaLightTypes = {
 
         "pointLight": cmds.pointLight,
         "ambientLight": cmds.ambientLight,
         "spotLight": cmds.spotLight,
         "directionalLight": cmds.directionalLight,
-        "areaLight": partial( cmds.shadingNode, 'areaLight', al=True ),
-        "volumeLight": partial( cmds.shadingNode, 'volumeLight', al=True )
+        "areaLight": partial(cmds.shadingNode, 'areaLight', al=True),
+        "volumeLight": partial(cmds.shadingNode, 'volumeLight', al=True)
     }
 
     vrayLightTypes = {
 
-        "VRayLightRectShape": partial( cmds.shadingNode, 'VRayLightRectShape', al=True ),
-        "VRayLightDomeShape": partial( cmds.shadingNode, 'VRayLightDomeShape', al=True ),
-        "VRayLightSphereShape": partial( cmds.shadingNode, 'VRayLightSphereShape', al=True ),
-        "VRayLightIESShape": partial( cmds.shadingNode, 'VRayLightIESShape', al=True ),
+        "VRayLightRectShape": partial(cmds.shadingNode, 'VRayLightRectShape', al=True),
+        "VRayLightDomeShape": partial(cmds.shadingNode, 'VRayLightDomeShape', al=True),
+        "VRayLightSphereShape": partial(cmds.shadingNode, 'VRayLightSphereShape', al=True),
+        "VRayLightIESShape": partial(cmds.shadingNode, 'VRayLightIESShape', al=True),
         "VRayLightMesh": partial(cmds.shadingNode, 'VRayLightMeshShape', al=True),
         "VRayLightMeshLightLinking": partial(cmds.shadingNode, 'VRayLightMeshLightLinkingShape', al=True),
         "VRayPluginNodeLightShapeShape": partial(cmds.shadingNode, 'VRayPluginNodeLightShapeShape', al=True),
@@ -236,17 +240,17 @@ class ToolBoxV(QtWidgets.QDialog):
 
     def buildUI(self):
         layout = QtWidgets.QGridLayout(self)
-        layout.setContentsMargins(5,5,5,5)
+        layout.setContentsMargins(5, 5, 5, 5)
 
         # Create a label to note for Maya light
         mayaLightLabel = QtWidgets.QLabel('Maya Lights')
         mayaLightLabel.setAlignment(QtCore.Qt.AlignCenter)
-        layout.addWidget(mayaLightLabel, 0,0,1,6)
+        layout.addWidget(mayaLightLabel, 0, 0, 1, 6)
 
         # Create a label to note for Vray light
         vrayLightLabel = QtWidgets.QLabel('Vray Lights')
         vrayLightLabel.setAlignment(QtCore.Qt.AlignCenter)
-        layout.addWidget(vrayLightLabel, 0,6,1,8)
+        layout.addWidget(vrayLightLabel, 0, 6, 1, 8)
 
         # Create a combo box that has the list of Maya light type
         self.mayaLightTypeCB = QtWidgets.QComboBox()
@@ -254,12 +258,12 @@ class ToolBoxV(QtWidgets.QDialog):
         for lightType in sorted(self.mayaLightTypes):
             self.mayaLightTypeCB.addItem(lightType)
 
-        layout.addWidget(self.mayaLightTypeCB, 1,0,1,4)
+        layout.addWidget(self.mayaLightTypeCB, 1, 0, 1, 4)
 
         # Create a button to create the light base on the selection of the combo box
         createMayaLightBtn = QtWidgets.QPushButton('Create')
         createMayaLightBtn.clicked.connect(partial(self.createLight, 'Maya Light'))
-        layout.addWidget(createMayaLightBtn, 1,4,1,2)
+        layout.addWidget(createMayaLightBtn, 1, 4, 1, 2)
 
         # Create a combo box that has the list of Vray light type
         self.vrayLightTypeCB = QtWidgets.QComboBox()
@@ -267,12 +271,12 @@ class ToolBoxV(QtWidgets.QDialog):
         for lightType in sorted(self.vrayLightTypes):
             self.vrayLightTypeCB.addItem(lightType)
 
-        layout.addWidget(self.vrayLightTypeCB, 1,6,1,6)
+        layout.addWidget(self.vrayLightTypeCB, 1, 6, 1, 6)
 
         # Create a button to create the light base on the selection of the combo box
         createVrayLightBtn = QtWidgets.QPushButton('Create')
         createVrayLightBtn.clicked.connect(partial(self.createLight, 'Vray Light'))
-        layout.addWidget(createVrayLightBtn, 1,12,1,2)
+        layout.addWidget(createVrayLightBtn, 1, 12, 1, 2)
 
         # Create Scroll layout to add the light created from buttons above into main layout via LightWidget class
         scrollWidget = QtWidgets.QWidget()
@@ -282,7 +286,7 @@ class ToolBoxV(QtWidgets.QDialog):
         scrollArea = QtWidgets.QScrollArea()
         scrollArea.setWidgetResizable(True)
         scrollArea.setWidget(scrollWidget)
-        layout.addWidget(scrollArea, 2,0,1,14)
+        layout.addWidget(scrollArea, 2, 0, 1, 14)
 
     def createLight(self, lightTypePlugin):
 
@@ -313,12 +317,11 @@ class ToolBoxV(QtWidgets.QDialog):
                 widget.disableLight(value)
 
 
-
 def showUI():
     ui = ToolBoxV()
     ui.show()
     return ui
 
-# --------------------------------------------------------------------------------------------------------
-# END OF CODE
-# --------------------------------------------------------------------------------------------------------
+    # --------------------------------------------------------------------------------------------------------
+    # END OF CODE
+    # --------------------------------------------------------------------------------------------------------

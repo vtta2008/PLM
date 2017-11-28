@@ -33,19 +33,19 @@ winID = 'TexturePathEditor'
 # Window title of the UI
 winTitle = 'Texture Path Editor'
 # Details of column width
-CW=[(1, 5), (2, 20), (3,5), (4, 300), (5,5), (6, 80), (7, 5)]
+CW = [(1, 5), (2, 20), (3, 5), (4, 300), (5, 5), (6, 80), (7, 5)]
 # Width of window UI
 W = 420
 # Color code
 GREEN = (0, 1, 0)
 RED = (1, 0, 0)
 
-
 # ----------------------------------------------------------------------------------------------------------- #
 """                        MAIN CLASS: FIXPATH - LIST AND CHECK ALL THE TEXTURE PATH                        """
+
+
 # ----------------------------------------------------------------------------------------------------------- #
 class FixPath(object):
-
     def __init__(self):
         # ALways super class
         super(FixPath, self).__init__()
@@ -122,7 +122,6 @@ class FixPath(object):
 
         return bgc
 
-
     def fixTexturePth(self, id, tex, *args):
         # Get the current project path
         curPrjPth = cmds.workspace(q=True, rd=True)
@@ -153,13 +152,15 @@ class FixPath(object):
             cmds.textField(id, edit=True, tx=desPth)
             cmds.text(id, edit=True, bgc=GREEN)
 
+
 def initialize():
     # Run class FixPath
     FixPath()
 
-if __name__=='__main__':
+
+if __name__ == '__main__':
     initialize()
 
-# --------------------------------------------------------------------------------------------------------
-# END OF CODE
-# --------------------------------------------------------------------------------------------------------
+    # --------------------------------------------------------------------------------------------------------
+    # END OF CODE
+    # --------------------------------------------------------------------------------------------------------

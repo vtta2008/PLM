@@ -15,6 +15,7 @@ logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
+
 # -------------------------------------------------------------------------------------------------------------
 # CHECK THE CORRECT BINDING THAT BE USING UNDER QT.PY
 # -------------------------------------------------------------------------------------------------------------
@@ -33,7 +34,7 @@ logger.setLevel(logging.DEBUG)
 #     from shiboken2 import wrapInstance
 #     from Maya_tk.plugins.Qt.QtCore import Signal
 
-class projectManager( object ):
+class projectManager(object):
     def __init__(self):
         if cmds.window('projectManagerUI', exists=True):
             cmds.deleteUI('projectManagerUI')
@@ -41,42 +42,42 @@ class projectManager( object ):
         self.buildUI()
 
     def buildUI(self):
-        self.projectManagerUI = cmds.window( 'projectManagerUI', t='Project Manager', rtf=True )
+        self.projectManagerUI = cmds.window('projectManagerUI', t='Project Manager', rtf=True)
         mlo = cmds.columnLayout()
-        cmds.separator( style='in', w=400 )
-        cmds.text( l="", h=2 )
+        cmds.separator(style='in', w=400)
+        cmds.text(l="", h=2)
         cmds.optionMenu('setMode', l='Set Mode')
-        cmds.menuItem( l="Production" )
-        cmds.menuItem( l="Group")
-        cmds.menuItem( l="Personal" )
-        cmds.text( l="", h=2 )
+        cmds.menuItem(l="Production")
+        cmds.menuItem(l="Group")
+        cmds.menuItem(l="Personal")
+        cmds.text(l="", h=2)
         cmds.setParent(mlo)
-        cmds.text( l="", h=2 )
-        cmds.separator( style='in', w=400 )
-        cmds.rowColumnLayout( nc=4, cw=[ (1, 100), (2, 100), (3, 100), (4, 100) ] )
-        cmds.button( l="New", ann="Create a new project", command=self.newProject )
-        cmds.button( l="Load", ann="Load Project", command=self.loadProjectContent )
-        cmds.button( l="Remove" )
-        cmds.button( l="Close", command=self.closeUI )
-        cmds.setParent( mlo )
-        cmds.separator( style='in', w=400 )
-        cmds.rowColumnLayout( nc=3, cw=[ (1, 150), (2, 50), (3, 200) ] )
-        cmds.text( l="ProjectName", align='center' )
-        cmds.text( l="Mode", align='center' )
-        cmds.text( l="Path", align='center' )
-        cmds.setParent( mlo )
-        cmds.text( l="", h=2 )
-        cmds.separator( style='in', w=400 )
-        cmds.rowColumnLayout( nc=3, cw=[ (1, 150), (2, 50), (3, 200) ] )
-        self.loadProjectContent( self )
-        cmds.setParent( mlo )
-        cmds.text( l="", h=2 )
-        cmds.separator( style='in', w=400 )
-        cmds.showWindow( 'projectManagerUI' )
+        cmds.text(l="", h=2)
+        cmds.separator(style='in', w=400)
+        cmds.rowColumnLayout(nc=4, cw=[(1, 100), (2, 100), (3, 100), (4, 100)])
+        cmds.button(l="New", ann="Create a new project", command=self.newProject)
+        cmds.button(l="Load", ann="Load Project", command=self.loadProjectContent)
+        cmds.button(l="Remove")
+        cmds.button(l="Close", command=self.closeUI)
+        cmds.setParent(mlo)
+        cmds.separator(style='in', w=400)
+        cmds.rowColumnLayout(nc=3, cw=[(1, 150), (2, 50), (3, 200)])
+        cmds.text(l="ProjectName", align='center')
+        cmds.text(l="Mode", align='center')
+        cmds.text(l="Path", align='center')
+        cmds.setParent(mlo)
+        cmds.text(l="", h=2)
+        cmds.separator(style='in', w=400)
+        cmds.rowColumnLayout(nc=3, cw=[(1, 150), (2, 50), (3, 200)])
+        self.loadProjectContent(self)
+        cmds.setParent(mlo)
+        cmds.text(l="", h=2)
+        cmds.separator(style='in', w=400)
+        cmds.showWindow('projectManagerUI')
 
     def loadProjectContent(self, *args):
         cmds.textField(text="", vis=False, w=400, h=300)
-            
+
     def newProject(self, *args):
         modeSelect = cmds.optionMenu('modeSelect', query=True, v=True)
         if modeSelect == "Group":
@@ -86,75 +87,75 @@ class projectManager( object ):
 
     def closeUI(self, *args):
         if cmds.window('projectManagerUI', exists=True):
-            cmds.deleteUI('projectManagerUI') 
+            cmds.deleteUI('projectManagerUI')
 
     def newprojectUI_personalMode(self, *args):
         if cmds.window('pmWinUI', exists=True):
             cmds.deleteUI('pmWinUI')
-            
+
         JTpmWinID = cmds.window("pmWinUI", t="New project - Personal Mode", w=600)
         tab1 = cmds.paneLayout(configuration="horizontal2")
         lo1 = cmds.columnLayout()
         cmds.button()
         cmds.showWindow(JTpmWinID)
-        
+
     def newprojectUI_groupMode(self, *args):
         def makeAcoolButton(btn, comm, widt):
             cmds.frameLayout(borderVisible=True, labelVisible=False)
             cmds.button(l=btn, command=comm, w=widt)
             cmds.setParent('..')
-        
+
         if cmds.window('pmWinUI', exists=True):
             cmds.deleteUI('pmWinUI')
-        
+
         JTpmWinID = cmds.window("pmWinUI", t="New project - Group Mode", w=600)
         tab1 = cmds.paneLayout(configuration="horizontal2")
         # make pane layout /1st layer
         cmds.columnLayout()
-        #make project setting section
+        # make project setting section
         lo1_rll = cmds.columnLayout(w=600)
-        #3rd layer
-        cmds.rowColumnLayout(nc=2, cat=[1, "both", 1], cw=([1,150],[2,450]))
+        # 3rd layer
+        cmds.rowColumnLayout(nc=2, cat=[1, "both", 1], cw=([1, 150], [2, 450]))
         makeAcoolButton('Set project Path', self.browseDir, 75)
         global saveprojectPath
         saveprojectPath = ""
         cmds.textField('projectPth', text=saveprojectPath)
-        #come back to 2nd layer
+        # come back to 2nd layer
         cmds.setParent(lo1_rll)
-        #4 rows for 4 sections /3rd layer
-        lo1_rll_rl1 = cmds.rowColumnLayout(nc=4, cat=[1, "both", 1], cw=[(1,120),(2,120),(3,120),(4,240)])
-        #character name row /4th layer
+        # 4 rows for 4 sections /3rd layer
+        lo1_rll_rl1 = cmds.rowColumnLayout(nc=4, cat=[1, "both", 1], cw=[(1, 120), (2, 120), (3, 120), (4, 240)])
+        # character name row /4th layer
         cmds.columnLayout()
-        #list of folders in pre project folders /5th layer
+        # list of folders in pre project folders /5th layer
         cmds.columnLayout(h=260)
-        #come back to 3rd layer
+        # come back to 3rd layer
         cmds.setParent(lo1_rll_rl1)
-        #environment objects row
+        # environment objects row
         cmds.columnLayout()
-        #come back to 3rd layer
+        # come back to 3rd layer
         cmds.setParent(lo1_rll_rl1)
-        #props objects row
+        # props objects row
         cmds.columnLayout()
-        #come back to 3rd layer
+        # come back to 3rd layer
         cmds.setParent(lo1_rll_rl1)
-        #project details row /4th layer
+        # project details row /4th layer
         lo1_rll_rl1_lo4 = cmds.columnLayout()
-        cmds.text(l="Details", w=240, h=20, align='center')   
-        #details column /5th layer
+        cmds.text(l="Details", w=240, h=20, align='center')
+        # details column /5th layer
         cmds.setParent(tab1)
         cmds.showWindow(JTpmWinID)
-    
+
     def browseDir(self, *args):
-        #get the path from MEL
+        # get the path from MEL
         path = cmds.fileDialog2(fm=3, ff='directory')
         saveprojectPath = path[0].encode('utf-8')
-        #set the textField text to the directory that was returned from MEL
+        # set the textField text to the directory that was returned from MEL
         cmds.textField('projectPth', edit=True, text=saveprojectPath)
-    
+
     def createFolderStructure(self, *args):
-        #get name project:
-        curProjName = cmds.textField("prjFullName", text = True, query = True)
-        #get current project path:
+        # get name project:
+        curProjName = cmds.textField("prjFullName", text=True, query=True)
+        # get current project path:
         curProjPath = cmds.textField('projectPth', query=True, text=True)
         stage_Ls = ['assets', 'deliverables', 'documents', 'editorial', 'reference', 'RnD', 'sequences', 'resources']
         assets_Ls = ['character', 'enviroment', 'props']
@@ -168,11 +169,11 @@ class projectManager( object ):
         surfacing_task = ['maya', 'mari', 'substance', 'photoshop']
         shotTask_apps = ['maya', 'houdini', 'nuke', 'AE']
         work_Ls = ['publish', 'review', 'work']
-        
+
         shots = cmds.intField('numOfShots', v=True, query=True)
         chars = cmds.intField('numOfChars', v=True, query=True)
         shortName = cmds.textField('prjShortName', text=True, query=True)
-        
+
         charName_Ls = []
         numChars = cmds.intField('numOfChars', v=True, query=True)
         i = 0
@@ -181,7 +182,7 @@ class projectManager( object ):
             getCharName = cmds.textField(str('charName' + str(number)), text=True, query=True)
             charName_Ls.append(getCharName)
             i = i + 1
-        
+
         envObj_Ls = []
         numEnvObj = cmds.intField('numOfenvObj', v=True, query=True)
         i = 0
@@ -199,25 +200,25 @@ class projectManager( object ):
             getPropName = cmds.textField(str('prop' + str(number)), text=True, query=True)
             props_Ls.append(getPropName)
 
-        p = curProjPath + "/" +curProjName
-        
-        #master folder (name of project)
+        p = curProjPath + "/" + curProjName
+
+        # master folder (name of project)
         cmds.sysFile(curProjPath + "/" + curProjName, md=True)
-        
-        #folder for stages of product
+
+        # folder for stages of product
         i = 0
         for i in range(len(stage_Ls)):
             cmds.sysFile(p + "/" + stage_Ls[i], md=True)
             i = i + 1
-        
-        #folder structure inside stages folder:
+
+        # folder structure inside stages folder:
         path = p + "/" + stage_Ls[0]
         i = 0
         for i in range(len(assets_Ls)):
             cmds.sysFile(path + "/" + assets_Ls[i], md=True)
             i = i + 1
-        
-        #character folder
+
+        # character folder
         path = path + "/" + assets_Ls[0]
         i = 0
         for i in range(len(charName_Ls)):
@@ -253,8 +254,8 @@ class projectManager( object ):
                 cmds.sysFile(path3 + "/" + surfacing_task[a], md=True)
                 a = a + 1
             i = i + 1
-        
-        #environment folder
+
+        # environment folder
         path = path = p + "/" + stage_Ls[0] + "/" + assets_Ls[1]
         i = 0
         for i in range(len(envObj_Ls)):
@@ -288,10 +289,10 @@ class projectManager( object ):
             a = 0
             for a in range(len(surfacing_task)):
                 cmds.sysFile(path3 + "/" + surfacing_task[a], md=True)
-                a = a + 1        
+                a = a + 1
             i = i + 1
 
-        #props folder
+        # props folder
         path = p + "/" + stage_Ls[0] + "/" + assets_Ls[2]
         i = 0
         for i in range(len(props_Ls)):
@@ -325,27 +326,27 @@ class projectManager( object ):
             a = 0
             for a in range(len(surfacing_task)):
                 cmds.sysFile(path3 + "/" + surfacing_task[a], md=True)
-                a = a + 1        
+                a = a + 1
             i = i + 1
 
-        #document folder:
+        # document folder:
         path = p + "/" + stage_Ls[2]
         i = 0
         for i in range(len(documents_Ls)):
             cmds.sysFile(path + "/" + documents_Ls[i], md=True)
             i = i + 1
-            
-        #editorial folder:
+
+        # editorial folder:
         path = p + "/" + stage_Ls[3]
         i = 0
         for i in range(len(editorial_Ls)):
             cmds.sysFile(path + "/" + editorial_Ls[i], md=True)
             i = i + 1
-        
-        #sequences folder:
+
+        # sequences folder:
         sequence_Ls = []
         i = 0
-        
+
         for i in range(int(shots)):
             shotNum = i + 1
             if shotNum <= 9:
@@ -377,7 +378,7 @@ class projectManager( object ):
                 item = item + 1
             i = i + 1
 
-        #resources folder
+        # resources folder
         path = p + "/" + stage_Ls[7]
         i = 0
         for i in range(len(resources_Ls)):

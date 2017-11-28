@@ -26,8 +26,8 @@ logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
-class EnglishDict(QDialog):
 
+class EnglishDict(QDialog):
     def __init__(self):
 
         super(EnglishDict, self).__init__()
@@ -38,8 +38,7 @@ class EnglishDict(QDialog):
 
         # self.setCentralWidget(self.layout)
 
-        self.setContentsMargins(5,5,5,5)
-
+        self.setContentsMargins(5, 5, 5, 5)
 
     def buildUI(self):
 
@@ -65,12 +64,12 @@ class EnglishDict(QDialog):
 
         self.answer = QTextEdit()
 
-        GridLayout.addWidget(self.lineInput, 0,0,1,3)
-        GridLayout.addWidget(self.suggessLabel, 1,0,1,3)
-        GridLayout.addWidget(searchBtn, 2,0,1,1)
-        GridLayout.addWidget(yesBtn, 2,1,1,1)
-        GridLayout.addWidget(noBtn, 2,2,1,1)
-        GridLayout.addWidget(self.answer, 3,0,4,3)
+        GridLayout.addWidget(self.lineInput, 0, 0, 1, 3)
+        GridLayout.addWidget(self.suggessLabel, 1, 0, 1, 3)
+        GridLayout.addWidget(searchBtn, 2, 0, 1, 1)
+        GridLayout.addWidget(yesBtn, 2, 1, 1, 1)
+        GridLayout.addWidget(noBtn, 2, 2, 1, 1)
+        GridLayout.addWidget(self.answer, 3, 0, 4, 3)
 
         hbox.addLayout(GridLayout)
 
@@ -96,11 +95,13 @@ class EnglishDict(QDialog):
         else:
             self.answer.setPlainText("The word doesn't exist. Please double check it.")
 
+
 def initialize():
     app = QApplication(sys.argv)
     dictUI = EnglishDict()
     dictUI.show()
     sys.exit(app.exec_())
 
-if __name__=="__main__":
+
+if __name__ == "__main__":
     initialize()

@@ -30,6 +30,7 @@ logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
+
 def getfilePath(directory=None):
     """
         This function will generate the file names in a directory
@@ -57,16 +58,15 @@ def getfilePath(directory=None):
     return file_paths  # Self-explanatory.
 
 
-def batchResizeImage(imgDir=None, imgResDir=None, size=[100,100], ext='jpg', mode=1):
-
-    if imgDir==None:
+def batchResizeImage(imgDir=None, imgResDir=None, size=[100, 100], ext='jpg', mode=1):
+    if imgDir == None:
         sys.exit()
 
     if not os.path.exists(imgDir):
         print 'The source folder: %s is not exists' % imgDir
         sys.exit()
 
-    if imgResDir==None:
+    if imgResDir == None:
         imgResDir = imgDir
 
     if not os.path.exists(imgResDir):
@@ -88,9 +88,11 @@ def batchResizeImage(imgDir=None, imgResDir=None, size=[100,100], ext='jpg', mod
 
     return images, resized_images
 
+
 def createToken(*args):
     token = uuid.uuid4()
     return token
+
 
 def dataHandle(filePath, mode, indent=4, *args):
     """
@@ -99,7 +101,7 @@ def dataHandle(filePath, mode, indent=4, *args):
 
     # print filePath
 
-    if mode=='r' or mode=='r+':
+    if mode == 'r' or mode == 'r+':
         if not os.path.exists(filePath):
             logger.debug('file is not exists')
             sys.exit()
@@ -113,9 +115,10 @@ def dataHandle(filePath, mode, indent=4, *args):
         else:
             with open(filePath, mode) as f:
                 return json.dump(filePath, f, indent=indent)
-    elif mode == 'w' or mode =='w+':
+    elif mode == 'w' or mode == 'w+':
         with open(filePath, mode) as f:
             return json.dump(filePath, f, indent=indent)
+
 
 def getAllInstalledPythonPackage(*args):
     pyPkgs = {}
@@ -123,11 +126,11 @@ def getAllInstalledPythonPackage(*args):
     pyPkgs['__mynote__'] = 'import pip; pip.get_installed_distributions()'
 
     for package in pip.get_installed_distributions():
-        name = package.project_name # SQLAlchemy, Django, Flask-OAuthlib
-        key = package.key # sqlalchemy, django, flask-oauthlib
-        module_name = package._get_metadata("top_level.txt") # sqlalchemy, django, flask_oauthlib
-        location = package.location # virtualenv lib directory etc.
-        version = package.version # version number
+        name = package.project_name  # SQLAlchemy, Django, Flask-OAuthlib
+        key = package.key  # sqlalchemy, django, flask-oauthlib
+        module_name = package._get_metadata("top_level.txt")  # sqlalchemy, django, flask_oauthlib
+        location = package.location  # virtualenv lib directory etc.
+        version = package.version  # version number
 
         pyPkgs[name] = [key, version, location]
 
@@ -145,6 +148,7 @@ def getAllInstalledPythonPackage(*args):
 
     return pyPkgs
 
+
 # Execute a python file
 def executing(name, path, *args):
     """
@@ -153,10 +157,11 @@ def executing(name, path, *args):
     :param path: path to python file
     :return: executing in command prompt
     """
-    logger.info( 'Executing %s from %s' % (name, path) )
+    logger.info('Executing %s from %s' % (name, path))
     pth = os.path.join(path, name)
     if os.path.exists(pth):
         subprocess.call([sys.executable, pth])
+
 
 # Install package via pip command (cmd)
 def install_package(name, *args):
@@ -165,9 +170,10 @@ def install_package(name, *args):
     :param name: name of component
     :return:
     """
-    logger.info( 'Using pip to install %s' % name )
+    logger.info('Using pip to install %s' % name)
 
     subprocess.Popen('pip install %s' % name, shell=True).wait()
+
 
 # Check plugin is installed or not
 def checkPackageInstall(name, *args):
@@ -186,6 +192,7 @@ def checkPackageInstall(name, *args):
                     'execute package installation procedural' % name)
         install_package(name)
 
+
 # Create environment variable by custom key
 def createKey(key, path, *args):
     """
@@ -201,6 +208,7 @@ def createKey(key, path, *args):
 
     os.environ[key] = path
 
+
 # Check the value of environment variable
 def checkEnvKey(key, path, *args):
     try:
@@ -214,6 +222,7 @@ def checkEnvKey(key, path, *args):
     else:
         pass
 
+
 # Get the full path of icon via icon file name
 def getIcon(name, *args):
     iconName = name + '.icon.png'
@@ -221,12 +230,14 @@ def getIcon(name, *args):
     iconPth = os.path.join(os.path.join(rootPth, 'icons'), iconName)
     return iconPth
 
+
 # Get the full path of image via icon file name
 def avatar(userName, *args):
     img = userName + '.avatar.jpg'
     imgPth = os.path.join(os.getcwd(), 'imgs')
     avatarPth = os.path.join(imgPth, img)
     return avatarPth
+
 
 # Save information of current log in user account for next time.
 def saveCurrentUserLogin(userName, remember=False, *args):
@@ -245,13 +256,17 @@ def saveCurrentUserLogin(userName, remember=False, *args):
 
     logger.info('save file to %s' % currentUserLoginPth)
 
+
 # ----------------------------------------------------------------------------------------------------------- #
 """                        MAIN CLASS 1: ENDCODE - ENCODE STRING TO HEXADECIMAL                             """
+
+
 # ----------------------------------------------------------------------------------------------------------- #
 class Encode():
     """
     This is the main class with function to encode a string to hexadecimal or revert.
     """
+
     def ascii(self, rawInput):
         """
         convert another type of unicode to be compatible in python
@@ -285,7 +300,7 @@ class Encode():
         :param strInput: string input
         :return: hexadecimal
         """
-        self.outPut = ''.join ( ["%02X" % ord (x) for x in strInput] )
+        self.outPut = ''.join(["%02X" % ord(x) for x in strInput])
         return self.outPut
 
     def hexToStr(self, hexInput):
@@ -295,12 +310,13 @@ class Encode():
         :return: readable string
         """
         bytes = []
-        hexStr = ''.join( hexInput.split(" ") )
+        hexStr = ''.join(hexInput.split(" "))
         for i in range(0, len(hexStr), 2):
-            bytes.append( chr( int (hexStr[i:i+2], 16 ) ) )
+            bytes.append(chr(int(hexStr[i:i + 2], 16)))
 
-        self.outPut = ''.join( bytes )
+        self.outPut = ''.join(bytes)
         return self.outPut
+
 
 # ------------------------------------------------------
 # FUNCTION TO OPERATE THE ENCODING
@@ -313,11 +329,11 @@ def encode(input=STRINPUT, mode=OPERATION[0]):
     :return: string
     """
     if mode == 'hex':
-       output = Encode().strToHex( input )
+        output = Encode().strToHex(input)
     elif mode == 'str':
-        output = Encode().hexToStr( input )
-    elif mode== 'ascii':
-        output = Encode().ascii( input )
+        output = Encode().hexToStr(input)
+    elif mode == 'ascii':
+        output = Encode().ascii(input)
     else:
         output = Encode().utf8(input)
 
@@ -326,6 +342,8 @@ def encode(input=STRINPUT, mode=OPERATION[0]):
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                MAIN CLASS 2: GET MODULE INFO - GET ALL INFO OF MODULES, ICONS, IMAGES                   """
+
+
 # ----------------------------------------------------------------------------------------------------------- #
 class Proc():
     """
@@ -338,33 +356,37 @@ class Proc():
         pass
 
     def getDate(self):
-        t = datetime.datetime.timetuple( datetime.datetime.now() )
+        t = datetime.datetime.timetuple(datetime.datetime.now())
         dateOutput = '%s/%s/%s' % (str(t.tm_mday), str(t.tm_mon), str(t.tm_year))
         return dateOutput
 
     def getTime(self):
-        t = datetime.datetime.timetuple(datetime.datetime.now() )
+        t = datetime.datetime.timetuple(datetime.datetime.now())
         timeOutput = '%s:%s' % (str(t.tm_hour), str(t.tm_min))
         return timeOutput
 
     def createLog(self, event='Create Log', names=NAMES, package=PACKAGE):
         log = {}
         log[proc('date')] = event
-        with open( os.path.join(package['appData'], names['log']), 'a+') as f:
+        with open(os.path.join(package['appData'], names['log']), 'a+') as f:
             json.dump(log, f, indent=4)
+
 
 def encoding(message):
     output = encode(message, mode='hex')
     return output
 
+
 def decoding(message):
     output = encode(message, mode='str')
     return output
+
 
 def logRecord(event):
     # logger.info('Log created')
     output = Proc().createLog(event=event)
     return output
+
 
 def proc(operation=None, name=NAMES['log'], path=PACKAGE['info']):
     t = Proc().getTime()
@@ -376,17 +398,18 @@ def proc(operation=None, name=NAMES['log'], path=PACKAGE['info']):
     elif operation == 'time':
         output = Proc().getTime()
     elif operation == 'log out':
-        output = logRecord('User %s logged out at %s' % (u,t))
+        output = logRecord('User %s logged out at %s' % (u, t))
     elif operation == 'log in':
-        output = logRecord('User %s logged in at %s' % (u,t))
+        output = logRecord('User %s logged in at %s' % (u, t))
     elif operation == 'update':
         output = logRecord('Update data at %s' % t)
     elif operation == 'restart':
-        output = logRecord('User %s restart app at %s' % (u, t) )
+        output = logRecord('User %s restart app at %s' % (u, t))
     else:
-        output=None
+        output = None
 
     return output
+
 
 # --------------------------------------------------------------------------------------------------------
 """                                                END OF CODE                                         """

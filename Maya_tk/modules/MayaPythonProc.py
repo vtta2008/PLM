@@ -13,10 +13,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-from maya import cmds # Maya_tk Python command
+from maya import cmds  # Maya_tk Python command
 import os, sys, json, shutil, getpass, platform, re, logging
 
 from Maya_tk.modules import MayaVariables as var
+
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
@@ -50,14 +51,16 @@ logger.setLevel(logging.DEBUG)
 #     from Maya_tk.plugins.Qt.QtCore import Signal
 # ----------------------------------------------------------------------------------------------------------- #
 """                   AIN CLASS: MAYA EXECUTE PYTHON - DAMG PIPELINE TOOL INSTALLATION                      """
-# ----------------------------------------------------------------------------------------------------------- #
-class MayaPythonProc( object ):
 
-    #file list in Installation folder
-    icons_lst = [f for f in os.listdir(os.path.join(os.getcwd(), 'Maya_tk/icons')) if f.endswith('.png') or f.endswith('.jpg')]
+
+# ----------------------------------------------------------------------------------------------------------- #
+class MayaPythonProc(object):
+    # file list in Installation folder
+    icons_lst = [f for f in os.listdir(os.path.join(os.getcwd(), 'Maya_tk/icons')) if
+                 f.endswith('.png') or f.endswith('.jpg')]
     modules_lst = [f for f in os.listdir(os.path.join(os.getcwd(), 'Maya_tk/modules')) if f.endswith('.py')]
-    scrRoot_lst = [f for f in os.listdir(os.path.join(os.getcwd(), 'Maya_tk')) if f.endswith( '.py' )]
-    #---------------------------------------------------------
+    scrRoot_lst = [f for f in os.listdir(os.path.join(os.getcwd(), 'Maya_tk')) if f.endswith('.py')]
+    # ---------------------------------------------------------
     # List file names for CHECK LIST
     checkList = dict(icons=NAMES['mayaIcon'], modules=NAMES['mayaModule'], master=NAMES['mayaRoot'])
     fileList = dict(icons=icons_lst, modules=modules_lst, master=scrRoot_lst)
@@ -66,7 +69,7 @@ class MayaPythonProc( object ):
     message_missing = []
 
     def __init__(self):
-        super( MayaPythonProc, self ).__init__()
+        super(MayaPythonProc, self).__init__()
 
         self.checkAllFiles()
 
@@ -81,7 +84,7 @@ class MayaPythonProc( object ):
                     logger.info("could not find: %s in: %s" % (file, (os.path.join(NAMES['mayaRootDir'], part))))
                     self.message_missing.append("%s in %s" % (file, (os.path.join(NAMES['mayaRootDir'], part))))
 
-        if self.message_missing==[]:
+        if self.message_missing == []:
             # logger.info("Finish checking, all files are there")
             pass
         else:
@@ -124,19 +127,19 @@ class MayaPythonProc( object ):
             with open(srcInfo, 'r') as f:
                 paths = json.load(f)
             for path in paths:
-                if os.path.exists( paths[ path ] ):
-                    if not paths[ path ] in sys.path:
-                        sys.path.append( paths[ path ] )
+                if os.path.exists(paths[path]):
+                    if not paths[path] in sys.path:
+                        sys.path.append(paths[path])
                     else:
                         pass
                 else:
                     continue
         else:
-            message = ('Could not find %s in %s,\n'  % (NAMES['maya'][1], srcInfo))
+            message = ('Could not find %s in %s,\n' % (NAMES['maya'][1], srcInfo))
             self.warningMessage(message=message)
 
     def updateLayout(self):
-        folName = ['workspaces', 'shelves',]
+        folName = ['workspaces', 'shelves', ]
         for i in range(0, 2):
             scr = os.path.join(NAMES['mayaRootDir'], 'layout') + '/' + NAMES['mayaLayout'][i]
             if not os.path.exists(scr):
@@ -150,30 +153,31 @@ class MayaPythonProc( object ):
                 else:
                     logger.info('updating %s...' % folName[i])
                     shutil.copy2(scr, des)
-                i+=1
+                i += 1
 
     def showMissing(self, *args):
         message = " "
         for m in self.message_missing:
             message = 'missing file: ' + message + m + ";"
-        self.warningMessage( message=message )
+        self.warningMessage(message=message)
         logger.info(message)
         sys.exit()
 
     def warningMessage(self, message="None"):
         cmds.confirmDialog(
-            t = 'Warning',
-            m = ( message + "\n"
-                "please re-install the tool, or contact Jimmy for help" + "\n"
-                ),
-            b = 'OK'
+            t='Warning',
+            m=(message + "\n"
+                         "please re-install the tool, or contact Jimmy for help" + "\n"
+               ),
+            b='OK'
         )
         logger.info(message)
         cmds.warning(message)
 
-if __name__=='main':
+
+if __name__ == 'main':
     MayaPythonProc()
 
-# -------------------------------------------------------------------------------------------------------------
-# END OF CODE
-# -------------------------------------------------------------------------------------------------------------
+    # -------------------------------------------------------------------------------------------------------------
+    # END OF CODE
+    # -------------------------------------------------------------------------------------------------------------

@@ -455,12 +455,18 @@ class TabWidget( QWidget ):
         self.tab3GridLayout = QGridLayout()
 
         # Content tab 3
-        sqlPeopleBtn = QPushButton('Members')
-        self.tab3GridLayout.addWidget(sqlPeopleBtn, 0,0,1,1)
+        sqlBtn = QPushButton('Test Database')
+        self.tab3GridLayout.addWidget(sqlBtn, 0,0,1,1)
+        sqlBtn.clicked.connect(self.testSQL)
 
         hboxLayout.addLayout(self.tab3GridLayout)
 
         self.tab3.setLayout(hboxLayout)
+
+    def testSQL(self, *args):
+        from sql_tk import test_sql
+        reload(test_sql)
+        test_sql.initialize()
 
     def makeIconButton(self, name):
 

@@ -27,6 +27,7 @@ tempVarPrimary = 0
 tempVarPrimaryCovert = 0
 tempVarAlula = 0
 
+
 # Function to run at startup- It creates the group structure for the rig
 def runAtStartup():
     global my_wing
@@ -612,7 +613,6 @@ def controlsSetup():
                           (facingDirection) * (tipLength + (0.075 * tipLength)), "_Wing_3_JNT", "_Wing_3_JNT",
                           numAlulas, 1)
 
-
     # Build IK FK Switch
     IKFKControlSetup()
 
@@ -673,7 +673,6 @@ def createWingControls():
     m.curve(n="BoxConBase", d=1,
             p=[(-2, -2, 2), (-2, -2, -2), (2, -2, -2), (2, 2, -2), (-2, 2, -2), (-2, -2, -2), (2, -2, -2), (2, -2, 2),
                (-2, -2, 2), (-2, 2, 2), (-2, 2, -2), (2, 2, -2), (2, 2, 2), (-2, 2, 2), (2, 2, 2), (2, -2, 2)])
-
 
     # Create Arrow Controls Base
     m.curve(n="ArrowConBase", d=1, p=[(0, 0, 0), (0, 0, 1), (-0.0393, 0, .96), (0, 0, 1), (0.0393, 0, .96)])
@@ -738,7 +737,6 @@ def IKFKControlSetup():
     m.select(side + '_Wing_3_JNT_FK', tgl=True)
     m.select(side + '_Wing_3_JNT', tgl=True)
     m.orientConstraint(weight=1, mo=True)
-
 
     # CHANGE INTERPOLATION TYPES ON ORIENT CONSTRAINTS
     m.setAttr(side + '_Wing_1_JNT_orientConstraint1.interpType', 2);
@@ -912,7 +910,6 @@ def mainControls():
     m.delete(m.pointConstraint(side + '_Wing_3_JNT', side + '_TipFeathers_GRP_FLD'))  # Position it
     m.parent(side + '_TipFeathers_GRP_FLD', side + '_TipFeathers_GRP2')  # Parent them properly
 
-
     # Make the control
     m.duplicate('CurveConBase', n=side + '_TipFeathers_CON')
     m.showHidden(side + '_TipFeathers_CON')
@@ -932,7 +929,6 @@ def mainControls():
 
     # color the control
     colorControls('_TipFeathers_CON', 0)
-
 
     # Create Feathers Middle Control #
     # Calculate where the control should sit based on where the primary and secondary controls are.
@@ -1045,7 +1041,6 @@ def mainControls():
         colorControls('_Mid_R_Flex_Feathers', 1)
         colorControls('_Mid_L_Flex_Feathers', 1)
         colorControls('_End_Flex_Feathers', 1)
-
 
     # Parent controls under the joints for proper movement (even between IK and FK)
     m.select(side + '_Wing_3_JNT', r=True)
@@ -1164,12 +1159,10 @@ def mainControls():
     m.setDrivenKeyframe(side + '_Secondaries_Con_1.visibility', cd=side + '_EndFeathers_CON.GroupControls')
     m.setDrivenKeyframe(side + '_SecondaryCoverts_Con_1.visibility', cd=side + '_EndFeathers_CON.GroupControls')
 
-
     # Set controls to default 0 (Invisible)
     m.setAttr(side + '_TipFeathers_CON.GroupControls', 0)
     m.setAttr(side + '_MiddleFeathers_CON.GroupControls', 0)
     m.setAttr(side + '_EndFeathers_CON.GroupControls', 0)
-
 
     # Blendshape Controls #
     # Tip Feathers Blendshape Controls #
@@ -1218,7 +1211,6 @@ def mainControls():
         m.setAttr(side + '_TipFeathers_CON.FlexControls', 0)
         m.setAttr(side + '_MiddleFeathers_CON.FlexControls', 0)
         m.setAttr(side + '_EndFeathers_CON.FlexControls', 0)
-
 
     # Parent Main groups properly
     if ((m.objExists('R_Wing_1_JNT') == 0) and (m.objExists('L_Wing_1_JNT') == 1)) or (
@@ -1339,32 +1331,55 @@ def foldControls():
     m.setAttr(side + '_Alula_Con_1_GRP_FLD.rotateY', 0)
     m.setAttr(side + '_Alula_Con_2_GRP_FLD.rotateY', 0)
 
-
     # Set the driven keys for those position
-    m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Wing2_FK_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Wing2_FK_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Wing2_FK_Con_GRP2.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Wing3_FK_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Wing3_FK_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Wing3_FK_Con_GRP2.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_MiddleFeathers_GRP_FLD.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_MiddleFeathers_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_MiddleFeathers_GRP_FLD.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_TipFeathers_GRP_FLD.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_TipFeathers_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_TipFeathers_GRP_FLD.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_EndFeathers_GRP_FLD.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_EndFeathers_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_EndFeathers_GRP_FLD.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Primaries_Con_1_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Primaries_Con_2_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_PrimaryCoverts_Con_1_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_PrimaryCoverts_Con_2_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Alula_Con_1_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Alula_Con_2_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
+    m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Wing2_FK_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Wing2_FK_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Wing2_FK_Con_GRP2.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Wing3_FK_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Wing3_FK_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Wing3_FK_Con_GRP2.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_MiddleFeathers_GRP_FLD.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_MiddleFeathers_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_MiddleFeathers_GRP_FLD.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_TipFeathers_GRP_FLD.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_TipFeathers_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_TipFeathers_GRP_FLD.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_EndFeathers_GRP_FLD.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_EndFeathers_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_EndFeathers_GRP_FLD.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_Primaries_Con_1_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_Primaries_Con_2_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_PrimaryCoverts_Con_1_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_PrimaryCoverts_Con_2_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_Alula_Con_1_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_Alula_Con_2_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
 
     # Due to mirroring the joints, the values need to be switched from positive to negative depending on
     # if a side has already been generated.
@@ -1382,7 +1397,8 @@ def foldControls():
         m.setAttr(side + '_Shoulder_CON.' + '_AutoWingfold', 10)
         m.setAttr(side + '_Shoulder_Con_GRP2.rotateX',
                   (mirrorSwitch * 34.482))  # Left first: 37.117   #Right first: -37.117
-        m.setAttr(side + '_Shoulder_Con_GRP2.rotateY', (mirrorSwitch * 63.435))  # Left first: -62.464   #Right first: 62.464
+        m.setAttr(side + '_Shoulder_Con_GRP2.rotateY',
+                  (mirrorSwitch * 63.435))  # Left first: -62.464   #Right first: 62.464
         m.setAttr(side + '_Shoulder_Con_GRP2.rotateZ', 52.487)
         m.setAttr(side + '_Wing2_FK_Con_GRP2.rotateX',
                   (mirrorSwitch * 20.614))  # Left first: -20.614       #Right first: 20.614
@@ -1447,30 +1463,54 @@ def foldControls():
 
 
         # Set the driven keys for those position
-    m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Wing2_FK_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Wing2_FK_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Wing2_FK_Con_GRP2.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Wing3_FK_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Wing3_FK_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Wing3_FK_Con_GRP2.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_MiddleFeathers_GRP_FLD.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_MiddleFeathers_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_MiddleFeathers_GRP_FLD.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_TipFeathers_GRP_FLD.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_TipFeathers_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_TipFeathers_GRP_FLD.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_EndFeathers_GRP_FLD.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_EndFeathers_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_EndFeathers_GRP_FLD.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Primaries_Con_1_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Primaries_Con_2_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_PrimaryCoverts_Con_1_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_PrimaryCoverts_Con_2_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Alula_Con_1_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
-    m.setDrivenKeyframe(side + '_Alula_Con_2_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt = 'linear', ott = 'linear')
+    m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Wing2_FK_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Wing2_FK_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Wing2_FK_Con_GRP2.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Wing3_FK_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Wing3_FK_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_Wing3_FK_Con_GRP2.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
+                        ott='linear')
+    m.setDrivenKeyframe(side + '_MiddleFeathers_GRP_FLD.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_MiddleFeathers_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_MiddleFeathers_GRP_FLD.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_TipFeathers_GRP_FLD.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_TipFeathers_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_TipFeathers_GRP_FLD.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_EndFeathers_GRP_FLD.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_EndFeathers_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_EndFeathers_GRP_FLD.rotateZ', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_Primaries_Con_1_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_Primaries_Con_2_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_PrimaryCoverts_Con_1_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_PrimaryCoverts_Con_2_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_Alula_Con_1_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
+    m.setDrivenKeyframe(side + '_Alula_Con_2_GRP_FLD.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold',
+                        itt='linear', ott='linear')
 
     m.setAttr(side + '_Shoulder_CON.' + '_AutoWingfold', 0)  # Set the default position to 0
 
@@ -1768,7 +1808,6 @@ def cleanup():
         m.delete(side + '_Wing_' + repr(i))
         i = i + 1
 
-
     # If the motion system function has been run, delete the extraneous bases
     if m.objExists('L_Wrist_CON'):
         if m.objExists('R_Wrist_CON'):
@@ -1859,11 +1898,9 @@ class ui():
         tab2 = m.columnLayout(adjustableColumn=False)
         m.separator(h=15, style='none')
 
-
         # Radio button for the right and left side option
         m.radioButtonGrp("radioWingType", label='Chose wing shape:  ', labelArray2=['Hawk', 'Falcon'],
                          numberOfRadioButtons=2, vr=True, select=1)
-
 
         # Make tab layout with two tabs, one for the rigging stuff, one for the different wing types
         m.tabLayout(tabs, edit=True, tabLabel=((tab1, 'Wing Rig'), (tab2, 'Wing Types')))
@@ -1981,7 +2018,6 @@ class ui():
 # GUI button function 1
 # Call the generation functions when the button to generate feathers is pressed
 def generateFeathers():
-
     # Check to make sure function hasn't been run yet by checking to see if the first feather exists
     if (m.objExists(side + '_Primaries_1') == 0):
         existanceCheck()  # check to make sure all objects needed for the program are there
@@ -2067,8 +2103,3 @@ def wingCreator():
     # create the window
     inst = ui()
     inst.create()
-
-
-
-
-

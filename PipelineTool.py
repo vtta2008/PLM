@@ -14,7 +14,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 import os, sys, logging, subprocess, json, shutil
 from tk import appFuncs as func
-from tk import autoUpdate as update
 
 # We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()
@@ -31,7 +30,7 @@ scr = os.getcwd()
 func.checkEnvKey(key, scr, toolName)
 
 # Name of required packages which should be installed along with Anaconda
-packages = ['pywinauto', 'winshell', 'pandas', 'opencv-python', 'patoolib']
+packages = ['pywinauto', 'winshell', 'pandas', 'opencv-python', 'patoolib 1.12']
 for pkg in packages:
     func.checkPackageInstall(pkg)
 
@@ -68,6 +67,8 @@ os.environ['PYTHONPATH'] = pythonValue
 #     func.checkPackageInstall(pkg)
 
 # Create temporary database, this data will be replaced in the future when I have an online server.
+from tk import autoUpdate as update
+
 update.createTempData()
 
 # Copy userSetup.py from source code to properly maya folder
@@ -78,6 +79,7 @@ shutil.copy2(userSetupScr, userSetupDes)
 
 # Load UI of pipeline application for window OS
 from ui import DesktopUI
+
 reload(DesktopUI)
 DesktopUI.initialize()
 
