@@ -31,18 +31,19 @@ scr = os.getcwd()
 func.checkEnvKey(key, scr, toolName)
 
 # Name of required packages which should be installed along with Anaconda
-packages = ['pywinauto', 'winshell', 'pandas', 'opencv-python']
+packages = ['pywinauto', 'winshell', 'pandas', 'opencv-python', 'patoolib']
+for pkg in packages:
+    func.checkPackageInstall(pkg)
 
 maya_tk = os.path.join(scr, 'Maya_tk')
 pythonValue = ""
 pythonList = []
 
-mayaDirFiltering = ['tk', 'Maya_tk', 'icons', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging',
-                    'Sufacing']
+mayBlock = ['tk', 'Maya_tk', 'icons', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging', 'Sufacing']
 
 for root, dirs, files in os.walk(maya_tk):
     for dir in dirs:
-        if dir in mayaDirFiltering:
+        if dir in mayBlock:
             dirPth = os.path.join(root, dir)
             pythonList.append(dirPth)
 

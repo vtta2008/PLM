@@ -435,7 +435,11 @@ class TabWidget( QWidget ):
 
         dictBtn = QPushButton( 'English Dictionary' )
         dictBtn.clicked.connect(self.englishDict)
-        self.tab2GridLayout.addWidget(dictBtn, 1,0,1,3)
+        self.tab2GridLayout.addWidget(dictBtn, 1,0,1,2)
+
+        updateLibraryBtn = QPushButton('Update Library')
+        updateLibraryBtn.clicked.connect(self.updateLibrary)
+        self.tab2GridLayout.addWidget(updateLibraryBtn, 1,3,1,2)
 
         hboxLayout.addLayout(self.tab2GridLayout)
 
@@ -477,6 +481,11 @@ class TabWidget( QWidget ):
         reload(englishDict)
         engDict = englishDict.EnglishDict()
         engDict.exec_()
+
+    def updateLibrary(self):
+        from lib_tk import LibHandle
+        reload(LibHandle)
+        LibHandle.initialize()
 
     def filterClassAllowance(self, func):
         if self.curUserData[self.curUser][1] == 'Admin':
