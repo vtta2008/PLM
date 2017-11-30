@@ -11,18 +11,22 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import json, logging, os, subprocess, sys, webbrowser
+import json, logging, os, subprocess, sys, webbrowser, yaml
 from functools import partial
-from tk import appFuncs as func
-from tk import defaultVariable as var
-from tk import getData
-
-# -------------------------------------------------------------------------------------------------------------
+from tk import message as mes
+# ------------------------------------------------------
 # IMPORT PTQT5 ELEMENT TO MAKE UI
-# -------------------------------------------------------------------------------------------------------------
+# ------------------------------------------------------
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
+
+# ------------------------------------------------------
+# IMPORT FROM PIPELINE TOOLS APP
+# ------------------------------------------------------
+from tk import appFuncs as func
+from tk import defaultVariable as var
+from tk import getData
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
@@ -31,33 +35,23 @@ logger.setLevel(logging.DEBUG)
 # ------------------------------------------------------
 # GET INFO DATA BEFORE START
 # Update local pc info
-getData.initialize()
+# getData.initialize()
 
 # logger.info('Updating data')
 
 # ------------------------------------------------------
 # DEFAULT VARIABLES
 # ------------------------------------------------------
-CURPTH = var.MAIN_ROOT['main']
-MESSAGE = var.MAIN_MESSAGE
-TABID = var.MAIN_TABID
-URL = var.MAIN_URL
-NAMES = var.MAIN_NAMES
-MAINID = var.MAIN_ID
-PACKAGE = var.MAIN_PACKPAGE
-TITLE = var.MAIN_ID['LogIn']
-USERNAME = var.USERNAME
-
 # UI variables preset for layout customizing
 # Dimension
 W = 350
-H = 150
+H = 260
 AVATAR_SIZE = 100
 ICON_SIZE = 30
 BUFFER = 3
 
 # Margin
-M1 = [0,5,5,5,5]
+M1 = [0, 5, 5, 5, 5]
 
 # Base unit of position to be using in QGridlayout
 X = 0
@@ -72,197 +66,138 @@ __right__ = Qt.AlignRight
 __left__ = Qt.AlignLeft
 
 # Get icon path
-pthInfo = PACKAGE['appData']
+# pthInfo = PACKAGE['appData']
+# infoData = NAMES['info']
 
-infoData = NAMES['info']
+getData.initialize()
 
-filePath = os.path.join(pthInfo, infoData)
+filePath = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk\db\main.config.yml')
 
-info = func.dataHandle(filePath, 'r')
-
-# with open(os.path.join(pthInfo, infoData), 'r') as f:
-#     info = json.load(f)
-
-# Get app path
-logger.info('Loading information...')
-APPINFO = info['pipeline']
-logger.info('Loading pipeline manager UI')
-
-userDataPth = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/user.info')
-
-userData = func.dataHandle(userDataPth, 'r')
-
-
-# prodInfoFolder = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/prodInfo')
-#
-# prodContent = [f for f in os.listdir(prodInfoFolder) if f.endswith('.prod')]
-#
-# prodLst = []
-#
-# for f in prodContent:
-#     with open(os.path.join(prodInfoFolder, f), 'r') as f:
-#         info = json.load(f)
-#     prodLst.append(info['name'])
+with open(filePath, 'r') as f:
+    APPINFO = yaml.load(f)
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                                       SUB CLASS: USER LOGIN UI                                          """
+
+
 # ----------------------------------------------------------------------------------------------------------- #
 class LoginUI(QDialog):
-
-    appDataPth = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/apps.pipeline')
+    appDataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/main.config')
 
     def __init__(self, parent=None):
 
         super(LoginUI, self).__init__()
 
-        self.setWindowTitle(TITLE)
+        self.setWindowTitle('Log in')
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
+        self.prevUserLogin = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
 
-        self.prevUserLogin = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/user.tempLog')
-
-        if not os.path.exists(self.prevUserLogin):
-            self.buildUI()
-        else:
-            with open(self.prevUserLogin, 'r') as f:
-                prevUserData = json.load(f)
-
-            userName = [f for f in prevUserData][0]
-
-            if prevUserData[userName][6]==0:
-                self.buildUI()
-            else:
-                self.autoLogin(userName)
-
-        # self.setCentralWidget(self.mainFrame)
+        self.buildUI()
 
     def buildUI(self):
 
-        x1 = X
-        y1 = Y
-        xh1 = XH
-        xw1 = 2*XW
-
-        x2 = x1
-        y2 = xw1
-        xh2 = xh1
-        xw2 = GRID_TOTAL - xw1
-
-        x3 = x1 + xh1
-        y3 = y1
-        xh3 = xh2
-        xw3 = xw1
-
-        x4 = x3
-        y4 = xw3
-        xh4 = xh3
-        xw4 = GRID_TOTAL - xw3
-
-        x5 = x3 + xh3
-        y5 = y3
-        xh5 = xh4
-        xw5 = xw3
-
-        x6 = x5
-        y6 = xw5
-        xh6 = xh5
-        xw6 = XW
-
-        x7 = x6
-        y7 = xw5 + xw6
-        xh7 = xh6
-        xw7 = (GRID_TOTAL - (xw5 + xw6))/2
-
-        x8 = x7
-        y8 = y7 + xw7
-        xh8 = xh7
-        xw8 = xw7
-
-        pos1 = [0, x1, y1, xh1, xw1]
-        pos2 = [0, x2, y2, xh2, xw2]
-        pos3 = [0, x3, y3, xh3, xw3]
-        pos4 = [0, x4, y4, xh4, xw4]
-        pos5 = [0, x5, y5, xh5, xw5]
-        pos6 = [0, x6, y6, xh6, xw6]
-        pos7 = [0, x7, y7, xh7, xw7]
-        pos8 = [0, x8, y8, xh8, xw8]
-
         self.mainFrame = QGroupBox(self)
         self.mainFrame.setTitle('User Account')
-        self.mainFrame.setFixedSize(W,H)
+        self.mainFrame.setFixedSize(W, H)
 
-        hbox = QHBoxLayout()
+        hboxLogin = QHBoxLayout()
 
         self.layout = QGridLayout()
-        self.layout.setContentsMargins(M1[1],M1[2],M1[3],M1[4])
+        self.layout.setContentsMargins(5, 5, 5, 5)
 
         loginText = QLabel('User Name: ')
-        self.layout.addWidget(loginText, pos1[1], pos1[2], pos1[3], pos1[4])
+        loginText.setAlignment(__center__)
+        self.layout.addWidget(loginText, 0, 0, 1, 2)
 
         self.userName = QLineEdit()
-        self.layout.addWidget(self.userName, pos2[1], pos2[2], pos2[3], pos2[4])
+        self.layout.addWidget(self.userName, 0, 2, 1, 7)
 
         passText = QLabel('Password: ')
-        self.layout.addWidget(passText, pos3[1], pos3[2], pos3[3], pos3[4])
+        passText.setAlignment(__center__)
+        self.layout.addWidget(passText, 1, 0, 1, 2)
 
         self.passWord = QLineEdit()
         self.passWord.setEchoMode(QLineEdit.Password)
-        self.layout.addWidget(self.passWord, pos4[1],pos4[2],pos4[3],pos4[4])
+        self.layout.addWidget(self.passWord, 1, 2, 1, 7)
 
         rememberCheck = QLabel('Remember Me')
-        self.layout.addWidget(rememberCheck, pos5[1],pos5[2],pos5[3],pos5[4])
+        rememberCheck.setAlignment(__center__)
+        self.layout.addWidget(rememberCheck, 2, 0, 1, 2)
 
         self.rememberCheckBox = QCheckBox()
-        self.layout.addWidget(self.rememberCheckBox, pos6[1],pos6[2],pos6[3],pos6[4])
+        self.layout.addWidget(self.rememberCheckBox, 2, 2, 1, 1)
 
         self.loginBtn = QPushButton('Login')
-        self.loginBtn.clicked.connect(self.checkLogin)
-        self.layout.addWidget(self.loginBtn, pos7[1],pos7[2],pos7[3],pos7[4])
+        self.loginBtn.clicked.connect(self.Login_btn)
+        self.layout.addWidget(self.loginBtn, 2, 3, 1, 3)
 
         self.cancelBtn = QPushButton('Cancel')
-        self.cancelBtn.clicked.connect(self.cancelLogin)
-        self.layout.addWidget(self.cancelBtn, pos8[1],pos8[2],pos8[3],pos8[4])
+        self.cancelBtn.clicked.connect(self.Cancel_btn)
+        self.layout.addWidget(self.cancelBtn, 2, 6, 1, 3)
 
-        hbox.addLayout(self.layout)
-        self.mainFrame.setLayout(hbox)
+        noteLabel = QLabel(mes.LOGIN_NOTE)
+        self.layout.addWidget(noteLabel, 3, 0, 1, 9)
 
-    def cancelLogin(self):
-        sys.exit(LoginUI.exec_())
+        hboxLogin.addLayout(self.layout)
+        self.mainFrame.setLayout(hboxLogin)
 
-    def autoLogin(self, userName, *args):
-        QMessageBox.information(self, 'Auto Login', "Welcome back %s\n"
-                                "Now it's the time to make amazing thing to the world !!!" % userName)
+    def Cancel_btn(self):
+        self.close()
 
-    def checkLogin(self, *args):
+    def Login_btn(self, *args):
         user_name = str(self.userName.text())
         pass_word = str(func.encoding(self.passWord.text()))
 
         if user_name == "":
             QMessageBox.information(self, 'Login Failed', 'Username can not be blank')
-        elif userData[user_name] != None and pass_word == userData[user_name][1]:
-            QMessageBox.information(self, 'Login Successful', "Welcome %s\n "
-                                    "Now it's the time to make amazing thing to the world !!!" % user_name)
-            self.close()
-            func.saveCurrentUserLogin(user_name, self.rememberCheckBox.checkState())
+        elif pass_word == "":
+            QMessageBox.information(self, 'Login Failed', 'No password')
         else:
-            QMessageBox.information(self, 'Login Failed', 'Username or Password is incorrected')
+            self.AttemptLogin(user_name, pass_word)
+
+    def AttemptLogin(self, username, password):
+        userData = func.checkUserLogin(username)
+        userLogin = {}
+        if userData == {}:
+            QMessageBox.information(self, 'Login Failed', "Username not exists")
+            return
+        else:
+            if not password == userData[username][7]:
+                QMessageBox.information(self, 'Login Failed', "Wrong password")
+                return
+            else:
+                QMessageBox.information(self, 'Login Successful', "Welcome %s" % username)
+                userLogin['remember login'] = self.rememberCheckBox.checkState()
+                userLogin['username'] = username
+                userLogin['group'] = userData[username][8]
+                userLogin['avatar'] = userData[username][9]
+                userLogin['aka'] = userData[username][6]
+                userLogin['title'] = userData[username][5]
+                userLogin['fullname'] = userData[username][4]
+                func.saveCurrentUserLogin(userLogin)
+
+                self.hide()
+
+                window = DesktopUI()
+                window.show()
+
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                                       SUB CLASS: TAB LAYOUT                                             """
+
+
 # ----------------------------------------------------------------------------------------------------------- #
-class TabWidget( QWidget ):
+class TabWidget(QWidget):
+    def __init__(self, parent, package, tabid):
 
-    def __init__(self, parent, package=PACKAGE, tabid=TABID):
-        
-        super( TabWidget, self ).__init__( parent )
+        super(TabWidget, self).__init__(parent)
 
-        with open(os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/user.tempLog'), 'r') as f:
-            self.curUserData = json.load(f)
+        with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config'), 'r') as f:
+            self.curUser = json.load(f)
 
-        self.curUser = [f for f in self.curUserData][0]
+        self.buildUI(tabid)
 
-        self.buildUI(package, tabid)
-
-    def buildUI(self, package, tabid):
+    def buildUI(self, tabid):
 
         self.layout = QVBoxLayout(self)
         # Create Tabs
@@ -276,7 +211,7 @@ class TabWidget( QWidget ):
         # Add Tabs
         self.tabs.addTab(self.tab1, tabid[1])
         self.tabs.addTab(self.tab2, tabid[2])
-        if self.curUserData[self.curUser][2]=='Admin':
+        if self.curUser['group'] == 'Admin':
             self.tabs.addTab(self.tab3, tabid[3])
         else:
             pass
@@ -298,8 +233,8 @@ class TabWidget( QWidget ):
 
         x1 = X
         y1 = Y
-        xh1 = 5*XH
-        xw1 = 5*XW
+        xh1 = 5 * XH
+        xw1 = 5 * XW
 
         x2 = x1
         y2 = xw1
@@ -340,42 +275,42 @@ class TabWidget( QWidget ):
         pos7 = [0, x7, y7, xh7, xw7]
 
         # Create Layout for Tab 1
-        self.tab1.setTitle(self.curUser)
+        self.tab1.setTitle(self.curUser['username'])
         # self.tab1.setFixedSize(W, H)
 
         hboxLayout = QHBoxLayout()
 
         self.tab1GridLayout = QGridLayout()
 
-        userImg = QPixmap(func.avatar(self.curUser))
+        userImg = QPixmap(func.avatar(self.curUser['avatar']))
         userAvatar = QLabel()
         userAvatar.setPixmap(userImg)
         userAvatar.setScaledContents(True)
-        userAvatar.setFixedSize(AVATAR_SIZE,AVATAR_SIZE)
-        self.tab1GridLayout.addWidget(userAvatar, pos1[1],pos1[2],pos1[3],pos1[4])
+        userAvatar.setFixedSize(AVATAR_SIZE, AVATAR_SIZE)
+        self.tab1GridLayout.addWidget(userAvatar, pos1[1], pos1[2], pos1[3], pos1[4])
 
         userNameLabel = QLabel('AKA: ')
         userNameLabel.setAlignment(alignL)
-        self.tab1GridLayout.addWidget(userNameLabel, pos2[1],pos2[2],pos2[3],pos2[4])
+        self.tab1GridLayout.addWidget(userNameLabel, pos2[1], pos2[2], pos2[3], pos2[4])
 
-        userNameArtist = QLabel(self.curUserData[self.curUser][4])
+        userNameArtist = QLabel(self.curUser['aka'])
         userNameArtist.setAlignment(alignR)
-        self.tab1GridLayout.addWidget(userNameArtist, pos3[1],pos3[2],pos3[3],pos3[4])
+        self.tab1GridLayout.addWidget(userNameArtist, pos3[1], pos3[2], pos3[3], pos3[4])
 
         titleLabel = QLabel('Group: ')
         titleLabel.setAlignment(alignL)
-        self.tab1GridLayout.addWidget(titleLabel, pos4[1],pos4[2],pos4[3],pos4[4])
+        self.tab1GridLayout.addWidget(titleLabel, pos4[1], pos4[2], pos4[3], pos4[4])
 
-        classLabel = QLabel(self.curUserData[self.curUser][2])
+        classLabel = QLabel(self.curUser['group'])
         classLabel.setAlignment(alignR)
-        self.tab1GridLayout.addWidget(classLabel, pos5[1],pos5[2],pos5[3],pos5[4])
+        self.tab1GridLayout.addWidget(classLabel, pos5[1], pos5[2], pos5[3], pos5[4])
 
         prodLabel = QLabel('Title: ')
         prodLabel.setAlignment(alignL)
-        self.tab1GridLayout.addWidget(prodLabel, pos6[1],pos6[2],pos6[3],pos6[4])
+        self.tab1GridLayout.addWidget(prodLabel, pos6[1], pos6[2], pos6[3], pos6[4])
 
-        classGroup = QLabel(self.curUserData[self.curUser][5])
-        self.tab1GridLayout.addWidget(classGroup, pos7[1],pos7[2],pos7[3],pos7[4])
+        classGroup = QLabel(self.curUser['title'])
+        self.tab1GridLayout.addWidget(classGroup, pos7[1], pos7[2], pos7[3], pos7[4])
 
         # self.tab1.layout.setMaximumSized(100,100)
         hboxLayout.addLayout(self.tab1GridLayout)
@@ -387,9 +322,10 @@ class TabWidget( QWidget ):
         self.tab2.setTitle('Extra Tool')
         # self.tab2.setFixedSize(W,H)
 
-        hboxLayout = QHBoxLayout()
+        vboxLayout = QVBoxLayout()
 
-        self.tab2GridLayout = QGridLayout()
+        tab2HBoxLayout1 = QHBoxLayout()
+        tab2HBoxLayout2 = QHBoxLayout()
 
         # Content tab 2
 
@@ -397,31 +333,17 @@ class TabWidget( QWidget ):
             # Illustrator
             if key == 'Illustrator CC':
                 illusBtn = self.makeIconButton(key)
-                self.tab2GridLayout.addWidget(illusBtn, 0,0,1,1)
+                tab2HBoxLayout1.addWidget(illusBtn)
             elif key == 'Illustrator CS6':
                 illusBtn = self.makeIconButton(key)
-                self.tab2GridLayout.addWidget(illusBtn,0,0,1,1)
-
-            # InDesign
-            if key == 'InDesign CC':
-                indesignBtn = self.makeIconButton(key)
-                self.tab2GridLayout.addWidget(indesignBtn, 0,1,1,1)
-            elif key == 'InDesign CS6':
-                indesignBtn = self.makeIconButton(key)
-                self.tab2GridLayout.addWidget(indesignBtn, 0,1,1,1)
-
+                tab2HBoxLayout1.addWidget(illusBtn)
             # Mudbox
             if key == 'Mudbox 2017':
                 mudboxBtn = self.makeIconButton(key)
-                self.tab2GridLayout.addWidget(mudboxBtn, 0,2,1,1)
+                tab2HBoxLayout1.addWidget(mudboxBtn)
             if key == 'Mudbox 2016':
                 mudboxBtn = self.makeIconButton(key)
-                self.tab2GridLayout.addWidget(mudboxBtn, 0,2,1,1)
-
-            #UV layout
-            if key == 'UVLayout':
-                uvLayoutBtn = self.makeIconButton(key)
-                self.tab2GridLayout.addWidget(uvLayoutBtn, 0,3,1,1)
+                tab2HBoxLayout1.addWidget(mudboxBtn)
 
         icon = QIcon(os.path.join(os.getenv('PIPELINE_TOOL'), 'icons/AdvanceRenamer.icon.png'))
         pth = os.path.join(os.getenv('PIPELINE_TOOL'), 'apps/batchRenamer/ARen.exe')
@@ -431,19 +353,20 @@ class TabWidget( QWidget ):
         iconBtn.setFixedSize(ICON_SIZE, ICON_SIZE)
         iconBtn.setIconSize(QSize(ICON_SIZE - BUFFER, ICON_SIZE - BUFFER))
         iconBtn.clicked.connect(partial(self.openApps, pth))
-        self.tab2GridLayout.addWidget(iconBtn, 0,4,1,1)
+        tab2HBoxLayout1.addWidget(iconBtn)
 
-        dictBtn = QPushButton( 'English Dictionary' )
+        dictBtn = QPushButton('English Dictionary')
         dictBtn.clicked.connect(self.englishDict)
-        self.tab2GridLayout.addWidget(dictBtn, 1,0,1,2)
+        tab2HBoxLayout2.addWidget(dictBtn)
 
         updateLibraryBtn = QPushButton('Update Library')
         updateLibraryBtn.clicked.connect(self.updateLibrary)
-        self.tab2GridLayout.addWidget(updateLibraryBtn, 1,3,1,2)
+        tab2HBoxLayout2.addWidget(updateLibraryBtn)
 
-        hboxLayout.addLayout(self.tab2GridLayout)
+        vboxLayout.addLayout(tab2HBoxLayout1)
+        vboxLayout.addLayout(tab2HBoxLayout2)
 
-        self.tab2.setLayout(hboxLayout)
+        self.tab2.setLayout(vboxLayout)
 
     def tab3Layout(self):
         # Create Layout for Tab 2
@@ -455,27 +378,35 @@ class TabWidget( QWidget ):
         self.tab3GridLayout = QGridLayout()
 
         # Content tab 3
-        sqlBtn = QPushButton('Test Database')
-        self.tab3GridLayout.addWidget(sqlBtn, 0,0,1,1)
-        sqlBtn.clicked.connect(self.testSQL)
+        icon = QIcon(os.path.join(os.getenv('PIPELINE_TOOL'), 'icons/SqliteTool.icon.png'))
+        pth = os.path.join(os.getenv('PIPELINE_TOOL'), 'apps/__admin__/SQLiteDatabaseBrowserPortable.exe')
+        iconBtn = QPushButton()
+        iconBtn.setToolTip('Database Tool(Admin Only)')
+        iconBtn.setIcon(icon)
+        iconBtn.setFixedSize(ICON_SIZE, ICON_SIZE)
+        iconBtn.setIconSize(QSize(ICON_SIZE - BUFFER, ICON_SIZE - BUFFER))
+        iconBtn.clicked.connect(partial(self.openApps, pth))
+        self.tab3GridLayout.addWidget(iconBtn, 0, 0, 1, 1)
+
+        userDataBtn = QPushButton('User Profile')
+        self.tab3GridLayout.addWidget(userDataBtn, 0, 1, 1, 1)
+        userDataBtn.clicked.connect(partial(self.userDatabase, 'user_profile'))
+
+        localConfig = QPushButton('Login Profile')
+        self.tab3GridLayout.addWidget(localConfig, 0, 2, 1, 1)
+        localConfig.clicked.connect(self.localData)
 
         hboxLayout.addLayout(self.tab3GridLayout)
 
         self.tab3.setLayout(hboxLayout)
 
-    def testSQL(self, *args):
-        from sql_tk import test_sql
-        reload(test_sql)
-        test_sql.initialize()
-
     def makeIconButton(self, name):
-
         icon = QIcon(APPINFO[name][1])
         iconBtn = QPushButton()
         iconBtn.setToolTip(APPINFO[name][0])
         iconBtn.setIcon(icon)
         iconBtn.setFixedSize(ICON_SIZE, ICON_SIZE)
-        iconBtn.setIconSize(QSize(ICON_SIZE-BUFFER, ICON_SIZE-BUFFER))
+        iconBtn.setIconSize(QSize(ICON_SIZE - BUFFER, ICON_SIZE - BUFFER))
         iconBtn.clicked.connect(partial(self.openApps, APPINFO[name][2]))
         return iconBtn
 
@@ -483,10 +414,22 @@ class TabWidget( QWidget ):
         subprocess.Popen(pth)
 
     def englishDict(self):
-        from ui import englishDict
-        reload(englishDict)
-        engDict = englishDict.EnglishDict()
-        engDict.exec_()
+        from ui import EnglishDict
+        reload(EnglishDict)
+        EngDict = EnglishDict.EnglishDict()
+        EngDict.exec_()
+
+    def userDatabase(self, tableName, *args):
+        from ui import SqlTable
+        reload(SqlTable)
+        SqlTable = SqlTable.SqlTable(tableName)
+        SqlTable.exec_()
+
+    def localData(self, *args):
+        from ui import SqlTable
+        reload(SqlTable)
+        SqlTable = SqlTable.SqlTable('local_data')
+        SqlTable.exec_()
 
     def updateLibrary(self):
         from lib_tk import LibHandle
@@ -499,12 +442,14 @@ class TabWidget( QWidget ):
         else:
             pass
 
+
 # ----------------------------------------------------------------------------------------------------------- #
 """                                SUB CLASS: CUSTOM WINDOW POP UP LAYOUT                                   """
+
+
 # ----------------------------------------------------------------------------------------------------------- #
 class WindowDialog(QDialog):
-
-    def __init__(self, id, message, icon):
+    def __init__(self, id='Note', message=None, icon=func.getIcon('Logo')):
         super(WindowDialog, self).__init__()
 
         self.setWindowTitle(id)
@@ -514,38 +459,55 @@ class WindowDialog(QDialog):
         self.buildUI(message)
 
     def buildUI(self, message):
-
-        self.layout = QVBoxLayout()
+        self.layout = QGridLayout(self)
 
         label = QLabel(message)
-        self.layout.addWidget(label)
+        self.layout.addWidget(label,0,0)
 
-        btn = QPushButton('OK')
-        btn.clicked.connect(self.close)
-        btn.setMaximumWidth(100)
-        self.layout.addWidget(btn)
+        self.checkBox = QCheckBox("Don't show it again")
+        self.checkBox.setCheckState(False)
+        self.layout.addWidget(self.checkBox,1,0,1,1)
+
+        btn = QMessageBox.Yes | QMessageBox.No # QPushButton('Yes')
+        self.layout.addWidget(btn,1,1,1,4)
+
+        # noBtn = QMessageBox.No # QPushButton('No')
+        # self.layout.addWidget(okBtn,1,2,1,2)
 
         self.setLayout(self.layout)
 
+        if btn == QMessageBox.Yes:
+            reply = (False, self.checkBox.checkState())
+
+        if btn == QMessageBox.No:
+            reply = (False, self.checkBox.checkState())
+
+        return reply
+
+        self.close()
+
 # ----------------------------------------------------------------------------------------------------------- #
 """                          MAIN CLASS: DESKTOP UI APPLICATIONS: PIPELINE TOOL                             """
+
+
 # ----------------------------------------------------------------------------------------------------------- #
-class DesktopUI( QMainWindow ):
+class DesktopUI(QMainWindow):
+    def __init__(self, case=None, parent = None):
 
-    def __init__(self, mainID, appInfo, package, message, names, url):
-
-        super(DesktopUI, self).__init__()
+        super(DesktopUI, self).__init__(parent)
+        mainID = var.MAIN_ID
+        appInfo = APPINFO
+        package = var.MAIN_PACKPAGE
+        message = var.MAIN_MESSAGE
+        names = var.MAIN_NAMES
+        url = var.MAIN_URL
         # Set window title
         self.setWindowTitle(mainID['Main'])
         # Set window icon
-        self.setWindowIcon(QIcon(appInfo['Logo'][1]))
-        # Build UI
-        self.buildUI(appInfo, package, message, mainID, names, url)
-        # User log in identification
-        login = LoginUI()
-        login.exec_()
+        self.setWindowIcon(QIcon(func.getIcon('Logo')))
 
-        tempUser = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/user.tempLog')
+        tempUser = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
+
 
         if not os.path.exists(tempUser):
             sys.exit()
@@ -553,10 +515,13 @@ class DesktopUI( QMainWindow ):
         with open(tempUser, 'r') as f:
             self.curUserData = json.load(f)
 
+        if case == 'Auto login':
+            self.autoLogin(str(self.curUserData['username']))
+
         self.curUser = [f for f in self.curUserData][0]
 
-        # Create Tabs
-        self.tabWidget = TabWidget(self)
+        # Build UI
+        self.buildUI(appInfo, package, message, mainID, names, url)
         # Put tabs to center of main UI
         self.setCentralWidget(self.tabWidget)
         # ShowUI
@@ -568,14 +533,14 @@ class DesktopUI( QMainWindow ):
         # Status bar viewing message
         self.statusBar().showMessage(message['status'])
 
-        #----------------------------------------------
+        # ----------------------------------------------
         # Menu Tool Bar sections
         menubar = self.menuBar()
 
         # File menu
         fileMenu = menubar.addMenu('File')
         # Extract actions
-        exitAction = self.fileMenuToolBar(appInfo, mainID, message, url)
+        exitAction = self.fileMenuToolBar(appInfo)
         separator1 = self.createSeparatorAction(appInfo)
         # Put actions into file menu
         fileMenu.addAction(separator1)
@@ -583,6 +548,10 @@ class DesktopUI( QMainWindow ):
 
         # Tool Menu
         toolMenu = menubar.addMenu('Tool')
+        cleanPycAction, reconfigaction = self.toolMenuToolBar(appInfo)
+        # Put actions into the file menu
+        toolMenu.addAction(cleanPycAction)
+        toolMenu.addAction(reconfigaction)
 
         # Help Menu
         helpMenu = menubar.addMenu('Help')
@@ -592,8 +561,7 @@ class DesktopUI( QMainWindow ):
         helpMenu.addAction(aboutAction)
         helpMenu.addAction(creditAction)
         helpMenu.addAction(helpAction)
-
-        #----------------------------------------------
+        # ----------------------------------------------
         # Shelf toolbar sections
         # TD Tool Bar
         self.tdToolBar = self.toolBarTD(appInfo)
@@ -601,31 +569,62 @@ class DesktopUI( QMainWindow ):
         self.compToolBar = self.toolBarComp(appInfo)
         # support ToolBar
         # self.supportApps = self.supApps( appInfo )
+        # System tray icon
+        self.mainLayout = QGridLayout(self)
 
-    def fileMenuToolBar(self, appInfo, mainid, message, url):
+        self.check_box = QCheckBox('Minimize to Tray')
+        self.tray_icon = QSystemTrayIcon(self)
+        self.tray_icon.setIcon(QIcon(func.getIcon('Logo')))
+
+        show_action = QAction('Show', self)
+        quit_action = QAction('Exit', self)
+        hide_action = QAction("Hide", self)
+        show_action.triggered.connect(self.show)
+        hide_action.triggered.connect(self.hide)
+        quit_action.triggered.connect(qApp.quit)
+        tray_menu = QMenu()
+        tray_menu.addAction(show_action)
+        tray_menu.addAction(hide_action)
+        tray_menu.addAction(quit_action)
+        self.tray_icon.setContextMenu(tray_menu)
+        self.tray_icon.show()
+
+        # Create Tabs
+        self.mainLayout.addWidget(self.check_box,1,0)
+        self.tabWidget = TabWidget(self, package, var.MAIN_TABID)
+        self.mainLayout.addWidget(self.tabWidget,2,0)
+
+    def fileMenuToolBar(self, appInfo):
         # Exit action
         exitAction = QAction(QIcon(appInfo['Exit'][1]), appInfo['Exit'][0], self)
         exitAction.setStatusTip(appInfo['Exit'][0])
         exitAction.triggered.connect(qApp.quit)
-
         return exitAction
 
-    def toolMenuToolBar(self, appInfo, mainid, message, url):
-        pass
+    def toolMenuToolBar(self, appInfo):
+        cleanaction = QAction(QIcon(appInfo['CleanPyc'][1]), appInfo['CleanPyc'][0], self)
+        cleanaction.setStatusTip(appInfo['CleanPyc'][0])
+        cleanaction.triggered.connect(partial(func.clean_unnecessary_file, '.pyc'))
+
+        reconfigaction = QAction(QIcon(appInfo['ReConfig'][1]), appInfo['ReConfig'][0], self)
+        reconfigaction.setStatusTip(appInfo['ReConfig'][0])
+        reconfigaction.triggered.connect(partial(getData.initialize, 'rc'))
+
+        return cleanaction, reconfigaction
 
     def helpMenuToolBar(self, appInfo, mainid, message, url):
         # About action
         about = QAction(QIcon(appInfo['About'][1]), appInfo['About'][0], self)
-        about.setStatusTip(appInfo['About'][0] )
-        about.triggered.connect( partial( self.subWindow, mainid['About'], message['About'], appInfo['About'][1]))
+        about.setStatusTip(appInfo['About'][0])
+        about.triggered.connect(partial(self.subWindow, mainid['About'], message['About'], appInfo['About'][1]))
         # Credit action
         credit = QAction(QIcon(appInfo['Credit'][1]), appInfo['Credit'][0], self)
         credit.setStatusTip(appInfo['Credit'][0])
-        credit.triggered.connect( partial( self.subWindow, mainid['Credit'], message['Credit'], appInfo['Credit'][1]))
+        credit.triggered.connect(partial(self.subWindow, mainid['Credit'], message['Credit'], appInfo['Credit'][1]))
         # Help action
-        helpAction = QAction( QIcon(appInfo['Help'][1]), appInfo['Help'][0], self)
-        helpAction.setStatusTip( (appInfo['Help'][0]) )
-        helpAction.triggered.connect( partial( self.openURL, url[ 'Help' ] ) )
+        helpAction = QAction(QIcon(appInfo['Help'][1]), appInfo['Help'][0], self)
+        helpAction.setStatusTip((appInfo['Help'][0]))
+        helpAction.triggered.connect(partial(self.openURL, url['Help']))
         return about, credit, helpAction
 
     def toolBarTD(self, appInfo):
@@ -642,6 +641,11 @@ class DesktopUI( QMainWindow ):
         else:
             pass
 
+        # 3ds Max 2017
+        if '3ds Max 2017' in appInfo:
+            max2017 = self.createAction(appInfo, '3ds Max 2017')
+            toolBarTD.addAction(max2017)
+
         # ZBrush 4R8
         if 'ZBrush 4R8' in appInfo:
             zbrush4R8 = self.createAction(appInfo, 'ZBrush 4R8')
@@ -656,7 +660,7 @@ class DesktopUI( QMainWindow ):
         # Houdini FX
         if 'Houdini FX' in appInfo:
             houdiniFX = self.createAction(appInfo, 'Houdini FX')
-            toolBarTD.addAction( houdiniFX )
+            toolBarTD.addAction(houdiniFX)
         else:
             pass
         # Mari_tk
@@ -711,30 +715,8 @@ class DesktopUI( QMainWindow ):
         # Return Tool Bar
         return toolBarComp
 
-    def supApps(self, appInfo):
-        # support apps tool bar
-        supAppsToolBar = self.addToolBar('supApps')
-        # Illustrator CC
-        if 'Illustrator CC' in appInfo:
-            illusCC = self.createAction(appInfo, 'Illustrator CC')
-            supAppsToolBar.addAction(illusCC)
-        # Illustrator CS6
-        elif 'Illustrator CS6' in appInfo:
-            illusCS6 = self.createAction(appInfo, 'Illustrator CS6')
-            supAppsToolBar.addAction(illusCS6)
-        else:
-            pass
-        # Headus UV Layout Pro
-        if 'UVLayout' in appInfo:
-            uvlayout = self.createAction(appInfo, 'UVLayout')
-            supAppsToolBar.addAction(uvlayout)
-        else:
-            pass
-
-        return supAppsToolBar
-
     def filterClassAllowance(self, func):
-        if self.curUserData[self.curUser][1]=='Admin':
+        if self.curUserData[self.curUser][1] == 'Admin':
             func()
         else:
             pass
@@ -760,23 +742,65 @@ class DesktopUI( QMainWindow ):
     def openURL(self, url):
         webbrowser.open(url)
 
+    def autoLogin(self, username):
+        QMessageBox.information(self, 'Auto Login', "Welcome back %s" % username)
+
     def closeEvent(self, event):
-        reply = QMessageBox.question(self, 'Message', "Are you sure?", QMessageBox.Yes|QMessageBox.No, QMessageBox.No)
+        checkBoxPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/sysTray.config')
+        checkSetting = func.dataHandle('json', 'r', checkBoxPth)
+        if checkSetting == {}:
+            message = "Minimize to Tray?"
+            popupWindow = WindowDialog(id='Confirmation', message=message)
+            popupWindow.show()
+            popupWindow.exec_()
 
-        if reply == QMessageBox.Yes:
-            event.accept()
-        else:
+        info = {}
+        dont_show_next_time = popupWindow[1]
+        info["Don't show sysTray window"] = dont_show_next_time
+
+        func.dataHandle('json', 'a+', checkBoxPth, info)
+
+        # reply = QMessageBox.question(self, 'Message', "You want to minimize to Tray?",
+        #                              QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+        #
+        # if reply == QMessageBox.Yes:
+        #     self.check_box.setCheckState(True)
+        # else:
+        #     event.ignore()
+
+        if self.check_box.isChecked():
             event.ignore()
+            self.hide()
+            self.tray_icon.showMessage("Minimized to Tray",QSystemTrayIcon.Information,2000)
 
-def initialize(mainID=MAINID, appInfo=APPINFO, package=PACKAGE, message=MESSAGE, names=NAMES, url=URL):
-
+def initialize():
     app = QApplication(sys.argv)
-    window = DesktopUI(MAINID, APPINFO, PACKAGE, MESSAGE, NAMES, URL)
-    # window.setFixedWidth(W)
-    window.show()
+
+    prevUserLogin = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
+    if not os.path.exists(prevUserLogin):
+        login = LoginUI()
+        login.show()
+    else:
+        with open(prevUserLogin, 'r') as f:
+            userLogin = json.load(f)
+
+        if userLogin['remember login'] == 0:
+            login = LoginUI()
+            login.show()
+        else:
+            window = DesktopUI('Auto login')
+            window.show()
+
     sys.exit(app.exec_())
 
-if __name__=='__main__':
+
+    # if login.exec_() == QDialog.Accepted:
+    #     window = DesktopUI()
+    #     window.show()
+    #     sys.exit(app.exec_())
+
+
+if __name__ == '__main__':
     initialize()
 
 # ----------------------------------------------------------------------------------------------------------- #

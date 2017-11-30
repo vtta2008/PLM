@@ -24,12 +24,6 @@ For Maya plugin required:
 
 Download and extract zip file to your pc, remember to rename the folder to 'PipelineTool'.
 
-Download VMM texture library for Maya:
-
-    https://www.mediafire.com/#d8o2660z68yf8
-
-After downloading, extract TEXTURE folder to ../PipelineTool/lib_tk
-
 Go to PipelineTool folder in your explorer, hold Shift + right-click -> Open PowerShell window here/Open command window here
 
 In CommandPrompt/WindowShell window:

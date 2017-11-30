@@ -12,8 +12,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import os, sys, logging, subprocess, json, shutil
-from tk import appFuncs as func
+import os, logging, shutil, yaml, pip, sys, subprocess
 
 # We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()
@@ -24,15 +23,38 @@ logger.setLevel(logging.DEBUG)
 # DEFAULT VARIABLES
 # ------------------------------------------------------
 key = 'PIPELINE_TOOL'
-toolName = 'Pipeline Tool'
+toolName = 'PipelineTool'
 scr = os.getcwd()
 # Check environment key to get the path to source code
-func.checkEnvKey(key, scr, toolName)
-
+os.environ[key] = scr
 # Name of required packages which should be installed along with Anaconda
-packages = ['pywinauto', 'winshell', 'pandas', 'opencv-python']
-for pkg in packages:
-    func.checkPackageInstall(pkg)
+packages = ['pywinauto', 'winshell', 'pandas', 'opencv-python', 'pyunpack']
+
+checkList = []
+
+pyPkgs = {}
+
+pyPkgs['__mynote__'] = 'import pip; pip.get_installed_distributions()'
+
+for package in pip.get_installed_distributions():
+    name = package.project_name
+    if name in packages:
+        checkList.append(name)
+
+resault = [p for p in packages if p not in checkList]
+
+if len(resault) > 0:
+    for package in resault:
+        subprocess.Popen("pip install %s" % packages)
+
+from tk import appFuncs as func
+
+tempDataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/local.config.yml')
+
+if not os.path.exists(tempDataPth):
+    token = func.createToken()
+    with open (tempDataPth, 'w') as f:
+        yaml.dump(token, f, default_flow_style=False)
 
 maya_tk = os.path.join(scr, 'Maya_tk')
 pythonValue = ""
@@ -46,30 +68,12 @@ for root, dirs, files in os.walk(maya_tk):
             dirPth = os.path.join(root, dir)
             pythonList.append(dirPth)
 
-# b = os.getenv('PATH')
-
-# for pth in b.split(';'):
-#     if 'Anaconda2' in pth:
-#         pythonList.append(pth)
-#
-# for pth in sys.path:
-#     pythonList.append(pth)
-
 pythonList = list(set(pythonList))
 
 for pth in pythonList:
     pythonValue += pth + ';'
 
 os.environ['PYTHONPATH'] = pythonValue
-
-# Check if packages are not installed, install it
-# for pkg in packages:
-#     func.checkPackageInstall(pkg)
-
-# Create temporary database, this data will be replaced in the future when I have an online server.
-from tk import autoUpdate as update
-
-update.createTempData()
 
 # Copy userSetup.py from source code to properly maya folder
 userSetupScr = os.path.join(os.getcwd(), 'Maya_tk/userSetup.py')
@@ -79,7 +83,6 @@ shutil.copy2(userSetupScr, userSetupDes)
 
 # Load UI of pipeline application for window OS
 from ui import DesktopUI
-
 reload(DesktopUI)
 DesktopUI.initialize()
 

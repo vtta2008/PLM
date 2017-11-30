@@ -9,7 +9,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import json, logging, os, sys, re, platform, winshell
+import json, logging, os, sys, re, platform, winshell, yaml
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
@@ -36,20 +36,26 @@ class GetData(object):
     info folder
     """
 
-    def __init__(self, package, names):
+    def __init__(self, mode):
         """
         Initialize the main class functions
         :param package: the package of many information stored from default variable
         :param names: the dictionary of names stored from default variable
         :returns: all installed app info, package app info, icon info, image info, pc info.
         """
-        logger.info('Updating data paths')
+        # logger.info('Updating data paths')
 
-        func.proc('')
+        package = PACKAGE
+        names = NAMES
+
+        if mode == 'rc':
+            func.proc('rc')
+
+        self.mode = mode
 
         self.createAllInfoFiles(package, names)
 
-    def getPCinfo(self, package):
+    def getPCinfo(self, package, names):
         """
         It will get all the info of section and store in an info file
         :param package: the package of many information stored from default variable
@@ -85,13 +91,14 @@ class GetData(object):
 
         return sysInfo
 
-    def getModuleInfo(self, package):
+    def getModuleInfo(self, package, names):
         """
         Get all the info of modules
         :param package: the package of many information stored from default variable
         :param names: the dictionary of names stored from default variable
         :return: modules.info
         """
+
         # Create info module dictionary
         moduleInfo = {}
         # root path
@@ -115,7 +122,7 @@ class GetData(object):
                 else:
                     pth = os.path.join(pyPth, file)
                     moduleInfo[file.split('PipelineTool.py')[0]] = pth
-        # return the dictionary
+
         return moduleInfo
 
     def getIconInfo(self, package, names):
@@ -147,10 +154,9 @@ class GetData(object):
         icons = {}
         # Store icon name into it
         icons['name'] = iconNames
-        # return icons info
         return iconInfo
 
-    def getImgInfo(self, package):
+    def getImgInfo(self, package, names):
         """
         Get all the info of images
         :param package: the package of many information stored from default variable
@@ -173,7 +179,7 @@ class GetData(object):
         # return the info file
         return imgInfo
 
-    def getAllAppInfo(self, package):
+    def getAllAppInfo(self, package, names):
         """
         It will find and put all the info of installed apps to two list: appname and path
         :param filters: self.appName, self.appPath
@@ -213,7 +219,7 @@ class GetData(object):
         :return: final app info
         """
         # Take app info return from function
-        self.appInfo = self.getAllAppInfo(package)
+        self.appInfo = self.getAllAppInfo(package, names)
         # logger.info(self.appInfo)
         # filter 1: find .exe path
         keys = [k for k in self.appInfo if not self.appInfo[k].endswith(package['ext'][0])]
@@ -254,29 +260,20 @@ class GetData(object):
         :return: info files
         """
         info = {}
-        # check if info folder exists, if not, create one
-        scrPth = package['appData']
-        # logger.info('Checking path available: %s' % scrPth)
-        if not os.path.exists(package['appData']):
-            # logger.info('False, creating path %s' % package['appData'])
-            os.mkdir(package['appData'])
-        # take info return from modules
-        # logger.info('collecting modules pth')
-        info['modules'] = self.getModuleInfo(package)
-        # take info return from icons
-        # logger.info( 'collecting info pth' )
+
         iconInfo = self.getIconInfo(package, names)
-        # take info return from image
-        # logger.info( 'collecting images and icons pth' )
-        info['image'] = self.getImgInfo(package)
-        # take info return from sys
-        # logger.info( 'collecting local computer configuration pth' )
-        info['sys'] = self.getPCinfo(package)
-        # take info return from all apps
-        # logger.info('collecting installed apps pth')
-        info['apps'] = self.getAllAppInfo(package)
+        # Check local pc
+        sysInfo = self.getPCinfo(package, names)
+        pcConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/pc.config.yml')
+        if self.mode == 'rc' or os.path.exists(pcConfig):
+            func.dataHandle('yaml', 'w', pcConfig, sysInfo)
+        # Check app installed
+        allapps = self.getAllAppInfo(package, names)
+        appsConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/apps.config.yml')
+        if self.mode=='rc' or not os.path.exists(appsConfig):
+            func.dataHandle('yaml', 'w', appsConfig, allapps)
+
         # take info return from apps
-        # logger.info( 'collecting pipeline package apps pth' )
         self.appInfo = self.getPackageAppInfo(package, names)
         # logger.info( 'Fix paths which is not corrected' )
         for key in self.appInfo:
@@ -293,6 +290,9 @@ class GetData(object):
                 # logger.info( 'Fix UVLayout path' )
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " -launch"
         # take info and arrange them to pipeline
+
+        # trackList = PACKAGE['TD'] + PACKAGE['Comp'] + PACKAGE['Design'] + PACKAGE['Office']
+
         trackKeys = {}
         for icon in iconInfo:
             for key in self.appInfo:
@@ -308,28 +308,32 @@ class GetData(object):
         trackKeys['About'] = ['About pipeline tool', iconInfo['About'], 'About pipeline tool']
         trackKeys['Credit'] = ['Credit', iconInfo['Credit'], 'Thanks to all of you']
         trackKeys['Help'] = ['Introduction', iconInfo['Help'], '']
+        trackKeys['CleanPyc'] = ['Clean .pyc files', iconInfo['CleanPyc'], '']
+        trackKeys['ReConfig'] = ['Re configuring data', iconInfo['Reconfig'], '']
+        trackKeys['3ds Max 2017'] = ['3ds Max 2017', iconInfo['3ds Max 2017'], self.appInfo['3ds Max 2017']]
         # make a loop to store all info to files one by one
         # logger.info(iconInfo)
-
         info['pipeline'] = trackKeys
-        info['icon'] = iconInfo
-        # Save all info to directory
-        logger.info('creating Info file')
-        self.createInfo(info, names, package)
-        logger.info('creating environment variable file')
-        self.getSysPth(package=PACKAGE, names=NAMES)
+        piplineConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/main.config.yml')
+        func.dataHandle('yaml', 'w', piplineConfig, trackKeys)
 
-    def getSysPth(self, package, names):
+        # pprint.pprint(trackKeys)
+        info['icon'] = iconInfo
+        iconConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/icon.config.yml')
+        if self.mode == 'rc' or not os.path.exists(iconConfig):
+            func.dataHandle('yaml', 'w', iconConfig, iconInfo)
+
+        self.getSysPth()
+
+    def getSysPth(self):
         envKeys = {}
         for key in os.environ.keys():
             envKeys[key] = os.getenv(key)
 
-        pth = os.path.join(package['appData'], names['sysEnv'])
-        logger.info('Saving file to %s' % pth)
-        with open(pth, 'w') as f:
-            json.dump(envKeys, f, indent=4)
+        pth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/sysPath.config.yml')
 
-        func.proc('update')
+        if not os.path.exists(pth):
+            func.dataHandle('yaml', 'w', envKeys, pth)
 
     def deleteKey(self, keys, n):
         for key in keys:
@@ -342,26 +346,18 @@ class GetData(object):
 
         return self.appInfo
 
-    def createInfo(self, info, names, package):
-
-        # print os.path.join(package['appData'], names['info'])
-
-        with open(os.path.join(package['appData'], names['info']), 'w') as f:
-            json.dump(info, f, indent=4)
-
-
-def initialize(package=PACKAGE, names=NAMES):
+def initialize(mode=None):
     """
     This function will import all the variables which need to run the class
     :param package: the package of many information stored from default variable
     :param names: the dictionsary of names stored from default variable
     :return: info file, log file
     """
-    GetData(package, names)
+    GetData(mode)
 
 
 if __name__ == '__main__':
-    initialize(PACKAGE, NAMES)
+    initialize()
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                                             END OF CODE                                                 """

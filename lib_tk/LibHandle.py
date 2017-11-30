@@ -3,8 +3,7 @@
 
 
 """
-import os, urllib, urllib2, re, sys, yaml, logging, zipfile
-from tk import appFuncs as func
+import os, urllib, urllib2, re, logging
 
 try:
     from pyunpack import Archive
@@ -52,29 +51,14 @@ class LibHandle(object):
         sections = ['__vmm__', '__tex__', '__hdri__', '__alpha__']
 
         for lib in sections:
-            dataDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/lib/%s.config.yml' % lib)
-
-            with open(dataDir, 'r') as f:
-                checkList = yaml.load(f)
 
             libDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'lib_tk/%s' % lib)
 
-            filePths = func.getfilePath(libDir)
-
-            missing = []
-            checked = []
-
-            for f in checkList:
-                if f in filePths:
-                    checked.append(f)
-                else:
-                    missing.append(f)
-
-            if len(missing)==0:
-                logger.info('%s is checked, no missing')
+            if os.path.exists(libDir):
+                filePths = func.getfilePath(libDir)
             else:
-                for f in missing:
-                    logger.info('missing %s' % f)
+                logger.info('%s folder is missing' % lib)
+                pass
 
     def batchDownload(self, urls, directory=None, *args):
         if directory is None:
@@ -89,7 +73,7 @@ class LibHandle(object):
             file_path = os.path.join(directory, file_name)
             # print file_path
             doDL = urllib.urlretrieve(urls, file_path)
-            print "Finish downloading: %s" % str(doDL)
+            logger.info("Finish downloading: %s" % str(doDL))
             download_files.append(file_path)
         else:
             for url in urls:
@@ -101,7 +85,7 @@ class LibHandle(object):
                 doDL = urllib.urlretrieve(url, file_path)
                 # print file_path
                 download_files.append(file_path)
-                print "Finish downloading: %s" % str(doDL)
+                logger.info("Finish downloading: %s" % str(doDL))
 
         return download_files
 
@@ -123,7 +107,7 @@ class LibHandle(object):
 
 
 def initialize():
-    LibHandle()
+    logger.info('This tool is under developing...')
 
 
 if __name__ == '__main__':

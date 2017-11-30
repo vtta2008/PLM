@@ -41,43 +41,10 @@ MAIN_NAMES = dict(info='apps.config',
 USER_CLASS = ['', 'Admin', 'Supervisor', 'Artist', 'Tester']
 
 
-# Create environment variable by custom key
-def createKey(key, path, *args):
-    """
-    Create custom enviroment Key in sys.
-    all of those keys are temporary,
-    it will be none once pipeline tool shut down.
-    """
-    logger.info('install new environment variable')
-
-    os.environ[key] = path
-
-
-def checkEnvKey(key, path, *args):
-    try:
-        pth = os.getenv(key)
-        if pth == None or pth == '':
-            createKey(key, path)
-    except KeyError:
-        createKey(key, path)
-    else:
-        pass
-
-
 def createInfo():
-    key = 'PROGRAMDATA'
-    path = os.getcwd()
-
-    checkEnvKey(key, path)
-
-    appDir = os.getenv('PROGRAMDATA')
-
-    infoDir = os.path.join(appDir, 'PipelineTool/scrInfo')
-
-    if not os.path.exists(infoDir):
-        os.makedirs(infoDir)
+    appDir = os.getcwd()
+    infoDir = os.path.join(appDir, 'sql_tk/db')
     return infoDir
-
 
 inforDir = createInfo()
 
@@ -94,17 +61,17 @@ MAIN_MESSAGE = dict(About=message.MAIN_ABOUT,
                     Credit=message.MAIN_CREDIT,
                     status='Pipeline Application', )
 
-MAIN_TABID = ['', 'Profile', 'Tools', 'Developer']
+MAIN_TABID = ['', 'User Profile', 'Extra Tools', 'Admin Only']
 
 MAIN_PLUGIN = dict(winshell='winshell')
 
 MAIN_URL = dict(Help='https://dot.damgteam.com/', )
 
 MAIN_PACKPAGE = dict(job=['TD', 'Comp', 'Design', 'Office', 'UV', 'Sound'],
-                     TD=['Maya', '3Ds max', 'Mudbox', 'Houdini FX', 'ZBrush', 'Mari'],
+                     TD=['Maya', '3ds Max', 'Mudbox', 'Houdini FX', 'ZBrush', 'Mari', 'Substance Painter',],
                      Comp=['NukeX', 'Hiero', 'After Effects', 'Premiere Pro'],
-                     Design=['Photoshop', 'Illustrator', 'InDesign'],
-                     Office=['Word', 'Excel', 'PowerPoint'],
+                     Design=['Photoshop', 'Illustrator'],
+                     Office=['Word', 'Excel'],
                      UV=['UVLayout'],
                      Sound=['Audition'],
                      instruction=['documentation'],

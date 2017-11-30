@@ -9,9 +9,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import os, sys, logging, json, subprocess, pip, uuid, unicodedata, datetime, cv2
+import os, sys, logging, json, subprocess, pip, uuid, unicodedata, datetime, cv2, platform, yaml, urllib
+import sqlite3 as lite
 from tk import defaultVariable as var
-
+from pyunpack import Archive
 # ------------------------------------------------------
 # DEFAULT VARIABLES
 # ------------------------------------------------------
@@ -30,8 +31,71 @@ logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
+def downloadSingleFile(url, path_to, *args):
+    doDL = urllib.urlretrieve(url, path_to)
+    logger.info(doDL)
+    logger.info("Downloaded to: %s" % str(path_to))
+
+def extactingFiles(inDir, file_name, outDir, *args):
+    Archive(os.path.join(inDir, file_name)).extractall(outDir)
+
+def system_call(args, cwd="."):
+    print("Running '{}' in '{}'".format(str(args), cwd))
+    subprocess.call(args, cwd=cwd)
+    pass
+
+def fix_image_files(root=os.curdir):
+    for path, dirs, files in os.walk(os.path.abspath(root)):
+        # sys.stdout.write('.')
+        for dir in dirs:
+            system_call("mogrify *.png", "{}".format(os.path.join(path, dir)))
+
+def object_config(directory, mode, *args):
+    operatingSystem = platform.system()
+
+    if operatingSystem == "Windows" or operatingSystem == "Darwin":
+        if mode == "h":
+            if operatingSystem == "Windows":
+                subprocess.call(["attrib", "+H", directory])
+            elif operatingSystem == "Darwin":
+                subprocess.call(["chflags", "hidden", directory])
+        elif mode == "s":
+            if operatingSystem == "Windows":
+                subprocess.call(["attrib", "-H", directory])
+            elif operatingSystem == "Darwin":
+                subprocess.call(["chflags", "nohidden", directory])
+        else:
+            logger.error("ERROR: (Incorrect Command) Valid commands are 'HIDE' and 'UNHIDE' (both are not case sensitive)")
+    else:
+        logger.error("ERROR: (Unknown Operating System) Only Windows and Darwin(Mac) are Supported")
+
+def batch_config(listObj, mode, *args):
+
+    for obj in listObj:
+        if os.path.exists(obj):
+            object_config(obj, mode)
+        else:
+            logger.info('Could not find the specific path: %s' % obj)
+
+def clean_unnecessary_file(var, *args):
+    directory = os.getenv('PIPELINE_TOOL')
+
+    profile = []
+    for root, dirs, file_names in os.walk(directory):
+        for file_name in file_names:
+            if var in file_name:
+                pth = os.path.join(root, file_name)
+                profile.append(pth)
+
+    if len(profile) is None:
+        sys.exit()
+
+    for f in profile:
+        logger.info('removing %s' % f)
+        os.remove(f)
 
 def getfilePath(directory=None):
+
     """
         This function will generate the file names in a directory
         tree by walking the tree either top-down or bottom-up. For each
@@ -58,7 +122,7 @@ def getfilePath(directory=None):
     return file_paths  # Self-explanatory.
 
 
-def batchResizeImage(imgDir=None, imgResDir=None, size=[100, 100], ext='jpg', mode=1):
+def batchResizeImage(imgDir=None, imgResDir=None, size=[100, 100], sub=False, ext='.png', mode=1):
     if imgDir == None:
         sys.exit()
 
@@ -72,7 +136,11 @@ def batchResizeImage(imgDir=None, imgResDir=None, size=[100, 100], ext='jpg', mo
     if not os.path.exists(imgResDir):
         os.mkdir(imgResDir)
 
-    images = [i for i in os.listdir(imgDir) if i.endswith('.%s' % ext)]
+    if not sub:
+        images = [i for i in os.listdir(imgDir) if i.endswith(ext)]
+    else:
+        filePths = getfilePath(imgDir)
+        images = [os.path.abspath(i) for i in filePths if i.endswith(ext)]
 
     resized_images = []
 
@@ -94,31 +162,33 @@ def createToken(*args):
     return token
 
 
-def dataHandle(filePath, mode, indent=4, *args):
+def dataHandle(type='json', mode='r', filePath=None, data={}, *args):
     """
-    json functions: read, write, edit... etc
+    json and yaml: read, write, edit... etc
     """
-
-    # print filePath
-
-    if mode == 'r' or mode == 'r+':
-        if not os.path.exists(filePath):
-            logger.debug('file is not exists')
-            sys.exit()
+    if type == 'json':
+        indent = 4
+        if mode == 'r' or mode == 'r+':
+            with open(filePath, mode) as f:
+                info = json.load(f)
+        elif mode == 'w' or mode == 'w+':
+            with open(filePath, mode) as f:
+                info = json.dump(data, f, indent=indent)
         else:
             with open(filePath, mode) as f:
-                return json.load(f)
-    elif mode == 'a' or mode == 'a+':
-        if not os.path.exists(filePath):
-            logger.debug('file is not exists')
-            sys.exit()
+                info = json.dump(data, f, indent=indent)
+    elif type == 'yaml':
+        if mode == 'r' or mode == 'r+':
+            with open(filePath, mode) as f:
+                info = yaml.load(f)
+        elif mode == 'w' or mode == 'w+':
+            with open(filePath, mode) as f:
+                info = yaml.dump(data, f, default_flow_style=False)
         else:
             with open(filePath, mode) as f:
-                return json.dump(filePath, f, indent=indent)
-    elif mode == 'w' or mode == 'w+':
-        with open(filePath, mode) as f:
-            return json.dump(filePath, f, indent=indent)
+                info = yaml.dump(data, f, default_flow_style=False)
 
+    return info
 
 def getAllInstalledPythonPackage(*args):
     pyPkgs = {}
@@ -134,17 +204,10 @@ def getAllInstalledPythonPackage(*args):
 
         pyPkgs[name] = [key, version, location]
 
-    pkgInfo = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/apps.pipeline')
+    pkgConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/pkgs.config.yml')
 
-    # print pkgInfo, os.path.exists(pkgInfo)
-
-    if not os.path.exists(pkgInfo):
-        from tk import getData
-        reload(getData)
-        getData.initialize()
-
-    with open(pkgInfo, 'w') as f:
-        json.dump(pyPkgs, f, indent=4)
+    with open(pkgConfig, 'w') as f:
+        yaml.dump(pyPkgs, f, default_flow_style=False)
 
     return pyPkgs
 
@@ -186,7 +249,8 @@ def checkPackageInstall(name, *args):
     allPkgs = getAllInstalledPythonPackage()
 
     if name in allPkgs:
-        logger.info('package "%s" is already installed' % name)
+        # logger.info('package "%s" is already installed' % name)
+        pass
     else:
         logger.info('package "%s" is not installed, '
                     'execute package installation procedural' % name)
@@ -232,29 +296,45 @@ def getIcon(name, *args):
 
 
 # Get the full path of image via icon file name
-def avatar(userName, *args):
-    img = userName + '.avatar.jpg'
-    imgPth = os.path.join(os.getcwd(), 'imgs')
-    avatarPth = os.path.join(imgPth, img)
+def avatar(link, *args):
+    fileName = os.path.basename(link)
+
+    imgPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs')
+
+    avatarPth = os.path.join(imgPth, fileName)
+
+    if not os.path.exists(avatarPth):
+        downloadSingleFile(link, avatarPth)
+
     return avatarPth
 
 
+def checkUserLogin(user_name, *args):
+    dataPth = os.path.join(os.getcwd(), 'sql_tk\db\userApp.db')
+
+    userData = {}
+
+    con = lite.connect(os.path.abspath(dataPth))
+    with con:
+        cur = con.cursor()
+        cur.execute("SELECT * FROM user_profile")
+        rows = cur.fetchall()
+        for row in rows:
+            if row[3] == user_name:
+                userData[user_name] = rows[rows.index(row)]
+
+    return userData
+
 # Save information of current log in user account for next time.
-def saveCurrentUserLogin(userName, remember=False, *args):
-    userDataPth = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/user.info')
+def saveCurrentUserLogin(userName, *args):
+    userLoginPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
 
-    with open(userDataPth, 'r') as f:
-        userData = json.load(f)
+    with open(userLoginPth, 'w') as f:
+        json.dump(userName, f, indent=4)
 
-    userData[userName].append(remember)
+    return userName
 
-    curUser = {}
-    curUser[userName] = userData[userName]
-    currentUserLoginPth = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/user.tempLog')
-    with open(currentUserLoginPth, 'w') as f:
-        json.dump(curUser, f, indent=4)
-
-    logger.info('save file to %s' % currentUserLoginPth)
+    # logger.info('save file to %s' % currentUserLoginPth)
 
 
 # ----------------------------------------------------------------------------------------------------------- #
@@ -365,12 +445,13 @@ class Proc():
         timeOutput = '%s:%s' % (str(t.tm_hour), str(t.tm_min))
         return timeOutput
 
-    def createLog(self, event='Create Log', names=NAMES, package=PACKAGE):
+    def createLog(self, event='Create Log', *args):
         log = {}
         log[proc('date')] = event
-        with open(os.path.join(package['appData'], names['log']), 'a+') as f:
-            json.dump(log, f, indent=4)
-
+        logPth = os.path.join(os.getcwd(), 'sql_tk/db/user.log')
+        logger.info(event)
+        dataHandle('json', 'w+', logPth, log)
+        logger.info("log: %s" % logPth)
 
 def encoding(message):
     output = encode(message, mode='hex')
@@ -388,23 +469,24 @@ def logRecord(event):
     return output
 
 
-def proc(operation=None, name=NAMES['log'], path=PACKAGE['info']):
+def proc(user, operation=None):
     t = Proc().getTime()
-    d = Proc().getDate()
-    u = USER
+    # d = Proc().getDate()
 
     if operation == 'date':
         output = Proc().getDate()
     elif operation == 'time':
         output = Proc().getTime()
     elif operation == 'log out':
-        output = logRecord('User %s logged out at %s' % (u, t))
+        output = logRecord('User %s logged out at %s' % (user, t))
     elif operation == 'log in':
-        output = logRecord('User %s logged in at %s' % (u, t))
+        output = logRecord('User %s logged in at %s' % (user, t))
     elif operation == 'update':
         output = logRecord('Update data at %s' % t)
     elif operation == 'restart':
-        output = logRecord('User %s restart app at %s' % (u, t))
+        output = logRecord('User %s restart app at %s' % (user, t))
+    elif operation == 'rc':
+        logRecord('User %s has recofigured at %s' % (user, t))
     else:
         output = None
 
