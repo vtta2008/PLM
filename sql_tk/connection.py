@@ -22,13 +22,6 @@ if not db.open():
                          QMessageBox.Cancel)
 
 
-def dynamic_data_entry():
-
-    unix = time.time()
-    date = str(datetime.datetime.fromtimestamp(unix).strftime('%Y-%m-%d %H:%M:%S'))
-    keyword = 'Python'
-    value = random.randrange()
-
 if __name__ == '__main__':
     import sys
     app = QtWidgets.QApplication(sys.argv)

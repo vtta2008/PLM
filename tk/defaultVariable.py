@@ -61,7 +61,7 @@ MAIN_MESSAGE = dict(About=message.MAIN_ABOUT,
                     Credit=message.MAIN_CREDIT,
                     status='Pipeline Application', )
 
-MAIN_TABID = ['', 'User Profile', 'Extra Tools', 'Admin Only']
+MAIN_TABID = ['', 'User', 'Functions', 'Project', 'Admin', ]
 
 MAIN_PLUGIN = dict(winshell='winshell')
 

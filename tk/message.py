@@ -55,9 +55,11 @@ LOGIN_NOTE = """
 
 Dear User,
 
-This app is for specific user only, if you do not have login account, 
-that means you are not a part of this, or not yet.
+If you do not have login account, use test account:
 
-Please contact JimJim if you have any question: dot@damgteam.com
+    username: tester
+    password: 123456
+
+Contact me if you have any question: dot@damgteam.com
 
 """

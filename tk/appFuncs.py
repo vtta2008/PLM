@@ -121,7 +121,6 @@ def getfilePath(directory=None):
 
     return file_paths  # Self-explanatory.
 
-
 def batchResizeImage(imgDir=None, imgResDir=None, size=[100, 100], sub=False, ext='.png', mode=1):
     if imgDir == None:
         sys.exit()
@@ -156,11 +155,9 @@ def batchResizeImage(imgDir=None, imgResDir=None, size=[100, 100], sub=False, ex
 
     return images, resized_images
 
-
 def createToken(*args):
     token = uuid.uuid4()
     return token
-
 
 def dataHandle(type='json', mode='r', filePath=None, data={}, *args):
     """
@@ -211,7 +208,6 @@ def getAllInstalledPythonPackage(*args):
 
     return pyPkgs
 
-
 # Execute a python file
 def executing(name, path, *args):
     """
@@ -225,7 +221,6 @@ def executing(name, path, *args):
     if os.path.exists(pth):
         subprocess.call([sys.executable, pth])
 
-
 # Install package via pip command (cmd)
 def install_package(name, *args):
     """
@@ -236,7 +231,6 @@ def install_package(name, *args):
     logger.info('Using pip to install %s' % name)
 
     subprocess.Popen('pip install %s' % name, shell=True).wait()
-
 
 # Check plugin is installed or not
 def checkPackageInstall(name, *args):
@@ -256,7 +250,6 @@ def checkPackageInstall(name, *args):
                     'execute package installation procedural' % name)
         install_package(name)
 
-
 # Create environment variable by custom key
 def createKey(key, path, *args):
     """
@@ -272,7 +265,6 @@ def createKey(key, path, *args):
 
     os.environ[key] = path
 
-
 # Check the value of environment variable
 def checkEnvKey(key, path, *args):
     try:
@@ -286,14 +278,12 @@ def checkEnvKey(key, path, *args):
     else:
         pass
 
-
 # Get the full path of icon via icon file name
 def getIcon(name, *args):
     iconName = name + '.icon.png'
     rootPth = os.getcwd().split('ui')[0]
     iconPth = os.path.join(os.path.join(rootPth, 'icons'), iconName)
     return iconPth
-
 
 # Get the full path of image via icon file name
 def avatar(link, *args):
@@ -307,7 +297,6 @@ def avatar(link, *args):
         downloadSingleFile(link, avatarPth)
 
     return avatarPth
-
 
 def checkUserLogin(user_name, *args):
     dataPth = os.path.join(os.getcwd(), 'sql_tk\db\userApp.db')
@@ -325,6 +314,20 @@ def checkUserLogin(user_name, *args):
 
     return userData
 
+def checkTempUserLogin():
+    dataPth = os.path.join(os.getcwd(), 'sql_tk\db\userApp.db')
+
+    con = lite.connect(os.path.abspath(dataPth))
+    with con:
+        cur = con.cursor()
+        cur.execute("SELECT * FROM current_login")
+        rows = cur.fetchall()
+        print rows
+
+    return rows
+
+
+
 # Save information of current log in user account for next time.
 def saveCurrentUserLogin(userName, *args):
     userLoginPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
@@ -335,6 +338,13 @@ def saveCurrentUserLogin(userName, *args):
     return userName
 
     # logger.info('save file to %s' % currentUserLoginPth)
+
+def createNewDatabase(*args):
+    dataPth = os.path.join(os.getcwd(), 'sql_tk\db\userApp.db')
+    con = lite.connect(os.path.abspath(dataPth))
+    with con:
+        cur = con.cursor()
+        cur.execute("create table current_login(username text, group text, title text, avatar text, remember int aka text, fullname text)")
 
 
 # ----------------------------------------------------------------------------------------------------------- #

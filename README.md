@@ -32,6 +32,11 @@ In CommandPrompt/WindowShell window:
 
 A user login window will show up, login with your username and password.
 
+If you do not have login account, use this:
+
+    Username: Tester
+    Password: 123456
+
 **REFERENCE**
 
 Here is Plugins/Files that I use for my code
