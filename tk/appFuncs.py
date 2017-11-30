@@ -298,35 +298,6 @@ def avatar(link, *args):
 
     return avatarPth
 
-def checkUserLogin(user_name, *args):
-    dataPth = os.path.join(os.getcwd(), 'sql_tk\db\userApp.db')
-
-    userData = {}
-
-    con = lite.connect(os.path.abspath(dataPth))
-    with con:
-        cur = con.cursor()
-        cur.execute("SELECT * FROM user_profile")
-        rows = cur.fetchall()
-        for row in rows:
-            if row[3] == user_name:
-                userData[user_name] = rows[rows.index(row)]
-
-    return userData
-
-def checkTempUserLogin():
-    dataPth = os.path.join(os.getcwd(), 'sql_tk\db\userApp.db')
-
-    con = lite.connect(os.path.abspath(dataPth))
-    with con:
-        cur = con.cursor()
-        cur.execute("SELECT * FROM current_login")
-        rows = cur.fetchall()
-        print rows
-
-    return rows
-
-
 
 # Save information of current log in user account for next time.
 def saveCurrentUserLogin(userName, *args):

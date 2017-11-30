@@ -464,6 +464,10 @@ class TabWidget(QWidget):
                 2000
                 )
 
+# ----------------------------------------------------------------------------------------------------------- #
+"""                                   SUB CLASS: SYSTEM TRAY ICON                                           """
+# ----------------------------------------------------------------------------------------------------------- #
+
 class LeftClickMenu(QMenu):
     def __init__(self, parent=None):
         QMenu.__init__(self, "File", parent)
@@ -497,7 +501,6 @@ class SystemTrayIcon(QSystemTrayIcon):
     def show(self):
         QSystemTrayIcon.show(self)
         QTimer.singleShot(100, self.welcome)
-
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                          MAIN CLASS: DESKTOP UI APPLICATIONS: PIPELINE TOOL                             """
@@ -581,8 +584,10 @@ class DesktopUI(QMainWindow):
         # Shelf toolbar sections
         # TD Tool Bar
         self.tdToolBar = self.toolBarTD(appInfo)
+
         # VFX Tool Bar
         self.compToolBar = self.toolBarComp(appInfo)
+
         # support ToolBar
         # self.supportApps = self.supApps( appInfo )
 
@@ -728,7 +733,9 @@ class DesktopUI(QMainWindow):
         subprocess.Popen(path)
 
     def subWindow(self, id, message, icon):
-        dlg = WindowDialog(id, message, icon)
+        from ui import WindowDialog
+        reload(WindowDialog)
+        dlg = WindowDialog.WindowDialog(id=id, message=message, icon=icon)
         dlg.exec_()
 
     def openURL(self, url):
@@ -737,7 +744,7 @@ class DesktopUI(QMainWindow):
     def autoLogin(self, username):
         QMessageBox.information(self, 'Auto Login', "Welcome back %s" % username)
 
-    def closeEvent(self, event):
+    def closeEvent(self, event, *args):
         reply = QMessageBox.Information(self, 'Confirm', 'It will minimize to tray', QMessageBox.Ok, QMessageBox.No)
 
         if reply is QMessageBox.Ok:
@@ -747,11 +754,9 @@ class DesktopUI(QMainWindow):
 
 def initialize():
     app = QApplication(sys.argv)
-    tray = SystemTrayIcon()
-    tray.show()
 
-    prevUserLogin1 = func.checkTempUserLogin()
-    print prevUserLogin1
+    # prevUserLogin1 = func.checkTempUserLogin()
+    # print prevUserLogin1
     prevUserLogin = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
     if not os.path.exists(prevUserLogin):
         login = LoginUI()
@@ -766,7 +771,10 @@ def initialize():
         else:
             window = DesktopUI('Auto login')
             window.show()
-
+    # System tray icon
+    tray = SystemTrayIcon()
+    tray.show()
+    # Run the application
     sys.exit(app.exec_())
 
 if __name__ == '__main__':
