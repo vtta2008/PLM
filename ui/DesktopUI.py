@@ -449,42 +449,52 @@ class TabWidget(QWidget):
 
 # ----------------------------------------------------------------------------------------------------------- #
 class WindowDialog(QDialog):
-    def __init__(self, id='Note', message=None, icon=func.getIcon('Logo')):
-        super(WindowDialog, self).__init__()
+    def __init__(self, id='Note', message=None, icon=func.getIcon('Logo'), parent=None):
+        super(WindowDialog, self).__init__(parent)
 
         self.setWindowTitle(id)
-
         self.setWindowIcon(QIcon(icon))
+        central_widget = QWidget(self)
+        self.setCentralWidget(central_widget)
 
-        self.buildUI(message)
+        self.layout = QGridLayout(self)
+        central_widget.setLayout(self.layout)
+
+        self.buildUI()
 
     def buildUI(self, message):
-        self.layout = QGridLayout(self)
-
-        label = QLabel(message)
-        self.layout.addWidget(label,0,0)
+        self.layout.addWidget(QLabel(message),0,0)
 
         self.checkBox = QCheckBox("Don't show it again")
         self.checkBox.setCheckState(False)
         self.layout.addWidget(self.checkBox,1,0,1,1)
 
-        btn = QMessageBox.Yes | QMessageBox.No # QPushButton('Yes')
-        self.layout.addWidget(btn,1,1,1,4)
+        yesBtn = QPushButton('Yes')
+        yesBtn.clicked.connect(partial(self.on_button_clicked, 'Yes'))
+        self.layout.addWidget(yesBtn,1,1,1,4)
 
-        # noBtn = QMessageBox.No # QPushButton('No')
-        # self.layout.addWidget(okBtn,1,2,1,2)
+        noBtn = QPushButton('No')
+        noBtn.clicked.connect(partial(self.on_button_clicked, 'No'))
+        self.layout.addWidget(noBtn,1,2,1,2)
 
         self.setLayout(self.layout)
 
-        if btn == QMessageBox.Yes:
-            reply = (False, self.checkBox.checkState())
+    def on_button_clicked(self, buttonClicked, *args):
+        checkState = self.checkBox.setCheckState()
+        checkBoxPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/sysTray.config')
+        info = {}
+        info["DontShowNextTime"] = checkState
+        func.dataHandle('json', 'w', checkBoxPth, info)
+        if not checkState:
+            print "Dont do it again!!!"
+        else:
+            print "update!"
 
-        if btn == QMessageBox.No:
-            reply = (False, self.checkBox.checkState())
+        if buttonClicked == 'Yes':
+            return True
+        else:
+            return False
 
-        return reply
-
-        self.close()
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                          MAIN CLASS: DESKTOP UI APPLICATIONS: PIPELINE TOOL                             """
@@ -492,6 +502,7 @@ class WindowDialog(QDialog):
 
 # ----------------------------------------------------------------------------------------------------------- #
 class DesktopUI(QMainWindow):
+
     def __init__(self, case=None, parent = None):
 
         super(DesktopUI, self).__init__(parent)
@@ -507,7 +518,6 @@ class DesktopUI(QMainWindow):
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
 
         tempUser = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
-
 
         if not os.path.exists(tempUser):
             sys.exit()
@@ -746,32 +756,13 @@ class DesktopUI(QMainWindow):
         QMessageBox.information(self, 'Auto Login', "Welcome back %s" % username)
 
     def closeEvent(self, event):
-        checkBoxPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/sysTray.config')
-        checkSetting = func.dataHandle('json', 'r', checkBoxPth)
-        if checkSetting == {}:
-            message = "Minimize to Tray?"
-            popupWindow = WindowDialog(id='Confirmation', message=message)
-            popupWindow.show()
-            popupWindow.exec_()
-
-        info = {}
-        dont_show_next_time = popupWindow[1]
-        info["Don't show sysTray window"] = dont_show_next_time
-
-        func.dataHandle('json', 'a+', checkBoxPth, info)
-
-        # reply = QMessageBox.question(self, 'Message', "You want to minimize to Tray?",
-        #                              QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
-        #
-        # if reply == QMessageBox.Yes:
-        #     self.check_box.setCheckState(True)
-        # else:
-        #     event.ignore()
 
         if self.check_box.isChecked():
             event.ignore()
             self.hide()
-            self.tray_icon.showMessage("Minimized to Tray",QSystemTrayIcon.Information,2000)
+            self.hide()
+            self.tray_icon.showMessage("Minimized to tray", QSystemTrayIcon.Information, 2000)
+
 
 def initialize():
     app = QApplication(sys.argv)
