@@ -48,3 +48,14 @@ Database browser:
 
     sqlitebrowser/sqlitebrowser. (2017, November 30).
     Retrieved from https://github.com/sqlitebrowser/sqlitebrowser
+
+Advance Renamer:
+
+    Advanced Renamer - Free and fast batch rename utility for files and folders. (n.d.).
+    Retrieved from https://www.advancedrenamer.com/
+
+**TODO LIST**
+
+- Add pycharm, sublime into app
+- Redesign database
+- Optimise configuration procedures
