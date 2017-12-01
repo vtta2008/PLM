@@ -8,9 +8,9 @@ logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
-dbPth = os.path.join(os.path.abspath(os.getenv('PIPELINE_TOOL')), 'sql_tk\db\pipeline.db')
+
 db = QSqlDatabase.addDatabase('QSQLITE')
-db.setDatabaseName(dbPth)
+db.setDatabaseName('sqllocal')
 
 if not db.open():
     QMessageBox.critical(None, "Cannot open database",

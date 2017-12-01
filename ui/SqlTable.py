@@ -11,13 +11,13 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import os, sys, subprocess, json, logging
+import sys, logging
 
 from PyQt5.QtCore import *
 from PyQt5.QtSql import *
 from PyQt5.QtWidgets import *
 
-from sql_tk import connectSQL
+from sql_tk.db import connectSQL
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)

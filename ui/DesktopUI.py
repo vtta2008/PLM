@@ -326,8 +326,7 @@ class TabWidget(QWidget):
         dictBtn.clicked.connect(self.englishDict)
         tab2HBoxLayout2.addWidget(dictBtn)
 
-        updateLibraryBtn = QPushButton('Update Library')
-        updateLibraryBtn.clicked.connect(self.updateLibrary)
+        updateLibraryBtn = QPushButton('Library Viewer')
         tab2HBoxLayout2.addWidget(updateLibraryBtn)
 
         vboxLayout.addLayout(tab2HBoxLayout1)
@@ -396,16 +395,6 @@ class TabWidget(QWidget):
         reload(SqlTable)
         SqlTable = SqlTable.SqlTable(tableName)
         SqlTable.exec_()
-
-    def testNewFunction(self):
-        from tk import testFunction
-        reload(testFunction)
-        testFunction.testFunction()
-
-    def updateLibrary(self):
-        from lib_tk import LibHandle
-        reload(LibHandle)
-        LibHandle.initialize()
 
     def filterClassAllowance(self, func):
         if self.curUserData[self.curUser][1] == 'Admin':
@@ -514,11 +503,11 @@ class DesktopUI(QMainWindow):
 
         testIcon = QIcon(func.getIcon('Test'))
         testAction1 = QAction(testIcon, 'Test1', self)
-        testAction1.triggered.connect(partial(self.testActionDef, 'set1'))
+        testAction1.triggered.connect(partial(self.actionConf, 'set1'))
 
         testIcon = QIcon(func.getIcon('Test'))
         testAction2 = QAction(testIcon, 'Test2', self)
-        testAction2.triggered.connect(partial(self.testActionDef, 'set2'))
+        testAction2.triggered.connect(partial(self.actionConf, 'set2'))
 
         trayIconMenu.addAction(testAction1)
         trayIconMenu.addAction(testAction2)
@@ -714,8 +703,8 @@ class DesktopUI(QMainWindow):
     def autoLogin(self, username):
         QMessageBox.information(self, 'Auto Login', "Welcome back %s" % username)
 
-    def testActionDef(self, name=None, *args):
-        from sql_tk import sqlTools
+    def actionConf(self, name=None, *args):
+        from sql_tk.db import sqlTools
         reload(sqlTools)
         if name == 'set1':
             sqlTools.create_predatabase()
