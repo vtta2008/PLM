@@ -9,7 +9,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import json, logging, os, sys, re, platform, winshell, yaml
+import logging, os, sys, re, platform, winshell, pprint, yaml
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
@@ -262,6 +262,9 @@ class GetData(object):
         info = {}
 
         iconInfo = self.getIconInfo(package, names)
+
+        trackKeys = {}
+
         # Check local pc
         sysInfo = self.getPCinfo(package, names)
         pcConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/pc.config.yml')
@@ -293,7 +296,7 @@ class GetData(object):
 
         # trackList = PACKAGE['TD'] + PACKAGE['Comp'] + PACKAGE['Design'] + PACKAGE['Office']
 
-        trackKeys = {}
+
         for icon in iconInfo:
             for key in self.appInfo:
                 if icon in key:
@@ -311,8 +314,31 @@ class GetData(object):
         trackKeys['CleanPyc'] = ['Clean .pyc files', iconInfo['CleanPyc'], '']
         trackKeys['ReConfig'] = ['Re configuring data', iconInfo['Reconfig'], '']
         trackKeys['3ds Max 2017'] = ['3ds Max 2017', iconInfo['3ds Max 2017'], self.appInfo['3ds Max 2017']]
-        # make a loop to store all info to files one by one
-        # logger.info(iconInfo)
+
+        # Fix key from PyCharm and Sublime, also compile portable tools into it
+        with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/apps.config.yml'), 'r') as f:
+            fixInfo = yaml.load(f)
+
+        dbBrowserPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'apps/__admin__/SQLiteDatabaseBrowserPortable.exe')
+
+        advanceRenamerPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'apps/batchRenamer/ARen.exe')
+
+        qtDesigner = 'C:/ProgramData/Anaconda2/Library/bin/designer.exe'
+
+        # Pycharm
+        trackKeys['PyCharm 2017'] = ['JetBrains PyCharm 2017.2.3',
+                                     func.getIcon('Pycharm 2017'), fixInfo['JetBrains PyCharm 2017.2.3']]
+        trackKeys['Snipping Tool'] = ['Snipping Tool', func.getIcon('Snipping Tool'), fixInfo['Snipping Tool']]
+        # Sublime
+        trackKeys['SublimeText 3'] = ['Sublime Text 3', func.getIcon('SublimeText 3'), fixInfo['Sublime Text 3']]
+        # QtDesigner
+        trackKeys['QtDesigner'] = ['QtDesigner', func.getIcon('QtDesigner'), qtDesigner]
+        # Database Browser
+        trackKeys['Database Browser'] = ['Database Browser', func.getIcon('SQliteTool'), dbBrowserPth]
+        # Advance Renamer
+        trackKeys['Advance Renamer'] = ['Advance Renamer 3.8', func.getIcon('AdvanceRenamer'), advanceRenamerPth]
+
+
         info['pipeline'] = trackKeys
         piplineConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/main.config.yml')
         func.dataHandle('yaml', 'w', piplineConfig, trackKeys)
@@ -333,7 +359,7 @@ class GetData(object):
         pth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/sysPath.config.yml')
 
         if not os.path.exists(pth):
-            func.dataHandle('yaml', 'w', envKeys, pth)
+            func.dataHandle('yaml', 'w', pth, envKeys)
 
     def deleteKey(self, keys, n):
         for key in keys:

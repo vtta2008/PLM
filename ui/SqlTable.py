@@ -17,7 +17,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtSql import *
 from PyQt5.QtWidgets import *
 
-from sql_tk import connection
+from sql_tk import connectSQL
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
@@ -67,7 +67,7 @@ class SqlTable(QDialog):
 
 def initialize(tableName):
     app = QApplication(sys.argv)
-    if not connection.createConnection():
+    if not connectSQL.createConnection():
         sys.exit(1)
     editor = SqlTable(tableName)
     editor.show()

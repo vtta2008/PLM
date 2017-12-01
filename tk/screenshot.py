@@ -1,8 +1,8 @@
-from PyQt5.QtCore import QDir, Qt, QTimer
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import (QApplication, QCheckBox, QFileDialog, QGridLayout,
-        QGroupBox, QHBoxLayout, QLabel, QPushButton, QSizePolicy, QSpinBox,
-        QVBoxLayout, QWidget)
+# coding=utf-8
+
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
+from PyQt5.QtWidgets import *
 
 
 class Screenshot(QWidget):
@@ -28,7 +28,7 @@ class Screenshot(QWidget):
         self.delaySpinBox.setValue(5)
 
         self.setWindowTitle("Screenshot")
-        self.resize(300, 200)
+        self.resize(960, 540)
 
     def resizeEvent(self, event):
         scaledSize = self.originalPixmap.size()
@@ -119,11 +119,14 @@ class Screenshot(QWidget):
                 Qt.SmoothTransformation))
 
 
-if __name__ == '__main__':
-
+def initialize():
     import sys
 
     app = QApplication(sys.argv)
     screenshot = Screenshot()
     screenshot.show()
     sys.exit(app.exec_())
+
+if __name__ == '__main__':
+
+    initialize()

@@ -12,7 +12,7 @@ logger.setLevel(logging.DEBUG)
 
 def createConnection():
     db = QSqlDatabase.addDatabase('QSQLITE')
-    db.setDatabaseName('D:\pipeline\PipelineTool\sql_tk\db\userApp.db')
+    db.setDatabaseName('D:\PipelineTool\sql_tk\db\dbAcc.db')
     print db.open()
 
     if not db.open():
@@ -25,8 +25,8 @@ def createConnection():
         return False
 
     q = QSqlQuery()
-
-    q.exec_("insert into current_login values (username 'Trinh.Do', group 'Admin', title 'PipelineTD', avatar 'TrinhDo', remember 2 aka 'JimJim', fullname Do Trinh)")
+    q.exec_("create table accountdb (id int primary key, username varchar(20), password varchar(20)")
+    q.exec_("insert into current_login values (13, 'Trinh.Do', '61647361647361')")
 
     return True
 

@@ -1,18 +1,17 @@
-import os, sys, logging, time, datetime, random
+import os, logging
 
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtSql import QSqlDatabase, QSqlQuery
 from PyQt5 import QtWidgets
 
-from tk import appFuncs as func
-
 logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
-dbPth = os.path.join(os.path.abspath(os.getenv('PIPELINE_TOOL')), 'sql_tk\db\userApp.db')
+dbPth = os.path.join(os.path.abspath(os.getenv('PIPELINE_TOOL')), 'sql_tk\db\pipeline.db')
 db = QSqlDatabase.addDatabase('QSQLITE')
 db.setDatabaseName(dbPth)
+
 if not db.open():
     QMessageBox.critical(None, "Cannot open database",
                          "Unable to establish a database connection.py.\n"

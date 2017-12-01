@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Script Name: desktopUI.py
+Script Name: WindowDialog.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:

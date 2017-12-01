@@ -179,12 +179,10 @@ class LoginUI(QDialog):
                 window = DesktopUI()
                 window.show()
 
-
 # ----------------------------------------------------------------------------------------------------------- #
 """                                       SUB CLASS: TAB LAYOUT                                             """
 # ----------------------------------------------------------------------------------------------------------- #
 class TabWidget(QWidget):
-
 
     def __init__(self, parent, package, tabid):
 
@@ -249,60 +247,40 @@ class TabWidget(QWidget):
         userAvatar.setPixmap(userImg)
         userAvatar.setScaledContents(True)
         userAvatar.setFixedSize(AVATAR_SIZE, AVATAR_SIZE)
-        self.tab1GridLayout.addWidget(userAvatar,0,0,5,5)
+        self.tab1GridLayout.addWidget(userAvatar,0,0,3,3)
 
-        userNameLabel = QLabel('AKA: ')
-        userNameLabel.setAlignment(__right__)
-        self.tab1GridLayout.addWidget(userNameLabel, 0,5,1,2)
+        settingBtn = QPushButton('Change Avatar')
+        self.tab1GridLayout.addWidget(settingBtn, 0,3,1,3)
 
-        userNameArtist = QLabel(self.curUser['aka'])
-        userNameArtist.setAlignment(__left__)
-        self.tab1GridLayout.addWidget(userNameArtist, 0,7,1,2)
-
-        titleLabel = QLabel('Group: ')
-        titleLabel.setAlignment(__right__)
-        self.tab1GridLayout.addWidget(titleLabel, 1,5,1,2)
-
-        classLabel = QLabel(self.curUser['group'])
-        classLabel.setAlignment(__left__)
-        self.tab1GridLayout.addWidget(classLabel,1,7,1,2)
-
-        prodLabel = QLabel('Title: ')
-        prodLabel.setAlignment(__right__)
-        self.tab1GridLayout.addWidget(prodLabel, 2,5,1,2)
-
-        classGroup = QLabel(self.curUser['title'])
-        classGroup.setAlignment(__left__)
-        self.tab1GridLayout.addWidget(classGroup, 2,7,1,2)
-
-        settingBtn = QPushButton('Your Account')
-        self.tab1GridLayout.addWidget(settingBtn, 4,5,1,2)
-
-        settingBtn = QPushButton('Setting')
-        self.tab1GridLayout.addWidget(settingBtn, 4,7,1,2)
-
-        # self.check_box = QCheckBox('Minimize to Tray')
-        # self.check_box.setCheckState(True)
-        # self.tab1GridLayout.addWidget(self.check_box, 5,5,1,2)
-        # self.tab1GridLayout.addItem(QSpacerItem(0,1,QSizePolicy.Expanding, QSizePolicy.Expanding),2,0)
-
-        # self.tray_icon = QSystemTrayIcon(self)
-        # self.tray_icon.setIcon(QIcon(func.getIcon('Logo')))
-        # show_action = QAction('Show', self)
-        # quit_action = QAction('Exit', self)
-        # hide_action = QAction("Hide", self)
-        # show_action.triggered.connect(self.show)
-        # hide_action.triggered.connect(self.hide)
-        # quit_action.triggered.connect(qApp.quit)
-        # tray_menu = QMenu()
-        # tray_menu.addAction(show_action)
-        # tray_menu.addAction(hide_action)
-        # tray_menu.addAction(quit_action)
-        # self.tray_icon.setContextMenu(tray_menu)
-        # self.tray_icon.show()
+        settingBtn = QPushButton('Change Password')
+        self.tab1GridLayout.addWidget(settingBtn, 1,3,1,3)
 
         settingBtn = QPushButton('Log Out')
-        self.tab1GridLayout.addWidget(settingBtn, 5,7,1,2)
+        self.tab1GridLayout.addWidget(settingBtn, 2,3,1,3)
+
+        # userNameLabel = QLabel('AKA: ')
+        # userNameLabel.setAlignment(__right__)
+        # self.tab1GridLayout.addWidget(userNameLabel, 0,3,1,2)
+
+        # userNameArtist = QLabel(self.curUser['aka'])
+        # userNameArtist.setAlignment(__left__)
+        # self.tab1GridLayout.addWidget(userNameArtist, 0,5,1,2)
+
+        # titleLabel = QLabel('Group: ')
+        # titleLabel.setAlignment(__right__)
+        # self.tab1GridLayout.addWidget(titleLabel, 1,3,1,2)
+
+        # classLabel = QLabel(self.curUser['group'])
+        # classLabel.setAlignment(__left__)
+        # self.tab1GridLayout.addWidget(classLabel,1,5,1,2)
+
+        # prodLabel = QLabel('Title: ')
+        # prodLabel.setAlignment(__right__)
+        # self.tab1GridLayout.addWidget(prodLabel, 2,3,1,2)
+        #
+        # classGroup = QLabel(self.curUser['title'])
+        # classGroup.setAlignment(__left__)
+        # self.tab1GridLayout.addWidget(classGroup, 2,5,1,2)
 
         # self.tab1.layout.setMaximumSized(100,100)
         hboxLayout.addLayout(self.tab1GridLayout)
@@ -321,31 +299,28 @@ class TabWidget(QWidget):
 
         # Content tab 2
 
+        arIconBtn = self.makeIconButton('Advance Renamer')
+        tab2HBoxLayout1.addWidget(arIconBtn)
+
+        pycharmBtn = self.makeIconButton('PyCharm 2017')
+        tab2HBoxLayout1.addWidget(pycharmBtn)
+
+        sublimeBtn = self.makeIconButton('SublimeText 3')
+        tab2HBoxLayout1.addWidget(sublimeBtn)
+
+        qtdesignerBtn = self.makeIconButton('QtDesigner')
+        tab2HBoxLayout1.addWidget(qtdesignerBtn)
+
         for key in APPINFO:
-            # Illustrator
-            if key == 'Illustrator CC':
-                illusBtn = self.makeIconButton(key)
-                tab2HBoxLayout1.addWidget(illusBtn)
-            elif key == 'Illustrator CS6':
-                illusBtn = self.makeIconButton(key)
-                tab2HBoxLayout1.addWidget(illusBtn)
+
             # Mudbox
             if key == 'Mudbox 2017':
-                mudboxBtn = self.makeIconButton(key)
-                tab2HBoxLayout1.addWidget(mudboxBtn)
-            if key == 'Mudbox 2016':
-                mudboxBtn = self.makeIconButton(key)
-                tab2HBoxLayout1.addWidget(mudboxBtn)
+                mudbox17Btn = self.makeIconButton(key)
+                tab2HBoxLayout1.addWidget(mudbox17Btn)
 
-        icon = QIcon(os.path.join(os.getenv('PIPELINE_TOOL'), 'icons/AdvanceRenamer.icon.png'))
-        pth = os.path.join(os.getenv('PIPELINE_TOOL'), 'apps/batchRenamer/ARen.exe')
-        iconBtn = QPushButton()
-        iconBtn.setToolTip('Advance Renamer 3.8')
-        iconBtn.setIcon(icon)
-        iconBtn.setFixedSize(ICON_SIZE, ICON_SIZE)
-        iconBtn.setIconSize(QSize(ICON_SIZE - BUFFER, ICON_SIZE - BUFFER))
-        iconBtn.clicked.connect(partial(self.openApps, pth))
-        tab2HBoxLayout1.addWidget(iconBtn)
+            if key == '3ds Max 2017':
+                max17Btn = self.makeIconButton(key)
+                tab2HBoxLayout1.addWidget(max17Btn)
 
         dictBtn = QPushButton('English Dictionary')
         dictBtn.clicked.connect(self.englishDict)
@@ -372,34 +347,26 @@ class TabWidget(QWidget):
 
     def tab4Layout(self):
         # Create Layout for Tab 4
-        self.tab4.setTitle('Admin Tool')
+        self.tab4.setTitle('SQL Tool')
 
         hboxLayout = QHBoxLayout()
 
         self.tab4GridLayout = QGridLayout()
 
-        # Content tab 3
-        icon = QIcon(os.path.join(os.getenv('PIPELINE_TOOL'), 'icons/SqliteTool.icon.png'))
-        pth = os.path.join(os.getenv('PIPELINE_TOOL'), 'apps/__admin__/SQLiteDatabaseBrowserPortable.exe')
-        iconBtn = QPushButton()
-        iconBtn.setToolTip('Database Tool(Admin)')
-        iconBtn.setIcon(icon)
-        iconBtn.setFixedSize(ICON_SIZE, ICON_SIZE)
-        iconBtn.setIconSize(QSize(ICON_SIZE - BUFFER, ICON_SIZE - BUFFER))
-        iconBtn.clicked.connect(partial(self.openApps, pth))
-        self.tab4GridLayout.addWidget(iconBtn, 0, 0, 1, 1)
+        dataBrowserIconBtn = self.makeIconButton('Database Browser')
+        self.tab4GridLayout.addWidget(dataBrowserIconBtn, 0, 0, 1, 1)
 
-        allUserProfileBtn = QPushButton('User Profile')
-        self.tab4GridLayout.addWidget(allUserProfileBtn, 1, 0, 1, 2)
-        allUserProfileBtn.clicked.connect(partial(self.userDatabase, 'user_profile'))
+        allUserProfileBtn = QPushButton('User')
+        self.tab4GridLayout.addWidget(allUserProfileBtn, 0, 1, 1, 2)
+        allUserProfileBtn.clicked.connect(partial(self.connectSQL, 'accountCf'))
 
-        currentLoginDataBtn = QPushButton('Current Profile')
-        self.tab4GridLayout.addWidget(currentLoginDataBtn, 2, 0, 1, 2)
-        currentLoginDataBtn.clicked.connect(self.currentUserLogin)
+        currentLoginDataBtn = QPushButton('Login')
+        self.tab4GridLayout.addWidget(currentLoginDataBtn, 0, 3, 1, 2)
+        currentLoginDataBtn.clicked.connect(partial(self.connectSQL, 'LoginCf'))
 
-        testNewFunctionBtn = QPushButton('Test New Function')
-        testNewFunctionBtn.clicked.connect(self.testNewFunction)
-        self.tab4GridLayout.addWidget(testNewFunctionBtn, 1,2,1,2)
+        testNewFunctionBtn = QPushButton('Profile')
+        testNewFunctionBtn.clicked.connect(partial(self.connectSQL, 'SettingCf'))
+        self.tab4GridLayout.addWidget(testNewFunctionBtn, 0,5,1,2)
 
         hboxLayout.addLayout(self.tab4GridLayout)
 
@@ -424,16 +391,10 @@ class TabWidget(QWidget):
         EngDict = EnglishDict.EnglishDict()
         EngDict.exec_()
 
-    def userDatabase(self, tableName, *args):
+    def connectSQL(self, tableName, *args):
         from ui import SqlTable
         reload(SqlTable)
         SqlTable = SqlTable.SqlTable(tableName)
-        SqlTable.exec_()
-
-    def currentUserLogin(self, *args):
-        from ui import SqlTable
-        reload(SqlTable)
-        SqlTable = SqlTable.SqlTable('current_login')
         SqlTable.exec_()
 
     def testNewFunction(self):
@@ -451,56 +412,6 @@ class TabWidget(QWidget):
             func()
         else:
             pass
-
-    def closeEvent(self, event):
-
-        if self.check_box.isChecked():
-            event.ignore()
-            self.hide()
-            self.tray_icon.showMessage(
-                "Tray Program",
-                "Application was minimized to Tray",
-                QSystemTrayIcon.Information,
-                2000
-                )
-
-# ----------------------------------------------------------------------------------------------------------- #
-"""                                   SUB CLASS: SYSTEM TRAY ICON                                           """
-# ----------------------------------------------------------------------------------------------------------- #
-
-class LeftClickMenu(QMenu):
-    def __init__(self, parent=None):
-        QMenu.__init__(self, "File", parent)
-
-        icon = QIcon(func.getIcon('New'))
-        self.addAction(QAction(icon, "&New", self))
-
-        icon = QIcon(func.getIcon('Open'))
-        self.addAction(QAction(icon, "&Open", self))
-
-        icon = QIcon(func.getIcon('Save'))
-        self.addAction(QAction(icon, "&Save", self))
-
-class SystemTrayIcon(QSystemTrayIcon):
-    def __init__(self, parent=None):
-        QSystemTrayIcon.__init__(self, parent)
-        self.setIcon(QIcon(func.getIcon('Logo')))
-
-        self.left_menu = LeftClickMenu()
-        self.setContextMenu(self.left_menu)
-
-        self.activated.connect(self.click_trap)
-
-    def click_trap(self, value):
-        if value == self.Trigger:  # left click!
-            self.left_menu.exec_(QCursor.pos())
-
-    def welcome(self):
-        self.showMessage("Hello", "I should be aware of both buttons")
-
-    def show(self):
-        QSystemTrayIcon.show(self)
-        QTimer.singleShot(100, self.welcome)
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                          MAIN CLASS: DESKTOP UI APPLICATIONS: PIPELINE TOOL                             """
@@ -520,6 +431,10 @@ class DesktopUI(QMainWindow):
         self.setWindowTitle(mainID['Main'])
         # Set window icon
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
+
+        self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+
+        self.setToolButtonStyle(Qt.ToolButtonFollowStyle)
 
         tempUser = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
 
@@ -585,11 +500,59 @@ class DesktopUI(QMainWindow):
         # TD Tool Bar
         self.tdToolBar = self.toolBarTD(appInfo)
 
-        # VFX Tool Bar
+        # comping Tool Bar
         self.compToolBar = self.toolBarComp(appInfo)
 
-        # support ToolBar
-        # self.supportApps = self.supApps( appInfo )
+        # Art Tool Bar
+        self.artToolBar = self.toolBarArt(appInfo)
+
+        # Systray Icon
+        self.tray_Icon = self.system_tray_icon(appInfo)
+
+    def system_tray_icon(self, appInfo):
+        trayIconMenu = QMenu(self)
+
+        testIcon = QIcon(func.getIcon('Test'))
+        testAction1 = QAction(testIcon, 'Test1', self)
+        testAction1.triggered.connect(partial(self.testActionDef, 'set1'))
+
+        testIcon = QIcon(func.getIcon('Test'))
+        testAction2 = QAction(testIcon, 'Test2', self)
+        testAction2.triggered.connect(partial(self.testActionDef, 'set2'))
+
+        trayIconMenu.addAction(testAction1)
+        trayIconMenu.addAction(testAction2)
+
+        snippingAction = self.createAction(appInfo, 'Snipping Tool')
+        trayIconMenu.addAction(snippingAction)
+
+        screenshoticon = QIcon(func.getIcon('Screenshot'))
+        screenshotAction = QAction(screenshoticon, "Screenshot", self)
+        screenshotAction.triggered.connect(self.screenshot)
+        trayIconMenu.addAction(screenshotAction)
+
+        minimizeIcon = QIcon(func.getIcon('Minimize'))
+        minimizeAction = QAction(minimizeIcon, "Mi&nimize", self)
+        minimizeAction.triggered.connect(self.hide)
+        trayIconMenu.addAction(minimizeAction)
+
+        restoreIcon = QIcon(func.getIcon('Restore'))
+        restoreAction = QAction(restoreIcon, "&Restore", self)
+        restoreAction.triggered.connect(self.showNormal)
+        trayIconMenu.addAction(restoreAction)
+
+        quitIcon = QIcon(func.getIcon('Close'))
+        quitAction = QAction(quitIcon, "&Quit", self)
+        quitAction.triggered.connect(QApplication.instance().quit)
+        trayIconMenu.addSeparator()
+        trayIconMenu.addAction(quitAction)
+
+        trayIcon = QSystemTrayIcon(self)
+        trayIcon.setIcon(QIcon(func.getIcon('Logo')))
+        trayIcon.setContextMenu(trayIconMenu)
+        trayIcon.show()
+
+        return trayIcon
 
     def fileMenuToolBar(self, appInfo):
         # Exit action
@@ -628,55 +591,32 @@ class DesktopUI(QMainWindow):
         # TD Tool Bar
         toolBarTD = self.addToolBar('TD')
         # Maya_tk 2017
+        if 'Maya 2018' in appInfo:
+            maya2017 = self.createAction(appInfo, 'Maya 2017')
+            toolBarTD.addAction(maya2017)
+        # Maya_tk 2017
         if 'Maya 2017' in appInfo:
             maya2017 = self.createAction(appInfo, 'Maya 2017')
             toolBarTD.addAction(maya2017)
-        # Maya_tk 2016
-        elif 'Maya 2016' in appInfo:
-            maya2016 = self.createAction(appInfo, 'Maya 2016')
-            toolBarTD.addAction(maya2016)
-        else:
-            pass
-
-        # 3ds Max 2017
-        if '3ds Max 2017' in appInfo:
-            max2017 = self.createAction(appInfo, '3ds Max 2017')
-            toolBarTD.addAction(max2017)
 
         # ZBrush 4R8
         if 'ZBrush 4R8' in appInfo:
             zbrush4R8 = self.createAction(appInfo, 'ZBrush 4R8')
             toolBarTD.addAction(zbrush4R8)
         # ZBrush 4R7
-        elif 'ZBrush 4R7' in appInfo:
+        if 'ZBrush 4R7' in appInfo:
             zbrush4R7 = self.createAction(appInfo, 'ZBrush 4R7')
             toolBarTD.addAction(zbrush4R7)
-        else:
-            pass
 
         # Houdini FX
         if 'Houdini FX' in appInfo:
             houdiniFX = self.createAction(appInfo, 'Houdini FX')
             toolBarTD.addAction(houdiniFX)
-        else:
-            pass
+
         # Mari_tk
         if 'Mari' in appInfo:
             mari = self.createAction(appInfo, 'Mari')
             toolBarTD.addAction(mari)
-        else:
-            pass
-
-        # Photoshop CC
-        if 'Photoshop CC' in appInfo:
-            ptsCS6 = self.createAction(appInfo, 'Photoshop CC')
-            toolBarTD.addAction(ptsCS6)
-        # Photoshop CS6
-        elif 'Photoshop CS6' in appInfo:
-            ptsCC = self.createAction(appInfo, 'Photoshop CS6')
-            toolBarTD.addAction(ptsCC)
-        else:
-            pass
 
         # return Tool Bar
         return toolBarTD
@@ -712,6 +652,31 @@ class DesktopUI(QMainWindow):
         # Return Tool Bar
         return toolBarComp
 
+    def toolBarArt(self, appInfo):
+        toolbarArt = self.addToolBar('Art')
+
+        # Photoshop CC
+        if 'Photoshop CC' in appInfo:
+            ptsCS6 = self.createAction(appInfo, 'Photoshop CC')
+            toolbarArt.addAction(ptsCS6)
+
+        # Photoshop CS6
+        if 'Photoshop CS6' in appInfo:
+            ptsCC = self.createAction(appInfo, 'Photoshop CS6')
+            toolbarArt.addAction(ptsCC)
+
+        # Illustrator CC
+        if 'Illustrator CC' in appInfo:
+            illusCC = self.createAction(appInfo, 'Illustrator CC')
+            toolbarArt.addAction(illusCC)
+
+        # Illustrator CS6
+        if 'Illustrator CS6' in appInfo:
+            illusCS6 = self.createActioin(appInfo, 'Illustrator CS6')
+            toolbarArt.addAction(illusCS6)
+
+        return toolbarArt
+
     def filterClassAllowance(self, func):
         if self.curUserData[self.curUser][1] == 'Admin':
             func()
@@ -741,16 +706,23 @@ class DesktopUI(QMainWindow):
     def openURL(self, url):
         webbrowser.open(url)
 
+    def screenshot(self):
+        from tk import screenshot
+        reload(screenshot)
+        screenshot.initialize()
+
     def autoLogin(self, username):
         QMessageBox.information(self, 'Auto Login', "Welcome back %s" % username)
 
-    def closeEvent(self, event, *args):
-        reply = QMessageBox.Information(self, 'Confirm', 'It will minimize to tray', QMessageBox.Ok, QMessageBox.No)
-
-        if reply is QMessageBox.Ok:
-            event.ignore()
-            self.hide()
-            self.tray_icon.showMessage("Minimized to tray", QSystemTrayIcon.Information, 2000)
+    def testActionDef(self, name=None, *args):
+        from sql_tk import sqlTools
+        reload(sqlTools)
+        if name == 'set1':
+            sqlTools.create_predatabase()
+        elif name == 'set2':
+            sqlTools.create_predatabase()
+        else:
+            pass
 
 def initialize():
     app = QApplication(sys.argv)
@@ -771,10 +743,13 @@ def initialize():
         else:
             window = DesktopUI('Auto login')
             window.show()
-    # System tray icon
-    tray = SystemTrayIcon()
-    tray.show()
-    # Run the application
+            if not QSystemTrayIcon.isSystemTrayAvailable():
+                QMessageBox.critical(None, "Systray could not detect any system tray on this system" )
+
+                sys.exit(1)
+            QApplication.setQuitOnLastWindowClosed(False)
+
+
     sys.exit(app.exec_())
 
 if __name__ == '__main__':
