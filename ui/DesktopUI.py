@@ -361,10 +361,10 @@ class TabWidget(QWidget):
 
         currentLoginDataBtn = QPushButton('Login')
         self.tab4GridLayout.addWidget(currentLoginDataBtn, 0, 3, 1, 2)
-        currentLoginDataBtn.clicked.connect(partial(self.connectSQL, 'LoginCf'))
+        currentLoginDataBtn.clicked.connect(partial(self.connectSQL, 'loginCf'))
 
         testNewFunctionBtn = QPushButton('Profile')
-        testNewFunctionBtn.clicked.connect(partial(self.connectSQL, 'SettingCf'))
+        testNewFunctionBtn.clicked.connect(partial(self.connectSQL, 'settingCf'))
         self.tab4GridLayout.addWidget(testNewFunctionBtn, 0,5,1,2)
 
         hboxLayout.addLayout(self.tab4GridLayout)
@@ -391,10 +391,9 @@ class TabWidget(QWidget):
         EngDict.exec_()
 
     def connectSQL(self, tableName, *args):
-        from ui import SqlTable
+        from sql_tk.db import SqlTable
         reload(SqlTable)
-        SqlTable = SqlTable.SqlTable(tableName)
-        SqlTable.exec_()
+        SqlTable = SqlTable.initialize(tableName)
 
     def filterClassAllowance(self, func):
         if self.curUserData[self.curUser][1] == 'Admin':

@@ -268,7 +268,7 @@ class GetData(object):
         # Check local pc
         sysInfo = self.getPCinfo(package, names)
         pcConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/pc.config.yml')
-        if self.mode == 'rc' or os.path.exists(pcConfig):
+        if self.mode == 'rc' or not os.path.exists(pcConfig):
             func.dataHandle('yaml', 'w', pcConfig, sysInfo)
         # Check app installed
         allapps = self.getAllAppInfo(package, names)

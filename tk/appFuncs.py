@@ -9,7 +9,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import os, sys, logging, json, subprocess, pip, uuid, unicodedata, datetime, cv2, platform, yaml, urllib
+import os, sys, logging, json, subprocess, pip, uuid, unicodedata, datetime, cv2, platform, yaml, urllib, requests
 import sqlite3 as lite
 from tk import defaultVariable as var
 from pyunpack import Archive
@@ -298,7 +298,6 @@ def avatar(link, *args):
 
     return avatarPth
 
-
 # Save information of current log in user account for next time.
 def saveCurrentUserLogin(userName, *args):
     userLoginPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
@@ -310,13 +309,17 @@ def saveCurrentUserLogin(userName, *args):
 
     # logger.info('save file to %s' % currentUserLoginPth)
 
-def createNewDatabase(*args):
-    dataPth = os.path.join(os.getcwd(), 'sql_tk\db\userApp.db')
-    con = lite.connect(os.path.abspath(dataPth))
-    with con:
-        cur = con.cursor()
-        cur.execute("create table current_login(username text, group text, title text, avatar text, remember int aka text, fullname text)")
+def get_location():
+    r = requests.get('https://api.ipdata.co').json()
+    info = {}
+    for key in r:
+        k = (str(key))
+        content = str(r[key])
+        info[k] = content
 
+    location = info['ip'] + ";" + info['city'] + ";" + info['country_name']
+
+    return location
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                        MAIN CLASS 1: ENDCODE - ENCODE STRING TO HEXADECIMAL                             """
@@ -418,7 +421,7 @@ class Proc():
 
     def getDate(self):
         t = datetime.datetime.timetuple(datetime.datetime.now())
-        dateOutput = '%s/%s/%s' % (str(t.tm_mday), str(t.tm_mon), str(t.tm_year))
+        dateOutput = '%s.%s.%s' % (str(t.tm_mday), str(t.tm_mon), str(t.tm_year))
         return dateOutput
 
     def getTime(self):
@@ -450,24 +453,23 @@ def logRecord(event):
     return output
 
 
-def proc(user, operation=None):
+def proc(unix, operation=None):
     t = Proc().getTime()
     # d = Proc().getDate()
-
     if operation == 'date':
         output = Proc().getDate()
     elif operation == 'time':
         output = Proc().getTime()
     elif operation == 'log out':
-        output = logRecord('User %s logged out at %s' % (user, t))
+        output = logRecord('User %s logged out at %s' % (unix, t))
     elif operation == 'log in':
-        output = logRecord('User %s logged in at %s' % (user, t))
+        output = logRecord('User %s logged in at %s' % (unix, t))
     elif operation == 'update':
         output = logRecord('Update data at %s' % t)
     elif operation == 'restart':
-        output = logRecord('User %s restart app at %s' % (user, t))
+        output = logRecord('User %s restart app at %s' % (unix, t))
     elif operation == 'rc':
-        logRecord('User %s has recofigured at %s' % (user, t))
+        logRecord('User %s has recofigured at %s' % (unix, t))
     else:
         output = None
 
