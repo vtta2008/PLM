@@ -9,10 +9,27 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import os, sys, logging, json, subprocess, pip, uuid, unicodedata, datetime, cv2, platform, yaml, urllib, requests
+import cv2
+import datetime
+import json
+import logging
+import os
+import pip
+import platform
+import requests
 import sqlite3 as lite
-from tk import defaultVariable as var
+import subprocess
+import sys
+import time
+import urllib
+import uuid
+import yaml
+
+import unicodedata
 from pyunpack import Archive
+
+from tk import defaultVariable as var
+
 # ------------------------------------------------------
 # DEFAULT VARIABLES
 # ------------------------------------------------------
@@ -154,10 +171,6 @@ def batchResizeImage(imgDir=None, imgResDir=None, size=[100, 100], sub=False, ex
         resized_images.append(resDir)
 
     return images, resized_images
-
-def createToken(*args):
-    token = uuid.uuid4()
-    return token
 
 def dataHandle(type='json', mode='r', filePath=None, data={}, *args):
     """
@@ -309,18 +322,6 @@ def saveCurrentUserLogin(userName, *args):
 
     # logger.info('save file to %s' % currentUserLoginPth)
 
-def get_location():
-    r = requests.get('https://api.ipdata.co').json()
-    info = {}
-    for key in r:
-        k = (str(key))
-        content = str(r[key])
-        info[k] = content
-
-    location = info['ip'] + ";" + info['city'] + ";" + info['country_name']
-
-    return location
-
 # ----------------------------------------------------------------------------------------------------------- #
 """                        MAIN CLASS 1: ENDCODE - ENCODE STRING TO HEXADECIMAL                             """
 
@@ -406,10 +407,8 @@ def encode(input=STRINPUT, mode=OPERATION[0]):
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                MAIN CLASS 2: GET MODULE INFO - GET ALL INFO OF MODULES, ICONS, IMAGES                   """
-
-
 # ----------------------------------------------------------------------------------------------------------- #
-class Proc():
+class Proceduring():
     """
     This is some function that will use many time
     """
@@ -441,25 +440,82 @@ def encoding(message):
     output = encode(message, mode='hex')
     return output
 
-
 def decoding(message):
     output = encode(message, mode='str')
     return output
 
-
 def logRecord(event):
     # logger.info('Log created')
-    output = Proc().createLog(event=event)
+    output = Proceduring().createLog(event=event)
     return output
 
+def query_list_unix_id(*args):
+    dataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/meta_data.db')
+    conn = lite.connect(dataPth)
+    c = conn.cursor()
+    ce = c.execute
+    ce("SELECT unix FROM unix_bank")
+    rows = c.fetchall()
+    unix_list = [row[0] for row in rows]
+    return unix_list
+
+def create_date_time_stamp():
+    datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d,%H:%M:%S'))
+    return datetime_stamp
+
+def create_date_stamp():
+    datetime_stamp = create_date_time_stamp()
+    day_stamp = datetime_stamp.split(',')[0]
+    return day_stamp
+
+def create_time_stamp():
+    time_stamp = time.strftime('%a,%H:%M:%S')
+    return time_stamp
+
+def create_token(*args):
+    new_token = str(uuid.uuid4())
+    return new_token
+
+def generate_set_unix_id(*args):
+    unix_id = (str(uuid.uuid4())).split('-')[-1]
+    token_id = create_token()
+    time_stamp = create_time_stamp()
+    date_stamp = create_date_stamp()
+    return unix_id, token_id, time_stamp, date_stamp
+
+# def check_unique_unix_id(unique_id, *args):
+#     unix_list = query_list_unix_id()
+#     if unique_id in unix_list:
+#         return True
+#     else:
+#         return False
+
+# def create_unique_id(*args):
+#     unique_id = generate_new_id()
+#     while False:
+#         check = check_unique_unix_id(unique_id)
+#         if check is True:
+#             unique_id = generate_new_id()
+#         else:
+#             return unique_id
+
+def create_location_stamp():
+    r = requests.get('https://api.ipdata.co').json()
+    info = {}
+    for key in r:
+        k = (str(key))
+        content = str(r[key])
+        info[k] = content
+    location = info['ip'] + ";" + info['city'] + ";" + info['country_name']
+    return location
 
 def proc(unix, operation=None):
-    t = Proc().getTime()
+    t = Proceduring().getTime()
     # d = Proc().getDate()
     if operation == 'date':
-        output = Proc().getDate()
+        output = Proceduring().getDate()
     elif operation == 'time':
-        output = Proc().getTime()
+        output = Proceduring().getTime()
     elif operation == 'log out':
         output = logRecord('User %s logged out at %s' % (unix, t))
     elif operation == 'log in':

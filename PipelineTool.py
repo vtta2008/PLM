@@ -12,7 +12,12 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import os, logging, shutil, yaml, pip, sys, subprocess
+import logging
+import os
+import pip
+import shutil
+import subprocess
+import yaml
 
 # We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()
@@ -52,7 +57,7 @@ from tk import appFuncs as func
 tempDataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/local.config.yml')
 
 if not os.path.exists(tempDataPth):
-    token = func.createToken()
+    token = func.create_new_unique_id()
     with open (tempDataPth, 'w') as f:
         yaml.dump(token, f, default_flow_style=False)
 
