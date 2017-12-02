@@ -34,18 +34,20 @@ linf = ['unix', 'token', 'username', 'password']
 
 class CreateNewUser(object):
 
-    def __init__(self, username, password, title, lastname, firstname, avatar):
+    def __init__(self, lastname, firstname, title, password):
         super(CreateNewUser, self).__init__()
 
         password = func.encoding(password)
 
-        self.username = username
+        self.username = '%s.%s' % (lastname, firstname)
         self.password = password
+        self.title = title
+        self.lastname = lastname
+        self.firstname = firstname
+        self.avatar = lastname + firstname
 
         self.create_timelog_table()
-
         self.create_current_login_table()
-
         self.create_login_account_table()
 
     def create_timelog_table(self):
@@ -73,6 +75,7 @@ class CreateNewUser(object):
         return self.unix, self.token, self.datelog, self.timelog
 
     def set_up_new_user_account(self):
+        self.generate_unix_and_token_for_account()
         # Create user login account
         umaster.dynamic_user_account_entry(self.unix, self.token, self.username, self.password)
         # Create profile table base on unix id
@@ -80,3 +83,5 @@ class CreateNewUser(object):
         # Update profile and setting
         umaster.dynamic_add_user_profile_entry(self.title, self.lastname, self.firstname, self.avatar, self.datelog, self.timelog, self.unix)
 
+
+CreateNewUser('Trinh', 'Do', 'PipelineTD', 'adsadsa')

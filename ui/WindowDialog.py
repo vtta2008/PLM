@@ -11,22 +11,21 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import json, logging, os, subprocess, sys, webbrowser, yaml
+import logging
+import os
+import sys
 from functools import partial
-from tk import message as mes
+
+from PyQt5.QtGui import *
 # ------------------------------------------------------
 # IMPORT PTQT5 ELEMENT TO MAKE UI
 # ------------------------------------------------------
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 
 # ------------------------------------------------------
 # IMPORT FROM PIPELINE TOOLS APP
 # ------------------------------------------------------
 from tk import appFuncs as func
-from tk import defaultVariable as var
-from tk import getData
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
@@ -44,8 +43,6 @@ class WindowDialog(QDialog):
         self.setWindowTitle(id)
         self.setWindowIcon(QIcon(icon))
         central_widget = QWidget(self)
-
-
         self.layout = QGridLayout(self)
         central_widget.setLayout(self.layout)
 

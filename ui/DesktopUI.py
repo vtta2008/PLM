@@ -11,15 +11,22 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import json, logging, os, subprocess, sys, webbrowser, yaml
+import json
+import logging
+import math
+import os
+import subprocess
+import sys
+import webbrowser
+import yaml
 from functools import partial
-from tk import message as mes
+
+from PyQt5.QtCore import *
+from PyQt5.QtGui import *
 # ------------------------------------------------------
 # IMPORT PTQT5 ELEMENT TO MAKE UI
 # ------------------------------------------------------
 from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
 
 # ------------------------------------------------------
 # IMPORT FROM PIPELINE TOOLS APP
@@ -27,6 +34,7 @@ from PyQt5.QtGui import *
 from tk import appFuncs as func
 from tk import defaultVariable as var
 from tk import getData
+from tk import message as mes
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
@@ -64,7 +72,7 @@ GRID_TOTAL = 9
 __center__ = Qt.AlignCenter
 __right__ = Qt.AlignRight
 __left__ = Qt.AlignLeft
-
+frameStyle = QFrame.Sunken | QFrame.Panel
 # Get icon path
 # pthInfo = PACKAGE['appData']
 # infoData = NAMES['info']
@@ -75,6 +83,114 @@ filePath = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk\db\main.config.yml')
 
 with open(filePath, 'r') as f:
     APPINFO = yaml.load(f)
+
+class Button(QToolButton):
+
+    def __init__(self, text, parent=None):
+        super(Button, self).__init__(parent)
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.setText(text)
+
+    def sizeHint(self):
+        size = super(Button, self).sizeHint()
+        size.setHeight(size.height() + 5)
+        size.setWidth(max(size.width(), size.height()))
+        return size
+
+# ----------------------------------------------------------------------------------------------------------- #
+"""                                       SUB CLASS: REGISTER UI                                            """
+# ----------------------------------------------------------------------------------------------------------- #
+class NewAccount(QDialog):
+    TITLEBLANK = 'If title is blank, it will be considered as a "Tester"'
+
+    def __init__(self, parent=None):
+        super(NewAccount, self).__init__(parent)
+        self.setWindowTitle("Create New Account")
+        self.setWindowIcon(QIcon(func.getIcon('Logo')))
+        self.layout = QGridLayout()
+        # self.layout.setColumnStretch(1, 1)
+        # self.layout.setColumnMinimumWidth(1, 250)
+        self.firstnameField = QLineEdit()
+        self.lastnameField = QLineEdit()
+        self.regisTitle = QLineEdit()
+        self.password = QLineEdit()
+        self.password.setEchoMode(QLineEdit.Password)
+        self.passwordRetype = QLineEdit()
+        self.passwordRetype.setEchoMode(QLineEdit.Password)
+        self.buildUI()
+
+    def buildUI(self):
+
+        self.layout.addWidget(self.clabel('Register!'), 0, 0, 1, 4)
+        self.layout.addWidget(self.clabel('Title(modeler, artist, etc.)'), 1, 0, 1, 1)
+        self.layout.addWidget(self.clabel('First Name'), 2, 0, 1, 1)
+        self.layout.addWidget(self.clabel('Last Name'), 3, 0, 1, 1)
+        self.layout.addWidget(self.clabel(self.TITLEBLANK), 4, 0, 1, 4)
+        self.layout.addWidget(self.clabel('Password'), 5, 0, 1, 1)
+        self.layout.addWidget(self.clabel('Re-type password'), 6, 0, 1, 1)
+        self.layout.addWidget(self.regisTitle, 1, 1, 1, 3)
+        self.layout.addWidget(self.firstnameField, 2, 1, 1, 3)
+        self.layout.addWidget(self.lastnameField, 3, 1, 1, 3)
+        self.layout.addWidget(self.password, 5, 1, 1, 3)
+        self.layout.addWidget(self.passwordRetype, 6, 1, 1, 3)
+        self.layout.addWidget(self.clabel(''), 7, 0, 1, 4)
+        okBtn = QPushButton('Ok')
+        okBtn.clicked.connect(self.setOKclciked)
+        cancelBtn = QPushButton('Cancel')
+        cancelBtn.clicked.connect(sys.exit())
+        self.layout.addWidget(okBtn, 8, 0, 1, 2)
+        self.layout.addWidget(cancelBtn, 8, 2, 1, 2)
+        self.setLayout(self.layout)
+
+    def clabel(self, text):
+        label = QLabel(text)
+        label.setAlignment(__center__)
+        label.setMinimumWidth(50)
+        return label
+
+    def setOKclciked(self):
+        title = self.regisTitle.text()
+        firstname = self.firstnameField.text()
+        lastname = self.lastnameField.text()
+        password = self.password.text()
+        passretype = self.passwordRetype.text()
+        check = self.checkMatchPassWord(firstname, lastname, title, password, passretype)
+        if not check:
+            pass
+        else:
+            SUCCESS = "%s.%s" % (lastname, firstname)
+            self.processNewAcountData(lastname, firstname, title, password)
+            QMessageBox.information(self, "Error", SUCCESS, QMessageBox.Retry)
+            self.hide()
+            login = LoginUI()
+            login.show()
+
+    def checkMatchPassWord(self, firstname, lastname, title, password, passretype):
+        NOTMATCH = "Password doesn't match"
+        FIRSTNAME = "Firstname cannot be blank"
+        LASTNAME = "Lastname cannot be blank"
+        if title == "":
+            title = 'Tester'
+        if firstname == "":
+            QMessageBox.critical(self, "Error", FIRSTNAME, QMessageBox.Retry)
+            return False
+        else:
+            pass
+        if lastname == "":
+            QMessageBox.critical(self, "Error", LASTNAME, QMessageBox.Retry)
+            return False
+        else:
+            pass
+        if not password == passretype:
+            QMessageBox.critical(self, "Password not matches", NOTMATCH, QMessageBox.Retry)
+            return False
+        else:
+            return True
+
+    def processNewAcountData(self, lastname, firstname, title, password):
+        from sql_tk.db import ultilitis_user
+        reload(ultilitis_user)
+        ultilitis_user.CreateNewUser(lastname, firstname, title, password)
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                                       SUB CLASS: USER LOGIN UI                                          """
@@ -89,7 +205,6 @@ class LoginUI(QDialog):
         self.setWindowTitle('Log in')
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
         self.prevUserLogin = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
-
         self.buildUI()
 
     def buildUI(self):
@@ -97,45 +212,33 @@ class LoginUI(QDialog):
         self.mainFrame = QGroupBox(self)
         self.mainFrame.setTitle('User Account')
         self.mainFrame.setFixedSize(W, H)
-
         hboxLogin = QHBoxLayout()
-
         self.layout = QGridLayout()
         self.layout.setContentsMargins(5, 5, 5, 5)
-
         loginText = QLabel('User Name: ')
         loginText.setAlignment(__center__)
         self.layout.addWidget(loginText, 0, 0, 1, 2)
-
         self.userName = QLineEdit()
         self.layout.addWidget(self.userName, 0, 2, 1, 7)
-
         passText = QLabel('Password: ')
         passText.setAlignment(__center__)
         self.layout.addWidget(passText, 1, 0, 1, 2)
-
         self.passWord = QLineEdit()
         self.passWord.setEchoMode(QLineEdit.Password)
         self.layout.addWidget(self.passWord, 1, 2, 1, 7)
-
         rememberCheck = QLabel('Remember Me')
         rememberCheck.setAlignment(__center__)
         self.layout.addWidget(rememberCheck, 2, 0, 1, 2)
-
         self.rememberCheckBox = QCheckBox()
         self.layout.addWidget(self.rememberCheckBox, 2, 2, 1, 1)
-
         self.loginBtn = QPushButton('Login')
         self.loginBtn.clicked.connect(self.Login_btn)
         self.layout.addWidget(self.loginBtn, 2, 3, 1, 3)
-
         self.cancelBtn = QPushButton('Cancel')
         self.cancelBtn.clicked.connect(self.Cancel_btn)
         self.layout.addWidget(self.cancelBtn, 2, 6, 1, 3)
-
         noteLabel = QLabel(mes.LOGIN_NOTE)
         self.layout.addWidget(noteLabel, 3, 0, 1, 9)
-
         hboxLogin.addLayout(self.layout)
         self.mainFrame.setLayout(hboxLogin)
 
@@ -173,9 +276,7 @@ class LoginUI(QDialog):
                 userLogin['title'] = userData[username][5]
                 userLogin['fullname'] = userData[username][4]
                 func.saveCurrentUserLogin(userLogin)
-
                 self.hide()
-
                 window = DesktopUI()
                 window.show()
 
@@ -198,34 +299,35 @@ class TabWidget(QWidget):
         self.layout = QVBoxLayout(self)
         # Create Tabs
         self.tabs = QTabWidget()
-        # self.tabs.setDocumentMode(True)
+        self.tabs.setTabIcon(1, QIcon(func.getIcon('Calculator')))
+        # self.tabs.setDocumentMode(False)
         # self.tabs.setTabPosition(QTabWidget.West)
         self.tab1 = QGroupBox(self)
         self.tab2 = QGroupBox(self)
         self.tab3 = QGroupBox(self)
         self.tab4 = QGroupBox(self)
+        # self.tab5 = QGroupBox(self)
         # self.tabs.resize(package['geo'][1], package['geo'][2])
         # Add Tabs
-        self.tabs.addTab(self.tab1, 'User')
         self.tabs.addTab(self.tab2, 'Tools')
-        self.tabs.addTab(self.tab3, 'Projects')
+        # self.tabs.addTab(self.tab3, 'SQL')
         if self.curUser['group'] == 'Admin':
-            self.tabs.addTab(self.tab4, 'Admin')
+            self.tabs.addTab(self.tab3, 'SQL')
         else:
             pass
-
+        self.tabs.addTab(self.tab4, 'Cal')
+        self.tabs.addTab(self.tab1, 'User')
+        # self.tabs.addTab(self.tab5, 'Calendar')
         # Create Tab 1 layout
         self.tab1Layout()
-
         # Create Tab 2 layout
         self.tab2Layout()
-
         # Create Tab 3 layout
         self.tab3Layout()
-
         # Create Tab 4 layout
         self.tab4Layout()
-
+        # Create Tab 4 layout
+        # self.tab5Layout()
         # Add Tab to Widget
         self.layout.addWidget(self.tabs)
 
@@ -298,6 +400,8 @@ class TabWidget(QWidget):
         tab2HBoxLayout2 = QHBoxLayout()
 
         # Content tab 2
+        dataBrowserIconBtn = self.makeIconButton('Database Browser')
+        tab2HBoxLayout1.addWidget(dataBrowserIconBtn)
 
         arIconBtn = self.makeIconButton('Advance Renamer')
         tab2HBoxLayout1.addWidget(arIconBtn)
@@ -326,8 +430,9 @@ class TabWidget(QWidget):
         dictBtn.clicked.connect(self.englishDict)
         tab2HBoxLayout2.addWidget(dictBtn)
 
-        updateLibraryBtn = QPushButton('Library Viewer')
-        tab2HBoxLayout2.addWidget(updateLibraryBtn)
+        # calculatorBtn = QPushButton('Calculator')
+        # calculatorBtn.clicked.connect(self.calculator)
+        # tab2HBoxLayout2.addWidget(calculatorBtn)
 
         vboxLayout.addLayout(tab2HBoxLayout1)
         vboxLayout.addLayout(tab2HBoxLayout2)
@@ -335,41 +440,115 @@ class TabWidget(QWidget):
         self.tab2.setLayout(vboxLayout)
 
     def tab3Layout(self):
-        self.tab3.setTitle('Project Tool')
+        # Create Layout for Tab 4
+        self.tab3.setTitle('database')
 
         hboxLayout = QHBoxLayout()
+
         self.tab3GridLayout = QGridLayout()
-        self.tab3GridLayout.addWidget(QLabel('Will design this tab later on'), 0,0)
+        self.tab3GridLayout.addWidget(QLabel('Develope it later'))
+
+
+        # allUserProfileBtn = QPushButton('User')
+        # self.tab3GridLayout.addWidget(allUserProfileBtn, 0, 1, 1, 2)
+        # allUserProfileBtn.clicked.connect(partial(self.connectSQL, 'accountCf'))
+        #
+        # currentLoginDataBtn = QPushButton('Login')
+        # self.tab3GridLayout.addWidget(currentLoginDataBtn, 0, 3, 1, 2)
+        # currentLoginDataBtn.clicked.connect(partial(self.connectSQL, 'loginCf'))
+        #
+        # testNewFunctionBtn = QPushButton('Profile')
+        # testNewFunctionBtn.clicked.connect(partial(self.connectSQL, 'settingCf'))
+        # self.tab3GridLayout.addWidget(testNewFunctionBtn, 0,5,1,2)
 
         hboxLayout.addLayout(self.tab3GridLayout)
+
         self.tab3.setLayout(hboxLayout)
 
     def tab4Layout(self):
+        self.tab4.setTitle('Calculator')
+
+        NumDigitButtons = 10
+
+        hboxLayout = QHBoxLayout()
+        self.tab4GridLayout = QGridLayout()
+        self.tab4GridLayout.setContentsMargins(1,1,1,1)
+        hboxLayout.addLayout(self.tab4GridLayout)
+
+        self.pendingAdditiveOperator = ''
+        self.pendingMultiplicativeOperator = ''
+        self.sumInMemory = 0.0
+        self.sumSoFar = 0.0
+        self.factorSoFar = 0.0
+        self.waitingForOperand = True
+        self.display = QLineEdit('0')
+        self.display.setReadOnly(False)
+        self.display.setAlignment(Qt.AlignRight)
+        self.display.setMaxLength(1)
+        font = self.display.font()
+        font.setPointSize(font.pointSize())
+        self.display.setFont(font)
+        self.digitButtons = []
+
+        for i in range(NumDigitButtons):
+            self.digitButtons.append(self.createButton(str(i), self.digitClicked))
+
+        self.pointButton = self.createButton(".", self.pointClicked)
+        self.changeSignButton = self.createButton(u"\N{PLUS-MINUS SIGN}", self.changeSignClicked)
+        self.backspaceButton = self.createButton("Backspace", self.backspaceClicked)
+        self.clearButton = self.createButton("Clear", self.clear)
+        self.clearAllButton = self.createButton("Clear All", self.clearAll)
+        self.clearMemoryButton = self.createButton("MC", self.clearMemory)
+        self.readMemoryButton = self.createButton("MR", self.readMemory)
+        self.setMemoryButton = self.createButton("MS", self.setMemory)
+        self.addToMemoryButton = self.createButton("M+", self.addToMemory)
+        self.divisionButton = self.createButton(u"\N{DIVISION SIGN}", self.multipleactiveClicked)
+        self.timesButton = self.createButton(u"\N{MULTIPLICATION SIGN}", self.multipleactiveClicked)
+        self.minusButton = self.createButton("-", self.additiveOperatorClicked)
+        self.plusButton = self.createButton("+", self.additiveOperatorClicked)
+        self.squareRootButton = self.createButton("Sqrt", self.unaryOperatorClicked)
+        self.powerButton = self.createButton(u"x\N{SUPERSCRIPT TWO}", self.unaryOperatorClicked)
+        self.reciprocalButton = self.createButton("1/x", self.unaryOperatorClicked)
+        self.equalButton = self.createButton("=", self.equalClicked)
+        self.tab4GridLayout.setSizeConstraint(QLayout.SetFixedSize)
+        self.tab4GridLayout.addWidget(self.display,0,0,1,6)
+        self.tab4GridLayout.addWidget(self.backspaceButton,1,0,1,2)
+        self.tab4GridLayout.addWidget(self.clearButton,1,2,1,2)
+        self.tab4GridLayout.addWidget(self.clearAllButton,1,4,1,2)
+        self.tab4GridLayout.addWidget(self.clearMemoryButton,2,0)
+        self.tab4GridLayout.addWidget(self.readMemoryButton,3,0)
+        self.tab4GridLayout.addWidget(self.setMemoryButton,4,0)
+        self.tab4GridLayout.addWidget(self.addToMemoryButton,5,0)
+        for i in range(1, NumDigitButtons):
+            row = ((9 - i) / 3) + 2
+            column = ((i - 1) % 3) + 1
+            self.tab4GridLayout.addWidget(self.digitButtons[i], row, column)
+        self.tab4GridLayout.addWidget(self.digitButtons[0], 5, 1)
+        self.tab4GridLayout.addWidget(self.pointButton, 5, 2)
+        self.tab4GridLayout.addWidget(self.changeSignButton, 5, 3)
+        self.tab4GridLayout.addWidget(self.divisionButton, 2, 4)
+        self.tab4GridLayout.addWidget(self.timesButton, 3, 4)
+        self.tab4GridLayout.addWidget(self.minusButton, 4, 4)
+        self.tab4GridLayout.addWidget(self.plusButton, 5, 4)
+        self.tab4GridLayout.addWidget(self.squareRootButton, 2, 5)
+        self.tab4GridLayout.addWidget(self.powerButton, 3, 5)
+        self.tab4GridLayout.addWidget(self.reciprocalButton, 4, 5)
+        self.tab4GridLayout.addWidget(self.equalButton, 5, 5)
+
+        self.tab4.setLayout(hboxLayout)
+
+    def tab5Layout(self):
         # Create Layout for Tab 4
-        self.tab4.setTitle('SQL Tool')
+        self.tab5.setTitle('Calendar')
 
         hboxLayout = QHBoxLayout()
 
-        self.tab4GridLayout = QGridLayout()
+        self.tab5GridLayout = QGridLayout()
+        self.tab5GridLayout.addWidget(QLabel('Develope it later'))
 
-        dataBrowserIconBtn = self.makeIconButton('Database Browser')
-        self.tab4GridLayout.addWidget(dataBrowserIconBtn, 0, 0, 1, 1)
+        hboxLayout.addLayout(self.tab5GridLayout)
 
-        allUserProfileBtn = QPushButton('User')
-        self.tab4GridLayout.addWidget(allUserProfileBtn, 0, 1, 1, 2)
-        allUserProfileBtn.clicked.connect(partial(self.connectSQL, 'accountCf'))
-
-        currentLoginDataBtn = QPushButton('Login')
-        self.tab4GridLayout.addWidget(currentLoginDataBtn, 0, 3, 1, 2)
-        currentLoginDataBtn.clicked.connect(partial(self.connectSQL, 'loginCf'))
-
-        testNewFunctionBtn = QPushButton('Profile')
-        testNewFunctionBtn.clicked.connect(partial(self.connectSQL, 'settingCf'))
-        self.tab4GridLayout.addWidget(testNewFunctionBtn, 0,5,1,2)
-
-        hboxLayout.addLayout(self.tab4GridLayout)
-
-        self.tab4.setLayout(hboxLayout)
+        self.tab5.setLayout(hboxLayout)
 
     def makeIconButton(self, name):
         icon = QIcon(APPINFO[name][1])
@@ -381,6 +560,11 @@ class TabWidget(QWidget):
         iconBtn.clicked.connect(partial(self.openApps, APPINFO[name][2]))
         return iconBtn
 
+    def createButton(self, text, member):
+        button = Button(text)
+        button.clicked.connect(member)
+        return button
+
     def openApps(self, pth):
         subprocess.Popen(pth)
 
@@ -391,15 +575,198 @@ class TabWidget(QWidget):
         EngDict.exec_()
 
     def connectSQL(self, tableName, *args):
-        from sql_tk.db import SqlTable
-        reload(SqlTable)
-        SqlTable = SqlTable.initialize(tableName)
+        pass
 
     def filterClassAllowance(self, func):
         if self.curUserData[self.curUser][1] == 'Admin':
             func()
         else:
             pass
+
+    def digitClicked(self):
+        clickedButton = self.sender()
+        digitValue = int(clickedButton.text())
+
+        if self.display.text() == '0' and digitValue == 0.0:
+            return
+
+        if self.waitingForOperand:
+            self.display.clear()
+            self.waitingForOperand = False
+
+        self.display.setText(self.display.text() + str(digitValue))
+
+    def unaryOperatorClicked(self):
+        clickedButton = self.sender()
+        clickedOperator = clickedButton.text()
+        operand = float(self.display.text())
+
+        if clickedOperator == "Sqrt":
+            if operand < 0.0:
+                self.abortOperation()
+                return
+
+            result = math.sqrt(operand)
+        elif clickedOperator == u"x\N{SUPERSCRIPT TWO}":
+            result = math.pow(operand, 2.0)
+        elif clickedOperator == "1/x":
+            if operand == 0.0:
+                self.abortOperation()
+                return
+
+            result = 1.0 / operand
+
+        self.display.setText(str(result))
+        self.waitingForOperand = True
+
+    def additiveOperatorClicked(self):
+        clickedButton = self.sender()
+        clickedOperator = clickedButton.text()
+        operand = float(self.display.text())
+
+        if self.pendingMultiplicativeOperator:
+            if not self.calculate(operand, self.pendingMultiplicativeOperator):
+                self.abortOperation()
+                return
+
+            self.display.setText(str(self.factorSoFar))
+            operand = self.factorSoFar
+            self.factorSoFar = 0.0
+            self.pendingMultiplicativeOperator = ''
+
+        if self.pendingAdditiveOperator:
+            if not self.calculate(operand, self.pendingAdditiveOperator):
+                self.abortOperation()
+                return
+
+            self.display.setText(str(self.sumSoFar))
+        else:
+            self.sumSoFar = operand
+
+        self.pendingAdditiveOperator = clickedOperator
+        self.waitingForOperand = True
+
+    def multipleactiveClicked(self):
+        clickedButton = self.sender()
+        clickedOperator = clickedButton.text()
+        operand = float(self.display.text())
+
+        if self.pendingMultiplicativeOperator:
+            if not self.calculate(operand, self.pendingMultiplicativeOperator):
+                self.abortOperation()
+                return
+
+            self.display.setText(str(self.factorSoFar))
+        else:
+            self.factorSoFar = operand
+
+        self.pendingMultiplicativeOperator = clickedOperator
+        self.waitingForOperand = True
+
+    def equalClicked(self):
+        operand = float(self.display.text())
+
+        if self.pendingMultiplicativeOperator:
+            if not self.calculate(operand, self.pendingMultiplicativeOperator):
+                self.abortOperation()
+                return
+
+            operand = self.factorSoFar
+            self.factorSoFar = 0.0
+            self.pendingMultiplicativeOperator = ''
+
+        if self.pendingAdditiveOperator:
+            if not self.calculate(operand, self.pendingAdditiveOperator):
+                self.abortOperation()
+                return
+
+            self.pendingAdditiveOperator = ''
+        else:
+            self.sumSoFar = operand
+
+        self.display.setText(str(self.sumSoFar))
+        self.sumSoFar = 0.0
+        self.waitingForOperand = True
+
+    def pointClicked(self):
+        if self.waitingForOperand:
+            self.display.setText('0')
+
+        if "." not in self.display.text():
+            self.display.setText(self.display.text() + ".")
+
+        self.waitingForOperand = False
+
+    def changeSignClicked(self):
+        text = self.display.text()
+        value = float(text)
+
+        if value > 0.0:
+            text = "-" + text
+        elif value < 0.0:
+            text = text[1:]
+
+        self.display.setText(text)
+
+    def backspaceClicked(self):
+        if self.waitingForOperand:
+            return
+
+        text = self.display.text()[:-1]
+        if not text:
+            text = '0'
+            self.waitingForOperand = True
+
+        self.display.setText(text)
+
+    def clear(self):
+        if self.waitingForOperand:
+            return
+
+        self.display.setText('0')
+        self.waitingForOperand = True
+
+    def clearAll(self):
+        self.sumSoFar = 0.0
+        self.factorSoFar = 0.0
+        self.pendingAdditiveOperator = ''
+        self.pendingMultiplicativeOperator = ''
+        self.display.setText('0')
+        self.waitingForOperand = True
+
+    def clearMemory(self):
+        self.sumInMemory = 0.0
+
+    def readMemory(self):
+        self.display.setText(str(self.sumInMemory))
+        self.waitingForOperand = True
+
+    def setMemory(self):
+        self.equalClicked()
+        self.sumInMemory = float(self.display.text())
+
+    def addToMemory(self):
+        self.equalClicked()
+        self.sumInMemory += float(self.display.text())
+
+    def abortOperation(self):
+        self.clearAll()
+        self.display.setText("####")
+
+    def calculate(self, rightOperand, pendingOperator):
+        if pendingOperator == "+":
+            self.sumSoFar += rightOperand
+        elif pendingOperator == "-":
+            self.sumSoFar -= rightOperand
+        elif pendingOperator == u"\N{MULTIPLICATION SIGN}":
+            self.factorSoFar *= rightOperand
+        elif pendingOperator == u"\N{DIVISION SIGN}":
+            if rightOperand == 0.0:
+                return False
+
+            self.factorSoFar /= rightOperand
+
+        return True
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                          MAIN CLASS: DESKTOP UI APPLICATIONS: PIPELINE TOOL                             """
@@ -419,11 +786,8 @@ class DesktopUI(QMainWindow):
         self.setWindowTitle(mainID['Main'])
         # Set window icon
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
-
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-
         self.setToolButtonStyle(Qt.ToolButtonFollowStyle)
-
         tempUser = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
 
         if not os.path.exists(tempUser):
@@ -436,16 +800,12 @@ class DesktopUI(QMainWindow):
             self.autoLogin(str(self.curUserData['username']))
 
         self.curUser = [f for f in self.curUserData][0]
-
         # Build UI
         self.buildUI(appInfo, package, message, mainID, names, url)
-
         # Create Tabs
         self.tabWidget = TabWidget(self, package, var.MAIN_TABID)
-
         # Put tabs to center of main UI
         self.setCentralWidget(self.tabWidget)
-
         # ShowUI
         func.proc('log in')
 
@@ -487,13 +847,11 @@ class DesktopUI(QMainWindow):
         # Shelf toolbar sections
         # TD Tool Bar
         self.tdToolBar = self.toolBarTD(appInfo)
-
         # comping Tool Bar
         self.compToolBar = self.toolBarComp(appInfo)
-
         # Art Tool Bar
-        self.artToolBar = self.toolBarArt(appInfo)
-
+        # self.artToolBar = self.toolBarArt(appInfo)
+        # ----------------------------------------------
         # Systray Icon
         self.tray_Icon = self.system_tray_icon(appInfo)
 
@@ -624,45 +982,54 @@ class DesktopUI(QMainWindow):
         if 'After Effects CC' in appInfo:
             aeCC = self.createAction(appInfo, 'After Effects CC')
             toolBarComp.addAction(aeCC)
-            pass
         # After Effect CS6
-        elif 'After Effects CS6' in appInfo:
+        if 'After Effects CS6' in appInfo:
             aeCS6 = self.createAction(appInfo, 'After Effects CS6')
             toolBarComp.addAction(aeCS6)
         # Premiere CC
         if 'Premiere Pro CC' in appInfo:
             prCC = self.createAction(appInfo, 'Premiere Pro CC')
             toolBarComp.addAction(prCC)
-            pass
-        elif 'Premiere Pro CS6' in appInfo:
+        # Premiere CS6
+        if 'Premiere Pro CS6' in appInfo:
             prCS6 = self.createAction(appInfo, 'Premiere Pro CS6')
             toolBarComp.addAction(prCS6)
+        # Photoshop CC
+        if 'Photoshop CC' in appInfo:
+            ptsCS6 = self.createAction(appInfo, 'Photoshop CC')
+            toolBarComp.addAction(ptsCS6)
+        # Photoshop CS6
+        if 'Photoshop CS6' in appInfo:
+            ptsCC = self.createAction(appInfo, 'Photoshop CS6')
+            toolBarComp.addAction(ptsCC)
+        # Illustrator CC
+        if 'Illustrator CC' in appInfo:
+            illusCC = self.createAction(appInfo, 'Illustrator CC')
+            toolBarComp.addAction(illusCC)
+        # Illustrator CS6
+        if 'Illustrator CS6' in appInfo:
+            illusCS6 = self.createActioin(appInfo, 'Illustrator CS6')
+            toolBarComp.addAction(illusCS6)
         # Return Tool Bar
         return toolBarComp
 
     def toolBarArt(self, appInfo):
         toolbarArt = self.addToolBar('Art')
-
-        # Photoshop CC
         if 'Photoshop CC' in appInfo:
             ptsCS6 = self.createAction(appInfo, 'Photoshop CC')
             toolbarArt.addAction(ptsCS6)
-
         # Photoshop CS6
         if 'Photoshop CS6' in appInfo:
             ptsCC = self.createAction(appInfo, 'Photoshop CS6')
             toolbarArt.addAction(ptsCC)
-
         # Illustrator CC
         if 'Illustrator CC' in appInfo:
             illusCC = self.createAction(appInfo, 'Illustrator CC')
             toolbarArt.addAction(illusCC)
-
         # Illustrator CS6
         if 'Illustrator CS6' in appInfo:
             illusCS6 = self.createActioin(appInfo, 'Illustrator CS6')
             toolbarArt.addAction(illusCS6)
-
         return toolbarArt
 
     def filterClassAllowance(self, func):
@@ -697,20 +1064,21 @@ class DesktopUI(QMainWindow):
     def screenshot(self):
         from tk import screenshot
         reload(screenshot)
-        screenshot.initialize()
+        screenshot.exe_()
 
     def autoLogin(self, username):
         QMessageBox.information(self, 'Auto Login', "Welcome back %s" % username)
 
     def actionConf(self, name=None, *args):
-        from sql_tk.db import sqlTools
-        reload(sqlTools)
-        if name == 'set1':
-            sqlTools.create_predatabase()
-        elif name == 'set2':
-            sqlTools.create_predatabase()
-        else:
-            pass
+        # from sql_tk.db import sqlTools
+        # reload(sqlTools)
+        # if name == 'set1':
+        #     sqlTools.create_predatabase()
+        # elif name == 'set2':
+        #     sqlTools.create_predatabase()
+        # else:
+        #     pass
+        pass
 
 def initialize():
     app = QApplication(sys.argv)

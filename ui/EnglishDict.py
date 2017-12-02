@@ -11,15 +11,18 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import os, sys, subprocess, json, logging
+import json
+import logging
+import os
+import sys
 from difflib import get_close_matches
 
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PTQT5 ELEMENT TO MAKE UI
 # -------------------------------------------------------------------------------------------------------------
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import *
-from PyQt5.QtCore import *
+
+from tk import appFuncs as func
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
@@ -32,6 +35,7 @@ class EnglishDict(QDialog):
         super(EnglishDict, self).__init__()
 
         self.setWindowTitle('English Dictionary')
+        self.setWindowIcon(func.getIcon('Logo'))
 
         self.buildUI()
 
