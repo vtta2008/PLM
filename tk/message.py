@@ -53,13 +53,6 @@ Sorry, but only Admin can do this function, please contact JimJim for details.
 
 LOGIN_NOTE = """
 
-Dear User,
-
-If you do not have login account, use test account:
-
-    username: tester
-    password: 123456
-
-Contact me if you have any question: dot@damgteam.com
+Or just create one.
 
 """

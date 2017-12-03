@@ -11,16 +11,16 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import json
 import logging
 import math
 import os
+import shutil
 import subprocess
 import sys
 import webbrowser
-import yaml
 from functools import partial
 
+import yaml
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 # ------------------------------------------------------
@@ -28,6 +28,7 @@ from PyQt5.QtGui import *
 # ------------------------------------------------------
 from PyQt5.QtWidgets import *
 
+from sql_tk.db import ultiSQL as ulti
 # ------------------------------------------------------
 # IMPORT FROM PIPELINE TOOLS APP
 # ------------------------------------------------------
@@ -50,6 +51,10 @@ logger.setLevel(logging.DEBUG)
 # ------------------------------------------------------
 # DEFAULT VARIABLES
 # ------------------------------------------------------
+CURUSERDATA = ulti.query_current_user()
+CURUSER = CURUSERDATA[2]
+USERCLASS = ulti.query_user_class(CURUSERDATA[0], CURUSERDATA[1])
+
 # UI variables preset for layout customizing
 # Dimension
 W = 350
@@ -73,17 +78,18 @@ __center__ = Qt.AlignCenter
 __right__ = Qt.AlignRight
 __left__ = Qt.AlignLeft
 frameStyle = QFrame.Sunken | QFrame.Panel
-# Get icon path
-# pthInfo = PACKAGE['appData']
-# infoData = NAMES['info']
 
+dataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/database.db')
 getData.initialize()
-
 filePath = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk\db\main.config.yml')
 
 with open(filePath, 'r') as f:
     APPINFO = yaml.load(f)
 
+
+# ----------------------------------------------------------------------------------------------------------- #
+"""                                       SUB CLASS: REGISTER UI                                            """
+# ----------------------------------------------------------------------------------------------------------- #
 class Button(QToolButton):
 
     def __init__(self, text, parent=None):
@@ -97,19 +103,17 @@ class Button(QToolButton):
         size.setWidth(max(size.width(), size.height()))
         return size
 
-# ----------------------------------------------------------------------------------------------------------- #
-"""                                       SUB CLASS: REGISTER UI                                            """
-# ----------------------------------------------------------------------------------------------------------- #
+
 class NewAccount(QDialog):
     TITLEBLANK = 'If title is blank, it will be considered as a "Tester"'
 
+
     def __init__(self, parent=None):
         super(NewAccount, self).__init__(parent)
+
         self.setWindowTitle("Create New Account")
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
         self.layout = QGridLayout()
-        # self.layout.setColumnStretch(1, 1)
-        # self.layout.setColumnMinimumWidth(1, 250)
         self.firstnameField = QLineEdit()
         self.lastnameField = QLineEdit()
         self.regisTitle = QLineEdit()
@@ -135,9 +139,9 @@ class NewAccount(QDialog):
         self.layout.addWidget(self.passwordRetype, 6, 1, 1, 3)
         self.layout.addWidget(self.clabel(''), 7, 0, 1, 4)
         okBtn = QPushButton('Ok')
-        okBtn.clicked.connect(self.setOKclciked)
+        okBtn.clicked.connect(self.onOKclicked)
         cancelBtn = QPushButton('Cancel')
-        cancelBtn.clicked.connect(sys.exit())
+        cancelBtn.clicked.connect(self.close)
         self.layout.addWidget(okBtn, 8, 0, 1, 2)
         self.layout.addWidget(cancelBtn, 8, 2, 1, 2)
         self.setLayout(self.layout)
@@ -148,63 +152,68 @@ class NewAccount(QDialog):
         label.setMinimumWidth(50)
         return label
 
-    def setOKclciked(self):
+    def onOKclicked(self):
         title = self.regisTitle.text()
-        firstname = self.firstnameField.text()
-        lastname = self.lastnameField.text()
-        password = self.password.text()
-        passretype = self.passwordRetype.text()
+        if title is None or title == '':
+            title = 'Tester'
+        else:
+            title = str(title)
+        FIRSTNAME = "Firstname cannot be blank"
+        LASTNAME = "Lastname cannot be blank"
+        firstname = str(self.firstnameField.text())
+        if firstname == "" or firstname is None:
+            QMessageBox.critical(self, "Error", FIRSTNAME, QMessageBox.Retry)
+            return False
+        else:
+            pass
+        lastname = str(self.lastnameField.text())
+        if lastname == "":
+            QMessageBox.critical(self, "Error", LASTNAME, QMessageBox.Retry)
+            return False
+        else:
+            pass
+
+        username = '%s.%s' % (lastname, firstname)
+        check = ulti.check_data_exists(username)
+        if check:
+            USEREXISTS = 'Username %s exists, try again or you already have an account?' % username
+            QMessageBox.critical(self, "Username Exists", USEREXISTS, QMessageBox.Retry)
+        else:
+            pass
+
+        password = str(self.password.text())
+        passretype = str(self.passwordRetype.text())
         check = self.checkMatchPassWord(firstname, lastname, title, password, passretype)
+        SUCCESS = "Your account has been created: %s" % username
         if not check:
             pass
         else:
-            SUCCESS = "%s.%s" % (lastname, firstname)
-            self.processNewAcountData(lastname, firstname, title, password)
-            QMessageBox.information(self, "Error", SUCCESS, QMessageBox.Retry)
+            ulti.CreateNewUser(firstname, lastname, title, password)
+            QMessageBox.information(self, "Your username", SUCCESS, QMessageBox.Retry)
             self.hide()
             login = LoginUI()
             login.show()
 
     def checkMatchPassWord(self, firstname, lastname, title, password, passretype):
         NOTMATCH = "Password doesn't match"
-        FIRSTNAME = "Firstname cannot be blank"
-        LASTNAME = "Lastname cannot be blank"
-        if title == "":
-            title = 'Tester'
-        if firstname == "":
-            QMessageBox.critical(self, "Error", FIRSTNAME, QMessageBox.Retry)
-            return False
-        else:
-            pass
-        if lastname == "":
-            QMessageBox.critical(self, "Error", LASTNAME, QMessageBox.Retry)
-            return False
-        else:
-            pass
         if not password == passretype:
             QMessageBox.critical(self, "Password not matches", NOTMATCH, QMessageBox.Retry)
             return False
         else:
             return True
 
-    def processNewAcountData(self, lastname, firstname, title, password):
-        from sql_tk.db import ultilitis_user
-        reload(ultilitis_user)
-        ultilitis_user.CreateNewUser(lastname, firstname, title, password)
-
 # ----------------------------------------------------------------------------------------------------------- #
 """                                       SUB CLASS: USER LOGIN UI                                          """
 # ----------------------------------------------------------------------------------------------------------- #
 class LoginUI(QDialog):
-    appDataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/main.config')
 
     def __init__(self, parent=None):
 
-        super(LoginUI, self).__init__()
+        super(LoginUI, self).__init__(parent)
 
         self.setWindowTitle('Log in')
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
-        self.prevUserLogin = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
+        
         self.buildUI()
 
     def buildUI(self):
@@ -218,7 +227,7 @@ class LoginUI(QDialog):
         loginText = QLabel('User Name: ')
         loginText.setAlignment(__center__)
         self.layout.addWidget(loginText, 0, 0, 1, 2)
-        self.userName = QLineEdit()
+        self.userName = QLineEdit(CURUSER)
         self.layout.addWidget(self.userName, 0, 2, 1, 7)
         passText = QLabel('Password: ')
         passText.setAlignment(__center__)
@@ -232,248 +241,178 @@ class LoginUI(QDialog):
         self.rememberCheckBox = QCheckBox()
         self.layout.addWidget(self.rememberCheckBox, 2, 2, 1, 1)
         self.loginBtn = QPushButton('Login')
-        self.loginBtn.clicked.connect(self.Login_btn)
+        self.loginBtn.clicked.connect(self.onLoginBtnClicked)
         self.layout.addWidget(self.loginBtn, 2, 3, 1, 3)
         self.cancelBtn = QPushButton('Cancel')
-        self.cancelBtn.clicked.connect(self.Cancel_btn)
+        self.cancelBtn.clicked.connect(self.onCancelBtnClicked)
         self.layout.addWidget(self.cancelBtn, 2, 6, 1, 3)
         noteLabel = QLabel(mes.LOGIN_NOTE)
-        self.layout.addWidget(noteLabel, 3, 0, 1, 9)
+        self.layout.addWidget(noteLabel, 3, 0, 1, 3)
+        createAccountBtn = QPushButton('Create Account')
+        createAccountBtn.clicked.connect(self.onCreateAccountClicked)
+        self.layout.addWidget(createAccountBtn, 3,3,1,6)
+
         hboxLogin.addLayout(self.layout)
         self.mainFrame.setLayout(hboxLogin)
 
-    def Cancel_btn(self):
+    def onCreateAccountClicked(self):
+        createAcc = NewAccount()
+        createAcc.exec_()
+
+    def onCancelBtnClicked(self):
         self.close()
 
-    def Login_btn(self, *args):
-        user_name = str(self.userName.text())
-        pass_word = str(func.encoding(self.passWord.text()))
+    def onLoginBtnClicked(self, *args):
+        username = str(self.userName.text())
 
-        if user_name == "":
-            QMessageBox.information(self, 'Login Failed', 'Username can not be blank')
-        elif pass_word == "":
-            QMessageBox.information(self, 'Login Failed', 'No password')
-        else:
-            self.AttemptLogin(user_name, pass_word)
+        if username == "" or username is None:
+            QMessageBox.critical(self, 'Login Failed', 'Username can not be blank')
+        
+        pass_word = self.passWord.text()
+        
+        if pass_word == "" or pass_word is None:
+            QMessageBox.critical(self, 'Login Failed', 'No password')
+            
+        password = str(func.encoding(pass_word))
+        
+        checkU = ulti.check_data_exists(username)
+        
+        if not checkU:
+            QMessageBox.critical(self, 'Login Failed', "Username not exists")
+        
+        check = ulti.check_password_match(username, password)
 
-    def AttemptLogin(self, username, password):
-        userData = func.checkUserLogin(username)
-        userLogin = {}
-        if userData == {}:
-            QMessageBox.information(self, 'Login Failed', "Username not exists")
-            return
+        if not check:
+            QMessageBox.critical(self, 'Login Failed', "Password not match")
         else:
-            if not password == userData[username][7]:
-                QMessageBox.information(self, 'Login Failed', "Wrong password")
-                return
+            QMessageBox.information(self, 'Login Successful', "Welcome %s" % username)
+            checkState = self.rememberCheckBox.checkState()
+            if checkState:
+                check = 'True'
             else:
-                QMessageBox.information(self, 'Login Successful', "Welcome %s" % username)
-                userLogin['remember login'] = self.rememberCheckBox.checkState()
-                userLogin['username'] = username
-                userLogin['group'] = userData[username][8]
-                userLogin['avatar'] = userData[username][9]
-                userLogin['aka'] = userData[username][6]
-                userLogin['title'] = userData[username][5]
-                userLogin['fullname'] = userData[username][4]
-                func.saveCurrentUserLogin(userLogin)
-                self.hide()
-                window = DesktopUI()
-                window.show()
+                check = 'False'
+
+            user = ulti.query_current_user()
+
+            token = user[1]
+            setting = user[3]
+            if setting == check:
+                pass
+            else:
+                ulti.update_user_remember_login(token, setting)
+                ulti.dynamic_update_current_user(user[0], user[1], username, user[3])
+
+            self.hide()
+
+            window = DesktopUI()
+            window.show()
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                                       SUB CLASS: TAB LAYOUT                                             """
 # ----------------------------------------------------------------------------------------------------------- #
 class TabWidget(QWidget):
 
-    def __init__(self, parent, package, tabid):
+    def __init__(self, package):
 
-        super(TabWidget, self).__init__(parent)
+        super(TabWidget, self).__init__()
+        self.buildUI(package)
 
-        with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config'), 'r') as f:
-            self.curUser = json.load(f)
-
-        self.buildUI(tabid)
-
-    def buildUI(self, tabid):
-
+    def buildUI(self, package):
         self.layout = QVBoxLayout(self)
-        # Create Tabs
         self.tabs = QTabWidget()
-        self.tabs.setTabIcon(1, QIcon(func.getIcon('Calculator')))
         # self.tabs.setDocumentMode(False)
         # self.tabs.setTabPosition(QTabWidget.West)
+        self.tabs.resize(package['geo'][1], package['geo'][2])
+
         self.tab1 = QGroupBox(self)
         self.tab2 = QGroupBox(self)
         self.tab3 = QGroupBox(self)
         self.tab4 = QGroupBox(self)
-        # self.tab5 = QGroupBox(self)
-        # self.tabs.resize(package['geo'][1], package['geo'][2])
+        self.tab5 = QGroupBox(self)
+
         # Add Tabs
-        self.tabs.addTab(self.tab2, 'Tools')
-        # self.tabs.addTab(self.tab3, 'SQL')
-        if self.curUser['group'] == 'Admin':
-            self.tabs.addTab(self.tab3, 'SQL')
-        else:
-            pass
-        self.tabs.addTab(self.tab4, 'Cal')
-        self.tabs.addTab(self.tab1, 'User')
-        # self.tabs.addTab(self.tab5, 'Calendar')
+        self.tabs.addTab(self.tab1, 'Tools')
+        self.tabs.addTab(self.tab2, 'Prj')
+        self.tabs.addTab(self.tab3, 'Cal')
+        self.tabs.addTab(self.tab4, 'User')
+        self.tabs.addTab(self.tab5, 'SQL')
+
         # Create Tab 1 layout
         self.tab1Layout()
-        # Create Tab 2 layout
         self.tab2Layout()
-        # Create Tab 3 layout
         self.tab3Layout()
-        # Create Tab 4 layout
         self.tab4Layout()
-        # Create Tab 4 layout
-        # self.tab5Layout()
-        # Add Tab to Widget
-        self.layout.addWidget(self.tabs)
+        self.tab5Layout()
 
-        # Set main layout
+        self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
 
     def tab1Layout(self):
-
-        # Create Layout for Tab 1
-        self.tab1.setTitle(self.curUser['username'])
-        # self.tab1.setFixedSize(W, H)
-
-        hboxLayout = QHBoxLayout()
-
-        self.tab1GridLayout = QGridLayout()
-
-        userImg = QPixmap(func.avatar(self.curUser['avatar']))
-        userAvatar = QLabel()
-        userAvatar.setPixmap(userImg)
-        userAvatar.setScaledContents(True)
-        userAvatar.setFixedSize(AVATAR_SIZE, AVATAR_SIZE)
-        self.tab1GridLayout.addWidget(userAvatar,0,0,3,3)
-
-        settingBtn = QPushButton('Change Avatar')
-        self.tab1GridLayout.addWidget(settingBtn, 0,3,1,3)
-
-        settingBtn = QPushButton('Change Password')
-        self.tab1GridLayout.addWidget(settingBtn, 1,3,1,3)
-
-        settingBtn = QPushButton('Log Out')
-        self.tab1GridLayout.addWidget(settingBtn, 2,3,1,3)
-
-        # userNameLabel = QLabel('AKA: ')
-        # userNameLabel.setAlignment(__right__)
-        # self.tab1GridLayout.addWidget(userNameLabel, 0,3,1,2)
-
-        # userNameArtist = QLabel(self.curUser['aka'])
-        # userNameArtist.setAlignment(__left__)
-        # self.tab1GridLayout.addWidget(userNameArtist, 0,5,1,2)
-
-        # titleLabel = QLabel('Group: ')
-        # titleLabel.setAlignment(__right__)
-        # self.tab1GridLayout.addWidget(titleLabel, 1,3,1,2)
-
-        # classLabel = QLabel(self.curUser['group'])
-        # classLabel.setAlignment(__left__)
-        # self.tab1GridLayout.addWidget(classLabel,1,5,1,2)
-
-        # prodLabel = QLabel('Title: ')
-        # prodLabel.setAlignment(__right__)
-        # self.tab1GridLayout.addWidget(prodLabel, 2,3,1,2)
-        #
-        # classGroup = QLabel(self.curUser['title'])
-        # classGroup.setAlignment(__left__)
-        # self.tab1GridLayout.addWidget(classGroup, 2,5,1,2)
-
-        # self.tab1.layout.setMaximumSized(100,100)
-        hboxLayout.addLayout(self.tab1GridLayout)
-
-        self.tab1.setLayout(hboxLayout)
-
-    def tab2Layout(self):
         # Create Layout for Tab 2
-        self.tab2.setTitle('Extra Tool')
-        # self.tab2.setFixedSize(W,H)
-
+        self.tab1.setTitle('Extra Tool')
+        # self.tab1.setFixedSize(W,H)
         vboxLayout = QVBoxLayout()
-
-        tab2HBoxLayout1 = QHBoxLayout()
-        tab2HBoxLayout2 = QHBoxLayout()
+        tab1HBoxLayout1 = QHBoxLayout()
+        tab1HBoxLayout2 = QHBoxLayout()
 
         # Content tab 2
-        dataBrowserIconBtn = self.makeIconButton('Database Browser')
-        tab2HBoxLayout1.addWidget(dataBrowserIconBtn)
-
         arIconBtn = self.makeIconButton('Advance Renamer')
-        tab2HBoxLayout1.addWidget(arIconBtn)
-
+        tab1HBoxLayout1.addWidget(arIconBtn)
         pycharmBtn = self.makeIconButton('PyCharm 2017')
-        tab2HBoxLayout1.addWidget(pycharmBtn)
-
+        tab1HBoxLayout1.addWidget(pycharmBtn)
         sublimeBtn = self.makeIconButton('SublimeText 3')
-        tab2HBoxLayout1.addWidget(sublimeBtn)
-
+        tab1HBoxLayout1.addWidget(sublimeBtn)
         qtdesignerBtn = self.makeIconButton('QtDesigner')
-        tab2HBoxLayout1.addWidget(qtdesignerBtn)
-
+        tab1HBoxLayout1.addWidget(qtdesignerBtn)
         for key in APPINFO:
-
             # Mudbox
+            if key == 'Mudbox 2018':
+                mudbox18Btn = self.makeIconButton(key)
+                tab1HBoxLayout1.addWidget(mudbox18Btn)
             if key == 'Mudbox 2017':
                 mudbox17Btn = self.makeIconButton(key)
-                tab2HBoxLayout1.addWidget(mudbox17Btn)
-
+                tab1HBoxLayout1.addWidget(mudbox17Btn)
+            if key == '3ds Max 2018':
+                max18Btn = self.makeIconButton(key)
+                tab1HBoxLayout1.addWidget(max18Btn)
             if key == '3ds Max 2017':
                 max17Btn = self.makeIconButton(key)
-                tab2HBoxLayout1.addWidget(max17Btn)
-
+                tab1HBoxLayout1.addWidget(max17Btn)
         dictBtn = QPushButton('English Dictionary')
         dictBtn.clicked.connect(self.englishDict)
-        tab2HBoxLayout2.addWidget(dictBtn)
+        tab1HBoxLayout2.addWidget(dictBtn)
 
-        # calculatorBtn = QPushButton('Calculator')
-        # calculatorBtn.clicked.connect(self.calculator)
-        # tab2HBoxLayout2.addWidget(calculatorBtn)
+        vboxLayout.addLayout(tab1HBoxLayout1)
+        vboxLayout.addLayout(tab1HBoxLayout2)
+        self.tab1.setLayout(vboxLayout)
 
-        vboxLayout.addLayout(tab2HBoxLayout1)
-        vboxLayout.addLayout(tab2HBoxLayout2)
-
-        self.tab2.setLayout(vboxLayout)
-
-    def tab3Layout(self):
+    def tab2Layout(self):
         # Create Layout for Tab 4
-        self.tab3.setTitle('database')
+        self.tab2.setTitle('database')
 
         hboxLayout = QHBoxLayout()
+        tab2GridLayout = QGridLayout()
 
-        self.tab3GridLayout = QGridLayout()
-        self.tab3GridLayout.addWidget(QLabel('Develope it later'))
+        allUserProfileBtn = QPushButton('New Project')
+        tab2GridLayout.addWidget(allUserProfileBtn, 0, 0, 1, 2)
+        currentLoginDataBtn = QPushButton('Login')
+        tab2GridLayout.addWidget(currentLoginDataBtn, 0, 2, 1, 2)
+        testNewFunctionBtn = QPushButton('Profile')
+        tab2GridLayout.addWidget(testNewFunctionBtn, 0, 4, 1, 2)
 
+        hboxLayout.addLayout(tab2GridLayout)
+        self.tab2.setLayout(hboxLayout)
 
-        # allUserProfileBtn = QPushButton('User')
-        # self.tab3GridLayout.addWidget(allUserProfileBtn, 0, 1, 1, 2)
-        # allUserProfileBtn.clicked.connect(partial(self.connectSQL, 'accountCf'))
-        #
-        # currentLoginDataBtn = QPushButton('Login')
-        # self.tab3GridLayout.addWidget(currentLoginDataBtn, 0, 3, 1, 2)
-        # currentLoginDataBtn.clicked.connect(partial(self.connectSQL, 'loginCf'))
-        #
-        # testNewFunctionBtn = QPushButton('Profile')
-        # testNewFunctionBtn.clicked.connect(partial(self.connectSQL, 'settingCf'))
-        # self.tab3GridLayout.addWidget(testNewFunctionBtn, 0,5,1,2)
-
-        hboxLayout.addLayout(self.tab3GridLayout)
-
-        self.tab3.setLayout(hboxLayout)
-
-    def tab4Layout(self):
-        self.tab4.setTitle('Calculator')
+    def tab3Layout(self):
+        self.tab3.setTitle('Calculator')
+        self.tab3.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 
         NumDigitButtons = 10
 
         hboxLayout = QHBoxLayout()
-        self.tab4GridLayout = QGridLayout()
-        self.tab4GridLayout.setContentsMargins(1,1,1,1)
-        hboxLayout.addLayout(self.tab4GridLayout)
+        tab3GridLayout = QGridLayout()
+        tab3GridLayout.setContentsMargins(1,1,1,1)
+        hboxLayout.addLayout(tab3GridLayout)
 
         self.pendingAdditiveOperator = ''
         self.pendingMultiplicativeOperator = ''
@@ -510,45 +449,120 @@ class TabWidget(QWidget):
         self.powerButton = self.createButton(u"x\N{SUPERSCRIPT TWO}", self.unaryOperatorClicked)
         self.reciprocalButton = self.createButton("1/x", self.unaryOperatorClicked)
         self.equalButton = self.createButton("=", self.equalClicked)
-        self.tab4GridLayout.setSizeConstraint(QLayout.SetFixedSize)
-        self.tab4GridLayout.addWidget(self.display,0,0,1,6)
-        self.tab4GridLayout.addWidget(self.backspaceButton,1,0,1,2)
-        self.tab4GridLayout.addWidget(self.clearButton,1,2,1,2)
-        self.tab4GridLayout.addWidget(self.clearAllButton,1,4,1,2)
-        self.tab4GridLayout.addWidget(self.clearMemoryButton,2,0)
-        self.tab4GridLayout.addWidget(self.readMemoryButton,3,0)
-        self.tab4GridLayout.addWidget(self.setMemoryButton,4,0)
-        self.tab4GridLayout.addWidget(self.addToMemoryButton,5,0)
+
+        tab3GridLayout.setSizeConstraint(QLayout.SetFixedSize)
+        tab3GridLayout.addWidget(self.display,0,0,1,6)
+        tab3GridLayout.addWidget(self.backspaceButton,1,0,1,2)
+        tab3GridLayout.addWidget(self.clearButton,1,2,1,2)
+        tab3GridLayout.addWidget(self.clearAllButton,1,4,1,2)
+        tab3GridLayout.addWidget(self.clearMemoryButton,2,0)
+        tab3GridLayout.addWidget(self.readMemoryButton,3,0)
+        tab3GridLayout.addWidget(self.setMemoryButton,4,0)
+        tab3GridLayout.addWidget(self.addToMemoryButton,5,0)
         for i in range(1, NumDigitButtons):
             row = ((9 - i) / 3) + 2
             column = ((i - 1) % 3) + 1
-            self.tab4GridLayout.addWidget(self.digitButtons[i], row, column)
-        self.tab4GridLayout.addWidget(self.digitButtons[0], 5, 1)
-        self.tab4GridLayout.addWidget(self.pointButton, 5, 2)
-        self.tab4GridLayout.addWidget(self.changeSignButton, 5, 3)
-        self.tab4GridLayout.addWidget(self.divisionButton, 2, 4)
-        self.tab4GridLayout.addWidget(self.timesButton, 3, 4)
-        self.tab4GridLayout.addWidget(self.minusButton, 4, 4)
-        self.tab4GridLayout.addWidget(self.plusButton, 5, 4)
-        self.tab4GridLayout.addWidget(self.squareRootButton, 2, 5)
-        self.tab4GridLayout.addWidget(self.powerButton, 3, 5)
-        self.tab4GridLayout.addWidget(self.reciprocalButton, 4, 5)
-        self.tab4GridLayout.addWidget(self.equalButton, 5, 5)
+            tab3GridLayout.addWidget(self.digitButtons[i], row, column)
+        tab3GridLayout.addWidget(self.digitButtons[0], 5, 1)
+        tab3GridLayout.addWidget(self.pointButton, 5, 2)
+        tab3GridLayout.addWidget(self.changeSignButton, 5, 3)
+        tab3GridLayout.addWidget(self.divisionButton, 2, 4)
+        tab3GridLayout.addWidget(self.timesButton, 3, 4)
+        tab3GridLayout.addWidget(self.minusButton, 4, 4)
+        tab3GridLayout.addWidget(self.plusButton, 5, 4)
+        tab3GridLayout.addWidget(self.squareRootButton, 2, 5)
+        tab3GridLayout.addWidget(self.powerButton, 3, 5)
+        tab3GridLayout.addWidget(self.reciprocalButton, 4, 5)
+        tab3GridLayout.addWidget(self.equalButton, 5, 5)
 
+        self.tab3.setLayout(hboxLayout)
+
+    def tab4Layout(self):
+
+        # Create Layout for Tab 1
+        self.tab4.setTitle(CURUSER)
+        # self.tab1.setFixedSize(W, H)
+
+        hboxLayout = QHBoxLayout()
+        tab4ridLayout = QGridLayout()
+
+        userProfile = ulti.query_user_profile(CURUSER, 'username')
+        userImg = QPixmap(func.getAvatar(userProfile[7]))
+        self.userAvatar = QLabel()
+        self.userAvatar.setPixmap(userImg)
+        self.userAvatar.setScaledContents(True)
+        self.userAvatar.setFixedSize(AVATAR_SIZE, AVATAR_SIZE)
+        tab4ridLayout.addWidget(self.userAvatar, 0, 0, 3, 3)
+
+        changeAvatarBtn = QPushButton('Change Avatar')
+        changeAvatarBtn.clicked.connect(self.onChangeAvatarBtnClicked)
+        tab4ridLayout.addWidget(changeAvatarBtn, 0,3,1,3)
+
+        settingBtn = QPushButton('Change Password')
+        tab4ridLayout.addWidget(settingBtn, 1, 3, 1, 3)
+
+        settingBtn = QPushButton('Log Out')
+        tab4ridLayout.addWidget(settingBtn, 2, 3, 1, 3)
+
+        # userNameLabel = QLabel('AKA: ')
+        # userNameLabel.setAlignment(__right__)
+        # tab4ridLayout.addWidget(userNameLabel, 0,3,1,2)
+
+        # userNameArtist = QLabel(CURUSER['aka'])
+        # userNameArtist.setAlignment(__left__)
+        # tab4ridLayout.addWidget(userNameArtist, 0,5,1,2)
+
+        # titleLabel = QLabel('Group: ')
+        # titleLabel.setAlignment(__right__)
+        # tab4ridLayout.addWidget(titleLabel, 1,3,1,2)
+
+        # classLabel = QLabel(CURUSER['group'])
+        # classLabel.setAlignment(__left__)
+        # tab4ridLayout.addWidget(classLabel,1,5,1,2)
+
+        # prodLabel = QLabel('Title: ')
+        # prodLabel.setAlignment(__right__)
+        # tab4ridLayout.addWidget(prodLabel, 2,3,1,2)
+        #
+        # classGroup = QLabel(CURUSER['title'])
+        # classGroup.setAlignment(__left__)
+        # tab4ridLayout.addWidget(classGroup, 2,5,1,2)
+
+        # self.tab1.layout.setMaximumSized(100,100)
+        hboxLayout.addLayout(tab4ridLayout)
         self.tab4.setLayout(hboxLayout)
 
     def tab5Layout(self):
         # Create Layout for Tab 4
-        self.tab5.setTitle('Calendar')
-
+        self.tab5.setTitle('SQL')
         hboxLayout = QHBoxLayout()
+        tab5GridLayout = QGridLayout()
 
-        self.tab5GridLayout = QGridLayout()
-        self.tab5GridLayout.addWidget(QLabel('Develope it later'))
+        dataBrowserIconBtn = self.makeIconButton('Database Browser')
+        tab5GridLayout.addWidget(dataBrowserIconBtn)
 
-        hboxLayout.addLayout(self.tab5GridLayout)
-
+        hboxLayout.addLayout(tab5GridLayout)
         self.tab5.setLayout(hboxLayout)
+
+    def onChangeAvatarBtnClicked(self, ext='jpg'):
+        basePth = '%s.avatar.%s' % (CURUSER, ext)
+        oldImgPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs/%s.avatar.jpg') % CURUSER
+        _bkDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs/_bk')
+        _bkPth = os.path.join(_bkDir, basePth)
+        initialPath = QDir.currentPath() + "/untitled." + ext
+        options = QFileDialog.Options()
+        fileName, _ = QFileDialog.getOpenFileName(self, "Choose your image file", initialPath,
+                                                  "Img Files (*.jpg, *.png)", options=options)
+        if fileName:
+            if initialPath == oldImgPth:
+                pass
+            else:
+                if not os.path.exists(_bkDir):
+                    os.mkdir(_bkDir)
+                shutil.copy2(oldImgPth, _bkPth)
+                os.remove(oldImgPth)
+                shutil.copy2(initialPath, oldImgPth)
+                self.userAvatar.setPixmap(QPixmap(oldImgPth))
 
     def makeIconButton(self, name):
         icon = QIcon(APPINFO[name][1])
@@ -574,14 +588,10 @@ class TabWidget(QWidget):
         EngDict = EnglishDict.EnglishDict()
         EngDict.exec_()
 
-    def connectSQL(self, tableName, *args):
-        pass
-
-    def filterClassAllowance(self, func):
-        if self.curUserData[self.curUser][1] == 'Admin':
-            func()
-        else:
-            pass
+    def filteringUI(self):
+        # Not Welcome To use this tab
+        if USERCLASS == 'FatherOfThisApp':
+            self.tab5.setDisabled(True)
 
     def digitClicked(self):
         clickedButton = self.sender()
@@ -776,40 +786,32 @@ class DesktopUI(QMainWindow):
     def __init__(self, case=None, parent = None):
 
         super(DesktopUI, self).__init__(parent)
+
         mainID = var.MAIN_ID
         appInfo = APPINFO
         package = var.MAIN_PACKPAGE
         message = var.MAIN_MESSAGE
         names = var.MAIN_NAMES
         url = var.MAIN_URL
-        # Set window title
+
         self.setWindowTitle(mainID['Main'])
-        # Set window icon
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.setToolButtonStyle(Qt.ToolButtonFollowStyle)
-        tempUser = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
-
-        if not os.path.exists(tempUser):
-            sys.exit()
-
-        with open(tempUser, 'r') as f:
-            self.curUserData = json.load(f)
 
         if case == 'Auto login':
-            self.autoLogin(str(self.curUserData['username']))
+            self.autoLogin(str(CURUSER))
 
-        self.curUser = [f for f in self.curUserData][0]
         # Build UI
         self.buildUI(appInfo, package, message, mainID, names, url)
-        # Create Tabs
-        self.tabWidget = TabWidget(self, package, var.MAIN_TABID)
-        # Put tabs to center of main UI
+        self.tabWidget = TabWidget(package)
         self.setCentralWidget(self.tabWidget)
         # ShowUI
-        func.proc('log in')
+
+        self.procedures('log in')
 
     def buildUI(self, appInfo, package, message, mainID, names, url):
+
         self.layout = self.setGeometry(300, 300, 400, 350)
 
         # Status bar viewing message
@@ -849,6 +851,7 @@ class DesktopUI(QMainWindow):
         self.tdToolBar = self.toolBarTD(appInfo)
         # comping Tool Bar
         self.compToolBar = self.toolBarComp(appInfo)
+
         # Art Tool Bar
         # self.artToolBar = self.toolBarArt(appInfo)
         # ----------------------------------------------
@@ -860,11 +863,11 @@ class DesktopUI(QMainWindow):
 
         testIcon = QIcon(func.getIcon('Test'))
         testAction1 = QAction(testIcon, 'Test1', self)
-        testAction1.triggered.connect(partial(self.actionConf, 'set1'))
+        testAction1.triggered.connect(partial(self.onSysTrayIconClick, 'set1'))
 
         testIcon = QIcon(func.getIcon('Test'))
         testAction2 = QAction(testIcon, 'Test2', self)
-        testAction2.triggered.connect(partial(self.actionConf, 'set2'))
+        testAction2.triggered.connect(partial(self.onSysTrayIconClick, 'set2'))
 
         trayIconMenu.addAction(testAction1)
         trayIconMenu.addAction(testAction2)
@@ -1032,11 +1035,8 @@ class DesktopUI(QMainWindow):
             toolbarArt.addAction(illusCS6)
         return toolbarArt
 
-    def filterClassAllowance(self, func):
-        if self.curUserData[self.curUser][1] == 'Admin':
-            func()
-        else:
-            pass
+    def procedures(self, event):
+        ulti.dynamic_insert_timelog(event)
 
     def createAction(self, appInfo, key):
         action = QAction(QIcon(appInfo[key][1]), appInfo[key][0], self)
@@ -1052,24 +1052,25 @@ class DesktopUI(QMainWindow):
     def openApplication(self, path):
         subprocess.Popen(path)
 
-    def subWindow(self, id, message, icon):
+    def subWindow(self, id='Note', message=" ", icon = func.getIcon('Logo')):
         from ui import WindowDialog
         reload(WindowDialog)
         dlg = WindowDialog.WindowDialog(id=id, message=message, icon=icon)
         dlg.exec_()
 
+    def screenshot(self):
+        from ui import Screenshot
+        reload(Screenshot)
+        dlg = Screenshot.Screenshot()
+        dlg.exec_()
+
     def openURL(self, url):
         webbrowser.open(url)
-
-    def screenshot(self):
-        from tk import screenshot
-        reload(screenshot)
-        screenshot.exe_()
 
     def autoLogin(self, username):
         QMessageBox.information(self, 'Auto Login', "Welcome back %s" % username)
 
-    def actionConf(self, name=None, *args):
+    def onSysTrayIconClick(self, name=None, *args):
         # from sql_tk.db import sqlTools
         # reload(sqlTools)
         # if name == 'set1':
@@ -1083,29 +1084,17 @@ class DesktopUI(QMainWindow):
 def initialize():
     app = QApplication(sys.argv)
 
-    # prevUserLogin1 = func.checkTempUserLogin()
-    # print prevUserLogin1
-    prevUserLogin = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
-    if not os.path.exists(prevUserLogin):
+    if CURUSERDATA[3] == 'False' or CURUSERDATA == [] or CURUSERDATA == None:
         login = LoginUI()
         login.show()
     else:
-        with open(prevUserLogin, 'r') as f:
-            userLogin = json.load(f)
+        window = DesktopUI('Auto login')
+        window.show()
+        if not QSystemTrayIcon.isSystemTrayAvailable():
+            QMessageBox.critical(None, "Systray could not detect any system tray on this system")
+            sys.exit(1)
 
-        if userLogin['remember login'] == 0:
-            login = LoginUI()
-            login.show()
-        else:
-            window = DesktopUI('Auto login')
-            window.show()
-            if not QSystemTrayIcon.isSystemTrayAvailable():
-                QMessageBox.critical(None, "Systray could not detect any system tray on this system" )
-
-                sys.exit(1)
-            QApplication.setQuitOnLastWindowClosed(False)
-
-
+    QApplication.setQuitOnLastWindowClosed(False)
     sys.exit(app.exec_())
 
 if __name__ == '__main__':

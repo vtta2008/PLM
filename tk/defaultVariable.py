@@ -9,7 +9,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
-import os, sys, winshell, platform, logging
+import logging
+import os
+import platform
+import winshell
+
 from tk import message
 
 logging.basicConfig()
@@ -79,7 +83,7 @@ MAIN_PACKPAGE = dict(job=['TD', 'Comp', 'Design', 'Office', 'UV', 'Sound'],
                      image=['icons', 'imgs'],
                      py=['tk', 'ui', ],
                      ext=['.exe', 'PipelineTool.py', '.lnk'],
-                     sysOpts=["Host Name", "OS Name", "OS Version", "Product ID", "System Manufacturer",
+                     sysOpts=["Host Name", "Product ID", "System Manufacturer",
                               "System Model",
                               "System type", "BIOS Version", "Domain", "Windows Directory", "Total Physical Memory",
                               "Available Physical Memory", "Logon Server"],

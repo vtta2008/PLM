@@ -45,7 +45,6 @@ class WindowDialog(QDialog):
         central_widget = QWidget(self)
         self.layout = QGridLayout(self)
         central_widget.setLayout(self.layout)
-
         self.buildUI(message)
 
     def buildUI(self, message):

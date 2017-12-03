@@ -6,6 +6,8 @@ Author: Do Trinh/Jimmy - 3D artist.
 Description:
     This script will find all the path of modules, icons, images ans store them to a file
 """
+import sqlite3 as lite
+
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
@@ -17,15 +19,12 @@ import os
 import pip
 import platform
 import requests
-import sqlite3 as lite
+import shutil
 import subprocess
 import sys
-import time
-import urllib
-import uuid
-import yaml
-
 import unicodedata
+import urllib
+import yaml
 from pyunpack import Archive
 
 from tk import defaultVariable as var
@@ -298,34 +297,29 @@ def getIcon(name, *args):
     iconPth = os.path.join(os.path.join(rootPth, 'icons'), iconName)
     return iconPth
 
+def getAvatar(name, *args):
+    imgFile = name + '.avatar.jpg'
+    imgDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs')
+    imgPth = os.path.join(imgDir, imgFile)
+    if os.path.exists(imgPth):
+        return imgPth
+    else:
+        scrPth = os.path.join(imgDir, 'default.avatar.jpg')
+        shutil.copy2(scrPth, imgPth)
+        return imgPth
+
 # Get the full path of image via icon file name
-def avatar(link, *args):
+def downloadFromURL(link, *args):
     fileName = os.path.basename(link)
-
     imgPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs')
-
     avatarPth = os.path.join(imgPth, fileName)
-
     if not os.path.exists(avatarPth):
         downloadSingleFile(link, avatarPth)
 
     return avatarPth
 
-# Save information of current log in user account for next time.
-def saveCurrentUserLogin(userName, *args):
-    userLoginPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/user.config')
-
-    with open(userLoginPth, 'w') as f:
-        json.dump(userName, f, indent=4)
-
-    return userName
-
-    # logger.info('save file to %s' % currentUserLoginPth)
-
 # ----------------------------------------------------------------------------------------------------------- #
 """                        MAIN CLASS 1: ENDCODE - ENCODE STRING TO HEXADECIMAL                             """
-
-
 # ----------------------------------------------------------------------------------------------------------- #
 class Encode():
     """
@@ -454,50 +448,29 @@ def query_list_unix_id(*args):
     conn = lite.connect(dataPth)
     c = conn.cursor()
     ce = c.execute
-    ce("SELECT unix FROM unix_bank")
+    ce("SELECT unix FROM loginCf")
     rows = c.fetchall()
     unix_list = [row[0] for row in rows]
     return unix_list
 
-def create_date_time_stamp():
-    datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d,%H:%M:%S'))
-    return datetime_stamp
+def checkUserLogin(username):
+    dataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/meta_data.db')
+    conn = lite.connect(dataPth)
+    c = conn.cursor()
+    ce = c.execute
+    ce("SELECT username FROM loginCf")
+    tuples = [t for t in c.fetchall()]
+    usernameList = [str(t[0]) for t in tuples]
 
-def create_date_stamp():
-    datetime_stamp = create_date_time_stamp()
-    day_stamp = datetime_stamp.split(',')[0]
-    return day_stamp
+    print usernameList
 
-def create_time_stamp():
-    time_stamp = time.strftime('%a,%H:%M:%S')
-    return time_stamp
+    user = {}
 
-def create_token(*args):
-    new_token = str(uuid.uuid4())
-    return new_token
-
-def generate_set_unix_id(*args):
-    unix_id = (str(uuid.uuid4())).split('-')[-1]
-    token_id = create_token()
-    time_stamp = create_time_stamp()
-    date_stamp = create_date_stamp()
-    return unix_id, token_id, time_stamp, date_stamp
-
-# def check_unique_unix_id(unique_id, *args):
-#     unix_list = query_list_unix_id()
-#     if unique_id in unix_list:
-#         return True
-#     else:
-#         return False
-
-# def create_unique_id(*args):
-#     unique_id = generate_new_id()
-#     while False:
-#         check = check_unique_unix_id(unique_id)
-#         if check is True:
-#             unique_id = generate_new_id()
-#         else:
-#             return unique_id
+    if username in usernameList:
+        index = usernameList.index(username)
+        ce("SELECT * FROM loginCf")
+        tuples = [t for t in c.fetchall()]
+        user[username] = tuples[index]
 
 def create_location_stamp():
     r = requests.get('https://api.ipdata.co').json()
@@ -506,8 +479,10 @@ def create_location_stamp():
         k = (str(key))
         content = str(r[key])
         info[k] = content
-    location = info['ip'] + ";" + info['city'] + ";" + info['country_name']
-    return location
+    ip = info['ip']
+    city = info['city']
+    country = info['country_name']
+    return ip, city, country
 
 def proc(unix, operation=None):
     t = Proceduring().getTime()
@@ -531,6 +506,10 @@ def proc(unix, operation=None):
 
     return output
 
+def query_local_product_id():
+    path = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/pc.config.yml')
+    info = dataHandle('yaml', 'r', path)
+    return info['Product ID']
 
 # --------------------------------------------------------------------------------------------------------
 """                                                END OF CODE                                         """

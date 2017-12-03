@@ -14,10 +14,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 import logging
 import os
-import pip
 import shutil
 import subprocess
-import yaml
+
+import pip
 
 # We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()
@@ -30,6 +30,7 @@ logger.setLevel(logging.DEBUG)
 key = 'PIPELINE_TOOL'
 toolName = 'PipelineTool'
 scr = os.getcwd()
+
 # Check environment key to get the path to source code
 os.environ[key] = scr
 # Name of required packages which should be installed along with Anaconda
@@ -52,14 +53,13 @@ if len(resault) > 0:
     for package in resault:
         subprocess.Popen("pip install %s" % packages)
 
-from tk import appFuncs as func
+# from tk import appFuncs as func
 
-tempDataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/local.config.yml')
+dataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/db/database.db')
+dataBkp = os.path.join(os.getenv('PIPELINE_TOOL'), 'sql_tk/_bk/database.db')
 
-if not os.path.exists(tempDataPth):
-    token = func.create_new_unique_id()
-    with open (tempDataPth, 'w') as f:
-        yaml.dump(token, f, default_flow_style=False)
+if not os.path.exists(dataPth):
+    shutil.copy2(dataBkp, dataPth)
 
 maya_tk = os.path.join(scr, 'Maya_tk')
 pythonValue = ""
