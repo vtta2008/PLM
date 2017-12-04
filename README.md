@@ -37,6 +37,11 @@ If you do not have login account, use this:
     Username: Tester
     Password: 123456
 
+Or you can create one. I have updated register function.
+
+* Update sql, now data is being stored to database file.
+* Tranfering configurations of the pipeline into database, not using yml.
+
 **REFERENCE**
 
 Here is Plugins/Files that I use for my code in Maya
@@ -56,6 +61,6 @@ Advance Renamer:
 
 **TODO LIST**
 
-- Add pycharm, sublime into app
+- Add pycharm, sublime into app *Done
 - Redesign database
-- Optimise configuration procedures
+- Optimise configuration procedures *Working
