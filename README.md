@@ -28,7 +28,7 @@ Go to PipelineTool folder in your explorer, hold Shift + right-click -> Open Pow
 
 In CommandPrompt/WindowShell window:
 
-    "start python PipelineTool.py" then enter to run.
+    "start python main.py" then enter to run.
 
 A user login window will show up, login with your username and password.
 

@@ -23,8 +23,6 @@ import pip
 import yaml
 from PyQt5.QtCore import *
 from PyQt5.QtGui import *
-# ------------------------------------------------------
-# IMPORT PTQT5 ELEMENT TO MAKE UI
 from PyQt5.QtWidgets import *
 
 from util import message as mes
@@ -50,8 +48,6 @@ __center__ = Qt.AlignCenter
 __right__ = Qt.AlignRight
 __left__ = Qt.AlignLeft
 frameStyle = QFrame.Sunken | QFrame.Panel
-
-
 
 KEY = 'PIPELINE_TOOL'
 TOOL_NAME = 'PipelineTool'
@@ -434,7 +430,7 @@ class TabWidget(QWidget):
 
     def tab2Layout(self):
         # Create Layout for Tab 4
-        self.tab2.setTitle('database')
+        self.tab2.setTitle('Project')
 
         hboxLayout = QHBoxLayout()
         tab2GridLayout = QGridLayout()
@@ -543,11 +539,13 @@ class TabWidget(QWidget):
         changeAvatarBtn.clicked.connect(self.onChangeAvatarBtnClicked)
         tab4ridLayout.addWidget(changeAvatarBtn, 0,3,1,3)
 
-        settingBtn = QPushButton('Change Password')
-        tab4ridLayout.addWidget(settingBtn, 1, 3, 1, 3)
+        changePasswordBtn = QPushButton('Change Password')
+        changePasswordBtn.clicked.connect(self.onChangePasswordBtnClicked)
+        tab4ridLayout.addWidget(changePasswordBtn, 1, 3, 1, 3)
 
-        settingBtn = QPushButton('Log Out')
-        tab4ridLayout.addWidget(settingBtn, 2, 3, 1, 3)
+        logoutBtn = QPushButton('Log Out')
+        logoutBtn.clicked.connect(self.onLogoutBtnClicked)
+        tab4ridLayout.addWidget(logoutBtn, 2, 3, 1, 3)
 
         hboxLayout.addLayout(tab4ridLayout)
         self.tab4.setLayout(hboxLayout)
@@ -583,6 +581,12 @@ class TabWidget(QWidget):
                 os.remove(oldImgPth)
                 shutil.copy2(initialPath, oldImgPth)
                 self.userAvatar.setPixmap(QPixmap(oldImgPth))
+
+    def onChangePasswordBtnClicked(self):
+        pass
+
+    def onLogoutBtnCLicked(self):
+        pass
 
     def makeIconButton(self, name):
         icon = QIcon(APPINFO[name][1])
