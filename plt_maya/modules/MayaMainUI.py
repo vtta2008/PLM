@@ -43,8 +43,8 @@ WIDTH = 450
 ICONWIDTH = 30
 
 # FIX VERSION CONVENTION
-from plt_maya.plugins import Qt
-from plt_maya.plugins.Qt import QtWidgets
+import Qt
+from Qt import QtWidgets
 
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION

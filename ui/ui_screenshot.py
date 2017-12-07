@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Script Name: about.py
+Script Name: ui_about.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:

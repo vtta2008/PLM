@@ -6,7 +6,9 @@ Author: Do Trinh/Jimmy - 3D artist.
 Description:
     This script will find all the path of modules, icons, images ans store them to a file
 """
-
+# -------------------------------------------------------------------------------------------------------------
+# IMPORT PYTHON MODULES
+# -------------------------------------------------------------------------------------------------------------
 import datetime
 import json
 import logging
@@ -20,9 +22,6 @@ import urllib
 import cv2
 import pip
 import requests
-# -------------------------------------------------------------------------------------------------------------
-# IMPORT PYTHON MODULES
-# -------------------------------------------------------------------------------------------------------------
 import winshell
 import yaml
 from pyunpack import Archive
@@ -139,7 +138,7 @@ def getfilePath(directory=None):
 
     return file_paths  # Self-explanatory.
 
-def batchResizeImage(imgDir=None, imgResDir=None, size=[100, 100], sub=False, ext='.png', mode=1):
+def batch_resize_image(imgDir=None, imgResDir=None, size=[100, 100], sub=False, ext='.png', mode=1):
     if imgDir == None:
         sys.exit()
 
@@ -172,6 +171,11 @@ def batchResizeImage(imgDir=None, imgResDir=None, size=[100, 100], sub=False, ex
         resized_images.append(resDir)
 
     return images, resized_images
+
+def resize_image(imgPthSrc, imgPthDes, size=[100,100]):
+    img = cv2.imread(imgPthSrc, 1)
+    resized_image = cv2.resize(img, (size[0], size[1]))
+    cv2.imwrite(imgPthDes, resized_image)
 
 def dataHandle(type='json', mode='r', filePath=None, data={}, *args):
     """
@@ -448,8 +452,8 @@ class Generate_info(object):
         # logger.info('Updating data paths')
 
         package = PACKAGE
-        names = NAMES
-        self.createAllInfoFiles(package, names)
+
+        self.createAllInfoFiles(package)
 
     def getModuleInfo(self, package):
         """
@@ -576,7 +580,7 @@ class Generate_info(object):
 
         return self.appInfo
 
-    def createAllInfoFiles(self, package, names=NAMES):
+    def createAllInfoFiles(self, package):
         """
         Run all the functions inside class and take all the return info then store them to files
         :param package: the package of many information stored from default variable
@@ -624,35 +628,53 @@ class Generate_info(object):
         with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/app_config.yml'), 'r') as f:
             fixInfo = yaml.load(f)
 
-        dbBrowserPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'apps/sqlbrowser/SQLiteDatabaseBrowserPortable.exe')
-        advanceRenamerPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'apps/batchRenamer/ARen.exe')
+        dbBrowserPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'external_app/sqlbrowser/SQLiteDatabaseBrowserPortable.exe')
+        advanceRenamerPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'external_app/batchRenamer/ARen.exe')
         qtDesigner = 'C:/ProgramData/Anaconda2/Library/bin/designer.exe'
-        # Pycharm
-        trackKeys['PyCharm 2017'] = ['PyCharm 2017.2.3', getIcon('Pycharm 2017'), fixInfo['JetBrains PyCharm 2017.2.3']]
-        trackKeys['SublimeText 3'] = ['Sublime Text 3', getIcon('SublimeText 3'), fixInfo['Sublime Text 3']]
-        trackKeys['Snipping Tool'] = ['Snipping Tool', getIcon('Snipping Tool'), fixInfo['Snipping Tool']]
-        trackKeys['QtDesigner'] = ['QtDesigner', getIcon('QtDesigner'), qtDesigner]
-        trackKeys['Database Browser'] = ['Database Browser', getIcon('SQliteTool'), dbBrowserPth]
-        trackKeys['Advance Renamer'] = ['Advance Renamer 3.8', getIcon('AdvanceRenamer'), advanceRenamerPth]
+
+        for keys in fixInfo:
+            # Pycharm.
+            if 'JetBrains PyCharm 2017.2.3' in keys:
+                trackKeys['PyCharm 2017'] = ['PyCharm 2017.2.3', getIcon('Pycharm 2017'), fixInfo['JetBrains PyCharm 2017.2.3']]
+
+            # Sumblime text.
+            if 'Sublime Text 3' in keys:
+                trackKeys['SublimeText 3'] = ['Sublime Text 3', getIcon('SublimeText 3'), fixInfo['Sublime Text 3']]
+
+            # Qt Designer
+            if os.path.exists(qtDesigner):
+                trackKeys['QtDesigner'] = ['QtDesigner', getIcon('QtDesigner'), qtDesigner]
+
+            # Snipping tool.
+            if 'Snipping Tool' in fixInfo:
+                trackKeys['Snipping Tool'] = ['Snipping Tool', getIcon('Snipping Tool'), fixInfo['Snipping Tool']]
+
+            # Database browser.
+            if os.path.exists(dbBrowserPth):
+                trackKeys['Database Browser'] = ['Database Browser', getIcon('SQliteTool'), dbBrowserPth]
+
+            # Advance Renamer.
+            if os.path.exists(advanceRenamerPth):
+                trackKeys['Advance Renamer'] = ['Advance Renamer 3.8', getIcon('AdvanceRenamer'), advanceRenamerPth]
 
         info['pipeline'] = trackKeys
         piplineConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/main_config.yml')
         dataHandle('yaml', 'w', piplineConfig, trackKeys)
-
         info['icon'] = iconInfo
-        iconConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/icon_config.yml')
 
-        if not os.path.exists(iconConfig):
-            dataHandle('yaml', 'w', iconConfig, iconInfo)
+        # iconConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/icon_config.yml')
+        #
+        # if not os.path.exists(iconConfig):
+        #     dataHandle('yaml', 'w', iconConfig, iconInfo)
 
-        envKeys = {}
-        for key in os.environ.keys():
-            envKeys[key] = os.getenv(key)
+        # envKeys = {}
+        # for key in os.environ.keys():
+        #     envKeys[key] = os.getenv(key)
 
-        pth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/sysPath.config.yml')
-
-        if not os.path.exists(pth):
-            dataHandle('yaml', 'w', pth, envKeys)
+        # pth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/sysPath_config.yml')
+        #
+        # if not os.path.exists(pth):
+        #     dataHandle('yaml', 'w', pth, envKeys)
 
     def deleteKey(self, keys, n):
         for key in keys:

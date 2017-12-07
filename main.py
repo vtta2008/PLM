@@ -9,9 +9,10 @@ Description:
 """
 
 # -------------------------------------------------------------------------------------------------------------
-# IMPORT PYTHON MODULES
+""" Import modules """
+# -------------------------------------------------------------------------------------------------------------
+# Python modules.
 import logging
-import math
 import os
 import shutil
 import subprocess
@@ -21,98 +22,126 @@ from functools import partial
 
 import pip
 import yaml
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+# PyQt5 modules
+from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
+                             QGridLayout, QSizePolicy, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
+                             QCheckBox,
+                             QTabWidget, QSystemTrayIcon, QAction, QMenu, qApp, QFileDialog)
 
+# Pipeline tool modules
 from util import message as mes
-from util import util_sql as ulti
-# ------------------------------------------------------
-# IMPORT FROM PIPELINE TOOLS APP
+from util import util_sql as ultis
 from util import utilities as func
 from util import variables as var
 
+# -------------------------------------------------------------------------------------------------------------
+""" Configure the current level to make it disable certain logs """
 # -------------------------------------------------------------------------------------------------------------
 logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
-# ------------------------------------------------------
-# DEFAULT VARIABLES
-CURUSERDATA = ulti.query_current_user()
-CURUSER = CURUSERDATA[2]
-USERCLASS = ulti.query_user_class(CURUSERDATA[0], CURUSERDATA[1])
 
-# Alignment attribute from PyQt5
+# -------------------------------------------------------------------------------------------------------------
+""" PyQt5 ui element predefine """
+# -------------------------------------------------------------------------------------------------------------
 __center__ = Qt.AlignCenter
 __right__ = Qt.AlignRight
 __left__ = Qt.AlignLeft
 frameStyle = QFrame.Sunken | QFrame.Panel
 
-KEY = 'PIPELINE_TOOL'
-TOOL_NAME = 'PipelineTool'
-SCR_PATH = os.getcwd()
 
-# Check environment key to get the path to source code
-os.environ[KEY] = SCR_PATH
-# Name of required packages which should be installed along with Anaconda
-packages = ['pywinauto', 'winshell', 'pandas', 'opencv-python', 'pyunpack']
+# -------------------------------------------------------------------------------------------------------------
+""" Create and locate local path via environment key. """
+# -------------------------------------------------------------------------------------------------------------
+def setup1_application_root_path():
+    global SCR_PATH
+    # Key name.
+    KEY = 'PIPELINE_TOOL'
+    TOOL_NAME = 'PipelineTool'
+    # Path value.
+    SCR_PATH = os.getcwd()
+    # Set key, path into environment variable.
+    os.environ[KEY] = SCR_PATH
+    return KEY, TOOL_NAME
 
-checkList = []
 
-pyPkgs = {}
+# -------------------------------------------------------------------------------------------------------------
+""" Set up database path """
+# -------------------------------------------------------------------------------------------------------------
+def setup2_application_database_path():
+    # User database will be store into here.
+    appDataPath = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData')
+    DATA_PATH = os.path.join(appDataPath, 'database.db')
 
-pyPkgs['__mynote__'] = 'import pip; pip.get_installed_distributions()'
+    # Back database in case something missing
+    DATA_BACKUP = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/backup/database.db')
+    MAIN_CONFIG_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/main_config.yml')
 
-for package in pip.get_installed_distributions():
-    name = package.project_name
-    if name in packages:
-        checkList.append(name)
+    # If database file is missing, copy the backup one.
+    if not os.path.exists(DATA_PATH):
+        shutil.copy2(DATA_BACKUP, DATA_PATH)
+    return MAIN_CONFIG_PATH
 
-resault = [p for p in packages if p not in checkList]
 
-if len(resault) > 0:
-    for package in resault:
-        subprocess.Popen("pip install %s" % packages)
+# -------------------------------------------------------------------------------------------------------------
+""" Check extra packages """
+# -------------------------------------------------------------------------------------------------------------
+def setup3_extra_python_packages():
+    # Extra package list.
+    packages = ['pywinauto', 'winshell', 'pandas', 'opencv-python', 'pyunpack']
+    # Get current installed packages.
+    checkList = []
+    pyPkgs = {}
+    pyPkgs['__mynote__'] = 'import pip; pip.get_installed_distributions()'
+    for package in pip.get_installed_distributions():
+        name = package.project_name
+        if name in packages:
+            checkList.append(name)
+    resault = [p for p in packages if p not in checkList]
+    # Automatically install packages if it is not.
+    if len(resault) > 0:
+        for package in resault:
+            subprocess.Popen("pip install %s" % package)
 
-# from util import appFuncs as func
 
-DATA_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/database.db')
-DATA_BACKUP= os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/backup/database.db')
-MAIN_CONFIG_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/main_config.yml')
-appDataPath = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData')
+# -------------------------------------------------------------------------------------------------------------
+""" Setup extra environment path for maya """
+# -------------------------------------------------------------------------------------------------------------
+def setup4_intergrade_for_maya():
+    # Pipeline tool module paths for Maya.
+    maya_tk = os.path.join(SCR_PATH, 'plt_maya')
+    # Name of folders
+    mayaTrack = ['util', 'plt_maya', 'icons', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging',
+                 'Sufacing']
+    pythonValue = ""
+    pythonList = []
+    for root, dirs, files in os.walk(maya_tk):
+        for dir in dirs:
+            if dir in mayaTrack:
+                dirPth = os.path.join(root, dir)
+                pythonList.append(dirPth)
+    pythonList = list(set(pythonList))
+    for pth in pythonList:
+        pythonValue += pth + ';'
+    os.environ['PYTHONPATH'] = pythonValue
+    # Copy userSetup.py from source code to properly maya folder
+    userSetup_plt_path = os.path.join(os.getcwd(), 'plt_maya/userSetup.py')
+    userSetup_maya_path = os.path.join(os.path.expanduser('~/Documents/maya/2017/prefs/scripts'), 'userSetup.py')
+    shutil.copy2(userSetup_plt_path, userSetup_maya_path)
 
-if not os.path.exists(DATA_PATH):
-    shutil.copy2(DATA_BACKUP, DATA_PATH)
 
-maya_tk = os.path.join(SCR_PATH, 'plt_maya')
-pythonValue = ""
-pythonList = []
+# -------------------------------------------------------------------------------------------------------------
+""" Gather info from local pc to config with Pipeline tool application """
+# -------------------------------------------------------------------------------------------------------------
+def setup5_gather_configure_info():
+    func.Generate_info()
+    with open(MAIN_CONFIG_PATH, 'r') as f:
+        APPINFO = yaml.load(f)
+    return APPINFO
 
-mayaBlock = ['util', 'plt_maya', 'icons', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging', 'Sufacing']
-
-for root, dirs, files in os.walk(maya_tk):
-    for dir in dirs:
-        if dir in mayaBlock:
-            dirPth = os.path.join(root, dir)
-            pythonList.append(dirPth)
-
-pythonList = list(set(pythonList))
-
-for pth in pythonList:
-    pythonValue += pth + ';'
-
-os.environ['PYTHONPATH'] = pythonValue
-
-# Copy userSetup.py from source code to properly maya folder
-userSetup_plt_path = os.path.join(os.getcwd(), 'plt_maya/userSetup.py')
-userSetup_maya_path = os.path.join(os.path.expanduser('~/Documents/maya/2017/prefs/scripts'), 'userSetup.py')
-shutil.copy2(userSetup_plt_path, userSetup_maya_path)
-
-func.Generate_info()
-
-with open(MAIN_CONFIG_PATH, 'r') as f:
-    APPINFO = yaml.load(f)
 
 # setup(
 #     name='PipelineTool',
@@ -127,24 +156,24 @@ with open(MAIN_CONFIG_PATH, 'r') as f:
 #     description='soft package manager in custom pipeline'
 # )
 
+def query_user_info():
+    currentUserData = ultis.query_current_user()
+    curUser = currentUserData[2]
+    unix = currentUserData[0]
+    token = currentUserData[1]
+    rememberLogin = currentUserData[3]
+    status = currentUserData[-1]
+    ultis.check_sys_configuration(curUser)
+    return unix, token, curUser, rememberLogin, status
 
-"""  Customising QToolButton """
-# ----------------------------------------------------------------------------------------------------------- #
-class Button(QToolButton):
-
-    def __init__(self, text, parent=None):
-        super(Button, self).__init__(parent)
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        self.setText(text)
-
-    def sizeHint(self):
-        size = super(Button, self).sizeHint()
-        size.setHeight(size.height() + 5)
-        size.setWidth(max(size.width(), size.height()))
-        return size
+KEY, TOOL_NAME = setup1_application_root_path()
+MAIN_CONFIG_PATH = setup2_application_database_path()
+setup3_extra_python_packages()
+setup4_intergrade_for_maya()
+APPINFO = setup5_gather_configure_info()
 
 
-"""  Create New Account """
+""" Create New Account """
 # ----------------------------------------------------------------------------------------------------------- #
 class Create_account(QDialog):
 
@@ -217,7 +246,7 @@ class Create_account(QDialog):
             pass
 
         username = '%s.%s' % (lastname, firstname)
-        check = ulti.check_data_exists(username)
+        check = ultis.check_data_exists(username)
         if check:
             USEREXISTS = 'Username %s exists, try again or you already have an account?' % username
             QMessageBox.critical(self, "Username Exists", USEREXISTS, QMessageBox.Retry)
@@ -226,18 +255,18 @@ class Create_account(QDialog):
 
         password = str(self.password.text())
         passretype = str(self.passwordRetype.text())
-        check = self.checkMatchPassWord(firstname, lastname, title, password, passretype)
+        check = self.checkMatchPassWord(password, passretype)
         SUCCESS = "Your account has been created: %s" % username
         if not check:
             pass
         else:
-            ulti.CreateNewUser(firstname, lastname, title, password)
+            ultis.CreateNewUser(firstname, lastname, title, password)
             QMessageBox.information(self, "Your username", SUCCESS, QMessageBox.Retry)
             self.hide()
             login = Login()
             login.show()
 
-    def checkMatchPassWord(self, firstname, lastname, title, password, passretype):
+    def checkMatchPassWord(self, password, passretype):
         NOTMATCH = "Password doesn't match"
         if not password == passretype:
             QMessageBox.critical(self, "Password not matches", NOTMATCH, QMessageBox.Retry)
@@ -246,7 +275,7 @@ class Create_account(QDialog):
             return True
 
 
-"""  Login Layout         """
+""" Login Layout """
 # ----------------------------------------------------------------------------------------------------------- #
 class Login(QDialog):
 
@@ -261,6 +290,8 @@ class Login(QDialog):
 
     def buildUI(self):
 
+        unix, token, curUser, rememberLogin, status = query_user_info()
+
         self.mainFrame = QGroupBox(self)
         self.mainFrame.setTitle('User Account')
         self.mainFrame.setFixedSize(350, 250)
@@ -270,7 +301,7 @@ class Login(QDialog):
         loginText = QLabel('User Name: ')
         loginText.setAlignment(__center__)
         self.layout.addWidget(loginText, 0, 0, 1, 2)
-        self.userName = QLineEdit(CURUSER)
+        self.userName = QLineEdit(curUser)
         self.layout.addWidget(self.userName, 0, 2, 1, 7)
         passText = QLabel('Password: ')
         passText.setAlignment(__center__)
@@ -310,133 +341,198 @@ class Login(QDialog):
 
         if username == "" or username is None:
             QMessageBox.critical(self, 'Login Failed', 'Username can not be blank')
+            return
         
         pass_word = self.passWord.text()
         
         if pass_word == "" or pass_word is None:
             QMessageBox.critical(self, 'Login Failed', 'No password')
+            return
             
         password = str(func.encoding(pass_word))
         
-        checkU = ulti.check_data_exists(username)
+        checkUserExists = ultis.check_data_exists(username)
         
-        if not checkU:
+        if not checkUserExists:
             QMessageBox.critical(self, 'Login Failed', "Username not exists")
-        
-        check = ulti.check_password_match(username, password)
+            return
 
-        if not check:
+        checkUserStatus = ultis.query_user_status(username)
+
+        if checkUserStatus == 'disabled':
+            QMessageBox.critical(self, 'Login Failed', "This username is not activated")
+            return
+
+        checkPasswordMatch = ultis.check_password_match(username, password)
+
+        if not checkPasswordMatch:
             QMessageBox.critical(self, 'Login Failed', "Password not match")
+            return
         else:
             QMessageBox.information(self, 'Login Successful', "Welcome %s" % username)
-            checkState = self.rememberCheckBox.checkState()
-            if checkState:
-                check = 'True'
+            checkSettingState = self.rememberCheckBox.checkState()
+            if checkSettingState:
+                setting = 'True'
             else:
-                check = 'False'
+                setting = 'False'
 
-            user = ulti.query_current_user()
+            user_profile = ultis.query_user_profile(username)
+            token = user_profile[1]
+            unix = user_profile[0]
 
-            token = user[1]
-            setting = user[3]
-            if setting == check:
-                pass
-            else:
-                ulti.update_user_remember_login(token, setting)
-                ulti.dynamic_update_current_user(user[0], user[1], username, user[3])
+            ultis.update_user_remember_login(token, setting)
+            ultis.update_current_user(unix, token, username, setting)
 
             self.hide()
             window = Main()
             window.show()
 
 
-"""   Tab Layout          """
+""" Tab Layout """
 # ----------------------------------------------------------------------------------------------------------- #
 class TabWidget(QWidget):
 
-    def __init__(self, package):
+    def __init__(self, unix, username, package, parent=None):
 
-        super(TabWidget, self).__init__()
-        self.buildUI(package)
+        super(TabWidget, self).__init__(parent)
 
-    def buildUI(self, package):
+        self.buildUI(unix, username, package)
+
+    def buildUI(self, unix, username, package):
+        # Create tab layout
+        # ------------------------------------------------------
         self.layout = QVBoxLayout(self)
         self.tabs = QTabWidget()
         # self.tabs.setDocumentMode(False)
         # self.tabs.setTabPosition(QTabWidget.West)
         self.tabs.resize(package['geo'][1], package['geo'][2])
 
+        # Create and add tabs
+        # ------------------------------------------------------
+        # Create and add tab 1: 'Tools: Extra tools that might be useful for user & developer'
         self.tab1 = QGroupBox(self)
-        self.tab2 = QGroupBox(self)
-        self.tab3 = QGroupBox(self)
-        self.tab4 = QGroupBox(self)
-        self.tab5 = QGroupBox(self)
-
-        # Add Tabs
-        self.tabs.addTab(self.tab1, 'Tools')
-        self.tabs.addTab(self.tab2, 'Prj')
-        self.tabs.addTab(self.tab3, 'Cal')
-        self.tabs.addTab(self.tab4, 'User')
-        self.tabs.addTab(self.tab5, 'SQL')
-
-        # Create Tab 1 layout
         self.tab1Layout()
+        self.tabs.addTab(self.tab1, 'Tools')
+
+        # Create and add tab 2: 'Proj: Project management'
+        self.tab2 = QGroupBox(self)
         self.tab2Layout()
-        self.tab3Layout()
+        self.tabs.addTab(self.tab2, 'Prj')
+
+        # Create and add tab 3: 'Cal: Just a calculator'
+        self.tab3 = QGroupBox(self)
+        self.tab3Layout(curUser=username)
+        self.tabs.addTab(self.tab3, 'User')
+
+        # Create and add tab 4: 'User: User login profile'
+        self.tab4 = QGroupBox(self)
         self.tab4Layout()
-        self.tab5Layout()
+        self.tabs.addTab(self.tab4, 'Lib')
+
+        userClass = ultis.query_user_class(unix=unix, username=username)
+
+        if userClass == 'Administrator Privilege':
+            self.tab5 = QGroupBox(self)
+            self.tab5Layout()
+            self.tabs.addTab(self.tab5, 'SQL')
 
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
 
     def tab1Layout(self):
-        # Create Layout for Tab 2
-        self.tab1.setTitle('Extra Tool')
+        # Create Layout for Tab 1.
+        # ------------------------------------------------------
+        # Title of layout
+        self.tab1.setTitle('Personal Tool')
         # self.tab1.setFixedSize(W,H)
-        vboxLayout = QVBoxLayout()
-        tab1HBoxLayout1 = QHBoxLayout()
-        tab1HBoxLayout2 = QHBoxLayout()
 
-        # Content tab 2
+        # Main layout
+        # ------------------------------------------------------
+        vboxLayout = QVBoxLayout()
+        tab1HBoxLine1 = QHBoxLayout()
+        tab1HBoxLine2 = QHBoxLayout()
+        tab1HBoxLine3 = QHBoxLayout()
+
+        # Content
+        # ------------------------------------------------------
+        tab1HBoxLine1.addWidget(QLabel('Extra app: '))
+
+        # Advance Renamer
         arIconBtn = self.makeIconButton('Advance Renamer')
-        tab1HBoxLayout1.addWidget(arIconBtn)
-        pycharmBtn = self.makeIconButton('PyCharm 2017')
-        tab1HBoxLayout1.addWidget(pycharmBtn)
-        sublimeBtn = self.makeIconButton('SublimeText 3')
-        tab1HBoxLayout1.addWidget(sublimeBtn)
-        qtdesignerBtn = self.makeIconButton('QtDesigner')
-        tab1HBoxLayout1.addWidget(qtdesignerBtn)
+        tab1HBoxLine1.addWidget(arIconBtn)
+
         for key in APPINFO:
             # Mudbox
             if key == 'Mudbox 2018':
                 mudbox18Btn = self.makeIconButton(key)
-                tab1HBoxLayout1.addWidget(mudbox18Btn)
+                tab1HBoxLine1.addWidget(mudbox18Btn)
             if key == 'Mudbox 2017':
                 mudbox17Btn = self.makeIconButton(key)
-                tab1HBoxLayout1.addWidget(mudbox17Btn)
+                tab1HBoxLine1.addWidget(mudbox17Btn)
             if key == '3ds Max 2018':
                 max18Btn = self.makeIconButton(key)
-                tab1HBoxLayout1.addWidget(max18Btn)
+                tab1HBoxLine1.addWidget(max18Btn)
             if key == '3ds Max 2017':
                 max17Btn = self.makeIconButton(key)
-                tab1HBoxLayout1.addWidget(max17Btn)
-        dictBtn = QPushButton('English Dictionary')
-        dictBtn.clicked.connect(self.englishDict)
-        tab1HBoxLayout2.addWidget(dictBtn)
+                tab1HBoxLine1.addWidget(max17Btn)
 
-        vboxLayout.addLayout(tab1HBoxLayout1)
-        vboxLayout.addLayout(tab1HBoxLayout2)
+        # Note
+        noteReminderBtn = self.iconButtonSelfFunction('QtNote', 'QtNote', self.qtNote)
+        tab1HBoxLine1.addWidget(noteReminderBtn)
+
+        # ------------------------------------------------------
+        tab1HBoxLine2.addWidget(QLabel('Enhance: '))
+
+        # English dictionary
+        dictBtn = self.iconButtonSelfFunction('English Dictionary', 'English Dictionary', self.englishDict)
+        tab1HBoxLine2.addWidget(dictBtn)
+
+        # Screenshot
+        screenshotBtn = self.iconButtonSelfFunction('Screenshot', 'Screenshot', self.screenShot)
+        tab1HBoxLine2.addWidget(screenshotBtn)
+
+        # Calendar
+        calendarBtn = self.iconButtonSelfFunction('Calendar', 'Calendar', self.calendar)
+        tab1HBoxLine2.addWidget(calendarBtn)
+
+        # Calculator
+        calculatorBtn = self.iconButtonSelfFunction('Calculator', 'Calculator', self.calculator)
+        tab1HBoxLine2.addWidget(calculatorBtn)
+
+        # File finder
+        fileFinderBtn = self.iconButtonSelfFunction('Finder', 'Find files', self.findFiles)
+        tab1HBoxLine2.addWidget(fileFinderBtn)
+
+        # ------------------------------------------------------
+        tab1HBoxLine3.addWidget(QLabel('Dev: '))
+
+        # PyCharm
+        pycharmBtn = self.makeIconButton('PyCharm 2017')
+        tab1HBoxLine3.addWidget(pycharmBtn)
+
+        # SublimeText
+        sublimeBtn = self.makeIconButton('SublimeText 3')
+        tab1HBoxLine3.addWidget(sublimeBtn)
+
+        # Qt Designer
+        qtdesignerBtn = self.makeIconButton('QtDesigner')
+        tab1HBoxLine3.addWidget(qtdesignerBtn)
+
+        vboxLayout.addLayout(tab1HBoxLine1)
+        vboxLayout.addLayout(tab1HBoxLine2)
+        vboxLayout.addLayout(tab1HBoxLine3)
         self.tab1.setLayout(vboxLayout)
 
     def tab2Layout(self):
-        # Create Layout for Tab 4
+        # Create Layout for Tab 2.
         self.tab2.setTitle('Project')
 
         hboxLayout = QHBoxLayout()
         tab2GridLayout = QGridLayout()
 
-        allUserProfileBtn = QPushButton('New Project')
-        tab2GridLayout.addWidget(allUserProfileBtn, 0, 0, 1, 2)
+        createProjectBtn = QPushButton('New Project')
+        createProjectBtn.clicked.connect(self.createProject)
+        tab2GridLayout.addWidget(createProjectBtn, 0, 0, 1, 2)
         currentLoginDataBtn = QPushButton('Login')
         tab2GridLayout.addWidget(currentLoginDataBtn, 0, 2, 1, 2)
         testNewFunctionBtn = QPushButton('Profile')
@@ -445,107 +541,47 @@ class TabWidget(QWidget):
         hboxLayout.addLayout(tab2GridLayout)
         self.tab2.setLayout(hboxLayout)
 
-    def tab3Layout(self):
-        self.tab3.setTitle('Calculator')
-        self.tab3.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+    def tab3Layout(self, curUser):
 
-        NumDigitButtons = 10
-
-        hboxLayout = QHBoxLayout()
-        tab3GridLayout = QGridLayout()
-        tab3GridLayout.setContentsMargins(1,1,1,1)
-        hboxLayout.addLayout(tab3GridLayout)
-
-        self.pendingAdditiveOperator = ''
-        self.pendingMultiplicativeOperator = ''
-        self.sumInMemory = 0.0
-        self.sumSoFar = 0.0
-        self.factorSoFar = 0.0
-        self.waitingForOperand = True
-        self.display = QLineEdit('0')
-        self.display.setReadOnly(False)
-        self.display.setAlignment(Qt.AlignRight)
-        self.display.setMaxLength(1)
-        font = self.display.font()
-        font.setPointSize(font.pointSize())
-        self.display.setFont(font)
-        self.digitButtons = []
-
-        for i in range(NumDigitButtons):
-            self.digitButtons.append(self.createButton(str(i), self.digitClicked))
-
-        self.pointButton = self.createButton(".", self.pointClicked)
-        self.changeSignButton = self.createButton(u"\N{PLUS-MINUS SIGN}", self.changeSignClicked)
-        self.backspaceButton = self.createButton("Backspace", self.backspaceClicked)
-        self.clearButton = self.createButton("Clear", self.clear)
-        self.clearAllButton = self.createButton("Clear All", self.clearAll)
-        self.clearMemoryButton = self.createButton("MC", self.clearMemory)
-        self.readMemoryButton = self.createButton("MR", self.readMemory)
-        self.setMemoryButton = self.createButton("MS", self.setMemory)
-        self.addToMemoryButton = self.createButton("M+", self.addToMemory)
-        self.divisionButton = self.createButton(u"\N{DIVISION SIGN}", self.multipleactiveClicked)
-        self.timesButton = self.createButton(u"\N{MULTIPLICATION SIGN}", self.multipleactiveClicked)
-        self.minusButton = self.createButton("-", self.additiveOperatorClicked)
-        self.plusButton = self.createButton("+", self.additiveOperatorClicked)
-        self.squareRootButton = self.createButton("Sqrt", self.unaryOperatorClicked)
-        self.powerButton = self.createButton(u"x\N{SUPERSCRIPT TWO}", self.unaryOperatorClicked)
-        self.reciprocalButton = self.createButton("1/x", self.unaryOperatorClicked)
-        self.equalButton = self.createButton("=", self.equalClicked)
-
-        tab3GridLayout.setSizeConstraint(QLayout.SetFixedSize)
-        tab3GridLayout.addWidget(self.display,0,0,1,6)
-        tab3GridLayout.addWidget(self.backspaceButton,1,0,1,2)
-        tab3GridLayout.addWidget(self.clearButton,1,2,1,2)
-        tab3GridLayout.addWidget(self.clearAllButton,1,4,1,2)
-        tab3GridLayout.addWidget(self.clearMemoryButton,2,0)
-        tab3GridLayout.addWidget(self.readMemoryButton,3,0)
-        tab3GridLayout.addWidget(self.setMemoryButton,4,0)
-        tab3GridLayout.addWidget(self.addToMemoryButton,5,0)
-        for i in range(1, NumDigitButtons):
-            row = ((9 - i) / 3) + 2
-            column = ((i - 1) % 3) + 1
-            tab3GridLayout.addWidget(self.digitButtons[i], row, column)
-        tab3GridLayout.addWidget(self.digitButtons[0], 5, 1)
-        tab3GridLayout.addWidget(self.pointButton, 5, 2)
-        tab3GridLayout.addWidget(self.changeSignButton, 5, 3)
-        tab3GridLayout.addWidget(self.divisionButton, 2, 4)
-        tab3GridLayout.addWidget(self.timesButton, 3, 4)
-        tab3GridLayout.addWidget(self.minusButton, 4, 4)
-        tab3GridLayout.addWidget(self.plusButton, 5, 4)
-        tab3GridLayout.addWidget(self.squareRootButton, 2, 5)
-        tab3GridLayout.addWidget(self.powerButton, 3, 5)
-        tab3GridLayout.addWidget(self.reciprocalButton, 4, 5)
-        tab3GridLayout.addWidget(self.equalButton, 5, 5)
-
-        self.tab3.setLayout(hboxLayout)
-
-    def tab4Layout(self):
-        # Create Layout for Tab 1
-        self.tab4.setTitle(CURUSER)
+        # Create Layout for Tab 3.
+        self.tab3.setTitle(curUser)
         # self.tab1.setFixedSize(W, H)
 
         hboxLayout = QHBoxLayout()
-        tab4ridLayout = QGridLayout()
+        tab3ridLayout = QGridLayout()
 
-        userProfile = ulti.query_user_profile(CURUSER, 'username')
+        userProfile = ultis.query_user_profile(curUser, 'username')
         userImg = QPixmap(func.getAvatar(userProfile[7]))
         self.userAvatar = QLabel()
         self.userAvatar.setPixmap(userImg)
         self.userAvatar.setScaledContents(True)
         self.userAvatar.setFixedSize(100, 100)
-        tab4ridLayout.addWidget(self.userAvatar, 0, 0, 3, 3)
+        tab3ridLayout.addWidget(self.userAvatar, 0, 0, 3, 3)
 
         changeAvatarBtn = QPushButton('Change Avatar')
         changeAvatarBtn.clicked.connect(self.onChangeAvatarBtnClicked)
-        tab4ridLayout.addWidget(changeAvatarBtn, 0,3,1,3)
+        tab3ridLayout.addWidget(changeAvatarBtn, 0,3,1,3)
 
         changePasswordBtn = QPushButton('Change Password')
         changePasswordBtn.clicked.connect(self.onChangePasswordBtnClicked)
-        tab4ridLayout.addWidget(changePasswordBtn, 1, 3, 1, 3)
+        tab3ridLayout.addWidget(changePasswordBtn, 1,3,1,3)
 
         logoutBtn = QPushButton('Log Out')
         logoutBtn.clicked.connect(self.onLogoutBtnClicked)
-        tab4ridLayout.addWidget(logoutBtn, 2, 3, 1, 3)
+        tab3ridLayout.addWidget(logoutBtn, 2,3,1,3)
+
+        hboxLayout.addLayout(tab3ridLayout)
+        self.tab3.setLayout(hboxLayout)
+
+    def tab4Layout(self):
+        # Create Layout for Tab 4.
+        self.tab4.setTitle('Library')
+        # self.tab4.setFixedSize(W, H)
+
+        hboxLayout = QHBoxLayout()
+        tab4ridLayout = QGridLayout()
+
+        tab4ridLayout.addWidget(QLabel('Update later'), 0,0)
 
         hboxLayout.addLayout(tab4ridLayout)
         self.tab4.setLayout(hboxLayout)
@@ -562,31 +598,47 @@ class TabWidget(QWidget):
         hboxLayout.addLayout(tab5GridLayout)
         self.tab5.setLayout(hboxLayout)
 
-    def onChangeAvatarBtnClicked(self, ext='jpg'):
-        basePth = '%s.avatar.%s' % (CURUSER, ext)
-        oldImgPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs/%s.avatar.jpg') % CURUSER
-        _bkDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs/backup')
-        _bkPth = os.path.join(_bkDir, basePth)
-        initialPath = QDir.currentPath() + "/untitled." + ext
+    def onChangeAvatarBtnClicked(self):
         options = QFileDialog.Options()
-        fileName, _ = QFileDialog.getOpenFileName(self, "Choose your image file", initialPath,
-                                                  "Img Files (*.jpg, *.png)", options=options)
+        options |= QFileDialog.DontUseNativeDialog
+        fileName, _ = QFileDialog.getOpenFileName(self, "Your Avatar", "", "All Files (*);;Img Files (*.jpg)",
+                                                  options=options)
         if fileName:
-            if initialPath == oldImgPth:
-                pass
+            unix, token, curUser, rememberLogin, status = query_user_info()
+            imgsDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs')
+            baseFileName = curUser.split('.')[0] + curUser.split('.')[-1] + '.avatar.jpg'
+            desPth = os.path.join(imgsDir, baseFileName)
+            if os.path.exists(desPth):
+                if desPth == fileName:
+                    pass
+                else:
+                    func.resize_image(fileName, desPth)
+                    os.rename(desPth, desPth + '.old')
+                    shutil.copy2(fileName, desPth)
+                    self.userAvatar.setInvisible(True)
+                    self.userAvatar.setPixmap(QPixmap=desPth)
+                    self.userAvatar.setVisible(True)
             else:
-                if not os.path.exists(_bkDir):
-                    os.mkdir(_bkDir)
-                shutil.copy2(oldImgPth, _bkPth)
-                os.remove(oldImgPth)
-                shutil.copy2(initialPath, oldImgPth)
-                self.userAvatar.setPixmap(QPixmap(oldImgPth))
+                shutil.copy2(fileName, desPth)
+                self.userAvatar.setPixmap(desPth)
+
+            ultis.dynamic_insert_timelog('Change Avatar')
 
     def onChangePasswordBtnClicked(self):
         pass
 
-    def onLogoutBtnCLicked(self):
+    def onLogoutBtnClicked(self):
         pass
+
+    def iconButtonSelfFunction(self, iconName, tooltip, func_tool):
+        icon = QIcon(func.getIcon(iconName))
+        iconBtn = QPushButton()
+        iconBtn.setToolTip(tooltip)
+        iconBtn.setIcon(icon)
+        iconBtn.setFixedSize(30, 30)
+        iconBtn.setIconSize(QSize(30 - 3, 30 - 3))
+        iconBtn.clicked.connect(func_tool)
+        return iconBtn
 
     def makeIconButton(self, name):
         icon = QIcon(APPINFO[name][1])
@@ -598,217 +650,55 @@ class TabWidget(QWidget):
         iconBtn.clicked.connect(partial(self.openApps, APPINFO[name][2]))
         return iconBtn
 
-    def createButton(self, text, member):
-        button = Button(text)
-        button.clicked.connect(member)
-        return button
-
     def openApps(self, pth):
         subprocess.Popen(pth)
 
     def englishDict(self):
-        from ui import english_dictionary
-        reload(english_dictionary)
-        EngDict = english_dictionary.EnglishDict()
+        from ui import ui_english_dict
+        reload(ui_english_dict)
+        EngDict = ui_english_dict.EnglishDict()
         EngDict.exec_()
 
-    def filteringUI(self):
-        # Not Welcome To use this tab
-        if USERCLASS == 'FatherOfThisApp':
-            self.tab5.setDisabled(True)
+    def screenShot(self):
+        from ui import ui_screenshot
+        reload(ui_screenshot)
+        dlg = ui_screenshot.Screenshot()
+        dlg.exec_()
 
-    def digitClicked(self):
-        clickedButton = self.sender()
-        digitValue = int(clickedButton.text())
+    def calendar(self):
+        from ui import ui_calendar
+        reload(ui_calendar)
+        dlg = ui_calendar.Calendar()
+        dlg.exec_()
 
-        if self.display.text() == '0' and digitValue == 0.0:
-            return
+    def calculator(self):
+        from ui import ui_calculator
+        reload(ui_calculator)
+        dlg = ui_calculator.Calculator()
+        dlg.exec_()
 
-        if self.waitingForOperand:
-            self.display.clear()
-            self.waitingForOperand = False
+    def findFiles(self):
+        from ui import ui_find_files
+        reload(ui_find_files)
+        dlg = ui_find_files.Findfiles()
+        dlg.exec_()
 
-        self.display.setText(self.display.text() + str(digitValue))
+    def qtNote(self):
+        path = os.path.join(os.getenv('PIPELINE_TOOL'), 'ui/textedit/texedit.py')
+        self.openApps(path)
 
-    def unaryOperatorClicked(self):
-        clickedButton = self.sender()
-        clickedOperator = clickedButton.text()
-        operand = float(self.display.text())
+    def createProject(self):
+        from ui import ui_new_project
+        reload(ui_new_project)
+        window = ui_new_project.NewProject()
+        window.exec_()
 
-        if clickedOperator == "Sqrt":
-            if operand < 0.0:
-                self.abortOperation()
-                return
-
-            result = math.sqrt(operand)
-        elif clickedOperator == u"x\N{SUPERSCRIPT TWO}":
-            result = math.pow(operand, 2.0)
-        elif clickedOperator == "1/x":
-            if operand == 0.0:
-                self.abortOperation()
-                return
-
-            result = 1.0 / operand
-
-        self.display.setText(str(result))
-        self.waitingForOperand = True
-
-    def additiveOperatorClicked(self):
-        clickedButton = self.sender()
-        clickedOperator = clickedButton.text()
-        operand = float(self.display.text())
-
-        if self.pendingMultiplicativeOperator:
-            if not self.calculate(operand, self.pendingMultiplicativeOperator):
-                self.abortOperation()
-                return
-
-            self.display.setText(str(self.factorSoFar))
-            operand = self.factorSoFar
-            self.factorSoFar = 0.0
-            self.pendingMultiplicativeOperator = ''
-
-        if self.pendingAdditiveOperator:
-            if not self.calculate(operand, self.pendingAdditiveOperator):
-                self.abortOperation()
-                return
-
-            self.display.setText(str(self.sumSoFar))
-        else:
-            self.sumSoFar = operand
-
-        self.pendingAdditiveOperator = clickedOperator
-        self.waitingForOperand = True
-
-    def multipleactiveClicked(self):
-        clickedButton = self.sender()
-        clickedOperator = clickedButton.text()
-        operand = float(self.display.text())
-
-        if self.pendingMultiplicativeOperator:
-            if not self.calculate(operand, self.pendingMultiplicativeOperator):
-                self.abortOperation()
-                return
-
-            self.display.setText(str(self.factorSoFar))
-        else:
-            self.factorSoFar = operand
-
-        self.pendingMultiplicativeOperator = clickedOperator
-        self.waitingForOperand = True
-
-    def equalClicked(self):
-        operand = float(self.display.text())
-
-        if self.pendingMultiplicativeOperator:
-            if not self.calculate(operand, self.pendingMultiplicativeOperator):
-                self.abortOperation()
-                return
-
-            operand = self.factorSoFar
-            self.factorSoFar = 0.0
-            self.pendingMultiplicativeOperator = ''
-
-        if self.pendingAdditiveOperator:
-            if not self.calculate(operand, self.pendingAdditiveOperator):
-                self.abortOperation()
-                return
-
-            self.pendingAdditiveOperator = ''
-        else:
-            self.sumSoFar = operand
-
-        self.display.setText(str(self.sumSoFar))
-        self.sumSoFar = 0.0
-        self.waitingForOperand = True
-
-    def pointClicked(self):
-        if self.waitingForOperand:
-            self.display.setText('0')
-
-        if "." not in self.display.text():
-            self.display.setText(self.display.text() + ".")
-
-        self.waitingForOperand = False
-
-    def changeSignClicked(self):
-        text = self.display.text()
-        value = float(text)
-
-        if value > 0.0:
-            text = "-" + text
-        elif value < 0.0:
-            text = text[1:]
-
-        self.display.setText(text)
-
-    def backspaceClicked(self):
-        if self.waitingForOperand:
-            return
-
-        text = self.display.text()[:-1]
-        if not text:
-            text = '0'
-            self.waitingForOperand = True
-
-        self.display.setText(text)
-
-    def clear(self):
-        if self.waitingForOperand:
-            return
-
-        self.display.setText('0')
-        self.waitingForOperand = True
-
-    def clearAll(self):
-        self.sumSoFar = 0.0
-        self.factorSoFar = 0.0
-        self.pendingAdditiveOperator = ''
-        self.pendingMultiplicativeOperator = ''
-        self.display.setText('0')
-        self.waitingForOperand = True
-
-    def clearMemory(self):
-        self.sumInMemory = 0.0
-
-    def readMemory(self):
-        self.display.setText(str(self.sumInMemory))
-        self.waitingForOperand = True
-
-    def setMemory(self):
-        self.equalClicked()
-        self.sumInMemory = float(self.display.text())
-
-    def addToMemory(self):
-        self.equalClicked()
-        self.sumInMemory += float(self.display.text())
-
-    def abortOperation(self):
-        self.clearAll()
-        self.display.setText("####")
-
-    def calculate(self, rightOperand, pendingOperator):
-        if pendingOperator == "+":
-            self.sumSoFar += rightOperand
-        elif pendingOperator == "-":
-            self.sumSoFar -= rightOperand
-        elif pendingOperator == u"\N{MULTIPLICATION SIGN}":
-            self.factorSoFar *= rightOperand
-        elif pendingOperator == u"\N{DIVISION SIGN}":
-            if rightOperand == 0.0:
-                return False
-
-            self.factorSoFar /= rightOperand
-
-        return True
-
-
-"""   Main                """
+""" Main """
 # ----------------------------------------------------------------------------------------------------------- #
 class Main(QMainWindow):
 
-    def __init__(self, case=None, parent = None):
-
+    def __init__(self, case=None, parent=None):
+        unix, token, username, rememberLogin, status = query_user_info()
         super(Main, self).__init__(parent)
 
         mainID = var.MAIN_ID
@@ -817,21 +707,28 @@ class Main(QMainWindow):
         message = var.MAIN_MESSAGE
         url = var.MAIN_URL
 
+        ini_pth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/settings')
+        self.setPath = QSettings.setPath(QSettings.IniFormat, QSettings.UserScope, ini_pth)
+        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, 'PipelineTool', 'PipelineTool')
+
         self.setWindowTitle(mainID['Main'])
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.setToolButtonStyle(Qt.ToolButtonFollowStyle)
 
         if case == 'Auto login':
-            self.autoLogin(str(CURUSER))
+            self.autoLogin(username)
 
         self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, 'PipelineTool', 'PipelineTool')
 
         # Build UI
         self.buildUI(appInfo, message, mainID, url)
-        self.tabWidget = TabWidget(package)
+
+        self.tabWidget = TabWidget(unix, username, package)
+
         self.setCentralWidget(self.tabWidget)
-        # ShowUI
+
+        # Log record
         self.procedures('log in')
 
     def buildUI(self, appInfo, message, mainID, url):
@@ -864,7 +761,9 @@ class Main(QMainWindow):
         self.compToolBar = self.toolBarComp(appInfo)
         # self.artToolBar = self.toolBarArt(appInfo)
         # ----------------------------------------------
-        self.tray_Icon = self.system_tray_icon(appInfo)
+        self.trayIcon = self.system_tray_icon(appInfo)
+        self.trayIcon.setToolTip('Pipeline Tool v.13 - DAMG team')
+        self.trayIcon.show()
         # ----------------------------------------------
 
     def system_tray_icon(self, appInfo):
@@ -889,18 +788,24 @@ class Main(QMainWindow):
         screenshotAction.triggered.connect(self.screenshot)
         trayIconMenu.addAction(screenshotAction)
 
+        maximizeIcon = QIcon(func.getIcon("Maximize"))
+        maximizeAction = QAction(maximizeIcon, "Maximize", self)
+        maximizeAction.triggered.connect(self.showMaximized)
+        trayIconMenu.addSeparator()
+        trayIconMenu.addAction(maximizeAction)
+
         minimizeIcon = QIcon(func.getIcon('Minimize'))
-        minimizeAction = QAction(minimizeIcon, "Mi&nimize", self)
+        minimizeAction = QAction(minimizeIcon, "Minimize", self)
         minimizeAction.triggered.connect(self.hide)
         trayIconMenu.addAction(minimizeAction)
 
         restoreIcon = QIcon(func.getIcon('Restore'))
-        restoreAction = QAction(restoreIcon, "&Restore", self)
+        restoreAction = QAction(restoreIcon, "Restore", self)
         restoreAction.triggered.connect(self.showNormal)
         trayIconMenu.addAction(restoreAction)
 
         quitIcon = QIcon(func.getIcon('Close'))
-        quitAction = QAction(quitIcon, "&Quit", self)
+        quitAction = QAction(quitIcon, "Quit", self)
         quitAction.triggered.connect(QApplication.instance().quit)
         trayIconMenu.addSeparator()
         trayIconMenu.addAction(quitAction)
@@ -908,7 +813,6 @@ class Main(QMainWindow):
         trayIcon = QSystemTrayIcon(self)
         trayIcon.setIcon(QIcon(func.getIcon('Logo')))
         trayIcon.setContextMenu(trayIconMenu)
-        trayIcon.show()
 
         return trayIcon
 
@@ -1045,7 +949,7 @@ class Main(QMainWindow):
         return toolbarArt
 
     def procedures(self, event):
-        ulti.dynamic_insert_timelog(event)
+        ultis.dynamic_insert_timelog(event)
 
     def createAction(self, appInfo, key):
         action = QAction(QIcon(appInfo[key][1]), appInfo[key][0], self)
@@ -1062,15 +966,15 @@ class Main(QMainWindow):
         subprocess.Popen(path)
 
     def subWindow(self, id='Note', message=" ", icon = func.getIcon('Logo')):
-        from ui import about
-        reload(about)
-        dlg = about.WindowDialog(id=id, message=message, icon=icon)
+        from ui import ui_about
+        reload(ui_about)
+        dlg = ui_about.WindowDialog(id=id, message=message, icon=icon)
         dlg.exec_()
 
     def screenshot(self):
-        from ui import screen_shot
-        reload(screen_shot)
-        dlg = screen_shot.Screenshot()
+        from ui import ui_screenshot
+        reload(ui_screenshot)
+        dlg = ui_screenshot.Screenshot()
         dlg.exec_()
 
     def openURL(self, url):
@@ -1090,6 +994,12 @@ class Main(QMainWindow):
         #     pass
         pass
 
+    def closeEvent(self, event):
+        icon = QSystemTrayIcon.Information
+        self.trayIcon.showMessage('Notice', "Pipeline Tool will keep running in the system tray.", icon, 1000)
+        self.hide()
+        event.ignore()
+
 def main():
 
     QCoreApplication.setApplicationName("PipelineTool")
@@ -1097,8 +1007,12 @@ def main():
     QCoreApplication.setOrganizationName("DAMG_TEAM")
     QCoreApplication.setOrganizationDomain("damgteam.com")
 
+    unix, token, curUser, rememberLogin, status = query_user_info()
+    userdata = [unix, token, curUser, rememberLogin]
+
     app = QApplication(sys.argv)
-    if CURUSERDATA[3] == 'False' or CURUSERDATA == [] or CURUSERDATA == None:
+
+    if rememberLogin == 'False' or userdata == [] or userdata == None:
         login = Login()
         login.show()
     else:
@@ -1109,6 +1023,7 @@ def main():
             sys.exit(1)
 
     QApplication.setQuitOnLastWindowClosed(False)
+
 
     sys.exit(app.exec_())
 

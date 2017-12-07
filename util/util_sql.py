@@ -30,10 +30,6 @@ c = conn.cursor()
 
 USERCLASSDATA = ['Tester, DemoUser, NormalUser', 'Artist', 'Instructor', 'CEO', 'Supervisor', 'Leader']
 
-demaoName = "DEMO TABLE"
-nf = ['col1', 'col2', 'col3', 'col4']
-ft = ['TEXT', 'TEXT', 'TEXT', 'TEXT']
-
 tdKeys = ['Maya', 'HoudiniFX', 'ZBrush', 'UVLayout', 'Mudbox', '3dsMax']
 vfxKeys = ['Hiero', 'NukeX', 'PremierePro']
 artKeys = ['Illustrator CC', 'Photoshop']
@@ -43,20 +39,7 @@ subKeys = ['Snipping', 'Wordpad']
 tableName = 'Pipeline'
 
 
-
-
-def create_table_with_4_column(nt=nf, ft=ft, tableName=tableName):
-    c.execute("CREATE TABLE IF NOT EXISTS {tn} ({nf1} {ft1}, {nf2} {ft2}, {nf3} {ft3}, {nf4} ft4);".format(
-        tn=tableName, nf1=nf[1], nf2=nf[2], nf3=nf[3], nf4=nf[4], tf1=ft[1], ft2=ft[2], ft3=ft[3], ft4=ft[4]))
-    conn.commit()
-
-def create_table_with_5_column(nf1, nf2, nf3, nf4, nf5, tableName):
-    c.execute("CREATE TABLE IF NOT EXISTS {tn} ({nf1} TEXT, {nf2} TEXT, {nf3} TEXT, {nf4} TEXT, "
-              "{nf5} TEXT)".format(tn=tableName, nf1=nf1, nf2=nf2, nf3=nf3, nf4=nf4, nf5=nf5))
-    conn.commit()
-
-
-""" Tool to gathering info """
+""" Tool to config info """
 # -------------------------------------------------------------------------------------------------------------
 def query_local_pc_info(*args):
     from util import variables as var
@@ -148,9 +131,26 @@ def decode(hex):
     return outPut
 
 
+""" Template to create table """
 # -------------------------------------------------------------------------------------------------------------
-""" Create New Table """
+demaoName = "DEMO TABLE"
+nf = ['col1', 'col2', 'col3', 'col4']
+ft = ['TEXT', 'TEXT', 'TEXT', 'TEXT']
+
+def create_table_with_4_column(nf=nf, ft=ft, tableName=tableName):
+    c.execute("CREATE TABLE IF NOT EXISTS {tn} ({nf1} {ft1}, {nf2} {ft2}, {nf3} {ft3}, {nf4} ft4);".format(
+        tn=tableName, nf1=nf[1], nf2=nf[2], nf3=nf[3], nf4=nf[4], tf1=ft[1], ft2=ft[2], ft3=ft[3], ft4=ft[4]))
+    conn.commit()
+
+def create_table_with_5_column(nf1, nf2, nf3, nf4, nf5, tableName):
+    c.execute("CREATE TABLE IF NOT EXISTS {tn} ({nf1} TEXT, {nf2} TEXT, {nf3} TEXT, {nf4} TEXT, "
+              "{nf5} TEXT)".format(tn=tableName, nf1=nf1, nf2=nf2, nf3=nf3, nf4=nf4, nf5=nf5))
+    conn.commit()
+
+
+""" Create Dataset Table """
 # -------------------------------------------------------------------------------------------------------------
+# For user account
 def create_table_content():
     c.execute("CREATE TABLE IF NOT EXISTS TableContent (tableName TEXT, columnList TEXT, datetimeLog TEXT)")
     conn.commit()
@@ -161,7 +161,7 @@ def create_table_timelog():
 
 def create_table_user_account():
     c.execute("CREATE TABLE IF NOT EXISTS AccountUser (unix TEXT, token TEXT, username TEXT, password TEXT, "
-              "title TEXT, lastname TEXT,firstname TEXT, avatar TEXT, time_stamp TEXT, date_stamp TEXT)")
+              "title TEXT, lastname TEXT,firstname TEXT, avatar TEXT, time_stamp TEXT, date_stamp TEXT, status TEXT)")
     conn.commit()
 
 def create_table_current_user():
@@ -182,51 +182,31 @@ def create_table_userClass():
     c.execute("CREATE TABLE IF NOT EXISTS UserClassDB (unix TEXT, username TEXT, UserClass TEXT)")
     conn.commit()
 
+# For production
 def create_table_project_list():
-    c.execute("CREATE TABLE IF NOT EXISTS proj_list (proj_name VARCHAR(20), prod_code VARCHAR(20) start_date DATE end_date DATE)")
+    c.execute("CREATE TABLE IF NOT EXISTS ProjectList (proj_name VARCHAR(20), proj_code VARCHAR(20), "
+              "start_date VARCHAR(20), end_date VARCHAR(20), status VARCHAR(20))")
 
-def create_table_project_crew_on_board():
-    c.execute("CREATE TABLE IF NOT EXISTS pro_crew (proj_code VARCHAR(20), proj_unix UNIQUE)")
-
-def create_table_project_pre_production():
-    c.execute("CREATE TABLE IF NOT EXISTS pre_production (script VARCHAR(20), script_dateline VARCHAR(20), storyboard VARCHAR(20)"
-       "storyboard_deadline VARCHAR(20), animatic2D VARCHAR(20), animatic2D_deadline VARCHAR(20), animatic3D VARCHAR(20),"
-       "animatic3D_dealine VARCHAR(20))")
     conn.commit()
 
-def create_table_project_production():
-    c.execute("CREATE TABLE IF NOT EXISTS production_state (proj_code VARCHAR(20) time_long INT, unix_ppl REAL duty VARCHAR(20) "
-       "period VARCHAR(20) shots INT, assets VARCHAR(20), asset_task VARCHAR(20))")
+def create_table_project_crew_on_board():
+    c.execute("CREATE TABLE IF NOT EXISTS ProjectCrew (proj_code VARCHAR(20), unix VARCHAR(20))")
+    conn.commit()
 
-def create_table_assets_detail():
-    c.execute("CREATE TABLE IF NOT EXISTS assets_task (proj_code VARCHAR(20) art VARCHAR(20) art_dateline VARCHAR(20) "
-       "modeling VARCHAR(20), modeling_dateline VARCHAR(20) rigging VARCHAR(20), rigging_dateline VARCHAR(20)"
-       "lookdev VARCHAR(20), lookdev_dateline TIMESTAMP)")
+def create_table_project_tracking():
+    c.execute("CREATE TABLE IF NOT EXISTS TaskTracking (taskName VARCHAR(20), assignedTo VARCHAR(20), "
+              "proj_code VARCHAR(20), start_date VARCHAR(20), end_date VARCHAR(20))")
+    conn.commit()
 
-def create_table_shots_detail():
-    c.execute("CREATE TABLE IF NOT EXISTS shots_task (proj_code VARCHAR(20), shot_code VARCHAR(20), anim VARCHAR(20)), "
-       "anim_dateline VARCHAR(20), comp VARCHAR(20), comp_dateline VARCHAR(20), vfx VARCHAR(20), vfx_dateline VARCHAR(20)"
-       "layout VARCHAR(20), layout_dateline VARCHAR(20), lighting VARCHAR(20), lighting_dateline(20), "
-       "shot_dateline VARCHAR(20)")
+def create_table_project_plan():
+    c.execute("CREATE TABLE IF NOT EXISTS ProjectPlan (proj_code VARCHAR(20), sections VARCHAR(20), "
+              "section_details VARCHAR(20), sections_task VARCHAR(20), assignedTo VARCHAR(20), start_date VARCHAR(20), "
+              "end_date VARCHAR(20), path TEXT)")
 
-def create_table_project_post_production():
-    c.execute("CREATE TABLE IF NOT EXISTS pre_production (proj_code VARCHAR(20), shot_comping VARCHAR(20), "
-       "shot_comp_deadline VARCHAR(20), master_comp VARCHAR(20), sound VARCHAR(20), sound_dateline VARCHAR(20), "
-       "editing VARCHAR(20), deliverable_dateline VARCHAR(20))")
+    conn.commit()
 
-def create_table_project_config_software_path():
-    c.execute("CREATE TABLE IF NOT EXISTS software_path (proj_code VARCHAR(20) maya_path VARCHAR(20), zbrush_path VARCHAR(20),"
-       "houdini VARCHAR(20), photoshop VARCHAR(20), nukex VARCHAR(20), after_effects VARCHAR(20), premiere_pro VARCHAR(20)"
-       "mari VARCHAR(20))")
-
-def create_table_project_folder_path():
-    c.execute("CREATE TABLE IF NOT EXISTS proj_path (prod_master VARCHAR(20), )")
-
-def create_table_pipeline_config(nf1, nf2, nf3, table_name):
-    c.execute("CREATE TABLE IF NOT EXISTS {tn} ({nf1} TEXT, {nf2} TEXT, {nf3} TEXT, maya TEXT, "
-              "max3ds TEXT, zbrush TEXT, mudbox TEXT, houdini TEXT, "
-              "mari TEXT, substance TEXT, nukex TEXT, hiero TEXT, after_effect TEXT, "
-              "premiere pro  TEXT, photoshop TEXT)".format(tn=table_name, nf1=nf1, nf2=nf2, nf3=nf3))
+def create_table_pipeline_config():
+    c.execute("CREATE TABLE IF NOT EXISTS PipelineConfig (productID TEXT, appName VARCHAR(20), path_config VARCHAR(20))")
     conn.commit()
 
 
@@ -287,7 +267,11 @@ def query_user_profile(name, typeName=None):
 def query_current_user():
     c.execute("SELECT * FROM CurrentUser")
     data = c.fetchall()
-    user = [str(p) for p in list(data[0])]
+    if len(data) == 0:
+        print 'no current user'
+        user = ["", "", "", "False"]
+    else:
+        user = [str(p) for p in list(data[0])]
     return user
 
 def query_original_pcToken(productID):
@@ -305,14 +289,20 @@ def query_original_pcToken(productID):
 
 def query_user_class(unix, username):
     c.execute("SELECT * FROM UserClassDB")
-    rows = [str(r[0]) for r in c.fetchall()]
+    rows = c.fetchall()
+    userClass = 'UnKnown'
     for row in rows:
-        if unix in row and username in row:
+        data = [str(f) for f in row]
+        if unix == data[0] and username == data[1]:
             userClass = row[2]
         else:
-            userClass = 'Tester'
-    dynamic_insert_timelog("Query userclass: %s" % username)
+            pass
     return userClass
+
+def query_user_status(username):
+    userData = query_user_profile(username)
+    status = userData[-1]
+    return status
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -362,41 +352,7 @@ def check_sys_configuration(username):
         token = createTokenLog()
         dynamic_insert_newToKenLogData(username, token, productID)
 
-def dynamic_pipeline_config_entry(username, trackKeys):
-    softs_list = ['maya', '3ds Max', 'ZBrush', 'Mudbox', 'Houdini', 'Mari', 'Substance', 'NukeX', 'Hiero',
-                     'After Effects', 'Premiere Pro', 'Photoshop', 'Illustrator', 'Pycharm', 'Sublime Text']
-    values = {}
-    for real_key in trackKeys:
-        for check_key in softs_list:
-            if check_key in real_key:
-                values[check_key] = 1
-            else:
-                values[check_key] = 0
-
-    maya = values['maya']
-    max3ds = values['3ds Max']
-    zbrush = values['ZBrush']
-    mudbox = values['Mudbox']
-    houdini = values['Houdini']
-    mari = values['Mari']
-    substance = values['Substance']
-    nukex = values['NukeX']
-    hiero = values['Hiero']
-    ae = values['AfterEffects']
-    pr = values['Primiere Pro']
-    pts = values['Photoshop']
-    illus = values['Illustrator']
-    pycharm = values['Pycharm']
-    sublime = values['Sublime']
-
-
-    c.execute("INSERT INTO {tn} (unix, token, product_id, maya, max3dds, zbrush, mudbox, houdini, mari, substance, "
-       "nukex, hiero, ae, pr, pts, illus, pycharm, sublime) VALUES (?, ?, ?, ?, ?, ?, ?, ?, "
-       "?, ?, ?, ?, ?, ?, ?, ?, ?, ?)".format(tn=table_name), (unix, token, product_id, maya, max3ds, zbrush, mudbox, houdini, mari,
-                                         substance, nukex, hiero, ae, pr, pts, illus, pycharm, sublime))
-
-    conn.commit()
-
+    return productID
 
 # -------------------------------------------------------------------------------------------------------------
 """ Insert New Data To Table """
@@ -408,15 +364,9 @@ def dynamic_new_user_entry(unix, token, username, password, title,
               "avatar, time_stamp, date_stamp) VALUES (?,?,?,?,?,?,?,?,?,?)",
               (unix, token, username, password, title, lastname, firstname, avatar, time_stamp, date_stamp))
     value = createRandomTitle()
-    dynamic_insert_classUser(unix, username, value)
+    c.execute("INSERT INTO UserClassDB (unix, username, UserClass) VALUES (?,?,?)", (unix, username, value))
     conn.commit()
     dynamic_insert_timelog('inserted to table AccountUser')
-
-def dynamic_update_current_user(unix, token, username, rememberLogin):
-    delete_all_data_table('currentUser')
-    c.execute("INSERT INTO currentUser (unix,token,username,rememberLogin) VALUES (?,?,?,?)",
-              (unix, token, username, rememberLogin))
-    conn.commit()
 
 def dynamic_insert_timelog(eventlog):
     username = query_current_user()[2]
@@ -424,6 +374,7 @@ def dynamic_insert_timelog(eventlog):
     c.execute("INSERT INTO TimeLog (datetimeLog, username, eventLog) VALUES (?,?,?)",
               (datetimeLog, username, eventlog))
     conn.commit()
+    return True
 
 def dynamic_insert_tokenlog(token, username, productID, ip, city, country, rememberLogin):
     c.execute("INSERT INTO TokenLog (token, username, productID, ip, city, country, rememberLogin) VALUES (?,?,?,?,?,?,?)",
@@ -452,11 +403,18 @@ def dynamic_insert_classUser(unix, username, value):
     c.execute("INSERT INTO UserClassDB (unix, username, UserClass) VALUES (?,?,?)", (unix, username, value))
     conn.commit()
 
+def dynamic_pipeline_config_entry():
+    currentUserData = query_current_user()
+    username = currentUserData[2]
+    productID = check_sys_configuration(username)
+
+    conn.commit()
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Delete Data """
 # -------------------------------------------------------------------------------------------------------------
-def delete_all_data_table(table_name):
+def remove_all_data_table(table_name):
     # Delete old data first
     c.execute("SELECT * FROM {tn}".format(tn=table_name))
     c.fetchall()
@@ -466,8 +424,16 @@ def delete_all_data_table(table_name):
 
 
 # -------------------------------------------------------------------------------------------------------------
-""" Edit Data """
+""" Update Data """
 # -------------------------------------------------------------------------------------------------------------
+def update_current_user(unix, token, username, rememberLogin):
+    c.execute("SELECT * FROM CurrentUser")
+    data = c.fetchall()
+    c.execute("DELETE FROM CurrentUser")
+    c.execute("INSERT INTO CurrentUser (unix,token,username,rememberLogin) VALUES (?,?,?,?)",
+              (unix, token, username, rememberLogin))
+    conn.commit()
+
 def update_user_remember_login(token, newValue):
     c.execute("SELECT * FROM TokenLog")
     c.fetchall()
@@ -488,12 +454,16 @@ def update_sysInfo_config(token, info):
               WHERE productID=(?) AND token=(?)""", (OS, pcUser, python, datetimeLog, productID, token))
     
     conn.commit()
-    dynamic_insert_timelog('update sysInfo')
 
 def update_table_content():
+    c.execute("SELECT * FROM TableContent")
+    data = c.fetchall()
+    c.execute("DELETE FROM TableContent")
     tableLst = query_table_list()
+
     if 'UserClassDB' in tableLst:
         tableLst.remove('UserClassDB')
+
     for tableName in tableLst:
         cll = query_column_list(tableName)
         columnContent = ""
@@ -502,7 +472,8 @@ def update_table_content():
         datetimeLog = createDatetimeLog()
         c.execute("INSERT INTO TableContent (tableName, columnList, datetimeLog) VALUES (?,?,?)",
                   (tableName, columnContent, datetimeLog))
-        dynamic_insert_timelog('Update content table (%s) into TableContent' % tableName)
+
+    conn.commit()
     event = 'Update table all content'
     dynamic_insert_timelog(event)
 
@@ -526,6 +497,7 @@ def update_password_user(unix, new_password):
     conn.commit()
     dynamic_insert_timelog('Changed password')
 
+
 # -------------------------------------------------------------------------------------------------------------
 """ Class: Create A New Account """
 # -------------------------------------------------------------------------------------------------------------
@@ -540,19 +512,19 @@ class CreateNewUser(object):
         self.lastname = lastname
         self.firstname = firstname
         self.avatar = lastname + firstname
-        # if self.username == 'Demo.User':
-        #     pass
-        # else:
-        #     self.set_up_new_user_account()
+        if self.username == 'Demo.User':
+            pass
+        else:
+            self.set_up_new_user_account()
 
-        self.set_up_new_user_account()
+        # self.set_up_new_user_account()
 
     def set_up_new_user_account(self):
         self.unix, self.token, timelog, datelog = createSetUnixID()
         # Create user login account
         dynamic_new_user_entry(self.unix, self.token, self.username, self.password, self.title, self.lastname,
                                self.firstname, self.avatar, timelog, datelog)
-        dynamic_update_current_user(self.unix, self.token, self.username, 'False')
+        update_current_user(self.unix, self.token, self.username, 'False')
         eventLog = "User: '%s' is created" % self.username
         dynamic_insert_timelog(eventLog)
         check_sys_configuration(self.username)
@@ -570,10 +542,16 @@ def create_table_set():
     create_table_userClass()
     update_table_content()
 
+def create_project_table_set():
+    create_table_project_crew_on_board()
+    create_table_project_list()
+    create_table_project_plan()
+    create_table_project_tracking()
+    # create_table_pipeline_config()
+    update_table_content()
+
 # def create_member_set():
 #     CreateNewUser('User', 'Demo', 'A demo user account', '123456')
 #     CreateNewUser('User', 'Test', 'A test user account', '123456')
 #     CreateNewUser('DM', 'Duc', 'Multimedia Design', '123456')
 #     CreateNewUser('Do', 'Trinh', 'PipelineTD', 'adsadsa')
-
-

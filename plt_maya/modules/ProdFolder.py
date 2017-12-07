@@ -498,12 +498,6 @@ class ProdFolder(object):
         for dirpath, dirnames, filenames in os.walk(path):
             return dirpath
 
-    def createInfo(self, *args):
-        appDir = os.getenv('PROGRAMDATA')
-        infoDir = os.path.join(appDir, 'PipelineTool/prodInfo')
-        if not os.path.exists(infoDir):
-            os.makedirs(infoDir)
-        return infoDir
 
 
 # ----------------------------------------------------------------------------------------------------------- #

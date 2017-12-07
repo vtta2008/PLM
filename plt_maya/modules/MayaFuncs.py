@@ -79,7 +79,7 @@ def fixTexturePathUI(*args):
 
 
 def vmmApps(*args):
-    vmmDir = os.path.join(os.getcwd(), "plt_maya/apps/vmpp")
+    vmmDir = os.path.join(os.getenv('PIPELINE_TOOL'), "external_app/vmpp")
     vmmPth = os.path.join(vmmDir, "VMPPmaya.exe")
 
     if not os.path.exists(vmmPth):
@@ -653,26 +653,6 @@ def setDisplay(type=None, *args):
 
 def pipelineLayout(*args):
     cmds.confirmDialog(t="doing it now", m="I am old Code with it", b="OK")
-
-
-def onerror(func, path, exc_info):
-    """
-    Error handler for ``shutil.rmtree``.
-
-    If the error is due to an access error (read only file)
-    it attempts to add write permission and then retries.
-
-    If the error is for another reason it re-raises the error.
-
-    Usage : ``shutil.rmtree(path, onerror=onerror)``
-    """
-    if not os.access(path, os.W_OK):
-        # Is the error an access error ?
-        os.chmod(path, stat.S_IWRITE)
-        os.unlink(path)
-    else:
-        raise
-
 
 def aboutThisTool(*args):
     if cmds.window('mainUIAbout', exists=True):

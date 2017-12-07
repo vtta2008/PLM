@@ -2,40 +2,39 @@
 """
 Script Name: englishDict.py
 Author: Do Trinh/Jimmy - 3D artist.
-
 Description:
     It is a very fun english dictionary.
-
 """
 
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
 import json
-import logging
 import os
 import sys
 from difflib import get_close_matches
 
+from PyQt5.QtGui import QIcon
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT PTQT5 ELEMENT TO MAKE UI
 # -------------------------------------------------------------------------------------------------------------
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import (QDialog, QGridLayout, QLabel, QHBoxLayout, QPushButton, QLineEdit, QTextEdit,
+                             QApplication, QWidget)
 
 from util import utilities as func
 
-logging.basicConfig()
-logger = logging.getLogger(__file__)
-logger.setLevel(logging.DEBUG)
-
 
 class EnglishDict(QDialog):
-    def __init__(self):
+    def __init__(self, id='English Dictionary', icon=func.getIcon('English Dictionary'), parent=None):
 
-        super(EnglishDict, self).__init__()
+        super(EnglishDict, self).__init__(parent)
 
-        self.setWindowTitle('English Dictionary')
-        self.setWindowIcon(func.getIcon('Logo'))
+        self.setWindowTitle(id)
+        self.setWindowIcon(QIcon(icon))
+
+        central_widget = QWidget(self)
+        self.layout = QGridLayout(self)
+        central_widget.setLayout(self.layout)
 
         self.buildUI()
 
@@ -44,9 +43,6 @@ class EnglishDict(QDialog):
         self.setContentsMargins(5, 5, 5, 5)
 
     def buildUI(self):
-
-        self.layout = QGroupBox(self)
-        self.layout.setWindowTitle('English Dictionary')
 
         hbox = QHBoxLayout()
 
@@ -76,7 +72,7 @@ class EnglishDict(QDialog):
 
         hbox.addLayout(GridLayout)
 
-        self.layout.setLayout(hbox)
+        self.setLayout(hbox)
 
     def translate(self, *args):
         filePth = os.path.join(os.getcwd().split('ui')[0], os.path.join('appData', 'englishDictionary.json'))

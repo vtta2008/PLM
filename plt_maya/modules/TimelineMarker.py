@@ -197,6 +197,7 @@ class TimelineMarkers(QWidget):
         self.update()
 
     def clear(self):
+        # type: () -> object
         """
         Remove all marker information.
         """
