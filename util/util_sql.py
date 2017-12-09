@@ -268,7 +268,6 @@ def query_current_user():
     c.execute("SELECT * FROM CurrentUser")
     data = c.fetchall()
     if len(data) == 0:
-        print 'no current user'
         user = ["", "", "", "False"]
     else:
         user = [str(p) for p in list(data[0])]
@@ -335,7 +334,7 @@ def check_password_match(username, password):
     usernameLst = query_user_list()
     passwordLst = query_password_list()
     passCheck = passwordLst[usernameLst.index(username)]
-    if int(password)==int(passCheck):
+    if password == passCheck:
         check = True
     else:
         check = False

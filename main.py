@@ -24,11 +24,11 @@ import pip
 import yaml
 # PyQt5 modules
 from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings
-from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtGui import QIcon, QPixmap, QImage
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QGridLayout, QSizePolicy, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox,
-                             QTabWidget, QSystemTrayIcon, QAction, QMenu, qApp, QFileDialog)
+                             QTabWidget, QSystemTrayIcon, QAction, QMenu, qApp)
 
 # Pipeline tool modules
 from util import message as mes
@@ -461,6 +461,13 @@ class TabWidget(QWidget):
         arIconBtn = self.makeIconButton('Advance Renamer')
         tab1HBoxLine1.addWidget(arIconBtn)
 
+        # Note
+        noteReminderBtn = self.iconButtonSelfFunction('QtNote', 'Note Reminder', self.note_reminder)
+        tab1HBoxLine1.addWidget(noteReminderBtn)
+
+        textEditorBtn = self.iconButtonSelfFunction('Text Editor', 'Text Editor', self.text_editor)
+        tab1HBoxLine1.addWidget(textEditorBtn)
+
         for key in APPINFO:
             # Mudbox
             if key == 'Mudbox 2018':
@@ -475,10 +482,12 @@ class TabWidget(QWidget):
             if key == '3ds Max 2017':
                 max17Btn = self.makeIconButton(key)
                 tab1HBoxLine1.addWidget(max17Btn)
-
-        # Note
-        noteReminderBtn = self.iconButtonSelfFunction('QtNote', 'QtNote', self.qtNote)
-        tab1HBoxLine1.addWidget(noteReminderBtn)
+            if key == 'Illustrator CC':
+                illusCCBtn = self.makeIconButton(key)
+                tab1HBoxLine1.addWidget(illusCCBtn)
+            if key == 'Illustrator CS6':
+                illusCS6Btn = self.makeIconButton(key)
+                tab1HBoxLine1.addWidget(illusCS6Btn)
 
         # ------------------------------------------------------
         tab1HBoxLine2.addWidget(QLabel('Enhance: '))
@@ -533,15 +542,15 @@ class TabWidget(QWidget):
         createProjectBtn = QPushButton('New Project')
         createProjectBtn.clicked.connect(self.createProject)
         tab2GridLayout.addWidget(createProjectBtn, 0, 0, 1, 2)
-        currentLoginDataBtn = QPushButton('Login')
+        currentLoginDataBtn = QPushButton('Project List')
         tab2GridLayout.addWidget(currentLoginDataBtn, 0, 2, 1, 2)
-        testNewFunctionBtn = QPushButton('Profile')
+        testNewFunctionBtn = QPushButton('Project Details')
         tab2GridLayout.addWidget(testNewFunctionBtn, 0, 4, 1, 2)
 
         hboxLayout.addLayout(tab2GridLayout)
         self.tab2.setLayout(hboxLayout)
 
-    def tab3Layout(self, curUser):
+    def tab3Layout(self, curUser, newAvatar=None):
 
         # Create Layout for Tab 3.
         self.tab3.setTitle(curUser)
@@ -551,15 +560,15 @@ class TabWidget(QWidget):
         tab3ridLayout = QGridLayout()
 
         userProfile = ultis.query_user_profile(curUser, 'username')
-        userImg = QPixmap(func.getAvatar(userProfile[7]))
+        userImg = QPixmap.fromImage(QImage(func.getAvatar(userProfile[7])))
         self.userAvatar = QLabel()
         self.userAvatar.setPixmap(userImg)
         self.userAvatar.setScaledContents(True)
         self.userAvatar.setFixedSize(100, 100)
-        tab3ridLayout.addWidget(self.userAvatar, 0, 0, 3, 3)
+        tab3ridLayout.addWidget(self.userAvatar, 0,0,3,3)
 
-        changeAvatarBtn = QPushButton('Change Avatar')
-        changeAvatarBtn.clicked.connect(self.onChangeAvatarBtnClicked)
+        changeAvatarBtn = QPushButton('Account Setting')
+        changeAvatarBtn.clicked.connect(partial(self.onAccountSettingBtnClicked, curUser))
         tab3ridLayout.addWidget(changeAvatarBtn, 0,3,1,3)
 
         changePasswordBtn = QPushButton('Change Password')
@@ -598,31 +607,11 @@ class TabWidget(QWidget):
         hboxLayout.addLayout(tab5GridLayout)
         self.tab5.setLayout(hboxLayout)
 
-    def onChangeAvatarBtnClicked(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        fileName, _ = QFileDialog.getOpenFileName(self, "Your Avatar", "", "All Files (*);;Img Files (*.jpg)",
-                                                  options=options)
-        if fileName:
-            unix, token, curUser, rememberLogin, status = query_user_info()
-            imgsDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs')
-            baseFileName = curUser.split('.')[0] + curUser.split('.')[-1] + '.avatar.jpg'
-            desPth = os.path.join(imgsDir, baseFileName)
-            if os.path.exists(desPth):
-                if desPth == fileName:
-                    pass
-                else:
-                    func.resize_image(fileName, desPth)
-                    os.rename(desPth, desPth + '.old')
-                    shutil.copy2(fileName, desPth)
-                    self.userAvatar.setInvisible(True)
-                    self.userAvatar.setPixmap(QPixmap=desPth)
-                    self.userAvatar.setVisible(True)
-            else:
-                shutil.copy2(fileName, desPth)
-                self.userAvatar.setPixmap(desPth)
-
-            ultis.dynamic_insert_timelog('Change Avatar')
+    def onAccountSettingBtnClicked(self, username):
+        from ui import ui_account_setting
+        reload(ui_account_setting)
+        window = ui_account_setting.WindowDialog(username)
+        window.exec_()
 
     def onChangePasswordBtnClicked(self):
         pass
@@ -683,9 +672,17 @@ class TabWidget(QWidget):
         dlg = ui_find_files.Findfiles()
         dlg.exec_()
 
-    def qtNote(self):
-        path = os.path.join(os.getenv('PIPELINE_TOOL'), 'ui/textedit/texedit.py')
-        self.openApps(path)
+    def note_reminder(self):
+        from ui import ui_note_reminder
+        reload(ui_note_reminder)
+        window = ui_note_reminder.WindowDialog()
+        window.exec_()
+
+    def text_editor(self):
+        from ui.textedit import textedit
+        reload(textedit)
+        window = textedit.WindowDialog()
+        window.exec_()
 
     def createProject(self):
         from ui import ui_new_project
@@ -919,13 +916,13 @@ class Main(QMainWindow):
             ptsCC = self.createAction(appInfo, 'Photoshop CS6')
             toolBarComp.addAction(ptsCC)
         # Illustrator CC
-        if 'Illustrator CC' in appInfo:
-            illusCC = self.createAction(appInfo, 'Illustrator CC')
-            toolBarComp.addAction(illusCC)
-        # Illustrator CS6
-        if 'Illustrator CS6' in appInfo:
-            illusCS6 = self.createActioin(appInfo, 'Illustrator CS6')
-            toolBarComp.addAction(illusCS6)
+        # if 'Illustrator CC' in appInfo:
+        #     illusCC = self.createAction(appInfo, 'Illustrator CC')
+        #     toolBarComp.addAction(illusCC)
+        # # Illustrator CS6
+        # if 'Illustrator CS6' in appInfo:
+        #     illusCS6 = self.createActioin(appInfo, 'Illustrator CS6')
+        #     toolBarComp.addAction(illusCS6)
         # Return Tool Bar
         return toolBarComp
 
