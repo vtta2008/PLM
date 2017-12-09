@@ -123,16 +123,19 @@ class WindowDialog(QDialog):
 
         if password=="":
             QMessageBox.critical(self, 'Failed', "Please type your password")
+            return
 
         checkPass = ultis.check_password_match(curUser, password)
 
         if not checkPass:
             QMessageBox.critical(self, 'Failed', "Password not match")
+            return
         else:
             newpass = func.encode(self.newPassword.text())
             confirm = func.encode(self.confirmPassword.text())
             if newpass == "" or confirm == "":
                 QMessageBox.critical(self, 'Failed', "Please type your new password")
+                return
             elif newpass==confirm:
                 ultis.update_password_user(unix, newpass)
                 QMessageBox.information(self, 'Update password', "Your password has changed")

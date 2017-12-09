@@ -8,6 +8,15 @@ Description:
 
 """
 
+__appname__ = "Pipeline Tool"
+__module__ = "main"
+__version__ = "0.13"
+__organization__ = "DAMG team"
+__website__ = "www.damgteam.com"
+__email__ = "dot@damgteam.com"
+__author__ = "Trinh Do, a.k.a: Jimmy"
+
+
 # -------------------------------------------------------------------------------------------------------------
 """ Import modules """
 # -------------------------------------------------------------------------------------------------------------
@@ -15,6 +24,7 @@ Description:
 import logging
 import os
 import shutil
+import sqlite3 as lite
 import subprocess
 import sys
 import webbrowser
@@ -30,6 +40,7 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget
                              QCheckBox,
                              QTabWidget, QSystemTrayIcon, QAction, QMenu, qApp)
 
+from ui import ui_preference
 # Pipeline tool modules
 from util import message as mes
 from util import util_sql as ultis
@@ -39,7 +50,8 @@ from util import variables as var
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 # -------------------------------------------------------------------------------------------------------------
-logging.basicConfig()
+logging.basicConfig(filename=os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/settings/main.log'),
+format="%(asctime)-15s: %(name)-18s - %(levelname)-8s - %(module)-15s - %(funcName)-20s - %(lineno)-6d - %(message)s")
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
@@ -171,7 +183,8 @@ MAIN_CONFIG_PATH = setup2_application_database_path()
 setup3_extra_python_packages()
 setup4_intergrade_for_maya()
 APPINFO = setup5_gather_configure_info()
-
+SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/settings/PipelineTool_settings.ini')
+DB_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/database.db')
 
 """ Create New Account """
 # ----------------------------------------------------------------------------------------------------------- #
@@ -392,6 +405,8 @@ class Login(QDialog):
 # ----------------------------------------------------------------------------------------------------------- #
 class TabWidget(QWidget):
 
+    dbConn = lite.connect(DB_PATH)
+
     def __init__(self, unix, username, package, parent=None):
 
         super(TabWidget, self).__init__(parent)
@@ -541,16 +556,16 @@ class TabWidget(QWidget):
 
         createProjectBtn = QPushButton('New Project')
         createProjectBtn.clicked.connect(self.createProject)
-        tab2GridLayout.addWidget(createProjectBtn, 0, 0, 1, 2)
+        tab2GridLayout.addWidget(createProjectBtn, 0,0,1,2)
         currentLoginDataBtn = QPushButton('Project List')
-        tab2GridLayout.addWidget(currentLoginDataBtn, 0, 2, 1, 2)
+        tab2GridLayout.addWidget(currentLoginDataBtn, 0,2,1,2)
         testNewFunctionBtn = QPushButton('Project Details')
-        tab2GridLayout.addWidget(testNewFunctionBtn, 0, 4, 1, 2)
+        tab2GridLayout.addWidget(testNewFunctionBtn, 0,4,1,2)
 
         hboxLayout.addLayout(tab2GridLayout)
         self.tab2.setLayout(hboxLayout)
 
-    def tab3Layout(self, curUser, newAvatar=None):
+    def tab3Layout(self, curUser):
 
         # Create Layout for Tab 3.
         self.tab3.setTitle(curUser)
@@ -567,9 +582,9 @@ class TabWidget(QWidget):
         self.userAvatar.setFixedSize(100, 100)
         tab3ridLayout.addWidget(self.userAvatar, 0,0,3,3)
 
-        changeAvatarBtn = QPushButton('Account Setting')
-        changeAvatarBtn.clicked.connect(partial(self.onAccountSettingBtnClicked, curUser))
-        tab3ridLayout.addWidget(changeAvatarBtn, 0,3,1,3)
+        accountSettingBtn = QPushButton('Account Setting')
+        accountSettingBtn.clicked.connect(partial(self.onAccountSettingBtnClicked, curUser))
+        tab3ridLayout.addWidget(accountSettingBtn, 0,3,1,3)
 
         changePasswordBtn = QPushButton('Change Password')
         changePasswordBtn.clicked.connect(self.onChangePasswordBtnClicked)
@@ -704,25 +719,30 @@ class Main(QMainWindow):
         message = var.MAIN_MESSAGE
         url = var.MAIN_URL
 
-        ini_pth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/settings')
-        self.setPath = QSettings.setPath(QSettings.IniFormat, QSettings.UserScope, ini_pth)
-        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, 'PipelineTool', 'PipelineTool')
+        self.settings = QSettings(SETTING_PATH, QSettings.IniFormat)
 
         self.setWindowTitle(mainID['Main'])
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.setToolButtonStyle(Qt.ToolButtonFollowStyle)
 
+        self.trayIcon = self.system_tray_icon(appInfo)
+        self.trayIcon.setToolTip(__appname__)
+        self.trayIcon.show()
+
         if case == 'Auto login':
             self.autoLogin(username)
-
-        self.settings = QSettings(QSettings.IniFormat, QSettings.UserScope, 'PipelineTool', 'PipelineTool')
 
         # Build UI
         self.buildUI(appInfo, message, mainID, url)
 
-        self.tabWidget = TabWidget(unix, username, package)
+        # Load Setting
+        self.showToolBar = func.str2bool(self.settings.value("showToolbar", True))
+        self.tdToolBar.setVisible(self.showToolBar)
+        self.compToolBar.setVisible(self.showToolBar)
 
+        # Tabs build
+        self.tabWidget = TabWidget(unix, username, package)
         self.setCentralWidget(self.tabWidget)
 
         # Log record
@@ -738,8 +758,9 @@ class Main(QMainWindow):
         # Menu Tool Bar sections
         menubar = self.menuBar()
         fileMenu = menubar.addMenu('File')
-        exitAction = self.fileMenuToolBar(appInfo)
+        exitAction, prefAction = self.fileMenuToolBar(appInfo)
         separator1 = self.createSeparatorAction(appInfo)
+        fileMenu.addAction(prefAction)
         fileMenu.addAction(separator1)
         fileMenu.addAction(exitAction)
         # ----------------------------------------------
@@ -757,10 +778,6 @@ class Main(QMainWindow):
         self.tdToolBar = self.toolBarTD(appInfo)
         self.compToolBar = self.toolBarComp(appInfo)
         # self.artToolBar = self.toolBarArt(appInfo)
-        # ----------------------------------------------
-        self.trayIcon = self.system_tray_icon(appInfo)
-        self.trayIcon.setToolTip('Pipeline Tool v.13 - DAMG team')
-        self.trayIcon.show()
         # ----------------------------------------------
 
     def system_tray_icon(self, appInfo):
@@ -814,11 +831,16 @@ class Main(QMainWindow):
         return trayIcon
 
     def fileMenuToolBar(self, appInfo):
+        # Preferences
+        prefAction = QAction(QIcon(func.getIcon('Preferences')), 'Preferences', self)
+        prefAction.setStatusTip('Preferences')
+        prefAction.triggered.connect(self.preferences_action_triggered)
+
         # Exit action
         exitAction = QAction(QIcon(appInfo['Exit'][1]), appInfo['Exit'][0], self)
         exitAction.setStatusTip(appInfo['Exit'][0])
         exitAction.triggered.connect(qApp.quit)
-        return exitAction
+        return exitAction, prefAction
 
     def toolMenuToolBar(self, appInfo):
         cleanaction = QAction(QIcon(appInfo['CleanPyc'][1]), appInfo['CleanPyc'][0], self)
@@ -978,7 +1000,8 @@ class Main(QMainWindow):
         webbrowser.open(url)
 
     def autoLogin(self, username):
-        QMessageBox.information(self, 'Auto Login', "Welcome back %s" % username)
+        icon = QSystemTrayIcon.Information
+        self.trayIcon.showMessage('Auto Login', "Welcome back %s" % username, icon, 1000)
 
     def onSysTrayIconClick(self, name=None, *args):
         # from appData.db import sqlTools
@@ -991,6 +1014,18 @@ class Main(QMainWindow):
         #     pass
         pass
 
+    def preferences_action_triggered(self):
+        dlg = ui_preference.Preferences(self)
+        sig = dlg.checkboxSig
+        sig.connect(self.showHideToolbar)
+        dlg.exec_()
+
+    def showHideToolbar(self, param):
+        # assert type(param) is bool
+        self.tdToolBar.setVisible(param)
+        self.compToolBar.setVisible(param)
+        self.settings.setValue("showToolbar", func.bool2str(param))
+
     def closeEvent(self, event):
         icon = QSystemTrayIcon.Information
         self.trayIcon.showMessage('Notice', "Pipeline Tool will keep running in the system tray.", icon, 1000)
@@ -999,10 +1034,10 @@ class Main(QMainWindow):
 
 def main():
 
-    QCoreApplication.setApplicationName("PipelineTool")
-    QCoreApplication.setApplicationVersion("0.13")
-    QCoreApplication.setOrganizationName("DAMG_TEAM")
-    QCoreApplication.setOrganizationDomain("damgteam.com")
+    QCoreApplication.setApplicationName(__appname__)
+    QCoreApplication.setApplicationVersion(__version__)
+    QCoreApplication.setOrganizationName(__organization__)
+    QCoreApplication.setOrganizationDomain(__website__)
 
     unix, token, curUser, rememberLogin, status = query_user_info()
     userdata = [unix, token, curUser, rememberLogin]
@@ -1020,7 +1055,6 @@ def main():
             sys.exit(1)
 
     QApplication.setQuitOnLastWindowClosed(False)
-
 
     sys.exit(app.exec_())
 

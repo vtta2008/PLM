@@ -48,6 +48,15 @@ logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
+def str2bool(arg):
+    return str(arg).lower() in ['true', 1, '1', 'ok']
+
+def bool2str(arg):
+    if arg:
+        return "True"
+    else:
+        return "False"
+
 def downloadSingleFile(url, path_to, *args):
     doDL = urllib.urlretrieve(url, path_to)
     logger.info(doDL)
