@@ -16,6 +16,7 @@ import os
 import shutil
 import sys
 
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QImage, QIcon, QPixmap
 from PyQt5.QtWidgets import *
 
@@ -41,7 +42,9 @@ def query_user_info():
 
 class WindowDialog(QDialog):
 
-    def __init__(self, username, id='User Setting', icon=func.getIcon('Logo'), parent=None):
+    changAvatarSignal = pyqtSignal(str)
+
+    def __init__(self, parent=None, username=None, id='User Setting', icon=func.getIcon('Logo')):
         super(WindowDialog, self).__init__(parent)
 
         self.setWindowTitle(id)
@@ -174,6 +177,7 @@ class WindowDialog(QDialog):
                 self.avatar.setPixmap(desPth)
                 self.avatar.update()
 
+            self.changAvatarSignal.emit(desPth)
             ultis.dynamic_insert_timelog('Change Avatar')
 
 

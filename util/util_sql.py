@@ -489,10 +489,9 @@ def update_title_user(text):
     return True
 
 def update_password_user(unix, new_password):
-    password_new = encode(new_password)
     c.execute("SELECT * FROM AccountUser")
     rows = c.fetchall()
-    c.execute("UPDATE AccountUser Set password = (?) WHERE unix = (?)", (password_new, unix))
+    c.execute("UPDATE AccountUser Set password = (?) WHERE unix = (?)", (new_password, unix))
     conn.commit()
     dynamic_insert_timelog('Changed password')
 

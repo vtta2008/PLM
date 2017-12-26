@@ -38,8 +38,9 @@ from PyQt5.QtGui import QIcon, QPixmap, QImage
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QGridLayout, QSizePolicy, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox,
-                             QTabWidget, QSystemTrayIcon, QAction, QMenu, qApp)
+                             QTabWidget, QSystemTrayIcon, QAction, QMenu)
 
+from ui import ui_account_setting
 from ui import ui_preference
 # Pipeline tool modules
 from util import message as mes
@@ -51,9 +52,9 @@ from util import variables as var
 """ Configure the current level to make it disable certain logs """
 # -------------------------------------------------------------------------------------------------------------
 logging.basicConfig(filename=os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/settings/main.log'),
-format="%(asctime)-15s: %(name)-18s - %(levelname)-8s - %(module)-15s - %(funcName)-20s - %(lineno)-6d - %(message)s")
-logger = logging.getLogger(__file__)
-logger.setLevel(logging.DEBUG)
+format="%(asctime)-15s: %(name)-18s - %(levelname)-8s - %(module)-15s - %(funcName)-20s - %(lineno)-6d - %(message)s",
+                    level=logging.DEBUG)
+logger = logging.getLogger(name=__appname__)
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -586,13 +587,9 @@ class TabWidget(QWidget):
         accountSettingBtn.clicked.connect(partial(self.onAccountSettingBtnClicked, curUser))
         tab3ridLayout.addWidget(accountSettingBtn, 0,3,1,3)
 
-        changePasswordBtn = QPushButton('Change Password')
-        changePasswordBtn.clicked.connect(self.onChangePasswordBtnClicked)
-        tab3ridLayout.addWidget(changePasswordBtn, 1,3,1,3)
-
         logoutBtn = QPushButton('Log Out')
         logoutBtn.clicked.connect(self.onLogoutBtnClicked)
-        tab3ridLayout.addWidget(logoutBtn, 2,3,1,3)
+        tab3ridLayout.addWidget(logoutBtn, 1,3,1,3)
 
         hboxLayout.addLayout(tab3ridLayout)
         self.tab3.setLayout(hboxLayout)
@@ -623,16 +620,23 @@ class TabWidget(QWidget):
         self.tab5.setLayout(hboxLayout)
 
     def onAccountSettingBtnClicked(self, username):
-        from ui import ui_account_setting
         reload(ui_account_setting)
-        window = ui_account_setting.WindowDialog(username)
+        window = ui_account_setting.WindowDialog(self, username)
         window.exec_()
 
-    def onChangePasswordBtnClicked(self):
-        pass
+    def userAvatarChanged(self, curUser):
+        sig = ui_account_setting.WindowDialog(self, curUser).changAvatarSignal
+        print sig
 
     def onLogoutBtnClicked(self):
-        pass
+        unix, token, curUser, rememberLogin, status = query_user_info()
+
+        user_profile = ultis.query_user_profile(curUser)
+        token = user_profile[1]
+        unix = user_profile[0]
+
+        ultis.update_user_remember_login(token, 'Flase')
+        ultis.update_current_user(unix, token, curUser, 'False')
 
     def iconButtonSelfFunction(self, iconName, tooltip, func_tool):
         icon = QIcon(func.getIcon(iconName))
@@ -820,7 +824,7 @@ class Main(QMainWindow):
 
         quitIcon = QIcon(func.getIcon('Close'))
         quitAction = QAction(quitIcon, "Quit", self)
-        quitAction.triggered.connect(QApplication.instance().quit)
+        quitAction.triggered.connect(self.exit_action_trigger)
         trayIconMenu.addSeparator()
         trayIconMenu.addAction(quitAction)
 
@@ -839,7 +843,7 @@ class Main(QMainWindow):
         # Exit action
         exitAction = QAction(QIcon(appInfo['Exit'][1]), appInfo['Exit'][0], self)
         exitAction.setStatusTip(appInfo['Exit'][0])
-        exitAction.triggered.connect(qApp.quit)
+        exitAction.triggered.connect(self.exit_action_trigger)
         return exitAction, prefAction
 
     def toolMenuToolBar(self, appInfo):
@@ -1025,6 +1029,11 @@ class Main(QMainWindow):
         self.tdToolBar.setVisible(param)
         self.compToolBar.setVisible(param)
         self.settings.setValue("showToolbar", func.bool2str(param))
+
+    def exit_action_trigger(self):
+        self.procedures("Log out")
+        logger.debug("LOG OUT")
+        QApplication.instance().quit()
 
     def closeEvent(self, event):
         icon = QSystemTrayIcon.Information
