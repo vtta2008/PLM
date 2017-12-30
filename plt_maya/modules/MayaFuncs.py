@@ -25,7 +25,7 @@ from plt_maya.modules import MayaVariables as var
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool', 'scrInfo')
 ICONS = var.ICONS
 TITLE = var.TITLE
 MESSAGE = var.MESSAGE
@@ -79,7 +79,7 @@ def fixTexturePathUI(*args):
 
 
 def vmmApps(*args):
-    vmmDir = os.path.join(os.getenv('PIPELINE_TOOL'), "external_app/vmpp")
+    vmmDir = os.path.join(os.getenv('PIPELINE_TOOL'), "external_app", "vmpp")
     vmmPth = os.path.join(vmmDir, "VMPPmaya.exe")
 
     if not os.path.exists(vmmPth):
@@ -89,7 +89,7 @@ def vmmApps(*args):
 
 
 def geticon(icon):
-    iconPth = os.path.join(os.getcwd(), 'plt_maya/icons')
+    iconPth = os.path.join(os.getcwd(), 'plt_maya', 'icons')
     path = os.path.join(iconPth, icon)
     return path
 
@@ -477,13 +477,13 @@ def openSourceimagesFolder(*args):
 
 def openSnapShotFolder(*args):
     projPth = cmds.workspace(q=True, rd=True)
-    snapShotPth = os.path.join(projPth, "scenes/snapShot")
+    snapShotPth = os.path.join(projPth, "scenes", "snapShot")
     os.startfile(snapShotPth)
 
 
 def openPublishFolder(*args):
     projPth = cmds.workspace(q=True, rd=True)
-    publishPth = os.path.join(projPth.split('work')[0], "publish/maya")
+    publishPth = os.path.join(projPth.split('work')[0], "publish", "maya")
     os.startfile(publishPth)
 
 

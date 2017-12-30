@@ -1912,7 +1912,7 @@ class ui():
         m.window(self.winName, edit=True, widthHeight=[300, 335])
 
     def importWingBase(self, *args):
-        wingBaseFile = os.path.join(os.getenv('PIPELINE_TOOL'), 'plt_maya/modules/MayaLib/wingBase.ma')
+        wingBaseFile = os.path.join(os.getenv('PIPELINE_TOOL'), 'plt_maya', 'modules', 'MayaLib', 'wingBase.ma')
 
         namespace = 'wingBase'
 

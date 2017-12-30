@@ -37,9 +37,9 @@ from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings
 from PyQt5.QtGui import QIcon, QPixmap, QImage
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QGridLayout, QSizePolicy, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
-                             QCheckBox,
-                             QTabWidget, QSystemTrayIcon, QAction, QMenu)
+                             QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu)
 
+# Pipeline tool ui
 from ui import ui_account_setting
 from ui import ui_preference
 # Pipeline tool modules
@@ -51,14 +51,14 @@ from util import variables as var
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 # -------------------------------------------------------------------------------------------------------------
-logging.basicConfig(filename=os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/settings/main.log'),
+logging.basicConfig(filename=os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'main.log'),
 format="%(asctime)-15s: %(name)-18s - %(levelname)-8s - %(module)-15s - %(funcName)-20s - %(lineno)-6d - %(message)s",
                     level=logging.DEBUG)
 logger = logging.getLogger(name=__appname__)
 
 
 # -------------------------------------------------------------------------------------------------------------
-""" PyQt5 ui element predefine """
+""" PyQt5 ui element pre-define """
 # -------------------------------------------------------------------------------------------------------------
 __center__ = Qt.AlignCenter
 __right__ = Qt.AlignRight
@@ -141,7 +141,7 @@ def setup4_intergrade_for_maya():
         pythonValue += pth + ';'
     os.environ['PYTHONPATH'] = pythonValue
     # Copy userSetup.py from source code to properly maya folder
-    userSetup_plt_path = os.path.join(os.getcwd(), 'plt_maya/userSetup.py')
+    userSetup_plt_path = os.path.join(os.getcwd(), 'plt_maya', 'userSetup.py')
     userSetup_maya_path = os.path.join(os.path.expanduser('~/Documents/maya/2017/prefs/scripts'), 'userSetup.py')
     shutil.copy2(userSetup_plt_path, userSetup_maya_path)
 
@@ -184,8 +184,8 @@ MAIN_CONFIG_PATH = setup2_application_database_path()
 setup3_extra_python_packages()
 setup4_intergrade_for_maya()
 APPINFO = setup5_gather_configure_info()
-SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/settings/PipelineTool_settings.ini')
-DB_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/database.db')
+SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'PipelineTool_settings.ini')
+DB_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'database.db')
 
 """ Create New Account """
 # ----------------------------------------------------------------------------------------------------------- #
@@ -288,9 +288,9 @@ class Create_account(QDialog):
         else:
             return True
 
-
+# -------------------------------------------------------------------------------------------------------------
 """ Login Layout """
-# ----------------------------------------------------------------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------
 class Login(QDialog):
 
     def __init__(self, parent=None):
@@ -402,8 +402,9 @@ class Login(QDialog):
             window.show()
 
 
+# -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
-# ----------------------------------------------------------------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------
 class TabWidget(QWidget):
 
     dbConn = lite.connect(DB_PATH)
@@ -709,8 +710,10 @@ class TabWidget(QWidget):
         window = ui_new_project.NewProject()
         window.exec_()
 
+
+# -------------------------------------------------------------------------------------------------------------
 """ Main """
-# ----------------------------------------------------------------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------
 class Main(QMainWindow):
 
     def __init__(self, case=None, parent=None):

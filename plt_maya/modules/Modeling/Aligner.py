@@ -25,7 +25,7 @@ winID = 'ALigner'
 winTitle = 'Objects Aligner'
 
 def getIcon(icon):
-    iconPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'plt_maya/icons')
+    iconPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'plt_maya', 'icons')
     return os.path.join(iconPth, icon)
 
 def createIconButton(icon, command=None):

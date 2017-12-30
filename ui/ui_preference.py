@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QDialog, QCheckBox, QPushButton, QVBoxLayout
 
 from util import utilities as func
 
-SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/settings/PipelineTool_settings.ini')
+SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'PipelineTool_settings.ini')
 
 class Preferences(QDialog):
 

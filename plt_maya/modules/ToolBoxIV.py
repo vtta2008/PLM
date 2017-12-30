@@ -9,11 +9,17 @@ Description:
 
 """
 
-from maya import cmds
-import os, sys, logging, subprocess, json, shutil
+import json
+import logging
+import os
+import shutil
+import subprocess
+import sys
 from functools import partial
-from plt_maya.modules import MayaVariables as var
 
+from maya import cmds
+
+from plt_maya.modules import MayaVariables as var
 from plt_maya.plugins import Qt
 
 # ------------------------------------------------------
@@ -21,7 +27,7 @@ from plt_maya.plugins import Qt
 # ------------------------------------------------------
 NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool', 'scrInfo')
 
 WINID = 'AppsManager'
 SUBID = 'Chosing version'
@@ -42,15 +48,10 @@ logger.setLevel(logging.DEBUG)
 # and a few support libraries we need that we have to import manually.
 if Qt.__binding__ == 'PySide':
     logger.debug('Using PySide with shiboken')
-    from shiboken import wrapInstance
-    from plt_maya.plugins.Qt.QtCore import Signal
 elif Qt.__binding__.startswith('PyQt'):
     logger.debug('Using PyQt with sip')
-    from sip import wrapinstance as wrapInstance
 else:
     logger.debug('Using PySide2 with shiboken2')
-    from shiboken2 import wrapInstance
-    from plt_maya.plugins.Qt.QtCore import Signal
 
 
 def geticon(icon):
@@ -58,11 +59,9 @@ def geticon(icon):
     return os.path.join(iconPth, icon)
 
 
-# ----------------------------------------------------------------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------
 """                        MAIN CLASS: APPSMANAGER - GET ALL APPS INSTALLED IN MAYA                         """
-
-
-# ----------------------------------------------------------------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------
 
 class toolBoxIV(object):
     def __init__(self):

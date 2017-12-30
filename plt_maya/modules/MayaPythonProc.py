@@ -29,7 +29,7 @@ from plt_maya.modules import MayaVariables as var
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool', 'scrInfo')
 
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION
@@ -63,9 +63,9 @@ logger.setLevel(logging.DEBUG)
 # ----------------------------------------------------------------------------------------------------------- #
 class MayaPythonProc(object):
     # file list in Installation folder
-    icons_lst = [f for f in os.listdir(os.path.join(os.getcwd(), 'plt_maya/icons')) if
+    icons_lst = [f for f in os.listdir(os.path.join(os.getcwd(), 'plt_maya', 'icons')) if
                  f.endswith('.png') or f.endswith('.jpg')]
-    modules_lst = [f for f in os.listdir(os.path.join(os.getcwd(), 'plt_maya/modules')) if f.endswith('.py')]
+    modules_lst = [f for f in os.listdir(os.path.join(os.getcwd(), 'plt_maya', 'modules')) if f.endswith('.py')]
     scrRoot_lst = [f for f in os.listdir(os.path.join(os.getcwd(), 'plt_maya')) if f.endswith('.py')]
     # ---------------------------------------------------------
     # List file names for CHECK LIST
@@ -148,13 +148,13 @@ class MayaPythonProc(object):
     def updateLayout(self):
         folName = ['workspaces', 'shelves', ]
         for i in range(0, 2):
-            scr = os.path.join(NAMES['mayaRootDir'], 'layout') + '/' + NAMES['mayaLayout'][i]
+            scr = os.path.join(NAMES['mayaRootDir'], 'layout', NAMES['mayaLayout'][i])
             if not os.path.exists(scr):
                 message = "missing %s, it should be in: %s, ignore." % (NAMES['mayaLayout'][i], scr)
                 logger.info(message)
                 cmds.warning(message)
             else:
-                des = os.path.join(NAMES['mayaRootDir'], folName[i]) + '/' + NAMES['mayaLayout'][i]
+                des = os.path.join(NAMES['mayaRootDir'], folName[i], NAMES['mayaLayout'][i])
                 if os.path.exists(des):
                     logger.info('Already updated %s layout, ignore.' % folName[i])
                 else:

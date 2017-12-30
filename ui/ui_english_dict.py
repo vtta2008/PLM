@@ -75,7 +75,7 @@ class EnglishDict(QDialog):
         self.setLayout(hbox)
 
     def translate(self, *args):
-        filePth = os.path.join(os.getcwd().split('ui')[0], os.path.join('appData', 'englishDictionary.json'))
+        filePth = os.path.join(os.getcwd().split('ui')[0], 'appData', 'englishDictionary.json')
 
         data = json.load(open(filePth))
 

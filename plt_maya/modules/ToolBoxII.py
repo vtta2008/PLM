@@ -33,9 +33,9 @@ from plt_maya.modules import MayaVariables as var
 from plt_maya.modules import ToolBoxIIfuncs
 
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool', 'scrInfo')
 VERSION = var.MAYAVERSION
-DIRECTORY = os.path.join(os.getenv('PIPELINE_TOOL'), 'plt_maya/userLibrary')
+DIRECTORY = os.path.join(os.getenv('PIPELINE_TOOL'), 'plt_maya', 'userLibrary')
 CHANNELBOX_ID = 'ChannelBoxID'
 
 # -------------------------------------------------------------------------------------------------------------
@@ -706,10 +706,10 @@ class ToolBoxII(QtWidgets.QWidget):
     }
 
     # get the paths of icons folder
-    scrData = os.path.join(os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo'), NAMES['maya'][1])
+    scrData = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo', NAMES['maya'][1])
     with open(scrData, 'r') as f:
         scrPth = json.load(f)
-    scrIcons = os.path.join(os.getcwd(), 'plt_maya/icons')
+    scrIcons = os.path.join(os.getcwd(), 'plt_maya', 'icons')
 
     def __init__(self, dock=True):
         if dock:

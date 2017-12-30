@@ -33,7 +33,7 @@ NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE
 TITLE = var.TITLE
 VERSION = NAMES['mayaVersion']
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool', 'scrInfo')
 
 # Icon directory:
 ICONS = var.ICONS
@@ -215,7 +215,7 @@ class MayaMainUI(QtWidgets.QWidget):
         self.assetsTaskPth = os.path.join(self.assetsPth, self.assetsList[0])
 
         self.assetsTaskList = [f for f in os.listdir(self.assetsTaskPth) if os.path.isdir(self.assetsTaskPth + f)]
-        self.sequencesPth = self.curPth + 'scenes/sequences/'
+        self.sequencesPth = os.path.join(self.curPth, 'scenes', 'sequences')
 
         if not os.path.exists(self.sequencesPth):
             cmds.sysFile(self.sequencesPth, md=True)
@@ -223,20 +223,20 @@ class MayaMainUI(QtWidgets.QWidget):
         self.sequencesList = [f for f in os.listdir(self.sequencesPth) if
                               os.path.isdir(self.sequencesPth + f)]
         if self.sequencesList == []:
-            self.sequencesTaskPth = self.sequencesPth + 'shot_01/'
+            self.sequencesTaskPth = os.path.join(self.sequencesPth, 'shot_01')
             cmds.sysFile(self.sequencesTaskPth, md=True)
             self.sequencesTaskList = ['lighting', 'FX', 'layout', 'Animation', 'comp']
             for i in self.sequencesTaskList:
                 cmds.sysFile(self.sequencesTaskPth + i, md=True)
         else:
-            self.sequencesTaskPth = self.sequencesPth + self.sequencesList[0] + '/'
+            self.sequencesTaskPth = os.path.join(self.sequencesPth, self.sequencesList[0])
             self.sequencesTaskList = [f for f in os.listdir(self.sequencesTaskPth) if
                                       os.path.isdir(self.sequencesTaskPth + f)]
         self.stageText = "NA"
         self.stageName = "MA"
         self.curTask = "NA"
         self.curTaskPth = "NA"
-        self.reviewPth = os.path.join(self.curPth, 'movies/review')
+        self.reviewPth = os.path.join(self.curPth, 'movies', 'review')
 
         self.curStage = self.projPthParts[1]
 

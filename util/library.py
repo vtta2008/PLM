@@ -56,7 +56,7 @@ class LibHandle(object):
 
         for lib in sections:
 
-            libDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'lib_tk/%s' % lib)
+            libDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'lib_tk', '%s' % lib)
 
             if os.path.exists(libDir):
                 filePths = func.getfilePath(libDir)

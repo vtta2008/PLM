@@ -22,7 +22,7 @@ logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
-dataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/database.db')
+dataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'database.db')
 
 table_info = {}
 conn = lite.connect(dataPth)

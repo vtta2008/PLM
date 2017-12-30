@@ -74,11 +74,11 @@ class DataHandle(object):
         self.workPth = os.path.join(self.curPth, "scenes")
         self.filePth = cmds.file(q=True, loc=True)
 
-        self.snapShotPth = os.path.join(self.curPth, "scenes/snapShot")
+        self.snapShotPth = os.path.join(self.curPth, 'scenes', 'snapShot')
         if not os.path.exists(self.snapShotPth):
             cmds.sysFile(self.snapShotPth, md=True)
 
-        self.publishPth = os.path.join(self.curPth.split('work')[0], "publish/maya/")
+        self.publishPth = os.path.join(self.curPth.split('work')[0], "publish", "maya")
         if not os.path.exists(self.publishPth):
             cmds.sysFile(self.publishPth, md=True)
 

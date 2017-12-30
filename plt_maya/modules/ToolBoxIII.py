@@ -31,9 +31,9 @@ from plt_maya.plugins import Qt
 from plt_maya.plugins.Qt import QtWidgets, QtCore, QtGui
 
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
+SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool', 'scrInfo')
 VERSION = var.MAYAVERSION
-DIRECTORY = os.path.join(os.getcwd(), 'plt_maya/userLibrary')
+DIRECTORY = os.path.join(os.getcwd(), 'plt_maya', 'userLibrary')
 
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION

@@ -19,7 +19,7 @@ with open(os.path.join(pthInfo, infoData), 'r') as f:
 # Get app path
 APPINFO = info['pipeline']
 LOGO = info['icon']['Logo']
-iconPth = os.path.join(CURPTH, 'icons/Web.icon')
+iconPth = os.path.join(CURPTH, 'icons', 'Web.icon')
 keys = [k.split('.icon')[0] for k in os.listdir(iconPth) if k.endswith('.png')]
 
 info = {}
