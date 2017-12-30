@@ -29,7 +29,7 @@ from plt_maya.modules import MayaVariables as var
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool', 'scrInfo')
+SCRPTH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData')
 
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION
@@ -78,7 +78,9 @@ class MayaPythonProc(object):
     def __init__(self):
         super(MayaPythonProc, self).__init__()
 
-        self.checkAllFiles()
+        # self.checkAllFiles()
+
+        self.setupFolderAndPath()
 
     def checkAllFiles(self):
         for part in self.checkList:
@@ -96,8 +98,6 @@ class MayaPythonProc(object):
             pass
         else:
             self.showMissing()
-
-        self.setupFolderAndPath()
 
     def setupFolderAndPath(self, **info):
         infoUser = {}

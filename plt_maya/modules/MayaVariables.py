@@ -220,8 +220,6 @@ def getScrPth(mainVar):
         os.mkdir( pipelineDataPth )
     return pipelineDataPth
 
-SCRPTH = getScrPth(MAINVAR)
-
 def getDate():
     t = datetime.datetime.timetuple(datetime.datetime.now())
     date = '%s/%s/%s' % (str(t.tm_mday), str(t.tm_mon), str(t.tm_year))
@@ -233,6 +231,8 @@ def getTime():
     return time
 
 def createLog(apps, event='log in', data=MAINVAR):
+    SCRPTH = getScrPth(MAINVAR)
+
     d = getDate()
     t = getTime()
 

@@ -21,7 +21,7 @@ from plt_maya.modules import MayaVariables as var
 # ------------------------------------------------------
 # We can configure the current level to make it disable certain logs when we don't want it.
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo')
+SCRPTH = os.path.join(os.getenv('PIPELINE_TOOL'), 'PipelineTool/scrInfo')
 MESSAGE = var.MESSAGE
 ID = 'UserSetup'
 KEY = 'PYTHONPATH'
@@ -46,18 +46,17 @@ class InitUserSetup(object):
         # First greeting to user
         # self.greetings()
 
-        var.createLog('maya')
-
-        SCR = os.path.join( SCRPTH, NAMES['os'][0] )
-
-        if os.path.exists( SCR ):
-            # logger.info( 'Start updateing sys path' )
-            self.updatePathFromUser(SCR)
-        else:
-            pass
+        # var.createLog('maya')
+        #
+        # SCR = os.path.join( SCRPTH, NAMES['os'][0] )
+        #
+        # if os.path.exists( SCR ):
+        #     # logger.info( 'Start updateing sys path' )
+        #     self.updatePathFromUser(SCR)
 
         # Create menu in Maya Layout
         self.makePipelineMenu()
+
         # Create port for Vray material presets pro
         try:
             cmds.commandPort(n = "localhost:7088")
@@ -95,7 +94,7 @@ class InitUserSetup(object):
 
         info['sysPth'] = sysPth
 
-        filePth = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo/maya.os')
+        filePth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'maya_config.json')
 
         with open(filePth, 'w') as f:
             json.dump(info, f, indent=4)

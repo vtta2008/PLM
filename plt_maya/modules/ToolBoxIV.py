@@ -71,7 +71,7 @@ class toolBoxIV(object):
 
     def getAppData(self):
 
-        self.scrApps = os.path.join(SCRPTH, 'apps.config')
+        self.scrApps = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'main_config.json')
         if not os.path.exists(self.scrApps):
             self.warningMessage(MESSAGE['canNotFindIt'])
         else:
@@ -87,9 +87,7 @@ class toolBoxIV(object):
                 'Photoshop CC', 'Illustrator CC', 'Premiere Pro CC', 'After Effects CC']
 
         with open(self.scrApps, 'r') as f:
-            info = json.load(f)
-
-        appInfo = info['pipeline']
+            appInfo = json.load(f)
 
         if cmds.window(WINID, exists=True):
             cmds.deleteUI(WINID)

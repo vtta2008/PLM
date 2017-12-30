@@ -228,7 +228,7 @@ def getAllInstalledPythonPackage(*args):
 
         pyPkgs[name] = [key, version, location]
 
-    pkgConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/pkgs.config.yml')
+    pkgConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/pkgs_config.yml')
 
     with open(pkgConfig, 'w') as f:
         yaml.dump(pyPkgs, f, default_flow_style=False)
@@ -600,9 +600,11 @@ class Generate_info(object):
         trackKeys = {}
 
         allapps = self.getAllAppInfo()
-        appsConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/app_config.yml')
-        if not os.path.exists(appsConfig):
-            dataHandle('yaml', 'w', appsConfig, allapps)
+        appsConfig_yaml = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/app_config.yml')
+        appsConfig_json = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/app_config.json')
+
+        dataHandle('yaml', 'w', appsConfig_yaml, allapps)
+        dataHandle('json', 'w', appsConfig_json, allapps)
 
         self.appInfo = self.getPackageAppInfo(package)
         for key in self.appInfo:
@@ -667,8 +669,10 @@ class Generate_info(object):
                 trackKeys['Advance Renamer'] = ['Advance Renamer 3.8', getIcon('AdvanceRenamer'), advanceRenamerPth]
 
         info['pipeline'] = trackKeys
-        piplineConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/main_config.yml')
-        dataHandle('yaml', 'w', piplineConfig, trackKeys)
+        pipelineConfig_yaml = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/main_config.yml')
+        pipelineConfig_json = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/main_config.json')
+        dataHandle('yaml', 'w', pipelineConfig_yaml, trackKeys)
+        dataHandle('json', 'w', pipelineConfig_json, trackKeys)
         info['icon'] = iconInfo
 
         # iconConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/icon_config.yml')

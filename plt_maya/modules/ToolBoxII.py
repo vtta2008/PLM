@@ -706,10 +706,7 @@ class ToolBoxII(QtWidgets.QWidget):
     }
 
     # get the paths of icons folder
-    scrData = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool/scrInfo', NAMES['maya'][1])
-    with open(scrData, 'r') as f:
-        scrPth = json.load(f)
-    scrIcons = os.path.join(os.getcwd(), 'plt_maya', 'icons')
+    scrIcons = os.path.join(os.getenv('PIPELINE_TOOL'), 'plt_maya', 'icons')
 
     def __init__(self, dock=True):
         if dock:
