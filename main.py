@@ -460,93 +460,98 @@ class TabWidget(QWidget):
         # Create Layout for Tab 1.
         # ------------------------------------------------------
         # Title of layout
-        self.tab1.setTitle('Personal Tool')
+        self.tab1.setTitle('Optional Tool')
         # self.tab1.setFixedSize(W,H)
 
         # Main layout
         # ------------------------------------------------------
         vboxLayout = QVBoxLayout()
-        tab1HBoxLine1 = QHBoxLayout()
-        tab1HBoxLine2 = QHBoxLayout()
-        tab1HBoxLine3 = QHBoxLayout()
+        tab1VBoxLayout = QVBoxLayout()
+        line1GroupBox = QGroupBox()
+        line1HBoxLayout = QHBoxLayout()
+        line2HBoxLayout = QHBoxLayout()
+        line3HBoxLayout = QHBoxLayout()
 
         # Content
         # ------------------------------------------------------
-        tab1HBoxLine1.addWidget(QLabel('Extra app: '))
+        line1HBoxLayout.addWidget(QLabel('Extra app: '))
 
         # Advance Renamer
         arIconBtn = self.makeIconButton('Advance Renamer')
-        tab1HBoxLine1.addWidget(arIconBtn)
+        line1HBoxLayout.addWidget(arIconBtn)
 
         # Note
         noteReminderBtn = self.iconButtonSelfFunction('QtNote', 'Note Reminder', self.note_reminder)
-        tab1HBoxLine1.addWidget(noteReminderBtn)
+        line1HBoxLayout.addWidget(noteReminderBtn)
 
         textEditorBtn = self.iconButtonSelfFunction('Text Editor', 'Text Editor', self.text_editor)
-        tab1HBoxLine1.addWidget(textEditorBtn)
+        line1HBoxLayout.addWidget(textEditorBtn)
 
         for key in APPINFO:
             # Mudbox
             if key == 'Mudbox 2018':
                 mudbox18Btn = self.makeIconButton(key)
-                tab1HBoxLine1.addWidget(mudbox18Btn)
+                line1HBoxLayout.addWidget(mudbox18Btn)
             if key == 'Mudbox 2017':
                 mudbox17Btn = self.makeIconButton(key)
-                tab1HBoxLine1.addWidget(mudbox17Btn)
+                line1HBoxLayout.addWidget(mudbox17Btn)
             if key == '3ds Max 2018':
                 max18Btn = self.makeIconButton(key)
-                tab1HBoxLine1.addWidget(max18Btn)
+                line1HBoxLayout.addWidget(max18Btn)
             if key == '3ds Max 2017':
                 max17Btn = self.makeIconButton(key)
-                tab1HBoxLine1.addWidget(max17Btn)
+                line1HBoxLayout.addWidget(max17Btn)
             if key == 'Illustrator CC':
                 illusCCBtn = self.makeIconButton(key)
-                tab1HBoxLine1.addWidget(illusCCBtn)
+                line1HBoxLayout.addWidget(illusCCBtn)
             if key == 'Illustrator CS6':
                 illusCS6Btn = self.makeIconButton(key)
-                tab1HBoxLine1.addWidget(illusCS6Btn)
+                line1HBoxLayout.addWidget(illusCS6Btn)
 
         # ------------------------------------------------------
-        tab1HBoxLine2.addWidget(QLabel('Enhance: '))
+        line2HBoxLayout.addWidget(QLabel('Enhance: '))
 
         # English dictionary
         dictBtn = self.iconButtonSelfFunction('English Dictionary', 'English Dictionary', self.englishDict)
-        tab1HBoxLine2.addWidget(dictBtn)
+        line2HBoxLayout.addWidget(dictBtn)
 
         # Screenshot
         screenshotBtn = self.iconButtonSelfFunction('Screenshot', 'Screenshot', self.screenShot)
-        tab1HBoxLine2.addWidget(screenshotBtn)
+        line2HBoxLayout.addWidget(screenshotBtn)
 
         # Calendar
         calendarBtn = self.iconButtonSelfFunction('Calendar', 'Calendar', self.calendar)
-        tab1HBoxLine2.addWidget(calendarBtn)
+        line2HBoxLayout.addWidget(calendarBtn)
 
         # Calculator
         calculatorBtn = self.iconButtonSelfFunction('Calculator', 'Calculator', self.calculator)
-        tab1HBoxLine2.addWidget(calculatorBtn)
+        line2HBoxLayout.addWidget(calculatorBtn)
 
         # File finder
         fileFinderBtn = self.iconButtonSelfFunction('Finder', 'Find files', self.findFiles)
-        tab1HBoxLine2.addWidget(fileFinderBtn)
+        line2HBoxLayout.addWidget(fileFinderBtn)
 
         # ------------------------------------------------------
-        tab1HBoxLine3.addWidget(QLabel('Dev: '))
+        line3HBoxLayout.addWidget(QLabel('Dev: '))
 
         # PyCharm
         pycharmBtn = self.makeIconButton('PyCharm 2017')
-        tab1HBoxLine3.addWidget(pycharmBtn)
+        line3HBoxLayout.addWidget(pycharmBtn)
 
         # SublimeText
         sublimeBtn = self.makeIconButton('SublimeText 3')
-        tab1HBoxLine3.addWidget(sublimeBtn)
+        line3HBoxLayout.addWidget(sublimeBtn)
 
         # Qt Designer
         qtdesignerBtn = self.makeIconButton('QtDesigner')
-        tab1HBoxLine3.addWidget(qtdesignerBtn)
+        line3HBoxLayout.addWidget(qtdesignerBtn)
 
-        vboxLayout.addLayout(tab1HBoxLine1)
-        vboxLayout.addLayout(tab1HBoxLine2)
-        vboxLayout.addLayout(tab1HBoxLine3)
+        # line1GroupBox.setLayout(line1HBoxLayout)
+
+        tab1VBoxLayout.addLayout(line1HBoxLayout)
+        tab1VBoxLayout.addLayout(line2HBoxLayout)
+        tab1VBoxLayout.addLayout(line3HBoxLayout)
+        vboxLayout.addLayout(tab1VBoxLayout)
         self.tab1.setLayout(vboxLayout)
 
     def tab2Layout(self):
