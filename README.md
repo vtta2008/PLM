@@ -21,6 +21,10 @@ Maya 2017/2018(it's up to you):
     - Vray 3.6: https://www.chaosgroup.com/vray/maya
     - Phoenix FD 3.0: https://www.chaosgroup.com/phoenix-fd/maya
 
+Houdini:
+
+    - Houdini download: https://www.sidefx.com/download/
+
 Mari:
 
     - Mari download: https://www.foundry.com/products/mari
