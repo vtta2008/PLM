@@ -39,14 +39,6 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget
                              QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu)
 from functools import partial
 
-# Pipeline tool ui
-from ui import ui_account_setting
-from ui import ui_preference
-# Pipeline tool modules
-from util import message as mes
-from util import util_sql as ultis
-from util import variables as var
-
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 # -------------------------------------------------------------------------------------------------------------
@@ -180,9 +172,18 @@ def query_user_info():
 
 KEY, TOOL_NAME = setup1_application_root_path()
 MAIN_CONFIG_PATH = setup2_application_database_path()
+
 setup3_extra_python_packages()
 
+# Pipeline tool ui
+from ui import ui_account_setting
+from ui import ui_preference
+# Pipeline tool modules
 from util import utilities as func
+from util import message as mes
+from util import util_sql as ultis
+from util import variables as var
+
 
 setup4_intergrade_for_maya()
 APPINFO = setup5_gather_configure_info()
