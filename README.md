@@ -67,6 +67,8 @@ Texture library:
 
     TEXTURE library: https://www.mediafire.com/#v5t32j935afg7
 
+**RUN PIPELINE TOOL**
+
 Download and extract zip file to your pc, remember to rename the folder to 'PipelineTool'.
 
 Go to PipelineTool folder in your explorer, hold Shift + right-click -> Open PowerShell window here/Open command window here
