@@ -1,29 +1,47 @@
 ## **SHORT FILM PIPELINE**
 
-This package: "Maya, Mari, Nuke, ZBrush, Hounidi and Adobe" is to build a pipeline for a brand new studio.
+This applications is to build, manage, and optimise a pipeline to make a short film.
 
-It is compatible with Windows 10 (may also work with earlier version but I have not tested yet) and will not work with Maya 2016 or lower.
+Now it's compatible with Windows 10 (may also work with earlier version but I have not tested yet) and will not work with Maya 2016 or lower.
 
 Regard to VFX Reference Platform, due to large invention we will stay with python 2.7 but will update to python 3 on 2019.
 Details is here:
 
     http://www.vfxplatform.com/
 
-To run it you need to install Python standalone, so I use Anaconda python 2.7 which is very useful.
-You can download Anaconda installer here:
+**SOFTWARE INSTALL**
 
-    Anaconda python 2.7: https://www.anaconda.com/download
+Python standalone:
 
-Right now, most of my work is focusing on developing for Maya, I will work on others in near future.
+    - Anaconda python 2.7: https://www.anaconda.com/download
 
-Plugin required:
+Maya 2017/2018(it's up to you):
 
-Maya:
-
+    - Maya education: https://www.autodesk.com/education/free-software/maya
     - Vray 3.6: https://www.chaosgroup.com/vray/maya
     - Phoenix FD 3.0: https://www.chaosgroup.com/phoenix-fd/maya
 
-**INSTALLATION**
+Mari:
+
+    - Mari download: https://www.foundry.com/products/mari
+    - Mari extension: "Will update later"
+
+Nuke:
+
+    - Nuke download: https://www.foundry.com/products/nuke
+
+ZBrush:
+
+    - ZBrush download: https://pixologic.com/zbrush/downloadcenter/
+
+Adobe:
+
+    - Creative Cloud download: https://www.adobe.com/creativecloud/catalog/desktop.html
+    You can install Photoshop, Premiere, After Effects or anything you want with Adobe Creative Cloud
+
+Davinci Resolve:
+
+    - Davinci Resolve download: https://www.blackmagicdesign.com/nz/products/davinciresolve/
 
 Download and extract zip file to your pc, remember to rename the folder to 'PipelineTool'.
 
