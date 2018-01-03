@@ -12,7 +12,6 @@ Description:
 import logging
 import os
 import platform
-
 import winshell
 
 import message

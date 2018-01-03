@@ -10,18 +10,18 @@ Description:
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
 import datetime
+import sys
+
+import cv2
 import json
 import logging
 import os
+import pip
 import platform
+import requests
 import shutil
 import subprocess
-import sys
 import urllib
-
-import cv2
-import pip
-import requests
 import winshell
 import yaml
 from pyunpack import Archive
@@ -565,7 +565,7 @@ class Generate_info(object):
         """
         self.appInfo = self.getAllAppInfo()
         keys = [k for k in self.appInfo if not self.appInfo[k].endswith(package['ext'][0])]
-        self.appInfo = self.deleteKey(keys, '1')
+        self.appInfo = self.deleteKey(keys, True)
         jobs = []
         for key in package['job']:
             for job in package[key]:
@@ -634,14 +634,14 @@ class Generate_info(object):
         trackKeys['Help'] = ['Introduction', iconInfo['Help'], '']
         trackKeys['CleanPyc'] = ['Clean .pyc files', iconInfo['CleanPyc'], '']
         trackKeys['ReConfig'] = ['Re configuring data', iconInfo['Reconfig'], '']
-        trackKeys['3ds Max 2017'] = ['3ds Max 2017', iconInfo['3ds Max 2017'], self.appInfo['3ds Max 2017']]
+        # trackKeys['3ds Max 2017'] = ['3ds Max 2017', iconInfo['3ds Max 2017'], self.appInfo['3ds Max 2017']]
 
         with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/app_config.yml'), 'r') as f:
             fixInfo = yaml.load(f)
 
-        dbBrowserPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'external_app/sqlbrowser/SQLiteDatabaseBrowserPortable.exe')
-        advanceRenamerPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'external_app/batchRenamer/ARen.exe')
-        qtDesigner = 'C:/ProgramData/Anaconda2/Library/bin/designer.exe'
+        dbBrowserPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'external_app', 'sqlbrowser', 'SQLiteDatabaseBrowserPortable.exe')
+        advanceRenamerPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'external_app', 'batchRenamer', 'ARen.exe')
+        qtDesigner = os.path.join(os.getenv('PROGRAMDATA'),'Anaconda2', 'Library', 'bin', 'designer.exe')
 
         for keys in fixInfo:
             # Pycharm.
@@ -669,8 +669,8 @@ class Generate_info(object):
                 trackKeys['Advance Renamer'] = ['Advance Renamer 3.8', getIcon('AdvanceRenamer'), advanceRenamerPth]
 
         info['pipeline'] = trackKeys
-        pipelineConfig_yaml = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/main_config.yml')
-        pipelineConfig_json = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/main_config.json')
+        pipelineConfig_yaml = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'main_config.yml')
+        pipelineConfig_json = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'main_config.json')
         dataHandle('yaml', 'w', pipelineConfig_yaml, trackKeys)
         dataHandle('json', 'w', pipelineConfig_json, trackKeys)
         info['icon'] = iconInfo
@@ -689,14 +689,17 @@ class Generate_info(object):
         # if not os.path.exists(pth):
         #     dataHandle('yaml', 'w', pth, envKeys)
 
-    def deleteKey(self, keys, n):
-        for key in keys:
-            try:
-                self.appInfo[key]
-            except KeyError:
-                continue
-            else:
-                del self.appInfo[key]
+    def deleteKey(self, keys, n=True):
+        if not n:
+            return self.appInfo
+        else:
+            for key in keys:
+                try:
+                    self.appInfo[key]
+                except KeyError:
+                    continue
+                else:
+                    del self.appInfo[key]
 
         return self.appInfo
 

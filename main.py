@@ -19,18 +19,17 @@ __author__ = "Trinh Do, a.k.a: Jimmy"
 
 # -------------------------------------------------------------------------------------------------------------
 """ Import modules """
+import sys
+
 # -------------------------------------------------------------------------------------------------------------
 # Python modules.
 import logging
 import os
+import pip
 import shutil
 import sqlite3 as lite
 import subprocess
-import sys
 import webbrowser
-from functools import partial
-
-import pip
 import yaml
 # PyQt5 modules
 from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings
@@ -38,6 +37,7 @@ from PyQt5.QtGui import QIcon, QPixmap, QImage
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QGridLayout, QSizePolicy, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu)
+from functools import partial
 
 # Pipeline tool ui
 from ui import ui_account_setting
@@ -45,7 +45,6 @@ from ui import ui_preference
 # Pipeline tool modules
 from util import message as mes
 from util import util_sql as ultis
-from util import utilities as func
 from util import variables as var
 
 # -------------------------------------------------------------------------------------------------------------
@@ -90,8 +89,8 @@ def setup2_application_database_path():
     DATA_PATH = os.path.join(appDataPath, 'database.db')
 
     # Back database in case something missing
-    DATA_BACKUP = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/backup/database.db')
-    MAIN_CONFIG_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/main_config.yml')
+    DATA_BACKUP = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'backup', 'database.db')
+    MAIN_CONFIG_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'main_config.yml')
 
     # If database file is missing, copy the backup one.
     if not os.path.exists(DATA_PATH):
@@ -182,6 +181,9 @@ def query_user_info():
 KEY, TOOL_NAME = setup1_application_root_path()
 MAIN_CONFIG_PATH = setup2_application_database_path()
 setup3_extra_python_packages()
+
+from util import utilities as func
+
 setup4_intergrade_for_maya()
 APPINFO = setup5_gather_configure_info()
 SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'PipelineTool_settings.ini')
