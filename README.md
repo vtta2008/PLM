@@ -12,7 +12,7 @@ Details is here:
 To run it you need to install Python standalone, so I use Anaconda python 2.7 which is very useful.
 You can download Anaconda installer here:
 
-    Anaconda python 2.7: https://www.continuum.io/downloads
+    Anaconda python 2.7: https://www.anaconda.com/download
 
 Right now, most of my work is focusing on developing for Maya, I will work on others in near future.
 
