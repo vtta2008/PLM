@@ -46,11 +46,14 @@ Davinci Resolve:
 **LIBRARY SUPPORT**
 
 After years collecting and researching, I can share you some library which is good for texturing and reference.
+
 You will need this for V-ray material preset in maya (VMM for maya).
 
     VMM for maya: https://www.mediafire.com/#gu9s1tbb2u4g9
     After downloading, please remember config the path to it when you open inside Maya.
     It is really sadly that the author has stop developing this app.
+
+Otherwise, here is something you may (or may not) like it.
 
 Alpha library:
 
