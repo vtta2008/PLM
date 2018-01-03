@@ -16,9 +16,12 @@ You can download Anaconda installer here:
 
 Right now, most of my work is focusing on developing for Maya, I will work on others in near future.
 
-For Maya plugin required:
+Plugin required:
 
-    Vray 3.6
+Maya:
+
+    - Vray 3.6: https://www.chaosgroup.com/vray/maya
+    - Phoenix FD 3.0: https://www.chaosgroup.com/phoenix-fd/maya
 
 **INSTALLATION**
 
@@ -32,12 +35,7 @@ In CommandPrompt/WindowShell window:
 
 A user login window will show up, login with your username and password.
 
-If you do not have login account, use this:
-
-    Username: Tester
-    Password: 123456
-
-Or you can create one. I have updated register function.
+If you do not have login account, simply create one. I have updated register function.
 
 * Update sql, now data is being stored to database file.
 * Tranfering configurations of the pipeline into database, not using yml.
