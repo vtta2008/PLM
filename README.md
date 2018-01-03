@@ -43,6 +43,27 @@ Davinci Resolve:
 
     - Davinci Resolve download: https://www.blackmagicdesign.com/nz/products/davinciresolve/
 
+**LIBRARY SUPPORT**
+
+After years collecting and researching, I can share you some library which is good for texturing and reference.
+You will need this for V-ray material preset in maya (VMM for maya).
+
+    VMM for maya: https://www.mediafire.com/#gu9s1tbb2u4g9
+    After downloading, please remember config the path to it when you open inside Maya.
+    It is really sadly that the author has stop developing this app.
+
+Alpha library:
+
+    ALPHA library: https://www.mediafire.com/#21br3oz8gf44j
+
+Hdri library:
+
+    HDRI library: https://www.mediafire.com/#33moon9n0qagc
+
+Texture library:
+
+    TEXTURE library: https://www.mediafire.com/#v5t32j935afg7
+
 Download and extract zip file to your pc, remember to rename the folder to 'PipelineTool'.
 
 Go to PipelineTool folder in your explorer, hold Shift + right-click -> Open PowerShell window here/Open command window here
