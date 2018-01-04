@@ -49,7 +49,7 @@ Davinci Resolve:
 
 **LIBRARY SUPPORT**
 
-After years collecting and researching, I can share you some library which is good for texturing and reference.
+After years of research and accumulation, I can share you some library which is good for texturing and reference.
 
 You will need this for V-ray material preset in maya (VMM for maya).
 
