@@ -5,7 +5,7 @@ This applications is to build, manage, and optimise a pipeline to make a short f
 Now it's compatible with Windows 10 (may also work with earlier version but I have not tested yet) and will not work with Maya 2016 or lower.
 
 Regard to VFX Reference Platform, due to large invention we will stay with python 2.7 but will update to python 3 on 2019.
-Details is here:
+Details are here:
 
     http://www.vfxplatform.com/
 

@@ -18,18 +18,19 @@ __author__ = "Trinh Do, a.k.a: Jimmy"
 
 
 # -------------------------------------------------------------------------------------------------------------
-""" Import modules """
-import sys
+""" Import Python modules """
 
-# -------------------------------------------------------------------------------------------------------------
-# Python modules.
 import logging
 import os
-import pip
 import shutil
 import sqlite3 as lite
 import subprocess
+import sys
+import time
 import webbrowser
+from functools import partial
+
+import pip
 import yaml
 # PyQt5 modules
 from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings
@@ -37,16 +38,6 @@ from PyQt5.QtGui import QIcon, QPixmap, QImage
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QGridLayout, QSizePolicy, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu)
-from functools import partial
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain logs """
-# -------------------------------------------------------------------------------------------------------------
-logging.basicConfig(filename=os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'main.log'),
-format="%(asctime)-15s: %(name)-18s - %(levelname)-8s - %(module)-15s - %(funcName)-20s - %(lineno)-6d - %(message)s",
-                    level=logging.DEBUG)
-logger = logging.getLogger(name=__appname__)
-
 
 # -------------------------------------------------------------------------------------------------------------
 """ PyQt5 ui element pre-define """
@@ -98,18 +89,24 @@ def setup3_extra_python_packages():
     packages = ['pywinauto', 'winshell', 'pandas', 'opencv-python', 'pyunpack']
     # Get current installed packages.
     checkList = []
+
     pyPkgs = {}
+
     pyPkgs['__mynote__'] = 'import pip; pip.get_installed_distributions()'
     for package in pip.get_installed_distributions():
         name = package.project_name
         if name in packages:
             checkList.append(name)
+
     resault = [p for p in packages if p not in checkList]
+
     # Automatically install packages if it is not.
     if len(resault) > 0:
         for package in resault:
             subprocess.Popen("pip install %s" % package)
+            time.sleep(5)
 
+    return True
 
 # -------------------------------------------------------------------------------------------------------------
 """ Setup extra environment path for maya """
@@ -173,19 +170,31 @@ def query_user_info():
 KEY, TOOL_NAME = setup1_application_root_path()
 MAIN_CONFIG_PATH = setup2_application_database_path()
 
-setup3_extra_python_packages()
+checkPackage = setup3_extra_python_packages()
+
+# -------------------------------------------------------------------------------------------------------------
+""" Configure the current level to make it disable certain logs """
+# -------------------------------------------------------------------------------------------------------------
+logging.basicConfig(filename=os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'main.log'),
+format="%(asctime)-15s: %(name)-18s - %(levelname)-8s - %(module)-15s - %(funcName)-20s - %(lineno)-6d - %(message)s",
+                    level=logging.DEBUG)
+logger = logging.getLogger(name=__appname__)
+
+while not checkPackage:
+    logger.debug('installing package')
 
 # Pipeline tool ui
 from ui import ui_account_setting
 from ui import ui_preference
+
 # Pipeline tool modules
 from util import utilities as func
 from util import message as mes
 from util import util_sql as ultis
 from util import variables as var
 
-
 setup4_intergrade_for_maya()
+
 APPINFO = setup5_gather_configure_info()
 SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'PipelineTool_settings.ini')
 DB_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'database.db')
@@ -792,7 +801,7 @@ class Main(QMainWindow):
         # ----------------------------------------------
         self.tdToolBar = self.toolBarTD(appInfo)
         self.compToolBar = self.toolBarComp(appInfo)
-        # self.artToolBar = self.toolBarArt(appInfo)
+        self.artToolBar = self.toolBarArt(appInfo)
         # ----------------------------------------------
 
     def system_tray_icon(self, appInfo):
@@ -920,66 +929,67 @@ class Main(QMainWindow):
     def toolBarComp(self, appInfo):
         # VFX toolBar
         toolBarComp = self.addToolBar('VFX')
+
+        # Davinci
+        if 'Resolve' in appInfo:
+            davinci = self.createAction(appInfo, 'Resolve')
+            toolBarComp.addAction(davinci)
+
         # NukeX
         if 'NukeX' in appInfo:
             nukeX = self.createAction(appInfo, 'NukeX')
             toolBarComp.addAction(nukeX)
+
         # Hiero
         if 'Hiero' in appInfo:
             hiero = self.createAction(appInfo, 'Hiero')
             toolBarComp.addAction(hiero)
+
         # After Effect CC
         if 'After Effects CC' in appInfo:
             aeCC = self.createAction(appInfo, 'After Effects CC')
             toolBarComp.addAction(aeCC)
+
         # After Effect CS6
         if 'After Effects CS6' in appInfo:
             aeCS6 = self.createAction(appInfo, 'After Effects CS6')
             toolBarComp.addAction(aeCS6)
+
         # Premiere CC
         if 'Premiere Pro CC' in appInfo:
             prCC = self.createAction(appInfo, 'Premiere Pro CC')
             toolBarComp.addAction(prCC)
+
         # Premiere CS6
         if 'Premiere Pro CS6' in appInfo:
             prCS6 = self.createAction(appInfo, 'Premiere Pro CS6')
             toolBarComp.addAction(prCS6)
-        # Photoshop CC
-        if 'Photoshop CC' in appInfo:
-            ptsCS6 = self.createAction(appInfo, 'Photoshop CC')
-            toolBarComp.addAction(ptsCS6)
-        # Photoshop CS6
-        if 'Photoshop CS6' in appInfo:
-            ptsCC = self.createAction(appInfo, 'Photoshop CS6')
-            toolBarComp.addAction(ptsCC)
-        # Illustrator CC
-        # if 'Illustrator CC' in appInfo:
-        #     illusCC = self.createAction(appInfo, 'Illustrator CC')
-        #     toolBarComp.addAction(illusCC)
-        # # Illustrator CS6
-        # if 'Illustrator CS6' in appInfo:
-        #     illusCS6 = self.createActioin(appInfo, 'Illustrator CS6')
-        #     toolBarComp.addAction(illusCS6)
+
         # Return Tool Bar
         return toolBarComp
 
     def toolBarArt(self, appInfo):
         toolbarArt = self.addToolBar('Art')
+
         if 'Photoshop CC' in appInfo:
             ptsCS6 = self.createAction(appInfo, 'Photoshop CC')
             toolbarArt.addAction(ptsCS6)
+
         # Photoshop CS6
         if 'Photoshop CS6' in appInfo:
             ptsCC = self.createAction(appInfo, 'Photoshop CS6')
             toolbarArt.addAction(ptsCC)
+
         # Illustrator CC
         if 'Illustrator CC' in appInfo:
             illusCC = self.createAction(appInfo, 'Illustrator CC')
             toolbarArt.addAction(illusCC)
+
         # Illustrator CS6
         if 'Illustrator CS6' in appInfo:
             illusCS6 = self.createActioin(appInfo, 'Illustrator CS6')
             toolbarArt.addAction(illusCS6)
+
         return toolbarArt
 
     def procedures(self, event):

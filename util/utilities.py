@@ -10,18 +10,18 @@ Description:
 # IMPORT PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
 import datetime
-import sys
-
-import cv2
 import json
 import logging
 import os
-import pip
 import platform
-import requests
 import shutil
 import subprocess
+import sys
 import urllib
+
+import cv2
+import pip
+import requests
 import winshell
 import yaml
 from pyunpack import Archive
@@ -634,7 +634,12 @@ class Generate_info(object):
         trackKeys['Help'] = ['Introduction', iconInfo['Help'], '']
         trackKeys['CleanPyc'] = ['Clean .pyc files', iconInfo['CleanPyc'], '']
         trackKeys['ReConfig'] = ['Re configuring data', iconInfo['Reconfig'], '']
-        # trackKeys['3ds Max 2017'] = ['3ds Max 2017', iconInfo['3ds Max 2017'], self.appInfo['3ds Max 2017']]
+
+        # Davinci Resolve
+        davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
+
+        if os.path.exists(davinciPth):
+            trackKeys['Resolve'] = ['Davinci Resolve 14', getIcon('Resolve'), davinciPth]
 
         with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/app_config.yml'), 'r') as f:
             fixInfo = yaml.load(f)

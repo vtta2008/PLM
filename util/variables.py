@@ -12,6 +12,7 @@ Description:
 import logging
 import os
 import platform
+
 import winshell
 
 import message
@@ -68,7 +69,7 @@ MAIN_TABID = ['', 'User', 'Functions', 'Project', 'Admin', ]
 
 MAIN_PLUGIN = dict(winshell='winshell')
 
-MAIN_URL = dict(Help='https://www.damgteam.com/', )
+MAIN_URL = dict(Help='https://www.dot.damgteam.com/', )
 
 MAIN_PACKPAGE = dict(job=['TD', 'Comp', 'Design', 'Office', 'UV', 'Sound'],
                      TD=['Maya', '3ds Max', 'Mudbox', 'Houdini FX', 'ZBrush', 'Mari', 'Substance Painter',],
