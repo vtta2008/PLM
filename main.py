@@ -133,9 +133,7 @@ def setup4_intergrade_for_maya():
     userSetup_plt_path = os.path.join(os.getcwd(), 'plt_maya', 'userSetup.py')
     userSetup_maya_path = os.path.join(os.path.expanduser('~/Documents/maya/2017/prefs/scripts'), 'userSetup.py')
 
-    if not os.path.exists(userSetup_maya_path):
-        pass
-    elif not os.path.exists(userSetup_plt_path):
+    if not os.path.exists(userSetup_plt_path):
         pass
     else:
         shutil.copy2(userSetup_plt_path, userSetup_maya_path)
