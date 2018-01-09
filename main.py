@@ -108,6 +108,7 @@ def setup3_extra_python_packages():
 
     return True
 
+
 # -------------------------------------------------------------------------------------------------------------
 """ Setup extra environment path for maya """
 # -------------------------------------------------------------------------------------------------------------
@@ -131,7 +132,13 @@ def setup4_intergrade_for_maya():
     # Copy userSetup.py from source code to properly maya folder
     userSetup_plt_path = os.path.join(os.getcwd(), 'plt_maya', 'userSetup.py')
     userSetup_maya_path = os.path.join(os.path.expanduser('~/Documents/maya/2017/prefs/scripts'), 'userSetup.py')
-    shutil.copy2(userSetup_plt_path, userSetup_maya_path)
+
+    if not os.path.exists(userSetup_maya_path):
+        pass
+    elif not os.path.exists(userSetup_plt_path):
+        pass
+    else:
+        shutil.copy2(userSetup_plt_path, userSetup_maya_path)
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -172,17 +179,6 @@ MAIN_CONFIG_PATH = setup2_application_database_path()
 
 checkPackage = setup3_extra_python_packages()
 
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain logs """
-# -------------------------------------------------------------------------------------------------------------
-logging.basicConfig(filename=os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'main.log'),
-format="%(asctime)-15s: %(name)-18s - %(levelname)-8s - %(module)-15s - %(funcName)-20s - %(lineno)-6d - %(message)s",
-                    level=logging.DEBUG)
-logger = logging.getLogger(name=__appname__)
-
-while not checkPackage:
-    logger.debug('installing package')
-
 # Pipeline tool ui
 from ui import ui_account_setting
 from ui import ui_preference
@@ -194,6 +190,18 @@ from util import util_sql as ultis
 from util import variables as var
 
 setup4_intergrade_for_maya()
+
+# -------------------------------------------------------------------------------------------------------------
+""" Configure the current level to make it disable certain logs """
+# -------------------------------------------------------------------------------------------------------------
+logFile = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'main.log')
+if not os.path.exists(logFile):
+    func.dataHandle('json', 'w', logFile)
+
+logging.basicConfig(filename=logFile,
+                    format="%(asctime)-15s: %(name)-18s - %(levelname)-8s - %(module)-15s - %(funcName)-20s - %(lineno)-6d - %(message)s",
+                    level=logging.DEBUG)
+logger = logging.getLogger(name=__appname__)
 
 APPINFO = setup5_gather_configure_info()
 SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'PipelineTool_settings.ini')

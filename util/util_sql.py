@@ -281,8 +281,7 @@ def query_original_pcToken(productID):
     elif len(tokenLst) == 1:
         token = createTokenLog()
     elif len(idLst) > 1 and len(tokenLst) > 1:
-        print 'idlist: %s' % idLst
-        token = tokenLst[idLst.index[productID]]
+        token = tokenLst[idLst.index(productID)]
     else:
         token = createTokenLog()
     return token
