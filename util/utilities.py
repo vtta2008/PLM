@@ -649,9 +649,10 @@ class Generate_info(object):
         qtDesigner = os.path.join(os.getenv('PROGRAMDATA'),'Anaconda2', 'Library', 'bin', 'designer.exe')
 
         for keys in fixInfo:
+            print keys
             # Pycharm.
-            if 'JetBrains PyCharm 2017.2.3' in keys:
-                trackKeys['PyCharm 2017'] = ['PyCharm 2017.2.3', getIcon('Pycharm 2017'), fixInfo['JetBrains PyCharm 2017.2.3']]
+            if 'JetBrains PyCharm' in keys:
+                trackKeys['PyCharm'] = ['PyCharm', getIcon('Pycharm'), fixInfo['JetBrains PyCharm 2017.3.3']]
 
             # Sumblime text.
             if 'Sublime Text 3' in keys:

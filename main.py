@@ -553,7 +553,7 @@ class TabWidget(QWidget):
         line3HBoxLayout.addWidget(QLabel('Dev: '))
 
         # PyCharm
-        pycharmBtn = self.makeIconButton('PyCharm 2017')
+        pycharmBtn = self.makeIconButton('PyCharm')
         line3HBoxLayout.addWidget(pycharmBtn)
 
         # SublimeText
