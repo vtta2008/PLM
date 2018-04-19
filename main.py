@@ -116,6 +116,7 @@ def setup3_extra_python_packages():
 def setup4_intergrade_for_maya():
     # Pipeline tool module paths for Maya.
     maya_tk = os.path.join(SCR_PATH, 'plt_maya')
+
     # Name of folders
     mayaTrack = ['util', 'plt_maya', 'icons', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging',
                  'Sufacing']
@@ -130,11 +131,14 @@ def setup4_intergrade_for_maya():
     for pth in pythonList:
         pythonValue += pth + ';'
     os.environ['PYTHONPATH'] = pythonValue
+
     # Copy userSetup.py from source code to properly maya folder
     userSetup_plt_path = os.path.join(os.getcwd(), 'plt_maya', 'userSetup.py')
     userSetup_maya_path = os.path.join(os.path.expanduser('~/Documents/maya/2017/prefs/scripts'), 'userSetup.py')
 
     if not os.path.exists(userSetup_plt_path):
+        pass
+    elif not os.path.exists(userSetup_plt_path):
         pass
     else:
         shutil.copy2(userSetup_plt_path, userSetup_maya_path)
@@ -194,6 +198,7 @@ setup4_intergrade_for_maya()
 """ Configure the current level to make it disable certain logs """
 # -------------------------------------------------------------------------------------------------------------
 logFile = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'main.log')
+
 if not os.path.exists(logFile):
     func.dataHandle('json', 'w', logFile)
 
@@ -258,27 +263,33 @@ class Create_account(QDialog):
         return label
 
     def onOKclicked(self):
+        FIRSTNAME = "Firstname cannot be blank"
+        LASTNAME = "Lastname cannot be blank"
+
+        # Get title info
         title = self.regisTitle.text()
         if title is None or title == '':
             title = 'Tester'
         else:
             title = str(title)
-        FIRSTNAME = "Firstname cannot be blank"
-        LASTNAME = "Lastname cannot be blank"
+
+        # Get first name and last name
+        lastname = str(self.lastnameField.text())
         firstname = str(self.firstnameField.text())
+
+        # Check first name and last name available
         if firstname == "" or firstname is None:
             QMessageBox.critical(self, "Error", FIRSTNAME, QMessageBox.Retry)
             return False
-        else:
-            pass
-        lastname = str(self.lastnameField.text())
-        if lastname == "":
+        elif lastname == "":
             QMessageBox.critical(self, "Error", LASTNAME, QMessageBox.Retry)
             return False
         else:
             pass
 
         username = '%s.%s' % (lastname, firstname)
+
+        # Check username already exists
         check = ultis.check_data_exists(username)
         if check:
             USEREXISTS = 'Username %s exists, try again or you already have an account?' % username
@@ -286,9 +297,11 @@ class Create_account(QDialog):
         else:
             pass
 
+        # Get password and retype password then check them
         password = str(self.password.text())
         passretype = str(self.passwordRetype.text())
         check = self.checkMatchPassWord(password, passretype)
+
         SUCCESS = "Your account has been created: %s" % username
         if not check:
             pass
