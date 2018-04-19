@@ -1,21 +1,22 @@
 ## **SHORT FILM PIPELINE**
 
-This applications is to build, manage, and optimise a pipeline to make a short film.
+This applications can be used to build, manage, and optimise film making pipelines.
 
-Now it's compatible with Windows 10 (may also work with earlier version but I have not tested yet) and will not work with Maya 2016 or lower.
+The latest version is compatible with Windows 10 and may run on earlier versions. It does not run in Maya 2016 or lower.
 
-Regard to VFX Reference Platform, due to large invention we will stay with python 2.7 but will update to python 3 on 2019.
-Details are here:
+Due to VFX Reference Platform and the large invention, we need to stay with python 2.7 but expect to migrate to python 3 in 2019.
+
+Details are as follows:
 
     http://www.vfxplatform.com/
 
-**SOFTWARE INSTALL**
+**SOFTWARE TO INSTALL**
 
 Python standalone:
 
     - Anaconda python 2.7: https://www.anaconda.com/download
 
-Maya 2017/2018(it's up to you):
+Maya 2017/2018(Optional):
 
     - Maya education: https://www.autodesk.com/education/free-software/maya
     - Vray 3.6: https://www.chaosgroup.com/vray/maya
@@ -49,15 +50,15 @@ Davinci Resolve:
 
 **LIBRARY SUPPORT**
 
-After years of research and accumulation, I am sharing my library with you, which is good for texturing and/or reference.
+I spent many years to build this library for texturing and referencing. The library is now freely availalbe to everyone.
 
-You will need this for V-ray material preset in maya (VMM for maya).
+For V-ray Materials in Maya, you will need this plugin:
 
     VMM for maya: https://www.mediafire.com/#gu9s1tbb2u4g9
-    After downloading, please remember config the path to it when you open inside Maya.
-    It is really sadly that the author has stop developing this app.
+    After downloading it, remember to configure the path once it is opened in Maya.
+    Unfortunately, the original author has stopped developing the plugin.
 
-Otherwise, here is something you may (or may not) like it.
+You may also find the following libraries useful:
 
 Alpha library:
 
@@ -73,15 +74,15 @@ Texture library:
 
 **RUN PIPELINE TOOL**
 
-Download and extract zip file to your pc, remember to rename the folder to 'PipelineTool'.
+Download and extract the zip file, remember to rename the folder as 'PipelineTool'.
 
-Go to PipelineTool folder in your explorer, hold Shift + right-click -> Open PowerShell window here/Open command window here
+Go to the diretory of 'PipelineTool' folder, hold down Shift + right-click -> Open PowerShell window here/Open command window here
 
-In CommandPrompt/WindowShell window:
+In CommandPrompt/WindowShell:
 
     "start python main.py" then enter to run.
 
-A user login window will show up, login with your username and password.
+A user login window will show up. Login with your username and password.
 
 If you do not have login account, simply create one. I have updated register function.
 
@@ -90,7 +91,7 @@ If you do not have login account, simply create one. I have updated register fun
 
 **REFERENCE**
 
-Here is Plugins/Files that I use for my code in Maya
+Here is the Plugins/Files that I use in Maya:
 
     GitHub - mottosso/Qt.py: Minimal Python 2 & 3 shim around all Qt bindings - PySide,
     PySide2, PyQt4 and PyQt5. (n.d.). Retrieved from https://github.com/mottosso/Qt.py
