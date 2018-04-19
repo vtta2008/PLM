@@ -651,7 +651,7 @@ class TabWidget(QWidget):
 
     def userAvatarChanged(self, curUser):
         sig = ui_account_setting.WindowDialog(self, curUser).changAvatarSignal
-        print sig
+        # print sig
 
     def onLogoutBtnClicked(self):
         unix, token, curUser, rememberLogin, status = query_user_info()
