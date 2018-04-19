@@ -32,6 +32,7 @@ from functools import partial
 
 import pip
 import yaml
+
 # PyQt5 modules
 from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings
 from PyQt5.QtGui import QIcon, QPixmap, QImage
