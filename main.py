@@ -533,12 +533,6 @@ class TabWidget(QWidget):
             if key == '3ds Max 2017':
                 max17Btn = self.makeIconButton(key)
                 line1HBoxLayout.addWidget(max17Btn)
-            if key == 'Illustrator CC':
-                illusCCBtn = self.makeIconButton(key)
-                line1HBoxLayout.addWidget(illusCCBtn)
-            if key == 'Illustrator CS6':
-                illusCS6Btn = self.makeIconButton(key)
-                line1HBoxLayout.addWidget(illusCS6Btn)
 
         # ------------------------------------------------------
         line2HBoxLayout.addWidget(QLabel('Enhance: '))
