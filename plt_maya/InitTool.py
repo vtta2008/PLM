@@ -22,7 +22,7 @@ SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool/scrInfo')
 
 # We can configure the current level to make it disable certain logs when we don't want it.
 logging.basicConfig()
-logger = logging.getLogger(NAMES['id'][13])
+logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
 # ----------------------------------------------------------------------------------------------------------- #

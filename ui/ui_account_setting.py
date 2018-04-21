@@ -31,6 +31,7 @@ logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
 def query_user_info():
+
     currentUserData = ultis.query_current_user()
     curUser = currentUserData[2]
     unix = currentUserData[0]
@@ -47,15 +48,17 @@ class WindowDialog(QDialog):
     def __init__(self, parent=None, username=None, id='User Setting', icon=func.getIcon('Logo')):
         super(WindowDialog, self).__init__(parent)
 
+        self.username = username
+
         self.setWindowTitle(id)
         self.setWindowIcon(QIcon(icon))
         central_widget = QWidget(self)
         self.layout = QGridLayout(self)
         central_widget.setLayout(self.layout)
 
-        self.buildUI(username)
+        self.buildUI()
 
-    def buildUI(self, username):
+    def buildUI(self):
 
         oldPasswordGroupBox = QGroupBox('Old Password')
         oldPasswordGridLayout = QGridLayout()
@@ -95,7 +98,7 @@ class WindowDialog(QDialog):
 
         avatarGroupBox = QGroupBox('User Avatar')
         avatarGroupLayout = QHBoxLayout()
-        imagePth = func.getAvatar(username.split(".")[0] + username.split(".")[-1])
+        imagePth = func.getAvatar(self.username.split(".")[0] + self.username.split(".")[-1])
         image = QPixmap.fromImage(QImage(imagePth))
         self.avatar = QLabel()
         self.avatar.setPixmap(image)

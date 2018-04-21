@@ -7,22 +7,43 @@ Description:
     This script is the place that all the variables will be referenced from here
 """
 # -------------------------------------------------------------------------------------------------------------
-# IMPORT PYTHON MODULES
+""" Import modules """
 # -------------------------------------------------------------------------------------------------------------
 import logging
 import os
 import platform
-
 import winshell
-
 import message
+
+# PyQt5 modules
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QFrame
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
+
 # ------------------------------------------------------
 # DEFAULT VARIABLES
 # ------------------------------------------------------
+
+# ui elements
+__center__ = Qt.AlignCenter
+__right__ = Qt.AlignRight
+__left__ = Qt.AlignLeft
+frameStyle = QFrame.Sunken | QFrame.Panel
+
+# main.py
+__appname__ = "Pipeline Tool"
+__module__ = "main"
+__version__ = "13.0.1"
+__organization__ = "DAMG team"
+__website__ = "www.damgteam.com"
+__email__ = "dot@damgteam.com"
+__author__ = "Trinh Do, a.k.a: Jimmy"
+
+TITLEBLANK = 'Blank title will be considered as "Tester"'
+
 # encode.py
 STRINPUT = 'password'
 HEXINPUT = '70617373776F7264'
@@ -44,6 +65,12 @@ MAIN_NAMES = dict(info='apps.config',
 
 USER_CLASS = ['', 'Admin', 'Supervisor', 'Artist', 'Tester']
 
+ERROR_LOG = dict(
+
+    first_name = "Firstname cannot be blank",
+    last_name = "Lastname cannot be blank"
+
+)
 
 def createInfo():
     appDir = os.getcwd()
