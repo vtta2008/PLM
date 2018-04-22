@@ -45,18 +45,26 @@ JimJim
 
 """
 
-NOT_ALLOW = """
-
-Sorry, but only Admin can do this function, please contact JimJim for details.
-
-"""
+NOT_ALLOW = "Sorry, but only Admin can do this function, please contact JimJim for details."
 
 SIGN_UP = "Is this the first time?"
 
-USERNAME_BLANK = "Username is blank."
-
-USER_BLOCK = "This username has been blocked"
+TITLE_BLANK = 'Blank title will be set to "Tester"'
 
 PASSWORD_BLANK = "Password is blank."
 
-CHECK_AGREEMENT = "I agree to the DAMG Terms of Service"
+PASSWORD_WRONG = "Your password is wrong."
+
+PASSWORD_UNMATCH = "Password doesn't match"
+
+FIRSTNAME_BLANK = "Firstname cannot be blank"
+
+LASTNAME_BLANK = "Lastname cannot be blank"
+
+USERNAME_BLANK = "Username is blank."
+
+USER_CHECK = "I agree to the DAMG Terms of Service"
+
+USER_NOT_EXSIST = "Wrong username or password"
+
+USER_BLOCK = "This username has been blocked"

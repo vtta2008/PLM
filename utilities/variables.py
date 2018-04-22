@@ -34,13 +34,13 @@ __left__ = Qt.AlignLeft
 frameStyle = QFrame.Sunken | QFrame.Panel
 
 # main.py
-__appname__ = "Pipeline Tool"
-__module__ = "main"
-__version__ = "13.0.1"
-__organization__ = "DAMG team"
-__website__ = "www.damgteam.com"
-__email__ = "dot@damgteam.com"
-__author__ = "Trinh Do, a.k.a: Jimmy"
+appname = "Pipeline Tool"
+module = "main"
+version = "13.0.1"
+organization = "DAMG team"
+website = "www.damgteam.com"
+email = "dot@damgteam.com"
+author = "Trinh Do, a.k.a: Jimmy"
 
 TITLEBLANK = 'Blank title will be considered as "Tester"'
 
@@ -69,8 +69,19 @@ ERROR_LOG = dict(
 
     first_name = "Firstname cannot be blank",
     last_name = "Lastname cannot be blank"
-
 )
+
+check_pth = os.getenv('PIPELINE_TOOL')
+
+if check_pth is None:
+    logging.warning("environment variable have not set yet.")
+
+    SCR_PATH = os.getcwd().split('ui')[0]
+    KEY = "PIPELINE_TOOL"
+
+    # Set key, path into environment variable.
+    logging.info("Set up environment variable")
+    os.environ[KEY] = SCR_PATH
 
 def createInfo():
     appDir = os.getcwd()
@@ -125,3 +136,5 @@ MAIN_PACKPAGE = dict(job=['TD', 'Comp', 'Design', 'Office', 'UV', 'Sound'],
                      geo=[300, 300, 300, 400, 350], )
 
 MAIN_ROOT = dict(main=MAIN_PACKPAGE['root'])
+
+DB_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'database.db')

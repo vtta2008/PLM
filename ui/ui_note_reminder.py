@@ -212,8 +212,11 @@ class WindowDialog(QDialog):
         self.layout = QGridLayout(self)
         self.layout.addWidget(self.mainMenu, 0,0,1,1)
 
-if __name__ == '__main__':
+def main():
     app = QApplication(sys.argv)
     mainWin = WindowDialog()
     mainWin.show()
     sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    main()
