@@ -28,7 +28,7 @@ class Calculator(QDialog):
 
     NumDigitButtons = 10
 
-    def __init__(self, id='Calculator', icon=func.getIcon('Calculator'), parent=None):
+    def __init__(self, id='Calculator', icon=func.get_icon('Calculator'), parent=None):
         super(Calculator, self).__init__(parent)
 
         self.setWindowTitle(id)

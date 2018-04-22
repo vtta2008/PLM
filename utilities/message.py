@@ -1,4 +1,4 @@
-MAIN_ABOUT = """
+PLT_ABOUT = """
 
 PIPELINE TOOL TO MAKE A SHORT FILM
 
@@ -15,7 +15,7 @@ For feedback or questions, feel free to email me: damgteam@gmail.com or dot@damg
 
 """
 
-MAIN_CREDIT = """
+PLT_CREDIT = """
 
 Special thank to lectures and students in Media Design School:
 

@@ -30,7 +30,7 @@ logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
 class WindowDialog(QDialog):
-    def __init__(self, id='About', message=None, icon=func.getIcon('Logo'), parent=None):
+    def __init__(self, id='About', message=None, icon=func.get_icon('Logo'), parent=None):
         super(WindowDialog, self).__init__(parent)
 
         self.setWindowTitle(id)

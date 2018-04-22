@@ -10,7 +10,7 @@ from utilities import utils as func
 
 
 class Calendar(QDialog):
-    def __init__(self, id='Calendar', icon=func.getIcon('Calendar'), parent=None):
+    def __init__(self, id='Calendar', icon=func.get_icon('Calendar'), parent=None):
         super(Calendar, self).__init__(parent)
 
         self.setWindowTitle(id)

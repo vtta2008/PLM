@@ -1,11 +1,48 @@
-# coding=utf-8
+# -*- coding: utf-8 -*-
+"""
 
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+Script Name: plt.py
+Author: Do Trinh/Jimmy - 3D artist.
+Description:
+    It simply makes a screenshot
 
+"""
+
+__appname__ = "Pipeline Tool"
+__module__ = "plt"
+__version__ = "13.0.1"
+__organization__ = "DAMG team"
+__website__ = "www.dot.damgteam.com"
+__email__ = "dot@damgteam.com"
+__author__ = "Trinh Do, a.k.a: Jimmy"
+
+# -------------------------------------------------------------------------------------------------------------
+""" Import modules """
+# -------------------------------------------------------------------------------------------------------------
+# Python
+import sys
+import os
+import logging
+
+# PyQt5
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtCore import Qt, QTimer, QDir
+from PyQt5.QtWidgets import (QWidget, QLabel, QSizePolicy, QVBoxLayout, QFileDialog, QApplication, QGroupBox, QSpinBox,
+                             QGridLayout, QCheckBox, QPushButton, QHBoxLayout)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Configure the current level to make it disable certain logs """
+# -------------------------------------------------------------------------------------------------------------
+logPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'logs', 'screenshot.log')
+logger = logging.getLogger('screenshot')
+handler = logging.FileHandler(logPth)
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
+logger.setLevel(logging.DEBUG)
 
 class Screenshot(QWidget):
+
     def __init__(self):
         super(Screenshot, self).__init__()
 
@@ -119,14 +156,10 @@ class Screenshot(QWidget):
                 Qt.SmoothTransformation))
 
 
-def initialize():
-    import sys
+
+if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     screenshot = Screenshot()
     screenshot.show()
     sys.exit(app.exec_())
-
-if __name__ == '__main__':
-
-    initialize()

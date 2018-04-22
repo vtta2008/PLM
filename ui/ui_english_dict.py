@@ -25,7 +25,7 @@ from utilities import utils as func
 
 
 class EnglishDict(QDialog):
-    def __init__(self, id='English Dictionary', icon=func.getIcon('English Dictionary'), parent=None):
+    def __init__(self, id='English Dictionary', icon=func.get_icon('English Dictionary'), parent=None):
 
         super(EnglishDict, self).__init__(parent)
 

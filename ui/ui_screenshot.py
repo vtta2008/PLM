@@ -16,7 +16,7 @@ from utilities import utils as func
 
 class Screenshot(QDialog):
 
-    def __init__(self, id='Screenshot', icon=func.getIcon('Logo'), parent=None):
+    def __init__(self, id='Screenshot', icon=func.get_icon('Logo'), parent=None):
         super(Screenshot, self).__init__(parent)
 
         self.setWindowTitle(id)

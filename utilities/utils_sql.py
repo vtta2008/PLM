@@ -46,7 +46,7 @@ tableName = 'Pipeline'
 # -------------------------------------------------------------------------------------------------------------
 def query_local_pc_info(*args):
 
-    package = var.MAIN_PACKPAGE
+    package = var.PLT_PACKAGE
     # python version
     pythonVersion = sys.version
 

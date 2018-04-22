@@ -9,16 +9,16 @@ Description:
 """
 
 __appname__ = "Pipeline Tool"
-__module__ = "main"
-__version__ = "0.13"
+__module__ = "plt"
+__version__ = "13.0.1"
 __organization__ = "DAMG team"
-__website__ = "www.damgteam.com"
+__website__ = "www.dot.damgteam.com"
 __email__ = "dot@damgteam.com"
 __author__ = "Trinh Do, a.k.a: Jimmy"
 
 # -------------------------------------------------------------------------------------------------------------
 """ Import modules """
-
+# -------------------------------------------------------------------------------------------------------------
 # Python
 import logging
 import os
@@ -34,6 +34,11 @@ from PyQt5.QtGui import QIcon, QPixmap, QImage, QRegExpValidator
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QGridLayout, QSizePolicy, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu, QComboBox)
+
+if not os.getenv('PIPELINE_TOOL'):
+    os.environ['PIPELINE_TOOL'] = os.getcwd()
+elif os.getenv('PIPELINE_TOOL') is None:
+    os.environ['PIPELINE_TOOL'] = os.getcwd()
 
 # Run Preset
 import plt_presets as pltp
@@ -61,7 +66,7 @@ __right__ = Qt.AlignRight
 __left__ = Qt.AlignLeft
 frameStyle = QFrame.Sunken | QFrame.Panel
 
-# Get apps info configuration
+# Get apps info config
 APPINFO = pltp.preset5_gather_configure_info()
 SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'PipelineTool_settings.ini')
 DB_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'database.db')
@@ -70,7 +75,6 @@ DB_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'database.db')
 """ Configure the current level to make it disable certain logs """
 # -------------------------------------------------------------------------------------------------------------
 logPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'plt.log')
-
 logger = logging.getLogger('plt')
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
@@ -86,7 +90,7 @@ def clabel(text, *args):
     return label
 
 # ----------------------------------------------------------------------------------------------------------- #
-""" Create New Account """
+""" Sign up layout """
 # ----------------------------------------------------------------------------------------------------------- #
 class Plt_sign_up(QDialog):
 
@@ -95,7 +99,7 @@ class Plt_sign_up(QDialog):
         super(Plt_sign_up, self).__init__(parent)
 
         self.setWindowTitle("Sign Up")
-        self.setWindowIcon(QIcon(func.getIcon('Logo')))
+        self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setContentsMargins(0,0,0,0)
         self.setFixedSize(400, 800)
 
@@ -285,7 +289,6 @@ class Plt_sign_up(QDialog):
         else:
             return True
 
-
 # -------------------------------------------------------------------------------------------------------------
 """ Login Layout """
 # -------------------------------------------------------------------------------------------------------------
@@ -297,7 +300,7 @@ class Sign_in_layout(QDialog):
 
         # Sign in layout preset
         self.setWindowTitle('Sign in')
-        self.setWindowIcon(QIcon(func.getIcon('Logo')))
+        self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setContentsMargins(0, 0, 0, 0)
         self.setFixedSize(360, 240)
 
@@ -349,26 +352,19 @@ class Sign_in_layout(QDialog):
 
     def on_sign_up_btn_clicked(self):
         self.hide()
-        print 1
         signup = Plt_sign_up()
-        print 2
         signup.show()
-        print 3
         signup.exec_()
-        print 4
 
     def on_sign_in_btn_clicked(self):
-        username = str(self.userName.text())
+
+        username = str(self.usernameField.text())
+        pass_word = self.passwordField.text()
 
         if username == "" or username is None:
             QMessageBox.critical(self, 'Login Failed', mess.USERNAME_BLANK)
-            return
-
-        pass_word = self.passWord.text()
-
-        if pass_word == "" or pass_word is None:
+        elif pass_word == "" or pass_word is None:
             QMessageBox.critical(self, 'Login Failed', mess.PASSWORD_BLANK)
-            return
 
         password = str(func.encoding(pass_word))
 
@@ -414,43 +410,46 @@ class TabWidget(QWidget):
 
         super(TabWidget, self).__init__(parent)
 
-        self.buildUI(unix, username, package)
+        self.unix = unix
+        self.username = username
+        self.package = package
 
-    def buildUI(self, unix, username, package):
+        self.buildUI()
+
+    def buildUI(self):
         # Create tab layout
         # ------------------------------------------------------
-        self.layout = QVBoxLayout(self)
+        self.layout = QVBoxLayout()
         self.tabs = QTabWidget()
-        self.tabs.resize(package['geo'][1], package['geo'][2])
 
         # Create and add tabs
         # ------------------------------------------------------
         # Create and add tab 1: 'Tools: Extra tools that might be useful for user & developer'
-        self.tab1 = QGroupBox(self)
+        self.tab1 = QGroupBox()
         self.tab1Layout()
-        self.tabs.addTab(self.tab1, 'Tools')
+        self.tabs.addTab(self.tab1, 'Tool')
 
         # Create and add tab 2: 'Proj: Project management'
-        self.tab2 = QGroupBox(self)
+        self.tab2 = QGroupBox()
         self.tab2Layout()
         self.tabs.addTab(self.tab2, 'Prj')
 
         # Create and add tab 3: 'Cal: Just a calculator'
-        self.tab3 = QGroupBox(self)
-        self.tab3Layout(curUser=username)
-        self.tabs.addTab(self.tab3, 'User')
+        self.tab3 = QGroupBox()
+        self.tab3Layout(self.username)
+        self.tabs.addTab(self.tab3, 'Acc')
 
         # Create and add tab 4: 'User: User login profile'
-        self.tab4 = QGroupBox(self)
+        self.tab4 = QGroupBox()
         self.tab4Layout()
         self.tabs.addTab(self.tab4, 'Lib')
 
-        userClass = usql.query_user_class(unix=unix, username=username)
+        userClass = usql.query_user_class(self.unix, self.username)
 
         if userClass == 'Administrator Privilege':
-            self.tab5 = QGroupBox(self)
+            self.tab5 = QGroupBox()
             self.tab5Layout()
-            self.tabs.addTab(self.tab5, 'SQL')
+            self.tabs.addTab(self.tab5, 'DB')
 
         self.layout.addWidget(self.tabs)
         self.setLayout(self.layout)
@@ -460,7 +459,6 @@ class TabWidget(QWidget):
         # ------------------------------------------------------
         # Title of layout
         self.tab1.setTitle('Optional Tool')
-        # self.tab1.setFixedSize(W,H)
 
         # Main layout
         # ------------------------------------------------------
@@ -541,8 +539,6 @@ class TabWidget(QWidget):
         qtdesignerBtn = self.make_icon_btn2('QtDesigner')
         line3HBoxLayout.addWidget(qtdesignerBtn)
 
-        # line1GroupBox.setLayout(line1HBoxLayout)
-
         tab1VBoxLayout.addLayout(line1HBoxLayout)
         tab1VBoxLayout.addLayout(line2HBoxLayout)
         tab1VBoxLayout.addLayout(line3HBoxLayout)
@@ -572,13 +568,12 @@ class TabWidget(QWidget):
 
         # Create Layout for Tab 3.
         self.tab3.setTitle(curUser)
-        # self.tab1.setFixedSize(W, H)
 
         hboxLayout = QHBoxLayout()
         tab3ridLayout = QGridLayout()
 
         userProfile = usql.query_user_profile(curUser, 'username')
-        userImg = QPixmap.fromImage(QImage(func.getAvatar(userProfile[7])))
+        userImg = QPixmap.fromImage(QImage(func.get_avatar(userProfile[7])))
         self.userAvatar = QLabel()
         self.userAvatar.setPixmap(userImg)
         self.userAvatar.setScaledContents(True)
@@ -599,7 +594,6 @@ class TabWidget(QWidget):
     def tab4Layout(self):
         # Create Layout for Tab 4.
         self.tab4.setTitle('Library')
-        # self.tab4.setFixedSize(W, H)
 
         hboxLayout = QHBoxLayout()
         tab4ridLayout = QGridLayout()
@@ -628,7 +622,6 @@ class TabWidget(QWidget):
 
     def user_avatar_changed(self, curUser):
         sig = ui_account_setting.WindowDialog(self, curUser).changAvatarSignal
-        # print sig
 
     def on_log_out_btn_clicked(self):
         unix, token, curUser, rememberLogin, status = pltp.preset6_query_user_info()
@@ -641,7 +634,7 @@ class TabWidget(QWidget):
         usql.update_current_user(unix, token, curUser, 'False')
 
     def make_icon_btn1(self, iconName, tooltip, func_tool):
-        icon = QIcon(func.getIcon(iconName))
+        icon = QIcon(func.get_icon(iconName))
         iconBtn = QPushButton()
         iconBtn.setToolTip(tooltip)
         iconBtn.setIcon(icon)
@@ -717,31 +710,34 @@ class TabWidget(QWidget):
 class Main_layout(QMainWindow):
 
     def __init__(self, case=None, parent=None):
-        unix, token, username, rememberLogin, status = pltp.preset6_query_user_info()
+
         super(Main_layout, self).__init__(parent)
 
-        mainID = var.MAIN_ID
-        appInfo = APPINFO
-        package = var.MAIN_PACKPAGE
-        message = var.MAIN_MESSAGE
-        url = var.MAIN_URL
+        unix, token, username, rememberLogin, status = pltp.preset6_query_user_info()
+
+        self.mainID = var.PLT_ID
+        self.appInfo = APPINFO
+        self.package = var.PLT_PACKAGE
+        self.message = var.PLT_MESS
+        self.url = var.PLT_URL
 
         self.settings = QSettings(SETTING_PATH, QSettings.IniFormat)
 
-        self.setWindowTitle(mainID['Main'])
-        self.setWindowIcon(QIcon(func.getIcon('Logo')))
+        self.setWindowTitle(self.mainID['Main'])
+        self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.setContentsMargins(0, 0, 0, 0)
         self.setToolButtonStyle(Qt.ToolButtonFollowStyle)
 
-        self.trayIcon = self.system_tray_icon(appInfo)
+        self.trayIcon = self.system_tray_icon()
         self.trayIcon.setToolTip(__appname__)
         self.trayIcon.show()
 
         if case == 'Auto login':
-            self.autoLogin(username)
+            self.auto_login(username)
 
         # Build UI
-        self.buildUI(appInfo, message, mainID, url)
+        self.buildUI()
 
         # Load Setting
         self.showToolBar = func.str2bool(self.settings.value("showToolbar", True))
@@ -749,228 +745,236 @@ class Main_layout(QMainWindow):
         self.compToolBar.setVisible(self.showToolBar)
 
         # Tabs build
-        self.tabWidget = TabWidget(unix, username, package)
+        self.tabWidget = TabWidget(unix, username, self.package)
         self.setCentralWidget(self.tabWidget)
 
         # Log record
         self.procedures('log in')
 
-    def buildUI(self, appInfo, message, mainID, url):
+    def buildUI(self):
 
         self.layout = self.setGeometry(300, 300, 400, 350)
 
         # Status bar viewing message
-        self.statusBar().showMessage(message['status'])
+        self.statusBar().showMessage(self.message['status'])
         # ----------------------------------------------
         # Menu Tool Bar sections
         menubar = self.menuBar()
+
+        # ----------------------------------------------
+        # File menu
         fileMenu = menubar.addMenu('File')
-        exitAction, prefAction = self.fileMenuToolBar(appInfo)
-        separator1 = self.createSeparatorAction(appInfo)
+        exitAction, prefAction = self.fileMenuToolBar()
+        separator1 = self.createSeparatorAction()
         fileMenu.addAction(prefAction)
         fileMenu.addAction(separator1)
         fileMenu.addAction(exitAction)
+
         # ----------------------------------------------
-        toolMenu = menubar.addMenu('Tool')
-        cleanPycAction, reconfigaction = self.toolMenuToolBar(appInfo)
+        # Tools menu
+        toolMenu = menubar.addMenu('Tools')
+        cleanPycAction, reconfigaction = self.toolMenuToolBar()
         toolMenu.addAction(cleanPycAction)
         toolMenu.addAction(reconfigaction)
+
         # ----------------------------------------------
+        # Help menu
         helpMenu = menubar.addMenu('Help')
-        aboutAction, creditAction, helpAction = self.helpMenuToolBar(appInfo, mainID, message, url)
+        aboutAction, creditAction, helpAction = self.helpMenuToolBar()
         helpMenu.addAction(aboutAction)
         helpMenu.addAction(creditAction)
         helpMenu.addAction(helpAction)
-        # ----------------------------------------------
-        self.tdToolBar = self.toolBarTD(appInfo)
-        self.compToolBar = self.toolBarComp(appInfo)
-        self.artToolBar = self.toolBarArt(appInfo)
+
         # ----------------------------------------------
 
-    def system_tray_icon(self, appInfo):
+        self.tdToolBar = self.toolBarTD()
+        self.compToolBar = self.toolBarComp()
+        self.artToolBar = self.toolBarArt()
+
+    def system_tray_icon(self):
         trayIconMenu = QMenu(self)
 
-        testIcon = QIcon(func.getIcon('Test'))
+        testIcon = QIcon(func.get_icon('Test'))
         testAction1 = QAction(testIcon, 'Test1', self)
-        testAction1.triggered.connect(partial(self.onSysTrayIconClick, 'set1'))
+        testAction1.triggered.connect(partial(self.on_sys_tray_icon_clicked, 'set1'))
 
-        testIcon = QIcon(func.getIcon('Test'))
+        testIcon = QIcon(func.get_icon('Test'))
         testAction2 = QAction(testIcon, 'Test2', self)
-        testAction2.triggered.connect(partial(self.onSysTrayIconClick, 'set2'))
+        testAction2.triggered.connect(partial(self.on_sys_tray_icon_clicked, 'set2'))
 
         trayIconMenu.addAction(testAction1)
         trayIconMenu.addAction(testAction2)
 
-        snippingAction = self.createAction(appInfo, 'Snipping Tool')
+        snippingAction = self.createAction(self.appInfo, 'Snipping Tool')
         trayIconMenu.addAction(snippingAction)
 
-        screenshoticon = QIcon(func.getIcon('Screenshot'))
+        screenshoticon = QIcon(func.get_icon('Screenshot'))
         screenshotAction = QAction(screenshoticon, "Screenshot", self)
         screenshotAction.triggered.connect(self.screenshot)
         trayIconMenu.addAction(screenshotAction)
 
-        maximizeIcon = QIcon(func.getIcon("Maximize"))
+        maximizeIcon = QIcon(func.get_icon("Maximize"))
         maximizeAction = QAction(maximizeIcon, "Maximize", self)
         maximizeAction.triggered.connect(self.showMaximized)
         trayIconMenu.addSeparator()
         trayIconMenu.addAction(maximizeAction)
 
-        minimizeIcon = QIcon(func.getIcon('Minimize'))
+        minimizeIcon = QIcon(func.get_icon('Minimize'))
         minimizeAction = QAction(minimizeIcon, "Minimize", self)
         minimizeAction.triggered.connect(self.hide)
         trayIconMenu.addAction(minimizeAction)
 
-        restoreIcon = QIcon(func.getIcon('Restore'))
+        restoreIcon = QIcon(func.get_icon('Restore'))
         restoreAction = QAction(restoreIcon, "Restore", self)
         restoreAction.triggered.connect(self.showNormal)
         trayIconMenu.addAction(restoreAction)
 
-        quitIcon = QIcon(func.getIcon('Close'))
+        quitIcon = QIcon(func.get_icon('Close'))
         quitAction = QAction(quitIcon, "Quit", self)
         quitAction.triggered.connect(self.exit_action_trigger)
         trayIconMenu.addSeparator()
         trayIconMenu.addAction(quitAction)
 
         trayIcon = QSystemTrayIcon(self)
-        trayIcon.setIcon(QIcon(func.getIcon('Logo')))
+        trayIcon.setIcon(QIcon(func.get_icon('Logo')))
         trayIcon.setContextMenu(trayIconMenu)
 
         return trayIcon
 
-    def fileMenuToolBar(self, appInfo):
+    def fileMenuToolBar(self):
         # Preferences
-        prefAction = QAction(QIcon(func.getIcon('Preferences')), 'Preferences', self)
+        prefAction = QAction(QIcon(func.get_icon('Preferences')), 'Preferences', self)
         prefAction.setStatusTip('Preferences')
         prefAction.triggered.connect(self.preferences_action_triggered)
 
         # Exit action
-        exitAction = QAction(QIcon(appInfo['Exit'][1]), appInfo['Exit'][0], self)
-        exitAction.setStatusTip(appInfo['Exit'][0])
+        exitAction = QAction(QIcon(self.appInfo['Exit'][1]), self.appInfo['Exit'][0], self)
+        exitAction.setStatusTip(self.appInfo['Exit'][0])
         exitAction.triggered.connect(self.exit_action_trigger)
         return exitAction, prefAction
 
-    def toolMenuToolBar(self, appInfo):
-        cleanaction = QAction(QIcon(appInfo['CleanPyc'][1]), appInfo['CleanPyc'][0], self)
-        cleanaction.setStatusTip(appInfo['CleanPyc'][0])
+    def toolMenuToolBar(self):
+        cleanaction = QAction(QIcon(self.appInfo['CleanPyc'][1]), self.appInfo['CleanPyc'][0], self)
+        cleanaction.setStatusTip(self.appInfo['CleanPyc'][0])
         cleanaction.triggered.connect(partial(func.clean_unnecessary_file, '.pyc'))
 
-        reconfigaction = QAction(QIcon(appInfo['ReConfig'][1]), appInfo['ReConfig'][0], self)
-        reconfigaction.setStatusTip(appInfo['ReConfig'][0])
+        reconfigaction = QAction(QIcon(self.appInfo['ReConfig'][1]), self.appInfo['ReConfig'][0], self)
+        reconfigaction.setStatusTip(self.appInfo['ReConfig'][0])
         reconfigaction.triggered.connect(func.Generate_info)
 
         return cleanaction, reconfigaction
 
-    def helpMenuToolBar(self, appInfo, mainid, message, url):
+    def helpMenuToolBar(self):
         # About action
-        about = QAction(QIcon(appInfo['About'][1]), appInfo['About'][0], self)
-        about.setStatusTip(appInfo['About'][0])
-        about.triggered.connect(partial(self.subWindow, mainid['About'], message['About'], appInfo['About'][1]))
+        about = QAction(QIcon(self.appInfo['About'][1]), self.appInfo['About'][0], self)
+        about.setStatusTip(self.appInfo['About'][0])
+        about.triggered.connect(partial(self.template_layout, self.mainID['About'], self.message['About'], self.appInfo['About'][1]))
         # Credit action
-        credit = QAction(QIcon(appInfo['Credit'][1]), appInfo['Credit'][0], self)
-        credit.setStatusTip(appInfo['Credit'][0])
-        credit.triggered.connect(partial(self.subWindow, mainid['Credit'], message['Credit'], appInfo['Credit'][1]))
+        credit = QAction(QIcon(self.appInfo['Credit'][1]), self.appInfo['Credit'][0], self)
+        credit.setStatusTip(self.appInfo['Credit'][0])
+        credit.triggered.connect(partial(self.template_layout, self.mainID['Credit'], self.message['Credit'], self.appInfo['Credit'][1]))
         # Help action
-        helpAction = QAction(QIcon(appInfo['Help'][1]), appInfo['Help'][0], self)
-        helpAction.setStatusTip((appInfo['Help'][0]))
-        helpAction.triggered.connect(partial(self.openURL, url['Help']))
+        helpAction = QAction(QIcon(self.appInfo['Help'][1]), self.appInfo['Help'][0], self)
+        helpAction.setStatusTip((self.appInfo['Help'][0]))
+        helpAction.triggered.connect(partial(self.open_browser, self.url['Help']))
         return about, credit, helpAction
 
-    def toolBarTD(self, appInfo):
+    def toolBarTD(self):
         # TD Tool Bar
         toolBarTD = self.addToolBar('TD')
         # Maya_tk 2017
-        if 'Maya 2018' in appInfo:
-            maya2017 = self.createAction(appInfo, 'Maya 2017')
+        if 'Maya 2018' in self.appInfo:
+            maya2017 = self.createAction(self.appInfo, 'Maya 2017')
             toolBarTD.addAction(maya2017)
         # Maya_tk 2017
-        if 'Maya 2017' in appInfo:
-            maya2017 = self.createAction(appInfo, 'Maya 2017')
+        if 'Maya 2017' in self.appInfo:
+            maya2017 = self.createAction(self.appInfo, 'Maya 2017')
             toolBarTD.addAction(maya2017)
 
         # ZBrush 4R8
-        if 'ZBrush 4R8' in appInfo:
-            zbrush4R8 = self.createAction(appInfo, 'ZBrush 4R8')
+        if 'ZBrush 4R8' in self.appInfo:
+            zbrush4R8 = self.createAction(self.appInfo, 'ZBrush 4R8')
             toolBarTD.addAction(zbrush4R8)
         # ZBrush 4R7
-        if 'ZBrush 4R7' in appInfo:
-            zbrush4R7 = self.createAction(appInfo, 'ZBrush 4R7')
+        if 'ZBrush 4R7' in self.appInfo:
+            zbrush4R7 = self.createAction(self.appInfo, 'ZBrush 4R7')
             toolBarTD.addAction(zbrush4R7)
 
         # Houdini FX
-        if 'Houdini FX' in appInfo:
-            houdiniFX = self.createAction(appInfo, 'Houdini FX')
+        if 'Houdini FX' in self.appInfo:
+            houdiniFX = self.createAction(self.appInfo, 'Houdini FX')
             toolBarTD.addAction(houdiniFX)
 
-        # plt_mari
-        if 'Mari' in appInfo:
-            mari = self.createAction(appInfo, 'Mari')
+        # Mari
+        if 'Mari' in self.appInfo:
+            mari = self.createAction(self.appInfo, 'Mari')
             toolBarTD.addAction(mari)
 
         # return Tool Bar
         return toolBarTD
 
-    def toolBarComp(self, appInfo):
+    def toolBarComp(self):
         # VFX toolBar
         toolBarComp = self.addToolBar('VFX')
 
         # Davinci
-        if 'Resolve' in appInfo:
-            davinci = self.createAction(appInfo, 'Resolve')
+        if 'Resolve' in self.appInfo:
+            davinci = self.createAction(self.appInfo, 'Resolve')
             toolBarComp.addAction(davinci)
 
         # NukeX
-        if 'NukeX' in appInfo:
-            nukeX = self.createAction(appInfo, 'NukeX')
+        if 'NukeX' in self.appInfo:
+            nukeX = self.createAction(self.appInfo, 'NukeX')
             toolBarComp.addAction(nukeX)
 
         # Hiero
-        if 'Hiero' in appInfo:
-            hiero = self.createAction(appInfo, 'Hiero')
+        if 'Hiero' in self.appInfo:
+            hiero = self.createAction(self.appInfo, 'Hiero')
             toolBarComp.addAction(hiero)
 
         # After Effect CC
-        if 'After Effects CC' in appInfo:
-            aeCC = self.createAction(appInfo, 'After Effects CC')
+        if 'After Effects CC' in self.appInfo:
+            aeCC = self.createAction(self.appInfo, 'After Effects CC')
             toolBarComp.addAction(aeCC)
 
         # After Effect CS6
-        if 'After Effects CS6' in appInfo:
-            aeCS6 = self.createAction(appInfo, 'After Effects CS6')
+        if 'After Effects CS6' in self.appInfo:
+            aeCS6 = self.createAction(self.appInfo, 'After Effects CS6')
             toolBarComp.addAction(aeCS6)
 
         # Premiere CC
-        if 'Premiere Pro CC' in appInfo:
-            prCC = self.createAction(appInfo, 'Premiere Pro CC')
+        if 'Premiere Pro CC' in self.appInfo:
+            prCC = self.createAction(self.appInfo, 'Premiere Pro CC')
             toolBarComp.addAction(prCC)
 
         # Premiere CS6
-        if 'Premiere Pro CS6' in appInfo:
-            prCS6 = self.createAction(appInfo, 'Premiere Pro CS6')
+        if 'Premiere Pro CS6' in self.appInfo:
+            prCS6 = self.createAction(self.appInfo, 'Premiere Pro CS6')
             toolBarComp.addAction(prCS6)
 
         # Return Tool Bar
         return toolBarComp
 
-    def toolBarArt(self, appInfo):
+    def toolBarArt(self):
         toolbarArt = self.addToolBar('Art')
 
-        if 'Photoshop CC' in appInfo:
-            ptsCS6 = self.createAction(appInfo, 'Photoshop CC')
+        if 'Photoshop CC' in self.appInfo:
+            ptsCS6 = self.createAction(self.appInfo, 'Photoshop CC')
             toolbarArt.addAction(ptsCS6)
 
         # Photoshop CS6
-        if 'Photoshop CS6' in appInfo:
-            ptsCC = self.createAction(appInfo, 'Photoshop CS6')
+        if 'Photoshop CS6' in self.appInfo:
+            ptsCC = self.createAction(self.appInfo, 'Photoshop CS6')
             toolbarArt.addAction(ptsCC)
 
         # Illustrator CC
-        if 'Illustrator CC' in appInfo:
-            illusCC = self.createAction(appInfo, 'Illustrator CC')
+        if 'Illustrator CC' in self.appInfo:
+            illusCC = self.createAction(self.appInfo, 'Illustrator CC')
             toolbarArt.addAction(illusCC)
 
         # Illustrator CS6
-        if 'Illustrator CS6' in appInfo:
-            illusCS6 = self.createActioin(appInfo, 'Illustrator CS6')
+        if 'Illustrator CS6' in self.appInfo:
+            illusCS6 = self.createActioin(self.appInfo, 'Illustrator CS6')
             toolbarArt.addAction(illusCS6)
 
         return toolbarArt
@@ -984,15 +988,15 @@ class Main_layout(QMainWindow):
         action.triggered.connect(partial(self.openApplication, appInfo[key][2]))
         return action
 
-    def createSeparatorAction(self, appInfo):
-        separator = QAction(QIcon(appInfo['Sep'][0]), appInfo['Sep'][1], self)
+    def createSeparatorAction(self):
+        separator = QAction(QIcon(self.appInfo['Sep'][0]), self.appInfo['Sep'][1], self)
         separator.setSeparator(True)
         return separator
 
     def openApplication(self, path):
         subprocess.Popen(path)
 
-    def subWindow(self, id='Note', message=" ", icon=func.getIcon('Logo')):
+    def template_layout(self, id='Note', message=" ", icon=func.get_icon('Logo')):
         from ui import ui_about
         reload(ui_about)
         dlg = ui_about.WindowDialog(id=id, message=message, icon=icon)
@@ -1004,14 +1008,14 @@ class Main_layout(QMainWindow):
         dlg = ui_screenshot.Screenshot()
         dlg.exec_()
 
-    def openURL(self, url):
+    def open_browser(self, url):
         webbrowser.open(url)
 
-    def autoLogin(self, username):
+    def auto_login(self, username):
         icon = QSystemTrayIcon.Information
         self.trayIcon.showMessage('Auto Login', "Welcome back %s" % username, icon, 1000)
 
-    def onSysTrayIconClick(self, name=None, *args):
+    def on_sys_tray_icon_clicked(self, name=None, *args):
         # from appData.db import sqlTools
         # reload(sqlTools)
         # if name == 'set1':
@@ -1025,10 +1029,10 @@ class Main_layout(QMainWindow):
     def preferences_action_triggered(self):
         dlg = ui_preference.Preferences(self)
         sig = dlg.checkboxSig
-        sig.connect(self.showHideToolbar)
+        sig.connect(self.show_hide_toolBar)
         dlg.exec_()
 
-    def showHideToolbar(self, param):
+    def show_hide_toolBar(self, param):
         # assert type(param) is bool
         self.tdToolBar.setVisible(param)
         self.compToolBar.setVisible(param)
@@ -1046,6 +1050,7 @@ class Main_layout(QMainWindow):
         event.ignore()
 
 def main():
+
     QCoreApplication.setApplicationName(__appname__)
     QCoreApplication.setApplicationVersion(__version__)
     QCoreApplication.setOrganizationName(__organization__)

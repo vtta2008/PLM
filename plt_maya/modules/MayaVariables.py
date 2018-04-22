@@ -82,7 +82,7 @@ MAINVAR = dict(
                       'nodeEditor.icon.png', 'obj.icon.png','openLoad.icon.png', 'openProjectFolder.icon.png',
                       'openPublishFolder.icon.png', 'openSceneFolder.icon.png', 'openSnapShotFolder.icon.png',
                       'openSourceimagesFolder.icon.png','outliner.icon.png', 'pluinManager.icon.png',
-                      'projectManager.icon.png', 'publish.icon.png','refresh.icon.png', 'renderSetting.icon.png',
+                      'projectManager.icon.png', 'publish.icon.png','Refresh.icon.png', 'renderSetting.icon.png',
                       'scriptEditor.icon.png', 'setProject.icon.png', 'snapshot.icon.png', 'toolboxI.icon.png',
                       'toolboxII.icon.png', 'toolboxIII.icon.png', 'uvEditor.icon.png', 'vrayVFB.icon.png',
                       'toolboxIV.shelf.icon.png', 'openload.shelf.icon.png', 'publish.shelf.icon.png',

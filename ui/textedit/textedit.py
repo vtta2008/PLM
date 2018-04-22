@@ -25,7 +25,7 @@ class TextEdit(QMainWindow):
     def __init__(self, fileName=None, parent=None):
         super(TextEdit, self).__init__(parent)
   
-        self.setWindowIcon(QIcon(func.getIcon('Logo')))
+        self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setToolButtonStyle(Qt.ToolButtonFollowStyle)
         self.setupFileActions()
         self.setupEditActions()
@@ -600,7 +600,7 @@ class WindowDialog(QDialog):
     def __init__(self, parent=None):
         super(WindowDialog, self).__init__(parent)
 
-        self.setWindowIcon(QIcon(func.getIcon('Logo')))
+        self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setWindowTitle('Editor')
 
         textEdit = TextEdit()

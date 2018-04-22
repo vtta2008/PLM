@@ -8,6 +8,14 @@ Description:
 
 """
 
+__appname__ = "Pipeline Tool"
+__module__ = "presets"
+__version__ = "13.0.1"
+__organization__ = "DAMG team"
+__website__ = "www.dot.damgteam.com"
+__email__ = "dot@damgteam.com"
+__author__ = "Trinh Do, a.k.a: Jimmy"
+
 # -------------------------------------------------------------------------------------------------------------
 """ Import modules """
 # -------------------------------------------------------------------------------------------------------------
@@ -28,7 +36,7 @@ from utilities import utils_sql as usql
 """ Configure the current level to make it disable certain logs """
 # -------------------------------------------------------------------------------------------------------------
 logPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'logs', 'plt_preset.log')
-logger = logging.getLogger(logPth)
+logger = logging.getLogger('plt_preset')
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
@@ -63,7 +71,7 @@ def preset2_plt_database_path():
 
     # Backup database.
     DATA_BACKUP = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'backup', 'database.db')
-    MAIN_CONFIG_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'main_config.yml')
+    MAIN_CONFIG_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'config', 'main_config.yml')
 
     # If database file is missing, copy the backup one.
     if not os.path.exists(DATA_PATH):
@@ -131,13 +139,13 @@ def preset4_maya_intergrate():
 
 def preset5_gather_configure_info():
     """
-    Get configuration info
+    Get config info
     :return:
     """
     # Configure root path
     MAIN_CONFIG_PATH = preset2_plt_database_path()
 
-    # Seeking configuration file
+    # Seeking config file
     func.Generate_info()
 
     # Get info from file

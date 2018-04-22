@@ -206,7 +206,7 @@ class WindowDialog(QDialog):
     def __init__(self, parent=None):
         super(WindowDialog, self).__init__(parent)
 
-        self.setWindowIcon(QIcon(func.getIcon('Logo')))
+        self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setWindowTitle('Note Reminder')
         self.mainMenu = MainWindow()
         self.layout = QGridLayout(self)

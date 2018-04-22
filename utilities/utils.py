@@ -7,8 +7,9 @@ Description:
     This script will find all the path of modules, icons, images ans store them to a file
 """
 # -------------------------------------------------------------------------------------------------------------
-# IMPORT PYTHON MODULES
+""" Import modules """
 # -------------------------------------------------------------------------------------------------------------
+# Python
 import datetime
 import json
 import logging
@@ -18,7 +19,6 @@ import shutil
 import subprocess
 import sys
 import urllib
-
 import cv2
 import pip
 import requests
@@ -26,16 +26,14 @@ import winshell
 import yaml
 from pyunpack import Archive
 
+# Plt tools
 import variables as var
 
 # ------------------------------------------------------
-# DEFAULT VARIABLES
+""" Variables """
 # ------------------------------------------------------
 config_path = os.path.join(os.getenv(('PIPELINE_TOOL'), 'appData'))
 
-PLUGIN = var.MAIN_PLUGIN
-PACKAGE = var.MAIN_PACKPAGE
-NAMES = var.MAIN_NAMES
 USER = var.USERNAME
 # example of a normal string (English, readable)
 STRINPUT = var.STRINPUT
@@ -44,8 +42,15 @@ HEXINPUT = var.HEXINPUT
 # list of keywords to run script by user
 OPERATION = var.OPERATION['encode']
 
-logging.basicConfig()
-logger = logging.getLogger(__file__)
+# -------------------------------------------------------------------------------------------------------------
+""" Configure the current level to make it disable certain logs """
+# -------------------------------------------------------------------------------------------------------------
+logPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'logs', 'plt.log')
+logger = logging.getLogger('plt')
+handler = logging.FileHandler(logPth)
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
 def str2bool(arg):
@@ -58,11 +63,11 @@ def bool2str(arg):
         return "False"
 
 def downloadSingleFile(url, path_to, *args):
-    doDL = urllib.urlretrieve(url, path_to)
-    logger.info(doDL)
+    execute_download = urllib.urlretrieve(url, path_to)
+    logger.info(execute_download)
     logger.info("Downloaded to: %s" % str(path_to))
 
-def extactingFiles(inDir, file_name, outDir, *args):
+def extract_files(inDir, file_name, outDir, *args):
     Archive(os.path.join(inDir, file_name)).extractall(outDir)
 
 def system_call(args, cwd="."):
@@ -77,6 +82,7 @@ def fix_image_files(root=os.curdir):
             system_call("mogrify *.png", "{}".format(os.path.join(path, dir)))
 
 def object_config(directory, mode, *args):
+
     operatingSystem = platform.system()
 
     if operatingSystem == "Windows" or operatingSystem == "Darwin":
@@ -120,13 +126,14 @@ def clean_unnecessary_file(var, *args):
         logger.info('removing %s' % f)
         os.remove(f)
 
-def getfilePath(directory=None):
+def get_file_path(directory=None):
 
     """
         This function will generate the file names in a directory
         tree by walking the tree either top-down or bottom-up. For each
         directory in the tree rooted at directory top (including top itself),
         it yields a 3-tuple (dirpath, dirnames, filenames).
+
     """
     file_paths = []  # List which will store all of the full filepaths.
 
@@ -148,6 +155,15 @@ def getfilePath(directory=None):
     return file_paths  # Self-explanatory.
 
 def batch_resize_image(imgDir=None, imgResDir=None, size=[100, 100], sub=False, ext='.png', mode=1):
+
+    """
+    resize multiple images at once
+    :param imgDir: the path of images will be resized
+    :param imgResDir: the path to store images after resizing
+    :param size: how big or small images will be resized
+
+    """
+
     if imgDir == None:
         sys.exit()
 
@@ -164,7 +180,7 @@ def batch_resize_image(imgDir=None, imgResDir=None, size=[100, 100], sub=False, 
     if not sub:
         images = [i for i in os.listdir(imgDir) if i.endswith(ext)]
     else:
-        filePths = getfilePath(imgDir)
+        filePths = get_file_path(imgDir)
         images = [os.path.abspath(i) for i in filePths if i.endswith(ext)]
 
     resized_images = []
@@ -182,6 +198,7 @@ def batch_resize_image(imgDir=None, imgResDir=None, size=[100, 100], sub=False, 
     return images, resized_images
 
 def resize_image(imgPthSrc, imgPthDes, size=[100,100]):
+
     img = cv2.imread(imgPthSrc, 1)
     resized_image = cv2.resize(img, (size[0], size[1]))
     cv2.imwrite(imgPthDes, resized_image)
@@ -214,7 +231,7 @@ def dataHandle(type='json', mode='r', filePath=None, data={}, *args):
 
     return info
 
-def getAllInstalledPythonPackage(*args):
+def get_list_python_packages_installed(*args):
     pyPkgs = {}
 
     pyPkgs['__mynote__'] = 'import pip; pip.get_installed_distributions()'
@@ -235,7 +252,6 @@ def getAllInstalledPythonPackage(*args):
 
     return pyPkgs
 
-# Execute a python file
 def executing(name, path, *args):
     """
     Executing a python file
@@ -248,10 +264,9 @@ def executing(name, path, *args):
     if os.path.exists(pth):
         subprocess.call([sys.executable, pth])
 
-# Install package via pip command (cmd)
 def install_package(name, *args):
     """
-    Install python component via command prompt
+    Install python package via command prompt
     :param name: name of component
     :return:
     """
@@ -259,15 +274,14 @@ def install_package(name, *args):
 
     subprocess.Popen('pip install %s' % name, shell=True).wait()
 
-# Check plugin is installed or not
-def checkPackageInstall(name, *args):
+def inspection_backage(name, *args):
     """
     check python component, if false, it will install component
     :param name:
     :return:
     """
     # logger.info( 'Trying to import %s' % name )
-    allPkgs = getAllInstalledPythonPackage()
+    allPkgs = get_list_python_packages_installed()
 
     if name in allPkgs:
         # logger.info('package "%s" is already installed' % name)
@@ -277,8 +291,7 @@ def checkPackageInstall(name, *args):
                     'execute package installation procedural' % name)
         install_package(name)
 
-# Create environment variable by custom key
-def createKey(key, path, *args):
+def create_env_key(key, path, *args):
     """
     Create custom enviroment Key in sys.
     all of those keys are temporary,
@@ -289,30 +302,31 @@ def createKey(key, path, *args):
     :return: a teamporary environment variable.
     """
     logger.info('install new environment variable')
-
     os.environ[key] = path
 
-# Check the value of environment variable
-def checkEnvKey(key, path, *args):
+def inspect_env_key(key, path, *args):
     try:
         pth = os.getenv(key)
 
         if pth == None or pth == '':
-            createKey(key, path)
+            create_env_key(key, path)
 
     except KeyError:
-        createKey(key, path)
+        create_env_key(key, path)
     else:
         pass
 
-# Get the full path of icon via icon file name
-def getIcon(name, *args):
+def get_icon(name, *args):
     iconName = name + '.icon.png'
-    rootPth = os.getcwd().split('ui')[0]
-    iconPth = os.path.join(os.path.join(rootPth, 'icons'), iconName)
+    iconPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'icons', iconName)
     return iconPth
 
-def getAvatar(name, *args):
+def get_web_icon(name, *args):
+    iconName = name + '.icon.png'
+    iconPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'icons', 'Web.icon', iconName)
+    return iconPth
+
+def get_avatar(name, *args):
     imgFile = name + '.avatar.jpg'
     imgDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs')
     imgPth = os.path.join(imgDir, imgFile)
@@ -323,8 +337,7 @@ def getAvatar(name, *args):
         shutil.copy2(scrPth, imgPth)
         return imgPth
 
-# Get the full path of image via icon file name
-def downloadFromURL(link, *args):
+def download_image_from_url(link, *args):
     fileName = os.path.basename(link)
     imgPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs')
     avatarPth = os.path.join(imgPth, fileName)
@@ -334,7 +347,7 @@ def downloadFromURL(link, *args):
     return avatarPth
 
 # ----------------------------------------------------------------------------------------------------------- #
-"""                        MAIN CLASS 1: ENDCODE - ENCODE STRING TO HEXADECIMAL                             """
+""" Enconding string """
 # ----------------------------------------------------------------------------------------------------------- #
 class Encode():
     """
@@ -381,9 +394,6 @@ class Encode():
         return self.outPut
 
 
-# ------------------------------------------------------
-# FUNCTION TO OPERATE THE ENCODING
-# ------------------------------------------------------
 def encode(input=STRINPUT, mode=OPERATION[0]):
     """
     Base on given mode it will tells script what to do
@@ -421,7 +431,7 @@ def create_location_stamp():
     return ip, city, country
 
 # ----------------------------------------------------------------------------------------------------------- #
-"""                MAIN CLASS 2: GET MODULE INFO - GET ALL INFO OF MODULES, ICONS, IMAGES                   """
+""" Get config info of modules, files etc. """
 # ----------------------------------------------------------------------------------------------------------- #
 class Get_current_time():
     """
@@ -452,15 +462,17 @@ class Generate_info(object):
 
     def __init__(self):
         super(Generate_info, self).__init__()
+
         """
         Initialize the main class functions
         :param package: the package of many information stored from default variable
         :param names: the dictionary of names stored from default variable
         :returns: all installed app info, package app info, icon info, image info, pc info.
+        
         """
         # logger.info('Updating data paths')
 
-        package = PACKAGE
+        package = var.PLT_PACKAGE
 
         self.createAllInfoFiles(package)
 
@@ -600,8 +612,8 @@ class Generate_info(object):
         trackKeys = {}
 
         allapps = self.getAllAppInfo()
-        appsConfig_yaml = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/app_config.yml')
-        appsConfig_json = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/app_config.json')
+        appsConfig_yaml = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'config', 'app_config.yml')
+        appsConfig_json = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'config', 'app_config.json')
 
         dataHandle('yaml', 'w', appsConfig_yaml, allapps)
         dataHandle('json', 'w', appsConfig_json, allapps)
@@ -639,9 +651,9 @@ class Generate_info(object):
         davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
 
         if os.path.exists(davinciPth):
-            trackKeys['Resolve'] = ['Davinci Resolve 14', getIcon('Resolve'), davinciPth]
+            trackKeys['Resolve'] = ['Davinci Resolve 14', get_icon('Resolve'), davinciPth]
 
-        with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/app_config.yml'), 'r') as f:
+        with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'config', 'app_config.yml'), 'r') as f:
             fixInfo = yaml.load(f)
 
         dbBrowserPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'external_app', 'sqlbrowser', 'SQLiteDatabaseBrowserPortable.exe')
@@ -652,35 +664,34 @@ class Generate_info(object):
             # print keys
             # Pycharm.
             if 'JetBrains PyCharm' in keys:
-                trackKeys['PyCharm'] = ['PyCharm', getIcon('Pycharm'), fixInfo['JetBrains PyCharm 2017.3.3']]
+                trackKeys['PyCharm'] = ['PyCharm', get_icon('Pycharm'), fixInfo['JetBrains PyCharm 2017.3.3']]
 
             # Sumblime text.
             if 'Sublime Text 3' in keys:
-                trackKeys['SublimeText 3'] = ['Sublime Text 3', getIcon('SublimeText 3'), fixInfo['Sublime Text 3']]
+                trackKeys['SublimeText 3'] = ['Sublime Text 3', get_icon('SublimeText 3'), fixInfo['Sublime Text 3']]
 
             # Qt Designer
             if os.path.exists(qtDesigner):
-                trackKeys['QtDesigner'] = ['QtDesigner', getIcon('QtDesigner'), qtDesigner]
+                trackKeys['QtDesigner'] = ['QtDesigner', get_icon('QtDesigner'), qtDesigner]
 
             # Snipping tool.
             if 'Snipping Tool' in fixInfo:
-                trackKeys['Snipping Tool'] = ['Snipping Tool', getIcon('Snipping Tool'), fixInfo['Snipping Tool']]
+                trackKeys['Snipping Tool'] = ['Snipping Tool', get_icon('Snipping Tool'), fixInfo['Snipping Tool']]
 
             # Database browser.
             if os.path.exists(dbBrowserPth):
-                trackKeys['Database Browser'] = ['Database Browser', getIcon('SQliteTool'), dbBrowserPth]
+                trackKeys['Database Browser'] = ['Database Browser', get_icon('SQliteTool'), dbBrowserPth]
 
             # Advance Renamer.
             if os.path.exists(advanceRenamerPth):
-                trackKeys['Advance Renamer'] = ['Advance Renamer 3.8', getIcon('AdvanceRenamer'), advanceRenamerPth]
+                trackKeys['Advance Renamer'] = ['Advance Renamer 3.8', get_icon('AdvanceRenamer'), advanceRenamerPth]
 
         info['pipeline'] = trackKeys
-        pipelineConfig_yaml = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'main_config.yml')
-        pipelineConfig_json = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'main_config.json')
+        pipelineConfig_yaml = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'config', 'main_config.yml')
+        pipelineConfig_json = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'config', 'main_config.json')
         dataHandle('yaml', 'w', pipelineConfig_yaml, trackKeys)
         dataHandle('json', 'w', pipelineConfig_json, trackKeys)
         info['icon'] = iconInfo
-
         # iconConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/icon_config.yml')
         #
         # if not os.path.exists(iconConfig):

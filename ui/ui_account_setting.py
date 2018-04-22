@@ -45,7 +45,7 @@ class WindowDialog(QDialog):
 
     changAvatarSignal = pyqtSignal(str)
 
-    def __init__(self, parent=None, username=None, id='User Setting', icon=func.getIcon('Logo')):
+    def __init__(self, parent=None, username=None, id='User Setting', icon=func.get_icon('Logo')):
         super(WindowDialog, self).__init__(parent)
 
         self.username = username
@@ -98,7 +98,7 @@ class WindowDialog(QDialog):
 
         avatarGroupBox = QGroupBox('User Avatar')
         avatarGroupLayout = QHBoxLayout()
-        imagePth = func.getAvatar(self.username.split(".")[0] + self.username.split(".")[-1])
+        imagePth = func.get_avatar(self.username.split(".")[0] + self.username.split(".")[-1])
         image = QPixmap.fromImage(QImage(imagePth))
         self.avatar = QLabel()
         self.avatar.setPixmap(image)

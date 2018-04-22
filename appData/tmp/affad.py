@@ -31,7 +31,7 @@ class MainWindow(QMainWindow):
     def buildUI(self):
 
         picLayout = QHBoxLayout()
-        pth = func.getAvatar('TrinhDo')
+        pth = func.get_avatar('TrinhDo')
         label = QImageReader()
         label.graphicsItem(pth)
         change = QPushButton('change')

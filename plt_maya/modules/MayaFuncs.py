@@ -274,7 +274,7 @@ def setCoolButton(anns, commands, labels, *args):
 
 
 def refreshBtn(command, wh=25, *args):
-    iconButton("Refresh", geticon('refresh.icon.png'), command, wh=wh)
+    iconButton("Refresh", geticon('Refresh.icon.png'), command, wh=wh)
 
 
 def cwE(nc, w, adj, *args):
