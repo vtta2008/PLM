@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import (QAction, QApplication, QComboBox, QDialog,
                              QDialogButtonBox, QFileDialog, QGridLayout, QLabel, QMainWindow, QMenu,
                              QMessageBox, QTextEdit)
 
-from util import utilities as func
+from utilities import utils as func
 
 
 def codec_name(codec):

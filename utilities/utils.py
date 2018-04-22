@@ -1,6 +1,6 @@
 # coding=utf-8
 """
-Script Name: util.py
+Script Name: utils.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:

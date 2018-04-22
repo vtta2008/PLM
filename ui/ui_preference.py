@@ -4,7 +4,7 @@ import os
 from PyQt5.QtCore import QSettings, pyqtSignal
 from PyQt5.QtWidgets import QDialog, QCheckBox, QPushButton, QVBoxLayout
 
-from util import utilities as func
+from utilities import utils as func
 
 SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'PipelineTool_settings.ini')
 

@@ -61,7 +61,7 @@ MAINVAR = dict(
 
     ext=[ '.exe', '.py', '.lnk' ],
 
-    py=[ 'util', 'ui', 'plugins', '' ],
+    py=[ 'utilities', 'ui', 'plugins', '' ],
 
     maya = ['maya.user', 'maya.os', 'maya.os'],
 

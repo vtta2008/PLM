@@ -23,7 +23,7 @@ from PyQt5.QtWidgets import *
 # ------------------------------------------------------
 # IMPORT FROM PIPELINE TOOLS APP
 # ------------------------------------------------------
-from util import utilities as func
+from utilities import utils as func
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)

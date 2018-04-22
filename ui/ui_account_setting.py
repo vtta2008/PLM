@@ -20,11 +20,11 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QImage, QIcon, QPixmap
 from PyQt5.QtWidgets import *
 
-from util import util_sql as ultis
+from utilities import utils_sql as ultis
 # ------------------------------------------------------
 # IMPORT FROM PIPELINE TOOLS APP
 # ------------------------------------------------------
-from util import utilities as func
+from utilities import utils as func
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)

@@ -12,7 +12,7 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog,
 
 import textedit_rc
 
-from util import utilities as func
+from utilities import utils as func
 
 if sys.platform.startswith('darwin'):
     rsrcPath = ":/images/mac"

@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
                              QComboBox, QDateEdit, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
                              QLayout, QDialog, QWidget)
 
-from util import utilities as func
+from utilities import utils as func
 
 
 class Calendar(QDialog):

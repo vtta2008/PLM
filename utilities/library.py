@@ -12,7 +12,7 @@ import urllib2
 try:
     from pyunpack import Archive
 except ImportError:
-    from utilities import utilities as func
+    from utils import utilities as func
 
     func.checkPackageInstall('pyunpack')
 else:

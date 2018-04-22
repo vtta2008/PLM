@@ -21,7 +21,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QDialog, QGridLayout, QLabel, QHBoxLayout, QPushButton, QLineEdit, QTextEdit,
                              QApplication, QWidget)
 
-from util import utilities as func
+from utilities import utils as func
 
 
 class EnglishDict(QDialog):

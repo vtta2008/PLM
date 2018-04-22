@@ -7,7 +7,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit,
                              QSizePolicy, QToolButton, QWidget, QDialog)
 
-from util import utilities as func
+from utilities import utils as func
 
 
 class Button(QToolButton):

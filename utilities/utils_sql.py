@@ -15,8 +15,11 @@ import sqlite3 as lite
 import sys
 import time
 import uuid
-
 import requests
+
+from utilities import variables as var
+import platform
+import re
 
 logging.basicConfig()
 logger = logging.getLogger(__file__)
@@ -42,21 +45,26 @@ tableName = 'Pipeline'
 """ Tool to config info """
 # -------------------------------------------------------------------------------------------------------------
 def query_local_pc_info(*args):
-    from util import variables as var
-    import platform, re
+
     package = var.MAIN_PACKPAGE
     # python version
     pythonVersion = sys.version
+
     # os
     windowOS = platform.system()
+
     # os version
     windowVersion = platform.version()
+
     # create dictionary to store info in
     sysInfo = {}
+
     # store python info
     sysInfo['python'] = pythonVersion
+
     # store os info
     sysInfo['os'] = windowOS + "|" + windowVersion
+
     # check if info folder exists, if not, create one
     sysOpts = package['sysOpts']
     cache = os.popen2("SYSTEMINFO")

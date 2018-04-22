@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: ui_create_account.py
+Script Name: ui_sign_up.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
-    ui to sign in new account
+    Create new account
 
 """
 
@@ -19,10 +19,10 @@ import logging
 import qdarkgraystyle
 
 # PyQt5 modules
-from PyQt5.QtCore import QRegExp, QLocale
-from PyQt5.QtGui import QIcon, QRegExpValidator
+from PyQt5.QtCore import QRegExp, QLocale, Qt
+from PyQt5.QtGui import QIcon, QRegExpValidator, QFont, QTextLine, QPalette
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLineEdit,  QDialog, QPushButton, QLabel, QMessageBox,
-                             QGroupBox, QComboBox)
+                             QGroupBox, QComboBox, QCheckBox)
 
 
 # Setting logfing info
@@ -43,39 +43,138 @@ if check_pth is None:
     os.environ[KEY] = SCR_PATH
 
 # import Pipeline tool modules
-from util import variables as var
-from util import utilities as func
-from util import util_sql as ultis
+from utilities import variables as var
+from utilities import utils as func
+from utilities import utils_sql as ultis
+from utilities import message as mess
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Sign in ui """
 # ----------------------------------------------------------------------------------------------------------- #
-class Sign_in(QDialog):
+class Sign_up(QDialog):
 
     def __init__(self, parent=None):
 
-        super(Sign_in, self).__init__(parent)
+        super(Sign_up, self).__init__(parent)
 
-        self.setWindowTitle("Sign In")
+        self.setWindowTitle("Sign Up")
         self.setWindowIcon(QIcon(func.getIcon('Logo')))
+        self.setContentsMargins(0,0,0,0)
+        self.setFixedSize(400, 800)
 
         self.layout = QGridLayout()
 
         self.buildUI()
 
         self.setLayout(self.layout)
-        self.setFixedSize(800, 300)
 
     def buildUI(self):
 
+        self.layout.addWidget(self.clabel("All fields are required."), 0,0,1,6)
+
         account_section = self.account_section()
-        self.layout.addWidget(account_section, 1,0,1,1)
+        self.layout.addWidget(account_section, 1, 0, 1, 6)
 
         profile_section = self.profile_section()
-        self.layout.addWidget(profile_section, 1,1,1,1)
+        self.layout.addWidget(profile_section, 2, 0, 1, 6)
+
+        contact_section = self.contact_section()
+        self.layout.addWidget(contact_section, 3, 0, 1, 6)
 
         buttons_section = self.buttons_section()
-        self.layout.addWidget(buttons_section, 3,0,1,2)
+        self.layout.addWidget(buttons_section, 5, 0, 1, 6)
+
+    def account_section(self):
+
+        account_groupBox = QGroupBox()
+        account_groupBox.setTitle("Account")
+        account_grid = QGridLayout()
+        account_groupBox.setLayout(account_grid)
+
+        account_grid.addWidget(self.clabel('User Name'), 0, 0, 1, 2)
+        account_grid.addWidget(self.clabel('Password'), 1, 0, 1, 2)
+        account_grid.addWidget(self.clabel('Re-type'), 2, 0, 1, 2)
+
+        self.usernameField = QLineEdit()
+        self.passwordField = QLineEdit()
+        self.retypeField = QLineEdit()
+
+        self.passwordField.setEchoMode(QLineEdit.Password)
+        self.retypeField.setEchoMode(QLineEdit.Password)
+
+        account_grid.addWidget(self.usernameField, 0, 3, 1, 4)
+        account_grid.addWidget(self.passwordField, 1, 3, 1, 4)
+        account_grid.addWidget(self.retypeField, 2, 3, 1, 4)
+
+        return account_groupBox
+
+    def profile_section(self):
+
+        profile_groupBox = QGroupBox()
+        profile_groupBox.setTitle("Profile")
+        profile_grid = QGridLayout()
+        profile_groupBox.setLayout(profile_grid)
+
+        profile_grid.addWidget(self.clabel('Your Title'), 0, 0, 1, 2)
+        profile_grid.addWidget(self.clabel('First Name'), 1, 0, 1, 2)
+        profile_grid.addWidget(self.clabel('Last Name'), 2, 0, 1, 2)
+
+        self.titleField = QLineEdit()
+        self.firstnameField = QLineEdit()
+        self.lastnameField = QLineEdit()
+
+        profile_grid.addWidget(self.titleField, 0, 3, 1, 4)
+        profile_grid.addWidget(self.firstnameField, 1, 3, 1, 4)
+        profile_grid.addWidget(self.lastnameField, 2, 3, 1, 4)
+
+        return profile_groupBox
+
+    def contact_section(self):
+
+        contact_groupBox = QGroupBox()
+        contact_groupBox.setTitle("Contact")
+        contact_grid = QGridLayout()
+        contact_groupBox.setLayout(contact_grid)
+
+        contact_grid.addWidget(self.clabel("Line 1"), 0, 0, 1, 2)
+        contact_grid.addWidget(self.clabel("Line 2"), 1, 0, 1, 2)
+        contact_grid.addWidget(self.clabel("Postal"), 2, 0, 1, 2)
+        contact_grid.addWidget(self.clabel("City"), 3, 0, 1, 2)
+        contact_grid.addWidget(self.clabel("Country"), 4, 0, 1, 2)
+
+        self.addressLine1 = QLineEdit()
+        self.addressLine2 = QLineEdit()
+        self.postalCode = QLineEdit()
+        self.city = QLineEdit()
+        self.countryLst = QComboBox()
+
+
+        regex = QRegExp("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
+        self.validator = QRegExpValidator(regex, self.postalCode)
+        self.postalCode.setValidator(self.validator)
+
+        lang_country = {}
+
+        for i in range(QLocale.C, QLocale.LastLanguage + 1):
+            lang = (QLocale(i).nativeLanguageName()).encode('utf-8')
+            country = (QLocale(i).nativeCountryName()).encode('utf-8')
+            lang_country[country] = [lang, i]
+            i += 1
+
+        countries = sorted(list(set([c for c in lang_country])))
+
+        countries.remove(countries[0])
+
+        for country in countries:
+            self.countryLst.addItem(country)
+
+        contact_grid.addWidget(self.addressLine1, 0, 3, 1, 4)
+        contact_grid.addWidget(self.addressLine2, 1, 3, 1, 4)
+        contact_grid.addWidget(self.cityLst, 2, 3, 1, 4)
+        contact_grid.addWidget(self.postalCode, 3, 3, 1, 4)
+        contact_grid.addWidget(self.countryLst, 4, 3, 1, 4)
+
+        return contact_groupBox
 
     def buttons_section(self):
 
@@ -83,98 +182,19 @@ class Sign_in(QDialog):
         btn_grid = QGridLayout()
         btn_groupBox.setLayout(btn_grid)
 
+        self.checkBox = QCheckBox(mess.CHECK_AGREEMENT)
+        self.checkBox.setStyleSheet("fontName='Timé'")
+        btn_grid.addWidget(self.checkBox, 0, 0, 1, 1)
+
         okBtn = QPushButton('Ok')
         okBtn.clicked.connect(self.onOKclicked)
-        btn_grid.addWidget(okBtn, 0, 0, 1, 1)
+        btn_grid.addWidget(okBtn, 1, 0, 1, 1)
 
         cancelBtn = QPushButton('Cancel')
         cancelBtn.clicked.connect(self.close)
-        btn_grid.addWidget(cancelBtn, 0, 1, 1, 1)
+        btn_grid.addWidget(cancelBtn, 1, 1, 1, 1)
 
         return btn_groupBox
-
-    def account_section(self):
-
-        account_groupBox = QGroupBox()
-        account_groupBox.setTitle("Account Info")
-        account_grid = QGridLayout()
-        account_groupBox.setLayout(account_grid)
-
-        account_grid.addWidget(self.clabel('User Name'), 0, 0, 1, 1)
-        account_grid.addWidget(self.clabel('Your Title'), 1, 0, 1, 1)
-        account_grid.addWidget(self.clabel('First Name'), 2, 0, 1, 1)
-        account_grid.addWidget(self.clabel('Last Name'), 3, 0, 1, 1)
-        account_grid.addWidget(self.clabel('Password'), 4, 0, 1, 1)
-        account_grid.addWidget(self.clabel('Re-type password'), 5, 0, 1, 1)
-
-        self.usernameField = QLineEdit()
-        self.titleField = QLineEdit()
-        self.firstnameField = QLineEdit()
-        self.lastnameField = QLineEdit()
-        self.passwordField = QLineEdit()
-        self.passwordRetypeField = QLineEdit()
-
-        self.passwordField.setEchoMode(QLineEdit.Password)
-        self.passwordRetypeField.setEchoMode(QLineEdit.Password)
-
-        account_grid.addWidget(self.usernameField, 0, 1, 1, 3)
-        account_grid.addWidget(self.titleField, 1, 1, 1, 3)
-        account_grid.addWidget(self.firstnameField, 2, 1, 1, 3)
-        account_grid.addWidget(self.lastnameField, 3, 1, 1, 3)
-        account_grid.addWidget(self.passwordField, 4, 1, 1, 3)
-        account_grid.addWidget(self.passwordRetypeField, 5, 1, 1, 3)
-
-        return account_groupBox
-
-    def profile_section(self):
-
-        profile_groupBox = QGroupBox()
-        profile_groupBox.setTitle("Contact details")
-        profile_grid = QGridLayout()
-        profile_groupBox.setLayout(profile_grid)
-
-        profile_grid.addWidget(self.clabel("Adress Line 1"), 0,0,1,1)
-        profile_grid.addWidget(self.clabel("Adress Line 2"), 1,0,1,1)
-        profile_grid.addWidget(self.clabel("Postal Code"), 2,0,1,1)
-        profile_grid.addWidget(self.clabel("City"), 3,0,1,1)
-        profile_grid.addWidget(self.clabel("Country"), 4,0,1,1)
-
-        self.addressLine1 = QLineEdit()
-        self.addressLine2 = QLineEdit()
-        self.postalCode = QLineEdit()
-        self.cityLst = QComboBox()
-        self.countryLst = QComboBox()
-
-        profile_grid.addWidget(self.addressLine1, 0,1,1,1)
-        self.addressLine2 = QLineEdit()
-
-        profile_grid.addWidget(self.addressLine2, 1,1,1,1)
-
-        regex = QRegExp("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
-        self.validator = QRegExpValidator(regex, self.postalCode)
-        self.postalCode.setValidator(self.validator)
-
-        curLocaleIndex = -1
-        lang_country = {}
-
-        for lid in range(QLocale.C, QLocale.LastLanguage + 1):
-            lang = (QLocale(lid).nativeLanguageName()).encode('utf-8')
-            country = (QLocale(lid).nativeCountryName()).encode('utf-8')
-            lang_country[country] = [lang, lid]
-
-            lid += 1
-
-        countries = sorted(list(set([c for c in lang_country])))
-        countries.remove(countries[0])
-
-        for c in countries:
-            self.country.addItem(c)
-
-        profile_grid.addWidget()
-
-        return profile_groupBox
-
-
 
     def clabel(self, text):
         label = QLabel(text)
@@ -247,7 +267,7 @@ class Sign_in(QDialog):
 def main():
     app = QApplication(sys.argv)
     app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
-    window = Sign_in()
+    window = Sign_up()
     window.resize(640, 480)
     window.show()
     sys.exit(app.exec_())

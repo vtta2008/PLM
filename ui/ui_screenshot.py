@@ -11,7 +11,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from util import utilities as func
+from utilities import utils as func
 
 
 class Screenshot(QDialog):

@@ -51,8 +51,12 @@ Sorry, but only Admin can do this function, please contact JimJim for details.
 
 """
 
-LOGIN_NOTE = """
+SIGN_UP = "Is this the first time?"
 
-Or just create one.
+USERNAME_BLANK = "Username is blank."
 
-"""
+USER_BLOCK = "This username has been blocked"
+
+PASSWORD_BLANK = "Password is blank."
+
+CHECK_AGREEMENT = "I agree to the DAMG Terms of Service"
