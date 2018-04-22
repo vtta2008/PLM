@@ -26,6 +26,8 @@ import subprocess
 import sys
 import webbrowser
 import sqlite3 as lite
+import qdarkgraystyle
+
 from functools import partial
 
 # PyQt5
@@ -1060,6 +1062,7 @@ def main():
     userdata = [unix, token, curUser, rememberLogin]
 
     app = QApplication(sys.argv)
+    app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
 
     if rememberLogin == 'False' or userdata == [] or userdata == None:
         login = Sign_in_layout()
