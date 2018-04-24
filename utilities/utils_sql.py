@@ -9,335 +9,257 @@ Description:
 
 """
 
-import datetime
+# -------------------------------------------------------------------------------------------------------------
+""" About Plt """
+
+__appname__ = "Pipeline Tool"
+__module__ = "Plt"
+__version__ = "13.0.1"
+__organization__ = "DAMG team"
+__website__ = "www.dot.damgteam.com"
+__email__ = "dot@damgteam.com"
+__author__ = "Trinh Do, a.k.a: Jimmy"
+__root__ = "PLT_RT"
+__db__ = "PLT_DB"
+__st__ = "PLT_ST"
+
+# -------------------------------------------------------------------------------------------------------------
+""" Import modules """
+
+# Python
 import logging
 import os
 import sqlite3 as lite
-import sys
-import time
-import uuid
-import requests
 
-from utilities import variables as var
-import platform
-import re
 
-logging.basicConfig()
-logger = logging.getLogger(__file__)
+# -------------------------------------------------------------------------------------------------------------
+""" Configure the current level to make it disable certain log """
+
+logPth = os.path.join(os.getenv(__root__), 'appData', 'logs', 'utils_sqp.log')
+logger = logging.getLogger('utils_sql')
+handler = logging.FileHandler(logPth)
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+handler.setFormatter(formatter)
+logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
-dataPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'database.db')
+# -------------------------------------------------------------------------------------------------------------
+""" Plt tools """
 
-table_info = {}
+from utilities import utils as func
+from utilities import variables as var
+
+# -------------------------------------------------------------------------------------------------------------
+""" Variables """
+
+dataPth = var.DB_PATH
 conn = lite.connect(dataPth)
 c = conn.cursor()
 
 USERCLASSDATA = ['Tester, DemoUser, NormalUser', 'Artist', 'Instructor', 'CEO', 'Supervisor', 'Leader']
 
-tdKeys = ['Maya', 'HoudiniFX', 'ZBrush', 'UVLayout', 'Mudbox', '3dsMax']
-vfxKeys = ['Hiero', 'NukeX', 'PremierePro']
-artKeys = ['Illustrator CC', 'Photoshop']
-devKeys = ['PyCharm', 'SublimeText', 'QtDesigner']
-subKeys = ['Snipping', 'Wordpad']
-
-tableName = 'Pipeline'
-
-
-""" Tool to config info """
 # -------------------------------------------------------------------------------------------------------------
-def query_local_pc_info(*args):
+""" Delete Data """
 
-    package = var.PLT_PACKAGE
-    # python version
-    pythonVersion = sys.version
+def remove_all_data_table(tableName):
+    # Delete old data first
+    c.execute("SELECT * FROM {tableName}".format(tableName=tableName))
+    c.fetchall()
+    c.execute("DELETE FROM {tableName}".format(tableName=tableName))
+    conn.commit()
+    insert_timeLog('Clean data in table: %s' % tableName)
 
-    # os
-    windowOS = platform.system()
-
-    # os version
-    windowVersion = platform.version()
-
-    # create dictionary to store info in
-    sysInfo = {}
-
-    # store python info
-    sysInfo['python'] = pythonVersion
-
-    # store os info
-    sysInfo['os'] = windowOS + "|" + windowVersion
-
-    # check if info folder exists, if not, create one
-    sysOpts = package['sysOpts']
-    cache = os.popen2("SYSTEMINFO")
-    source = cache[1].read()
-    sysInfo['pcUser'] = platform.node()
-    sysInfo['operating system'] = platform.system() + "/" + platform.platform()
-    sysInfo['python version'] = platform.python_version()
-    values = {}
-    for opt in sysOpts:
-        values[opt] = [item.strip() for item in re.findall("%s:\w*(.*?)\n" % (opt), source, re.IGNORECASE)][0]
-
-    for item in values:
-        sysInfo[item] = values[item]
-
-    return sysInfo
-
-def createDatetimeLog(*args):
-    datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
-    return datetime_stamp
-
-def createDateLog(*args):
-    datetimeLog = createDatetimeLog()
-    dayLog = datetimeLog.split('||')[0]
-    return dayLog
-
-def createTimeLog(*args):
-    datetimeLog = createDatetimeLog()
-    timeLog = datetimeLog.split('||')[1]
-    return timeLog
-
-def createTokenLog(*args):
-    return str(uuid.uuid4())
-
-def createSetUnixID(*args):
-    unix = (str(uuid.uuid4())).split('-')[-1]
-    token = createTokenLog()
-    timeLog = createTimeLog()
-    dateLog = createDateLog()
-    return unix, token, timeLog, dateLog
-
-def createRandomTitle():
-    import random
-    secure_random = random.SystemRandom()
-    value = secure_random.choice(USERCLASSDATA)
-    return value
-
-def createLocationLog(*args):
-    r = requests.get('https://api.ipdata.co').json()
-    info = {}
-    for key in r:
-        k = (str(key))
-        content = str(r[key])
-        info[k] = content
-    ip = info['ip']
-    city = info['city']
-    country = info['country_name']
-    return ip, city, country
-
-def encode(text):
-    text = str(text)
-    outPut = ''.join(["%02X" % ord(x) for x in text])
-    return outPut
-
-def decode(hex):
-    hex = str(hex)
-    bytes = []
-    hexStr = ''.join(hex.split(" "))
-    for i in range(0, len(hexStr), 2):
-        bytes.append(chr(int(hexStr[i:i + 2], 16)))
-
-    outPut = ''.join(bytes)
-    return outPut
-
-
-""" Template to create table """
 # -------------------------------------------------------------------------------------------------------------
-demo_name = "DEMO TABLE"
-nf = ['col1', 'col2', 'col3', 'col4']
-ft = ['TEXT', 'TEXT', 'TEXT', 'TEXT']
-
-def create_table_with_4_column(nf=nf, ft=ft, tableName=tableName):
-    c.execute("CREATE TABLE IF NOT EXISTS {tn} ({nf1} {ft1}, {nf2} {ft2}, {nf3} {ft3}, {nf4} ft4);".format(
-        tn=tableName, nf1=nf[1], nf2=nf[2], nf3=nf[3], nf4=nf[4], tf1=ft[1], ft2=ft[2], ft3=ft[3], ft4=ft[4]))
-    conn.commit()
-
-def create_table_with_5_column(nf1, nf2, nf3, nf4, nf5, tableName):
-    c.execute("CREATE TABLE IF NOT EXISTS {tn} ({nf1} TEXT, {nf2} TEXT, {nf3} TEXT, {nf4} TEXT, "
-              "{nf5} TEXT)".format(tn=tableName, nf1=nf1, nf2=nf2, nf3=nf3, nf4=nf4, nf5=nf5))
-    conn.commit()
-
-
 """ Create Dataset Table """
+
+class BuildDB():
+
+    def __init__(self, parent=None):
+        super(BuildDB, self).__init__(parent)
+
+        logger.info("Start building table")
+
+    def username(self, username):
+        c.execute("CREATE TABLE IF NOT EXISTS {username} (password TEXT, firstname TEXT, lastname TEXT, title TEXT,"
+        "email TEXT, phone TEXT, address1 TEXT, address2 TEXT, postal TEXT, city TEXT, country TEXT)".format(username=username))
+        logger.info("table %s created" % username)
+        conn.commit()
+
+    def userData(self):
+        c.execute("CREATE TABLE IF NOT EXISTS userData (username TEXT, date_create TEXT, unix TEXT, token TEXT, "
+                  "question1 TEXT, answer1 TEXT, question2 TEXT, answer2 TEXT)")
+        logger.info("table userData created")
+        conn.commit()
+
+    def userSetting(self):
+        c.execute("CREATE TABLE IF NOT EXISTS userSetting (username TEXT, showToolbar TXT, avatar TEXT)")
+        logger.info("table userSetting created")
+        conn.commit()
+
+    def userLog(self):
+        c.execute("CREATE TABLE IF NOT EXISTS userLog (username TEXT, date TEXT, login TEXT, logout TEXT)")
+        logger.info("table userLog created")
+        conn.commit()
+
+    def userClass(self):
+        c.execute("CREATE TABLE IF NOT EXISTS userClass (username TEXT, class TEXT, status TEXT)")
+        logger.info("table userClass created")
+        conn.commit()
+
+    def curUser(self):
+        c.execute("CREATE TABLE IF NOT EXISTS curUser (username TEXT, auto_login TEXT)")
+        logger.info("table curUser created")
+        conn.commit()
+
+    def timeLog(self):
+        c.execute("CREATE TABLE IF NOT EXISTS timeLog (dateTime TEXT , username TEXT, eventlog TEXT)")
+        logger.info("table timeLog created")
+        conn.commit()
+
+    def tokenID(self):
+        c.execute("CREATE TABLE IF NOT EXISTS tokenID (token TEXT, username TEXT, timelog TEXT, productID TEXT, ip TEXT, "
+                  "city TEXT, country TEXT)")
+        logger.info("table tokenID created")
+        conn.commit()
+
+    def pcID(self):
+        c.execute("CREATE TABLE IF NOT EXISTS pcID (token TEXT, productID TEXT, os TEXT, pcUser TEXT, python TEXT)")
+        logger.info("table pcID created")
+        conn.commit()
+
+    # -------------------------------------------------------------------------------------------------------------
+    """ For production """
+
+    def prjLst(self):
+        c.execute("CREATE TABLE IF NOT EXISTS prjLst (status TEXT, projName TEXT, start TEXT, end TEXT )")
+        logger.info("table prjLst created")
+        conn.commit()
+
+    def prjCrew(self):
+        c.execute("CREATE TABLE IF NOT EXISTS projCrew (projID TEXT, username TEXT, position TEXT)")
+        logger.info("table projCrew created")
+        conn.commit()
+
+    def prjTaskID(self, projName):
+        c.execute("CREATE TABLE IF NOT EXISTS {projName} (projStage TEXT, assetID TEXT, shotID TEXT, taskID TEXT, "
+                  "status TEXT, assign TEXT, start TEXT, end TEXT)".format(projName=projName))
+        logger.info("table %s created" % projName)
+        conn.commit()
+
+    # -------------------------------------------------------------------------------------------------------------
+    """ Configuration """
+
+    def pltConfig(self):
+        c.execute("CREATE TABLE IF NOT EXISTS pltConfig (appName TEXT, version VARCHAR(20), exePth VARCHAR(20))")
+        logger.info("table plt created")
+        conn.commit()
+
+    def tableConfig(self):
+        c.execute("CREATE TABLE IF NOT EXISTS tableConfig (tableName TEXT, columnList TEXT, datetimeLog TEXT)")
+        logger.info("table tableConfig created")
+        conn.commit()
+
+    def dataConfig(self):
+        c.execute("CREATE TABLE IF NOT EXISTS dataConfig (setup TEXT, account TEXT, message TEXT, name TEXT, format TEXT)")
+        logger.info("table dataConfig created")
+        conn.commit()
+
 # -------------------------------------------------------------------------------------------------------------
-# For user account
-def create_table_content():
-    c.execute("CREATE TABLE IF NOT EXISTS TableContent (tableName TEXT, columnList TEXT, datetimeLog TEXT)")
-    conn.commit()
+""" Query Data """
 
-def create_table_timelog():
-    c.execute("CREATE TABLE IF NOT EXISTS TimeLog (datetimeLog TEXT , username TEXT, eventlog TEXT)")
-    conn.commit()
-
-def create_table_user_account():
-    c.execute("CREATE TABLE IF NOT EXISTS AccountUser (unix TEXT, token TEXT, username TEXT, password TEXT, "
-              "title TEXT, lastname TEXT,firstname TEXT, avatar TEXT, time_stamp TEXT, date_stamp TEXT, status TEXT)")
-    conn.commit()
-
-def create_table_current_user():
-    c.execute("CREATE TABLE IF NOT EXISTS CurrentUser (unix TEXT , token TEXT, username TEXT, rememberLogin TEXT)")
-    conn.commit()
-
-def create_table_token_log():
-    c.execute("CREATE TABLE IF NOT EXISTS TokenLog (token TEXT, username TEXT, "
-              "productID TEXT, ip TEXT, city TEXT, country TEXT, rememberLogin TEXT)")
-    conn.commit()
-
-def create_table_productID():
-    c.execute("CREATE TABLE IF NOT EXISTS ProductID (token TEXT, username TEXT, productID TEXT, os TEXT, "
-              "pcUser TEXT, python TEXT, datetimeLog TEXT )")
-    conn.commit()
-
-def create_table_userClass():
-    c.execute("CREATE TABLE IF NOT EXISTS UserClassDB (unix TEXT, username TEXT, UserClass TEXT)")
-    conn.commit()
-
-# For production
-def create_table_project_list():
-    c.execute("CREATE TABLE IF NOT EXISTS ProjectList (proj_name VARCHAR(20), proj_code VARCHAR(20), "
-              "start_date VARCHAR(20), end_date VARCHAR(20), status VARCHAR(20))")
-
-    conn.commit()
-
-def create_table_project_crew_on_board():
-    c.execute("CREATE TABLE IF NOT EXISTS ProjectCrew (proj_code VARCHAR(20), unix VARCHAR(20))")
-    conn.commit()
-
-def create_table_project_tracking():
-    c.execute("CREATE TABLE IF NOT EXISTS TaskTracking (taskName VARCHAR(20), assignedTo VARCHAR(20), "
-              "proj_code VARCHAR(20), start_date VARCHAR(20), end_date VARCHAR(20))")
-    conn.commit()
-
-def create_table_project_plan():
-    c.execute("CREATE TABLE IF NOT EXISTS ProjectPlan (proj_code VARCHAR(20), sections VARCHAR(20), "
-              "section_details VARCHAR(20), sections_task VARCHAR(20), assignedTo VARCHAR(20), start_date VARCHAR(20), "
-              "end_date VARCHAR(20), path TEXT)")
-
-    conn.commit()
-
-def create_table_pipeline_config():
-    c.execute("CREATE TABLE IF NOT EXISTS PipelineConfig (productID TEXT, appName VARCHAR(20), path_config VARCHAR(20))")
-    conn.commit()
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" Query Data From Table """
-# -------------------------------------------------------------------------------------------------------------
-def query_table_list():
+def query_tableLst():
     c.execute("SELECT name FROM sqlite_master WHERE type='table';")
     return [str(t[0]) for t in c.fetchall()]
 
-def query_column_list(tableName):
+def query_userData():
+    c.execute("SELECT * FROM userData")
+    data = [r for r in c.fetchall()]
+    data = (data[0])[1]
+    return data
+
+def query_columnLst(tableName):
     c.execute("SELECT * FROM {tn}".format(tn=tableName))
     return [str(m[0]) for m in c.description]
 
-def query_user_list():
+def query_userLst():
     c.execute("SELECT username FROM AccountUser")
     data = [str(r[0]) for r in c.fetchall()]
     return data
 
-def query_unix_list():
-    c.execute("SELECT unix FROM AccountUser")
+def query_unixLst():
+    c.execute("SELECT unix FROM userData")
     data = [str(r[0]) for r in c.fetchall()]
     return data
 
-def query_token_list():
+def query_tokenLst():
     c.execute("SELECT token FROM TokenLog")
     data = [str(r[0]) for r in c.fetchall()]
     return data
 
-def query_token_user_list():
+def query_userTokenLst():
     c.execute("SELECT token FROM AccountUser")
     data = [str(r[0]) for r in c.fetchall()]
     return data
 
-def query_productID_list():
+def query_appIDLst():
     c.execute("SELECT productID FROM TokenLog")
     data = [str(t[0]) for t in c.fetchall()]
     return data
 
-def query_password_list():
-    c.execute("SELECT password FROM AccountUser")
-    data = [str(r[0]) for r in c.fetchall()]
-    return data
-
-def query_user_profile(name, typeName=None):
-    c.execute("SELECT * FROM AccountUser")
-    profileLst = c.fetchall()
-    if typeName == 'unix':
-        checkList = query_unix_list()
-    elif typeName == 'token':
-        checkList = query_token_user_list()
-    else:
-        checkList = query_user_list()
-    index = checkList.index(name)
-    data = [str(p) for p in profileLst[index]]
-    return data
-
-def query_current_user():
-    c.execute("SELECT * FROM CurrentUser")
+def query_curUser():
+    c.execute("SELECT * FROM curUser")
     data = c.fetchall()
     if len(data) == 0:
-        user = ["", "", "", "False"]
+        user = [" ", "False"]
     else:
         user = [str(p) for p in list(data[0])]
     return user
 
-def query_original_pcToken(productID):
-    idLst = query_productID_list()
-    tokenLst = query_token_list()
-    if len(idLst) == 1:
-        token = createTokenLog()
-    elif len(tokenLst) == 1:
-        token = createTokenLog()
-    elif len(idLst) > 1 and len(tokenLst) > 1:
-        token = tokenLst[idLst.index(productID)]
-    else:
-        token = createTokenLog()
-    return token
-
-def query_user_class(unix, username):
-
-    c.execute("SELECT * FROM UserClassDB")
+def query_userClass(username):
+    c.execute("SELECT * FROM userClass")
     rows = c.fetchall()
-    userClass = 'UnKnown'
     for row in rows:
-        data = [str(f) for f in row]
-        if unix == data[0] and username == data[1]:
+
+        data = [str(f[1]) for f in row]
+        if username == data[1]:
             userClass = row[2]
         else:
             pass
-    return userClass
 
-def query_user_status(username):
-    userData = query_user_profile(username)
+userClass = query_userClass('vtta2008')
+
+def query_userStatus(username):
+    userData = query_userClass(username)
     status = userData[-1]
     return status
 
-def query_user_security_question(username):
-    userData = query_user_profile(username)
+def query_securityQts(username):
+    userData = query_userData(username)
     question1 = userData[-3]
     question2 = userData[-2]
     return question1, question2
 
+def query_passwordLst(username):
+    pass
 
 # -------------------------------------------------------------------------------------------------------------
-""" Check Data If Exists or Match """
-# -------------------------------------------------------------------------------------------------------------
-def check_data_exists(name, typeName='username'):
+""" Check Data """
+
+def check_account(self, name, typeName='username'):
     if typeName == 'unix':
-        checkList = query_unix_list()
+        checkList = query_unixLst()
     elif typeName == 'token':
-        checkList = query_token_list()
+        checkList = query_tokenLst()
     else:
-        checkList = query_user_list()
+        checkList = query_userLst()
 
     if name in checkList:
         return True
     else:
         return False
 
-def check_productID_exists(productID):
-    idList = query_productID_list()
+def check_localPC(self, productID):
+    idList = query_appIDLst()
     if idList is None or idList == []:
         return False
     else:
@@ -346,9 +268,21 @@ def check_productID_exists(productID):
         else:
             return False
 
-def check_password_match(username, password):
-    usernameLst = query_user_list()
-    passwordLst = query_password_list()
+def check_sysConfig(username):
+    info = func.get_local_pc()
+    productID = info['Product ID']
+    check = check_localPC(productID)
+    if check:
+        token = query_tokenLst()
+        update_sysInfo(token, info)
+    else:
+        token = func.get_token()
+        insert_tokenID(username, token, productID)
+    return productID
+
+def check_pw_match(username, password):
+    usernameLst = query_userLst()
+    passwordLst = query_passwordLst()
     passCheck = passwordLst[usernameLst.index(username)]
     if password == passCheck:
         check = True
@@ -356,216 +290,122 @@ def check_password_match(username, password):
         check = False
     return check
 
-def check_sys_configuration(username):
-    info = query_local_pc_info()
-    productID = info['Product ID']
-    check = check_productID_exists(productID)
-    if check:
-        token = query_original_pcToken(productID)
-        update_sysInfo_config(token, info)
-    else:
-        token = createTokenLog()
-        dynamic_insert_newToKenLogData(username, token, productID)
-
-    return productID
-
 # -------------------------------------------------------------------------------------------------------------
-""" Insert New Data To Table """
-# -------------------------------------------------------------------------------------------------------------
-def dynamic_new_user_entry(unix, token, username, password, title,
-                           lastname, firstname, avatar, time_stamp, date_stamp):
-    password = encode(password)
-    c.execute("INSERT INTO AccountUser (unix, token, username, password, title, lastname, firstname, "
-              "avatar, time_stamp, date_stamp) VALUES (?,?,?,?,?,?,?,?,?,?)",
-              (unix, token, username, password, title, lastname, firstname, avatar, time_stamp, date_stamp))
-    value = createRandomTitle()
-    c.execute("INSERT INTO UserClassDB (unix, username, UserClass) VALUES (?,?,?)", (unix, username, value))
+""" Modify Data """
+
+def insert_userTable(data):
+    username = data[0]
+    c.execute("INSERT INTO {username} (password, firstname, lastname, title, email, phone, address1, address2, "
+              "postal, city, country) VALUES (?,?,?,?,?,?,?,?,?,?,?)".format(username = username),
+        (data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11]))
     conn.commit()
-    dynamic_insert_timelog('inserted to table AccountUser')
 
-def dynamic_insert_timelog(eventlog):
-    username = query_current_user()[2]
-    datetimeLog = createDatetimeLog()
-    c.execute("INSERT INTO TimeLog (datetimeLog, username, eventLog) VALUES (?,?,?)",
+def insert_userData(data):
+    c.execute("INSERT INTO userData (username, dateCreate, unix, token, question1, answer1, question2, answer2) "
+              "VALUES (?,?,?,?,?,?,?,?)", (data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7]))
+    conn.commit()
+
+def insert_tokenID(data):
+    c.execute("INSERT INTO token (token, username, productID, ip, city, country) VALUES (?,?,?,?,?,?)",
+              (data[0], data[1], data[2], data[3], data[4], data[5]))
+    conn.commit()
+
+def insert_timeLog(eventlog):
+    username = query_curUser()[0]
+    datetimeLog = func.get_datetime()
+    c.execute("INSERT INTO TimeLog (dateTime, username, eventLog) VALUES (?,?,?)",
               (datetimeLog, username, eventlog))
     conn.commit()
     return True
 
-def dynamic_insert_tokenlog(token, username, productID, ip, city, country, rememberLogin):
-    c.execute("INSERT INTO TokenLog (token, username, productID, ip, city, country, rememberLogin) VALUES (?,?,?,?,?,?,?)",
-              (token, username, productID, ip, city, country, rememberLogin))
-    conn.commit()
-
-def dynamic_insert_localLog(username, token, info):
-    datetimeLog = createDatetimeLog()
+def insert_pcid(username, token, info):
+    datetimeLog = func.get_datetime()
     productID = info["Product ID"]
     OS = info['os']
     pcUser = info['pcUser']
     python = info['python']
-    c.execute("INSERT INTO ProductID (token, username, productID, os, pcUser, python, datetimeLog) VALUES (?,?,?,?,?,?,?)",
+    c.execute("INSERT INTO pcid (token, productid, os, pcuser, python) VALUES (?,?,?,?,?)",
               (token, username, productID, OS, pcUser, python, datetimeLog))
     conn.commit()
 
-def dynamic_insert_newToKenLogData(username, token, productID):
-    info = query_local_pc_info()
-    curUserData = query_current_user()
-    rememberLogin = curUserData[3]
-    ip, city, country = createLocationLog()
-    dynamic_insert_tokenlog(token, username, productID, ip, city, country, rememberLogin)
-    dynamic_insert_localLog(username, token, info)
-
-def dynamic_insert_classUser(unix, username, value):
-    c.execute("INSERT INTO UserClassDB (unix, username, UserClass) VALUES (?,?,?)", (unix, username, value))
+def insert_userClass(data):
+    c.execute("INSERT INTO userClass (username, class, status) VALUES (?,?,?)", (data[0], data[1], data[2]))
     conn.commit()
 
-def dynamic_pipeline_config_entry():
-    currentUserData = query_current_user()
-    username = currentUserData[2]
-    productID = check_sys_configuration(username)
-
+def insert_pcID(data):
+    c.execute("INSERT INTO pcid (token, productID, os, pcUser, python) VALUES (?,?,?,?,?)",
+              (data[0], data[1], data[2], data[3], data[4]))
     conn.commit()
 
+def insert_curUser(username):
+    c.execute("INSERT INTO curUser (username) VALUES (?)", (username,))
 
-# -------------------------------------------------------------------------------------------------------------
-""" Delete Data """
-# -------------------------------------------------------------------------------------------------------------
-def remove_all_data_table(table_name):
-    # Delete old data first
-    c.execute("SELECT * FROM {tn}".format(tn=table_name))
-    c.fetchall()
-    c.execute("DELETE FROM {tn}".format(tn=table_name))
-    conn.commit()
-    dynamic_insert_timelog('Clean old data')
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" Update Data """
-# -------------------------------------------------------------------------------------------------------------
-def update_current_user(unix, token, username, rememberLogin):
+def insert_update_curUser(username, rememberLogin):
     c.execute("SELECT * FROM CurrentUser")
     data = c.fetchall()
     c.execute("DELETE FROM CurrentUser")
-    c.execute("INSERT INTO CurrentUser (unix,token,username,rememberLogin) VALUES (?,?,?,?)",
-              (unix, token, username, rememberLogin))
+    c.execute("INSERT INTO CurrentUser (username,rememberLogin) VALUES (?,?)",(username, rememberLogin))
     conn.commit()
 
-def update_user_remember_login(token, newValue):
+def insert_update_rememberLogin(token, newValue):
     c.execute("SELECT * FROM TokenLog")
     c.fetchall()
     c.execute("UPDATE TokenLog SET rememberLogin = (?) WHERE token = (?)", (newValue, token))
     conn.commit()
-    dynamic_insert_timelog('Update New User Login')
+    insert_timeLog('Update New User Login')
 
-def update_sysInfo_config(token, info):
+def update_sysInfo(token, info):
     c.execute("SELECT * FROM ProductID")
-    data = c.fetchall()
-    datetimeLog = createDatetimeLog()
     productID = info["Product ID"]
-    OS = info['os']
+    os = info['os']
     pcUser = info['pcUser']
     python = info['python']
-    c.execute("""UPDATE ProductID
-              SET OS=(?), pcUser=(?), python=(?), datetimelog=(?) 
-              WHERE productID=(?) AND token=(?)""", (OS, pcUser, python, datetimeLog, productID, token))
-    
+    c.execute("UPDATE pcid SET token=(?), productID=(?), os=(?), pcUser=(?), python=(?)",
+              (token, productID, os, pcUser, python))
     conn.commit()
 
-def update_table_content():
+def update_tableLst():
     c.execute("SELECT * FROM TableContent")
     data = c.fetchall()
     c.execute("DELETE FROM TableContent")
-    tableLst = query_table_list()
+    tableLst = query_tableLst()
 
     if 'UserClassDB' in tableLst:
         tableLst.remove('UserClassDB')
 
     for tableName in tableLst:
-        cll = query_column_list(tableName)
+        cll = query_columnLst(tableName)
         columnContent = ""
         for column in cll:
             columnContent = columnContent + column + "||"
-        datetimeLog = createDatetimeLog()
+        datetimeLog = func.get_datetime()
         c.execute("INSERT INTO TableContent (tableName, columnList, datetimeLog) VALUES (?,?,?)",
                   (tableName, columnContent, datetimeLog))
-
     conn.commit()
     event = 'Update table all content'
-    dynamic_insert_timelog(event)
+    insert_timeLog(event) 
 
-def update_title_user(text):
-    unix = query_current_user()[0]
-    username = query_current_user()[2]
-    c.execute("SELECT * FROM UserClassDB")
-    data = c.fetchall()
-    c.execute("""UPDATE UserClassDB 
-                 SET UserClass=(?) 
-                 WHERE unix=(?) AND username=(?)""", (unix, username, text))
-    
-    conn.commit()
-    return True
-
-def update_password_user(unix, new_password):
+def update_password(unix, new_password):
     c.execute("SELECT * FROM AccountUser")
     rows = c.fetchall()
     c.execute("UPDATE AccountUser Set password = (?) WHERE unix = (?)", (new_password, unix))
     conn.commit()
-    dynamic_insert_timelog('Changed password')
+    insert_timeLog('Changed password')
+
+# -------------------------------------------------------------------------------------------------------------
+""" Setup data """
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # -------------------------------------------------------------------------------------------------------------
-""" Class: Create A New Account """
-# -------------------------------------------------------------------------------------------------------------
-class CreateNewUser(object):
-
-    def __init__(self, firstname, lastname, title, password):
-        super(CreateNewUser, self).__init__()
-
-        self.username = '%s.%s' % (lastname, firstname)
-        self.password = password
-        self.title = title
-        self.lastname = lastname
-        self.firstname = firstname
-        self.avatar = lastname + firstname
-        if self.username == 'Demo.User':
-            pass
-        else:
-            self.set_up_new_user_account()
-
-        # self.set_up_new_user_account()
-
-    def set_up_new_user_account(self):
-        self.unix, self.token, timelog, datelog = createSetUnixID()
-        # Create user login account
-        dynamic_new_user_entry(self.unix, self.token, self.username, self.password, self.title, self.lastname,
-                               self.firstname, self.avatar, timelog, datelog)
-        update_current_user(self.unix, self.token, self.username, 'False')
-        eventLog = "User: '%s' is created" % self.username
-        dynamic_insert_timelog(eventLog)
-        check_sys_configuration(self.username)
-        value = createRandomTitle()
-        update_title_user(value)
-
-
-def create_table_set():
-    create_table_timelog()
-    create_table_content()
-    create_table_token_log()
-    create_table_user_account()
-    create_table_current_user()
-    create_table_productID()
-    create_table_userClass()
-    update_table_content()
-
-def create_project_table_set():
-    create_table_project_crew_on_board()
-    create_table_project_list()
-    create_table_project_plan()
-    create_table_project_tracking()
-    # create_table_pipeline_config()
-    update_table_content()
-
-# def create_member_set():
-#     CreateNewUser('User', 'Demo', 'A demo user account', '123456')
-#     CreateNewUser('User', 'Test', 'A test user account', '123456')
-#     CreateNewUser('DM', 'Duc', 'Multimedia Design', '123456')
-#     CreateNewUser('Do', 'Trinh', 'PipelineTD', 'adsadsa')

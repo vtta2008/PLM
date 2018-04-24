@@ -47,7 +47,7 @@ logger.setLevel(logging.DEBUG)
 # -------------------------------------------------------------------------------------------------------------
 """ Declare variables """
 # -------------------------------------------------------------------------------------------------------------
-PACKAGE = var.PLT_PACKAGE
+PACKAGE = var.PLT_PKG
 HOMEPAGE = var.PLT_URL['Home']
 
 class Plt_browser(QMainWindow):

@@ -1,4 +1,28 @@
 # -*- coding: utf-8 -*-
+"""
+
+Script Name: plt.py
+Author: Do Trinh/Jimmy - 3D artist.
+Description:
+    This script is master file of Pipeline Tool
+
+"""
+
+# -------------------------------------------------------------------------------------------------------------
+""" About Plt """
+
+__appname__ = "Pipeline Tool"
+__module__ = "Plt"
+__version__ = "13.0.1"
+__organization__ = "DAMG team"
+__website__ = "www.dot.damgteam.com"
+__email__ = "dot@damgteam.com"
+__author__ = "Trinh Do, a.k.a: Jimmy"
+__root__ = "PLT_RT"
+__db__ = "PLT_DB"
+__st__ = "PLT_ST"
+
+# -------------------------------------------------------------------------------------------------------------
 import os
 import sys
 
@@ -8,7 +32,7 @@ from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QPushButton, QVBox
 
 from utilities import utils as func
 
-SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'plt_setting.ini')
+SETTING_PATH = os.path.join(os.getenv(__root__), 'appData', 'settings', 'plt_setting.ini')
 
 class Pref_layout(QDialog):
 
@@ -41,7 +65,7 @@ class Pref_layout(QDialog):
         self.checkboxSig.emit(self.checkBox.isChecked())
 
 def main():
-    app = QApplication
+    app = QApplication(sys.argv)
     pref_layout = Pref_layout()
     pref_layout.show()
     app.exec_()

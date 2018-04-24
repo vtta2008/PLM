@@ -9,8 +9,22 @@ Description:
 """
 
 # -------------------------------------------------------------------------------------------------------------
-""" Import modules """
+""" About Plt """
+
+__appname__ = "Pipeline Tool"
+__module__ = "Plt"
+__version__ = "13.0.1"
+__organization__ = "DAMG team"
+__website__ = "www.dot.damgteam.com"
+__email__ = "dot@damgteam.com"
+__author__ = "Trinh Do, a.k.a: Jimmy"
+__root__ = "PLT_RT"
+__db__ = "PLT_DB"
+__st__ = "PLT_ST"
+
 # -------------------------------------------------------------------------------------------------------------
+""" Import modules """
+
 # Python
 import sys
 import os

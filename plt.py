@@ -8,17 +8,23 @@ Description:
 
 """
 
+# -------------------------------------------------------------------------------------------------------------
+""" About Plt """
+
 __appname__ = "Pipeline Tool"
-__module__ = "plt"
+__module__ = "Plt"
 __version__ = "13.0.1"
 __organization__ = "DAMG team"
 __website__ = "www.dot.damgteam.com"
 __email__ = "dot@damgteam.com"
 __author__ = "Trinh Do, a.k.a: Jimmy"
+__root__ = "PLT_RT"
+__db__ = "PLT_DB"
+__st__ = "PLT_ST"
 
 # -------------------------------------------------------------------------------------------------------------
 """ Import modules """
-# -------------------------------------------------------------------------------------------------------------
+
 # Python
 import shutil
 import logging
@@ -28,54 +34,30 @@ import sys
 import webbrowser
 import sqlite3 as lite
 import qdarkgraystyle
-
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings, QRegExp, QLocale, QTimer
-from PyQt5.QtGui import QIcon, QPixmap, QImage, QRegExpValidator
+from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings
+from PyQt5.QtGui import QIcon, QPixmap, QImage
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QGridLayout, QSizePolicy, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu, QFileDialog, QComboBox)
 
-if not os.getenv('PIPELINE_TOOL'):
-    os.environ['PIPELINE_TOOL'] = os.getcwd()
-elif os.getenv('PIPELINE_TOOL') is None:
-    os.environ['PIPELINE_TOOL'] = os.getcwd()
+# -------------------------------------------------------------------------------------------------------------
+""" Set up env variable path """
+# Main path
+os.environ[__root__] = os.getcwd()
 
-# Run Preset
+# Preset
 import plt_presets as pltp
 
-KEY, TOOL_NAME = pltp.preset1_plt_root_path()
-checkPackage = pltp.preset3_install_extra_python_package()
-pltp.preset4_maya_intergrate()
-
-# UI
-from ui import ui_acc_setting
-from ui import ui_preference
-
-# Plt tools
-from utilities import utils as func
-from utilities import utils_sql as usql
-from utilities import message as mess
-from utilities import variables as var
+pltp.preset2_install_extra_python_package()
+pltp.preset3_maya_intergrate()
 
 # -------------------------------------------------------------------------------------------------------------
-""" Declare variables """
-# -------------------------------------------------------------------------------------------------------------
-# PyQt5 ui elements
-__center__ = Qt.AlignCenter
-__right__ = Qt.AlignRight
-__left__ = Qt.AlignLeft
-frameStyle = QFrame.Sunken | QFrame.Panel
+""" Configure the current level to make it disable certain log """
 
-# Get apps info config
-APPINFO = pltp.preset5_gather_configure_info()
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain logs """
-# -------------------------------------------------------------------------------------------------------------
-logPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'plt.log')
+logPth = os.path.join(os.getenv(__root__), 'appData', 'logs', 'plt.log')
 logger = logging.getLogger('plt')
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
@@ -83,16 +65,50 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
+# -------------------------------------------------------------------------------------------------------------
+""" Plt tools """
 
-def clabel(text, *args):
+from ui import ui_acc_setting
+from ui import ui_preference
+
+from utilities import utils as func
+from utilities import utils_sql as usql
+from utilities import message as mess
+from utilities import variables as var
+
+# -------------------------------------------------------------------------------------------------------------
+""" Variables """
+
+# PyQt5 ui elements
+__center__ = Qt.AlignCenter
+__right__ = Qt.AlignRight
+__left__ = Qt.AlignLeft
+frameStyle = QFrame.Sunken | QFrame.Panel
+
+# Get apps info config
+APPINFO = pltp.preset4_gather_configure_info()
+
+# -------------------------------------------------------------------------------------------------------------
+
+def clabel(text):
     label = QLabel(text)
     label.setAlignment(__center__)
     label.setMinimumWidth(50)
     return label
 
-# ----------------------------------------------------------------------------------------------------------- #
+# -------------------------------------------------------------------------------------------------------------
 """ Sign up layout """
-# ----------------------------------------------------------------------------------------------------------- #
+
+
+
+
+
+
+
+
+# -------------------------------------------------------------------------------------------------------------
+""" Sign up layout """
+
 class Plt_sign_up(QDialog):
 
     def __init__(self, parent=None):
@@ -242,7 +258,7 @@ class Plt_sign_up(QDialog):
     def on_set_avatar_btn_clicked(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        imgsDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs')
+        imgsDir = os.path.join(os.getenv(__root__), 'imgs')
         self.rawAvatarPth, _ = QFileDialog.getOpenFileName(self, "Your Avatar", imgsDir, "All Files (*);;Img Files (*.jpg)",
                                                            options=options)
         if self.rawAvatarPth:
@@ -277,9 +293,6 @@ class Plt_sign_up(QDialog):
             QMessageBox.critical(self, "Warning", mess.PW_UNMATCH, QMessageBox.Retry)
             return
 
-
-
-
     def on_cancel_btn_clicked(self):
         self.close()
         # signin = Sign_in_layout()
@@ -296,7 +309,7 @@ class Plt_sign_up(QDialog):
 
 # -------------------------------------------------------------------------------------------------------------
 """ Login Layout """
-# -------------------------------------------------------------------------------------------------------------
+
 class Plt_sign_in(QDialog):
 
     def __init__(self, parent=None):
@@ -388,7 +401,7 @@ class Plt_sign_in(QDialog):
 
         password = str(func.encoding(pass_word))
 
-        checkUserExists = usql.check_data_exists(username)
+        checkUserExists = usql.accExsist(username)
         checkUserStatus = usql.query_user_status(username)
 
         if not checkUserExists:
@@ -396,7 +409,7 @@ class Plt_sign_in(QDialog):
         elif checkUserStatus == 'disabled':
             QMessageBox.critical(self, 'Login Failed', mess.USER_CONDITION)
 
-        checkPasswordMatch = usql.check_password_match(username, password)
+        checkPasswordMatch = usql.check_pw_match(username, password)
 
         if not checkPasswordMatch:
             QMessageBox.critical(self, 'Login Failed', "Password not match")
@@ -423,7 +436,7 @@ class Plt_sign_in(QDialog):
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
-# -------------------------------------------------------------------------------------------------------------
+
 class TabWidget(QWidget):
 
     dbConn = lite.connect(var.DB_PATH)
@@ -437,7 +450,7 @@ class TabWidget(QWidget):
         self.package = package
 
         self.setContentsMargins(0,0,0,0)
-        self.settings = QSettings(var.LAYOUT_SETTING_PTH, QSettings.IniFormat)
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
         self.buildUI()
 
@@ -469,7 +482,7 @@ class TabWidget(QWidget):
         self.tab4Layout()
         self.tabs.addTab(self.tab4, 'Lib')
 
-        userClass = usql.query_user_class(self.unix, self.username)
+        userClass = usql.query_userClass(self.username)
 
         if userClass == 'Administrator Privilege':
             self.tab5 = QGroupBox()
@@ -651,8 +664,7 @@ class TabWidget(QWidget):
         self.userAvatar.update()
 
     def on_log_out_btn_clicked(self):
-        unix, token, curUser, rememberLogin, status = pltp.preset6_query_user_info()
-
+        curUser, rememberLogin = pltp.preset5_query_user_info()
         user_profile = usql.query_user_profile(curUser)
         token = user_profile[1]
         unix = user_profile[0]
@@ -733,22 +745,22 @@ class TabWidget(QWidget):
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
-# -------------------------------------------------------------------------------------------------------------
+
 class Plt_application(QMainWindow):
 
     def __init__(self, login=None, parent=None):
 
         super(Plt_application, self).__init__(parent)
 
-        unix, token, username, rememberLogin, status = pltp.preset6_query_user_info()
+        username, rememberLogin = pltp.preset5_query_user_info()
 
         self.mainID = var.PLT_ID
         self.appInfo = APPINFO
-        self.package = var.PLT_PACKAGE
+        self.package = var.PLT_PKG
         self.message = var.PLT_MESS
         self.url = var.PLT_URL
 
-        self.settings = QSettings(var.LAYOUT_SETTING_PTH, QSettings.IniFormat)
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
         self.setWindowTitle(self.mainID['Main'])
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
@@ -777,6 +789,9 @@ class Plt_application(QMainWindow):
         self.artToolBar.setVisible(self.showToolBar)
 
         # Tabs build
+        userData = usql.query_userData()
+        unix = userData
+
         self.tabWidget = TabWidget(unix, username, self.package)
         self.setCentralWidget(self.tabWidget)
 
@@ -885,7 +900,7 @@ class Plt_application(QMainWindow):
 
         reconfigaction = QAction(QIcon(self.appInfo['ReConfig'][1]), self.appInfo['ReConfig'][0], self)
         reconfigaction.setStatusTip(self.appInfo['ReConfig'][0])
-        reconfigaction.triggered.connect(func.Generate_info)
+        reconfigaction.triggered.connect(func.Collect_info)
 
         return cleanaction, reconfigaction
 
@@ -1005,8 +1020,8 @@ class Plt_application(QMainWindow):
 
         return toolbarArt
 
-    def procedures(self, event):
-        usql.dynamic_insert_timelog(event)
+    def procedures(self, eventlog):
+        usql.insert_timeLog(eventlog)
 
     def createAction(self, appInfo, key):
         action = QAction(QIcon(appInfo[key][1]), appInfo[key][0], self)
@@ -1055,6 +1070,9 @@ class Plt_application(QMainWindow):
         self.hide()
         event.ignore()
 
+# -------------------------------------------------------------------------------------------------------------
+""" Operation """
+
 def main():
 
     QCoreApplication.setApplicationName(__appname__)
@@ -1062,8 +1080,8 @@ def main():
     QCoreApplication.setOrganizationName(__organization__)
     QCoreApplication.setOrganizationDomain(__website__)
 
-    unix, token, curUser, rememberLogin, status = pltp.preset6_query_user_info()
-    userdata = [unix, token, curUser, rememberLogin]
+    curUser, rememberLogin = pltp.preset5_query_user_info()
+    userdata = [curUser, rememberLogin]
 
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon(func.get_icon('Logo')))

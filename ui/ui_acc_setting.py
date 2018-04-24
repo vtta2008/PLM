@@ -8,17 +8,23 @@ Description:
 
 """
 
+# -------------------------------------------------------------------------------------------------------------
+""" About Plt """
+
 __appname__ = "Pipeline Tool"
-__module__ = "plt"
+__module__ = "Plt"
 __version__ = "13.0.1"
 __organization__ = "DAMG team"
 __website__ = "www.dot.damgteam.com"
 __email__ = "dot@damgteam.com"
 __author__ = "Trinh Do, a.k.a: Jimmy"
+__root__ = "PLT_RT"
+__db__ = "PLT_DB"
+__st__ = "PLT_ST"
 
 # -------------------------------------------------------------------------------------------------------------
 """ Import modules """
-# -------------------------------------------------------------------------------------------------------------
+
 # Python
 import os
 import shutil
@@ -32,37 +38,27 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLabel, QLineEdit, QGroupBox,
                              QMessageBox, QApplication)
 
 # Plt
-from utilities import utils_sql as ultis
+from utilities import utils_sql as usql
 from utilities import utils as func
 from utilities import message as mess
 from utilities import variables as var
 
 # -------------------------------------------------------------------------------------------------------------
 """ Declare variables """
-# -------------------------------------------------------------------------------------------------------------
+
 __center__ = Qt.AlignCenter
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
-# -------------------------------------------------------------------------------------------------------------
-logPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'user.log')
-logger = logging.getLogger('plt')
+
+logPth = os.path.join(os.getenv(__root__), 'appData', 'logs', 'acc_setting.log')
+logger = logging.getLogger('acc_setting')
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
-def query_user_info():
-
-    currentUserData = ultis.query_current_user()
-    curUser = currentUserData[2]
-    unix = currentUserData[0]
-    token = currentUserData[1]
-    rememberLogin = currentUserData[3]
-    status = currentUserData[-1]
-    ultis.check_sys_configuration(curUser)
-    return unix, token, curUser, rememberLogin, status
 
 def clabel(text, *args):
     label = QLabel(text)
@@ -76,7 +72,7 @@ def clabel(text, *args):
 class Account_setting(QDialog):
 
     changeAvatarSignal = pyqtSignal(str)
-    unix, token, curUser, rememberLogin, status = query_user_info()
+    curUser = usql.query_curUser()
 
     def __init__(self, parent=None):
 
@@ -86,7 +82,7 @@ class Account_setting(QDialog):
         self.setWindowTitle('User Setting')
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
 
-        self.settings = QSettings(var.USER_SETTING_PTH, QSettings.IniFormat)
+        self.settings = QSettings(var.USER_SETTING, QSettings.IniFormat)
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -221,13 +217,13 @@ class Account_setting(QDialog):
             QMessageBox.critical(self, 'Failed', mess.PW_UNMATCH)
             return
         else:
-            checkPass = ultis.check_password_match(self.curUser, old_pass)
+            checkPass = ultis.check_pw_match(self.curUser, old_pass)
             if not checkPass:
                 QMessageBox.critical(self, 'Failed', "Password not match")
                 return
             else:
                 newpass = func.encode(self.newPassword.text())
-                ultis.update_password_user(self.unix, newpass)
+                ultis.update_password(self.unix, newpass)
                 QMessageBox.information(self, 'Updated', mess.PW_CHANGED)
 
     def update_avatar(self):

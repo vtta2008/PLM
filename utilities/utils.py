@@ -6,11 +6,26 @@ Author: Do Trinh/Jimmy - 3D artist.
 Description:
     Here is where a lot of function need to use multiple times overall
 """
+
+# -------------------------------------------------------------------------------------------------------------
+""" About Plt """
+
+__appname__ = "Pipeline Tool"
+__module__ = "Plt"
+__version__ = "13.0.1"
+__organization__ = "DAMG team"
+__website__ = "www.dot.damgteam.com"
+__email__ = "dot@damgteam.com"
+__author__ = "Trinh Do, a.k.a: Jimmy"
+__root__ = "PLT_RT"
+__db__ = "PLT_DB"
+__st__ = "PLT_ST"
+
 # -------------------------------------------------------------------------------------------------------------
 """ Import modules """
-# -------------------------------------------------------------------------------------------------------------
+
 # Python
-import datetime
+import requests
 import json
 import logging
 import os
@@ -20,38 +35,23 @@ import subprocess
 import sys
 import urllib
 import cv2
-import pip
-import requests
 import winshell
 import yaml
+import pip
+import re
+import datetime
+import time
+import uuid
 from pyunpack import Archive
-from functools import partial
-
-# PyQt5
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QAction
 
 # Plt tools
 import variables as var
 
-# ------------------------------------------------------
-""" Variables """
-# ------------------------------------------------------
-config_path = os.path.join(os.getenv(('PIPELINE_TOOL'), 'appData'))
-
-USER = var.USERNAME
-# example of a normal string (English, readable)
-STRINPUT = var.STRINPUT
-# example of a string in hexadecimal code
-HEXINPUT = var.HEXINPUT
-# list of keywords to run script by user
-OPERATION = var.OPERATION['encode']
-
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
-# -------------------------------------------------------------------------------------------------------------
-logPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'logs', 'utilities.log')
-logger = logging.getLogger('utilities')
+
+logPth = os.path.join(os.getenv(__root__), 'appData', 'logs', 'func.log')
+logger = logging.getLogger('func')
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
@@ -60,28 +60,14 @@ logger.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Functions content """
-# -------------------------------------------------------------------------------------------------------------
-def str2bool(arg):
-    return str(arg).lower() in ['true', 1, '1', 'ok']
 
-def bool2str(arg):
-    if arg:
-        return "True"
-    else:
-        return "False"
-
-def downloadSingleFile(url, path_to, *args):
+def download_single_file(url, path_to, *args):
     execute_download = urllib.urlretrieve(url, path_to)
     logger.info(execute_download)
     logger.info("Downloaded to: %s" % str(path_to))
 
 def extract_files(inDir, file_name, outDir, *args):
     Archive(os.path.join(inDir, file_name)).extractall(outDir)
-
-def system_call(args, cwd="."):
-    print("Running '{}' in '{}'".format(str(args), cwd))
-    subprocess.call(args, cwd=cwd)
-    pass
 
 def fix_image_files(root=os.curdir):
     for path, dirs, files in os.walk(os.path.abspath(root)):
@@ -118,7 +104,7 @@ def batch_config(listObj, mode, *args):
             logger.info('Could not find the specific path: %s' % obj)
 
 def clean_unnecessary_file(var, *args):
-    directory = os.getenv('PIPELINE_TOOL')
+    directory = os.getenv(__root__)
 
     profile = []
     for root, dirs, file_names in os.walk(directory):
@@ -127,12 +113,12 @@ def clean_unnecessary_file(var, *args):
                 pth = os.path.join(root, file_name)
                 profile.append(pth)
 
-    if len(profile) is None:
-        sys.exit()
-
-    for f in profile:
-        logger.info('removing %s' % f)
-        os.remove(f)
+    if len(profile) == 0:
+        return
+    else:
+        for f in profile:
+            logger.info('removing %s' % f)
+            os.remove(f)
 
 def get_file_path(directory=None):
 
@@ -163,7 +149,6 @@ def get_file_path(directory=None):
     return file_paths  # Self-explanatory.
 
 def batch_resize_image(imgDir=None, imgResDir=None, size=[100, 100], sub=False, ext='.png', mode=1):
-
     """
     resize multiple images at once
     :param imgDir: the path of images will be resized
@@ -171,7 +156,6 @@ def batch_resize_image(imgDir=None, imgResDir=None, size=[100, 100], sub=False, 
     :param size: how big or small images will be resized
 
     """
-
     if imgDir == None:
         sys.exit()
 
@@ -239,9 +223,8 @@ def dataHandle(type='json', mode='r', filePath=None, data={}, *args):
 
     return info
 
-def get_list_python_packages_installed(*args):
+def get_python_pkgs(*args):
     pyPkgs = {}
-
     pyPkgs['__mynote__'] = 'import pip; pip.get_installed_distributions()'
 
     for package in pip.get_installed_distributions():
@@ -253,14 +236,14 @@ def get_list_python_packages_installed(*args):
 
         pyPkgs[name] = [key, version, location]
 
-    pkgConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/pkgs_config.yml')
+    pkgConfig = os.path.join(os.getenv(__root__), 'appData', 'pkgs_config.yml')
 
     with open(pkgConfig, 'w') as f:
         yaml.dump(pyPkgs, f, default_flow_style=False)
 
     return pyPkgs
 
-def executing(name, path, *args):
+def cmd_execute_py(name, path, *args):
     """
     Executing a python file
     :param name: python file name
@@ -272,7 +255,7 @@ def executing(name, path, *args):
     if os.path.exists(pth):
         subprocess.call([sys.executable, pth])
 
-def install_package(name, *args):
+def cmd_install_py(name, *args):
     """
     Install python package via command prompt
     :param name: name of component
@@ -282,6 +265,11 @@ def install_package(name, *args):
 
     subprocess.Popen('pip install %s' % name, shell=True).wait()
 
+def system_call(args, cwd="."):
+    print("Running '{}' in '{}'".format(str(args), cwd))
+    subprocess.call(args, cwd=cwd)
+    pass
+
 def inspection_backage(name, *args):
     """
     check python component, if false, it will install component
@@ -289,7 +277,7 @@ def inspection_backage(name, *args):
     :return:
     """
     # logger.info( 'Trying to import %s' % name )
-    allPkgs = get_list_python_packages_installed()
+    allPkgs = get_python_pkgs()
 
     if name in allPkgs:
         # logger.info('package "%s" is already installed' % name)
@@ -297,152 +285,90 @@ def inspection_backage(name, *args):
     else:
         logger.info('package "%s" is not installed, '
                     'execute package installation procedural' % name)
-        install_package(name)
-
-def create_env_key(key, path, *args):
-    """
-    Create custom enviroment Key in sys.
-    all of those keys are temporary,
-    it will be none once pipeline tool shut down.
-    :param key: name of the key
-    :param scrInstall: source scripts of pipline tool app
-    :param toolName: name of the folder where contains the tool
-    :return: a teamporary environment variable.
-    """
-    logger.info('install new environment variable')
-    os.environ[key] = path
+        cmd_install_py(name)
 
 def inspect_env_key(key, path, *args):
     try:
         pth = os.getenv(key)
-
         if pth == None or pth == '':
-            create_env_key(key, path)
-
+            logger.info('install new environment variable')
+            os.environ[key] = path
     except KeyError:
-        create_env_key(key, path)
+        logger.info('install new environment variable')
+        os.environ[key] = path
     else:
         pass
-
-def get_avatar(name, *args):
-    imgFile = name + '.avatar.jpg'
-    imgPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs', imgFile)
-
-    if os.path.exists(imgPth):
-        pass
-    else:
-        scrPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs', 'default.avatar.jpg')
-        shutil.copy2(scrPth, imgPth)
-    return imgPth
 
 def download_image_from_url(link, *args):
     fileName = os.path.basename(link)
-    imgPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs')
+    imgPth = os.path.join(os.getenv(__root__), 'imgs')
     avatarPth = os.path.join(imgPth, fileName)
     if not os.path.exists(avatarPth):
-        downloadSingleFile(link, avatarPth)
+        download_single_file(link, avatarPth)
 
     return avatarPth
 
-def open_app(pth, *args):
-    subprocess.Popen(pth)
+# -------------------------------------------------------------------------------------------------------------
+""" Collecting info user """
 
-# ----------------------------------------------------------------------------------------------------------- #
-""" Plt app functions """
+def get_local_pc(*args):
 
-def screenshot(*args):
-    from ui import ui_screenshot
-    reload(ui_screenshot)
-    dlg = ui_screenshot.Screenshot()
-    dlg.exec_()
+    package = var.PLT_PKG
+    pythonVersion = sys.version
+    windowOS = platform.system()
+    windowVersion = platform.version()
 
-# ----------------------------------------------------------------------------------------------------------- #
-""" PtQt5 Layout Functions """
+    sysOpts = package['sysOpts']
+    cache = os.popen2("SYSTEMINFO")
+    source = cache[1].read()
 
-def get_icon(name, *args):
-    iconName = name + '.icon.png'
-    iconPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'icons', iconName)
-    return iconPth
+    sysInfo = {}
 
-def get_web_icon(name, *args):
-    iconName = name + '.icon.png'
-    iconPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'icons', 'Web.icon', iconName)
-    return iconPth
+    sysInfo['python'] = pythonVersion
+    sysInfo['os'] = windowOS + "|" + windowVersion
+    sysInfo['pcUser'] = platform.node()
+    sysInfo['operating system'] = platform.system() + "/" + platform.platform()
+    sysInfo['python version'] = platform.python_version()
 
-# ----------------------------------------------------------------------------------------------------------- #
+    values = {}
+    for opt in sysOpts:
+        values[opt] = [item.strip() for item in re.findall("%s:\w*(.*?)\n" % (opt), source, re.IGNORECASE)][0]
+    for item in values:
+        sysInfo[item] = values[item]
 
-# ----------------------------------------------------------------------------------------------------------- #
-""" Enconding """
+    return sysInfo
 
-class Encode():
-    """
-    This is the main class with function to encode a string to hexadecimal or revert.
-    """
-    def utf8(self, rawInput):
-        outPut = rawInput.encode('utf-8')
-        return outPut
+def get_datetime(*args):
+    datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
+    return datetime_stamp
 
-    def typeToStr(self, rawInput):
-        """
-        convert to string
-        :param rawInput: input which may not be a string type
-        :return: string type input
-        """
-        if type(rawInput) is not 'string':
-            rawStr = str(rawInput)
-        else:
-            rawStr = rawInput
+def get_date(*args):
+    datetimeLog = get_datetime()
+    dayLog = datetimeLog.split('||')[0]
+    return dayLog
 
-        return rawStr
+def get_time(*args):
+    datetimeLog = get_datetime()
+    timeLog = datetimeLog.split('||')[1]
+    return timeLog
 
-    def strToHex(self, strInput):
-        """
-        convert string to hexadecimal
-        :param strInput: string input
-        :return: hexadecimal
-        """
-        self.outPut = ''.join(["%02X" % ord(x) for x in strInput])
-        return self.outPut
+def get_token(*args):
+    return str(uuid.uuid4())
 
-    def hexToStr(self, hexInput):
-        """
-        convert a hexadecimal string to a string which could be readable
-        :param hexInput: hexadecimal string
-        :return: readable string
-        """
-        bytes = []
-        hexStr = ''.join(hexInput.split(" "))
-        for i in range(0, len(hexStr), 2):
-            bytes.append(chr(int(hexStr[i:i + 2], 16)))
+def get_unix(*args):
+    unix = (str(uuid.uuid4())).split('-')[-1]
+    token = get_token()
+    timeLog = get_time()
+    dateLog = get_date()
+    return unix, token, timeLog, dateLog
 
-        self.outPut = ''.join(bytes)
-        return self.outPut
+def get_title():
+    import random
+    secure_random = random.SystemRandom()
+    value = secure_random.choice(var.USER_CLASS)
+    return value
 
-def encode(input=STRINPUT, mode=OPERATION[0]):
-    """
-    Base on given mode it will tells script what to do
-    :param input: type of input, string by default
-    :param mode: given mode to convert string to hexadecimal or revert.
-    :return: string
-    """
-    if mode == 'hex':
-        output = Encode().strToHex(input)
-    elif mode == 'str':
-        output = Encode().hexToStr(input)
-    else:
-        output = Encode().utf8(input)
-
-    return output
-
-def encoding(message):
-    output = encode(message, mode='hex')
-    return output
-
-def decoding(message):
-    output = encode(message, mode='str')
-    return output
-
-def create_location_stamp():
+def get_location(*args):
     r = requests.get('https://api.ipdata.co').json()
     info = {}
     for key in r:
@@ -453,55 +379,115 @@ def create_location_stamp():
     city = info['city']
     country = info['country_name']
     return ip, city, country
-# ----------------------------------------------------------------------------------------------------------- #
 
 # ----------------------------------------------------------------------------------------------------------- #
-""" Get config info of modules, files etc. """
+""" Plt app functions """
 
-class Get_current_time():
-    """
-    This is some function that will use many time
-    """
-    dt = datetime.datetime
+def screenshot(*args):
+    from ui import ui_screenshot
+    reload(ui_screenshot)
+    dlg = ui_screenshot.Screenshot()
+    dlg.exec_()
 
-    def __init__(self):
-        # logger.info('Start procedural')
+def open_app(pth, *args):
+    subprocess.Popen(pth)
+
+# ----------------------------------------------------------------------------------------------------------- #
+""" Quick find path """
+
+def get_icon(name, *args):
+    iconName = name + '.icon.png'
+    iconPth = os.path.join(os.getenv(__root__), 'icons', iconName)
+    return iconPth
+
+def get_web_icon(name, *args):
+    iconName = name + '.icon.png'
+    iconPth = os.path.join(os.getenv(__root__), 'icons', 'Web.icon', iconName)
+    return iconPth
+
+def get_avatar(name, *args):
+    imgFile = name + '.avatar.jpg'
+    imgPth = os.path.join(os.getenv(__root__), 'imgs', imgFile)
+
+    if os.path.exists(imgPth):
         pass
+    else:
+        scrPth = os.path.join(os.getenv(__root__), 'imgs', 'default.avatar.jpg')
+        shutil.copy2(scrPth, imgPth)
+    return imgPth
 
-    def getDate(self):
-        t = datetime.datetime.timetuple(datetime.datetime.now())
-        dateOutput = '%s.%s.%s' % (str(t.tm_mday), str(t.tm_mon), str(t.tm_year))
-        return dateOutput
+# ----------------------------------------------------------------------------------------------------------- #
+""" Encode, decode, convert """
 
-    def getTime(self):
-        t = datetime.datetime.timetuple(datetime.datetime.now())
-        timeOutput = '%s:%s' % (str(t.tm_hour), str(t.tm_min))
-        return timeOutput
+def text_to_utf8(input):
+    return input.encode('utf-8')
 
-class Generate_info(object):
+def text_to_hex(text):
+    text = str(text)
+    outPut = ''.join(["%02X" % ord(x) for x in text])
+    return outPut
+
+def hex_to_text(hex):
+    hex = str(hex)
+    bytes = []
+    hexStr = ''.join(hex.split(" "))
+    for i in range(0, len(hexStr), 2):
+        bytes.append(chr(int(hexStr[i:i + 2], 16)))
+    outPut = ''.join(bytes)
+    return outPut
+
+def str2bool(arg):
+    return str(arg).lower() in ['true', 1, '1', 'ok']
+
+def bool2str(arg):
+    if arg:
+        return "True"
+    else:
+        return "False"
+
+# ----------------------------------------------------------------------------------------------------------- #
+
+def check_blank(data, *args):
+    if len(data) == 0 or data == "" or data is None:
+        return False
+    else:
+        return True
+
+def check_match(data1, data2, *args):
+    if len(data1) == len(data2):
+        count = len(data1) - 1
+        for i in range(len(data1)):
+            if data1[i] == data2[i]:
+                count = count - 1
+            else:
+                count = count + 1
+            i += 1
+
+        if count == 1:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+# ----------------------------------------------------------------------------------------------------------- #
+""" Collecting all info. """
+
+class Collect_info(object):
+    """
+    Initialize the main class functions
+    :param package: the package of many information stored from default variable
+    :param names: the dictionary of names stored from default variable
+    :returns: all installed app info, package app info, icon info, image info, pc info.
 
     """
-    This class will find all the info of python, icon, image files and folders then store them to info files in
-    info folder
-    """
-
     def __init__(self):
-        super(Generate_info, self).__init__()
 
-        """
-        Initialize the main class functions
-        :param package: the package of many information stored from default variable
-        :param names: the dictionary of names stored from default variable
-        :returns: all installed app info, package app info, icon info, image info, pc info.
-        
-        """
-        # logger.info('Updating data paths')
+        super(Collect_info, self).__init__()
+        package = var.PLT_PKG
+        self.generate_config_file(package)
 
-        package = var.PLT_PACKAGE
-
-        self.createAllInfoFiles(package)
-
-    def getModuleInfo(self, package):
+    def collect_module_pth(self, package):
         """
         Get all the info of modules
         :param package: the package of many information stored from default variable
@@ -528,7 +514,7 @@ class Generate_info(object):
 
         return moduleInfo
 
-    def getIconInfo(self, package):
+    def collect_icon_path(self, package):
         """
         Get all the info of icons
         :param package: the package of many information stored from default variable
@@ -539,7 +525,7 @@ class Generate_info(object):
         iconInfo = {}
         iconInfo['Sep'] = 'separato.png'
         iconInfo['File'] = 'file.png'
-        iconInfo['iconPth'] = os.path.join(os.getenv('PIPELINE_TOOL'), package['image'][0])
+        iconInfo['iconPth'] = os.path.join(os.getenv(__root__), package['image'][0])
         icons = [f for f in os.listdir(iconInfo['iconPth']) if '.icon' in f]
         if len(icons) == 0:
             iconInfo['icons'] = None
@@ -551,7 +537,7 @@ class Generate_info(object):
         icons['name'] = iconNames
         return iconInfo
 
-    def getImgInfo(self, package):
+    def collect_img_path(self, package):
         """
         Get all the info of images
         :param package: the package of many information stored from default variable
@@ -567,7 +553,7 @@ class Generate_info(object):
                 imgInfo[i.split('.png')[0]] = os.path.join(imgInfo['imgPth'], i)
         return imgInfo
 
-    def getAllAppInfo(self):
+    def collect_all_apps_path(self):
         """
         It will find and put all the info of installed apps to two list: appname and path
         :param filters: self.appName, self.appPath
@@ -588,19 +574,19 @@ class Generate_info(object):
         appInfo = {}
         for name in appName:
             pth = appPth[appName.index(name)]
-            pth = encode(pth, 'utf8')
-            name = encode(name, 'utf8')
+            pth = text_to_utf8(pth)
+            name = text_to_utf8(name)
             appInfo[name] = pth
         return appInfo
 
-    def getPackageAppInfo(self, package):
+    def collect_python_pkgs(self, package):
         """
         It will Check if there is more than 1 version is installed
         :param package: the package of many information stored from default variable
         :param names: the dictionary of names stored from default variable
         :return: final app info
         """
-        self.appInfo = self.getAllAppInfo()
+        self.appInfo = self.collect_all_apps_path()
         keys = [k for k in self.appInfo if not self.appInfo[k].endswith(package['ext'][0])]
         self.appInfo = self.deleteKey(keys, True)
         jobs = []
@@ -626,24 +612,25 @@ class Generate_info(object):
 
         return self.appInfo
 
-    def createAllInfoFiles(self, package):
+    def generate_config_file(self, package):
         """
         Run all the functions inside class and take all the return info then store them to files
         :param package: the package of many information stored from default variable
         :return: info files
         """
         info = {}
-        iconInfo = self.getIconInfo(package)
+        iconInfo = self.collect_icon_path(package)
         trackKeys = {}
 
-        allapps = self.getAllAppInfo()
-        appsConfig_yaml = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'config', 'app_config.yml')
-        appsConfig_json = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'config', 'app_config.json')
+        allapps = self.collect_all_apps_path()
+        appsConfig_yaml = os.path.join(os.getenv(__root__), 'appData', 'config', 'app.yml')
+        appsConfig_json = os.path.join(os.getenv(__root__), 'appData', 'config', 'app.json')
 
+        print appsConfig_json, appsConfig_yaml
         dataHandle('yaml', 'w', appsConfig_yaml, allapps)
         dataHandle('json', 'w', appsConfig_json, allapps)
 
-        self.appInfo = self.getPackageAppInfo(package)
+        self.appInfo = self.collect_python_pkgs(package)
         for key in self.appInfo:
             # fix nukeX path
             if 'NukeX' in key:
@@ -678,11 +665,11 @@ class Generate_info(object):
         if os.path.exists(davinciPth):
             trackKeys['Resolve'] = ['Davinci Resolve 14', get_icon('Resolve'), davinciPth]
 
-        with open(os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'config', 'app_config.yml'), 'r') as f:
+        with open(os.path.join(os.getenv(__root__), 'appData', 'config', 'app.yml'), 'r') as f:
             fixInfo = yaml.load(f)
 
-        dbBrowserPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'external_app', 'sqlbrowser', 'SQLiteDatabaseBrowserPortable.exe')
-        advanceRenamerPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'external_app', 'batchRenamer', 'ARen.exe')
+        dbBrowserPth = os.path.join(os.getenv(__root__), 'external_app', 'sqlbrowser', 'SQLiteDatabaseBrowserPortable.exe')
+        advanceRenamerPth = os.path.join(os.getenv(__root__), 'external_app', 'batchRenamer', 'ARen.exe')
         qtDesigner = os.path.join(os.getenv('PROGRAMDATA'),'Anaconda2', 'Library', 'bin', 'designer.exe')
 
         for keys in fixInfo:
@@ -712,24 +699,25 @@ class Generate_info(object):
                 trackKeys['Advance Renamer'] = ['Advance Renamer 3.8', get_icon('AdvanceRenamer'), advanceRenamerPth]
 
         info['pipeline'] = trackKeys
-        pipelineConfig_yaml = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'config', 'main_config.yml')
-        pipelineConfig_json = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'config', 'main_config.json')
+        pipelineConfig_yaml = os.path.join(os.getenv(__root__), 'appData', 'config', 'main.yml')
+        pipelineConfig_json = os.path.join(os.getenv(__root__), 'appData', 'config', 'main.json')
         dataHandle('yaml', 'w', pipelineConfig_yaml, trackKeys)
         dataHandle('json', 'w', pipelineConfig_json, trackKeys)
         info['icon'] = iconInfo
-        # iconConfig = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/icon_config.yml')
-        #
-        # if not os.path.exists(iconConfig):
-        #     dataHandle('yaml', 'w', iconConfig, iconInfo)
 
-        # envKeys = {}
-        # for key in os.environ.keys():
-        #     envKeys[key] = os.getenv(key)
+        iconConfig = os.path.join(os.getenv(__root__), 'appData', 'config', 'icon.yml')
 
-        # pth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData/sysPath_config.yml')
-        #
-        # if not os.path.exists(pth):
-        #     dataHandle('yaml', 'w', pth, envKeys)
+        if not os.path.exists(iconConfig):
+            dataHandle('yaml', 'w', iconConfig, iconInfo)
+
+        envKeys = {}
+        for key in os.environ.keys():
+            envKeys[key] = os.getenv(key)
+
+        pth = os.path.join(os.getenv(__root__), 'appData', 'config', 'sysPath.yml')
+
+        if not os.path.exists(pth):
+            dataHandle('yaml', 'w', pth, envKeys)
 
     def deleteKey(self, keys, n=True):
         if not n:
@@ -744,32 +732,5 @@ class Generate_info(object):
                     del self.appInfo[key]
 
         return self.appInfo
+
 # ----------------------------------------------------------------------------------------------------------- #
-
-def check_blank(data, *args):
-    if len(data) == 0 or data == "" or data is None:
-        return False
-    else:
-        return True
-
-def check_match(data1, data2, *args):
-
-    if len(data1) == len(data2):
-        count = len(data1) - 1
-        for i in range(len(data1)):
-            if data1[i] == data2[i]:
-                count = count - 1
-            else:
-                count = count + 1
-            i += 1
-
-        if count == 1:
-            return True
-        else:
-            return False
-    else:
-        return False
-
-# --------------------------------------------------------------------------------------------------------
-"""                                                END OF CODE                                         """
-# --------------------------------------------------------------------------------------------------------
