@@ -20,9 +20,10 @@ def codec_name(codec):
     return name
 
 
-class MainWindow(QMainWindow):
+class Menu_layout(QMainWindow):
+
     def __init__(self):
-        super(MainWindow, self).__init__()
+        super(Menu_layout, self).__init__()
 
         self.textEdit = QTextEdit()
         self.textEdit.setLineWrapMode(QTextEdit.NoWrap)
@@ -151,6 +152,7 @@ class MainWindow(QMainWindow):
         self.menuBar().addMenu(self.helpMenu)
 
 class PreviewForm(QDialog):
+
     def __init__(self, parent):
         super(PreviewForm, self).__init__(parent)
 
@@ -208,8 +210,18 @@ class WindowDialog(QDialog):
 
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setWindowTitle('Note Reminder')
-        self.mainMenu = MainWindow()
-        self.layout = QGridLayout(self)
+
+
+        self.layout = QGridLayout()
+
+        self.buildUI()
+
+        self.setLayout(self.layout)
+
+    def buildUI(self):
+
+        self.mainMenu = Menu_layout()
+
         self.layout.addWidget(self.mainMenu, 0,0,1,1)
 
 def main():

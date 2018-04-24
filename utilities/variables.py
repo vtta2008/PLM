@@ -29,20 +29,6 @@ import winshell
 # Plt tools
 from utilities import message as mess
 
-PLT_KEY = 'PIPELINE_TOOL'
-
-check_pth = os.getenv(PLT_KEY)
-
-if check_pth is None or not os.path.exists(check_pth):
-    logging.warning("environment variable have not set yet.")
-
-    SCR_PATH = os.getcwd().split('utilities')[0]
-    KEY = "PIPELINE_TOOL"
-
-    # Set key, path into environment variable.
-    logging.info("Set up environment variable")
-    os.environ[KEY] = SCR_PATH
-
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 # -------------------------------------------------------------------------------------------------------------
@@ -62,7 +48,7 @@ appname = "Pipeline Tool"
 module = "main"
 version = "13.0.1"
 organization = "DAMG team"
-website = "www.damgteam.com"
+website = "www.dot.damgteam.com"
 email = "dot@damgteam.com"
 author = "Trinh Do, a.k.a: Jimmy"
 
@@ -91,7 +77,7 @@ PLT_TABID = ['', 'User', 'Functions', 'Project', 'Admin', ]
 PLT_URL = dict(
 
     Home = 'https://www.dot.damgteam.com/',
-    Help = 'https://www.damgteam.com/',
+    Help = 'https://www.dot.damgteam.com/',
 
 )
 
@@ -101,8 +87,8 @@ PLT_MESS = dict(About=mess.PLT_ABOUT,
 
 PLT_PATH = dict(
 
-    info = os.path.join(os.getenv(PLT_KEY), 'appData'),
-    temp = os.path.join(os.getenv(PLT_KEY), 'appData', 'temp'),
+    info = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData'),
+    temp = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'temp'),
     desktop = winshell.desktop(),
     db = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'database.db')
 
@@ -120,9 +106,16 @@ PLT_PACKAGE = dict(
     sysOpts=["Host Name", "Product ID", "System Manufacturer", "System Model", "System type", "BIOS Version", "Domain",
              "Windows Directory", "Total Physical Memory", "Available Physical Memory", "Logon Server"],
     filter=['Non-commercial', 'Uninstall', 'Verbose', 'License', 'Skype'],
-    root = os.getenv(PLT_KEY),
+    root = os.getenv('PIPELINE_TOOL'),
     py = ['utilities','ui'],
     image=['icons', 'imgs'],
     ext=['.exe', 'PipelineTool.py', '.lnk'],
 
 )
+
+# Setting Path
+LAYOUT_SETTING_PTH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'Plt.ini')
+
+USER_SETTING_PTH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'User.ini')
+
+DB_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'database.db')

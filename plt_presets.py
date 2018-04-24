@@ -54,7 +54,7 @@ def preset1_plt_root_path():
     global SCR_PATH
     # Key name.
     KEY = 'PIPELINE_TOOL'
-    TOOL_NAME = 'PipelineTool'
+    TOOL_NAME = __appname__
     # Path value.
     SCR_PATH = os.getcwd()
     # Set key, path into environment variable.

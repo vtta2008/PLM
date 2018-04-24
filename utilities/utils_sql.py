@@ -4,7 +4,8 @@ Script Name: ultilitis_user.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
-    This script is main file to create database
+    This script is main file to create, modify and/or query database
+    For now, database is offline, but it will be online soon, we going to work together via a server.
 
 """
 
@@ -141,7 +142,7 @@ def decode(hex):
 
 """ Template to create table """
 # -------------------------------------------------------------------------------------------------------------
-demaoName = "DEMO TABLE"
+demo_name = "DEMO TABLE"
 nf = ['col1', 'col2', 'col3', 'col4']
 ft = ['TEXT', 'TEXT', 'TEXT', 'TEXT']
 
@@ -295,6 +296,7 @@ def query_original_pcToken(productID):
     return token
 
 def query_user_class(unix, username):
+
     c.execute("SELECT * FROM UserClassDB")
     rows = c.fetchall()
     userClass = 'UnKnown'
@@ -310,6 +312,12 @@ def query_user_status(username):
     userData = query_user_profile(username)
     status = userData[-1]
     return status
+
+def query_user_security_question(username):
+    userData = query_user_profile(username)
+    question1 = userData[-3]
+    question2 = userData[-2]
+    return question1, question2
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -45,26 +45,27 @@ JimJim
 
 """
 
-NOT_ALLOW = "Sorry, but only Admin can do this function, please contact JimJim for details."
+PASSWORD_FORGOTTON = """
 
-SIGN_UP = "Is this the first time?"
+How the hell you forgot your password? Make a new one now!!!
+(This function will be update soon.)
 
-TITLE_BLANK = 'Blank title will be set to "Tester"'
+"""
 
-PASSWORD_BLANK = "Password is blank."
+SIGN_UP = "Do not have account?"
 
-PASSWORD_WRONG = "Your password is wrong."
-
-PASSWORD_UNMATCH = "Password doesn't match"
-
-FIRSTNAME_BLANK = "Firstname cannot be blank"
-
-LASTNAME_BLANK = "Lastname cannot be blank"
-
-USERNAME_BLANK = "Username is blank."
-
-USER_CHECK = "I agree to the DAMG Terms of Service"
-
-USER_NOT_EXSIST = "Wrong username or password"
-
-USER_BLOCK = "This username has been blocked"
+DISALLOW = "Sorry, but only Admin can do this function, please contact JimJim for details."
+TIT_BLANK = 'Blank title will be set to "Tester"'
+PW_BLANK = "Password is blank."
+PW_WRONG = "Your password is wrong."
+PW_UNMATCH = "Password doesn't match"
+PW_CHANGED = "Your password has changed"
+FN_BLANK = "Firstname cannot be blank"
+LN_BLANK = "Lastname cannot be blank"
+SEC_BLANK = "Every sections should not be blank, please try again."
+USER_CHECK_REQUIRED = "I agree to the DAMG Terms of Service"
+USER_BLANK = "Your username is blank."
+USER_CHECK_FAIL = "Wrong username or password"
+USER_NOT_EXSIST = "The username does not exists"
+USER_CONDITION = "This username is under condition and can not log in, please contact to admin."
+SYSTRAY_UNAVAI = "Systray could not detect any system tray on this system"

@@ -20,6 +20,7 @@ __author__ = "Trinh Do, a.k.a: Jimmy"
 """ Import modules """
 # -------------------------------------------------------------------------------------------------------------
 # Python
+import shutil
 import logging
 import os
 import subprocess
@@ -31,11 +32,11 @@ import qdarkgraystyle
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings, QRegExp, QLocale
+from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings, QRegExp, QLocale, QTimer
 from PyQt5.QtGui import QIcon, QPixmap, QImage, QRegExpValidator
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QGridLayout, QSizePolicy, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
-                             QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu, QComboBox)
+                             QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu, QFileDialog, QComboBox)
 
 if not os.getenv('PIPELINE_TOOL'):
     os.environ['PIPELINE_TOOL'] = os.getcwd()
@@ -50,7 +51,7 @@ checkPackage = pltp.preset3_install_extra_python_package()
 pltp.preset4_maya_intergrate()
 
 # UI
-from ui import ui_account_setting
+from ui import ui_acc_setting
 from ui import ui_preference
 
 # Plt tools
@@ -70,8 +71,6 @@ frameStyle = QFrame.Sunken | QFrame.Panel
 
 # Get apps info config
 APPINFO = pltp.preset5_gather_configure_info()
-SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'PipelineTool_settings.ini')
-DB_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'database.db')
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
@@ -111,74 +110,95 @@ class Plt_sign_up(QDialog):
 
     def buildUI(self):
 
-        self.layout.addWidget(clabel("All fields are required."), 0,0,1,6)
-
+        avatar_section = self.avatar_section()
         account_section = self.account_section()
-        self.layout.addWidget(account_section, 1, 0, 1, 6)
-
         profile_section = self.profile_section()
-        self.layout.addWidget(profile_section, 2, 0, 1, 6)
-
-        contact_section = self.contact_section()
-        self.layout.addWidget(contact_section, 3, 0, 1, 6)
-
+        contact_section = self.location_section()
         buttons_section = self.buttons_section()
+
+        self.layout.addWidget(clabel("All fields are required."), 0, 0, 1, 6)
+        self.layout.addWidget(avatar_section, 1, 0, 1, 6)
+        self.layout.addWidget(account_section, 2, 0, 1, 6)
+        self.layout.addWidget(profile_section, 3, 0, 1, 6)
+        self.layout.addWidget(contact_section, 4, 0, 1, 6)
         self.layout.addWidget(buttons_section, 5, 0, 1, 6)
+
+    def avatar_section(self):
+        avatar_groupBox = QGroupBox("Avatar")
+        avatar_grid = QGridLayout()
+        avatar_groupBox.setLayout(avatar_grid)
+
+        defaultImg = QPixmap.fromImage(QImage(func.get_avatar('default')))
+        self.userAvatar = QLabel()
+        self.userAvatar.setPixmap(defaultImg)
+        self.userAvatar.setScaledContents(True)
+        self.userAvatar.setFixedSize(100, 100)
+
+        set_avatarBtn = QPushButton("Set Avatar")
+        set_avatarBtn.clicked.connect(self.on_set_avatar_btn_clicked)
+
+        avatar_grid.addWidget(self.userAvatar, 0, 0, 2, 2)
+        avatar_grid.addWidget(set_avatarBtn, 0, 2, 1, 4)
+
+        return avatar_groupBox
 
     def account_section(self):
 
-        account_groupBox = QGroupBox()
-        account_groupBox.setTitle("Account")
+        account_groupBox = QGroupBox("Account")
         account_grid = QGridLayout()
         account_groupBox.setLayout(account_grid)
 
         account_grid.addWidget(clabel('User Name'), 0, 0, 1, 2)
         account_grid.addWidget(clabel('Password'), 1, 0, 1, 2)
-        account_grid.addWidget(clabel('Re-type'), 2, 0, 1, 2)
+        account_grid.addWidget(clabel('Confirm Password'), 2, 0, 1, 2)
 
         self.usernameField = QLineEdit()
         self.passwordField = QLineEdit()
-        self.retypeField = QLineEdit()
+        self.confirmPassField = QLineEdit()
 
         self.passwordField.setEchoMode(QLineEdit.Password)
-        self.retypeField.setEchoMode(QLineEdit.Password)
+        self.confirmPassField.setEchoMode(QLineEdit.Password)
 
         account_grid.addWidget(self.usernameField, 0, 3, 1, 4)
         account_grid.addWidget(self.passwordField, 1, 3, 1, 4)
-        account_grid.addWidget(self.retypeField, 2, 3, 1, 4)
+        account_grid.addWidget(self.confirmPassField, 2, 3, 1, 4)
 
         return account_groupBox
 
     def profile_section(self):
 
-        profile_groupBox = QGroupBox()
-        profile_groupBox.setTitle("Profile")
+        profile_groupBox = QGroupBox("Profile")
         profile_grid = QGridLayout()
         profile_groupBox.setLayout(profile_grid)
 
         profile_grid.addWidget(clabel('First Name'), 0, 0, 1, 2)
         profile_grid.addWidget(clabel('Last Name'), 1, 0, 1, 2)
         profile_grid.addWidget(clabel('Your Title'), 2, 0, 1, 2)
+        profile_grid.addWidget(clabel('Email'), 3, 0, 1, 2)
+        profile_grid.addWidget(clabel('Phone Number'), 4, 0, 1, 2)
 
         self.titleField = QLineEdit()
         self.firstnameField = QLineEdit()
         self.lastnameField = QLineEdit()
+        self.emailField = QLineEdit()
+        self.phoneField = QLineEdit()
 
-        profile_grid.addWidget(self.firstnameField, 0, 3, 1, 4)
-        profile_grid.addWidget(self.lastnameField, 1, 3, 1, 4)
-        profile_grid.addWidget(self.titleField, 2, 3, 1, 4)
+        profile_grid.addWidget(self.firstnameField, 0, 2, 1, 4)
+        profile_grid.addWidget(self.lastnameField, 1, 2, 1, 4)
+        profile_grid.addWidget(self.titleField, 2, 2, 1, 4)
+        profile_grid.addWidget(self.emailField, 3, 2, 1, 4)
+        profile_grid.addWidget(self.phoneField, 4, 2, 1, 4)
 
         return profile_groupBox
 
-    def contact_section(self):
+    def location_section(self):
 
-        contact_groupBox = QGroupBox()
-        contact_groupBox.setTitle("Contact")
+        contact_groupBox = QGroupBox("Location")
         contact_grid = QGridLayout()
         contact_groupBox.setLayout(contact_grid)
 
-        contact_grid.addWidget(clabel("Line 1"), 0, 0, 1, 2)
-        contact_grid.addWidget(clabel("Line 2"), 1, 0, 1, 2)
+        contact_grid.addWidget(clabel("Address Line 1"), 0, 0, 1, 2)
+        contact_grid.addWidget(clabel("Address Line 2"), 1, 0, 1, 2)
         contact_grid.addWidget(clabel("Postal"), 2, 0, 1, 2)
         contact_grid.addWidget(clabel("City"), 3, 0, 1, 2)
         contact_grid.addWidget(clabel("Country"), 4, 0, 1, 2)
@@ -186,107 +206,90 @@ class Plt_sign_up(QDialog):
         self.addressLine1 = QLineEdit()
         self.addressLine2 = QLineEdit()
         self.postalCode = QLineEdit()
-        self.cityLst = QLineEdit()
-        self.countryLst = QComboBox()
+        self.city = QLineEdit()
+        self.country = QLineEdit()
 
-        regex = QRegExp("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
-        self.validator = QRegExpValidator(regex, self.postalCode)
-        self.postalCode.setValidator(self.validator)
-
-        lang_country = {}
-
-        for i in range(QLocale.C, QLocale.LastLanguage + 1):
-            lang = (QLocale(i).nativeLanguageName()).encode('utf-8')
-            country = (QLocale(i).nativeCountryName()).encode('utf-8')
-            lang_country[country] = [lang, i]
-            i += 1
-
-        countries = sorted(list(set([c for c in lang_country])))
-
-        countries.remove(countries[0])
-
-        for country in countries:
-            self.countryLst.addItem(country)
-
-        contact_grid.addWidget(self.addressLine1, 0, 3, 1, 4)
-        contact_grid.addWidget(self.addressLine2, 1, 3, 1, 4)
-        contact_grid.addWidget(self.cityLst, 2, 3, 1, 4)
-        contact_grid.addWidget(self.postalCode, 3, 3, 1, 4)
-        contact_grid.addWidget(self.countryLst, 4, 3, 1, 4)
+        contact_grid.addWidget(self.addressLine1, 0, 2, 1, 4)
+        contact_grid.addWidget(self.addressLine2, 1, 2, 1, 4)
+        contact_grid.addWidget(self.city, 2, 2, 1, 4)
+        contact_grid.addWidget(self.postalCode, 3, 2, 1, 4)
+        contact_grid.addWidget(self.country, 4, 2, 1, 4)
 
         return contact_groupBox
 
     def buttons_section(self):
-
         btn_groupBox = QGroupBox()
         btn_grid = QGridLayout()
         btn_groupBox.setLayout(btn_grid)
 
-        self.checkBox = QCheckBox(mess.USER_CHECK)
-        btn_grid.addWidget(self.checkBox, 0, 0, 1, 1)
+        self.checkBox = QCheckBox(mess.USER_CHECK_REQUIRED)
+        btn_grid.addWidget(self.checkBox, 0, 0, 1, 6)
 
         okBtn = QPushButton('Create Account')
         okBtn.clicked.connect(self.on_create_btn_clicked)
-        btn_grid.addWidget(okBtn, 1, 0, 1, 1)
+        btn_grid.addWidget(okBtn, 1, 0, 1, 2)
 
         cancelBtn = QPushButton('Cancel')
-        cancelBtn.clicked.connect(self.close)
-        btn_grid.addWidget(cancelBtn, 1, 1, 1, 1)
+        cancelBtn.clicked.connect(self.on_cancel_btn_clicked)
+        btn_grid.addWidget(cancelBtn, 1, 2, 1, 2)
+
+        quitBtn = QPushButton('Quit')
+        quitBtn.clicked.connect(QApplication.quit)
+        btn_grid.addWidget(quitBtn, 1,4,1,2)
 
         return btn_groupBox
 
+    def on_set_avatar_btn_clicked(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        imgsDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs')
+        self.rawAvatarPth, _ = QFileDialog.getOpenFileName(self, "Your Avatar", imgsDir, "All Files (*);;Img Files (*.jpg)",
+                                                           options=options)
+        if self.rawAvatarPth:
+            self.userAvatar.setPixmap(QPixmap.fromImage(QImage(self.rawAvatarPth)))
+            self.userAvatar.update()
+
     def on_create_btn_clicked(self):
-
-        # Get title info
-        title = self.regisTitle.text()
-        if title is None or title == '':
-            title = 'Tester'
-        else:
-            title = str(title)
-
-        # Get first name and last name
-        lastname = str(self.lastnameField.text())
+        username = str(self.usernameField.text())
+        password = str(self.passwordField.text())
+        confirm = str(self.confirmPassField.text())
         firstname = str(self.firstnameField.text())
+        lastname = str(self.lastnameField.text())
+        email = str(self.emailField.text())
+        phone = str(self.phoneField.text())
+        address1 = str(self.addressLine1.text())
+        address2 = str(self.addressLine2.text())
+        postal = str(self.postalCode.text())
+        city = str(self.city.text())
+        country = str(self.country.text())
 
-        # Check first name and last name available
-        if firstname == "" or firstname is None:
-            QMessageBox.critical(self, "Error", mess.FIRSTNAME_BLANK, QMessageBox.Retry)
-            return False
-        elif lastname == "":
-            QMessageBox.critical(self, "Error", mess.LASTNAME_BLANK, QMessageBox.Retry)
-            return False
-        else:
-            pass
+        reg = [username, password, confirm, firstname, lastname, email, phone, address1, address2, postal, city, country]
 
-        username = '%s.%s' % (lastname, firstname)
+        for i in reg:
+            if func.check_blank(i):
+                continue
+            else:
+                QMessageBox.critical(self, "Warning", mess.SEC_BLANK, QMessageBox.Retry)
+                break
 
-        # Check username already exists
-        check = usql.check_data_exists(username)
-        if check:
-            USEREXISTS = 'Username %s exists, try again or you already have an account?' % username
-            QMessageBox.critical(self, "Username Exists", USEREXISTS, QMessageBox.Retry)
-        else:
-            pass
+        check_pass = func.check_match(password, confirm)
+        if not check_pass:
+            QMessageBox.critical(self, "Warning", mess.PW_UNMATCH, QMessageBox.Retry)
+            return
 
-        # Get password and retype password then check them
-        password = str(self.password.text())
-        passretype = str(self.passwordRetype.text())
-        check = self.check_password_matching(password, passretype)
 
-        SUCCESS = "Your account has been created: %s" % username
-        if not check:
-            pass
-        else:
-            usql.CreateNewUser(firstname, lastname, title, password)
-            QMessageBox.information(self, "Your username", SUCCESS, QMessageBox.Retry)
-            self.hide()
-            login = Sign_in_layout()
-            login.show()
+
+
+    def on_cancel_btn_clicked(self):
+        self.close()
+        # signin = Sign_in_layout()
+        # signin.show()
+        # signin.exec_()
 
     def check_password_matching(self, password, passretype):
 
         if not password == passretype:
-            QMessageBox.critical(self, "Warning", mess.PASSWORD_UNMATCH, QMessageBox.Retry)
+            QMessageBox.critical(self, "Warning", mess.PW_UNMATCH, QMessageBox.Retry)
             return False
         else:
             return True
@@ -294,17 +297,17 @@ class Plt_sign_up(QDialog):
 # -------------------------------------------------------------------------------------------------------------
 """ Login Layout """
 # -------------------------------------------------------------------------------------------------------------
-class Sign_in_layout(QDialog):
+class Plt_sign_in(QDialog):
 
     def __init__(self, parent=None):
 
-        super(Sign_in_layout, self).__init__(parent)
+        super(Plt_sign_in, self).__init__(parent)
 
         # Sign in layout preset
         self.setWindowTitle('Sign in')
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setContentsMargins(0, 0, 0, 0)
-        self.setFixedSize(360, 240)
+        self.setFixedSize(400, 300)
 
         # Main layout
         self.layout = QGridLayout()
@@ -317,43 +320,58 @@ class Sign_in_layout(QDialog):
 
     def buildUI(self):
 
-        unix, token, curUser, rememberLogin, status = pltp.preset6_query_user_info()
-
-        login_groupBox = QGroupBox()
-        login_groupBox.setTitle('Sign in')
+        login_groupBox = QGroupBox('Sign in')
         login_grid = QGridLayout()
         login_groupBox.setLayout(login_grid)
 
-        self.usernameField = QLineEdit(curUser)
+        self.usernameField = QLineEdit()
         self.passwordField = QLineEdit()
         self.rememberCheckBox = QCheckBox('Remember me.')
         self.passwordField.setEchoMode(QLineEdit.Password)
 
+        forgot_pw_btn = QPushButton('Forgot your password?')
+        forgot_pw_btn.clicked.connect(self.on_forgot_pw_btn_clicked)
+
         login_btn = QPushButton('Login')
         cancel_btn = QPushButton('Cancel')
-        sign_up_btn = QPushButton('Sign up')
 
         login_btn.clicked.connect(self.on_sign_in_btn_clicked)
-        cancel_btn.clicked.connect(self.close)
-        sign_up_btn.clicked.connect(self.on_sign_up_btn_clicked)
+        cancel_btn.clicked.connect(QApplication.quit)
 
         login_grid.addWidget(clabel('Username'), 1, 0, 1, 2)
         login_grid.addWidget(clabel('Password'), 2, 0, 1, 2)
         login_grid.addWidget(self.usernameField, 1, 2, 1, 4)
         login_grid.addWidget(self.passwordField, 2, 2, 1, 4)
 
-        login_grid.addWidget(self.rememberCheckBox, 3, 3, 1, 2)
+        login_grid.addWidget(self.rememberCheckBox, 3, 1, 1, 1)
+        login_grid.addWidget(forgot_pw_btn, 3, 3, 1, 3)
 
         login_grid.addWidget(login_btn, 4, 0, 1, 3)
         login_grid.addWidget(cancel_btn, 4, 3, 1, 3)
 
-        login_grid.addWidget(clabel(mess.SIGN_UP), 5, 0, 1, 3)
-        login_grid.addWidget(sign_up_btn, 5, 3, 1, 3)
-
         self.layout.addWidget(login_groupBox, 0, 0, 1, 1)
 
+        signup_groupBox = QGroupBox('Sign up')
+        signup_grid = QGridLayout()
+        signup_groupBox.setLayout(signup_grid)
+
+        sign_up_btn = QPushButton('Sign up')
+        sign_up_btn.clicked.connect(self.on_sign_up_btn_clicked)
+
+        signup_grid.addWidget(clabel(mess.SIGN_UP), 0, 0, 1, 6)
+        signup_grid.addWidget(sign_up_btn, 1, 0, 1, 6)
+
+        self.layout.addWidget(signup_groupBox, 1, 0, 1, 1)
+
+    def on_forgot_pw_btn_clicked(self):
+        from ui import ui_pw_reset_form
+        reload(ui_pw_reset_form)
+        reset_pw_form = ui_pw_reset_form.Reset_password_form()
+        reset_pw_form.show()
+        reset_pw_form.exec_()
+
     def on_sign_up_btn_clicked(self):
-        self.hide()
+        # self.hide()
         signup = Plt_sign_up()
         signup.show()
         signup.exec_()
@@ -361,12 +379,12 @@ class Sign_in_layout(QDialog):
     def on_sign_in_btn_clicked(self):
 
         username = str(self.usernameField.text())
-        pass_word = self.passwordField.text()
+        pass_word = str(self.passwordField.text())
 
         if username == "" or username is None:
-            QMessageBox.critical(self, 'Login Failed', mess.USERNAME_BLANK)
+            QMessageBox.critical(self, 'Login Failed', mess.USER_BLANK)
         elif pass_word == "" or pass_word is None:
-            QMessageBox.critical(self, 'Login Failed', mess.PASSWORD_BLANK)
+            QMessageBox.critical(self, 'Login Failed', mess.PW_BLANK)
 
         password = str(func.encoding(pass_word))
 
@@ -374,16 +392,15 @@ class Sign_in_layout(QDialog):
         checkUserStatus = usql.query_user_status(username)
 
         if not checkUserExists:
-            QMessageBox.critical(self, 'Login Failed', mess.USER_NOT_EXSIST)
+            QMessageBox.critical(self, 'Login Failed', mess.USER_CHECK_FAIL)
         elif checkUserStatus == 'disabled':
-            QMessageBox.critical(self, 'Login Failed', "This username is not activated")
+            QMessageBox.critical(self, 'Login Failed', mess.USER_CONDITION)
 
         checkPasswordMatch = usql.check_password_match(username, password)
 
         if not checkPasswordMatch:
             QMessageBox.critical(self, 'Login Failed', "Password not match")
         else:
-            QMessageBox.information(self, 'Login Successful', "Welcome %s" % username)
             checkSettingState = self.rememberCheckBox.checkState()
             if checkSettingState:
                 setting = 'True'
@@ -398,15 +415,18 @@ class Sign_in_layout(QDialog):
             usql.update_current_user(unix, token, username, setting)
 
             self.hide()
-            window = Main_layout()
+            window = Plt_application()
             window.show()
+
+    def closeEvent(self, event):
+        QApplication.quit()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
 # -------------------------------------------------------------------------------------------------------------
 class TabWidget(QWidget):
 
-    dbConn = lite.connect(DB_PATH)
+    dbConn = lite.connect(var.DB_PATH)
 
     def __init__(self, unix, username, package, parent=None):
 
@@ -415,6 +435,9 @@ class TabWidget(QWidget):
         self.unix = unix
         self.username = username
         self.package = package
+
+        self.setContentsMargins(0,0,0,0)
+        self.settings = QSettings(var.LAYOUT_SETTING_PTH, QSettings.IniFormat)
 
         self.buildUI()
 
@@ -438,7 +461,7 @@ class TabWidget(QWidget):
 
         # Create and add tab 3: 'Cal: Just a calculator'
         self.tab3 = QGroupBox()
-        self.tab3Layout(self.username)
+        self.tab3Layout()
         self.tabs.addTab(self.tab3, 'Acc')
 
         # Create and add tab 4: 'User: User login profile'
@@ -566,32 +589,31 @@ class TabWidget(QWidget):
         hboxLayout.addLayout(tab2GridLayout)
         self.tab2.setLayout(hboxLayout)
 
-    def tab3Layout(self, curUser):
-
+    def tab3Layout(self):
         # Create Layout for Tab 3.
-        self.tab3.setTitle(curUser)
-
+        self.tab3.setTitle(self.username)
         hboxLayout = QHBoxLayout()
         tab3ridLayout = QGridLayout()
+        hboxLayout.addLayout(tab3ridLayout)
+        self.tab3.setLayout(hboxLayout)
 
-        userProfile = usql.query_user_profile(curUser, 'username')
-        userImg = QPixmap.fromImage(QImage(func.get_avatar(userProfile[7])))
+        userImg = QPixmap.fromImage(QImage(func.get_avatar(self.username)))
+
         self.userAvatar = QLabel()
         self.userAvatar.setPixmap(userImg)
         self.userAvatar.setScaledContents(True)
         self.userAvatar.setFixedSize(100, 100)
+
         tab3ridLayout.addWidget(self.userAvatar, 0, 0, 3, 3)
 
-        accountSettingBtn = QPushButton('Account Setting')
-        accountSettingBtn.clicked.connect(partial(self.on_account_setting_btn_clicked, curUser))
-        tab3ridLayout.addWidget(accountSettingBtn, 0, 3, 1, 3)
+        user_setting_btn = QPushButton('Account Setting')
+        user_setting_btn.clicked.connect(self.on_user_setting_btn_clicked)
+
+        tab3ridLayout.addWidget(user_setting_btn, 0, 2, 1, 3)
 
         logoutBtn = QPushButton('Log Out')
         logoutBtn.clicked.connect(self.on_log_out_btn_clicked)
-        tab3ridLayout.addWidget(logoutBtn, 1, 3, 1, 3)
-
-        hboxLayout.addLayout(tab3ridLayout)
-        self.tab3.setLayout(hboxLayout)
+        tab3ridLayout.addWidget(logoutBtn, 1, 2, 1, 3)
 
     def tab4Layout(self):
         # Create Layout for Tab 4.
@@ -617,13 +639,16 @@ class TabWidget(QWidget):
         hboxLayout.addLayout(tab5GridLayout)
         self.tab5.setLayout(hboxLayout)
 
-    def on_account_setting_btn_clicked(self, username):
-        reload(ui_account_setting)
-        window = ui_account_setting.WindowDialog(self, username)
-        window.exec_()
+    def on_user_setting_btn_clicked(self):
+        user_setting_layout = ui_acc_setting.Account_setting(self)
+        user_setting_layout.show()
+        sig = user_setting_layout.changeAvatarSignal
+        sig.connect(self.update_avatar)
+        user_setting_layout.exec_()
 
-    def user_avatar_changed(self, curUser):
-        sig = ui_account_setting.WindowDialog(self, curUser).changAvatarSignal
+    def update_avatar(self, param):
+        self.userAvatar.setPixmap(QPixmap.fromImage(QImage(param)))
+        self.userAvatar.update()
 
     def on_log_out_btn_clicked(self):
         unix, token, curUser, rememberLogin, status = pltp.preset6_query_user_info()
@@ -709,11 +734,11 @@ class TabWidget(QWidget):
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
 # -------------------------------------------------------------------------------------------------------------
-class Main_layout(QMainWindow):
+class Plt_application(QMainWindow):
 
-    def __init__(self, case=None, parent=None):
+    def __init__(self, login=None, parent=None):
 
-        super(Main_layout, self).__init__(parent)
+        super(Plt_application, self).__init__(parent)
 
         unix, token, username, rememberLogin, status = pltp.preset6_query_user_info()
 
@@ -723,20 +748,24 @@ class Main_layout(QMainWindow):
         self.message = var.PLT_MESS
         self.url = var.PLT_URL
 
-        self.settings = QSettings(SETTING_PATH, QSettings.IniFormat)
+        self.settings = QSettings(var.LAYOUT_SETTING_PTH, QSettings.IniFormat)
 
         self.setWindowTitle(self.mainID['Main'])
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.setContentsMargins(0, 0, 0, 0)
-        self.setToolButtonStyle(Qt.ToolButtonFollowStyle)
 
-        self.trayIcon = self.system_tray_icon()
+        self.trayIcon = self.sys_tray_icon_menu()
         self.trayIcon.setToolTip(__appname__)
         self.trayIcon.show()
+        self.trayIcon.activated.connect(self.sys_tray_icon_activated)
 
-        if case == 'Auto login':
-            self.auto_login(username)
+        if login == 'Auto login':
+            icon = QSystemTrayIcon.Information
+            self.trayIcon.showMessage('Welcome', "Log in as %s" % username, icon, 1000)
+        else:
+            icon = QSystemTrayIcon.Information
+            self.trayIcon.showMessage('Welcome', "Log in as %s" % username, icon, 1000)
 
         # Build UI
         self.buildUI()
@@ -745,6 +774,7 @@ class Main_layout(QMainWindow):
         self.showToolBar = func.str2bool(self.settings.value("showToolbar", True))
         self.tdToolBar.setVisible(self.showToolBar)
         self.compToolBar.setVisible(self.showToolBar)
+        self.artToolBar.setVisible(self.showToolBar)
 
         # Tabs build
         self.tabWidget = TabWidget(unix, username, self.package)
@@ -793,26 +823,19 @@ class Main_layout(QMainWindow):
         self.compToolBar = self.toolBarComp()
         self.artToolBar = self.toolBarArt()
 
-    def system_tray_icon(self):
+    def sys_tray_icon_activated(self, reason):
+        if reason == QSystemTrayIcon.DoubleClick:
+            self.showNormal()
+
+    def sys_tray_icon_menu(self):
         trayIconMenu = QMenu(self)
-
-        testIcon = QIcon(func.get_icon('Test'))
-        testAction1 = QAction(testIcon, 'Test1', self)
-        testAction1.triggered.connect(partial(self.on_sys_tray_icon_clicked, 'set1'))
-
-        testIcon = QIcon(func.get_icon('Test'))
-        testAction2 = QAction(testIcon, 'Test2', self)
-        testAction2.triggered.connect(partial(self.on_sys_tray_icon_clicked, 'set2'))
-
-        trayIconMenu.addAction(testAction1)
-        trayIconMenu.addAction(testAction2)
 
         snippingAction = self.createAction(self.appInfo, 'Snipping Tool')
         trayIconMenu.addAction(snippingAction)
 
         screenshoticon = QIcon(func.get_icon('Screenshot'))
         screenshotAction = QAction(screenshoticon, "Screenshot", self)
-        screenshotAction.triggered.connect(self.screenshot)
+        screenshotAction.triggered.connect(func.screenshot)
         trayIconMenu.addAction(screenshotAction)
 
         maximizeIcon = QIcon(func.get_icon("Maximize"))
@@ -870,11 +893,11 @@ class Main_layout(QMainWindow):
         # About action
         about = QAction(QIcon(self.appInfo['About'][1]), self.appInfo['About'][0], self)
         about.setStatusTip(self.appInfo['About'][0])
-        about.triggered.connect(partial(self.template_layout, self.mainID['About'], self.message['About'], self.appInfo['About'][1]))
+        about.triggered.connect(partial(self.info_layout, self.mainID['About'], self.message['About'], self.appInfo['About'][1]))
         # Credit action
         credit = QAction(QIcon(self.appInfo['Credit'][1]), self.appInfo['Credit'][0], self)
         credit.setStatusTip(self.appInfo['Credit'][0])
-        credit.triggered.connect(partial(self.template_layout, self.mainID['Credit'], self.message['Credit'], self.appInfo['Credit'][1]))
+        credit.triggered.connect(partial(self.info_layout, self.mainID['Credit'], self.message['Credit'], self.appInfo['Credit'][1]))
         # Help action
         helpAction = QAction(QIcon(self.appInfo['Help'][1]), self.appInfo['Help'][0], self)
         helpAction.setStatusTip((self.appInfo['Help'][0]))
@@ -884,6 +907,7 @@ class Main_layout(QMainWindow):
     def toolBarTD(self):
         # TD Tool Bar
         toolBarTD = self.addToolBar('TD')
+
         # Maya_tk 2017
         if 'Maya 2018' in self.appInfo:
             maya2017 = self.createAction(self.appInfo, 'Maya 2017')
@@ -998,46 +1022,26 @@ class Main_layout(QMainWindow):
     def openApplication(self, path):
         subprocess.Popen(path)
 
-    def template_layout(self, id='Note', message=" ", icon=func.get_icon('Logo')):
-        from ui import ui_about
-        reload(ui_about)
-        dlg = ui_about.WindowDialog(id=id, message=message, icon=icon)
-        dlg.exec_()
-
-    def screenshot(self):
-        from ui import ui_screenshot
-        reload(ui_screenshot)
-        dlg = ui_screenshot.Screenshot()
+    def info_layout(self, id='Note', message=" ", icon=func.get_icon('Logo')):
+        from ui import ui_info_template
+        reload(ui_info_template)
+        dlg = ui_info_template.About_plt_layout(id=id, message=message, icon=icon)
         dlg.exec_()
 
     def open_browser(self, url):
         webbrowser.open(url)
 
-    def auto_login(self, username):
-        icon = QSystemTrayIcon.Information
-        self.trayIcon.showMessage('Auto Login', "Welcome back %s" % username, icon, 1000)
-
-    def on_sys_tray_icon_clicked(self, name=None, *args):
-        # from appData.db import sqlTools
-        # reload(sqlTools)
-        # if name == 'set1':
-        #     sqlTools.create_predatabase()
-        # elif name == 'set2':
-        #     sqlTools.create_predatabase()
-        # else:
-        #     pass
-        pass
-
     def preferences_action_triggered(self):
-        dlg = ui_preference.Preferences(self)
+        dlg = ui_preference.Pref_layout()
+        dlg.show()
         sig = dlg.checkboxSig
         sig.connect(self.show_hide_toolBar)
         dlg.exec_()
 
     def show_hide_toolBar(self, param):
-        # assert type(param) is bool
         self.tdToolBar.setVisible(param)
         self.compToolBar.setVisible(param)
+        self.artToolBar.setVisible(param)
         self.settings.setValue("showToolbar", func.bool2str(param))
 
     def exit_action_trigger(self):
@@ -1062,22 +1066,22 @@ def main():
     userdata = [unix, token, curUser, rememberLogin]
 
     app = QApplication(sys.argv)
+    app.setWindowIcon(QIcon(func.get_icon('Logo')))
     app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
 
     if rememberLogin == 'False' or userdata == [] or userdata == None:
-        login = Sign_in_layout()
+        login = Plt_sign_in()
         login.show()
     else:
-        window = Main_layout('Auto login')
+        window = Plt_application('Auto login')
         window.show()
         if not QSystemTrayIcon.isSystemTrayAvailable():
-            QMessageBox.critical(None, "Systray could not detect any system tray on this system")
+            QMessageBox.critical(None, mess.SYSTRAY_UNAVAI)
             sys.exit(1)
 
     QApplication.setQuitOnLastWindowClosed(False)
 
     sys.exit(app.exec_())
-
 
 if __name__ == '__main__':
     main()

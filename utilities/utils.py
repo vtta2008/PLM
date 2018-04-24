@@ -4,7 +4,7 @@ Script Name: utils.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
-    This script will find all the path of modules, icons, images ans store them to a file
+    Here is where a lot of function need to use multiple times overall
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import modules """
@@ -25,6 +25,11 @@ import requests
 import winshell
 import yaml
 from pyunpack import Archive
+from functools import partial
+
+# PyQt5
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QAction
 
 # Plt tools
 import variables as var
@@ -45,14 +50,17 @@ OPERATION = var.OPERATION['encode']
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 # -------------------------------------------------------------------------------------------------------------
-logPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'logs', 'plt.log')
-logger = logging.getLogger('plt')
+logPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'logs', 'utilities.log')
+logger = logging.getLogger('utilities')
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
+# -------------------------------------------------------------------------------------------------------------
+""" Functions content """
+# -------------------------------------------------------------------------------------------------------------
 def str2bool(arg):
     return str(arg).lower() in ['true', 1, '1', 'ok']
 
@@ -316,26 +324,16 @@ def inspect_env_key(key, path, *args):
     else:
         pass
 
-def get_icon(name, *args):
-    iconName = name + '.icon.png'
-    iconPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'icons', iconName)
-    return iconPth
-
-def get_web_icon(name, *args):
-    iconName = name + '.icon.png'
-    iconPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'icons', 'Web.icon', iconName)
-    return iconPth
-
 def get_avatar(name, *args):
     imgFile = name + '.avatar.jpg'
-    imgDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs')
-    imgPth = os.path.join(imgDir, imgFile)
+    imgPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs', imgFile)
+
     if os.path.exists(imgPth):
-        return imgPth
+        pass
     else:
-        scrPth = os.path.join(imgDir, 'default.avatar.jpg')
+        scrPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'imgs', 'default.avatar.jpg')
         shutil.copy2(scrPth, imgPth)
-        return imgPth
+    return imgPth
 
 def download_image_from_url(link, *args):
     fileName = os.path.basename(link)
@@ -346,9 +344,36 @@ def download_image_from_url(link, *args):
 
     return avatarPth
 
+def open_app(pth, *args):
+    subprocess.Popen(pth)
+
 # ----------------------------------------------------------------------------------------------------------- #
-""" Enconding string """
+""" Plt app functions """
+
+def screenshot(*args):
+    from ui import ui_screenshot
+    reload(ui_screenshot)
+    dlg = ui_screenshot.Screenshot()
+    dlg.exec_()
+
 # ----------------------------------------------------------------------------------------------------------- #
+""" PtQt5 Layout Functions """
+
+def get_icon(name, *args):
+    iconName = name + '.icon.png'
+    iconPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'icons', iconName)
+    return iconPth
+
+def get_web_icon(name, *args):
+    iconName = name + '.icon.png'
+    iconPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'icons', 'Web.icon', iconName)
+    return iconPth
+
+# ----------------------------------------------------------------------------------------------------------- #
+
+# ----------------------------------------------------------------------------------------------------------- #
+""" Enconding """
+
 class Encode():
     """
     This is the main class with function to encode a string to hexadecimal or revert.
@@ -393,7 +418,6 @@ class Encode():
         self.outPut = ''.join(bytes)
         return self.outPut
 
-
 def encode(input=STRINPUT, mode=OPERATION[0]):
     """
     Base on given mode it will tells script what to do
@@ -429,10 +453,11 @@ def create_location_stamp():
     city = info['city']
     country = info['country_name']
     return ip, city, country
+# ----------------------------------------------------------------------------------------------------------- #
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Get config info of modules, files etc. """
-# ----------------------------------------------------------------------------------------------------------- #
+
 class Get_current_time():
     """
     This is some function that will use many time
@@ -719,7 +744,31 @@ class Generate_info(object):
                     del self.appInfo[key]
 
         return self.appInfo
+# ----------------------------------------------------------------------------------------------------------- #
 
+def check_blank(data, *args):
+    if len(data) == 0 or data == "" or data is None:
+        return False
+    else:
+        return True
+
+def check_match(data1, data2, *args):
+
+    if len(data1) == len(data2):
+        count = len(data1) - 1
+        for i in range(len(data1)):
+            if data1[i] == data2[i]:
+                count = count - 1
+            else:
+                count = count + 1
+            i += 1
+
+        if count == 1:
+            return True
+        else:
+            return False
+    else:
+        return False
 
 # --------------------------------------------------------------------------------------------------------
 """                                                END OF CODE                                         """

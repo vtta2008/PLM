@@ -1,23 +1,25 @@
 # -*- coding: utf-8 -*-
 import os
+import sys
 
 from PyQt5.QtCore import QSettings, pyqtSignal
-from PyQt5.QtWidgets import QDialog, QCheckBox, QPushButton, QVBoxLayout
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QPushButton, QVBoxLayout
 
 from utilities import utils as func
 
-SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'PipelineTool_settings.ini')
+SETTING_PATH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'settings', 'plt_setting.ini')
 
-class Preferences(QDialog):
+class Pref_layout(QDialog):
 
     checkboxSig = pyqtSignal(bool)
 
     def __init__(self, parent=None):
-        super(Preferences, self).__init__(parent)
+        super(Pref_layout, self).__init__(parent)
 
         self.resize(200, 100)
         self.setWindowTitle("Preferences")
-
+        self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.settings = QSettings(SETTING_PATH, QSettings.IniFormat)
 
         self.checkBox = QCheckBox("Show main toolbar")
@@ -38,5 +40,12 @@ class Preferences(QDialog):
         self.settings.setValue("showToolbar", func.bool2str(showToolbar))
         self.checkboxSig.emit(self.checkBox.isChecked())
 
+def main():
+    app = QApplication
+    pref_layout = Pref_layout()
+    pref_layout.show()
+    app.exec_()
 
+if __name__=='__main__':
+    main()
 

@@ -1,37 +1,29 @@
 # -*- coding: utf-8 -*-
 """
-Script Name: ui_about.py
+Script Name: ui_info_template.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
-    This script is main file to store everything for the pipeline app
+    This is a layout which have info about pipeline tools
 
 """
 
 # -------------------------------------------------------------------------------------------------------------
-# IMPORT PYTHON MODULES
+""" Import modules """
 # -------------------------------------------------------------------------------------------------------------
-import logging
+# Python
 import sys
 
-from PyQt5.QtGui import *
-# ------------------------------------------------------
-# IMPORT PTQT5 ELEMENT TO MAKE UI
-# ------------------------------------------------------
-from PyQt5.QtWidgets import *
+# PtQt5
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication, QDialog, QWidget, QGridLayout, QLabel, QPushButton
 
-# ------------------------------------------------------
-# IMPORT FROM PIPELINE TOOLS APP
-# ------------------------------------------------------
+# Plt
 from utilities import utils as func
 
-logging.basicConfig()
-logger = logging.getLogger(__file__)
-logger.setLevel(logging.DEBUG)
-
-class WindowDialog(QDialog):
+class About_plt_layout(QDialog):
     def __init__(self, id='About', message=None, icon=func.get_icon('Logo'), parent=None):
-        super(WindowDialog, self).__init__(parent)
+        super(About_plt_layout, self).__init__(parent)
 
         self.setWindowTitle(id)
         self.setWindowIcon(QIcon(icon))
@@ -51,6 +43,6 @@ class WindowDialog(QDialog):
 
 if __name__=='__main__':
     app = QApplication(sys.argv)
-    window = WindowDialog()
-    window.show()
+    about_layout = About_plt_layout()
+    about_layout.show()
     sys.exit(app.exec_())
