@@ -192,11 +192,9 @@ def query_pc_info():
         sysInfo[item] = values[item]
     return sysInfo
 
-bigData = ["vtta2008", "476175626f7669646169313233", "Do", "Trinh", "PipelineTD", "dot@damgteam.com", "0211562273", "89 shakleton", "Mt Eden", "1024", "Auckland", "New Zealand"]
-
 class Plt_data_setup():
 
-    def __init__(self, data = bigData):
+    def __init__(self, data):
 
         self.username = data[0]
 

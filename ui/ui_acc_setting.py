@@ -59,7 +59,6 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
-
 def clabel(text, *args):
     label = QLabel(text)
     label.setAlignment(__center__)
@@ -78,7 +77,7 @@ class Account_setting(QDialog):
 
         super(Account_setting, self).__init__(parent)
 
-        self.username = self.curUser
+        self.username = self.curUser[0]
         self.setWindowTitle('User Setting')
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
 
@@ -101,6 +100,7 @@ class Account_setting(QDialog):
         self.layout.addWidget(location_setion, 1, 1, 1, 1)
 
     def change_avatar_section(self):
+
         avatar_groupBox = QGroupBox('Change Avatar')
         avatar_layout = QHBoxLayout()
         avatar_groupBox.setLayout(avatar_layout)
@@ -112,13 +112,13 @@ class Account_setting(QDialog):
 
         change_avatar_btn = QPushButton('Change Avatar')
         change_avatar_btn.clicked.connect(self.update_avatar)
-
         avatar_layout.addWidget(self.avatar)
         avatar_layout.addWidget(change_avatar_btn)
 
         return avatar_groupBox
 
     def change_pass_section(self):
+
         password_groupBox = QGroupBox('Change Password')
         password_layout = QGridLayout()
         password_groupBox.setLayout(password_layout)
@@ -206,9 +206,9 @@ class Account_setting(QDialog):
 
     def update_password(self):
 
-        old_pass = func.encode(self.old_pass.text())
-        new_pass = str(self.new_pass.text())
-        confirm_pass = str(self.confirm_pass.text())
+        old_pass = func.text_to_hex(self.old_pass.text())
+        new_pass = func.text_to_hex(self.new_pass.text())
+        confirm_pass = func.text_to_hex(self.confirm_pass.text())
 
         if len(old_pass) == 0 or len(new_pass) == 0 or len(confirm_pass) == 0:
             QMessageBox.critical(self, 'Failed', mess.PW_BLANK)
@@ -217,13 +217,13 @@ class Account_setting(QDialog):
             QMessageBox.critical(self, 'Failed', mess.PW_UNMATCH)
             return
         else:
-            checkPass = ultis.check_pw_match(self.curUser, old_pass)
+            checkPass = func.check_pw_match(self.curUser, old_pass)
             if not checkPass:
                 QMessageBox.critical(self, 'Failed', "Password not match")
                 return
             else:
                 newpass = func.encode(self.newPassword.text())
-                ultis.update_password(self.unix, newpass)
+                func.update_password(self.unix, newpass)
                 QMessageBox.information(self, 'Updated', mess.PW_CHANGED)
 
     def update_avatar(self):

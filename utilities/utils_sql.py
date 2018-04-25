@@ -35,9 +35,9 @@ import sqlite3 as lite
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logPth = os.path.join(os.getenv(__root__), 'appData', 'logs', 'utils_sqp.log')
+logPth = os.path.join(os.getenv(__root__), 'appData', 'logs', 'utils_sql.log')
 logger = logging.getLogger('utils_sql')
-handler = logging.FileHandler(logPth)
+handler = logging.FileHandler('utils_sql')
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
@@ -72,97 +72,92 @@ def remove_all_data_table(tableName):
 # -------------------------------------------------------------------------------------------------------------
 """ Create Dataset Table """
 
-class BuildDB():
 
-    def __init__(self, parent=None):
-        super(BuildDB, self).__init__(parent)
 
-        logger.info("Start building table")
+def username( username):
+    c.execute("CREATE TABLE IF NOT EXISTS {username} (password TEXT, firstname TEXT, lastname TEXT, title TEXT,"
+    "email TEXT, phone TEXT, address1 TEXT, address2 TEXT, postal TEXT, city TEXT, country TEXT)".format(username=username))
+    logger.info("table %s created" % username)
+    conn.commit()
 
-    def username(self, username):
-        c.execute("CREATE TABLE IF NOT EXISTS {username} (password TEXT, firstname TEXT, lastname TEXT, title TEXT,"
-        "email TEXT, phone TEXT, address1 TEXT, address2 TEXT, postal TEXT, city TEXT, country TEXT)".format(username=username))
-        logger.info("table %s created" % username)
-        conn.commit()
+def userData(self):
+    c.execute("CREATE TABLE IF NOT EXISTS userData (username TEXT, date_create TEXT, unix TEXT, token TEXT, "
+              "question1 TEXT, answer1 TEXT, question2 TEXT, answer2 TEXT)")
+    logger.info("table userData created")
+    conn.commit()
 
-    def userData(self):
-        c.execute("CREATE TABLE IF NOT EXISTS userData (username TEXT, date_create TEXT, unix TEXT, token TEXT, "
-                  "question1 TEXT, answer1 TEXT, question2 TEXT, answer2 TEXT)")
-        logger.info("table userData created")
-        conn.commit()
+def userSetting(self):
+    c.execute("CREATE TABLE IF NOT EXISTS userSetting (username TEXT, showToolbar TXT, avatar TEXT)")
+    logger.info("table userSetting created")
+    conn.commit()
 
-    def userSetting(self):
-        c.execute("CREATE TABLE IF NOT EXISTS userSetting (username TEXT, showToolbar TXT, avatar TEXT)")
-        logger.info("table userSetting created")
-        conn.commit()
+def userLog(self):
+    c.execute("CREATE TABLE IF NOT EXISTS userLog (username TEXT, date TEXT, login TEXT, logout TEXT)")
+    logger.info("table userLog created")
+    conn.commit()
 
-    def userLog(self):
-        c.execute("CREATE TABLE IF NOT EXISTS userLog (username TEXT, date TEXT, login TEXT, logout TEXT)")
-        logger.info("table userLog created")
-        conn.commit()
+def userClass(self):
+    c.execute("CREATE TABLE IF NOT EXISTS userClass (username TEXT, class TEXT, status TEXT)")
+    logger.info("table userClass created")
+    conn.commit()
 
-    def userClass(self):
-        c.execute("CREATE TABLE IF NOT EXISTS userClass (username TEXT, class TEXT, status TEXT)")
-        logger.info("table userClass created")
-        conn.commit()
+def curUser(self):
+    c.execute("CREATE TABLE IF NOT EXISTS curUser (username TEXT, auto_login TEXT)")
+    logger.info("table curUser created")
+    conn.commit()
 
-    def curUser(self):
-        c.execute("CREATE TABLE IF NOT EXISTS curUser (username TEXT, auto_login TEXT)")
-        logger.info("table curUser created")
-        conn.commit()
+def timeLog(self):
+    c.execute("CREATE TABLE IF NOT EXISTS timeLog (dateTime TEXT , username TEXT, eventlog TEXT)")
+    logger.info("table timeLog created")
+    conn.commit()
 
-    def timeLog(self):
-        c.execute("CREATE TABLE IF NOT EXISTS timeLog (dateTime TEXT , username TEXT, eventlog TEXT)")
-        logger.info("table timeLog created")
-        conn.commit()
+def tokenID(self):
+    c.execute("CREATE TABLE IF NOT EXISTS tokenID (token TEXT, username TEXT, timelog TEXT, productID TEXT, ip TEXT, "
+              "city TEXT, country TEXT)")
+    logger.info("table tokenID created")
+    conn.commit()
 
-    def tokenID(self):
-        c.execute("CREATE TABLE IF NOT EXISTS tokenID (token TEXT, username TEXT, timelog TEXT, productID TEXT, ip TEXT, "
-                  "city TEXT, country TEXT)")
-        logger.info("table tokenID created")
-        conn.commit()
+def pcID(self):
+    c.execute("CREATE TABLE IF NOT EXISTS pcID (token TEXT, productID TEXT, os TEXT, pcUser TEXT, python TEXT)")
+    logger.info("table pcID created")
+    conn.commit()
 
-    def pcID(self):
-        c.execute("CREATE TABLE IF NOT EXISTS pcID (token TEXT, productID TEXT, os TEXT, pcUser TEXT, python TEXT)")
-        logger.info("table pcID created")
-        conn.commit()
+# -------------------------------------------------------------------------------------------------------------
+""" For production """
 
-    # -------------------------------------------------------------------------------------------------------------
-    """ For production """
+def prjLst(self):
+    c.execute("CREATE TABLE IF NOT EXISTS prjLst (status TEXT, projName TEXT, start TEXT, end TEXT )")
+    logger.info("table prjLst created")
+    conn.commit()
 
-    def prjLst(self):
-        c.execute("CREATE TABLE IF NOT EXISTS prjLst (status TEXT, projName TEXT, start TEXT, end TEXT )")
-        logger.info("table prjLst created")
-        conn.commit()
+def prjCrew(self):
+    c.execute("CREATE TABLE IF NOT EXISTS projCrew (projID TEXT, username TEXT, position TEXT)")
+    logger.info("table projCrew created")
+    conn.commit()
 
-    def prjCrew(self):
-        c.execute("CREATE TABLE IF NOT EXISTS projCrew (projID TEXT, username TEXT, position TEXT)")
-        logger.info("table projCrew created")
-        conn.commit()
+def prjTaskID( projName):
+    c.execute("CREATE TABLE IF NOT EXISTS {projName} (projStage TEXT, assetID TEXT, shotID TEXT, taskID TEXT, "
+              "status TEXT, assign TEXT, start TEXT, end TEXT)".format(projName=projName))
+    logger.info("table %s created" % projName)
+    conn.commit()
 
-    def prjTaskID(self, projName):
-        c.execute("CREATE TABLE IF NOT EXISTS {projName} (projStage TEXT, assetID TEXT, shotID TEXT, taskID TEXT, "
-                  "status TEXT, assign TEXT, start TEXT, end TEXT)".format(projName=projName))
-        logger.info("table %s created" % projName)
-        conn.commit()
+# -------------------------------------------------------------------------------------------------------------
+""" Configuration """
 
-    # -------------------------------------------------------------------------------------------------------------
-    """ Configuration """
+def pltConfig(self):
+    c.execute("CREATE TABLE IF NOT EXISTS pltConfig (appName TEXT, version VARCHAR(20), exePth VARCHAR(20))")
+    logger.info("table plt created")
+    conn.commit()
 
-    def pltConfig(self):
-        c.execute("CREATE TABLE IF NOT EXISTS pltConfig (appName TEXT, version VARCHAR(20), exePth VARCHAR(20))")
-        logger.info("table plt created")
-        conn.commit()
+def tableConfig(self):
+    c.execute("CREATE TABLE IF NOT EXISTS tableConfig (tableName TEXT, columnList TEXT, datetimeLog TEXT)")
+    logger.info("table tableConfig created")
+    conn.commit()
 
-    def tableConfig(self):
-        c.execute("CREATE TABLE IF NOT EXISTS tableConfig (tableName TEXT, columnList TEXT, datetimeLog TEXT)")
-        logger.info("table tableConfig created")
-        conn.commit()
-
-    def dataConfig(self):
-        c.execute("CREATE TABLE IF NOT EXISTS dataConfig (setup TEXT, account TEXT, message TEXT, name TEXT, format TEXT)")
-        logger.info("table dataConfig created")
-        conn.commit()
+def dataConfig(self):
+    c.execute("CREATE TABLE IF NOT EXISTS dataConfig (setup TEXT, account TEXT, message TEXT, name TEXT, format TEXT)")
+    logger.info("table dataConfig created")
+    conn.commit()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Query Data """
@@ -218,13 +213,12 @@ def query_curUser():
 def query_userClass(username):
     c.execute("SELECT * FROM userClass")
     rows = c.fetchall()
-    for row in rows:
-
-        data = [str(f[1]) for f in row]
-        if username == data[1]:
-            userClass = row[2]
-        else:
-            pass
+    row = rows[0]
+    if username == row[0]:
+        userClass = str(row[1]).split("'")[0]
+    else:
+        pass
+    return userClass
 
 userClass = query_userClass('vtta2008')
 
@@ -245,7 +239,7 @@ def query_passwordLst(username):
 # -------------------------------------------------------------------------------------------------------------
 """ Check Data """
 
-def check_account(self, name, typeName='username'):
+def check_account( name, typeName='username'):
     if typeName == 'unix':
         checkList = query_unixLst()
     elif typeName == 'token':
@@ -258,7 +252,7 @@ def check_account(self, name, typeName='username'):
     else:
         return False
 
-def check_localPC(self, productID):
+def check_localPC( productID):
     idList = query_appIDLst()
     if idList is None or idList == []:
         return False
@@ -391,21 +385,5 @@ def update_password(unix, new_password):
     c.execute("UPDATE AccountUser Set password = (?) WHERE unix = (?)", (new_password, unix))
     conn.commit()
     insert_timeLog('Changed password')
-
-# -------------------------------------------------------------------------------------------------------------
-""" Setup data """
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 # -------------------------------------------------------------------------------------------------------------

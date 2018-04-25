@@ -99,16 +99,6 @@ def clabel(text):
 # -------------------------------------------------------------------------------------------------------------
 """ Sign up layout """
 
-
-
-
-
-
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" Sign up layout """
-
 class Plt_sign_up(QDialog):
 
     def __init__(self, parent=None):
@@ -399,10 +389,10 @@ class Plt_sign_in(QDialog):
         elif pass_word == "" or pass_word is None:
             QMessageBox.critical(self, 'Login Failed', mess.PW_BLANK)
 
-        password = str(func.encoding(pass_word))
+        password = str(func.text_to_hex(pass_word))
 
-        checkUserExists = usql.accExsist(username)
-        checkUserStatus = usql.query_user_status(username)
+        checkUserExists = usql.check_account(username)
+        checkUserStatus = usql.check_status(username)
 
         if not checkUserExists:
             QMessageBox.critical(self, 'Login Failed', mess.USER_CHECK_FAIL)
@@ -420,12 +410,12 @@ class Plt_sign_in(QDialog):
             else:
                 setting = 'False'
 
-            user_profile = usql.query_user_profile(username)
-            token = user_profile[1]
-            unix = user_profile[0]
-
-            usql.update_user_remember_login(token, setting)
-            usql.update_current_user(unix, token, username, setting)
+            # user_profile = usql.query_user_profile(username)
+            # token = user_profile[1]
+            # unix = user_profile[0]
+            #
+            # usql.update_user_remember_login(token, setting)
+            # usql.update_current_user(unix, token, username, setting)
 
             self.hide()
             window = Plt_application()
@@ -483,7 +473,6 @@ class TabWidget(QWidget):
         self.tabs.addTab(self.tab4, 'Lib')
 
         userClass = usql.query_userClass(self.username)
-
         if userClass == 'Administrator Privilege':
             self.tab5 = QGroupBox()
             self.tab5Layout()
@@ -653,7 +642,7 @@ class TabWidget(QWidget):
         self.tab5.setLayout(hboxLayout)
 
     def on_user_setting_btn_clicked(self):
-        user_setting_layout = ui_acc_setting.Account_setting(self)
+        user_setting_layout = ui_acc_setting.Account_setting()
         user_setting_layout.show()
         sig = user_setting_layout.changeAvatarSignal
         sig.connect(self.update_avatar)
@@ -665,7 +654,7 @@ class TabWidget(QWidget):
 
     def on_log_out_btn_clicked(self):
         curUser, rememberLogin = pltp.preset5_query_user_info()
-        user_profile = usql.query_user_profile(curUser)
+        user_profile = usql.query_userData(curUser)
         token = user_profile[1]
         unix = user_profile[0]
 
@@ -760,12 +749,12 @@ class Plt_application(QMainWindow):
         self.message = var.PLT_MESS
         self.url = var.PLT_URL
 
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
-
         self.setWindowTitle(self.mainID['Main'])
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.setContentsMargins(0, 0, 0, 0)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
         self.trayIcon = self.sys_tray_icon_menu()
         self.trayIcon.setToolTip(__appname__)
@@ -837,6 +826,9 @@ class Plt_application(QMainWindow):
         self.tdToolBar = self.toolBarTD()
         self.compToolBar = self.toolBarComp()
         self.artToolBar = self.toolBarArt()
+        self.addToolBar(Qt.LeftToolBarArea, self.compToolBar)
+        # self.addToolBar(Qt.LeftToolBarArea, self.tdToolBar)
+        # self.addToolBar(Qt.LeftToolBarArea, self.artToolBar)
 
     def sys_tray_icon_activated(self, reason):
         if reason == QSystemTrayIcon.DoubleClick:
