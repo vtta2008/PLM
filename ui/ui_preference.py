@@ -31,8 +31,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QPushButton, QVBoxLayout
 
 from utilities import utils as func
+from utilities import variables as var
 
-SETTING_PATH = os.path.join(os.getenv(__root__), 'appData', 'settings', 'plt_setting.ini')
 
 class Pref_layout(QDialog):
 
@@ -44,7 +44,7 @@ class Pref_layout(QDialog):
         self.resize(200, 100)
         self.setWindowTitle("Preferences")
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
-        self.settings = QSettings(SETTING_PATH, QSettings.IniFormat)
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
         self.checkBox = QCheckBox("Show main toolbar")
         showToolbar = func.str2bool(self.settings.value("showToolbar", True))

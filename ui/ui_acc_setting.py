@@ -230,7 +230,7 @@ class Account_setting(QDialog):
 
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        imgsDir = os.path.join(os.getenv('PIPELINE_TOOL'), 'avatar')
+        imgsDir = os.path.join(os.getenv(__root__), 'avatar')
         fileName, _ = QFileDialog.getOpenFileName(self, "Your Avatar", imgsDir, "All Files (*);;Img Files (*.jpg)",
                                                   options=options)
         if fileName:

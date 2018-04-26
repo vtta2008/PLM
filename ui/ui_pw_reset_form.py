@@ -29,11 +29,6 @@ __st__ = "PLT_ST"
 import sys
 import os
 
-if not os.getenv('PIPELINE_TOOL'):
-    os.environ['PIPELINE_TOOL'] = os.getcwd()
-elif os.getenv('PIPELINE_TOOL') is None:
-    os.environ['PIPELINE_TOOL'] = os.getcwd()
-
 # PtQt5
 from PyQt5.QtWidgets import (QApplication, QMessageBox, QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QLabel,
                              QLineEdit, QVBoxLayout)

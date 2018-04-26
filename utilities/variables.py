@@ -58,7 +58,7 @@ DEMODATA = ["demoUser", "70617373776F7264", "Mr.", "Nobody", "Homeless", "dot@da
             "homeless", "no postal", "anywhere", "in the world"]
 
 # Setting Path
-UI_SETTING = os.path.join(os.getenv(__root__), 'appData', 'settings', 'Plt.ini')
+UI_SETTING = os.path.join(os.getenv(__root__), 'appData', 'settings', 'plt.ini')
 
 USER_SETTING = os.path.join(os.getenv(__root__), 'appData', 'settings', 'User.ini')
 
