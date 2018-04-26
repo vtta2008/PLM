@@ -99,8 +99,6 @@ def sendudp(value):
 
 if __name__ == "__main__":
     app = QApplication([])
-
     tray = SystemTrayIcon()
     tray.show()
-
     app.exec_()
