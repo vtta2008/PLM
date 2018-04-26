@@ -248,7 +248,7 @@ class Plt_sign_up(QDialog):
     def on_set_avatar_btn_clicked(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        imgsDir = os.path.join(os.getenv(__root__), 'imgs')
+        imgsDir = os.path.join(os.getenv(__root__), 'avatar')
         self.rawAvatarPth, _ = QFileDialog.getOpenFileName(self, "Your Avatar", imgsDir, "All Files (*);;Img Files (*.jpg)",
                                                            options=options)
         if self.rawAvatarPth:

@@ -110,7 +110,7 @@ PLT_PKG = dict(
     filter="Non-commercial|Uninstall|Verbose|License|Skype",
     root = os.getenv(__root__),
     py = "utilities|ui",
-    image="icons|imgs",
+    image="plt.maya.icons|avatar",
     ext=['.exe', 'PipelineTool.py', '.lnk'],
 
 )
@@ -155,7 +155,7 @@ def hex_to_text(hex):
     return outPut
 
 def get_icon(name):
-    return os.path.join(os.getenv(__root__), 'icons', name + '.icon.png')
+    return os.path.join(os.getenv(__root__), 'plt.maya.icons', name + '.icon.png')
 
 def query_table_list():
     c.execute("SELECT name FROM sqlite_master WHERE type='table';")

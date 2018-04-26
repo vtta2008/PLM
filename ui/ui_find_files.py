@@ -38,7 +38,7 @@ from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QComboBox,
 
 class Findfiles(QDialog):
     def __init__(self, id='Files Finder', icon=os.path.join(os.getenv('PIPELINE_TOOL'),
-                                                            'icons', 'Finder.icon.png'), parent=None):
+                                                            'plt.maya.icons', 'Finder.icon.png'), parent=None):
         super(Findfiles, self).__init__(parent)
 
         self.setWindowTitle(id)

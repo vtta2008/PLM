@@ -301,7 +301,7 @@ def inspect_env_key(key, path, *args):
 
 def download_image_from_url(link, *args):
     fileName = os.path.basename(link)
-    imgPth = os.path.join(os.getenv(__root__), 'imgs')
+    imgPth = os.path.join(os.getenv(__root__), 'avatar')
     avatarPth = os.path.join(imgPth, fileName)
     if not os.path.exists(avatarPth):
         download_single_file(link, avatarPth)
@@ -397,22 +397,22 @@ def open_app(pth, *args):
 
 def get_icon(name, *args):
     iconName = name + '.icon.png'
-    iconPth = os.path.join(os.getenv(__root__), 'icons', iconName)
+    iconPth = os.path.join(os.getenv(__root__), 'imgs', 'plt.icons', iconName)
     return iconPth
 
 def get_web_icon(name, *args):
     iconName = name + '.icon.png'
-    iconPth = os.path.join(os.getenv(__root__), 'icons', 'Web.icon', iconName)
+    iconPth = os.path.join(os.getenv(__root__), 'imgs', 'web.icon', iconName)
     return iconPth
 
 def get_avatar(name, *args):
     imgFile = name + '.avatar.jpg'
-    imgPth = os.path.join(os.getenv(__root__), 'imgs', imgFile)
+    imgPth = os.path.join(os.getenv(__root__), 'imgs', 'avatar', imgFile)
 
     if os.path.exists(imgPth):
         pass
     else:
-        scrPth = os.path.join(os.getenv(__root__), 'imgs', 'default.avatar.jpg')
+        scrPth = os.path.join(os.getenv(__root__), 'imgs', 'avatar', 'default.avatar.jpg')
         shutil.copy2(scrPth, imgPth)
     return imgPth
 
@@ -516,19 +516,19 @@ class Collect_info(object):
 
     def collect_icon_path(self, package):
         """
-        Get all the info of icons
+        Get all the info of plt.maya.icons
         :param package: the package of many information stored from default variable
         :param names: the dictionsary of names stored from default variable
-        :return: icons.info
+        :return: plt.maya.icons.info
         """
         # Create dictionary for icon info
         iconInfo = {}
         iconInfo['Sep'] = 'separato.png'
         iconInfo['File'] = 'file.png'
-        iconInfo['iconPth'] = os.path.join(os.getenv(__root__), package['image'][0])
+        iconInfo['iconPth'] = os.path.join(os.getenv(__root__), 'imgs', package['image'][0])
         icons = [f for f in os.listdir(iconInfo['iconPth']) if '.icon' in f]
         if len(icons) == 0:
-            iconInfo['icons'] = None
+            iconInfo['plt.maya.icons'] = None
         else:
             for i in icons:
                 iconInfo[i.split('.icon')[0]] = os.path.join(iconInfo['iconPth'], i)
@@ -541,13 +541,13 @@ class Collect_info(object):
         """
         Get all the info of images
         :param package: the package of many information stored from default variable
-        :return: imgs.info
+        :return: avatar.info
         """
         imgInfo = {}
-        imgInfo['imgPth'] = os.path.join(package['root'], package['image'][1])
+        imgInfo['imgPth'] = os.path.join(package['root'], 'imgs', package['image'][1])
         imgs = [f for f in os.listdir(imgInfo['imgPth']) if '.img' in f]
         if len(imgs) == 0:
-            imgInfo['imgs'] = None
+            imgInfo['avatar'] = ""
         else:
             for i in imgs:
                 imgInfo[i.split('.png')[0]] = os.path.join(imgInfo['imgPth'], i)

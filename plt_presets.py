@@ -85,10 +85,10 @@ def preset2_install_extra_python_package():
 
 def preset3_maya_intergrate():
     # Pipeline tool module paths for Maya.
-    maya_tk = os.path.join(os.getenv(__root__), 'plt_maya')
+    maya_tk = os.path.join(os.getenv(__root__), 'maya')
 
     # Name of folders
-    mayaTrack = ['util', 'plt_maya', 'icons', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging',
+    mayaTrack = ['util', 'maya', 'plt.maya.icons', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging',
                  'Sufacing']
     pythonValue = ""
     pythonList = []
@@ -103,7 +103,7 @@ def preset3_maya_intergrate():
     os.environ['PYTHONPATH'] = pythonValue
 
     # Copy userSetup.py from source code to properly maya folder
-    userSetup_plt_path = os.path.join(os.getcwd(), 'plt_maya', 'userSetup.py')
+    userSetup_plt_path = os.path.join(os.getenv(__root__), 'plt_plugins', 'maya', 'userSetup.py')
     userSetup_maya_path = os.path.join(os.path.expanduser('~/Documents/maya/2017/prefs/scripts'), 'userSetup.py')
 
     if not os.path.exists(userSetup_plt_path) or not os.path.exists(userSetup_plt_path):

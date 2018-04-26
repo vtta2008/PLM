@@ -91,7 +91,7 @@ PLT_PKG = dict(
     filter=['Non-commercial', 'Uninstall', 'Verbose', 'License', 'Skype'],
     root = os.getenv(__root__),
     py = ['utilities','ui'],
-    image=['icons', 'imgs'],
+    image=['plt.icons', 'avatar'],
     ext=['.exe', 'PipelineTool.py', '.lnk'],
 
 )
