@@ -442,32 +442,24 @@ class TabWidget(QWidget):
         self.setContentsMargins(0,0,0,0)
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
+        self.layout = QVBoxLayout()
         self.buildUI()
+        self.setLayout(self.layout)
 
     def buildUI(self):
         # Create tab layout
         # ------------------------------------------------------
-        self.layout = QVBoxLayout()
         self.tabs = QTabWidget()
 
-        # Create and add tabs
-        # ------------------------------------------------------
-        # Create and add tab 1: 'Tools: Extra tools that might be useful for user & developer'
-        self.tab1 = QGroupBox()
-        self.tab1Layout()
+        self.tab1 = self.tab1Layout()
         self.tabs.addTab(self.tab1, 'Tool')
 
-        # Create and add tab 2: 'Proj: Project management'
-        self.tab2 = QGroupBox()
-        self.tab2Layout()
+        self.tab2 = self.tab2Layout()
         self.tabs.addTab(self.tab2, 'Prj')
 
-        # Create and add tab 3: 'Cal: Just a calculator'
-        self.tab3 = QGroupBox()
-        self.tab3Layout()
-        self.tabs.addTab(self.tab3, 'Acc')
+        self.tab3 = self.tab3Layout()
+        self.tabs.addTab(self.tab3, 'User')
 
-        # Create and add tab 4: 'User: User login profile'
         self.tab4 = QGroupBox()
         self.tab4Layout()
         self.tabs.addTab(self.tab4, 'Lib')
@@ -479,143 +471,152 @@ class TabWidget(QWidget):
             self.tabs.addTab(self.tab5, 'DB')
 
         self.layout.addWidget(self.tabs)
-        self.setLayout(self.layout)
 
     def tab1Layout(self):
-        # Create Layout for Tab 1.
-        # ------------------------------------------------------
-        # Title of layout
-        self.tab1.setTitle('Optional Tool')
+        tab1Widget = QWidget()
+        tab1layout = QHBoxLayout()
+        tab1Widget.setLayout(tab1layout)
 
-        # Main layout
-        # ------------------------------------------------------
-        vboxLayout = QVBoxLayout()
-        tab1VBoxLayout = QVBoxLayout()
-        line1HBoxLayout = QHBoxLayout()
-        line2HBoxLayout = QHBoxLayout()
-        line3HBoxLayout = QHBoxLayout()
-
-        # Content
-        # ------------------------------------------------------
-        line1HBoxLayout.addWidget(QLabel('Extra app: '))
-
-        # Advance Renamer
-        arIconBtn = self.make_icon_btn2('Advance Renamer')
-        line1HBoxLayout.addWidget(arIconBtn)
-
-        # Note
-        noteReminderBtn = self.make_icon_btn1('QtNote', 'Note Reminder', self.note_reminder)
-        line1HBoxLayout.addWidget(noteReminderBtn)
-
-        textEditorBtn = self.make_icon_btn1('Text Editor', 'Text Editor', self.text_editor)
-        line1HBoxLayout.addWidget(textEditorBtn)
+        tab1Section1GrpBox = QGroupBox('Dev')
+        tab1Section1Grid = QGridLayout()
+        tab1Section1GrpBox.setLayout(tab1Section1Grid)
 
         for key in APPINFO:
-            # Mudbox 2018
-            if key == 'Mudbox 2018':
-                mudbox18Btn = self.make_icon_btn2(key)
-                line1HBoxLayout.addWidget(mudbox18Btn)
-            # Mudbox 2017
-            if key == 'Mudbox 2017':
-                mudbox17Btn = self.make_icon_btn2(key)
-                line1HBoxLayout.addWidget(mudbox17Btn)
-            # 3ds Max 2018
-            if key == '3ds Max 2018':
-                max18Btn = self.make_icon_btn2(key)
-                line1HBoxLayout.addWidget(max18Btn)
-            # 3ds Max 2017
-            if key == '3ds Max 2017':
-                max17Btn = self.make_icon_btn2(key)
-                line1HBoxLayout.addWidget(max17Btn)
+            if key == 'PyCharm':
+                pycharmBtn = self.make_icon_btn2('PyCharm')
+                tab1Section1Grid.addWidget(pycharmBtn, 0, 0, 1, 1)
+            if key == 'SublimeText 3':
+                sublimeBtn = self.make_icon_btn2('SublimeText 3')
+                tab1Section1Grid.addWidget(sublimeBtn, 1, 0, 1, 1)
+            if key == 'QtDesigner':
+                qtdesignerBtn = self.make_icon_btn2('QtDesigner')
+                tab1Section1Grid.addWidget(qtdesignerBtn, 2, 0, 1, 1)
 
-        # ------------------------------------------------------
-        line2HBoxLayout.addWidget(QLabel('Enhance: '))
+        tab1Section2GrpBox = QGroupBox('Extra')
+        tab1Section2Grid = QGridLayout()
+        tab1Section2GrpBox.setLayout(tab1Section2Grid)
 
-        # English dictionary
+        arIconBtn = self.make_icon_btn2('Advance Renamer')
+        noteReminderBtn = self.make_icon_btn1('QtNote', 'Note Reminder', self.note_reminder)
+        textEditorBtn = self.make_icon_btn1('Text Editor', 'Text Editor', self.text_editor)
         dictBtn = self.make_icon_btn1('English Dictionary', 'English Dictionary', self.english_dictionary)
-        line2HBoxLayout.addWidget(dictBtn)
-
-        # Screenshot
         screenshotBtn = self.make_icon_btn1('Screenshot', 'Screenshot', self.make_screen_shot)
-        line2HBoxLayout.addWidget(screenshotBtn)
-
-        # Calendar
         calendarBtn = self.make_icon_btn1('Calendar', 'Calendar', self.calendar)
-        line2HBoxLayout.addWidget(calendarBtn)
-
-        # Calculator
         calculatorBtn = self.make_icon_btn1('Calculator', 'Calculator', self.calculator)
-        line2HBoxLayout.addWidget(calculatorBtn)
-
-        # File finder
         fileFinderBtn = self.make_icon_btn1('Finder', 'Find files', self.findFiles)
-        line2HBoxLayout.addWidget(fileFinderBtn)
 
-        # ------------------------------------------------------
-        line3HBoxLayout.addWidget(QLabel('Dev: '))
+        tab1Section2Grid.addWidget(arIconBtn, 0, 0, 1, 1)
+        tab1Section2Grid.addWidget(noteReminderBtn, 0, 1, 1, 1)
+        tab1Section2Grid.addWidget(textEditorBtn, 0, 2, 1, 1)
+        tab1Section2Grid.addWidget(dictBtn, 1, 0, 1, 1)
+        tab1Section2Grid.addWidget(screenshotBtn, 1, 1, 1, 1)
+        tab1Section2Grid.addWidget(calendarBtn, 1, 2, 1, 1)
+        tab1Section2Grid.addWidget(calculatorBtn, 2, 0, 1, 1)
+        tab1Section2Grid.addWidget(fileFinderBtn, 2, 1, 1, 1)
 
-        # PyCharm
-        pycharmBtn = self.make_icon_btn2('PyCharm')
-        line3HBoxLayout.addWidget(pycharmBtn)
+        tab1Section3GrpBox = QGroupBox('CGI')
+        tab1Section3Grid = QGridLayout()
+        tab1Section3GrpBox.setLayout(tab1Section3Grid)
 
-        # SublimeText
-        sublimeBtn = self.make_icon_btn2('SublimeText 3')
-        line3HBoxLayout.addWidget(sublimeBtn)
+        if key == 'Mudbox 2018':
+            mudbox18Btn = self.make_icon_btn2(key)
+            tab1Section3Grid.addWidget(mudbox18Btn, 2, 0, 1, 1)
+        if key == 'Mudbox 2017':
+            mudbox17Btn = self.make_icon_btn2(key)
+            tab1Section3Grid.addWidget(mudbox17Btn, 2, 1, 1, 1)
+        if key == '3ds Max 2018':
+            max18Btn = self.make_icon_btn2(key)
+            tab1Section3Grid.addWidget(max18Btn, 2, 2, 1, 1)
+        if key == '3ds Max 2017':
+            max17Btn = self.make_icon_btn2(key)
+            tab1Section3Grid.addWidget(max17Btn, 3, 0, 1, 1)
 
-        # Qt Designer
-        qtdesignerBtn = self.make_icon_btn2('QtDesigner')
-        line3HBoxLayout.addWidget(qtdesignerBtn)
+        tab1layout.addWidget(tab1Section1GrpBox)
+        tab1layout.addWidget(tab1Section2GrpBox)
+        tab1layout.addWidget(tab1Section3GrpBox)
 
-        tab1VBoxLayout.addLayout(line1HBoxLayout)
-        tab1VBoxLayout.addLayout(line2HBoxLayout)
-        tab1VBoxLayout.addLayout(line3HBoxLayout)
-        vboxLayout.addLayout(tab1VBoxLayout)
-
-        self.tab1.setLayout(vboxLayout)
+        return tab1Widget
 
     def tab2Layout(self):
         # Create Layout for Tab 2.
-        self.tab2.setTitle('Project')
+        tab2Widget = QWidget()
+        tab2layout = QHBoxLayout()
+        tab2Widget.setLayout(tab2layout)
 
-        hboxLayout = QHBoxLayout()
-        tab2GridLayout = QGridLayout()
+        tab2Section1GrpBox = QGroupBox('Proj')
+        tab2Section1Grid = QGridLayout()
+        tab2Section1GrpBox.setLayout(tab2Section1Grid)
 
-        createProjectBtn = QPushButton('New Project')
-        createProjectBtn.clicked.connect(self.create_new_project)
-        tab2GridLayout.addWidget(createProjectBtn, 0, 0, 1, 2)
-        currentLoginDataBtn = QPushButton('Project List')
-        tab2GridLayout.addWidget(currentLoginDataBtn, 0, 2, 1, 2)
-        testNewFunctionBtn = QPushButton('Project Details')
-        tab2GridLayout.addWidget(testNewFunctionBtn, 0, 4, 1, 2)
+        newProjBtn = QPushButton('New Project')
+        newProjBtn.clicked.connect(self.on_newProjBtbn_clicked)
+        newGrpBtn = QPushButton('New Group')
+        newGrpBtn.clicked.connect(self.on_newGrpBtn_clicked)
+        prjLstBtn = QPushButton('Your Projects')
+        prjLstBtn.clicked.connect(self.on_prjLstBtn_clicked)
 
-        hboxLayout.addLayout(tab2GridLayout)
-        self.tab2.setLayout(hboxLayout)
+        tab2Section1Grid.addWidget(newProjBtn, 0, 0, 1, 2)
+        tab2Section1Grid.addWidget(newGrpBtn, 1, 0, 1, 2)
+        tab2Section1Grid.addWidget(prjLstBtn, 2, 0, 1, 2)
+
+        tab2Section2GrpBox = QGroupBox('Crew')
+        tab2Section2Grid = QGridLayout()
+        tab2Section2GrpBox.setLayout(tab2Section2Grid)
+
+        recruitBtn = QPushButton('Find crew')
+        recruitBtn.clicked.connect(self.on_recruitBtn_clicked)
+        getCrewBtn = QPushButton('Get crew')
+        getCrewBtn.clicked.connect(self.on_getCrewBtn_clicked)
+        crewLstBtn = QPushButton('Your crew')
+        crewLstBtn.clicked.connect(self.on_crewLstBtn_clicked)
+        tab2Section2Grid.addWidget(recruitBtn, 0, 0, 1, 2)
+        tab2Section2Grid.addWidget(getCrewBtn, 1, 0, 1, 2)
+        tab2Section2Grid.addWidget(crewLstBtn, 2, 0, 1, 2)
+
+        tab2Section3GrpBox = QGroupBox('Com')
+        tab2Section3Grid = QGridLayout()
+        tab2Section3GrpBox.setLayout(tab2Section3Grid)
+
+        tab2Section3Grid.addWidget(QLabel(""), 0, 0, 1, 2)
+
+        tab2layout.addWidget(tab2Section1GrpBox)
+        tab2layout.addWidget(tab2Section2GrpBox)
+        tab2layout.addWidget(tab2Section3GrpBox)
+
+        return tab2Widget
 
     def tab3Layout(self):
         # Create Layout for Tab 3.
-        self.tab3.setTitle(self.username)
-        hboxLayout = QHBoxLayout()
-        tab3ridLayout = QGridLayout()
-        hboxLayout.addLayout(tab3ridLayout)
-        self.tab3.setLayout(hboxLayout)
+        tab3Widget = QWidget()
+        tab3layout = QHBoxLayout()
+        tab3Widget.setLayout(tab3layout)
 
-        userImg = QPixmap.fromImage(QImage(func.get_avatar(self.username)))
+        tab3Section1GrpBox = QGroupBox(self.username)
+        tab3Section1Grid = QGridLayout()
+        tab3Section1GrpBox.setLayout(tab3Section1Grid)
 
         self.userAvatar = QLabel()
-        self.userAvatar.setPixmap(userImg)
+        self.userAvatar.setPixmap(QPixmap.fromImage(QImage(func.get_avatar(self.username))))
         self.userAvatar.setScaledContents(True)
         self.userAvatar.setFixedSize(100, 100)
+        tab3Section1Grid.addWidget(self.userAvatar, 0, 0, 2, 2)
 
-        tab3ridLayout.addWidget(self.userAvatar, 0, 0, 3, 3)
+        tab3Section2GrpBox = QGroupBox("Account Setting")
+        tab3Section2Grid = QGridLayout()
+        tab3Section2GrpBox.setLayout(tab3Section2Grid)
 
-        user_setting_btn = QPushButton('Account Setting')
-        user_setting_btn.clicked.connect(self.on_user_setting_btn_clicked)
+        userSettingBtn = QPushButton('Account Setting')
+        userSettingBtn.clicked.connect(self.on_userSettingBtn_clicked)
 
-        tab3ridLayout.addWidget(user_setting_btn, 0, 2, 1, 3)
+        signOutBtn = QPushButton('Log Out')
+        signOutBtn.clicked.connect(self.on_signOutBtn_clicked)
 
-        logoutBtn = QPushButton('Log Out')
-        logoutBtn.clicked.connect(self.on_log_out_btn_clicked)
-        tab3ridLayout.addWidget(logoutBtn, 1, 2, 1, 3)
+        tab3Section2Grid.addWidget(userSettingBtn, 0, 2, 1, 4)
+        tab3Section2Grid.addWidget(signOutBtn, 1, 2, 1, 4)
+
+        tab3layout.addWidget(tab3Section1GrpBox)
+        tab3layout.addWidget(tab3Section2GrpBox)
+
+        return tab3Widget
 
     def tab4Layout(self):
         # Create Layout for Tab 4.
@@ -641,25 +642,9 @@ class TabWidget(QWidget):
         hboxLayout.addLayout(tab5GridLayout)
         self.tab5.setLayout(hboxLayout)
 
-    def on_user_setting_btn_clicked(self):
-        user_setting_layout = ui_acc_setting.Account_setting()
-        user_setting_layout.show()
-        sig = user_setting_layout.changeAvatarSignal
-        sig.connect(self.update_avatar)
-        user_setting_layout.exec_()
-
     def update_avatar(self, param):
         self.userAvatar.setPixmap(QPixmap.fromImage(QImage(param)))
         self.userAvatar.update()
-
-    def on_log_out_btn_clicked(self):
-        curUser, rememberLogin = pltp.preset5_query_user_info()
-        user_profile = usql.query_userData(curUser)
-        token = user_profile[1]
-        unix = user_profile[0]
-
-        usql.update_user_remember_login(token, 'Flase')
-        usql.update_current_user(unix, token, curUser, 'False')
 
     def make_icon_btn1(self, iconName, tooltip, func_tool):
         icon = QIcon(func.get_icon(iconName))
@@ -726,11 +711,42 @@ class TabWidget(QWidget):
         window = textedit.WindowDialog()
         window.exec_()
 
-    def create_new_project(self):
+    def on_newProjBtbn_clicked(self):
         from ui import ui_new_project
         reload(ui_new_project)
         window = ui_new_project.NewProject()
         window.exec_()
+
+    def on_newGrpBtn_clicked(self):
+        pass
+
+    def on_prjLstBtn_clicked(self):
+        pass
+
+    def on_recruitBtn_clicked(self):
+        pass
+
+    def on_getCrewBtn_clicked(self):
+        pass
+
+    def on_crewLstBtn_clicked(self):
+        pass
+
+    def on_userSettingBtn_clicked(self):
+        user_setting_layout = ui_acc_setting.Account_setting()
+        user_setting_layout.show()
+        sig = user_setting_layout.changeAvatarSignal
+        sig.connect(self.update_avatar)
+        user_setting_layout.exec_()
+
+    def on_signOutBtn_clicked(self):
+        curUser, rememberLogin = pltp.preset5_query_user_info()
+        user_profile = usql.query_userData(curUser)
+        token = user_profile[1]
+        unix = user_profile[0]
+
+        usql.update_user_remember_login(token, 'Flase')
+        usql.update_current_user(unix, token, curUser, 'False')
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """

@@ -72,8 +72,6 @@ def remove_all_data_table(tableName):
 # -------------------------------------------------------------------------------------------------------------
 """ Create Dataset Table """
 
-
-
 def username( username):
     c.execute("CREATE TABLE IF NOT EXISTS {username} (password TEXT, firstname TEXT, lastname TEXT, title TEXT,"
     "email TEXT, phone TEXT, address1 TEXT, address2 TEXT, postal TEXT, city TEXT, country TEXT)".format(username=username))
