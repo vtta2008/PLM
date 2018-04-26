@@ -81,7 +81,7 @@ MAINVAR = dict(
 
     maya = ['maya.user', 'maya.os', 'maya.os'],
 
-    mayaLayout = ['pipelineTool.json', 'shelf_pipelineTool.mel'],
+    mayaLayout = ['plt.json', 'shelf_plt.mel'],
 
     mayaRoot = ['userSetup.py', 'InitTool.py'],
 
@@ -196,34 +196,6 @@ for any question or feedback, email me at: dot@damgteam.com
 
 
 ICONS = os.path.join(os.getenv(__root__), 'imgs', 'maya.icon')
-
-# -------------------------------------------------------------------------------------------------------------
-# MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION
-# -------------------------------------------------------------------------------------------------------------
-# We can configure the current level to make it disable certain logs when we don't want it.
-logging.basicConfig()
-logger = logging.getLogger(__file__)
-logger.setLevel(logging.DEBUG)
-
-# -------------------------------------------------------------------------------------------------------------
-# CHECK THE CORRECT BINDING THAT BE USING UNDER QT.PY
-# -------------------------------------------------------------------------------------------------------------
-# While Qt.py lets us abstract the actual Qt library, there are a few things it cannot do yet
-# and a few support libraries we need that we have to import manually.
-# if Qt.__binding__=='PySide':
-#     logger.debug('Using PySide with shiboken')
-#     from shiboken import wrapInstance
-#     from Maya_tk.plugins.Qt.QtCore import Signal
-# elif Qt.__binding__.startswith('PyQt'):
-#     logger.debug('Using PyQt with sip')
-#     from sip import wrapinstance as wrapInstance
-#     from Maya_tk.plugins.Qt.QtCore import pyqtSignal as Signal
-# else:
-#     logger.debug('Using PySide2 with shiboken2')
-#     from shiboken2 import wrapInstance
-#     from Maya_tk.plugins.Qt.QtCore import Signal
-
-logger.info('Hello %s' % MAINVAR['user'])
 
 # Get common data directory for every apps
 def getScrPth(mainVar):

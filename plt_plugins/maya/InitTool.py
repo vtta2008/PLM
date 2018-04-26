@@ -25,20 +25,9 @@ __st__ = "PLT_ST"
 
 # -------------------------------------------------------------------------------------------------------------
 
-# -------------------------------------------------------------------------------------------------------------
-# IMPORT MAYA PYTHON MODULES
-# -------------------------------------------------------------------------------------------------------------
-import logging
-import os
-
 from plt_plugins.maya.modules import MayaVariables as var
 
 NAMES = var.MAINVAR
-
-# We can configure the current level to make it disable certain logs when we don't want it.
-logging.basicConfig()
-logger = logging.getLogger(__name__)
-logger.setLevel(logging.DEBUG)
 
 # ----------------------------------------------------------------------------------------------------------- #
 """                          MAIN CLASS: INITTOOL - DAMG PIPELINE DATA INSTALLATION                         """
@@ -51,24 +40,24 @@ class InitTool(object):
         self.MayaPythonProc()
 
     def MayaPythonProc(self):
-        from modules import MayaPythonProc
+        from plt_plugins.maya.modules import MayaPythonProc
         reload(MayaPythonProc)
         MayaPythonProc.MayaPythonProc()
         self.MayaMainUI()
 
     def OsPythonProc(self):
-        from modules import OsPythonProc
+        from plt_plugins.maya.modules import OsPythonProc
         reload(OsPythonProc)
         OsPythonProc.OsPythonProc()
         self.MayaMainUI()
 
     def MayaMainUI(self):
-        from modules import MayaMainUI
+        from plt_plugins.maya.modules import MayaMainUI
         reload(MayaMainUI)
         MayaMainUI.MayaMainUI()
 
-def initilize():
+def main():
     InitTool()
 
 if __name__=='__main__':
-    initilize()
+    main()

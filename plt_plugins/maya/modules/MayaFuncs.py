@@ -42,7 +42,6 @@ from plt_plugins.maya.modules import MayaVariables as var
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool', 'scrInfo')
 ICONS = var.ICONS
 TITLE = var.TITLE
 MESSAGE = var.MESSAGE
@@ -60,43 +59,37 @@ logger.setLevel(logging.DEBUG)
 
 
 def wingCreator(*args):
-    import WingCreator
+    from plt_plugins.maya.modules import WingCreator
     reload(WingCreator)
     WingCreator.wingCreator()
 
-
 def aligner(*args):
-    import Aligner
+    from plt_plugins.maya.modules.Modeling import Aligner
     reload(Aligner)
     Aligner.initialize()
 
-
 def randomizer(*args):
-    import Randomizer
+    from plt_plugins.maya.modules.Modeling import Randomizer
     reload(Randomizer)
     Randomizer.initialize()
 
-
 def userLib(*args):
-    from plt_plugins.maya import UserLibrary
-    reload(UserLibrary)
-    UserLibrary.initialize()
-
+    from plt_plugins.maya.modules import ToolBoxV
+    reload(ToolBoxV)
+    ToolBoxV.initialize()
 
 def tweenerUI(*args):
     from plt_plugins.maya.modules.Animation import Tweener
     reload(Tweener)
     Tweener.initialize()
 
-
 def fixTexturePathUI(*args):
     from plt_plugins.maya.modules import FixPath
     reload(FixPath)
     FixPath.initialize()
 
-
 def vmmApps(*args):
-    vmmDir = os.path.join(os.getenv('PIPELINE_TOOL'), "external_app", "vmpp")
+    vmmDir = os.path.join(os.getenv(__root__), "external_app", "vmpp")
     vmmPth = os.path.join(vmmDir, "VMPPmaya.exe")
 
     if not os.path.exists(vmmPth):
@@ -104,11 +97,8 @@ def vmmApps(*args):
     else:
         subprocess.Popen(vmmPth)
 
-
 def geticon(icon):
-    iconPth = os.path.join(os.getcwd(), 'maya', 'plt.maya.icons')
-    path = os.path.join(iconPth, icon)
-    return path
+   return os.path.join(os.getcwd(), 'imgs', 'maya.icons', icon)
 
 
 def clearOptionMenu(name, *args):
@@ -128,14 +118,12 @@ def clearOptionMenu(name, *args):
 
     return optionMenuFullName
 
-
 def refreshCamList(name, *args):
     menuOption = clearOptionMenu(name)
 
     camLst = cmds.ls(type='camera')
     for cam in camLst:
         cmds.menuItem(l=cam, parent=menuOption)
-
 
 def resizeImage(sourceImage, outputImage, width, height):
     image = om.MImage()
@@ -144,12 +132,10 @@ def resizeImage(sourceImage, outputImage, width, height):
     image.resize(width, height)
     image.writeToFile(outputImage, 'png')
 
-
 def importCamTemp(*args):
     tempPth = os.path.join(cmds.internalVar(usd=True), 'templateData')
     if not os.path.exists(tempPth):
         cmds.sysFile(tempPth, md=True)
-
 
 def showAllHideLayers(visible, *args):
     allLayers = cmds.ls(type='displayLayer')
@@ -162,7 +148,6 @@ def showAllHideLayers(visible, *args):
     for i in range(len(allLayers)):
         cmds.setAttr(allLayers[i] + '.visibility', visible)
 
-
 def trackingCommand(*args):
     if cmds.window('Command detect', query=True, exists=True):
         cmds.deleteUI('Command detect')
@@ -172,7 +157,6 @@ def trackingCommand(*args):
     cmds.cmdScrollFieldReporter(width=400, height=100)
     cmds.showWindow('Command detect')
 
-
 def openScriptEditor(*args):
     try:
         mel.eval('charcoalEditor')
@@ -180,7 +164,6 @@ def openScriptEditor(*args):
         pass
     else:
         mel.eval('ScriptEditor;')
-
 
 def customViewer(*args):
     from plt_plugins.maya.modules import CustomViewer
@@ -194,19 +177,16 @@ def customViewer(*args):
     cam = cmds.optionMenu('camListPanel', q=True, v=True)
     CustomViewer.CustomViewer(cam, w, h)
 
-
 def layerManagerUI(*args):
     from plt_plugins.maya.modules import LayerManager
     reload(LayerManager)
     LayerManager.LayerManager()
-
 
 def demoButton(*args):
     l = 'Demo Button'
     c = waitforupdate
     button = cmds.button(l=l, c=c)
     return button
-
 
 def setSymbolCheckable(ids, anns, ccs, types, icons, w=ICONWIDTH, *args):
     """
@@ -226,7 +206,6 @@ def setSymbolCheckable(ids, anns, ccs, types, icons, w=ICONWIDTH, *args):
         cmds.symbolCheckBox(ids[i], ann=anns[i], i=icon, cc=cc, v=True, w=w, h=w)
         i += 1
 
-
 def makeSeparator(h, w, hr=True, style='in', *args):
     """
     make a separator to divide sections in layout
@@ -242,7 +221,6 @@ def makeSeparator(h, w, hr=True, style='in', *args):
         cmds.separator(style=style, w=w)
         cmds.text(l="", h=h)
 
-
 def iconButton(ann, icon, command, wh=ICONWIDTH, *args):
     """
     Make a single icon button
@@ -253,7 +231,6 @@ def iconButton(ann, icon, command, wh=ICONWIDTH, *args):
     """
     image = geticon(icon)
     cmds.symbolButton(ann=ann, i=image, c=command, h=wh, w=wh)
-
 
 def setIconButton(anns, commands, icons, width=ICONWIDTH, *args):
     """
@@ -270,7 +247,6 @@ def setIconButton(anns, commands, icons, width=ICONWIDTH, *args):
         iconButton(anns[i], geticon(icons[i]), command, width)
         i += 1
 
-
 def makeAcoolButton(ann, label, cmd, *args):
     """
     Make a styled button
@@ -283,16 +259,13 @@ def makeAcoolButton(ann, label, cmd, *args):
     cmds.button(ann=ann, l=label, c=cmd)
     cmds.setParent('..')
 
-
 def setCoolButton(anns, commands, labels, *args):
     for i in range(len(anns)):
         makeAcoolButton(ann=anns[i], label=labels[i], cmd=commands[i])
         i += 1
 
-
 def refreshBtn(command, wh=25, *args):
     iconButton("Refresh", geticon('Refresh.icon.png'), command, wh=wh)
-
 
 def cwE(nc, w, adj, *args):
     """
@@ -310,7 +283,6 @@ def cwE(nc, w, adj, *args):
         cw.append((columnID, width))
     return cw
 
-
 def cwCustomize(nc, widthList, *args):
     cw = []
     for i in range(nc):
@@ -321,11 +293,9 @@ def cwCustomize(nc, widthList, *args):
         i += 1
     return cw
 
-
 def waitforupdate(*args):
     key = 'waitForUpdate'
     cmds.confirmDialog(t=TITLE[key], m=MESSAGE[key], b="OK")
-
 
 def warningFunc(key, *args):
     message = MESSAGE[key]
@@ -334,66 +304,55 @@ def warningFunc(key, *args):
     cmds.warning(message)
     logger.info(message)
 
-
 def reloadDataMainUI(*args):
     from plt_plugins.maya import InitTool
     reload(InitTool)
-    InitTool.initilize()
-
+    InitTool.main()
 
 def refreshMainUI(*args):
     from plt_plugins.maya.modules import MayaMainUI
     reload(MayaMainUI)
     MayaMainUI.MayaMainUI()
 
-
 def newProd(*args):
     from plt_plugins.maya.modules import ProdFolder
     reload(ProdFolder)
     ProdFolder.ProdFolder()
-
 
 def lightManager(*args):
     from plt_plugins.maya.modules import ToolBoxIII
     reload(ToolBoxIII)
     ToolBoxIII.showUI()
 
-
 def channelBoxUI(*args):
     from plt_plugins.maya.modules import ChannelBox
     reload(ChannelBox)
     ChannelBox.ChannelBox()
-
 
 def toolBoxI(*args):
     from plt_plugins.maya.modules import ToolBoxI
     reload(ToolBoxI)
     ToolBoxI.DAMGtoolBoxI()
 
-
 def createGear(*args):
     from plt_plugins.maya.modules.Modeling import gearCreator
     reload(gearCreator)
     gearCreator.gear()
-
 
 def toolBoxII(*args):
     from plt_plugins.maya.modules import ToolBoxII
     reload(ToolBoxII)
     ToolBoxII.ToolBoxII()
 
-
 def toolBoxIII(*args):
     from plt_plugins.maya.modules import ToolBoxIII
     reload(ToolBoxIII)
     ToolBoxIII.toolBoxIII()
 
-
 def toolBoxIV(*args):
     from plt_plugins.maya.modules import ToolBoxIV
     reload(ToolBoxIV)
     ToolBoxIV.toolBoxIV()
-
 
 def publishUI(mode, *args):
     if mode == 'Studio Mode':
@@ -405,7 +364,6 @@ def publishUI(mode, *args):
         reload(DataHandle_group)
         DataHandle_group.DataHandle().publishUI()
 
-
 def loaderUI(mode, *args):
     if mode == 'Studio Mode':
         from plt_plugins.maya.modules import DataHandle_studio
@@ -415,7 +373,6 @@ def loaderUI(mode, *args):
         from plt_plugins.maya.modules import DataHandle_group
         reload(DataHandle_group)
         DataHandle_group.DataHandle().loaderUI()
-
 
 def snapshotUI(mode, *args):
     if mode == 'Studio Mode':
@@ -427,34 +384,28 @@ def snapshotUI(mode, *args):
         reload(DataHandle_group)
         DataHandle_group.DataHandle().snapshotUI()
 
-
 def projManagerUI(*args):
     from plt_plugins.maya.modules import ProjectManager
     reload(ProjectManager)
     ProjectManager.projectManager()
 
-
 def groupCenter(*args):
     a = cmds.ls(sl=True)
     cmds.group(n=a[0] + "_group")
-
 
 def deleteHis(*args):
     a = cmds.ls(sl=True)
     if (len(a) > 0):
         cmds.DeleteHistory()
 
-
 def deleteUnusedNode(*args):
     logger.info('Delete Unused Nodes')
     mel.eval('hyperShadePanelMenuCommand("hyperShadePanel1", "deleteUnusedNodes");')
-
 
 def freezeTransformation(*args):
     a = cmds.ls(sl=True)
     if (len(a) > 0):
         cmds.makeIdentity(apply=True)
-
 
 def format_bytes(bytes_num=0, *args):
     sizes = ["B", "KB", "MB", "GB", "TB"]
@@ -467,48 +418,40 @@ def format_bytes(bytes_num=0, *args):
     size = str(round(dblbyte, 2)) + " " + sizes[i]
     return size
 
-
 def openVrayVFB(*args):
     cmds.loadPlugin("vrayformaya", quiet=True)
     cmds.pluginInfo('vrayformaya', edit=True, autoload=True)
     cmds.setAttr("defaultRenderGlobals.currentRenderer", "vray", type="string")
     cmds.vray("showVFB")
 
-
 def openProjFolder(*args):
     projPth = cmds.workspace(q=True, rd=True)
     cmds.launch(dir=projPth)
-
 
 def openSceneFolder(*args):
     projPth = cmds.workspace(q=True, rd=True)
     scenePth = os.path.join(projPth, "scenes")
     cmds.launch(dir=scenePth)
 
-
 def openSourceimagesFolder(*args):
     projPth = cmds.workspace(q=True, rd=True)
     sourceImagesPth = os.path.join(projPth, "sourceimages")
     cmds.launch(dir=sourceImagesPth)
-
 
 def openSnapShotFolder(*args):
     projPth = cmds.workspace(q=True, rd=True)
     snapShotPth = os.path.join(projPth, "scenes", "snapShot")
     os.startfile(snapShotPth)
 
-
 def openPublishFolder(*args):
     projPth = cmds.workspace(q=True, rd=True)
     publishPth = os.path.join(projPth.split('work')[0], "publish", "maya")
     os.startfile(publishPth)
 
-
 def centerPivot(*args):
     curSel = cmds.ls(sl=True)
     if (len(curSel) > 0):
         cmds.xform(cp=True)
-
 
 def gotoObjectmod(*args):
     curSel = cmds.ls(sl=True)
@@ -517,7 +460,6 @@ def gotoObjectmod(*args):
         ioF = pick1st.index('f') - 1
         objName = pick1st[0:ioF]
         cmds.select(objName, r=1)
-
 
 def Chop(*args):
     curSel = cmds.ls(sl=True)
@@ -528,24 +470,20 @@ def Chop(*args):
     else:
         print "nothing selected, please select faces"
 
-
 def normalOnOff(*args):
     a = cmds.ls(sl=True)
     if (len(a) > 0):
         cmds.ToggleFaceNormalDisplay()
-
 
 def reverseNormal(*args):
     a = cmds.ls(sl=True)
     if (len(a) > 0):
         cmds.polyNormal(nm=0)
 
-
 def ChildSel(*args):
     a = cmds.ls(sl=True)
     if (len(a) > 0):
         cmds.select(hi=True)
-
 
 def JointOff(*args):
     JointsSel = cmds.ls(sl=True)
@@ -558,7 +496,6 @@ def JointOff(*args):
         cmds.setAttr(JointsName + '.displayLocalAxis', 0)
         i += 1
 
-
 def JointOn(*args):
     JointsSel = cmds.ls(sl=True)
     Joints = []
@@ -569,7 +506,6 @@ def JointOn(*args):
         JointsName = Joints[i]
         cmds.setAttr(JointsName + '.displayLocalAxis', 1)
         i += 1
-
 
 def createSingleDispNode(*args):
     curSel = cmds.ls(sl=True)
@@ -582,7 +518,6 @@ def createSingleDispNode(*args):
             objName = (str(curSel[i]) + '_Displacement')
             cmds.rename('vrayDisplacement', objName)
 
-
 def createMultiDispNode(*args):
     a = cmds.ls(sl=True)
     numOfSel = len(a)
@@ -592,7 +527,6 @@ def createMultiDispNode(*args):
     else:
         cmds.vray("objectProperties", "add_multiple", "VRayDisplacement")
 
-
 def createJointFromSelections(*args):
     vtx = cmds.ls(sl=True, fl=True)
     for v in vtx:
@@ -600,7 +534,6 @@ def createJointFromSelections(*args):
         jnt = cmds.joint()
         pos = cmds.xform(v, q=True, ws=True, t=True)
         cmds.xform(jnt, ws=True, t=pos)
-
 
 def createLocatorFromSelection(*args):
     vtx = cmds.ls(sl=True, fl=True)
@@ -610,7 +543,6 @@ def createLocatorFromSelection(*args):
         pos = cmds.xform(v, q=True, ws=True, t=True)
         cmds.xform(loc, ws=True, t=pos)
 
-
 def createClusterFromSelection(*args):
     vtx = cmds.ls(sl=True, fl=True)
     for v in vtx:
@@ -618,7 +550,6 @@ def createClusterFromSelection(*args):
         clu = cmds.cluster()
         pos = cmds.xform(v, q=True, ws=True, t=True)
         cmds.xform(clu, ws=True, t=pos)
-
 
 def spreadSheetUI(*args):
     if cmds.window("sheetID", exists=True):
@@ -629,7 +560,6 @@ def spreadSheetUI(*args):
     activeList = cmds.selectionConnection(activeList=True)
     cmds.spreadSheetEditor(mainListConnection=activeList)
     cmds.showWindow(sheetID)
-
 
 def setDisplay(type=None, *args):
     global checkIcon, attrType, num, selection
@@ -667,7 +597,6 @@ def setDisplay(type=None, *args):
             cmds.setAttr(selection[i] + attrType, num[0])
         i += 1
 
-
 def pipelineLayout(*args):
     cmds.confirmDialog(t="doing it now", m="I am old Code with it", b="OK")
 
@@ -678,7 +607,6 @@ def aboutThisTool(*args):
     cmds.columnLayout()
     cmds.text(l=MESSAGE['mainUIabout'])
     cmds.showWindow('mainUIAbout')
-
 
 def NameTheFileForLater(*args):
     ## opens a window to name where the file is going and upon saving playblasts to there
@@ -692,7 +620,6 @@ def NameTheFileForLater(*args):
     fileNamer = TheMagicalDirectory.replace(' ', '')[:-2]
     # place the directory/file name into the text field to edit if desired
     cmds.textField("FileNameGoesHere", e=True, text=fileNamer)
-
 
 def TimeToPlayBlast(*args):
     resolution = {'HD 720': [1280, 720], 'HD 1080': [1920, 1080], 'HD 540': [960, 540]}
@@ -729,7 +656,6 @@ def TimeToPlayBlast(*args):
                    showOrnaments=OrnamentsCheck, framePadding=4, percent=100, compression="H.264",
                    quality=QualityField, widthHeight=(WidthField, HeightField), forceOverwrite=True)
 
-
 def styleColumn121(ann, label, cmd, adj, w, *args):
     nc = 2
     style121Layout = cmds.columnLayout(w=w, adj=True)
@@ -745,7 +671,6 @@ def styleColumn121(ann, label, cmd, adj, w, *args):
     cmds.setParent(style121Layout)
     cmds.setParent('..')
     return style121Layout
-
 
 def styleColumn212(ann, label, cmd, adj, w, *args):
     nc = 2
@@ -764,6 +689,6 @@ def styleColumn212(ann, label, cmd, adj, w, *args):
     cmds.setParent('..')
     return style212Layout
 
-    # -------------------------------------------------------------------------------------------------------------
-    # END OF CODE
-    # -------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------

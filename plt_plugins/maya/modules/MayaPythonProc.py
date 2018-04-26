@@ -45,7 +45,7 @@ from plt_plugins.maya.modules import MayaVariables as var
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData')
+SCRPTH = os.path.join(os.getenv(__root__), 'appData', 'config')
 
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION
@@ -55,32 +55,16 @@ logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
-# -------------------------------------------------------------------------------------------------------------
-# CHECK THE CORRECT BINDING THAT BE USING UNDER QT.PY
-# -------------------------------------------------------------------------------------------------------------
-# While Qt.py lets us abstract the actual Qt library, there are a few things it cannot do yet
-# and a few support libraries we need that we have to import manually.
-# if Qt.__binding__=='PySide':
-#     logger.debug('Using PySide with shiboken')
-#     from shiboken import wrapInstance
-#     from Maya_tk.plugins.Qt.QtCore import Signal
-# elif Qt.__binding__.startswith('PyQt'):
-#     logger.debug('Using PyQt with sip')
-#     from sip import wrapinstance as wrapInstance
-#     from Maya_tk.plugins.Qt.QtCore import pyqtSignal as Signal
-# else:
-#     logger.debug('Using PySide2 with shiboken2')
-#     from shiboken2 import wrapInstance
-#     from Maya_tk.plugins.Qt.QtCore import Signal
 # ----------------------------------------------------------------------------------------------------------- #
-"""                   AIN CLASS: MAYA EXECUTE PYTHON - DAMG PIPELINE TOOL INSTALLATION                      """
-# ----------------------------------------------------------------------------------------------------------- #
+""" Check file and folders """
+
 class MayaPythonProc(object):
     # file list in Installation folder
     icons_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'imgs', 'maya.icons')) if
                  f.endswith('.png') or f.endswith('.jpg')]
-    modules_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'maya', 'modules')) if f.endswith('.py')]
-    scrRoot_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'maya')) if f.endswith('.py')]
+    modules_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'plt_plugins', 'maya', 'modules')) if f.endswith('.py')]
+    scrRoot_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'plt_plugins', 'maya')) if f.endswith('.py')]
+
     # ---------------------------------------------------------
     # List file names for CHECK LIST
     checkList = dict(icons=NAMES['mayaIcon'], modules=NAMES['mayaModule'], master=NAMES['mayaRoot'])
@@ -116,7 +100,6 @@ class MayaPythonProc(object):
     def setupFolderAndPath(self, **info):
         infoUser = {}
         userPath = os.path.join(SCRPTH, NAMES['maya'][0])
-
         infoUser['source folder'] = NAMES['mayaRootDir']
         infoUser['user name'] = getpass.getuser()
         infoUser['artist name'] = platform.node()
@@ -140,7 +123,7 @@ class MayaPythonProc(object):
         #
         # logger.info('Saving file to %s' % toolPath)
 
-        self.applyToolPathIntoSystem()
+        # self.applyToolPathIntoSystem()
 
     def applyToolPathIntoSystem(self, *args):
         srcInfo = os.path.join(SCRPTH, NAMES['maya'][1])

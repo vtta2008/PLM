@@ -38,13 +38,17 @@ import maya.OpenMayaUI as omui
 import maya.mel as mel
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA PYTHON MODULES
-# -------------------------------------------------------------------------------------------------------------
+
 from maya import cmds
 
-# ------------------------------------------------------
-# VARIALBES ARE USED BY ALL CLASSES
-# ------------------------------------------------------
 from plt_plugins.maya.modules import MayaVariables as var
+
+# FIX VERSION CONVENTION
+from plt_plugins.maya.plugins import Qt
+from plt_plugins.maya.plugins.Qt import QtWidgets
+
+# -------------------------------------------------------------------------------------------------------------
+# VARIALBES ARE USED BY ALL CLASSES
 
 NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE
@@ -59,23 +63,19 @@ ICONS = var.ICONS
 WIDTH = 450
 ICONWIDTH = 30
 
-# FIX VERSION CONVENTION
-import Qt
-from Qt import QtWidgets
-
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION
-# -------------------------------------------------------------------------------------------------------------
 # We can configure the current level to make it disable certain logs when we don't want it.
+
 logging.basicConfig()
 logger = logging.getLogger(__file__)
 logger.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------------------
 # CHECK THE CORRECT BINDING THAT BE USING UNDER QT.PY
-# -------------------------------------------------------------------------------------------------------------
 # While Qt.py lets us abstract the actual Qt library, there are a few things it cannot do yet
 # and a few support libraries we need that we have to import manually.
+
 if Qt.__binding__ == 'PySide':
     logger.debug('Using PySide with shiboken')
     from shiboken import wrapInstance
@@ -86,8 +86,9 @@ else:
     logger.debug('Using PySide2 with shiboken2')
     from shiboken2 import wrapInstance
 
-
+# -------------------------------------------------------------------------------------------------------------
 # Convert PyQt window to Maya_tk window
+
 def getMayaMainWindow():
     """
     Since maya is Qt, we can parent our UIs to it.
@@ -146,17 +147,13 @@ def importBTS():
     reload(MayaFuncs)
     return MayaFuncs
 
-
 def geticon(icon):
-    iconPth = os.path.join(os.getcwd(), 'plt.maya.icons')
-    return os.path.join(iconPth, icon)
-
-
-# ----------------------------------------------------------------------------------------------------------- #
-"""                        MAIN CLASS: MAYA MASTER UI - ALL ABOUT CONTROLLER UI                             """
-
+    iconPth = os.path.join(os.getcwd(), 'imgs', 'maya.icons', icon)
+    return iconPth
 
 # ----------------------------------------------------------------------------------------------------------- #
+""" MAIN CLASS: MAYA MASTER UI - ALL ABOUT CONTROLLER UI """
+
 class MayaMainUI(QtWidgets.QWidget):
     icons = ICONS
     curPth = cmds.workspace(q=True, rd=True)
@@ -1061,6 +1058,6 @@ class MayaMainUI(QtWidgets.QWidget):
 if __name__ == "__main__":
     MayaMainUI()
 
-    # -------------------------------------------------------------------------------------------------------------
-    # END OF CODE
-    # -------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------

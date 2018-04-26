@@ -103,15 +103,12 @@ class InitUserSetup(object):
 
         for key in sorted(os.environ.keys()):
             info[key] = os.getenv(key)
-
         sysPth = ""
 
         for pth in sys.path:
             sysPth += pth
-
         info['sysPth'] = sysPth
-
-        filePth = os.path.join(os.getenv(__root__), 'appData', 'maya_config.json')
+        filePth = os.path.join(os.getenv(__root__), 'appData', 'config', 'maya.json')
 
         with open(filePth, 'w') as f:
             json.dump(info, f, indent=4)
@@ -134,7 +131,7 @@ class InitUserSetup(object):
     def mayaMainUI(self, *args):
         from plt_plugins.maya import InitTool
         reload(InitTool)
-        InitTool.initilize()
+        InitTool.main()
 
     def aboutMainUI(self, *args):
         aboutWindow = 'aboutWindow'
@@ -156,18 +153,18 @@ class InitUserSetup(object):
         # Check Layout exists, if not, import pipeline layout from source data
         if not 'PipelineTool' in listLayout:
             # Path of layout file from source data by default
-            layoutPth = os.path.join(os.getenv(__root__), 'maya/layout/pipelineTool.json')
+            layoutPth = os.path.join(os.getenv(__root__), 'plt_plugins', 'maya', 'layout', 'plt.json')
 
             # Check if it is not there, it may happen because the file might be moved or deleted
             if os.path.exists(layoutPth):
                cmds.workspaceLayoutManager(i = layoutPth)
-               mel.eval('onSetCurrentLayout "pipelineTool";')
+               mel.eval('onSetCurrentLayout "plt";')
             else:
                 logger.info('%s is not exists' % layoutPth)
                 pass
         # If the file is already there, dont need to import, change layout then.
         else:
-            mel.eval('onSetCurrentLayout "pipelineTool";')
+            mel.eval('onSetCurrentLayout "plt";')
 
     def loadTimelineColorMarker(self, *args):
         from plt_plugins.maya.modules import TimelineMarker

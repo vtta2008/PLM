@@ -709,6 +709,7 @@ class Collect_info(object):
 
         if not os.path.exists(iconConfig):
             dataHandle('yaml', 'w', iconConfig, iconInfo)
+            dataHandle('json', 'w', iconConfig, iconInfo)
 
         envKeys = {}
         for key in os.environ.keys():
@@ -718,6 +719,7 @@ class Collect_info(object):
 
         if not os.path.exists(pth):
             dataHandle('yaml', 'w', pth, envKeys)
+            dataHandle('json', 'w', pth, envKeys)
 
     def deleteKey(self, keys, n=True):
         if not n:

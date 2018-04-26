@@ -43,7 +43,6 @@ from plt_plugins.maya.plugins import Qt
 # ------------------------------------------------------
 NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'PipelineTool', 'scrInfo')
 
 WINID = 'AppsManager'
 SUBID = 'Chosing version'
@@ -71,8 +70,7 @@ else:
 
 
 def geticon(icon):
-    iconPth = os.path.join(os.getcwd(), 'plt.maya.icons')
-    return os.path.join(iconPth, icon)
+    return os.path.join(os.getenv(__root__), 'imgs', 'maya.icon', icon)
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -87,7 +85,7 @@ class toolBoxIV(object):
 
     def getAppData(self):
 
-        self.scrApps = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'main_config.json')
+        self.scrApps = os.path.join(os.getenv(__root__), 'appData', 'main.json')
         if not os.path.exists(self.scrApps):
             self.warningMessage(MESSAGE['canNotFindIt'])
         else:
@@ -143,6 +141,6 @@ class toolBoxIV(object):
         cmds.symbolButton(ann=ann, i=icon, c=command, h=40, w=40)
         cmds.setParent('..')
 
-        # -------------------------------------------------------------------------------------------------------------
-        # END OF CODE
-        # -------------------------------------------------------------------------------------------------------------
+# -------------------------------------------------------------------------------------------------------------
+# END OF CODE
+# -------------------------------------------------------------------------------------------------------------

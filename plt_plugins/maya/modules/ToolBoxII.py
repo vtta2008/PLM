@@ -49,9 +49,8 @@ from plt_plugins.maya.modules import MayaVariables as var
 from plt_plugins.maya.modules import ToolBoxIIfuncs
 
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv('PROGRAMDATA'), 'Pipeline Tool', 'scrInfo')
 VERSION = var.MAYAVERSION
-DIRECTORY = os.path.join(os.getenv('PIPELINE_TOOL'), 'maya', 'userLibrary')
+DIRECTORY = os.path.join(os.getenv(__root__), 'maya', 'userLibrary')
 CHANNELBOX_ID = 'ChannelBoxID'
 
 # -------------------------------------------------------------------------------------------------------------
@@ -148,9 +147,7 @@ def getDock(name='DAMGtoolBoxIIDock', version=VERSION):
 # ------------------------------------------------------
 
 def geticon(icon):
-    iconPth = os.path.join(os.getcwd(), 'plt.maya.icons')
-    return os.path.join(iconPth, icon)
-
+    return os.path.join(os.getenv(__root__), 'imgs', 'maya.icon', icon)
 
 class ControllerManager(QtWidgets.QWidget):
     onSolo = Signal(bool)
@@ -722,7 +719,7 @@ class ToolBoxII(QtWidgets.QWidget):
     }
 
     # get the paths of plt.maya.icons folder
-    scrIcons = os.path.join(os.getenv('PIPELINE_TOOL'), 'maya', 'plt.maya.icons')
+    scrIcons = os.path.join(os.getenv(__root__), 'imgs', 'maya.icons')
 
     def __init__(self, dock=True):
         if dock:
