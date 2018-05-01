@@ -26,7 +26,6 @@ __st__ = "PLT_ST"
 """ Import modules """
 
 # Python
-import shutil
 import logging
 import os
 import subprocess
@@ -37,11 +36,11 @@ import qdarkgraystyle
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings
+from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings, pyqtSignal
 from PyQt5.QtGui import QIcon, QPixmap, QImage
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QGridLayout, QSizePolicy, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
-                             QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu, QFileDialog, QComboBox)
+                             QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu, QFileDialog, QComboBox, QTabBar)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Set up env variable path """
@@ -346,10 +345,10 @@ class Plt_sign_in(QDialog):
         login_grid.addWidget(self.usernameField, 1, 2, 1, 4)
         login_grid.addWidget(self.passwordField, 2, 2, 1, 4)
 
-        login_grid.addWidget(self.rememberCheckBox, 3, 1, 1, 1)
-        login_grid.addWidget(forgot_pw_btn, 3, 3, 1, 3)
+        login_grid.addWidget(self.rememberCheckBox, 3, 1, 1, 2)
+        login_grid.addWidget(login_btn, 3, 3, 1, 3)
 
-        login_grid.addWidget(login_btn, 4, 0, 1, 3)
+        login_grid.addWidget(forgot_pw_btn, 4, 0, 1, 3)
         login_grid.addWidget(cancel_btn, 4, 3, 1, 3)
 
         self.layout.addWidget(login_groupBox, 0, 0, 1, 1)
@@ -380,14 +379,15 @@ class Plt_sign_in(QDialog):
         signup.exec_()
 
     def on_sign_in_btn_clicked(self):
-
         username = str(self.usernameField.text())
         pass_word = str(self.passwordField.text())
 
         if username == "" or username is None:
             QMessageBox.critical(self, 'Login Failed', mess.USER_BLANK)
+            return
         elif pass_word == "" or pass_word is None:
             QMessageBox.critical(self, 'Login Failed', mess.PW_BLANK)
+            return
 
         password = str(func.text_to_hex(pass_word))
 
@@ -396,27 +396,18 @@ class Plt_sign_in(QDialog):
 
         if not checkUserExists:
             QMessageBox.critical(self, 'Login Failed', mess.USER_CHECK_FAIL)
+            return
         elif checkUserStatus == 'disabled':
             QMessageBox.critical(self, 'Login Failed', mess.USER_CONDITION)
+            return
 
         checkPasswordMatch = usql.check_pw_match(username, password)
 
         if not checkPasswordMatch:
             QMessageBox.critical(self, 'Login Failed', "Password not match")
         else:
-            checkSettingState = self.rememberCheckBox.checkState()
-            if checkSettingState:
-                setting = 'True'
-            else:
-                setting = 'False'
-
-            # user_profile = usql.query_user_profile(username)
-            # token = user_profile[1]
-            # unix = user_profile[0]
-            #
-            # usql.update_user_remember_login(token, setting)
-            # usql.update_current_user(unix, token, username, setting)
-
+            checkSettingState = str(self.rememberCheckBox.checkState())
+            usql.update_remember_login(username, checkSettingState)
             self.hide()
             window = Plt_application()
             window.show()
@@ -430,12 +421,12 @@ class Plt_sign_in(QDialog):
 class TabWidget(QWidget):
 
     dbConn = lite.connect(var.DB_PATH)
+    showMainSig = pyqtSignal(bool)
 
-    def __init__(self, unix, username, package, parent=None):
+    def __init__(self, username, package, parent=None):
 
         super(TabWidget, self).__init__(parent)
 
-        self.unix = unix
         self.username = username
         self.package = package
 
@@ -740,13 +731,12 @@ class TabWidget(QWidget):
         user_setting_layout.exec_()
 
     def on_signOutBtn_clicked(self):
-        curUser, rememberLogin = pltp.preset5_query_user_info()
-        user_profile = usql.query_userData(curUser)
-        token = user_profile[1]
-        unix = user_profile[0]
-
-        usql.update_user_remember_login(token, 'Flase')
-        usql.update_current_user(unix, token, curUser, 'False')
+        self.settings.setValue("showMain", False)
+        self.showMainSig.emit(False)
+        usql.update_remember_login(self.username, False)
+        login = Plt_sign_in()
+        login.show()
+        login.exec_()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
@@ -794,10 +784,9 @@ class Plt_application(QMainWindow):
         self.artToolBar.setVisible(self.showToolBar)
 
         # Tabs build
-        userData = usql.query_userData()
-        unix = userData
-
-        self.tabWidget = TabWidget(unix, username, self.package)
+        self.tabWidget = TabWidget(username, self.package)
+        showMainSig = self.tabWidget.showMainSig
+        showMainSig.connect(self.show_hide_main)
         self.setCentralWidget(self.tabWidget)
 
         # Log record
@@ -842,7 +831,6 @@ class Plt_application(QMainWindow):
         self.tdToolBar = self.toolBarTD()
         self.compToolBar = self.toolBarComp()
         self.artToolBar = self.toolBarArt()
-        self.addToolBar(Qt.LeftToolBarArea, self.compToolBar)
         # self.addToolBar(Qt.LeftToolBarArea, self.tdToolBar)
         # self.addToolBar(Qt.LeftToolBarArea, self.artToolBar)
 
@@ -1067,6 +1055,11 @@ class Plt_application(QMainWindow):
         self.artToolBar.setVisible(param)
         self.settings.setValue("showToolbar", func.bool2str(param))
 
+    def show_hide_main(self, param):
+        if not param:
+            self.trayIcon.hide()
+            self.close()
+
     def exit_action_trigger(self):
         self.procedures("Log out")
         logger.debug("LOG OUT")
@@ -1083,23 +1076,25 @@ class Plt_application(QMainWindow):
 
 def main():
 
+    usql.query_userData()
+
     QCoreApplication.setApplicationName(__appname__)
     QCoreApplication.setApplicationVersion(__version__)
     QCoreApplication.setOrganizationName(__organization__)
     QCoreApplication.setOrganizationDomain(__website__)
 
     curUser, rememberLogin = pltp.preset5_query_user_info()
-    userdata = [curUser, rememberLogin]
+    rememberLogin = func.str2bool(rememberLogin)
 
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon(func.get_icon('Logo')))
     app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
 
-    if rememberLogin == 'False' or userdata == [] or userdata == None:
+    if not rememberLogin:
         login = Plt_sign_in()
         login.show()
     else:
-        window = Plt_application('Auto login')
+        window = Plt_application()
         window.show()
         if not QSystemTrayIcon.isSystemTrayAvailable():
             QMessageBox.critical(None, mess.SYSTRAY_UNAVAI)

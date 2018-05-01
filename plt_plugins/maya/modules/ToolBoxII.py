@@ -525,7 +525,6 @@ class ChanelBox(QtWidgets.QWidget):
                     defaultValue = cmds.addAttr(obj + "." + channel, query=True, dv=True)
                     cmds.setAttr(obj + "." + channel, defaultValue)
         elif (operation == "-keySelected"):
-            print self.channelBoxID, channelSel, objSel
             for obj in objSel:
                 for channel in channelSel:
                     cmds.setKeyframe(obj + "." + channel)

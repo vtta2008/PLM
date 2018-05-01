@@ -201,8 +201,6 @@ ICONS = os.path.join(os.getenv(__root__), 'imgs', 'maya.icon')
 def getScrPth(mainVar):
     localAppDir = os.getenv( mainVar[ 'envKey' ][3])
 
-    print 'localAppDir: %s' % localAppDir
-
     pipelineDataPth = os.path.join( localAppDir, mainVar['dir'] )
     if not os.path.exists( pipelineDataPth ):
         os.mkdir( pipelineDataPth )

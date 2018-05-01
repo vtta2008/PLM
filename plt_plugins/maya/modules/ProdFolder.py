@@ -437,14 +437,11 @@ class ProdFolder(object):
                 for i in range(self.numOfProps):
                     propsName = 'props' + str(i + 1)
                     folPropsName = cmds.textField(propsName, q=True, tx=True)
-                    print type(folPropsName)
 
                     if folPropsName == "" or folPropsName == None:
                         folPropsName = 'props_' + str(i + 1)
 
                     folPropsPth = os.path.join(assetsSectionsPth, folPropsName)
-
-                    print folPropsPth + ' 4'
 
                     os.mkdir(folPropsPth)
                     for task in assetsTasks:

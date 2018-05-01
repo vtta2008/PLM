@@ -437,7 +437,7 @@ def hex_to_text(hex):
     return outPut
 
 def str2bool(arg):
-    return str(arg).lower() in ['true', 1, '1', 'ok']
+    return str(arg).lower() in ['true', 1, '1', 'ok', '2']
 
 def bool2str(arg):
     if arg:
@@ -626,7 +626,6 @@ class Collect_info(object):
         appsConfig_yaml = os.path.join(os.getenv(__root__), 'appData', 'config', 'app.yml')
         appsConfig_json = os.path.join(os.getenv(__root__), 'appData', 'config', 'app.json')
 
-        print appsConfig_json, appsConfig_yaml
         dataHandle('yaml', 'w', appsConfig_yaml, allapps)
         dataHandle('json', 'w', appsConfig_json, allapps)
 

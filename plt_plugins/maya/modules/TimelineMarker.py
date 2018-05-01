@@ -117,8 +117,6 @@ class TimelineMarkers(QWidget):
         self.initialize()
         self.addCallbacks()
 
-        print "Timeline Marker: installation succeeded"
-
     def initialize(self, *args):
         # Decode stored information
         stored = cmds.fileInfo("timelineMarkers", query=True)
