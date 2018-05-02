@@ -364,14 +364,20 @@ def get_title():
 
 def get_location(*args):
     r = requests.get('https://api.ipdata.co').json()
-    info = {}
+
     for key in r:
         k = (str(key))
-        content = str(r[key])
-        info[k] = content
-    ip = info['ip']
-    city = info['city']
-    country = info['country_name']
+        if k == 'ip':
+            ip = str(r[key])
+        elif k == 'city':
+            city = str(r[key])
+        elif k == 'country_name':
+            country = str(r[key])
+        else:
+            ip = ""
+            city = ""
+            country = ""
+
     return ip, city, country
 
 # ----------------------------------------------------------------------------------------------------------- #

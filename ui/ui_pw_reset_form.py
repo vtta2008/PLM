@@ -34,7 +34,7 @@ from PyQt5.QtWidgets import (QApplication, QMessageBox, QDialog, QDialogButtonBo
                              QLineEdit, QVBoxLayout)
 
 # Plt tools
-from utilities import utils_sql as usql
+from utilities import sql_local as usql
 from utilities import message as mess
 
 # ----------------------------------------------------------------------------------------------------------- #

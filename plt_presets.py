@@ -49,7 +49,7 @@ logger.setLevel(logging.WARNING)
 """ Plt tools """
 
 from utilities import utils as func
-from utilities import utils_sql as usql
+from utilities import sql_local as usql
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preset """

@@ -33,6 +33,7 @@ import sys
 import webbrowser
 import qdarkgraystyle
 import shutil
+import requests
 import sqlite3 as lite
 from functools import partial
 
@@ -72,7 +73,7 @@ from ui import ui_acc_setting
 from ui import ui_preference
 
 from utilities import utils as func
-from utilities import utils_sql as usql
+from utilities import sql_local as usql
 from utilities import message as mess
 from utilities import variables as var
 
@@ -292,6 +293,7 @@ class Plt_sign_up(QDialog):
             self.userAvatar.update()
 
     def on_create_btn_clicked(self):
+
         username = str(self.usernameField.text())
         password = str(self.passwordField.text())
         confirm = str(self.confirmPassField.text())
@@ -310,13 +312,14 @@ class Plt_sign_up(QDialog):
         reg = [username, password, confirm, firstname, lastname, email, phone, address1, address2, postal, city, country,
                answer1, answer2]
 
-        if not self.check_all_conditions(confirm, password, reg):
-            return
-        else:
+        if self.check_all_conditions(confirm, password, reg):
+
             data = self.create_user_data()
-            usql.create_user_data(data)
+
+            usql.create_new_user_data(data)
 
     def create_user_data(self):
+
         username = str(self.usernameField.text())
         password = str(self.passwordField.text())
         firstname = str(self.firstnameField.text())
@@ -343,10 +346,20 @@ class Plt_sign_up(QDialog):
         pcOS = sysInfo['os']
         pcUser = sysInfo['pcUser']
         pcPython = sysInfo['python']
+        print 1
+        if not os.path.exists(self.rawAvatarPth):
+            rawAvatarPth = func.get_avatar('default')
+        else:
+            rawAvatarPth = self.rawAvatarPth
+        print 2
 
         data = [username, password, firstname, lastname, title, email, phone, address1, address2, postal, city,
                     country, token, timelog, productID, ip, cityIP, countryIP, unix, question1, answer1, question2,
-                    answer2, datelog, pcOS, pcUser, pcPython]
+                    answer2, datelog, pcOS, pcUser, pcPython, rawAvatarPth]
+
+        print len(data)
+        for i in data:
+            print i, type(i)
 
         return data
 
@@ -500,6 +513,7 @@ class Plt_sign_in(QDialog):
         self.signup.exec_()
 
     def on_sign_in_btn_clicked(self):
+
         username = str(self.usernameField.text())
         pass_word = str(self.passwordField.text())
 
@@ -512,30 +526,50 @@ class Plt_sign_in(QDialog):
 
         password = str(pass_word)
 
-        checkUserExists = usql.check_account(username)
-        checkUserStatus = usql.check_status(username)
+        r = requests.post("http://13.55.214.163/auth", data={'user': username, 'pwd': password})
 
-        if not checkUserExists:
-            QMessageBox.critical(self, 'Login Failed', mess.USER_CHECK_FAIL)
-            return
-        elif checkUserStatus == 'disabled':
-            QMessageBox.critical(self, 'Login Failed', mess.USER_CONDITION)
-            return
+        for i in r.headers['set-cookie'].split(";"):
+            if 'connect.sid=' in i:
+                cookie = i.split('connect.sid=')[-1]
 
-        checkPasswordMatch = usql.check_pw_match(username, password)
-
-        if not checkPasswordMatch:
-            QMessageBox.critical(self, 'Login Failed', mess.PW_WRONG)
-        else:
-            checkSettingState = str(self.rememberCheckBox.checkState())
-            usql.update_remember_login(username, checkSettingState)
-
+        if r.status_code == 200:
+            token = r.json()['token']
+            usql.update_user_token(username, token, cookie)
             self.settings.setValue("showMain", True)
             window = Plt_application()
             showLoginSig2 = window.showLoginSig2
             showLoginSig2.connect(self.show_hide_login)
             self.hide()
             window.show()
+        else:
+            QMessageBox.critical(self, 'Login Failed', mess.PW_WRONG)
+            return
+
+
+        # checkUserExists = usql.check_account(username)
+        # checkUserStatus = usql.check_status(username)
+        #
+        # if not checkUserExists:
+        #     QMessageBox.critical(self, 'Login Failed', mess.USER_CHECK_FAIL)
+        #     return
+        # elif checkUserStatus == 'disabled':
+        #     QMessageBox.critical(self, 'Login Failed', mess.USER_CONDITION)
+        #     return
+        #
+        # checkPasswordMatch = usql.check_pw_match(username, password)
+        #
+        # if not checkPasswordMatch:
+        #     QMessageBox.critical(self, 'Login Failed', mess.PW_WRONG)
+        # else:
+        #     checkSettingState = str(self.rememberCheckBox.checkState())
+        #     usql.update_remember_login(username, checkSettingState)
+        #
+        #     self.settings.setValue("showMain", True)
+        #     window = Plt_application()
+        #     showLoginSig2 = window.showLoginSig2
+        #     showLoginSig2.connect(self.show_hide_login)
+        #     self.hide()
+        #     window.show()
 
     def closeEvent(self, event):
         QApplication.quit()
@@ -857,12 +891,11 @@ class TabWidget(QWidget):
         user_setting_layout.exec_()
 
     def on_signOutBtn_clicked(self):
-        self.settings.setValue("showMain", False)
-        self.showMainSig.emit(False)
-        self.showLoginSig.emit(True)
-        usql.update_remember_login(self.username, False)
-
-
+        logout = usql.logout_account()
+        if logout:
+            self.settings.setValue("showMain", not logout)
+            self.showMainSig.emit(not logout)
+            self.showLoginSig.emit(logout)
 
         # login = Plt_sign_in()
         # login.show()
@@ -923,7 +956,7 @@ class Plt_application(QMainWindow):
         self.show_hide_main(self.showMainUI)
 
         # Log record
-        self.procedures('log in')
+        # self.procedures('log in')
 
     def buildUI(self):
 
@@ -1159,7 +1192,8 @@ class Plt_application(QMainWindow):
         return toolbarArt
 
     def procedures(self, eventlog):
-        usql.insert_timeLog(eventlog)
+        pass
+        # usql.insert_timeLog(eventlog)
 
     def createAction(self, appInfo, key):
         action = QAction(QIcon(appInfo[key][1]), appInfo[key][0], self)
@@ -1221,7 +1255,7 @@ class Plt_application(QMainWindow):
         self.showLoginSig2.emit(param)
 
     def exit_action_trigger(self):
-        self.procedures("Log out")
+        # self.procedures("Log out")
         logger.debug("LOG OUT")
         QApplication.instance().quit()
 
@@ -1243,22 +1277,23 @@ def main():
     QCoreApplication.setOrganizationName(__organization__)
     QCoreApplication.setOrganizationDomain(__website__)
 
-    curUser, rememberLogin = pltp.preset5_query_user_info()
-    rememberLogin = func.str2bool(rememberLogin)
-
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon(func.get_icon('Logo')))
     app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
 
-    if not rememberLogin:
-        login = Plt_sign_in()
-        login.show()
-    else:
+    username, token, cookie = usql.query_user_session()
+    r = requests.get("http://13.55.214.163/check", headers={'Authorization': 'Bearer %s' % token}, cookies={'connect.sid': cookie})
+
+    if r.status_code == 200:
         window = Plt_application()
         window.show()
         if not QSystemTrayIcon.isSystemTrayAvailable():
             QMessageBox.critical(None, mess.SYSTRAY_UNAVAI)
             sys.exit(1)
+    else:
+        login = Plt_sign_in()
+        login.show()
+
 
     QApplication.setQuitOnLastWindowClosed(False)
 
@@ -1267,6 +1302,4 @@ def main():
 if __name__ == '__main__':
     main()
 
-# ----------------------------------------------------------------------------------------------------------- #
-"""                                                END OF CODE                                              """
-# ----------------------------------------------------------------------------------------------------------- #
+# ----------------------------------------------------------------------------

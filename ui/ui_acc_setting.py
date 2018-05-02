@@ -38,7 +38,7 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLabel, QLineEdit, QGroupBox,
                              QMessageBox, QApplication)
 
 # Plt
-from utilities import utils_sql as usql
+from utilities import sql_local as usql
 from utilities import utils as func
 from utilities import message as mess
 from utilities import variables as var
