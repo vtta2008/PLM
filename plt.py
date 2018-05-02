@@ -31,8 +31,9 @@ import os
 import subprocess
 import sys
 import webbrowser
-import sqlite3 as lite
 import qdarkgraystyle
+import shutil
+import sqlite3 as lite
 from functools import partial
 
 # PyQt5
@@ -100,6 +101,8 @@ def clabel(text):
 
 class Plt_sign_up(QDialog):
 
+    showLoginSig1 = pyqtSignal(bool)
+
     def __init__(self, parent=None):
 
         super(Plt_sign_up, self).__init__(parent)
@@ -107,7 +110,9 @@ class Plt_sign_up(QDialog):
         self.setWindowTitle("Sign Up")
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setContentsMargins(0,0,0,0)
-        self.setFixedSize(400, 800)
+        self.setFixedSize(450, 900)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -119,13 +124,15 @@ class Plt_sign_up(QDialog):
         account_section = self.account_section()
         profile_section = self.profile_section()
         contact_section = self.location_section()
+        security_section = self.security_section()
         buttons_section = self.buttons_section()
 
-        self.layout.addWidget(clabel("All fields are required."), 0, 0, 1, 6)
-        self.layout.addWidget(avatar_section, 1, 0, 1, 6)
-        self.layout.addWidget(account_section, 2, 0, 1, 6)
-        self.layout.addWidget(profile_section, 3, 0, 1, 6)
-        self.layout.addWidget(contact_section, 4, 0, 1, 6)
+        self.layout.addWidget(clabel("ALL FIELD ARE REQUIRED."), 0, 0, 1, 6)
+        self.layout.addWidget(avatar_section, 1, 0, 1, 2)
+        self.layout.addWidget(account_section, 1, 2, 1, 4)
+        self.layout.addWidget(profile_section, 2, 0, 1, 6)
+        self.layout.addWidget(contact_section, 3, 0, 1, 6)
+        self.layout.addWidget(security_section, 4, 0, 1, 6)
         self.layout.addWidget(buttons_section, 5, 0, 1, 6)
 
     def avatar_section(self):
@@ -143,7 +150,7 @@ class Plt_sign_up(QDialog):
         set_avatarBtn.clicked.connect(self.on_set_avatar_btn_clicked)
 
         avatar_grid.addWidget(self.userAvatar, 0, 0, 2, 2)
-        avatar_grid.addWidget(set_avatarBtn, 0, 2, 1, 4)
+        avatar_grid.addWidget(set_avatarBtn, 2, 0, 1, 2)
 
         return avatar_groupBox
 
@@ -222,13 +229,43 @@ class Plt_sign_up(QDialog):
 
         return contact_groupBox
 
+    def security_section(self):
+
+        questions_groupBox = QGroupBox("Security Question")
+        questions_grid = QGridLayout()
+        questions_groupBox.setLayout(questions_grid)
+
+        self.question1 = QComboBox()
+        self.question1.setMaximumWidth(300)
+        self.answer2 = QLineEdit()
+        self.question2 = QComboBox()
+        self.question2.setMaximumWidth(300)
+        self.answer1 = QLineEdit()
+
+        questions = usql.query_all_questions()
+        for i in questions:
+            self.question1.addItem(i)
+            self.question2.addItem(i)
+
+        questions_grid.addWidget(clabel('Question 1'), 0, 0, 1, 3)
+        questions_grid.addWidget(clabel('Answer 1'), 1, 0, 1, 3)
+        questions_grid.addWidget(clabel('Question 2'), 2, 0, 1, 3)
+        questions_grid.addWidget(clabel('Answer 2'), 3, 0, 1, 3)
+
+        questions_grid.addWidget(self.question1, 0, 3, 1, 6)
+        questions_grid.addWidget(self.answer1, 1, 3, 1, 6)
+        questions_grid.addWidget(self.question2, 2, 3, 1, 6)
+        questions_grid.addWidget(self.answer2, 3, 3, 1, 6)
+
+        return questions_groupBox
+
     def buttons_section(self):
         btn_groupBox = QGroupBox()
         btn_grid = QGridLayout()
         btn_groupBox.setLayout(btn_grid)
 
-        self.checkBox = QCheckBox(mess.USER_CHECK_REQUIRED)
-        btn_grid.addWidget(self.checkBox, 0, 0, 1, 6)
+        self.user_agree_checkBox = QCheckBox(mess.USER_CHECK_REQUIRED)
+        btn_grid.addWidget(self.user_agree_checkBox, 0, 0, 1, 6)
 
         okBtn = QPushButton('Create Account')
         okBtn.clicked.connect(self.on_create_btn_clicked)
@@ -267,26 +304,105 @@ class Plt_sign_up(QDialog):
         postal = str(self.postalCode.text())
         city = str(self.city.text())
         country = str(self.country.text())
+        answer1 = str(self.answer1.text())
+        answer2 = str(self.answer2.text())
 
-        reg = [username, password, confirm, firstname, lastname, email, phone, address1, address2, postal, city, country]
+        reg = [username, password, confirm, firstname, lastname, email, phone, address1, address2, postal, city, country,
+               answer1, answer2]
 
-        for i in reg:
-            if func.check_blank(i):
-                continue
-            else:
-                QMessageBox.critical(self, "Warning", mess.SEC_BLANK, QMessageBox.Retry)
-                break
-
-        check_pass = func.check_match(password, confirm)
-        if not check_pass:
-            QMessageBox.critical(self, "Warning", mess.PW_UNMATCH, QMessageBox.Retry)
+        if not self.check_all_conditions(confirm, password, reg):
             return
+        else:
+            data = self.create_user_data()
+            usql.create_user_data(data)
+
+    def create_user_data(self):
+        username = str(self.usernameField.text())
+        password = str(self.passwordField.text())
+        firstname = str(self.firstnameField.text())
+        lastname = str(self.lastnameField.text())
+        email = str(self.emailField.text())
+        phone = str(self.phoneField.text())
+        address1 = str(self.addressLine1.text())
+        address2 = str(self.addressLine2.text())
+        postal = str(self.postalCode.text())
+        city = str(self.city.text())
+        country = str(self.country.text())
+        question1 = str(self.question1.currentText())
+        answer1 = str(self.answer1.text())
+        question2 = str(self.question2.currentText())
+        answer2 = str(self.answer2.text())
+        title = str(self.titleField.text())
+        token = func.get_token()
+        timelog = func.get_time()
+        sysInfo = func.get_local_pc()
+        productID = sysInfo['Product ID']
+        ip, cityIP, countryIP = func.get_location()
+        unix = func.get_unix()
+        datelog = func.get_date()
+        pcOS = sysInfo['os']
+        pcUser = sysInfo['pcUser']
+        pcPython = sysInfo['python']
+
+        data = [username, password, firstname, lastname, title, email, phone, address1, address2, postal, city,
+                    country, token, timelog, productID, ip, cityIP, countryIP, unix, question1, answer1, question2,
+                    answer2, datelog, pcOS, pcUser, pcPython]
+
+        return data
 
     def on_cancel_btn_clicked(self):
         self.close()
-        # signin = Sign_in_layout()
-        # signin.show()
-        # signin.exec_()
+        self.settings.setValue("showLogin", True)
+        self.showLoginSig1.emit(True)
+
+    def check_all_conditions(self, confirm, password, reg):
+
+        if self.check_all_field_blank(reg):
+            if self.check_pw_matching(confirm, password):
+                if self.check_user_agreement():
+                    return True
+                else:
+                    return False
+            else:
+                return False
+        else:
+            return False
+
+    def check_user_agreement(self):
+        state = self.user_agree_checkBox.checkState()
+        if not state:
+            QMessageBox.critical(self, "Warning", mess.USER_NOT_CHECK, QMessageBox.Retry)
+            return False
+        else:
+            return True
+
+    def check_pw_matching(self, confirm, password):
+        check_pass = func.check_match(password, confirm)
+        if not check_pass:
+            QMessageBox.critical(self, "Warning", mess.PW_UNMATCH, QMessageBox.Retry)
+            return False
+        else:
+            return True
+
+    def check_all_field_blank(self, reg):
+        secName = ['Username', 'Password', 'Confirm Password', 'Firstname', 'Lastname', 'Email', 'Phone', 'Address line 1',
+                   'Address line 2', 'Postal', 'City', 'Country', 'Answer 1', 'Answer 2']
+
+        check = []
+
+        for i in reg:
+            if not func.check_blank(i):
+                index = reg.index(i)
+                QMessageBox.critical(self, "Warning", secName[index] + mess.SEC_BLANK, QMessageBox.Retry)
+                check.append(secName[index])
+                break
+            else:
+                continue
+
+        if len(check) == 0:
+            return True
+        else:
+            return False
 
     def check_password_matching(self, password, passretype):
 
@@ -295,6 +411,9 @@ class Plt_sign_up(QDialog):
             return False
         else:
             return True
+
+    def closeEvent(self, event):
+        self.on_cancel_btn_clicked()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Login Layout """
@@ -311,13 +430,14 @@ class Plt_sign_in(QDialog):
         self.setContentsMargins(0, 0, 0, 0)
         self.setFixedSize(400, 300)
 
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.signup = Plt_sign_up()
+        showLoginSig1 = self.signup.showLoginSig1
+        showLoginSig1.connect(self.show_hide_login)
+
         # Main layout
         self.layout = QGridLayout()
-
-        # Layout content
         self.buildUI()
-
-        # Load layout content
         self.setLayout(self.layout)
 
     def buildUI(self):
@@ -333,10 +453,8 @@ class Plt_sign_in(QDialog):
 
         forgot_pw_btn = QPushButton('Forgot your password?')
         forgot_pw_btn.clicked.connect(self.on_forgot_pw_btn_clicked)
-
         login_btn = QPushButton('Login')
         cancel_btn = QPushButton('Cancel')
-
         login_btn.clicked.connect(self.on_sign_in_btn_clicked)
         cancel_btn.clicked.connect(QApplication.quit)
 
@@ -344,14 +462,10 @@ class Plt_sign_in(QDialog):
         login_grid.addWidget(clabel('Password'), 2, 0, 1, 2)
         login_grid.addWidget(self.usernameField, 1, 2, 1, 4)
         login_grid.addWidget(self.passwordField, 2, 2, 1, 4)
-
         login_grid.addWidget(self.rememberCheckBox, 3, 1, 1, 2)
         login_grid.addWidget(login_btn, 3, 3, 1, 3)
-
         login_grid.addWidget(forgot_pw_btn, 4, 0, 1, 3)
         login_grid.addWidget(cancel_btn, 4, 3, 1, 3)
-
-        self.layout.addWidget(login_groupBox, 0, 0, 1, 1)
 
         signup_groupBox = QGroupBox('Sign up')
         signup_grid = QGridLayout()
@@ -363,7 +477,15 @@ class Plt_sign_in(QDialog):
         signup_grid.addWidget(clabel(mess.SIGN_UP), 0, 0, 1, 6)
         signup_grid.addWidget(sign_up_btn, 1, 0, 1, 6)
 
+        self.layout.addWidget(login_groupBox, 0, 0, 1, 1)
         self.layout.addWidget(signup_groupBox, 1, 0, 1, 1)
+
+    def show_hide_login(self, param):
+        param = func.str2bool(param)
+        if param:
+            self.show()
+        else:
+            self.hide()
 
     def on_forgot_pw_btn_clicked(self):
         from ui import ui_pw_reset_form
@@ -373,10 +495,9 @@ class Plt_sign_in(QDialog):
         reset_pw_form.exec_()
 
     def on_sign_up_btn_clicked(self):
-        # self.hide()
-        signup = Plt_sign_up()
-        signup.show()
-        signup.exec_()
+        self.hide()
+        self.signup.show()
+        self.signup.exec_()
 
     def on_sign_in_btn_clicked(self):
         username = str(self.usernameField.text())
@@ -389,7 +510,7 @@ class Plt_sign_in(QDialog):
             QMessageBox.critical(self, 'Login Failed', mess.PW_BLANK)
             return
 
-        password = str(func.text_to_hex(pass_word))
+        password = str(pass_word)
 
         checkUserExists = usql.check_account(username)
         checkUserStatus = usql.check_status(username)
@@ -404,12 +525,16 @@ class Plt_sign_in(QDialog):
         checkPasswordMatch = usql.check_pw_match(username, password)
 
         if not checkPasswordMatch:
-            QMessageBox.critical(self, 'Login Failed', "Password not match")
+            QMessageBox.critical(self, 'Login Failed', mess.PW_WRONG)
         else:
             checkSettingState = str(self.rememberCheckBox.checkState())
             usql.update_remember_login(username, checkSettingState)
-            self.hide()
+
+            self.settings.setValue("showMain", True)
             window = Plt_application()
+            showLoginSig2 = window.showLoginSig2
+            showLoginSig2.connect(self.show_hide_login)
+            self.hide()
             window.show()
 
     def closeEvent(self, event):
@@ -422,6 +547,7 @@ class TabWidget(QWidget):
 
     dbConn = lite.connect(var.DB_PATH)
     showMainSig = pyqtSignal(bool)
+    showLoginSig = pyqtSignal(bool)
 
     def __init__(self, username, package, parent=None):
 
@@ -733,15 +859,21 @@ class TabWidget(QWidget):
     def on_signOutBtn_clicked(self):
         self.settings.setValue("showMain", False)
         self.showMainSig.emit(False)
+        self.showLoginSig.emit(True)
         usql.update_remember_login(self.username, False)
-        login = Plt_sign_in()
-        login.show()
-        login.exec_()
+
+
+
+        # login = Plt_sign_in()
+        # login.show()
+        # login.exec_()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
 
 class Plt_application(QMainWindow):
+
+    showLoginSig2 = pyqtSignal(bool)
 
     def __init__(self, login=None, parent=None):
 
@@ -777,17 +909,18 @@ class Plt_application(QMainWindow):
         # Build UI
         self.buildUI()
 
-        # Load Setting
-        self.showToolBar = func.str2bool(self.settings.value("showToolbar", True))
-        self.tdToolBar.setVisible(self.showToolBar)
-        self.compToolBar.setVisible(self.showToolBar)
-        self.artToolBar.setVisible(self.showToolBar)
-
         # Tabs build
         self.tabWidget = TabWidget(username, self.package)
         showMainSig = self.tabWidget.showMainSig
+        showLoginSig = self.tabWidget.showLoginSig
+
         showMainSig.connect(self.show_hide_main)
+        showLoginSig.connect(self.send_to_login)
+
         self.setCentralWidget(self.tabWidget)
+
+        self.showMainUI = func.str2bool(self.settings.value("showMain", True))
+        self.show_hide_main(self.showMainUI)
 
         # Log record
         self.procedures('log in')
@@ -833,6 +966,15 @@ class Plt_application(QMainWindow):
         self.artToolBar = self.toolBarArt()
         # self.addToolBar(Qt.LeftToolBarArea, self.tdToolBar)
         # self.addToolBar(Qt.LeftToolBarArea, self.artToolBar)
+
+        # Load Setting
+        self.showTDToolBar = func.str2bool(self.settings.value("showTDToolbar", True))
+        self.showCompToolBar = func.str2bool(self.settings.value("showCompToolbar", True))
+        self.showArtToolBar = func.str2bool(self.settings.value("showArtToolbar", True))
+
+        self.tdToolBar.setVisible(self.showTDToolBar)
+        self.compToolBar.setVisible(self.showCompToolBar)
+        self.artToolBar.setVisible(self.showArtToolBar)
 
     def sys_tray_icon_activated(self, reason):
         if reason == QSystemTrayIcon.DoubleClick:
@@ -1045,20 +1187,38 @@ class Plt_application(QMainWindow):
     def preferences_action_triggered(self):
         dlg = ui_preference.Pref_layout()
         dlg.show()
-        sig = dlg.checkboxSig
-        sig.connect(self.show_hide_toolBar)
+        sigTD = dlg.checkboxTDSig
+        sigComp = dlg.checkboxCompSig
+        sigArt = dlg.checkboxArtSig
+        sigTD.connect(self.show_hide_TDtoolBar)
+        sigComp.connect(self.show_hide_ComptoolBar)
+        sigArt.connect(self.show_hide_ArttoolBar)
         dlg.exec_()
 
-    def show_hide_toolBar(self, param):
+    def show_hide_TDtoolBar(self, param):
         self.tdToolBar.setVisible(param)
+        self.settings.setValue("showTDToolbar", func.bool2str(param))
+
+    def show_hide_ComptoolBar(self, param):
         self.compToolBar.setVisible(param)
+        self.settings.setValue("showCompToolbar", func.bool2str(param))
+
+    def show_hide_ArttoolBar(self, param):
         self.artToolBar.setVisible(param)
-        self.settings.setValue("showToolbar", func.bool2str(param))
+        self.settings.setValue("showArtToolbar", func.bool2str(param))
 
     def show_hide_main(self, param):
+        param = func.str2bool(param)
         if not param:
             self.trayIcon.hide()
             self.close()
+        else:
+            self.trayIcon.show()
+            self.show()
+
+    def send_to_login(self, param):
+        self.settings.setValue("showLogin", param)
+        self.showLoginSig2.emit(param)
 
     def exit_action_trigger(self):
         self.procedures("Log out")

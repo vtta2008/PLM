@@ -344,23 +344,17 @@ def get_datetime(*args):
 
 def get_date(*args):
     datetimeLog = get_datetime()
-    dayLog = datetimeLog.split('||')[0]
-    return dayLog
+    return datetimeLog.split('||')[0]
 
 def get_time(*args):
     datetimeLog = get_datetime()
-    timeLog = datetimeLog.split('||')[1]
-    return timeLog
+    return datetimeLog.split('||')[1]
 
 def get_token(*args):
     return str(uuid.uuid4())
 
 def get_unix(*args):
-    unix = (str(uuid.uuid4())).split('-')[-1]
-    token = get_token()
-    timeLog = get_time()
-    dateLog = get_date()
-    return unix, token, timeLog, dateLog
+    return (str(uuid.uuid4())).split('-')[-1]
 
 def get_title():
     import random
@@ -454,19 +448,18 @@ def check_blank(data, *args):
         return True
 
 def check_match(data1, data2, *args):
+    check = []
     if len(data1) == len(data2):
-        count = len(data1) - 1
         for i in range(len(data1)):
-            if data1[i] == data2[i]:
-                count = count - 1
+            if data1[i] is data2[i]:
+                continue
             else:
-                count = count + 1
-            i += 1
+                check.append('False')
+    else:
+        check.append('False')
 
-        if count == 1:
-            return True
-        else:
-            return False
+    if len(check) == 0:
+        return True
     else:
         return False
 

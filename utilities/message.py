@@ -56,16 +56,21 @@ SIGN_UP = "Do not have account?"
 
 DISALLOW = "Sorry, but only Admin can do this function, please contact JimJim for details."
 TIT_BLANK = 'Blank title will be set to "Tester"'
-PW_BLANK = "Password must not blank."
-PW_WRONG = "Your password is wrong."
+
+PW_BLANK = "Password must not be blank."
+PW_WRONG = "Wrong username or password."
 PW_UNMATCH = "Password doesn't match"
 PW_CHANGED = "Your password has changed"
+
 FN_BLANK = "Firstname must not be blank"
 LN_BLANK = "Lastname must not be blank"
-SEC_BLANK = "Every sections should not be blank, please try again."
+SEC_BLANK = " section should not be blank."
+
 USER_CHECK_REQUIRED = "I agree to the DAMG Terms of Service"
-USER_BLANK = "Username must not blank."
+USER_NOT_CHECK = "You must agree with DAMG team term of service"
+USER_BLANK = "Username must not be blank."
 USER_CHECK_FAIL = "Wrong username or password"
 USER_NOT_EXSIST = "The username does not exists"
 USER_CONDITION = "This username is under condition and can not log in, please contact to admin."
+
 SYSTRAY_UNAVAI = "Systray could not detect any system tray on this system"
