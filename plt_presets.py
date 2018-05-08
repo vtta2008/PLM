@@ -28,12 +28,8 @@ __st__ = "PLT_ST"
 # Python
 import os
 import shutil
-import pip
-import subprocess
-import time
 import yaml
 import logging
-import pkg_resources
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
@@ -54,31 +50,6 @@ from utilities import sql_local as usql
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preset """
-
-def preset2_install_extra_python_package():
-    """
-    There are multiple pyton packages needs to be installed
-    :return: Extra python packages installed
-    """
-    # Packages checklist.
-    checkLst = ['pywinauto', 'winshell', 'pandas', 'opencv-python', 'pyunpack', 'argparse']
-
-    # Query current packages
-    packages = [d for d in pkg_resources.working_set]
-
-    for pk_info in packages:
-        for pk in checkLst:
-            if pk in str(pk_info):
-                checkLst.remove((pk))
-
-    if len(checkLst) > 0:
-        for package in checkLst:
-            while subprocess.Popen("python -m pip instal %s" % package):
-                continue
-            else:
-                pass
-
-    return True
 
 def preset3_maya_intergrate():
     # Pipeline tool module paths for Maya.
@@ -124,13 +95,3 @@ def preset4_gather_configure_info():
         APPINFO = yaml.load(f)
 
     return APPINFO
-
-def preset5_query_user_info():
-    """
-    Query user info
-    :return: user info
-    """
-    currentUserData = usql.query_curUser()
-    curUser = currentUserData[0]
-    rememberLogin = currentUserData[1]
-    return  curUser, rememberLogin,

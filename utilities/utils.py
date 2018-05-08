@@ -42,6 +42,9 @@ import re
 import datetime
 import time
 import uuid
+import win32gui
+import win32api
+
 from pyunpack import Archive
 
 # Plt tools
@@ -335,6 +338,19 @@ def get_local_pc(*args):
 
     return sysInfo
 
+def get_screen_resolution(*args):
+    resW = win32api.GetSystemMetrics(0)
+    resH = win32api.GetSystemMetrics(1)
+    return resW, resH
+
+def get_window_taskbar_size(*args):
+    resW, resH = get_screen_resolution()
+    monitors = win32api.EnumDisplayMonitors()
+    display1 = win32api.GetMonitorInfo(monitors[0][0])
+    tbH = resH - display1['Work'][3]
+    tbW = resW
+    return tbW, tbH
+
 def get_datetime(*args):
     datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
     return datetime_stamp
@@ -359,7 +375,7 @@ def get_title():
     value = secure_random.choice(var.USER_CLASS)
     return value
 
-def get_location(*args):
+def get_pc_location(*args):
     r = requests.get('https://api.ipdata.co').json()
 
     for key in r:
@@ -371,11 +387,52 @@ def get_location(*args):
         elif k == 'country_name':
             country = str(r[key])
         else:
-            ip = ""
-            city = ""
-            country = ""
+            ip = city = country = 'unknown'
+
+    print(ip)
+    print(city)
+    print(country)
 
     return ip, city, country
+
+def set_buffer_and_offset(offsetX=5, offsetY=5, *args):
+    tbW, tbH = get_window_taskbar_size()
+    resW, resH = get_screen_resolution()
+    if tbW == resW:
+        bufferX = 0
+    elif tbW > resW:
+        bufferX = resW - tbW
+    else:
+        bufferX = tbW - resW
+    bufferY = tbH
+    return bufferX, bufferY, offsetX, offsetY
+
+def set_app_stick_to_bot_right(sizeW=400, sizeH=280, offsetX=5, offsetY=5, *args):
+    resW, resH = get_screen_resolution()
+    bufferX, bufferY, offsetX, offsetY = set_buffer_and_offset(offsetX, offsetY)
+    posX = resW - (sizeW + bufferX + offsetX)
+    posY = resH - (sizeH + bufferY + offsetY)
+    return posX, posY, sizeW, sizeH
+
+def set_app_stick_to_bot_left(sizeW=400, sizeH=280, offsetX=5, offsetY=5, *args):
+    resW, resH = get_screen_resolution()
+    bufferX, bufferY, offsetX, offsetY = set_buffer_and_offset(offsetX, offsetY)
+    posX = offsetX
+    posY = resH - (sizeH + bufferY + offsetY)
+    return posX, posY, sizeW, sizeH
+
+def set_app_stick_to_top_right(sizeW=400, sizeH=280, offsetX=5, offsetY=5, *args):
+    resW, resH = get_screen_resolution()
+    bufferX, bufferY, offsetX, offsetY = set_buffer_and_offset(offsetX, offsetY)
+    posX = resW - (sizeW + bufferX + offsetX)
+    posY = offsetX + bufferY
+    return posX, posY, sizeW, sizeH
+
+def set_app_stick_to_top_left(sizeW=400, sizeH=280, offsetX=5, offsetY=5, *args):
+    bufferX, bufferY, offsetX, offsetY = set_buffer_and_offset(offsetX, offsetY)
+    posX = offsetX + bufferX
+    posY = offsetY + bufferY
+    return posX, posY, sizeW, sizeH
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Plt app functions """
@@ -666,7 +723,7 @@ class Collect_info(object):
 
         dbBrowserPth = os.path.join(os.getenv(__root__), 'external_app', 'sqlbrowser', 'SQLiteDatabaseBrowserPortable.exe')
         advanceRenamerPth = os.path.join(os.getenv(__root__), 'external_app', 'batchRenamer', 'ARen.exe')
-        qtDesigner = os.path.join(os.getenv('PROGRAMDATA'),'Anaconda2', 'Library', 'bin', 'designer.exe')
+        qtDesigner = os.path.join(os.getenv('PROGRAMDATA'),'Anaconda3', 'Library', 'bin', 'designer.exe')
 
         for keys in fixInfo:
             # print keys
