@@ -1,4 +1,8 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+# http://13.55.214.163/check
+# http://13.55.214.163/auth
 """
 
 Script Name: plt.py
@@ -9,20 +13,6 @@ Description:
 """
 
 # -------------------------------------------------------------------------------------------------------------
-""" About Plt """
-
-__appname__ = "Pipeline Tool"
-__module__ = "Plt"
-__version__ = "13.0.1"
-__organization__ = "DAMG team"
-__website__ = "www.dot.damgteam.com"
-__email__ = "dot@damgteam.com"
-__author__ = "Trinh Do, a.k.a: Jimmy"
-__root__ = "PLT_RT"
-__db__ = "PLT_DB"
-__st__ = "PLT_ST"
-
-# -------------------------------------------------------------------------------------------------------------
 """ Import modules """
 
 # Python
@@ -31,9 +21,8 @@ import os
 import subprocess
 import sys
 import webbrowser
-import qdarkgraystyle
-import shutil
 import requests
+
 import sqlite3 as lite
 from functools import partial
 
@@ -44,10 +33,14 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget
                              QGridLayout, QSizePolicy, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu, QFileDialog, QComboBox, QTabBar)
 
+from __init__ import (__root__, __appname__, __version__, __organization__, __website__)
+
 # -------------------------------------------------------------------------------------------------------------
 """ Set up env variable path """
 # Main path
 os.environ[__root__] = os.getcwd()
+
+# subprocess.Popen("python setup.py build", cwd=os.getcwd())
 
 # Preset
 import plt_presets as pltp
@@ -68,6 +61,8 @@ logger.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Plt tools """
+
+import qdarkgraystyle
 
 from ui import ui_acc_setting
 from ui import ui_preference
@@ -245,8 +240,8 @@ class Plt_sign_up(QDialog):
 
         questions = usql.query_all_questions()
         for i in questions:
-            self.question1.addItem(i)
-            self.question2.addItem(i)
+            self.question1.addItem(str(i[0]))
+            self.question2.addItem(str(i[0]))
 
         questions_grid.addWidget(clabel('Question 1'), 0, 0, 1, 3)
         questions_grid.addWidget(clabel('Answer 1'), 1, 0, 1, 3)
@@ -346,20 +341,15 @@ class Plt_sign_up(QDialog):
         pcOS = sysInfo['os']
         pcUser = sysInfo['pcUser']
         pcPython = sysInfo['python']
-        print 1
+
         if not os.path.exists(self.rawAvatarPth):
             rawAvatarPth = func.get_avatar('default')
         else:
             rawAvatarPth = self.rawAvatarPth
-        print 2
 
         data = [username, password, firstname, lastname, title, email, phone, address1, address2, postal, city,
                     country, token, timelog, productID, ip, cityIP, countryIP, unix, question1, answer1, question2,
                     answer2, datelog, pcOS, pcUser, pcPython, rawAvatarPth]
-
-        print len(data)
-        for i in data:
-            print i, type(i)
 
         return data
 
@@ -502,7 +492,6 @@ class Plt_sign_in(QDialog):
 
     def on_forgot_pw_btn_clicked(self):
         from ui import ui_pw_reset_form
-        reload(ui_pw_reset_form)
         reset_pw_form = ui_pw_reset_form.Reset_password_form()
         reset_pw_form.show()
         reset_pw_form.exec_()
@@ -526,50 +515,30 @@ class Plt_sign_in(QDialog):
 
         password = str(pass_word)
 
-        r = requests.post("http://13.55.214.163/auth", data={'user': username, 'pwd': password})
-
-        for i in r.headers['set-cookie'].split(";"):
-            if 'connect.sid=' in i:
-                cookie = i.split('connect.sid=')[-1]
+        r = requests.post("https://pipeline.damgteam.com/auth", verify=False,
+                          data={'user': username, 'pwd': password})
 
         if r.status_code == 200:
+            for i in r.headers['set-cookie'].split(";"):
+                if 'connect.sid=' in i:
+                    cookie = i.split('connect.sid=')[-1]
+
             token = r.json()['token']
-            usql.update_user_token(username, token, cookie)
+            if func.str2bool(self.rememberCheckBox.checkState()):
+                usql.update_user_token(username, token, cookie)
+            else:
+                usql.remove_data_table('userTokenLogin')
+
+            self.hide()
             self.settings.setValue("showMain", True)
+
             window = Plt_application()
             showLoginSig2 = window.showLoginSig2
             showLoginSig2.connect(self.show_hide_login)
-            self.hide()
             window.show()
         else:
             QMessageBox.critical(self, 'Login Failed', mess.PW_WRONG)
             return
-
-
-        # checkUserExists = usql.check_account(username)
-        # checkUserStatus = usql.check_status(username)
-        #
-        # if not checkUserExists:
-        #     QMessageBox.critical(self, 'Login Failed', mess.USER_CHECK_FAIL)
-        #     return
-        # elif checkUserStatus == 'disabled':
-        #     QMessageBox.critical(self, 'Login Failed', mess.USER_CONDITION)
-        #     return
-        #
-        # checkPasswordMatch = usql.check_pw_match(username, password)
-        #
-        # if not checkPasswordMatch:
-        #     QMessageBox.critical(self, 'Login Failed', mess.PW_WRONG)
-        # else:
-        #     checkSettingState = str(self.rememberCheckBox.checkState())
-        #     usql.update_remember_login(username, checkSettingState)
-        #
-        #     self.settings.setValue("showMain", True)
-        #     window = Plt_application()
-        #     showLoginSig2 = window.showLoginSig2
-        #     showLoginSig2.connect(self.show_hide_login)
-        #     self.hide()
-        #     window.show()
 
     def closeEvent(self, event):
         QApplication.quit()
@@ -822,49 +791,41 @@ class TabWidget(QWidget):
 
     def english_dictionary(self):
         from ui import ui_english_dict
-        reload(ui_english_dict)
         EngDict = ui_english_dict.EnglishDict()
         EngDict.exec_()
 
     def make_screen_shot(self):
         from ui import ui_screenshot
-        reload(ui_screenshot)
         dlg = ui_screenshot.Screenshot()
         dlg.exec_()
 
     def calendar(self):
         from ui import ui_calendar
-        reload(ui_calendar)
         dlg = ui_calendar.Calendar()
         dlg.exec_()
 
     def calculator(self):
         from ui import ui_calculator
-        reload(ui_calculator)
         dlg = ui_calculator.Calculator()
         dlg.exec_()
 
     def findFiles(self):
         from ui import ui_find_files
-        reload(ui_find_files)
         dlg = ui_find_files.Findfiles()
         dlg.exec_()
 
     def note_reminder(self):
         from ui import ui_note_reminder
-        reload(ui_note_reminder)
         window = ui_note_reminder.WindowDialog()
         window.exec_()
 
     def text_editor(self):
         from ui.textedit import textedit
-        reload(textedit)
         window = textedit.WindowDialog()
         window.exec_()
 
     def on_newProjBtbn_clicked(self):
         from ui import ui_new_project
-        reload(ui_new_project)
         window = ui_new_project.NewProject()
         window.exec_()
 
@@ -891,15 +852,9 @@ class TabWidget(QWidget):
         user_setting_layout.exec_()
 
     def on_signOutBtn_clicked(self):
-        logout = usql.logout_account()
-        if logout:
-            self.settings.setValue("showMain", not logout)
-            self.showMainSig.emit(not logout)
-            self.showLoginSig.emit(logout)
-
-        # login = Plt_sign_in()
-        # login.show()
-        # login.exec_()
+        self.settings.setValue("showMain", False)
+        self.showMainSig.emit(False)
+        self.showLoginSig.emit(True)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
@@ -1211,7 +1166,6 @@ class Plt_application(QMainWindow):
 
     def info_layout(self, id='Note', message=" ", icon=func.get_icon('Logo')):
         from ui import ui_info_template
-        reload(ui_info_template)
         dlg = ui_info_template.About_plt_layout(id=id, message=message, icon=icon)
         dlg.exec_()
 
@@ -1282,7 +1236,9 @@ def main():
     app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
 
     username, token, cookie = usql.query_user_session()
-    r = requests.get("http://13.55.214.163/check", headers={'Authorization': 'Bearer %s' % token}, cookies={'connect.sid': cookie})
+
+    r = requests.get("https://pipeline.damgteam.com/check", verify = False,
+                     headers={'Authorization': 'Bearer {token}'.format(token=token)}, cookies={'connect.sid': cookie})
 
     if r.status_code == 200:
         window = Plt_application()
@@ -1293,7 +1249,6 @@ def main():
     else:
         login = Plt_sign_in()
         login.show()
-
 
     QApplication.setQuitOnLastWindowClosed(False)
 

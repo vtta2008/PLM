@@ -14,7 +14,7 @@ Details are as follows:
 
 Python standalone:
 
-    - Anaconda python 2.7: https://www.anaconda.com/download
+    - Anaconda python 3.6: https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86_64.exe
 
 Maya 2017/2018(Optional):
 
@@ -105,9 +105,3 @@ Advance Renamer:
 
     Advanced Renamer - Free and fast batch rename utility for files and folders. (n.d.).
     Retrieved from https://www.advancedrenamer.com/
-
-**TODO LIST**
-
-- Add pycharm, sublime into app *Done
-- Redesign database
-- Optimise configuration procedures *Working
