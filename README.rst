@@ -1,6 +1,12 @@
 SHORT FILM PIPELINE
 ====================
 
+.. image:: https://img.shields.io/pypi/pyversions/qdarkgraystyle.svg?style=flat-square
+    :target: https://pypi.org/project/qdarkgraystyle
+
+.. image:: https://img.shields.io/pypi/l/qdarkgraystyle.svg?style=flat-square
+    :target: https://github.com/vtta2008/PipelineTool/blob/master/LICENSE
+
 This applications can be used to build, manage, and optimise film making pipelines. The latest version is compatible
 with Windows 10 and may run on earlier versions. It does not run in Maya 2016 or lower.
 
