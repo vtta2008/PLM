@@ -8,7 +8,7 @@ Due to VFX Reference Platform and the large invention, we need to stay with pyth
 Details are `here <http://www.vfxplatform.com>`_
 
 NOTE:
-    - Currently I am working on setup a server and working on it, some functions may not work.
+    - Currently I am working on setup a server, some functions may not work.
 
 **SOFTWARE TO INSTALL**
 =======================
