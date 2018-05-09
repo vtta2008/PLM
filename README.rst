@@ -1,7 +1,7 @@
-** SHORT FILM PIPELINE **
+SHORT FILM PIPELINE
 =========================
 
-.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/svg/python.svg
+.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/png/python.png
     :target: https://github.com/vtta2008/PipelineTool
 
 .. image:: https://img.shields.io/pypi/l/qdarkgraystyle.svg?style=flat-square
@@ -17,7 +17,7 @@ NOTE:
 
     - Currently I am working on setup a server, some functions may not work.
 
-** SOFTWARE TO INSTALL **
+SOFTWARE TO INSTALL
 =========================
 
 Python 3.6 for Windows:
@@ -40,7 +40,7 @@ To install extra packages, run command in CMD:
 
     python -m pip install {packagename}
 
-** LIST SOFTWARES PACKAGE **
+LIST SOFTWARES PACKAGE
 ============================
 
     - `Maya 2017 <https://www.autodesk.com/education/free-software/maya>`_
@@ -60,7 +60,7 @@ NOTE:
 
     - For VMM for maya, remember to configure the path once it is opened in Maya. (sadly, the author has stopped developing the plugin.)
 
-** LIBRARY SUPPORT **
+LIBRARY SUPPORT
 =====================
 
 I spent many years to build this library for texturing and referencing. The library is now freely availalbe to everyone.
@@ -70,8 +70,8 @@ You may also find the following libraries useful, You will need an `mediafie <ht
     - `HDRI library <https://www.mediafire.com/#33moon9n0qagc>`_
     - `TEXTURE library <https://www.mediafire.com/#v5t32j935afg7>`_
 
-** HOW TO USE PIPELINE TOOL **
-==============================
+HOW TO USE PIPELINE TOOL
+========================
 
 Go to the diretory of 'PipelineTool' folder, hold down Shift + right-click -> Open PowerShell window here/Open command window here
 In CommandPrompt/WindowShell:
@@ -88,8 +88,8 @@ Complie executable file:
 
     python setup.py build
 
-** REFERENCE **
-===============
+REFERENCE
+=========
 
 Here is the Plugins/Files that I am using:
 
