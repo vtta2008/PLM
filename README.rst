@@ -1,10 +1,10 @@
 SHORT FILM PIPELINE
-=========================
+===================
 
 .. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/png/python.png
     :target: https://github.com/vtta2008/PipelineTool
 
-.. image:: https://img.shields.io/pypi/l/qdarkgraystyle.svg?style=flat-square
+.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/png/licence.png
     :target: https://github.com/vtta2008/PipelineTool/blob/master/LICENSE
 
 This applications can be used to build, manage, and optimise film making pipelines. The latest version is compatible
@@ -18,7 +18,7 @@ NOTE:
     - Currently I am working on setup a server, some functions may not work.
 
 SOFTWARE TO INSTALL
-=========================
+===================
 
 Python 3.6 for Windows:
 
@@ -41,7 +41,7 @@ To install extra packages, run command in CMD:
     python -m pip install {packagename}
 
 LIST SOFTWARES PACKAGE
-============================
+======================
 
     - `Maya 2017 <https://www.autodesk.com/education/free-software/maya>`_
     - `Vray 3.6 <https://www.chaosgroup.com/vray/maya>`_
@@ -61,7 +61,7 @@ NOTE:
     - For VMM for maya, remember to configure the path once it is opened in Maya. (sadly, the author has stopped developing the plugin.)
 
 LIBRARY SUPPORT
-=====================
+===============
 
 I spent many years to build this library for texturing and referencing. The library is now freely availalbe to everyone.
 You may also find the following libraries useful, You will need an `mediafie <https://mediafire.com>`_ account to be able to download.
