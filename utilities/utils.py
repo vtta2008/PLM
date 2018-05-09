@@ -543,6 +543,7 @@ def bool2str(arg):
         return "False"
 
 # ----------------------------------------------------------------------------------------------------------- #
+""" Checking info """
 
 def check_blank(data, *args):
     if len(data) == 0 or data == "" or data is None:
@@ -565,6 +566,54 @@ def check_match(data1, data2, *args):
         return True
     else:
         return False
+
+# ----------------------------------------------------------------------------------------------------------- #
+""" Preset """
+
+def preset3_maya_intergrate(*args):
+    # Pipeline tool module paths for Maya.
+    maya_tk = os.path.join(os.getenv(__root__), 'maya')
+
+    # Name of folders
+    mayaTrack = ['util', 'maya', 'plt.maya.icons', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging',
+                 'Sufacing']
+    pythonValue = ""
+    pythonList = []
+    for root, dirs, files in os.walk(maya_tk):
+        for dir in dirs:
+            if dir in mayaTrack:
+                dirPth = os.path.join(root, dir)
+                pythonList.append(dirPth)
+    pythonList = list(set(pythonList))
+    for pth in pythonList:
+        pythonValue += pth + ';'
+    os.environ['PYTHONPATH'] = pythonValue
+
+    # Copy userSetup.py from source code to properly maya folder
+    userSetup_plt_path = os.path.join(os.getenv(__root__), 'plt_plugins', 'maya', 'userSetup.py')
+    userSetup_maya_path = os.path.join(os.path.expanduser('~/Documents/maya/2017/prefs/scripts'), 'userSetup.py')
+
+    if not os.path.exists(userSetup_plt_path) or not os.path.exists(userSetup_plt_path):
+        pass
+    else:
+        shutil.copy2(userSetup_plt_path, userSetup_maya_path)
+
+def preset4_gather_configure_info(*args):
+    """
+    Get config info
+    :return:
+    """
+    # Configure root path
+    MAIN_CONFIG_PATH = os.path.join(os.getenv(__root__), 'appData', 'config', 'main.yml')
+
+    # Seeking config file
+    Collect_info()
+
+    # Get info from file
+    with open(MAIN_CONFIG_PATH, 'r') as f:
+        APPINFO = yaml.load(f)
+
+    return APPINFO
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Collecting all info. """

@@ -78,6 +78,9 @@ Here is the Plugins/Files that I am using:
     GitHub - mottosso/Qt.py: Minimal Python 2 & 3 shim around all Qt bindings - PySide,
     PySide2, PyQt4 and PyQt5. (n.d.). Retrieved from https://github.com/mottosso/Qt.py
 
+    mstuttgart/qdarkgraystyle. (n.d.). A dark gray style sheet for PyQt5 application.
+    Retrieved from https://github.com/mstuttgart/qdarkgraystyle
+
     sqlitebrowser/sqlitebrowser. (2017, November 30).
     Retrieved from https://github.com/sqlitebrowser/sqlitebrowser
 

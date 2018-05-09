@@ -12,7 +12,6 @@ Description:
 
 import os
 import sys
-import subprocess
 
 from cx_Freeze import setup, Executable
 
