@@ -575,7 +575,7 @@ def preset3_maya_intergrate(*args):
     maya_tk = os.path.join(os.getenv(__root__), 'maya')
 
     # Name of folders
-    mayaTrack = ['util', 'maya', 'plt.maya.icons', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging',
+    mayaTrack = ['util', 'maya', 'plt.maya.icon', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging',
                  'Sufacing']
     pythonValue = ""
     pythonList = []
@@ -661,19 +661,26 @@ class Collect_info(object):
 
     def collect_icon_path(self, package):
         """
-        Get all the info of plt.maya.icons
+        Get all the info of plt.maya.icon
         :param package: the package of many information stored from default variable
         :param names: the dictionsary of names stored from default variable
-        :return: plt.maya.icons.info
+        :return: plt.maya.icon.info
         """
         # Create dictionary for icon info
         iconInfo = {}
         iconInfo['Sep'] = 'separato.png'
         iconInfo['File'] = 'file.png'
-        iconInfo['iconPth'] = os.path.join(os.getenv(__root__), 'imgs', package['image'][0])
+
+        iconPth1 = os.path.join(os.getenv(__root__), 'imgs', 'plt.icon')
+        iconPth2 = os.path.join(os.getenv(__root__), 'imgs', 'web.icon')
+        iconPth3 = os.path.join(os.getenv(__root__), 'imgs', 'png')
+        iconPth4 = os.path.join(os.getenv(__root__), 'imgs', 'svg')
+        iconPth5 = os.path.join(os.getenv(__root__), 'imgs', 'maya.icon')
+
+
         icons = [f for f in os.listdir(iconInfo['iconPth']) if '.icon' in f]
         if len(icons) == 0:
-            iconInfo['plt.maya.icons'] = None
+            iconInfo['plt.maya.icon'] = None
         else:
             for i in icons:
                 iconInfo[i.split('.icon')[0]] = os.path.join(iconInfo['iconPth'], i)

@@ -60,7 +60,7 @@ logger.setLevel(logging.DEBUG)
 
 class MayaPythonProc(object):
     # file list in Installation folder
-    icons_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'imgs', 'maya.icons')) if
+    icons_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'imgs', 'maya.icon')) if
                  f.endswith('.png') or f.endswith('.jpg')]
     modules_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'plt_plugins', 'maya', 'modules')) if f.endswith('.py')]
     scrRoot_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'plt_plugins', 'maya')) if f.endswith('.py')]
@@ -113,7 +113,7 @@ class MayaPythonProc(object):
 
         # infoPath = {}
         # toolPath = os.path.join( SCRPTH, '%s' % NAMES[ 'maya' ][1] )
-        # for part in ['plt.maya.icons', 'modules', 'packages']:
+        # for part in ['plt.maya.icon', 'modules', 'packages']:
         #     infoPath[part] = os.path.join(NAMES['mayaRootDir'], part)
         #
         # with open(toolPath, 'w') as f:

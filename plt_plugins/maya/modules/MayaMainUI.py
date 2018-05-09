@@ -148,7 +148,7 @@ def importBTS():
     return MayaFuncs
 
 def geticon(icon):
-    iconPth = os.path.join(os.getcwd(), 'imgs', 'maya.icons', icon)
+    iconPth = os.path.join(os.getcwd(), 'imgs', 'maya.icon', icon)
     return iconPth
 
 # ----------------------------------------------------------------------------------------------------------- #

@@ -98,7 +98,7 @@ def vmmApps(*args):
         subprocess.Popen(vmmPth)
 
 def geticon(icon):
-   return os.path.join(os.getcwd(), 'imgs', 'maya.icons', icon)
+   return os.path.join(os.getcwd(), 'imgs', 'maya.icon', icon)
 
 
 def clearOptionMenu(name, *args):

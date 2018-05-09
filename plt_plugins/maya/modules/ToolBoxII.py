@@ -717,8 +717,8 @@ class ToolBoxII(QtWidgets.QWidget):
         'Tongue Control': 'tongueControl.icon.png', 'Zig Zag Circle': 'zigZagCircle.icon.png'
     }
 
-    # get the paths of plt.maya.icons folder
-    scrIcons = os.path.join(os.getenv(__root__), 'imgs', 'maya.icons')
+    # get the paths of plt.maya.icon folder
+    scrIcons = os.path.join(os.getenv(__root__), 'imgs', 'maya.icon')
 
     def __init__(self, dock=True):
         if dock:

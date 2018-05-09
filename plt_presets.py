@@ -57,7 +57,7 @@ def preset3_maya_intergrate():
     maya_tk = os.path.join(os.getenv(__root__), 'maya')
 
     # Name of folders
-    mayaTrack = ['util', 'maya', 'plt.maya.icons', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging',
+    mayaTrack = ['util', 'maya', 'plt.maya.icon', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging',
                  'Sufacing']
     pythonValue = ""
     pythonList = []
