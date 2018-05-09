@@ -70,11 +70,13 @@ In CommandPrompt/WindowShell:
 Run directly:
 
 .. code:: bash
+
     start python main.py
 
 Complie executable file:
 
 .. code:: bash
+
     python setup.py build
 
 **REFERENCE**
