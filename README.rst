@@ -55,9 +55,9 @@ NOTE:
 I spent many years to build this library for texturing and referencing. The library is now freely availalbe to everyone.
 You may also find the following libraries useful:
 
-    - ALPHA library: https://www.mediafire.com/#21br3oz8gf44j
-    - HDRI library: https://www.mediafire.com/#33moon9n0qagc
-    - TEXTURE library: https://www.mediafire.com/#v5t32j935afg7
+    - `ALPHA library <https://www.mediafire.com/#21br3oz8gf44j>`_
+    - `HDRI library <https://www.mediafire.com/#33moon9n0qagc>`_
+    - `TEXTURE library <https://www.mediafire.com/#v5t32j935afg7>`_
 
 **HOW TO USE PIPELINE TOOL**
 ============================
