@@ -1,4 +1,5 @@
-## **SHORT FILM PIPELINE**
+SHORT FILM PIPELINE
+====================
 
 This applications can be used to build, manage, and optimise film making pipelines.
 
@@ -11,14 +12,11 @@ Details are as follows:
     http://www.vfxplatform.com/
 
 **SOFTWARE TO INSTALL**
+=======================
 
-Python standalone:
-    <64 bit>
-
-        anaconda 2.7" = "https://repo.anaconda.com/archive/Anaconda2-5.1.0-Windows-x86_64.exe
-        anaconda 3.6" = "https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86_64.exe
-
-    <32 bit>
+Python 3.6 for Windows:
+    64 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86_64.exe>`
+    32 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86.exe>`
 
     - Also require extra python packages (will update more):
 
@@ -27,10 +25,11 @@ Python standalone:
         asyncio, websockets, cx_Freeze,
 
     - To install extra packages, run command in CMD:
-
+    .. code:: bash
         "python -m pip install {packagename}"
 
 **LIST SOFTWARES PACKAGE**
+==========================
 
     - Maya 2017: https://www.autodesk.com/education/free-software/maya
     - Vray 3.6: https://www.chaosgroup.com/vray/maya
@@ -50,6 +49,7 @@ NOTE:
     - For VMM for maya, remember to configure the path once it is opened in Maya. (sadly, the author has stopped developing the plugin.)
 
 **LIBRARY SUPPORT**
+===================
 
 I spent many years to build this library for texturing and referencing. The library is now freely availalbe to everyone.
 You may also find the following libraries useful:
@@ -58,20 +58,22 @@ You may also find the following libraries useful:
     - HDRI library: https://www.mediafire.com/#33moon9n0qagc
     - TEXTURE library: https://www.mediafire.com/#v5t32j935afg7
 
-**RUN PIPELINE TOOL**
-
-Download and extract the zip file, remember to rename the folder as 'PipelineTool'.
-
 **HOW TO USE PIPELINE TOOL**
+============================
 
 Go to the diretory of 'PipelineTool' folder, hold down Shift + right-click -> Open PowerShell window here/Open command window here
 In CommandPrompt/WindowShell:
 
-    - Run directly: "start python main.py"
+    - Run directly:
+    .. code:: bash
+        start python main.py
 
-    - Complie executable file: "python setup.py build"
+    - Complie executable file:
+    .. code:: bash
+        python setup.py build
 
 **REFERENCE**
+=============
 
 Here is the Plugins/Files that I am using:
 
