@@ -81,16 +81,17 @@ In CommandPrompt/WindowShell:
 Here is the Plugins/Files that I am using:
 
 .. code:: bash
-    - GitHub - mottosso/Qt.py: Minimal Python 2 & 3 shim around all Qt bindings - PySide,
-      PySide2, PyQt4 and PyQt5. (n.d.). Retrieved from https://github.com/mottosso/Qt.py
 
-    - mstuttgart/qdarkgraystyle. (n.d.). A dark gray style sheet for PyQt5 application.
-      Retrieved from https://github.com/mstuttgart/qdarkgraystyle
+    GitHub - mottosso/Qt.py: Minimal Python 2 & 3 shim around all Qt bindings - PySide, PySide2, PyQt4 and PyQt5. (n.d.).
+    Retrieved from https://github.com/mottosso/Qt.py
 
-    - sqlitebrowser/sqlitebrowser. (2017, November 30).
-      Retrieved from https://github.com/sqlitebrowser/sqlitebrowser
+    mstuttgart/qdarkgraystyle. (n.d.). A dark gray style sheet for PyQt5 application.
+    Retrieved from https://github.com/mstuttgart/qdarkgraystyle
 
-    - Advanced Renamer - Free and fast batch rename utility for files and folders. (n.d.).
-      Retrieved from https://www.advancedrenamer.com/
+    sqlitebrowser/sqlitebrowser. (2017, November 30).
+    Retrieved from https://github.com/sqlitebrowser/sqlitebrowser
+
+    Advanced Renamer - Free and fast batch rename utility for files and folders. (n.d.).
+    Retrieved from https://www.advancedrenamer.com/
 
 Copyright (C) 2016-2018 by Trinh Do
