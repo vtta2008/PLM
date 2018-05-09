@@ -26,14 +26,18 @@ __author__ = "Trinh Do, a.k.a: Jimmy"
 __description__ = "This applications can be used to build, manage, and optimise film making pipelines."
 __readme__ = os.path.join(os.getenv(__root__), 'README.md')
 __licence__ = os.path.join(os.getenv(__root__), 'LICENSE')
+
 __modules__ = ['plt', 'plt_preset', 'utilities.variables', 'utilities.utils', 'utilities.sql_server',
                   'utilities.sql_local', 'utilities.message', 'ui.ui_acc_setting', 'ui.ui_calculator',
                   'ui.ui_calendar', 'ui.ui_english_dict', 'ui.ui_find_files', 'ui.ui_image_viewer',
                   'ui.ui_info_template', 'ui.ui_new_project', 'ui.ui_note_reminder', 'ui.ui_preference',
                   'ui.ui_pw_reset_form', 'ui.ui_screenshot', ]
+
 __pkgsReq__ = ['deprecated', 'jupyter-console', 'ipywidgets', 'pywinauto', 'winshell',
                'pandas', 'notebook', 'juppyter', 'opencv-python', 'pyunpack', 'argparse']
+
 __packages__ = ['', 'bin', 'qdarkgraystyle', 'ui', 'textedit', 'bin', 'appData', 'utilities']
+
 __pkgsDir__ = {
         'bin': os.path.join(os.getenv(__root__), 'bin'),
         'qdarkgraystyle': os.path.join(os.getenv(__root__), 'bin', 'qdarkgraystyle'),

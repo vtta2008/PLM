@@ -28,13 +28,13 @@ from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings, pyqtSignal, QByteArray
-from PyQt5.QtGui import QIcon, QPixmap, QImage, QValidator, QIntValidator
+from PyQt5.QtGui import QIcon, QPixmap, QImage, QIntValidator
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QGridLayout, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu, QFileDialog, QComboBox,
-                             QDockWidget, QSlider, QSizePolicy, )
+                             QDockWidget, QSlider, QSizePolicy, QStackedWidget, QStackedLayout)
 
-# import qdarkgraystyle
+import qdarkgraystyle
 
 from __init__ import (__root__, __appname__, __version__, __organization__, __website__)
 
@@ -42,8 +42,6 @@ from __init__ import (__root__, __appname__, __version__, __organization__, __we
 """ Set up env variable path """
 # Main path
 os.environ[__root__] = os.getcwd()
-
-# subprocess.Popen("python setup.py build", cwd=os.getcwd())
 
 # Preset
 import plt_presets as pltp
@@ -1591,8 +1589,7 @@ def main():
 
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon(func.get_icon('Logo')))
-    # import qdarkgraystyle
-    # app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
+    app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
 
     username, token, cookie = usql.query_user_session()
 

@@ -13,81 +13,63 @@ Details are as follows:
 **SOFTWARE TO INSTALL**
 
 Python standalone:
+    <64 bit>
 
-    - Anaconda python 3.6: https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86_64.exe
+        anaconda 2.7" = "https://repo.anaconda.com/archive/Anaconda2-5.1.0-Windows-x86_64.exe
+        anaconda 3.6" = "https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86_64.exe
 
-Maya 2017/2018(Optional):
+    <32 bit>
 
-    - Maya education: https://www.autodesk.com/education/free-software/maya
+    - Also require extra python packages (will update more):
+
+        deprecated, jupyter-console, ipywidgets,'pywinauto, winshell, pandas,
+        notebook, juppyter, opencv-python, pyunpack, argparse, qdarkgraystyle,
+        asyncio, websockets, cx_Freeze,
+
+    - To install extra packages, run command in CMD:
+
+        "python -m pip install {packagename}"
+
+**LIST SOFTWARES PACKAGE**
+
+    - Maya 2017: https://www.autodesk.com/education/free-software/maya
     - Vray 3.6: https://www.chaosgroup.com/vray/maya
     - Phoenix FD 3.0: https://www.chaosgroup.com/phoenix-fd/maya
-
-Houdini:
-
-    - Houdini download: https://www.sidefx.com/download/
-
-Mari:
-
+    - VMM for maya: https://www.mediafire.com/#gu9s1tbb2u4g9
+    - Houdini: https://www.sidefx.com/download/
     - Mari download: https://www.foundry.com/products/mari
     - Mari extension: "Will update later"
-
-Nuke:
-
     - Nuke download: https://www.foundry.com/products/nuke
-
-ZBrush:
-
     - ZBrush download: https://pixologic.com/zbrush/downloadcenter/
-
-Adobe:
-
     - Creative Cloud download: https://www.adobe.com/creativecloud/catalog/desktop.html
-    You can install Photoshop, Premiere, After Effects or anything you want with Adobe Creative Cloud
+    - Davinci Resolve: https://www.blackmagicdesign.com/nz/products/davinciresolve/
 
-Davinci Resolve:
+NOTE:
+    - You can install Photoshop, Premiere, After Effects or anything you want with Adobe Creative Cloud
 
-    - Davinci Resolve download: https://www.blackmagicdesign.com/nz/products/davinciresolve/
+    - For VMM for maya, remember to configure the path once it is opened in Maya. (sadly, the author has stopped developing the plugin.)
 
 **LIBRARY SUPPORT**
 
 I spent many years to build this library for texturing and referencing. The library is now freely availalbe to everyone.
-
-For V-ray Materials in Maya, you will need this plugin:
-
-    VMM for maya: https://www.mediafire.com/#gu9s1tbb2u4g9
-    After downloading it, remember to configure the path once it is opened in Maya.
-    Unfortunately, the original author has stopped developing the plugin.
-
 You may also find the following libraries useful:
 
-Alpha library:
-
-    ALPHA library: https://www.mediafire.com/#21br3oz8gf44j
-
-Hdri library:
-
-    HDRI library: https://www.mediafire.com/#33moon9n0qagc
-
-Texture library:
-
-    TEXTURE library: https://www.mediafire.com/#v5t32j935afg7
+    - ALPHA library: https://www.mediafire.com/#21br3oz8gf44j
+    - HDRI library: https://www.mediafire.com/#33moon9n0qagc
+    - TEXTURE library: https://www.mediafire.com/#v5t32j935afg7
 
 **RUN PIPELINE TOOL**
 
 Download and extract the zip file, remember to rename the folder as 'PipelineTool'.
 
-Go to the diretory of 'PipelineTool' folder, hold down Shift + right-click -> Open PowerShell window here/Open command window here
+**HOW TO USE PIPELINE TOOL**
 
+Go to the diretory of 'PipelineTool' folder, hold down Shift + right-click -> Open PowerShell window here/Open command window here
 In CommandPrompt/WindowShell:
 
-    "start python main.py" then enter to run.
+    - Run directly: "start python main.py"
 
-A user login window will show up. Login with your username and password.
-
-If you do not have login account, simply create one. I have updated register function.
-
-* Update sql, now data is being stored to database file.
-* Tranfering configurations of the pipeline into database, not using yml.
+    - Complie executable file: "python setup.py build"
 
 **REFERENCE**
 
