@@ -25,6 +25,7 @@ Python 3.6 for Windows:
         asyncio, websockets, cx_Freeze,
 
     - To install extra packages, run command in CMD:
+
     .. code:: bash
         "python -m pip install {packagename}"
 
