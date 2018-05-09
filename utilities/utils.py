@@ -777,6 +777,7 @@ class Collect_info(object):
         dataHandle('json', 'w', appsConfig_json, self.appInfo)
 
         self.appInfo = self.collect_python_pkgs(package)
+
         for key in self.appInfo:
             # fix nukeX path
             if 'NukeX' in key:
