@@ -2,7 +2,7 @@ SHORT FILM PIPELINE
 ====================
 
 .. image:: https://img.shields.io/pypi/pyversions/qdarkgraystyle.svg?style=flat-square
-    :target: https://pypi.org/project/qdarkgraystyle
+    :target: https://github.com/vtta2008/PipelineTool
 
 .. image:: https://img.shields.io/pypi/l/qdarkgraystyle.svg?style=flat-square
     :target: https://github.com/vtta2008/PipelineTool/blob/master/LICENSE
