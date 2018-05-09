@@ -954,6 +954,7 @@ class TabWidget(QWidget):
         tab1Sec2Grid = QGridLayout()
         tab1Sec2GrpBox.setLayout(tab1Sec2Grid)
 
+        gitbashIconBtn = self.make_icon_btn2('Git Bash')
         tab1Sec2Grid.addWidget(Clabel("Just for fun"), 0, 0, 1, 1)
 
         tab1Sec3GrpBox = QGroupBox('Custom')

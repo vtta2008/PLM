@@ -21,8 +21,8 @@ __author__ = "Trinh Do, a.k.a: Jimmy"
 __root__ = "PLT_RT"
 __db__ = "PLT_DB"
 __st__ = "PLT_ST"
-__pkgsReq__ = ['deprecated', 'jupyter-console', 'ipywidgets', 'pywinauto', 'winshell',
-               'pandas', 'notebook', 'juppyter', 'opencv-python', 'pyunpack', 'argparse']
+__pkgsReq__ = [ "deprecated", "jupyter-console", "ipywidgets","pywinauto", "winshell", "pandas", "notebook", "juppyter",
+                "opencv-python", "pyunpack", "argparse", "qdarkgraystyle", "asyncio", "websockets", "cx_Freeze", ]
 # -------------------------------------------------------------------------------------------------------------
 """ Import modules """
 
@@ -494,7 +494,7 @@ def open_app(pth, *args):
 
 def get_icon(name, *args):
     iconName = name + '.icon.png'
-    iconPth = os.path.join(os.getenv(__root__), 'imgs', 'plt.icons', iconName)
+    iconPth = os.path.join(os.getenv(__root__), 'imgs', 'plt.icon', iconName)
     return iconPth
 
 def get_web_icon(name, *args):

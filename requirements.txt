@@ -1,0 +1,16 @@
+PyQt5>=5.6
+deprecated
+jupyter-console
+ipywidgets
+pywinauto
+winshell
+pandas
+notebook
+juppyter
+opencv-python
+pyunpack
+argparse
+qdarkgraystyle
+asyncio
+websockets
+cx_Freeze

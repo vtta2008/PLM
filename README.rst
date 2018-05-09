@@ -1,6 +1,9 @@
 SHORT FILM PIPELINE
 ===================
 
+.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/png/release13.1.png
+    :target: https://github.com/vtta2008/PipelineTool
+
 .. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/png/python3.6.png
     :target: https://github.com/vtta2008/PipelineTool
 
@@ -17,8 +20,8 @@ NOTE:
 
     - Currently I am working on setup a server, some functions may not work.
 
-SOFTWARE TO INSTALL
-===================
+REQUIREMENTS
+============
 
 Python 3.6 for Windows:
 

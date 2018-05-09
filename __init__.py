@@ -17,14 +17,23 @@ __root__ = "PLT_RT"
 os.environ[__root__] = os.getcwd()
 
 __appname__ = "Pipeline Tool (plt)"
+
 __version__ = "13.0.1"
+
 __organization__ = "DAMG team"
+
 __website__ = "https://pipeline.damgteam.com"
+
 __download__ = "https://github.com/vtta2008/pipelineTool"
+
 __email__ = "dot@damgteam.com"
+
 __author__ = "Trinh Do, a.k.a: Jimmy"
+
 __description__ = "This applications can be used to build, manage, and optimise film making pipelines."
+
 __readme__ = os.path.join(os.getenv(__root__), 'README.rst')
+
 __licence__ = os.path.join(os.getenv(__root__), 'LICENSE')
 
 __modules__ = ['plt', 'plt_preset', 'utilities.variables', 'utilities.utils', 'utilities.sql_server',
