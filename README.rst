@@ -20,6 +20,7 @@ NOTE:
 =======================
 
 Python 3.6 for Windows:
+
     - 64 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86_64.exe>`_
 
     - 32 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86.exe>`_
@@ -53,6 +54,7 @@ To install extra packages, run command in CMD:
     - `Davinci Resolve <https://www.blackmagicdesign.com/nz/products/davinciresolve/>`_
 
 NOTE:
+
     - You can install Photoshop, Premiere, After Effects or anything you want with Adobe Creative Cloud
 
     - For VMM for maya, remember to configure the path once it is opened in Maya. (sadly, the author has stopped developing the plugin.)
