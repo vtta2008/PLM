@@ -5,9 +5,10 @@ This applications can be used to build, manage, and optimise film making pipelin
 with Windows 10 and may run on earlier versions. It does not run in Maya 2016 or lower.
 
 Due to VFX Reference Platform and the large invention, we need to stay with python 2.7 but expect to migrate to python 3 in 2019.
-Details are as follows:
+Details are `here <http://www.vfxplatform.com>`_
 
-    http://www.vfxplatform.com/
+NOTE:
+    - Currently I am working on setup a server and working on it, some functions may not work.
 
 **SOFTWARE TO INSTALL**
 =======================
@@ -20,14 +21,15 @@ Python 3.6 for Windows:
     - Also require extra python packages (will update more):
 
 .. code:: bash
-        deprecated, jupyter-console, ipywidgets,'pywinauto, winshell, pandas,
-        notebook, juppyter, opencv-python, pyunpack, argparse, qdarkgraystyle,
-        asyncio, websockets, cx_Freeze,
 
-    - To install extra packages, run command in CMD:
+    deprecated, jupyter-console, ipywidgets,'pywinauto, winshell, pandas,
+    notebook, juppyter, opencv-python, pyunpack, argparse, qdarkgraystyle,
+    asyncio, websockets, cx_Freeze,
+
+To install extra packages, run command in CMD:
 
 .. code:: bash
-    "python -m pip install {packagename}"
+    python -m pip install {packagename}
 
 **LIST SOFTWARES PACKAGE**
 ==========================
@@ -65,12 +67,12 @@ You may also find the following libraries useful:
 Go to the diretory of 'PipelineTool' folder, hold down Shift + right-click -> Open PowerShell window here/Open command window here
 In CommandPrompt/WindowShell:
 
-    - Run directly:
+Run directly:
 
 .. code:: bash
     start python main.py
 
-    - Complie executable file:
+Complie executable file:
 
 .. code:: bash
     python setup.py build
