@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 PLT_ABOUT = """
 
 PIPELINE TOOL TO MAKE A SHORT FILM

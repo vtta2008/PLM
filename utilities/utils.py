@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # coding=utf-8
 """
 Script Name: utils.py
@@ -20,7 +21,8 @@ __author__ = "Trinh Do, a.k.a: Jimmy"
 __root__ = "PLT_RT"
 __db__ = "PLT_DB"
 __st__ = "PLT_ST"
-
+__pkgsReq__ = ['deprecated', 'jupyter-console', 'ipywidgets', 'pywinauto', 'winshell',
+               'pandas', 'notebook', 'juppyter', 'opencv-python', 'pyunpack', 'argparse']
 # -------------------------------------------------------------------------------------------------------------
 """ Import modules """
 
@@ -62,12 +64,125 @@ logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------------------
+""" Installation """
+
+def install_py_packages(name, *args):
+    """
+    Install python package via command prompt
+    :param name: name of component
+    :return:
+    """
+    logger.info('Using pip to install %s' % name)
+    if os.path.exists(name):
+        subprocess.Popen('python %s install' % name)
+    else:
+        subprocess.Popen('python -m pip install %s' % name, shell=True).wait()
+
+def install_required_package():
+    for pkg in __pkgsReq__:
+        try:
+            subprocess.Popen("python -m pip install %s" % pkg)
+        except FileNotFoundError:
+            subprocess.Popen("pip install %s" % pkg)
+        finally:
+            subprocess.Popen("python -m pip install --upgrade %s" % pkg)
+
+def install_layout_style_package():
+    layoutStyle_setupPth = os.path.join(os.getenv(__root__), 'bin', 'qdarkgraystyle', 'setup.py')
+
+    if os.path.exists(layoutStyle_setupPth):
+        try:
+            import qdarkgraystyle
+        except ImportError:
+            subprocess.Popen("python setup.py install", cwd=layoutStyle_setupPth)
+            return True
+        else:
+            return False
+    else:
+        return False
+
+def uninstall_all_required_package():
+    for pkg in __pkgsReq__:
+        try:
+            subprocess.Popen("python -m pip uninstall %s" % pkg)
+        except FileNotFoundError:
+            subprocess.Popen("pip uninstall %s" % pkg)
+            __pkgsReq__.remove(pkg)
+
+    if len(__pkgsReq__)==0:
+        return True
+    else:
+        return False
+
+# -------------------------------------------------------------------------------------------------------------
+""" Inspect info """
+
+def get_python_pkgs(*args):
+    pyPkgs = {}
+    pyPkgs['__mynote__'] = 'import pip; pip.get_installed_distributions()'
+
+    for package in pip.get_installed_distributions():
+        name = package.project_name  # SQLAlchemy, Django, Flask-OAuthlib
+        key = package.key  # sqlalchemy, django, flask-oauthlib
+        module_name = package._get_metadata("top_level.txt")  # sqlalchemy, django, flask_oauthlib
+        location = package.location  # virtualenv lib directory etc.
+        version = package.version  # version number
+
+        pyPkgs[name] = [key, version, location]
+
+    pkgConfig = os.path.join(os.getenv(__root__), 'appData', 'pkgs_config.yml')
+
+    with open(pkgConfig, 'w') as f:
+        yaml.dump(pyPkgs, f, default_flow_style=False)
+
+    return pyPkgs
+
+def inspect_package(name, *args):
+    """
+    check python component, if false, it will install component
+    :param name:
+    :return:
+    """
+    # logger.info( 'Trying to import %s' % name )
+    allPkgs = get_python_pkgs()
+
+    if name in allPkgs:
+        # logger.info('package "%s" is already installed' % name)
+        pass
+    else:
+        logger.info('package "%s" is not installed, '
+                    'execute package installation procedural' % name)
+        install_py_packages(name)
+
+def inspect_env_key(key, path, *args):
+    try:
+        pth = os.getenv(key)
+        if pth == None or pth == '':
+            logger.info('install new environment variable')
+            os.environ[key] = path
+    except KeyError:
+        logger.info('install new environment variable')
+        os.environ[key] = path
+    else:
+        pass
+
+# -------------------------------------------------------------------------------------------------------------
 """ Functions content """
 
 def download_single_file(url, path_to, *args):
     execute_download = urllib.urlretrieve(url, path_to)
     logger.info(execute_download)
     logger.info("Downloaded to: %s" % str(path_to))
+
+def download_image_from_url(link, *args):
+    fileName = os.path.basename(link)
+    imgPth = os.path.join(os.getenv(__root__), 'avatar')
+    avatarPth = os.path.join(imgPth, fileName)
+
+    if not os.path.exists(avatarPth):
+        download_single_file(link, avatarPth)
+
+    return avatarPth
 
 def extract_files(inDir, file_name, outDir, *args):
     Archive(os.path.join(inDir, file_name)).extractall(outDir)
@@ -221,26 +336,6 @@ def dataHandle(type='json', mode='r', filePath=None, data={}, *args):
 
     return info
 
-def get_python_pkgs(*args):
-    pyPkgs = {}
-    pyPkgs['__mynote__'] = 'import pip; pip.get_installed_distributions()'
-
-    for package in pip.get_installed_distributions():
-        name = package.project_name  # SQLAlchemy, Django, Flask-OAuthlib
-        key = package.key  # sqlalchemy, django, flask-oauthlib
-        module_name = package._get_metadata("top_level.txt")  # sqlalchemy, django, flask_oauthlib
-        location = package.location  # virtualenv lib directory etc.
-        version = package.version  # version number
-
-        pyPkgs[name] = [key, version, location]
-
-    pkgConfig = os.path.join(os.getenv(__root__), 'appData', 'pkgs_config.yml')
-
-    with open(pkgConfig, 'w') as f:
-        yaml.dump(pyPkgs, f, default_flow_style=False)
-
-    return pyPkgs
-
 def cmd_execute_py(name, path, *args):
     """
     Executing a python file
@@ -253,60 +348,10 @@ def cmd_execute_py(name, path, *args):
     if os.path.exists(pth):
         subprocess.call([sys.executable, pth])
 
-def install_py_packages(name, *args):
-    """
-    Install python package via command prompt
-    :param name: name of component
-    :return:
-    """
-    logger.info('Using pip to install %s' % name)
-    if os.path.exists(name):
-        subprocess.Popen('python %s install' % name)
-    else:
-        subprocess.Popen('python -m pip install %s' % name, shell=True).wait()
-
 def system_call(args, cwd="."):
     print("Running '{}' in '{}'".format(str(args), cwd))
     subprocess.call(args, cwd=cwd)
     pass
-
-def inspection_backage(name, *args):
-    """
-    check python component, if false, it will install component
-    :param name:
-    :return:
-    """
-    # logger.info( 'Trying to import %s' % name )
-    allPkgs = get_python_pkgs()
-
-    if name in allPkgs:
-        # logger.info('package "%s" is already installed' % name)
-        pass
-    else:
-        logger.info('package "%s" is not installed, '
-                    'execute package installation procedural' % name)
-        install_py_packages(name)
-
-def inspect_env_key(key, path, *args):
-    try:
-        pth = os.getenv(key)
-        if pth == None or pth == '':
-            logger.info('install new environment variable')
-            os.environ[key] = path
-    except KeyError:
-        logger.info('install new environment variable')
-        os.environ[key] = path
-    else:
-        pass
-
-def download_image_from_url(link, *args):
-    fileName = os.path.basename(link)
-    imgPth = os.path.join(os.getenv(__root__), 'avatar')
-    avatarPth = os.path.join(imgPth, fileName)
-    if not os.path.exists(avatarPth):
-        download_single_file(link, avatarPth)
-
-    return avatarPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Collecting info user """
@@ -389,11 +434,10 @@ def get_pc_location(*args):
         else:
             ip = city = country = 'unknown'
 
-    print(ip)
-    print(city)
-    print(country)
-
     return ip, city, country
+
+# -------------------------------------------------------------------------------------------------------------
+""" Layout setting """
 
 def set_buffer_and_offset(offsetX=5, offsetY=5, *args):
     tbW, tbH = get_window_taskbar_size()

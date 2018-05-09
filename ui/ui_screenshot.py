@@ -1,4 +1,6 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 """
 Script Name: ui_info_template.py
 Author: Do Trinh/Jimmy - 3D artist.
@@ -7,21 +9,6 @@ Description:
     This script is main file to store everything for the pipeline app
 
 """
-
-# -------------------------------------------------------------------------------------------------------------
-""" About Plt """
-
-__appname__ = "Pipeline Tool"
-__module__ = "Plt"
-__version__ = "13.0.1"
-__organization__ = "DAMG team"
-__website__ = "www.dot.damgteam.com"
-__email__ = "dot@damgteam.com"
-__author__ = "Trinh Do, a.k.a: Jimmy"
-__root__ = "PLT_RT"
-__db__ = "PLT_DB"
-__st__ = "PLT_ST"
-
 # -------------------------------------------------------------------------------------------------------------
 
 from PyQt5.QtCore import *

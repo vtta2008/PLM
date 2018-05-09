@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
 # http://13.55.214.163/check
@@ -27,12 +27,14 @@ import sqlite3 as lite
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings, pyqtSignal, QBitArray
-from PyQt5.QtGui import QIcon, QPixmap, QImage
+from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings, pyqtSignal, QByteArray
+from PyQt5.QtGui import QIcon, QPixmap, QImage, QValidator, QIntValidator
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
-                             QGridLayout, QSizePolicy, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
+                             QGridLayout, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu, QFileDialog, QComboBox,
-                             QStyleOptionToolBar, )
+                             QDockWidget, QSlider, QSizePolicy, )
+
+# import qdarkgraystyle
 
 from __init__ import (__root__, __appname__, __version__, __organization__, __website__)
 
@@ -61,9 +63,6 @@ logger.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Plt tools """
-
-import qdarkgraystyle
-
 from ui import ui_acc_setting
 from ui import ui_preference
 
@@ -81,16 +80,63 @@ __right__ = Qt.AlignRight
 __left__ = Qt.AlignLeft
 frameStyle = QFrame.Sunken | QFrame.Panel
 
+UNIT = 60
+MARG = 5
+BUFF = 10
+SCAL = 1
+STEP = 1
+VAL = 1
+MIN = 0
+MAX = 1000
+
 # Get apps info config
 APPINFO = pltp.preset4_gather_configure_info()
 
 # -------------------------------------------------------------------------------------------------------------
+""" A label with center align """
 
-def clabel(text):
-    label = QLabel(text)
-    label.setAlignment(__center__)
-    label.setMinimumWidth(50)
-    return label
+class Clabel(QLabel):
+
+    def __init__(self, text = "", align = __center__, lbW = 50, parent=None):
+        super(Clabel, self).__init__(parent)
+
+        self.text = text
+        self.align = align
+        self.lbW = lbW
+
+        self.layout = QHBoxLayout()
+        self.buildUI()
+        self.setLayout(self.layout)
+
+    def buildUI(self):
+
+        label = QLabel(self.text)
+        label.setAlignment(self.align)
+        label.setMinimumWidth(self.lbW)
+        self.layout.addWidget(label)
+
+# -------------------------------------------------------------------------------------------------------------
+""" A spacer line to be able to add between layouts """
+
+class QSpacer(QWidget):
+
+    def __init__(self, lineW=MARG, parent=None):
+        super(QSpacer, self).__init__(parent)
+
+        self.lineW = lineW
+
+        self.layout = QVBoxLayout()
+        self.buildUI()
+        self.setLayout(self.layout)
+
+    def buildUI(self):
+
+        Separador = QFrame()
+        Separador.setFrameShape(QFrame.HLine)
+        Separador.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+        Separador.setLineWidth(self.lineW)
+
+        self.layout.addWidget(Separador)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign up layout """
@@ -123,7 +169,7 @@ class Plt_sign_up(QDialog):
         security_section = self.security_section()
         buttons_section = self.buttons_section()
 
-        self.layout.addWidget(clabel("ALL FIELD ARE REQUIRED."), 0, 0, 1, 6)
+        self.layout.addWidget(Clabel("ALL FIELD ARE REQUIRED."), 0, 0, 1, 6)
         self.layout.addWidget(avatar_section, 1, 0, 1, 2)
         self.layout.addWidget(account_section, 1, 2, 1, 4)
         self.layout.addWidget(profile_section, 2, 0, 1, 6)
@@ -156,9 +202,9 @@ class Plt_sign_up(QDialog):
         account_grid = QGridLayout()
         account_groupBox.setLayout(account_grid)
 
-        account_grid.addWidget(clabel('User Name'), 0, 0, 1, 2)
-        account_grid.addWidget(clabel('Password'), 1, 0, 1, 2)
-        account_grid.addWidget(clabel('Confirm Password'), 2, 0, 1, 2)
+        account_grid.addWidget(Clabel('User Name'), 0, 0, 1, 2)
+        account_grid.addWidget(Clabel('Password'), 1, 0, 1, 2)
+        account_grid.addWidget(Clabel('Confirm Password'), 2, 0, 1, 2)
 
         self.usernameField = QLineEdit()
         self.passwordField = QLineEdit()
@@ -179,11 +225,11 @@ class Plt_sign_up(QDialog):
         profile_grid = QGridLayout()
         profile_groupBox.setLayout(profile_grid)
 
-        profile_grid.addWidget(clabel('First Name'), 0, 0, 1, 2)
-        profile_grid.addWidget(clabel('Last Name'), 1, 0, 1, 2)
-        profile_grid.addWidget(clabel('Your Title'), 2, 0, 1, 2)
-        profile_grid.addWidget(clabel('Email'), 3, 0, 1, 2)
-        profile_grid.addWidget(clabel('Phone Number'), 4, 0, 1, 2)
+        profile_grid.addWidget(Clabel('First Name'), 0, 0, 1, 2)
+        profile_grid.addWidget(Clabel('Last Name'), 1, 0, 1, 2)
+        profile_grid.addWidget(Clabel('Your Title'), 2, 0, 1, 2)
+        profile_grid.addWidget(Clabel('Email'), 3, 0, 1, 2)
+        profile_grid.addWidget(Clabel('Phone Number'), 4, 0, 1, 2)
 
         self.titleField = QLineEdit()
         self.firstnameField = QLineEdit()
@@ -205,11 +251,11 @@ class Plt_sign_up(QDialog):
         contact_grid = QGridLayout()
         contact_groupBox.setLayout(contact_grid)
 
-        contact_grid.addWidget(clabel("Address Line 1"), 0, 0, 1, 2)
-        contact_grid.addWidget(clabel("Address Line 2"), 1, 0, 1, 2)
-        contact_grid.addWidget(clabel("Postal"), 2, 0, 1, 2)
-        contact_grid.addWidget(clabel("City"), 3, 0, 1, 2)
-        contact_grid.addWidget(clabel("Country"), 4, 0, 1, 2)
+        contact_grid.addWidget(Clabel("Address Line 1"), 0, 0, 1, 2)
+        contact_grid.addWidget(Clabel("Address Line 2"), 1, 0, 1, 2)
+        contact_grid.addWidget(Clabel("Postal"), 2, 0, 1, 2)
+        contact_grid.addWidget(Clabel("City"), 3, 0, 1, 2)
+        contact_grid.addWidget(Clabel("Country"), 4, 0, 1, 2)
 
         self.addressLine1 = QLineEdit()
         self.addressLine2 = QLineEdit()
@@ -243,10 +289,10 @@ class Plt_sign_up(QDialog):
             self.question1.addItem(str(i[0]))
             self.question2.addItem(str(i[0]))
 
-        questions_grid.addWidget(clabel('Question 1'), 0, 0, 1, 3)
-        questions_grid.addWidget(clabel('Answer 1'), 1, 0, 1, 3)
-        questions_grid.addWidget(clabel('Question 2'), 2, 0, 1, 3)
-        questions_grid.addWidget(clabel('Answer 2'), 3, 0, 1, 3)
+        questions_grid.addWidget(Clabel('Question 1'), 0, 0, 1, 3)
+        questions_grid.addWidget(Clabel('Answer 1'), 1, 0, 1, 3)
+        questions_grid.addWidget(Clabel('Question 2'), 2, 0, 1, 3)
+        questions_grid.addWidget(Clabel('Answer 2'), 3, 0, 1, 3)
 
         questions_grid.addWidget(self.question1, 0, 3, 1, 6)
         questions_grid.addWidget(self.answer1, 1, 3, 1, 6)
@@ -430,7 +476,6 @@ class Plt_sign_in(QDialog):
         # Sign in layout preset
         self.setWindowTitle('Sign in')
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
-        self.setContentsMargins(0, 0, 0, 0)
         self.setFixedSize(400, 300)
 
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
@@ -461,14 +506,14 @@ class Plt_sign_in(QDialog):
         login_btn.clicked.connect(self.on_sign_in_btn_clicked)
         cancel_btn.clicked.connect(QApplication.quit)
 
-        login_grid.addWidget(clabel('Username'), 1, 0, 1, 2)
-        login_grid.addWidget(clabel('Password'), 2, 0, 1, 2)
-        login_grid.addWidget(self.usernameField, 1, 2, 1, 4)
-        login_grid.addWidget(self.passwordField, 2, 2, 1, 4)
-        login_grid.addWidget(self.rememberCheckBox, 3, 1, 1, 2)
-        login_grid.addWidget(login_btn, 3, 3, 1, 3)
-        login_grid.addWidget(forgot_pw_btn, 4, 0, 1, 3)
-        login_grid.addWidget(cancel_btn, 4, 3, 1, 3)
+        login_grid.addWidget(Clabel(text='Username'), 0, 0, 1, 2)
+        login_grid.addWidget(Clabel(text='Password'), 1, 0, 1, 2)
+        login_grid.addWidget(self.usernameField, 0, 2, 1, 4)
+        login_grid.addWidget(self.passwordField, 1, 2, 1, 4)
+        login_grid.addWidget(self.rememberCheckBox, 2, 1, 1, 2)
+        login_grid.addWidget(login_btn, 2, 3, 1, 3)
+        login_grid.addWidget(forgot_pw_btn, 3, 0, 1, 3)
+        login_grid.addWidget(cancel_btn, 3, 3, 1, 3)
 
         signup_groupBox = QGroupBox('Sign up')
         signup_grid = QGridLayout()
@@ -477,7 +522,7 @@ class Plt_sign_in(QDialog):
         sign_up_btn = QPushButton('Sign up')
         sign_up_btn.clicked.connect(self.on_sign_up_btn_clicked)
 
-        signup_grid.addWidget(clabel(mess.SIGN_UP), 0, 0, 1, 6)
+        signup_grid.addWidget(Clabel(text=mess.SIGN_UP), 0, 0, 1, 6)
         signup_grid.addWidget(sign_up_btn, 1, 0, 1, 6)
 
         self.layout.addWidget(login_groupBox, 0, 0, 1, 1)
@@ -536,12 +581,308 @@ class Plt_sign_in(QDialog):
             showLoginSig2 = window.showLoginSig2
             showLoginSig2.connect(self.show_hide_login)
             window.show()
+            if not QSystemTrayIcon.isSystemTrayAvailable():
+                QMessageBox.critical(None, mess.SYSTRAY_UNAVAI)
+                sys.exit(1)
         else:
             QMessageBox.critical(self, 'Login Failed', mess.PW_WRONG)
             return
 
     def closeEvent(self, event):
         QApplication.quit()
+
+# -------------------------------------------------------------------------------------------------------------
+""" Menu bar Layout """
+
+class MenuBarLayout(QMainWindow):
+
+    showTDSig2 = pyqtSignal(bool)
+    showCompSig2 = pyqtSignal(bool)
+    showArtSig2 = pyqtSignal(bool)
+
+    def __init__(self, parent=None):
+
+        super(MenuBarLayout, self).__init__(parent)
+
+        self.appInfo = APPINFO
+        self.mainID = var.PLT_ID
+        self.message = var.PLT_MESS
+        self.url = var.PLT_URL
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.setFixedHeight(30)
+
+        self.layout = QGridLayout()
+        self.buildUI()
+        self.setLayout(self.layout)
+
+    def buildUI(self):
+        self.createAction()
+
+        self.fileMenu = self.menuBar().addMenu("&File")
+        self.fileMenu.addAction(self.prefAct)
+        self.fileMenu.addAction(self.separator1)
+        self.fileMenu.addAction(self.exitAct)
+
+        self.viewMenu = self.menuBar().addMenu("&View")
+        self.viewMenu.addAction(self.viewTDAct)
+        self.viewMenu.addAction(self.viewCompAct)
+        self.viewMenu.addAction(self.viewArtAct)
+        self.viewMenu.addAction(self.viewAllAct)
+
+        self.toolMenu = self.menuBar().addMenu("&Tools")
+        self.toolMenu.addAction(self.cleanAct)
+        self.toolMenu.addAction(self.reconfigAct)
+
+        self.aboutMenu = self.menuBar().addMenu("&About")
+        self.aboutMenu.addAction(self.aboutAct)
+
+        self.creditMenu = self.menuBar().addMenu("&Credit")
+        self.creditMenu.addAction(self.creditAct)
+
+        self.helpMenu = self.menuBar().addMenu("&Help")
+        self.helpMenu.addAction(self.helpAct)
+
+    def createAction(self):
+        # Preferences
+        self.prefAct = QAction(QIcon(func.get_icon('Preferences')), 'Preferences', self)
+        self.prefAct.setStatusTip('Preferences')
+        self.prefAct.triggered.connect(self.preferences_action_triggered)
+
+        # Exit
+        self.exitAct = QAction(QIcon(self.appInfo['Exit'][1]), self.appInfo['Exit'][0], self)
+        self.exitAct.setStatusTip(self.appInfo['Exit'][0])
+        self.exitAct.triggered.connect(self.exit_action_trigger)
+
+        # View TD toolbar
+        self.viewTDAct = QAction(QIcon(func.get_icon("")), "hide/view TD tool bar", self)
+        viewTDToolBar = func.str2bool(self.settings.value("showTDToolbar", True))
+        self.viewTDAct.setChecked(viewTDToolBar)
+        self.viewTDAct.triggered.connect(self.show_hide_TDtoolBar)
+
+        # View comp toolbar
+        self.viewCompAct = QAction(QIcon(func.get_icon("")), "hide/view Comp tool bar", self)
+        viewCompToolBar = func.str2bool(self.settings.value("showCompToolbar", True))
+
+        # self.viewCompAct.setCheckable(True)
+        self.viewCompAct.setChecked(viewCompToolBar)
+        self.viewCompAct.triggered.connect(self.show_hide_ComptoolBar)
+
+        # View art toolbar
+        self.viewArtAct = QAction(QIcon(func.get_icon("")), "hide/view Art tool bar", self)
+        viewArtToolBar = func.str2bool(self.settings.value("showArtToolbar", True))
+
+        # self.viewArtAct.setCheckable(True)
+        self.viewArtAct.setChecked(viewArtToolBar)
+        self.viewArtAct.triggered.connect(self.show_hide_ArttoolBar)
+
+        # View all toolbar
+        self.viewAllAct = QAction(QIcon(func.get_icon("Alltoolbar")), "hide/view All tool bar", self)
+        viewAllToolbar = func.str2bool(self.settings.value("showAllToolbar", True))
+
+        # self.viewAllAct.setCheckable(True)
+        self.viewAllAct.setChecked(viewAllToolbar)
+        self.viewAllAct.triggered.connect(self.show_hide_AlltoolBar)
+
+        # Clean trash file
+        self.cleanAct = QAction(QIcon(self.appInfo['CleanPyc'][1]), self.appInfo['CleanPyc'][0], self)
+        self.cleanAct.setStatusTip(self.appInfo['CleanPyc'][0])
+        self.cleanAct.triggered.connect(partial(func.clean_unnecessary_file, '.pyc'))
+
+        # Re-configuration
+        self.reconfigAct = QAction(QIcon(self.appInfo['ReConfig'][1]), self.appInfo['ReConfig'][0], self)
+        self.reconfigAct.setStatusTip(self.appInfo['ReConfig'][0])
+        self.reconfigAct.triggered.connect(func.Collect_info)
+
+        # About action
+        self.aboutAct = QAction(QIcon(self.appInfo['About'][1]), self.appInfo['About'][0], self)
+        self.aboutAct.setStatusTip(self.appInfo['About'][0])
+        self.aboutAct.triggered.connect(partial(self.info_layout, self.mainID['About'], self.message['About'], self.appInfo['About'][1]))
+
+        # Credit action
+        self.creditAct = QAction(QIcon(self.appInfo['Credit'][1]), self.appInfo['Credit'][0], self)
+        self.creditAct.setStatusTip(self.appInfo['Credit'][0])
+        self.creditAct.triggered.connect(partial(self.info_layout, self.mainID['Credit'], self.message['Credit'], self.appInfo['Credit'][1]))
+
+        # Help action
+        self.helpAct = QAction(QIcon(self.appInfo['Help'][1]), self.appInfo['Help'][0], self)
+        self.helpAct.setStatusTip((self.appInfo['Help'][0]))
+        self.helpAct.triggered.connect(partial(webbrowser.open, self.url['Help']))
+
+        # Seperator action
+        self.separator1 = QAction(QIcon(self.appInfo['Sep'][0]), self.appInfo['Sep'][1], self)
+        self.separator1.setSeparator(True)
+
+    def preferences_action_triggered(self):
+        dlg = ui_preference.Pref_layout()
+        dlg.show()
+        sigTD = dlg.checkboxTDSig
+        sigComp = dlg.checkboxCompSig
+        sigArt = dlg.checkboxArtSig
+        sigTD.connect(self.show_hide_TDtoolBar)
+        sigComp.connect(self.show_hide_ComptoolBar)
+        sigArt.connect(self.show_hide_ArttoolBar)
+        dlg.exec_()
+
+    def exit_action_trigger(self):
+        usql.insert_timeLog("Log out")
+        logger.debug("LOG OUT")
+        QApplication.instance().quit()
+
+    def show_hide_TDtoolBar(self, param):
+        self.showTDSig2.emit(param)
+
+    def show_hide_ComptoolBar(self, param):
+        self.showCompSig2.emit(param)
+
+    def show_hide_ArttoolBar(self, param):
+        self.showArtSig2.emit(param)
+
+    def show_hide_AlltoolBar(self, param):
+        self.show_hide_TDtoolBar(param)
+        self.show_hide_ComptoolBar(param)
+        self.show_hide_ArttoolBar(param)
+
+    def info_layout(self, id='Note', message="", icon=func.get_icon('Logo')):
+        from ui import ui_info_template
+        dlg = ui_info_template.About_plt_layout(id=id, message=message, icon=icon)
+        dlg.exec_()
+
+    def contextMenuEvent(self, event):
+        menu = QMenu(self)
+        # menu.addAction(self.cutAct)
+        # menu.addAction(self.copyAct)
+        # menu.addAction(self.pasteAct)
+        menu.exec_(event.globalPos())
+
+# -------------------------------------------------------------------------------------------------------------
+""" Slider Layout """
+
+class SliderWidget(QWidget):
+
+    valueChangeSig = pyqtSignal(float)
+
+    def __init__(self, lab="slider", min=MIN, max=MAX, step=STEP, val=VAL, parent=None):
+        super(SliderWidget, self).__init__(parent)
+
+        self.min = min
+        self.max = max
+        self.step = step
+        self.lab = lab
+        self.val = val
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+
+        self.layout = QGridLayout()
+        self.buildUI()
+        self.setLayout(self.layout)
+
+    def buildUI(self):
+
+        self.label = Clabel(text=self.lab + ": ")
+
+        self.slider = QSlider(Qt.Horizontal)
+        self.slider.setMinimum(int(self.min))
+        self.slider.setMaximum(int(self.max))
+        self.slider.setSingleStep(int(self.step))
+        self.slider.setValue(int(self.val))
+
+        self.numField = QLineEdit()
+        self.numField.setValidator(QIntValidator(0, 999, self))
+        self.numField.setText("0")
+        self.numField.setFixedSize(30,20)
+        self.numField.setText(str(self.val))
+
+        self.slider.valueChanged.connect(self.set_value)
+        self.numField.textChanged.connect(self.set_slider)
+
+        self.layout.addWidget(self.label, 0, 0, 1, 1)
+        self.layout.addWidget(self.numField, 0, 1, 1, 1)
+        self.layout.addWidget(self.slider, 0, 2, 1, 1)
+
+    def set_value(self):
+        val = self.slider.value()
+        self.numField.setText(str(val))
+
+    def set_slider(self):
+        val = self.numField.text()
+        # Debug empty value making crash
+        if val == "" or val == None:
+            val = "0"
+        self.slider.setValue(float(val))
+
+    def changeEvent(self, event):
+        self.settings.setValue("{name}Value".format(name=self.lab), float)
+        self.valueChangeSig.emit(self.slider.value())
+
+# -------------------------------------------------------------------------------------------------------------
+""" Unit setting Layout """
+
+class UnitSettingLayout(QWidget):
+
+    stepChangeSig = pyqtSignal(float)
+    valueChangeSig = pyqtSignal(float)
+    minChangeSig = pyqtSignal(float)
+    maxChangeSig = pyqtSignal(float)
+
+    def __init__(self, parent=None):
+        super(UnitSettingLayout, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+
+        self.layout = QGridLayout()
+        self.buildUI()
+        self.setLayout(self.layout)
+
+    def buildUI(self):
+
+        self.stepVal = QLineEdit("1")
+        self.valueVal = QLineEdit("1")
+        self.minVal = QLineEdit("0")
+        self.maxVal = QLineEdit("1000")
+
+        self.stepVal.setValidator(QIntValidator(0, 999, self))
+        self.valueVal.setValidator(QIntValidator(0, 999, self))
+        self.minVal.setValidator(QIntValidator(0, 999, self))
+        self.maxVal.setValidator(QIntValidator(0, 999, self))
+
+        self.stepVal.textChanged.connect(self.set_step)
+        self.valueVal.textChanged.connect(self.set_value)
+        self.minVal.textChanged.connect(self.set_min)
+        self.maxVal.textChanged.connect(self.set_max)
+
+        self.layout.addWidget(Clabel("STEP: "), 0,0,1,1)
+        self.layout.addWidget(Clabel("VALUE: "), 1,0,1,1)
+        self.layout.addWidget(Clabel("MIN: "), 2,0,1,1)
+        self.layout.addWidget(Clabel("MAX: "), 3,0,1,1)
+
+        self.layout.addWidget(self.stepVal, 0, 1, 1, 1)
+        self.layout.addWidget(self.valueVal, 1, 1, 1, 1)
+        self.layout.addWidget(self.minVal, 2, 1, 1, 1)
+        self.layout.addWidget(self.maxVal, 3, 1, 1, 1)
+
+    def set_step(self):
+        val = float(self.stepVal.text())
+        self.stepChangeSig.emit(val)
+        self.settings.setValue("stepSetting", float)
+
+    def set_value(self):
+        val = float(self.valueVal.text())
+        self.valueChangeSig.emit(float(val))
+        self.settings.setValue("valueSetting", float)
+
+    def set_min(self):
+        val = float(self.minVal.text())
+        self.minChangeSig.emit(float(val))
+        self.settings.setValue("minSetting", float)
+
+    def set_max(self):
+        val = float(self.maxVal.text())
+        self.maxChangeSig.emit(float(val))
+        self.settings.setValue("maxSetting", float)
+
+    def changeEvent(self, event):
+        pass
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
@@ -551,6 +892,7 @@ class TabWidget(QWidget):
     dbConn = lite.connect(var.DB_PATH)
     showMainSig = pyqtSignal(bool)
     showLoginSig = pyqtSignal(bool)
+    tabSizeSig = pyqtSignal(int, int)
 
     def __init__(self, username, package, parent=None):
 
@@ -559,7 +901,6 @@ class TabWidget(QWidget):
         self.username = username
         self.package = package
 
-        self.setContentsMargins(0,0,0,0)
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
         self.layout = QVBoxLayout()
@@ -571,19 +912,18 @@ class TabWidget(QWidget):
         # ------------------------------------------------------
         self.tabs = QTabWidget()
 
-        self.tab1 = self.tab1Layout()
+        self.tab1Layout()
+        self.tab2Layout()
+        self.tab3Layout()
+        self.tab4Layout()
+
         self.tabs.addTab(self.tab1, 'Tool')
-
-        self.tab2 = self.tab2Layout()
         self.tabs.addTab(self.tab2, 'Prj')
-
-        self.tab3 = self.tab3Layout()
         self.tabs.addTab(self.tab3, 'User')
-
-        self.tab4 = self.tab4Layout()
         self.tabs.addTab(self.tab4, 'Lib')
 
         userClass = usql.query_userClass(self.username)
+
         if userClass == 'Administrator Privilege':
             self.tab5 = QGroupBox()
             self.tab5Layout()
@@ -592,28 +932,35 @@ class TabWidget(QWidget):
         self.layout.addWidget(self.tabs)
 
     def tab1Layout(self):
-        tab1Widget = QWidget()
-        tab1layout = QHBoxLayout()
-        tab1Widget.setLayout(tab1layout)
 
-        tab1Section1GrpBox = QGroupBox('Dev')
-        tab1Section1Grid = QGridLayout()
-        tab1Section1GrpBox.setLayout(tab1Section1Grid)
+        self.tab1 = QWidget()
+        tab1layout = QGridLayout()
+        self.tab1.setLayout(tab1layout)
+
+        tab1Sec1GrpBox = QGroupBox('Dev')
+        tab1Sec1Grid = QGridLayout()
+        tab1Sec1GrpBox.setLayout(tab1Sec1Grid)
 
         for key in APPINFO:
             if key == 'PyCharm':
                 pycharmBtn = self.make_icon_btn2('PyCharm')
-                tab1Section1Grid.addWidget(pycharmBtn, 0, 0, 1, 1)
+                tab1Sec1Grid.addWidget(pycharmBtn, 0, 0, 1, 1)
             if key == 'SublimeText 3':
                 sublimeBtn = self.make_icon_btn2('SublimeText 3')
-                tab1Section1Grid.addWidget(sublimeBtn, 1, 0, 1, 1)
+                tab1Sec1Grid.addWidget(sublimeBtn, 0, 1, 1, 1)
             if key == 'QtDesigner':
                 qtdesignerBtn = self.make_icon_btn2('QtDesigner')
-                tab1Section1Grid.addWidget(qtdesignerBtn, 2, 0, 1, 1)
+                tab1Sec1Grid.addWidget(qtdesignerBtn, 0, 2, 1, 1)
 
-        tab1Section2GrpBox = QGroupBox('Extra')
-        tab1Section2Grid = QGridLayout()
-        tab1Section2GrpBox.setLayout(tab1Section2Grid)
+        tab1Sec2GrpBox = QGroupBox('CMD')
+        tab1Sec2Grid = QGridLayout()
+        tab1Sec2GrpBox.setLayout(tab1Sec2Grid)
+
+        tab1Sec2Grid.addWidget(Clabel("Just for fun"), 0, 0, 1, 1)
+
+        tab1Sec3GrpBox = QGroupBox('Custom')
+        tab1Sec3Grid = QGridLayout()
+        tab1Sec3GrpBox.setLayout(tab1Sec3Grid)
 
         arIconBtn = self.make_icon_btn2('Advance Renamer')
         noteReminderBtn = self.make_icon_btn1('QtNote', 'Note Reminder', self.note_reminder)
@@ -624,43 +971,43 @@ class TabWidget(QWidget):
         calculatorBtn = self.make_icon_btn1('Calculator', 'Calculator', self.calculator)
         fileFinderBtn = self.make_icon_btn1('Finder', 'Find files', self.findFiles)
 
-        tab1Section2Grid.addWidget(arIconBtn, 0, 0, 1, 1)
-        tab1Section2Grid.addWidget(noteReminderBtn, 0, 1, 1, 1)
-        tab1Section2Grid.addWidget(textEditorBtn, 0, 2, 1, 1)
-        tab1Section2Grid.addWidget(dictBtn, 1, 0, 1, 1)
-        tab1Section2Grid.addWidget(screenshotBtn, 1, 1, 1, 1)
-        tab1Section2Grid.addWidget(calendarBtn, 1, 2, 1, 1)
-        tab1Section2Grid.addWidget(calculatorBtn, 2, 0, 1, 1)
-        tab1Section2Grid.addWidget(fileFinderBtn, 2, 1, 1, 1)
+        tab1Sec3Grid.addWidget(arIconBtn, 0, 0, 1, 1)
+        tab1Sec3Grid.addWidget(noteReminderBtn, 0, 1, 1, 1)
+        tab1Sec3Grid.addWidget(textEditorBtn, 0, 2, 1, 1)
+        tab1Sec3Grid.addWidget(dictBtn, 1, 0, 1, 1)
+        tab1Sec3Grid.addWidget(screenshotBtn, 1, 1, 1, 1)
+        tab1Sec3Grid.addWidget(calendarBtn, 1, 2, 1, 1)
+        tab1Sec3Grid.addWidget(calculatorBtn, 2, 0, 1, 1)
+        tab1Sec3Grid.addWidget(fileFinderBtn, 2, 1, 1, 1)
 
-        tab1Section3GrpBox = QGroupBox('CGI')
-        tab1Section3Grid = QGridLayout()
-        tab1Section3GrpBox.setLayout(tab1Section3Grid)
+        tab1Sec4GrpBox = QGroupBox('CGI')
+        tab1Sec4Grid = QGridLayout()
+        tab1Sec4GrpBox.setLayout(tab1Sec4Grid)
 
-        if key == 'Mudbox 2018':
-            mudbox18Btn = self.make_icon_btn2(key)
-            tab1Section3Grid.addWidget(mudbox18Btn, 2, 0, 1, 1)
-        if key == 'Mudbox 2017':
-            mudbox17Btn = self.make_icon_btn2(key)
-            tab1Section3Grid.addWidget(mudbox17Btn, 2, 1, 1, 1)
-        if key == '3ds Max 2018':
-            max18Btn = self.make_icon_btn2(key)
-            tab1Section3Grid.addWidget(max18Btn, 2, 2, 1, 1)
-        if key == '3ds Max 2017':
-            max17Btn = self.make_icon_btn2(key)
-            tab1Section3Grid.addWidget(max17Btn, 3, 0, 1, 1)
+        for key in APPINFO:
+            if key == 'Mudbox 2018':
+                mudbox18Btn = self.make_icon_btn2(key)
+                tab1Sec4Grid.addWidget(mudbox18Btn, 2, 0, 1, 1)
+            if key == 'Mudbox 2017':
+                mudbox17Btn = self.make_icon_btn2(key)
+                tab1Sec4Grid.addWidget(mudbox17Btn, 2, 1, 1, 1)
+            if key == '3ds Max 2018':
+                max18Btn = self.make_icon_btn2(key)
+                tab1Sec4Grid.addWidget(max18Btn, 2, 2, 1, 1)
+            if key == '3ds Max 2017':
+                max17Btn = self.make_icon_btn2(key)
+                tab1Sec4Grid.addWidget(max17Btn, 3, 0, 1, 1)
 
-        tab1layout.addWidget(tab1Section1GrpBox)
-        tab1layout.addWidget(tab1Section2GrpBox)
-        tab1layout.addWidget(tab1Section3GrpBox)
-
-        return tab1Widget
+        tab1layout.addWidget(tab1Sec1GrpBox, 0,0,1,3)
+        tab1layout.addWidget(tab1Sec2GrpBox, 1,0,2,3)
+        tab1layout.addWidget(tab1Sec3GrpBox, 0,3,3,3)
+        tab1layout.addWidget(tab1Sec4GrpBox, 0,6,3,2)
 
     def tab2Layout(self):
         # Create Layout for Tab 2.
-        tab2Widget = QWidget()
+        self.tab2 = QWidget()
         tab2layout = QHBoxLayout()
-        tab2Widget.setLayout(tab2layout)
+        self.tab2.setLayout(tab2layout)
 
         tab2Section1GrpBox = QGroupBox('Proj')
         tab2Section1Grid = QGridLayout()
@@ -701,27 +1048,24 @@ class TabWidget(QWidget):
         tab2layout.addWidget(tab2Section2GrpBox)
         tab2layout.addWidget(tab2Section3GrpBox)
 
-        return tab2Widget
-
     def tab3Layout(self):
         # Create Layout for Tab 3.
-        tab3Widget = QWidget()
-        tab3layout = QHBoxLayout()
-        tab3Widget.setLayout(tab3layout)
+        self.tab3 = QWidget()
+        tab3layout = QGridLayout()
+        self.tab3.setLayout(tab3layout)
 
-        tab3Section1GrpBox = QGroupBox(self.username)
-        tab3Section1Grid = QGridLayout()
-        tab3Section1GrpBox.setLayout(tab3Section1Grid)
+        tab3Sec1GrpBox = QGroupBox(self.username)
+        tab3Sec1Grid = QGridLayout()
+        tab3Sec1GrpBox.setLayout(tab3Sec1Grid)
 
         self.userAvatar = QLabel()
         self.userAvatar.setPixmap(QPixmap.fromImage(QImage(func.get_avatar(self.username))))
         self.userAvatar.setScaledContents(True)
         self.userAvatar.setFixedSize(100, 100)
-        tab3Section1Grid.addWidget(self.userAvatar, 0, 0, 2, 2)
 
-        tab3Section2GrpBox = QGroupBox("Account Setting")
-        tab3Section2Grid = QGridLayout()
-        tab3Section2GrpBox.setLayout(tab3Section2Grid)
+        tab3Sec2GrpBox = QGroupBox("Account Setting")
+        tab3Sec2Grid = QGridLayout()
+        tab3Sec2GrpBox.setLayout(tab3Sec2Grid)
 
         userSettingBtn = QPushButton('Account Setting')
         userSettingBtn.clicked.connect(self.on_userSettingBtn_clicked)
@@ -729,28 +1073,26 @@ class TabWidget(QWidget):
         signOutBtn = QPushButton('Log Out')
         signOutBtn.clicked.connect(self.on_signOutBtn_clicked)
 
-        tab3Section2Grid.addWidget(userSettingBtn, 0, 2, 1, 4)
-        tab3Section2Grid.addWidget(signOutBtn, 1, 2, 1, 4)
+        tab3Sec1Grid.addWidget(self.userAvatar, 0, 0, 2, 3)
+        tab3Sec2Grid.addWidget(userSettingBtn, 0, 2, 1, 5)
+        tab3Sec2Grid.addWidget(signOutBtn, 1, 2, 1, 5)
 
-        tab3layout.addWidget(tab3Section1GrpBox)
-        tab3layout.addWidget(tab3Section2GrpBox)
-
-        return tab3Widget
+        tab3layout.addWidget(tab3Sec1GrpBox)
+        tab3layout.addWidget(tab3Sec2GrpBox)
 
     def tab4Layout(self):
         # Create Layout for Tab 4.
-        tab4Widget = QWidget()
-        tab4layout = QHBoxLayout()
-        tab4Widget.setLayout(tab4layout)
+        self.tab4 = QWidget()
+        tab4layout = QGridLayout()
+        self.tab4.setLayout(tab4layout)
 
         tab4Section1GrpBox = QGroupBox('Library')
         tab4Section1Grid = QGridLayout()
         tab4Section1GrpBox.setLayout(tab4Section1Grid)
 
-        tab4Section1Grid.addWidget(clabel("Update later"), 0, 0, 1, 6)
+        tab4Section1Grid.addWidget(Clabel("Update later"), 0, 0, 1, 8)
 
-        tab4layout.addWidget(tab4Section1GrpBox)
-        return tab4Widget
+        tab4layout.addWidget(tab4Section1GrpBox, 0, 0, 1, 8)
 
     def tab5Layout(self):
         # Create Layout for Tab 4
@@ -789,11 +1131,8 @@ class TabWidget(QWidget):
         iconBtn.setIcon(icon)
         iconBtn.setFixedSize(30, 30)
         iconBtn.setIconSize(QSize(30 - 3, 30 - 3))
-        iconBtn.clicked.connect(partial(self.open_applicaton, APPINFO[name][2]))
+        iconBtn.clicked.connect(partial(subprocess.Popen, APPINFO[name][2]))
         return iconBtn
-
-    def open_applicaton(self, pth):
-        subprocess.Popen(pth)
 
     def english_dictionary(self):
         from ui import ui_english_dict
@@ -869,12 +1208,10 @@ class Plt_application(QMainWindow):
 
     showLoginSig2 = pyqtSignal(bool)
 
-    def __init__(self, login=None, parent=None):
-
+    def __init__(self, parent=None):
         super(Plt_application, self).__init__(parent)
 
         self.username, rememberLogin = usql.query_curUser()
-
         self.mainID = var.PLT_ID
         self.appInfo = APPINFO
         self.package = var.PLT_PKG
@@ -883,111 +1220,47 @@ class Plt_application(QMainWindow):
 
         self.setWindowTitle(self.mainID['Main'])
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
-        self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        self.setContentsMargins(0, 0, 0, 0)
-
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.setFixedWidth(400)
 
         self.trayIcon = self.sys_tray_icon_menu()
         self.trayIcon.setToolTip(__appname__)
         self.trayIcon.show()
         self.trayIcon.activated.connect(self.sys_tray_icon_activated)
+        icon = QSystemTrayIcon.Information
+        self.trayIcon.showMessage('Welcome', "Log in as %s" % self.username, icon, 500)
 
-        if login == 'Auto':
-            icon = QSystemTrayIcon.Information
-            self.trayIcon.showMessage('Welcome', "Log in as %s" % self.username, icon, 500)
-        else:
-            icon = QSystemTrayIcon.Information
-            self.trayIcon.showMessage('Welcome', "Log in as %s" % self.username, icon, 500)
-
-        self.layout = QGridLayout()
+        self.mainWidget = QWidget()
         self.buildUI()
-        self.setLayout(self.layout)
+        self.setCentralWidget(self.mainWidget)
 
-        self.showMainUI = func.str2bool(self.settings.value("showMain", True))
-        self.show_hide_main(self.showMainUI)
+        # self.showMainUI = func.str2bool(self.settings.value("showMain", True))
+        # self.show_hide_main(self.showMainUI)
 
-        self.restoreState(self.settings.value("layoutState", QBitArray()))
+        # self.layout_magrin_ratio()
+        # self.layout_height_ratio()
+        # self.layout_width_ratio()
+
+        # self.restoreState(self.settings.value("layoutState", QBitArray()))
 
         # Log record
-        self.procedures('log in')
+        # usql.insert_timeLog('Log in')
 
     def buildUI(self):
 
-        posX, posY, sizeW, sizeH = func.set_app_stick_to_top_right()
+        sizeW, sizeH = self.get_layout_dimention()
+        posX, posY, sizeW, sizeH = func.set_app_stick_to_bot_right(sizeW, sizeH)
         self.setGeometry(posX, posY, sizeW, sizeH)
+        self.layout = QGridLayout()
+        self.mainWidget.setLayout(self.layout)
 
-        self.mainWidget = QWidget()
-        self.mainGrid = QGridLayout()
-        self.mainWidget.setLayout(self.mainGrid)
+        # Menubar build
+        self.menuGrpBox = QGroupBox("Menu Layout")
+        menuLayout = QHBoxLayout()
+        self.menuGrpBox.setLayout(menuLayout)
 
-        # Top build
-        topGrpBox = QGroupBox("Top Layout")
-        topLayout = QHBoxLayout()
-        topGrpBox.setLayout(topLayout)
-
-        topLayout.addWidget(clabel("This Layout is for drag and drop"))
-
-        # Mid build
-        midGrpBox = QGroupBox("Top Layout")
-        midLayout = QHBoxLayout()
-        midGrpBox.setLayout(midLayout)
-
-        self.tabWidget = TabWidget(self.username, self.package)
-        showMainSig = self.tabWidget.showMainSig
-        showLoginSig = self.tabWidget.showLoginSig
-        showMainSig.connect(self.show_hide_main)
-        showLoginSig.connect(self.send_to_login)
-        midLayout.addWidget(self.tabWidget)
-
-        # Bot build
-        botGrpBox = QGroupBox("Bot Layout")
-        botLayout = QHBoxLayout()
-        botGrpBox.setLayout(botLayout)
-
-        botLayout.addWidget(clabel("This Layout is for searching"))
-
-        # Add layout to main
-        self.mainGrid.addWidget(topGrpBox, 0, 0, 1, 6)
-        self.mainGrid.addWidget(midGrpBox, 1, 0, 3, 6)
-        self.mainGrid.addWidget(botGrpBox, 4, 0, 1, 6)
-        self.setCentralWidget(self.mainWidget)
-
-        # Status bar viewing message
-        self.statusBar().showMessage(self.message['status'])
-        # ----------------------------------------------
-        # Menu Tool Bar sections
-        self.pltMenu = self.menuBar()
-        self.fileMenu = self.pltMenu.addMenu('File')
-        self.viewMenu = self.pltMenu.addMenu('View')
-        self.layoutMenu = self.pltMenu.addMenu('Layout')
-        self.toolMenu = self.pltMenu.addMenu('Tools')
-        self.helpMenu = self.pltMenu.addMenu('Help')
-
-        # ----------------------------------------------
-        # Menu
-        exitAction, prefAction = self.fileMenuSections()
-        separator1 = self.createSeparatorAction()
-        aboutAction, creditAction, helpAction = self.helpMenuSections()
-        cleanPycAction, reconfigaction = self.toolMenuSections()
-        viewTDtoolbar, viewComptoolbar, viewArttoolbar, viewAlltoolbar = self.viewMenuSections()
-
-        self.fileMenu.addAction(prefAction)
-        self.fileMenu.addAction(separator1)
-        self.fileMenu.addAction(exitAction)
-
-        self.viewMenu.addAction(viewTDtoolbar)
-        self.viewMenu.addAction(viewComptoolbar)
-        self.viewMenu.addAction(viewArttoolbar)
-        self.viewMenu.addAction(viewAlltoolbar)
-        self.viewMenu.addAction(separator1)
-
-        self.toolMenu.addAction(cleanPycAction)
-        self.toolMenu.addAction(reconfigaction)
-
-        self.helpMenu.addAction(aboutAction)
-        self.helpMenu.addAction(creditAction)
-        self.helpMenu.addAction(helpAction)
+        menuBar = MenuBarLayout()
+        menuLayout.addWidget(menuBar)
 
         # ----------------------------------------------
         self.tdToolBar = self.toolBarTD()
@@ -1003,9 +1276,78 @@ class Plt_application(QMainWindow):
         self.compToolBar.setVisible(self.showCompToolBar)
         self.artToolBar.setVisible(self.showArtToolBar)
 
-        # self.addToolBar(Qt.LeftToolBarArea, self.tdToolBar)
-        # self.addToolBar(Qt.LeftToolBarArea, self.compToolBar)
-        # self.addToolBar(Qt.LeftToolBarArea, self.artToolBar)
+        showTDSig = menuBar.showTDSig2
+        showCompSig = menuBar.showCompSig2
+        showArtSig = menuBar.showArtSig2
+        showTDSig.connect(self.show_hide_TDtoolBar)
+        showCompSig.connect(self.show_hide_ComptoolBar)
+        showArtSig.connect(self.show_hide_ArttoolBar)
+
+        # Status bar viewing message
+        self.statusBar().showMessage(self.message['status'])
+
+        # Top build
+        self.topGrpBox = QGroupBox("Top Layout")
+        topLayout = QHBoxLayout()
+        self.topGrpBox.setLayout(topLayout)
+        topLayout.addWidget(Clabel("This Layout is for drag and drop"))
+
+        # Mid build
+        self.midGrpBox = QGroupBox("plt Tool Box")
+        midLayout = QHBoxLayout()
+        self.midGrpBox.setLayout(midLayout)
+
+        self.tabWidget = TabWidget(self.username, self.package)
+
+        showMainSig = self.tabWidget.showMainSig
+        showLoginSig = self.tabWidget.showLoginSig
+        tabSizeSig = self.tabWidget.tabSizeSig
+        showMainSig.connect(self.show_hide_main)
+        showLoginSig.connect(self.send_to_login)
+        tabSizeSig.connect(self.autoResize)
+        midLayout.addWidget(self.tabWidget)
+
+        # Bot build
+        self.sizeGrpBox = QGroupBox("Size Setting")
+        sizeGridLayout = QGridLayout()
+        self.sizeGrpBox.setLayout(sizeGridLayout)
+
+        unitSlider = SliderWidget(lab="UNIT", min=0, max=1000, step=1, val=UNIT)
+        margSlider = SliderWidget(lab="MARG", min=0, max=1000, step=1, val=MARG)
+        buffSlider = SliderWidget(lab="BUFF", min=0, max=1000, step=1, val=BUFF)
+        scalSlider = SliderWidget(lab="SCAL", min=0, max=1000, step=1, val=SCAL)
+
+        unitSig = unitSlider.valueChangeSig
+        margSig = margSlider.valueChangeSig
+        buffSig = buffSlider.valueChangeSig
+        scalSig = scalSlider.valueChangeSig
+
+        sizeGridLayout.addWidget(unitSlider, 0, 0, 1, 5)
+        sizeGridLayout.addWidget(margSlider, 1, 0, 1, 5)
+        sizeGridLayout.addWidget(buffSlider, 2, 0, 1, 5)
+        sizeGridLayout.addWidget(scalSlider, 3, 0, 1, 5)
+
+        # Bot build
+        self.unitGrpBox = QGroupBox("Unit Setting")
+        unitGridLayout = QGridLayout()
+        self.unitGrpBox.setLayout(unitGridLayout)
+
+        unitSetting = UnitSettingLayout()
+        unitGridLayout.addWidget(unitSetting)
+
+        # Add layout to main
+        self.layout.addWidget(self.menuGrpBox, 1, 0, 1, 6)
+        self.layout.addWidget(self.topGrpBox, 2, 0, 2, 6)
+        self.layout.addWidget(self.midGrpBox, 4, 0, 4, 6)
+        self.layout.addWidget(self.sizeGrpBox, 8, 0, 4, 3)
+        self.layout.addWidget(self.unitGrpBox, 8, 3, 4, 3)
+
+        # Restore last setting layout from user
+        stateLayout = self.settings.value("layoutState", QByteArray().toBase64())
+        try:
+            self.restoreState(QByteArray(stateLayout))
+        except IOError or TypeError:
+            pass
 
     def sys_tray_icon_activated(self, reason):
         if reason == QSystemTrayIcon.DoubleClick:
@@ -1050,67 +1392,6 @@ class Plt_application(QMainWindow):
 
         return trayIcon
 
-    def fileMenuSections(self):
-        # Preferences
-        prefAction = QAction(QIcon(func.get_icon('Preferences')), 'Preferences', self)
-        prefAction.setStatusTip('Preferences')
-        prefAction.triggered.connect(self.preferences_action_triggered)
-
-        # Exit action
-        exitAction = QAction(QIcon(self.appInfo['Exit'][1]), self.appInfo['Exit'][0], self)
-        exitAction.setStatusTip(self.appInfo['Exit'][0])
-        exitAction.triggered.connect(self.exit_action_trigger)
-        return exitAction, prefAction
-
-    def viewMenuSections(self):
-        viewTDtoolbarAction = QAction(QIcon(func.get_icon("TDtoolbar")), "hide/view TD tool bar", self)
-        viewTDtoolbarAction.setStatusTip("hide/view TD tool bar")
-        viewTDtoolbarAction.setCheckable(True)
-        viewTDtoolbarAction.triggered.connect(self.show_hide_TDtoolBar)
-
-        viewComptoolbarAction = QAction(QIcon(func.get_icon("Comptoolbar")), "hide/view Comp tool bar", self)
-        viewComptoolbarAction.setStatusTip("hide/view Comp tool bar")
-        viewComptoolbarAction.setCheckable(True)
-        viewComptoolbarAction.triggered.connect(self.show_hide_ComptoolBar)
-
-        viewArttoolbarAction = QAction(QIcon(func.get_icon("Arttoolbar")), "hide/view Art tool bar", self)
-        viewArttoolbarAction.setStatusTip("hide/view Art tool bar")
-        viewArttoolbarAction.setCheckable(True)
-        viewArttoolbarAction.triggered.connect(self.show_hide_ArttoolBar)
-
-        viewAlltoolbarAction = QAction(QIcon(func.get_icon("Alltoolbar")), "hide/view All tool bar", self)
-        viewAlltoolbarAction.setStatusTip("hide/view all tool bar")
-        viewAlltoolbarAction.setCheckable(True)
-        viewAlltoolbarAction.triggered.connect(self.show_hide_AlltoolBar)
-
-        return viewTDtoolbarAction, viewComptoolbarAction, viewArttoolbarAction, viewAlltoolbarAction
-
-    def toolMenuSections(self):
-        cleanaction = QAction(QIcon(self.appInfo['CleanPyc'][1]), self.appInfo['CleanPyc'][0], self)
-        cleanaction.setStatusTip(self.appInfo['CleanPyc'][0])
-        cleanaction.triggered.connect(partial(func.clean_unnecessary_file, '.pyc'))
-
-        reconfigaction = QAction(QIcon(self.appInfo['ReConfig'][1]), self.appInfo['ReConfig'][0], self)
-        reconfigaction.setStatusTip(self.appInfo['ReConfig'][0])
-        reconfigaction.triggered.connect(func.Collect_info)
-
-        return cleanaction, reconfigaction
-
-    def helpMenuSections(self):
-        # About action
-        about = QAction(QIcon(self.appInfo['About'][1]), self.appInfo['About'][0], self)
-        about.setStatusTip(self.appInfo['About'][0])
-        about.triggered.connect(partial(self.info_layout, self.mainID['About'], self.message['About'], self.appInfo['About'][1]))
-        # Credit action
-        credit = QAction(QIcon(self.appInfo['Credit'][1]), self.appInfo['Credit'][0], self)
-        credit.setStatusTip(self.appInfo['Credit'][0])
-        credit.triggered.connect(partial(self.info_layout, self.mainID['Credit'], self.message['Credit'], self.appInfo['Credit'][1]))
-        # Help action
-        helpAction = QAction(QIcon(self.appInfo['Help'][1]), self.appInfo['Help'][0], self)
-        helpAction.setStatusTip((self.appInfo['Help'][0]))
-        helpAction.triggered.connect(partial(self.open_browser, self.url['Help']))
-        return about, credit, helpAction
-
     def toolBarTD(self):
         # TD Tool Bar
         toolBarTD = self.addToolBar('TD')
@@ -1119,22 +1400,27 @@ class Plt_application(QMainWindow):
         if 'Maya 2018' in self.appInfo:
             maya2017 = self.createAction(self.appInfo, 'Maya 2017')
             toolBarTD.addAction(maya2017)
+
         # Maya_tk 2017
         if 'Maya 2017' in self.appInfo:
             maya2017 = self.createAction(self.appInfo, 'Maya 2017')
             toolBarTD.addAction(maya2017)
+
         # ZBrush 4R8
         if 'ZBrush 4R8' in self.appInfo:
             zbrush4R8 = self.createAction(self.appInfo, 'ZBrush 4R8')
             toolBarTD.addAction(zbrush4R8)
+
         # ZBrush 4R7
         if 'ZBrush 4R7' in self.appInfo:
             zbrush4R7 = self.createAction(self.appInfo, 'ZBrush 4R7')
             toolBarTD.addAction(zbrush4R7)
+
         # Houdini FX
         if 'Houdini FX' in self.appInfo:
             houdiniFX = self.createAction(self.appInfo, 'Houdini FX')
             toolBarTD.addAction(houdiniFX)
+
         # Mari
         if 'Mari' in self.appInfo:
             mari = self.createAction(self.appInfo, 'Mari')
@@ -1196,14 +1482,10 @@ class Plt_application(QMainWindow):
             toolbarArt.addAction(illusCS6)
         return toolbarArt
 
-    def procedures(self, eventlog):
-        pass
-        usql.insert_timeLog(eventlog)
-
     def createAction(self, appInfo, key):
         action = QAction(QIcon(appInfo[key][1]), appInfo[key][0], self)
         action.setStatusTip(appInfo[key][0])
-        action.triggered.connect(partial(self.openApplication, appInfo[key][2]))
+        action.triggered.connect (partial(subprocess.Popen, appInfo[key][2]))
         return action
 
     def createSeparatorAction(self):
@@ -1211,39 +1493,17 @@ class Plt_application(QMainWindow):
         separator.setSeparator(True)
         return separator
 
-    def openApplication(self, path):
-        subprocess.Popen(path)
-
-    def info_layout(self, id='Note', message="", icon=func.get_icon('Logo')):
-        from ui import ui_info_template
-        dlg = ui_info_template.About_plt_layout(id=id, message=message, icon=icon)
-        dlg.exec_()
-
-    def open_browser(self, url):
-        webbrowser.open(url)
-
-    def preferences_action_triggered(self):
-        dlg = ui_preference.Pref_layout()
-        dlg.show()
-        sigTD = dlg.checkboxTDSig
-        sigComp = dlg.checkboxCompSig
-        sigArt = dlg.checkboxArtSig
-        sigTD.connect(self.show_hide_TDtoolBar)
-        sigComp.connect(self.show_hide_ComptoolBar)
-        sigArt.connect(self.show_hide_ArttoolBar)
-        dlg.exec_()
-
     def show_hide_TDtoolBar(self, param):
-        self.tdToolBar.setVisible(param)
         self.settings.setValue("showTDToolbar", func.bool2str(param))
+        self.tdToolBar.setVisible(func.str2bool(param))
 
     def show_hide_ComptoolBar(self, param):
-        self.compToolBar.setVisible(param)
         self.settings.setValue("showCompToolbar", func.bool2str(param))
+        self.compToolBar.setVisible(func.str2bool(param))
 
     def show_hide_ArttoolBar(self, param):
-        self.artToolBar.setVisible(param)
         self.settings.setValue("showArtToolbar", func.bool2str(param))
+        self.artToolBar.setVisible(func.str2bool(param))
 
     def show_hide_AlltoolBar(self, param):
         self.show_hide_TDtoolBar(param)
@@ -1264,7 +1524,7 @@ class Plt_application(QMainWindow):
         self.showLoginSig2.emit(param)
 
     def exit_action_trigger(self):
-        self.procedures("Log out")
+        usql.insert_timeLog("Log out")
         logger.debug("LOG OUT")
         QApplication.instance().quit()
 
@@ -1276,10 +1536,42 @@ class Plt_application(QMainWindow):
         sizeH = self.frameGeometry().height()
         return sizeW, sizeH
 
+    def layout_magrin_ratio(self, margin = MARG):
+        self.menuGrpBox.setContentsMargins(margin, margin, margin, margin)
+        self.topGrpBox.setContentsMargins(margin, margin, margin, margin)
+        self.midGrpBox.setContentsMargins(margin, margin, margin, margin)
+        self.sizeGrpBox.setContentsMargins(margin, margin, margin, margin)
+        return True
+
+    def layout_height_ratio(self, baseH = UNIT):
+        self.menuGrpBox.setFixedHeight(baseH)
+        self.topGrpBox.setFixedHeight(baseH*2)
+        self.midGrpBox.setFixedHeight(baseH*4)
+        self.sizeGrpBox.setFixedHeight(baseH * 2)
+        return True
+
+    def layout_width_ratio(self, baseW = UNIT):
+        self.menuGrpBox.setFixedWidth(baseW)
+        self.topGrpBox.setFixedWidth(baseW)
+        self.midGrpBox.setFixedWidth(baseW)
+        self.sizeGrpBox.setFixedWidth(baseW)
+        return True
+
+    def autoResize(self, param):
+
+        # print(param)
+        pass
+
+    def resizeEvent(self, event):
+        sizeW, sizeH = self.get_layout_dimention()
+        self.settings.setValue("appW", sizeW)
+        self.settings.setValue("appH", sizeH)
+
     def windowState(self):
-        self.settings.setValue('layoutState', self.saveState().data())
+        self.settings.setValue("layoutState", self.saveState().data())
 
     def closeEvent(self, event):
+        self.settings.setValue("layoutState", QByteArray(self.saveState().data()).toBase64())
         icon = QSystemTrayIcon.Information
         self.trayIcon.showMessage('Notice', "Pipeline Tool will keep running in the system tray.", icon, 1000)
         self.hide()
@@ -1299,26 +1591,30 @@ def main():
 
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon(func.get_icon('Logo')))
-    app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
+    # import qdarkgraystyle
+    # app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
 
     username, token, cookie = usql.query_user_session()
 
-    r = requests.get("https://pipeline.damgteam.com/check", verify = False,
+    if username is None or token is None or cookie is None:
+        login = Plt_sign_in()
+        login.show()
+    else:
+        r = requests.get("https://pipeline.damgteam.com/check", verify = False,
                      headers={'Authorization': 'Bearer {token}'.format(token=token)},
                      cookies={'connect.sid': cookie})
 
-    if r.status_code == 200:
-        window = Plt_application()
-        window.show()
-        if not QSystemTrayIcon.isSystemTrayAvailable():
-            QMessageBox.critical(None, mess.SYSTRAY_UNAVAI)
-            sys.exit(1)
-    else:
-        login = Plt_sign_in()
-        login.show()
+        if r.status_code == 200:
+            window = Plt_application()
+            window.show()
+            if not QSystemTrayIcon.isSystemTrayAvailable():
+                QMessageBox.critical(None, mess.SYSTRAY_UNAVAI)
+                sys.exit(1)
+        else:
+            login = Plt_sign_in()
+            login.show()
 
     QApplication.setQuitOnLastWindowClosed(False)
-
     sys.exit(app.exec_())
 
 if __name__ == '__main__':

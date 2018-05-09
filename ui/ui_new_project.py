@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # -*-coding:utf-8 -*
 """
 
@@ -368,172 +369,172 @@ class NewProject(QDialog):
     #         self.prjStudioMode()
     #     elif self.modeSetting == 'Group Mode':
     #         self.prjGroupMode()
-
-    def prjStudioMode(self, *args):
-        # Create master folder
-        os.mkdir(self.rootPth)
-        # Create content of master Folder
-        master = ['assets', 'sequences', 'deliverables', 'documents', 'editorial', 'sound', 'resources', 'RnD']
-        steps = ['publish', 'review', 'work']
-        mayaFolders = ['scenes', 'sourceimages', 'images', 'movie', 'alembic', 'reference']
-
-        for f in master:
-            contentMasterPth = os.path.join(self.rootPth, f)
-            os.mkdir(contentMasterPth)
-
-        # Assets content
-        assetsTasks = ['art', 'Modeling', 'surfacing', 'rigging']
-        assetsSections = ['characters', 'environment', 'props']
-
-        assetsPth = os.path.join(self.rootPth, 'assets')
-        for section in assetsSections:
-            assetsSectionsPth = os.path.join(assetsPth, section)
-            os.mkdir(assetsSectionsPth)
-            if section == 'characters':
-                for i in range(self.numOfChar):
-                    charName = 'char' + str(i + 1)
-                    folCharName = cmds.textField(charName, q=True, tx=True)
-                    if folCharName == "" or folCharName == None:
-                        folCharName = 'character_' + str(i + 1)
-                    folCharPth = os.path.join(assetsSectionsPth, folCharName)
-                    os.mkdir(folCharPth)
-                    for task in assetsTasks:
-                        assetsTaskPth = os.path.join(folCharPth, task)
-                        os.mkdir(assetsTaskPth)
-                        for step in steps:
-                            assetsTaskStepPth = os.path.join(assetsTaskPth, step)
-                            os.mkdir(assetsTaskStepPth)
-                        assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
-                        if task == 'art':
-                            apps = ['photoshop', 'maya']
-                        elif task == 'Modeling':
-                            apps = ['zbrush', 'maya', 'mudbox', 'houdini']
-                        elif task == 'surfacing':
-                            apps = ['mari', 'maya', 'substance', 'photoshop']
-                        elif task == 'rigging':
-                            apps = ['maya']
-
-                        for app in apps:
-                            appPth = os.path.join(assetsWorkTaskPth, app)
-                            os.mkdir(appPth)
-                            if app == 'maya':
-                                for f in mayaFolders:
-                                    mayaPth = os.path.join(appPth, f)
-                                    os.mkdir(mayaPth)
-                    i += 1
-            elif section == 'environment':
-                for i in range(self.numOfEnv):
-                    envName = 'env' + str(i + 1)
-                    folEnvName = cmds.textField(envName, q=True, tx=True)
-                    if folEnvName == "" or folEnvName == None:
-                        folEnvName = 'env_' + str(i + 1)
-                    folEnvPth = os.path.join(assetsSectionsPth, folEnvName)
-                    os.mkdir(folEnvPth)
-                    for task in assetsTasks:
-                        assetsTaskPth = os.path.join(folEnvPth, task)
-                        os.mkdir(assetsTaskPth)
-                        for step in steps:
-                            assetsTaskStepPth = os.path.join(assetsTaskPth, step)
-                            os.mkdir(assetsTaskStepPth)
-                        assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
-                        if task == 'art':
-                            apps = ['photoshop', 'maya']
-                        elif task == 'Modeling':
-                            apps = ['zbrush', 'maya', 'mudbox', 'houdini']
-                        elif task == 'surfacing':
-                            apps = ['mari', 'maya', 'substance', 'photoshop']
-                        elif task == 'rigging':
-                            apps = ['maya']
-
-                        for app in apps:
-                            appPth = os.path.join(assetsWorkTaskPth, app)
-                            os.mkdir(appPth)
-                            if app == 'maya':
-                                for f in mayaFolders:
-                                    mayaPth = os.path.join(appPth, f)
-                                    os.mkdir(mayaPth)
-                    i += 1
-            elif section == 'props':
-                for i in range(self.numOfProps):
-                    propsName = 'props' + str(i + 1)
-                    folPropsName = cmds.textField(propsName, q=True, tx=True)
-                    print type(folPropsName)
-
-                    if folPropsName == "" or folPropsName == None:
-                        folPropsName = 'props_' + str(i + 1)
-
-                    folPropsPth = os.path.join(assetsSectionsPth, folPropsName)
-
-                    print folPropsPth + ' 4'
-
-                    os.mkdir(folPropsPth)
-                    for task in assetsTasks:
-                        assetsTaskPth = os.path.join(folPropsPth, task)
-                        os.mkdir(assetsTaskPth)
-                        for step in steps:
-                            assetsTaskStepPth = os.path.join(assetsTaskPth, step)
-                            os.mkdir(assetsTaskStepPth)
-                        assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
-                        if task == 'art':
-                            apps = ['photoshop', 'maya']
-                        elif task == 'Modeling':
-                            apps = ['zbrush', 'maya', 'mudbox', 'houdini']
-                        elif task == 'surfacing':
-                            apps = ['mari', 'maya', 'substance', 'photoshop']
-                        elif task == 'rigging':
-                            apps = ['maya']
-
-                        for app in apps:
-                            appPth = os.path.join(assetsWorkTaskPth, app)
-                            os.mkdir(appPth)
-                            if app == 'maya':
-                                for f in mayaFolders:
-                                    mayaPth = os.path.join(appPth, f)
-                                    os.mkdir(mayaPth)
-                    i += 1
-
-        # Sequences content
-
-        seqTask = ['anim', 'comp', 'fx', 'layout', 'lighting']
-
-        sequencesPth = os.path.join(self.rootPth, 'sequences')
-        for i in range(self.numSeq):
-            folName = self.shortName + "_" + "shot_" + str(i + 1)
-            seqPth = os.path.join(sequencesPth, folName)
-            os.mkdir(seqPth)
-            for task in seqTask:
-                seqTaskPth = os.path.join(seqPth, task)
-                os.mkdir(seqTaskPth)
-                for step in steps:
-                    seqTaskStepPth = os.path.join(seqTaskPth, step)
-                    os.mkdir(seqTaskStepPth)
-                seqTaskWorkPth = os.path.join(seqTaskPth, 'work')
-                if task == 'anim':
-                    apps = ['maya', 'after effect', 'houdini']
-                elif task == 'comp':
-                    apps = ['nuke', 'after effect', 'photoshop']
-                elif task == 'fx':
-                    apps = ['maya', 'houdini']
-                elif task == 'layout':
-                    apps = ['maya']
-                elif task == 'lighting':
-                    apps = ['maya']
-
-                for app in apps:
-                    appPth = os.path.join(seqTaskWorkPth, app)
-                    os.mkdir(appPth)
-                    if app == 'maya':
-                        for f in mayaFolders:
-                            mayaPth = os.path.join(appPth, f)
-                            os.mkdir(mayaPth)
-            i += 1
-
-    def prjGroupMode(self, *args):
-        pass
-
-    def getDirFromUnicode(self, path, *args):
-        for dirpath, dirnames, filenames in os.walk(path):
-            return dirpath
+    #
+    # def prjStudioMode(self, *args):
+    #     # Create master folder
+    #     os.mkdir(self.rootPth)
+    #     # Create content of master Folder
+    #     master = ['assets', 'sequences', 'deliverables', 'documents', 'editorial', 'sound', 'resources', 'RnD']
+    #     steps = ['publish', 'review', 'work']
+    #     mayaFolders = ['scenes', 'sourceimages', 'images', 'movie', 'alembic', 'reference']
+    #
+    #     for f in master:
+    #         contentMasterPth = os.path.join(self.rootPth, f)
+    #         os.mkdir(contentMasterPth)
+    #
+    #     # Assets content
+    #     assetsTasks = ['art', 'Modeling', 'surfacing', 'rigging']
+    #     assetsSections = ['characters', 'environment', 'props']
+    #
+    #     assetsPth = os.path.join(self.rootPth, 'assets')
+    #     for section in assetsSections:
+    #         assetsSectionsPth = os.path.join(assetsPth, section)
+    #         os.mkdir(assetsSectionsPth)
+    #         if section == 'characters':
+    #             for i in range(self.numOfChar):
+    #                 charName = 'char' + str(i + 1)
+    #                 folCharName = cmds.textField(charName, q=True, tx=True)
+    #                 if folCharName == "" or folCharName == None:
+    #                     folCharName = 'character_' + str(i + 1)
+    #                 folCharPth = os.path.join(assetsSectionsPth, folCharName)
+    #                 os.mkdir(folCharPth)
+    #                 for task in assetsTasks:
+    #                     assetsTaskPth = os.path.join(folCharPth, task)
+    #                     os.mkdir(assetsTaskPth)
+    #                     for step in steps:
+    #                         assetsTaskStepPth = os.path.join(assetsTaskPth, step)
+    #                         os.mkdir(assetsTaskStepPth)
+    #                     assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
+    #                     if task == 'art':
+    #                         apps = ['photoshop', 'maya']
+    #                     elif task == 'Modeling':
+    #                         apps = ['zbrush', 'maya', 'mudbox', 'houdini']
+    #                     elif task == 'surfacing':
+    #                         apps = ['mari', 'maya', 'substance', 'photoshop']
+    #                     elif task == 'rigging':
+    #                         apps = ['maya']
+    #
+    #                     for app in apps:
+    #                         appPth = os.path.join(assetsWorkTaskPth, app)
+    #                         os.mkdir(appPth)
+    #                         if app == 'maya':
+    #                             for f in mayaFolders:
+    #                                 mayaPth = os.path.join(appPth, f)
+    #                                 os.mkdir(mayaPth)
+    #                 i += 1
+    #         elif section == 'environment':
+    #             for i in range(self.numOfEnv):
+    #                 envName = 'env' + str(i + 1)
+    #                 folEnvName = cmds.textField(envName, q=True, tx=True)
+    #                 if folEnvName == "" or folEnvName == None:
+    #                     folEnvName = 'env_' + str(i + 1)
+    #                 folEnvPth = os.path.join(assetsSectionsPth, folEnvName)
+    #                 os.mkdir(folEnvPth)
+    #                 for task in assetsTasks:
+    #                     assetsTaskPth = os.path.join(folEnvPth, task)
+    #                     os.mkdir(assetsTaskPth)
+    #                     for step in steps:
+    #                         assetsTaskStepPth = os.path.join(assetsTaskPth, step)
+    #                         os.mkdir(assetsTaskStepPth)
+    #                     assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
+    #                     if task == 'art':
+    #                         apps = ['photoshop', 'maya']
+    #                     elif task == 'Modeling':
+    #                         apps = ['zbrush', 'maya', 'mudbox', 'houdini']
+    #                     elif task == 'surfacing':
+    #                         apps = ['mari', 'maya', 'substance', 'photoshop']
+    #                     elif task == 'rigging':
+    #                         apps = ['maya']
+    #
+    #                     for app in apps:
+    #                         appPth = os.path.join(assetsWorkTaskPth, app)
+    #                         os.mkdir(appPth)
+    #                         if app == 'maya':
+    #                             for f in mayaFolders:
+    #                                 mayaPth = os.path.join(appPth, f)
+    #                                 os.mkdir(mayaPth)
+    #                 i += 1
+    #         elif section == 'props':
+    #             for i in range(self.numOfProps):
+    #                 propsName = 'props' + str(i + 1)
+    #                 folPropsName = cmds.textField(propsName, q=True, tx=True)
+    #                 print type(folPropsName)
+    #
+    #                 if folPropsName == "" or folPropsName == None:
+    #                     folPropsName = 'props_' + str(i + 1)
+    #
+    #                 folPropsPth = os.path.join(assetsSectionsPth, folPropsName)
+    #
+    #                 print folPropsPth + ' 4'
+    #
+    #                 os.mkdir(folPropsPth)
+    #                 for task in assetsTasks:
+    #                     assetsTaskPth = os.path.join(folPropsPth, task)
+    #                     os.mkdir(assetsTaskPth)
+    #                     for step in steps:
+    #                         assetsTaskStepPth = os.path.join(assetsTaskPth, step)
+    #                         os.mkdir(assetsTaskStepPth)
+    #                     assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
+    #                     if task == 'art':
+    #                         apps = ['photoshop', 'maya']
+    #                     elif task == 'Modeling':
+    #                         apps = ['zbrush', 'maya', 'mudbox', 'houdini']
+    #                     elif task == 'surfacing':
+    #                         apps = ['mari', 'maya', 'substance', 'photoshop']
+    #                     elif task == 'rigging':
+    #                         apps = ['maya']
+    #
+    #                     for app in apps:
+    #                         appPth = os.path.join(assetsWorkTaskPth, app)
+    #                         os.mkdir(appPth)
+    #                         if app == 'maya':
+    #                             for f in mayaFolders:
+    #                                 mayaPth = os.path.join(appPth, f)
+    #                                 os.mkdir(mayaPth)
+    #                 i += 1
+    #
+    #     # Sequences content
+    #
+    #     seqTask = ['anim', 'comp', 'fx', 'layout', 'lighting']
+    #
+    #     sequencesPth = os.path.join(self.rootPth, 'sequences')
+    #     for i in range(self.numSeq):
+    #         folName = self.shortName + "_" + "shot_" + str(i + 1)
+    #         seqPth = os.path.join(sequencesPth, folName)
+    #         os.mkdir(seqPth)
+    #         for task in seqTask:
+    #             seqTaskPth = os.path.join(seqPth, task)
+    #             os.mkdir(seqTaskPth)
+    #             for step in steps:
+    #                 seqTaskStepPth = os.path.join(seqTaskPth, step)
+    #                 os.mkdir(seqTaskStepPth)
+    #             seqTaskWorkPth = os.path.join(seqTaskPth, 'work')
+    #             if task == 'anim':
+    #                 apps = ['maya', 'after effect', 'houdini']
+    #             elif task == 'comp':
+    #                 apps = ['nuke', 'after effect', 'photoshop']
+    #             elif task == 'fx':
+    #                 apps = ['maya', 'houdini']
+    #             elif task == 'layout':
+    #                 apps = ['maya']
+    #             elif task == 'lighting':
+    #                 apps = ['maya']
+    #
+    #             for app in apps:
+    #                 appPth = os.path.join(seqTaskWorkPth, app)
+    #                 os.mkdir(appPth)
+    #                 if app == 'maya':
+    #                     for f in mayaFolders:
+    #                         mayaPth = os.path.join(appPth, f)
+    #                         os.mkdir(mayaPth)
+    #         i += 1
+    #
+    # def prjGroupMode(self, *args):
+    #     pass
+    #
+    # def getDirFromUnicode(self, path, *args):
+    #     for dirpath, dirnames, filenames in os.walk(path):
+    #         return dirpath
 
 
 if __name__=="__main__":

@@ -1,5 +1,15 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+
+"""
+
+Script Name: __init__.py
+Author: Do Trinh/Jimmy - 3D artist.
+
+"""
 
 import os
 
@@ -28,7 +38,7 @@ __pkgsDir__ = {
         'bin': os.path.join(os.getenv(__root__), 'bin'),
         'qdarkgraystyle': os.path.join(os.getenv(__root__), 'bin', 'qdarkgraystyle'),
         'ui': os.path.join(os.getenv(__root__), 'ui'),
-        'textedit': os.path.join(os.getenv(__root__), 'bin', 'textedit'),
+        'textedit': os.path.join(os.getenv(__root__), 'ui', 'textedit'),
         'appData': os.path.join(os.getenv(__root__), 'appData'),
         'utilities': os.path.join(os.getenv(__root__), 'utilities'),
     }
