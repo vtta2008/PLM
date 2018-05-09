@@ -1,12 +1,10 @@
 SHORT FILM PIPELINE
 ====================
 
-This applications can be used to build, manage, and optimise film making pipelines.
-
-The latest version is compatible with Windows 10 and may run on earlier versions. It does not run in Maya 2016 or lower.
+This applications can be used to build, manage, and optimise film making pipelines. The latest version is compatible
+with Windows 10 and may run on earlier versions. It does not run in Maya 2016 or lower.
 
 Due to VFX Reference Platform and the large invention, we need to stay with python 2.7 but expect to migrate to python 3 in 2019.
-
 Details are as follows:
 
     http://www.vfxplatform.com/
@@ -15,34 +13,36 @@ Details are as follows:
 =======================
 
 Python 3.6 for Windows:
-    64 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86_64.exe>`_
-    32 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86.exe>`_
+    - 64 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86_64.exe>`_
+
+    - 32 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86.exe>`_
 
     - Also require extra python packages (will update more):
 
-        deprecated, jupyter-console, ipywidgets,'pywinauto, winshell, pandas,
-        notebook, juppyter, opencv-python, pyunpack, argparse, qdarkgraystyle,
-        asyncio, websockets, cx_Freeze,
+        .. code:: bash
+                deprecated, jupyter-console, ipywidgets,'pywinauto, winshell, pandas,
+                notebook, juppyter, opencv-python, pyunpack, argparse, qdarkgraystyle,
+                asyncio, websockets, cx_Freeze,
 
     - To install extra packages, run command in CMD:
 
-    .. code:: bash
-        "python -m pip install {packagename}"
+            .. code:: bash
+                "python -m pip install {packagename}"
 
 **LIST SOFTWARES PACKAGE**
 ==========================
 
-    - Maya 2017: https://www.autodesk.com/education/free-software/maya
-    - Vray 3.6: https://www.chaosgroup.com/vray/maya
-    - Phoenix FD 3.0: https://www.chaosgroup.com/phoenix-fd/maya
-    - VMM for maya: https://www.mediafire.com/#gu9s1tbb2u4g9
-    - Houdini: https://www.sidefx.com/download/
-    - Mari download: https://www.foundry.com/products/mari
+    - `Maya 2017 <https://www.autodesk.com/education/free-software/maya>`_
+    - `Vray 3.6 <https://www.chaosgroup.com/vray/maya>`_
+    - `Phoenix FD 3.0 <https://www.chaosgroup.com/phoenix-fd/maya>`_
+    - `VMM for maya <https://www.mediafire.com/#gu9s1tbb2u4g9>`_
+    - `Houdini <https://www.sidefx.com/download/>`_
+    - `Mari download <https://www.foundry.com/products/mari>`_
     - Mari extension: "Will update later"
-    - Nuke download: https://www.foundry.com/products/nuke
-    - ZBrush download: https://pixologic.com/zbrush/downloadcenter/
-    - Creative Cloud download: https://www.adobe.com/creativecloud/catalog/desktop.html
-    - Davinci Resolve: https://www.blackmagicdesign.com/nz/products/davinciresolve/
+    - `Nuke download <https://www.foundry.com/products/nuke>`_
+    - `ZBrush download <https://pixologic.com/zbrush/downloadcenter/>`_
+    - `Creative Cloud download <https://www.adobe.com/creativecloud/catalog/desktop.html>`_
+    - `Davinci Resolve <https://www.blackmagicdesign.com/nz/products/davinciresolve/>`_
 
 NOTE:
     - You can install Photoshop, Premiere, After Effects or anything you want with Adobe Creative Cloud
