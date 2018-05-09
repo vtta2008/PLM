@@ -107,4 +107,4 @@ Here is the Plugins/Files that I am using:
     Advanced Renamer - Free and fast batch rename utility for files and folders. (n.d.).
     Retrieved from https://www.advancedrenamer.com/
 
-Copyright (C) 2016-2018 by Trinh Do
+Copyright (C) 2017-2018 by Trinh Do
