@@ -73,17 +73,15 @@ In CommandPrompt/WindowShell:
 
 **REFERENCE**
 
-Here is the Plugins/Files that I use in Maya:
+Here is the Plugins/Files that I am using:
 
     GitHub - mottosso/Qt.py: Minimal Python 2 & 3 shim around all Qt bindings - PySide,
     PySide2, PyQt4 and PyQt5. (n.d.). Retrieved from https://github.com/mottosso/Qt.py
 
-Database browser:
-
     sqlitebrowser/sqlitebrowser. (2017, November 30).
     Retrieved from https://github.com/sqlitebrowser/sqlitebrowser
 
-Advance Renamer:
-
     Advanced Renamer - Free and fast batch rename utility for files and folders. (n.d.).
     Retrieved from https://www.advancedrenamer.com/
+
+Copyright (C) 2017-2018 by Trinh Do

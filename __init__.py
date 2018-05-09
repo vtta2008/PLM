@@ -24,7 +24,7 @@ __download__ = "https://github.com/vtta2008/pipelineTool"
 __email__ = "dot@damgteam.com"
 __author__ = "Trinh Do, a.k.a: Jimmy"
 __description__ = "This applications can be used to build, manage, and optimise film making pipelines."
-__readme__ = os.path.join(os.getenv(__root__), 'README.md')
+__readme__ = os.path.join(os.getenv(__root__), 'README.rst')
 __licence__ = os.path.join(os.getenv(__root__), 'LICENSE')
 
 __modules__ = ['plt', 'plt_preset', 'utilities.variables', 'utilities.utils', 'utilities.sql_server',
