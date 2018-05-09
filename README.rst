@@ -1,7 +1,7 @@
 SHORT FILM PIPELINE
 =========================
 
-.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/png/python.png
+.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/svg/python.svg
     :target: https://github.com/vtta2008/PipelineTool
 
 .. image:: https://img.shields.io/pypi/l/qdarkgraystyle.svg?style=flat-square
