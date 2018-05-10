@@ -46,6 +46,7 @@ import time
 import uuid
 import win32gui
 import win32api
+import pprint
 
 from pyunpack import Archive
 
@@ -493,14 +494,16 @@ def open_app(pth, *args):
 """ Quick find path """
 
 def get_icon(name, *args):
-    iconName = name + '.icon.png'
-    iconPth = os.path.join(os.getenv(__root__), 'imgs', 'plt.icon', iconName)
-    return iconPth
+    iconLst = [i for i in get_file_path(os.path.join(os.getenv(__root__), 'imgs')) if '.icon' in i]
+    for icon in iconLst:
+        if name in icon:
+            return icon
 
 def get_web_icon(name, *args):
-    iconName = name + '.icon.png'
-    iconPth = os.path.join(os.getenv(__root__), 'imgs', 'web.icon', iconName)
-    return iconPth
+    iconLst = get_file_path(os.path.join(os.getenv(__root__), 'imgs', 'web.icon'))
+    for icon in iconLst:
+        if name in icon:
+            return icon
 
 def get_avatar(name, *args):
     imgFile = name + '.avatar.jpg'
@@ -570,13 +573,12 @@ def check_match(data1, data2, *args):
 # ----------------------------------------------------------------------------------------------------------- #
 """ Preset """
 
-def preset3_maya_intergrate(*args):
+def preset_maya_intergrate(*args):
     # Pipeline tool module paths for Maya.
-    maya_tk = os.path.join(os.getenv(__root__), 'maya')
+    maya_tk = os.path.join(os.getenv(__root__), 'plt_plugins', 'maya')
 
     # Name of folders
-    mayaTrack = ['util', 'maya', 'plt.maya.icon', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging',
-                 'Sufacing']
+    mayaTrack = ['util', 'maya', 'plt.maya.icon', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging', 'Sufacing']
     pythonValue = ""
     pythonList = []
     for root, dirs, files in os.walk(maya_tk):
@@ -598,22 +600,22 @@ def preset3_maya_intergrate(*args):
     else:
         shutil.copy2(userSetup_plt_path, userSetup_maya_path)
 
-def preset4_gather_configure_info(*args):
+def preset_load_appInfo(*args):
     """
-    Get config info
-    :return:
+    Load installed app info from config file
+    :return: appInfo
     """
     # Configure root path
-    MAIN_CONFIG_PATH = os.path.join(os.getenv(__root__), 'appData', 'config', 'main.yml')
+    mainConfigPth = os.path.join(os.getenv(__root__), 'appData', 'config', 'main.yml')
 
     # Seeking config file
     Collect_info()
 
-    # Get info from file
-    with open(MAIN_CONFIG_PATH, 'r') as f:
-        APPINFO = yaml.load(f)
+    # Load info from file
+    with open(mainConfigPth, 'r') as f:
+        appInfo = yaml.load(f)
 
-    return APPINFO
+    return appInfo
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Collecting all info. """
@@ -629,8 +631,9 @@ class Collect_info(object):
     def __init__(self):
 
         super(Collect_info, self).__init__()
-        package = var.PLT_PKG
-        self.generate_config_file(package)
+        self.package = var.PLT_PKG
+
+        self.get_app_installed()
 
     def collect_module_pth(self, package):
         """
@@ -641,9 +644,9 @@ class Collect_info(object):
         """
         # Create info module dictionary
         moduleInfo = {}
-        moduleInfo['root'] = package['root']
-        moduleInfo['app module'] = os.path.join(package['root'], package['py'][0])
-        moduleInfo['app ui'] = os.path.join(package['root'], package['py'][1])
+        moduleInfo['root'] = os.getenv(__root__)
+        moduleInfo['app module'] = os.path.join(os.getenv(__root__), package['py'][0])
+        moduleInfo['app ui'] = os.path.join(os.getenv(__root__), package['py'][1])
 
         for pyFol in package['py']:
             pyPth = os.path.join(package['root'], pyFol)
@@ -659,53 +662,23 @@ class Collect_info(object):
 
         return moduleInfo
 
-    def collect_icon_path(self, package):
+    def collect_icon_path(self):
         """
         Get all the info of plt.maya.icon
-        :param package: the package of many information stored from default variable
         :param names: the dictionsary of names stored from default variable
         :return: plt.maya.icon.info
         """
         # Create dictionary for icon info
-        iconInfo = {}
-        iconInfo['Sep'] = 'separato.png'
-        iconInfo['File'] = 'file.png'
+        self.iconInfo = {}
+        # Custom some info to debug
+        self.iconInfo['Sep'] = 'separato.png'
+        self.iconInfo['File'] = 'file.png'
+        # Get list of icons in imgage folder
+        iconlst = [i for i in get_file_path(os.path.join(os.getenv(__root__), 'imgs')) if '.icon' in i]
+        for i in iconlst:
+            self.iconInfo[os.path.basename(i).split('.icon')[0]] = i
 
-        iconPth1 = os.path.join(os.getenv(__root__), 'imgs', 'plt.icon')
-        iconPth2 = os.path.join(os.getenv(__root__), 'imgs', 'web.icon')
-        iconPth3 = os.path.join(os.getenv(__root__), 'imgs', 'png')
-        iconPth4 = os.path.join(os.getenv(__root__), 'imgs', 'svg')
-        iconPth5 = os.path.join(os.getenv(__root__), 'imgs', 'maya.icon')
-
-
-        icons = [f for f in os.listdir(iconInfo['iconPth']) if '.icon' in f]
-        if len(icons) == 0:
-            iconInfo['plt.maya.icon'] = None
-        else:
-            for i in icons:
-                iconInfo[i.split('.icon')[0]] = os.path.join(iconInfo['iconPth'], i)
-        iconNames = [f for f in iconInfo]
-        icons = {}
-        icons['name'] = iconNames
-        return iconInfo
-
-    def collect_img_path(self, package):
-        """
-        Get all the info of images
-        :param package: the package of many information stored from default variable
-        :return: avatar.info
-        """
-        imgInfo = {}
-        imgInfo['imgPth'] = os.path.join(package['root'], 'imgs', package['image'][1])
-        imgs = [f for f in os.listdir(imgInfo['imgPth']) if '.img' in f]
-        if len(imgs) == 0:
-            imgInfo['avatar'] = ""
-        else:
-            for i in imgs:
-                imgInfo[i.split('.png')[0]] = os.path.join(imgInfo['imgPth'], i)
-        return imgInfo
-
-    def collect_all_apps_path(self):
+    def get_app_installed(self):
         """
         It will find and put all the info of installed apps to two list: appname and path
         :param filters: self.appName, self.appPath
@@ -715,6 +688,9 @@ class Collect_info(object):
         appName = []
         appPth = []
         all_programs = winshell.programs(common=1)
+
+        # pprint.pprint(all_programs)
+
         for dirpath, dirnames, filenames in os.walk(all_programs):
             relpath = dirpath[1 + len(all_programs):]
             shortcuts.setdefault(relpath, []).extend([winshell.shortcut(os.path.join(dirpath, f)) for f in filenames])
@@ -723,13 +699,10 @@ class Collect_info(object):
                 name, _ = os.path.splitext(os.path.basename(lnk.lnk_filepath))
                 appName.append(name)
                 appPth.append(lnk.path)
-        appInfo = {}
+
+        self.appInfo = {}
         for name in appName:
-            pth = appPth[appName.index(name)]
-            pth = str(pth)
-            name = str(name)
-            appInfo[name] = pth
-        return appInfo
+            self.appInfo[str(name)] = str(appPth[appName.index(name)])
 
     def collect_python_pkgs(self, package):
         """
@@ -738,7 +711,7 @@ class Collect_info(object):
         :param names: the dictionary of names stored from default variable
         :return: final app info
         """
-        self.appInfo = self.collect_all_apps_path()
+
         keys = [k for k in self.appInfo if not self.appInfo[k].endswith(package['ext'][0])]
         self.appInfo = self.deleteKey(keys, True)
         jobs = []
@@ -771,11 +744,8 @@ class Collect_info(object):
         :return: info files
         """
 
-        info = {}
         iconInfo = self.collect_icon_path(package)
         trackKeys = {}
-
-        self.appInfo = self.collect_all_apps_path()
 
         appsConfig_yaml = os.path.join(os.getenv(__root__), 'appData', 'config', 'app.yml')
         appsConfig_json = os.path.join(os.getenv(__root__), 'appData', 'config', 'app.json')
@@ -802,8 +772,8 @@ class Collect_info(object):
             for key in self.appInfo:
                 if icon in key:
                     trackKeys[icon] = [key, iconInfo[icon], self.appInfo[key]]
-        # insert info which is not in installed apps
-        trackKeys['Logo'] = ['pipeline manager', iconInfo['Logo'], '']
+        # Custom functions
+        trackKeys['Logo'] = ['Pipeline Tool', iconInfo['Logo'], '']
         trackKeys['Sep'] = ['separator', iconInfo['Sep'], 'separator']
         trackKeys['File'] = ['File', iconInfo['File'], '']
         trackKeys['Exit'] = ['Exit application', iconInfo['Exit'], '']
@@ -814,56 +784,54 @@ class Collect_info(object):
         trackKeys['ReConfig'] = ['Re configuring data', iconInfo['Reconfig'], '']
 
         # Davinci Resolve
-        davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
-
-        if os.path.exists(davinciPth):
-            trackKeys['Resolve'] = ['Davinci Resolve 14', get_icon('Resolve'), davinciPth]
-
-        with open(os.path.join(os.getenv(__root__), 'appData', 'config', 'app.yml'), 'r') as f:
-            fixInfo = yaml.load(f)
 
         dbBrowserPth = os.path.join(os.getenv(__root__), 'external_app', 'sqlbrowser', 'SQLiteDatabaseBrowserPortable.exe')
         advanceRenamerPth = os.path.join(os.getenv(__root__), 'external_app', 'batchRenamer', 'ARen.exe')
         qtDesigner = os.path.join(os.getenv('PROGRAMDATA'),'Anaconda3', 'Library', 'bin', 'designer.exe')
+        davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
 
-        for keys in fixInfo:
-            # print keys
-            # Pycharm.
-            if 'JetBrains PyCharm' in keys:
-                trackKeys['PyCharm'] = ['PyCharm', get_icon('Pycharm'), fixInfo['JetBrains PyCharm 2017.3.3']]
+        extraApps = [dbBrowserPth, advanceRenamerPth, qtDesigner, davinciPth]
+        extraKeys = ['Database Browser', 'Advance Renamer', 'QtDesigner', "Davinci Resolve"]
 
-            # Sumblime text.
-            if 'Sublime Text 3' in keys:
-                trackKeys['SublimeText 3'] = ['Sublime Text 3', get_icon('SublimeText 3'), fixInfo['Sublime Text 3']]
+        for i in range(len(extraApps)):
+            if os.path.exists(extraApps[i]):
+                trackKeys[extraKeys[i]] = [extraKeys[i], get_icon(extraKeys[i]), extraApps[i]]
 
-            # Qt Designer
-            if os.path.exists(qtDesigner):
-                trackKeys['QtDesigner'] = ['QtDesigner', get_icon('QtDesigner'), qtDesigner]
+        # for path in extraApps:
 
-            # Snipping tool.
-            if 'Snipping Tool' in fixInfo:
-                trackKeys['Snipping Tool'] = ['Snipping Tool', get_icon('Snipping Tool'), fixInfo['Snipping Tool']]
+        # # Pycharm.
+        # if 'JetBrains PyCharm' in keys:
+        #     trackKeys['PyCharm'] = ['PyCharm', get_icon('Pycharm'), fixInfo['JetBrains PyCharm 2017.3.3']]
+        #
+        # # Sumblime text.
+        # if 'Sublime Text 3' in keys:
+        #     trackKeys['SublimeText 3'] = ['Sublime Text 3', get_icon('SublimeText 3'), fixInfo['Sublime Text 3']]
+        #
+        #
+        # # Snipping tool.
+        # if 'Snipping Tool' in fixInfo:
+        #     trackKeys['Snipping Tool'] = ['Snipping Tool', get_icon('Snipping Tool'), fixInfo['Snipping Tool']]
 
-            # Database browser.
-            if os.path.exists(dbBrowserPth):
-                trackKeys['Database Browser'] = ['Database Browser', get_icon('SQliteTool'), dbBrowserPth]
+        # Qt Designer
+        # if os.path.exists(qtDesigner):
+        #     trackKeys['QtDesigner'] = ['QtDesigner', get_icon('QtDesigner'), qtDesigner]
+        #
+        # # Database browser.
+        # if os.path.exists(dbBrowserPth):
+        #     trackKeys['Database Browser'] = ['Database Browser', get_icon('SQliteTool'), dbBrowserPth]
+        #
+        # # Advance Renamer.
+        # if os.path.exists(advanceRenamerPth):
+        #     trackKeys['Advance Renamer'] = ['Advance Renamer 3.8', get_icon('AdvanceRenamer'), advanceRenamerPth]
 
-            # Advance Renamer.
-            if os.path.exists(advanceRenamerPth):
-                trackKeys['Advance Renamer'] = ['Advance Renamer 3.8', get_icon('AdvanceRenamer'), advanceRenamerPth]
-
-        info['pipeline'] = trackKeys
+        # info['pipeline'] = trackKeys
         pipelineConfig_yaml = os.path.join(os.getenv(__root__), 'appData', 'config', 'main.yml')
         pipelineConfig_json = os.path.join(os.getenv(__root__), 'appData', 'config', 'main.json')
         dataHandle('yaml', 'w', pipelineConfig_yaml, trackKeys)
         dataHandle('json', 'w', pipelineConfig_json, trackKeys)
-        info['icon'] = iconInfo
 
-        iconConfig = os.path.join(os.getenv(__root__), 'appData', 'config', 'icon.yml')
-
-        if not os.path.exists(iconConfig):
-            dataHandle('yaml', 'w', iconConfig, iconInfo)
-            dataHandle('json', 'w', iconConfig, iconInfo)
+        dataHandle('yaml', 'w', iconConfig, iconInfo)
+        dataHandle('json', 'w', iconConfig, iconInfo)
 
         envKeys = {}
         for key in os.environ.keys():
@@ -871,9 +839,8 @@ class Collect_info(object):
 
         pth = os.path.join(os.getenv(__root__), 'appData', 'config', 'sysPath.yml')
 
-        if not os.path.exists(pth):
-            dataHandle('yaml', 'w', pth, envKeys)
-            dataHandle('json', 'w', pth, envKeys)
+        dataHandle('yaml', 'w', pth, envKeys)
+        dataHandle('json', 'w', pth, envKeys)
 
     def deleteKey(self, keys, n=True):
         if not n:

@@ -80,19 +80,20 @@ PLT_MESS = dict(About=mess.PLT_ABOUT, Credit=mess.PLT_CREDIT, status='Pipeline A
 
 PLT_PKG = dict(
 
-    job=['TD', 'Comp', 'Design', 'Office', 'UV', 'Sound'],
+    job=['TD', 'Comp', 'Design', 'Microsoft', 'UV', 'Sound', 'Dev', 'Plt', ],
     TD=['Maya', '3ds Max', 'Mudbox', 'Houdini FX', 'ZBrush', 'Mari', 'Substance Painter',],
     Comp=['NukeX', 'Hiero', 'After Effects', 'Premiere Pro'],
     Design=['Photoshop', 'Illustrator'],
-    Office=['Word', 'Excel'],
+    Microsoft=['Word', 'Excel', "Snipping Tool"],
     UV=['UVLayout'],
     Sound=['Audition'],
+    Plt=["Git Bash", "Git CMD"],
+    Dev=["PyCharm", "Sublime Text", "QtDesigner"],
+
     sysOpts=["Host Name", "Product ID", "System Manufacturer", "System Model", "System type", "BIOS Version", "Domain",
              "Windows Directory", "Total Physical Memory", "Available Physical Memory", "Logon Server"],
     filter=['Non-commercial', 'Uninstall', 'Verbose', 'License', 'Skype'],
-    root = os.getenv(__root__),
     py = ['utilities','ui'],
-    image=['plt.icon', 'avatar'],
-    ext=['.exe', 'PipelineTool.py', '.lnk'],
+    ext=['.exe', '.lnk'],
 
 )

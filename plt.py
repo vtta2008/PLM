@@ -43,11 +43,6 @@ from __init__ import (__root__, __appname__, __version__, __organization__, __we
 # Main path
 os.environ[__root__] = os.getcwd()
 
-# Preset
-import plt_presets as pltp
-
-pltp.preset3_maya_intergrate()
-
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
@@ -69,6 +64,8 @@ from utilities import sql_local as usql
 from utilities import message as mess
 from utilities import variables as var
 
+func.preset_maya_intergrate()
+
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
 
@@ -88,7 +85,7 @@ MIN = 0
 MAX = 1000
 
 # Get apps info config
-APPINFO = pltp.preset4_gather_configure_info()
+APPINFO = func.preset_load_appInfo()
 
 # -------------------------------------------------------------------------------------------------------------
 """ A label with center align """
@@ -898,6 +895,7 @@ class TabWidget(QWidget):
 
         self.username = username
         self.package = package
+        self.appInfo = APPINFO
 
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
@@ -939,6 +937,18 @@ class TabWidget(QWidget):
         tab1Sec1Grid = QGridLayout()
         tab1Sec1GrpBox.setLayout(tab1Sec1Grid)
 
+        tab1Sec2GrpBox = QGroupBox('cmd')
+        tab1Sec2Grid = QGridLayout()
+        tab1Sec2GrpBox.setLayout(tab1Sec2Grid)
+
+        tab1Sec3GrpBox = QGroupBox('Custom')
+        tab1Sec3Grid = QGridLayout()
+        tab1Sec3GrpBox.setLayout(tab1Sec3Grid)
+
+        tab1Sec4GrpBox = QGroupBox('CGI')
+        tab1Sec4Grid = QGridLayout()
+        tab1Sec4GrpBox.setLayout(tab1Sec4Grid)
+
         for key in APPINFO:
             if key == 'PyCharm':
                 pycharmBtn = self.make_icon_btn2('PyCharm')
@@ -950,16 +960,12 @@ class TabWidget(QWidget):
                 qtdesignerBtn = self.make_icon_btn2('QtDesigner')
                 tab1Sec1Grid.addWidget(qtdesignerBtn, 0, 2, 1, 1)
 
-        tab1Sec2GrpBox = QGroupBox('CMD')
-        tab1Sec2Grid = QGridLayout()
-        tab1Sec2GrpBox.setLayout(tab1Sec2Grid)
-
-        gitbashIconBtn = self.make_icon_btn2('Git Bash')
-        tab1Sec2Grid.addWidget(Clabel("Just for fun"), 0, 0, 1, 1)
-
-        tab1Sec3GrpBox = QGroupBox('Custom')
-        tab1Sec3Grid = QGridLayout()
-        tab1Sec3GrpBox.setLayout(tab1Sec3Grid)
+            if key == 'Git Bash':
+                gitbashIconBtn = self.make_icon_btn2('Git Bash')
+                tab1Sec2Grid.addWidget(gitbashIconBtn, 0, 0, 1, 1)
+            if key == 'Git CMD':
+                gitbashIconBtn = self.make_icon_btn2('Git Bash')
+                tab1Sec2Grid.addWidget(gitbashIconBtn, 0, 1, 1, 1)
 
         arIconBtn = self.make_icon_btn2('Advance Renamer')
         noteReminderBtn = self.make_icon_btn1('QtNote', 'Note Reminder', self.note_reminder)
@@ -978,10 +984,6 @@ class TabWidget(QWidget):
         tab1Sec3Grid.addWidget(calendarBtn, 1, 2, 1, 1)
         tab1Sec3Grid.addWidget(calculatorBtn, 2, 0, 1, 1)
         tab1Sec3Grid.addWidget(fileFinderBtn, 2, 1, 1, 1)
-
-        tab1Sec4GrpBox = QGroupBox('CGI')
-        tab1Sec4Grid = QGridLayout()
-        tab1Sec4GrpBox.setLayout(tab1Sec4Grid)
 
         for key in APPINFO:
             if key == 'Mudbox 2018':
@@ -1103,7 +1105,7 @@ class TabWidget(QWidget):
         tab5Section1Grid = QGridLayout()
         tab5Section1GrpBox.setLayout(tab5Section1Grid)
 
-        dataBrowserIconBtn = self.make_icon_btn2('Database Browser')
+        dataBrowserIconBtn = self.make_icon_btn1('Database Browser')
         tab5Section1Grid.addWidget(dataBrowserIconBtn, 0, 0, 1, 1)
 
         tab5layout.addWidget(tab5Section1GrpBox)
@@ -1124,6 +1126,7 @@ class TabWidget(QWidget):
         return iconBtn
 
     def make_icon_btn2(self, name):
+        keyLst = [k for k in APPINFO]
         icon = QIcon(APPINFO[name][1])
         iconBtn = QPushButton()
         iconBtn.setToolTip(APPINFO[name][0])
@@ -1164,7 +1167,7 @@ class TabWidget(QWidget):
         window.exec_()
 
     def text_editor(self):
-        from ui.textedit import textedit
+        from ui import textedit
         window = textedit.WindowDialog()
         window.exec_()
 

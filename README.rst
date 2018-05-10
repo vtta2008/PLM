@@ -1,13 +1,13 @@
 SHORT FILM PIPELINE
 ===================
 
-.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/png/release13.1.png
+.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/release13.1.tag.png?style=flat-square
     :target: https://github.com/vtta2008/PipelineTool
 
-.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/png/python3.6.png
+.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/python3.6.tag.png?style=flat-square
     :target: https://github.com/vtta2008/PipelineTool
 
-.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/png/licenceMIT.png
+.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/licenceMIT.tag.png?style=flat-square
     :target: https://github.com/vtta2008/PipelineTool/blob/master/LICENSE
 
 This application can be used to build, manage, and optimise film making pipelines. The latest version is compatible
