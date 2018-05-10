@@ -1,11 +1,11 @@
 SHORT FILM PIPELINE
 ===================
 
-.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/release13.1.tag.png?style=flat-square
-    :target: https://github.com/vtta2008/PipelineTool
-
 .. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/python3.6.tag.png?style=flat-square
-    :target: https://github.com/vtta2008/PipelineTool
+    :target: https://www.anaconda.com/download/
+
+.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/release13.1.tag.png?style=flat-square
+    :target: https://github.com/vtta2008/PipelineTool/releases
 
 .. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/licenceMIT.tag.png?style=flat-square
     :target: https://github.com/vtta2008/PipelineTool/blob/master/LICENSE
@@ -83,7 +83,7 @@ Run directly:
 
 .. code:: bash
 
-    start python main.py
+    start python plt.py
 
 Complie executable file:
 

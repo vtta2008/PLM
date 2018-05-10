@@ -9,23 +9,13 @@ Description:
     This place is a storage of variables
 
 """
-
 # -------------------------------------------------------------------------------------------------------------
-""" About Plt """
-
-__appname__ = "Pipeline Tool"
-__module__ = "Plt"
-__version__ = "13.0.1"
-__organization__ = "DAMG team"
-__website__ = "www.dot.damgteam.com"
-__email__ = "dot@damgteam.com"
-__author__ = "Trinh Do, a.k.a: Jimmy"
+""" Check data flowing """
+print("Import from modules: {file}".format(file=__name__))
+print("Directory: {path}".format(path=__file__.split(__name__)[0]))
 __root__ = "PLT_RT"
-__db__ = "PLT_DB"
-__st__ = "PLT_ST"
-
 # -------------------------------------------------------------------------------------------------------------
-""" Import modules """
+""" Import """
 
 # Python
 import logging
@@ -34,6 +24,7 @@ import platform
 
 # Plt tools
 from utilities import message as mess
+from __init__ import __appname__
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """

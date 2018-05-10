@@ -48,7 +48,7 @@ WINPROFILE = dict(prodpthUI=['ProdPthUI', 'Create New Project', 'SET UP NEW PROJ
 APPS = ['maya', 'zbrush', 'mari', 'nuke', 'photoshop', 'houdini', 'after effects']
 
 MASTER = ['assets', 'sequences', 'deliverables', 'documents', 'editorial', 'sound', 'resources', 'RnD']
-TASKS = ['art', 'Modeling', 'rigging', 'surfacing']
+TASKS = ['art', 'plt_model', 'rigging', 'surfacing']
 SEQTASKS = ['anim', 'comp', 'fx', 'layout', 'lighting']
 ASSETS = {'heroObj': ['washer', 'dryer'], 'environment': [], 'props': []}
 STEPS = ['publish', 'review', 'work']
@@ -383,7 +383,7 @@ class NewProject(QDialog):
     #         os.mkdir(contentMasterPth)
     #
     #     # Assets content
-    #     assetsTasks = ['art', 'Modeling', 'surfacing', 'rigging']
+    #     assetsTasks = ['art', 'plt_model', 'surfacing', 'rigging']
     #     assetsSections = ['characters', 'environment', 'props']
     #
     #     assetsPth = os.path.join(self.rootPth, 'assets')
@@ -407,7 +407,7 @@ class NewProject(QDialog):
     #                     assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
     #                     if task == 'art':
     #                         apps = ['photoshop', 'maya']
-    #                     elif task == 'Modeling':
+    #                     elif task == 'plt_model':
     #                         apps = ['zbrush', 'maya', 'mudbox', 'houdini']
     #                     elif task == 'surfacing':
     #                         apps = ['mari', 'maya', 'substance', 'photoshop']
@@ -439,7 +439,7 @@ class NewProject(QDialog):
     #                     assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
     #                     if task == 'art':
     #                         apps = ['photoshop', 'maya']
-    #                     elif task == 'Modeling':
+    #                     elif task == 'plt_model':
     #                         apps = ['zbrush', 'maya', 'mudbox', 'houdini']
     #                     elif task == 'surfacing':
     #                         apps = ['mari', 'maya', 'substance', 'photoshop']
@@ -477,7 +477,7 @@ class NewProject(QDialog):
     #                     assetsWorkTaskPth = os.path.join(assetsTaskPth, 'work')
     #                     if task == 'art':
     #                         apps = ['photoshop', 'maya']
-    #                     elif task == 'Modeling':
+    #                     elif task == 'plt_model':
     #                         apps = ['zbrush', 'maya', 'mudbox', 'houdini']
     #                     elif task == 'surfacing':
     #                         apps = ['mari', 'maya', 'substance', 'photoshop']

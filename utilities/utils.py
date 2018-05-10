@@ -7,46 +7,17 @@ Author: Do Trinh/Jimmy - 3D artist.
 Description:
     Here is where a lot of function need to use multiple times overall
 """
-
 # -------------------------------------------------------------------------------------------------------------
-""" About Plt """
-
-__appname__ = "Pipeline Tool"
-__module__ = "Plt"
-__version__ = "13.0.1"
-__organization__ = "DAMG team"
-__website__ = "www.dot.damgteam.com"
-__email__ = "dot@damgteam.com"
-__author__ = "Trinh Do, a.k.a: Jimmy"
+""" Check data flowing """
+print("Import from modules: {file}".format(file=__name__))
+print("Directory: {path}".format(path=__file__.split(__name__)[0]))
 __root__ = "PLT_RT"
-__db__ = "PLT_DB"
-__st__ = "PLT_ST"
-__pkgsReq__ = [ "deprecated", "jupyter-console", "ipywidgets","pywinauto", "winshell", "pandas", "notebook", "juppyter",
-                "opencv-python", "pyunpack", "argparse", "qdarkgraystyle", "asyncio", "websockets", "cx_Freeze", ]
 # -------------------------------------------------------------------------------------------------------------
-""" Import modules """
+""" Import """
 
 # Python
-import requests
-import json
-import logging
-import os
-import platform
-import shutil
-import subprocess
-import sys
-import urllib
-import cv2
-import winshell
-import yaml
-import pip
-import re
-import datetime
-import time
-import uuid
-import win32gui
-import win32api
-import pprint
+import os, sys, requests, logging, platform, shutil, subprocess, urllib, cv2, winshell, yaml, json, pip, re
+import datetime, time, uuid, win32gui, win32api, pprint
 
 from pyunpack import Archive
 
@@ -63,6 +34,16 @@ formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Error handle """
+
+def handle_path_error(directory=None):
+    if not os.path.exists(directory) or directory is None:
+        try:
+            raise IsADirectoryError("Path is not exists: {directory}".format(directory=directory))
+        except IsADirectoryError as error:
+            logger.debug('Caught error: ' + repr(error))
 
 # -------------------------------------------------------------------------------------------------------------
 """ Installation """
@@ -118,7 +99,7 @@ def uninstall_all_required_package():
 # -------------------------------------------------------------------------------------------------------------
 """ Inspect info """
 
-def get_python_pkgs(*args):
+def get_python_pkgs():
     pyPkgs = {}
     pyPkgs['__mynote__'] = 'import pip; pip.get_installed_distributions()'
 
@@ -138,7 +119,7 @@ def get_python_pkgs(*args):
 
     return pyPkgs
 
-def inspect_package(name, *args):
+def inspect_package(name):
     """
     check python component, if false, it will install component
     :param name:
@@ -146,7 +127,6 @@ def inspect_package(name, *args):
     """
     # logger.info( 'Trying to import %s' % name )
     allPkgs = get_python_pkgs()
-
     if name in allPkgs:
         # logger.info('package "%s" is already installed' % name)
         pass
@@ -155,7 +135,7 @@ def inspect_package(name, *args):
                     'execute package installation procedural' % name)
         install_py_packages(name)
 
-def inspect_env_key(key, path, *args):
+def get_all_env_key(key, path):
     try:
         pth = os.getenv(key)
         if pth == None or pth == '':
@@ -166,6 +146,38 @@ def inspect_env_key(key, path, *args):
         os.environ[key] = path
     else:
         pass
+
+def get_all_path_from_dir(directory):
+    """
+        This function will generate the file names in a directory
+        tree by walking the tree either top-down or bottom-up. For each
+        directory in the tree rooted at directory top (including top itself),
+        it yields a 3-tuple (dirpath, dirnames, filenames).
+    """
+    filePths = []   # List which will store all of the full file paths.
+    dirPths = []    # List which will store all of the full folder paths.
+
+    # Walk the tree.
+    for root, directories, files in os.walk(directory, topdown=False):
+        for filename in files:
+            filePths.append(os.path.join(root, filename))  # Add to file list.
+        for folder in directories:
+            dirPths.append(os.path.join(root, folder)) # Add to folder list.
+    return [filePths, dirPths]
+
+def get_file_path(directory):
+    handle_path_error(directory)
+    return get_all_path_from_dir(directory)[0]
+
+def get_folder_path(directory):
+    handle_path_error(directory)
+    return get_all_path_from_dir(directory)[1]
+
+def get_base_folder(path):
+    return os.path.dirname(path)
+
+def get_base_name(path):
+    return os.path.basename(path)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Functions content """
@@ -190,35 +202,31 @@ def extract_files(inDir, file_name, outDir, *args):
 
 def fix_image_files(root=os.curdir):
     for path, dirs, files in os.walk(os.path.abspath(root)):
-        # sys.stdout.write('.')
         for dir in dirs:
             system_call("mogrify *.png", "{}".format(os.path.join(path, dir)))
 
-def object_config(directory, mode, *args):
-
-    operatingSystem = platform.system()
-
-    if operatingSystem == "Windows" or operatingSystem == "Darwin":
+def obj_properties_setting(directory, mode, *args):
+    if platform.system() == "Windows" or platform.system() == "Darwin":
         if mode == "h":
-            if operatingSystem == "Windows":
+            if platform.system() == "Windows":
                 subprocess.call(["attrib", "+H", directory])
-            elif operatingSystem == "Darwin":
+            elif platform.system() == "Darwin":
                 subprocess.call(["chflags", "hidden", directory])
         elif mode == "s":
-            if operatingSystem == "Windows":
+            if platform.system() == "Windows":
                 subprocess.call(["attrib", "-H", directory])
-            elif operatingSystem == "Darwin":
+            elif platform.system() == "Darwin":
                 subprocess.call(["chflags", "nohidden", directory])
         else:
             logger.error("ERROR: (Incorrect Command) Valid commands are 'HIDE' and 'UNHIDE' (both are not case sensitive)")
     else:
         logger.error("ERROR: (Unknown Operating System) Only Windows and Darwin(Mac) are Supported")
 
-def batch_config(listObj, mode, *args):
+def batch_obj_properties_setting(listObj, mode, *args):
 
     for obj in listObj:
         if os.path.exists(obj):
-            object_config(obj, mode)
+            obj_properties_setting(obj, mode)
         else:
             logger.info('Could not find the specific path: %s' % obj)
 
@@ -238,29 +246,6 @@ def clean_unnecessary_file(var, *args):
         for f in profile:
             logger.info('removing %s' % f)
             os.remove(f)
-
-def get_file_path(directory=None):
-
-    """
-        This function will generate the file names in a directory
-        tree by walking the tree either top-down or bottom-up. For each
-        directory in the tree rooted at directory top (including top itself),
-        it yields a 3-tuple (dirpath, dirnames, filenames).
-
-    """
-    file_paths = []  # List which will store all of the full filepaths.
-
-    if not os.path.exists(directory) or directory is None:
-        sys.exit()
-
-    # Walk the tree.
-    for root, directories, files in os.walk(directory):
-        for filename in files:
-            # Join the two strings in order to form the full filepath.
-            filepath = os.path.join(root, filename)
-            file_paths.append(filepath)  # Add it to the list.
-
-    return file_paths  # Self-explanatory.
 
 def batch_resize_image(imgDir=None, imgResDir=None, size=[100, 100], sub=False, ext='.png', mode=1):
     """
@@ -344,7 +329,7 @@ def cmd_execute_py(name, path, *args):
     :param path: path to python file
     :return: executing in command prompt
     """
-    logger.info('Executing %s from %s' % (name, path))
+    logger.info("Executing {name} from {path}".format(name=name, path=path))
     pth = os.path.join(path, name)
     if os.path.exists(pth):
         subprocess.call([sys.executable, pth])
@@ -506,15 +491,10 @@ def get_web_icon(name, *args):
             return icon
 
 def get_avatar(name, *args):
-    imgFile = name + '.avatar.jpg'
-    imgPth = os.path.join(os.getenv(__root__), 'imgs', 'avatar', imgFile)
-
-    if os.path.exists(imgPth):
-        pass
-    else:
-        scrPth = os.path.join(os.getenv(__root__), 'imgs', 'avatar', 'default.avatar.jpg')
-        shutil.copy2(scrPth, imgPth)
-    return imgPth
+    avatarLst = [i for i in get_file_path(os.path.join(os.getenv(__root__), 'imgs')) if '.avatar' in i]
+    for avatar in avatarLst:
+        if name in avatar:
+            return avatar
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Encode, decode, convert """
@@ -575,10 +555,10 @@ def check_match(data1, data2, *args):
 
 def preset_maya_intergrate(*args):
     # Pipeline tool module paths for Maya.
-    maya_tk = os.path.join(os.getenv(__root__), 'plt_plugins', 'maya')
+    maya_tk = os.path.join(os.getenv(__root__), 'appPackages', 'maya')
 
     # Name of folders
-    mayaTrack = ['util', 'maya', 'plt.maya.icon', 'modules', 'plugins', 'Animation', 'MayaLib', 'Modeling', 'Rigging', 'Sufacing']
+    mayaTrack = ['plt_modules', 'plugins', 'plt_anim', 'MayaLib', 'plt_model', 'plt_rig', 'plt_surface']
     pythonValue = ""
     pythonList = []
     for root, dirs, files in os.walk(maya_tk):
@@ -592,7 +572,7 @@ def preset_maya_intergrate(*args):
     os.environ['PYTHONPATH'] = pythonValue
 
     # Copy userSetup.py from source code to properly maya folder
-    userSetup_plt_path = os.path.join(os.getenv(__root__), 'plt_plugins', 'maya', 'userSetup.py')
+    userSetup_plt_path = os.path.join(os.getenv(__root__), 'appPackages', 'maya', 'userSetup.py')
     userSetup_maya_path = os.path.join(os.path.expanduser('~/Documents/maya/2017/prefs/scripts'), 'userSetup.py')
 
     if not os.path.exists(userSetup_plt_path) or not os.path.exists(userSetup_plt_path):
@@ -637,10 +617,10 @@ class Collect_info(object):
 
     def collect_module_pth(self, package):
         """
-        Get all the info of modules
+        Get all the info of plt_modules
         :param package: the package of many information stored from default variable
         :param names: the dictionary of names stored from default variable
-        :return: modules.info
+        :return: plt_modules.info
         """
         # Create info module dictionary
         moduleInfo = {}

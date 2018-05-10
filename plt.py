@@ -1,8 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
-# http://13.55.214.163/check
-# http://13.55.214.163/auth
 """
 
 Script Name: plt.py
@@ -11,19 +8,18 @@ Description:
     This script is master file of Pipeline Tool
 
 """
-
 # -------------------------------------------------------------------------------------------------------------
-""" Import modules """
+""" Check data flowing """
+print("Import from modules: {file}".format(file=__name__))
+print("Directory: {path}".format(path=__file__.split(__name__)[0]))
+__root__ = "PLT_RT"
+# -------------------------------------------------------------------------------------------------------------
+""" Import """
 
 # Python
-import logging
-import os
-import subprocess
-import sys
-import webbrowser
-import requests
-
+import os, sys, logging, subprocess, webbrowser, requests
 import sqlite3 as lite
+
 from functools import partial
 
 # PyQt5
@@ -56,8 +52,7 @@ logger.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Plt tools """
-from ui import ui_acc_setting
-from ui import ui_preference
+from ui import (ui_acc_setting, ui_preference)
 
 from utilities import utils as func
 from utilities import sql_local as usql
@@ -69,69 +64,25 @@ func.preset_maya_intergrate()
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
 
-# PyQt5 ui elements
-__center__ = Qt.AlignCenter
-__right__ = Qt.AlignRight
-__left__ = Qt.AlignLeft
-frameStyle = QFrame.Sunken | QFrame.Panel
 
-UNIT = 60
-MARG = 5
-BUFF = 10
-SCAL = 1
-STEP = 1
-VAL = 1
-MIN = 0
-MAX = 1000
 
+# -------------------------------------------------------------------------------------------------------------
 # Get apps info config
 APPINFO = func.preset_load_appInfo()
 
-# -------------------------------------------------------------------------------------------------------------
-""" A label with center align """
-
 class Clabel(QLabel):
 
-    def __init__(self, text = "", align = __center__, lbW = 50, parent=None):
+    def __init__(self, text="No Text", wmin=50, align=None, parent=None):
         super(Clabel, self).__init__(parent)
+        self.setText(text)
+        self.setMinimumWidth(wmin)
 
-        self.text = text
-        self.align = align
-        self.lbW = lbW
+        if align == None:
+            align = Qt.AlignCenter
 
-        self.layout = QHBoxLayout()
-        self.buildUI()
-        self.setLayout(self.layout)
+        self.setAlignment(align)
 
-    def buildUI(self):
 
-        label = QLabel(self.text)
-        label.setAlignment(self.align)
-        label.setMinimumWidth(self.lbW)
-        self.layout.addWidget(label)
-
-# -------------------------------------------------------------------------------------------------------------
-""" A spacer line to be able to add between layouts """
-
-class QSpacer(QWidget):
-
-    def __init__(self, lineW=MARG, parent=None):
-        super(QSpacer, self).__init__(parent)
-
-        self.lineW = lineW
-
-        self.layout = QVBoxLayout()
-        self.buildUI()
-        self.setLayout(self.layout)
-
-    def buildUI(self):
-
-        Separador = QFrame()
-        Separador.setFrameShape(QFrame.HLine)
-        Separador.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
-        Separador.setLineWidth(self.lineW)
-
-        self.layout.addWidget(Separador)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign up layout """
@@ -156,26 +107,25 @@ class Plt_sign_up(QDialog):
         self.setLayout(self.layout)
 
     def buildUI(self):
+        self.avatar_section()
+        self.account_section()
+        self.profile_section()
+        self.location_section()
+        self.security_section()
+        self.buttons_section()
 
-        avatar_section = self.avatar_section()
-        account_section = self.account_section()
-        profile_section = self.profile_section()
-        contact_section = self.location_section()
-        security_section = self.security_section()
-        buttons_section = self.buttons_section()
-
-        self.layout.addWidget(Clabel("ALL FIELD ARE REQUIRED."), 0, 0, 1, 6)
-        self.layout.addWidget(avatar_section, 1, 0, 1, 2)
-        self.layout.addWidget(account_section, 1, 2, 1, 4)
-        self.layout.addWidget(profile_section, 2, 0, 1, 6)
-        self.layout.addWidget(contact_section, 3, 0, 1, 6)
-        self.layout.addWidget(security_section, 4, 0, 1, 6)
-        self.layout.addWidget(buttons_section, 5, 0, 1, 6)
+        self.layout.addWidget(Clabel("ALL FIELD ARE REQUIRED!!!"), 0, 0, 1, 6)
+        self.layout.addWidget(self.avaSection, 1, 0, 1, 2)
+        self.layout.addWidget(self.accSection, 1, 2, 1, 4)
+        self.layout.addWidget(self.prfSection, 2, 0, 1, 6)
+        self.layout.addWidget(self.conSection, 3, 0, 1, 6)
+        self.layout.addWidget(self.serSection, 4, 0, 1, 6)
+        self.layout.addWidget(self.btnSection, 5, 0, 1, 6)
 
     def avatar_section(self):
-        avatar_groupBox = QGroupBox("Avatar")
+        self.avaSection = QGroupBox("Avatar")
         avatar_grid = QGridLayout()
-        avatar_groupBox.setLayout(avatar_grid)
+        self.avaSection.setLayout(avatar_grid)
 
         defaultImg = QPixmap.fromImage(QImage(func.get_avatar('default')))
         self.userAvatar = QLabel()
@@ -189,36 +139,30 @@ class Plt_sign_up(QDialog):
         avatar_grid.addWidget(self.userAvatar, 0, 0, 2, 2)
         avatar_grid.addWidget(set_avatarBtn, 2, 0, 1, 2)
 
-        return avatar_groupBox
-
     def account_section(self):
-
-        account_groupBox = QGroupBox("Account")
+        self.accSection = QGroupBox("Account")
         account_grid = QGridLayout()
-        account_groupBox.setLayout(account_grid)
+        self.accSection.setLayout(account_grid)
 
         account_grid.addWidget(Clabel('User Name'), 0, 0, 1, 2)
         account_grid.addWidget(Clabel('Password'), 1, 0, 1, 2)
         account_grid.addWidget(Clabel('Confirm Password'), 2, 0, 1, 2)
 
-        self.usernameField = QLineEdit()
-        self.passwordField = QLineEdit()
-        self.confirmPassField = QLineEdit()
+        self.userField = QLineEdit()
+        self.pwField = QLineEdit()
+        self.cfpwField = QLineEdit()
 
-        self.passwordField.setEchoMode(QLineEdit.Password)
-        self.confirmPassField.setEchoMode(QLineEdit.Password)
+        self.pwField.setEchoMode(QLineEdit.Password)
+        self.cfpwField.setEchoMode(QLineEdit.Password)
 
-        account_grid.addWidget(self.usernameField, 0, 3, 1, 4)
-        account_grid.addWidget(self.passwordField, 1, 3, 1, 4)
-        account_grid.addWidget(self.confirmPassField, 2, 3, 1, 4)
-
-        return account_groupBox
+        account_grid.addWidget(self.userField, 0, 3, 1, 4)
+        account_grid.addWidget(self.pwField, 1, 3, 1, 4)
+        account_grid.addWidget(self.cfpwField, 2, 3, 1, 4)
 
     def profile_section(self):
-
-        profile_groupBox = QGroupBox("Profile")
+        self.prfSection = QGroupBox("Profile")
         profile_grid = QGridLayout()
-        profile_groupBox.setLayout(profile_grid)
+        self.prfSection.setLayout(profile_grid)
 
         profile_grid.addWidget(Clabel('First Name'), 0, 0, 1, 2)
         profile_grid.addWidget(Clabel('Last Name'), 1, 0, 1, 2)
@@ -238,19 +182,16 @@ class Plt_sign_up(QDialog):
         profile_grid.addWidget(self.emailField, 3, 2, 1, 4)
         profile_grid.addWidget(self.phoneField, 4, 2, 1, 4)
 
-        return profile_groupBox
-
     def location_section(self):
+        self.conSection = QGroupBox("Location")
+        conGrid = QGridLayout()
+        self.conSection.setLayout(conGrid)
 
-        contact_groupBox = QGroupBox("Location")
-        contact_grid = QGridLayout()
-        contact_groupBox.setLayout(contact_grid)
-
-        contact_grid.addWidget(Clabel("Address Line 1"), 0, 0, 1, 2)
-        contact_grid.addWidget(Clabel("Address Line 2"), 1, 0, 1, 2)
-        contact_grid.addWidget(Clabel("Postal"), 2, 0, 1, 2)
-        contact_grid.addWidget(Clabel("City"), 3, 0, 1, 2)
-        contact_grid.addWidget(Clabel("Country"), 4, 0, 1, 2)
+        conGrid.addWidget(Clabel("Address Line 1"), 0, 0, 1, 2)
+        conGrid.addWidget(Clabel("Address Line 2"), 1, 0, 1, 2)
+        conGrid.addWidget(Clabel("Postal"), 2, 0, 1, 2)
+        conGrid.addWidget(Clabel("City"), 3, 0, 1, 2)
+        conGrid.addWidget(Clabel("Country"), 4, 0, 1, 2)
 
         self.addressLine1 = QLineEdit()
         self.addressLine2 = QLineEdit()
@@ -258,48 +199,43 @@ class Plt_sign_up(QDialog):
         self.city = QLineEdit()
         self.country = QLineEdit()
 
-        contact_grid.addWidget(self.addressLine1, 0, 2, 1, 4)
-        contact_grid.addWidget(self.addressLine2, 1, 2, 1, 4)
-        contact_grid.addWidget(self.city, 2, 2, 1, 4)
-        contact_grid.addWidget(self.postalCode, 3, 2, 1, 4)
-        contact_grid.addWidget(self.country, 4, 2, 1, 4)
-
-        return contact_groupBox
+        conGrid.addWidget(self.addressLine1, 0, 2, 1, 4)
+        conGrid.addWidget(self.addressLine2, 1, 2, 1, 4)
+        conGrid.addWidget(self.city, 2, 2, 1, 4)
+        conGrid.addWidget(self.postalCode, 3, 2, 1, 4)
+        conGrid.addWidget(self.country, 4, 2, 1, 4)
 
     def security_section(self):
 
-        questions_groupBox = QGroupBox("Security Question")
+        self.serSection = QGroupBox("Security Question")
         questions_grid = QGridLayout()
-        questions_groupBox.setLayout(questions_grid)
+        self.serSection.setLayout(questions_grid)
 
-        self.question1 = QComboBox()
-        self.question1.setMaximumWidth(300)
-        self.answer2 = QLineEdit()
-        self.question2 = QComboBox()
-        self.question2.setMaximumWidth(300)
-        self.answer1 = QLineEdit()
+        self.ques1 = QComboBox()
+        self.answ2 = QLineEdit()
+        self.ques2 = QComboBox()
+        self.answ1 = QLineEdit()
 
         questions = usql.query_all_questions()
+
         for i in questions:
-            self.question1.addItem(str(i[0]))
-            self.question2.addItem(str(i[0]))
+            self.ques1.addItem(str(i[0]))
+            self.ques2.addItem(str(i[0]))
 
         questions_grid.addWidget(Clabel('Question 1'), 0, 0, 1, 3)
         questions_grid.addWidget(Clabel('Answer 1'), 1, 0, 1, 3)
         questions_grid.addWidget(Clabel('Question 2'), 2, 0, 1, 3)
         questions_grid.addWidget(Clabel('Answer 2'), 3, 0, 1, 3)
 
-        questions_grid.addWidget(self.question1, 0, 3, 1, 6)
-        questions_grid.addWidget(self.answer1, 1, 3, 1, 6)
-        questions_grid.addWidget(self.question2, 2, 3, 1, 6)
-        questions_grid.addWidget(self.answer2, 3, 3, 1, 6)
-
-        return questions_groupBox
+        questions_grid.addWidget(self.ques1, 0, 3, 1, 6)
+        questions_grid.addWidget(self.answ1, 1, 3, 1, 6)
+        questions_grid.addWidget(self.ques2, 2, 3, 1, 6)
+        questions_grid.addWidget(self.answ2, 3, 3, 1, 6)
 
     def buttons_section(self):
-        btn_groupBox = QGroupBox()
+        self.btnSection = QGroupBox()
         btn_grid = QGridLayout()
-        btn_groupBox.setLayout(btn_grid)
+        self.btnSection.setLayout(btn_grid)
 
         self.user_agree_checkBox = QCheckBox(mess.USER_CHECK_REQUIRED)
         btn_grid.addWidget(self.user_agree_checkBox, 0, 0, 1, 6)
@@ -316,8 +252,6 @@ class Plt_sign_up(QDialog):
         quitBtn.clicked.connect(QApplication.quit)
         btn_grid.addWidget(quitBtn, 1,4,1,2)
 
-        return btn_groupBox
-
     def on_set_avatar_btn_clicked(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
@@ -329,35 +263,15 @@ class Plt_sign_up(QDialog):
             self.userAvatar.update()
 
     def on_create_btn_clicked(self):
-
-        username = str(self.usernameField.text())
-        password = str(self.passwordField.text())
-        confirm = str(self.confirmPassField.text())
-        firstname = str(self.firstnameField.text())
-        lastname = str(self.lastnameField.text())
-        email = str(self.emailField.text())
-        phone = str(self.phoneField.text())
-        address1 = str(self.addressLine1.text())
-        address2 = str(self.addressLine2.text())
-        postal = str(self.postalCode.text())
-        city = str(self.city.text())
-        country = str(self.country.text())
-        answer1 = str(self.answer1.text())
-        answer2 = str(self.answer2.text())
-
-        reg = [username, password, confirm, firstname, lastname, email, phone, address1, address2, postal, city, country,
-               answer1, answer2]
-
-        if self.check_all_conditions(confirm, password, reg):
-
-            data = self.create_user_data()
-
+        regInput = self.collect_input()
+        if self.check_all_conditions(regInput):
+            data = self.generate_user_data()
             usql.create_new_user_data(data)
 
-    def create_user_data(self):
-
-        username = str(self.usernameField.text())
-        password = str(self.passwordField.text())
+    def collect_input(self):
+        username = str(self.userField.text())
+        password = str(self.pwField.text())
+        confirm = str(self.cfpwField.text())
         firstname = str(self.firstnameField.text())
         lastname = str(self.lastnameField.text())
         email = str(self.emailField.text())
@@ -367,11 +281,17 @@ class Plt_sign_up(QDialog):
         postal = str(self.postalCode.text())
         city = str(self.city.text())
         country = str(self.country.text())
-        question1 = str(self.question1.currentText())
-        answer1 = str(self.answer1.text())
-        question2 = str(self.question2.currentText())
-        answer2 = str(self.answer2.text())
-        title = str(self.titleField.text())
+        answer1 = str(self.answ1.text())
+        answer2 = str(self.answ2.text())
+        return [username, password, confirm, firstname, lastname, email, phone, address1, address2, postal, city,
+                country, answer1, answer2]
+
+    def generate_user_data(self):
+        regInput = self.collect_input()
+        question1 = str(self.ques1.currentText())
+        question2 = str(self.ques2.currentText())
+        title = str(self.titleField.text()) or "Guess"
+
         token = func.get_token()
         timelog = func.get_time()
         sysInfo = func.get_local_pc()
@@ -384,14 +304,13 @@ class Plt_sign_up(QDialog):
         pcPython = sysInfo['python']
 
         if not os.path.exists(self.rawAvatarPth):
-            rawAvatarPth = func.get_avatar('default')
+            avatar = func.get_avatar('default')
         else:
-            rawAvatarPth = self.rawAvatarPth
+            avatar = self.rawAvatarPth
 
-        data = [username, password, firstname, lastname, title, email, phone, address1, address2, postal, city,
-                    country, token, timelog, productID, ip, cityIP, countryIP, unix, question1, answer1, question2,
-                    answer2, datelog, pcOS, pcUser, pcPython, rawAvatarPth]
-
+        data = [regInput[0], regInput[1], regInput[3], regInput[4], title, regInput[5], regInput[6], regInput[7],
+                regInput[8], regInput[9], regInput[10], regInput[11], token, timelog, productID, ip, cityIP, countryIP, unix, question1, regInput[12], question2,
+                regInput[13], datelog, pcOS, pcUser, pcPython, avatar]
         return data
 
     def on_cancel_btn_clicked(self):
@@ -399,62 +318,34 @@ class Plt_sign_up(QDialog):
         self.settings.setValue("showLogin", True)
         self.showLoginSig1.emit(True)
 
-    def check_all_conditions(self, confirm, password, reg):
-
-        if self.check_all_field_blank(reg):
-            if self.check_pw_matching(confirm, password):
-                if self.check_user_agreement():
+    def check_all_conditions(self):
+        if self.check_all_field_blank():
+            if self.check_user_agreement():
+                if self.check_pw_matching():
                     return True
-                else:
-                    return False
-            else:
+        return False
+
+    def check_all_field_blank(self):
+        regInput = self.collect_input()
+        secName = ["Username", "Password", "Confirm Password", "Firstname", "Lastname", "Email", "Phone",
+                   "Address line 1", "Address line 2", "Postal", "City", "Country", "Answer 1", "Answer 2"]
+        for section in regInput:
+            if not func.check_blank(section):
+                QMessageBox.critical(self, "Fail", secName[regInput.index(section)] + mess.SEC_BLANK, QMessageBox.Retry)
                 return False
-        else:
-            return False
+        return True
 
     def check_user_agreement(self):
-        state = self.user_agree_checkBox.checkState()
-        if not state:
-            QMessageBox.critical(self, "Warning", mess.USER_NOT_CHECK, QMessageBox.Retry)
-            return False
-        else:
-            return True
+        return self.user_agree_checkBox.checkState()
 
-    def check_pw_matching(self, confirm, password):
+    def check_pw_matching(self):
+        password = str(self.pwField.text())
+        confirm = str(self.cfpwField.text())
         check_pass = func.check_match(password, confirm)
         if not check_pass:
             QMessageBox.critical(self, "Warning", mess.PW_UNMATCH, QMessageBox.Retry)
             return False
-        else:
-            return True
-
-    def check_all_field_blank(self, reg):
-        secName = ['Username', 'Password', 'Confirm Password', 'Firstname', 'Lastname', 'Email', 'Phone', 'Address line 1',
-                   'Address line 2', 'Postal', 'City', 'Country', 'Answer 1', 'Answer 2']
-
-        check = []
-
-        for i in reg:
-            if not func.check_blank(i):
-                index = reg.index(i)
-                QMessageBox.critical(self, "Warning", secName[index] + mess.SEC_BLANK, QMessageBox.Retry)
-                check.append(secName[index])
-                break
-            else:
-                continue
-
-        if len(check) == 0:
-            return True
-        else:
-            return False
-
-    def check_password_matching(self, password, passretype):
-
-        if not password == passretype:
-            QMessageBox.critical(self, "Warning", mess.PW_UNMATCH, QMessageBox.Retry)
-            return False
-        else:
-            return True
+        return True
 
     def closeEvent(self, event):
         self.on_cancel_btn_clicked()
@@ -750,134 +641,7 @@ class MenuBarLayout(QMainWindow):
         # menu.addAction(self.pasteAct)
         menu.exec_(event.globalPos())
 
-# -------------------------------------------------------------------------------------------------------------
-""" Slider Layout """
 
-class SliderWidget(QWidget):
-
-    valueChangeSig = pyqtSignal(float)
-
-    def __init__(self, lab="slider", min=MIN, max=MAX, step=STEP, val=VAL, parent=None):
-        super(SliderWidget, self).__init__(parent)
-
-        self.min = min
-        self.max = max
-        self.step = step
-        self.lab = lab
-        self.val = val
-
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
-
-        self.layout = QGridLayout()
-        self.buildUI()
-        self.setLayout(self.layout)
-
-    def buildUI(self):
-
-        self.label = Clabel(text=self.lab + ": ")
-
-        self.slider = QSlider(Qt.Horizontal)
-        self.slider.setMinimum(int(self.min))
-        self.slider.setMaximum(int(self.max))
-        self.slider.setSingleStep(int(self.step))
-        self.slider.setValue(int(self.val))
-
-        self.numField = QLineEdit()
-        self.numField.setValidator(QIntValidator(0, 999, self))
-        self.numField.setText("0")
-        self.numField.setFixedSize(30,20)
-        self.numField.setText(str(self.val))
-
-        self.slider.valueChanged.connect(self.set_value)
-        self.numField.textChanged.connect(self.set_slider)
-
-        self.layout.addWidget(self.label, 0, 0, 1, 1)
-        self.layout.addWidget(self.numField, 0, 1, 1, 1)
-        self.layout.addWidget(self.slider, 0, 2, 1, 1)
-
-    def set_value(self):
-        val = self.slider.value()
-        self.numField.setText(str(val))
-
-    def set_slider(self):
-        val = self.numField.text()
-        # Debug empty value making crash
-        if val == "" or val == None:
-            val = "0"
-        self.slider.setValue(float(val))
-
-    def changeEvent(self, event):
-        self.settings.setValue("{name}Value".format(name=self.lab), float)
-        self.valueChangeSig.emit(self.slider.value())
-
-# -------------------------------------------------------------------------------------------------------------
-""" Unit setting Layout """
-
-class UnitSettingLayout(QWidget):
-
-    stepChangeSig = pyqtSignal(float)
-    valueChangeSig = pyqtSignal(float)
-    minChangeSig = pyqtSignal(float)
-    maxChangeSig = pyqtSignal(float)
-
-    def __init__(self, parent=None):
-        super(UnitSettingLayout, self).__init__(parent)
-
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
-
-        self.layout = QGridLayout()
-        self.buildUI()
-        self.setLayout(self.layout)
-
-    def buildUI(self):
-
-        self.stepVal = QLineEdit("1")
-        self.valueVal = QLineEdit("1")
-        self.minVal = QLineEdit("0")
-        self.maxVal = QLineEdit("1000")
-
-        self.stepVal.setValidator(QIntValidator(0, 999, self))
-        self.valueVal.setValidator(QIntValidator(0, 999, self))
-        self.minVal.setValidator(QIntValidator(0, 999, self))
-        self.maxVal.setValidator(QIntValidator(0, 999, self))
-
-        self.stepVal.textChanged.connect(self.set_step)
-        self.valueVal.textChanged.connect(self.set_value)
-        self.minVal.textChanged.connect(self.set_min)
-        self.maxVal.textChanged.connect(self.set_max)
-
-        self.layout.addWidget(Clabel("STEP: "), 0,0,1,1)
-        self.layout.addWidget(Clabel("VALUE: "), 1,0,1,1)
-        self.layout.addWidget(Clabel("MIN: "), 2,0,1,1)
-        self.layout.addWidget(Clabel("MAX: "), 3,0,1,1)
-
-        self.layout.addWidget(self.stepVal, 0, 1, 1, 1)
-        self.layout.addWidget(self.valueVal, 1, 1, 1, 1)
-        self.layout.addWidget(self.minVal, 2, 1, 1, 1)
-        self.layout.addWidget(self.maxVal, 3, 1, 1, 1)
-
-    def set_step(self):
-        val = float(self.stepVal.text())
-        self.stepChangeSig.emit(val)
-        self.settings.setValue("stepSetting", float)
-
-    def set_value(self):
-        val = float(self.valueVal.text())
-        self.valueChangeSig.emit(float(val))
-        self.settings.setValue("valueSetting", float)
-
-    def set_min(self):
-        val = float(self.minVal.text())
-        self.minChangeSig.emit(float(val))
-        self.settings.setValue("minSetting", float)
-
-    def set_max(self):
-        val = float(self.maxVal.text())
-        self.maxChangeSig.emit(float(val))
-        self.settings.setValue("maxSetting", float)
-
-    def changeEvent(self, event):
-        pass
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
@@ -1314,10 +1078,10 @@ class Plt_application(QMainWindow):
         sizeGridLayout = QGridLayout()
         self.sizeGrpBox.setLayout(sizeGridLayout)
 
-        unitSlider = SliderWidget(lab="UNIT", min=0, max=1000, step=1, val=UNIT)
-        margSlider = SliderWidget(lab="MARG", min=0, max=1000, step=1, val=MARG)
-        buffSlider = SliderWidget(lab="BUFF", min=0, max=1000, step=1, val=BUFF)
-        scalSlider = SliderWidget(lab="SCAL", min=0, max=1000, step=1, val=SCAL)
+        unitSlider = uirc.SliderTemplate(["UNIT", 0, 1000, 1, 60])
+        margSlider = uirc.SliderTemplate(["MARG", 0, 1000, 1, 5])
+        buffSlider = uirc.SliderTemplate(["BUFF", 0, 1000, 1, 10])
+        scalSlider = uirc.SliderTemplate(["SCAL", 0, 1000, 1, 1])
 
         unitSig = unitSlider.valueChangeSig
         margSig = margSlider.valueChangeSig
@@ -1538,21 +1302,21 @@ class Plt_application(QMainWindow):
         sizeH = self.frameGeometry().height()
         return sizeW, sizeH
 
-    def layout_magrin_ratio(self, margin = MARG):
+    def layout_magrin_ratio(self, margin = 5):
         self.menuGrpBox.setContentsMargins(margin, margin, margin, margin)
         self.topGrpBox.setContentsMargins(margin, margin, margin, margin)
         self.midGrpBox.setContentsMargins(margin, margin, margin, margin)
         self.sizeGrpBox.setContentsMargins(margin, margin, margin, margin)
         return True
 
-    def layout_height_ratio(self, baseH = UNIT):
+    def layout_height_ratio(self, baseH = 60):
         self.menuGrpBox.setFixedHeight(baseH)
         self.topGrpBox.setFixedHeight(baseH*2)
         self.midGrpBox.setFixedHeight(baseH*4)
         self.sizeGrpBox.setFixedHeight(baseH * 2)
         return True
 
-    def layout_width_ratio(self, baseW = UNIT):
+    def layout_width_ratio(self, baseW = 60):
         self.menuGrpBox.setFixedWidth(baseW)
         self.topGrpBox.setFixedWidth(baseW)
         self.midGrpBox.setFixedWidth(baseW)
@@ -1560,7 +1324,6 @@ class Plt_application(QMainWindow):
         return True
 
     def autoResize(self, param):
-
         # print(param)
         pass
 
@@ -1601,9 +1364,10 @@ def main():
         login = Plt_sign_in()
         login.show()
     else:
-        r = requests.get("https://pipeline.damgteam.com/check", verify = False,
-                     headers={'Authorization': 'Bearer {token}'.format(token=token)},
-                     cookies={'connect.sid': cookie})
+        r = requests.get("https://pipeline.damgteam.com/check",
+                         verify = False,
+                         headers={'Authorization': 'Bearer {token}'.format(token=token)},
+                         cookies={'connect.sid': cookie})
 
         if r.status_code == 200:
             window = Plt_application()

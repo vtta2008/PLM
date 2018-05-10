@@ -7,7 +7,16 @@
 #      by: The Resource Compiler for PyQt (Qt v5.0.2)
 #
 # WARNING! All changes made in this file will be lost!
-  
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# -------------------------------------------------------------------------------------------------------------
+""" Check data flowing """
+print("Import from modules: {file}".format(file=__name__))
+print("Directory: {path}".format(path=__file__.split(__name__)[0]))
+__root__ = "PLT_RT"
+# -------------------------------------------------------------------------------------------------------------
+""" Import """
+
 from PyQt5 import QtCore
   
 qt_resource_data = b"\

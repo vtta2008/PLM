@@ -9,3 +9,10 @@ Description:
     This script is main file to create, modify and/or query server data
 
 """
+# -------------------------------------------------------------------------------------------------------------
+""" Check data flowing """
+print("Import from modules: {file}".format(file=__name__))
+print("Directory: {path}".format(path=__file__.split(__name__)[0]))
+__root__ = "PLT_RT"
+# -------------------------------------------------------------------------------------------------------------
+""" Import """

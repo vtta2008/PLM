@@ -1,4 +1,19 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+
+Script Name: plt.py
+Author: Do Trinh/Jimmy - 3D artist.
+Description:
+    This script is master file of Pipeline Tool
+
+"""
+# -------------------------------------------------------------------------------------------------------------
+""" Check data flowing """
+print("Import from modules: {file}".format(file=__name__))
+print("Directory: {path}".format(path=__file__.split(__name__)[0]))
+# -------------------------------------------------------------------------------------------------------------
+
 PLT_ABOUT = """
 
 PIPELINE TOOL TO MAKE A SHORT FILM
