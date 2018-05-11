@@ -11,8 +11,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Check data flowing """
-print("Import from modules: {file}".format(file=__name__))
-print("Directory: {path}".format(path=__file__.split(__name__)[0]))
+# print("Import from modules: {file}".format(file=__name__))
+# print("Directory: {path}".format(path=__file__.split(__name__)[0]))
 __root__ = "PLT_RT"
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
@@ -29,10 +29,10 @@ from __init__ import __appname__
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 
-logPth = os.path.join(os.getenv(__root__), 'appData', 'logs', 'variables.log')
-logger = logging.getLogger('variables')
+logPth = os.path.join(os.getenv(__root__), "appData", "logs", "variables.log")
+logger = logging.getLogger("variables")
 handler = logging.FileHandler(logPth)
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
@@ -41,50 +41,53 @@ logger.setLevel(logging.DEBUG)
 """ Variables """
 
 # encode.py
-STRINPUT = 'password'
-HEXINPUT = '70617373776F7264'
-ENCODE = ['hexadecimal', 'ascii', 'unicode']
-OPERATION = dict(encode=['hex', 'string'], pathInfo=['create', 'read', 'modify'])
+STRINPUT = "password"
+HEXINPUT = "70617373776F7264"
+ENCODE = ["hexadecimal", "ascii", "unicode"]
+OPERATION = dict(encode=["hex", "string"], pathInfo=["create", "read", "modify"])
 
 DEMODATA = ["demoUser", "70617373776F7264", "Mr.", "Nobody", "Homeless", "dot@damgteam.com", "1234567890", "forever",
             "homeless", "no postal", "anywhere", "in the world"]
 
 # Setting Path
-UI_SETTING = os.path.join(os.getenv(__root__), 'appData', 'settings', 'plt.ini')
+UI_SETTING = os.path.join(os.getenv(__root__), "appData", "settings", "plt.ini")
 
-USER_SETTING = os.path.join(os.getenv(__root__), 'appData', 'settings', 'User.ini')
+USER_SETTING = os.path.join(os.getenv(__root__), "appData", "settings", "User.ini")
 
-DB_PATH = os.path.join(os.getenv(__root__), 'appData', 'plt.db')
+DB_PATH = os.path.join(os.getenv(__root__), "appData", "plt.db")
 
 # getData.py
-USER_CLASS = ['', 'Admin', 'Supervisor', 'Artist', 'Tester']
+USER_CLASS = ["", "Admin", "Supervisor", "Artist", "Tester"]
 
 USERNAME = platform.node()
 
-PLT_ID = dict(Main=__appname__, LogIn='Log in', About='About Pipeline Tool', Credit='From Author')
+PLT_ID = dict(Main=__appname__, LogIn="Log in", About="About Pipeline Tool", Credit="From Author")
 
-PLT_TABID = ['', 'User', 'Functions', 'Project', 'Admin', ]
+PLT_TABID = ["", "User", "Functions", "Project", "Admin", ]
 
-PLT_URL = dict(Home = 'https://www.dot.damgteam.com/', Help = 'https://www.dot.damgteam.com/')
+PLT_URL = dict(Home = "https://www.dot.damgteam.com/", Help = "https://www.dot.damgteam.com/")
 
-PLT_MESS = dict(About=mess.PLT_ABOUT, Credit=mess.PLT_CREDIT, status='Pipeline Application', )
+PLT_MESS = dict(About=mess.PLT_ABOUT, Credit=mess.PLT_CREDIT, status="Pipeline Application", )
 
 PLT_PKG = dict(
-
-    job=['TD', 'Comp', 'Design', 'Microsoft', 'UV', 'Sound', 'Dev', 'Plt', ],
-    TD=['Maya', '3ds Max', 'Mudbox', 'Houdini FX', 'ZBrush', 'Mari', 'Substance Painter',],
-    Comp=['NukeX', 'Hiero', 'After Effects', 'Premiere Pro'],
-    Design=['Photoshop', 'Illustrator'],
-    Microsoft=['Word', 'Excel', "Snipping Tool"],
-    UV=['UVLayout'],
-    Sound=['Audition'],
-    Plt=["Git Bash", "Git CMD"],
+    TD=["Maya", "3ds Max", "Mudbox", "Houdini FX", "ZBrush", "Mari", "Substance Painter"],
+    Comp=["NukeX", "Hiero", "After Effects", "Premiere Pro"],
+    Design=["Photoshop", "Illustrator"],
+    Microsoft=["Word", "Excel", "Snipping Tool"],
+    UV=["UVLayout"],
+    Sound=["Audition"],
+    Plt=["Git Bash", "Git CMD", "Advance Rename"],
     Dev=["PyCharm", "Sublime Text", "QtDesigner"],
+
+    main = ["Maya", "3ds Max", "Mudbox", "Houdini FX", "ZBrush", "Mari", "Substance Painter", "NukeX", "Hiero", 
+            "After Effects", "Premiere Pro", "Photoshop", "Illustrator", "Word", "Excel", "Snipping Tool", "UVLayout",
+            "Audition", "Git Bash", "Git CMD", "Advance Rename", "PyCharm", "Sublime Text", "QtDesigner"],
 
     sysOpts=["Host Name", "Product ID", "System Manufacturer", "System Model", "System type", "BIOS Version", "Domain",
              "Windows Directory", "Total Physical Memory", "Available Physical Memory", "Logon Server"],
-    filter=['Non-commercial', 'Uninstall', 'Verbose', 'License', 'Skype'],
-    py = ['utilities','ui'],
-    ext=['.exe', '.lnk'],
-
+    detect=["Non-commercial", "Uninstall", "Verbose", "License", "Skype"],
+    py = ["utilities","ui"],
+    ext=[".exe", ".lnk"],
 )
+
+LLINE = "==============================================================================================================="

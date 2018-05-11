@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: plt.py
+Script Name: Plt.py
 Author: Do Trinh/Jimmy - 3D artist.
 Description:
     This script is master file of Pipeline Tool

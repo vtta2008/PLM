@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: browser.py
+Script Name: ui_browser.py
 Author: Do Trinh/Jimmy - 3D artist.
 Description:
     Browser hand made

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: plt.py
+Script Name: Plt.py
 Author: Do Trinh/Jimmy - 3D artist.
 Description:
     This script is master file of Pipeline Tool
@@ -10,8 +10,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Check data flowing """
-print("Import from modules: {file}".format(file=__name__))
-print("Directory: {path}".format(path=__file__.split(__name__)[0]))
+# print("Import from modules: {file}".format(file=__name__))
+# print("Directory: {path}".format(path=__file__.split(__name__)[0]))
 __root__ = "PLT_RT"
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
@@ -19,7 +19,6 @@ __root__ = "PLT_RT"
 # Python
 import os, sys, logging, subprocess, webbrowser, requests
 import sqlite3 as lite
-
 from functools import partial
 
 # PyQt5
@@ -30,14 +29,16 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget
                              QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu, QFileDialog, QComboBox,
                              QDockWidget, QSlider, QSizePolicy, QStackedWidget, QStackedLayout)
 
+# -------------------------------------------------------------------------------------------------------------
+""" Set up env variable path """
+
+os.environ[__root__] = os.getcwd()
+
+# -------------------------------------------------------------------------------------------------------------
+""" Stylesheet plugin """
 import qdarkgraystyle
 
 from __init__ import (__root__, __appname__, __version__, __organization__, __website__)
-
-# -------------------------------------------------------------------------------------------------------------
-""" Set up env variable path """
-# Main path
-os.environ[__root__] = os.getcwd()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -64,25 +65,179 @@ func.preset_maya_intergrate()
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
 
+# String
+TXT = "No Text" # String by default
+
+# Value, Nummber, Float, Int ...
+UNIT = 60   # Base Unit
+MARG = 5    # Content margin
+BUFF = 10   # Buffer size
+SCAL = 1    # Scale value
+STEP = 1    # Step value changing
+VAL = 1     # Default value
+MIN = 0     # Minimum value
+MAX = 1000  # Maximum value
+WMIN = 50   # Minimum width
+HMIN = 20   # Minimum height
+
+# Alignment
+ALGC = Qt.AlignCenter
+ALGR = Qt.AlignRight
+ALGL = Qt.AlignLeft
+HORZ = Qt.Horizontal
+VERT = Qt.Vertical
+
+# Style
+frameStyle = QFrame.Sunken | QFrame.Panel
 
 
 # -------------------------------------------------------------------------------------------------------------
 # Get apps info config
 APPINFO = func.preset_load_appInfo()
+ICONINFO = func.preset_load_iconInfo()
 
-class Clabel(QLabel):
+class pltLabel(QLabel):
 
-    def __init__(self, text="No Text", wmin=50, align=None, parent=None):
-        super(Clabel, self).__init__(parent)
-        self.setText(text)
-        self.setMinimumWidth(wmin)
-
+    def __init__(self, txt=TXT, align=None, parent=None):
+        super(pltLabel, self).__init__(parent)
+        self.setText(txt)
+        self.setMinimumWidth(WMIN)
         if align == None:
             align = Qt.AlignCenter
-
         self.setAlignment(align)
 
+class pltSlider(QVBoxLayout):
 
+    def __init__(self, txt=TXT, val=VAL, axe=None, parent=None):
+        super(pltSlider, self).__init__(parent)
+
+        if axe == None:
+            axe = HORZ
+
+        self.val = val
+        self.slider = QSlider(axe)
+        self.slider.setWindowTitle(txt)
+        self.addWidget(self.slider)
+
+    def slider_value(self):
+        self.slider.setMinimum(MIN)
+        self.slider.setMaximum(MAX)
+        self.slider.setSingleStep(STEP)
+        self.slider.setValue(self.val)
+
+class SliderWidget(QWidget):
+
+    valueChangeSig = pyqtSignal(float)
+
+    def __init__(self, txt=TXT, val=VAL, axe=HORZ, parent=None):
+        super(SliderWidget, self).__init__(parent)
+
+        self.val = val
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+
+        self.layout = QGridLayout()
+
+        self.slider = QSlider(axe)
+        self.slider.setWindowTitle(txt)
+
+        self.slider.setMinimum(MIN)
+        self.slider.setMaximum(MAX)
+        self.slider.setSingleStep(STEP)
+        self.slider.setValue(self.val)
+
+        self.numField = QLineEdit()
+        self.numField.setValidator(QIntValidator(0, 999, self))
+        self.numField.setText("0")
+        self.numField.setText(str(self.val))
+
+        self.slider.valueChanged.connect(self.set_value)
+        self.numField.textChanged.connect(self.set_slider)
+
+        # self.layout.addWidget(pltLabel("Unit: "), 0, 0, 1, 1)
+        self.layout.addWidget(self.numField, 0, 0, 1, 1)
+        self.layout.addWidget(self.slider, 0, 1, 1, 2)
+
+        self.setLayout(self.layout)
+
+    def set_value(self):
+        val = self.slider.value()
+        self.numField.setText(str(val))
+
+    def set_slider(self):
+        val = self.numField.text()
+        if val == "" or val == None:
+            val = "0"
+        self.slider.setValue(float(val))
+
+    def changeEvent(self, event):
+        self.settings.setValue("{name}Value".format(name=self.txt), float)
+        self.valueChangeSig.emit(self.slider.value())
+
+class UnitSetting(QWidget):
+
+    stepChangeSig = pyqtSignal(float)
+    valueChangeSig = pyqtSignal(float)
+    minChangeSig = pyqtSignal(float)
+    maxChangeSig = pyqtSignal(float)
+
+    def __init__(self, parent=None):
+        super(UnitSetting, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+
+        self.layout = QGridLayout()
+        self.buildUI()
+        self.setLayout(self.layout)
+
+    def buildUI(self):
+
+        self.stepVal = QLineEdit("1")
+        self.valueVal = QLineEdit("1")
+        self.minVal = QLineEdit("0")
+        self.maxVal = QLineEdit("1000")
+
+        self.stepVal.setValidator(QIntValidator(0, 999, self))
+        self.valueVal.setValidator(QIntValidator(0, 999, self))
+        self.minVal.setValidator(QIntValidator(0, 999, self))
+        self.maxVal.setValidator(QIntValidator(0, 999, self))
+
+        self.stepVal.textChanged.connect(self.set_step)
+        self.valueVal.textChanged.connect(self.set_value)
+        self.minVal.textChanged.connect(self.set_min)
+        self.maxVal.textChanged.connect(self.set_max)
+
+        self.layout.addWidget(pltLabel("STEP: "), 0,0,1,1)
+        self.layout.addWidget(pltLabel("VALUE: "), 1,0,1,1)
+        self.layout.addWidget(pltLabel("MIN: "), 2,0,1,1)
+        self.layout.addWidget(pltLabel("MAX: "), 3,0,1,1)
+
+        self.layout.addWidget(self.stepVal, 0, 1, 1, 1)
+        self.layout.addWidget(self.valueVal, 1, 1, 1, 1)
+        self.layout.addWidget(self.minVal, 2, 1, 1, 1)
+        self.layout.addWidget(self.maxVal, 3, 1, 1, 1)
+
+    def set_step(self):
+        val = float(self.stepVal.text())
+        self.stepChangeSig.emit(val)
+        self.settings.setValue("stepSetting", float)
+
+    def set_value(self):
+        val = float(self.valueVal.text())
+        self.valueChangeSig.emit(float(val))
+        self.settings.setValue("valueSetting", float)
+
+    def set_min(self):
+        val = float(self.minVal.text())
+        self.minChangeSig.emit(float(val))
+        self.settings.setValue("minSetting", float)
+
+    def set_max(self):
+        val = float(self.maxVal.text())
+        self.maxChangeSig.emit(float(val))
+        self.settings.setValue("maxSetting", float)
+
+    def changeEvent(self, event):
+        pass
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign up layout """
@@ -114,7 +269,7 @@ class Plt_sign_up(QDialog):
         self.security_section()
         self.buttons_section()
 
-        self.layout.addWidget(Clabel("ALL FIELD ARE REQUIRED!!!"), 0, 0, 1, 6)
+        self.layout.addWidget(pltLabel("ALL FIELD ARE REQUIRED!!!"), 0, 0, 1, 6)
         self.layout.addWidget(self.avaSection, 1, 0, 1, 2)
         self.layout.addWidget(self.accSection, 1, 2, 1, 4)
         self.layout.addWidget(self.prfSection, 2, 0, 1, 6)
@@ -144,9 +299,9 @@ class Plt_sign_up(QDialog):
         account_grid = QGridLayout()
         self.accSection.setLayout(account_grid)
 
-        account_grid.addWidget(Clabel('User Name'), 0, 0, 1, 2)
-        account_grid.addWidget(Clabel('Password'), 1, 0, 1, 2)
-        account_grid.addWidget(Clabel('Confirm Password'), 2, 0, 1, 2)
+        account_grid.addWidget(pltLabel('User Name'), 0, 0, 1, 2)
+        account_grid.addWidget(pltLabel('Password'), 1, 0, 1, 2)
+        account_grid.addWidget(pltLabel('Confirm Password'), 2, 0, 1, 2)
 
         self.userField = QLineEdit()
         self.pwField = QLineEdit()
@@ -164,11 +319,11 @@ class Plt_sign_up(QDialog):
         profile_grid = QGridLayout()
         self.prfSection.setLayout(profile_grid)
 
-        profile_grid.addWidget(Clabel('First Name'), 0, 0, 1, 2)
-        profile_grid.addWidget(Clabel('Last Name'), 1, 0, 1, 2)
-        profile_grid.addWidget(Clabel('Your Title'), 2, 0, 1, 2)
-        profile_grid.addWidget(Clabel('Email'), 3, 0, 1, 2)
-        profile_grid.addWidget(Clabel('Phone Number'), 4, 0, 1, 2)
+        profile_grid.addWidget(pltLabel('First Name'), 0, 0, 1, 2)
+        profile_grid.addWidget(pltLabel('Last Name'), 1, 0, 1, 2)
+        profile_grid.addWidget(pltLabel('Your Title'), 2, 0, 1, 2)
+        profile_grid.addWidget(pltLabel('Email'), 3, 0, 1, 2)
+        profile_grid.addWidget(pltLabel('Phone Number'), 4, 0, 1, 2)
 
         self.titleField = QLineEdit()
         self.firstnameField = QLineEdit()
@@ -187,11 +342,11 @@ class Plt_sign_up(QDialog):
         conGrid = QGridLayout()
         self.conSection.setLayout(conGrid)
 
-        conGrid.addWidget(Clabel("Address Line 1"), 0, 0, 1, 2)
-        conGrid.addWidget(Clabel("Address Line 2"), 1, 0, 1, 2)
-        conGrid.addWidget(Clabel("Postal"), 2, 0, 1, 2)
-        conGrid.addWidget(Clabel("City"), 3, 0, 1, 2)
-        conGrid.addWidget(Clabel("Country"), 4, 0, 1, 2)
+        conGrid.addWidget(pltLabel("Address Line 1"), 0, 0, 1, 2)
+        conGrid.addWidget(pltLabel("Address Line 2"), 1, 0, 1, 2)
+        conGrid.addWidget(pltLabel("Postal"), 2, 0, 1, 2)
+        conGrid.addWidget(pltLabel("City"), 3, 0, 1, 2)
+        conGrid.addWidget(pltLabel("Country"), 4, 0, 1, 2)
 
         self.addressLine1 = QLineEdit()
         self.addressLine2 = QLineEdit()
@@ -222,10 +377,10 @@ class Plt_sign_up(QDialog):
             self.ques1.addItem(str(i[0]))
             self.ques2.addItem(str(i[0]))
 
-        questions_grid.addWidget(Clabel('Question 1'), 0, 0, 1, 3)
-        questions_grid.addWidget(Clabel('Answer 1'), 1, 0, 1, 3)
-        questions_grid.addWidget(Clabel('Question 2'), 2, 0, 1, 3)
-        questions_grid.addWidget(Clabel('Answer 2'), 3, 0, 1, 3)
+        questions_grid.addWidget(pltLabel('Question 1'), 0, 0, 1, 3)
+        questions_grid.addWidget(pltLabel('Answer 1'), 1, 0, 1, 3)
+        questions_grid.addWidget(pltLabel('Question 2'), 2, 0, 1, 3)
+        questions_grid.addWidget(pltLabel('Answer 2'), 3, 0, 1, 3)
 
         questions_grid.addWidget(self.ques1, 0, 3, 1, 6)
         questions_grid.addWidget(self.answ1, 1, 3, 1, 6)
@@ -392,8 +547,8 @@ class Plt_sign_in(QDialog):
         login_btn.clicked.connect(self.on_sign_in_btn_clicked)
         cancel_btn.clicked.connect(QApplication.quit)
 
-        login_grid.addWidget(Clabel(text='Username'), 0, 0, 1, 2)
-        login_grid.addWidget(Clabel(text='Password'), 1, 0, 1, 2)
+        login_grid.addWidget(pltLabel(text='Username'), 0, 0, 1, 2)
+        login_grid.addWidget(pltLabel(text='Password'), 1, 0, 1, 2)
         login_grid.addWidget(self.usernameField, 0, 2, 1, 4)
         login_grid.addWidget(self.passwordField, 1, 2, 1, 4)
         login_grid.addWidget(self.rememberCheckBox, 2, 1, 1, 2)
@@ -408,7 +563,7 @@ class Plt_sign_in(QDialog):
         sign_up_btn = QPushButton('Sign up')
         sign_up_btn.clicked.connect(self.on_sign_up_btn_clicked)
 
-        signup_grid.addWidget(Clabel(text=mess.SIGN_UP), 0, 0, 1, 6)
+        signup_grid.addWidget(pltLabel(text=mess.SIGN_UP), 0, 0, 1, 6)
         signup_grid.addWidget(sign_up_btn, 1, 0, 1, 6)
 
         self.layout.addWidget(login_groupBox, 0, 0, 1, 1)
@@ -641,8 +796,6 @@ class MenuBarLayout(QMainWindow):
         # menu.addAction(self.pasteAct)
         menu.exec_(event.globalPos())
 
-
-
 # -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
 
@@ -855,7 +1008,7 @@ class TabWidget(QWidget):
         tab4Section1Grid = QGridLayout()
         tab4Section1GrpBox.setLayout(tab4Section1Grid)
 
-        tab4Section1Grid.addWidget(Clabel("Update later"), 0, 0, 1, 8)
+        tab4Section1Grid.addWidget(pltLabel("Update later"), 0, 0, 1, 8)
 
         tab4layout.addWidget(tab4Section1GrpBox, 0, 0, 1, 8)
 
@@ -890,7 +1043,10 @@ class TabWidget(QWidget):
         return iconBtn
 
     def make_icon_btn2(self, name):
-        keyLst = [k for k in APPINFO]
+        for key in APPINFO:
+            if name in key:
+                name = key
+
         icon = QIcon(APPINFO[name][1])
         iconBtn = QPushButton()
         iconBtn.setToolTip(APPINFO[name][0])
@@ -980,6 +1136,7 @@ class Plt_application(QMainWindow):
         self.username, rememberLogin = usql.query_curUser()
         self.mainID = var.PLT_ID
         self.appInfo = APPINFO
+        self.iconInfo = ICONINFO
         self.package = var.PLT_PKG
         self.message = var.PLT_MESS
         self.url = var.PLT_URL
@@ -1056,7 +1213,7 @@ class Plt_application(QMainWindow):
         self.topGrpBox = QGroupBox("Top Layout")
         topLayout = QHBoxLayout()
         self.topGrpBox.setLayout(topLayout)
-        topLayout.addWidget(Clabel("This Layout is for drag and drop"))
+        topLayout.addWidget(pltLabel("This Layout is for drag and drop"))
 
         # Mid build
         self.midGrpBox = QGroupBox("plt Tool Box")
@@ -1078,42 +1235,42 @@ class Plt_application(QMainWindow):
         sizeGridLayout = QGridLayout()
         self.sizeGrpBox.setLayout(sizeGridLayout)
 
-        unitSlider = uirc.SliderTemplate(["UNIT", 0, 1000, 1, 60])
-        margSlider = uirc.SliderTemplate(["MARG", 0, 1000, 1, 5])
-        buffSlider = uirc.SliderTemplate(["BUFF", 0, 1000, 1, 10])
-        scalSlider = uirc.SliderTemplate(["SCAL", 0, 1000, 1, 1])
-
-        unitSig = unitSlider.valueChangeSig
-        margSig = margSlider.valueChangeSig
-        buffSig = buffSlider.valueChangeSig
-        scalSig = scalSlider.valueChangeSig
-
-        sizeGridLayout.addWidget(unitSlider, 0, 0, 1, 5)
-        sizeGridLayout.addWidget(margSlider, 1, 0, 1, 5)
-        sizeGridLayout.addWidget(buffSlider, 2, 0, 1, 5)
-        sizeGridLayout.addWidget(scalSlider, 3, 0, 1, 5)
+        # unitSlider = SliderWidget("UNIT")
+        # margSlider = SliderWidget("MARG")
+        # buffSlider = SliderWidget("BUFF")
+        # scalSlider =SliderWidget("SCAL")
+        #
+        # unitSig = unitSlider.valueChangeSig
+        # margSig = margSlider.valueChangeSig
+        # buffSig = buffSlider.valueChangeSig
+        # scalSig = scalSlider.valueChangeSig
+        #
+        # sizeGridLayout.addWidget(unitSlider, 0, 0, 1, 5)
+        # sizeGridLayout.addWidget(margSlider, 1, 0, 1, 5)
+        # sizeGridLayout.addWidget(buffSlider, 2, 0, 1, 5)
+        # sizeGridLayout.addWidget(scalSlider, 3, 0, 1, 5)
 
         # Bot build
-        self.unitGrpBox = QGroupBox("Unit Setting")
-        unitGridLayout = QGridLayout()
-        self.unitGrpBox.setLayout(unitGridLayout)
-
-        unitSetting = UnitSettingLayout()
-        unitGridLayout.addWidget(unitSetting)
-
-        # Add layout to main
+        # self.unitGrpBox = QGroupBox("Unit Setting")
+        # unitGridLayout = QGridLayout()
+        # self.unitGrpBox.setLayout(unitGridLayout)
+        #
+        # unitSetting = UnitSetting()
+        # unitGridLayout.addWidget(unitSetting)
+        #
+        # # Add layout to main
         self.layout.addWidget(self.menuGrpBox, 1, 0, 1, 6)
         self.layout.addWidget(self.topGrpBox, 2, 0, 2, 6)
         self.layout.addWidget(self.midGrpBox, 4, 0, 4, 6)
-        self.layout.addWidget(self.sizeGrpBox, 8, 0, 4, 3)
-        self.layout.addWidget(self.unitGrpBox, 8, 3, 4, 3)
+        # self.layout.addWidget(self.sizeGrpBox, 8, 0, 4, 3)
+        # self.layout.addWidget(self.unitGrpBox, 8, 3, 4, 3)
 
         # Restore last setting layout from user
-        stateLayout = self.settings.value("layoutState", QByteArray().toBase64())
-        try:
-            self.restoreState(QByteArray(stateLayout))
-        except IOError or TypeError:
-            pass
+        # stateLayout = self.settings.value("layoutState", QByteArray().toBase64())
+        # try:
+        #     self.restoreState(QByteArray(stateLayout))
+        # except IOError or TypeError:
+        #     pass
 
     def sys_tray_icon_activated(self, reason):
         if reason == QSystemTrayIcon.DoubleClick:
@@ -1122,7 +1279,8 @@ class Plt_application(QMainWindow):
     def sys_tray_icon_menu(self):
         trayIconMenu = QMenu(self)
 
-        snippingAction = self.createAction(self.appInfo, 'Snipping Tool')
+        appKey, iconKey = self.get_correct_key("Snipping Tool")
+        snippingAction = self.createAction(self.appInfo, appKey, iconKey)
         trayIconMenu.addAction(snippingAction)
 
         screenshoticon = QIcon(func.get_icon('Screenshot'))
@@ -1161,36 +1319,11 @@ class Plt_application(QMainWindow):
     def toolBarTD(self):
         # TD Tool Bar
         toolBarTD = self.addToolBar('TD')
-
-        # Maya_tk 2017
-        if 'Maya 2018' in self.appInfo:
-            maya2017 = self.createAction(self.appInfo, 'Maya 2017')
-            toolBarTD.addAction(maya2017)
-
-        # Maya_tk 2017
-        if 'Maya 2017' in self.appInfo:
-            maya2017 = self.createAction(self.appInfo, 'Maya 2017')
-            toolBarTD.addAction(maya2017)
-
-        # ZBrush 4R8
-        if 'ZBrush 4R8' in self.appInfo:
-            zbrush4R8 = self.createAction(self.appInfo, 'ZBrush 4R8')
-            toolBarTD.addAction(zbrush4R8)
-
-        # ZBrush 4R7
-        if 'ZBrush 4R7' in self.appInfo:
-            zbrush4R7 = self.createAction(self.appInfo, 'ZBrush 4R7')
-            toolBarTD.addAction(zbrush4R7)
-
-        # Houdini FX
-        if 'Houdini FX' in self.appInfo:
-            houdiniFX = self.createAction(self.appInfo, 'Houdini FX')
-            toolBarTD.addAction(houdiniFX)
-
-        # Mari
-        if 'Mari' in self.appInfo:
-            mari = self.createAction(self.appInfo, 'Mari')
-            toolBarTD.addAction(mari)
+        TD = ['Maya', 'ZBrush', 'Mari', 'Houdini', 'Substance Painter']
+        for k in TD:
+            appKey, iconKey = self.get_correct_key(k)
+            if not appKey == None:
+                toolBarTD.addAction(self.createAction(self.appInfo, appKey, iconKey))
 
         # return Tool Bar
         return toolBarTD
@@ -1198,60 +1331,44 @@ class Plt_application(QMainWindow):
     def toolBarComp(self):
         # VFX toolBar
         toolBarComp = self.addToolBar('VFX')
-        # Davinci
-        if 'Resolve' in self.appInfo:
-            davinci = self.createAction(self.appInfo, 'Resolve')
-            toolBarComp.addAction(davinci)
-        # NukeX
-        if 'NukeX' in self.appInfo:
-            nukeX = self.createAction(self.appInfo, 'NukeX')
-            toolBarComp.addAction(nukeX)
-        # Hiero
-        if 'Hiero' in self.appInfo:
-            hiero = self.createAction(self.appInfo, 'Hiero')
-            toolBarComp.addAction(hiero)
-        # After Effect CC
-        if 'After Effects CC' in self.appInfo:
-            aeCC = self.createAction(self.appInfo, 'After Effects CC')
-            toolBarComp.addAction(aeCC)
-        # After Effect CS6
-        if 'After Effects CS6' in self.appInfo:
-            aeCS6 = self.createAction(self.appInfo, 'After Effects CS6')
-            toolBarComp.addAction(aeCS6)
-        # Premiere CC
-        if 'Premiere Pro CC' in self.appInfo:
-            prCC = self.createAction(self.appInfo, 'Premiere Pro CC')
-            toolBarComp.addAction(prCC)
-        # Premiere CS6
-        if 'Premiere Pro CS6' in self.appInfo:
-            prCS6 = self.createAction(self.appInfo, 'Premiere Pro CS6')
-            toolBarComp.addAction(prCS6)
+        VFX = ['Resolve', 'NukeX', 'Hiero', 'After Effect CC', 'Premiere CC']
+        for k in VFX:
+            appKey, iconKey = self.get_correct_key(k)
+            if not appKey == None:
+                toolBarComp.addAction(self.createAction(self.appInfo, appKey, iconKey))
+
         # Return Tool Bar
         return toolBarComp
 
     def toolBarArt(self):
         toolbarArt = self.addToolBar('Art')
-        if 'Photoshop CC' in self.appInfo:
-            ptsCS6 = self.createAction(self.appInfo, 'Photoshop CC')
-            toolbarArt.addAction(ptsCS6)
-        # Photoshop CS6
-        if 'Photoshop CS6' in self.appInfo:
-            ptsCC = self.createAction(self.appInfo, 'Photoshop CS6')
-            toolbarArt.addAction(ptsCC)
-        # Illustrator CC
-        if 'Illustrator CC' in self.appInfo:
-            illusCC = self.createAction(self.appInfo, 'Illustrator CC')
-            toolbarArt.addAction(illusCC)
-        # Illustrator CS6
-        if 'Illustrator CS6' in self.appInfo:
-            illusCS6 = self.createActioin(self.appInfo, 'Illustrator CS6')
-            toolbarArt.addAction(illusCS6)
+        ART = ['Photoshop CC', 'Illustrator CC']
+        for k in ART:
+            appKey, iconKey = self.get_correct_key(k)
+            if not appKey == None:
+                toolbarArt.addAction(self.createAction(self.appInfo, appKey, iconKey))
+
         return toolbarArt
 
-    def createAction(self, appInfo, key):
-        action = QAction(QIcon(appInfo[key][1]), appInfo[key][0], self)
-        action.setStatusTip(appInfo[key][0])
-        action.triggered.connect (partial(subprocess.Popen, appInfo[key][2]))
+    def get_correct_key(self, k):
+        TD = ['Maya', 'ZBrush', 'Mari', 'Houdini', 'Substance Painter']
+        for app in self.appInfo:
+            if k in app:
+                appKey = app
+            else:
+                appKey = None
+        for icon in self.iconInfo:
+            if k in icon:
+                iconKey = app
+            else:
+                iconKey = None
+        print(appKey, iconKey)
+        return appKey, iconKey
+
+    def createAction(self, appInfo, appKey, iconKey):
+        action = QAction(QIcon(appInfo[appKey]), func.get_icon(iconKey), self)
+        action.setStatusTip(appInfo[appKey][0])
+        action.triggered.connect (partial(subprocess.Popen, appInfo[appKey][2]))
         return action
 
     def createSeparatorAction(self):
@@ -1356,7 +1473,7 @@ def main():
 
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon(func.get_icon('Logo')))
-    app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
+    # app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
 
     username, token, cookie = usql.query_user_session()
 
@@ -1364,8 +1481,7 @@ def main():
         login = Plt_sign_in()
         login.show()
     else:
-        r = requests.get("https://pipeline.damgteam.com/check",
-                         verify = False,
+        r = requests.get("https://pipeline.damgteam.com/check", verify = False,
                          headers={'Authorization': 'Bearer {token}'.format(token=token)},
                          cookies={'connect.sid': cookie})
 

@@ -11,8 +11,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Check data flowing """
-print("Import from modules: {file}".format(file=__name__))
-print("Directory: {path}".format(path=__file__.split(__name__)[0]))
+# print("Import from modules: {file}".format(file=__name__))
+# print("Directory: {path}".format(path=__file__.split(__name__)[0]))
 __root__ = "PLT_RT"
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
@@ -25,10 +25,9 @@ base = None
 if sys.platform == "win32":
     base = "Win32GUI"
 
-from __init__ import __root__
 os.environ[__root__] = os.getcwd()
-from __init__ import (__pkgsReq__, __readme__, __appname__, __version__, __licence__, __author__, __modules__, \
-    __classifiers__, __description__, __download__, __email__, __packages__, __pkgsDir__, __website__)
+from __init__ import (__pkgsReq__, __readme__, __appname__, __version__, __licence__, __author__, __modules__,
+                      __classifiers__, __description__, __download__, __email__, __packages__, __pkgsDir__, __website__)
 
 for dir in os.listdir(os.getenv(__root__)):
     pltPth = os.path.join(os.getenv(__root__), dir)
@@ -59,5 +58,5 @@ setup(
     install_requires = __pkgsReq__,
     classifiers = __classifiers__,
     options = {"build_exe" : {"includes" : includes }},
-    executables = [Executable("plt.py", base = base)]
+    executables = [Executable("Plt.py", base = base)]
 )

@@ -11,8 +11,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Check data flowing """
 import os
-print("Import from modules: {file}".format(file=__name__))
-print("Directory: {path}".format(path=__file__.split(__name__)[0]))
+# print("Import from modules: {file}".format(file=__name__))
+# print("Directory: {path}".format(path=__file__.split(__name__)[0]))
 __root__ = "PLT_RT"
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
@@ -20,6 +20,8 @@ __root__ = "PLT_RT"
 os.environ[__root__] = os.getcwd()
 
 __appname__ = "Pipeline Tool (plt)"
+
+__about__ = "About plt"
 
 __version__ = "13.0.1"
 

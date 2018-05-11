@@ -9,20 +9,23 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Check data flowing """
-print("Import from modules: {file}".format(file=__name__))
-print("Directory: {path}".format(path=__file__.split(__name__)[0]))
+# print("Import from modules: {file}".format(file=__name__))
+# print("Directory: {path}".format(path=__file__.split(__name__)[0]))
 __root__ = "PLT_RT"
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
 # Python
-import os, sys, requests, logging, platform, shutil, subprocess, urllib, cv2, winshell, yaml, json, pip, re
-import datetime, time, uuid, win32gui, win32api, pprint
+import os, sys, requests, logging, platform, shutil, subprocess, urllib, winshell, yaml, json, pip, re
+import datetime, time, uuid, win32gui, win32api, pprint, cv2
 
 from pyunpack import Archive
 
 # Plt tools
+from __init__ import __pkgsReq__, __appname__, __about__
 from utilities import variables as var
+
+CONFIG = os.path.join(os.getenv(__root__), 'appData', 'config')
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
@@ -44,6 +47,14 @@ def handle_path_error(directory=None):
             raise IsADirectoryError("Path is not exists: {directory}".format(directory=directory))
         except IsADirectoryError as error:
             logger.debug('Caught error: ' + repr(error))
+
+def mark_tracking_data(data):
+    pprint.pprint(var.LLINE)
+    pprint.pprint(data)
+    pprint.pprint(var.LLINE)
+    pprint.pprint("Modules {name}: Marked".format(name=os.path.basename(__file__)))
+    pprint.pprint(__file__)
+    sys.exit()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Installation """
@@ -231,21 +242,10 @@ def batch_obj_properties_setting(listObj, mode, *args):
             logger.info('Could not find the specific path: %s' % obj)
 
 def clean_unnecessary_file(var, *args):
-    directory = os.getenv(__root__)
-
-    profile = []
-    for root, dirs, file_names in os.walk(directory):
-        for file_name in file_names:
-            if var in file_name:
-                pth = os.path.join(root, file_name)
-                profile.append(pth)
-
-    if len(profile) == 0:
-        return
-    else:
-        for f in profile:
-            logger.info('removing %s' % f)
-            os.remove(f)
+    fileNames = [f for f in get_file_path(os.getenv(__root__)) if var in f] or []
+    if not fileNames == []:
+        for filePth in fileNames:
+            os.remove(filePth)
 
 def batch_resize_image(imgDir=None, imgResDir=None, size=[100, 100], sub=False, ext='.png', mode=1):
     """
@@ -298,6 +298,7 @@ def dataHandle(type='json', mode='r', filePath=None, data={}, *args):
     """
     json and yaml: read, write, edit... etc
     """
+    info = {}
     if type == 'json':
         indent = 4
         if mode == 'r' or mode == 'r+':
@@ -309,7 +310,7 @@ def dataHandle(type='json', mode='r', filePath=None, data={}, *args):
         else:
             with open(filePath, mode) as f:
                 info = json.dump(data, f, indent=indent)
-    elif type == 'yaml':
+    else:
         if mode == 'r' or mode == 'r+':
             with open(filePath, mode) as f:
                 info = yaml.load(f)
@@ -469,8 +470,8 @@ def set_app_stick_to_top_left(sizeW=400, sizeH=280, offsetX=5, offsetY=5, *args)
 
 def screenshot(*args):
     from ui import ui_screenshot
-    dlg = ui_screenshot.Screenshot()
-    dlg.exec_()
+    screen = ui_screenshot.Screenshot()
+    screen.exec_()
 
 def open_app(pth, *args):
     subprocess.Popen(pth)
@@ -481,7 +482,7 @@ def open_app(pth, *args):
 def get_icon(name, *args):
     iconLst = [i for i in get_file_path(os.path.join(os.getenv(__root__), 'imgs')) if '.icon' in i]
     for icon in iconLst:
-        if name in icon:
+        if name in os.path.basename(icon):
             return icon
 
 def get_web_icon(name, *args):
@@ -585,22 +586,52 @@ def preset_load_appInfo(*args):
     Load installed app info from config file
     :return: appInfo
     """
-    # Configure root path
-    mainConfigPth = os.path.join(os.getenv(__root__), 'appData', 'config', 'main.yml')
-
     # Seeking config file
     Collect_info()
-
+    # Configure root path
+    mainConfigPth = os.path.join(CONFIG, 'main.yml')
     # Load info from file
     with open(mainConfigPth, 'r') as f:
         appInfo = yaml.load(f)
 
     return appInfo
 
+def preset_load_iconInfo():
+    iconConfigPth = os.path.join(CONFIG, 'icon.yml')
+    with open(iconConfigPth, 'r') as f:
+        iconInfo = yaml.load(f)
+    return iconInfo
+
+# ----------------------------------------------------------------------------------------------------------- #
+""" Math """
+def check_odd(num):
+    return str2bool(num%2)
+
+def get_all_odd(numLst):
+    return [i for i in numLst if check_odd(i)]
+
+def get_all_even(numLst):
+    return [i for i in numLst if not check_odd(i)]
+
+# ----------------------------------------------------------------------------------------------------------- #
+""" Remove data """
+def del_key(key, dict = {}):
+    if not key in dict:
+        logger.debug("key not exists: {key}".format(key=key))
+        pass
+    else:
+        try:
+            del dict[key]
+            logger.debug("key deleted: {key}".format(key=key))
+        except KeyError:
+            dict.pop(key, None)
+            logger.debug("key poped: {key}".format(key=key))
+
+
 # ----------------------------------------------------------------------------------------------------------- #
 """ Collecting all info. """
 
-class Collect_info(object):
+class Collect_info():
     """
     Initialize the main class functions
     :param package: the package of many information stored from default variable
@@ -611,36 +642,18 @@ class Collect_info(object):
     def __init__(self):
 
         super(Collect_info, self).__init__()
+
         self.package = var.PLT_PKG
+        self.collect_env_variables()
+        self.collect_icon_path()
+        self.collect_all_app()
+        self.collect_main_app()
 
-        self.get_app_installed()
-
-    def collect_module_pth(self, package):
-        """
-        Get all the info of plt_modules
-        :param package: the package of many information stored from default variable
-        :param names: the dictionary of names stored from default variable
-        :return: plt_modules.info
-        """
-        # Create info module dictionary
-        moduleInfo = {}
-        moduleInfo['root'] = os.getenv(__root__)
-        moduleInfo['app module'] = os.path.join(os.getenv(__root__), package['py'][0])
-        moduleInfo['app ui'] = os.path.join(os.getenv(__root__), package['py'][1])
-
-        for pyFol in package['py']:
-            pyPth = os.path.join(package['root'], pyFol)
-            if os.path.exists(pyPth):
-                sys.path.append(pyPth)
-            files = [f for f in os.listdir(pyPth) if f.endswith('PipelineTool.py')]
-            for file in files:
-                if '__init__' in file:
-                    pass
-                else:
-                    pth = os.path.join(pyPth, file)
-                    moduleInfo[file.split('PipelineTool.py')[0]] = pth
-
-        return moduleInfo
+    def collect_env_variables(self):
+        envKeys = {}
+        for key in os.environ.keys():
+            envKeys[key] = os.getenv(key)
+        self.create_config_file('envKeys', envKeys)
 
     def collect_icon_path(self):
         """
@@ -649,16 +662,18 @@ class Collect_info(object):
         :return: plt.maya.icon.info
         """
         # Create dictionary for icon info
-        self.iconInfo = {}
+        iconInfo = {}
         # Custom some info to debug
-        self.iconInfo['Sep'] = 'separato.png'
-        self.iconInfo['File'] = 'file.png'
+        iconInfo['Sep'] = 'separato.png'
+        iconInfo['File'] = 'file.png'
         # Get list of icons in imgage folder
         iconlst = [i for i in get_file_path(os.path.join(os.getenv(__root__), 'imgs')) if '.icon' in i]
         for i in iconlst:
-            self.iconInfo[os.path.basename(i).split('.icon')[0]] = i
+            iconInfo[os.path.basename(i).split('.icon')[0]] = i
 
-    def get_app_installed(self):
+        self.create_config_file('icon', iconInfo)
+
+    def collect_all_app(self):
         """
         It will find and put all the info of installed apps to two list: appname and path
         :param filters: self.appName, self.appPath
@@ -667,9 +682,8 @@ class Collect_info(object):
         shortcuts = {}
         appName = []
         appPth = []
-        all_programs = winshell.programs(common=1)
 
-        # pprint.pprint(all_programs)
+        all_programs = winshell.programs(common=1)
 
         for dirpath, dirnames, filenames in os.walk(all_programs):
             relpath = dirpath[1 + len(all_programs):]
@@ -680,160 +694,95 @@ class Collect_info(object):
                 appName.append(name)
                 appPth.append(lnk.path)
 
-        self.appInfo = {}
+        appInfo = {}
         for name in appName:
-            self.appInfo[str(name)] = str(appPth[appName.index(name)])
+            appInfo[str(name)] = str(appPth[appName.index(name)])
 
-    def collect_python_pkgs(self, package):
-        """
-        It will Check if there is more than 1 version is installed
-        :param package: the package of many information stored from default variable
-        :param names: the dictionary of names stored from default variable
-        :return: final app info
-        """
+        self.create_config_file("app", appInfo)
 
-        keys = [k for k in self.appInfo if not self.appInfo[k].endswith(package['ext'][0])]
-        self.appInfo = self.deleteKey(keys, True)
-        jobs = []
-        for key in package['job']:
-            for job in package[key]:
-                jobs.append(job)
+    def collect_main_app(self):
 
-        keys = []
-        for job in jobs:
-            for key in self.appInfo:
-                if job in key:
-                    keys.append(key)
+        self.mainInfo = {}
 
-        pth = [self.appInfo[k] for k in keys]
-        self.appInfo = {}
-        for k in sorted(keys):
-            self.appInfo[k] = pth[keys.index(k)]
+        appInfo = dataHandle('yaml', 'r', os.path.join(CONFIG, 'app.yml'))
+        iconInfo = dataHandle('yaml', 'r', os.path.join(CONFIG, 'icon.yml'))
 
-        for k in package['filter']:
-            for key in keys:
+        detectLst = self.package['detect']
+        pltLst = self.package['main']
+
+        delKeys = [k for k in appInfo if not appInfo[k].endswith('.exe')]
+
+        for key in delKeys:
+            del_key(key, appInfo)
+
+        keepKeys = []
+        for k in pltLst:
+            for key in appInfo:
                 if k in key:
-                    del self.appInfo[key]
+                    keepKeys.append(key)
+        delKeys = [k for k in appInfo if not k in keepKeys]
+        for key in delKeys:
+            del_key(key, appInfo)
 
-        return self.appInfo
+        delKeys = []
+        for key in appInfo:
+            for k in detectLst:
+                if k in key:
+                    delKeys.append(key)
+        for key in delKeys:
+            del_key(key, appInfo)
 
-    def generate_config_file(self, package):
-        """
-        Run all the functions inside class and take all the return info then store them to files
-        :param package: the package of many information stored from default variable
-        :return: info files
-        """
-
-        iconInfo = self.collect_icon_path(package)
-        trackKeys = {}
-
-        appsConfig_yaml = os.path.join(os.getenv(__root__), 'appData', 'config', 'app.yml')
-        appsConfig_json = os.path.join(os.getenv(__root__), 'appData', 'config', 'app.json')
-
-        dataHandle('yaml', 'w', appsConfig_yaml, self.appInfo)
-        dataHandle('json', 'w', appsConfig_json, self.appInfo)
-
-        self.appInfo = self.collect_python_pkgs(package)
-
-        for key in self.appInfo:
-            # fix nukeX path
-            if 'NukeX' in key:
-                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --nukex"
-            # fix Hiero path
-            if 'Hiero' in key:
-                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --hiero"
-            # fix UVLayout path
-            if 'UVLayout' in key:
-                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " -launch"
-
-        # trackList = PACKAGE['TD'] + PACKAGE['Comp'] + PACKAGE['Design'] + PACKAGE['Office']
-
-        for icon in iconInfo:
-            for key in self.appInfo:
-                if icon in key:
-                    trackKeys[icon] = [key, iconInfo[icon], self.appInfo[key]]
         # Custom functions
-        trackKeys['Logo'] = ['Pipeline Tool', iconInfo['Logo'], '']
-        trackKeys['Sep'] = ['separator', iconInfo['Sep'], 'separator']
-        trackKeys['File'] = ['File', iconInfo['File'], '']
-        trackKeys['Exit'] = ['Exit application', iconInfo['Exit'], '']
-        trackKeys['About'] = ['About pipeline tool', iconInfo['About'], 'About pipeline tool']
-        trackKeys['Credit'] = ['Credit', iconInfo['Credit'], 'Thanks to all of you']
-        trackKeys['Help'] = ['Introduction', iconInfo['Help'], '']
-        trackKeys['CleanPyc'] = ['Clean .pyc files', iconInfo['CleanPyc'], '']
-        trackKeys['ReConfig'] = ['Re configuring data', iconInfo['Reconfig'], '']
+        self.mainInfo['Logo'] = [__appname__, iconInfo['Logo'], ' ']
+        self.mainInfo['Sep'] = ['separator', iconInfo['Sep'], ' ']
+        self.mainInfo['File'] = ['File', iconInfo['File'], ' ']
+        self.mainInfo['Exit'] = ['Exit plt', iconInfo['Exit'], ' ']
+        self.mainInfo['About'] = [__about__, iconInfo['About'], ' ']
+        self.mainInfo['Credit'] = ['Credit', iconInfo['Credit'], ' ']
+        self.mainInfo['Help'] = ['Introduction', iconInfo['Help'], ' ']
+        self.mainInfo['CleanPyc'] = ['Clean .pyc files', iconInfo['CleanPyc'], ' ']
+        self.mainInfo['ReConfig'] = ['Re configuring data', iconInfo['Reconfig'], ' ']
 
-        # Davinci Resolve
+        for key in appInfo:
+            print("{key}: -{value}".format(key=key, value=appInfo[key]))
 
-        dbBrowserPth = os.path.join(os.getenv(__root__), 'external_app', 'sqlbrowser', 'SQLiteDatabaseBrowserPortable.exe')
+        for key in appInfo:
+            if 'NukeX' in key:
+                logger.debug("key found: {key}, need to fix value".format(key=key))
+                appInfo[key] = '"' + appInfo[key] + '"' + " --nukex"
+                logger.debug("Fixed: {key}: {val}".format(key=key, val=appInfo[key]))
+            elif 'Hiero' in key:
+                logger.debug("key found: {key}, need to fix value".format(key=key))
+                appInfo[key] = '"' + appInfo[key] + '"' + " --hiero"
+                logger.debug("Fixed: {key}: {val}".format(key=key, val=appInfo[key]))
+            elif 'UVLayout' in key:
+                logger.debug("key found: {key}, need to fix value".format(key=key))
+                appInfo[key] = '"' + appInfo[key] + '"' + " -launch"
+                logger.debug("Fixed: {key}: {val}".format(key=key, val=appInfo[key]))
+
+        # Extra app come along with plt but not be installed in local.
+        dbBrowserPth = os.path.join(os.getenv(__root__), 'external_app', 'sqlbrowser',
+                                    'SQLiteDatabaseBrowserPortable.exe')
         advanceRenamerPth = os.path.join(os.getenv(__root__), 'external_app', 'batchRenamer', 'ARen.exe')
-        qtDesigner = os.path.join(os.getenv('PROGRAMDATA'),'Anaconda3', 'Library', 'bin', 'designer.exe')
+        qtDesigner = os.path.join(os.getenv('PROGRAMDATA'), 'Anaconda3', 'Library', 'bin', 'designer.exe')
         davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
 
-        extraApps = [dbBrowserPth, advanceRenamerPth, qtDesigner, davinciPth]
-        extraKeys = ['Database Browser', 'Advance Renamer', 'QtDesigner', "Davinci Resolve"]
+        eVal = [dbBrowserPth, advanceRenamerPth, qtDesigner, davinciPth]
+        eKeys = ['Database Browser', 'Advance Renamer', 'QtDesigner', "Davinci Resolve"]
 
-        for i in range(len(extraApps)):
-            if os.path.exists(extraApps[i]):
-                trackKeys[extraKeys[i]] = [extraKeys[i], get_icon(extraKeys[i]), extraApps[i]]
+        for key in eKeys:
+            self.mainInfo[key] = [key, get_icon(key), eVal[eKeys.index(key)]]
 
-        # for path in extraApps:
+        for key in appInfo:
+            self.mainInfo[key] = [key, get_icon(key), appInfo[key]]
 
-        # # Pycharm.
-        # if 'JetBrains PyCharm' in keys:
-        #     trackKeys['PyCharm'] = ['PyCharm', get_icon('Pycharm'), fixInfo['JetBrains PyCharm 2017.3.3']]
-        #
-        # # Sumblime text.
-        # if 'Sublime Text 3' in keys:
-        #     trackKeys['SublimeText 3'] = ['Sublime Text 3', get_icon('SublimeText 3'), fixInfo['Sublime Text 3']]
-        #
-        #
-        # # Snipping tool.
-        # if 'Snipping Tool' in fixInfo:
-        #     trackKeys['Snipping Tool'] = ['Snipping Tool', get_icon('Snipping Tool'), fixInfo['Snipping Tool']]
 
-        # Qt Designer
-        # if os.path.exists(qtDesigner):
-        #     trackKeys['QtDesigner'] = ['QtDesigner', get_icon('QtDesigner'), qtDesigner]
-        #
-        # # Database browser.
-        # if os.path.exists(dbBrowserPth):
-        #     trackKeys['Database Browser'] = ['Database Browser', get_icon('SQliteTool'), dbBrowserPth]
-        #
-        # # Advance Renamer.
-        # if os.path.exists(advanceRenamerPth):
-        #     trackKeys['Advance Renamer'] = ['Advance Renamer 3.8', get_icon('AdvanceRenamer'), advanceRenamerPth]
+        self.create_config_file('main', self.mainInfo)
 
-        # info['pipeline'] = trackKeys
-        pipelineConfig_yaml = os.path.join(os.getenv(__root__), 'appData', 'config', 'main.yml')
-        pipelineConfig_json = os.path.join(os.getenv(__root__), 'appData', 'config', 'main.json')
-        dataHandle('yaml', 'w', pipelineConfig_yaml, trackKeys)
-        dataHandle('json', 'w', pipelineConfig_json, trackKeys)
-
-        dataHandle('yaml', 'w', iconConfig, iconInfo)
-        dataHandle('json', 'w', iconConfig, iconInfo)
-
-        envKeys = {}
-        for key in os.environ.keys():
-            envKeys[key] = os.getenv(key)
-
-        pth = os.path.join(os.getenv(__root__), 'appData', 'config', 'sysPath.yml')
-
-        dataHandle('yaml', 'w', pth, envKeys)
-        dataHandle('json', 'w', pth, envKeys)
-
-    def deleteKey(self, keys, n=True):
-        if not n:
-            return self.appInfo
-        else:
-            for key in keys:
-                try:
-                    self.appInfo[key]
-                except KeyError:
-                    continue
-                else:
-                    del self.appInfo[key]
-
-        return self.appInfo
+    def create_config_file(self, name, data):
+        appsConfig_yaml = os.path.join(os.getenv(__root__), 'appData', 'config', '{name}.yml'.format(name=name))
+        appsConfig_json = os.path.join(os.getenv(__root__), 'appData', 'config', '{name}.json'.format(name=name))
+        dataHandle('yaml', 'w', appsConfig_yaml, data)
+        dataHandle('json', 'w', appsConfig_json, data)
 
 # ----------------------------------------------------------------------------------------------------------- #

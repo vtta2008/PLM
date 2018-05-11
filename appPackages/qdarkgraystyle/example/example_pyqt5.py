@@ -8,8 +8,7 @@ Requirements:
     - Python 3
     - PyQt5
 
-.. note.. :: qdarkgraystyle does not have to be installed to run
-    the example
+.. note.. :: qdarkgraystyle does not have to be installed to run the example
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Check data flowing """

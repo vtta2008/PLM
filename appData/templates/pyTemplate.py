@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
 """
 
-Script Name: $name
+Script Name: __init__.py
 Author: Do Trinh/Jimmy - 3D artist.
+
 Description:
-    This script is master file of Pipeline Tool
 
 """
+# -------------------------------------------------------------------------------------------------------------
+""" Check data flowing """
+print("Import from modules: {file}".format(file=__name__))
+print("Directory: {path}".format(path=__file__.split(__name__)[0]))
+__root__ = "PLT_RT"
+# -------------------------------------------------------------------------------------------------------------
+""" Import """

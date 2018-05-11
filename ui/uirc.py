@@ -81,7 +81,7 @@ class tpLabel(QLabel):
 
 class tpSlider(QSlider):
 
-    def __init__(self, dataSet=DATASET, parent=None):
+    def __init__(self, parent=None):
         super(tpSlider, self).__init__(parent)
 
         self.set
@@ -118,14 +118,8 @@ class SliderTemplate(QWidget):
 
     valueChangeSig = pyqtSignal(float)
 
-    def __init__(self, setData=SLIDER_DS, parent=None):
+    def __init__(self, parent=None):
         super(SliderTemplate, self).__init__(parent)
-
-        self.txt = setData[0]
-        self.min = setData[1]
-        self.max = setData[2]
-        self.step = setData[3]
-        self.val = setData[4]
 
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
