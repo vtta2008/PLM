@@ -18,6 +18,7 @@ __root__ = "PLT_RT"
 """ Import """
 import os
 import sys
+import versioneer
 
 from cx_Freeze import setup, Executable
 
@@ -26,7 +27,7 @@ if sys.platform == "win32":
     base = "Win32GUI"
 
 os.environ[__root__] = os.getcwd()
-from __init__ import (__pkgsReq__, __readme__, __appname__, __version__, __licence__, __author__, __modules__,
+from __init__ import (__pkgsReq__, __readme__, __appname__, __licence__, __author__, __modules__,
                       __classifiers__, __description__, __download__, __email__, __packages__, __pkgsDir__, __website__)
 
 for dir in os.listdir(os.getenv(__root__)):
@@ -42,7 +43,8 @@ includes = ["atexit", "re"]
 
 setup(
     name = __appname__,
-    version = __version__,
+    version = versioneer.get_version(),
+    cmdclass = versioneer.get_cmdclass(),
     packages = __packages__,
     package_dir = __pkgsDir__,
     url = __website__,

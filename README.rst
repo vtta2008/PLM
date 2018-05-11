@@ -35,7 +35,7 @@ Also require extra python packages (will update more):
 
     deprecated, jupyter-console, ipywidgets,'pywinauto, winshell, pandas,
     notebook, juppyter, opencv-python, pyunpack, argparse, qdarkgraystyle,
-    asyncio, websockets, cx_Freeze,
+    asyncio, websockets, cx_Freeze, py2exe, versioneer
 
 To install extra packages, run command in CMD:
 
@@ -83,7 +83,7 @@ Run directly:
 
 .. code:: bash
 
-    start python plt.py
+    start python Plt.py
 
 Complie executable file:
 

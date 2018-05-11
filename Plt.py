@@ -23,7 +23,7 @@ from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings, pyqtSignal, QByteArray
-from PyQt5.QtGui import QIcon, QPixmap, QImage, QIntValidator
+from PyQt5.QtGui import QIcon, QPixmap, QImage, QIntValidator, QFont
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
                              QGridLayout, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu, QFileDialog, QComboBox,
@@ -96,15 +96,20 @@ frameStyle = QFrame.Sunken | QFrame.Panel
 APPINFO = func.preset_load_appInfo()
 ICONINFO = func.preset_load_iconInfo()
 
-class pltLabel(QLabel):
+def Clabel(txt=TXT, wmin=WMIN, alg = None, font=None):
+    if alg == None:
+        alg = Qt.AlignCenter
 
-    def __init__(self, txt=TXT, align=None, parent=None):
-        super(pltLabel, self).__init__(parent)
-        self.setText(txt)
-        self.setMinimumWidth(WMIN)
-        if align == None:
-            align = Qt.AlignCenter
-        self.setAlignment(align)
+    if font == None:
+        font = QFont({"Arial, 10"})
+
+    label = QLabel(txt)
+    label.setMinimumWidth(wmin)
+    label.setAlignment(alg)
+    label.setFont(font)
+    return label
+
+    return label
 
 class pltSlider(QVBoxLayout):
 
@@ -206,10 +211,10 @@ class UnitSetting(QWidget):
         self.minVal.textChanged.connect(self.set_min)
         self.maxVal.textChanged.connect(self.set_max)
 
-        self.layout.addWidget(pltLabel("STEP: "), 0,0,1,1)
-        self.layout.addWidget(pltLabel("VALUE: "), 1,0,1,1)
-        self.layout.addWidget(pltLabel("MIN: "), 2,0,1,1)
-        self.layout.addWidget(pltLabel("MAX: "), 3,0,1,1)
+        self.layout.addWidget(Clabel("STEP: "), 0,0,1,1)
+        self.layout.addWidget(Clabel("VALUE: "), 1,0,1,1)
+        self.layout.addWidget(Clabel("MIN: "), 2,0,1,1)
+        self.layout.addWidget(Clabel("MAX: "), 3,0,1,1)
 
         self.layout.addWidget(self.stepVal, 0, 1, 1, 1)
         self.layout.addWidget(self.valueVal, 1, 1, 1, 1)
@@ -269,7 +274,7 @@ class Plt_sign_up(QDialog):
         self.security_section()
         self.buttons_section()
 
-        self.layout.addWidget(pltLabel("ALL FIELD ARE REQUIRED!!!"), 0, 0, 1, 6)
+        self.layout.addWidget(Clabel("ALL FIELD ARE REQUIRED!!!"), 0, 0, 1, 6)
         self.layout.addWidget(self.avaSection, 1, 0, 1, 2)
         self.layout.addWidget(self.accSection, 1, 2, 1, 4)
         self.layout.addWidget(self.prfSection, 2, 0, 1, 6)
@@ -299,9 +304,9 @@ class Plt_sign_up(QDialog):
         account_grid = QGridLayout()
         self.accSection.setLayout(account_grid)
 
-        account_grid.addWidget(pltLabel('User Name'), 0, 0, 1, 2)
-        account_grid.addWidget(pltLabel('Password'), 1, 0, 1, 2)
-        account_grid.addWidget(pltLabel('Confirm Password'), 2, 0, 1, 2)
+        account_grid.addWidget(Clabel('User Name'), 0, 0, 1, 2)
+        account_grid.addWidget(Clabel('Password'), 1, 0, 1, 2)
+        account_grid.addWidget(Clabel('Confirm Password'), 2, 0, 1, 2)
 
         self.userField = QLineEdit()
         self.pwField = QLineEdit()
@@ -319,11 +324,11 @@ class Plt_sign_up(QDialog):
         profile_grid = QGridLayout()
         self.prfSection.setLayout(profile_grid)
 
-        profile_grid.addWidget(pltLabel('First Name'), 0, 0, 1, 2)
-        profile_grid.addWidget(pltLabel('Last Name'), 1, 0, 1, 2)
-        profile_grid.addWidget(pltLabel('Your Title'), 2, 0, 1, 2)
-        profile_grid.addWidget(pltLabel('Email'), 3, 0, 1, 2)
-        profile_grid.addWidget(pltLabel('Phone Number'), 4, 0, 1, 2)
+        profile_grid.addWidget(Clabel('First Name'), 0, 0, 1, 2)
+        profile_grid.addWidget(Clabel('Last Name'), 1, 0, 1, 2)
+        profile_grid.addWidget(Clabel('Your Title'), 2, 0, 1, 2)
+        profile_grid.addWidget(Clabel('Email'), 3, 0, 1, 2)
+        profile_grid.addWidget(Clabel('Phone Number'), 4, 0, 1, 2)
 
         self.titleField = QLineEdit()
         self.firstnameField = QLineEdit()
@@ -342,11 +347,11 @@ class Plt_sign_up(QDialog):
         conGrid = QGridLayout()
         self.conSection.setLayout(conGrid)
 
-        conGrid.addWidget(pltLabel("Address Line 1"), 0, 0, 1, 2)
-        conGrid.addWidget(pltLabel("Address Line 2"), 1, 0, 1, 2)
-        conGrid.addWidget(pltLabel("Postal"), 2, 0, 1, 2)
-        conGrid.addWidget(pltLabel("City"), 3, 0, 1, 2)
-        conGrid.addWidget(pltLabel("Country"), 4, 0, 1, 2)
+        conGrid.addWidget(Clabel("Address Line 1"), 0, 0, 1, 2)
+        conGrid.addWidget(Clabel("Address Line 2"), 1, 0, 1, 2)
+        conGrid.addWidget(Clabel("Postal"), 2, 0, 1, 2)
+        conGrid.addWidget(Clabel("City"), 3, 0, 1, 2)
+        conGrid.addWidget(Clabel("Country"), 4, 0, 1, 2)
 
         self.addressLine1 = QLineEdit()
         self.addressLine2 = QLineEdit()
@@ -377,10 +382,10 @@ class Plt_sign_up(QDialog):
             self.ques1.addItem(str(i[0]))
             self.ques2.addItem(str(i[0]))
 
-        questions_grid.addWidget(pltLabel('Question 1'), 0, 0, 1, 3)
-        questions_grid.addWidget(pltLabel('Answer 1'), 1, 0, 1, 3)
-        questions_grid.addWidget(pltLabel('Question 2'), 2, 0, 1, 3)
-        questions_grid.addWidget(pltLabel('Answer 2'), 3, 0, 1, 3)
+        questions_grid.addWidget(Clabel('Question 1'), 0, 0, 1, 3)
+        questions_grid.addWidget(Clabel('Answer 1'), 1, 0, 1, 3)
+        questions_grid.addWidget(Clabel('Question 2'), 2, 0, 1, 3)
+        questions_grid.addWidget(Clabel('Answer 2'), 3, 0, 1, 3)
 
         questions_grid.addWidget(self.ques1, 0, 3, 1, 6)
         questions_grid.addWidget(self.answ1, 1, 3, 1, 6)
@@ -547,8 +552,8 @@ class Plt_sign_in(QDialog):
         login_btn.clicked.connect(self.on_sign_in_btn_clicked)
         cancel_btn.clicked.connect(QApplication.quit)
 
-        login_grid.addWidget(pltLabel(text='Username'), 0, 0, 1, 2)
-        login_grid.addWidget(pltLabel(text='Password'), 1, 0, 1, 2)
+        login_grid.addWidget(Clabel(text='Username'), 0, 0, 1, 2)
+        login_grid.addWidget(Clabel(text='Password'), 1, 0, 1, 2)
         login_grid.addWidget(self.usernameField, 0, 2, 1, 4)
         login_grid.addWidget(self.passwordField, 1, 2, 1, 4)
         login_grid.addWidget(self.rememberCheckBox, 2, 1, 1, 2)
@@ -563,7 +568,7 @@ class Plt_sign_in(QDialog):
         sign_up_btn = QPushButton('Sign up')
         sign_up_btn.clicked.connect(self.on_sign_up_btn_clicked)
 
-        signup_grid.addWidget(pltLabel(text=mess.SIGN_UP), 0, 0, 1, 6)
+        signup_grid.addWidget(Clabel(text=mess.SIGN_UP), 0, 0, 1, 6)
         signup_grid.addWidget(sign_up_btn, 1, 0, 1, 6)
 
         self.layout.addWidget(login_groupBox, 0, 0, 1, 1)
@@ -1008,7 +1013,7 @@ class TabWidget(QWidget):
         tab4Section1Grid = QGridLayout()
         tab4Section1GrpBox.setLayout(tab4Section1Grid)
 
-        tab4Section1Grid.addWidget(pltLabel("Update later"), 0, 0, 1, 8)
+        tab4Section1Grid.addWidget(Clabel("Update later"), 0, 0, 1, 8)
 
         tab4layout.addWidget(tab4Section1GrpBox, 0, 0, 1, 8)
 
@@ -1213,7 +1218,7 @@ class Plt_application(QMainWindow):
         self.topGrpBox = QGroupBox("Top Layout")
         topLayout = QHBoxLayout()
         self.topGrpBox.setLayout(topLayout)
-        topLayout.addWidget(pltLabel("This Layout is for drag and drop"))
+        topLayout.addWidget(Clabel("This Layout is for drag and drop"))
 
         # Mid build
         self.midGrpBox = QGroupBox("plt Tool Box")

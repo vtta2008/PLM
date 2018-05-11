@@ -14,3 +14,4 @@ qdarkgraystyle
 asyncio
 websockets
 cx_Freeze
+versioneer
