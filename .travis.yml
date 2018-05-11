@@ -6,7 +6,7 @@ script:
   - pytest
 
 sudo: required
-dist: python example/plt_test.py --travis
+dist: python plt_test.py --travis
 
 before_install:
   - sudo apt-get update

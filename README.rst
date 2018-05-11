@@ -35,7 +35,7 @@ Also require extra python packages (will update more):
 
     deprecated, jupyter-console, ipywidgets,'pywinauto, winshell, pandas,
     notebook, juppyter, opencv-python, pyunpack, argparse, qdarkgraystyle,
-    asyncio, websockets, cx_Freeze, py2exe, versioneer
+    asyncio, websockets, cx_Freeze, py2exe, versioneer, pychecker
 
 To install extra packages, run command in CMD:
 
@@ -94,20 +94,7 @@ Complie executable file:
 REFERENCE
 =========
 
-Here is the Plugins/Files that I am using:
+For Plugins/Files that I am using, you can see `here <docs/reference.rst>`_.
 
-.. code:: bash
 
-    GitHub - mottosso/Qt.py: Minimal Python 2 & 3 shim around all Qt bindings - PySide, PySide2, PyQt4 and PyQt5. (n.d.).
-    Retrieved from https://github.com/mottosso/Qt.py
-
-    mstuttgart/qdarkgraystyle. (n.d.). A dark gray style sheet for PyQt5 application.
-    Retrieved from https://github.com/mstuttgart/qdarkgraystyle
-
-    sqlitebrowser/sqlitebrowser. (2017, November 30).
-    Retrieved from https://github.com/sqlitebrowser/sqlitebrowser
-
-    Advanced Renamer - Free and fast batch rename utility for files and folders. (n.d.).
-    Retrieved from https://www.advancedrenamer.com/
-
-Copyright (C) 2017-2018 by `Trinh Do <http://dot.damgteam.com/>`_ & `Duong Minh Duc <http://up.damgteam.com>`_.
+Copyright (C) `details <docs/copyright.rst>`_.

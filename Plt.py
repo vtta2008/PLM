@@ -17,6 +17,7 @@ __root__ = "PLT_RT"
 """ Import """
 
 # Python
+import pychecker
 import os, sys, logging, subprocess, webbrowser, requests
 import sqlite3 as lite
 from functools import partial
@@ -107,8 +108,6 @@ def Clabel(txt=TXT, wmin=WMIN, alg = None, font=None):
     label.setMinimumWidth(wmin)
     label.setAlignment(alg)
     label.setFont(font)
-    return label
-
     return label
 
 class pltSlider(QVBoxLayout):

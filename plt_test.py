@@ -16,8 +16,11 @@ print("Directory: {path}".format(path=__file__.split(__name__)[0]))
 __root__ = "PLT_RT"
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-
+import versioneer
 import sys, logging
+
+version = versioneer.get_versions()
+print(version)
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *
@@ -27,21 +30,20 @@ TXT = "Test String"
 ALG = Qt.AlignCenter
 WMIN = 50
 
-class pltLabel(QDialog):
+class Clabel(QWidget):
+    def __init__(self,txt=TXT, wmin=WMIN, alg = None, font=None, parent=None):
+        super(Clabel, self).__init__(parent)
+        if alg == None:
+            alg = Qt.AlignCenter
+        if font == None:
+            font = QFont("Arial, 10")
+        label = QLabel(txt)
+        label.setMinimumWidth(wmin)
+        label.setAlignment(alg)
+        label.setFont(font)
 
-    def __init__(self, txt=TXT, align=None, parent=None):
-        super(pltLabel, self).__init__(parent)
-
-        layout = QVBoxLayout()
-        text = QLabel(txt)
-        layout.addWidget(text)
-
-        text.setMinimumWidth(WMIN)
-        if align == None:
-            align = Qt.AlignCenter
-        text.setAlignment(align)
-
-        self.setLayout(layout)
+        layout = QHBoxLayout()
+        layout.addWidget(label)
 
 class TestWindow(QMainWindow):
 
@@ -49,14 +51,14 @@ class TestWindow(QMainWindow):
         super(TestWindow, self).__init__(parent)
 
         self.setWindowTitle(TXT)
-        self.layout = QGridLayout()
+        self.widget = QWidget()
         self.buildUI()
-        self.setLayout(self.layout)
+        self.setCentralWidget(self.widget)
 
     def buildUI(self):
-
-        widget = pltLabel("What the hex is this ???")
-        self.layout.addWidget(widget, 0,0,1,1)
+        layout = QVBoxLayout()
+        layout.addWidget(Clabel("What the hex is this ???"))
+        self.widget.setLayout(layout)
 
 def main():
     app = QApplication(sys.argv)

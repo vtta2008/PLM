@@ -17,10 +17,14 @@ import subprocess
 import sys
 
 def get_keywords():
-    # these strings will be replaced by git during git-archive.
-    # setup.py/versioneer.py will grep for the variable names, so they must
-    # each be defined on a line of their own. _version.py will just call
-    # get_keywords().
+    """
+
+    these strings will be replaced by git during git-archive.
+    setup.py/versioneer.py will grep for the variable names, so they must
+    each be defined on a line of their own. _version.py will just call
+    get_keywords().
+
+    """
     git_refnames = "$Format:%d$"
     git_full = "$Format:%H$"
     keywords = {"refnames": git_refnames, "full": git_full}
@@ -36,9 +40,9 @@ def get_config():
     cfg = VersioneerConfig()
     cfg.VCS = "git"
     cfg.style = "pep440"
-    cfg.tag_prefix = "zfec-"
-    cfg.parentdir_prefix = "zfec-"
-    cfg.versionfile_source = "zfec/_version.py"
+    cfg.tag_prefix = "PipelineTool"
+    cfg.parentdir_prefix = "PipelineTool"
+    cfg.versionfile_source = "PipelineTool/_version.py"
     cfg.verbose = False
     return cfg
 

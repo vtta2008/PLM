@@ -15,3 +15,4 @@ asyncio
 websockets
 cx_Freeze
 versioneer
+pychecker
