@@ -1,13 +1,13 @@
 SHORT FILM PIPELINE
 ===================
 
-.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/python3.6.tag.png?style=flat-square
+.. image:: https://github.com/vtta2008/PipelineTool/tree/master/imgs/tag/python3.6.tag.png?style=flat-square
     :target: https://www.anaconda.com/download/
 
-.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/release13.1.tag.png?style=flat-square
+.. image:: https://github.com/vtta2008/PipelineTool/tree/master/imgs/tag/release13.1.tag.png?style=flat-square
     :target: https://github.com/vtta2008/PipelineTool/releases
 
-.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/licenceMIT.tag.png?style=flat-square
+.. image:: https://github.com/vtta2008/PipelineTool/tree/master/imgs/tag/licenceMIT.tag.png?style=flat-square
     :target: https://github.com/vtta2008/PipelineTool/blob/master/LICENSE
 
 This application can be used to build, manage, and optimise film making pipelines. The latest version is compatible
@@ -110,4 +110,4 @@ Here is the Plugins/Files that I am using:
     Advanced Renamer - Free and fast batch rename utility for files and folders. (n.d.).
     Retrieved from https://www.advancedrenamer.com/
 
-Copyright (C) 2017-2018 by `Trinh Do <dot.damgteam.com/>`_ & `Duong Minh Duc <up.damgteam.com>`_.
+Copyright (C) 2017-2018 by `Trinh Do <http://dot.damgteam.com/>`_ & `Duong Minh Duc <http://up.damgteam.com>`_.
