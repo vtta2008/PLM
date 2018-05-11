@@ -147,7 +147,7 @@ class InitUserSetup(object):
         # Check Layout exists, if not, import pipeline layout from source data
         if not 'PipelineTool' in listLayout:
             # Path of layout file from source data by default
-            layoutPth = os.path.join(os.getenv(__root__), 'appPackages', 'maya', 'layout', 'plt.json')
+            layoutPth = os.path.join(os.getenv(__root__), 'packages', 'maya', 'layout', 'plt.json')
 
             # Check if it is not there, it may happen because the file might be moved or deleted
             if os.path.exists(layoutPth):

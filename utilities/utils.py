@@ -486,7 +486,7 @@ def get_icon(name, *args):
             return icon
 
 def get_web_icon(name, *args):
-    iconLst = get_file_path(os.path.join(os.getenv(__root__), 'imgs', 'web.icon'))
+    iconLst = get_file_path(os.path.join(os.getenv(__root__), 'imgs', 'web'))
     for icon in iconLst:
         if name in icon:
             return icon
@@ -556,7 +556,7 @@ def check_match(data1, data2, *args):
 
 def preset_maya_intergrate(*args):
     # Pipeline tool module paths for Maya.
-    maya_tk = os.path.join(os.getenv(__root__), 'appPackages', 'maya')
+    maya_tk = os.path.join(os.getenv(__root__), 'packages', 'maya')
 
     # Name of folders
     mayaTrack = ['plt_modules', 'plugins', 'plt_anim', 'MayaLib', 'plt_model', 'plt_rig', 'plt_surface']
@@ -573,7 +573,7 @@ def preset_maya_intergrate(*args):
     os.environ['PYTHONPATH'] = pythonValue
 
     # Copy userSetup.py from source code to properly maya folder
-    userSetup_plt_path = os.path.join(os.getenv(__root__), 'appPackages', 'maya', 'userSetup.py')
+    userSetup_plt_path = os.path.join(os.getenv(__root__), 'packages', 'maya', 'userSetup.py')
     userSetup_maya_path = os.path.join(os.path.expanduser('~/Documents/maya/2017/prefs/scripts'), 'userSetup.py')
 
     if not os.path.exists(userSetup_plt_path) or not os.path.exists(userSetup_plt_path):

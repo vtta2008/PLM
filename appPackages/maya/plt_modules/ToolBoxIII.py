@@ -39,7 +39,7 @@ from appPackages.maya.plugins.Qt import QtWidgets, QtCore, QtGui
 
 NAMES = var.MAINVAR
 VERSION = var.MAYAVERSION
-DIRECTORY = os.path.join(os.getenv(__root__), 'appPackages', 'maya', 'userLibrary')
+DIRECTORY = os.path.join(os.getenv(__root__), 'packages', 'maya', 'userLibrary')
 
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION

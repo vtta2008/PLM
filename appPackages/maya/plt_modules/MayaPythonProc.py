@@ -53,8 +53,8 @@ class MayaPythonProc(object):
     # file list in Installation folder
     icons_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'imgs', 'maya.icon')) if
                  f.endswith('.png') or f.endswith('.jpg')]
-    modules_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'appPackages', 'maya', 'plt_modules')) if f.endswith('.py')]
-    scrRoot_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'appPackages', 'maya')) if f.endswith('.py')]
+    modules_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'packages', 'maya', 'plt_modules')) if f.endswith('.py')]
+    scrRoot_lst = [f for f in os.listdir(os.path.join(os.getenv(__root__), 'packages', 'maya')) if f.endswith('.py')]
 
     # ---------------------------------------------------------
     # List file names for CHECK LIST
