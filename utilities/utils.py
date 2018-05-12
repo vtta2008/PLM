@@ -646,8 +646,8 @@ class Collect_info():
         self.package = var.PLT_PKG
         self.collect_env_variables()
         self.collect_icon_path()
-        self.collect_all_app()
-        self.collect_main_app()
+        # self.collect_all_app()
+        # self.collect_main_app()
 
     def collect_env_variables(self):
         envKeys = {}
@@ -670,8 +670,8 @@ class Collect_info():
         iconlst = [i for i in get_file_path(os.path.join(os.getenv(__root__), 'imgs')) if '.icon' in i]
         for i in iconlst:
             iconInfo[os.path.basename(i).split('.icon')[0]] = i
-
-        self.create_config_file('icon', iconInfo)
+        pprint.pprint(iconInfo)
+        # self.create_config_file('icon', iconInfo)
 
     def collect_all_app(self):
         """

@@ -39,7 +39,7 @@ os.environ[__root__] = os.getcwd()
 """ Stylesheet plugin """
 import qdarkgraystyle
 
-from __init__ import (__root__, __appname__, __version__, __organization__, __website__)
+from appData import globals
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """

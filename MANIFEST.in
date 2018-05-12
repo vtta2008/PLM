@@ -7,6 +7,8 @@ include MANIFEST.in
 include setup.py
 include LICENSE
 include README.rst
-
-include versioneer.py
-include PipelineTool/appData/_version.py
+include VERSION
+include appData/VERSION
+include docs/reference.rst
+include docs/version.rst
+include EnglishDIctionary.json
