@@ -39,8 +39,6 @@ os.environ[__root__] = os.getcwd()
 """ Stylesheet plugin """
 import qdarkgraystyle
 
-from appData import globals
-
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
@@ -102,7 +100,7 @@ def Clabel(txt=TXT, wmin=WMIN, alg = None, font=None):
         alg = Qt.AlignCenter
 
     if font == None:
-        font = QFont({"Arial, 10"})
+        font = QFont("Arial, 10")
 
     label = QLabel(txt)
     label.setMinimumWidth(wmin)
@@ -551,8 +549,8 @@ class Plt_sign_in(QDialog):
         login_btn.clicked.connect(self.on_sign_in_btn_clicked)
         cancel_btn.clicked.connect(QApplication.quit)
 
-        login_grid.addWidget(Clabel(text='Username'), 0, 0, 1, 2)
-        login_grid.addWidget(Clabel(text='Password'), 1, 0, 1, 2)
+        login_grid.addWidget(Clabel(txt='Username'), 0, 0, 1, 2)
+        login_grid.addWidget(Clabel(txt='Password'), 1, 0, 1, 2)
         login_grid.addWidget(self.usernameField, 0, 2, 1, 4)
         login_grid.addWidget(self.passwordField, 1, 2, 1, 4)
         login_grid.addWidget(self.rememberCheckBox, 2, 1, 1, 2)
@@ -567,7 +565,7 @@ class Plt_sign_in(QDialog):
         sign_up_btn = QPushButton('Sign up')
         sign_up_btn.clicked.connect(self.on_sign_up_btn_clicked)
 
-        signup_grid.addWidget(Clabel(text=mess.SIGN_UP), 0, 0, 1, 6)
+        signup_grid.addWidget(Clabel(txt=mess.SIGN_UP), 0, 0, 1, 6)
         signup_grid.addWidget(sign_up_btn, 1, 0, 1, 6)
 
         self.layout.addWidget(login_groupBox, 0, 0, 1, 1)
@@ -1151,7 +1149,7 @@ class Plt_application(QMainWindow):
         self.setFixedWidth(400)
 
         self.trayIcon = self.sys_tray_icon_menu()
-        self.trayIcon.setToolTip(__appname__)
+        self.trayIcon.setToolTip("Pipeline Tool")
         self.trayIcon.show()
         self.trayIcon.activated.connect(self.sys_tray_icon_activated)
         icon = QSystemTrayIcon.Information
@@ -1363,10 +1361,10 @@ class Plt_application(QMainWindow):
                 appKey = None
         for icon in self.iconInfo:
             if k in icon:
-                iconKey = app
+                iconKey = icon
             else:
                 iconKey = None
-        print(appKey, iconKey)
+
         return appKey, iconKey
 
     def createAction(self, appInfo, appKey, iconKey):
@@ -1470,10 +1468,10 @@ def main():
 
     usql.query_userData()
 
-    QCoreApplication.setApplicationName(__appname__)
-    QCoreApplication.setApplicationVersion(__version__)
-    QCoreApplication.setOrganizationName(__organization__)
-    QCoreApplication.setOrganizationDomain(__website__)
+    QCoreApplication.setApplicationName("Pipeline Tool")
+    QCoreApplication.setApplicationVersion("13.0.1")
+    QCoreApplication.setOrganizationName("DAMG team")
+    QCoreApplication.setOrganizationDomain("www.damgteam.com")
 
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon(func.get_icon('Logo')))

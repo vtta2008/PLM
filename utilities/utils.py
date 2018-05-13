@@ -22,7 +22,6 @@ import datetime, time, uuid, win32gui, win32api, pprint, cv2
 from pyunpack import Archive
 
 # Plt tools
-from __init__ import __pkgsReq__, __appname__, __about__
 from utilities import variables as var
 
 CONFIG = os.path.join(os.getenv(__root__), 'appData', 'config')

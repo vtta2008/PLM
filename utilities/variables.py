@@ -24,7 +24,6 @@ import platform
 
 # Plt tools
 from utilities import message as mess
-from __init__ import __appname__
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
@@ -61,7 +60,7 @@ USER_CLASS = ["", "Admin", "Supervisor", "Artist", "Tester"]
 
 USERNAME = platform.node()
 
-PLT_ID = dict(Main=__appname__, LogIn="Log in", About="About Pipeline Tool", Credit="From Author")
+PLT_ID = dict(Main="Pipeline Tool", LogIn="Log in", About="About Pipeline Tool", Credit="From Author")
 
 PLT_TABID = ["", "User", "Functions", "Project", "Admin", ]
 

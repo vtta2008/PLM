@@ -16,7 +16,7 @@ __root__ = "PLT_RT"
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from appPackages.maya.plt_modules import MayaVariables as var
+from appPackages.maya.modules import MayaVariables as var
 
 NAMES = var.MAINVAR
 
@@ -31,19 +31,19 @@ class InitTool(object):
         self.MayaPythonProc()
 
     def MayaPythonProc(self):
-        from appPackages.maya.plt_modules import MayaPythonProc
+        from appPackages.maya.modules import MayaPythonProc
         reload(MayaPythonProc)
         MayaPythonProc.MayaPythonProc()
         self.MayaMainUI()
 
     def OsPythonProc(self):
-        from appPackages.maya.plt_modules import OsPythonProc
+        from appPackages.maya.modules import OsPythonProc
         reload(OsPythonProc)
         OsPythonProc.OsPythonProc()
         self.MayaMainUI()
 
     def MayaMainUI(self):
-        from appPackages.maya.plt_modules import MayaMainUI
+        from appPackages.maya.modules import MayaMainUI
         reload(MayaMainUI)
         MayaMainUI.MayaMainUI()
 

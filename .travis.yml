@@ -3,14 +3,13 @@ language: python
 python:
   - "3.6"
 script:
-  - pytest
+  - plt_test
 
 sudo: required
 dist: python plt_test.py --travis
 
 before_install:
   - sudo apt-get update
-  - sudo apt get install -qq qttools5-dev-tools
 
 install:
   - pip install -r requirements.txt
