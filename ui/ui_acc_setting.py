@@ -12,7 +12,6 @@ Description:
 """ Check data flowing """
 # print("Import from modules: {file}".format(file=__name__))
 # print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-__root__ = "PLT_RT"
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
@@ -29,6 +28,7 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QHBoxLa
                              QMessageBox, QApplication, QLabel)
 
 # Plt
+import appData as app
 from utilities import sql_local as usql
 from utilities import utils as func
 from utilities import message as mess
@@ -40,7 +40,7 @@ from utilities import variables as var
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 
-logPth = os.path.join(os.getenv(__root__), 'appData', 'logs', 'acc_setting.log')
+logPth = os.path.join('appData', 'logs', 'acc_setting.log')
 logger = logging.getLogger('acc_setting')
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
@@ -213,7 +213,7 @@ class Account_setting(QDialog):
 
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        imgsDir = os.path.join(os.getenv(__root__), 'avatar')
+        imgsDir = os.path.join(os.getenv(app.__envKey__), 'avatar')
         fileName, _ = QFileDialog.getOpenFileName(self, "Your Avatar", imgsDir, "All Files (*);;Img Files (*.jpg)",
                                                   options=options)
         if fileName:

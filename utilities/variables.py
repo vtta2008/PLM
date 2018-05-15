@@ -13,7 +13,6 @@ Description:
 """ Check data flowing """
 # print("Import from modules: {file}".format(file=__name__))
 # print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-__root__ = "PLT_RT"
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
@@ -23,12 +22,14 @@ import os
 import platform
 
 # Plt tools
+import appData as app
 from utilities import message as mess
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 
-logPth = os.path.join(os.getenv(__root__), "appData", "logs", "variables.log")
+logPth = os.path.join(os.getenv(app.__envKey__), "appData", "logs", "variables.log")
 logger = logging.getLogger("variables")
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
@@ -49,11 +50,11 @@ DEMODATA = ["demoUser", "70617373776F7264", "Mr.", "Nobody", "Homeless", "dot@da
             "homeless", "no postal", "anywhere", "in the world"]
 
 # Setting Path
-UI_SETTING = os.path.join(os.getenv(__root__), "appData", "settings", "plt.ini")
+UI_SETTING = os.path.join(os.getenv(app.__envKey__), "appData", "settings", "plt.ini")
 
-USER_SETTING = os.path.join(os.getenv(__root__), "appData", "settings", "User.ini")
+USER_SETTING = os.path.join(os.getenv(app.__envKey__), "appData", "settings", "User.ini")
 
-DB_PATH = os.path.join(os.getenv(__root__), "appData", "plt.db")
+DB_PATH = os.path.join(os.getenv(app.__envKey__), "appData", "plt.db")
 
 # getData.py
 USER_CLASS = ["", "Admin", "Supervisor", "Artist", "Tester"]

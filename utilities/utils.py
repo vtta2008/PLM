@@ -11,7 +11,6 @@ Description:
 """ Check data flowing """
 # print("Import from modules: {file}".format(file=__name__))
 # print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-__root__ = "PLT_RT"
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
@@ -26,12 +25,12 @@ import appData as app
 from utilities import variables as var
 from utilities import message as mess
 
-CONFIG = os.path.join(os.getenv(__root__), 'appData', 'config')
+CONFIG = os.path.join(os.getenv(app.__envKey__), 'appData', 'config')
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 
-logPth = os.path.join(os.getenv(__root__), 'appData', 'logs', 'func.log')
+logPth = os.path.join(os.getenv(app.__envKey__), 'appData', 'logs', 'func.log')
 logger = logging.getLogger('func')
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
@@ -124,7 +123,7 @@ def get_python_pkgs():
 
         pyPkgs[name] = [key, version, location]
 
-    pkgConfig = os.path.join(os.getenv(__root__), 'appData', 'pkgs_config.yml')
+    pkgConfig = os.path.join(os.getenv(app.__envKey__), 'appData', 'pkgs_config.yml')
 
     with open(pkgConfig, 'w') as f:
         yaml.dump(pyPkgs, f, default_flow_style=False)
@@ -201,7 +200,7 @@ def download_single_file(url, path_to, *args):
 
 def download_image_from_url(link, *args):
     fileName = os.path.basename(link)
-    imgPth = os.path.join(os.getenv(__root__), 'avatar')
+    imgPth = os.path.join(os.getenv(app.__envKey__), 'avatar')
     avatarPth = os.path.join(imgPth, fileName)
 
     if not os.path.exists(avatarPth):
@@ -243,7 +242,7 @@ def batch_obj_properties_setting(listObj, mode, *args):
             logger.info('Could not find the specific path: %s' % obj)
 
 def clean_unnecessary_file(var, *args):
-    fileNames = [f for f in get_file_path(os.getenv(__root__)) if var in f] or []
+    fileNames = [f for f in get_file_path(os.getenv(app.__envKey__)) if var in f] or []
     if not fileNames == []:
         for filePth in fileNames:
             os.remove(filePth)
@@ -481,19 +480,19 @@ def open_app(pth, *args):
 """ Quick find path """
 
 def get_icon(name, *args):
-    iconLst = [i for i in get_file_path(os.path.join(os.getenv(__root__), 'imgs')) if '.icon' in i]
+    iconLst = [i for i in get_file_path(os.path.join(os.getenv(app.__envKey__), 'imgs')) if '.icon' in i]
     for icon in iconLst:
         if name in os.path.basename(icon):
             return icon
 
 def get_web_icon(name, *args):
-    iconLst = get_file_path(os.path.join(os.getenv(__root__), 'imgs', 'web'))
+    iconLst = get_file_path(os.path.join(os.getenv(app.__envKey__), 'imgs', 'web'))
     for icon in iconLst:
         if name in icon:
             return icon
 
 def get_avatar(name, *args):
-    avatarLst = [i for i in get_file_path(os.path.join(os.getenv(__root__), 'imgs')) if '.avatar' in i]
+    avatarLst = [i for i in get_file_path(os.path.join(os.getenv(app.__envKey__), 'imgs')) if '.avatar' in i]
     for avatar in avatarLst:
         if name in avatar:
             return avatar
@@ -557,7 +556,7 @@ def check_match(data1, data2, *args):
 
 def preset_maya_intergrate(*args):
     # Pipeline tool module paths for Maya.
-    maya_tk = os.path.join(os.getenv(__root__), 'packages', 'maya')
+    maya_tk = os.path.join(os.getenv(app.__envKey__), 'packages', 'maya')
 
     # Name of folders
     mayaTrack = ['plt_modules', 'plugins', 'plt_anim', 'MayaLib', 'plt_model', 'plt_rig', 'plt_surface']
@@ -574,7 +573,7 @@ def preset_maya_intergrate(*args):
     os.environ['PYTHONPATH'] = pythonValue
 
     # Copy userSetup.py from source code to properly maya folder
-    userSetup_plt_path = os.path.join(os.getenv(__root__), 'packages', 'maya', 'userSetup.py')
+    userSetup_plt_path = os.path.join(os.getenv(app.__envKey__), 'packages', 'maya', 'userSetup.py')
     userSetup_maya_path = os.path.join(os.path.expanduser('~/Documents/maya/2017/prefs/scripts'), 'userSetup.py')
 
     if not os.path.exists(userSetup_plt_path) or not os.path.exists(userSetup_plt_path):
@@ -668,12 +667,15 @@ class Collect_info():
         iconInfo['Sep'] = 'separato.png'
         iconInfo['File'] = 'file.png'
         # Get list of icons in imgage folder
-        iconlst = [i for i in get_file_path(os.path.join(os.getenv(__root__), 'imgs')) if '.icon' in i]
+        iconlst = [i for i in get_file_path(os.path.join('imgs', 'main')) if '.icon' in i] \
+                  + [i for i in get_file_path(os.path.join('imgs', 'apps')) if '.icon' in i] \
+                  + [i for i in get_file_path(os.path.join('imgs', 'dev')) if '.icon' in i]
+    
         for i in iconlst:
             iconInfo[os.path.basename(i).split('.icon')[0]] = i
-        pprint.pprint(iconInfo)
-        # self.create_config_file('icon', iconInfo)
 
+        self.create_config_file('icon', iconInfo)
+    # 
     def collect_all_app(self):
         """
         It will find and put all the info of installed apps to two list: appname and path
@@ -762,9 +764,9 @@ class Collect_info():
                 logger.debug("Fixed: {key}: {val}".format(key=key, val=appInfo[key]))
 
         # Extra app come along with plt but not be installed in local.
-        dbBrowserPth = os.path.join(os.getenv(__root__), 'external_app', 'sqlbrowser',
+        dbBrowserPth = os.path.join(os.getenv(app.__envKey__), 'external_app', 'sqlbrowser',
                                     'SQLiteDatabaseBrowserPortable.exe')
-        advanceRenamerPth = os.path.join(os.getenv(__root__), 'external_app', 'batchRenamer', 'ARen.exe')
+        advanceRenamerPth = os.path.join(os.getenv(app.__envKey__), 'external_app', 'batchRenamer', 'ARen.exe')
         qtDesigner = os.path.join(os.getenv('PROGRAMDATA'), 'Anaconda3', 'Library', 'bin', 'designer.exe')
         davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
 
@@ -781,8 +783,8 @@ class Collect_info():
         self.create_config_file('main', self.mainInfo)
 
     def create_config_file(self, name, data):
-        appsConfig_yaml = os.path.join(os.getenv(__root__), 'appData', 'config', '{name}.yml'.format(name=name))
-        appsConfig_json = os.path.join(os.getenv(__root__), 'appData', 'config', '{name}.json'.format(name=name))
+        appsConfig_yaml = os.path.join(os.getenv(app.__envKey__), 'appData', 'config', '{name}.yml'.format(name=name))
+        appsConfig_json = os.path.join(os.getenv(app.__envKey__), 'appData', 'config', '{name}.json'.format(name=name))
         dataHandle('yaml', 'w', appsConfig_yaml, data)
         dataHandle('json', 'w', appsConfig_json, data)
 

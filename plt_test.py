@@ -10,14 +10,11 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Check data flowing """
-import os
 print("Start running test file: {file}".format(file=__name__))
 print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-__root__ = "PLT_RT"
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-import versioneer
-import sys, logging
+import sys
 
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import *

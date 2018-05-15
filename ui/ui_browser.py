@@ -11,7 +11,6 @@ Description:
 """ Check data flowing """
 print("Import from modules: {file}".format(file=__name__))
 print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-__root__ = "PLT_RT"
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
@@ -27,13 +26,14 @@ from PyQt5.QtWebKitWidgets import *
 from PyQt5.QtWidgets import *
 
 # Plt tools
+import appData as app
 from utilities import variables as var
 from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 # -------------------------------------------------------------------------------------------------------------
-logPth = os.path.join(os.getenv('PIPELINE_TOOL'), 'appData', 'logs', 'browser.log')
+logPth = os.path.join('appData', 'logs', 'browser.log')
 logger = logging.getLogger('browser')
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')

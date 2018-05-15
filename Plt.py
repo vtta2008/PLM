@@ -12,7 +12,6 @@ Description:
 """ Check data flowing """
 # print("Import from modules: {file}".format(file=__name__))
 # print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-__root__ = "PLT_RT"
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
@@ -32,8 +31,9 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget
 
 # -------------------------------------------------------------------------------------------------------------
 """ Set up env variable path """
+import appData as app
 
-os.environ[__root__] = os.getcwd()
+os.environ[app.__envKey__] = os.getcwd()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Stylesheet plugin """
@@ -42,7 +42,7 @@ import qdarkgraystyle
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logPth = os.path.join(os.getenv(__root__), 'appData', 'logs', 'plt.log')
+logPth = os.path.join('appData', 'logs', 'plt.log')
 logger = logging.getLogger('plt')
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
@@ -412,9 +412,10 @@ class Plt_sign_up(QDialog):
     def on_set_avatar_btn_clicked(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        imgsDir = os.path.join(os.getenv(__root__), 'avatar')
-        self.rawAvatarPth, _ = QFileDialog.getOpenFileName(self, "Your Avatar", imgsDir, "All Files (*);;Img Files (*.jpg)",
-                                                           options=options)
+
+        self.rawAvatarPth, _ = QFileDialog.getOpenFileName(self, "Your Avatar", os.path.join('imgs', 'avatar'),
+                                                           "All Files (*);;Img Files (*.jpg)", options=options)
+
         if self.rawAvatarPth:
             self.userAvatar.setPixmap(QPixmap.fromImage(QImage(self.rawAvatarPth)))
             self.userAvatar.update()
