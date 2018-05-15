@@ -1,3 +1,0 @@
-# The base version is 13 and will be never change in anycase.
-
-__version__ = "v13.0.1.dev1"

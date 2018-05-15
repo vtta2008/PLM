@@ -1475,7 +1475,7 @@ def main():
 
     app = QApplication(sys.argv)
     app.setWindowIcon(QIcon(func.get_icon('Logo')))
-    # app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
+    app.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
 
     username, token, cookie = usql.query_user_session()
 

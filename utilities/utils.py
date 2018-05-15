@@ -22,7 +22,9 @@ import datetime, time, uuid, win32gui, win32api, pprint, cv2
 from pyunpack import Archive
 
 # Plt tools
+import appData as app
 from utilities import variables as var
+from utilities import message as mess
 
 CONFIG = os.path.join(os.getenv(__root__), 'appData', 'config')
 
@@ -36,6 +38,19 @@ formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Metadata """
+
+def read_package_variable(key):
+    """Read the value of a variable from the package without importing."""
+    module_path = os.path.join('appData', '__init__.py')
+    with open(module_path) as module:
+        for line in module:
+            parts = line.strip().split(' ')
+            if parts and parts[0] == key:
+                return parts[-1].strip("'")
+    assert 0, "'{0}' not found in '{1}'".format(key, module_path)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Error handle """
@@ -71,7 +86,7 @@ def install_py_packages(name, *args):
         subprocess.Popen('python -m pip install %s' % name, shell=True).wait()
 
 def install_required_package():
-    for pkg in __pkgsReq__:
+    for pkg in app.__pkgsReq__:
         try:
             subprocess.Popen("python -m pip install %s" % pkg)
         except FileNotFoundError:
@@ -79,22 +94,9 @@ def install_required_package():
         finally:
             subprocess.Popen("python -m pip install --upgrade %s" % pkg)
 
-def install_layout_style_package():
-    layoutStyle_setupPth = os.path.join(os.getenv(__root__), 'bin', 'qdarkgraystyle', 'setup.py')
-
-    if os.path.exists(layoutStyle_setupPth):
-        try:
-            import qdarkgraystyle
-        except ImportError:
-            subprocess.Popen("python setup.py install", cwd=layoutStyle_setupPth)
-            return True
-        else:
-            return False
-    else:
-        return False
-
 def uninstall_all_required_package():
-    for pkg in __pkgsReq__:
+    __pkgsReq__ = app.__pkgsReq__
+    for pkg in app.__pkgsReq__:
         try:
             subprocess.Popen("python -m pip uninstall %s" % pkg)
         except FileNotFoundError:
@@ -732,11 +734,11 @@ class Collect_info():
             del_key(key, appInfo)
 
         # Custom functions
-        self.mainInfo['Logo'] = [__appname__, iconInfo['Logo'], ' ']
+        self.mainInfo['Logo'] = [app.__appname__, iconInfo['Logo'], ' ']
         self.mainInfo['Sep'] = ['separator', iconInfo['Sep'], ' ']
         self.mainInfo['File'] = ['File', iconInfo['File'], ' ']
         self.mainInfo['Exit'] = ['Exit plt', iconInfo['Exit'], ' ']
-        self.mainInfo['About'] = [__about__, iconInfo['About'], ' ']
+        self.mainInfo['About'] = [mess.PLT_ABOUT, iconInfo['About'], ' ']
         self.mainInfo['Credit'] = ['Credit', iconInfo['Credit'], ' ']
         self.mainInfo['Help'] = ['Introduction', iconInfo['Help'], ' ']
         self.mainInfo['CleanPyc'] = ['Clean .pyc files', iconInfo['CleanPyc'], ' ']

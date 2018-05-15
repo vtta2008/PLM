@@ -26,8 +26,6 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog,
                              QComboBox, QFileDialog, QFontComboBox, QMainWindow, QMenu, QMessageBox,
                              QTextEdit, QToolBar, QDialog, QGridLayout)
 
-import textedit_rc
-
 from utilities import utils as func
 
 if sys.platform.startswith('darwin'):
