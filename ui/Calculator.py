@@ -2,19 +2,14 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: ui_calculator.py
+Script Name: Calculator.py
 Author: Do Trinh/Jimmy - 3D artist.
 Description:
-    This script is master file of Pipeline Tool
+    This script is a Calculator demo
 
 """
-# -------------------------------------------------------------------------------------------------------------
-""" Check data flowing """
-print("Import from modules: {file}".format(file=__name__))
-print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-# -------------------------------------------------------------------------------------------------------------
 """ Import """
-
+import sys
 import math
 
 from PyQt5.QtCore import Qt
@@ -308,11 +303,11 @@ class Calculator(QDialog):
 
         return True
 
-
-if __name__ == '__main__':
-    import sys
-
+def main():
     app = QApplication(sys.argv)
     calc = Calculator()
     calc.show()
-    sys.exit(app.exec_())
+    app.exec_()
+
+if __name__ == '__main__':
+    main()

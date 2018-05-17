@@ -9,11 +9,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Check data flowing """
-print("Import from modules: {file}".format(file=__name__))
-print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-__root__ = "PLT_RT"
-# -------------------------------------------------------------------------------------------------------------
 """ Import """
 import sys
 
@@ -26,20 +21,12 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog,
                              QComboBox, QFileDialog, QFontComboBox, QMainWindow, QMenu, QMessageBox,
                              QTextEdit, QToolBar, QDialog, QGridLayout)
 
-from utilities import utils as func
-
-if sys.platform.startswith('darwin'):
-    rsrcPath = ":/images/mac"
-else:
-    rsrcPath = ":/images/win"
-  
-  
-class TextEdit(QMainWindow):
+class TextEditor(QMainWindow):
 
     def __init__(self, fileName=None, parent=None):
-        super(TextEdit, self).__init__(parent)
+        super(TextEditor, self).__init__(parent)
   
-        self.setWindowIcon(QIcon(func.get_icon('Logo')))
+        # self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setToolButtonStyle(Qt.ToolButtonFollowStyle)
         self.setupFileActions()
         self.setupEditActions()
@@ -614,10 +601,10 @@ class WindowDialog(QDialog):
     def __init__(self, parent=None):
         super(WindowDialog, self).__init__(parent)
 
-        self.setWindowIcon(QIcon(func.get_icon('Logo')))
+        # self.setWindowIcon(rsrcPath + '/Logo.png')
         self.setWindowTitle('Editor')
 
-        textEdit = TextEdit()
+        textEdit = TextEditor()
 
         self.layout = QGridLayout(self)
         self.layout.addWidget(textEdit, 0,0,1,1)

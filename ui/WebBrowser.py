@@ -47,11 +47,11 @@ logger.setLevel(logging.DEBUG)
 PACKAGE = var.PLT_PKG
 HOMEPAGE = var.PLT_URL['Home']
 
-class Plt_browser(QMainWindow):
+class WebBrowser(QMainWindow):
 
     def __init__(self, *args, **kwargs):
 
-        super(Plt_browser, self).__init__(*args, **kwargs)
+        super(WebBrowser, self).__init__(*args, **kwargs)
 
         self.setWindowTitle('Plt browser')
         self.setWindowIcon(QIcon(func.get_web_icon('Logo')))
@@ -137,9 +137,12 @@ class Plt_browser(QMainWindow):
     def homepage(self):
         self.browser.setUrl(QUrl('https://www.google.com.vn'))
 
+def main():
+    app = QApplication(sys.argv)
+    web = WebBrowser()
+    web.show()
+    app.exec_()
 
 if __name__ == '__main__':
 
-    app = QApplication(sys.argv)
-    web = Plt_browser()
-    app.exec_()
+    main()

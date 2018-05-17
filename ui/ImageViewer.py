@@ -2,28 +2,14 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Plt.py
+Script Name: ImageViewer.py
 Author: Do Trinh/Jimmy - 3D artist.
 Description:
-    This script is master file of Pipeline Tool
+    An very good example about how to show up an image in a layout.
 
 """
-
 # -------------------------------------------------------------------------------------------------------------
-""" About Plt """
-
-__appname__ = "Pipeline Tool"
-__module__ = "Plt"
-__version__ = "13.0.1"
-__organization__ = "DAMG team"
-__website__ = "www.dot.damgteam.com"
-__email__ = "dot@damgteam.com"
-__author__ = "Trinh Do, a.k.a: Jimmy"
-__root__ = "PLT_RT"
-__db__ = "PLT_DB"
-__st__ = "PLT_ST"
-
-# -------------------------------------------------------------------------------------------------------------
+""" Import """
 
 import os.path
 import sys
@@ -32,11 +18,8 @@ from PyQt5.QtCore import Qt, QRectF, pyqtSignal
 from PyQt5.QtGui import QImage, QPixmap, QPainterPath
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsScene, QFileDialog, QApplication
 
-# __author__ = "Marcel Goldschen-Ohm <marcel.goldschen@gmail.com>"
-# __version__ = '0.9.0'
 
-
-class QtImageViewer(QGraphicsView):
+class ImageViewer(QGraphicsView):
     """ PyQt image viewer widget for a QPixmap in a QGraphicsView scene with mouse zooming and panning.
     Displays a QImage or QPixmap (QImage is internally converted to a QPixmap).
     To display any other image format, you must first convert it to a QImage or QPixmap.
@@ -208,8 +191,7 @@ class QtImageViewer(QGraphicsView):
         QGraphicsView.mouseDoubleClickEvent(self, event)
 
 
-if __name__ == '__main__':
-
+def main():
     def handleLeftClick(x, y):
         row = int(y)
         column = int(x)
@@ -219,7 +201,7 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
 
     # Create image viewer and load an image file to display.
-    viewer = QtImageViewer()
+    viewer = ImageViewer()
     viewer.loadImageFromFile()  # Pops up file dialog.
 
     # Handle left mouse clicks with custom slot.
@@ -227,4 +209,8 @@ if __name__ == '__main__':
 
     # Show viewer and run application.
     viewer.show()
-    sys.exit(app.exec_())
+    app.exec_()
+
+
+if __name__ == '__main__':
+    main()

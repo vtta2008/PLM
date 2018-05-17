@@ -16,14 +16,14 @@ import sys
 
 # PtQt5
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QDialog, QWidget, QGridLayout, QLabel, QPushButton
+from PyQt5.QtWidgets import QApplication, QDialog, QWidget, QGridLayout, QLabel, QPushButton, QScrollArea
 
 # Plt
 from utilities import utils as func
 
-class About_plt_layout(QDialog):
+class AboutPlt(QDialog):
     def __init__(self, id='About', message=None, icon=func.get_icon('Logo'), parent=None):
-        super(About_plt_layout, self).__init__(parent)
+        super(AboutPlt, self).__init__(parent)
 
         self.setWindowTitle(id)
         self.setWindowIcon(QIcon(icon))
@@ -31,18 +31,27 @@ class About_plt_layout(QDialog):
         self.layout = QGridLayout(self)
         central_widget.setLayout(self.layout)
         self.buildUI(message)
+        self.setLayout(self.layout)
 
     def buildUI(self, message):
-        self.layout.addWidget(QLabel(message),0,0)
+        self.scrollArea = QScrollArea()
+        self.scrollArea.setWidgetResizable(True)
+        self.content = QLabel(message)
+        self.content.setGeometry(0, 0, 400, 650)
+        self.scrollArea.setWidget(self.content)
 
         yesBtn = QPushButton('OK')
         yesBtn.clicked.connect(self.close)
-        self.layout.addWidget(yesBtn,1,1,1,2)
 
-        self.setLayout(self.layout)
+        self.layout.addWidget(self.scrollArea, 0, 0, 8, 4)
+        self.layout.addWidget(yesBtn, 8, 2, 1, 2)
+
+def main():
+    app = QApplication(sys.argv)
+    about_layout = AboutPlt()
+    about_layout.show()
+    app.exec_()
+
 
 if __name__=='__main__':
-    app = QApplication(sys.argv)
-    about_layout = About_plt_layout()
-    about_layout.show()
-    sys.exit(app.exec_())
+    main()

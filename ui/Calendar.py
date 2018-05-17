@@ -2,19 +2,15 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: ui_clendar.py
+Script Name: Calendar.py
 Author: Do Trinh/Jimmy - 3D artist.
 Description:
-    This script is master file of Pipeline Tool
+    This script is a calendar
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Check data flowing """
-print("Import from modules: {file}".format(file=__name__))
-print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-# -------------------------------------------------------------------------------------------------------------
 """ Import """
-
+import sys
 from PyQt5.QtCore import QDate, QLocale, Qt
 from PyQt5.QtGui import QFont, QTextCharFormat, QIcon
 from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
@@ -356,13 +352,11 @@ class Calendar(QDialog):
 
         return comboBox
 
-
-if __name__ == '__main__':
-    import sys
-
+def main():
     app = QApplication(sys.argv)
-
     window = Calendar()
     window.show()
+    app.exec_()
 
-    sys.exit(app.exec_())
+if __name__ == '__main__':
+    main()

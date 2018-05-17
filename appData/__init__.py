@@ -10,11 +10,14 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Check data flowing """
-print("Import from modules: {file}".format(file=__name__))
-print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-
+# print("Import from modules: {file}".format(file=__name__))
+# print("Directory: {path}".format(path=__file__.split(__name__)[0]))
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
+import os
+
+# -------------------------------------------------------------------------------------------------------------
+""" Global variables """
 
 __envKey__ = "PIPELINE_TOOL"
 
@@ -22,7 +25,7 @@ __project__ = "Pipeline Tool"
 
 __version__ = "13.0.1"
 
-__appname__ = "PipelineTool"
+__appname__ = "Pipeline Tool (Plt)"
 
 __about__ = "About plt"
 
@@ -68,3 +71,41 @@ __serverCheck__ = "https://pipeline.damgteam.com/check"
 __serverAutho__ = "https://pipeline.damgteam.com/auth"
 
 VERSION = "{0} v{1}".format(__project__, __version__)
+
+UDP_IP = "192.168.1.1"
+
+UDP_PORT = 20118
+
+KEY_PKGS = ["Maya", "3ds Max", "Mudbox", "Houdini FX", "ZBrush", "Mari", "Substance Painter", "NukeX", "Hiero",
+            "After Effects", "Premiere Pro", "Photoshop", "Illustrator", "Word", "Excel", "Snipping Tool", "UVLayout",
+            "Audition", "Git Bash", "Git CMD", "Advance Rename", "PyCharm", "Sublime Text", "QtDesigner", "Katana",]
+
+KEY_DETECT = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype"]
+
+CONFIG_ART = ['Adobe Photoshop CC 2018', 'Adobe Illustrator CC 2018']
+
+CONFIG_VFX = ['NukeX11.1v1', 'Davinci Resolve', 'Hiero11.1v1', 'HieroPlayer11.1v1', 'Adobe After Effects CC 2018',
+              'Adobe Premiere Pro CC 2018']
+
+CONFIG_TDS = ['Autodesk Maya 2017', 'ZBrush 4R8', 'Mari 4.0v1', 'Houdini FX', 'Substance Painter']
+
+CONFIG_DEV = ['JetBrains PyCharm 2017.3.3', 'Sublime Text 3', 'QtDesigner']
+
+CONFIG_CMD = ['Git CMD', 'Git Bash', 'Command Prompt']
+
+CONFIG_MAIN = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ForgotPassword', 'ImageViewer',
+               'InfoTemplate', 'NewProject', 'NoteReminder', 'Preference', 'Screenshot', 'SignIn', 'SignUp',
+               'TextEditor', 'UserSetting', 'WebBrowser', ]
+
+CONFIG_TAB1 = ['NoteReminder', 'TextEditor', 'EnglishDictionary', 'Screenshot', 'Calculator',
+               'Calendar', 'FindFiles', 'ImageViewer', 'WebBrowser']
+
+CONFIG_TRAY1 = ['FM', 'ViewSplit', 'Mute', 'VolumeUp', 'VolumeDown', 'ChannelUp', 'ChannelDown']
+
+CONFIG_TRAY2 = ['Snipping Tool', 'Screenshot']
+
+CONFIGPTH = os.path.join(os.getenv(__envKey__), 'appData', 'config')
+
+LOGPTH = os.path.join(os.getenv(__envKey__), 'appData', 'logs')
+
+SETTINGPTH = os.path.join(os.getenv(__envKey__), 'appData', 'settings')

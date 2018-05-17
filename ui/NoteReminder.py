@@ -216,10 +216,10 @@ class PreviewForm(QDialog):
         self.decodedStr = data.readAll()
         self.textEdit.setPlainText(self.decodedStr)
 
-class WindowDialog(QDialog):
+class NoteReminder(QDialog):
 
     def __init__(self, parent=None):
-        super(WindowDialog, self).__init__(parent)
+        super(NoteReminder, self).__init__(parent)
 
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setWindowTitle('Note Reminder')
@@ -239,9 +239,9 @@ class WindowDialog(QDialog):
 
 def main():
     app = QApplication(sys.argv)
-    mainWin = WindowDialog()
+    mainWin = NoteReminder()
     mainWin.show()
-    sys.exit(app.exec_())
+    app.exec_()
 
 if __name__ == '__main__':
     main()

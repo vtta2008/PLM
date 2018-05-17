@@ -2,29 +2,33 @@
 # -*- coding: utf-8 -*-
 
 """
-Script Name: ui_info_template.py
+Script Name: Screenshot.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
-    This script is main file to store everything for the pipeline app
+    This script will create a new layout with image is desktop screenshot.
 
 """
 # -------------------------------------------------------------------------------------------------------------
+""" Import """
 
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+import sys
+
+from PyQt5.QtCore import Qt, QDir, QTimer
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import (QDialog, QWidget, QGridLayout, QLabel, QSizePolicy, QFileDialog, QApplication, QGroupBox,
+                             QSpinBox, QCheckBox, QPushButton, QHBoxLayout)
 
 from utilities import utils as func
 
 
 class Screenshot(QDialog):
 
-    def __init__(self, id='Screenshot', icon=func.get_icon('Logo'), parent=None):
+    def __init__(self, parent=None):
         super(Screenshot, self).__init__(parent)
 
-        self.setWindowTitle(id)
-        self.setWindowIcon(QIcon(icon))
+        self.setWindowTitle('Screenshot')
+        self.setWindowIcon(QIcon(func.get_icon('Screenshot')))
         self.resize(960, 540)
 
         central_widget = QWidget(self)
@@ -135,11 +139,12 @@ class Screenshot(QDialog):
                 self.screenshotLabel.size(), Qt.KeepAspectRatio,
                 Qt.SmoothTransformation))
 
-
-if __name__ == '__main__':
-
-    import sys
+def main():
     app = QApplication(sys.argv)
     screenshot = Screenshot()
     screenshot.show()
-    sys.exit(app.exec_())
+    app.exec_()
+
+
+if __name__ == '__main__':
+    main()

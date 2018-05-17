@@ -1,15 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Script Name: englishDict.py
+Script Name: EnglishDictionary.py
 Author: Do Trinh/Jimmy - 3D artist.
 Description:
     It is a very fun english dictionary.
 """
-# -------------------------------------------------------------------------------------------------------------
-""" Check data flowing """
-print("Import from modules: {file}".format(file=__name__))
-print("Directory: {path}".format(path=__file__.split(__name__)[0]))
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
@@ -19,19 +15,16 @@ import sys
 from difflib import get_close_matches
 
 from PyQt5.QtGui import QIcon
-# -------------------------------------------------------------------------------------------------------------
-# IMPORT PTQT5 ELEMENT TO MAKE UI
-# -------------------------------------------------------------------------------------------------------------
 from PyQt5.QtWidgets import (QDialog, QGridLayout, QLabel, QHBoxLayout, QPushButton, QLineEdit, QTextEdit,
                              QApplication, QWidget)
 
 from utilities import utils as func
 
 
-class EnglishDict(QDialog):
+class EnglishDictionary(QDialog):
     def __init__(self, id='English Dictionary', icon=func.get_icon('English Dictionary'), parent=None):
 
-        super(EnglishDict, self).__init__(parent)
+        super(EnglishDictionary, self).__init__(parent)
 
         self.setWindowTitle(id)
         self.setWindowIcon(QIcon(icon))
@@ -123,9 +116,9 @@ class EnglishDict(QDialog):
 
 def initialize():
     app = QApplication(sys.argv)
-    dictUI = EnglishDict()
+    dictUI = EnglishDictionary()
     dictUI.show()
-    sys.exit(app.exec_())
+    app.exec_()
 
 if __name__ == "__main__":
     initialize()

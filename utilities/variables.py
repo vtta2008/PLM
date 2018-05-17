@@ -29,8 +29,8 @@ from utilities import message as mess
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 
-logPth = os.path.join(os.getenv(app.__envKey__), "appData", "logs", "variables.log")
-logger = logging.getLogger("variables")
+logPth = os.path.join(app.LOGPTH, "variables.log")
+logger = logging.getLogger(__name__)
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
 handler.setFormatter(formatter)

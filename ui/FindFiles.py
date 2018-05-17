@@ -3,10 +3,10 @@
 
 """
 
-Script Name: Plt.py
+Script Name: FindFile.py
 Author: Do Trinh/Jimmy - 3D artist.
 Description:
-    This script is master file of Pipeline Tool
+    This script is a tool to find file name inside a specific directory
 
 """
 
@@ -22,11 +22,12 @@ from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QComboBox,
                              QProgressDialog, QPushButton, QSizePolicy, QTableWidget,
                              QTableWidgetItem, QWidget)
 
+from utilities import utils as func
 
-class Findfiles(QDialog):
-    def __init__(self, id='Files Finder', icon=os.path.join(os.getenv('PIPELINE_TOOL'),
-                                                            'plt.maya.icon', 'Finder.icon.png'), parent=None):
-        super(Findfiles, self).__init__(parent)
+class FindFiles(QDialog):
+
+    def __init__(self, id='Files Finder', icon=func.fine_icon('FindFiles'), parent=None):
+        super(FindFiles, self).__init__(parent)
 
         self.setWindowTitle(id)
         self.setWindowIcon(QIcon(icon))
@@ -180,10 +181,11 @@ class Findfiles(QDialog):
 
         QDesktopServices.openUrl(QUrl(self.currentDir.absoluteFilePath(item.text())))
 
+def main():
+    app = QApplication(sys.argv)
+    window = FindFiles()
+    window.show()
+    app.exec_()
 
 if __name__ == '__main__':
-
-    app = QApplication(sys.argv)
-    window = Findfiles()
-    window.show()
-    sys.exit(app.exec_())
+    main()

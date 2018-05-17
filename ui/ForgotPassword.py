@@ -9,7 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import plt_modules """
+""" Import """
 
 # Python
 import sys
@@ -23,13 +23,10 @@ from PyQt5.QtWidgets import (QApplication, QMessageBox, QDialog, QDialogButtonBo
 from utilities import sql_local as usql
 from utilities import message as mess
 
-# ----------------------------------------------------------------------------------------------------------- #
-""" Reset Password layout """
-# ----------------------------------------------------------------------------------------------------------- #
-class Reset_password_form(QDialog):
+class ForgotPassword(QDialog):
 
     def __init__(self):
-        super(Reset_password_form, self).__init__()
+        super(ForgotPassword, self).__init__()
 
         self.setWindowTitle("Reset Password")
         self.setContentsMargins(0,0,0,0)
@@ -123,9 +120,9 @@ class Reset_password_form(QDialog):
 
 def main():
     app = QApplication(sys.argv)
-    reset_pw_layout = Reset_password_form()
+    reset_pw_layout = ForgotPassword()
     reset_pw_layout.show()
-    sys.reset_pw_layout(app.exec_())
+    app.exec_()
 
 
 if __name__ == '__main__':

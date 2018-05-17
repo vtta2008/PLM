@@ -20,14 +20,14 @@ from utilities import utils as func
 from utilities import variables as var
 
 
-class Pref_layout(QDialog):
+class Preference(QDialog):
 
     checkboxTDSig = pyqtSignal(bool)
     checkboxCompSig = pyqtSignal(bool)
     checkboxArtSig = pyqtSignal(bool)
 
     def __init__(self, parent=None):
-        super(Pref_layout, self).__init__(parent)
+        super(Preference, self).__init__(parent)
 
         self.resize(200, 100)
         self.setWindowTitle("Preferences")
@@ -102,7 +102,7 @@ class Pref_layout(QDialog):
 
 def main():
     app = QApplication(sys.argv)
-    pref_layout = Pref_layout()
+    pref_layout = Preference()
     pref_layout.show()
     app.exec_()
 
