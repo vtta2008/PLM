@@ -16,13 +16,14 @@ Description:
 
 # Python
 import os, sys, requests, logging, platform, shutil, subprocess, urllib, winshell, yaml, json, pip, re
-import datetime, time, uuid, win32gui, win32api, pprint, cv2, socket
+import datetime, time, uuid, win32gui, win32api, pprint, cv2, socket, signal
 
 from pyunpack import Archive
 
 # Plt tools
 import appData as app
 from utilities import variables as var
+from ui import WebBrowser
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
@@ -396,18 +397,16 @@ def send_udp(value, *args):
     soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     soc.sendto(value, (app.UDP_IP, app.UDP_PORT))
 
-def openProcess(data, *args):
-    if "Load python layout: " in data:
-        key = data.split("Load python layout: ")[-1]
-        return show_hide_layout(key)
-    elif "Send UDP: " in data:
-        value = data.split("Send UDP: ")[-1]
-        return send_udp(value)
-    else:
-        return subprocess.Popen(data)
+def openWebsite(url, *args):
+    web = WebBrowser.WebBrowser(url)
+    web.show()
+    web.exec_()
 
 def show_hide_layout(key, *args):
-    if key == "Calculator":
+    if key == "AboutPlt":
+        from ui import AboutPlt
+        layout = AboutPlt.AboutPlt()
+    elif key == "Calculator":
         from ui import Calculator
         layout = Calculator.Calculator()
     elif key == "Calendar":
@@ -456,8 +455,34 @@ def show_hide_layout(key, *args):
         from ui import WebBrowser
         layout = WebBrowser.WebBrowser()
 
+    print(4)
+    # layout.show()
+    print(5)
     layout.exec_()
-    return layout
+    print(6)
+
+def reconfig_data(*args):
+    pass
+
+def operate_function(funcName):
+    if funcName == "clean_unnecessary_file":
+        return clean_unnecessary_file(".pyc")
+    elif funcName == "reconfig_data":
+        return reconfig_data()
+
+def openProcess(data, *args):
+    if "Load python layout: " in data:
+        return show_hide_layout(data.split("Load python layout: ")[-1])
+    elif "Send UDP: " in data:
+        return send_udp(data.split("Send UDP: ")[-1])
+    elif data == "Exit programe":
+        return sys.exit(1)
+    elif "Open website: " in data:
+        return openWebsite(data.split("Open website: ")[-1])
+    elif "Use function: " in data:
+        return operate_function(data.split("Use function: ")[-1])
+    else:
+        return subprocess.Popen(data)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Collecting info user """
@@ -817,22 +842,29 @@ class Collect_info():
 
         # Custom functions
         self.mainInfo['Logo'] = [app.__appname__, self.iconInfo['Logo'], ' ']
-        self.mainInfo['Sep'] = ['separator', self.iconInfo['Sep'], ' ']
+        self.mainInfo['Separator'] = ['separator', self.iconInfo['Sep'], ' ']
         self.mainInfo['File'] = ['File', self.iconInfo['File'], ' ']
-        self.mainInfo['Exit'] = ['Exit Pipeline Tool', self.iconInfo['Exit'], ' ']
-        self.mainInfo['About'] = ['About Plt', self.iconInfo['AboutPlt'], ' ']
-        self.mainInfo['Credit'] = ['Credit & Copyright', self.iconInfo['Credit'], ' ']
-        self.mainInfo['Help'] = ['Introduction', self.iconInfo['Help'], ' ']
-        self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'Use function: clean_unnecessary_file']
-        self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['Reconfig'], ' ']
-        self.mainInfo['Shutdown'] = ['Shut down your pc', self.iconInfo['Shutdown'], 'Send UDB: s53905\n']
-        self.mainInfo['FM'] = ['FM radio', self.iconInfo['FM'], 'Send UDB: s32113\n']
-        self.mainInfo['ViewSplit'] = ['View split left right', self.iconInfo['ViewSplit'], 'Send UDB: s32401\n']
-        self.mainInfo['Mute'] = ['Mute your volume', self.iconInfo['Mute'], 'Send UDB: s3641\n']
-        self.mainInfo['VolumeUp'] = ['Turn your volume up', self.iconInfo['VolumeUp'], 'Send UDB: s51153\n']
-        self.mainInfo['VolumeDown'] = ['Turn your volume down', self.iconInfo['VolumeDown'], 'Send UDB: s53201\n']
-        self.mainInfo['ChannelUp'] = ['Media skip forward', self.iconInfo['SkipForward'], 'Send UDB: s3150\n']
-        self.mainInfo['ChannelDown'] = ['Media skip backward', self.iconInfo['SkipBackward'], 'Send UDB: s32198\n']
+
+        self.mainInfo['Exit'] = ['Exit Pipeline Tool', self.iconInfo['Exit'], '']
+
+        self.mainInfo['About'] = ['About Plt', self.iconInfo['AboutPlt'], '']
+        self.mainInfo['Credit'] = ['Credit', self.iconInfo['Credit'], '']
+        self.mainInfo['Preferences'] = ['Preferences', self.iconInfo['Preferences'], '']
+
+        self.mainInfo['Help'] = ['PLt wiki', self.iconInfo['Help'], '']
+
+        self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], '']
+        self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['Reconfig'], '']
+
+        self.mainInfo['Shutdown'] = ['Shut down your pc', self.iconInfo['Shutdown'], '']
+        self.mainInfo['FM'] = ['FM radio', self.iconInfo['FM'], '']
+        self.mainInfo['ViewSplit'] = ['View split left right', self.iconInfo['ViewSplit'], '']
+        self.mainInfo['Mute'] = ['Mute your volume', self.iconInfo['Mute'], '']
+        self.mainInfo['VolumeUp'] = ['Turn your volume up', self.iconInfo['VolumeUp'], '']
+        self.mainInfo['VolumeDown'] = ['Turn your volume down', self.iconInfo['VolumeDown'], '']
+        self.mainInfo['ChannelUp'] = ['Media skip forward', self.iconInfo['SkipForward'], '']
+        self.mainInfo['ChannelDown'] = ['Media skip backward', self.iconInfo['SkipBackward'], '']
+
 
         # Fixing the path to open desire app.
         for key in self.appInfo:

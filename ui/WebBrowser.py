@@ -20,14 +20,13 @@ import logging
 import sys
 
 # PtQt5
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWebKitWidgets import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import QUrl
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWebKitWidgets import QWebView
+from PyQt5.QtWidgets import QMainWindow, QToolBar, QLineEdit, QAction, QApplication, QLabel
 
 # Plt tools
 import appData as app
-from utilities import variables as var
 from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
@@ -43,30 +42,28 @@ logger.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Declare variables """
-# -------------------------------------------------------------------------------------------------------------
-PACKAGE = var.PLT_PKG
-HOMEPAGE = var.PLT_URL['Home']
+
+HOMEPAGE = app.__homepage__
 
 class WebBrowser(QMainWindow):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, url=HOMEPAGE, *args, **kwargs):
 
         super(WebBrowser, self).__init__(*args, **kwargs)
-
+        self.url = url
         self.setWindowTitle('Plt browser')
         self.setWindowIcon(QIcon(func.get_web_icon('Logo')))
-
+        print(1)
+        self.browser = QWebView()
+        self.browser.setUrl(QUrl(self.url))
+        print(2)
         self.buildUI()
-
+        print(9)
         self.setCentralWidget(self.browser)
-
-        self.show()
+        print(10)
 
     def buildUI(self):
-
-        self.browser = QWebView()
-        self.browser.setUrl(QUrl(HOMEPAGE))
-
+        print(3)
         navtb = QToolBar('Navigation')
         homeBtn, backBtn, forwardBtn, reloadBtn, stopBtn = self.tool_bar_btns()
         navtb.addAction(homeBtn)
@@ -74,21 +71,21 @@ class WebBrowser(QMainWindow):
         navtb.addAction(forwardBtn)
         navtb.addAction(stopBtn)
         navtb.addAction(reloadBtn)
-
+        print(4)
         urltb = QToolBar('URL')
-
-        self.httpsicon = QLabel()
+        print(5)
+        self.httpsicon = QLabel(" ")
         self.httpsicon.setPixmap(QPixmap(func.get_web_icon('Https')))
         self.httpsicon.resize(16, 16)
         urltb.addWidget(self.httpsicon)
-
+        print(6)
         self.urlbar = QLineEdit()
         self.urlbar.returnPressed.connect(self.navigate_url)
         urltb.addWidget(self.urlbar)
-
+        print(7)
         self.addToolBar(navtb)
         self.addToolBar(urltb)
-
+        print(8)
         self.browser.urlChanged.connect(self.update_url_bar)
 
     def tool_bar_btns(self):

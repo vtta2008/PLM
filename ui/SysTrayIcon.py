@@ -92,7 +92,6 @@ class SysTrayIconMenu(QMenu):
         else:
             self.showNormalSig.emit(True)
 
-
 class SystrayWheelEventObject(QObject):
 
     def eventFilter(self, object, event):
@@ -135,8 +134,6 @@ class SysTrayIcon(QSystemTrayIcon):
         self.eventObj=SystrayWheelEventObject()
         self.installEventFilter(self.eventObj)
 
-        self.welcome()
-
     def show_nor(self, param):
         param = func.str2bool(param)
         self.showNormalSig.emit(param)
@@ -162,10 +159,12 @@ class SysTrayIcon(QSystemTrayIcon):
         if reason == QSystemTrayIcon.DoubleClick:
             self.show_nor(True)
 
-    def welcome(self):
-        icon = QSystemTrayIcon.Information
-        self.showMessage('Welcome', "Log in as %s" % self.username, icon, 500)
+    def loginMess(self):
+        self.showMessage('Welcome', "Log in as %s" % self.username, QSystemTrayIcon.Information, 500)
 
+    def closeMess(self):
+        self.showMessage('Notice', "Pipeline Tool will keep running in the system tray.",
+                                  QSystemTrayIcon.Information, 500)
 
 def main():
     pass

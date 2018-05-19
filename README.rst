@@ -96,5 +96,4 @@ REFERENCE
 
 For Plugins/Files that I am using, you can see `here <docs/reference.rst>`_.
 
-
 Copyright (C) 2017 - 2018 by DAMGteam - `details <docs/copyright.rst>`_.

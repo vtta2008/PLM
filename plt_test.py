@@ -2,63 +2,97 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: plt_test.py
+Script Name: {}.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
-        This is the place to test layout script
+
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Check data flowing """
-print("Start running test file: {file}".format(file=__name__))
-print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-# -------------------------------------------------------------------------------------------------------------
 """ Import """
-import sys
+import time
+import ctypes
 
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+# Import the SendInput object
+SendInput = ctypes.windll.user32.SendInput
 
-TXT = "Test String"
-ALG = Qt.AlignCenter
-WMIN = 50
+# C struct redefinitions
+PUL = ctypes.POINTER(ctypes.c_ulong)
 
-class Clabel(QWidget):
-    def __init__(self,txt=TXT, wmin=WMIN, alg = None, font=None, parent=None):
-        super(Clabel, self).__init__(parent)
-        if alg == None:
-            alg = Qt.AlignCenter
-        if font == None:
-            font = QFont("Arial, 10")
-        label = QLabel(txt)
-        label.setMinimumWidth(wmin)
-        label.setAlignment(alg)
-        label.setFont(font)
+class KeyBoardInput(ctypes.Structure):
+    _fields_ = [
+        ("wVk", ctypes.c_ushort),
+        ("wScan", ctypes.c_ushort),
+        ("dwFlags", ctypes.c_ulong),
+        ("time", ctypes.c_ulong),
+        ("dwExtraInfo", PUL)
+    ]
 
-        layout = QHBoxLayout()
-        layout.addWidget(label)
+class HardwareInput(ctypes.Structure):
+    _fields_ = [
+        ("uMsg", ctypes.c_ulong),
+        ("wParamL", ctypes.c_short),
+        ("wParamH", ctypes.c_ushort)
+    ]
 
-class TestWindow(QMainWindow):
+class MouseInput(ctypes.Structure):
+    _fields_ = [
+        ("dx", ctypes.c_long),
+        ("dy", ctypes.c_long),
+        ("mouseData", ctypes.c_ulong),
+        ("dwFlags", ctypes.c_ulong),
+        ("time",ctypes.c_ulong),
+        ("dwExtraInfo", PUL)
+    ]
 
-    def __init__(self, parent=None):
-        super(TestWindow, self).__init__(parent)
+class Input_I(ctypes.Union):
+    _fields_ = [
+        ("ki", KeyBoardInput),
+        ("mi", MouseInput),
+        ("hi", HardwareInput)
+    ]
 
-        self.setWindowTitle(TXT)
-        self.widget = QWidget()
-        self.buildUI()
-        self.setCentralWidget(self.widget)
+class Input(ctypes.Structure):
+    _fields_ = [
+        ("type", ctypes.c_ulong),
+        ("ii", Input_I)
+    ]
 
-    def buildUI(self):
-        layout = QVBoxLayout()
-        layout.addWidget(Clabel("What the hex is this ???"))
-        self.widget.setLayout(layout)
+VK_VOLUME_MUTE = 0xAD
+VK_VOLUME_DOWN = 0xAE
+VK_VOLUME_UP = 0xAF
 
-def main():
-    app = QApplication(sys.argv)
-    testWindow = TestWindow()
-    testWindow.show()
-    app.exec_()
+def key_down(keyCode):
+    extra = ctypes.c_ulong(0)
+    ii_ = Input_I()
+    ii_.ki = KeyBoardInput(keyCode, 0x48, 0, 0, ctypes.pointer(extra))
+    x = Input( ctypes.c_ulong(1), ii_ )
+    SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
 
-if __name__=='__main__':
-    main()
+
+def key_up(keyCode):
+    extra = ctypes.c_ulong(0)
+    ii_ = Input_I()
+    ii_.ki = KeyBoardInput(keyCode, 0x48, 0x0002, 0, ctypes.pointer(extra))
+    x = Input(ctypes.c_ulong(1), ii_)
+    SendInput(1, ctypes.pointer(x), ctypes.sizeof(x))
+
+
+def key(key_code, length = 0):
+    key_down(key_code)
+    time.sleep(length)
+    key_up(key_code)
+
+def volume_up():
+    key(VK_VOLUME_UP)
+
+def volume_down():
+    key(VK_VOLUME_DOWN)
+
+def set_volume(int):
+    for _ in range(0, 50):
+        volume_down()
+    for _ in range(int / 2):
+        volume_up()
+
+set_volume(100)

@@ -8,12 +8,6 @@ Description:
     This script is master file of Pipeline Tool
 
 """
-# -------------------------------------------------------------------------------------------------------------
-""" Check data flowing """
-# print("Import from modules: {file}".format(file=__name__))
-# print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-# -------------------------------------------------------------------------------------------------------------
-
 PLT_ABOUT = """
 
 PIPELINE TOOL TO MAKE A SHORT FILM
@@ -31,28 +25,6 @@ For feedback or questions, feel free to email me: damgteam@gmail.com or dot@damg
 
 """
 
-PLT_CREDIT = """
-
-Special thank to lectures and students in Media Design School:
-
-    Lecture:
-        Oliver Hilbert
-        Brian Samuel
-        Kelly Bechtle-Woods
-
-    Students:
-        Brandon Hayman
-
-big thank to DAMG team's members
-
-        Duong Minh Duc - Interactive Media Artist
-        Tran Huyen Trang - 2D artist
-
-Also thank to:
-
-        Dhruv Govil, Ardit Sulce, Vasandkumar Kunasekaran - from udemy.com
-        
-"""
 
 WAIT_FOR_UPDATE = """
 
@@ -90,3 +62,5 @@ USER_NOT_EXSIST = "The username does not exists"
 USER_CONDITION = "This username is under condition and can not log in, please contact to admin."
 
 SYSTRAY_UNAVAI = "Systray could not detect any system tray on this system"
+
+LINE = "==============================================================================================================="

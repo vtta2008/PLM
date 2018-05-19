@@ -20,7 +20,7 @@ from functools import partial
 from PyQt5.QtCore import Qt, QSize, pyqtSignal, QSettings
 from PyQt5.QtGui import QIntValidator, QFont, QIcon
 from PyQt5.QtWidgets import (QFrame, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QWidget, QSizePolicy, QSlider,
-                             QLineEdit, QPushButton, QAction)
+                             QLineEdit, QPushButton, QAction, QToolButton)
 
 # Plt
 import appData as app
@@ -39,10 +39,12 @@ BUFF = 10   # Buffer size
 SCAL = 1    # Scale value
 STEP = 1    # Step value changing
 VAL = 1     # Default value
+WLINE = 3   # Line width
 MIN = 0     # Minimum value
 MAX = 1000  # Maximum value
 WMIN = 50   # Minimum width
 HMIN = 20   # Minimum height
+
 ICON_SIZE = 30
 ICON_BUFFRATE = 10
 ICON_BUFFREGION = -1
@@ -66,6 +68,30 @@ with open(pth, 'r') as f:
 
 # -------------------------------------------------------------------------------------------------------------
 
+class Button(QToolButton):
+
+    def __init__(self, txt=TXT, parent=None):
+        super(Button, self).__init__(parent)
+
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.setText(txt)
+
+    def sizeHint(self):
+        size = super(Button, self).sizeHint()
+        size.setHeight(size.height() + 20)
+        size.setWidth(max(size.width()), size.height())
+        return size
+
+def separador(shape=QFrame.HLine, lineWidth=WLINE):
+    separador = QFrame()
+    separador.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
+    separador.setLineWidth(lineWidth)
+    separador.setFrameShape(shape)
+    separador.setFrameShape(frameStyle)
+
+    return separador
+
+
 def iconBtn(key):
     iconBtn = QPushButton()
     iconBtn.setToolTip(APPINFO[key][0])
@@ -76,9 +102,9 @@ def iconBtn(key):
     return iconBtn
 
 def action(key, parent=None):
-    action = QAction(QIcon(func.get_icon(key)), APPINFO[key][0], parent)
-    action.setStatusTip(APPINFO[key][1])
-    action.triggered.connect(partial(subprocess.Popen, APPINFO[key][2]))
+    action = QAction(QIcon(APPINFO[key][1]), APPINFO[key][0], parent)
+    action.setStatusTip(APPINFO[key][0])
+    action.triggered.connect(partial(func.openProcess, APPINFO[key][2]))
     return action
 
 def Clabel(txt=TXT, wmin=WMIN, alg = None, font=None):

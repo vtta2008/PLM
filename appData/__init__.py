@@ -25,6 +25,10 @@ __project__ = "Pipeline Tool"
 
 __version__ = "13.0.1"
 
+__verType__ = "Dev"
+
+__reverType__ = "1"
+
 __appname__ = "Pipeline Tool (Plt)"
 
 __about__ = "About plt"
@@ -32,6 +36,8 @@ __about__ = "About plt"
 __organization__ = "DAMG team"
 
 __website__ = "https://pipeline.damgteam.com"
+
+__pltWiki__ = "https://github.com/vtta2008/PipelineTool/wiki"
 
 __download__ = "https://github.com/vtta2008/pipelineTool"
 
@@ -64,13 +70,16 @@ __classifiers__ = [
               "Topic :: Software Development :: pipeline-framework :: Application :: vfx :: customization :: optimization :: research-project",
                 ]
 
+__homepage__ = "https://pipeline.damgteam.com"
+
 __server__ = "https://pipeline.damgteam.com"
 
 __serverCheck__ = "https://pipeline.damgteam.com/check"
 
 __serverAutho__ = "https://pipeline.damgteam.com/auth"
 
-VERSION = "{0} v{1}".format(__project__, __version__)
+VERSION = "{0} v{1}.{2}-{3}".format(__project__, __version__, __verType__, __reverType__)
+COPYRIGHT = "Copyright (C) 2017 - 2018 by DAMG team."
 
 UDP_IP = "192.168.1.1"
 

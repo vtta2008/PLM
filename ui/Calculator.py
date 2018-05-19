@@ -21,6 +21,7 @@ from utilities import utils as func
 
 
 class Button(QToolButton):
+
     def __init__(self, text, parent=None):
         super(Button, self).__init__(parent)
 

@@ -61,14 +61,6 @@ USER_CLASS = ["", "Admin", "Supervisor", "Artist", "Tester"]
 
 USERNAME = platform.node()
 
-PLT_ID = dict(Main="Pipeline Tool", LogIn="Log in", About="About Pipeline Tool", Credit="From Author")
-
-PLT_TABID = ["", "User", "Functions", "Project", "Admin", ]
-
-PLT_URL = dict(Home = "https://www.dot.damgteam.com/", Help = "https://www.dot.damgteam.com/")
-
-PLT_MESS = dict(About=mess.PLT_ABOUT, Credit=mess.PLT_CREDIT, status="Pipeline Application", )
-
 PLT_PKG = dict(
     TD=["Maya", "3ds Max", "Mudbox", "Houdini FX", "ZBrush", "Mari", "Substance Painter"],
     Comp=["NukeX", "Hiero", "After Effects", "Premiere Pro"],
@@ -90,4 +82,3 @@ PLT_PKG = dict(
     ext=[".exe", ".lnk"],
 )
 
-LLINE = "==============================================================================================================="

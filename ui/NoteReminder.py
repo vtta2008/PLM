@@ -226,15 +226,12 @@ class NoteReminder(QDialog):
 
 
         self.layout = QGridLayout()
-
         self.buildUI()
-
         self.setLayout(self.layout)
 
     def buildUI(self):
 
         self.mainMenu = Menu_layout()
-
         self.layout.addWidget(self.mainMenu, 0,0,1,1)
 
 def main():

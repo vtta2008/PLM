@@ -55,7 +55,6 @@ from ui import (SignIn, SignUp, PipelineTool, SysTrayIcon)
 from utilities import utils as func
 from utilities import sql_local as usql
 from utilities import message as mess
-from utilities import variables as var
 
 func.preset_maya_intergrate()
 
@@ -69,10 +68,6 @@ formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
-
-# -------------------------------------------------------------------------------------------------------------
-""" Variables """
-
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -91,7 +86,6 @@ class PltConsole():
         QCoreApplication.setOrganizationDomain(app.__website__)
 
         mainApp = QApplication(sys.argv)
-        # mainApp.setWindowIcon(QIcon(func.get_icon('Logo')))
         mainApp.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
 
         username, token, cookie = usql.query_user_session()
@@ -99,23 +93,33 @@ class PltConsole():
         self.SignInUI = SignIn.SignIn()
         self.SignUpUI = SignUp.SignUp()
         self.MainUI = PipelineTool.PipelineTool()
-        self.SysTrayIcon = SysTrayIcon.SysTrayIcon()
+        self.SysTray = SysTrayIcon.SysTrayIcon()
+
+        showSignUpSig = self.SignInUI.showSignUpSig
+        showSignUpSig.connect(self.show_hide_signup)
 
         showMainSig1 = self.SignInUI.showMainSig
-        showSignUpSig = self.SignInUI.showSignUpSig
-        showMainSig2 = self.SignUpUI.showMainSig
-        showSignInSig = self.SignUpUI.showLoginSig
-        showNorSig = self.SysTrayIcon.showNormalSig
-        showMinSig = self.SysTrayIcon.showMinimizeSig
-        showMaxSig = self.SysTrayIcon.showMaximizeSig
+        showMainSig2 = self.SignUpUI.showMainSig2
+        showMainSig3 = self.MainUI.showMainSig
 
         showMainSig1.connect(self.show_hide_main)
         showMainSig2.connect(self.show_hide_main)
-        showSignUpSig.connect(self.show_hide_signup)
-        showSignInSig.connect(self.show_hide_signin)
+        showMainSig3.connect(self.show_hide_main)
+
+        showSignInSig1 = self.MainUI.showLoginSig1
+        showSignInSig2 = self.SignUpUI.showLoginSig2
+        showSignInSig1.connect(self.show_hide_signin)
+        showSignInSig2.connect(self.show_hide_signin)
+
+        showNorSig = self.SysTray.showNormalSig
+        showMinSig = self.SysTray.showMinimizeSig
+        showMaxSig = self.SysTray.showMaximizeSig
+        closeMessSig = self.MainUI.closeMessSig
+
         showNorSig.connect(self.MainUI.showNormal)
         showMinSig.connect(self.MainUI.hide)
         showMaxSig.connect(self.MainUI.showMaximized)
+        closeMessSig.connect(self.closeMess)
 
         if username is None or token is None or cookie is None:
             self.SignInUI.show()
@@ -127,7 +131,7 @@ class PltConsole():
             if r.status_code == 200:
 
                 self.MainUI.show()
-                self.SysTrayIcon.show()
+                self.SysTray.show()
 
                 if not QSystemTrayIcon.isSystemTrayAvailable():
                     QMessageBox.critical(None, mess.SYSTRAY_UNAVAI)
@@ -143,8 +147,10 @@ class PltConsole():
         param = func.str2bool(param)
         if param:
             self.MainUI.show()
+            self.SysTray.show()
         else:
             self.MainUI.hide()
+            self.SysTray.hide()
 
     def show_hide_signup(self, param):
         param = func.str2bool(param)
@@ -159,6 +165,10 @@ class PltConsole():
             self.SignInUI.show()
         else:
             self.SignInUI.hide()
+
+    def closeMess(self, param):
+        if param:
+            self.SysTray.closeMess()
 
 if __name__ == '__main__':
     PltConsole()

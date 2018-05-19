@@ -20,19 +20,19 @@ from utilities import utils as func
 from utilities import variables as var
 
 
-class Preference(QDialog):
+class Preferences(QDialog):
 
     checkboxTDSig = pyqtSignal(bool)
     checkboxCompSig = pyqtSignal(bool)
     checkboxArtSig = pyqtSignal(bool)
 
     def __init__(self, parent=None):
-        super(Preference, self).__init__(parent)
+        super(Preferences, self).__init__(parent)
 
         self.resize(200, 100)
         self.setWindowTitle("Preferences")
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
-        self.setContentsMargins(0,0,0,0)
+
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
         self.layout = QGridLayout()
@@ -75,7 +75,6 @@ class Preference(QDialog):
         tbGrid.addWidget(self.allToolBar_checkBox, 3, 0, 1, 1)
 
         self.layout.addWidget(tbGrpBox, 0,0,1,2)
-
         self.layout.addWidget(closeBtn, 1, 0, 1, 2)
 
     def checkBoxMasterStateChanged(self):
@@ -102,7 +101,7 @@ class Preference(QDialog):
 
 def main():
     app = QApplication(sys.argv)
-    pref_layout = Preference()
+    pref_layout = Preferences()
     pref_layout.show()
     app.exec_()
 

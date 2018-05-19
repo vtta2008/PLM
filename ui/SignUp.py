@@ -47,8 +47,8 @@ logger.setLevel(logging.DEBUG)
 
 class SignUp(QDialog):
 
-    showLoginSig = pyqtSignal(bool)
-    showMainSig = pyqtSignal(bool)
+    showLoginSig2 = pyqtSignal(bool)
+    showMainSig2 = pyqtSignal(bool)
 
     def __init__(self, parent=None):
 
@@ -309,7 +309,7 @@ class SignUp(QDialog):
 
     def show_hide_signin(self, mode):
         self.settings.setValue("showSignIn", mode)
-        self.showLoginSig.emit(mode)
+        self.showLoginSig2.emit(mode)
 
     def show_hide_main(self, mode):
         self.settings.setValue("showMain", mode)

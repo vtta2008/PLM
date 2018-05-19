@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Script Name: AboutPlt.py
+Script Name: Credit.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
-    This is a layout which have info about pipeline tools
+    Credit infomation.
 
 """
 # -------------------------------------------------------------------------------------------------------------
@@ -21,18 +21,17 @@ from PyQt5.QtWidgets import QApplication, QDialog, QGridLayout, QScrollArea, QLa
 
 # Plt
 from utilities import utils as func
-# from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
 """ About Layout """
 
-class AboutPlt(QDialog):
+class Credit(QDialog):
 
     def __init__(self, parent=None):
 
-        super(AboutPlt, self).__init__(parent)
+        super(Credit, self).__init__(parent)
 
-        self.setWindowTitle("About PLt")
+        self.setWindowTitle("Credit")
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
 
         self.layout = QGridLayout()
@@ -40,12 +39,12 @@ class AboutPlt(QDialog):
         self.setLayout(self.layout)
 
     def buildUI(self):
-        with open(os.path.join(os.getenv(app.__envKey__), 'appData', 'ABOUT'), 'r') as f:
-            readme = f.read()
+        with open(os.path.join(os.getenv(app.__envKey__), 'appData', 'CREDIT'), 'r') as f:
+            credit = f.read()
 
         self.scrollArea = QScrollArea()
         self.scrollArea.setWidgetResizable(True)
-        self.content = QLabel(readme)
+        self.content = QLabel(credit)
 
         self.content.setGeometry(0, 0, 650, 400)
         self.scrollArea.setWidget(self.content)
@@ -58,7 +57,7 @@ class AboutPlt(QDialog):
 
 def main():
     app = QApplication(sys.argv)
-    about_layout = AboutPlt()
+    about_layout = Credit()
     about_layout.show()
     app.exec_()
 
