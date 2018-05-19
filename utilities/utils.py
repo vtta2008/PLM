@@ -21,20 +21,7 @@ import datetime, time, uuid, win32gui, win32api, pprint, cv2, socket, signal
 from pyunpack import Archive
 
 # Plt tools
-import appData as app
 from utilities import variables as var
-from ui import WebBrowser
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain logs """
-logPth = os.path.join(os.getenv(app.__envKey__), 'appData', 'logs', 'func.log')
-logger = logging.getLogger(__name__)
-handler = logging.FileHandler(logPth)
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
-
 # ----------------------------------------------------------------------------------------------------------- #
 """ Preset """
 

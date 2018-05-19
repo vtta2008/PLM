@@ -32,6 +32,9 @@ from utilities import utils as func
 from utilities import sql_local as usql
 from utilities import variables as var
 
+from ui import (UserSetting, Preferences, AboutPlt, Credit, QuickSetting)
+from ui import uirc as rc
+
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
@@ -42,9 +45,6 @@ formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
-
-from ui import (UserSetting, Preferences, AboutPlt, Credit, QuickSetting)
-from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """

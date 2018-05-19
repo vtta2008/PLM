@@ -23,8 +23,6 @@ import platform
 
 # Plt tools
 import appData as app
-from utilities import message as mess
-
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """

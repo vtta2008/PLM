@@ -10,27 +10,24 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Check data flowing """
-# print("Import from modules: {file}".format(file=__name__))
-# print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-__root__ = "PLT_RT"
-# -------------------------------------------------------------------------------------------------------------
 """ Import """
 import os
 import sys
-from utilities import utils as func
 import setuptools
 from cx_Freeze import setup, Executable
+
+import appData as app
+from utilities import utils as func
 
 base = None
 
 if sys.platform == "win32":
     base = "Win32GUI"
 
-os.environ[__root__] = os.getcwd()
+os.environ[app.__envKey__] = os.getcwd()
 
-for dir in os.listdir(os.getenv(__root__)):
-    pltPth = os.path.join(os.getenv(__root__), dir)
+for dir in os.listdir(os.getenv(app.__envKey__)):
+    pltPth = os.path.join(os.getenv(app.__envKey__), dir)
     if os.path.isdir(pltPth):
         if not pltPth in sys.path:
             sys.path.append(pltPth)
