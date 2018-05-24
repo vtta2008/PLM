@@ -12,11 +12,11 @@ Description:
 """ Import """
 
 # Python
-import os, sys, logging, requests, socket
+import os, sys, logging
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, QSettings
-from PyQt5.QtWidgets import QApplication, QGridLayout, QPushButton
+from PyQt5.QtWidgets import QApplication, QGridLayout, QVBoxLayout, QHBoxLayout, QWidget
 
 # Plt
 import appData as app
@@ -25,6 +25,7 @@ from ui import uirc as rc
 
 from utilities import utils as func
 from utilities import variables as var
+from utilities import Networking as net
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -42,32 +43,7 @@ logger.setLevel(logging.DEBUG)
 APPINFO = func.preset_load_appInfo()
 
 # -------------------------------------------------------------------------------------------------------------
-""" Variables """
-
-from urllib.parse import urlparse
-from urllib.request import urlopen, URLError
-
-class ConnectionChecker(object):
-
-    con_url = app.__server__
-
-    def __init__(self):
-        pass
-
-    def test_connection(self):
-        try:
-            data = urlopen(self.con_url, timeout=5)
-        except URLError:
-            return False
-
-        host = data.fp.raw._sock.getpeername()
-
-        self.conn_url = 'http://' + (host[0] if len(host) == 2 else socket.gethostbyname(urlparse(data.geturl()).hostname))
-
-        return True
-
-# -------------------------------------------------------------------------------------------------------------
-""" ServerStatus """
+""" Server Status Layout """
 
 class ServerStatus(QGridLayout):
 
@@ -78,26 +54,36 @@ class ServerStatus(QGridLayout):
 
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
-        checker = ConnectionChecker()
-        check = checker.test_connection()
+        checker = net.ConnectionChecker()
+        check = checker.check_url()
         print(checker, check, type(check))
 
         self.buildUI()
 
     def buildUI(self):
 
-        self.networdErrorIcon = rc.ImageUI("NetworkError")
-        self.networkGoodIcon = rc.ImageUI("NetworkGood")
-        self.addWidget(self.networkGoodIcon, 0, 0, 1, 1)
-        self.addWidget(self.networdErrorIcon, 0, 0, 1, 1)
+        goodLayout = QHBoxLayout()
+        goodLayout.addWidget(rc.ImageUI("NetworkGood"))
+        goodLayout.addWidget(rc.Label("Connected"))
+        self.goodWidget = QWidget()
+        self.goodWidget.setLayout(goodLayout)
+
+        badLayout = QHBoxLayout()
+        badLayout.addWidget(rc.ImageUI("NetworkError"))
+        badLayout.addWidget(rc.Label("Disconnected"))
+        self.badWidget = QWidget()
+        self.badWidget.setLayout(badLayout)
+
+        self.addWidget(self.goodWidget, 0, 0, 1, 1)
+        self.addWidget(self.badWidget, 0, 0, 1, 1)
 
         self.serverStatusSig.connect(self.network_status)
 
         self.applySetting()
 
     def network_status(self, param):
-        self.networkGoodIcon.setVisible(param)
-        self.networdErrorIcon.setVisible(not param)
+        self.goodWidget.setVisible(param)
+        self.badWidget.setVisible(not param)
 
     def applySetting(self):
         self.setSpacing(2)

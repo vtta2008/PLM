@@ -18,7 +18,7 @@ Details are `here <http://www.vfxplatform.com>`_
 
 NOTE:
 
-    - Currently I am working on setup a server, some functions may not work.
+    - Currently I am working on setup a server, some functions may not work :bowtie: :bowtie: :bowtie:.
 
 REQUIREMENTS
 ============

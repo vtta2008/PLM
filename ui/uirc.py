@@ -20,7 +20,8 @@ from functools import partial
 from PyQt5.QtCore import Qt, QSize, pyqtSignal, QSettings, QObject
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 from PyQt5.QtWidgets import (QFrame, QLabel, QGridLayout, QPushButton, QAction, QApplication, QGroupBox, QToolBar,
-                             QGraphicsView, QHBoxLayout, QGraphicsScene, QMessageBox)
+                             QGraphicsView, QHBoxLayout, QGraphicsScene, QMessageBox, QTabWidget, QWidget, QTabBar,
+                             QVBoxLayout, )
 
 # Plt
 import appData as app
@@ -102,7 +103,7 @@ class Run(QObject):
             func.open_cmd()
 
 # -------------------------------------------------------------------------------------------------------------
-""" UI resource with signal """
+""" UI resource preset """
 
 class IconBtnProcess(QPushButton):
 
@@ -430,7 +431,64 @@ class AutoSectionLayoutGrp(QGroupBox):
         pass
 
 # -------------------------------------------------------------------------------------------------------------
-""" UI resource without signal """
+""" Tab layout """
+
+class TabBar(QTabBar):
+    def tabSizeHint(self, index):
+        size = QTabBar.tabSizeHint(self, index)
+        w = int(self.width()/self.count())
+        return QSize(w, size.height())
+
+class TabBodyDemo(QWidget):
+    def __init__(self, text):
+        super(TabBodyDemo, self).__init__()
+
+        self.hbox = QHBoxLayout()
+        self.hbox.setSpacing(0)
+        self.hbox.setContentsMargins(0, 0, 0, 0)
+        self.setLayout(self.hbox)
+
+        self.button = QPushButton(text)
+        self.hbox.addWidget(self.button)
+
+class TabWidget (QWidget):
+    def __init__(self, parent=None):
+        super(TabWidget, self).__init__(parent)
+
+        self.button = QPushButton("Add tab")
+        self.button.clicked.connect(self.buttonClicked)
+
+        self.tabs = QTabWidget()
+        self.tabs.setTabBar(TabBar())
+        self.tabs.setTabsClosable(True)
+        self.tabs.setMovable(True)
+        self.tabs.setDocumentMode(True)
+        self.tabs.setElideMode(Qt.ElideRight)
+        self.tabs.setUsesScrollButtons(True)
+        self.tabs.tabCloseRequested.connect(self.closeTab)
+
+        self.tabs.addTab(TabBodyDemo("Very big titleeeeeeeeee"),
+                         "Very big titleeeeeeeeeeee")
+        self.tabs.addTab(TabBodyDemo("smalltext"), "smalltext")
+        self.tabs.addTab(TabBodyDemo("smalltext2"), "smalltext2")
+
+        vbox = QVBoxLayout()
+        vbox.addWidget(self.button)
+        vbox.addWidget(self.tabs)
+        self.setLayout(vbox)
+
+        self.resize(600, 600)
+
+    def closeTab(self, index):
+        tab = self.tabs.widget(index)
+        tab.deleteLater()
+        self.tabs.removeTab(index)
+
+    def buttonClicked(self):
+        self.tabs.addTab(TabBodyDemo("smalltext2"), "smalltext2")
+
+# -------------------------------------------------------------------------------------------------------------
+""" UI element """
 
 class Label(QLabel):
 
@@ -472,7 +530,6 @@ class ImageUI(QGraphicsView):
             sys.exit(1)
 
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
-
         self.pixmap = QPixmap(func.get_icon(icon))
 
         if size == None or len(size) == 0:
@@ -481,14 +538,11 @@ class ImageUI(QGraphicsView):
             self.size = size
 
         self.scene = QGraphicsScene()
-
         self.buildUI()
-
         self.setScene(self.scene)
 
     def buildUI(self):
         self.scene.addPixmap(self.pixmap)
-
         self.applySetting()
 
     def applySetting(self):
