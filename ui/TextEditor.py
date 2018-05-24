@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: textedit.py
+Script Name: TextEditor.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -10,23 +10,35 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
+
+# Python
 import sys
 
+# PyQt5
 from PyQt5.QtCore import QFile, QFileInfo, Qt, QTextCodec
-from PyQt5.QtGui import (QFont, QFontDatabase, QFontInfo, QIcon, QKeySequence,
-                         QPixmap, QTextBlockFormat, QTextCharFormat, QTextCursor,
-                         QTextDocumentWriter, QTextListFormat)
+from PyQt5.QtGui import (QFont, QFontDatabase, QFontInfo, QIcon, QKeySequence, QPixmap, QTextBlockFormat, QTextCharFormat,
+                         QTextCursor, QTextDocumentWriter, QTextListFormat)
 from PyQt5.QtPrintSupport import QPrintDialog, QPrinter, QPrintPreviewDialog
-from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog,
-                             QComboBox, QFileDialog, QFontComboBox, QMainWindow, QMenu, QMessageBox,
-                             QTextEdit, QToolBar, QDialog, QGridLayout)
+from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog, QComboBox, QFileDialog, QFontComboBox,
+                             QMainWindow, QMenu, QMessageBox, QTextEdit, QToolBar, QDialog, QHBoxLayout)
 
-class TextEditor(QMainWindow):
+# Plt
+from ui import TextEditor_rc
+from utilities import utils as func
+
+if sys.platform.startswith('darwin'):
+    rsrcPath = ":/images/mac"
+else:
+    rsrcPath = ":/images/win"
+
+# -------------------------------------------------------------------------------------------------------------
+""" Main class """
+
+class TextEdit(QMainWindow):
 
     def __init__(self, fileName=None, parent=None):
-        super(TextEditor, self).__init__(parent)
-  
-        # self.setWindowIcon(QIcon(func.get_icon('Logo')))
+        super(TextEdit, self).__init__(parent)
+
         self.setToolButtonStyle(Qt.ToolButtonFollowStyle)
         self.setupFileActions()
         self.setupEditActions()
@@ -34,9 +46,7 @@ class TextEditor(QMainWindow):
   
         helpMenu = QMenu("Help", self)
         self.menuBar().addMenu(helpMenu)
-        helpMenu.addAction("About", self.about)
-        helpMenu.addAction("About &Qt", QApplication.instance().aboutQt)
-  
+
         self.textEdit = QTextEdit(self)
         self.textEdit.currentCharFormatChanged.connect(self.currentCharFormatChanged)
         self.textEdit.cursorPositionChanged.connect(self.cursorPositionChanged)
@@ -557,12 +567,6 @@ class TextEditor(QMainWindow):
     def clipboardDataChanged(self):
         self.actionPaste.setEnabled(len(QApplication.clipboard().text()) != 0)
   
-    def about(self):
-        QMessageBox.about(self, "About", 
-                "This example demonstrates Qt's rich text editing facilities "
-                "in action, providing an example document for you to "
-                "experiment with.")
-  
     def mergeFormatOnWordOrSelection(self, format):
         cursor = self.textEdit.textCursor()
         if not cursor.hasSelection():
@@ -595,31 +599,30 @@ class TextEditor(QMainWindow):
         elif alignment & Qt.AlignJustify:
             self.actionAlignJustify.setChecked(True)
 
+# -------------------------------------------------------------------------------------------------------------
+""" layout class """
 
-class WindowDialog(QDialog):
+class TextEditor(QDialog):
 
     def __init__(self, parent=None):
-        super(WindowDialog, self).__init__(parent)
+        super(TextEditor, self).__init__(parent)
 
-        # self.setWindowIcon(rsrcPath + '/Logo.png')
-        self.setWindowTitle('Editor')
+        self.setWindowIcon(QIcon(func.get_icon('TextEditor')))
+        self.setWindowTitle('Pipeline Text Editor')
 
-        textEdit = TextEditor()
+        self.layout = QHBoxLayout()
+        self.buildUI()
+        self.setLayout(self.layout)
 
-        self.layout = QGridLayout(self)
-        self.layout.addWidget(textEdit, 0,0,1,1)
+    def buildUI(self):
+        textEditor = TextEdit()
+        self.layout.addWidget(textEditor)
+
+def main():
+    app = QApplication(sys.argv)
+    layout = TextEditor()
+    layout.show()
+    app.exec_()
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-  
-    # mainWindows = []
-    # for fn in sys.argv[1:] or [None]:
-    #     textEdit = TextEdit(fn)
-    #     textEdit.resize(700, 800)
-    #     textEdit.show()
-    #     mainWindows.append(textEdit)
-
-    winDialog = WindowDialog()
-    winDialog.show()
-
-    sys.exit(app.exec_())
+    main()

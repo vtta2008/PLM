@@ -35,7 +35,7 @@ class QuickSetting(QGridLayout):
     showStatusSig = pyqtSignal(bool)
     showServerStatusSig = pyqtSignal(bool)
     showNotificationSig = pyqtSignal(bool)
-    showAllSettingSig = pyqtSignal(bool)
+    quickSettingSig = pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super(QuickSetting, self).__init__(parent)
@@ -51,7 +51,7 @@ class QuickSetting(QGridLayout):
         self.subMenuBarCB = QCheckBox("Sub Menu")
         self.serverStatusCB = QCheckBox("Server Status")
         self.notificationCB = QCheckBox("Notification")
-        self.quickSettingCB = QCheckBox("QuickSetting")
+        self.quickSettingCB = QCheckBox("Quick Setting")
 
         self.buildUI()
 
@@ -65,7 +65,7 @@ class QuickSetting(QGridLayout):
             showSubMenuBar = [self.subMenuBarCB, self.showStatusSig],
             showServerStatus = [self.serverStatusCB, self.showServerStatusSig],
             showNotificatuon = [self.notificationCB, self.showNotificationSig],
-            showQuickSetting = [self.quickSettingCB, self.showAllSettingSig]
+            showQuickSetting = [self.quickSettingCB, self.quickSettingSig]
         )
 
         for key in quickSettingInfo:
@@ -128,10 +128,11 @@ class QuickSetting(QGridLayout):
         self.showNotificationSig.emit(self.notificationCB.isChecked())
 
     def quickSettingStateChanged(self):
-        self.settings.setValue("showQuickSetting", self.quickSettingCB.setChecked())
-        self.showAllSettingSig.emit(self.quickSettingCB.isChecked())
+        self.settings.setValue("showQuickSetting", self.quickSettingCB.checkState())
+        self.quickSettingSig.emit(self.quickSettingCB.isChecked())
 
 def main():
+
     app = QApplication
     quickSetting = QuickSetting()
     quickSetting.show()

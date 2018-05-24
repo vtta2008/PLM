@@ -27,11 +27,11 @@ import appData as app
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 
-logPth = os.path.join(app.LOGPTH, "variables.log")
-logger = logging.getLogger(__name__)
+logPth = os.path.join(app.LOGPTH)
 handler = logging.FileHandler(logPth)
-formatter = logging.Formatter("%(asctime)s %(levelname)s %(message)s")
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
+logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
@@ -58,25 +58,4 @@ DB_PATH = os.path.join(os.getenv(app.__envKey__), "appData", "plt.db")
 USER_CLASS = ["", "Admin", "Supervisor", "Artist", "Tester"]
 
 USERNAME = platform.node()
-
-PLT_PKG = dict(
-    TD=["Maya", "3ds Max", "Mudbox", "Houdini FX", "ZBrush", "Mari", "Substance Painter"],
-    Comp=["NukeX", "Hiero", "After Effects", "Premiere Pro"],
-    Design=["Photoshop", "Illustrator"],
-    Microsoft=["Word", "Excel", "Snipping Tool"],
-    UV=["UVLayout"],
-    Sound=["Audition"],
-    Plt=["Git Bash", "Git CMD", "Advance Rename"],
-    Dev=["PyCharm", "Sublime Text", "QtDesigner"],
-
-    main = ["Maya", "3ds Max", "Mudbox", "Houdini FX", "ZBrush", "Mari", "Substance Painter", "NukeX", "Hiero", 
-            "After Effects", "Premiere Pro", "Photoshop", "Illustrator", "Word", "Excel", "Snipping Tool", "UVLayout",
-            "Audition", "Git Bash", "Git CMD", "Advance Rename", "PyCharm", "Sublime Text", "QtDesigner"],
-
-    sysOpts=["Host Name", "Product ID", "System Manufacturer", "System Model", "System type", "BIOS Version", "Domain",
-             "Windows Directory", "Total Physical Memory", "Available Physical Memory", "Logon Server"],
-    detect=["Non-commercial", "Uninstall", "Verbose", "License", "Skype"],
-    py = ["utilities","ui"],
-    ext=[".exe", ".lnk"],
-)
 

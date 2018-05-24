@@ -27,11 +27,11 @@ import appData as app
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logPth = os.path.join(app.LOGPTH, 'sysTrayIcon.log')
-logger = logging.getLogger(__name__)
+logPth = os.path.join(app.LOGPTH)
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
+logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
@@ -46,16 +46,16 @@ class SysTrayIconMenu(QMenu):
     def __init__(self, parent=None):
         super(SysTrayIconMenu, self).__init__(parent)
 
-        self.addAction(rc.action('Shutdown', self))
+        self.addAction(rc.ActionProcess('Shutdown', self))
         self.addSeparator()
 
         for key in app.CONFIG_TRAY1:
-            self.addAction(rc.action(key, self))
+            self.addAction(rc.ActionProcess(key, self))
 
         self.addSeparator()
 
         for key in app.CONFIG_TRAY2:
-            self.addAction(rc.action(key, self))
+            self.addAction(rc.ActionProcess(key, self))
 
         self.addSeparator()
 
@@ -97,9 +97,9 @@ class SystrayWheelEventObject(QObject):
     def eventFilter(self, object, event):
         if type(event) == QWheelEvent:
             if event.delta() > 0:
-                func.send_udp("s51153\n")
+                print("wheel up")
             else:
-                func.send_udp("s53201\n")
+                print("wheel down")
             event.accept()
             return True
         return False

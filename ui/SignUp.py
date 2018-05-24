@@ -37,11 +37,12 @@ from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
-logPth = os.path.join(os.getenv(app.__envKey__), 'appData', 'logs', 'func.log')
-logger = logging.getLogger(__name__)
+
+logPth = os.path.join(app.LOGPTH)
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
+logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
@@ -74,7 +75,7 @@ class SignUp(QDialog):
         self.security_section()
         self.buttons_section()
 
-        self.layout.addWidget(rc.Clabel("ALL FIELD ARE REQUIRED!!!"), 0, 0, 1, 6)
+        self.layout.addWidget(rc.Label("ALL FIELD ARE REQUIRED!!!"), 0, 0, 1, 6)
         self.layout.addWidget(self.avaSection, 1, 0, 1, 2)
         self.layout.addWidget(self.accSection, 1, 2, 1, 4)
         self.layout.addWidget(self.prfSection, 2, 0, 1, 6)
@@ -104,9 +105,9 @@ class SignUp(QDialog):
         account_grid = QGridLayout()
         self.accSection.setLayout(account_grid)
 
-        account_grid.addWidget(rc.Clabel('User Name'), 0, 0, 1, 2)
-        account_grid.addWidget(rc.Clabel('Password'), 1, 0, 1, 2)
-        account_grid.addWidget(rc.Clabel('Confirm Password'), 2, 0, 1, 2)
+        account_grid.addWidget(rc.Label('User Name'), 0, 0, 1, 2)
+        account_grid.addWidget(rc.Label('Password'), 1, 0, 1, 2)
+        account_grid.addWidget(rc.Label('Confirm Password'), 2, 0, 1, 2)
 
         self.userField = QLineEdit()
         self.pwField = QLineEdit()
@@ -124,11 +125,11 @@ class SignUp(QDialog):
         profile_grid = QGridLayout()
         self.prfSection.setLayout(profile_grid)
 
-        profile_grid.addWidget(rc.Clabel('First Name'), 0, 0, 1, 2)
-        profile_grid.addWidget(rc.Clabel('Last Name'), 1, 0, 1, 2)
-        profile_grid.addWidget(rc.Clabel('Your Title'), 2, 0, 1, 2)
-        profile_grid.addWidget(rc.Clabel('Email'), 3, 0, 1, 2)
-        profile_grid.addWidget(rc.Clabel('Phone Number'), 4, 0, 1, 2)
+        profile_grid.addWidget(rc.Label('First Name'), 0, 0, 1, 2)
+        profile_grid.addWidget(rc.Label('Last Name'), 1, 0, 1, 2)
+        profile_grid.addWidget(rc.Label('Your Title'), 2, 0, 1, 2)
+        profile_grid.addWidget(rc.Label('Email'), 3, 0, 1, 2)
+        profile_grid.addWidget(rc.Label('Phone Number'), 4, 0, 1, 2)
 
         self.titleField = QLineEdit()
         self.firstnameField = QLineEdit()
@@ -147,11 +148,11 @@ class SignUp(QDialog):
         conGrid = QGridLayout()
         self.conSection.setLayout(conGrid)
 
-        conGrid.addWidget(rc.Clabel("Address Line 1"), 0, 0, 1, 2)
-        conGrid.addWidget(rc.Clabel("Address Line 2"), 1, 0, 1, 2)
-        conGrid.addWidget(rc.Clabel("Postal"), 2, 0, 1, 2)
-        conGrid.addWidget(rc.Clabel("City"), 3, 0, 1, 2)
-        conGrid.addWidget(rc.Clabel("Country"), 4, 0, 1, 2)
+        conGrid.addWidget(rc.Label("Address Line 1"), 0, 0, 1, 2)
+        conGrid.addWidget(rc.Label("Address Line 2"), 1, 0, 1, 2)
+        conGrid.addWidget(rc.Label("Postal"), 2, 0, 1, 2)
+        conGrid.addWidget(rc.Label("City"), 3, 0, 1, 2)
+        conGrid.addWidget(rc.Label("Country"), 4, 0, 1, 2)
 
         self.addressLine1 = QLineEdit()
         self.addressLine2 = QLineEdit()
@@ -179,13 +180,14 @@ class SignUp(QDialog):
         questions = usql.query_all_questions()
 
         for i in questions:
-            self.ques1.addItem(str(i[0]))
-            self.ques2.addItem(str(i[0]))
+            self.ques1.addItem(str(i[0]).split("'")[1])
+            if i != 0:
+                self.ques2.addItem(str(i[0]).split("'")[1])
 
-        questions_grid.addWidget(rc.Clabel('Question 1'), 0, 0, 1, 3)
-        questions_grid.addWidget(rc.Clabel('Answer 1'), 1, 0, 1, 3)
-        questions_grid.addWidget(rc.Clabel('Question 2'), 2, 0, 1, 3)
-        questions_grid.addWidget(rc.Clabel('Answer 2'), 3, 0, 1, 3)
+        questions_grid.addWidget(rc.Label('Question 1'), 0, 0, 1, 3)
+        questions_grid.addWidget(rc.Label('Answer 1'), 1, 0, 1, 3)
+        questions_grid.addWidget(rc.Label('Question 2'), 2, 0, 1, 3)
+        questions_grid.addWidget(rc.Label('Answer 2'), 3, 0, 1, 3)
 
         questions_grid.addWidget(self.ques1, 0, 3, 1, 6)
         questions_grid.addWidget(self.answ1, 1, 3, 1, 6)
@@ -224,10 +226,11 @@ class SignUp(QDialog):
             self.userAvatar.update()
 
     def on_create_btn_clicked(self):
-        regInput = self.collect_input()
-        if self.check_all_conditions(regInput):
+        if self.check_all_conditions():
             data = self.generate_user_data()
-            usql.create_new_user_data(data)
+            # usql.create_new_user_data(data)
+            QMessageBox.information(self, "Failed", mess.WAIT_TO_COMPLETE, QMessageBox.Ok)
+            return
 
     def on_cancel_btn_clicked(self):
         self.close()
@@ -256,17 +259,20 @@ class SignUp(QDialog):
             if self.check_user_agreement():
                 if self.check_pw_matching():
                     return True
-        return False
+        else:
+            return False
 
     def check_all_field_blank(self):
         regInput = self.collect_input()
         secName = ["Username", "Password", "Confirm Password", "Firstname", "Lastname", "Email", "Phone",
                    "Address line 1", "Address line 2", "Postal", "City", "Country", "Answer 1", "Answer 2"]
         for section in regInput:
-            if not func.check_blank(section):
-                QMessageBox.critical(self, "Fail", secName[regInput.index(section)] + mess.SEC_BLANK, QMessageBox.Retry)
-                return False
-        return True
+            if func.check_blank(section):
+                return True
+            else:
+                QMessageBox.information(self, "Fail", secName[regInput.index(section)] + mess.SEC_BLANK, QMessageBox.Ok)
+                break
+
 
     def check_user_agreement(self):
         return self.user_agree_checkBox.checkState()
@@ -303,7 +309,7 @@ class SignUp(QDialog):
         confirm = str(self.cfpwField.text())
         check_pass = func.check_match(password, confirm)
         if not check_pass:
-            QMessageBox.critical(self, "Warning", mess.PW_UNMATCH, QMessageBox.Retry)
+            QMessageBox.information(self, "Warning", mess.PW_UNMATCH, QMessageBox.Retry)
             return False
         return True
 

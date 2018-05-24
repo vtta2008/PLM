@@ -40,11 +40,11 @@ from utilities import variables as var
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 
-logPth = os.path.join('appData', 'logs', 'acc_setting.log')
-logger = logging.getLogger('acc_setting')
+logPth = os.path.join(app.LOGPTH)
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
+logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 

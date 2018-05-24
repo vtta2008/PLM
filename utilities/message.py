@@ -33,6 +33,10 @@ JimJim
 
 """
 
+WAIT_TO_COMPLETE = "This function is not completed yet. Please try again later"
+
+WAIT_LAYOUT_COMPLETE = "Udating..."
+
 PASSWORD_FORGOTTON = """
 
 How the hell you forgot your password? Make a new one now!!!
@@ -62,5 +66,11 @@ USER_NOT_EXSIST = "The username does not exists"
 USER_CONDITION = "This username is under condition and can not log in, please contact to admin."
 
 SYSTRAY_UNAVAI = "Systray could not detect any system tray on this system"
+
+PTH_NOT_EXSIST = "Could not find directory path specific"
+
+ERROR_OPENFILE = "There was an error opening the file"
+
+ERROR_QIMAGE = "ImageViewer.setImage: Argument must be a QImage or QPixmap."
 
 LINE = "==============================================================================================================="

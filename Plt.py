@@ -9,24 +9,14 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Check data flowing """
-# print("Import from modules: {file}".format(file=__name__))
-# print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-# -------------------------------------------------------------------------------------------------------------
 """ Import """
 
 # Python
-import os, sys, logging, subprocess, webbrowser, requests
-import sqlite3 as lite
-from functools import partial
+import os, sys, logging, requests
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings, pyqtSignal, QByteArray
-from PyQt5.QtGui import QIcon, QPixmap, QImage, QIntValidator, QFont
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
-                             QGridLayout, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
-                             QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu, QFileDialog, QComboBox,
-                             QDockWidget, QSlider, QSizePolicy, QStackedWidget, QStackedLayout)
+from PyQt5.QtCore import QCoreApplication, QObject, QSettings
+from PyQt5.QtWidgets import QApplication, QMessageBox, QSystemTrayIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Set up env variable path """
@@ -50,18 +40,21 @@ import qdarkgraystyle
 
 # -------------------------------------------------------------------------------------------------------------
 """ Plt tools """
-from ui import (SignIn, SignUp, PipelineTool, SysTrayIcon)
 
 from utilities import utils as func
 from utilities import sql_local as usql
 from utilities import message as mess
+from utilities import variables as var
 
+func.Collect_info()
 func.preset_maya_intergrate()
+
+from ui import (SignIn, SignUp, PipelineTool, SysTrayIcon)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logPth = os.path.join(app.LOGPTH, 'master.log')
+logPth = os.path.join(app.LOGPTH)
 logger = logging.getLogger(__name__)
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
@@ -72,11 +65,12 @@ logger.setLevel(logging.DEBUG)
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
-class PltConsole():
+class PltConsole(QObject):
 
     def __init__(self):
-
         super(PltConsole, self).__init__()
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
         usql.query_userData()
 
@@ -86,13 +80,17 @@ class PltConsole():
         QCoreApplication.setOrganizationDomain(app.__website__)
 
         mainApp = QApplication(sys.argv)
-        mainApp.setStyleSheet(qdarkgraystyle.load_stylesheet_pyqt5())
+        mainApp.setApplicationDisplayName(app.__slogan__)
+        mainApp.setStyleSheet(qdarkgraystyle.load_stylesheet())
 
         username, token, cookie = usql.query_user_session()
 
         self.SignInUI = SignIn.SignIn()
+
         self.SignUpUI = SignUp.SignUp()
+
         self.MainUI = PipelineTool.PipelineTool()
+
         self.SysTray = SysTrayIcon.SysTrayIcon()
 
         showSignUpSig = self.SignInUI.showSignUpSig
@@ -115,7 +113,6 @@ class PltConsole():
         showMinSig = self.SysTray.showMinimizeSig
         showMaxSig = self.SysTray.showMaximizeSig
         closeMessSig = self.MainUI.closeMessSig
-
         showNorSig.connect(self.MainUI.showNormal)
         showMinSig.connect(self.MainUI.hide)
         showMaxSig.connect(self.MainUI.showMaximized)
@@ -132,6 +129,7 @@ class PltConsole():
 
                 self.MainUI.show()
                 self.SysTray.show()
+                self.SysTray.loginMess()
 
                 if not QSystemTrayIcon.isSystemTrayAvailable():
                     QMessageBox.critical(None, mess.SYSTRAY_UNAVAI)

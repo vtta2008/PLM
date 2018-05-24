@@ -26,7 +26,7 @@ from utilities import utils as func
 
 class FindFiles(QDialog):
 
-    def __init__(self, id='Files Finder', icon=func.fine_icon('FindFiles'), parent=None):
+    def __init__(self, id='Files Finder', icon=func.get_icon('FindFiles'), parent=None):
         super(FindFiles, self).__init__(parent)
 
         self.setWindowTitle(id)
@@ -39,19 +39,25 @@ class FindFiles(QDialog):
         self.buildUI()
 
     def buildUI(self):
+
         browseButton = self.createButton("&Browse...", self.browse)
         findButton = self.createButton("&Find", self.find)
+
         self.fileComboBox = self.createComboBox("*")
         self.textComboBox = self.createComboBox()
         self.directoryComboBox = self.createComboBox(QDir.currentPath())
+
         fileLabel = QLabel("Named:")
         textLabel = QLabel("Containing text:")
         directoryLabel = QLabel("In directory:")
+
         self.filesFoundLabel = QLabel()
         self.createFilesTable()
+
         buttonsLayout = QHBoxLayout()
         buttonsLayout.addStretch()
         buttonsLayout.addWidget(findButton)
+
         self.layout = QGridLayout()
         self.layout.addWidget(fileLabel, 0, 0)
         self.layout.addWidget(self.fileComboBox, 0, 1, 1, 2)
@@ -64,6 +70,7 @@ class FindFiles(QDialog):
         self.layout.addWidget(self.filesFoundLabel, 4, 0)
         self.layout.addLayout(buttonsLayout, 5, 0, 1, 3)
         self.setLayout(self.layout)
+
         self.resize(700, 300)
 
     def browse(self):

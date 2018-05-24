@@ -12,12 +12,12 @@ Description:
 import sys
 import math
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, QSettings
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit,
-                             QSizePolicy, QToolButton, QWidget, QDialog)
+from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QSizePolicy, QToolButton, QWidget, QDialog)
 
 from utilities import utils as func
+from utilities import variables as var
 
 
 class Button(QToolButton):
@@ -25,8 +25,12 @@ class Button(QToolButton):
     def __init__(self, text, parent=None):
         super(Button, self).__init__(parent)
 
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
         self.setText(text)
+        self.applySetting()
+
+    def applySetting(self):
+        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
 
     def sizeHint(self):
         size = super(Button, self).sizeHint()
@@ -37,13 +41,13 @@ class Button(QToolButton):
 
 class Calculator(QDialog):
 
-    NumDigitButtons = 10
-
-    def __init__(self, id='Calculator', icon=func.get_icon('Calculator'), parent=None):
+    def __init__(self, parent=None):
         super(Calculator, self).__init__(parent)
 
-        self.setWindowTitle(id)
-        self.setWindowIcon(QIcon(icon))
+        self.setWindowTitle('Calculator')
+        self.setWindowIcon(QIcon(func.get_icon('Calculator')))
+
+        self.NumDigitButtons = 10
 
         central_widget = QWidget(self)
         self.layout = QGridLayout(self)
@@ -61,13 +65,12 @@ class Calculator(QDialog):
         self.display = QLineEdit('0')
         self.display.setReadOnly(True)
         self.display.setAlignment(Qt.AlignRight)
-        self.display.setMaxLength(15)
-        font = self.display.font()
-        font.setPointSize(font.pointSize() + 8)
-        self.display.setFont(font)
+
+
         self.digitButtons = []
-        for i in range(Calculator.NumDigitButtons):
+        for i in range(self.NumDigitButtons):
             self.digitButtons.append(self.createButton(str(i), self.digitClicked))
+
         self.pointButton = self.createButton(".", self.pointClicked)
         self.changeSignButton = self.createButton(u"\N{PLUS-MINUS SIGN}",  self.changeSignClicked)
         self.backspaceButton = self.createButton("Backspace", self.backspaceClicked)
@@ -85,7 +88,7 @@ class Calculator(QDialog):
         self.powerButton = self.createButton(u"x\N{SUPERSCRIPT TWO}", self.unaryOperatorClicked)
         self.reciprocalButton = self.createButton("1/x", self.unaryOperatorClicked)
         self.equalButton = self.createButton("=", self.equalClicked)
-        self.layout.setSizeConstraint(QLayout.SetFixedSize)
+
         self.layout.addWidget(self.display, 0,0,1,6)
         self.layout.addWidget(self.backspaceButton, 1,0,1,2)
         self.layout.addWidget(self.clearButton, 1,2,1,2)
@@ -95,7 +98,7 @@ class Calculator(QDialog):
         self.layout.addWidget(self.setMemoryButton,4,0)
         self.layout.addWidget(self.addToMemoryButton,5,0)
 
-        for i in range(1, Calculator.NumDigitButtons):
+        for i in range(1, self.NumDigitButtons):
             row = ((9 - i) / 3) + 2
             column = ((i - 1) % 3) + 1
             self.layout.addWidget(self.digitButtons[i], row, column)
@@ -111,7 +114,6 @@ class Calculator(QDialog):
         self.layout.addWidget(self.powerButton,3,5)
         self.layout.addWidget(self.reciprocalButton,4,5)
         self.layout.addWidget(self.equalButton,5,5)
-        self.setLayout(self.layout)
 
     def digitClicked(self):
         clickedButton = self.sender()
@@ -303,6 +305,15 @@ class Calculator(QDialog):
             self.factorSoFar /= rightOperand
 
         return True
+
+    def applySetting(self):
+        self.display.setMaxLength(15)
+
+        font = self.display.font()
+        font.setPointSize(font.pointSize() + 8)
+        self.display.setFont(font)
+
+        self.layout.setSizeConstraint(QLayout.SetFixedSize)
 
 def main():
     app = QApplication(sys.argv)

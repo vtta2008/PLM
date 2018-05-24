@@ -10,20 +10,29 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
+
+# Python
 import sys
 
+# PyQt5
 from PyQt5.QtCore import QFile, QIODevice, Qt, QTextStream, QUrl
-from PyQt5.QtWidgets import (QAction, QApplication, QLineEdit, QMainWindow,
-        QSizePolicy, QStyle, QTextEdit)
+from PyQt5.QtWidgets import (QAction, QApplication, QLineEdit, QMainWindow, QDialog, QSizePolicy, QStyle, QTextEdit,
+                             QHBoxLayout)
+from PyQt5.QtGui import QIcon
 from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
 
+# Plt
 from ui import PltBrowser_rc
+from utilities import utils as func
 
-class PltBrowser(QMainWindow):
+# -------------------------------------------------------------------------------------------------------------
+""" Pipeline Web browser """
 
-    def __init__(self, url):
-        super(PltBrowser, self).__init__()
+class Browser(QMainWindow):
+
+    def __init__(self, url, parent=None):
+        super(Browser, self).__init__(parent)
 
         self.progress = 0
 
@@ -163,16 +172,31 @@ class PltBrowser(QMainWindow):
         code = "$('embed').remove()"
         self.view.page().mainFrame().evaluateJavaScript(code)
 
+# -------------------------------------------------------------------------------------------------------------
+""" layout class """
+
+class PltBrowser(QDialog):
+
+    def __init__(self, url=None, parent=None):
+        super(PltBrowser, self).__init__(parent)
+
+        self.setWindowIcon(QIcon(func.get_icon('PltBrowser')))
+        self.setWindowTitle('Pipeline Webbrowser')
+
+        self.url = url
+
+        self.layout = QHBoxLayout()
+        self.buildUI()
+        self.setLayout(self.layout)
+
+    def buildUI(self):
+        viewer = Browser(self.url)
+        self.layout.addWidget(viewer)
+
 
 def main():
     app = QApplication(sys.argv)
-
-    if len(sys.argv) > 1:
-        url = QUrl(sys.argv[1])
-    else:
-        url = QUrl('http://www.google.com/ncr')
-
-    browser = PltBrowser(url)
+    browser = PltBrowser(QUrl('http://www.google.com.vn'))
     browser.show()
     app.exec_()
 

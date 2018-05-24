@@ -8,20 +8,29 @@ Description:
     Here is where a lot of function need to use multiple times overall
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Check data flowing """
-# print("Import from modules: {file}".format(file=__name__))
-# print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-# -------------------------------------------------------------------------------------------------------------
 """ Import """
 
 # Python
 import os, sys, requests, logging, platform, shutil, subprocess, urllib, winshell, yaml, json, pip, re
-import datetime, time, uuid, win32gui, win32api, pprint, cv2, socket, signal
+import datetime, time, uuid, win32gui, win32api, pprint, cv2
 
 from pyunpack import Archive
 
 # Plt tools
+import appData as app
 from utilities import variables as var
+
+# ----------------------------------------------------------------------------------------------------------- #
+""" Simple log """
+
+logPth = os.path.join(app.LOGPTH)
+handler = logging.FileHandler(logPth)
+formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
+handler.setFormatter(formatter)
+logger = logging.getLogger(__name__)
+logger.addHandler(handler)
+logger.setLevel(logging.DEBUG)
+
 # ----------------------------------------------------------------------------------------------------------- #
 """ Preset """
 
@@ -73,12 +82,6 @@ def preset_load_iconInfo(*args):
         iconInfo = yaml.load(f)
     return iconInfo
 
-def preset_load_pyuiInfor(*args):
-    pyuiConfigPth = os.path.join(app.CONFIGPTH, 'pyui.yml')
-    with open(pyuiConfigPth, 'r') as f:
-        pyuiInfo = yaml.load(f)
-    return pyuiInfo
-
 # -------------------------------------------------------------------------------------------------------------
 """ Metadata """
 
@@ -100,15 +103,7 @@ def handle_path_error(directory=None):
         try:
             raise IsADirectoryError("Path is not exists: {directory}".format(directory=directory))
         except IsADirectoryError as error:
-            logger.debug('Caught error: ' + repr(error))
-
-def mark_tracking_data(data):
-    pprint.pprint(var.LLINE)
-    pprint.pprint(data)
-    pprint.pprint(var.LLINE)
-    pprint.pprint("Modules {name}: Marked".format(name=os.path.basename(__file__)))
-    pprint.pprint(__file__)
-    sys.exit()
+            logger.info('Caught error: ' + repr(error))
 
 # -------------------------------------------------------------------------------------------------------------
 """ Installation """
@@ -282,12 +277,6 @@ def batch_obj_properties_setting(listObj, mode, *args):
         else:
             logger.info('Could not find the specific path: %s' % obj)
 
-def clean_unnecessary_file(var, *args):
-    fileNames = [f for f in get_file_path(os.getenv(app.__envKey__)) if var in f] or []
-    if not fileNames == []:
-        for filePth in fileNames:
-            os.remove(filePth)
-
 def batch_resize_image(imgDir=None, imgResDir=None, size=[100, 100], sub=False, ext='.png', mode=1):
     """
     resize multiple images at once
@@ -380,96 +369,14 @@ def system_call(args, cwd="."):
     subprocess.call(args, cwd=cwd)
     pass
 
-def send_udp(value, *args):
-    soc = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    soc.sendto(value, (app.UDP_IP, app.UDP_PORT))
-
-def openWebsite(url, *args):
-    web = WebBrowser.WebBrowser(url)
+def open_plt_browser(url, *args):
+    from ui import PltBrowser
+    web = PltBrowser.Browser(url)
     web.show()
     web.exec_()
 
-def show_hide_layout(key, *args):
-    if key == "AboutPlt":
-        from ui import AboutPlt
-        layout = AboutPlt.AboutPlt()
-    elif key == "Calculator":
-        from ui import Calculator
-        layout = Calculator.Calculator()
-    elif key == "Calendar":
-        from ui import Calendar
-        layout = Calendar.Calendar()
-    elif key == "EnglishDictionary":
-        from ui import EnglishDictionary
-        layout = EnglishDictionary.EnglishDictionary()
-    elif key == "FindFiles":
-        from ui import FindFiles
-        layout = FindFiles.FindFiles()
-    elif key == "ForgotPassword":
-        from ui import ForgotPassword
-        layout = ForgotPassword.ForgotPassword()
-    elif key == "ImageViewer":
-        from ui import ImageViewer
-        layout = ImageViewer.ImageViewer()
-    elif key == "InfoTemplate":
-        from ui import AboutPlt
-        layout = AboutPlt.AboutPlt()
-    elif key == "NewProject":
-        from ui import NewProject
-        layout = NewProject.NewProject()
-    elif key == "NoteReminder":
-        from ui import NoteReminder
-        layout = NoteReminder.NoteReminder()
-    elif key == "Preference":
-        from ui import Preference
-        layout = Preference.Preference()
-    elif key == "Screenshot":
-        from ui import Screenshot
-        layout = Screenshot.Screenshot()
-    elif key == "SignIn":
-        from ui import SignIn
-        layout = SignIn.SignIn()
-    elif key == "SignUp":
-        from ui import SignUp
-        layout = SignUp.SignUp()
-    elif key == "TextEditor":
-        from ui import TextEditor
-        layout = TextEditor.TextEditor()
-    elif key == "UserSetting":
-        from ui import UserSetting
-        layout = UserSetting.UserSetting()
-    elif key == "WebBrowser":
-        from ui import WebBrowser
-        layout = WebBrowser.WebBrowser()
-
-    print(4)
-    # layout.show()
-    print(5)
-    layout.exec_()
-    print(6)
-
 def reconfig_data(*args):
     pass
-
-def operate_function(funcName):
-    if funcName == "clean_unnecessary_file":
-        return clean_unnecessary_file(".pyc")
-    elif funcName == "reconfig_data":
-        return reconfig_data()
-
-def openProcess(data, *args):
-    if "Load python layout: " in data:
-        return show_hide_layout(data.split("Load python layout: ")[-1])
-    elif "Send UDP: " in data:
-        return send_udp(data.split("Send UDP: ")[-1])
-    elif data == "Exit programe":
-        return sys.exit(1)
-    elif "Open website: " in data:
-        return openWebsite(data.split("Open website: ")[-1])
-    elif "Use function: " in data:
-        return operate_function(data.split("Use function: ")[-1])
-    else:
-        return subprocess.Popen(data)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Collecting info user """
@@ -605,7 +512,7 @@ def screenshot(*args):
     screen = Screenshot.Screenshot()
     screen.exec_()
 
-def open_app(pth, *args):
+def run(pth, *args):
     subprocess.Popen(pth)
 
 # ----------------------------------------------------------------------------------------------------------- #
@@ -702,17 +609,32 @@ def get_all_even(numLst):
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Remove data """
+
 def del_key(key, dict = {}):
-    if not key in dict:
-        logger.debug("key not exists: {key}".format(key=key))
-        pass
-    else:
-        try:
-            del dict[key]
-            logger.debug("key deleted: {key}".format(key=key))
-        except KeyError:
-            dict.pop(key, None)
-            logger.debug("key poped: {key}".format(key=key))
+    try:
+        del dict[key]
+        # logger.info("key deleted: {key}".format(key=key))
+    except KeyError:
+        dict.pop(key, None)
+        # logger.info("key poped: {key}".format(key=key))
+
+# ----------------------------------------------------------------------------------------------------------- #
+""" Remove data """
+
+def clean_pyc_file(var, *args):
+    fileNames = [f for f in get_file_path(os.getenv(app.__envKey__)) if var in f] or []
+    if not fileNames == []:
+        for filePth in fileNames:
+            os.remove(filePth)
+
+def config_info(*args):
+    Collect_info()
+
+def shutdown(*args):
+    os.system("shutdown /p")
+
+def open_cmd(*args):
+    os.system("start /wait cmd")
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Collecting all info. """
@@ -731,7 +653,6 @@ class Collect_info():
 
         self.collect_env_variables()
         self.collect_icon_path()
-        self.collect_pyui_path()
         self.collect_all_app()
         self.collect_main_app()
 
@@ -742,14 +663,10 @@ class Collect_info():
         self.create_config_file('envKeys', envKeys)
 
     def collect_icon_path(self):
-        """
-        Get all the info of plt.maya.icon
-        :param names: the dictionsary of names stored from default variable
-        :return: plt.maya.icon.info
-        """
         # Create dictionary for icon info
         self.iconInfo = {}
         self.iconInfo['Logo'] = os.path.join('imgs', 'Logo.icon.png')
+        self.iconInfo['DAMG'] = os.path.join('imgs', 'DAMGteam.icon.png')
         # Custom some info to debug
         self.iconInfo['Sep'] = 'separato.png'
         self.iconInfo['File'] = 'file.png'
@@ -790,14 +707,6 @@ class Collect_info():
 
         self.create_config_file("app", self.appInfo)
 
-    def collect_pyui_path(self):
-        self.pyToolInfor = {}
-        for key in app.CONFIG_MAIN:
-            pyPth = os.path.join(os.getenv(app.__envKey__), "ui", key + ".py")
-            if os.path.exists(pyPth):
-                self.pyToolInfor[key] = "Load python layout: {key}".format(key=key)
-        self.create_config_file('pyui', self.pyToolInfor)
-
     def collect_main_app(self):
 
         self.mainInfo = {}
@@ -828,67 +737,66 @@ class Collect_info():
             del_key(key, self.appInfo)
 
         # Custom functions
-        self.mainInfo['Logo'] = [app.__appname__, self.iconInfo['Logo'], ' ']
-        self.mainInfo['Separator'] = ['separator', self.iconInfo['Sep'], ' ']
-        self.mainInfo['File'] = ['File', self.iconInfo['File'], ' ']
 
-        self.mainInfo['Exit'] = ['Exit Pipeline Tool', self.iconInfo['Exit'], '']
+        self.mainInfo['Exit'] = ['Exit Pipeline Tool', self.iconInfo['Exit'], 'Func: Exit']
+        self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'Func: CleanPyc']
+        self.mainInfo['ClearData'] = ['Clean Config data', self.iconInfo['CleanConfig'], 'Func: CleanConfigData']
+        self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['Reconfig'], 'Func: Config']
+        self.mainInfo['Shutdown'] = ['Shut down your pc', self.iconInfo['Shutdown'], 'Func: Shutdown']
+        self.mainInfo['Command Prompt'] = ['Open command prompt', self.iconInfo['Command Prompt'], 'Func: open_cmd']
 
-        self.mainInfo['About'] = ['About Plt', self.iconInfo['AboutPlt'], '']
-        self.mainInfo['Credit'] = ['Credit', self.iconInfo['Credit'], '']
-        self.mainInfo['Preferences'] = ['Preferences', self.iconInfo['Preferences'], '']
+        self.mainInfo['Plt wiki'] = ['Plt wiki', self.iconInfo['Plt wiki'], "Url: {key}".format(key=app.__pltWiki__)]
 
-        self.mainInfo['Help'] = ['PLt wiki', self.iconInfo['Help'], '']
-
-        self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], '']
-        self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['Reconfig'], '']
-
-        self.mainInfo['Shutdown'] = ['Shut down your pc', self.iconInfo['Shutdown'], '']
-        self.mainInfo['FM'] = ['FM radio', self.iconInfo['FM'], '']
-        self.mainInfo['ViewSplit'] = ['View split left right', self.iconInfo['ViewSplit'], '']
-        self.mainInfo['Mute'] = ['Mute your volume', self.iconInfo['Mute'], '']
-        self.mainInfo['VolumeUp'] = ['Turn your volume up', self.iconInfo['VolumeUp'], '']
-        self.mainInfo['VolumeDown'] = ['Turn your volume down', self.iconInfo['VolumeDown'], '']
-        self.mainInfo['ChannelUp'] = ['Media skip forward', self.iconInfo['SkipForward'], '']
-        self.mainInfo['ChannelDown'] = ['Media skip backward', self.iconInfo['SkipBackward'], '']
-
+        self.mainInfo['PltBrowser'] = ['PltBrowser', self.iconInfo['PltBrowser'], "UI: PltBrowser"]
 
         # Fixing the path to open desire app.
+
+        officeBase = os.path.join(os.getenv("COMMONPROGRAMFILES").split("Common Files")[0], 'Microsoft Office')
+        officeVersion = [d for d in os.listdir(officeBase) if 'Office' in d][0]
+        officePth = os.path.join(officeBase, officeVersion)
+        WordPth = os.path.join(officePth, 'WINWORD.EXE')
+        ExcelPth = os.path.join(officePth, 'EXCEL.EXE')
+        PptPth = os.path.join(officePth, 'POWERPNT.EXE')
+
+        if os.path.exists(WordPth):
+            self.appInfo['McWord'] = WordPth
+
+        if os.path.exists(ExcelPth):
+            self.appInfo['McExcel'] = ExcelPth
+
+        if os.path.exists(PptPth):
+            self.appInfo['McPowerPoint'] = PptPth
+
         for key in self.appInfo:
             if 'NukeX' in key:
-                logger.debug("key found: {key}, need to fix value".format(key=key))
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --nukex"
-                logger.debug("Fixed: {key}: {val}".format(key=key, val=self.appInfo[key]))
             elif 'Hiero' in key:
-                logger.debug("key found: {key}, need to fix value".format(key=key))
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --hiero"
-                logger.debug("Fixed: {key}: {val}".format(key=key, val=self.appInfo[key]))
             elif 'UVLayout' in key:
-                logger.debug("key found: {key}, need to fix value".format(key=key))
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " -launch"
-                logger.debug("Fixed: {key}: {val}".format(key=key, val=self.appInfo[key]))
-
-
 
         # Extra app come along with plt but not be installed in local.
         dbBrowserPth = os.path.join(os.getenv(app.__envKey__), 'external_app', 'sqlbrowser', 'SQLiteDatabaseBrowserPortable.exe')
         advanceRenamerPth = os.path.join(os.getenv(app.__envKey__), 'external_app', 'batchRenamer', 'ARen.exe')
         qtDesigner = os.path.join(os.getenv('PROGRAMDATA'), 'Anaconda3', 'Library', 'bin', 'designer.exe')
         davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
-        commandPromptPth = os.getenv('COMSPEC')
 
-        eVal = [dbBrowserPth, advanceRenamerPth, qtDesigner, davinciPth, commandPromptPth]
-        eKeys = ['Database Browser', 'Advance Renamer', 'QtDesigner', "Davinci Resolve", "Command Prompt"]
+        eVal = [dbBrowserPth, advanceRenamerPth, qtDesigner, davinciPth]
+        eKeys = ['Database Browser', 'Advance Renamer', 'QtDesigner']
 
         for key in eKeys:
             if os.path.exists(eVal[eKeys.index(key)]):
-                self.mainInfo[key] = [key, get_icon(key), eVal[eKeys.index(key)]]
+                self.mainInfo[key] = [key, get_icon(key), "App: {key}".format(key=eVal[eKeys.index(key)])]
 
         for key in self.appInfo:
-            self.mainInfo[key] = [key, get_icon(key), self.appInfo[key]]
+            if key in self.iconInfo:
+                self.mainInfo[key] = [key, get_icon(key), "App: {key}".format(key=self.appInfo[key])]
 
-        for key in self.pyToolInfor:
-            self.mainInfo[key] = [key, get_icon(key), self.pyToolInfor[key]]
+        for key in app.CONFIG_PQUI:
+            self.mainInfo[key] = [key, get_icon(key), "UI: {key}".format(key=key)]
+
+        for key in app.CONFIG_TRAY1:
+            self.mainInfo[key] = [key, get_icon(key), "Func: {key}".format(key=key)]
 
         self.create_config_file('main', self.mainInfo)
 

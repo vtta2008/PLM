@@ -11,20 +11,23 @@ Description: This script is the place for every ui elements
 """ Import """
 
 # Python
-import sys, os
+import sys, os, webbrowser
 import json
 import subprocess
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSize, pyqtSignal, QSettings
-from PyQt5.QtGui import QIntValidator, QFont, QIcon
-from PyQt5.QtWidgets import (QFrame, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QWidget, QSizePolicy, QSlider,
-                             QLineEdit, QPushButton, QAction, QToolButton)
+from PyQt5.QtCore import Qt, QSize, pyqtSignal, QSettings, QObject
+from PyQt5.QtGui import QFont, QIcon, QPixmap
+from PyQt5.QtWidgets import (QFrame, QLabel, QGridLayout, QPushButton, QAction, QApplication, QGroupBox, QToolBar,
+                             QGraphicsView, QHBoxLayout, QGraphicsScene)
 
 # Plt
 import appData as app
+from utilities import variables as var
+from utilities import sql_local as usql
 from utilities import utils as func
+from utilities import message as mess
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -67,55 +70,413 @@ with open(pth, 'r') as f:
     APPINFO = json.load(f)
 
 # -------------------------------------------------------------------------------------------------------------
+""" UI resource with signal """
 
-class Button(QToolButton):
+class Run(QObject):
 
-    def __init__(self, txt=TXT, parent=None):
-        super(Button, self).__init__(parent)
+    def __init__(self, data=None, parent=None):
+        super(Run, self).__init__(parent)
 
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-        self.setText(txt)
+        self.data = data
 
-    def sizeHint(self):
-        size = super(Button, self).sizeHint()
-        size.setHeight(size.height() + 20)
-        size.setWidth(max(size.width()), size.height())
-        return size
+        if "App: " in self.data:
+            self.openApp(self.data.split("App: ")[1])
+        elif "Url: " in self.data:
+            self.openUrl(self.data.split("Url: ")[1])
+        elif "Func: " in self.data:
+            self.exeFunc(self.data.split("Func: ")[1])
+        elif "UI: " in self.data:
+            pass
 
-def separador(shape=QFrame.HLine, lineWidth=WLINE):
-    separador = QFrame()
-    separador.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Expanding)
-    separador.setLineWidth(lineWidth)
-    separador.setFrameShape(shape)
-    separador.setFrameShape(frameStyle)
+    def openApp(self, pth):
+        subprocess.Popen(pth)
 
-    return separador
+    def openUrl(self, url):
+        webbrowser.open(url)
+
+    def exeFunc(self, funcName):
+        if funcName == "Exit":
+            usql.insert_timeLog("Log out")
+            QApplication.instance().quit()
+        elif funcName == "open_cmd":
+            func.open_cmd()
+
+# -------------------------------------------------------------------------------------------------------------
+""" UI resource with signal """
+
+class IconBtnProcess(QPushButton):
+
+    consoleSig = pyqtSignal(str)
+
+    def __init__(self, key, parent=None):
+        super(IconBtnProcess, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+
+        self.key = key
+
+        self.buildUI()
+
+    def buildUI(self):
+        self.setToolTip(APPINFO[self.key][0])
+        self.setIcon(QIcon(APPINFO[self.key][1]))
+        self.setFixedSize(ICON_SIZE, ICON_SIZE)
+        self.setIconSize(ICON_SET_SIZE)
+        self.clicked.connect(partial(self.on_icon_btn_clicked, APPINFO[self.key][2]))
+
+        self.applySetting()
+
+    def on_icon_btn_clicked(self, data):
+        Run(data)
+
+    def applySetting(self):
+        pass
+
+class IconBtnLoadLayout(QPushButton):
+
+    consoleSig = pyqtSignal(bool)
+
+    def __init__(self, key=None, parent=None):
+        super(IconBtnLoadLayout, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.key = key
+
+        self.buildUI()
+
+    def buildUI(self):
+        self.setToolTip(APPINFO[self.key][0])
+        self.setIcon(QIcon(APPINFO[self.key][1]))
+        self.setFixedSize(ICON_SIZE, ICON_SIZE)
+        self.setIconSize(ICON_SET_SIZE)
+        self.clicked.connect(self.on_icon_btn_clicked)
+
+        self.applySetting()
+
+    def on_icon_btn_clicked(self):
+        self.settings.setValue(self.key, True)
+        self.consoleSig.emit(True)
+
+    def applySetting(self):
+        pass
+
+class ActionProcess(QAction):
+
+    consoleSig = pyqtSignal(str)
+
+    def __init__(self, key, parent=None):
+        super(ActionProcess, self).__init__(parent)
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.key = key
+
+        self.buildUI()
+
+    def buildUI(self):
+        self.setIcon(QIcon(APPINFO[self.key][1]))
+        self.setText(self.key)
+        self.setStatusTip(APPINFO[self.key][0])
+        self.triggered.connect(partial(self.on_action_triggered, APPINFO[self.key][2]))
+
+        self.applySetting()
+
+    def on_action_triggered(self, data):
+        Run(data)
+
+    def applySetting(self):
+        pass
+
+class ActionLoadLayout(QAction):
+
+    consoleSig = pyqtSignal(str)
+
+    def __init__(self, key, parent=None):
+        super(ActionLoadLayout, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.key = key
+
+        self.buildUI()
+
+    def buildUI(self, key):
+        self.setIcon(QIcon(APPINFO[self.key][1]))
+        self.setText(key)
+        self.setStatusTip(APPINFO[self.key][0])
+        self.triggered.connect(self.on_action_triggered)
+
+        self.applySetting()
+
+    def on_action_triggered(self):
+        self.settings.setValue(self.key, True)
+        self.consoleSig.emit(True)
+
+    def applySetting(self):
+        pass
+
+class BatchTBProcess(QToolBar):
+
+    def __init__(self, name="Tool bar name", apps=[], parent=None):
+        super(BatchTBProcess, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.name = name
+        self.layout = parent
+        self.apps = apps
+
+        self.buildUI()
+
+    def buildUI(self):
+        self.toolBar = self.layout.addToolBar(self.name)
+
+        for key in self.apps:
+            if key in APPINFO:
+                self.toolBar.addAction(ActionProcess(key, self.layout))
+
+        self.applySetting()
+
+    def applySetting(self):
+        pass
+
+class AutoArrangeIconGrid(QGridLayout):
+
+    def __init__(self, btns=[], parent=None):
+        super(AutoArrangeIconGrid, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+
+        self.btns = btns
+
+        self.buildUI()
+
+    def buildUI(self):
+        if not len(self.btns) == 0:
+            for i in range(len(self.btns)):
+                if str(type(self.btns[i])) in ["<class 'ui.uirc.IconBtnProcess'>", "<class 'ui.uirc.IconBtnLoadLayout'>"]:
+                    if i == 0:
+                        self.addWidget(self.btns[i], 0, 0, 1, 1)
+                    elif i == 1:
+                        self.addWidget(self.btns[i], 0, 1, 1, 1)
+                    elif i == 2:
+                        self.addWidget(self.btns[i], 0, 2, 1, 1)
+                    elif i == 3:
+                        self.addWidget(self.btns[i], 1, 0, 1, 1)
+                    elif i == 4:
+                        self.addWidget(self.btns[i], 1, 1, 1, 1)
+                    elif i == 5:
+                        self.addWidget(self.btns[i], 1, 2, 1, 1)
+                    elif i == 6:
+                        self.addWidget(self.btns[i], 2, 0, 1, 1)
+                    elif i == 7:
+                        self.addWidget(self.btns[i], 2, 1, 1, 1)
+                    elif i == 8:
+                        self.addWidget(self.btns[i], 2, 2, 1, 1)
+                else:
+                    raise TypeError("Type Object is not corrected, expected icon button class")
+                i += 1
+
+        self.applySetting()
+
+    def applySetting(self):
+        pass
+
+class AutoArrangeBtnGrid(QGridLayout):
+
+    def __init__(self, btns=[], parent=None):
+        super(AutoArrangeBtnGrid, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.btns = btns
+        self.buildUI()
+
+    def buildUI(self):
+        if not len(self.btns) == 0:
+            for i in range(len(self.btns)):
+                if str(type(self.btns[i])) in ["<class 'PyQt5.QtWidgets.QPushButton'>"]:
+                    if i == 0:
+                        self.addWidget(self.btns[i], 0, 0, 1, 2)
+                    elif i == 1:
+                        self.addWidget(self.btns[i], 1, 0, 1, 2)
+                    elif i == 2:
+                        self.addWidget(self.btns[i], 2, 0, 1, 2)
+                    elif i == 3:
+                        self.addWidget(self.btns[i], 3, 0, 1, 2)
+                    elif i == 4:
+                        self.addWidget(self.btns[i], 4, 0, 1, 2)
+                    elif i == 5:
+                        self.addWidget(self.btns[i], 5, 0, 1, 2)
+                    elif i == 6:
+                        self.addWidget(self.btns[i], 6, 0, 1, 2)
+                    elif i == 7:
+                        self.addWidget(self.btns[i], 7, 0, 1, 2)
+                    elif i == 8:
+                        self.addWidget(self.btns[i], 8, 0, 1, 2)
+                else:
+                    raise TypeError("Type Object is not corrected, expected icon button class")
+            i += 1
+
+        self.applySetting()
+
+    def applySetting(self):
+        pass
+
+class AutoArrangeImageView(QGridLayout):
+
+    def __init__(self, imageView, parent=None):
+        super(AutoArrangeImageView, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+
+        self.img = imageView
+
+        self.buildUI()
 
 
-def iconBtn(key):
-    iconBtn = QPushButton()
-    iconBtn.setToolTip(APPINFO[key][0])
-    iconBtn.setIcon(QIcon(APPINFO[key][1]))
-    iconBtn.setFixedSize(ICON_SIZE, ICON_SIZE)
-    iconBtn.setIconSize(ICON_SET_SIZE)
-    iconBtn.clicked.connect(partial(func.openProcess, APPINFO[key][2]))
-    return iconBtn
+    def buildUI(self):
 
-def action(key, parent=None):
-    action = QAction(QIcon(APPINFO[key][1]), APPINFO[key][0], parent)
-    action.setStatusTip(APPINFO[key][0])
-    action.triggered.connect(partial(func.openProcess, APPINFO[key][2]))
-    return action
+        if self.img:
+            if str(type(self.img)) in ["<class 'PyQt5.QtWidgets.QGraphicsView'>", ]:
+                self.addWidget(self.img, 0, 0, 1, 1)
 
-def Clabel(txt=TXT, wmin=WMIN, alg = None, font=None):
-    if alg == None:
-        alg = Qt.AlignCenter
+        self.applySetting()
 
-    if font == None:
-        font = QFont("Arial, 10")
+    def applySetting(self):
+        pass
 
-    label = QLabel(txt)
-    label.setMinimumWidth(wmin)
-    label.setAlignment(alg)
-    label.setFont(font)
-    return label
+class AutoSectionBtnGrp(QGroupBox):
+
+    def __init__(self, title="Section Title", btns=[], mode="IconGrid", parent=None):
+        super(AutoSectionBtnGrp, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.setTitle(title)
+        self.btns = btns
+        self.mode = mode
+
+        self.buildUI()
+
+    def buildUI(self):
+        if self.mode == "IconGrid":
+            self.setLayout(AutoArrangeIconGrid(self.btns))
+        elif self.mode == "BtnGrid":
+            self.setLayout(AutoArrangeBtnGrid(self.btns))
+        elif self.mode == "ImageView":
+            self.setLayout(AutoArrangeImageView(self.btns[0]))
+
+        self.applySetting()
+
+    def applySetting(self):
+        pass
+
+class AutoSectionQMainGrp(QGroupBox):
+
+    def __init__(self, title="Section Title", subLayout=None, parent=None):
+        super(AutoSectionQMainGrp, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.setTitle(title)
+        self.subLayout = subLayout
+
+        self.layout = QHBoxLayout()
+        self.buildUI()
+        self.setLayout(self.layout)
+
+    def buildUI(self):
+
+        self.layout.addWidget(self.subLayout)
+
+        self.applySetting()
+
+    def applySetting(self):
+        pass
+
+class AutoSectionQGridGrp(QGroupBox):
+
+    def __init__(self, title="Section Title", subLayout=None, parent=None):
+        super(AutoSectionQGridGrp, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.setTitle(title)
+
+        self.layout = subLayout
+        self.setLayout(self.layout)
+
+        self.applySetting()
+
+    def applySetting(self):
+        pass
+
+class AutoSectionLayoutGrp(QGroupBox):
+
+    def __init__(self, title="Section Title", subLayout=None, parent=None):
+        super(AutoSectionLayoutGrp, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.setTitle(title)
+
+        if subLayout == None or len(subLayout) == 0:
+            subLayout = Label(mess.WAIT_LAYOUT_COMPLETE)
+
+        self.subLayout = subLayout
+
+        self.layout = QGridLayout()
+        self.buildUI()
+        self.setLayout(self.layout)
+
+    def buildUI(self):
+        self.layout.addWidget(self.subLayout, 0, 0, 1, 1)
+
+        self.applySetting()
+
+    def applySetting(self):
+        pass
+# -------------------------------------------------------------------------------------------------------------
+""" UI resource without signal """
+
+class Label(QLabel):
+
+    def __init__(self, txt=TXT, wmin=WMIN, alg = None, font=None, parent=None):
+        super(Label, self).__init__(parent)
+
+        if alg == None:
+            alg = Qt.AlignCenter
+
+        if font == None:
+            font = QFont("Arial, 10")
+
+        self.alg = alg
+        self.fnt = font
+        self.txt = txt
+        self.wmin = wmin
+
+        self.buildText()
+
+    def buildText(self):
+        self.setText(self.txt)
+        self.applySetting()
+
+    def applySetting(self):
+        self.setMinimumWidth(self.wmin)
+        self.setAlignment(self.alg)
+        self.setFont(self.fnt)
+        self.setScaledContents(True)
+
+class ImageUI(QGraphicsView):
+
+    def __init__(self, icon="", size=[100, 100], parent=None):
+        super(ImageUI, self).__init__(parent)
+
+        self.pixmap = QPixmap(func.get_icon(icon))
+        self.size = size
+        self.buildUI()
+        self.setScene(self.scene)
+
+    def buildUI(self):
+        self.scene = QGraphicsScene()
+        self.scene.addPixmap(self.pixmap)
+        self.applySetting()
+
+    def applySetting(self):
+        self.aspectRatioMode = app.keepARM
+        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.setFixedSize(self.size[0], self.size[1])
+
+# -------------------------------------------------------------------------------------------------------------

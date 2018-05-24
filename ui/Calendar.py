@@ -21,11 +21,12 @@ from utilities import utils as func
 
 
 class Calendar(QDialog):
-    def __init__(self, id='Calendar', icon=func.get_icon('Calendar'), parent=None):
+
+    def __init__(self, parent=None):
         super(Calendar, self).__init__(parent)
 
-        self.setWindowTitle(id)
-        self.setWindowIcon(QIcon(icon))
+        self.setWindowTitle('Calendar')
+        self.setWindowIcon(QIcon(func.get_icon('Calendar')))
 
         central_widget = QWidget(self)
         self.layout = QGridLayout(self)
@@ -34,18 +35,18 @@ class Calendar(QDialog):
         self.buildUI()
 
     def buildUI(self):
+
         self.createPreviewGroupBox()
         self.createGeneralOptionsGroupBox()
         self.createDatesGroupBox()
         self.createTextFormatsGroupBox()
+
         self.layout.addWidget(self.previewGroupBox, 0, 0)
         self.layout.addWidget(self.generalOptionsGroupBox, 0, 1)
         self.layout.addWidget(self.datesGroupBox, 1, 0)
         self.layout.addWidget(self.textFormatsGroupBox, 1, 1)
-        self.layout.setSizeConstraint(QLayout.SetFixedSize)
-        self.setLayout(self.layout)
-        self.previewLayout.setRowMinimumHeight(0, self.calendar.sizeHint().height())
-        self.previewLayout.setColumnMinimumWidth(0, self.calendar.sizeHint().width())
+
+        self.applySetting()
 
     def localeChanged(self, index):
         self.calendar.setLocale(self.localeCombo.itemData(index))
@@ -349,8 +350,12 @@ class Calendar(QDialog):
         comboBox.addItem("Blue", Qt.blue)
         comboBox.addItem("Black", Qt.black)
         comboBox.addItem("Magenta", Qt.magenta)
-
         return comboBox
+
+    def applySetting(self):
+        self.layout.setSizeConstraint(QLayout.SetFixedSize)
+        self.previewLayout.setRowMinimumHeight(0, self.calendar.sizeHint().height())
+        self.previewLayout.setColumnMinimumWidth(0, self.calendar.sizeHint().width())
 
 def main():
     app = QApplication(sys.argv)

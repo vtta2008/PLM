@@ -13,6 +13,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
+# Python
 import os
 import sys
 import requests
@@ -24,6 +25,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QDialog, QGridLayout, QLineEdit, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox, )
 
+# Plt
 import appData as app
 
 from utilities import utils as func
@@ -35,13 +37,17 @@ from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
-logPth = os.path.join(os.getenv(app.__envKey__), 'appData', 'logs', 'func.log')
-logger = logging.getLogger(__name__)
+
+logPth = os.path.join(app.LOGPTH)
 handler = logging.FileHandler(logPth)
 formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
 handler.setFormatter(formatter)
+logger = logging.getLogger(__name__)
 logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Sign In Layout """
 
 class SignIn(QDialog):
 
@@ -82,8 +88,8 @@ class SignIn(QDialog):
         login_btn.clicked.connect(self.on_sign_in_btn_clicked)
         cancel_btn.clicked.connect(QApplication.quit)
 
-        login_grid.addWidget(rc.Clabel(txt='Username'), 0, 0, 1, 2)
-        login_grid.addWidget(rc.Clabel(txt='Password'), 1, 0, 1, 2)
+        login_grid.addWidget(rc.Label(txt='Username'), 0, 0, 1, 2)
+        login_grid.addWidget(rc.Label(txt='Password'), 1, 0, 1, 2)
         login_grid.addWidget(self.usernameField, 0, 2, 1, 4)
         login_grid.addWidget(self.passwordField, 1, 2, 1, 4)
         login_grid.addWidget(self.rememberCheckBox, 2, 1, 1, 2)
@@ -98,7 +104,7 @@ class SignIn(QDialog):
         sign_up_btn = QPushButton('Sign up')
         sign_up_btn.clicked.connect(self.on_sign_up_btn_clicked)
 
-        signup_grid.addWidget(rc.Clabel(txt=mess.SIGN_UP), 0, 0, 1, 6)
+        signup_grid.addWidget(rc.Label(txt=mess.SIGN_UP), 0, 0, 1, 6)
         signup_grid.addWidget(sign_up_btn, 1, 0, 1, 6)
 
         self.layout.addWidget(login_groupBox, 0, 0, 1, 1)
