@@ -105,6 +105,8 @@ CONFIG_TDS = ['Autodesk Maya 2017', 'ZBrush 4R8', 'Mari 4.0v1', 'Houdini FX', 'S
 
 CONFIG_DEV = ['JetBrains PyCharm 2017.3.3', 'Sublime Text 3', 'QtDesigner', 'Git Bash', 'Command Prompt']
 
+CONFIG_EXTRA = ['Autodesk 3Ds Max 2017', 'Autodesk 3Ds Max 2018', 'Autodesk Mudbox 2017', 'Autodesk Mudbox 2018']
+
 CONFIG_OFFICE = ['McWord', 'McExcel', 'McPowerPoint', 'Wordpad']
 
 CONFIG_PQUI = ['AboutPlt', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary', 'FindFiles', 'ForgotPassword', 'ImageViewer',

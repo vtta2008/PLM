@@ -16,7 +16,7 @@ import os, sys, logging
 
 # PyQt5
 from PyQt5.QtCore import QUrl, QSize, QSettings
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLineEdit, QPushButton
 
 # Plt
 import appData as app
@@ -89,33 +89,23 @@ class TopTab1(QWidget):
 
         sec3Grp = rc.AutoSectionBtnGrp("Tools", pyuiBtns, "IconGrid")
 
-        sec4Grp = QGroupBox("CMD")
-        sec4Grid = QGridLayout()
-        sec4Grp.setLayout(sec4Grid)
+        extraBtns = [rc.IconBtnProcess(key) for key in app.CONFIG_EXTRA if key in self.appInfo] or []
+        sec4Grp = rc.AutoSectionBtnGrp("Extra", extraBtns, "IconGrid")
 
-        sec5Grp = QGroupBox("CGI")
+        self.findEdit = QLineEdit()
+        findBtn = QPushButton("Find Tool")
+
+        sec5Grp = QGroupBox("Find Tool")
         sec5Grid = QGridLayout()
+        sec5Grid.addWidget(self.findEdit, 0, 0, 1, 7)
+        sec5Grid.addWidget(findBtn, 0, 7, 1, 2)
         sec5Grp.setLayout(sec5Grid)
-
-        for key in self.appInfo:
-            if key == 'Mudbox 2018':
-                mudbox18Btn = rc.IconBtnProcess(key)
-                sec4Grid.addWidget(mudbox18Btn, 2, 0, 1, 1)
-            if key == 'Mudbox 2017':
-                mudbox17Btn = rc.IconBtnProcess(key)
-                sec4Grid.addWidget(mudbox17Btn, 2, 1, 1, 1)
-            if key == '3ds Max 2018':
-                max18Btn = rc.IconBtnProcess(key)
-                sec4Grid.addWidget(max18Btn, 2, 2, 1, 1)
-            if key == '3ds Max 2017':
-                max17Btn = rc.IconBtnProcess(key)
-                sec4Grid.addWidget(max17Btn, 3, 0, 1, 1)
 
         self.layout.addWidget(sec1Grp, 0, 0, 2, 3)
         self.layout.addWidget(sec2Grp, 2, 0, 2, 3)
         self.layout.addWidget(sec3Grp, 0, 3, 4, 3)
-        self.layout.addWidget(sec4Grp, 0, 6, 2, 2)
-        self.layout.addWidget(sec5Grp, 2, 6, 2, 2)
+        self.layout.addWidget(sec4Grp, 0, 6, 4, 3)
+        self.layout.addWidget(sec5Grp, 4, 0, 1, 9)
 
         self.applySetting()
 

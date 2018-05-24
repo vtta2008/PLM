@@ -96,15 +96,12 @@ class QuickSetting(QGridLayout):
         self.addWidget(self.quickSettingCB, 2, 4, 1, 2)
 
     def toolBarTDStateChanged(self):
-        self.settings.setValue("showTDToolbar", self.toolBarTDCB.checkState())
         self.checkboxTDSig.emit(self.toolBarTDCB.isChecked())
 
     def toolBarCompStateChanged(self):
-        self.settings.setValue("showCompToolbar", self.toolBarCompCB.checkState())
         self.checkboxCompSig.emit(self.toolBarCompCB.isChecked())
 
     def toolBarArtStateChanged(self):
-        self.settings.setValue("showArtToolbar", self.toolBarArtCB.checkState())
         self.checkboxArtSig.emit(self.toolBarArtCB.isChecked())
 
     def toolBarStateChanged(self):
@@ -112,23 +109,18 @@ class QuickSetting(QGridLayout):
         self.checkboxMasterSig.emit(self.toolBarCB.isChecked())
 
     def menuBarStateChanged(self):
-        self.settings.setValue("showSubMenuBar", self.subMenuBarCB.checkState())
         self.checkboxMenuBarSig.emit(self.subMenuBarCB.isChecked())
 
     def statusBarStateChanged(self):
-        self.settings.setValue("showStatusBar", self.statusBarCB.checkState())
         self.showStatusSig.emit(self.statusBarCB.isChecked())
 
     def serverStatusStateChanged(self):
-        self.settings.setValue("showServerStatus", self.serverStatusCB.checkState())
         self.showServerStatusSig.emit(self.serverStatusCB.isChecked())
 
     def notificationStateChanged(self):
-        self.settings.setValue("showNotification", self.notificationCB.checkState())
         self.showNotificationSig.emit(self.notificationCB.isChecked())
 
     def quickSettingStateChanged(self):
-        self.settings.setValue("showQuickSetting", self.quickSettingCB.checkState())
         self.quickSettingSig.emit(self.quickSettingCB.isChecked())
 
 def main():

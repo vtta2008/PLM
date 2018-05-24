@@ -14,27 +14,23 @@ Description:
 """ Import """
 
 # Python
-import os, sys, logging, webbrowser
-import sqlite3 as lite
-from functools import partial
+import os, sys, logging
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSize, QSettings, pyqtSignal, QByteArray, QRectF
-from PyQt5.QtGui import QIcon, QPixmap, QImage
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QWidget, QVBoxLayout, QHBoxLayout, QLineEdit,
-                             QGridLayout, QLabel, QPushButton, QGroupBox, QTabWidget, QAction, QMenu,
-                             QSizePolicy, QDockWidget, QGraphicsView, QGraphicsScene)
+from PyQt5.QtCore import Qt, QSettings, pyqtSignal, QByteArray
+from PyQt5.QtGui import QIcon, QPixmap
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QSizePolicy, QDockWidget,
+                             QGraphicsView, QGraphicsScene)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Plt tools """
 import appData as app
-from ui import uirc as rc
 
 from utilities import utils as func
 from utilities import sql_local as usql
 from utilities import variables as var
 
-from ui import (SubMenuBar, ToolBar, QuickSetting, TopTabWidget, )
+from ui import (SubMenuBar, ToolBar, TopTab, BotTab, ServerStatus)
 from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
@@ -53,9 +49,11 @@ logger.setLevel(logging.DEBUG)
 
 class PipelineTool(QMainWindow):
 
+    quickSettingSig = pyqtSignal(bool)
     showMainSig = pyqtSignal(bool)
-    showLoginSig1 = pyqtSignal(bool)
+    showLoginSig = pyqtSignal(bool)
     closeMessSig = pyqtSignal(bool)
+    serverSig = pyqtSignal(bool)
 
     def __init__(self, parent=None):
 
@@ -84,92 +82,57 @@ class PipelineTool(QMainWindow):
 
     def buildUI(self):
         # Sub menu
-        menuLayout = SubMenuBar.SubMenuBar()
-        subMenuSec = rc.AutoSectionQMainGrp("Sub Menu", menuLayout)
+        subMenuBar = SubMenuBar.SubMenuBar()
+        self.subMenuSec = rc.AutoSectionQMainGrp("Sub Menu", subMenuBar)
 
         # Server Status
-        serverStatSec = rc.AutoSectionLayoutGrp("Server Status", None)
+
+        serverStatus = ServerStatus.ServerStatus()
+        self.serverSig.connect(serverStatus.network_status)
+        self.serverStat = rc.AutoSectionLayoutGrp("Server Status", serverStatus)
 
         # Toolbar
         toolBar = ToolBar.ToolBar()
-        toolBarSec = rc.AutoSectionQMainGrp("Tool Bar", toolBar)
+        self.toolBarSec = rc.AutoSectionQMainGrp("Tool Bar", toolBar)
 
         # Tab layout
-        self.topTabUI = TopTabWidget.TopTabWidget(self.username)
+        self.topTabUI = TopTab.TopTab(self.username)
 
         # Bot build 1
-        quickSetting = QuickSetting.QuickSetting()
-        quickSettingSec = rc.AutoSectionQGridGrp("Quick Setting", quickSetting)
+        self.botTabUI = BotTab.BotTab()
 
         # Bot build 2
-        notifiSec = rc.AutoSectionLayoutGrp("Notification", None)
+        self.notifiSec = rc.AutoSectionLayoutGrp("Notification", None)
 
         # Signal definition
-        showTDSig = quickSetting.checkboxTDSig
-        showTDSig.connect(toolBar.show_hide_TDtoolBar)
 
-        showCompSig = quickSetting.checkboxCompSig
-        showCompSig.connect(toolBar.show_hide_ComptoolBar)
+        self.botTabUI.tdToolBarSig.connect(toolBar.show_hide_TDtoolBar)
+        self.botTabUI.compToolBarSig.connect(toolBar.show_hide_ComptoolBar)
+        self.botTabUI.artToolBarSig.connect(toolBar.show_hide_ArttoolBar)
+        self.botTabUI.toolBarSig.connect(toolBar.show_hide_AlltoolBar)
+        self.botTabUI.subMenuSig.connect(subMenuBar.show_hide_subMenuBar)
+        self.botTabUI.statusBarSig.connect(self.show_hide_statusBar)
+        self.botTabUI.serverStatSig.connect(self.show_hide_serverStatus)
+        self.botTabUI.notifiSig.connect(self.show_hide_notification)
 
-        showArtSig = quickSetting.checkboxArtSig
-        showArtSig.connect(toolBar.show_hide_ArttoolBar)
+        self.topTabUI.showMainSig.connect(self.showMainSig.emit)
+        self.topTabUI.showLoginSig.connect(self.showLoginSig.emit)
 
-        showToolBarSig = quickSetting.checkboxMasterSig
-        showToolBarSig.connect(self.show_hide_toolBar)
+        self.damgteam = rc.ImageUI('DAMG', [20, 20])
 
-        showMenuBarSig = quickSetting.checkboxMenuBarSig
-        showMenuBarSig.connect(self.show_hide_menuBar)
-
-        showStatSig = quickSetting.showStatusSig
-        showStatSig.connect(self.show_hide_statusBar)
-
-        serverStatusSig = quickSetting.showServerStatusSig
-        serverStatusSig.connect(self.show_hide_serverStatus)
-
-        notificatuonSig = quickSetting.showNotificationSig
-        notificatuonSig.connect(self.show_hide_notification)
-
-        quickSettingSig = quickSetting.quickSettingSig
-        quickSettingSig.connect(self.show_hide_quickSetting)
-
-        showMainSig = self.topTabUI.showMainSig
-        showMainSig.connect(self.show_hide_main)
-
-        showLoginSig = self.topTabUI.showLoginSig
-        showLoginSig.connect(self.show_hide_login)
-
-        tabSizeSig = self.topTabUI.tabSizeSig
-        tabSizeSig.connect(self.autoResize)
-
-        # scene = QGraphicsScene()
-        # scene.addPixmap(QPixmap(os.path.join(os.getenv(app.__envKey__), "imgs", "DAMGteam.icon.png")))
-        # self.damgteam = QGraphicsView()
-        # self.damgteam.setScene(scene)
-        # self.damgteam.aspectRatioMode = Qt.KeepAspectRatio
-        # self.damgteam.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-
-        self.damgteam = rc.ImageUI(icon='DAMGteam', size=[20, 20])
-
-        self.layout.addWidget(subMenuSec, 0, 0, 1, 6)
-        self.layout.addWidget(serverStatSec, 0, 6, 1, 3)
-        self.layout.addWidget(toolBarSec, 1, 0, 2, 9)
+        self.layout.addWidget(self.subMenuSec, 0, 0, 1, 6)
+        self.layout.addWidget(self.serverStat, 0, 6, 1, 3)
+        self.layout.addWidget(self.toolBarSec, 1, 0, 2, 9)
 
         self.layout.addWidget(self.topTabUI, 3, 0, 4, 9)
-        self.layout.addWidget(quickSettingSec, 7, 0, 3, 6)
-        self.layout.addWidget(notifiSec, 7, 6, 3, 3)
+        self.layout.addWidget(self.botTabUI, 7, 0, 3, 6)
+        self.layout.addWidget(self.notifiSec, 7, 6, 3, 3)
 
-        self.layout.addWidget(self.damgteam, 10, 8, 2, 2)
-        self.layout.addWidget(rc.Label(txt=app.COPYRIGHT, alg=app.center), 11, 0, 1, 8)
+        self.layout.addWidget(rc.Label(txt=" "), 10, 0, 1, 9)
+        self.layout.addWidget(rc.Label(txt=app.COPYRIGHT, alg=app.right), 11, 0, 1, 8)
+        self.layout.addWidget(self.damgteam, 11, 8, 1, 1)
 
         self.applySetting()
-
-    def show_hide_main(self, param):
-        param = func.str2bool(param)
-        self.showMainSig.emit(param)
-
-    def show_hide_login(self, param):
-        self.settings.setValue("showLogin", param)
-        self.showLoginSig1.emit(param)
 
     def show_hide_statusBar(self, param):
         self.settings.setValue("showStatusBar", param)
@@ -178,30 +141,20 @@ class PipelineTool(QMainWindow):
         else:
             self.statusBar().hide()
 
-    def show_hide_toolBar(self, param):
-        self.settings.setValue("showToolBar", param)
-        self.toolBarGrpBox.setVisible(param)
-
-    def show_hide_menuBar(self, param):
-        self.settings.setValue("showMenuBar", param)
-        self.subMenuGrpBox.setVisible(param)
-
     def show_hide_serverStatus(self, param):
-        self.settings.setValue("showServerStatus", param)
-        self.serverStatusGrpBox.setVisible(param)
+        self.settings.setValue("serverStatus", param)
+        self.serverStat.setVisible(param)
 
     def show_hide_notification(self, param):
-        self.settings.setValue("showNotification", param)
-        self.notificationGrpBox.setVisible(param)
+        self.settings.setValue("notification", param)
+        self.notifiSec.setVisible(param)
+
 
     def show_hide_quickSetting(self, param):
         self.show_hide_statusBar(param)
-        self.show_hide_toolBar(param)
-        self.show_hide_menuBar(param)
         self.show_hide_serverStatus(param)
         self.show_hide_notification(param)
-        self.settings.setValue("showMasterQuickSetting", param)
-        self.quickSettingGrpBox.setVisible(param)
+        self.quickSettingSig.emit(param)
 
     def exit_action_trigger(self):
         usql.insert_timeLog("Log out")
@@ -215,9 +168,6 @@ class PipelineTool(QMainWindow):
         sizeW = self.frameGeometry().width()
         sizeH = self.frameGeometry().height()
         return sizeW, sizeH
-
-    def autoResize(self, param):
-        print(param)
 
     def applySetting(self):
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
@@ -233,6 +183,7 @@ class PipelineTool(QMainWindow):
         self.settings.setValue("layoutState", self.saveState().data())
 
     def closeEvent(self, event):
+
         self.settings.setValue("layoutState", QByteArray(self.saveState().data()).toBase64())
         self.closeMessSig.emit(True)
         self.hide()

@@ -15,7 +15,7 @@ Description:
 import os, sys, logging, requests
 
 # PyQt5
-from PyQt5.QtCore import QCoreApplication, QObject, QSettings
+from PyQt5.QtCore import QCoreApplication, QObject, QSettings, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QMessageBox, QSystemTrayIcon
 
 # -------------------------------------------------------------------------------------------------------------
@@ -67,6 +67,8 @@ logger.setLevel(logging.DEBUG)
 
 class PltConsole(QObject):
 
+    serverSig = pyqtSignal(bool)
+
     def __init__(self):
         super(PltConsole, self).__init__()
 
@@ -93,30 +95,19 @@ class PltConsole(QObject):
 
         self.SysTray = SysTrayIcon.SysTrayIcon()
 
-        showSignUpSig = self.SignInUI.showSignUpSig
-        showSignUpSig.connect(self.show_hide_signup)
+        self.serverSig.connect(self.MainUI.serverSig.emit)
 
-        showMainSig1 = self.SignInUI.showMainSig
-        showMainSig2 = self.SignUpUI.showMainSig2
-        showMainSig3 = self.MainUI.showMainSig
+        self.SignInUI.showSignUpSig.connect(self.show_hide_signup)
+        self.SignInUI.showMainSig.connect(self.show_hide_main)
+        self.MainUI.showMainSig.connect(self.show_hide_main)
 
-        showMainSig1.connect(self.show_hide_main)
-        showMainSig2.connect(self.show_hide_main)
-        showMainSig3.connect(self.show_hide_main)
+        self.MainUI.showLoginSig.connect(self.show_hide_signin)
+        self.SignUpUI.showLoginSig.connect(self.show_hide_signin)
 
-        showSignInSig1 = self.MainUI.showLoginSig1
-        showSignInSig2 = self.SignUpUI.showLoginSig2
-        showSignInSig1.connect(self.show_hide_signin)
-        showSignInSig2.connect(self.show_hide_signin)
-
-        showNorSig = self.SysTray.showNormalSig
-        showMinSig = self.SysTray.showMinimizeSig
-        showMaxSig = self.SysTray.showMaximizeSig
-        closeMessSig = self.MainUI.closeMessSig
-        showNorSig.connect(self.MainUI.showNormal)
-        showMinSig.connect(self.MainUI.hide)
-        showMaxSig.connect(self.MainUI.showMaximized)
-        closeMessSig.connect(self.closeMess)
+        self.SysTray.showNormalSig.connect(self.MainUI.showNormal)
+        self.SysTray.showMinimizeSig.connect(self.MainUI.hide)
+        self.SysTray.showMaximizeSig.connect(self.MainUI.showMaximized)
+        self.MainUI.closeMessSig.connect(self.closeMess)
 
         if username is None or token is None or cookie is None:
             self.SignInUI.show()
@@ -126,6 +117,7 @@ class PltConsole(QObject):
                              cookies={'connect.sid': cookie})
 
             if r.status_code == 200:
+                self.serverSig.emit(True)
 
                 self.MainUI.show()
                 self.SysTray.show()

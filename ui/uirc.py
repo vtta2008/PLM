@@ -20,7 +20,7 @@ from functools import partial
 from PyQt5.QtCore import Qt, QSize, pyqtSignal, QSettings, QObject
 from PyQt5.QtGui import QFont, QIcon, QPixmap
 from PyQt5.QtWidgets import (QFrame, QLabel, QGridLayout, QPushButton, QAction, QApplication, QGroupBox, QToolBar,
-                             QGraphicsView, QHBoxLayout, QGraphicsScene)
+                             QGraphicsView, QHBoxLayout, QGraphicsScene, QMessageBox)
 
 # Plt
 import appData as app
@@ -412,22 +412,23 @@ class AutoSectionLayoutGrp(QGroupBox):
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
         self.setTitle(title)
 
-        if subLayout == None or len(subLayout) == 0:
+        if subLayout == None or len(subLayout) == 0 or str(type(subLayout)) in ["Class <'Label'>", "Class <'QLabel'>",]:
             subLayout = Label(mess.WAIT_LAYOUT_COMPLETE)
+            self.layout = QGridLayout()
+            self.layout.addWidget(subLayout, 0, 0, 1, 1)
+        else:
+            self.layout = subLayout
 
-        self.subLayout = subLayout
-
-        self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
-        self.layout.addWidget(self.subLayout, 0, 0, 1, 1)
 
         self.applySetting()
 
     def applySetting(self):
         pass
+
 # -------------------------------------------------------------------------------------------------------------
 """ UI resource without signal """
 
@@ -435,6 +436,8 @@ class Label(QLabel):
 
     def __init__(self, txt=TXT, wmin=WMIN, alg = None, font=None, parent=None):
         super(Label, self).__init__(parent)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
         if alg == None:
             alg = Qt.AlignCenter
@@ -461,17 +464,31 @@ class Label(QLabel):
 
 class ImageUI(QGraphicsView):
 
-    def __init__(self, icon="", size=[100, 100], parent=None):
+    def __init__(self, icon="", size=None, parent=None):
         super(ImageUI, self).__init__(parent)
 
+        if not os.path.exists(func.get_icon(icon)):
+            QMessageBox.Critical(self, "Key Error", mess.PTH_NOT_EXSIST)
+            sys.exit(1)
+
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+
         self.pixmap = QPixmap(func.get_icon(icon))
-        self.size = size
+
+        if size == None or len(size) == 0:
+            self.size = [self.pixmap.width(), self.pixmap.height()]
+        else:
+            self.size = size
+
+        self.scene = QGraphicsScene()
+
         self.buildUI()
+
         self.setScene(self.scene)
 
     def buildUI(self):
-        self.scene = QGraphicsScene()
         self.scene.addPixmap(self.pixmap)
+
         self.applySetting()
 
     def applySetting(self):

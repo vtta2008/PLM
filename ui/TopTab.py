@@ -48,7 +48,7 @@ ICONINFO = func.preset_load_iconInfo()
 # -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
 
-class TopTabWidget(QWidget):
+class TopTab(QWidget):
 
     dbConn = lite.connect(var.DB_PATH)
     showMainSig = pyqtSignal(bool)
@@ -56,7 +56,7 @@ class TopTabWidget(QWidget):
     tabSizeSig = pyqtSignal(int, int)
 
     def __init__(self, username, parent=None):
-        super(TopTabWidget, self).__init__(parent)
+        super(TopTab, self).__init__(parent)
 
         self.username = username
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
@@ -66,16 +66,11 @@ class TopTabWidget(QWidget):
         self.setLayout(self.layout)
 
     def buildUI(self):
-        # Create tab layout
-        # ------------------------------------------------------
         self.tabs = QTabWidget()
-        self.tabs.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 
         tab3 = TopTab3.TopTab3()
-        showMainSig1 = tab3.showMainSig
-        showLoginSig1 = tab3.showLoginSig
-        showMainSig1.connect(self.show_hide_main)
-        showLoginSig1.connect(self.show_hide_login)
+        tab3.showMainSig.connect(self.showMainSig.emit)
+        tab3.showLoginSig.connect(self.showLoginSig.emit)
 
         self.tabs.addTab(TopTab1.TopTab1(), 'Tool')
         self.tabs.addTab(TopTab2.TopTab2(), 'Prj')
@@ -83,31 +78,16 @@ class TopTabWidget(QWidget):
         self.tabs.addTab(TopTab4.TopTab4(), 'Library')
 
         self.layout.addWidget(self.tabs)
-
         self.applySetting()
-
-        # userClass = usql.query_userClass(self.username)
-        #
-        # if userClass == "Administrator Privilege":
-        #     self.tab5 = QGroupBox()
-        #     self.tab5Layout()
-        #     self.tabs.addTab(self.tab5, 'DB')
-        #
-        # self.layout.addWidget(self.tabs)
-
-    def show_hide_main(self, param):
-        self.showMainSig.emit(param)
-
-    def show_hide_login(self, param):
-        self.showLoginSig.emit(param)
 
     def applySetting(self):
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.tabs.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 
 
 def main():
     app = QApplication(sys.argv)
-    layout = TopTabWidget()
+    layout = TopTab()
     layout.show()
     app.exec_()
 

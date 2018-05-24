@@ -17,7 +17,7 @@ import os, sys, logging
 # PyQt5
 from PyQt5.QtCore import QSettings
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QMenu, QMainWindow, QAction, QSizePolicy, QApplication
+from PyQt5.QtWidgets import QMainWindow, QAction, QSizePolicy, QApplication
 
 # Plt
 import appData as app
@@ -28,10 +28,6 @@ from utilities import variables as var
 from utilities import sql_local as usql
 
 from ui import(Preferences, AboutPlt, Credit)
-
-# -------------------------------------------------------------------------------------------------------------
-# Get apps info config
-APPINFO = func.preset_load_appInfo()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -45,11 +41,6 @@ logger.addHandler(handler)
 logger.setLevel(logging.DEBUG)
 
 # -------------------------------------------------------------------------------------------------------------
-""" Variables """
-
-
-
-# -------------------------------------------------------------------------------------------------------------
 """ Menu bar Layout """
 
 class SubMenuBar(QMainWindow):
@@ -58,7 +49,7 @@ class SubMenuBar(QMainWindow):
 
         super(SubMenuBar, self).__init__(parent)
 
-        self.appInfo = APPINFO
+        self.appInfo = func.preset_load_appInfo()
         self.url = app.__pltWiki__
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
@@ -119,16 +110,9 @@ class SubMenuBar(QMainWindow):
         logger.debug("LOG OUT")
         QApplication.instance().quit()
 
-    def toogleMenu(self, state):
-        self.viewStatusSig.emit(state)
-        self.settings.setValue("statusBar", state)
-
-    def contextMenuEvent(self, event):
-        menu = QMenu(self)
-        # menu.addAction(self.cutAct)
-        # menu.addAction(self.copyAct)
-        # menu.addAction(self.pasteAct)
-        menu.exec_(event.globalPos())
+    def show_hide_subMenuBar(self, param):
+        self.settings.setValue("subMenu", param)
+        self.setVisible(param)
 
 def main():
     app = QApplication(sys.argv)

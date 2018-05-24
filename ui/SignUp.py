@@ -12,17 +12,13 @@ Description:
 """ Import """
 
 # Python
-import os, sys, logging, subprocess, webbrowser, requests
-import sqlite3 as lite
-from functools import partial
+import os, sys, logging
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSize, QCoreApplication, QSettings, pyqtSignal, QByteArray
-from PyQt5.QtGui import QIcon, QPixmap, QImage, QIntValidator, QFont
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QFrame, QDialog, QWidget, QVBoxLayout, QHBoxLayout,
-                             QGridLayout, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
-                             QCheckBox, QTabWidget, QSystemTrayIcon, QAction, QMenu, QFileDialog, QComboBox,
-                             QDockWidget, QSlider, QSizePolicy, QStackedWidget, QStackedLayout)
+from PyQt5.QtCore import QSettings, pyqtSignal
+from PyQt5.QtGui import QIcon, QPixmap, QImage
+from PyQt5.QtWidgets import (QApplication, QGridLayout, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
+                             QCheckBox, QFileDialog, QComboBox, QDialog)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Plt tools """
@@ -48,8 +44,7 @@ logger.setLevel(logging.DEBUG)
 
 class SignUp(QDialog):
 
-    showLoginSig2 = pyqtSignal(bool)
-    showMainSig2 = pyqtSignal(bool)
+    showLoginSig = pyqtSignal(bool)
 
     def __init__(self, parent=None):
 
@@ -61,7 +56,7 @@ class SignUp(QDialog):
         self.setFixedSize(450, 900)
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
-        self.show_hide_signin(False)
+        self.showLoginSig.emit(False)
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -234,7 +229,7 @@ class SignUp(QDialog):
 
     def on_cancel_btn_clicked(self):
         self.close()
-        self.show_hide_signin(True)
+        self.showLoginSig.emit(True)
 
     def collect_input(self):
         username = str(self.userField.text())
@@ -272,7 +267,6 @@ class SignUp(QDialog):
             else:
                 QMessageBox.information(self, "Fail", secName[regInput.index(section)] + mess.SEC_BLANK, QMessageBox.Ok)
                 break
-
 
     def check_user_agreement(self):
         return self.user_agree_checkBox.checkState()
@@ -312,14 +306,6 @@ class SignUp(QDialog):
             QMessageBox.information(self, "Warning", mess.PW_UNMATCH, QMessageBox.Retry)
             return False
         return True
-
-    def show_hide_signin(self, mode):
-        self.settings.setValue("showSignIn", mode)
-        self.showLoginSig2.emit(mode)
-
-    def show_hide_main(self, mode):
-        self.settings.setValue("showMain", mode)
-        self.showMainSig.emit(mode)
 
     def closeEvent(self, event):
         self.on_cancel_btn_clicked()
