@@ -434,58 +434,49 @@ class AutoSectionLayoutGrp(QGroupBox):
 """ Tab layout """
 
 class TabBar(QTabBar):
+
     def tabSizeHint(self, index):
         size = QTabBar.tabSizeHint(self, index)
         w = int(self.width()/self.count())
         return QSize(w, size.height())
 
-class TabBodyDemo(QWidget):
-    def __init__(self, text):
-        super(TabBodyDemo, self).__init__()
+class TabContainer(QWidget):
 
+    def __init__(self, text):
+        super(TabContainer, self).__init__()
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
         self.hbox = QHBoxLayout()
-        self.hbox.setSpacing(0)
-        self.hbox.setContentsMargins(0, 0, 0, 0)
         self.setLayout(self.hbox)
 
         self.button = QPushButton(text)
         self.hbox.addWidget(self.button)
 
+    def applySetting(self):
+        self.hbox.setSpacing(0)
+        self.hbox.setContentsMargins(0, 0, 0, 0)
+
 class TabWidget (QWidget):
+
     def __init__(self, parent=None):
         super(TabWidget, self).__init__(parent)
+        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.buildUI()
+        self.setLayout(self.layout)
 
-        self.button = QPushButton("Add tab")
-        self.button.clicked.connect(self.buttonClicked)
-
+    def buildUI(self):
         self.tabs = QTabWidget()
         self.tabs.setTabBar(TabBar())
-        self.tabs.setTabsClosable(True)
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.tabs)
+
+        self.applySetting()
+
+    def applySetting(self):
         self.tabs.setMovable(True)
         self.tabs.setDocumentMode(True)
         self.tabs.setElideMode(Qt.ElideRight)
         self.tabs.setUsesScrollButtons(True)
-        self.tabs.tabCloseRequested.connect(self.closeTab)
-
-        self.tabs.addTab(TabBodyDemo("Very big titleeeeeeeeee"),
-                         "Very big titleeeeeeeeeeee")
-        self.tabs.addTab(TabBodyDemo("smalltext"), "smalltext")
-        self.tabs.addTab(TabBodyDemo("smalltext2"), "smalltext2")
-
-        vbox = QVBoxLayout()
-        vbox.addWidget(self.button)
-        vbox.addWidget(self.tabs)
-        self.setLayout(vbox)
-
         self.resize(600, 600)
-
-    def closeTab(self, index):
-        tab = self.tabs.widget(index)
-        tab.deleteLater()
-        self.tabs.removeTab(index)
-
-    def buttonClicked(self):
-        self.tabs.addTab(TabBodyDemo("smalltext2"), "smalltext2")
 
 # -------------------------------------------------------------------------------------------------------------
 """ UI element """
@@ -551,5 +542,29 @@ class ImageUI(QGraphicsView):
         self.aspectRatioMode = app.keepARM
         self.setSizePolicy(app.SiPoMin, app.SiPoMin)
         self.resize(self.size[0], self.size[1])
+
+class Button(QPushButton):
+
+    def __init__(self, data=[], parent=None):
+        super(Button, self).__init__(parent)
+
+        self.data = data
+        self.buildUI()
+
+    def buildUI(self):
+
+        self.setText(self.data[0])
+        self.setToolTip(self.data[1])
+        self.applySetting()
+
+    def applySetting(self):
+        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+
+    def sizeHint(self):
+        size = super(Button, self).sizeHint()
+        size.setHeight(size.height())
+        size.setWidth(max(size.width(), size.height()))
+        return size
+
 
 # -------------------------------------------------------------------------------------------------------------

@@ -12,31 +12,25 @@ Description:
 """ Import """
 
 # Python
-import os, sys, logging
+import sys
 import sqlite3 as lite
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, QSettings
+from PyQt5.QtCore import pyqtSignal, QSettings, Qt
 from PyQt5.QtWidgets import (QApplication, QSizePolicy, QWidget, QVBoxLayout, QTabWidget)
 
 # Plt
 import appData as app
 
-from ui import (TopTab1, TopTab2, TopTab3, TopTab4)
-
+from ui import (TopTab1, TopTab2, TopTab3, TopTab4, TopTab5)
+from ui import uirc as rc
 from utilities import utils as func
 from utilities import variables as var
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logPth = os.path.join(app.LOGPTH)
-handler = logging.FileHandler(logPth)
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-handler.setFormatter(formatter)
-logger = logging.getLogger(__name__)
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
 # Get apps info config
@@ -76,11 +70,17 @@ class TopTab(QWidget):
         self.tabs.addTab(TopTab2.TopTab2(), 'Prj')
         self.tabs.addTab(tab3, 'User')
         self.tabs.addTab(TopTab4.TopTab4(), 'Library')
+        self.tabs.addTab(TopTab5.TopTab5(), 'Django')
 
         self.layout.addWidget(self.tabs)
         self.applySetting()
 
     def applySetting(self):
+        # self.tabs.setTabBar(rc.TabBar())
+        # self.tabs.setDocumentMode(True)
+        self.tabs.setMovable(True)
+        self.tabs.setElideMode(Qt.ElideRight)
+        self.tabs.setUsesScrollButtons(True)
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.tabs.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 

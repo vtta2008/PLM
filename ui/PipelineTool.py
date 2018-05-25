@@ -35,13 +35,7 @@ from ui import uirc as rc
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logPth = os.path.join(app.LOGPTH)
-handler = logging.FileHandler(logPth)
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-handler.setFormatter(formatter)
-logger = logging.getLogger(__name__)
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
