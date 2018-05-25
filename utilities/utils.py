@@ -665,8 +665,8 @@ class Collect_info():
     def collect_icon_path(self):
         # Create dictionary for icon info
         self.iconInfo = {}
-        self.iconInfo['Logo'] = os.path.join('imgs', 'Logo.icon.png')
-        self.iconInfo['DAMG'] = os.path.join('imgs', 'DAMGteam.icon.png')
+        self.iconInfo['Logo'] = os.path.join(os.getenv(app.__envKey__), 'imgs', 'Logo.icon.png')
+        self.iconInfo['DAMG'] = os.path.join(os.getenv(app.__envKey__), 'imgs', 'DAMGteam.icon.png')
         # Custom some info to debug
         self.iconInfo['Sep'] = 'separato.png'
         self.iconInfo['File'] = 'file.png'

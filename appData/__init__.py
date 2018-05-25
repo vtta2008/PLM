@@ -16,7 +16,7 @@ Description:
 """ Import """
 
 # Python
-import os
+import os, logging
 from importlib import reload as r
 
 from PyQt5.QtCore import Qt, QSize
@@ -61,6 +61,7 @@ __modules__ = ["plt", "globals", "_version", "appData.templates.pyTemplate", "ut
                "utilities.sql_server", "utilities.sql_local", "utilities.message", "ui.ui_acc_setting", "ui.ui_calculator",
                "ui.ui_calendar", "ui.ui_english_dict", "ui.ui_find_files", "ui.ui_image_viewer", "ui.ui_info_template",
                "ui.ui_new_project", "ui.ui_note_reminder", "ui.ui_preference", "ui.ui_pw_reset_form", "ui.ui_screenshot", ]
+
 __pkgsReq__ = [ "deprecated", "jupyter-console", "ipywidgets","pywinauto", "winshell", "pandas", "notebook", "juppyter",
                 "opencv-python", "pyunpack", "argparse", "qdarkgraystyle", "asyncio", "websockets", "cx_Freeze", ]
 
@@ -85,6 +86,8 @@ __server__ = "https://pipeline.damgteam.com"
 __serverCheck__ = "https://pipeline.damgteam.com/check"
 
 __serverAutho__ = "https://pipeline.damgteam.com/auth"
+
+__local__ = "http://127.0.0.1:8000/"
 
 VERSION = "{0} v{1}.{2}-{3}".format(__project__, __version__, __verType__, __reverType__)
 
@@ -166,6 +169,10 @@ ICON_BUFFREGION = -1
 ICON_BUFF = ICON_BUFFREGION*(ICON_SIZE*ICON_BUFFRATE/100)
 ICON_SET_SIZE = QSize(ICON_SIZE+ICON_BUFF, ICON_SIZE+ICON_BUFF)
 
+
+logFormat1 = "%(asctime)s %(levelname)s %(message)s",
+logFormat2 = "%(asctime)-15s: %(name)-18s - %(levelname)-8s - %(module)-15s - %(funcName)-20s - %(lineno)-6d - %(message)s"
+
 # ----------------------------------------------------------------------------------------------------------- #
 """ Check plt scripts runable """
 
@@ -180,3 +187,14 @@ else:
 
 def reload(module):
     return r(module)
+
+def set_log(name=__name__, format=logFormat1):
+
+    handler = logging.FileHandler(LOGPTH)
+    handler.setFormatter(logging.Formatter(format))
+
+    logger = logging.getLogger(name)
+    logger.addHandler(handler)
+    logger.setLevel(logging.DEBUG)
+
+    return logger

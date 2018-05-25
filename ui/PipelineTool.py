@@ -17,10 +17,9 @@ Description:
 import os, sys, logging
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSettings, pyqtSignal, QByteArray
-from PyQt5.QtGui import QIcon, QPixmap
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QSizePolicy, QDockWidget,
-                             QGraphicsView, QGraphicsScene)
+from PyQt5.QtCore import QSettings, pyqtSignal, QByteArray
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QSizePolicy, QDockWidget)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Plt tools """
@@ -53,7 +52,6 @@ class PipelineTool(QMainWindow):
     showMainSig = pyqtSignal(bool)
     showLoginSig = pyqtSignal(bool)
     closeMessSig = pyqtSignal(bool)
-    serverSig = pyqtSignal(bool)
 
     def __init__(self, parent=None):
 
@@ -86,10 +84,8 @@ class PipelineTool(QMainWindow):
         self.subMenuSec = rc.AutoSectionQMainGrp("Sub Menu", subMenuBar)
 
         # Server Status
-
         serverStatus = ServerStatus.ServerStatus()
-        self.serverSig.connect(serverStatus.network_status)
-        self.serverStat = rc.AutoSectionLayoutGrp("Server Status", serverStatus)
+        self.networkStatus = rc.AutoSectionLayoutGrp("Server Status", serverStatus)
 
         # Toolbar
         toolBar = ToolBar.ToolBar()
@@ -121,7 +117,7 @@ class PipelineTool(QMainWindow):
         self.damgteam = rc.ImageUI('DAMG', [20, 20])
 
         self.layout.addWidget(self.subMenuSec, 0, 0, 1, 6)
-        self.layout.addWidget(self.serverStat, 0, 6, 1, 3)
+        self.layout.addWidget(self.networkStatus, 0, 6, 1, 3)
         self.layout.addWidget(self.toolBarSec, 1, 0, 2, 9)
 
         self.layout.addWidget(self.topTabUI, 3, 0, 4, 9)
@@ -143,12 +139,11 @@ class PipelineTool(QMainWindow):
 
     def show_hide_serverStatus(self, param):
         self.settings.setValue("serverStatus", param)
-        self.serverStat.setVisible(param)
+        self.networkStatus.setVisible(param)
 
     def show_hide_notification(self, param):
         self.settings.setValue("notification", param)
         self.notifiSec.setVisible(param)
-
 
     def show_hide_quickSetting(self, param):
         self.show_hide_statusBar(param)
@@ -170,8 +165,22 @@ class PipelineTool(QMainWindow):
         return sizeW, sizeH
 
     def applySetting(self):
-        self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+
+        self.networkStatus.setSizePolicy(app.SiPoMin, app.SiPoMin)
+
+        self.networkStatus.setMaximumSize(150, 75)
+
+        self.toolBarSec.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.toolBarSec.setFixedHeight(75)
+
+        self.subMenuSec.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.subMenuSec.setFixedHeight(75)
+
         self.mainWidget.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+
+        self.notifiSec.setSizePolicy(app.SiPoMin, app.SiPoMin)
+
         self.layout.setSpacing(1)
 
     def resizeEvent(self, event):

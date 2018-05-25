@@ -31,8 +31,8 @@ from maya import cmds, mel  # Maya_tk Python command
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
-from tankers.mayaPlt.plt_modules import MayaVariables as var
-from tankers.mayaPlt.plt_modules import ToolBoxIIfuncs
+from tankers.pMaya.plt_modules import MayaVariables as var
+from tankers.pMaya.plt_modules import ToolBoxIIfuncs
 
 NAMES = var.MAINVAR
 VERSION = var.MAYAVERSION
@@ -42,8 +42,8 @@ CHANNELBOX_ID = 'ChannelBoxID'
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT QT MODULES
 # -------------------------------------------------------------------------------------------------------------
-from tankers.mayaPlt.plugins import Qt  # plugin module go with DAMGtool to make UI
-from tankers.mayaPlt.plugins.Qt import QtWidgets, QtCore, QtGui
+from tankers.pMaya.plugins import Qt  # plugin module go with DAMGtool to make UI
+from tankers.pMaya.plugins.Qt import QtWidgets, QtCore, QtGui
 
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION

@@ -11,23 +11,26 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
+import os
 import json
 import logging
 import sys
+
+
+import appData as app
 
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA PYTHON MODULES
 # -------------------------------------------------------------------------------------------------------------
 from maya import cmds, mel
 
-from tankers.mayaPlt.plt_modules import MayaVariables as var
+from tankers.pMaya.modules import MayaVariables as var
 
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
 # We can configure the current level to make it disable certain logs when we don't want it.
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv(__root__), 'appData', 'config')
 MESSAGE = var.MESSAGE
 ID = 'UserSetup'
 KEY = 'PYTHONPATH'
@@ -50,26 +53,15 @@ class InitUserSetup(object):
 
         super(InitUserSetup, self).__init__()
         # First greeting to user
-        # self.greetings()
+        self.greetings()
 
-        # var.createLog('maya')
-        #
-        # SCR = os.path.join( SCRPTH, NAMES['os'][0] )
-        #
-        # if os.path.exists( SCR ):
-        #     # logger.info( 'Start updateing sys path' )
-        #     self.updatePathFromUser(SCR)
-
-        # Create menu in Maya Layout
         self.makePipelineMenu()
 
         # Create port for Vray material presets pro
         try:
             cmds.commandPort(n = "localhost:7088")
-
         except RuntimeError:
             logger.debug('port:7088 already activated')
-
         else:
             pass
 
@@ -97,7 +89,7 @@ class InitUserSetup(object):
         for pth in sys.path:
             sysPth += pth
         info['sysPth'] = sysPth
-        filePth = os.path.join(os.getenv(__root__), 'appData', 'config', 'maya.json')
+        filePth = os.path.join(os.getenv(app.__envKey__), 'appData', 'config', 'maya.json')
 
         with open(filePth, 'w') as f:
             json.dump(info, f, indent=4)
@@ -118,8 +110,8 @@ class InitUserSetup(object):
                         # logger.info('Updated system path: %s' % lnk)
 
     def mayaMainUI(self, *args):
-        from appPackages.maya import InitTool
-        reload(InitTool)
+        from tankers.pMaya import InitTool
+        app.reload(InitTool)
         InitTool.main()
 
     def aboutMainUI(self, *args):
@@ -142,7 +134,7 @@ class InitUserSetup(object):
         # Check Layout exists, if not, import pipeline layout from source data
         if not 'PipelineTool' in listLayout:
             # Path of layout file from source data by default
-            layoutPth = os.path.join(os.getenv(__root__), 'packages', 'maya', 'layout', 'plt.json')
+            layoutPth = os.path.join(os.getenv(app.__envKey__), 'packages', 'maya', 'layout', 'plt.json')
 
             # Check if it is not there, it may happen because the file might be moved or deleted
             if os.path.exists(layoutPth):
@@ -156,8 +148,8 @@ class InitUserSetup(object):
             mel.eval('onSetCurrentLayout "plt";')
 
     def loadTimelineColorMarker(self, *args):
-        from appPackages.maya.plt_modules import TimelineMarker
-        reload(TimelineMarker)
+        from tankers.pMaya.modules import TimelineMarker
+        app.reload(TimelineMarker)
         TimelineMarker.initialize()
 
     def greetings(self):

@@ -18,7 +18,7 @@ from functools import partial
 import maya.OpenMaya as om
 from maya import cmds, mel
 
-from tankers.mayaPlt.plt_modules import MayaVariables as var
+from tankers.pMaya.plt_modules import MayaVariables as var
 
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES

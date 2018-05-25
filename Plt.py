@@ -12,10 +12,10 @@ Description:
 """ Import """
 
 # Python
-import os, sys, logging, requests
+import os, sys, requests
 
 # PyQt5
-from PyQt5.QtCore import QCoreApplication, QObject, QSettings, pyqtSignal
+from PyQt5.QtCore import QCoreApplication, QObject, QSettings
 from PyQt5.QtWidgets import QApplication, QMessageBox, QSystemTrayIcon
 
 # -------------------------------------------------------------------------------------------------------------
@@ -53,21 +53,12 @@ from ui import (SignIn, SignUp, PipelineTool, SysTrayIcon)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
-
-logPth = os.path.join(app.LOGPTH)
-logger = logging.getLogger(__name__)
-handler = logging.FileHandler(logPth)
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-handler.setFormatter(formatter)
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
 class PltConsole(QObject):
-
-    serverSig = pyqtSignal(bool)
 
     def __init__(self):
         super(PltConsole, self).__init__()
@@ -88,14 +79,9 @@ class PltConsole(QObject):
         username, token, cookie = usql.query_user_session()
 
         self.SignInUI = SignIn.SignIn()
-
         self.SignUpUI = SignUp.SignUp()
-
         self.MainUI = PipelineTool.PipelineTool()
-
         self.SysTray = SysTrayIcon.SysTrayIcon()
-
-        self.serverSig.connect(self.MainUI.serverSig.emit)
 
         self.SignInUI.showSignUpSig.connect(self.show_hide_signup)
         self.SignInUI.showMainSig.connect(self.show_hide_main)
@@ -117,8 +103,6 @@ class PltConsole(QObject):
                              cookies={'connect.sid': cookie})
 
             if r.status_code == 200:
-                self.serverSig.emit(True)
-
                 self.MainUI.show()
                 self.SysTray.show()
                 self.SysTray.loginMess()

@@ -28,9 +28,9 @@ from maya.app.renderSetup.views.renderSetupButton import *
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
-from tankers.mayaPlt.plt_modules import MayaVariables as var
-from tankers.mayaPlt.plugins import Qt
-from tankers.mayaPlt.plugins.Qt import QtWidgets, QtCore, QtGui
+from tankers.pMaya.plt_modules import MayaVariables as var
+from tankers.pMaya.plugins import Qt
+from tankers.pMaya.plugins.Qt import QtWidgets, QtCore, QtGui
 
 NAMES = var.MAINVAR
 VERSION = var.MAYAVERSION

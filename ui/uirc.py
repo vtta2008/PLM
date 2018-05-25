@@ -518,7 +518,9 @@ class Label(QLabel):
         self.setMinimumWidth(self.wmin)
         self.setAlignment(self.alg)
         self.setFont(self.fnt)
+        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
         self.setScaledContents(True)
+        self.setWordWrap(True)
 
 class ImageUI(QGraphicsView):
 
@@ -548,6 +550,6 @@ class ImageUI(QGraphicsView):
     def applySetting(self):
         self.aspectRatioMode = app.keepARM
         self.setSizePolicy(app.SiPoMin, app.SiPoMin)
-        self.setFixedSize(self.size[0], self.size[1])
+        self.resize(self.size[0], self.size[1])
 
 # -------------------------------------------------------------------------------------------------------------

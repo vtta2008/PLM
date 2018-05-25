@@ -21,7 +21,7 @@ from functools import partial  # partial module can store variables to method
 # -------------------------------------------------------------------------------------------------------------
 import maya.cmds as cmds
 
-from tankers.mayaPlt.plt_modules import MayaVariables as var
+from tankers.pMaya.plt_modules import MayaVariables as var
 
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA MODULES

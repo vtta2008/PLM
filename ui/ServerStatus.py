@@ -12,11 +12,13 @@ Description:
 """ Import """
 
 # Python
-import os, sys, logging
+import os, sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, QSettings
-from PyQt5.QtWidgets import QApplication, QGridLayout, QVBoxLayout, QHBoxLayout, QWidget
+from PyQt5.QtWidgets import QApplication, QGridLayout, QVBoxLayout, QHBoxLayout, QWidget, QMessageBox
+
+from PyQt5.QtNetwork import QHostAddress
 
 # Plt
 import appData as app
@@ -25,18 +27,12 @@ from ui import uirc as rc
 
 from utilities import utils as func
 from utilities import variables as var
-from utilities import Networking as net
+
+from appData.__core.pServer__ import Server
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
-
-logPth = os.path.join(app.LOGPTH)
-handler = logging.FileHandler(logPth)
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-handler.setFormatter(formatter)
-logger = logging.getLogger(__name__)
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
 # Get apps info config
@@ -47,47 +43,48 @@ APPINFO = func.preset_load_appInfo()
 
 class ServerStatus(QGridLayout):
 
-    serverStatusSig = pyqtSignal(bool)
+    networkStatutSig = pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super(ServerStatus, self).__init__(parent)
 
         self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
 
-        checker = net.ConnectionChecker()
-        check = checker.check_url()
-        print(checker, check, type(check))
+        self.server = Server.Server()
+        self.server.listen(QHostAddress(app.__server__), 9000)
+        self.serverOpen = self.server.isListening()
+
+        self.netGood = rc.ImageUI("NetworkGood")
+        self.netBad = rc.ImageUI("NetworkError")
+
+        self.networkStatutSig.connect(self.connection_status)
+        self.networkStatutSig.emit(self.serverOpen)
+
+        if not self.serverOpen:
+            self.add_message(self.server.errorString())
+            QMessageBox.critical(self, "Error", self.tcpServer.errorString())
+            self.text = "Failed to connect"
+        else:
+            self.text = "IP: %s\nport: %d\n\n" % (self.server.serverAddress().toString(), self.server.serverPort())
 
         self.buildUI()
 
     def buildUI(self):
 
-        goodLayout = QHBoxLayout()
-        goodLayout.addWidget(rc.ImageUI("NetworkGood"))
-        goodLayout.addWidget(rc.Label("Connected"))
-        self.goodWidget = QWidget()
-        self.goodWidget.setLayout(goodLayout)
-
-        badLayout = QHBoxLayout()
-        badLayout.addWidget(rc.ImageUI("NetworkError"))
-        badLayout.addWidget(rc.Label("Disconnected"))
-        self.badWidget = QWidget()
-        self.badWidget.setLayout(badLayout)
-
-        self.addWidget(self.goodWidget, 0, 0, 1, 1)
-        self.addWidget(self.badWidget, 0, 0, 1, 1)
-
-        self.serverStatusSig.connect(self.network_status)
+        self.addWidget(rc.Label(txt=self.text, alg=app.left), 0, 1, 1, 1)
 
         self.applySetting()
 
-    def network_status(self, param):
-        self.goodWidget.setVisible(param)
-        self.badWidget.setVisible(not param)
-
     def applySetting(self):
-        self.setSpacing(2)
+        self.setSpacing(1)
 
+    def connection_status(self, param):
+        if param:
+            self.addWidget(self.netGood, 0, 0, 1, 1)
+            self.removeWidget(self.netBad)
+        else:
+            self.addWidget(self.netBad, 0, 0, 1, 1)
+            self.removeWidget(self.netGood)
 
 def main():
     app = QApplication(sys.argv)

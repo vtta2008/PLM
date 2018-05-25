@@ -39,8 +39,8 @@ ICONS = var.ICONS
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT QT MODULES
 # -------------------------------------------------------------------------------------------------------------
-from tankers.mayaPlt.plugins import Qt  # plugin module go with DAMGtool to make UI
-from tankers.mayaPlt.plugins.Qt import QtWidgets
+from tankers.pMaya.plugins import Qt  # plugin module go with DAMGtool to make UI
+from tankers.pMaya.plugins.Qt import QtWidgets
 
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION

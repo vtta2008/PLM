@@ -26,8 +26,8 @@ from maya import cmds
 from tankers.maya.plt_modules import MayaVariables as var
 
 # FIX VERSION CONVENTION
-from tankers.mayaPlt.plugins import Qt
-from tankers.mayaPlt.plugins.Qt import QtWidgets
+from tankers.pMaya.plugins import Qt
+from tankers.pMaya.plugins.Qt import QtWidgets
 
 # -------------------------------------------------------------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES

@@ -22,8 +22,8 @@ from functools import partial
 
 from maya import cmds
 
-from tankers.mayaPlt.plt_modules import MayaVariables as var
-from tankers.mayaPlt.plugins import Qt
+from tankers.pMaya.plt_modules import MayaVariables as var
+from tankers.pMaya.plugins import Qt
 
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES

@@ -23,7 +23,7 @@ from maya import cmds
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
-from tankers.mayaPlt.plt_modules import MayaVariables as var
+from tankers.pMaya.plt_modules import MayaVariables as var
 
 NAMES = var.MAINVAR
 MESSAGE = var.MESSAGE

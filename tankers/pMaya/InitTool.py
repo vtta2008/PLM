@@ -11,7 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from tankers.mayaPlt.modules import MayaVariables as var
+from tankers.pMaya.modules import MayaVariables as var
 
 NAMES = var.MAINVAR
 
