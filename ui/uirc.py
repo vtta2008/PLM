@@ -476,7 +476,6 @@ class TabWidget (QWidget):
         self.tabs.setDocumentMode(True)
         self.tabs.setElideMode(Qt.ElideRight)
         self.tabs.setUsesScrollButtons(True)
-        self.resize(600, 600)
 
 # -------------------------------------------------------------------------------------------------------------
 """ UI element """
@@ -559,6 +558,8 @@ class Button(QPushButton):
 
     def applySetting(self):
         self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        # self.setStyleSheet("""color: #{color1}; background-color: #{color2}; border: 1px solid #{color1};""".format(
+        #     color1="3861aa", color2="ffffff"))
 
     def sizeHint(self):
         size = super(Button, self).sizeHint()

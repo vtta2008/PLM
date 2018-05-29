@@ -70,7 +70,7 @@ class TopTab(QWidget):
         self.tabs.addTab(TopTab2.TopTab2(), 'Prj')
         self.tabs.addTab(tab3, 'User')
         self.tabs.addTab(TopTab4.TopTab4(), 'Library')
-        self.tabs.addTab(TopTab5.TopTab5(), 'Django')
+        self.tabs.addTab(TopTab5.TopTab5(), 'Cmd')
 
         self.layout.addWidget(self.tabs)
         self.applySetting()

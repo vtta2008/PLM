@@ -16,27 +16,19 @@ import os, sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, QSettings
-from PyQt5.QtWidgets import QApplication, QGridLayout, QVBoxLayout, QHBoxLayout, QWidget, QMessageBox
+from PyQt5.QtWidgets import QApplication, QGridLayout
 
 from PyQt5.QtNetwork import QHostAddress
 
 # Plt
 import appData as app
-
 from ui import uirc as rc
-
-from utilities import utils as func
 from utilities import variables as var
-
 from appData.__core.pServer__ import Server
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 logger = app.set_log()
-
-# -------------------------------------------------------------------------------------------------------------
-# Get apps info config
-APPINFO = func.preset_load_appInfo()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """
@@ -61,8 +53,6 @@ class ServerStatus(QGridLayout):
         self.networkStatutSig.emit(self.serverOpen)
 
         if not self.serverOpen:
-            self.add_message(self.server.errorString())
-            QMessageBox.critical(self, "Error", self.tcpServer.errorString())
             self.text = "Failed to connect"
         else:
             self.text = "IP: %s\nport: %d\n\n" % (self.server.serverAddress().toString(), self.server.serverPort())
