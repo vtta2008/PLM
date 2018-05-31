@@ -12,10 +12,10 @@ Description:
 """ Import """
 
 # Python
-import os, sys, logging
+import sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, QSettings
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QSizePolicy
 
 # Plt
@@ -24,7 +24,6 @@ import appData as app
 from ui import uirc as rc
 from ui import QuickSetting
 from utilities import utils as func
-from utilities import variables as var
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -43,7 +42,7 @@ class TabWidget(QWidget):
     def __init__(self, layout, parent=None):
         super(TabWidget, self).__init__(parent)
 
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
         self.layout = layout
         self.buildUI()
         self.setLayout(self.layout)
@@ -73,7 +72,7 @@ class BotTab(QWidget):
     def __init__(self, parent=None):
         super(BotTab, self).__init__(parent)
 
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
 
         self.layout = QVBoxLayout()
         self.buildUI()
@@ -83,7 +82,6 @@ class BotTab(QWidget):
         self.tabs = QTabWidget()
 
         self.quickSetting = QuickSetting.QuickSetting()
-        tab2 = TabWidget(self.quickSetting)
 
         self.quickSetting.checkboxTDSig.connect(self.tdToolBarSig.emit)
         self.quickSetting.checkboxCompSig.connect(self.compToolBarSig.emit)
@@ -97,7 +95,7 @@ class BotTab(QWidget):
 
         self.tabs.addTab(QWidget(), "General")
         self.tabs.addTab(QWidget(), "Unit")
-        self.tabs.addTab(tab2, "Quick")
+        self.tabs.addTab(rc.TabContent(self.quickSetting), "Quick")
 
         self.layout.addWidget(self.tabs)
 

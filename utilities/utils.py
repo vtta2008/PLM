@@ -11,75 +11,78 @@ Description:
 """ Import """
 
 # Python
-import os, sys, requests, logging, platform, shutil, subprocess, urllib, winshell, yaml, json, pip, re
-import datetime, time, uuid, win32gui, win32api, pprint, cv2
+import os, sys, requests, platform, shutil, subprocess, urllib, winshell, yaml, json, pip, re, datetime, time, uuid, \
+    win32api, cv2
 
 from pyunpack import Archive
 
-# Plt tools
+# Plt
 import appData as app
-from utilities import variables as var
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Simple log """
 
-logPth = os.path.join(app.LOGPTH)
-handler = logging.FileHandler(logPth)
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-handler.setFormatter(formatter)
-logger = logging.getLogger(__name__)
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+# logger = app.set_log()
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Preset """
 
-def preset_maya_intergrate(*args):
-    # Pipeline tool module paths for Maya.
-    maya_tk = os.path.join(os.getenv(app.__envKey__), 'packages', 'maya')
+def preset_setup_config_data(*args):
+    # setup local database
+    if not os.path.exists(app.DBPTH):
+        from utilities import localdb as usql
 
-    # Name of folders
-    mayaTrack = ['plt_modules', 'plugins', 'plt_anim', 'MayaLib', 'plt_model', 'plt_rig', 'plt_surface']
-    pythonValue = ""
-    pythonList = []
-    for root, dirs, files in os.walk(maya_tk):
-        for dir in dirs:
-            if dir in mayaTrack:
-                dirPth = os.path.join(root, dir)
-                pythonList.append(dirPth)
-    pythonList = list(set(pythonList))
-    for pth in pythonList:
-        pythonValue += pth + ';'
-    os.environ['PYTHONPATH'] = pythonValue
+        usql.create_curUser_table()
+        usql.create_user_token_table()
+        usql.create_timeLog_table()
+        usql.create_questions_library()
 
-    # Copy userSetup.py from source code to properly maya folder
-    userSetup_plt_path = os.path.join(os.getenv(app.__envKey__), 'packages', 'maya', 'userSetup.py')
-    userSetup_maya_path = os.path.join(os.path.expanduser('~/Documents/maya/2017/prefs/scripts'), 'userSetup.py')
+        with open(os.path.join(app.dtDir.split('appData')[0], 'appData', 'QUESTION'), 'r') as f:
+            data = f.read()
 
-    if not os.path.exists(userSetup_plt_path) or not os.path.exists(userSetup_plt_path):
-        pass
+        questions = [q.split('"')[1] for q in data.split(",")]
+
+        usql.insert_questions_library(questions=questions, source="Old data")
     else:
-        shutil.copy2(userSetup_plt_path, userSetup_maya_path)
+        from utilities import localdb as usql
+
+    # Set up app config directories
+    for dirPth in [app.DAMGDIR, app.APPDIR, app.CONFIGDIR, app.SETTINGDIR, app.LOGDIR]:
+        if not os.path.exists(dirPth):
+            os.mkdir(dirPth)
 
 def preset_load_appInfo(*args):
-    """
-    Load installed app info from config file
-    :return: appInfo
-    """
-    # Seeking config file
-    Collect_info()
-    # Configure root path
-    mainConfigPth = os.path.join(app.CONFIGPTH, 'main.yml')
+    if not os.path.exists(app.mainConfig):
+        Collect_info()
     # Load info from file
-    with open(mainConfigPth, 'r') as f:
-        appInfo = yaml.load(f)
-
+    with open(app.mainConfig, 'r') as f:
+        appInfo = json.load(f)
     return appInfo
 
+def preset_implement_maya_tanker(*args):
+    tk = os.path.join(app.dtDir.split('appData')[0], 'tankers', 'pMaya')
+
+    tranker = dict(modules = ['anim', 'lib', 'modeling', 'rendering', 'simulating', 'surfacing', ],
+                     QtPlugins = [], )
+
+    pVal = ""
+    pyList = [os.path.join(tk, k) for k in tranker] + [os.path.join(tk, "modules", p) for p in tranker["modules"]]
+
+    for p in pyList:
+        pVal += p + ';'
+    os.environ['PYTHONPATH'] = pVal
+
+    # Copy userSetup.py from source code to properly maya folder
+    usScr = os.path.join(app.dtDir.split('appData')[0], 'packages', 'maya', 'userSetup.py')
+    if os.path.exists(usScr):
+        mayaVers = [os.path.join(tk, v) for v in app.autodeskVer if os.path.exists(os.path.join(tk, v))] or []
+        if not len(mayaVers) == 0 or not mayaVers == []:
+            for usDes in mayaVers:
+                shutil.copy(usScr, usDes)
+
 def preset_load_iconInfo(*args):
-    iconConfigPth = os.path.join(app.CONFIGPTH, 'icon.yml')
-    with open(iconConfigPth, 'r') as f:
-        iconInfo = yaml.load(f)
+    with open(app.iconConfig, 'r') as f:
+        iconInfo = json.load(f)
     return iconInfo
 
 # -------------------------------------------------------------------------------------------------------------
@@ -96,6 +99,16 @@ def read_package_variable(key):
     assert 0, "'{0}' not found in '{1}'".format(key, module_path)
 
 # -------------------------------------------------------------------------------------------------------------
+""" shotcut """
+
+def create_shotcut(target, icon, shortcut, description):
+    winshell.CreateShortcut(
+        Path=os.path.join(winshell.desktop(), shortcut),
+        Target=target,
+        Icon=(icon, 0),
+        Description=description
+    )
+# -------------------------------------------------------------------------------------------------------------
 """ Error handle """
 
 def handle_path_error(directory=None):
@@ -103,7 +116,8 @@ def handle_path_error(directory=None):
         try:
             raise IsADirectoryError("Path is not exists: {directory}".format(directory=directory))
         except IsADirectoryError as error:
-            logger.info('Caught error: ' + repr(error))
+            pass
+            # logger.info('Caught error: ' + repr(error))
 
 # -------------------------------------------------------------------------------------------------------------
 """ Installation """
@@ -114,7 +128,7 @@ def install_py_packages(name, *args):
     :param name: name of component
     :return:
     """
-    logger.info('Using pip to install %s' % name)
+    # logger.info('Using pip to install %s' % name)
     if os.path.exists(name):
         subprocess.Popen('python %s install' % name)
     else:
@@ -159,7 +173,7 @@ def get_python_pkgs():
 
         pyPkgs[name] = [key, version, location]
 
-    pkgConfig = os.path.join(os.getenv(app.__envKey__), 'appData', 'pkgs_config.yml')
+    pkgConfig = os.path.join(app.dtDir.split('appData')[0], 'appData', 'pkgs_config.yml')
 
     with open(pkgConfig, 'w') as f:
         yaml.dump(pyPkgs, f, default_flow_style=False)
@@ -178,18 +192,18 @@ def inspect_package(name):
         # logger.info('package "%s" is already installed' % name)
         pass
     else:
-        logger.info('package "%s" is not installed, '
-                    'execute package installation procedural' % name)
+        # logger.info('package "%s" is not installed, '
+        #             'execute package installation procedural' % name)
         install_py_packages(name)
 
 def get_all_env_key(key, path):
     try:
         pth = os.getenv(key)
         if pth == None or pth == '':
-            logger.info('install new environment variable')
+            # logger.info('install new environment variable')
             os.environ[key] = path
     except KeyError:
-        logger.info('install new environment variable')
+        # logger.info('install new environment variable')
         os.environ[key] = path
     else:
         pass
@@ -231,12 +245,12 @@ def get_base_name(path):
 
 def download_single_file(url, path_to, *args):
     execute_download = urllib.urlretrieve(url, path_to)
-    logger.info(execute_download)
-    logger.info("Downloaded to: %s" % str(path_to))
+    # logger.info(execute_download)
+    # logger.info("Downloaded to: %s" % str(path_to))
 
 def download_image_from_url(link, *args):
     fileName = os.path.basename(link)
-    imgPth = os.path.join(os.getenv(app.__envKey__), 'avatar')
+    imgPth = os.path.join(app.dtDir.split('appData')[0], 'avatar')
     avatarPth = os.path.join(imgPth, fileName)
 
     if not os.path.exists(avatarPth):
@@ -265,9 +279,9 @@ def obj_properties_setting(directory, mode, *args):
             elif platform.system() == "Darwin":
                 subprocess.call(["chflags", "nohidden", directory])
         else:
-            logger.error("ERROR: (Incorrect Command) Valid commands are 'HIDE' and 'UNHIDE' (both are not case sensitive)")
+            print("ERROR: (Incorrect Command) Valid commands are 'HIDE' and 'UNHIDE' (both are not case sensitive)")
     else:
-        logger.error("ERROR: (Unknown Operating System) Only Windows and Darwin(Mac) are Supported")
+        print("ERROR: (Unknown Operating System) Only Windows and Darwin(Mac) are Supported")
 
 def batch_obj_properties_setting(listObj, mode, *args):
 
@@ -275,7 +289,8 @@ def batch_obj_properties_setting(listObj, mode, *args):
         if os.path.exists(obj):
             obj_properties_setting(obj, mode)
         else:
-            logger.info('Could not find the specific path: %s' % obj)
+            pass
+            # logger.info('Could not find the specific path: %s' % obj)
 
 def batch_resize_image(imgDir=None, imgResDir=None, size=[100, 100], sub=False, ext='.png', mode=1):
     """
@@ -289,7 +304,7 @@ def batch_resize_image(imgDir=None, imgResDir=None, size=[100, 100], sub=False, 
         sys.exit()
 
     if not os.path.exists(imgDir):
-        logger.info('The source folder: %s is not exists' % imgDir)
+        # logger.info('The source folder: %s is not exists' % imgDir)
         sys.exit()
 
     if imgResDir == None:
@@ -359,7 +374,7 @@ def cmd_execute_py(name, path, *args):
     :param path: path to python file
     :return: executing in command prompt
     """
-    logger.info("Executing {name} from {path}".format(name=name, path=path))
+    # logger.info("Executing {name} from {path}".format(name=name, path=path))
     pth = os.path.join(path, name)
     if os.path.exists(pth):
         subprocess.call([sys.executable, pth])
@@ -370,8 +385,8 @@ def system_call(args, cwd="."):
     pass
 
 def open_plt_browser(url, *args):
-    from ui import PltBrowser
-    web = PltBrowser.Browser(url)
+    from ui import Browser
+    web = Browser.WebBrowser(url)
     web.show()
     web.exec_()
 
@@ -383,7 +398,7 @@ def reconfig_data(*args):
 
 def get_local_pc(*args):
 
-    package = var.PLT_PKG
+    package = app.KEYPACKAGE
     pythonVersion = sys.version
     windowOS = platform.system()
     windowVersion = platform.version()
@@ -439,12 +454,6 @@ def get_token(*args):
 
 def get_unix(*args):
     return (str(uuid.uuid4())).split('-')[-1]
-
-def get_title():
-    import random
-    secure_random = random.SystemRandom()
-    value = secure_random.choice(var.USER_CLASS)
-    return value
 
 def get_pc_location(*args):
     r = requests.get('https://api.ipdata.co').json()
@@ -519,8 +528,7 @@ def run(pth, *args):
 """ Quick find path """
 
 def get_icon(key, *args):
-    iconConfig = os.path.join(os.getenv(app.__envKey__), 'appData', 'config', 'icon.json')
-    with open(iconConfig, 'r') as f:
+    with open(app.iconConfig, 'r') as f:
         iconInfo = json.load(f)
     for k in iconInfo:
         if key in k:
@@ -528,19 +536,19 @@ def get_icon(key, *args):
     return "No Value"
 
 def get_web_icon(key, *args):
-    iconLst = get_file_path(os.path.join(os.getenv(app.__envKey__), 'imgs', 'web'))
+    iconLst = get_file_path(os.path.join(app.dtDir.split('appData')[0], 'imgs', 'web'))
     for icon in iconLst:
         if key in icon:
             return icon
 
 def get_avatar(key, *args):
-    avatarLst = [i for i in get_file_path(os.path.join(os.getenv(app.__envKey__), 'imgs', 'avatar')) if '.avatar' in i]
+    avatarLst = [i for i in get_file_path(os.path.join(app.dtDir.split('appData')[0], 'imgs', 'avatar')) if '.avatar' in i]
     for avatar in avatarLst:
         if key in avatar:
             return avatar
 
 def get_tag(key, *args):
-    tagLst = [i for i in get_file_path(os.path.join(os.getenv(app.__envKey__), 'imgs', 'tags')) if '.tag' in i]
+    tagLst = [i for i in get_file_path(os.path.join(app.dtDir.split('appData')[0], 'imgs', 'tags')) if '.tag' in i]
     for tag in tagLst:
         if key in tagLst:
             return tag
@@ -622,7 +630,7 @@ def del_key(key, dict = {}):
 """ Remove data """
 
 def clean_pyc_file(var, *args):
-    fileNames = [f for f in get_file_path(os.getenv(app.__envKey__)) if var in f] or []
+    fileNames = [f for f in get_file_path(app.dtDir.split('appData')[0]) if var in f] or []
     if not fileNames == []:
         for filePth in fileNames:
             os.remove(filePth)
@@ -665,15 +673,13 @@ class Collect_info():
     def collect_icon_path(self):
         # Create dictionary for icon info
         self.iconInfo = {}
-        self.iconInfo['Logo'] = os.path.join(os.getenv(app.__envKey__), 'imgs', 'Logo.icon.png')
-        self.iconInfo['DAMG'] = os.path.join(os.getenv(app.__envKey__), 'imgs', 'DAMGteam.icon.png')
+        self.iconInfo['Logo'] = os.path.join(app.dtDir.split('appData')[0], 'imgs', 'Logo.icon.png')
+        self.iconInfo['DAMG'] = os.path.join(app.dtDir.split('appData')[0], 'imgs', 'DAMGteam.icon.png')
         # Custom some info to debug
         self.iconInfo['Sep'] = 'separato.png'
         self.iconInfo['File'] = 'file.png'
         # Get list of icons in imgage folder
-        iconlst = [i for i in get_file_path(os.path.join(os.getenv(app.__envKey__), 'imgs', 'main')) if '.icon' in i] \
-                  + [i for i in get_file_path(os.path.join(os.getenv(app.__envKey__), 'imgs', 'apps')) if '.icon' in i] \
-                  + [i for i in get_file_path(os.path.join(os.getenv(app.__envKey__), 'imgs', 'dev')) if '.icon' in i]
+        iconlst = [i for i in get_file_path(os.path.join(app.dtDir.split('appData')[0], 'imgs', 'icons', 'x32')) if '.icon' in i]
     
         for i in iconlst:
             self.iconInfo[os.path.basename(i).split('.icon')[0]] = i
@@ -683,8 +689,7 @@ class Collect_info():
     def collect_all_app(self):
         """
         It will find and put all the info of installed apps to two list: appname and path
-        :param filters: self.appName, self.appPath
-        :return: self.appName, self.appPath
+        return: self.appName, self.appPath
         """
         shortcuts = {}
         appName = []
@@ -702,6 +707,7 @@ class Collect_info():
                 appPth.append(lnk.path)
 
         self.appInfo = {}
+
         for name in appName:
             self.appInfo[str(name)] = str(appPth[appName.index(name)])
 
@@ -711,61 +717,26 @@ class Collect_info():
 
         self.mainInfo = {}
 
-        detectLst = app.KEY_DETECT
-        pltLst = app.KEY_PKGS
-
-        delKeys = [k for k in self.appInfo if not self.appInfo[k].endswith('.exe')]
-
-        for key in delKeys:
-            del_key(key, self.appInfo)
-
-        keepKeys = []
-        for k in pltLst:
-            for key in self.appInfo:
-                if k in key:
-                    keepKeys.append(key)
-        delKeys = [k for k in self.appInfo if not k in keepKeys]
-        for key in delKeys:
-            del_key(key, self.appInfo)
-
         delKeys = []
         for key in self.appInfo:
-            for k in detectLst:
+            for k in app.KEYDETECT:
                 if k in key:
                     delKeys.append(key)
+
         for key in delKeys:
             del_key(key, self.appInfo)
 
-        # Custom functions
+        keepKeys = [k for k in app.KEYPACKAGE if k in self.appInfo and k in self.iconInfo]
 
+        # Custom functions
         self.mainInfo['Exit'] = ['Exit Pipeline Tool', self.iconInfo['Exit'], 'Func: Exit']
         self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'Func: CleanPyc']
         self.mainInfo['ClearData'] = ['Clean Config data', self.iconInfo['CleanConfig'], 'Func: CleanConfigData']
         self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['Reconfig'], 'Func: Config']
-        self.mainInfo['Shutdown'] = ['Shut down your pc', self.iconInfo['Shutdown'], 'Func: Shutdown']
         self.mainInfo['Command Prompt'] = ['Open command prompt', self.iconInfo['Command Prompt'], 'Func: open_cmd']
-
         self.mainInfo['Plt wiki'] = ['Plt wiki', self.iconInfo['Plt wiki'], "Url: {key}".format(key=app.__pltWiki__)]
-
         self.mainInfo['PltBrowser'] = ['PltBrowser', self.iconInfo['PltBrowser'], "UI: PltBrowser"]
-
-        # Fixing the path to open desire app.
-
-        officeBase = os.path.join(os.getenv("COMMONPROGRAMFILES").split("Common Files")[0], 'Microsoft Office')
-        officeVersion = [d for d in os.listdir(officeBase) if 'Office' in d][0]
-        officePth = os.path.join(officeBase, officeVersion)
-        WordPth = os.path.join(officePth, 'WINWORD.EXE')
-        ExcelPth = os.path.join(officePth, 'EXCEL.EXE')
-        PptPth = os.path.join(officePth, 'POWERPNT.EXE')
-
-        if os.path.exists(WordPth):
-            self.appInfo['McWord'] = WordPth
-
-        if os.path.exists(ExcelPth):
-            self.appInfo['McExcel'] = ExcelPth
-
-        if os.path.exists(PptPth):
-            self.appInfo['McPowerPoint'] = PptPth
+        self.mainInfo['OpenConfig'] = ['Open config folder', self.iconInfo['OpenConfig'], '']
 
         for key in self.appInfo:
             if 'NukeX' in key:
@@ -776,13 +747,14 @@ class Collect_info():
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " -launch"
 
         # Extra app come along with plt but not be installed in local.
-        dbBrowserPth = os.path.join(os.getenv(app.__envKey__), 'external_app', 'sqlbrowser', 'SQLiteDatabaseBrowserPortable.exe')
-        advanceRenamerPth = os.path.join(os.getenv(app.__envKey__), 'external_app', 'batchRenamer', 'ARen.exe')
+        dbBrowserPth = os.path.join(app.dtDir.split('appData')[0], 'tankers', 'sqlbrowser', 'SQLiteDatabaseBrowserPortable.exe')
+        advanceRenamerPth = os.path.join(app.dtDir.split('appData')[0], 'tankers', 'batchRenamer', 'ARen.exe')
         qtDesigner = os.path.join(os.getenv('PROGRAMDATA'), 'Anaconda3', 'Library', 'bin', 'designer.exe')
         davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
 
         eVal = [dbBrowserPth, advanceRenamerPth, qtDesigner, davinciPth]
-        eKeys = ['Database Browser', 'Advance Renamer', 'QtDesigner']
+
+        eKeys = ['Database Browser', 'Advance Renamer', 'QtDesigner', 'Davinci Resolve 14']
 
         for key in eKeys:
             if os.path.exists(eVal[eKeys.index(key)]):
@@ -792,18 +764,24 @@ class Collect_info():
             if key in self.iconInfo:
                 self.mainInfo[key] = [key, get_icon(key), "App: {key}".format(key=self.appInfo[key])]
 
-        for key in app.CONFIG_PQUI:
+        for key in app.CONFIG_APPUI:
             self.mainInfo[key] = [key, get_icon(key), "UI: {key}".format(key=key)]
 
-        for key in app.CONFIG_TRAY1:
+        for key in app.CONFIG_SYSTRAY:
             self.mainInfo[key] = [key, get_icon(key), "Func: {key}".format(key=key)]
 
         self.create_config_file('main', self.mainInfo)
 
     def create_config_file(self, name, data):
-        appsConfig_yaml = os.path.join(os.getenv(app.__envKey__), 'appData', 'config', '{name}.yml'.format(name=name))
-        appsConfig_json = os.path.join(os.getenv(app.__envKey__), 'appData', 'config', '{name}.json'.format(name=name))
-        dataHandle('yaml', 'w', appsConfig_yaml, data)
-        dataHandle('json', 'w', appsConfig_json, data)
+        if name == 'envKeys':
+            filePth = app.envConfig
+        elif name == "main":
+            filePth = app.mainConfig
+        elif name=='icon':
+            filePth = app.iconConfig
+        elif name == 'app':
+            filePth = app.appConfig
+
+        dataHandle('json', 'w', filePth, data)
 
 # ----------------------------------------------------------------------------------------------------------- #

@@ -15,7 +15,6 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import QSettings
 from PyQt5.QtWidgets import QApplication, QGridLayout, QWidget, QGroupBox
 
 # -------------------------------------------------------------------------------------------------------------
@@ -24,31 +23,20 @@ import appData as app
 
 from ui import uirc as rc
 
-from utilities import utils as func
-from utilities import variables as var
-
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
 logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
-# Get apps info config
-APPINFO = func.preset_load_appInfo()
-
-# -------------------------------------------------------------------------------------------------------------
-""" Variables """
-
-# -------------------------------------------------------------------------------------------------------------
 """ TopTab4 """
-
 
 class TopTab4(QWidget):
 
     def __init__(self, parent=None):
         super(TopTab4, self).__init__(parent)
 
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
 
         self.layout = QGridLayout()
         self.buildUI()

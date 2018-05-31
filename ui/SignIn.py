@@ -17,10 +17,9 @@ Description:
 import os
 import sys
 import requests
-import logging
 
 # PyQt5
-from PyQt5.QtCore import QSettings, pyqtSignal
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QDialog, QGridLayout, QLineEdit, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox, )
@@ -29,9 +28,8 @@ from PyQt5.QtWidgets import (QApplication, QDialog, QGridLayout, QLineEdit, QPus
 import appData as app
 
 from utilities import utils as func
-from utilities import variables as var
 from utilities import message as mess
-from utilities import sql_local as usql
+from utilities import localdb as usql
 
 from ui import uirc as rc
 
@@ -47,6 +45,7 @@ class SignIn(QDialog):
 
     showMainSig = pyqtSignal(bool)
     showSignUpSig = pyqtSignal(bool)
+    greetingSig = pyqtSignal(bool)
 
     def __init__(self, parent=None):
 
@@ -56,13 +55,14 @@ class SignIn(QDialog):
         self.setWindowTitle('Sign in')
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
         self.setFixedSize(400, 300)
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
         self.show_hide_main(False)
 
         # Main layout
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
+
 
     def buildUI(self):
 
@@ -128,8 +128,7 @@ class SignIn(QDialog):
 
         password = str(pass_word)
 
-        r = requests.post("https://pipeline.damgteam.com/auth", verify=False,
-                          data={'user': username, 'pwd': password})
+        r = requests.post(app.__serverAutho__, verify=False, data={'user': username, 'pwd': password})
 
         if r.status_code == 200:
             for i in r.headers['set-cookie'].split(";"):
@@ -144,6 +143,7 @@ class SignIn(QDialog):
 
             self.hide()
             self.show_hide_main(True)
+            self.greetingSig.emit(True)
         else:
             QMessageBox.critical(self, 'Login Failed', mess.PW_WRONG)
             return
@@ -161,10 +161,10 @@ class SignIn(QDialog):
 
 
 def main():
-    app = QApplication(sys.argv)
+    login = QApplication(sys.argv)
     layout = SignIn()
     layout.show()
-    app.exec_()
+    login.exec_()
 
 
 if __name__ == '__main__':

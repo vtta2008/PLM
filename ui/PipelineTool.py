@@ -1,14 +1,10 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-
 Script Name: PipelineTool.py
 Author: Do Trinh/Jimmy - 3D artist.
-
 Description:
-
     This is main UI of PipelineTool.
-
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
@@ -26,9 +22,7 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QS
 import appData as app
 
 from utilities import utils as func
-from utilities import sql_local as usql
-from utilities import variables as var
-
+from utilities import localdb as usql
 from ui import (SubMenuBar, ToolBar, TopTab, BotTab, ServerStatus)
 from ui import uirc as rc
 
@@ -57,7 +51,7 @@ class PipelineTool(QMainWindow):
 
         self.setWindowTitle(app.__appname__)
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
 
         self.mainWidget = QWidget()
         self.layout = QGridLayout()

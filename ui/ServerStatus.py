@@ -15,16 +15,15 @@ Description:
 import os, sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, QSettings
-from PyQt5.QtWidgets import QApplication, QGridLayout
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QApplication, QGridLayout, QWidget
 
 from PyQt5.QtNetwork import QHostAddress
 
 # Plt
 import appData as app
 from ui import uirc as rc
-from utilities import variables as var
-from appData.__core.pServer__ import Server
+from utilities import Server
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -40,10 +39,10 @@ class ServerStatus(QGridLayout):
     def __init__(self, parent=None):
         super(ServerStatus, self).__init__(parent)
 
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
 
         self.server = Server.Server()
-        self.server.listen(QHostAddress(app.__server__), 9000)
+        self.server.listen(QHostAddress(app.__serverUrl__), 9000)
         self.serverOpen = self.server.isListening()
 
         self.netGood = rc.ImageUI("NetworkGood")
@@ -61,11 +60,13 @@ class ServerStatus(QGridLayout):
 
     def buildUI(self):
 
-        self.addWidget(rc.Label(txt=self.text, alg=app.left), 0, 1, 1, 1)
+        self.addWidget(rc.Label(txt=self.text, alg=app.right), 0, 1, 1, 1)
 
         self.applySetting()
 
     def applySetting(self):
+        self.netGood.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.netBad.setSizePolicy(app.SiPoMin, app.SiPoMin)
         self.setSpacing(1)
 
     def connection_status(self, param):
@@ -75,6 +76,7 @@ class ServerStatus(QGridLayout):
         else:
             self.addWidget(self.netBad, 0, 0, 1, 1)
             self.removeWidget(self.netGood)
+
 
 def main():
     app = QApplication(sys.argv)

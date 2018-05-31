@@ -14,7 +14,7 @@ Description:
 """ Import """
 
 # Python
-import os, sys, glob, logging
+import os, sys, glob
 from functools import partial
 
 # PyQt5
@@ -26,8 +26,6 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphic
 
 # Plt
 import appData as app
-
-from utilities import variables as var
 from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
@@ -161,8 +159,11 @@ class ImageInitUI(ViewerWindow):
     def __init__(self, key=None, parent=None):
         super(ImageInitUI, self).__init__(parent)
 
-        self.dbfile = var.DB_PATH
+        self.dbfile = app.DBPTH
         self.dbdir = os.path.dirname(self.dbfile)
+
+        print(self.dbfile)
+        print(self.dbdir)
 
         if not os.path.isfile(self.dbfile):
             self.createDB()

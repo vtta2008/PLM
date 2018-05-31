@@ -12,10 +12,10 @@ Description:
 """ Import """
 
 # Python
-import os, sys, logging
+import os, sys
 
 # PyQt5
-from PyQt5.QtCore import QSettings, pyqtSignal
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QIcon, QPixmap, QImage
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox, QFileDialog, QComboBox, QDialog)
@@ -25,9 +25,8 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QLineEdit, QLabel, QPush
 import appData as app
 
 from utilities import utils as func
-from utilities import sql_local as usql
+from utilities import localdb as usql
 from utilities import message as mess
-from utilities import variables as var
 
 from ui import uirc as rc
 
@@ -36,19 +35,23 @@ from ui import uirc as rc
 
 logger = app.set_log()
 
+# -------------------------------------------------------------------------------------------------------------
+""" Sign up ui """
+
 class SignUp(QDialog):
 
     showLoginSig = pyqtSignal(bool)
 
     def __init__(self, parent=None):
-
         super(SignUp, self).__init__(parent)
-
+        print(1)
         self.setWindowTitle("Sign Up")
+        print(2)
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
-        self.setContentsMargins(0,0,0,0)
+        print(3)
+        # self.setContentsMargins(0,0,0,0)
         self.setFixedSize(450, 900)
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
 
         self.showLoginSig.emit(False)
 

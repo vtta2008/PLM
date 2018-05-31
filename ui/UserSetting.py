@@ -9,44 +9,28 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Check data flowing """
-# print("Import from modules: {file}".format(file=__name__))
-# print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-# -------------------------------------------------------------------------------------------------------------
 """ Import """
 
 # Python
 import os
 import shutil
 import sys
-import logging
 
 # PtQt5
-from PyQt5.QtCore import pyqtSignal, QSettings, Qt
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QImage, QIcon, QPixmap
 from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QHBoxLayout, QPushButton, QFileDialog,
                              QMessageBox, QApplication, QLabel)
 
 # Plt
 import appData as app
-from utilities import sql_local as usql
+from utilities import localdb as usql
 from utilities import utils as func
 from utilities import message as mess
-from utilities import variables as var
-
-# -------------------------------------------------------------------------------------------------------------
-""" Declare variables """
-
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 
-logPth = os.path.join(app.LOGPTH)
-handler = logging.FileHandler(logPth)
-formatter = logging.Formatter('%(asctime)s %(levelname)s %(message)s')
-handler.setFormatter(formatter)
-logger = logging.getLogger(__name__)
-logger.addHandler(handler)
-logger.setLevel(logging.DEBUG)
+# logger = app.set_log()
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """
@@ -64,7 +48,7 @@ class Account_setting(QDialog):
         self.setWindowTitle('User Setting')
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
 
-        self.settings = QSettings(var.USER_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
 
         self.layout = QGridLayout()
         self.buildUI()

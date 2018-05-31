@@ -20,7 +20,7 @@ from PyQt5.QtWidgets import (QApplication, QMessageBox, QDialog, QDialogButtonBo
                              QLineEdit, QVBoxLayout)
 
 # Plt tools
-from utilities import sql_local as usql
+from utilities import localdb as usql
 from utilities import message as mess
 
 class ForgotPassword(QDialog):

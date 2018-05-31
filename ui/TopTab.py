@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-
 Script Name: TopTabWidget.py
 Author: Do Trinh/Jimmy - 3D artist.
-
 Description:
-
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
@@ -16,16 +13,14 @@ import sys
 import sqlite3 as lite
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, QSettings, Qt
+from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import (QApplication, QSizePolicy, QWidget, QVBoxLayout, QTabWidget)
 
 # Plt
 import appData as app
 
 from ui import (TopTab1, TopTab2, TopTab3, TopTab4, TopTab5)
-from ui import uirc as rc
 from utilities import utils as func
-from utilities import variables as var
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -33,18 +28,11 @@ from utilities import variables as var
 logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
-# Get apps info config
-ICONINFO = func.preset_load_iconInfo()
-
-# -------------------------------------------------------------------------------------------------------------
-""" Variables """
-
-# -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
 
 class TopTab(QWidget):
 
-    dbConn = lite.connect(var.DB_PATH)
+    dbConn = lite.connect(app.DBPTH)
     showMainSig = pyqtSignal(bool)
     showLoginSig = pyqtSignal(bool)
     tabSizeSig = pyqtSignal(int, int)
@@ -53,7 +41,7 @@ class TopTab(QWidget):
         super(TopTab, self).__init__(parent)
 
         self.username = username
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
 
         self.layout = QVBoxLayout()
         self.buildUI()

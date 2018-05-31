@@ -10,15 +10,23 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
+
+# Python
 import sys
+
+# PyQt5
 from PyQt5.QtCore import QDate, QLocale, Qt
 from PyQt5.QtGui import QFont, QTextCharFormat, QIcon
 from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
                              QComboBox, QDateEdit, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
-                             QLayout, QDialog, QWidget)
+                             QLayout, QDialog)
 
+# Plt
+import appData as app
 from utilities import utils as func
 
+# -------------------------------------------------------------------------------------------------------------
+""" Clendar """
 
 class Calendar(QDialog):
 
@@ -28,11 +36,9 @@ class Calendar(QDialog):
         self.setWindowTitle('Calendar')
         self.setWindowIcon(QIcon(func.get_icon('Calendar')))
 
-        central_widget = QWidget(self)
         self.layout = QGridLayout(self)
-        central_widget.setLayout(self.layout)
-
         self.buildUI()
+        self.setLayout(self.layout)
 
     def buildUI(self):
 
@@ -150,8 +156,8 @@ class Calendar(QDialog):
         curLocaleIndex = -1
         lang_country = {}
         for lid in range(QLocale.C, QLocale.LastLanguage + 1):
-            lang = (QLocale(lid).nativeLanguageName()).encode('utf-8')
-            country = (QLocale(lid).nativeCountryName()).encode('utf-8')
+            lang = (QLocale(lid).nativeLanguageName())
+            country = (QLocale(lid).nativeCountryName())
             lang_country[country] = [lang, lid]
             lid += 1
 
@@ -159,8 +165,9 @@ class Calendar(QDialog):
         countries.remove(countries[0])
         for country in countries:
             lang = lang_country[country][0]
-            label = "%s/%s" % (lang, country)
+            label = "{0}/{1}".format(lang, country)
             locale = QLocale(lang_country[country][1])
+
             if self.locale().language() == lang and self.locale().country() == country:
                 curLocaleIndex = lang_country[country][1]
 
@@ -229,17 +236,17 @@ class Calendar(QDialog):
         checkBoxLayout.addWidget(self.navigationCheckBox)
 
         outerLayout = QGridLayout()
-        outerLayout.addWidget(self.localeLabel, 0, 0)
-        outerLayout.addWidget(self.localeCombo, 0, 1)
-        outerLayout.addWidget(self.firstDayLabel, 1, 0)
-        outerLayout.addWidget(self.firstDayCombo, 1, 1)
-        outerLayout.addWidget(self.selectionModeLabel, 2, 0)
-        outerLayout.addWidget(self.selectionModeCombo, 2, 1)
+        outerLayout.addWidget(self.localeLabel, 0, 0, 1, 1)
+        outerLayout.addWidget(self.localeCombo, 0, 1, 1, 1)
+        outerLayout.addWidget(self.firstDayLabel, 1, 0, 1, 1)
+        outerLayout.addWidget(self.firstDayCombo, 1, 1, 1, 1)
+        outerLayout.addWidget(self.selectionModeLabel, 2, 0, 1, 1)
+        outerLayout.addWidget(self.selectionModeCombo, 2, 1, 1, 1)
         outerLayout.addLayout(checkBoxLayout, 3, 0, 1, 2)
-        outerLayout.addWidget(self.horizontalHeaderLabel, 4, 0)
-        outerLayout.addWidget(self.horizontalHeaderCombo, 4, 1)
-        outerLayout.addWidget(self.verticalHeaderLabel, 5, 0)
-        outerLayout.addWidget(self.verticalHeaderCombo, 5, 1)
+        outerLayout.addWidget(self.horizontalHeaderLabel, 5, 0, 1, 1)
+        outerLayout.addWidget(self.horizontalHeaderCombo, 5, 1, 1, 1)
+        outerLayout.addWidget(self.verticalHeaderLabel, 6, 0, 1, 1)
+        outerLayout.addWidget(self.verticalHeaderCombo, 6, 1, 1, 1)
         self.generalOptionsGroupBox.setLayout(outerLayout)
 
         self.firstDayChanged(self.firstDayCombo.currentIndex())
@@ -329,12 +336,12 @@ class Calendar(QDialog):
         checkBoxLayout.addWidget(self.mayFirstCheckBox)
 
         outerLayout = QGridLayout()
-        outerLayout.addWidget(self.weekdayColorLabel, 0, 0)
-        outerLayout.addWidget(self.weekdayColorCombo, 0, 1)
-        outerLayout.addWidget(self.weekendColorLabel, 1, 0)
-        outerLayout.addWidget(self.weekendColorCombo, 1, 1)
-        outerLayout.addWidget(self.headerTextFormatLabel, 2, 0)
-        outerLayout.addWidget(self.headerTextFormatCombo, 2, 1)
+        outerLayout.addWidget(self.weekdayColorLabel, 0, 0, 1, 1)
+        outerLayout.addWidget(self.weekdayColorCombo, 0, 1, 1, 1)
+        outerLayout.addWidget(self.weekendColorLabel, 1, 0, 1, 1)
+        outerLayout.addWidget(self.weekendColorCombo, 1, 1, 1, 1)
+        outerLayout.addWidget(self.headerTextFormatLabel, 2, 0, 1, 1)
+        outerLayout.addWidget(self.headerTextFormatCombo, 2, 1, 1, 1)
         outerLayout.addLayout(checkBoxLayout, 3, 0, 1, 2)
         self.textFormatsGroupBox.setLayout(outerLayout)
 
@@ -353,15 +360,15 @@ class Calendar(QDialog):
         return comboBox
 
     def applySetting(self):
+        self.layout.setSpacing(2)
         self.layout.setSizeConstraint(QLayout.SetFixedSize)
-        self.previewLayout.setRowMinimumHeight(0, self.calendar.sizeHint().height())
-        self.previewLayout.setColumnMinimumWidth(0, self.calendar.sizeHint().width())
+        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
 
 def main():
-    app = QApplication(sys.argv)
+    calendar = QApplication(sys.argv)
     window = Calendar()
     window.show()
-    app.exec_()
+    calendar.exec_()
 
 if __name__ == '__main__':
     main()

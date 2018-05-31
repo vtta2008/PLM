@@ -14,14 +14,15 @@ Description:
 """ Import """
 
 # Python
+import sys
 
 # PtQt5
-from PyQt5.QtCore import pyqtSignal, QSettings
-from PyQt5.QtWidgets import QGridLayout, QCheckBox, QApplication
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QGridLayout, QCheckBox, QApplication, QWidget
 
 # Plt
+import appData as app
 from utilities import utils as func
-from utilities import variables as var
 
 # -------------------------------------------------------------------------------------------------------------
 """ Quick Setting """
@@ -40,8 +41,8 @@ class QuickSetting(QGridLayout):
     def __init__(self, parent=None):
         super(QuickSetting, self).__init__(parent)
 
-        self.setSpacing(0)
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.setSpacing(2)
+        self.settings = app.APPSETTING
 
         self.toolBarTDCB = QCheckBox("TD toolbar")
         self.toolBarCompCB = QCheckBox("Comp toolbar")
@@ -123,9 +124,10 @@ class QuickSetting(QGridLayout):
     def quickSettingStateChanged(self):
         self.quickSettingSig.emit(self.quickSettingCB.isChecked())
 
+
 def main():
 
-    app = QApplication
+    app = QApplication(sys.argv)
     quickSetting = QuickSetting()
     quickSetting.show()
     app.exec_()

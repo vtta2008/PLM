@@ -14,30 +14,11 @@ import math
 
 from PyQt5.QtCore import Qt, QSettings
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QSizePolicy, QToolButton, QWidget, QDialog)
+from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QDialog)
 
+import appData as app
 from utilities import utils as func
-from utilities import variables as var
-
-
-class Button(QToolButton):
-
-    def __init__(self, text, parent=None):
-        super(Button, self).__init__(parent)
-
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
-        self.setText(text)
-        self.applySetting()
-
-    def applySetting(self):
-        self.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
-
-    def sizeHint(self):
-        size = super(Button, self).sizeHint()
-        size.setHeight(size.height() + 20)
-        size.setWidth(max(size.width(), size.height()))
-        return size
-
+from ui import uirc as rc
 
 class Calculator(QDialog):
 
@@ -46,14 +27,12 @@ class Calculator(QDialog):
 
         self.setWindowTitle('Calculator')
         self.setWindowIcon(QIcon(func.get_icon('Calculator')))
-
+        self.settings = app.APPSETTING
         self.NumDigitButtons = 10
 
-        central_widget = QWidget(self)
         self.layout = QGridLayout(self)
-        central_widget.setLayout(self.layout)
-
         self.buildUI()
+        self.setLayout(self.layout)
 
     def buildUI(self):
         self.pendingAdditiveOperator = ''
@@ -114,6 +93,8 @@ class Calculator(QDialog):
         self.layout.addWidget(self.powerButton,3,5)
         self.layout.addWidget(self.reciprocalButton,4,5)
         self.layout.addWidget(self.equalButton,5,5)
+
+        self.applySetting()
 
     def digitClicked(self):
         clickedButton = self.sender()
@@ -283,7 +264,7 @@ class Calculator(QDialog):
         self.sumInMemory += float(self.display.text())
 
     def createButton(self, text, member):
-        button = Button(text)
+        button = rc.TButton(text)
         button.clicked.connect(member)
         return button
 
@@ -307,19 +288,21 @@ class Calculator(QDialog):
         return True
 
     def applySetting(self):
-        self.display.setMaxLength(15)
 
+        self.display.setMaxLength(15)
         font = self.display.font()
         font.setPointSize(font.pointSize() + 8)
         self.display.setFont(font)
 
+        self.layout.setSpacing(2)
         self.layout.setSizeConstraint(QLayout.SetFixedSize)
+        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
 
 def main():
-    app = QApplication(sys.argv)
+    appCal = QApplication(sys.argv)
     calc = Calculator()
     calc.show()
-    app.exec_()
+    appCal.exec_()
 
 if __name__ == '__main__':
     main()

@@ -10,15 +10,22 @@ Description:
 """
 
 # -------------------------------------------------------------------------------------------------------------
+""" Import """
+
+# Python
 import sys
 
+# PyQt5
 from PyQt5.QtCore import QSettings, pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QPushButton, QGridLayout, QGroupBox
 
+# Plt
+import appData as app
 from utilities import utils as func
-from utilities import variables as var
 
+# -------------------------------------------------------------------------------------------------------------
+""" Preferences window """
 
 class Preferences(QDialog):
 
@@ -33,7 +40,7 @@ class Preferences(QDialog):
         self.setWindowTitle("Preferences")
         self.setWindowIcon(QIcon(func.get_icon('Logo')))
 
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
 
         self.layout = QGridLayout()
         self.buildUI()

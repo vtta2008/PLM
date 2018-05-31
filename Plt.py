@@ -13,46 +13,32 @@ Description:
 
 # Python
 import os, sys, requests
-
-# PyQt5
-from PyQt5.QtCore import QCoreApplication, QObject, QSettings
-from PyQt5.QtWidgets import QApplication, QMessageBox, QSystemTrayIcon
-
-# -------------------------------------------------------------------------------------------------------------
-""" Set up env variable path """
-
-__envKey__ = "PIPELINE_TOOL"
-os.environ[__envKey__] = os.getcwd()
-
-import appData as app
-
-configPth = os.path.join(os.getenv(app.__envKey__), 'appData', 'config')
-settingPth = os.path.join(os.getenv(app.__envKey__), 'appData', 'settings')
-logPth = os.path.join(os.getenv(app.__envKey__), 'appData', 'logs')
-
-for pth in [configPth, settingPth, logPth]:
-    if not os.path.exists(pth):
-        os.mkdir(pth)
-
-# -------------------------------------------------------------------------------------------------------------
-""" Stylesheet plugin """
 import qdarkgraystyle
 
-# -------------------------------------------------------------------------------------------------------------
-""" Plt tools """
+# PyQt5
+from PyQt5.QtCore import QCoreApplication, QObject
+from PyQt5.QtWidgets import QApplication, QMessageBox, QSystemTrayIcon
+
+# Plt
+import appData as app
+
+os.environ[app.__envKey__] = os.getcwd()        # Set up environment variable
 
 from utilities import utils as func
-from utilities import sql_local as usql
 from utilities import message as mess
-from utilities import variables as var
 
-func.Collect_info()
-func.preset_maya_intergrate()
+func.preset_setup_config_data()         # Set up config data
+func.preset_implement_maya_tanker()     # Implement maya tankers
+func.Collect_info()                     # Generate config info
 
+from utilities import localdb as usql
+
+# Import ui
 from ui import (SignIn, SignUp, PipelineTool, SysTrayIcon)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
+
 logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
@@ -63,9 +49,7 @@ class PltConsole(QObject):
     def __init__(self):
         super(PltConsole, self).__init__()
 
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
-
-        usql.query_userData()
+        self.settings = app.APPSETTING
 
         QCoreApplication.setApplicationName(app.__appname__)
         QCoreApplication.setApplicationVersion(app.__version__)
@@ -73,44 +57,44 @@ class PltConsole(QObject):
         QCoreApplication.setOrganizationDomain(app.__website__)
 
         mainApp = QApplication(sys.argv)
-        mainApp.setApplicationDisplayName(app.__slogan__)
+        mainApp.setApplicationDisplayName(app.__appname__)
         mainApp.setStyleSheet(qdarkgraystyle.load_stylesheet())
 
-        username, token, cookie = usql.query_user_session()
+        self.username, token, cookie = usql.query_user_session()
 
         self.SignInUI = SignIn.SignIn()
         self.SignUpUI = SignUp.SignUp()
         self.MainUI = PipelineTool.PipelineTool()
         self.SysTray = SysTrayIcon.SysTrayIcon()
 
+        self.SignInUI.greetingSig.connect(self.loginMess)
         self.SignInUI.showSignUpSig.connect(self.show_hide_signup)
         self.SignInUI.showMainSig.connect(self.show_hide_main)
-        self.MainUI.showMainSig.connect(self.show_hide_main)
 
+        self.MainUI.showMainSig.connect(self.show_hide_main)
         self.MainUI.showLoginSig.connect(self.show_hide_signin)
         self.SignUpUI.showLoginSig.connect(self.show_hide_signin)
 
         self.SysTray.showNormalSig.connect(self.MainUI.showNormal)
         self.SysTray.showMinimizeSig.connect(self.MainUI.hide)
         self.SysTray.showMaximizeSig.connect(self.MainUI.showMaximized)
-        self.MainUI.closeMessSig.connect(self.closeMess)
+        # self.MainUI.closeMessSig.connect(self.closeMess)
 
-        if username is None or token is None or cookie is None:
+        if self.username is None or token is None or cookie is None:
             self.SignInUI.show()
         else:
-            r = requests.get("https://pipeline.damgteam.com/check", verify = False,
+            r = requests.get(app.__serverCheck__, verify = False,
                              headers={'Authorization': 'Bearer {token}'.format(token=token)},
                              cookies={'connect.sid': cookie})
-
             if r.status_code == 200:
-                self.MainUI.show()
+
                 self.SysTray.show()
                 self.SysTray.loginMess()
+                self.MainUI.show()
 
                 if not QSystemTrayIcon.isSystemTrayAvailable():
                     QMessageBox.critical(None, mess.SYSTRAY_UNAVAI)
                     sys.exit(1)
-
             else:
                 self.SignInUI.show()
 
@@ -118,7 +102,6 @@ class PltConsole(QObject):
         sys.exit(mainApp.exec_())
 
     def show_hide_main(self, param):
-        param = func.str2bool(param)
         if param:
             self.MainUI.show()
             self.SysTray.show()
@@ -139,6 +122,10 @@ class PltConsole(QObject):
             self.SignInUI.show()
         else:
             self.SignInUI.hide()
+
+    def loginMess(self, param):
+        if param:
+            self.SysTray.loginMess()
 
     def closeMess(self, param):
         if param:

@@ -12,31 +12,21 @@ Description:
 """ Import """
 
 # Python
-import os, sys, logging
+import sys
 
 # PyQt5
-from PyQt5.QtCore import QUrl, QSize, QSettings
+from PyQt5.QtCore import QUrl
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLineEdit, QPushButton
 
 # Plt
 import appData as app
 from ui import uirc as rc
 from utilities import utils as func
-from utilities import variables as var
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
 logger = app.set_log()
-
-# -------------------------------------------------------------------------------------------------------------
-""" Variables """
-
-ICON_SIZE = 30
-ICON_BUFFRATE = 10
-ICON_BUFFREGION = -1
-ICON_BUFF = ICON_BUFFREGION*(ICON_SIZE*ICON_BUFFRATE/100)
-ICON_SET_SIZE = QSize(ICON_SIZE + ICON_BUFF, ICON_SIZE + ICON_BUFF)
 
 def handleLeftClick(x, y):
     row = int(y)
@@ -51,8 +41,9 @@ class TopTab1(QWidget):
     def __init__(self, parent=None):
         super(TopTab1, self).__init__(parent)
 
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
-        for i in app.CONFIG_PQUIP1:
+        self.settings = app.APPSETTING
+
+        for i in app.CONFIG_TOOLS:
             self.settings.setValue(i, False)
 
         self.appInfo = func.preset_load_appInfo()
@@ -74,11 +65,11 @@ class TopTab1(QWidget):
                      self.noteReminderUI, self.pltBrowserUI, self.screenshotUI, self.textEditorUI]
 
         pyuiBtns = []
-        for key in app.CONFIG_PQUIP1:
+        for key in app.CONFIG_TOOLS:
             if key in self.appInfo:
                 btn = rc.IconBtnLoadLayout(key)
                 sig = btn.consoleSig
-                sig.connect(loaduiLst[app.CONFIG_PQUIP1.index(key)])
+                sig.connect(loaduiLst[app.CONFIG_TOOLS.index(key)])
                 pyuiBtns.append(btn)
 
         sec3Grp = rc.AutoSectionBtnGrp("Tools", pyuiBtns, "IconGrid")
@@ -145,10 +136,10 @@ class TopTab1(QWidget):
         layout.show()
         layout.exec_()
 
-    def pltBrowserUI(self):
-        from ui import PltBrowser
-        app.reload(PltBrowser)
-        layout = PltBrowser.PltBrowser(QUrl('http://www.google.com.vn'))
+    def pltBrowserUI(self, url='http://www.google.com.vn'):
+        from ui import Browser
+        app.reload(Browser)
+        layout = Browser.Browser(QUrl(url))
         layout.show()
         layout.exec_()
 

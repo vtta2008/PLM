@@ -38,12 +38,12 @@ with open('README.rst', 'r') as f:
 includes = ["atexit", "re"]
 
 setup(
-    name = func.read_package_variable("__project__"),
-    version = func.read_package_variable("__version__"),
+    name = app.__project__,
+    version = app.__version__,
     packages = setuptools.find_packages(),
-    package_dir = func.read_package_variable("__packages_dir__"),
-    url = func.read_package_variable("__website__"),
-    download_url = func.read_package_variable("__download__"),
+    package_dir = app.__packages_dir__,
+    url = app.__website__,
+    download_url = app.__download__,
     license = func.read_package_variable("__licence__"),
     author = func.read_package_variable("__author__"),
     author_email= func.read_package_variable("__email__"),

@@ -9,49 +9,170 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Check data flowing """
-# print("Import from modules: {file}".format(file=__name__))
-# print("Directory: {path}".format(path=__file__.split(__name__)[0]))
-# -------------------------------------------------------------------------------------------------------------
 """ Import """
 
 # Python
-import os, logging
+import os
 from importlib import reload as r
 
-from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtWidgets import QSizePolicy, QFrame
+# Plt
+from . import subData as sub
 
 # -------------------------------------------------------------------------------------------------------------
-""" Global variables """
+""" Environment Variable """
 
+# Plt environment key:
 __envKey__ = "PIPELINE_TOOL"
 
-__project__ = "Pipeline Tool"
+try:
+    dtDir = os.path.join(os.getenv(__envKey__).split('ui')[0], 'appData')
+except AttributeError:
+    dtDir = os.path.join(os.getcwd().split('ui')[0], 'appData')
 
-__version__ = "13.0.1"
+print(dtDir)
 
-__verType__ = "Dev"
+# -------------------------------------------------------------------------------------------------------------
+""" Reload module """
 
-__reverType__ = "1"
+def reload(module):
+    return r(module)
 
-__appname__ = "Pipeline Tool"
+def set_log():
+    return sub.set_log()
 
-__slogan__ = "Creative solution for problem solving"
+# -------------------------------------------------------------------------------------------------------------
+""" Setup dir, path """
 
-__about__ = "About plt"
+DAMGDIR = sub.DAMGDIR
+APPDIR = sub.APPDIR
+
+CONFIGDIR = sub.CONFIGDIR                       # Config dir to store config info
+SETTINGDIR = sub.SETTINGDIR                     # Setting dir to store setting info
+LOGDIR = sub.LOGDIR                             # Log dir to store log info
+
+DBPTH = sub.DBPTH                               # Local database
+LOGPTH = sub.LOGPTH                             # Log file
+
+APPSETTING = sub.appSetting
+USERSETTING = sub.userSetting
+
+envConfig = sub.envConfig
+iconConfig = sub.iconConfig                     # icon config
+mainConfig = sub.mainConfig                     # general info config
+appConfig = sub.appConfig
+
+# -------------------------------------------------------------------------------------------------------------
+""" DAMG team """
 
 __organization__ = "DAMG team"
+__damgSlogan__ = "Desire Design"
+__website__ = "https://damgteam.com"
+__author1__ = "Trinh Do"
+__author2__ = "Duong Minh Duc"
+__Founder__ = __author1__
+__CoFonder1__ = __author2__
+__email1__ = "dot@damgteam.com"
+__email2__ = "up@damgteam.com"
 
-__website__ = "https://pipeline.damgteam.com"
+# -------------------------------------------------------------------------------------------------------------
+""" PipelineTool """
 
+__project__ = "Pipeline Tool (Plt)"
+__appname__ = "PipelineTool"
+__appShortcut__ = "Plt.ink"
+__version__ = "13.0.1"
+__verType__ = "Dev"
+__reverType__ = "1"
+__about__ = "About plt"
+__homepage__ = "https://pipeline.damgteam.com"
+__pltSlogan__ = "Creative solution for problem solving"
 __pltWiki__ = "https://github.com/vtta2008/PipelineTool/wiki"
 
-__download__ = "https://github.com/vtta2008/pipelineTool"
+# -------------------------------------------------------------------------------------------------------------
+""" Server """
 
-__email__ = "dot@damgteam.com, up@damgteam.com"
+__serverLocal__ = "http://127.0.0.1:8000/"
+__serverUrl__ = "https://pipeline.damgteam.com"
+__serverCheck__ = "https://pipeline.damgteam.com/check"
+__serverAutho__ = "https://pipeline.damgteam.com/auth"
 
-__author__ = "Trinh Do, Duong Minh Duc"
+__google__ = "https://google.com.vn"
+
+# -------------------------------------------------------------------------------------------------------------
+""" Metadata """
+
+VERSION = "{0} v{1}.{2}-{3}".format(__project__, __version__, __verType__, __reverType__)
+COPYRIGHT = "{0} software (c) 2017-2018 {1}. All rights reserved.".format(__appname__, __organization__)
+
+# --------------------------------------------------------------------------------------------------------------
+""" Config data """
+
+KEYDETECT = sub.KEYDETECT
+
+CONFIG_APPUI = sub.CONFIG_APPUI
+
+pVERSION = dict(autodesk=sub.autodeskVer, adobe=sub.adobeVer, foundry=sub.foundryVer, pixologic=sub.pixologiVer,
+                sizefx=sub.sizefxVer, office=sub.officeVer, jetbrains=sub.jetbrainsVer)
+
+pPACKAGE = dict(autodesk=sub.autodeskApp, adobe=sub.adobeApp, foundry=sub.foundryApp, pixologic=sub.pixologiApp,
+                sizefx=sub.sizefxApp, office=sub.officeApp, jetbrains=sub.jetbrainsApp)
+
+pTRACK = dict(TDS=sub.TRACK_TDS, VFX=sub.TRACK_VFX, ART=sub.TRACK_ART, Office=sub.TRACK_OFFICE, Dev=sub.TRACK_DEV,
+              Tools=sub.TRACK_TOOLS, Extra=sub.TRACK_EXTRA, sysTray=sub.TRACK_SYSTRAY, )
+
+KEYPACKAGE = []
+
+for k in pPACKAGE:
+    for name in pPACKAGE[k]:
+        for ver in pVERSION[k]:
+            if name == 'Hiero' or name == 'HieroPlayer':
+                key = name + ver
+            else:
+                key = name + " " + ver
+            KEYPACKAGE.append(key)
+
+KEYPACKAGE = KEYPACKAGE + sub.otherApp + sub.anacondaApp + CONFIG_APPUI
+
+def generate_config(key, *args):
+    keys = []
+    for k in KEYPACKAGE:
+        for t in pTRACK[key]:
+            if t in k:
+                keys.append(k)
+
+    return list(set(keys))
+
+# Toolbar config
+CONFIG_TDS = generate_config('TDS')
+CONFIG_VFX = generate_config('VFX')
+CONFIG_ART = generate_config('ART')
+
+# Tab 1 sections config
+CONFIG_OFFICE = generate_config('Office')
+CONFIG_DEV = generate_config('Dev')
+CONFIG_TOOLS = generate_config('Tools')
+CONFIG_EXTRA = generate_config('Extra')
+CONFIG_SYSTRAY = generate_config('sysTray')
+
+# ----------------------------------------------------------------------------------------------------------- #
+""" Setup.py options """
+
+__email__ = __email1__ + ", " + __email2__
+
+__packages_dir__ = ["", "ui", "appData", "tankers", "docs", "imgs", "utilities"]
+
+__classifiers__ = [
+              "Development Status :: 3 - Production/Unstable",
+              "Environment :: X11 Applications :: Qt",
+              "Environment :: Win64 (MS Windows)",
+              "Intended Audience :: Artist :: VFX Company",
+              "License :: OSI Approved :: MIT License",
+              "Operating System :: Microsoft :: Windows",
+              "Programming Language :: Python :: 3.6",
+              "Topic :: Software Development :: pipeline-framework :: Application :: vfx :: customization :: optimization :: research-project",
+                ]
+
+__download__ = "https://github.com/vtta2008/PipelineTool/releases"
 
 __description__ = "This applications can be used to build, manage, and optimise film making pipelines."
 
@@ -65,136 +186,26 @@ __modules__ = ["plt", "globals", "_version", "appData.templates.pyTemplate", "ut
 __pkgsReq__ = [ "deprecated", "jupyter-console", "ipywidgets","pywinauto", "winshell", "pandas", "notebook", "juppyter",
                 "opencv-python", "pyunpack", "argparse", "qdarkgraystyle", "asyncio", "websockets", "cx_Freeze", ]
 
-__packages_dir__ = ["", "ui", "appData", "appPackages", "docs", "imgs", "utilities"]
+QUESTIONS = sub.read_file(dtDir, 'QUESTION')
 
+ABOUT = sub.read_file(dtDir, 'ABOUT')
 
-__classifiers__ = [
-              "Development Status :: 3 - Production/Unstable",
-              "Environment :: X11 Applications :: Qt",
-              "Environment :: Win64 (MS Windows)",
-              "Intended Audience :: Artist :: VFX Company",
-              "License :: OSI Approved :: MIT License",
-              "Operating System :: Microsoft :: Windows",
-              "Programming Language :: Python :: 3.6",
-              "Topic :: Software Development :: pipeline-framework :: Application :: vfx :: customization :: optimization :: research-project",
-                ]
+CREDIT = sub.read_file(dtDir, 'CREDIT')
 
-__homepage__ = "https://pipeline.damgteam.com"
-
-__server__ = "https://pipeline.damgteam.com"
-
-__serverCheck__ = "https://pipeline.damgteam.com/check"
-
-__serverAutho__ = "https://pipeline.damgteam.com/auth"
-
-__local__ = "http://127.0.0.1:8000/"
-
-VERSION = "{0} v{1}.{2}-{3}".format(__project__, __version__, __verType__, __reverType__)
-
-COPYRIGHT = "Copyright (C) 2017 - 2018 by DAMG team."
-
-KEY_PKGS = ['3ds Max', 'Advance Rename', 'After Effects', 'Audition', 'Git Bash', 'Hiero', 'Houdini FX',
-            'Illustrator', 'Katana', 'Mari', 'Maya', 'McWord', 'McExcel', 'McPowerPoint', 'Mudbox', 'NukeX', 'Photoshop', 'Premiere Pro', 'PyCharm',
-            'QtDesigner', 'Snipping Tool', 'Sublime Text', 'Substance Painter', 'UVLayout', 'Wordpad', 'ZBrush']
-
-KEY_DETECT = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype"]
-
-CONFIG_ART = ['Adobe Photoshop CC 2018', 'Adobe Illustrator CC 2018']
-
-CONFIG_VFX = ['NukeX11.1v1', 'Davinci Resolve', 'Hiero11.1v1', 'HieroPlayer11.1v1', 'Adobe After Effects CC 2018',
-              'Adobe Premiere Pro CC 2018']
-
-CONFIG_TDS = ['Autodesk Maya 2017', 'ZBrush 4R8', 'Mari 4.0v1', 'Houdini FX', 'Substance Painter']
-
-CONFIG_DEV = ['JetBrains PyCharm 2017.3.3', 'Sublime Text 3', 'QtDesigner', 'Git Bash', 'Command Prompt']
-
-CONFIG_EXTRA = ['Autodesk 3Ds Max 2017', 'Autodesk 3Ds Max 2018', 'Autodesk Mudbox 2017', 'Autodesk Mudbox 2018']
-
-CONFIG_OFFICE = ['McWord', 'McExcel', 'McPowerPoint', 'Wordpad']
-
-CONFIG_PQUI = ['AboutPlt', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary', 'FindFiles', 'ForgotPassword', 'ImageViewer',
-               'NewProject', 'NoteReminder', 'Preferences', 'Screenshot', 'TextEditor', 'UserSetting']
-
-CONFIG_PQUIP1 = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'NoteReminder', 'PltBrowser',
-                 'Screenshot', 'TextEditor', ]
-
-CONFIG_TRAY1 = ['Mute', 'VolumeUp', 'VolumeDown', 'ChannelUp', 'ChannelDown']
-
-CONFIG_TRAY2 = ['Snipping Tool', 'Screenshot']
-
-# -------------------------------------------------------------------------------------------------------------
-""" Global setting """
-
-__imgExt = "All Files (*);;Img Files (*.jpg);;Img Files (*.png)"
-
-keepARM = Qt.KeepAspectRatio
-ignoreARM = Qt.IgnoreAspectRatio
-
-scrollAsNeed = Qt.ScrollBarAsNeeded
-scrollOff = Qt.ScrollBarAlwaysOff
-scrollOn = Qt.ScrollBarAlwaysOn
-
-SiPoMin = QSizePolicy.Minimum
-SiPoMax = QSizePolicy.Maximum
-SiPoExp = QSizePolicy.Expanding
-SiPoPre = QSizePolicy.Preferred
-
-frameStyle = QFrame.Sunken | QFrame.Panel
-
-# Alignment
-center = Qt.AlignCenter
-right = Qt.AlignRight
-left = Qt.AlignLeft
-hori = Qt.Horizontal
-vert = Qt.Vertical
-
-# String
-TXT = "No Text" # String by default
-
-# Value, Nummber, Float, Int ...
-UNIT = 60   # Base Unit
-MARG = 5    # Content margin
-BUFF = 10   # Buffer size
-SCAL = 1    # Scale value
-STEP = 1    # Step value changing
-VAL = 1     # Default value
-MIN = 0     # Minimum value
-MAX = 1000  # Maximum value
-WMIN = 50   # Minimum width
-HMIN = 20   # Minimum height
-HFIX = 80
-ICON_SIZE = 30
-ICON_BUFFRATE = 10
-ICON_BUFFREGION = -1
-ICON_BUFF = ICON_BUFFREGION*(ICON_SIZE*ICON_BUFFRATE/100)
-ICON_SET_SIZE = QSize(ICON_SIZE+ICON_BUFF, ICON_SIZE+ICON_BUFF)
-
-
-logFormat1 = "%(asctime)s %(levelname)s %(message)s",
-logFormat2 = "%(asctime)-15s: %(name)-18s - %(levelname)-8s - %(module)-15s - %(funcName)-20s - %(lineno)-6d - %(message)s"
+README = sub.read_file(dtDir, 'README')
 
 # ----------------------------------------------------------------------------------------------------------- #
-""" Check plt scripts runable """
 
-try:
-    pth = os.path.join(os.getenv(__envKey__))
-except TypeError:
-    raise KeyError("We need environment variable to run.")
-else:
-    CONFIGPTH = os.path.join(os.getenv(__envKey__), 'appData', 'config')
-    LOGPTH = os.path.join(os.getenv(__envKey__), 'appData', 'logs', 'Plt.log')
-    SETTINGPTH = os.path.join(os.getenv(__envKey__), 'appData', 'settings')
+TXT = sub.TXT
+WMIN = sub.WMIN
+ICONSIZE = sub.ICONSIZE
+ICONSETSIZE = sub.ICONSETSIZE
 
-def reload(module):
-    return r(module)
+keepARM = sub.keepARM
 
-def set_log(name=__name__, format=logFormat1):
+SiPoMin = sub.SiPoMin
+SiPoExp = sub.SiPoExp
+SiPoPre = sub.SiPoPre
 
-    handler = logging.FileHandler(LOGPTH)
-    handler.setFormatter(logging.Formatter(format))
-
-    logger = logging.getLogger(name)
-    logger.addHandler(handler)
-    logger.setLevel(logging.DEBUG)
-
-    return logger
+left = sub.left
+right = sub.right

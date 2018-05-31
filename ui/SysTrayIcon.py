@@ -11,18 +11,19 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-import os, sys, logging
+# Python
+import sys
 
-from PyQt5.QtCore import QObject, pyqtSignal, QSettings
+# PyQt5
+from PyQt5.QtCore import QObject, pyqtSignal
 from PyQt5.QtGui import QIcon, QWheelEvent
 from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QAction, QApplication
 
-from utilities import utils as func
-from utilities import sql_local as usql
-from utilities import variables as var
-
-from ui import uirc as rc
+# Plt
 import appData as app
+from ui import uirc as rc
+from utilities import utils as func
+from utilities import localdb as usql
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -40,16 +41,15 @@ class SysTrayIconMenu(QMenu):
     def __init__(self, parent=None):
         super(SysTrayIconMenu, self).__init__(parent)
 
-        self.addAction(rc.ActionProcess('Shutdown', self))
+        # self.addAction(rc.ActionProcess('Shutdown', self))
         self.addSeparator()
 
-        for key in app.CONFIG_TRAY1:
+        for key in app.CONFIG_SYSTRAY:
             self.addAction(rc.ActionProcess(key, self))
 
-        self.addSeparator()
-
-        for key in app.CONFIG_TRAY2:
-            self.addAction(rc.ActionProcess(key, self))
+        # self.addSeparator()
+        # for key in app.CONFIG_TRAY2:
+        #     self.addAction(rc.ActionProcess(key, self))
 
         self.addSeparator()
 
@@ -75,7 +75,6 @@ class SysTrayIconMenu(QMenu):
 
     def exit_action_trigger(self):
         usql.insert_timeLog("Log out")
-        logger.debug("LOG OUT")
         QApplication.instance().quit()
 
     def showMainApp(self, mode):
@@ -109,7 +108,11 @@ class SysTrayIcon(QSystemTrayIcon):
         super(SysTrayIcon, self).__init__(parent)
 
         self.username, rememberLogin = usql.query_curUser()
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+
+        if not self.username:
+            self.username, token, cookie = usql.query_user_session()
+
+        self.settings = app.APPSETTING
         self.rightClickMenu = SysTrayIconMenu()
 
         showNorSig = self.rightClickMenu.showNormalSig
@@ -157,11 +160,13 @@ class SysTrayIcon(QSystemTrayIcon):
         self.showMessage('Welcome', "Log in as %s" % self.username, QSystemTrayIcon.Information, 500)
 
     def closeMess(self):
-        self.showMessage('Notice', "Pipeline Tool will keep running in the system tray.",
-                                  QSystemTrayIcon.Information, 500)
+        self.showMessage('Notice', "Pipeline Tool will keep running in the system tray.", QSystemTrayIcon.Information, 500)
 
 def main():
-    pass
+    sysApp = QApplication(sys.argv)
+    sysTray = SysTrayIcon()
+    sysTray.show()
+    sysApp.exec_()
 
 if __name__ == '__main__':
     main()

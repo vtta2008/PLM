@@ -16,7 +16,7 @@ import sys
 
 # PyQt5
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import pyqtSignal, QSettings, Qt
+from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGraphicsView, QGraphicsScene, QSizePolicy,
                              QPushButton, QGroupBox)
 
@@ -27,24 +27,15 @@ from ui import uirc as rc
 from ui import UserSetting
 
 from utilities import utils as func
-from utilities import variables as var
-from utilities import sql_local as usql
+from utilities import localdb as usql
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logger = app.set_log()
-
-# -------------------------------------------------------------------------------------------------------------
-# Get apps info config
-APPINFO = func.preset_load_appInfo()
-
-# -------------------------------------------------------------------------------------------------------------
-""" Variables """
+# logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab3 """
-
 
 class TopTab3(QWidget):
 
@@ -56,7 +47,7 @@ class TopTab3(QWidget):
 
         self.username, rememberLogin = usql.query_curUser()
 
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
@@ -68,7 +59,9 @@ class TopTab3(QWidget):
         self.avatarScene.addPixmap(avatar)
         self.avatarView = QGraphicsView()
         self.avatarView.setScene(self.avatarScene)
+
         self.avatarView.scale(100 / avatar.width(), 100 / avatar.height())
+
         self.avatarView.aspectRatioMode = Qt.KeepAspectRatio
         self.avatarView.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.avatarView.setFixedSize(100, 100)
@@ -121,7 +114,6 @@ def main():
     layout = TopTab3()
     layout.show()
     app.exec_()
-
 
 if __name__ == '__main__':
     main()

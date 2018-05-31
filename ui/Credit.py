@@ -39,8 +39,7 @@ class Credit(QDialog):
         self.setLayout(self.layout)
 
     def buildUI(self):
-        with open(os.path.join(os.getenv(app.__envKey__), 'appData', 'CREDIT'), 'r') as f:
-            credit = f.read()
+        credit = app.CREDIT
 
         self.scrollArea = QScrollArea()
         self.scrollArea.setWidgetResizable(True)

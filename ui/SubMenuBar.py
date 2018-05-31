@@ -12,7 +12,8 @@ Description:
 """ Import """
 
 # Python
-import os, sys, logging
+import sys, os
+from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import QSettings
@@ -21,12 +22,9 @@ from PyQt5.QtWidgets import QMainWindow, QAction, QSizePolicy, QApplication
 
 # Plt
 import appData as app
-from ui import uirc as rc
-
 from utilities import utils as func
-from utilities import variables as var
-from utilities import sql_local as usql
-
+from utilities import localdb as usql
+from ui import uirc as rc
 from ui import(Preferences, AboutPlt, Credit)
 
 # -------------------------------------------------------------------------------------------------------------
@@ -45,7 +43,7 @@ class SubMenuBar(QMainWindow):
 
         self.appInfo = func.preset_load_appInfo()
         self.url = app.__pltWiki__
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.buildMenu()
 
@@ -63,12 +61,18 @@ class SubMenuBar(QMainWindow):
         creditAct.setStatusTip(self.appInfo['Credit'][0])
         creditAct.triggered.connect(self.open_credit_layout)
 
+        openConfigAct = QAction(QIcon(self.appInfo['OpenConfig'][1]), self.appInfo['OpenConfig'][0], self)
+        openConfigAct.setStatusTip(self.appInfo['OpenConfig'][0])
+        openConfigAct.triggered.connect(partial(os.startfile, app.CONFIGDIR))
+
         self.fileMenu = self.menuBar().addMenu("&File")
+        self.fileMenu.addAction(openConfigAct)
         self.fileMenu.addAction(prefAct)
         self.fileMenu.addSeparator()
         self.fileMenu.addAction(rc.ActionProcess("Exit", self))
 
         self.editMenu = self.menuBar().addMenu("&Edit")
+
 
         self.viewMenu = self.menuBar().addMenu("&View")
 

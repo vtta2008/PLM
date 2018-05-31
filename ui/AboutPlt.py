@@ -40,8 +40,8 @@ class AboutPlt(QDialog):
         self.setLayout(self.layout)
 
     def buildUI(self):
-        with open(os.path.join(os.getenv(app.__envKey__), 'appData', 'ABOUT'), 'r') as f:
-            readme = f.read()
+
+        readme = app.README
 
         self.scrollArea = QScrollArea()
         self.scrollArea.setWidgetResizable(True)

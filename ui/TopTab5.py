@@ -1,10 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-
 Script Name: TopTab5.py
 Author: Do Trinh/Jimmy - 3D artist.
-
 Description:
     Tab 5 layout
 """
@@ -15,7 +13,7 @@ Description:
 import os, sys, subprocess
 
 # PyQt5
-from PyQt5.QtCore import pyqtSlot, QSettings
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLineEdit, QTextEdit, QTextBrowser, QLabel
 
 # Plt
@@ -24,7 +22,6 @@ import appData as app
 from ui import uirc as rc
 
 from utilities import utils as func
-from utilities import variables as var
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -63,7 +60,7 @@ class TopTab5(QWidget):
     def __init__(self, parent=None):
         super(TopTab5, self).__init__(parent)
 
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
 
         self.layout = QGridLayout()
         self.buildUI()

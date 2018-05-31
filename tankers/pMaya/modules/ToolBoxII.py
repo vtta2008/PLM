@@ -42,8 +42,8 @@ CHANNELBOX_ID = 'ChannelBoxID'
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT QT MODULES
 # -------------------------------------------------------------------------------------------------------------
-from tankers.pMaya.plugins import Qt  # plugin module go with DAMGtool to make UI
-from tankers.pMaya.plugins.Qt import QtWidgets, QtCore, QtGui
+from tankers.pMaya.QtPlugins import Qt  # plugin module go with DAMGtool to make UI
+from tankers.pMaya.QtPlugins.Qt import QtWidgets, QtCore, QtGui
 
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX VERSION CONVENTION

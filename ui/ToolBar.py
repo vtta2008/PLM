@@ -12,32 +12,21 @@ Description:
 """ Import """
 
 # Python
-import os, sys, logging
+import sys
 
 # PyQt5
 from PyQt5.QtCore import QSettings
 from PyQt5.QtWidgets import QMainWindow, QSizePolicy, QApplication
 
-# -------------------------------------------------------------------------------------------------------------
-""" Plt tools """
+# Plt
 import appData as app
-
 from ui import uirc as rc
-
 from utilities import utils as func
-from utilities import variables as var
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
 logger = app.set_log()
-
-# -------------------------------------------------------------------------------------------------------------
-# Get apps info config
-APPINFO = func.preset_load_appInfo()
-
-# -------------------------------------------------------------------------------------------------------------
-""" Variables """
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
@@ -48,9 +37,9 @@ class ToolBar(QMainWindow):
 
         super(ToolBar, self).__init__(parent)
 
-        self.appInfo = APPINFO
+        self.appInfo = func.preset_load_appInfo()
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
 
         # self.tdToolBar = self.make_toolBar("TD", app.CONFIG_TDS)
         self.tdToolBar = self.make_toolBar("TD", app.CONFIG_TDS)

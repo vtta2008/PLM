@@ -12,26 +12,21 @@ Description:
 """ Import """
 
 # Python
-import os, sys, logging
+import sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, QSettings
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QGroupBox
 
 # Plt
 import appData as app
 from ui import uirc as rc
 from utilities import utils as func
-from utilities import variables as var
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
 logger = app.set_log()
-
-# -------------------------------------------------------------------------------------------------------------
-# Get apps info config
-APPINFO = func.preset_load_appInfo()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -45,7 +40,7 @@ class TopTab2(QWidget):
     def __init__(self, parent=None):
         super(TopTab2, self).__init__(parent)
 
-        self.settings = QSettings(var.UI_SETTING, QSettings.IniFormat)
+        self.settings = app.APPSETTING
         self.appInfo = func.preset_load_appInfo()
 
         self.layout = QGridLayout()
