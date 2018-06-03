@@ -24,14 +24,8 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QHBoxLa
 
 # Plt
 import appData as app
-from utilities import localSQL as usql
 from utilities import utils as func
 from ui import uirc as rc
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain logs """
-
-logger = app.set_log()
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """

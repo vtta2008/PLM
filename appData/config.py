@@ -13,6 +13,7 @@ Description:
 # Python
 import os, logging
 from importlib import reload as r
+import json
 
 # Plm
 from appData import _path as p
@@ -268,6 +269,24 @@ SYSTRAY_UNAVAI = d.SYSTRAY_UNAVAI
 PTH_NOT_EXSIST = d.PTH_NOT_EXSIST
 ERROR_OPENFILE = d.ERROR_OPENFILE
 ERROR_QIMAGE = d.ERROR_QIMAGE
+
+def load_appInfo():
+    if not os.path.exists(mainConfig):
+        from appData import LocalCfg
+        cfg = reload_module(LocalCfg)
+        cfg.LocalCfg()
+    # Load info from file
+    with open(mainConfig, 'r') as f:
+        appInfo = json.load(f)
+    return appInfo
+
+def load_iconInfo():
+    with open(appIconCfg, 'r') as f:
+        iconInfo = json.load(f)
+    return iconInfo
+
+APPINFO = load_appInfo()
+ICONINFO = load_iconInfo()
 
 # --------------------------------------------------------------------------------------------------------------
 """ Autodesk config """

@@ -44,7 +44,7 @@ class BotTab(QWidget):
     def __init__(self, parent=None):
         super(BotTab, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
 
         self.layout = QVBoxLayout()
         self.buildUI()

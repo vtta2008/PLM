@@ -35,7 +35,7 @@ class Footer(QWidget):
         self.setWindowTitle("PLT Footer")
         self.setWindowIcon(rc.IconPth('Logo'))
 
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
         self.layout = QHBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)

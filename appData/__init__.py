@@ -240,6 +240,9 @@ PTH_NOT_EXSIST = c.PTH_NOT_EXSIST
 ERROR_OPENFILE = c.ERROR_OPENFILE
 ERROR_QIMAGE = c.ERROR_QIMAGE
 
+APPINFO = c.APPINFO
+ICONINFO = c.ICONINFO
+
 # --------------------------------------------------------------------------------------------------------------
 """ Autodesk config """
 

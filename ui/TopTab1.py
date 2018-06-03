@@ -22,12 +22,6 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLine
 # Plt
 import appData as app
 from ui import uirc as rc
-from utilities import utils as func
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
 """ topTab1 """
@@ -40,12 +34,12 @@ class TopTab1(QWidget):
     def __init__(self, parent=None):
         super(TopTab1, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
 
         for i in app.CONFIG_TOOLS:
             self.settings.setValue(i, False)
 
-        self.appInfo = func.preset_load_appInfo()
+        self.appInfo = app.APPINFO
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)

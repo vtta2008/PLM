@@ -40,7 +40,7 @@ class Preferences(QDialog):
         self.setWindowTitle("Preferences")
         self.setWindowIcon(QIcon(func.getIcon32('Logo')))
 
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
 
         self.layout = QGridLayout()
         self.buildUI()

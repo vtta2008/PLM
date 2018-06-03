@@ -23,20 +23,27 @@ from PyQt5.QtWidgets import QApplication, QMessageBox, QSystemTrayIcon
 
 # Plt
 import appData as app
-from utilities import utils as func
+
+from appData import LocalCfg                                                          # Generate config info
+LocalCfg = app.reload(LocalCfg)
+preset1 = LocalCfg.LocalCfg()
+
+from appData import MayaCfg                                                          # Generate config info
+MayaCfg = app.reload(MayaCfg)
+preset2 = MayaCfg.MayaCfg()
+
 from utilities import localSQL as usql
 
-func.Collect_info()                                                                 # Generate config info
-func.preset_setup_config_data()                                                     # Set up config data
-func.preset_implement_maya_tanker()                                                 # Implement maya tankers
-
-from ui import (SignIn, SignUp, PipelineManager, SysTrayIcon)                          # Import ui
+from ui import (SignIn, SignUp, PipelineManager, SysTrayIcon)                       # Import ui
 from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
 logger = app.set_log()
+
+def str2bool(arg):
+    return str(arg).lower() in ['true', 1, '1', 'ok', '2']
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -48,7 +55,7 @@ class PltConsole(QObject):
     def __init__(self):
         super(PltConsole, self).__init__()
 
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
 
         mainApp = QApplication(sys.argv)
         mainApp.setApplicationName(app.__project__)
@@ -88,7 +95,7 @@ class PltConsole(QObject):
         except ValueError:
             self.show_login(True)
         else:
-            if not func.str2bool(remember):
+            if not str2bool(remember):
                 self.show_login(True)
             else:
                 r = requests.get(app.__serverCheck__, verify = False,

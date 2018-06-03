@@ -16,20 +16,13 @@ import sys, os
 from functools import partial
 
 # PyQt5
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QAction, QSizePolicy, QApplication
 
 # Plt
 import appData as app
-from utilities import utils as func
 from utilities import localSQL as usql
 from ui import uirc as rc
 from ui import(Preferences, AboutPlt, Credit)
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Menu bar Layout """
@@ -40,9 +33,9 @@ class SubMenuBar(QMainWindow):
 
         super(SubMenuBar, self).__init__(parent)
 
-        self.appInfo = func.preset_load_appInfo()
+        self.appInfo = app.APPINFO
         self.url = app.__pltWiki__
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.buildMenu()
 
@@ -104,7 +97,7 @@ class SubMenuBar(QMainWindow):
 
     def on_exit_action_triggered(self):
         usql.insert_timeLog("Log out")
-        logger.debug("LOG OUT")
+        # logger.debug("LOG OUT")
         QApplication.instance().quit()
 
     def show_hide_subMenuBar(self, param):

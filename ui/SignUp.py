@@ -27,11 +27,6 @@ from utilities import utils as func
 from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.set_log()
-
-# -------------------------------------------------------------------------------------------------------------
 """ Sign up ui """
 
 class SignUp(QDialog):
@@ -45,7 +40,7 @@ class SignUp(QDialog):
         self.setWindowTitle("Sign Up")
         self.setWindowIcon(rc.IconPth(32, "SignUp"))
         self.setFixedSize(450, 900)
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -183,7 +178,7 @@ class SignUp(QDialog):
         btn_grid = QGridLayout()
         self.btnSection.setLayout(btn_grid)
 
-        self.user_agree_checkBox = QCheckBox(app.USERCHECKREQUIRED)
+        self.user_agree_checkBox = QCheckBox(app.USER_CHECK_REQUIRED)
         btn_grid.addWidget(self.user_agree_checkBox, 0, 0, 1, 6)
 
         okBtn = QPushButton('Create Account')

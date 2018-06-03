@@ -18,14 +18,8 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QD
 # Plt
 import appData as app
 from utilities import utils as func
-from utilities import localSQL as usql
 from ui import (SubMenuBar, ToolBar, TopTab, BotTab, ServerStatus)
 from ui import uirc as rc
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
@@ -46,7 +40,7 @@ class PipelineManager(QMainWindow):
         self.url = app.__homepage__
         self.setWindowTitle(app.__appname__)
         self.setWindowIcon(rc.AppIcon("Logo"))
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
 
         self.mainWidget = QWidget()
         self.layout = QGridLayout()

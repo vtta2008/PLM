@@ -48,7 +48,7 @@ class SignIn(QDialog):
         self.setWindowTitle('Sign in')
         self.setWindowIcon(rc.IconPth(32, "SignIn"))
         self.setFixedSize(400, 300)
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
 
         self.layout = QGridLayout()
         self.buildUI()

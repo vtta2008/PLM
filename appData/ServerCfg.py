@@ -60,7 +60,7 @@ class SocketThread(QThread):
         tcpSocket.waitForDisconnected()
 
 
-class Server(QTcpServer):
+class ServerCfg(QTcpServer):
 
     def incomingConnection(self, socketDescriptor):
         thread = SocketThread(socketDescriptor, "You have notification", self)

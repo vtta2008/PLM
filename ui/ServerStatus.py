@@ -23,8 +23,8 @@ from PyQt5.QtNetwork import QHostAddress
 
 # Plt
 import appData as app
+from appData import ServerCfg
 from ui import uirc as rc
-from utilities import Server
 from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
@@ -41,9 +41,9 @@ class ServerStatus(QGridLayout):
     def __init__(self, parent=None):
         super(ServerStatus, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
 
-        self.server = Server.Server()
+        self.server = ServerCfg.ServerCfg()
         self.server.listen(QHostAddress(app.__serverUrl__), 9000)
         self.serverOpen = self.server.isListening()
 

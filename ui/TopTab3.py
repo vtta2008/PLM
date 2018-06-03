@@ -29,11 +29,6 @@ from utilities import localSQL as usql
 from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-# logger = app.set_log()
-
-# -------------------------------------------------------------------------------------------------------------
 """ TopTab3 """
 
 class TopTab3(QWidget):

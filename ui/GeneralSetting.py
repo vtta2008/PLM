@@ -42,7 +42,7 @@ class GeneralSetting(QGridLayout):
         super(GeneralSetting, self).__init__(parent)
 
         self.setSpacing(2)
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
 
         self.tbTDCB = QCheckBox("TD toolbar")
         self.tbCompCB = QCheckBox("Comp toolbar")

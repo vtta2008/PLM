@@ -611,7 +611,7 @@ class AutoSectionLayoutGrp(QGroupBox):
         self.setTitle(title)
 
         if subLayout == None or len(subLayout) == 0 or str(type(subLayout)) in ["Class <'Label'>", "Class <'QLabel'>",]:
-            subLayout = Label(app.WAITUICOMPLETE)
+            subLayout = Label(app.WAIT_LAYOUT_COMPLETE)
             self.layout = QGridLayout()
             self.layout.addWidget(subLayout, 0, 0, 1, 1)
         else:

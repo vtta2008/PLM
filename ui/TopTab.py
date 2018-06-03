@@ -21,11 +21,6 @@ import appData as app
 from ui import (TopTab1, TopTab2, TopTab3, TopTab4, TopTab5)
 
 # -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.set_log()
-
-# -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
 
 class TopTab(QWidget):
@@ -40,7 +35,7 @@ class TopTab(QWidget):
     def __init__(self, parent=None):
         super(TopTab, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
 
         self.layout = QVBoxLayout()
         self.buildUI()

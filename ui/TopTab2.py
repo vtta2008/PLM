@@ -21,12 +21,6 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QPushButton, QGr
 # Plt
 import appData as app
 from ui import uirc as rc
-from utilities import utils as func
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -40,8 +34,8 @@ class TopTab2(QWidget):
     def __init__(self, parent=None):
         super(TopTab2, self).__init__(parent)
 
-        self.settings = app.APPSETTING
-        self.appInfo = func.preset_load_appInfo()
+        self.settings = app.appSetting
+        self.appInfo = app.APPINFO
 
         self.layout = QGridLayout()
         self.buildUI()

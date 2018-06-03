@@ -22,13 +22,7 @@ from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QAction, QApplication
 # Plt
 import appData as app
 from ui import uirc as rc
-from utilities import utils as func
 from utilities import localSQL as usql
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -102,7 +96,7 @@ class SysTrayIcon(QSystemTrayIcon):
         except IndexError:
             self.username = 'DemoUser'
 
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
         self.rightClickMenu = SysTrayIconMenu()
 
         self.rightClickMenu.showNor.connect(self.showNor.emit)

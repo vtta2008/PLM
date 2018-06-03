@@ -24,11 +24,6 @@ import appData as app
 from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.set_log()
-
-# -------------------------------------------------------------------------------------------------------------
 """ TopTab4 """
 
 class TopTab4(QWidget):

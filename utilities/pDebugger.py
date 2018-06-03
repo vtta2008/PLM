@@ -142,14 +142,14 @@ class pDeBug(pDetector):
         qDebug('message_handler: line: {0}, func: {1}(), file: {2}'.format(line, funct, file))
         qDebug('  %s: %s\n' % (self.mode, self.message))
 
-class DeBug(QWidget):
+class pDebugger(QWidget):
 
     def __init__(self, parent=None):
-        super(DeBug, self).__init__(parent)
+        super(pDebugger, self).__init__(parent)
 
         doctest.testmod(verbose=True)
 
-        self.setWindowIcon(QIcon(func.getIcon32('DeBug')))
+        self.setWindowIcon(QIcon(func.getAppIcon(32, 'DeBug')))
         self.setWindowTitle('Pipeline debug')
 
         self.layout = QHBoxLayout()
@@ -168,7 +168,7 @@ class DeBug(QWidget):
 def main():
 
     debug = QApplication(sys.argv)
-    layout = DeBug()
+    layout = pDebugger()
     layout.show()
     debug.exec_()
 

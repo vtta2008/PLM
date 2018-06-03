@@ -15,18 +15,12 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import QSettings
 from PyQt5.QtWidgets import QMainWindow, QSizePolicy, QApplication
 
 # Plt
 import appData as app
 from ui import uirc as rc
 from utilities import utils as func
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
@@ -37,11 +31,10 @@ class ToolBar(QMainWindow):
 
         super(ToolBar, self).__init__(parent)
 
-        self.appInfo = func.preset_load_appInfo()
+        self.appInfo = app.APPINFO
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
 
-        # self.tdToolBar = self.make_toolBar("TD", app.CONFIG_TDS)
         self.tdToolBar = self.make_toolBar("TD", app.CONFIG_TDS)
         self.compToolBar = self.make_toolBar("VFX", app.CONFIG_VFX)
         self.artToolBar = self.make_toolBar("ART", app.CONFIG_ART)

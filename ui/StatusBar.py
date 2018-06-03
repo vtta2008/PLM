@@ -21,11 +21,6 @@ from PyQt5.QtWidgets import QApplication, QStatusBar
 import appData as app
 
 # -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.set_log()
-
-# -------------------------------------------------------------------------------------------------------------
 """ Variables """
 
 # -------------------------------------------------------------------------------------------------------------
@@ -39,7 +34,7 @@ class StatusBar(QStatusBar):
     def __init__(self, parent=None):
         super(StatusBar, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = app.appSetting
 
         self.buildUI()
 

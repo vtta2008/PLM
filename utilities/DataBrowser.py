@@ -13,7 +13,7 @@ from PyQt5.QtWidgets import (QWidget, QHBoxLayout, QFormLayout, QLineEdit, QPush
                              QTableWidgetItem, QApplication, QTabWidget, QGridLayout)
 from PyQt5.QtGui import QIcon
 
-from appData import sqlManager
+from utilities import sqlManager
 import appData as app
 
 from ui import uirc as rc
