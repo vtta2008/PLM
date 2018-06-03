@@ -34,7 +34,7 @@ class Calendar(QDialog):
         super(Calendar, self).__init__(parent)
 
         self.setWindowTitle('Calendar')
-        self.setWindowIcon(QIcon(func.get_icon('Calendar')))
+        self.setWindowIcon(QIcon(func.getIcon32('Calendar')))
 
         self.layout = QGridLayout(self)
         self.buildUI()

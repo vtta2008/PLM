@@ -149,7 +149,7 @@ class DeBug(QWidget):
 
         doctest.testmod(verbose=True)
 
-        self.setWindowIcon(QIcon(func.get_icon('DeBug')))
+        self.setWindowIcon(QIcon(func.getIcon32('DeBug')))
         self.setWindowTitle('Pipeline debug')
 
         self.layout = QHBoxLayout()

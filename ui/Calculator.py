@@ -26,7 +26,7 @@ class Calculator(QDialog):
         super(Calculator, self).__init__(parent)
 
         self.setWindowTitle('Calculator')
-        self.setWindowIcon(QIcon(func.get_icon('Calculator')))
+        self.setWindowIcon(QIcon(func.getIcon32('Calculator')))
         self.settings = app.APPSETTING
         self.NumDigitButtons = 10
 
@@ -264,7 +264,7 @@ class Calculator(QDialog):
         self.sumInMemory += float(self.display.text())
 
     def createButton(self, text, member):
-        button = rc.TButton(text)
+        button = rc.ToolBtn(text)
         button.clicked.connect(member)
         return button
 

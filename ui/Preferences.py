@@ -38,7 +38,7 @@ class Preferences(QDialog):
 
         self.resize(200, 100)
         self.setWindowTitle("Preferences")
-        self.setWindowIcon(QIcon(func.get_icon('Logo')))
+        self.setWindowIcon(QIcon(func.getIcon32('Logo')))
 
         self.settings = app.APPSETTING
 

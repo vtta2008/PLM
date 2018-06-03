@@ -24,29 +24,29 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QHBoxLa
 
 # Plt
 import appData as app
-from utilities import localdb as usql
+from utilities import localSQL as usql
 from utilities import utils as func
-from utilities import message as mess
+from ui import uirc as rc
+
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain logs """
 
-# logger = app.set_log()
+logger = app.set_log()
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """
 # ----------------------------------------------------------------------------------------------------------- #
 class Account_setting(QDialog):
 
-    changeAvatarSignal = pyqtSignal(str)
-    curUser = usql.query_curUser()
+    updateAvatar = pyqtSignal(bool)
 
     def __init__(self, parent=None):
 
         super(Account_setting, self).__init__(parent)
 
-        self.username = self.curUser[0]
+
         self.setWindowTitle('User Setting')
-        self.setWindowIcon(QIcon(func.get_icon('Logo')))
+        self.setWindowIcon(rc.AppIcon(32, "UserSetting"))
 
         self.settings = app.APPSETTING
 
@@ -73,7 +73,7 @@ class Account_setting(QDialog):
         avatar_groupBox.setLayout(avatar_layout)
 
         self.avatar = QLabel()
-        self.avatar.setPixmap(QPixmap.fromImage(QImage(func.get_avatar(self.username))))
+        self.avatar.setPixmap(QPixmap.fromImage(QImage(func.getAvatar(self.username))))
         self.avatar.setScaledContents(True)
         self.avatar.setFixedSize(100, 100)
 
@@ -178,20 +178,20 @@ class Account_setting(QDialog):
         confirm_pass = func.text_to_hex(self.confirm_pass.text())
 
         if len(old_pass) == 0 or len(new_pass) == 0 or len(confirm_pass) == 0:
-            QMessageBox.critical(self, 'Failed', mess.PW_BLANK)
+            QMessageBox.critical(self, 'Failed', app.PWBLANK)
             return
         elif new_pass is not confirm_pass:
-            QMessageBox.critical(self, 'Failed', mess.PW_UNMATCH)
+            QMessageBox.critical(self, 'Failed', app.PWUNMATCH)
             return
         else:
-            checkPass = func.check_pw_match(self.curUser, old_pass)
+            checkPass = func.check_pw_match(self.username, old_pass)
             if not checkPass:
                 QMessageBox.critical(self, 'Failed', "Password not match")
                 return
             else:
                 newpass = func.encode(self.newPassword.text())
                 func.update_password(self.unix, newpass)
-                QMessageBox.information(self, 'Updated', mess.PW_CHANGED)
+                QMessageBox.information(self, 'Updated', app.PWCHANGED)
 
     def update_avatar(self):
 
@@ -217,7 +217,7 @@ class Account_setting(QDialog):
                 self.avatar.setPixmap(image)
                 self.avatar.update()
                 self.settings.setValue(self.username, desPth)
-                self.changeAvatarSignal.emit(desPth)
+                self.updateAvatar.emit(True)
 
     def update_profile(self):
         pass

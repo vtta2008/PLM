@@ -22,11 +22,12 @@ from PyQt5 import QtSql
 from PyQt5.QtCore import Qt, QDir, pyqtSignal
 from PyQt5.QtGui import QPixmap, QTransform, QIcon
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QDialog,
-                             QHBoxLayout)
+                             QHBoxLayout, QWidget)
 
 # Plt
 import appData as app
 from utilities import utils as func
+from . import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -135,9 +136,8 @@ class ViewerWindow(QMainWindow):
     def resizeEvent(self, resizeEvent):
         width = self.frameGeometry().width()
         height = self.frameGeometry().height()
-        print(width, height)
-        self.view.resize(width + 2, height + 2)
-        self.resizeSig.emit(width + 4, height + 4)
+        # self.view.resize(width + 2, height + 2)
+        # self.resizeSig.emit(width + 4, height + 4)
 
     def closeEvent(self, event):
 
@@ -173,7 +173,7 @@ class ImageInitUI(ViewerWindow):
         # Set common window attributes
         self.path, self.title = os.path.split(self.key)
         self.setWindowTitle("Image Viewer: " + str(self.title))
-        self.setWindowIcon(QIcon(func.get_icon("ImageViewer")))
+        self.setWindowIcon(QIcon(func.getIcon32("ImageViewer")))
 
         self.dbSanitise()
 
@@ -454,7 +454,7 @@ class ImageInitUI(ViewerWindow):
 
             self.path, self.title = os.path.split(self.key)
             self.setWindowTitle(str("Image Viewer: " + self.title))
-            self.setWindowIcon(QIcon(func.get_icon("ImageViewer")))
+            self.setWindowIcon(QIcon(func.getIcon32("ImageViewer")))
             
 
             self.inshuft = 0
@@ -501,7 +501,7 @@ class ImageViewer(QDialog):
     def __init__(self, key=None, parent=None):
         super(ImageViewer, self).__init__(parent)
 
-        self.setWindowIcon(QIcon(func.get_icon('ImageViewer')))
+        self.setWindowIcon(rc.IconPth('ImageViewer'))
         self.setWindowTitle('Image Viewer')
 
         if key == None or not os.path.exists(key) or os.path.isdir(key):

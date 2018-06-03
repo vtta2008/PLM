@@ -13,15 +13,12 @@ Description:
 
 # Python
 import sys
-import os
+
 
 # PtQt5
 from PyQt5.QtWidgets import (QApplication, QMessageBox, QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QLabel,
                              QLineEdit, QVBoxLayout)
 
-# Plt tools
-from utilities import localdb as usql
-from utilities import message as mess
 
 class ForgotPassword(QDialog):
 

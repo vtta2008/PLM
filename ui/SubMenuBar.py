@@ -16,14 +16,13 @@ import sys, os
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import QSettings
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QAction, QSizePolicy, QApplication
 
 # Plt
 import appData as app
 from utilities import utils as func
-from utilities import localdb as usql
+from utilities import localSQL as usql
 from ui import uirc as rc
 from ui import(Preferences, AboutPlt, Credit)
 
@@ -49,19 +48,19 @@ class SubMenuBar(QMainWindow):
 
     def buildMenu(self):
 
-        prefAct = QAction(QIcon(func.get_icon('Preferences')), 'Preferences', self)
+        prefAct = QAction(rc.AppIcon(32, 'Preferences'), 'Preferences', self)
         prefAct.setStatusTip('Preferences')
         prefAct.triggered.connect(self.open_preferences_layout)
 
-        aboutAct = QAction(QIcon(self.appInfo['AboutPlt'][1]), self.appInfo['AboutPlt'][0], self)
+        aboutAct = QAction(rc.AppIcon(32, 'AboutPlt'), self.appInfo['AboutPlt'][0], self)
         aboutAct.setStatusTip(self.appInfo['AboutPlt'][0])
         aboutAct.triggered.connect(self.open_about_layout)
 
-        creditAct = QAction(QIcon(self.appInfo['Credit'][1]), self.appInfo['Credit'][0], self)
+        creditAct = QAction(rc.AppIcon(32, 'Credit'), self.appInfo['Credit'][0], self)
         creditAct.setStatusTip(self.appInfo['Credit'][0])
         creditAct.triggered.connect(self.open_credit_layout)
 
-        openConfigAct = QAction(QIcon(self.appInfo['OpenConfig'][1]), self.appInfo['OpenConfig'][0], self)
+        openConfigAct = QAction(rc.AppIcon(32, 'OpenConfig'), self.appInfo['OpenConfig'][0], self)
         openConfigAct.setStatusTip(self.appInfo['OpenConfig'][0])
         openConfigAct.triggered.connect(partial(os.startfile, app.CONFIGDIR))
 

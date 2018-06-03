@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script Name: AboutPlt.py
@@ -12,7 +11,7 @@ Description:
 """ Import """
 
 # Python
-import sys, os
+import sys
 import appData as app
 
 # PtQt5
@@ -21,7 +20,6 @@ from PyQt5.QtWidgets import QApplication, QDialog, QGridLayout, QScrollArea, QLa
 
 # Plt
 from utilities import utils as func
-# from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
 """ About Layout """
@@ -33,7 +31,7 @@ class AboutPlt(QDialog):
         super(AboutPlt, self).__init__(parent)
 
         self.setWindowTitle("About PLt")
-        self.setWindowIcon(QIcon(func.get_icon('Logo')))
+        self.setWindowIcon(QIcon(func.getIcon32('Logo')))
 
         self.layout = QGridLayout()
         self.buildUI()

@@ -16,7 +16,8 @@ import os, sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QGridLayout, QWidget
+from PyQt5.QtGui import QPixmap
+from PyQt5.QtWidgets import QApplication, QGridLayout, QWidget, QLabel
 
 from PyQt5.QtNetwork import QHostAddress
 
@@ -24,6 +25,7 @@ from PyQt5.QtNetwork import QHostAddress
 import appData as app
 from ui import uirc as rc
 from utilities import Server
+from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -45,8 +47,14 @@ class ServerStatus(QGridLayout):
         self.server.listen(QHostAddress(app.__serverUrl__), 9000)
         self.serverOpen = self.server.isListening()
 
-        self.netGood = rc.ImageUI("NetworkGood")
-        self.netBad = rc.ImageUI("NetworkError")
+        self.connected = func.getAppIcon(16, 'Connected')
+        print(self.connected)
+        self.disconnected = func.getAppIcon(16, 'Disconnected')
+
+        self.networkStatus = QLabel()
+        self.networkStatus.setPixmap(QPixmap(self.connected))
+
+        self.addWidget(self.networkStatus, 0, 0, 1, 1)
 
         self.networkStatutSig.connect(self.connection_status)
         self.networkStatutSig.emit(self.serverOpen)
@@ -65,17 +73,15 @@ class ServerStatus(QGridLayout):
         self.applySetting()
 
     def applySetting(self):
-        self.netGood.setSizePolicy(app.SiPoMin, app.SiPoMin)
-        self.netBad.setSizePolicy(app.SiPoMin, app.SiPoMin)
-        self.setSpacing(1)
+        pass
 
     def connection_status(self, param):
         if param:
-            self.addWidget(self.netGood, 0, 0, 1, 1)
-            self.removeWidget(self.netBad)
+            self.networkStatus.setPixmap(QPixmap(self.connected))
         else:
-            self.addWidget(self.netBad, 0, 0, 1, 1)
-            self.removeWidget(self.netGood)
+            self.networkStatus.setPixmap(QPixmap(self.disconnected))
+
+        self.networkStatus.update()
 
 
 def main():

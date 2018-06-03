@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # Python
-import sys
+import sys, os
 
 # PyQt5
 from PyQt5.QtGui import QPixmap
@@ -25,9 +25,8 @@ import appData as app
 
 from ui import uirc as rc
 from ui import UserSetting
-
+from utilities import localSQL as usql
 from utilities import utils as func
-from utilities import localdb as usql
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -39,13 +38,11 @@ from utilities import localdb as usql
 
 class TopTab3(QWidget):
 
-    showMainSig = pyqtSignal(bool)
-    showLoginSig = pyqtSignal(bool)
+    showPlt = pyqtSignal(bool)
+    showLogin = pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super(TopTab3, self).__init__(parent)
-
-        self.username, rememberLogin = usql.query_curUser()
 
         self.settings = app.APPSETTING
         self.layout = QGridLayout()
@@ -53,8 +50,14 @@ class TopTab3(QWidget):
         self.setLayout(self.layout)
 
     def buildUI(self):
+        self.query = usql.QuerryDB()
+        try:
+            self.username, token, cookie, remember = self.query.query_table('curUser')
+        except IndexError:
+            self.username = 'DemoUser'
 
-        avatar = QPixmap(func.get_avatar(self.username))
+        avatarPth = func.getAvatar(self.username)
+        avatar = QPixmap(avatarPth)
         self.avatarScene = QGraphicsScene()
         self.avatarScene.addPixmap(avatar)
         self.avatarView = QGraphicsView()
@@ -88,22 +91,19 @@ class TopTab3(QWidget):
         self.applySetting()
 
     def update_avatar(self, param):
-        self.avatarView.setPixmap(QPixmap(param))
-        self.avatarView.update()
+        print("get signal at final des {0}".format(param))
 
     def on_userSettingBtn_clicked(self):
-        app.reload(UserSetting)
         layout = UserSetting.Account_setting()
         layout.show()
-        sig = layout.changeAvatarSignal
-        sig.connect(self.update_avatar)
+        layout.updateAvatar.connect(self.update_avatar)
         layout.exec_()
 
     def on_signOutBtn_clicked(self):
         self.settings.setValue("showMain", False)
         self.settings.setValue("showLogin", True)
-        self.showMainSig.emit(False)
-        self.showLoginSig.emit(True)
+        self.showPlt.emit(False)
+        self.showLogin.emit(True)
 
     def applySetting(self):
         pass

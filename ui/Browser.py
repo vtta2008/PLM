@@ -180,7 +180,7 @@ class Browser(QWidget):
     def __init__(self, url='http://www.google.com.vn', parent=None):
         super(Browser, self).__init__(parent)
 
-        self.setWindowIcon(QIcon(func.get_icon('PltBrowser')))
+        self.setWindowIcon(QIcon(func.getIcon32('PltBrowser')))
         self.setWindowTitle('Pipeline Webbrowser')
 
         self.url = url

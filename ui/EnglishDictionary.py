@@ -22,7 +22,7 @@ from utilities import utils as func
 
 
 class EnglishDictionary(QDialog):
-    def __init__(self, id='English Dictionary', icon=func.get_icon('English Dictionary'), parent=None):
+    def __init__(self, id='English Dictionary', icon=func.getIcon32('English Dictionary'), parent=None):
 
         super(EnglishDictionary, self).__init__(parent)
 

@@ -18,9 +18,7 @@ from PyQt5.QtWidgets import (QApplication, QSizePolicy, QWidget, QVBoxLayout, QT
 
 # Plt
 import appData as app
-
 from ui import (TopTab1, TopTab2, TopTab3, TopTab4, TopTab5)
-from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -32,15 +30,16 @@ logger = app.set_log()
 
 class TopTab(QWidget):
 
-    dbConn = lite.connect(app.DBPTH)
-    showMainSig = pyqtSignal(bool)
-    showLoginSig = pyqtSignal(bool)
+    showPlt = pyqtSignal(bool)
+    showLogin = pyqtSignal(bool)
     tabSizeSig = pyqtSignal(int, int)
+    updateAvatar = pyqtSignal(bool)
+    loadLayout = pyqtSignal(str)
+    execute = pyqtSignal(str)
 
-    def __init__(self, username, parent=None):
+    def __init__(self, parent=None):
         super(TopTab, self).__init__(parent)
 
-        self.username = username
         self.settings = app.APPSETTING
 
         self.layout = QVBoxLayout()
@@ -51,10 +50,15 @@ class TopTab(QWidget):
         self.tabs = QTabWidget()
 
         tab3 = TopTab3.TopTab3()
-        tab3.showMainSig.connect(self.showMainSig.emit)
-        tab3.showLoginSig.connect(self.showLoginSig.emit)
+        tab3.showPlt.connect(self.showPlt.emit)
+        tab3.showLogin.connect(self.showLogin.emit)
+        self.updateAvatar.connect(tab3.update_avatar)
 
-        self.tabs.addTab(TopTab1.TopTab1(), 'Tool')
+        tab1 = TopTab1.TopTab1()
+        tab1.loadLayout.connect(self.loadLayout.emit)
+        tab1.execute.connect(self.execute.emit)
+
+        self.tabs.addTab(tab1, 'Tool')
         self.tabs.addTab(TopTab2.TopTab2(), 'Prj')
         self.tabs.addTab(tab3, 'User')
         self.tabs.addTab(TopTab4.TopTab4(), 'Library')

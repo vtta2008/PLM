@@ -26,7 +26,7 @@ from utilities import utils as func
 
 class FindFiles(QDialog):
 
-    def __init__(self, id='Files Finder', icon=func.get_icon('FindFiles'), parent=None):
+    def __init__(self, id='Files Finder', icon=func.getIcon32('FindFiles'), parent=None):
         super(FindFiles, self).__init__(parent)
 
         self.setWindowTitle(id)

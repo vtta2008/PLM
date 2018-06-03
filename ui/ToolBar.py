@@ -61,22 +61,17 @@ class ToolBar(QMainWindow):
                 toolBar.addAction(rc.ActionProcess(key, self))
         return toolBar
 
-    def show_hide_TDtoolBar(self, param):
-        self.settings.setValue("showTDToolbar", func.bool2str(param))
+    def show_td(self, param):
+        self.settings.setValue("tbTD", func.bool2str(param))
         self.tdToolBar.setVisible(func.str2bool(param))
 
-    def show_hide_ComptoolBar(self, param):
-        self.settings.setValue("showCompToolbar", func.bool2str(param))
+    def show_comp(self, param):
+        self.settings.setValue("tbComp", func.bool2str(param))
         self.compToolBar.setVisible(func.str2bool(param))
 
-    def show_hide_ArttoolBar(self, param):
-        self.settings.setValue("showArtToolbar", func.bool2str(param))
+    def show_art(self, param):
+        self.settings.setValue("tbArt", func.bool2str(param))
         self.artToolBar.setVisible(func.str2bool(param))
-
-    def show_hide_AlltoolBar(self, param):
-        self.show_hide_TDtoolBar(param)
-        self.show_hide_ComptoolBar(param)
-        self.show_hide_ArttoolBar(param)
 
 def main():
     app = QApplication(sys.argv)

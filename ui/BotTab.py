@@ -16,14 +16,12 @@ import sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget, QSizePolicy
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 
 # Plt
 import appData as app
-
 from ui import uirc as rc
-from ui import QuickSetting
-from utilities import utils as func
+from ui import GeneralSetting
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -31,43 +29,17 @@ from utilities import utils as func
 logger = app.set_log()
 
 # -------------------------------------------------------------------------------------------------------------
-# Get apps info config
-APPINFO = func.preset_load_appInfo()
-
-# -------------------------------------------------------------------------------------------------------------
-""" Tab Widget """
-
-class TabWidget(QWidget):
-
-    def __init__(self, layout, parent=None):
-        super(TabWidget, self).__init__(parent)
-
-        self.settings = app.APPSETTING
-        self.layout = layout
-        self.buildUI()
-        self.setLayout(self.layout)
-
-    def buildUI(self):
-
-        self.applySetting()
-
-    def applySetting(self):
-
-        pass
-
-
-# -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """
 class BotTab(QWidget):
 
-    tdToolBarSig = pyqtSignal(bool)
-    compToolBarSig = pyqtSignal(bool)
-    artToolBarSig = pyqtSignal(bool)
-    toolBarSig = pyqtSignal(bool)
-    subMenuSig = pyqtSignal(bool)
-    statusBarSig = pyqtSignal(bool)
-    serverStatSig = pyqtSignal(bool)
-    notifiSig = pyqtSignal(bool)
+    tbTD = pyqtSignal(bool)
+    tbComp = pyqtSignal(bool)
+    tbArt = pyqtSignal(bool)
+    tbMaster = pyqtSignal(bool)
+    subMenu = pyqtSignal(bool)
+    statusBar = pyqtSignal(bool)
+    serStatus = pyqtSignal(bool)
+    notifi = pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super(BotTab, self).__init__(parent)
@@ -81,38 +53,35 @@ class BotTab(QWidget):
     def buildUI(self):
         self.tabs = QTabWidget()
 
-        self.quickSetting = QuickSetting.QuickSetting()
+        self.generalSetting = GeneralSetting.GeneralSetting()
 
-        self.quickSetting.checkboxTDSig.connect(self.tdToolBarSig.emit)
-        self.quickSetting.checkboxCompSig.connect(self.compToolBarSig.emit)
-        self.quickSetting.checkboxArtSig.connect(self.artToolBarSig.emit)
-        self.quickSetting.checkboxMasterSig.connect(self.toolBarSig.emit)
-        self.quickSetting.checkboxMenuBarSig.connect(self.subMenuSig.emit)
-        self.quickSetting.showStatusSig.connect(self.statusBarSig.emit)
-        self.quickSetting.showServerStatusSig.connect(self.serverStatSig.emit)
-        self.quickSetting.showNotificationSig.connect(self.notifiSig.emit)
-        self.quickSetting.showNotificationSig.connect(self.show_hide_quickSetting)
+        self.generalSetting.tbTD.connect(self.tbTD.emit)
+        self.generalSetting.tbComp.connect(self.tbComp.emit)
+        self.generalSetting.tbArt.connect(self.tbArt.emit)
+        self.generalSetting.tbMaster.connect(self.tbMaster.emit)
+        self.generalSetting.subMenu.connect(self.subMenu.emit)
+        self.generalSetting.statusBar.connect(self.statusBar.emit)
+        self.generalSetting.serStatus.connect(self.serStatus.emit)
+        self.generalSetting.notifi.connect(self.notifi.emit)
 
-        self.tabs.addTab(QWidget(), "General")
-        self.tabs.addTab(QWidget(), "Unit")
-        self.tabs.addTab(rc.TabContent(self.quickSetting), "Quick")
+        self.tabs.addTab(rc.TabContent(self.generalSetting), "General")
+        self.tabs.addTab(rc.TabContent(), "Unit")
+        self.tabs.addTab(rc.TabContent(), "Quick")
 
         self.layout.addWidget(self.tabs)
 
         self.applySetting()
 
-    def show_hide_quickSetting(self, param):
-        self.show_hide_statusBar(param)
-        self.show_hide_toolBar(param)
-        self.show_hide_sub_menu(param)
-        self.show_hide_serverStatus(param)
-        self.show_hide_notification(param)
-        self.settings.setValue("showMasterQuickSetting", param)
-        self.quickSetting.setVisible(param)
-
     def applySetting(self):
-        self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        self.tabs.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.tabs.setSizePolicy(app.SiPoMin, app.SiPoMin)
+
+        self.tabs.setTabIcon(0, rc.IconPth('General Setting'))
+        self.tabs.setTabIcon(1, rc.IconPth('Unit Setting'))
+        self.tabs.setTabIcon(2, rc.IconPth('Quick Setting'))
+
+        self.tabs.setTabPosition(QTabWidget.South)
+        self.tabs.setMovable(True)
 
 
 def main():
@@ -120,7 +89,6 @@ def main():
     layout = BotTab()
     layout.show()
     app.exec_()
-
 
 if __name__ == '__main__':
     main()

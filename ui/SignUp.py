@@ -12,22 +12,18 @@ Description:
 """ Import """
 
 # Python
-import os, sys
+import os, sys, json
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QIcon, QPixmap, QImage
+from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
                              QCheckBox, QFileDialog, QComboBox, QDialog)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Plt tools """
 import appData as app
-
 from utilities import utils as func
-from utilities import localdb as usql
-from utilities import message as mess
-
 from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
@@ -40,20 +36,16 @@ logger = app.set_log()
 
 class SignUp(QDialog):
 
-    showLoginSig = pyqtSignal(bool)
+    showSignup = pyqtSignal(bool)
+    showPlt = pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super(SignUp, self).__init__(parent)
-        print(1)
+
         self.setWindowTitle("Sign Up")
-        print(2)
-        self.setWindowIcon(QIcon(func.get_icon('Logo')))
-        print(3)
-        # self.setContentsMargins(0,0,0,0)
+        self.setWindowIcon(rc.IconPth(32, "SignUp"))
         self.setFixedSize(450, 900)
         self.settings = app.APPSETTING
-
-        self.showLoginSig.emit(False)
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -80,7 +72,7 @@ class SignUp(QDialog):
         avatar_grid = QGridLayout()
         self.avaSection.setLayout(avatar_grid)
 
-        defaultImg = QPixmap.fromImage(QImage(func.get_avatar('default')))
+        defaultImg = QPixmap.fromImage(QImage(func.getAvatar('default')))
         self.userAvatar = QLabel()
         self.userAvatar.setPixmap(defaultImg)
         self.userAvatar.setScaledContents(True)
@@ -169,12 +161,12 @@ class SignUp(QDialog):
         self.ques2 = QComboBox()
         self.answ1 = QLineEdit()
 
-        questions = usql.query_all_questions()
+        questions = app.QUESTIONS
 
         for i in questions:
-            self.ques1.addItem(str(i[0]).split("'")[1])
+            self.ques1.addItem(str(i[0]))
             if i != 0:
-                self.ques2.addItem(str(i[0]).split("'")[1])
+                self.ques2.addItem(str(i[0]))
 
         questions_grid.addWidget(rc.Label('Question 1'), 0, 0, 1, 3)
         questions_grid.addWidget(rc.Label('Answer 1'), 1, 0, 1, 3)
@@ -191,7 +183,7 @@ class SignUp(QDialog):
         btn_grid = QGridLayout()
         self.btnSection.setLayout(btn_grid)
 
-        self.user_agree_checkBox = QCheckBox(mess.USER_CHECK_REQUIRED)
+        self.user_agree_checkBox = QCheckBox(app.USERCHECKREQUIRED)
         btn_grid.addWidget(self.user_agree_checkBox, 0, 0, 1, 6)
 
         okBtn = QPushButton('Create Account')
@@ -221,12 +213,13 @@ class SignUp(QDialog):
         if self.check_all_conditions():
             data = self.generate_user_data()
             # usql.create_new_user_data(data)
-            QMessageBox.information(self, "Failed", mess.WAIT_TO_COMPLETE, QMessageBox.Ok)
+            QMessageBox.information(self, "Failed", app.WAITUICOMPLETE, QMessageBox.Ok)
+            # self.showPlt.emit(True)
             return
 
     def on_cancel_btn_clicked(self):
         self.close()
-        self.showLoginSig.emit(True)
+        self.showSignup.emit(True)
 
     def collect_input(self):
         username = str(self.userField.text())
@@ -262,7 +255,7 @@ class SignUp(QDialog):
             if func.check_blank(section):
                 return True
             else:
-                QMessageBox.information(self, "Fail", secName[regInput.index(section)] + mess.SEC_BLANK, QMessageBox.Ok)
+                QMessageBox.information(self, "Fail", secName[regInput.index(section)] + app.BLANKALERT, QMessageBox.Ok)
                 break
 
     def check_user_agreement(self):
@@ -286,7 +279,7 @@ class SignUp(QDialog):
         pcPython = sysInfo['python']
 
         if not os.path.exists(self.rawAvatarPth):
-            avatar = func.get_avatar('default')
+            avatar = func.getAvatar('default')
         else:
             avatar = self.rawAvatarPth
 
@@ -300,7 +293,7 @@ class SignUp(QDialog):
         confirm = str(self.cfpwField.text())
         check_pass = func.check_match(password, confirm)
         if not check_pass:
-            QMessageBox.information(self, "Warning", mess.PW_UNMATCH, QMessageBox.Retry)
+            QMessageBox.information(self, "Warning", app.PWUNMATCH, QMessageBox.Retry)
             return False
         return True
 

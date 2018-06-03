@@ -607,7 +607,7 @@ class TextEditor(QDialog):
     def __init__(self, parent=None):
         super(TextEditor, self).__init__(parent)
 
-        self.setWindowIcon(QIcon(func.get_icon('TextEditor')))
+        self.setWindowIcon(QIcon(func.getIcon32('TextEditor')))
         self.setWindowTitle('Pipeline Text Editor')
 
         self.layout = QHBoxLayout()

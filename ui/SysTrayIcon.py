@@ -16,14 +16,14 @@ import sys
 
 # PyQt5
 from PyQt5.QtCore import QObject, pyqtSignal
-from PyQt5.QtGui import QIcon, QWheelEvent
+from PyQt5.QtGui import QWheelEvent
 from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QAction, QApplication
 
 # Plt
 import appData as app
 from ui import uirc as rc
 from utilities import utils as func
-from utilities import localdb as usql
+from utilities import localSQL as usql
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -34,41 +34,37 @@ logger = app.set_log()
 
 class SysTrayIconMenu(QMenu):
 
-    showNormalSig = pyqtSignal(bool)
-    showMinimizeSig = pyqtSignal(bool)
-    showMaximizeSig = pyqtSignal(bool)
+    showNor = pyqtSignal(bool)
+    showMin = pyqtSignal(bool)
+    showMax = pyqtSignal(bool)
 
     def __init__(self, parent=None):
+
         super(SysTrayIconMenu, self).__init__(parent)
 
-        # self.addAction(rc.ActionProcess('Shutdown', self))
         self.addSeparator()
 
         for key in app.CONFIG_SYSTRAY:
             self.addAction(rc.ActionProcess(key, self))
 
-        # self.addSeparator()
-        # for key in app.CONFIG_TRAY2:
-        #     self.addAction(rc.ActionProcess(key, self))
+        self.addSeparator()
+
+        maxAction = QAction(rc.IconPth(32, "Maximize"), "Maximize", self)
+        maxAction.triggered.connect(self.showMax.emit)
+
+        minAction = QAction(rc.IconPth(32, 'Minimize'), "Minimize", self)
+        minAction.triggered.connect(self.showMin.emit)
+
+        norAction = QAction(rc.IconPth(32, 'Restore'), "Restore", self)
+        norAction.triggered.connect(self.showNor.emit)
+
+        self.addAction(maxAction)
+        self.addAction(minAction)
+        self.addAction(norAction)
 
         self.addSeparator()
 
-        maximizeAction = QAction(QIcon(func.get_icon("Maximize")), "Maximize", self)
-        maximizeAction.triggered.connect(lambda: self.showMainApp('maximize'))
-
-        minimizeAction = QAction(QIcon(func.get_icon('Minimize')), "Minimize", self)
-        minimizeAction.triggered.connect(lambda: self.showMainApp('minimize'))
-
-        restoreAction = QAction(QIcon(func.get_icon('Restore')), "Restore", self)
-        restoreAction.triggered.connect(lambda: self.showMainApp('normal'))
-
-        self.addAction(maximizeAction)
-        self.addAction(minimizeAction)
-        self.addAction(restoreAction)
-
-        self.addSeparator()
-
-        quitAction = QAction(QIcon(func.get_icon('Close')), "Quit", self)
+        quitAction = QAction(rc.IconPth(32, 'Close'), "Quit", self)
         quitAction.triggered.connect(self.exit_action_trigger)
 
         self.addAction(quitAction)
@@ -76,14 +72,6 @@ class SysTrayIconMenu(QMenu):
     def exit_action_trigger(self):
         usql.insert_timeLog("Log out")
         QApplication.instance().quit()
-
-    def showMainApp(self, mode):
-        if mode == 'maximize':
-            self.showMaximizeSig.emit(True)
-        elif mode == 'minimize':
-            self.showMinimizeSig.emit(True)
-        else:
-            self.showNormalSig.emit(True)
 
 class SystrayWheelEventObject(QObject):
 
@@ -99,31 +87,29 @@ class SystrayWheelEventObject(QObject):
 
 class SysTrayIcon(QSystemTrayIcon):
 
-    showNormalSig = pyqtSignal(bool)
-    showMinimizeSig = pyqtSignal(bool)
-    showMaximizeSig = pyqtSignal(bool)
+    showNor = pyqtSignal(bool)
+    showMin = pyqtSignal(bool)
+    showMax = pyqtSignal(bool)
 
     def __init__(self, parent=None):
 
         super(SysTrayIcon, self).__init__(parent)
 
-        self.username, rememberLogin = usql.query_curUser()
+        self.query = usql.QuerryDB
 
-        if not self.username:
-            self.username, token, cookie = usql.query_user_session()
+        try:
+            self.username, token, cookie, remember = self.query.query_table("curUser")
+        except IndexError:
+            self.username = 'DemoUser'
 
         self.settings = app.APPSETTING
         self.rightClickMenu = SysTrayIconMenu()
 
-        showNorSig = self.rightClickMenu.showNormalSig
-        showMinSig = self.rightClickMenu.showMinimizeSig
-        showMaxSig = self.rightClickMenu.showMaximizeSig
+        self.rightClickMenu.showNor.connect(self.showNor.emit)
+        self.rightClickMenu.showMin.connect(self.showMin.emit)
+        self.rightClickMenu.showMax.connect(self.showMax.emit)
 
-        showNorSig.connect(self.show_nor)
-        showMinSig.connect(self.show_min)
-        showMaxSig.connect(self.show_max)
-
-        self.setIcon(QIcon(func.get_icon('Logo')))
+        self.setIcon(rc.AppIcon('Logo'))
         self.setToolTip(app.__appname__)
         self.activated.connect(self.sys_tray_icon_activated)
         self.setContextMenu(self.rightClickMenu)
@@ -131,36 +117,21 @@ class SysTrayIcon(QSystemTrayIcon):
         self.eventObj=SystrayWheelEventObject()
         self.installEventFilter(self.eventObj)
 
-    def show_nor(self, param):
-        param = func.str2bool(param)
-        self.showNormalSig.emit(param)
-        self.settings.setValue("showNormal", param)
-        self.settings.setValue("showMinimize", not param)
-        self.settings.setValue("showMaximize", not param)
-
-    def show_min(self, param):
-        param = func.str2bool(param)
-        self.showMinimizeSig.emit(param)
-        self.settings.setValue("showNormal", not param)
-        self.settings.setValue("showMinimize", param)
-        self.settings.setValue("showMaximize", not param)
-
-    def show_max(self, param):
-        param = func.str2bool(param)
-        self.showMaximizeSig.emit(param)
-        self.settings.setValue("showNormal", not param)
-        self.settings.setValue("showMinimize", not param)
-        self.settings.setValue("showMaximize", param)
-
     def sys_tray_icon_activated(self, reason):
         if reason == QSystemTrayIcon.DoubleClick:
-            self.show_nor(True)
+            self.showNor.emit(True)
 
-    def loginMess(self):
-        self.showMessage('Welcome', "Log in as %s" % self.username, QSystemTrayIcon.Information, 500)
+    def log_in(self):
+        self.showMessage('Welcome', "Log in as {0}".format(self.username),
+                         QSystemTrayIcon.Information, 500)
 
-    def closeMess(self):
-        self.showMessage('Notice', "Pipeline Tool will keep running in the system tray.", QSystemTrayIcon.Information, 500)
+    def log_out(self):
+        self.showMessage('Welcome', "Log out",
+                         QSystemTrayIcon.Information, 500)
+
+    def close_event(self):
+        self.showMessage('Notice', "{0} will keep running in the system tray.".format(app.__appname__),
+                         QSystemTrayIcon.Information, 500)
 
 def main():
     sysApp = QApplication(sys.argv)

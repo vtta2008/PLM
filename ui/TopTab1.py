@@ -13,9 +13,10 @@ Description:
 
 # Python
 import sys
+from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import QUrl
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLineEdit, QPushButton
 
 # Plt
@@ -28,15 +29,13 @@ from utilities import utils as func
 
 logger = app.set_log()
 
-def handleLeftClick(x, y):
-    row = int(y)
-    column = int(x)
-    print("Clicked on image pixel (row=" + str(row) + ", column=" + str(column) + ")")
-
 # -------------------------------------------------------------------------------------------------------------
 """ topTab1 """
 
 class TopTab1(QWidget):
+
+    loadLayout = pyqtSignal(str)
+    execute = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(TopTab1, self).__init__(parent)
@@ -48,33 +47,52 @@ class TopTab1(QWidget):
 
         self.appInfo = func.preset_load_appInfo()
         self.layout = QGridLayout()
-
         self.buildUI()
-
         self.setLayout(self.layout)
 
     def buildUI(self):
 
-        officeBtns = [rc.IconBtnProcess(key) for key in app.CONFIG_OFFICE if key in self.appInfo] or []
+        officeBtns = []
+        keys = ['TextEditor', 'NoteReminder']
+        for key in keys:
+            if key in self.appInfo:
+                btn = rc.IconBtnLoadLayout(key)
+                btn.consoleSig.connect(self.loadLayout.emit)
+                officeBtns.append(btn)
+
+        for key in app.CONFIG_OFFICE:
+            if key in self.appInfo:
+                btn = rc.IconBtnProcess(key)
+                btn.consoleSig.connect(self.execute.emit)
+                officeBtns.append(btn)
+
         sec1Grp = rc.AutoSectionBtnGrp("Office", officeBtns, "IconGrid")
 
-        devBtns = [rc.IconBtnProcess(key) for key in app.CONFIG_DEV if key in self.appInfo] or []
+        devBtns = []
+        for key in app.CONFIG_DEV:
+            if key in self.appInfo:
+                btn = rc.IconBtnProcess(key)
+                btn.consoleSig.connect(self.execute.emit)
+                devBtns.append(btn)
+
         sec2Grp = rc.AutoSectionBtnGrp("Dev", devBtns, "IconGrid")
 
-        loaduiLst = [self.calculatorUI, self.calendarUI, self.englishDictionaryUI, self.findFilesUI, self.imageViewerUI,
-                     self.noteReminderUI, self.pltBrowserUI, self.screenshotUI, self.textEditorUI]
-
-        pyuiBtns = []
+        pyuiBtn = []
         for key in app.CONFIG_TOOLS:
             if key in self.appInfo:
                 btn = rc.IconBtnLoadLayout(key)
-                sig = btn.consoleSig
-                sig.connect(loaduiLst[app.CONFIG_TOOLS.index(key)])
-                pyuiBtns.append(btn)
+                btn.consoleSig.connect(self.loadLayout.emit)
+                pyuiBtn.append(btn)
 
-        sec3Grp = rc.AutoSectionBtnGrp("Tools", pyuiBtns, "IconGrid")
+        sec3Grp = rc.AutoSectionBtnGrp("Tools", pyuiBtn, "IconGrid")
 
-        extraBtns = [rc.IconBtnProcess(key) for key in app.CONFIG_EXTRA if key in self.appInfo] or []
+        extraBtns = []
+        for key in app.CONFIG_EXTRA:
+            if key in self.appInfo:
+                btn = rc.IconBtnProcess(key)
+                btn.consoleSig.connect(self.loadLayout.emit)
+                extraBtns.append(btn)
+
         sec4Grp = rc.AutoSectionBtnGrp("Extra", extraBtns, "IconGrid")
 
         self.findEdit = QLineEdit()
@@ -94,71 +112,7 @@ class TopTab1(QWidget):
 
         self.applySetting()
 
-    def calculatorUI(self):
-        from ui import Calculator
-        app.reload(Calculator)
-        layout = Calculator.Calculator()
-        layout.show()
-        layout.exec_()
-
-    def calendarUI(self):
-        from ui import Calendar
-        app.reload(Calendar)
-        layout = Calendar.Calendar()
-        layout.show()
-        layout.exec_()
-
-    def englishDictionaryUI(self):
-        from ui import EnglishDictionary
-        app.reload(EnglishDictionary)
-        layout = EnglishDictionary.EnglishDictionary()
-        layout.show()
-        layout.exec_()
-
-    def findFilesUI(self):
-        from ui import FindFiles
-        app.reload(FindFiles)
-        layout = FindFiles.FindFiles()
-        layout.show()
-        layout.exec_()
-
-    def imageViewerUI(self):
-        from ui import ImageViewer
-        app.reload(ImageViewer)
-        layout = ImageViewer.ImageViewer()
-        layout.show()
-        layout.exec_()
-
-    def noteReminderUI(self):
-        from ui import NoteReminder
-        app.reload(NoteReminder)
-        layout = NoteReminder.NoteReminder()
-        layout.show()
-        layout.exec_()
-
-    def pltBrowserUI(self, url='http://www.google.com.vn'):
-        from ui import Browser
-        app.reload(Browser)
-        layout = Browser.Browser(QUrl(url))
-        layout.show()
-        layout.exec_()
-
-    def screenshotUI(self):
-        from ui import Screenshot
-        app.reload(Screenshot)
-        layout = Screenshot.Screenshot()
-        layout.show()
-        layout.exec_()
-
-    def textEditorUI(self):
-        from ui import TextEditor
-        app.reload(TextEditor)
-        layout = TextEditor.TextEditor()
-        layout.show()
-        layout.exec_()
-
     def applySetting(self):
-
         self.layout.setSpacing(2)
 
 

@@ -22,7 +22,7 @@ import appData as app
 # ----------------------------------------------------------------------------------------------------------- #
 """ Simple log """
 
-# logger = app.set_log()
+logger = app.set_log()
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Preset """
@@ -30,24 +30,11 @@ import appData as app
 def preset_setup_config_data(*args):
     # setup local database
     if not os.path.exists(app.DBPTH):
-        from utilities import localdb as usql
-
-        usql.create_curUser_table()
-        usql.create_user_token_table()
-        usql.create_timeLog_table()
-        usql.create_questions_library()
-
-        with open(os.path.join(app.dtDir.split('appData')[0], 'appData', 'QUESTION'), 'r') as f:
-            data = f.read()
-
-        questions = [q.split('"')[1] for q in data.split(",")]
-
-        usql.insert_questions_library(questions=questions, source="Old data")
-    else:
-        from utilities import localdb as usql
+        from appData import baseRC as base
+        base.GenerateResource()
 
     # Set up app config directories
-    for dirPth in [app.DAMGDIR, app.APPDIR, app.CONFIGDIR, app.SETTINGDIR, app.LOGDIR]:
+    for dirPth in [app.DAMGDIR, app.APPDIR, app.CONFIGDIR, app.SETTINGDIR, app.LOGODIR]:
         if not os.path.exists(dirPth):
             os.mkdir(dirPth)
 
@@ -60,7 +47,7 @@ def preset_load_appInfo(*args):
     return appInfo
 
 def preset_implement_maya_tanker(*args):
-    tk = os.path.join(app.dtDir.split('appData')[0], 'tankers', 'pMaya')
+    tk = os.path.join(os.getenv(app.__envKey__), 'tankers', 'pMaya')
 
     tranker = dict(modules = ['anim', 'lib', 'modeling', 'rendering', 'simulating', 'surfacing', ],
                      QtPlugins = [], )
@@ -73,7 +60,7 @@ def preset_implement_maya_tanker(*args):
     os.environ['PYTHONPATH'] = pVal
 
     # Copy userSetup.py from source code to properly maya folder
-    usScr = os.path.join(app.dtDir.split('appData')[0], 'packages', 'maya', 'userSetup.py')
+    usScr = os.path.join(os.getenv(app.__envKey__), 'packages', 'maya', 'userSetup.py')
     if os.path.exists(usScr):
         mayaVers = [os.path.join(tk, v) for v in app.autodeskVer if os.path.exists(os.path.join(tk, v))] or []
         if not len(mayaVers) == 0 or not mayaVers == []:
@@ -81,7 +68,7 @@ def preset_implement_maya_tanker(*args):
                 shutil.copy(usScr, usDes)
 
 def preset_load_iconInfo(*args):
-    with open(app.iconConfig, 'r') as f:
+    with open(app.appIconCfg, 'r') as f:
         iconInfo = json.load(f)
     return iconInfo
 
@@ -279,9 +266,9 @@ def obj_properties_setting(directory, mode, *args):
             elif platform.system() == "Darwin":
                 subprocess.call(["chflags", "nohidden", directory])
         else:
-            print("ERROR: (Incorrect Command) Valid commands are 'HIDE' and 'UNHIDE' (both are not case sensitive)")
+            logger.debug("ERROR: (Incorrect Command) Valid commands are 'HIDE' and 'UNHIDE' (both are not case sensitive)")
     else:
-        print("ERROR: (Unknown Operating System) Only Windows and Darwin(Mac) are Supported")
+        logger.debug("ERROR: (Unknown Operating System) Only Windows and Darwin(Mac) are Supported")
 
 def batch_obj_properties_setting(listObj, mode, *args):
 
@@ -380,7 +367,7 @@ def cmd_execute_py(name, path, *args):
         subprocess.call([sys.executable, pth])
 
 def system_call(args, cwd="."):
-    print("Running '{}' in '{}'".format(str(args), cwd))
+    logger.info("Running '{}' in '{}'".format(str(args), cwd))
     subprocess.call(args, cwd=cwd)
     pass
 
@@ -486,33 +473,6 @@ def set_buffer_and_offset(offsetX=5, offsetY=5, *args):
     bufferY = tbH
     return bufferX, bufferY, offsetX, offsetY
 
-def set_app_stick_to_bot_right(sizeW=400, sizeH=280, offsetX=5, offsetY=5, *args):
-    resW, resH = get_screen_resolution()
-    bufferX, bufferY, offsetX, offsetY = set_buffer_and_offset(offsetX, offsetY)
-    posX = resW - (sizeW + bufferX + offsetX)
-    posY = resH - (sizeH + bufferY + offsetY)
-    return posX, posY, sizeW, sizeH
-
-def set_app_stick_to_bot_left(sizeW=400, sizeH=280, offsetX=5, offsetY=5, *args):
-    resW, resH = get_screen_resolution()
-    bufferX, bufferY, offsetX, offsetY = set_buffer_and_offset(offsetX, offsetY)
-    posX = offsetX
-    posY = resH - (sizeH + bufferY + offsetY)
-    return posX, posY, sizeW, sizeH
-
-def set_app_stick_to_top_right(sizeW=400, sizeH=280, offsetX=5, offsetY=5, *args):
-    resW, resH = get_screen_resolution()
-    bufferX, bufferY, offsetX, offsetY = set_buffer_and_offset(offsetX, offsetY)
-    posX = resW - (sizeW + bufferX + offsetX)
-    posY = offsetX + bufferY
-    return posX, posY, sizeW, sizeH
-
-def set_app_stick_to_top_left(sizeW=400, sizeH=280, offsetX=5, offsetY=5, *args):
-    bufferX, bufferY, offsetX, offsetY = set_buffer_and_offset(offsetX, offsetY)
-    posX = offsetX + bufferX
-    posY = offsetY + bufferY
-    return posX, posY, sizeW, sizeH
-
 # ----------------------------------------------------------------------------------------------------------- #
 """ Plt app functions """
 
@@ -527,31 +487,38 @@ def run(pth, *args):
 # ----------------------------------------------------------------------------------------------------------- #
 """ Quick find path """
 
-def get_icon(key, *args):
-    with open(app.iconConfig, 'r') as f:
-        iconInfo = json.load(f)
-    for k in iconInfo:
-        if key in k:
-            return iconInfo[k]
-    return "No Value"
+def getAppIcon(size=32, iconName="AboutPlt"):
+    iconPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'icons', "x" + str(size))
+    return os.path.join(iconPth, iconName + ".icon.png")
 
-def get_web_icon(key, *args):
-    iconLst = get_file_path(os.path.join(app.dtDir.split('appData')[0], 'imgs', 'web'))
-    for icon in iconLst:
-        if key in icon:
-            return icon
+def getLogo(size=32, name="DAMG", *args):
+    if name == "Logo":
+        logoPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'logo', 'Plt', 'icons')
+    elif name == 'DAMG':
+        logoPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'logo', 'DAMGteam', 'icons')
+    else:
+        logoPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'logo', 'Plt', 'icons')
 
-def get_avatar(key, *args):
-    avatarLst = [i for i in get_file_path(os.path.join(app.dtDir.split('appData')[0], 'imgs', 'avatar')) if '.avatar' in i]
-    for avatar in avatarLst:
-        if key in avatar:
-            return avatar
+    return os.path.join(logoPth, str(size) + "x" + str(size) + ".png")
 
-def get_tag(key, *args):
-    tagLst = [i for i in get_file_path(os.path.join(app.dtDir.split('appData')[0], 'imgs', 'tags')) if '.tag' in i]
-    for tag in tagLst:
-        if key in tagLst:
-            return tag
+def getWebIcon(name, *args):
+    webiconPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'web')
+    icons = [i for i in get_file_path(webiconPth) if ".avatar" in i]
+    for i in icons:
+        if name in i:
+            return i
+
+def getAvatar(name, *args):
+    avatars = [a for a in get_file_path(os.path.join(os.getenv(app.__envKey__), 'imgs', 'avatar')) if '.avatar' in a]
+    for a in avatars:
+        if name in a:
+            return a
+
+def getTag(name, *args):
+    tags = [t for t in get_file_path(os.path.join(os.getenv(app.__envKey__), 'imgs', 'tags')) if '.tag' in t]
+    for t in tags:
+        if name in t:
+            return t
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Encode, decode, convert """
@@ -673,13 +640,13 @@ class Collect_info():
     def collect_icon_path(self):
         # Create dictionary for icon info
         self.iconInfo = {}
-        self.iconInfo['Logo'] = os.path.join(app.dtDir.split('appData')[0], 'imgs', 'Logo.icon.png')
-        self.iconInfo['DAMG'] = os.path.join(app.dtDir.split('appData')[0], 'imgs', 'DAMGteam.icon.png')
+        self.iconInfo['Logo'] = app.PLTLOGO
+        self.iconInfo['DAMG'] = app.DAMGLOGO
         # Custom some info to debug
         self.iconInfo['Sep'] = 'separato.png'
         self.iconInfo['File'] = 'file.png'
         # Get list of icons in imgage folder
-        iconlst = [i for i in get_file_path(os.path.join(app.dtDir.split('appData')[0], 'imgs', 'icons', 'x32')) if '.icon' in i]
+        iconlst = [i for i in get_file_path(app.ICONDIR32) if i.endswith(".png")]
     
         for i in iconlst:
             self.iconInfo[os.path.basename(i).split('.icon')[0]] = i
@@ -747,9 +714,12 @@ class Collect_info():
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " -launch"
 
         # Extra app come along with plt but not be installed in local.
-        dbBrowserPth = os.path.join(app.dtDir.split('appData')[0], 'tankers', 'sqlbrowser', 'SQLiteDatabaseBrowserPortable.exe')
-        advanceRenamerPth = os.path.join(app.dtDir.split('appData')[0], 'tankers', 'batchRenamer', 'ARen.exe')
+        dbBrowserPth = os.path.join(os.getenv(app.__envKey__), 'tankers', 'sqlbrowser', 'SQLiteDatabaseBrowserPortable.exe')
+
+        advanceRenamerPth = os.path.join(os.getenv(app.__envKey__), 'tankers', 'batchRenamer', 'ARen.exe')
+
         qtDesigner = os.path.join(os.getenv('PROGRAMDATA'), 'Anaconda3', 'Library', 'bin', 'designer.exe')
+
         davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
 
         eVal = [dbBrowserPth, advanceRenamerPth, qtDesigner, davinciPth]
@@ -758,29 +728,30 @@ class Collect_info():
 
         for key in eKeys:
             if os.path.exists(eVal[eKeys.index(key)]):
-                self.mainInfo[key] = [key, get_icon(key), "App: {key}".format(key=eVal[eKeys.index(key)])]
+                self.mainInfo[key] = [key, getAppIcon(32, key), "App: {key}".format(key=eVal[eKeys.index(key)])]
 
-        for key in self.appInfo:
-            if key in self.iconInfo:
-                self.mainInfo[key] = [key, get_icon(key), "App: {key}".format(key=self.appInfo[key])]
+        for key in keepKeys:
+            self.mainInfo[key] = [key, getAppIcon(32, key), "App: {key}".format(key=self.appInfo[key])]
 
         for key in app.CONFIG_APPUI:
-            self.mainInfo[key] = [key, get_icon(key), "UI: {key}".format(key=key)]
+            self.mainInfo[key] = [key, getAppIcon(32, key), "UI: {key}".format(key=key)]
 
         for key in app.CONFIG_SYSTRAY:
-            self.mainInfo[key] = [key, get_icon(key), "Func: {key}".format(key=key)]
+            self.mainInfo[key] = [key, getAppIcon(32, key), "Func: {key}".format(key=key)]
 
         self.create_config_file('main', self.mainInfo)
 
     def create_config_file(self, name, data):
         if name == 'envKeys':
-            filePth = app.envConfig
+            filePth = app.pyEnvCfg
         elif name == "main":
             filePth = app.mainConfig
         elif name=='icon':
-            filePth = app.iconConfig
+            filePth = app.appIconCfg
         elif name == 'app':
             filePth = app.appConfig
+        else:
+            filePth = app.webIconCfg
 
         dataHandle('json', 'w', filePth, data)
 

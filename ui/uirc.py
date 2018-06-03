@@ -18,16 +18,15 @@ from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import Qt, QSize, pyqtSignal, QObject
-from PyQt5.QtGui import QFont, QIcon, QPixmap
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QTextTableFormat, QTextCharFormat
 from PyQt5.QtWidgets import (QLabel, QGridLayout, QPushButton, QAction, QApplication, QGroupBox, QToolBar,
-                             QGraphicsView, QHBoxLayout, QGraphicsScene, QMessageBox, QTabWidget, QWidget, QTabBar,
-                             QVBoxLayout, QToolButton, )
+                             QGraphicsView, QHBoxLayout, QGraphicsScene, QTabWidget, QWidget, QTabBar,
+                             QVBoxLayout, QToolButton, QTextEdit, QDockWidget)
 
 # Plt
 import appData as app
-from utilities import localdb as usql
+from utilities import localSQL as usql
 from utilities import utils as func
-from utilities import message as mess
 
 # Path
 with open(app.mainConfig, 'r') as f:
@@ -60,7 +59,7 @@ class Run(QObject):
 
     def exeFunc(self, funcName):
         if funcName == "Exit":
-            usql.insert_timeLog("Log out")
+            usql.TimeLog("Log out")
             QApplication.instance().quit()
         elif funcName == "open_cmd":
             func.open_cmd()
@@ -68,23 +67,60 @@ class Run(QObject):
 # -------------------------------------------------------------------------------------------------------------
 """ UI resource preset """
 
-class TButton(QToolButton):
+class IconPth(QIcon):
 
-    def __init__(self, text, parent=None):
-        super(TButton, self).__init__(parent)
+    def __init__(self, size=32, name="AboutPlt"):
+        super(IconPth, self).__init__()
 
-        self.settings = app.APPSETTING
-        self.setText(text)
+        self.iconPth = func.getAppIcon(size, name)
+        self.buildUI()
+
+    def buildUI(self):
+        self.addFile(self.iconPth, QSize(32, 32))
         self.applySetting()
 
     def applySetting(self):
-        self.setSizePolicy(app.SiPoExp, app.SiPoPre)
+        pass
 
-    def sizeHint(self):
-        size = super(TButton, self).sizeHint()
-        size.setHeight(size.height() + 20)
-        size.setWidth(max(size.width(), size.height()))
-        return size
+class AppIcon(QIcon):
+
+    def __init__(self, name="Logo", parent=None):
+        super(AppIcon, self).__init__(parent)
+
+        sizes = [16, 24, 32, 48, 64, 96, 128, 256, 512]
+
+        for s in sizes:
+            self.addFile(func.getLogo(s, name), QSize(s, s))
+
+        self.applySetting()
+
+    def applySetting(self):
+
+        pass
+
+class ImageUI(QGraphicsView):
+
+    def __init__(self, icon="", size=None, parent=None):
+        super(ImageUI, self).__init__(parent)
+
+        self.settings = app.APPSETTING
+        self.pixmap = QPixmap(func.getAppIcon(32, icon))
+
+        if size == None or len(size) == 0:
+            self.size = [self.pixmap.width(), self.pixmap.height()]
+        else:
+            self.size = size
+
+        self.scene = QGraphicsScene()
+        self.buildUI()
+        self.setScene(self.scene)
+
+    def buildUI(self):
+        self.scene.addPixmap(self.pixmap)
+        self.applySetting()
+
+    def applySetting(self):
+        pass
 
 class Label(QLabel):
 
@@ -118,35 +154,23 @@ class Label(QLabel):
         self.setScaledContents(True)
         self.setWordWrap(True)
 
-class ImageUI(QGraphicsView):
+class ToolBtn(QToolButton):
 
-    def __init__(self, icon="", size=None, parent=None):
-        super(ImageUI, self).__init__(parent)
-
-        if not os.path.exists(func.get_icon(icon)):
-            print("it ends here")
-            sys.exit(1)
+    def __init__(self, text, parent=None):
+        super(ToolBtn, self).__init__(parent)
 
         self.settings = app.APPSETTING
-        self.pixmap = QPixmap(func.get_icon(icon))
-
-        if size == None or len(size) == 0:
-            self.size = [self.pixmap.width(), self.pixmap.height()]
-        else:
-            self.size = size
-
-        self.scene = QGraphicsScene()
-        self.buildUI()
-        self.setScene(self.scene)
-
-    def buildUI(self):
-        self.scene.addPixmap(self.pixmap)
+        self.setText(text)
         self.applySetting()
 
     def applySetting(self):
-        self.aspectRatioMode = app.keepARM
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
-        self.resize(self.size[0], self.size[1])
+        self.setSizePolicy(app.SiPoExp, app.SiPoPre)
+
+    def sizeHint(self):
+        size = super(ToolBtn, self).sizeHint()
+        size.setHeight(size.height() + 20)
+        size.setWidth(max(size.width(), size.height()))
+        return size
 
 class Button(QPushButton):
 
@@ -164,8 +188,7 @@ class Button(QPushButton):
 
     def applySetting(self):
         self.setSizePolicy(app.SiPoMin, app.SiPoMin)
-        # self.setStyleSheet("""color: #{color1}; background-color: #{color2}; border: 1px solid #{color1};""".format(
-        #     color1="3861aa", color2="ffffff"))
+        self.setMouseTracking(True)
 
     def sizeHint(self):
         size = super(Button, self).sizeHint()
@@ -187,11 +210,10 @@ class IconBtnProcess(QPushButton):
         self.buildUI()
 
     def buildUI(self):
+
         self.setToolTip(APPINFO[self.key][0])
-        self.setIcon(QIcon(APPINFO[self.key][1]))
-        self.setFixedSize(app.ICONSIZE, app.ICONSIZE)
-        self.setIconSize(app.ICONSETSIZE)
-        self.clicked.connect(partial(self.on_icon_btn_clicked, APPINFO[self.key][2]))
+        self.setIcon(IconPth(32, self.key))
+        self.clicked.connect(partial(self.consoleSig.emit, self.key))
 
         self.applySetting()
 
@@ -199,11 +221,13 @@ class IconBtnProcess(QPushButton):
         Run(data)
 
     def applySetting(self):
-        pass
+        self.setFixedSize(app.BTNICONSIZE)
+        self.setIconSize(app.ICONBTNSIZE)
+        self.setMouseTracking(True)
 
 class IconBtnLoadLayout(QPushButton):
 
-    consoleSig = pyqtSignal(bool)
+    consoleSig = pyqtSignal(str)
 
     def __init__(self, key=None, parent=None):
         super(IconBtnLoadLayout, self).__init__(parent)
@@ -215,19 +239,19 @@ class IconBtnLoadLayout(QPushButton):
 
     def buildUI(self):
         self.setToolTip(APPINFO[self.key][0])
-        self.setIcon(QIcon(APPINFO[self.key][1]))
-        self.setFixedSize(app.ICONSIZE, app.ICONSIZE)
-        self.setIconSize(app.ICONSETSIZE)
-        self.clicked.connect(self.on_icon_btn_clicked)
+        self.setIcon(IconPth(32, self.key))
+        self.clicked.connect(partial(self.consoleSig.emit, self.key))
 
         self.applySetting()
 
     def on_icon_btn_clicked(self):
         self.settings.setValue(self.key, True)
-        self.consoleSig.emit(True)
+        self.consoleSig.emit(self.key)
 
     def applySetting(self):
-        pass
+        self.setFixedSize(app.BTNICONSIZE)
+        self.setIconSize(app.ICONBTNSIZE)
+        self.setMouseTracking(True)
 
 class ActionProcess(QAction):
 
@@ -237,7 +261,6 @@ class ActionProcess(QAction):
         super(ActionProcess, self).__init__(parent)
         self.settings = app.APPSETTING
         self.key = key
-
         self.buildUI()
 
     def buildUI(self):
@@ -306,7 +329,110 @@ class BatchTBProcess(QToolBar):
         pass
 
 # -------------------------------------------------------------------------------------------------------------
-""" Tab layout """
+""" Dock widget """
+
+class NoteStamp(QTextTableFormat):
+    def __init__(self):
+        super(NoteStamp, self).__init__()
+        self.setBorder(1)
+        self.setCellPadding(4)
+        self.setAlignment(app.right)
+
+class DockStamp(QTextEdit):
+
+    def __init__(self, parent=None):
+        super(DockStamp, self).__init__(parent)
+
+        self.buildStamp()
+
+    def buildStamp(self):
+
+        cursor = self.textCursor()
+        frame = cursor.currentFrame()
+        frameFormat = frame.frameFormat()
+        frameFormat.setPadding(1)
+        frame.setFrameFormat(frameFormat)
+
+        cursor.insertTable(1, 1, NoteStamp())
+        cursor.insertText(app.datetTimeStamp, QTextCharFormat())
+
+    def applySetting(self):
+        self.resize(250, 100)
+        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+
+class DockWidget(QDockWidget):
+
+    def __init__(self, name="Reminder", parent=None):
+        super(DockWidget, self).__init__(parent)
+
+        self.setWindowTitle = name
+        self.setAllowedAreas(app.dockB | app.dockT)
+
+        self.content = DockStamp(self)
+        self.buildUI()
+        self.setWidget(self.content)
+
+    def buildUI(self):
+
+        cursor = self.content.textCursor()
+        cursor.insertBlock()
+        cursor.insertText("Note info")
+
+# -------------------------------------------------------------------------------------------------------------
+""" Tab layout element"""
+
+class TabBar(QTabBar):
+
+    def tabSizeHint(self, index):
+        size = QTabBar.tabSizeHint(self, index)
+        w = int(self.width()/self.count())
+        return QSize(w, size.height())
+
+class TabContent(QWidget):
+
+    def __init__(self, layout=None, parent=None):
+        super(TabContent, self).__init__(parent)
+
+        if layout is None:
+            layout = QGridLayout()
+            layout.addWidget(Label())
+
+        self.settings = app.APPSETTING
+        self.layout = layout
+        self.buildUI()
+        self.setLayout(self.layout)
+
+    def buildUI(self):
+
+        self.applySetting()
+
+    def applySetting(self):
+        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+
+class TabWidget(QWidget):
+
+    def __init__(self, parent=None):
+        super(TabWidget, self).__init__(parent)
+        self.settings = app.APPSETTING
+        self.buildUI()
+        self.setLayout(self.layout)
+
+    def buildUI(self):
+        self.tabs = QTabWidget()
+        self.tabs.setTabBar(TabBar())
+        self.layout = QVBoxLayout()
+        self.layout.addWidget(self.tabs)
+
+        self.applySetting()
+
+    def applySetting(self):
+        self.tabs.setMovable(True)
+        self.tabs.setDocumentMode(True)
+        self.tabs.setElideMode(Qt.ElideRight)
+        self.tabs.setUsesScrollButtons(True)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Layout """
 
 class AutoArrangeIconGrid(QGridLayout):
 
@@ -322,7 +448,7 @@ class AutoArrangeIconGrid(QGridLayout):
     def buildUI(self):
         if not len(self.btns) == 0:
             for i in range(len(self.btns)):
-                if str(type(self.btns[i])) in ["<class 'ui.uirc.IconBtnProcess'>", "<class 'ui.uirc.IconBtnLoadLayout'>"]:
+                if str(type(self.btns[i])) in ["<class 'ui.uirc.IconBtnProcess'>", "<class 'ui.uirc.IconBtnLoadLayout'>", ]:
                     if i == 0:
                         self.addWidget(self.btns[i], 0, 0, 1, 1)
                     elif i == 1:
@@ -485,7 +611,7 @@ class AutoSectionLayoutGrp(QGroupBox):
         self.setTitle(title)
 
         if subLayout == None or len(subLayout) == 0 or str(type(subLayout)) in ["Class <'Label'>", "Class <'QLabel'>",]:
-            subLayout = Label(mess.WAIT_LAYOUT_COMPLETE)
+            subLayout = Label(app.WAITUICOMPLETE)
             self.layout = QGridLayout()
             self.layout.addWidget(subLayout, 0, 0, 1, 1)
         else:
@@ -500,50 +626,5 @@ class AutoSectionLayoutGrp(QGroupBox):
 
     def applySetting(self):
         pass
-
-class TabBar(QTabBar):
-
-    def tabSizeHint(self, index):
-        size = QTabBar.tabSizeHint(self, index)
-        w = int(self.width()/self.count())
-        return QSize(w, size.height())
-
-class TabContent(QWidget):
-
-    def __init__(self, layout, parent=None):
-        super(TabContent, self).__init__(parent)
-        self.settings = app.APPSETTING
-        self.layout = layout
-        self.buildUI()
-        self.setLayout(self.layout)
-
-    def buildUI(self):
-
-        self.applySetting()
-
-    def applySetting(self):
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
-
-class TabWidget(QWidget):
-
-    def __init__(self, parent=None):
-        super(TabWidget, self).__init__(parent)
-        self.settings = app.APPSETTING
-        self.buildUI()
-        self.setLayout(self.layout)
-
-    def buildUI(self):
-        self.tabs = QTabWidget()
-        self.tabs.setTabBar(TabBar())
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.tabs)
-
-        self.applySetting()
-
-    def applySetting(self):
-        self.tabs.setMovable(True)
-        self.tabs.setDocumentMode(True)
-        self.tabs.setElideMode(Qt.ElideRight)
-        self.tabs.setUsesScrollButtons(True)
 
 # -------------------------------------------------------------------------------------------------------------

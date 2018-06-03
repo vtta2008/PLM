@@ -80,7 +80,7 @@ class NewProject(QDialog):
 
     info = {}
 
-    def __init__(self, id='Create New Project', icon=func.get_icon('New Project'), parent=None):
+    def __init__(self, id='Create New Project', icon=func.getIcon32('New Project'), parent=None):
         super(NewProject, self).__init__(parent)
 
         self.setWindowTitle(id)
