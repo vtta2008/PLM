@@ -43,6 +43,8 @@ class StatusBar(QStatusBar):
 
         self.applySetting()
 
+
+
     def applySetting(self):
         self.setSizePolicy(app.SiPoMin, app.SiPoMin)
 
