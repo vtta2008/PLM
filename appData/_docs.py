@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Plt.py
+Script Name: _doc.py
 Author: Do Trinh/Jimmy - 3D artist.
 Description:
     This script is master file of Pipeline Tool
 
 """
-PLT_ABOUT = """
+
+PLM_ABOUT = """
 
 PIPELINE TOOL TO MAKE A SHORT FILM
 
@@ -71,5 +72,3 @@ PTH_NOT_EXSIST = "Could not find directory path specific"
 ERROR_OPENFILE = "There was an error opening the file"
 
 ERROR_QIMAGE = "ImageViewer.setImage: Argument must be a QImage or QPixmap."
-
-LINE = "==============================================================================================================="

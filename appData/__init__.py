@@ -9,255 +9,321 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
+""" import """
 
-# Python
-import os
-from importlib import reload as r
-
-# Plt
-from . import subData as sub
-from . import strData as mes
+from . import config as c
 
 # -------------------------------------------------------------------------------------------------------------
-""" Environment Variable """
+""" Environment variables """
 
-__envKey__ = sub.__envKey__
+__envKey__ = c.__envKey__
 
 # -------------------------------------------------------------------------------------------------------------
 """ Reload module """
 
 def reload(module):
-    return r(module)
-
-def set_log():
-    return sub.set_log()
-
-# -------------------------------------------------------------------------------------------------------------
-""" Setup dir, path """
-
-DAMGDIR = sub.CONFIGLOCALDAMGDIR
-APPDIR = sub.PLMCONFIGLOCAL
-
-CONFIGDIR = sub.CONFIGDIR                       # Config dir to store config info
-SETTINGDIR = sub.SETTINGDIR                     # Setting dir to store setting info
-LOGODIR = sub.LOGDIR                             # Log dir to store log info
-
-DBPTH = sub.DBPTH                               # Local database
-LOGPTH = sub.LOGPTH                             # Log file
-
-APPICONDIR = sub.APPICONDIR
-WEBICONDIR = sub.WEBICONDIR
-AVATARDIR = sub.AVATARDIR
-PICDIR = sub.PICDIR
-
-ICONDIR16 = sub.ICONDIR16
-ICONDIR24 = sub.ICONDIR24
-ICONDIR32 = sub.ICONDIR32
-ICONDIR48 = sub.ICONDIR48
-ICONDIR64 = sub.ICONDIR64
-
-WEBICON16 = sub.WEBICON16
-WEBICON24 = sub.WEBICON24
-WEBICON32 = sub.WEBICON32
-WEBICON48 = sub.WEBICON48
-WEBICON64 = sub.WEBICON64
-WEBICON128 = sub.WEBICON128
-
-APPSETTING = sub.appSetting
-USERSETTING = sub.userSetting
-
-pyEnvCfg = sub.pyEnvCfg
-appIconCfg = sub.appIconCfg                     # app icon config
-webIconCfg = sub.webIconCfg                     # web icon config
-mainConfig = sub.mainConfig                     # pipeline packages config
-appConfig = sub.appConfig                       # all app installed config
-
-DAMGLOGO = sub.DAMGLOGO
-PLTLOGO = sub.PLTLOGO
+    return c.reload_module(module)
 
 # -------------------------------------------------------------------------------------------------------------
 """ DAMG team """
 
-__organization__ = "DAMG team"
-__damgSlogan__ = "Desire Design"
-__website__ = "https://damgteam.com"
-__author1__ = "Trinh Do"
-__author2__ = "Duong Minh Duc"
-__Founder__ = __author1__
-__CoFonder1__ = __author2__
-__email1__ = "dot@damgteam.com"
-__email2__ = "up@damgteam.com"
+__organization__ = c.__organization__
+__damgSlogan__ = c.__damgSlogan__
+__website__ = c.__website__
+__author1__ = c.__author1__
+__author2__ = c.__author2__
+__Founder__ = c.__author1__
+__CoFonder1__ = c.__author2__
+__email1__ = c.__email1__
+__email2__ = c.__email2__
 
 # -------------------------------------------------------------------------------------------------------------
 """ PipelineTool """
 
-__project__ = "Pipeline Tool (Plt)"
-__appname__ = "PLT"
-__appShortcut__ = "Plt.ink"
-__version__ = "13.0.1"
-__cfgVersion__ = "0.8.6"
-__verType__ = "Dev"
-__reverType__ = "2"
-__about__ = "About plt"
-__homepage__ = "https://pipeline.damgteam.com"
-__pltSlogan__ = "Creative solution for problem solving"
-__pltWiki__ = "https://github.com/vtta2008/PipelineTool/wiki"
+__project__ = c.__project__
+__appname__ = c.__appname__
+__appShortcut__ = c.__appShortcut__
+__version__ = c.__version__
+__cfgVersion__ = c.__cfgVersion__
+__verType__ = c.__verType__
+__reverType__ = c.__reverType__
+__about__ = c.__about__
+__homepage__ = c.__homepage__
+__pltSlogan__ = c.__pltSlogan__
+__pltWiki__ = c.__pltWiki__
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """
 
-__serverLocal__ = "http://127.0.0.1:8000/"
-__serverUrl__ = "https://pipeline.damgteam.com"
-__serverCheck__ = "https://pipeline.damgteam.com/check"
-__serverAutho__ = "https://pipeline.damgteam.com/auth"
+__serverLocal__ = c.__serverLocal__
+__serverUrl__ = c.__serverUrl__
+__serverCheck__ = c.__serverCheck__
+__serverAutho__ = c.__serverAutho__
 
-__google__ = "https://google.com.vn"
+__google__ = c.__google__
 
 # -------------------------------------------------------------------------------------------------------------
 """ Metadata """
 
-VERSION = "{0} v{1}.{2}-{3}".format(__project__, __version__, __verType__, __reverType__)
-COPYRIGHT = "{0} software (c) 2017-2018 {1}. All rights reserved.".format(__appname__, __organization__)
-PLUGINVERSION = "{0}.13.cfg.{1}".format(__appname__, __cfgVersion__)
-PLTAPPID = u'{0}.{1}.{2}.{3}'.format(__organization__, __project__, __appname__, VERSION)
-
-# --------------------------------------------------------------------------------------------------------------
-""" Config data """
-
-KEYDETECT = sub.KEYDETECT
-
-CONFIG_APPUI = sub.CONFIG_APPUI
-
-pVERSION = dict(autodesk=sub.autodeskVer, adobe=sub.adobeVer, foundry=sub.foundryVer, pixologic=sub.pixologiVer,
-                sizefx=sub.sizefxVer, office=sub.officeVer, jetbrains=sub.jetbrainsVer)
-
-pPACKAGE = dict(autodesk=sub.autodeskApp, adobe=sub.adobeApp, foundry=sub.foundryApp, pixologic=sub.pixologiApp,
-                sizefx=sub.sizefxApp, office=sub.officeApp, jetbrains=sub.jetbrainsApp)
-
-pTRACK = dict(TDS=sub.TRACK_TDS, VFX=sub.TRACK_VFX, ART=sub.TRACK_ART, Office=sub.TRACK_OFFICE, Dev=sub.TRACK_DEV,
-              Tools=sub.TRACK_TOOLS, Extra=sub.TRACK_EXTRA, sysTray=sub.TRACK_SYSTRAY, )
-
-def generate_key_packages(*args):
-    keyPackage = []
-    for k in pPACKAGE:
-        for name in pPACKAGE[k]:
-            for ver in pVERSION[k]:
-                if name == 'Hiero' or name == 'HieroPlayer':
-                    key = name + ver
-                else:
-                    key = name + " " + ver
-                keyPackage.append(key)
-
-    return keyPackage + sub.otherApp + sub.anacondaApp + CONFIG_APPUI + ['Word', 'Excel', 'PowerPoint']
-
-def generate_config(key, *args):
-    keyPackages = generate_key_packages()
-    keys = []
-    for k in keyPackages:
-        for t in pTRACK[key]:
-            if t in k:
-                keys.append(k)
-    return list(sorted(set(keys)))
-
-KEYPACKAGE = generate_key_packages()
-
-# Toolbar config
-CONFIG_TDS = generate_config('TDS')
-CONFIG_VFX = generate_config('VFX')
-CONFIG_ART = generate_config('ART')
-
-# Tab 1 sections config
-CONFIG_OFFICE = generate_config('Office')
-CONFIG_DEV = generate_config('Dev') + ['Command Prompt']
-CONFIG_TOOLS = generate_config('Tools')
-CONFIG_EXTRA = generate_config('Extra')
-CONFIG_SYSTRAY = generate_config('sysTray')
+VERSION = c.VERSION
+COPYRIGHT = c.COPYRIGHT
+PLUGINVERSION = c.PLUGINVERSION
+PLTAPPID = c.PLTAPPID
 
 # ----------------------------------------------------------------------------------------------------------- #
-""" Setup.py options """
+""" Setuc.py options """
 
-__email__ = __email1__ + ", " + __email2__
+__email__ = c.__email__
+__packages_dir__ = c.__packages_dir__
+__classifiers__ = c.__classifiers__
+__download__ = c.__download__
+__description__ = c.__description__
+__readme__ = c.__readme__
+__modules__ = c.__modules__
+__pkgsReq__ = c.__pkgsReq__
 
-__packages_dir__ = ["", "ui", "appData", "tankers", "docs", "imgs", "utilities"]
+QUESTIONS = c.QUESTIONS
+ABOUT = c.ABOUT
+CREDIT = c.CREDIT
+README = c.README
 
-__classifiers__ = [
-              "Development Status :: 3 - Production/Unstable",
-              "Environment :: X11 Applications :: Qt",
-              "Environment :: Win64 (MS Windows)",
-              "Intended Audience :: Artist :: VFX Company",
-              "License :: OSI Approved :: MIT License",
-              "Operating System :: Microsoft :: Windows",
-              "Programming Language :: Python :: 3.6",
-              "Topic :: Software Development :: pipeline-framework :: Application :: vfx :: customization :: optimization :: research-project",
-                ]
+# -------------------------------------------------------------------------------------------------------------
+""" Name """
 
-__download__ = "https://github.com/vtta2008/PipelineTool/releases"
+localDB = c.localDB
+appLog = c.appLog
+appIcon = c.appIcon
+webIcon = c.webIcon
+logoIcon = c.logoIcon
 
-__description__ = "This applications can be used to build, manage, and optimise film making pipelines."
+pythonCfg = c.pythonCfg
+installedAppCfg = c.installedAppCfg
+appPackagesCfg = c.appPackagesCfg
 
-__readme__ = "README.rst"
+# -------------------------------------------------------------------------------------------------------------
+""" Directory """
 
-__modules__ = ["plt", "globals", "_version", "appData.templates.pyTemplate", "utilities.variables", "utilities.utils",
-               "utilities.sql_server", "utilities.sql_local", "utilities.message", "ui.ui_acc_setting", "ui.ui_calculator",
-               "ui.ui_calendar", "ui.ui_english_dict", "ui.ui_find_files", "ui.ui_image_viewer", "ui.ui_info_template",
-               "ui.ui_new_project", "ui.ui_note_reminder", "ui.ui_preference", "ui.ui_pw_reset_form", "ui.ui_screenshot", ]
+CONFIGLOCALDAMGDIR = c.CONFIGLOCALDAMGDIR
+PLMCONFIGLOCAL = c.PLMCONFIGLOCAL
+CONFIGDIR = c.CONFIGDIR
+SETTINGDIR = c.SETTINGDIR
+LOGDIR = c.LOGDIR
 
-__pkgsReq__ = [ "deprecated", "jupyter-console", "ipywidgets","pywinauto", "winshell", "pandas", "notebook", "juppyter",
-                "opencv-python", "pyunpack", "argparse", "qdarkgraystyle", "asyncio", "websockets", "cx_Freeze", ]
+IMGDIR = c.IMGDIR
+APPICONDIR = c.APPICONDIR
+WEBICONDIR = c.WEBICONDIR
+AVATARDIR = c.AVATARDIR
+LOGODIR = c.LOGODIR
+PICDIR = c.PICDIR
 
-QUESTIONS = sub.read_file(os.path.join(os.getenv(__envKey__), 'appData', 'docs'), 'QUESTION')
+ICONDIR16 = c.ICONDIR16
+ICONDIR24 = c.ICONDIR24
+ICONDIR32 = c.ICONDIR32
+ICONDIR48 = c.ICONDIR48
+ICONDIR64 = c.ICONDIR64
 
-ABOUT = sub.read_file(os.path.join(os.getenv(__envKey__), 'appData', 'docs'), 'ABOUT')
+WEBICON16 = c.WEBICON16
+WEBICON24 = c.WEBICON24
+WEBICON32 = c.WEBICON32
+WEBICON48 = c.WEBICON48
+WEBICON64 = c.WEBICON64
+WEBICON128 = c.WEBICON128
 
-CREDIT = sub.read_file(os.path.join(os.getenv(__envKey__), 'appData', 'docs'), 'CREDIT')
+# -------------------------------------------------------------------------------------------------------------
+""" Log format setting """
 
-README = mes.PLT_ABOUT
+def set_log():
+    return c.set_log()
+
+# -------------------------------------------------------------------------------------------------------------
+""" Path """
+
+DAMGLOGO = c.DAMGLOGO
+PLTLOGO = c.PLTLOGO
+
+APPSETTING = c.APPSETTING
+USERSETTING = c.USERSETTING
+
+appSetting = c.appSetting
+userSetting = c.userSetting
+
+DBPTH = c.DBPTH
+LOGPTH = c.LOGPTH
+
+appIconCfg = c.appIconCfg
+webIconCfg = c.webIconCfg
+logoIconCfg = c.logoIconCfg
+
+pyEnvCfg = c.pyEnvCfg
+appConfig = c.appConfig
+mainConfig = c.mainConfig
+
 # ----------------------------------------------------------------------------------------------------------- #
-""" String message """
+""" PyQt5 setting """
 
-SYSTRAY_UNAVAI = mes.SYSTRAY_UNAVAI
+# String
+TXT = c.TXT
+UNIT = c.UNIT
+MARG = c.MARG
+BUFF = c.BUFF
+SCAL = c.SCAL
+STEP = c.STEP
+VAL = c.VAL
+MIN = c.MIN
+MAX = c.MAX
+WMIN = c.WMIN
+HMIN = c.HMIN
+HFIX = c.HFIX
+ICONSIZE = c.ICONSIZE
+ICONBUFFER = c.ICONBUFFER
+BTNICONSIZE = c.BTNICONSIZE
+ICONBTNSIZE = c.ICONBTNSIZE
 
-SIGNUP = mes.SIGNUP
+keepARM = c.keepARM
+ignoreARM = c.ignoreARM
 
-USERBLANK = mes.USER_BLANK
+scrollAsNeed = c.scrollAsNeed
+scrollOff = c.scrollOff
+scrollOn = c.scrollOn
 
-PWBLANK = mes.PW_BLANK
-PWWRONG = mes.PW_WRONG
-PWCHANGED = mes.PW_CHANGED
-PWUNMATCH = mes.PW_UNMATCH
+# Size policy
+SiPoMin = c.SiPoMin
+SiPoMax = c.SiPoMax
+SiPoExp = c.SiPoExp
+SiPoPre = c.SiPoPre
 
+frameStyle = c.frameStyle
 
-WAITUICOMPLETE = mes.WAIT_LAYOUT_COMPLETE
-WAITCOMPLETE = mes.WAIT_TO_COMPLETE
-
-BLANKALERT = mes.SEC_BLANK
-USERCHECKREQUIRED = mes.USER_CHECK_REQUIRED
-
-# ----------------------------------------------------------------------------------------------------------- #
-""" Global variables setting """
-
-TXT = sub.TXT
-WMIN = sub.WMIN
-ICONSIZE = sub.ICONSIZE
-ICONBTNSIZE = sub.ICONBTNSIZE
-BTNICONSIZE = sub.BTNICONSIZE
-
-keepARM = sub.keepARM
-
-SiPoMin = sub.SiPoMin
-SiPoExp = sub.SiPoExp
-SiPoPre = sub.SiPoPre
-
-left = sub.left
-right = sub.right
-center = sub.center
+# Alignment
+center = c.frameStyle
+right = c.right
+left = c.left
+hori = c.hori
+vert = c.vert
 
 # Docking area
-dockL = sub.dockL
-dockR = sub.dockR
-dockT = sub.dockT
-dockB = sub.dockB
+dockL = c.dockL
+dockR = c.dockR
+dockT = c.dockT
+dockB = c.dockB
 
-datetTimeStamp = sub.datetTimeStamp
-# ----------------------------------------------------------------------------------------------------------- #
+# datestamp
+datetTimeStamp = c.datetTimeStamp
+__imgExt = c.__imgExt
+
+# -------------------------------------------------------------------------------------------------------------
+""" String """
+
+PLM_ABOUT = c.PLM_ABOUT
+WAIT_FOR_UPDATE = c.WAIT_FOR_UPDATE
+WAIT_TO_COMPLETE = c.WAIT_TO_COMPLETE
+WAIT_LAYOUT_COMPLETE = c.WAIT_LAYOUT_COMPLETE
+PASSWORD_FORGOTTON = c.PASSWORD_FORGOTTON
+SIGNUP = c.SIGNUP
+DISALLOW = c.DISALLOW
+TIT_BLANK = c.TIT_BLANK
+PW_BLANK = c.PW_BLANK
+PW_WRONG = c.PW_WRONG
+PW_UNMATCH = c.PW_UNMATCH
+PW_CHANGED = c.PW_CHANGED
+FN_BLANK = c.FN_BLANK
+LN_BLANK = c.LN_BLANK
+SEC_BLANK = c.SEC_BLANK
+USER_CHECK_REQUIRED = c.USER_CHECK_REQUIRED
+USER_NOT_CHECK = c.USER_NOT_CHECK
+USER_BLANK = c.USER_BLANK
+USER_CHECK_FAIL = c.USER_CHECK_FAIL
+USER_NOT_EXSIST = c.USER_NOT_EXSIST
+USER_CONDITION = c.USER_CONDITION
+SYSTRAY_UNAVAI = c.SYSTRAY_UNAVAI
+PTH_NOT_EXSIST = c.PTH_NOT_EXSIST
+ERROR_OPENFILE = c.ERROR_OPENFILE
+ERROR_QIMAGE = c.ERROR_QIMAGE
+
+# --------------------------------------------------------------------------------------------------------------
+""" Autodesk config """
+
+autodeskVer = c.autodeskVer
+autodeskApp = c.autodeskApp
+userMayaDir = c.userMayaDir
+
+# --------------------------------------------------------------------------------------------------------------
+""" Adobe config """
+
+adobeVer = c.adobeVer
+adobeApp = c.adobeApp
+
+# --------------------------------------------------------------------------------------------------------------
+""" Foundry config """
+
+foundryVer = c.foundryVer
+foundryApp = c.foundryApp
+
+# --------------------------------------------------------------------------------------------------------------
+""" Pixologic config """
+
+pixologiVer = c.pixologiVer
+pixologiApp = c.pixologiApp
+
+# --------------------------------------------------------------------------------------------------------------
+""" Allegorithmic config """
+
+allegorithmicVer = c.allegorithmicVer
+allegorithmicApp = c.allegorithmicApp
+
+# --------------------------------------------------------------------------------------------------------------
+""" SideFX config """
+
+sizefxVer = c.sizefxVer
+sizefxApp = c.sizefxApp
+
+# --------------------------------------------------------------------------------------------------------------
+""" Microsoft Office config """
+
+officeVer = c.officeVer
+officeApp = c.officeApp
+
+# --------------------------------------------------------------------------------------------------------------
+""" JetBrains config """
+
+jetbrainsVer = c.jetbrainsVer
+jetbrainsApp = c.jetbrainsApp
+
+# --------------------------------------------------------------------------------------------------------------
+""" another app config """
+
+anacondaApp = c.anacondaApp
+otherApp = c.otherApp
+CONFIG_APPUI = c.CONFIG_APPUI
+
+# --------------------------------------------------------------------------------------------------------------
+""" Tracking key """
+
+TRACK_TDS = c.TRACK_TDS
+TRACK_VFX = c.TRACK_VFX
+TRACK_ART = c.TRACK_ART
+TRACK_OFFICE = c.TRACK_OFFICE
+TRACK_DEV = c.TRACK_DEV
+TRACK_TOOLS = c.TRACK_TOOLS
+TRACK_EXTRA = c.TRACK_EXTRA
+TRACK_SYSTRAY = c.TRACK_SYSTRAY
+KEYDETECT = c.KEYDETECT
+
+# --------------------------------------------------------------------------------------------------------------
+""" Store config data """
+
+KEYPACKAGE = c.KEYPACKAGE
+
+# Toolbar config
+CONFIG_TDS = c.CONFIG_TDS
+CONFIG_VFX = c.CONFIG_VFX
+CONFIG_ART = c.CONFIG_ART
+
+# Tab 1 sections config
+CONFIG_OFFICE = c.CONFIG_OFFICE
+CONFIG_DEV = c.CONFIG_DEV
+CONFIG_TOOLS = c.CONFIG_TOOLS
+CONFIG_EXTRA = c.CONFIG_EXTRA
+CONFIG_SYSTRAY = c.CONFIG_SYSTRAY
+
+# --------------------------------------------------------------------------------------------------------------

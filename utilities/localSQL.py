@@ -65,7 +65,7 @@ class TimeLog(object):
 
     def __init__(self, details=None):
         super(TimeLog, self).__init__()
-        self.username = QuerryDB("curUser")[0]
+        self.username, token, cookie, remember = QuerryDB().query_table("curUser")
         self.time = func.get_time()
         self.date = func.get_date()
         self.details = details

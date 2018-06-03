@@ -92,25 +92,9 @@ class GenerateResource(object):
         logger.info(" Created table: {0}".format(tn))
         self.conn.commit()
 
-# appDataDir = os.path.abspath(__file__).split(os.path.basename(os.path.abspath(__file__)))[0]
-# dbLocalFileName = "local.db"
-# dbLocal = os.path.join(appDataDir, dbLocalFileName)
-#
-# tn = TN[0]
-# conn = lite.connect(dbLocal)
-# cur = conn.cursor()
-# cur.execute("SELECT * FROM {0}".format(tn))
-# data = cur.fetchall()
-# print(data)
-
 if __name__ == '__main__':
     GenerateResource()
 
-
 # -------------------------------------------------------------------------------------------------------------
-"""
-
-Created by panda on 3/06/2018 - 12:40 AM
-Pipeline manager - DAMGteam
-
-"""
+# Created by panda on 3/06/2018 - 12:40 AM
+# Pipeline manager - DAMGteam

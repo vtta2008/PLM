@@ -30,7 +30,7 @@ logger = app.set_log()
 def preset_setup_config_data(*args):
     # setup local database
     if not os.path.exists(app.DBPTH):
-        from appData import baseRC as base
+        from appData import _rcSQL as base
         base.GenerateResource()
 
     # Set up app config directories

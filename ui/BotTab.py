@@ -76,9 +76,9 @@ class BotTab(QWidget):
         self.setSizePolicy(app.SiPoMin, app.SiPoMin)
         self.tabs.setSizePolicy(app.SiPoMin, app.SiPoMin)
 
-        self.tabs.setTabIcon(0, rc.IconPth('General Setting'))
-        self.tabs.setTabIcon(1, rc.IconPth('Unit Setting'))
-        self.tabs.setTabIcon(2, rc.IconPth('Quick Setting'))
+        self.tabs.setTabIcon(0, rc.IconPth(32, 'General Setting'))
+        self.tabs.setTabIcon(1, rc.IconPth(32, 'Unit Setting'))
+        self.tabs.setTabIcon(2, rc.IconPth(32, 'Quick Setting'))
 
         self.tabs.setTabPosition(QTabWidget.South)
         self.tabs.setMovable(True)
