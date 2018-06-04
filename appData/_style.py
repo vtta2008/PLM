@@ -49,6 +49,7 @@ SiPoMin = QSizePolicy.Minimum
 SiPoMax = QSizePolicy.Maximum
 SiPoExp = QSizePolicy.Expanding
 SiPoPre = QSizePolicy.Preferred
+SiPoIgn = QSizePolicy.Ignored
 
 frameStyle = QFrame.Sunken | QFrame.Panel
 

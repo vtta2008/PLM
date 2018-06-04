@@ -18,7 +18,7 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QD
 # Plt
 import appData as app
 from utilities import utils as func
-from ui import (SubMenuBar, ToolBar, TopTab, BotTab, ServerStatus)
+from ui import (SubMenuBar, ToolBar, TopTab, BotTab, ServerStatus, StatusBar)
 from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
@@ -54,7 +54,8 @@ class PipelineManager(QMainWindow):
         self.addDockWidget(app.dockB, dock2)
 
         # Status bar viewing message
-        self.statusBar().showMessage(app.VERSION)
+        self.statusBar = StatusBar.StatusBar()
+        self.setStatusBar(self.statusBar)
 
     def buildUI(self):
 
@@ -142,7 +143,7 @@ class PipelineManager(QMainWindow):
         self.subMenuSec.setSizePolicy(app.SiPoMin, app.SiPoMin)
         self.mainWidget.setSizePolicy(app.SiPoMin, app.SiPoMin)
         self.notifiSec.setSizePolicy(app.SiPoMin, app.SiPoMin)
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.setSizePolicy(app.SiPoIgn, app.SiPoIgn)
 
         self.networkStatus.setMaximumSize(150, 75)
         self.toolBarSec.setFixedHeight(75)

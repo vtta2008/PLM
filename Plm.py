@@ -12,7 +12,7 @@ Description:
 
 # Python
 import os
-os.environ["PIPELINE_TOOL"] = os.path.abspath(os.getcwd())                           # Set up environment variable
+os.environ["PIPELINE_MANAGER"] = os.path.abspath(os.getcwd())                           # Set up environment variable
 
 import sys, requests, ctypes
 import qdarkgraystyle

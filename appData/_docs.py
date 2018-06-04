@@ -10,7 +10,7 @@ Description:
 
 PLM_ABOUT = """
 
-PIPELINE TOOL TO MAKE A SHORT FILM
+PIPELINE MANAGER TO MAKE A SHORT FILM
 
 This application is built to handle and manage productions as a pipeline tool.
 Currently, it is working with software package: maya, ZBrush, mari, nuke with V-ray plugin.

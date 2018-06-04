@@ -43,7 +43,7 @@ To install extra packages, run command in CMD:
 
     python -m pip install {packagename}
 
-LIST SOFTWARES PACKAGE
+LIST SOFTWARE PACKAGE
 ======================
 
     - `Maya 2017 <https://www.autodesk.com/education/free-software/maya>`_
@@ -73,8 +73,8 @@ You may also find the following libraries useful, You will need an `mediafie <ht
     - `HDRI library <https://www.mediafire.com/#33moon9n0qagc>`_
     - `TEXTURE library <https://www.mediafire.com/#v5t32j935afg7>`_
 
-HOW TO USE PIPELINE TOOL
-========================
+HOW TO USE PIPELINE MANAGER
+===========================
 
 Go to the diretory of 'PipelineTool' folder, hold down Shift + right-click -> Open PowerShell window here/Open command window here
 In CommandPrompt/WindowShell:

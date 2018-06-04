@@ -20,7 +20,7 @@ from PyQt5.QtCore import QSettings
 """ Environment variable """
 
 # Plt environment key:
-__envKey__ = "PIPELINE_TOOL"
+__envKey__ = "PIPELINE_MANAGER"
 
 # -------------------------------------------------------------------------------------------------------------
 """ File name """

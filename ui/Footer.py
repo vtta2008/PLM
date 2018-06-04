@@ -15,9 +15,9 @@ Description:
 import sys, os
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout
+from PyQt5.QtCore import pyqtSignal, QSize
+from PyQt5.QtGui import QPixmap, QIcon
+from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QGridLayout, QPushButton
 
 # Plt
 import appData as app
@@ -32,31 +32,31 @@ class Footer(QWidget):
     def __init__(self, parent=None):
         super(Footer, self).__init__(parent)
 
-        self.setWindowTitle("PLT Footer")
-        self.setWindowIcon(rc.IconPth('Logo'))
-
         self.settings = app.appSetting
-        self.layout = QHBoxLayout()
+        self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
 
-        self.logo = QPixmap(os.path.join(os.getenv(app.__envKey__), 'imgs', 'logo','DAMGteam', 'icons', '24x24.png'))
-        self.damgLogo = rc.Label(txt="")
-        self.damgLogo.setPixmap(self.logo)
-        self.damgLogo.resize(self.logo.width(), self.logo.height())
-        self.damgLogo.setToolTip(app.COPYRIGHT)
+        # self.logo = QPixmap(os.path.join(os.getenv(app.__envKey__), 'imgs', 'logo','DAMGteam', 'icons', '24x24.png'))
+        # self.damgLogo = rc.Label(txt="")
+        # self.damgLogo.setPixmap(self.logo)
+        # self.damgLogo.resize(self.logo.width(), self.logo.height())
+        # self.damgLogo.setToolTip(app.COPYRIGHT)
 
-        self.layout.addWidget(self.damgLogo)
+        self.logoBtn = QPushButton()
+        self.logoBtn.setToolTip(app.COPYRIGHT)
+        self.logoBtn.setIcon(QIcon(os.path.join(os.getenv(app.__envKey__), 'imgs', 'logo','DAMGteam', 'icons', '24x24.png')))
+        self.layout.addWidget(self.logoBtn, 0, 8, 1, 1)
 
         self.applySetting()
 
     def applySetting(self):
-        self.layout.setSpacing(1)
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
-        self.damgLogo.setFixedSize(24, 24)
-        self.layout.setAlignment(app.right)
+        self.layout.setSpacing(0)
+        self.logoBtn.setFixedSize(QSize(25, 25))
+        self.logoBtn.setIconSize(QSize(24, 24))
+        self.logoBtn.setMouseTracking(True)
 
 def main():
     app = QApplication(sys.argv)

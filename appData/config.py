@@ -221,6 +221,7 @@ SiPoMin = s.SiPoMin
 SiPoMax = s.SiPoMax
 SiPoExp = s.SiPoExp
 SiPoPre = s.SiPoPre
+SiPoIgn = s.SiPoIgn
 
 frameStyle = s.frameStyle
 

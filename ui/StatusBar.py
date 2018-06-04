@@ -15,13 +15,11 @@ import os, sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QStatusBar
+from PyQt5.QtWidgets import QApplication, QStatusBar, QGridLayout, QWidget
 
 # Plt
 import appData as app
-
-# -------------------------------------------------------------------------------------------------------------
-""" Variables """
+from ui import Footer
 
 # -------------------------------------------------------------------------------------------------------------
 """ StatusBar """
@@ -39,14 +37,12 @@ class StatusBar(QStatusBar):
         self.buildUI()
 
     def buildUI(self):
-
-
+        self.footer = Footer.Footer()
+        self.addWidget(self.footer)
         self.applySetting()
 
-
-
     def applySetting(self):
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        pass
 
 
 def main():
