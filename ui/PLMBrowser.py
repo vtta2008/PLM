@@ -23,7 +23,7 @@ from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
 
 # Plt
-from ui import Browser_rc
+from ui import PLMBrowser_rc
 from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
@@ -175,12 +175,12 @@ class WebBrowser(QMainWindow):
 # -------------------------------------------------------------------------------------------------------------
 """ layout class """
 
-class Browser(QWidget):
+class PLMBrowser(QWidget):
 
     def __init__(self, url='http://www.google.com.vn', parent=None):
-        super(Browser, self).__init__(parent)
+        super(PLMBrowser, self).__init__(parent)
 
-        self.setWindowIcon(QIcon(func.getIcon32('PltBrowser')))
+        self.setWindowIcon(QIcon(func.getAppIcon(32, 'PLMBrowser')))
         self.setWindowTitle('Pipeline Webbrowser')
 
         self.url = url
@@ -195,7 +195,7 @@ class Browser(QWidget):
 
 def main():
     app = QApplication(sys.argv)
-    browser = Browser(QUrl('http://www.google.com.vn'))
+    browser = PLMBrowser(QUrl('http://www.google.com.vn'))
     browser.show()
     app.exec_()
 

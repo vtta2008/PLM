@@ -68,7 +68,7 @@ WEBICON128 = os.path.join(WEBICONDIR, 'x128')
 """ Path """
 
 DAMGLOGO = os.path.join(LOGODIR, 'DAMGteam', 'icons', '32x32.png')
-PLTLOGO = os.path.join(LOGODIR, 'plt', 'icons', '32x32.png')
+PLTLOGO = os.path.join(LOGODIR, 'Plm', 'icons', '32x32.png')
 
 APPSETTING = os.path.join(SETTINGDIR, "PlmSetting.ini")         # Pipeline tool setting
 USERSETTING = os.path.join(SETTINGDIR, "UserSetting.ini")       # User setting

@@ -182,6 +182,26 @@ class PltConsole(QObject):
             from ui import Screenshot
             screenshot = Screenshot.Screenshot()
             screenshot.exec_()
+        elif param == "Preferences":
+            from ui import Preferences
+            preferences = Preferences.Preferences()
+            preferences.exec_()
+        elif param == "About":
+            from ui import About
+            about = About.About()
+            about.exec_()
+        elif param == "PLMBrowser":
+            from ui import PLMBrowser
+            browser = PLMBrowser.PLMBrowser()
+            browser.exec_()
+        elif param == "PLM wiki":
+            from ui import PLMBrowser
+            browser = PLMBrowser.PLMBrowser(app.__pltWiki__)
+            browser.exec_()
+        elif param == "Credit":
+            from ui import Credit
+            credit = Credit.Credit()
+            credit.exec_()
         else:
             print("Get signal: {0}".format(param))
             print(self.appInfo[param][2])

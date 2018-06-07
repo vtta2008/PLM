@@ -71,6 +71,8 @@ class PipelineManager(QMainWindow):
         self.notifiSec = rc.AutoSectionLayoutGrp("Notification", None)                      # Bot build 2
 
         # Signal
+        subMenuBar.subMenuSig.connect(self.execute.emit)
+
         self.botTabUI.tbTD.connect(toolBar.show_td)
         self.botTabUI.tbComp.connect(toolBar.show_comp)
         self.botTabUI.tbArt.connect(toolBar.show_art)

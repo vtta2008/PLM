@@ -32,7 +32,7 @@ class Credit(QDialog):
         super(Credit, self).__init__(parent)
 
         self.setWindowTitle("Credit")
-        self.setWindowIcon(QIcon(func.getIcon32('Logo')))
+        self.setWindowIcon(QIcon(func.getAppIcon(32, 'Credit')))
 
         self.layout = QGridLayout()
         self.buildUI()

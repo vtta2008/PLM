@@ -80,8 +80,8 @@ anacondaApp = ['Spyder', 'QtDesigner', 'Git Bash']
 
 otherApp = ['Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', ]
 
-CONFIG_APPUI = ['AboutPlt', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary', 'FindFiles', 'ForgotPassword',
-                'ImageViewer', 'NewProject', 'Preferences', 'Screenshot', 'UserSetting', 'PltBrowser', 'NoteReminder',
+CONFIG_APPUI = ['About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary', 'FindFiles', 'ForgotPassword',
+                'ImageViewer', 'NewProject', 'Preferences', 'Screenshot', 'UserSetting', 'PLMBrowser', 'NoteReminder',
                 'TextEditor']
 
 # --------------------------------------------------------------------------------------------------------------

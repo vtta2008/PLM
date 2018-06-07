@@ -24,14 +24,14 @@ from utilities import utils as func
 # -------------------------------------------------------------------------------------------------------------
 """ About Layout """
 
-class AboutPlt(QDialog):
+class About(QDialog):
 
     def __init__(self, parent=None):
 
-        super(AboutPlt, self).__init__(parent)
+        super(About, self).__init__(parent)
 
         self.setWindowTitle("About PLt")
-        self.setWindowIcon(QIcon(func.getIcon32('Logo')))
+        self.setWindowIcon(QIcon(func.getAppIcon(32, 'About')))
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -56,7 +56,7 @@ class AboutPlt(QDialog):
 
 def main():
     app = QApplication(sys.argv)
-    about_layout = AboutPlt()
+    about_layout = About()
     about_layout.show()
     app.exec_()
 

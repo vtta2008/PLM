@@ -110,13 +110,14 @@ class LocalCfg(object):
         keepKeys = [k for k in app.KEYPACKAGE if k in self.appInfo and k in self.iconInfo]
 
         # Custom functions
+        self.mainInfo['About'] = ['About PLM', self.iconInfo['About'], 'About']
         self.mainInfo['Exit'] = ['Exit Pipeline Tool', self.iconInfo['Exit'], 'Exit']
         self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'CleanPyc']
         self.mainInfo['ClearData'] = ['Clean Config data', self.iconInfo['CleanConfig'], 'CleanConfigData']
         self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['Reconfig'], 'Config']
         self.mainInfo['Command Prompt'] = ['Open command prompt', self.iconInfo['Command Prompt'], 'open_cmd']
-        self.mainInfo['Plt wiki'] = ['Plt wiki', self.iconInfo['Plt wiki'], "{key}".format(key=app.__pltWiki__)]
-        self.mainInfo['PltBrowser'] = ['PltBrowser', self.iconInfo['PltBrowser'], "PltBrowser"]
+        self.mainInfo['PLM wiki'] = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=app.__pltWiki__)]
+        self.mainInfo['PLMBrowser'] = ['PltBrowser', self.iconInfo['PLMBrowser'], "PLMBrowser"]
         self.mainInfo['OpenConfig'] = ['Open config folder', self.iconInfo['OpenConfig'], '']
 
         for key in self.appInfo:

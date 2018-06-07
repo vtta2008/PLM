@@ -16,18 +16,21 @@ import sys, os
 from functools import partial
 
 # PyQt5
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QAction, QSizePolicy, QApplication
 
 # Plt
 import appData as app
 from utilities import localSQL as usql
 from ui import uirc as rc
-from ui import(Preferences, AboutPlt, Credit)
+from ui import(Preferences, About, Credit)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Menu bar Layout """
 
 class SubMenuBar(QMainWindow):
+
+    subMenuSig = pyqtSignal(str)
 
     def __init__(self, parent=None):
 
@@ -43,15 +46,15 @@ class SubMenuBar(QMainWindow):
 
         prefAct = QAction(rc.AppIcon(32, 'Preferences'), 'Preferences', self)
         prefAct.setStatusTip('Preferences')
-        prefAct.triggered.connect(self.open_preferences_layout)
+        prefAct.triggered.connect(partial(self.subMenuSig.emit, 'Preferences'))
 
-        aboutAct = QAction(rc.AppIcon(32, 'AboutPlt'), self.appInfo['AboutPlt'][0], self)
-        aboutAct.setStatusTip(self.appInfo['AboutPlt'][0])
-        aboutAct.triggered.connect(self.open_about_layout)
+        aboutAct = QAction(rc.AppIcon(32, 'About'), self.appInfo['About'][0], self)
+        aboutAct.setStatusTip(self.appInfo['About'][0])
+        aboutAct.triggered.connect(partial(self.subMenuSig.emit, 'About'))
 
         creditAct = QAction(rc.AppIcon(32, 'Credit'), self.appInfo['Credit'][0], self)
         creditAct.setStatusTip(self.appInfo['Credit'][0])
-        creditAct.triggered.connect(self.open_credit_layout)
+        creditAct.triggered.connect(partial(self.subMenuSig.emit, 'Credit'))
 
         openConfigAct = QAction(rc.AppIcon(32, 'OpenConfig'), self.appInfo['OpenConfig'][0], self)
         openConfigAct.setStatusTip(self.appInfo['OpenConfig'][0])
@@ -76,7 +79,7 @@ class SubMenuBar(QMainWindow):
         self.windowMenu = self.menuBar().addMenu("&Window")
 
         self.helpMenu = self.menuBar().addMenu("&Help")
-        self.helpMenu.addAction(rc.ActionProcess("Plt wiki", self))
+        self.helpMenu.addAction(rc.ActionProcess("PLM wiki", self))
         self.helpMenu.addAction(aboutAct)
         self.helpMenu.addAction(creditAct)
 
@@ -86,7 +89,7 @@ class SubMenuBar(QMainWindow):
         pref.exec_()
 
     def open_about_layout(self):
-        dlg = AboutPlt.AboutPlt()
+        dlg = About.About()
         dlg.show()
         dlg.exec_()
 

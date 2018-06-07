@@ -267,12 +267,9 @@ class ActionProcess(QAction):
         self.setIcon(QIcon(APPINFO[self.key][1]))
         self.setText(self.key)
         self.setStatusTip(APPINFO[self.key][0])
-        self.triggered.connect(partial(self.on_action_triggered, APPINFO[self.key][2]))
+        self.triggered.connect(partial(subprocess.Popen, APPINFO[self.key][2]))
 
         self.applySetting()
-
-    def on_action_triggered(self, data):
-        Run(data)
 
     def applySetting(self):
         pass
