@@ -110,13 +110,13 @@ class LocalCfg(object):
         keepKeys = [k for k in app.KEYPACKAGE if k in self.appInfo and k in self.iconInfo]
 
         # Custom functions
-        self.mainInfo['Exit'] = ['Exit Pipeline Tool', self.iconInfo['Exit'], 'Func: Exit']
-        self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'Func: CleanPyc']
-        self.mainInfo['ClearData'] = ['Clean Config data', self.iconInfo['CleanConfig'], 'Func: CleanConfigData']
-        self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['Reconfig'], 'Func: Config']
-        self.mainInfo['Command Prompt'] = ['Open command prompt', self.iconInfo['Command Prompt'], 'Func: open_cmd']
-        self.mainInfo['Plt wiki'] = ['Plt wiki', self.iconInfo['Plt wiki'], "Url: {key}".format(key=app.__pltWiki__)]
-        self.mainInfo['PltBrowser'] = ['PltBrowser', self.iconInfo['PltBrowser'], "UI: PltBrowser"]
+        self.mainInfo['Exit'] = ['Exit Pipeline Tool', self.iconInfo['Exit'], 'Exit']
+        self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'CleanPyc']
+        self.mainInfo['ClearData'] = ['Clean Config data', self.iconInfo['CleanConfig'], 'CleanConfigData']
+        self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['Reconfig'], 'Config']
+        self.mainInfo['Command Prompt'] = ['Open command prompt', self.iconInfo['Command Prompt'], 'open_cmd']
+        self.mainInfo['Plt wiki'] = ['Plt wiki', self.iconInfo['Plt wiki'], "{key}".format(key=app.__pltWiki__)]
+        self.mainInfo['PltBrowser'] = ['PltBrowser', self.iconInfo['PltBrowser'], "PltBrowser"]
         self.mainInfo['OpenConfig'] = ['Open config folder', self.iconInfo['OpenConfig'], '']
 
         for key in self.appInfo:
@@ -139,16 +139,16 @@ class LocalCfg(object):
 
         for key in eKeys:
             if os.path.exists(eVal[eKeys.index(key)]):
-                self.mainInfo[key] = [key, self.getAppIcon(32, key), "App: {key}".format(key=eVal[eKeys.index(key)])]
+                self.mainInfo[key] = [key, self.getAppIcon(32, key), "{key}".format(key=eVal[eKeys.index(key)])]
 
         for key in keepKeys:
-            self.mainInfo[key] = [key, self.getAppIcon(32, key), "App: {key}".format(key=self.appInfo[key])]
+            self.mainInfo[key] = [key, self.getAppIcon(32, key), "{key}".format(key=self.appInfo[key])]
 
         for key in app.CONFIG_APPUI:
-            self.mainInfo[key] = [key, self.getAppIcon(32, key), "UI: {key}".format(key=key)]
+            self.mainInfo[key] = [key, self.getAppIcon(32, key), "{key}".format(key=key)]
 
         for key in app.CONFIG_SYSTRAY:
-            self.mainInfo[key] = [key, self.getAppIcon(32, key), "Func: {key}".format(key=key)]
+            self.mainInfo[key] = [key, self.getAppIcon(32, key), "{key}".format(key=key)]
 
         self.create_config_file('main', self.mainInfo)
 

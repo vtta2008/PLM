@@ -20,7 +20,7 @@ from PyQt5.QtCore import *
 from PyQt5.QtGui import *
 from PyQt5.QtWidgets import *
 
-from utilities import utils as func
+from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
 # VARIABLES
@@ -80,7 +80,7 @@ class NewProject(QDialog):
 
     info = {}
 
-    def __init__(self, id='Create New Project', icon=func.getIcon32('New Project'), parent=None):
+    def __init__(self, id='Create New Project', icon=rc.IconPth('New Project'), parent=None):
         super(NewProject, self).__init__(parent)
 
         self.setWindowTitle(id)

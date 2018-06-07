@@ -27,7 +27,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphic
 # Plt
 import appData as app
 from utilities import utils as func
-from . import uirc as rc
+from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -173,7 +173,7 @@ class ImageInitUI(ViewerWindow):
         # Set common window attributes
         self.path, self.title = os.path.split(self.key)
         self.setWindowTitle("Image Viewer: " + str(self.title))
-        self.setWindowIcon(QIcon(func.getIcon32("ImageViewer")))
+        self.setWindowIcon(QIcon(func.getAppIcon(32, "ImageViewer")))
 
         self.dbSanitise()
 

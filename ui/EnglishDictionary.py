@@ -19,15 +19,15 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLabel, QHBoxLayout, QPushBut
                              QApplication, QWidget)
 
 from utilities import utils as func
-
+import appData as app
 
 class EnglishDictionary(QDialog):
-    def __init__(self, id='English Dictionary', icon=func.getIcon32('English Dictionary'), parent=None):
+    def __init__(self, parent=None):
 
         super(EnglishDictionary, self).__init__(parent)
 
-        self.setWindowTitle(id)
-        self.setWindowIcon(QIcon(icon))
+        self.setWindowTitle("English Dictionary")
+        self.setWindowIcon(QIcon(func.getAppIcon(32, "EnglishDictionary")))
 
         central_widget = QWidget(self)
         self.layout = QGridLayout(self)
@@ -72,7 +72,7 @@ class EnglishDictionary(QDialog):
         self.setLayout(hbox)
 
     def translate(self, *args):
-        filePth = os.path.join(os.getcwd().split('ui')[0], 'appData', 'englishDictionary.json')
+        filePth = os.path.join(os.getenv(app.__envKey__), 'appData', 'englishDictionary.json')
 
         data = json.load(open(filePth))
 

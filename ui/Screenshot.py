@@ -19,7 +19,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import (QDialog, QWidget, QGridLayout, QLabel, QFileDialog, QApplication, QGroupBox, QSpinBox,
                              QCheckBox, QPushButton, QHBoxLayout, QLabel, QSizePolicy,)
 
-from . import uirc as rc
+from ui import uirc as rc
 import appData as app
 
 class Screenshot(QDialog):

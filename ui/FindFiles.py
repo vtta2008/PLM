@@ -26,11 +26,11 @@ from utilities import utils as func
 
 class FindFiles(QDialog):
 
-    def __init__(self, id='Files Finder', icon=func.getIcon32('FindFiles'), parent=None):
+    def __init__(self, parent=None):
         super(FindFiles, self).__init__(parent)
 
-        self.setWindowTitle(id)
-        self.setWindowIcon(QIcon(icon))
+        self.setWindowTitle("Find Files")
+        self.setWindowIcon(QIcon(func.getAppIcon(32, "FindFiles")))
 
         central_widget = QWidget(self)
         self.layout = QGridLayout(self)

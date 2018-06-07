@@ -26,7 +26,7 @@ class Calculator(QDialog):
         super(Calculator, self).__init__(parent)
 
         self.setWindowTitle('Calculator')
-        self.setWindowIcon(QIcon(func.getIcon32('Calculator')))
+        self.setWindowIcon(QIcon(func.getAppIcon(32, 'Calculator')))
         self.settings = app.appSetting
         self.NumDigitButtons = 10
 

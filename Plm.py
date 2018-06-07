@@ -12,6 +12,7 @@ Description:
 
 # Python
 import os
+import subprocess
 os.environ["PIPELINE_MANAGER"] = os.path.abspath(os.getcwd())                           # Set up environment variable
 
 import sys, requests, ctypes
@@ -56,6 +57,7 @@ class PltConsole(QObject):
         super(PltConsole, self).__init__()
 
         self.settings = app.appSetting
+        self.appInfo = app.APPINFO
 
         mainApp = QApplication(sys.argv)
         mainApp.setApplicationName(app.__project__)
@@ -77,7 +79,7 @@ class PltConsole(QObject):
 
         self.MainUI = PipelineManager.PipelineManager()
         self.MainUI.showPlt.connect(self.show_plt)
-        self.MainUI.loadLayout.connect(self.loadLayout)
+        self.MainUI.loadLayout.connect(self.execute)
         self.MainUI.execute.connect(self.execute)
         self.MainUI.timelogSig.connect(usql.TimeLog)
         self.updateAvatar.connect(self.MainUI.updateAvatar)
@@ -145,11 +147,45 @@ class PltConsole(QObject):
 
         self.settings.setValue("showSignIn", param)
 
-    def loadLayout(self, param):
-        print("get signal loadlayout: {0}".format(param))
-
     def execute(self, param):
-        print("get signal execute: {0}".format(param))
+        if param == "Command Prompt":
+            os.system("start /wait cmd")
+        elif param == "TextEditor":
+            from ui import TextEditor
+            textEditor = TextEditor.TextEditor()
+            textEditor.exec_()
+        elif param == "NoteReminder":
+            from ui import NoteReminder
+            noteReminder = NoteReminder.NoteReminder()
+            noteReminder.exec_()
+        elif param == "Calculator":
+            from ui import Calculator
+            calculator = Calculator.Calculator()
+            calculator.exec_()
+        elif param == "Calendar":
+            from ui import Calendar
+            calendar = Calendar.Calendar()
+            calendar.exec_()
+        elif param == "EnglishDictionary":
+            from ui import EnglishDictionary
+            englishDictionary = EnglishDictionary.EnglishDictionary()
+            englishDictionary.exec_()
+        elif param == "FindFiles":
+            from ui import FindFiles
+            findFiles = FindFiles.FindFiles()
+            findFiles.exec_()
+        elif param == "ImageViewer":
+            from ui import ImageViewer
+            imageViewer = ImageViewer.ImageViewer()
+            imageViewer.exec_()
+        elif param == "Screenshot":
+            from ui import Screenshot
+            screenshot = Screenshot.Screenshot()
+            screenshot.exec_()
+        else:
+            print("Get signal: {0}".format(param))
+            print(self.appInfo[param][2])
+            subprocess.Popen(self.appInfo[param][2])
 
 if __name__ == '__main__':
     PltConsole()

@@ -221,7 +221,7 @@ class NoteReminder(QDialog):
     def __init__(self, parent=None):
         super(NoteReminder, self).__init__(parent)
 
-        self.setWindowIcon(QIcon(func.getIcon32('Logo')))
+        self.setWindowIcon(QIcon(func.getAppIcon(32, 'NoteReminder')))
         self.setWindowTitle('Note Reminder')
 
 
