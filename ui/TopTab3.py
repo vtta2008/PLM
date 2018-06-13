@@ -12,7 +12,8 @@ Description:
 """ Import """
 
 # Python
-import sys, os
+import sys
+from functools import partial
 
 # PyQt5
 from PyQt5.QtGui import QPixmap
@@ -68,7 +69,7 @@ class TopTab3(QWidget):
         btn1.clicked.connect(self.on_userSettingBtn_clicked)
 
         btn2 = QPushButton('Log Out')
-        btn2.clicked.connect(self.on_signOutBtn_clicked)
+        btn2.clicked.connect(partial(self.showLogin.emit, True))
 
         btns = [btn1, btn2]
 
@@ -89,7 +90,7 @@ class TopTab3(QWidget):
         print("get signal at final des {0}".format(param))
 
     def on_userSettingBtn_clicked(self):
-        layout = UserSetting.Account_setting()
+        layout = UserSetting.UserSetting()
         layout.show()
         layout.updateAvatar.connect(self.update_avatar)
         layout.exec_()

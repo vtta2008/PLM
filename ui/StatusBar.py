@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # Python
-import os, sys
+import sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
@@ -27,7 +27,7 @@ from ui import Footer
 
 class StatusBar(QStatusBar):
 
-    StatusBarSig = pyqtSignal(bool)
+    statusBarSig = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(StatusBar, self).__init__(parent)
@@ -38,6 +38,8 @@ class StatusBar(QStatusBar):
 
     def buildUI(self):
         self.footer = Footer.Footer()
+        self.footer.footerSig.connect(self.statusBarSig.emit)
+
         self.addWidget(self.footer)
         self.applySetting()
 

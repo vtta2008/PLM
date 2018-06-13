@@ -253,7 +253,7 @@ def getAppIcon(size=32, iconName="AboutPlt"):
 
 def getLogo(size=32, name="DAMG"):
     if name == "Logo":
-        logoPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'logo', 'Plt', 'icons')
+        logoPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'logo', 'Plm', 'icons')
     elif name == 'DAMG':
         logoPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'logo', 'DAMGteam', 'icons')
     else:

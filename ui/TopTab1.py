@@ -28,7 +28,6 @@ from ui import uirc as rc
 
 class TopTab1(QWidget):
 
-    loadLayout = pyqtSignal(str)
     execute = pyqtSignal(str)
 
     def __init__(self, parent=None):
@@ -51,7 +50,7 @@ class TopTab1(QWidget):
         for key in keys:
             if key in self.appInfo:
                 btn = rc.IconBtnLoadLayout(key)
-                btn.consoleSig.connect(self.loadLayout.emit)
+                btn.consoleSig.connect(self.execute.emit)
                 officeBtns.append(btn)
 
         for key in app.CONFIG_OFFICE:
@@ -75,7 +74,7 @@ class TopTab1(QWidget):
         for key in app.CONFIG_TOOLS:
             if key in self.appInfo:
                 btn = rc.IconBtnLoadLayout(key)
-                btn.consoleSig.connect(self.loadLayout.emit)
+                btn.consoleSig.connect(self.execute.emit)
                 pyuiBtn.append(btn)
 
         sec3Grp = rc.AutoSectionBtnGrp("Tools", pyuiBtn, "IconGrid")
@@ -84,7 +83,7 @@ class TopTab1(QWidget):
         for key in app.CONFIG_EXTRA:
             if key in self.appInfo:
                 btn = rc.IconBtnProcess(key)
-                btn.consoleSig.connect(self.loadLayout.emit)
+                btn.consoleSig.connect(self.execute.emit)
                 extraBtns.append(btn)
 
         sec4Grp = rc.AutoSectionBtnGrp("Extra", extraBtns, "IconGrid")

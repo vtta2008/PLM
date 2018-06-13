@@ -36,6 +36,8 @@ preset2 = MayaCfg.MayaCfg()
 from utilities import localSQL as usql
 
 from ui import (SignIn, SignUp, PipelineManager, SysTrayIcon)                       # Import ui
+from ui import (TextEditor, NoteReminder, Calculator, Calendar, EnglishDictionary, FindFiles, ImageViewer, Screenshot,
+                Preferences, About, PLMBrowser, Credit, UserSetting)
 from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
@@ -79,7 +81,7 @@ class PltConsole(QObject):
 
         self.MainUI = PipelineManager.PipelineManager()
         self.MainUI.showPlt.connect(self.show_plt)
-        self.MainUI.loadLayout.connect(self.execute)
+        self.MainUI.showLogin.connect(self.show_login)
         self.MainUI.execute.connect(self.execute)
         self.MainUI.timelogSig.connect(usql.TimeLog)
         self.updateAvatar.connect(self.MainUI.updateAvatar)
@@ -112,6 +114,20 @@ class PltConsole(QObject):
                         sys.exit(1)
                 else:
                     self.LoginUI.show()
+
+        self.textEditor = TextEditor.TextEditor()
+        self.noteReminder = NoteReminder.NoteReminder()
+        self.calculator = Calculator.Calculator()
+        self.calendar = Calendar.Calendar()
+        self.englishDictionary = EnglishDictionary.EnglishDictionary()
+        self.findFiles = FindFiles.FindFiles()
+        self.screenshot = Screenshot.Screenshot()
+        self.preferences = Preferences.Preferences()
+        self.about = About.About()
+        self.browser = PLMBrowser.PLMBrowser()
+        self.wiki = PLMBrowser.PLMBrowser(app.__pltWiki__)
+        self.credit = Credit.Credit()
+        self.userSetting = UserSetting.UserSetting()
 
         QApplication.setQuitOnLastWindowClosed(False)
         sys.exit(mainApp.exec_())
@@ -151,57 +167,34 @@ class PltConsole(QObject):
         if param == "Command Prompt":
             os.system("start /wait cmd")
         elif param == "TextEditor":
-            from ui import TextEditor
-            textEditor = TextEditor.TextEditor()
-            textEditor.exec_()
+            self.textEditor.show()
         elif param == "NoteReminder":
-            from ui import NoteReminder
-            noteReminder = NoteReminder.NoteReminder()
-            noteReminder.exec_()
+            self.noteReminder.show()
         elif param == "Calculator":
-            from ui import Calculator
-            calculator = Calculator.Calculator()
-            calculator.exec_()
+            self.calculator.show()
         elif param == "Calendar":
-            from ui import Calendar
-            calendar = Calendar.Calendar()
-            calendar.exec_()
+            self.calendar.show()
         elif param == "EnglishDictionary":
-            from ui import EnglishDictionary
-            englishDictionary = EnglishDictionary.EnglishDictionary()
-            englishDictionary.exec_()
+            self.englishDictionary.show()
         elif param == "FindFiles":
-            from ui import FindFiles
-            findFiles = FindFiles.FindFiles()
-            findFiles.exec_()
+            self.findFiles.show()
         elif param == "ImageViewer":
-            from ui import ImageViewer
-            imageViewer = ImageViewer.ImageViewer()
-            imageViewer.exec_()
+            self.imageViewer = ImageViewer.ImageViewer()
+            self.imageViewer.show()
         elif param == "Screenshot":
-            from ui import Screenshot
-            screenshot = Screenshot.Screenshot()
-            screenshot.exec_()
+            self.screenshot.show()
         elif param == "Preferences":
-            from ui import Preferences
-            preferences = Preferences.Preferences()
-            preferences.exec_()
+            self.preferences.show()
         elif param == "About":
-            from ui import About
-            about = About.About()
-            about.exec_()
+            self.about.show()
         elif param == "PLMBrowser":
-            from ui import PLMBrowser
-            browser = PLMBrowser.PLMBrowser()
-            browser.exec_()
+            self.browser.show()
         elif param == "PLM wiki":
-            from ui import PLMBrowser
-            browser = PLMBrowser.PLMBrowser(app.__pltWiki__)
-            browser.exec_()
+            self.wiki.show()
         elif param == "Credit":
-            from ui import Credit
-            credit = Credit.Credit()
-            credit.exec_()
+            self.credit.show()
+        elif param == "UserSetting":
+            self.userSetting.show()
         else:
             print("Get signal: {0}".format(param))
             print(self.appInfo[param][2])

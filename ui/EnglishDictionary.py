@@ -72,7 +72,7 @@ class EnglishDictionary(QDialog):
         self.setLayout(hbox)
 
     def translate(self, *args):
-        filePth = os.path.join(os.getenv(app.__envKey__), 'appData', 'englishDictionary.json')
+        filePth = os.path.join(os.getenv(app.__envKey__), 'appData', 'ED.json')
 
         data = json.load(open(filePth))
 
@@ -95,7 +95,7 @@ class EnglishDictionary(QDialog):
 
     def populateAnswer(self, answer, *args):
 
-        blocks = ["[u'", "']", "', u'", "', u", ", u'"]
+        blocks = ["[u'", "']", "', u'", "', u", ", u'", "['"]
 
         for block in blocks:
             if block in answer:

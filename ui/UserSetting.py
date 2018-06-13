@@ -25,18 +25,20 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QHBoxLa
 # Plt
 import appData as app
 from utilities import utils as func
+from utilities import localSQL as usql
 from ui import uirc as rc
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """
 # ----------------------------------------------------------------------------------------------------------- #
-class Account_setting(QDialog):
+class UserSetting(QDialog):
 
     updateAvatar = pyqtSignal(bool)
+    query = usql.QuerryDB()
 
     def __init__(self, parent=None):
 
-        super(Account_setting, self).__init__(parent)
+        super(UserSetting, self).__init__(parent)
 
 
         self.setWindowTitle('User Setting')
@@ -61,6 +63,8 @@ class Account_setting(QDialog):
         self.layout.addWidget(location_setion, 1, 1, 1, 1)
 
     def change_avatar_section(self):
+
+        self.username, token, cookie, remember = self.query.query_table('curUser')
 
         avatar_groupBox = QGroupBox('Change Avatar')
         avatar_layout = QHBoxLayout()
@@ -222,7 +226,7 @@ class Account_setting(QDialog):
 
 def main():
     app = QApplication(sys.argv)
-    acc_setting = Account_setting()
+    acc_setting = UserSetting()
     acc_setting.show()
     app.exec_()
 

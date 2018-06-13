@@ -27,10 +27,10 @@ from ui import uirc as rc
 class PipelineManager(QMainWindow):
 
     showPlt = pyqtSignal(bool)
+    showLogin = pyqtSignal(bool)
     close_event = pyqtSignal(bool)
     timelogSig = pyqtSignal(str)
     updateAvatar = pyqtSignal(bool)
-    loadLayout = pyqtSignal(str)
     execute = pyqtSignal(str)
 
     def __init__(self, parent=None):
@@ -55,6 +55,7 @@ class PipelineManager(QMainWindow):
 
         # Status bar viewing message
         self.statusBar = StatusBar.StatusBar()
+        self.statusBar.statusBarSig.connect(self.execute.emit)
         self.setStatusBar(self.statusBar)
 
     def buildUI(self):
@@ -84,8 +85,8 @@ class PipelineManager(QMainWindow):
         self.botTabUI.notifi.connect(self.show_notifi)
 
         self.topTabUI.showPlt.connect(self.showPlt.emit)
-        self.topTabUI.loadLayout.connect(self.loadLayout.emit)
         self.topTabUI.execute.connect(self.execute.emit)
+        self.topTabUI.showLogin.connect(self.showLogin.emit)
 
         self.layout.addWidget(self.subMenuSec, 0, 0, 1, 6)
         self.layout.addWidget(self.networkStatus, 0, 6, 1, 3)

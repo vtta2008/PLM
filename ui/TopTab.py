@@ -29,7 +29,6 @@ class TopTab(QWidget):
     showLogin = pyqtSignal(bool)
     tabSizeSig = pyqtSignal(int, int)
     updateAvatar = pyqtSignal(bool)
-    loadLayout = pyqtSignal(str)
     execute = pyqtSignal(str)
 
     def __init__(self, parent=None):
@@ -50,7 +49,6 @@ class TopTab(QWidget):
         self.updateAvatar.connect(tab3.update_avatar)
 
         tab1 = TopTab1.TopTab1()
-        tab1.loadLayout.connect(self.loadLayout.emit)
         tab1.execute.connect(self.execute.emit)
 
         self.tabs.addTab(tab1, 'Tool')
