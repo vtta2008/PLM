@@ -12,9 +12,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-import random, sys
-
 # PtQt5
 from PyQt5.QtCore import (pyqtSignal, QByteArray, QDataStream, QIODevice, QThread)
 from PyQt5.QtNetwork import (QTcpServer, QTcpSocket)

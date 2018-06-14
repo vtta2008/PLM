@@ -51,8 +51,11 @@ class TopTab(QWidget):
         tab1 = TopTab1.TopTab1()
         tab1.execute.connect(self.execute.emit)
 
+        tab2 = TopTab2.TopTab2()
+        tab2.execute.connect(self.execute.emit)
+
         self.tabs.addTab(tab1, 'Tool')
-        self.tabs.addTab(TopTab2.TopTab2(), 'Prj')
+        self.tabs.addTab(tab2, 'Prj')
         self.tabs.addTab(tab3, 'User')
         self.tabs.addTab(TopTab4.TopTab4(), 'Library')
         self.tabs.addTab(TopTab5.TopTab5(), 'Cmd')

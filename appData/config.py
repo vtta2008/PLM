@@ -11,9 +11,11 @@ Description:
 """ Import """
 
 # Python
-import os, logging
-from importlib import reload as r
+import os
+import logging
 import json
+
+from importlib import reload as r
 
 # Plm
 from appData import _path as p
@@ -82,7 +84,7 @@ PLTAPPID = m.PLTAPPID
 # ----------------------------------------------------------------------------------------------------------- #
 """ Setup.py options """
 
-def read_file(pth, fileName, *args):
+def read_file(pth, fileName):
     with open(os.path.join(pth, fileName), 'r') as f:
         data = f.read()
     return data
@@ -147,19 +149,7 @@ WEBICON48 = p.WEBICON48
 WEBICON64 = p.WEBICON64
 WEBICON128 = p.WEBICON128
 
-# -------------------------------------------------------------------------------------------------------------
-""" Log format setting """
 
-logFormat1 = "%(asctime)s %(levelname)s %(message)s",
-logFormat2 = "%(asctime)-15s: %(name)-18s - %(levelname)-8s - %(module)-15s - %(funcName)-20s - %(lineno)-6d - %(message)s"
-
-def set_log(name=__name__, format=logFormat1):
-    handler = logging.FileHandler(LOGPTH)
-    handler.setFormatter(logging.Formatter(format))
-    logger = logging.getLogger(name)
-    logger.addHandler(handler)
-    logger.setLevel(logging.DEBUG)
-    return logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Path """
@@ -187,6 +177,52 @@ logoIconCfg = p.logoIconCfg
 pyEnvCfg = p.pyEnvCfg
 appConfig = p.appConfig
 mainConfig = p.mainConfig
+
+# -------------------------------------------------------------------------------------------------------------
+""" Log format setting """
+
+from logging import getLogger, INFO, WARN, DEBUG, ERROR, FATAL
+
+__all__ = ['getLogger', 'INFO', 'WARN', 'DEBUG', 'TRACE', 'ERROR', 'FATAL']
+
+levels = ['TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR', 'CRITICAL']
+
+logFormat1 = "%(relativeCreated)d %(levelname)s: %(message)s"
+logFormat2 = "%(asctime)-15s: %(name)-18s - %(levelname)-8s - %(module)-15s - %(funcName)-20s - %(lineno)-6d - %(message)s"
+logFormat3 = "%(asctime)s %(levelname)s %(message)s",
+
+TRACE = logging.TRACE = DEBUG - 5
+
+def get_logger(name):
+
+    logging.addLevelName(TRACE, 'TRACE')
+    logger = logging.getLogger(name)
+    return logger
+
+def get_handler(logPth, format):
+    handler = logging.FileHandler(logPth)
+    handler.setFormatter(logging.Formatter(format))
+    return handler
+
+def get_level(opts="DEBUG"):
+    try:
+        level = getattr(logging, opts.loglevel.upper())
+        print(level)
+    except AttributeError:
+        return logging.DEBUG
+    else:
+        return level
+
+def set_log(name=__name__, logPth=LOGPTH, format=logFormat1):
+
+    handler = get_handler(logPth, format)
+    level = get_level()
+    logger = get_logger(name)
+
+    logger.addHandler(handler)
+    logger.setLevel(level)
+
+    return logger
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ PyQt5 setting """

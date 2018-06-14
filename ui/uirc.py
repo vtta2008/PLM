@@ -485,7 +485,7 @@ class AutoArrangeBtnGrid(QGridLayout):
     def buildUI(self):
         if not len(self.btns) == 0:
             for i in range(len(self.btns)):
-                if str(type(self.btns[i])) in ["<class 'PyQt5.QtWidgets.QPushButton'>"]:
+                if str(type(self.btns[i])) in ["<class 'PyQt5.QtWidgets.QPushButton'>", "<class 'ui.uirc.Button'>"]:
                     if i == 0:
                         self.addWidget(self.btns[i], 0, 0, 1, 2)
                     elif i == 1:
@@ -506,7 +506,7 @@ class AutoArrangeBtnGrid(QGridLayout):
                         self.addWidget(self.btns[i], 8, 0, 1, 2)
                 else:
                     raise TypeError("Type Object is not corrected, expected icon button class")
-            i += 1
+                i += 1
 
         self.applySetting()
 

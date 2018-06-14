@@ -42,12 +42,6 @@ class Footer(QWidget):
 
     def buildUI(self):
 
-        # self.logo = QPixmap(os.path.join(os.getenv(app.__envKey__), 'imgs', 'logo','DAMGteam', 'icons', '24x24.png'))
-        # self.damgLogo = rc.Label(txt="")
-        # self.damgLogo.setPixmap(self.logo)
-        # self.damgLogo.resize(self.logo.width(), self.logo.height())
-        # self.damgLogo.setToolTip(app.COPYRIGHT)
-
         self.logoBtn = QPushButton()
         self.logoBtn.setToolTip(app.COPYRIGHT)
         self.logoBtn.setIcon(QIcon(func.getLogo(24, 'DAMG')))

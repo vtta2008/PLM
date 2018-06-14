@@ -15,9 +15,9 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import QFile, QIODevice, Qt, QTextStream, QUrl
+from PyQt5.QtCore import QFile, QIODevice, Qt, QTextStream, QUrl, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QApplication, QLineEdit, QMainWindow, QWidget, QSizePolicy, QStyle, QTextEdit,
-                             QHBoxLayout)
+                             QStatusBar, QVBoxLayout)
 from PyQt5.QtGui import QIcon
 from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 from PyQt5.QtWebKitWidgets import QWebPage, QWebView
@@ -30,6 +30,10 @@ from utilities import utils as func
 """ Pipeline Web browser """
 
 class WebBrowser(QMainWindow):
+
+    adjTitSig = pyqtSignal(str)
+    setProgSig = pyqtSignal(int)
+    finLoadSig = pyqtSignal(str)
 
     def __init__(self, url, parent=None):
         super(WebBrowser, self).__init__(parent)
@@ -54,8 +58,7 @@ class WebBrowser(QMainWindow):
         self.view.loadFinished.connect(self.finishLoading)
 
         self.locationEdit = QLineEdit(self)
-        self.locationEdit.setSizePolicy(QSizePolicy.Expanding,
-                self.locationEdit.sizePolicy().verticalPolicy())
+        self.locationEdit.setSizePolicy(QSizePolicy.Expanding, self.locationEdit.sizePolicy().verticalPolicy())
         self.locationEdit.returnPressed.connect(self.changeLocation)
 
         toolBar = self.addToolBar("Navigation")
@@ -73,10 +76,8 @@ class WebBrowser(QMainWindow):
         effectMenu = self.menuBar().addMenu("&Effect")
         effectMenu.addAction("Highlight all links", self.highlightAllLinks)
 
-        self.rotateAction = QAction(
-                self.style().standardIcon(QStyle.SP_FileDialogDetailedView),
-                "Turn images upside down", self, checkable=True,
-                toggled=self.rotateImages)
+        self.rotateAction = QAction(self.style().standardIcon(QStyle.SP_FileDialogDetailedView), "Turn images upside down",
+                                    self, checkable=True, toggled=self.rotateImages)
         effectMenu.addAction(self.rotateAction)
 
         toolsMenu = self.menuBar().addMenu("&Tools")
@@ -114,13 +115,15 @@ class WebBrowser(QMainWindow):
 
     def adjustTitle(self):
         if 0 < self.progress < 100:
-            self.setWindowTitle("%s (%s%%)" % (self.view.title(), self.progress))
+            self.setWindowTitle("{0} ({1}%%)".format(self.view.title(), self.progress))
         else:
             self.setWindowTitle(self.view.title())
 
     def setProgress(self, p):
         self.progress = p
+        self.setProgSig.emit(self.progress)
         self.adjustTitle()
+
 
     def finishLoading(self):
         self.progress = 100
@@ -181,17 +184,32 @@ class PLMBrowser(QWidget):
         super(PLMBrowser, self).__init__(parent)
 
         self.setWindowIcon(QIcon(func.getAppIcon(32, 'PLMBrowser')))
-        self.setWindowTitle('Pipeline Webbrowser')
+        self.setWindowTitle('PLM Browser')
 
         self.url = url
 
-        self.layout = QHBoxLayout()
+        self.layout = QVBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
         viewer = WebBrowser(self.url)
+        viewer.setProgSig.connect(self.adjustTitle)
         self.layout.addWidget(viewer)
+
+        self.statusBar = QStatusBar(self)
+        self.layout.addWidget(self.statusBar)
+
+        self. applySetting()
+
+    def adjustTitle(self, param):
+        if 0 < param < 100:
+            self.setWindowTitle("PLM Browser ({0}%)".format(param))
+        else:
+            self.setWindowTitle("PLM Browser")
+
+    def applySetting(self):
+        pass
 
 def main():
     app = QApplication(sys.argv)

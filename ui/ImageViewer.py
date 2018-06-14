@@ -172,8 +172,6 @@ class ImageInitUI(ViewerWindow):
 
         # Set common window attributes
         self.path, self.title = os.path.split(self.key)
-        self.setWindowTitle("Image Viewer: " + str(self.title))
-        self.setWindowIcon(QIcon(func.getAppIcon(32, "ImageViewer")))
 
         self.dbSanitise()
 
@@ -183,7 +181,7 @@ class ImageInitUI(ViewerWindow):
             open(self.key, 'r')
         except IOError:
             print('There was an error opening the file')
-            sys.exit(1)
+            # sys.exit(1)
 
         if self.key.lower().endswith(self.formats):
             # If inshuft = 0, the image is not in shufti's image database
@@ -252,7 +250,7 @@ class ImageInitUI(ViewerWindow):
                 self.oldImage()
         else:
             print("Unsupported file format")
-            sys.exit(1)
+            # sys.exit(1)
 
     def getValueRotate(self, value):
         self.rotateImg(value)
@@ -501,8 +499,7 @@ class ImageViewer(QDialog):
     def __init__(self, key=None, parent=None):
         super(ImageViewer, self).__init__(parent)
 
-        self.setWindowIcon(rc.IconPth('ImageViewer'))
-        self.setWindowTitle('Image Viewer')
+
 
         if key == None or not os.path.exists(key) or os.path.isdir(key):
             key = self.loadImageFromFile()
@@ -518,7 +515,14 @@ class ImageViewer(QDialog):
         resizeSig = viewer.resizeSig
         resizeSig.connect(self.resizeUI)
 
+        self.title = viewer.title
+
+        self.setWindowTitle("Image Viewer: " + str(self.title))
+        self.setWindowIcon(QIcon(func.getAppIcon(32, "ImageViewer")))
+
         self.layout.addWidget(viewer)
+
+        self.applySetting()
 
     def loadImageFromFile(self):
         options = QFileDialog.Options()
@@ -536,12 +540,16 @@ class ImageViewer(QDialog):
         if fileName:
             return fileName
         elif str(type(fileName)) == "NoneType":
-            self.close()
+            return " "
         else:
-            self.close()
+            return " "
 
     def resizeUI(self, w, h):
         self.resize(w, h)
+
+    def applySetting(self):
+        pass
+
 
 
 def main():
