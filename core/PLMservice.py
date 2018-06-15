@@ -154,7 +154,7 @@ class PingThread(QThread):
 
     def run(self):
         while self.isRunning():
-            print('check ping')
+
             try:
                 pingval = self.ping(self.host)
             except:
@@ -162,7 +162,7 @@ class PingThread(QThread):
             else:
                 pingval = 0
             finally:
-                self.pingSig.emit(pingval)
+                self.pingNumber.emit(pingval)
 
 # -------------------------------------------------------------------------------------------------------------
 """ PingService """

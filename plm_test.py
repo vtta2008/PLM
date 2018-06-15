@@ -1,7 +1,7 @@
 
 import sys, json, pprint
 
-from PyQt5.QtNetwork import QNetworkReply, QNetworkAccessManager, QNetworkRequest
+from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
 from PyQt5.QtCore import QUrl, QCoreApplication
 
 import appData as app
@@ -33,7 +33,7 @@ class NetworkManager(QNetworkAccessManager):
             bytes_string = self.reply.readAll()
             raw = json.load(bytes_string, 'utf-8')
 
-        pprint.pprint(raw)
+            pprint.pprint(raw)
 
         QCoreApplication.quit()
 
