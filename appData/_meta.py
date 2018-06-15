@@ -32,8 +32,8 @@ __verType__ = "Dev"
 __reverType__ = "2"
 __about__ = "About Pipeline Manager"
 __homepage__ = "https://pipeline.damgteam.com"
-__pltSlogan__ = "Creative your own pipeline"
-__pltWiki__ = "https://github.com/vtta2008/PipelineTool/wiki"
+__plmSlogan__ = "Creative your own pipeline"
+__plmWiki__ = "https://github.com/vtta2008/PipelineTool/wiki"
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """
@@ -51,7 +51,7 @@ __google__ = "https://google.com.vn"
 VERSION = "{0} v{1}.{2}-{3}".format(__project__, __version__, __verType__, __reverType__)
 COPYRIGHT = "{0} software (c) 2017-2018 {1}. All rights reserved.".format(__appname__, __organization__)
 PLUGINVERSION = "{0}.13.cfg.{1}".format(__appname__, __cfgVersion__)
-PLTAPPID = u'{0}.{1}.{2}.{3}'.format(__organization__, __project__, __appname__, VERSION)
+PLMAPPID = u'{0}.{1}.{2}.{3}'.format(__organization__, __project__, __appname__, VERSION)
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Setup.py options """
@@ -77,7 +77,7 @@ __description__ = "This applications can be used to build, manage, and optimise 
 
 __readme__ = "README.rst"
 
-__modules__ = ["plt", "globals", "_version", "appData.templates.pyTemplate", "utilities.variables", "utilities.utils",
+__modules__ = ["plm", "globals", "_version", "appData.templates.pyTemplate", "utilities.variables", "utilities.utils",
                "utilities.sql_server", "utilities.sql_local", "utilities.message", "ui.ui_acc_setting", "ui.ui_calculator",
                "ui.ui_calendar", "ui.ui_english_dict", "ui.ui_find_files", "ui.ui_image_viewer", "ui.ui_info_template",
                "ui.ui_new_project", "ui.ui_note_reminder", "ui.ui_preference", "ui.ui_pw_reset_form", "ui.ui_screenshot", ]

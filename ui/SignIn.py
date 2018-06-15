@@ -31,7 +31,7 @@ from utilities import utils as func
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logger = app.set_log()
+logger = app.logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """

@@ -11,7 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
-from . import config as c
+from appData import config as c
 
 # -------------------------------------------------------------------------------------------------------------
 """ Environment variables """
@@ -49,8 +49,8 @@ __verType__ = c.__verType__
 __reverType__ = c.__reverType__
 __about__ = c.__about__
 __homepage__ = c.__homepage__
-__pltSlogan__ = c.__pltSlogan__
-__pltWiki__ = c.__pltWiki__
+__plmSlogan__ = c.__plmSlogan__
+__plmWiki__ = c.__plmWiki__
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """
@@ -68,10 +68,10 @@ __google__ = c.__google__
 VERSION = c.VERSION
 COPYRIGHT = c.COPYRIGHT
 PLUGINVERSION = c.PLUGINVERSION
-PLTAPPID = c.PLTAPPID
+PLMAPPID = c.PLMAPPID
 
 # ----------------------------------------------------------------------------------------------------------- #
-""" Setuc.py options """
+""" Setup.py options """
 
 __email__ = c.__email__
 __packages_dir__ = c.__packages_dir__
@@ -130,22 +130,24 @@ WEBICON64 = c.WEBICON64
 WEBICON128 = c.WEBICON128
 
 # -------------------------------------------------------------------------------------------------------------
-""" Log format setting """
+""" Format """
 
-def set_log():
-    return c.set_log()
+LOGFORMAT = c.LOGFORMAT
+
+logger = c.logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Path """
 
 DAMGLOGO = c.DAMGLOGO
-PLTLOGO = c.PLTLOGO
+PLMLOGO = c.PLMLOGO
 
 APPSETTING = c.APPSETTING
 USERSETTING = c.USERSETTING
 
 appSetting = c.appSetting
 userSetting = c.userSetting
+formatSetting = c.formatSetting
 
 DBPTH = c.DBPTH
 LOGPTH = c.LOGPTH

@@ -12,7 +12,6 @@ Description:
 
 # Python
 import os
-import logging
 import json
 
 from importlib import reload as r
@@ -23,6 +22,8 @@ from appData import _docs as d
 from appData import _keys as k
 from appData import _meta as m
 from appData import _style as s
+from appData import _format as f
+from appData import logger as l
 
 # -------------------------------------------------------------------------------------------------------------
 """ Environment variables """
@@ -60,8 +61,8 @@ __verType__ = m.__verType__
 __reverType__ = m.__reverType__
 __about__ = m.__about__
 __homepage__ = m.__homepage__
-__pltSlogan__ = m.__pltSlogan__
-__pltWiki__ = m.__pltWiki__
+__plmSlogan__ = m.__plmSlogan__
+__plmWiki__ = m.__plmWiki__
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """
@@ -79,7 +80,7 @@ __google__ = m.__google__
 VERSION = m.VERSION
 COPYRIGHT = m.COPYRIGHT
 PLUGINVERSION = m.PLUGINVERSION
-PLTAPPID = m.PLTAPPID
+PLMAPPID = m.PLMAPPID
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Setup.py options """
@@ -123,9 +124,10 @@ CONFIGLOCALDAMGDIR = p.CONFIGLOCALDAMGDIR
 PLMCONFIGLOCAL = p.PLMCONFIGLOCAL
 CONFIGDIR = p.CONFIGDIR
 SETTINGDIR = p.SETTINGDIR
+FORMATDIR = p.FORMATDIR
 LOGDIR = p.LOGDIR
 
-for pth in [CONFIGLOCALDAMGDIR, PLMCONFIGLOCAL, CONFIGDIR, SETTINGDIR, LOGDIR]:
+for pth in [CONFIGLOCALDAMGDIR, PLMCONFIGLOCAL, CONFIGDIR, SETTINGDIR, LOGDIR, FORMATDIR]:
     if not os.path.exists(pth):
         os.mkdir(pth)
 
@@ -149,19 +151,18 @@ WEBICON48 = p.WEBICON48
 WEBICON64 = p.WEBICON64
 WEBICON128 = p.WEBICON128
 
-
-
 # -------------------------------------------------------------------------------------------------------------
 """ Path """
 
 DAMGLOGO = p.DAMGLOGO
-PLTLOGO = p.PLTLOGO
+PLMLOGO = p.PLMLOGO
 
 APPSETTING = p.APPSETTING
 USERSETTING = p.USERSETTING
 
 appSetting = p.appSetting
 userSetting = p.userSetting
+formatSetting = p.formatSetting
 
 DBPTH = p.DBPTH
 LOGPTH = p.LOGPTH
@@ -179,50 +180,11 @@ appConfig = p.appConfig
 mainConfig = p.mainConfig
 
 # -------------------------------------------------------------------------------------------------------------
-""" Log format setting """
+""" Format """
 
-from logging import getLogger, INFO, WARN, DEBUG, ERROR, FATAL
+LOGFORMAT = f.LOGFORMAT
 
-__all__ = ['getLogger', 'INFO', 'WARN', 'DEBUG', 'TRACE', 'ERROR', 'FATAL']
-
-levels = ['TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR', 'CRITICAL']
-
-logFormat1 = "%(relativeCreated)d %(levelname)s: %(message)s"
-logFormat2 = "%(asctime)-15s: %(name)-18s - %(levelname)-8s - %(module)-15s - %(funcName)-20s - %(lineno)-6d - %(message)s"
-logFormat3 = "%(asctime)s %(levelname)s %(message)s",
-
-TRACE = logging.TRACE = DEBUG - 5
-
-def get_logger(name):
-
-    logging.addLevelName(TRACE, 'TRACE')
-    logger = logging.getLogger(name)
-    return logger
-
-def get_handler(logPth, format):
-    handler = logging.FileHandler(logPth)
-    handler.setFormatter(logging.Formatter(format))
-    return handler
-
-def get_level(opts="DEBUG"):
-    try:
-        level = getattr(logging, opts.loglevel.upper())
-        print(level)
-    except AttributeError:
-        return logging.DEBUG
-    else:
-        return level
-
-def set_log(name=__name__, logPth=LOGPTH, format=logFormat1):
-
-    handler = get_handler(logPth, format)
-    level = get_level()
-    logger = get_logger(name)
-
-    logger.addHandler(handler)
-    logger.setLevel(level)
-
-    return logger
+logger = l.Logger().logger
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ PyQt5 setting """

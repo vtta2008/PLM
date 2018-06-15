@@ -12,16 +12,19 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
+# Python
+import time
+
 # PtQt5
 from PyQt5.QtCore import (pyqtSignal, QByteArray, QDataStream, QIODevice, QThread)
 from PyQt5.QtNetwork import (QTcpServer, QTcpSocket)
 
-# Plt
+# Plm
 import appData as app
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
-logger = app.set_log()
+logger = app.logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Thread connecting """

@@ -1,54 +1,44 @@
-import sys, time
-from multiprocessing import Process
-from PyQt5.QtCore import QObject, pyqtSignal, Qt
-from PyQt5.QtWidgets import QProgressBar, QDialogButtonBox, QVBoxLayout, QApplication, QDialog
 
+import sys, json, pprint
 
-class Compute(QObject):
-    def __init__(self, win, parent=None):
-        super(Compute, self).__init__(parent)
+from PyQt5.QtNetwork import QNetworkReply, QNetworkAccessManager, QNetworkRequest
+from PyQt5.QtCore import QUrl, QCoreApplication
 
-        self.win = win
+import appData as app
 
-    def calculate(self):
-        for i in range(100):
-            self.progressBar(i)
-            time.sleep(0.05)
+class Request(QNetworkRequest):
 
-    def progressBar(self, value):
-        self.win.updatePb.emit(value)
+    def __init__(self):
+        super(Request, self).__init__()
 
+        self.host = QUrl(app.__serverCheck__)
+        self.setUrl(self.host)
+        self.setHeader(QNetworkRequest.ContentTypeHeader, "application/x-www-form-urlencoded")
 
-# -------------------------------------------------------------------------------
-class Form(QDialog):
-
-    updatePb = pyqtSignal(int)
+class NetworkManager(QNetworkAccessManager):
 
     def __init__(self, parent=None):
-        super(Form, self).__init__(parent)
+        super(NetworkManager, self).__init__(parent)
 
-        self.progressBar = QProgressBar()
-        self.progressBar.setMinimum(0)
-        self.progressBar.setMaximum(100)
-        self.progressBar.setValue(0)
-        bbox = QDialogButtonBox()
-        bbox.setOrientation(Qt.Horizontal)
-        bbox.setStandardButtons(QDialogButtonBox.Ok)
-        layout = QVBoxLayout(self)
-        layout.addWidget(self.progressBar)
-        layout.addWidget(bbox)
-        bbox.clicked.connect(self.calculate)
+        self.request = Request()
+        self.finished.connect(self.handleResponse)
+        self.get(self.request)
 
-        self.updatePb.connect(self.progressBar.setValue)
+    def handleResponse(self, reply):
 
-    def calculate(self):
-        co = Compute(self)
-        p = Process(target=co.calculate)
-        p.start()
-        p.join()
+        self.reply = reply
+        er = self.reply.error()
+        print(er)
+        if er == self.reply.NoError:
+            bytes_string = self.reply.readAll()
+            raw = json.load(bytes_string, 'utf-8')
+
+        pprint.pprint(raw)
+
+        QCoreApplication.quit()
 
 
-app = QApplication(sys.argv)
-layout = Form()
-layout.show()
-app.exec_()
+app2 = QCoreApplication([])
+manager = NetworkManager()
+sys.exit(app2.exec_())
+

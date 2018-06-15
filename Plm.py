@@ -27,7 +27,7 @@ from PyQt5.QtWidgets import QApplication, QMessageBox, QSystemTrayIcon
 
 # Plt
 import appData as app
-logger = app.set_log()
+logger = app.logger
 
 from appData import LocalCfg, MayaCfg                                       # Generate config info
 preset1 = LocalCfg.LocalCfg()
@@ -75,7 +75,7 @@ class PlmConsole(QObject):
         self.PLMcore.setOrganizationDomain(app.__website__)
 
         self.PLMapp.setWindowIcon(rc.AppIcon("Logo"))                                   # Set up task bar icon
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app.PLTAPPID)     # Change taskbar icon in system
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(app.PLMAPPID)     # Change taskbar icon in system
         self.PLMapp.setStyleSheet(qdarkgraystyle.load_stylesheet())                     # set theme
 
         self.import_uiSet1()
@@ -90,7 +90,7 @@ class PlmConsole(QObject):
                 self.show_login(True)
             else:
                 r = requests.get(app.__serverCheck__, verify = False,
-                                 headers={'Authorization': 'Bearer {token}'.format(token=token)},
+                                 headers={'Authorization': 'Bearer {0}'.format(token)},
                                  cookies={'connect.sid': cookie})
 
                 if r.status_code == 200:
@@ -165,7 +165,7 @@ class PlmConsole(QObject):
         self.preferences = Preferences.Preferences()
         self.about = About.About()
         self.browser = PLMBrowser.PLMBrowser()
-        self.wiki = PLMBrowser.PLMBrowser(app.__pltWiki__)
+        self.wiki = PLMBrowser.PLMBrowser(app.__plmWiki__)
         self.credit = Credit.Credit()
         self.userSetting = UserSetting.UserSetting()
         self.newProject = NewProject.NewProject()

@@ -37,7 +37,7 @@ class SubMenuBar(QMainWindow):
         super(SubMenuBar, self).__init__(parent)
 
         self.appInfo = app.APPINFO
-        self.url = app.__pltWiki__
+        self.url = app.__plmWiki__
         self.settings = app.appSetting
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.buildMenu()

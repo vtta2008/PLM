@@ -19,7 +19,7 @@ from PyQt5.QtCore import QSettings
 # -------------------------------------------------------------------------------------------------------------
 """ Environment variable """
 
-# Plt environment key:
+# Plm environment key:
 __envKey__ = "PIPELINE_MANAGER"
 
 # -------------------------------------------------------------------------------------------------------------
@@ -39,9 +39,10 @@ appPackagesCfg = "main.cfg"
 """ Directory """
 
 CONFIGLOCALDAMGDIR = os.path.join(os.getenv("LOCALAPPDATA"), 'DAMGteam')   # DAMG team directory
-PLMCONFIGLOCAL = os.path.join(CONFIGLOCALDAMGDIR, 'PipelineManager')          # Plt directory
+PLMCONFIGLOCAL = os.path.join(CONFIGLOCALDAMGDIR, 'PipelineManager')          # Plm directory
 CONFIGDIR = os.path.join(PLMCONFIGLOCAL, "config")                      # Config dir to store config info
 SETTINGDIR = os.path.join(PLMCONFIGLOCAL, "settings")                   # Setting dir to store setting info
+FORMATDIR = os.path.join(SETTINGDIR, "format")
 LOGDIR = os.path.join(PLMCONFIGLOCAL, "logs")                           # Log dir to store log info
 
 IMGDIR = os.path.join(os.getenv(__envKey__), 'imgs')
@@ -68,13 +69,15 @@ WEBICON128 = os.path.join(WEBICONDIR, 'x128')
 """ Path """
 
 DAMGLOGO = os.path.join(LOGODIR, 'DAMGteam', 'icons', '32x32.png')
-PLTLOGO = os.path.join(LOGODIR, 'Plm', 'icons', '32x32.png')
+PLMLOGO = os.path.join(LOGODIR, 'Plm', 'icons', '32x32.png')
 
-APPSETTING = os.path.join(SETTINGDIR, "PlmSetting.ini")         # Pipeline tool setting
+APPSETTING = os.path.join(SETTINGDIR, "PlmSetting.ini")         # Pipeline application setting
 USERSETTING = os.path.join(SETTINGDIR, "UserSetting.ini")       # User setting
+FORMATSETTING = os.path.join(SETTINGDIR, "format", "FormatSetting.ini")
 
 appSetting = QSettings(APPSETTING, QSettings.IniFormat)
 userSetting = QSettings(USERSETTING, QSettings.IniFormat)
+formatSetting = QSettings(FORMATSETTING, QSettings.IniFormat)
 
 DBPTH = os.path.join(os.getenv(__envKey__), 'appData', localDB)                             # Local database
 LOGPTH = os.path.join(LOGDIR, appLog)                                                       # Log file

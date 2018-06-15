@@ -26,7 +26,7 @@ from ui import GeneralSetting
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logger = app.set_log()
+logger = app.logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """

@@ -22,7 +22,7 @@ import appData as app
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logger = app.set_log()
+logger = app.logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Collecting all info. """
@@ -54,7 +54,7 @@ class LocalCfg(object):
     def collect_icon_path(self):
         # Create dictionary for icon info
         self.iconInfo = {}
-        self.iconInfo['Logo'] = app.PLTLOGO
+        self.iconInfo['Logo'] = app.PLMLOGO
         self.iconInfo['DAMG'] = app.DAMGLOGO
         # Custom some info to debug
         self.iconInfo['Sep'] = 'separato.png'
@@ -116,8 +116,8 @@ class LocalCfg(object):
         self.mainInfo['ClearData'] = ['Clean Config data', self.iconInfo['CleanConfig'], 'CleanConfigData']
         self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['Reconfig'], 'Config']
         self.mainInfo['Command Prompt'] = ['Open command prompt', self.iconInfo['Command Prompt'], 'open_cmd']
-        self.mainInfo['PLM wiki'] = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=app.__pltWiki__)]
-        self.mainInfo['PLMBrowser'] = ['PltBrowser', self.iconInfo['PLMBrowser'], "PLMBrowser"]
+        self.mainInfo['PLM wiki'] = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=app.__plmWiki__)]
+        self.mainInfo['PLMBrowser'] = ['PlmBrowser', self.iconInfo['PLMBrowser'], "PLMBrowser"]
         self.mainInfo['OpenConfig'] = ['Open config folder', self.iconInfo['OpenConfig'], '']
 
         for key in self.appInfo:
@@ -128,7 +128,7 @@ class LocalCfg(object):
             elif 'UVLayout' in key:
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " -launch"
 
-        # Extra app come along with plt but not be installed in local.
+        # Extra app come along with plm but not be installed in local.
 
         qtDesigner = os.path.join(os.getenv('PROGRAMDATA'), 'Anaconda3', 'Library', 'bin', 'designer.exe')
 
@@ -153,7 +153,7 @@ class LocalCfg(object):
 
         self.create_config_file('main', self.mainInfo)
 
-    def getAppIcon(self, size=32, iconName="AboutPlt"):
+    def getAppIcon(self, size=32, iconName="AboutPlm"):
         iconPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'icons', "x" + str(size))
         return os.path.join(iconPth, iconName + ".icon.png")
 

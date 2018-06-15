@@ -29,14 +29,14 @@ from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
-logger = app.set_log()
+logger = app.logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """
 
 class ServerStatus(QGridLayout):
 
-    networkStatutSig = pyqtSignal(bool)
+    onlineStage = pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super(ServerStatus, self).__init__(parent)
@@ -56,8 +56,8 @@ class ServerStatus(QGridLayout):
 
         self.addWidget(self.networkStatus, 0, 0, 1, 1)
 
-        self.networkStatutSig.connect(self.connection_status)
-        self.networkStatutSig.emit(self.serverOpen)
+        self.onlineStage.connect(self.connection_status)
+        self.onlineStage.emit(self.serverOpen)
 
         if not self.serverOpen:
             self.text = "Failed to connect"
