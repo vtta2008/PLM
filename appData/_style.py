@@ -18,19 +18,19 @@ from PyQt5.QtWidgets import QSizePolicy, QFrame
 """ PyQt5 setting """
 
 # String
-TXT = "No Text" # String by default
+TXT = "No Text"                                                                     # String by default
 
 # Value, Nummber, Float, Int ...
-UNIT = 60   # Base Unit
-MARG = 5    # Content margin
-BUFF = 10   # Buffer size
-SCAL = 1    # Scale value
-STEP = 1    # Step value changing
-VAL = 1     # Default value
-MIN = 0     # Minimum value
-MAX = 1000  # Maximum value
-WMIN = 50   # Minimum width
-HMIN = 20   # Minimum height
+UNIT = 60                                                                           # Base Unit
+MARG = 5                                                                            # Content margin
+BUFF = 10                                                                           # Buffer size
+SCAL = 1                                                                            # Scale value
+STEP = 1                                                                            # Step value changing
+VAL = 1                                                                             # Default value
+MIN = 0                                                                             # Minimum value
+MAX = 1000                                                                          # Maximum value
+WMIN = 50                                                                           # Minimum width
+HMIN = 20                                                                           # Minimum height
 HFIX = 80
 ICONSIZE = 32
 ICONBUFFER = -1
@@ -73,9 +73,5 @@ datetTimeStamp = QDateTime.currentDateTime().toString("hh:mm - dd MMMM yy")
 __imgExt = "All Files (*);;Img Files (*.jpg);;Img Files (*.png)"
 
 # -------------------------------------------------------------------------------------------------------------
-"""
-
-Created by panda on 3/06/2018 - 10:48 PM
-Pipeline manager - DAMGteam
-
-"""
+# Created by panda on 14/06/2018 - 9:58 PM
+# © 2017 - 2018 DAMGteam. All rights reserved

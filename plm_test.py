@@ -33,10 +33,13 @@ class NetworkManager(QNetworkAccessManager):
             bytes_string = self.reply.readAll()
             raw = json.load(bytes_string, 'utf-8')
 
-            pprint.pprint(raw)
-
         QCoreApplication.quit()
 
+
+import subprocess
+
+ping = subprocess.call('ping -t 8.8.8.8').from_bytes()
+print(ping, type(ping))
 
 app2 = QCoreApplication([])
 manager = NetworkManager()

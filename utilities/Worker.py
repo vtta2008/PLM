@@ -56,6 +56,7 @@ class Signals(QObject):
 """ Worker QRunnable """
 
 class Worker(QRunnable):
+
     '''
         Worker thread
 
@@ -227,13 +228,6 @@ class ThreadConsole(QWidget):
 
         event.accept()
 
-def main():
-    threadApp = QApplication(sys.argv)
-    layout = ThreadConsole()
-    threadApp.exec_()
-
-if __name__ == '__main__':
-    main()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 14/06/2018 - 9:58 PM

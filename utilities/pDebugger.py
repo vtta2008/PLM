@@ -22,8 +22,7 @@ from code import InteractiveConsole
 # PyQt5
 from PyQt5.QtWidgets import QTextEdit, QApplication, QWidget, QHBoxLayout
 from PyQt5.QtGui import QTextCursor, QIcon
-from PyQt5.QtCore import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg,
-                          QtFatalMsg)
+from PyQt5.QtCore import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
 
 # Plt
 import appData as app
@@ -32,7 +31,7 @@ from utilities import utils as func
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logger = app.set_log()
+logger = app.logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Processing User Input """

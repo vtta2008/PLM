@@ -23,7 +23,7 @@ from PyQt5.QtWidgets import QMainWindow, QAction, QSizePolicy, QApplication
 import appData as app
 from utilities import localSQL as usql
 from ui import uirc as rc
-from ui import(Preferences, About, Credit)
+from ui import(Configuration, About, Credit)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Menu bar Layout """
@@ -84,7 +84,7 @@ class SubMenuBar(QMainWindow):
         self.helpMenu.addAction(creditAct)
 
     def open_preferences_layout(self):
-        pref = Preferences.Preferences()
+        pref = Configuration.Configuration()
         pref.show()
         pref.exec_()
 

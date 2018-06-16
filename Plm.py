@@ -4,7 +4,7 @@
 Script Name: Plm.py
 Author: Do Trinh/Jimmy - 3D artist.
 Description:
-    This script is master file of Pipeline Tool
+    This script is master file of Pipeline Manager
 
 """
 # -------------------------------------------------------------------------------------------------------------
@@ -17,19 +17,16 @@ os.environ["PIPELINE_MANAGER"] = os.path.join(os.path.dirname(os.path.realpath(_
 """ Import """
 
 # Python
-import  sys, requests, ctypes, subprocess, qdarkgraystyle
-
-print(sys.hexversion)
+import  sys, requests, ctypes, subprocess, qdarkgraystyle, logging, platform
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, QCoreApplication, QObject, QThreadPool
+from PyQt5.QtCore import pyqtSignal, QCoreApplication, QObject, QThreadPool, pyqtSlot
 from PyQt5.QtWidgets import QApplication, QMessageBox, QSystemTrayIcon
 
-# Plt
+# Plm
 import appData as app
-logger = app.logger
-
-from appData import LocalCfg, MayaCfg                                       # Generate config info
+from appData import LocalCfg, MayaCfg   # Generate config info
+from appData.logger import SETUP
 preset1 = LocalCfg.LocalCfg()
 preset2 = MayaCfg.MayaCfg()
 
@@ -49,6 +46,32 @@ def bool2str(arg):
     else:
         return "False"
 
+def debug_trace():
+    """Set a tracepoint in the Python debugger that works with Qt."""
+    from PyQt5.QtCore import pyqtRemoveInputHook
+
+    from pdb import set_trace
+    pyqtRemoveInputHook()
+    set_trace()
+
+def fix_environment():
+    """Add enviroment variable on Windows systems."""
+    from PyQt5 import __file__ as pyqt_path
+    if platform.system() == "Windows":
+        pyqt = os.path.dirname(pyqt_path)
+        qt_platform_plugins_path = os.path.join(pyqt, "plugins")
+        os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = qt_platform_plugins_path
+
+verbose = len(sys.argv) > 1 and sys.argv[1] in ('-v', '--verbose')
+SETUP(verbose)
+log = logging.getLogger(app.LOGPTH)
+
+log.info("Running Python {} on {!r}".format(sys.version_info, sys.platform))
+log.info("Running Python {0} on {1}".format(sys.version_info, sys.platform))
+log.info(app.VERSION)
+
+fix_environment()
+
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
@@ -60,7 +83,7 @@ class PlmConsole(QObject):
     def __init__(self):
         super(PlmConsole, self).__init__()
 
-        self.settings = app.appSetting
+        self.appSetting = app.appSetting
         self.appInfo = app.APPINFO
 
         self.threadpool = QThreadPool()
@@ -151,9 +174,8 @@ class PlmConsole(QObject):
 
     def import_uiSet2(self):
 
-        from ui import (About, Calculator, Calendar, Credit, EnglishDictionary, FindFiles, NewProject,
-                        NoteReminder,
-                        Preferences, PLMBrowser, Screenshot, TextEditor, UserSetting)
+        from ui import (About, Calculator, Calendar, Credit, EnglishDictionary, FindFiles, NewProject, NoteReminder,
+                        Configuration, PLMBrowser, Screenshot, TextEditor, UserSetting)
 
         self.textEditor = TextEditor.TextEditor()
         self.noteReminder = NoteReminder.NoteReminder()
@@ -162,7 +184,7 @@ class PlmConsole(QObject):
         self.englishDictionary = EnglishDictionary.EnglishDictionary()
         self.findFiles = FindFiles.FindFiles()
         self.screenshot = Screenshot.Screenshot()
-        self.preferences = Preferences.Preferences()
+        self.preferences = Configuration.Configuration()
         self.about = About.About()
         self.browser = PLMBrowser.PLMBrowser()
         self.wiki = PLMBrowser.PLMBrowser(app.__plmWiki__)
@@ -180,7 +202,7 @@ class PlmConsole(QObject):
             self.MainUI.hide()
             self.SysTray.hide()
 
-        self.settings.setValue("showPlt", param)
+        self.appSetting.setValue("showPlt", param)
 
     def show_signup(self, param):
         if param:
@@ -189,7 +211,7 @@ class PlmConsole(QObject):
         else:
             self.SignUpUI.hide()
 
-        self.settings.setValue("showSignUp", param)
+        self.appSetting.setValue("showSignUp", param)
 
     def show_login(self, param):
         if param:
@@ -199,10 +221,9 @@ class PlmConsole(QObject):
         else:
             self.LoginUI.hide()
 
-        self.settings.setValue("showSignIn", param)
+        self.appSetting.setValue("showSignIn", param)
 
     def execute(self, param):
-
         if param == "Command Prompt":
             os.system("start /wait cmd")
         elif param == "TextEditor":
@@ -241,6 +262,8 @@ class PlmConsole(QObject):
             subprocess.Popen(self.appInfo[param][2])
 
 if __name__ == '__main__':
+
+
     PlmConsole()
 
 # ----------------------------------------------------------------------------

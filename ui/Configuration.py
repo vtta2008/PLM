@@ -27,18 +27,20 @@ from utilities import utils as func
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """
 
-class Preferences(QDialog):
+class Configuration(QDialog):
 
     checkboxTDSig = pyqtSignal(bool)
     checkboxCompSig = pyqtSignal(bool)
     checkboxArtSig = pyqtSignal(bool)
 
+    _msg_user_not_set = "Not configured yet, will be set with the first message received"
+
     def __init__(self, parent=None):
-        super(Preferences, self).__init__(parent)
+        super(Configuration, self).__init__(parent)
 
         self.resize(200, 100)
-        self.setWindowTitle("Preferences")
-        self.setWindowIcon(QIcon(func.getAppIcon(32, 'Preferences')))
+        self.setWindowTitle("Configuration")
+        self.setWindowIcon(QIcon(func.getAppIcon(32, 'Configuration')))
 
         self.settings = app.appSetting
 
@@ -108,7 +110,7 @@ class Preferences(QDialog):
 
 def main():
     app = QApplication(sys.argv)
-    pref_layout = Preferences()
+    pref_layout = Configuration()
     pref_layout.show()
     app.exec_()
 

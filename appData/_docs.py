@@ -72,3 +72,17 @@ PTH_NOT_EXSIST = "Could not find directory path specific"
 ERROR_OPENFILE = "There was an error opening the file"
 
 ERROR_QIMAGE = "ImageViewer.setImage: Argument must be a QImage or QPixmap."
+
+# what to present when the user hovers the cells
+tooltips_present = [ "When the message was sent", "The text of the message (double click to copy to the clipboard)",
+                     "The media (image, audio, etc) included in the message",
+                     "Select to remove the message from the system", ]
+
+tooltips_missing = [
+    None,
+    "No text included in the message",
+    "No media included in the message",
+    None,
+]
+
+N_MESSAGES_TEXT = "{quantity} new messages"

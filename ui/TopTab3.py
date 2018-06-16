@@ -52,17 +52,15 @@ class TopTab3(QWidget):
         except IndexError:
             self.username = 'DemoUser'
 
-        avatarPth = func.getAvatar(self.username)
-        avatar = QPixmap(avatarPth)
+        self.avatar = QPixmap(func.getAvatar(self.username))
         self.avatarScene = QGraphicsScene()
-        self.avatarScene.addPixmap(avatar)
+        self.avatarScene.addPixmap(self.avatar)
+
         self.avatarView = QGraphicsView()
         self.avatarView.setScene(self.avatarScene)
-
-        self.avatarView.scale(100 / avatar.width(), 100 / avatar.height())
-
         self.avatarView.aspectRatioMode = Qt.KeepAspectRatio
         self.avatarView.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.avatarView.scale(100 / self.avatar.width(), 100 / self.avatar.height())
         self.avatarView.setFixedSize(100, 100)
 
         btn1 = QPushButton('Account Setting')
@@ -87,7 +85,7 @@ class TopTab3(QWidget):
         self.applySetting()
 
     def update_avatar(self, param):
-        print("get signal at final des {0}".format(param))
+        self.username, token, cookie, remember = self.query.query_table('curUser')
 
     def on_userSettingBtn_clicked(self):
         layout = UserSetting.UserSetting()

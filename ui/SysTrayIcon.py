@@ -67,6 +67,16 @@ class SysTrayIconMenu(QMenu):
         usql.insert_timeLog("Log out")
         QApplication.instance().quit()
 
+    def _show_messages(self, _):
+        """Show a window with the messages."""
+        # store it in the instance otherwise it's destroyed
+        self._temp_mw = MessagesWidget(self.app.storage, self)
+
+    def _configure(self, _):
+        """Show the configuration dialog."""
+        self._temp_cw = ConfigWidget()
+        self._temp_cw.exec_()
+
 class SystrayWheelEventObject(QObject):
 
     def eventFilter(self, object, event):

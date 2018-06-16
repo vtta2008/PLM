@@ -55,7 +55,7 @@ class TopTab5(QWidget):
     def __init__(self, parent=None):
         super(TopTab5, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.appSetting = app.APPSETTING
 
         self.layout = QGridLayout()
         self.buildUI()

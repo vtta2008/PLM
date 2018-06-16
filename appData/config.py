@@ -13,17 +13,23 @@ Description:
 # Python
 import os
 import json
+import pickle
 
 from importlib import reload as r
 
 # Plm
+from appData import logger as l
+
+logger = l.online_exception_logging()
+
 from appData import _path as p
 from appData import _docs as d
 from appData import _keys as k
 from appData import _meta as m
 from appData import _style as s
 from appData import _format as f
-from appData import logger as l
+
+from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
 """ Environment variables """
@@ -182,9 +188,7 @@ mainConfig = p.mainConfig
 # -------------------------------------------------------------------------------------------------------------
 """ Format """
 
-LOGFORMAT = f.LOGFORMAT
-
-logger = l.Logger().logger
+LOGFORMAT = f.LOG
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ PyQt5 setting """
@@ -268,6 +272,7 @@ SYSTRAY_UNAVAI = d.SYSTRAY_UNAVAI
 PTH_NOT_EXSIST = d.PTH_NOT_EXSIST
 ERROR_OPENFILE = d.ERROR_OPENFILE
 ERROR_QIMAGE = d.ERROR_QIMAGE
+N_MESSAGES_TEXT = d.N_MESSAGES_TEXT
 
 def load_appInfo():
     if not os.path.exists(mainConfig):
@@ -406,6 +411,57 @@ CONFIG_DEV = generate_config('Dev') + ['Command Prompt']
 CONFIG_TOOLS = generate_config('Tools')
 CONFIG_EXTRA = generate_config('Extra')
 CONFIG_SYSTRAY = generate_config('sysTray')
+
+FILEPATH = os.path.join(CONFIGDIR, "PLM.cfg")
+
+class _Config(object):
+    """The configuration."""
+
+    # config options, with their default
+    _config_options = {
+        'BOT_AUTH_TOKEN': '',
+        'POLLING_TIME': 30,
+        'USER_ALLOWED': None,
+        'COL_ORDER': []
+    }
+
+    def __init__(self):
+        self._needs_save = 0
+
+        if not os.path.exists(FILEPATH):
+            # default to an empty dict
+            logger.debug("File not found, starting empty")
+            self._data = {}
+            return
+
+        with open(FILEPATH, 'rb') as fh:
+            self._data = pickle.load(fh)
+        logger.debug("Loaded: %s", self._data)
+
+    def __getattr__(self, key):
+        return self._data.get(key, self._config_options[key])
+
+    def __setattr__(self, key, value):
+        if key in self._config_options:
+            if key not in self._data or self._data[key] != value:
+                self._data[key] = value
+                self._needs_save += 1
+        else:
+            if key.startswith('_'):
+                super().__setattr__(key, value)
+            else:
+                raise AttributeError
+
+    def save(self):
+        """Save the config to disk."""
+        if self._needs_save:
+            logger.debug("Saving: %s", self._data)
+            with func.SafeSaver(FILEPATH) as fh:
+                pickle.dump(self._data, fh)
+                self._needs_save = 0
+
+
+config = _Config
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:56 PM
