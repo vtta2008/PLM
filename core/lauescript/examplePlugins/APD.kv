@@ -1,0 +1,55 @@
+########################################################################
+#   Layout file for gui.py for all classes used by the APD-Toolkit     #
+########################################################################
+#Author:    Jens Luebben
+#Date:      Apr 2013
+
+
+<MainWidget>:
+    corrlist_wid:corrlist
+    corrview2_wid:corrview2
+
+    anchor_x:'right'
+    Widget:
+        canvas:
+            Color:
+                rgb:(0.2,0.2,0.2)
+            Rectangle:
+                #size:(root.size[0]-115,root.size[1]-30)
+                size:(root.size[0]-200,root.size[1]-30)
+                pos:(15,15)
+    Correlationview:
+        anchor_x:'left'
+        anchor_y:'top'
+        padding:30
+        Correlationview2:
+            id:corrview2
+            orientation:'vertical'
+            size_hint:(0.2,0.4)
+
+
+            Correlationlist:
+                id:corrlist
+
+                text:''
+
+<myBubble>:
+    size_hint: (None, None)
+    size: (500, 50)
+    pos_hint: {'x': .6, 'y': .6}
+    arrow_pos: 'bottom_mid'
+    orientation: 'horizontal'
+    BubbleButton:
+        text: '<Select all> is deactivated in <show enviroments> mode'
+
+
+
+
+
+
+
+
+
+
+
+

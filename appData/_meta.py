@@ -53,6 +53,13 @@ COPYRIGHT = "{0} software (c) 2017-2018 {1}. All rights reserved.".format(__appn
 PLUGINVERSION = "{0}.13.cfg.{1}".format(__appname__, __cfgVersion__)
 PLMAPPID = u'{0}.{1}.{2}.{3}'.format(__organization__, __project__, __appname__, VERSION)
 
+API_MAJOR_VERSION = 0.69
+API_REVISION = 0
+API_VERSION = float('%s%s' % (API_MAJOR_VERSION, API_REVISION))
+API_VERSION_AS_STRING = '%.02f.%d' % (API_MAJOR_VERSION, API_REVISION)
+PLATFORM = 'Windows'
+API_MINIMUM = 0.64
+
 # ----------------------------------------------------------------------------------------------------------- #
 """ Setup.py options """
 

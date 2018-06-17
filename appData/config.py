@@ -22,25 +22,20 @@ from appData import logger as l
 
 logger = l.online_exception_logging()
 
-from appData import _path as p
-from appData import _docs as d
-from appData import _keys as k
-from appData import _meta as m
-from appData import _style as s
-from appData import _format as f
+from appData._path import *
+from appData._docs import *
+from appData._keys import *
+from appData._meta import *
+from appData._layoutSetting import *
+from appData._format import *
+from appData._pref import *
+from appData._rcSQL import *
 
 from utilities import utils as func
-
-# -------------------------------------------------------------------------------------------------------------
-""" Environment variables """
+from appData import _path as p
+from appData import _meta as m
 
 __envKey__ = p.__envKey__
-
-# -------------------------------------------------------------------------------------------------------------
-""" Reload module """
-
-def reload_module(module):
-    return r(module)
 
 # -------------------------------------------------------------------------------------------------------------
 """ DAMG team """
@@ -80,23 +75,8 @@ __serverAutho__ = m.__serverAutho__
 
 __google__ = m.__google__
 
-# -------------------------------------------------------------------------------------------------------------
-""" Metadata """
-
-VERSION = m.VERSION
-COPYRIGHT = m.COPYRIGHT
-PLUGINVERSION = m.PLUGINVERSION
-PLMAPPID = m.PLMAPPID
-
-# ----------------------------------------------------------------------------------------------------------- #
-""" Setup.py options """
-
-def read_file(pth, fileName):
-    with open(os.path.join(pth, fileName), 'r') as f:
-        data = f.read()
-    return data
-
 __email__ = m.__email__
+
 __packages_dir__ = m.__packages_dir__
 __classifiers__ = m.__classifiers__
 __download__ = m.__download__
@@ -105,174 +85,29 @@ __readme__ = m.__readme__
 __modules__ = m.__modules__
 __pkgsReq__ = m.__pkgsReq__
 
-QUESTIONS = read_file(os.path.join(os.getenv(__envKey__), 'appData', 'docs'), 'QUESTION')
-ABOUT = read_file(os.path.join(os.getenv(__envKey__), 'appData', 'docs'), 'ABOUT')
-CREDIT = read_file(os.path.join(os.getenv(__envKey__), 'appData', 'docs'), 'CREDIT')
-README = d.PLM_ABOUT
+# ----------------------------------------------------------------------------------------------------------- #
 
-# -------------------------------------------------------------------------------------------------------------
-""" Name """
+def reload_module(module):
+    return r(module)
 
-localDB = p.localDB
-appLog = p.appLog
-appIcon = p.appIcon
-webIcon = p.webIcon
-logoIcon = p.logoIcon
+def read_file(filePth):
+    with open(filePth, 'r') as f:
+        data = f.read()
+    return data
 
-pythonCfg = p.pythonCfg
-installedAppCfg = p.installedAppCfg
-appPackagesCfg = p.appPackagesCfg
+QUESTIONS = read_file(QUESTIONS)
+ABOUT = read_file(ABOUT)
+CREDIT = read_file(CREDIT)
+README = PLM_ABOUT
 
-# -------------------------------------------------------------------------------------------------------------
-""" Directory """
+dirLst = [CONFIGLOCALDAMGDIR, PLMCONFIGLOCAL, CONFIGDIR, SETTINGDIR, LOGDIR, FORMATDIR, CACHEDIR, PREFDIR, USERPREFDIR]
 
-CONFIGLOCALDAMGDIR = p.CONFIGLOCALDAMGDIR
-PLMCONFIGLOCAL = p.PLMCONFIGLOCAL
-CONFIGDIR = p.CONFIGDIR
-SETTINGDIR = p.SETTINGDIR
-FORMATDIR = p.FORMATDIR
-LOGDIR = p.LOGDIR
-
-for pth in [CONFIGLOCALDAMGDIR, PLMCONFIGLOCAL, CONFIGDIR, SETTINGDIR, LOGDIR, FORMATDIR]:
+for pth in dirLst:
     if not os.path.exists(pth):
         os.mkdir(pth)
 
-IMGDIR = p.IMGDIR
-APPICONDIR = p.APPICONDIR
-WEBICONDIR = p.WEBICONDIR
-AVATARDIR = p.AVATARDIR
-LOGODIR = p.LOGODIR
-PICDIR = p.PICDIR
-
-ICONDIR16 = p.ICONDIR16
-ICONDIR24 = p.ICONDIR24
-ICONDIR32 = p.ICONDIR32
-ICONDIR48 = p.ICONDIR48
-ICONDIR64 = p.ICONDIR64
-
-WEBICON16 = p.WEBICON16
-WEBICON24 = p.WEBICON24
-WEBICON32 = p.WEBICON32
-WEBICON48 = p.WEBICON48
-WEBICON64 = p.WEBICON64
-WEBICON128 = p.WEBICON128
-
-# -------------------------------------------------------------------------------------------------------------
-""" Path """
-
-DAMGLOGO = p.DAMGLOGO
-PLMLOGO = p.PLMLOGO
-
-APPSETTING = p.APPSETTING
-USERSETTING = p.USERSETTING
-
-appSetting = p.appSetting
-userSetting = p.userSetting
-formatSetting = p.formatSetting
-
-DBPTH = p.DBPTH
-LOGPTH = p.LOGPTH
-
 if not os.path.exists(DBPTH):
-    from appData import _rcSQL as r
-    r.GenerateResource()
-
-appIconCfg = p.appIconCfg
-webIconCfg = p.webIconCfg
-logoIconCfg = p.logoIconCfg
-
-pyEnvCfg = p.pyEnvCfg
-appConfig = p.appConfig
-mainConfig = p.mainConfig
-
-# -------------------------------------------------------------------------------------------------------------
-""" Format """
-
-LOGFORMAT = f.LOG
-
-# ----------------------------------------------------------------------------------------------------------- #
-""" PyQt5 setting """
-
-# String
-TXT = s.TXT
-UNIT = s.UNIT
-MARG = s.MARG
-BUFF = s.BUFF
-SCAL = s.SCAL
-STEP = s.STEP
-VAL = s.VAL
-MIN = s.MIN
-MAX = s.MAX
-WMIN = s.WMIN
-HMIN = s.HMIN
-HFIX = s.HFIX
-ICONSIZE = s.ICONSIZE
-ICONBUFFER = s.ICONBUFFER
-BTNICONSIZE = s.BTNICONSIZE
-ICONBTNSIZE = s.ICONBTNSIZE
-
-keepARM = s.keepARM
-ignoreARM = s.ignoreARM
-
-scrollAsNeed = s.scrollAsNeed
-scrollOff = s.scrollOff
-scrollOn = s.scrollOn
-
-# Size policy
-SiPoMin = s.SiPoMin
-SiPoMax = s.SiPoMax
-SiPoExp = s.SiPoExp
-SiPoPre = s.SiPoPre
-SiPoIgn = s.SiPoIgn
-
-frameStyle = s.frameStyle
-
-# Alignment
-center = s.frameStyle
-right = s.right
-left = s.left
-hori = s.hori
-vert = s.vert
-
-# Docking area
-dockL = s.dockL
-dockR = s.dockR
-dockT = s.dockT
-dockB = s.dockB
-
-# datestamp
-datetTimeStamp = s.datetTimeStamp
-__imgExt = s.__imgExt
-
-# -------------------------------------------------------------------------------------------------------------
-""" String """
-
-PLM_ABOUT = d.PLM_ABOUT
-WAIT_FOR_UPDATE = d.WAIT_FOR_UPDATE
-WAIT_TO_COMPLETE = d.WAIT_TO_COMPLETE
-WAIT_LAYOUT_COMPLETE = d.WAIT_LAYOUT_COMPLETE
-PASSWORD_FORGOTTON = d.PASSWORD_FORGOTTON
-SIGNUP = d.SIGNUP
-DISALLOW = d.DISALLOW
-TIT_BLANK = d.TIT_BLANK
-PW_BLANK = d.PW_BLANK
-PW_WRONG = d.PW_WRONG
-PW_UNMATCH = d.PW_UNMATCH
-PW_CHANGED = d.PW_CHANGED
-FN_BLANK = d.FN_BLANK
-LN_BLANK = d.LN_BLANK
-SEC_BLANK = d.SEC_BLANK
-USER_CHECK_REQUIRED = d.USER_CHECK_REQUIRED
-USER_NOT_CHECK = d.USER_NOT_CHECK
-USER_BLANK = d.USER_BLANK
-USER_CHECK_FAIL = d.USER_CHECK_FAIL
-USER_NOT_EXSIST = d.USER_NOT_EXSIST
-USER_CONDITION = d.USER_CONDITION
-SYSTRAY_UNAVAI = d.SYSTRAY_UNAVAI
-PTH_NOT_EXSIST = d.PTH_NOT_EXSIST
-ERROR_OPENFILE = d.ERROR_OPENFILE
-ERROR_QIMAGE = d.ERROR_QIMAGE
-N_MESSAGES_TEXT = d.N_MESSAGES_TEXT
+    GenerateResource()
 
 def load_appInfo():
     if not os.path.exists(mainConfig):
@@ -291,75 +126,6 @@ def load_iconInfo():
 
 APPINFO = load_appInfo()
 ICONINFO = load_iconInfo()
-
-# --------------------------------------------------------------------------------------------------------------
-""" Autodesk config """
-
-autodeskVer = k.autodeskVer
-autodeskApp = k.autodeskApp
-userMayaDir = k.userMayaDir
-
-# --------------------------------------------------------------------------------------------------------------
-""" Adobe config """
-
-adobeVer = k.adobeVer
-adobeApp = k.adobeApp
-
-# --------------------------------------------------------------------------------------------------------------
-""" Foundry config """
-
-foundryVer = k.foundryVer
-foundryApp = k.foundryApp
-
-# --------------------------------------------------------------------------------------------------------------
-""" Pixologic config """
-
-pixologiVer = k.pixologiVer
-pixologiApp = k.pixologiApp
-
-# --------------------------------------------------------------------------------------------------------------
-""" Allegorithmic config """
-
-allegorithmicVer = k.allegorithmicVer
-allegorithmicApp = k.allegorithmicApp
-
-# --------------------------------------------------------------------------------------------------------------
-""" SideFX config """
-
-sizefxVer = k.sizefxVer
-sizefxApp = k.sizefxApp
-
-# --------------------------------------------------------------------------------------------------------------
-""" Microsoft Office config """
-
-officeVer = k.officeVer
-officeApp = k.officeApp
-
-# --------------------------------------------------------------------------------------------------------------
-""" JetBrains config """
-
-jetbrainsVer = k.jetbrainsVer
-jetbrainsApp = k.jetbrainsApp
-
-# --------------------------------------------------------------------------------------------------------------
-""" another app config """
-
-anacondaApp = k.anacondaApp
-otherApp = k.otherApp
-CONFIG_APPUI = k.CONFIG_APPUI
-
-# --------------------------------------------------------------------------------------------------------------
-""" Tracking key """
-
-TRACK_TDS = k.TRACK_TDS
-TRACK_VFX = k.TRACK_VFX
-TRACK_ART = k.TRACK_ART
-TRACK_OFFICE = k.TRACK_OFFICE
-TRACK_DEV = k.TRACK_DEV
-TRACK_TOOLS = k.TRACK_TOOLS
-TRACK_EXTRA = k.TRACK_EXTRA
-TRACK_SYSTRAY = k.TRACK_SYSTRAY
-KEYDETECT = k.KEYDETECT
 
 # --------------------------------------------------------------------------------------------------------------
 """ Combine config data """

@@ -16,7 +16,7 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import QSettings, pyqtSignal
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QPushButton, QGridLayout, QGroupBox
 
@@ -24,6 +24,7 @@ from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QPushButton, QGrid
 import appData as app
 from utilities import utils as func
 
+logger = app.logger
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """
 

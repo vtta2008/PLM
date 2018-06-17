@@ -64,7 +64,7 @@ class SysTrayIconMenu(QMenu):
         self.addAction(quitAction)
 
     def exit_action_trigger(self):
-        usql.insert_timeLog("Log out")
+        usql.TimeLog("Log out")
         QApplication.instance().quit()
 
     def _show_messages(self, _):

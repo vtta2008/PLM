@@ -1,6 +1,4 @@
-#!/usr/bin/python
 # -*- coding: utf-8 -*-
-
 """
 
 Script Name: PyQtDebuging.py
@@ -56,29 +54,20 @@ class Console(InteractiveConsole):
 # -------------------------------------------------------------------------------------------------------------
 """ Bug detector """
 
-class pDetector(QTextEdit):
-    '''
-    A simple QTextEdit, with a few pre-set attributes and a file-like
-    interface.
-    '''
+class pDetector(QTextEdit):              # A simple QTextEdit, with a few pre-set attributes and a file-like interface.
     def __init__(self, parent=None):
         super(pDetector, self).__init__(parent)
 
         self._buffer = StringIO()
         self.setReadOnly(True)
 
-    def write(self, msg):
-        '''Add msg to the console's output, on a new line.'''
+    def write(self, msg):                   # Add msg to the console's output, on a new line.
         self.insertPlainText(msg)
-        # Autoscroll
-        self.moveCursor(QTextCursor.End)
+        self.moveCursor(QTextCursor.End)    # Autoscroll
         self._buffer.write(msg)
 
     def __getattr__(self, attr):
-        '''
-        Fall back to the buffer object if an attribute can't be found.
-        '''
-        return getattr(self._buffer, attr)
+        return getattr(self._buffer, attr)  # Fall back to the buffer object if an attribute can't be found.
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bug detector """

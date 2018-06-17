@@ -17,6 +17,7 @@ from logging import getLogger, INFO, WARN, DEBUG, ERROR, FATAL
 # Plm
 from appData import _path as p
 from appData import _format as f
+
 LOGFORMAT = f.LOG
 DATETIMEFORMAT = f.DATETIME
 LOGPTH = p.LOGPTH
@@ -68,7 +69,7 @@ def online_exception_logging():
 
 def SETUP(verbose):
 
-    handler = logging.StreamHandler()
+    handler = logging.StreamHandler(sys.stdout)
 
     formatter = logging.Formatter("%(asctime)s  %(name)-22s  %(levelname)-8s %(message)s")
     handler.setFormatter(formatter)

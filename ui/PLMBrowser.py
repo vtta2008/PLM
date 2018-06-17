@@ -213,7 +213,7 @@ class PLMBrowser(QWidget):
 
 def main():
     app = QApplication(sys.argv)
-    browser = PLMBrowser(QUrl('http://www.google.com.vn'))
+    browser = PLMBrowser(r'https://www.google.com.vn')
     browser.show()
     app.exec_()
 

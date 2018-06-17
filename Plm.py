@@ -17,10 +17,10 @@ os.environ["PIPELINE_MANAGER"] = os.path.join(os.path.dirname(os.path.realpath(_
 """ Import """
 
 # Python
-import  sys, requests, ctypes, subprocess, qdarkgraystyle, logging, platform
+import  sys, requests, ctypes, subprocess, qdarkgraystyle, platform, traceback
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, QCoreApplication, QObject, QThreadPool, pyqtSlot
+from PyQt5.QtCore import pyqtSignal, QCoreApplication, QObject, QThreadPool
 from PyQt5.QtWidgets import QApplication, QMessageBox, QSystemTrayIcon
 
 # Plm
@@ -62,15 +62,22 @@ def fix_environment():
         qt_platform_plugins_path = os.path.join(pyqt, "plugins")
         os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = qt_platform_plugins_path
 
-verbose = len(sys.argv) > 1 and sys.argv[1] in ('-v', '--verbose')
-SETUP(verbose)
-log = logging.getLogger(app.LOGPTH)
+def setup_dependancies():
+    dpc = ['nodegraph', 'lauescript']
+    for i in dpc:
+        pth = os.path.join(app.COREDIR, i)
+        pths = os.getenv('PYTHONPATH') + ';' + pth
+        os.environ['PYTHONPATH'] = pths
+        print(os.getenv('PYTHONPATH'))
 
-log.info("Running Python {} on {!r}".format(sys.version_info, sys.platform))
-log.info("Running Python {0} on {1}".format(sys.version_info, sys.platform))
-log.info(app.VERSION)
+verbose = len(sys.argv) > 1 and sys.argv[1] in ('-v', '--verbose')
+
+SETUP(verbose)
+
+logger = app.logger
 
 fix_environment()
+setup_dependancies()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -263,7 +270,6 @@ class PlmConsole(QObject):
 
 if __name__ == '__main__':
 
-
     PlmConsole()
-
+    print(os.getenv('PYTHONPATH'))
 # ----------------------------------------------------------------------------
