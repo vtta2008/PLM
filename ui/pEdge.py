@@ -20,7 +20,7 @@ from PyQt5.QtGui import QColor, QPainterPath, QPen
 
 # Plt
 import appData as app
-from appData._layoutSetting import *
+from appData._pNN import *
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -35,7 +35,7 @@ logger = app.logger
 
 class pEdge(QGraphicsPathItem):
 
-    Type = QGraphicsPathItem.UserType + 2
+    Type = 'pEdge'
 
     def __init__(self, **kwargs):
         super(pEdge, self).__init__(**kwargs)

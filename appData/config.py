@@ -26,7 +26,7 @@ from appData._path import *
 from appData._docs import *
 from appData._keys import *
 from appData._meta import *
-from appData._layoutSetting import *
+from appData._layout import *
 from appData._format import *
 from appData._pref import *
 from appData._rcSQL import *

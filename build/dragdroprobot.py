@@ -164,6 +164,7 @@ class RobotHead(RobotPart):
 
 
 class RobotTorso(RobotPart):
+
     def boundingRect(self):
         return QRectF(-30, -20, 60, 60)
 
@@ -177,6 +178,7 @@ class RobotTorso(RobotPart):
 
 
 class RobotLimb(RobotPart):
+
     def boundingRect(self):
         return QRectF(-5, -5, 40, 10)
 

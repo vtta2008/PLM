@@ -20,11 +20,11 @@ from PyQt5.QtGui import QColor, QPen, QBrush, QPainter
 
 # Plt
 import appData as app
-from appData._layoutSetting import *
-from appData._exception import KnobConnectionError, UnknownFlowError
-from pUtils import *
 
-from pEdge import pEdge
+from appData._exception import KnobConnectionError, UnknownFlowError
+from appData._pNN import *
+from utilities.pUtils import *
+from ui.pEdge import pEdge
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -36,17 +36,21 @@ logger = app.logger
 
 class pKnob(QGraphicsItem):
 
+    Type = 'pKnob'
+
     def __init__(self, **kwargs):
         super(pKnob, self).__init__(**kwargs)
+
+        self.name = "knob"
 
         self.x = 0
         self.y = 0
         self.w = 10
         self.h = 10
+
         self.margin = 5
         self.flow = FLTR
         self.maxConnections = -1
-        self.name = "value"
         self.displayName = self.name
 
         self.labelColor = QColor(10, 10, 10)
@@ -57,34 +61,31 @@ class pKnob(QGraphicsItem):
         self.edges = []
         self.setAcceptHoverEvents(True)
 
-    def node(self):
+    def pNode(self):
         return self.parentItem()
 
-    def boundingRect(self):
-        return QRectF(self.x, self.y, self.w, self.h)
-
-    def connectTo(self, knob):
-        if knob is self:
+    def connectTo(self, pKnob):
+        if pKnob is self:
             return
 
-        self.checkMaxConnections(knob)
+        self.checkMaxConnections(pKnob)
 
         edge = pEdge()
         edge.source = self
-        edge.target = knob
+        edge.target = pKnob
         edge.updatePath()
 
-    def addEdge(self, edge):
-        self.edges.append(edge)
+    def addEdge(self, pEdge):
+        self.edges.append(pEdge)
         scene = self.scene()
-        if edge not in scene.items():
-            scene.addItem(edge)
+        if pEdge not in scene.items():
+            scene.addItem(pEdge)
 
-    def removeEdge(self, edge):
-        self.edges.remove(edge)
+    def removeEdge(self, pEdge):
+        self.edges.remove(pEdge)
         scene = self.scene()
-        if edge in scene.items():
-            scene.removeItem(edge)
+        if pEdge in scene.items():
+            scene.removeItem(pEdge)
 
     def highlight(self, toggle):
         if toggle:
@@ -92,6 +93,8 @@ class pKnob(QGraphicsItem):
             self.fillColor = self.highlightColor
         else:
             self.fillColor = self._oldFilColor
+        self.update()
+        super(pKnob, self).highlight()
 
     def checkMaxConnections(self, knob):
 
@@ -100,7 +103,7 @@ class pKnob(QGraphicsItem):
             return
 
         numSourceConnections = len(self.edges)  # Edge already added.
-        numTargetConnections = len(knob.edges) + 1
+        numTargetConnections = len(knob.pKnobs) + 1
 
         print(numSourceConnections, numTargetConnections)
 
@@ -110,9 +113,6 @@ class pKnob(QGraphicsItem):
         if sourceMaxReached or targetMaxReached:
             raise KnobConnectionError(
                 "Maximum number of connections reached.")
-
-    def finalizeEdge(self, edge):
-        pass
 
     def destroy(self):
 
@@ -126,6 +126,15 @@ class pKnob(QGraphicsItem):
 
         self.scene().removeItem(self)
         del self
+
+    def finalizeEdge(self, edge):
+        pass
+
+    def type(self):
+        return self.Type
+
+    def boundingRect(self):
+        return QRectF(self.x, self.y, self.w, self.h)
 
     def paint(self, painter, option, widget):
         bbox = self.boundingRect()
@@ -143,11 +152,12 @@ class pKnob(QGraphicsItem):
             x = bbox.left() - self.margin - textSize.width()
         else:
             raise UnknownFlowError("Flow not recognized: {0}".format(self.flow))
-            
+
         y = bbox.bottom()
         
         painter.setPen(QPen(self.labelColor))
         painter.drawText(x, y, self.displayName)
+
 
     def hoverEnterEvent(self, event):
         self.highlight(True)
@@ -204,23 +214,24 @@ class pKnob(QGraphicsItem):
             self.removeEdge(self.newEdge)
             self.newEdge = None
 
-def ensureEdgeDirection(edge):
+def ensureEdgeDirection(pEdge):
 
     print("ensure edge direction")
-    if isinstance(edge.target, OutputKnob):
-        assert isinstance(edge.source, InputKnob)
-        actualTarget = edge.source
-        edge.source = edge.target
-        edge.target = actualTarget
+    if isinstance(pEdge.target, OutputKnob):
+        assert isinstance(pEdge.source, InputKnob)
+        actualTarget = pEdge.source
+        pEdge.source = pEdge.target
+        pEdge.target = actualTarget
     else:
-        assert isinstance(edge.source, OutputKnob)
-        assert isinstance(edge.target, InputKnob)
+        assert isinstance(pEdge.source, OutputKnob)
+        assert isinstance(pEdge.target, InputKnob)
 
-    print("src:", edge.source.__class__.__name__,
-          "trg:", edge.target.__class__.__name__)
+    print("src:", pEdge.source.__class__.__name__,
+          "trg:", pEdge.target.__class__.__name__)
 
 
 class InputKnob(pKnob):
+
     """A Knob that represents an input value for its Node."""
 
     def __init__(self, *args, **kwargs):
@@ -247,17 +258,6 @@ class OutputKnob(pKnob):
 
     def finalizeEdge(self, edge):
         ensureEdgeDirection(edge)
-
-
-def main():
-    app = QApplication(sys.argv)
-    layout = pKnob()
-    layout.show()
-    app.exec_()
-
-
-if __name__ == '__main__':
-    main()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 17/06/2018 - 3:14 PM

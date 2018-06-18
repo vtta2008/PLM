@@ -3,7 +3,8 @@ from PyQt5.QtGui import QColor, QPainter, QRadialGradient, QBrush, QPen
 from PyQt5.QtWidgets import QAbstractButton, QApplication
 
 class Indicator(QAbstractButton):
-    scaledSize = 1000.0
+
+    scaledSize = 25000.0
 
     def __init__(self, parent=None):
         QAbstractButton.__init__(self, parent)
@@ -17,6 +18,38 @@ class Indicator(QAbstractButton):
         self.off_color_2 = QColor(0, 128, 0)
 
         self.applySetting()
+
+    @pyqtProperty(QColor)
+    def onColor1(self):
+        return self.on_color_1
+
+    @onColor1.setter
+    def onColor1(self, color):
+        self.on_color_1 = color
+
+    @pyqtProperty(QColor)
+    def onColor2(self):
+        return self.on_color_2
+
+    @onColor2.setter
+    def onColor2(self, color):
+        self.on_color_2 = color
+
+    @pyqtProperty(QColor)
+    def offColor1(self):
+        return self.off_color_1
+
+    @offColor1.setter
+    def offColor1(self, color):
+        self.off_color_1 = color
+
+    @pyqtProperty(QColor)
+    def offColor2(self):
+        return self.off_color_2
+
+    @offColor2.setter
+    def offColor2(self, color):
+        self.off_color_2 = color
 
     def resizeEvent(self, QResizeEvent):
         self.update()
@@ -58,38 +91,6 @@ class Indicator(QAbstractButton):
 
         painter.setBrush(gradient)
         painter.drawEllipse(QPointF(0, 0), 400, 400)
-
-    @pyqtProperty(QColor)
-    def onColor1(self):
-        return self.on_color_1
-
-    @onColor1.setter
-    def onColor1(self, color):
-        self.on_color_1 = color
-
-    @pyqtProperty(QColor)
-    def onColor2(self):
-        return self.on_color_2
-
-    @onColor2.setter
-    def onColor2(self, color):
-        self.on_color_2 = color
-
-    @pyqtProperty(QColor)
-    def offColor1(self):
-        return self.off_color_1
-
-    @offColor1.setter
-    def offColor1(self, color):
-        self.off_color_1 = color
-
-    @pyqtProperty(QColor)
-    def offColor2(self):
-        return self.off_color_2
-
-    @offColor2.setter
-    def offColor2(self, color):
-        self.off_color_2 = color
 
     def applySetting(self):
         self.setMinimumSize(24, 24)

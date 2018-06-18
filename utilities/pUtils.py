@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # Python
-import sys
+import sys, uuid
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt
@@ -20,8 +20,6 @@ from PyQt5.QtGui import QFontMetrics, QFont
 
 # Plt
 import appData as app
-from ui import uirc as rc
-from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
