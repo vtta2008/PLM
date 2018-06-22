@@ -20,11 +20,13 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QAction, QSizePolicy, QApplication
 
 # Plt
-import appData as app
 from utilities import localSQL as usql
 from ui import uirc as rc
 from ui import(Configuration, About, Credit)
 
+from appData import APPINFO, __plmWiki__
+from appData.Loggers import SetLogger
+logger = SetLogger()
 # -------------------------------------------------------------------------------------------------------------
 """ Menu bar Layout """
 
@@ -36,9 +38,10 @@ class SubMenuBar(QMainWindow):
 
         super(SubMenuBar, self).__init__(parent)
 
-        self.appInfo = app.APPINFO
-        self.url = app.__plmWiki__
-        self.settings = app.appSetting
+        self.appInfo = APPINFO
+        self.url = __plmWiki__
+        from core.SettingManager import Settings
+        self.settings = Settings(self)
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.buildMenu()
 
@@ -58,7 +61,11 @@ class SubMenuBar(QMainWindow):
 
         openConfigAct = QAction(rc.AppIcon(32, 'OpenConfig'), self.appInfo['OpenConfig'][0], self)
         openConfigAct.setStatusTip(self.appInfo['OpenConfig'][0])
-        openConfigAct.triggered.connect(partial(os.startfile, app.CONFIGDIR))
+        openConfigAct.triggered.connect(partial(self.subMenuSig.emit, 'Go to config folder'))
+
+        exitAction = QAction(rc.AppIcon(32, 'Exit'), self.appInfo['Exit'][0], self)
+        exitAction.setStatusTip(self.appInfo['Exit'][0])
+        exitAction.triggered.connect(partial(self.subMenuSig.emit, 'Exit'))
 
         self.fileMenu = self.menuBar().addMenu("&File")
         self.fileMenu.addAction(openConfigAct)
@@ -67,7 +74,6 @@ class SubMenuBar(QMainWindow):
         self.fileMenu.addAction(rc.ActionProcess("Exit", self))
 
         self.editMenu = self.menuBar().addMenu("&Edit")
-
 
         self.viewMenu = self.menuBar().addMenu("&View")
 
@@ -99,12 +105,11 @@ class SubMenuBar(QMainWindow):
         dlg.exec_()
 
     def on_exit_action_triggered(self):
-        usql.insert_timeLog("Log out")
-        # logger.debug("LOG OUT")
+        usql.TimeLog("Log out")
         QApplication.instance().quit()
 
     def show_hide_subMenuBar(self, param):
-        self.settings.setValue("subMenu", param)
+        self.settings._app.setValue("subMenu", param)
         self.setVisible(param)
 
 def main():

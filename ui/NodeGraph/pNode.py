@@ -17,15 +17,10 @@ from PyQt5.QtWidgets import QGraphicsItem, QApplication, QGraphicsScene, QGraphi
 from PyQt5.QtGui import QColor, QPen, QBrush, QRadialGradient
 
 # Plt
-from appData import logger as log, center
+from appData import center
 from appData._pNN import *
 from utilities.pUtils import *
-from ui.pKnob import InputKnob, OutputKnob
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = log
+from ui.NodeGraph.pKnob import InputKnob, OutputKnob
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """

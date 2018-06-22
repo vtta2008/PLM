@@ -13,26 +13,19 @@ Description:
 # Python
 import sys
 
-import qdarkgraystyle
-
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, QRectF
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QMenu, QGraphicsScene, QMenuBar
 from PyQt5.QtGui import QIcon, QColor, QFont
 
 # Plt
-import appData as app
 from utilities import utils as func
 
 from appData._pNN import *
 
-from ui.pNode import pNode
-from ui.pView import pView
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.logger
+from ui.NodeGraph.pNode import pNode
+from ui.NodeGraph.pView import pView
+from ui.NodeGraph.pMenuBar import pMenuBar
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -46,27 +39,6 @@ class pScene(QGraphicsScene):
         super(pScene, self).__init__(parent)
 
         self.setSceneRect(0, 0, 100, 30)
-
-class pMenuBar(QMenuBar):
-
-    def __init__(self, parent=None):
-        super(pMenuBar, self).__init__(parent)
-
-        self.fm = QMenu('File')
-        self.fm.addMenu(QMenu('New Scene'))
-        self.fm.addMenu(QMenu('New Node'))
-
-        self.addSeparator()
-
-        self.addMenu(self.fm)
-        self.addMenu(QMenu('Tools'))
-        self.addMenu(QMenu('Nodes'))
-
-    def createNode(self):
-        pass
-
-    def regisNode(self):
-        pass
 
 class pNodeGraph(QWidget):
 
@@ -102,6 +74,12 @@ class pNodeGraph(QWidget):
 
         self.resize(1000, 500)
 
+    def createNode(self):
+        pass
+
+    def regisNode(self):
+        pass
+
     def clearScene(self):
         pass
 
@@ -131,11 +109,11 @@ class pNodeGraph(QWidget):
         print(self.width(), self.height())
 
 def main():
-    app = QApplication(sys.argv)
-    app.setStyleSheet(qdarkgraystyle.load_stylesheet())
+    nodeGrahp = QApplication(sys.argv)
+    # nodeGrahp.setStyleSheet(nodeGrahp.load_stylesheet())
     layout = pNodeGraph()
     layout.show()
-    app.exec_()
+    nodeGrahp.exec_()
 
 
 if __name__ == '__main__':

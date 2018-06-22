@@ -20,7 +20,6 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox
 
 # Plt
-import appData as app
 from ui import uirc as rc
 
 # -------------------------------------------------------------------------------------------------------------
@@ -36,14 +35,12 @@ class TopTab2(QWidget):
     def __init__(self, parent=None):
         super(TopTab2, self).__init__(parent)
 
-        self.settings = app.appSetting
-        self.appInfo = app.APPINFO
-
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
+
         btn1 = rc.Button(['New Project', 'Create New Project'])
         btn1.clicked.connect(partial(self.execute.emit, 'NewProject'))
         btn2 = rc.Button(['New Group', 'Create New Group'])
@@ -77,8 +74,7 @@ class TopTab2(QWidget):
         pass
 
     def on_newProjBtbn_clicked(self):
-        from ui import NewProject
-        app.reload(NewProject)
+        from tools import NewProject
         layout = NewProject.NewProject()
         layout.show()
         layout.exec_()

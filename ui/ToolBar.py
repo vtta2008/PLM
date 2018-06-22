@@ -19,8 +19,10 @@ from PyQt5.QtWidgets import QMainWindow, QSizePolicy, QApplication
 
 # Plt
 import appData as app
+from appData import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, APPINFO
 from ui import uirc as rc
 from utilities import utils as func
+logger = app.logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
@@ -31,13 +33,14 @@ class ToolBar(QMainWindow):
 
         super(ToolBar, self).__init__(parent)
 
-        self.appInfo = app.APPINFO
-        self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        # from core.Settings import Settings
         self.settings = app.appSetting
+        self.appInfo = APPINFO
+        self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 
-        self.tdToolBar = self.make_toolBar("TD", app.CONFIG_TDS)
-        self.compToolBar = self.make_toolBar("VFX", app.CONFIG_VFX)
-        self.artToolBar = self.make_toolBar("ART", app.CONFIG_ART)
+        self.tdToolBar = self.make_toolBar("TD", CONFIG_TDS)
+        self.compToolBar = self.make_toolBar("VFX", CONFIG_VFX)
+        self.artToolBar = self.make_toolBar("ART", CONFIG_ART)
 
         self.showTDToolBar = func.str2bool(self.settings.value("showTDToolbar", True))
         self.showCompToolBar = func.str2bool(self.settings.value("showCompToolbar", True))

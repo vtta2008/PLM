@@ -18,9 +18,9 @@ from PyQt5.QtGui import QIcon, QIntValidator
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QGroupBox, QHBoxLayout, QVBoxLayout, QLineEdit, QInputDialog,
                              QComboBox, QFileDialog, QListWidget, QListWidgetItem, QApplication)
 
-import appData as app
 from utilities import utils as func
 from ui import uirc as rc
+import appData as app
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -46,11 +46,6 @@ LAYOUT = ["scenes", "sourceimages", "images", "movie", "alembic"]
 LIGHTING = ["scenes", "sourceimages", "images", "cache", "reference"]
 FX = ["scenes", "sourceimages", "images", "cache", "reference", "alembic"]
 ANIM = LAYOUT
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """

@@ -15,15 +15,16 @@ Description:
 import sys
 
 # PyQt5
+from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
+
 from PyQt5.QtCore import QFile, QIODevice, Qt, QTextStream, QUrl, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QApplication, QLineEdit, QMainWindow, QWidget, QSizePolicy, QStyle, QTextEdit,
                              QStatusBar, QVBoxLayout)
 from PyQt5.QtGui import QIcon
 from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
-from PyQt5.QtWebKitWidgets import QWebPage, QWebView
 
 # Plt
-from ui import PLMBrowser_rc
+from ui.Web import PLMBrowser_rc
 from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
@@ -50,7 +51,7 @@ class WebBrowser(QMainWindow):
 
         QNetworkProxyFactory.setUseSystemConfiguration(True)
 
-        self.view = QWebView(self)
+        self.view = QWebEngineView(self)
         self.view.load(QUrl(url))
         self.view.loadFinished.connect(self.adjustLocation)
         self.view.titleChanged.connect(self.adjustTitle)
@@ -62,10 +63,10 @@ class WebBrowser(QMainWindow):
         self.locationEdit.returnPressed.connect(self.changeLocation)
 
         toolBar = self.addToolBar("Navigation")
-        toolBar.addAction(self.view.pageAction(QWebPage.Back))
-        toolBar.addAction(self.view.pageAction(QWebPage.Forward))
-        toolBar.addAction(self.view.pageAction(QWebPage.Reload))
-        toolBar.addAction(self.view.pageAction(QWebPage.Stop))
+        toolBar.addAction(self.view.pageAction(QWebEnginePage.Back))
+        toolBar.addAction(self.view.pageAction(QWebEnginePage.Forward))
+        toolBar.addAction(self.view.pageAction(QWebEnginePage.Reload))
+        toolBar.addAction(self.view.pageAction(QWebEnginePage.Stop))
         toolBar.addWidget(self.locationEdit)
 
         viewMenu = self.menuBar().addMenu("&View")
@@ -128,7 +129,7 @@ class WebBrowser(QMainWindow):
     def finishLoading(self):
         self.progress = 100
         self.adjustTitle()
-        self.view.page().mainFrame().evaluateJavaScript(self.jQuery)
+        self.view.page().runJavaScript(self.jQuery)
         self.rotateImages(self.rotateAction.isChecked())
 
     def highlightAllLinks(self):
@@ -137,7 +138,7 @@ class WebBrowser(QMainWindow):
                         $(this).css('background-color', 'yellow') 
                     } 
                   )"""
-        self.view.page().mainFrame().evaluateJavaScript(code)
+        self.view.page().runJavaScript(code)
 
     def rotateImages(self, invert):
         if invert:
@@ -157,23 +158,23 @@ class WebBrowser(QMainWindow):
                     } 
                 )"""
 
-        self.view.page().mainFrame().evaluateJavaScript(code)
+        self.view.page().runJavaScript(code)
 
     def removeGifImages(self):
         code = "$('[src*=gif]').remove()"
-        self.view.page().mainFrame().evaluateJavaScript(code)
+        self.view.page().runJavaScript(code)
 
     def removeInlineFrames(self):
         code = "$('iframe').remove()"
-        self.view.page().mainFrame().evaluateJavaScript(code)
+        self.view.page().runJavaScript(code)
 
     def removeObjectElements(self):
         code = "$('object').remove()"
-        self.view.page().mainFrame().evaluateJavaScript(code)
+        self.view.page().runJavaScript(code)
 
     def removeEmbeddedElements(self):
         code = "$('embed').remove()"
-        self.view.page().mainFrame().evaluateJavaScript(code)
+        self.view.page().runJavaScript(code)
 
 # -------------------------------------------------------------------------------------------------------------
 """ layout class """

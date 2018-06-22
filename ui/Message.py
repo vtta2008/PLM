@@ -24,10 +24,8 @@ import appData as app
 from appData.config import config
 from utilities import utils as func
 
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
 logger = app.logger
+
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
 
@@ -57,7 +55,7 @@ class Message(QTableWidget):
         ]
 
         for row, msg in enumerate(self._messages):
-            logger.debug("Set message for row %d: %s", row, msg)
+            # logger.debug("Set message for row %d: %s", row, msg)
             for col in range(len(self.titles)):
                 # get the builder according to the column and build the item
                 builder = item_builders[col]

@@ -23,13 +23,7 @@ from PyQt5.QtGui import QTextCursor, QIcon
 from PyQt5.QtCore import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
 
 # Plt
-import appData as app
 from utilities import utils as func
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Processing User Input """
@@ -152,6 +146,14 @@ class pDebugger(QWidget):
 
     def applySetting(self):
         pass
+
+    def debug_trace(self):
+        """Set a tracepoint in the Python debugger that works with Qt."""
+        from PyQt5.QtCore import pyqtRemoveInputHook
+
+        from pdb import set_trace
+        pyqtRemoveInputHook()
+        set_trace()
 
 def main():
 

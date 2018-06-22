@@ -15,7 +15,6 @@ Description:
 
 # Python
 import sys
-from functools import partial
 
 # PtQt5
 from PyQt5.QtCore import pyqtSignal
@@ -42,6 +41,7 @@ class GeneralSetting(QGridLayout):
         super(GeneralSetting, self).__init__(parent)
 
         self.setSpacing(2)
+        # from core.Settings import Settings
         self.settings = app.appSetting
 
         self.tbTDCB = QCheckBox("TD toolbar")

@@ -19,17 +19,12 @@ from PyQt5.QtWidgets import QGraphicsView
 from PyQt5.QtGui import QColor, QBrush, QPen
 
 # Plt
-import appData as app
+
 from appData._pNN import (CURRENT_ZOOM, SCROLLBAROFF, RUBBERDRAG, ANCHORUNDERMOUSE, CACHEBACKGROUND, UPDATEVIEWRECT,
                           ANTIALIAS, ANCHORVIEWCENTER, ALTKEY, TABKEY, MOUSEMIDDLEBTN, NODRAG, SIZEALLCURSOR,
                           MOUSELEFTBTN, ARROWCUSOR, BLOCK)
-from ui.pNode import pNodeParts
-from ui.pEdge import pEdge
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.logger
+from ui.NodeGraph.pNode import pNodeParts
+from ui.NodeGraph.pEdge import pEdge
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """

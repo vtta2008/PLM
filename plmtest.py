@@ -1,304 +1,161 @@
-from PyQt5.QtCore import QPoint, QRect, QSize, Qt
-from PyQt5.QtGui import (QBrush, QConicalGradient, QLinearGradient, QPainter,
-        QPainterPath, QPalette, QPen, QPixmap, QPolygon, QRadialGradient)
-from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QGridLayout,
-        QLabel, QSpinBox, QWidget)
+# -*- coding: utf-8 -*-
+"""
+
+Script Name: Plm.py
+Author: Do Trinh/Jimmy - 3D artist.
+Description:
+    This script is master file of Pipeline Manager
+
+"""
+import random
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
+from PyQt5.QtWidgets import QApplication, QLabel, QDialog, QVBoxLayout, QPushButton, QWidget, QLineEdit
+from PyQt5.QtGui import QIntValidator
+
+import appData as app
+logger = app.logger
+
+class WorkThread(QThread):
+    ''' Streaming task in its window.
+    Signals and Slots are used for communication between objects. '''
+
+    # Declare a signal, with an argument (int) for transmission in the connected slots
+    threadSignal = pyqtSignal(int)
+
+    def __init__(self, startParm):
+        super(WorkThread, self).__init__()
+        self.startParm = startParm         # Initialize the parameters passed to the task
+
+    def run(self, *args, **kwargs):
+        c = self.startParm
+        while True:
+            QThread.msleep(200)
+            c += 1
+            self.threadSignal.emit(c)      # We disable the signal and pass arguments to the connected slot
 
 
+class WorkThreadMain(QThread):
+    ''' Streaming Main task '''
 
-class RenderArea(QWidget):
-    points = QPolygon([
-        QPoint(10, 80),
-        QPoint(20, 10),
-        QPoint(80, 30),
-        QPoint(90, 70)
-    ])
+    threadSignalMain = pyqtSignal(int)
+    def __init__(self, startParm):
+        super(WorkThreadMain, self).__init__()
+        self.startParm = startParm
 
-    Line, Points, Polyline, Polygon, Rect, RoundedRect, Ellipse, Arc, Chord, \
-            Pie, Path, Text, Pixmap = range(13)
-
-    def __init__(self, parent=None):
-        super(RenderArea, self).__init__(parent)
-
-        self.pen = QPen()
-        self.brush = QBrush()
-        self.pixmap = QPixmap()
-
-        self.shape = RenderArea.Polygon
-        self.antialiased = False
-        self.transformed = False
-        self.pixmap.load(':/images/qt-logo.png')
-
-        self.setBackgroundRole(QPalette.Base)
-        self.setAutoFillBackground(True)
-
-    def minimumSizeHint(self):
-        return QSize(100, 100)
-
-    def sizeHint(self):
-        return QSize(400, 200)
-
-    def setShape(self, shape):
-        self.shape = shape
-        self.update()
-
-    def setPen(self, pen):
-        self.pen = pen
-        self.update()
-
-    def setBrush(self, brush):
-        self.brush = brush
-        self.update()
-
-    def setAntialiased(self, antialiased):
-        self.antialiased = antialiased
-        self.update()
-
-    def setTransformed(self, transformed):
-        self.transformed = transformed
-        self.update()
-
-    def paintEvent(self, event):
-        rect = QRect(10, 20, 80, 60)
-
-        path = QPainterPath()
-        path.moveTo(20, 80)
-        path.lineTo(20, 30)
-        path.cubicTo(80, 0, 50, 50, 80, 80)
-
-        startAngle = 30 * 16
-        arcLength = 120 * 16
-
-        painter = QPainter(self)
-        painter.setPen(self.pen)
-        painter.setBrush(self.brush)
-        if self.antialiased:
-            painter.setRenderHint(QPainter.Antialiasing)
-
-        for x in range(0, self.width(), 100):
-            for y in range(0, self.height(), 100):
-                painter.save()
-                painter.translate(x, y)
-                if self.transformed:
-                    painter.translate(50, 50)
-                    painter.rotate(60.0)
-                    painter.scale(0.6, 0.9)
-                    painter.translate(-50, -50)
-
-                if self.shape == RenderArea.Line:
-                    painter.drawLine(rect.bottomLeft(), rect.topRight())
-                elif self.shape == RenderArea.Points:
-                    painter.drawPoints(RenderArea.points)
-                elif self.shape == RenderArea.Polyline:
-                    painter.drawPolyline(RenderArea.points)
-                elif self.shape == RenderArea.Polygon:
-                    painter.drawPolygon(RenderArea.points)
-                elif self.shape == RenderArea.Rect:
-                    painter.drawRect(rect)
-                elif self.shape == RenderArea.RoundedRect:
-                    painter.drawRoundedRect(rect, 25, 25, Qt.RelativeSize)
-                elif self.shape == RenderArea.Ellipse:
-                    painter.drawEllipse(rect)
-                elif self.shape == RenderArea.Arc:
-                    painter.drawArc(rect, startAngle, arcLength)
-                elif self.shape == RenderArea.Chord:
-                    painter.drawChord(rect, startAngle, arcLength)
-                elif self.shape == RenderArea.Pie:
-                    painter.drawPie(rect, startAngle, arcLength)
-                elif self.shape == RenderArea.Path:
-                    painter.drawPath(path)
-                elif self.shape == RenderArea.Text:
-                    painter.drawText(rect, Qt.AlignCenter,
-                            "PyQt by\nRiverbank Computing")
-                elif self.shape == RenderArea.Pixmap:
-                    painter.drawPixmap(10, 10, self.pixmap)
-
-                painter.restore()
-
-        painter.setPen(self.palette().dark().color())
-        painter.setBrush(Qt.NoBrush)
-        painter.drawRect(QRect(0, 0, self.width() - 1, self.height() - 1))
+    def run(self, *args, **kwargs):
+        c = self.startParm
+        while True:
+            QThread.msleep(1000)
+            c += 1
+            self.threadSignalMain.emit(c)
 
 
-IdRole = Qt.UserRole
+class MsgBox(QDialog):
+    """ Window initialization class for visualizing an additional stream
+         and a button to close the stream window if the thread is stopped! """
 
-class Window(QWidget):
     def __init__(self):
-        super(Window, self).__init__()
+        super().__init__()
 
-        self.renderArea = RenderArea()
+        layout     = QVBoxLayout(self)
+        self.label = QLabel("")
+        layout.addWidget(self.label)
 
-        self.shapeComboBox = QComboBox()
-        self.shapeComboBox.addItem("Polygon", RenderArea.Polygon)
-        self.shapeComboBox.addItem("Rectangle", RenderArea.Rect)
-        self.shapeComboBox.addItem("Rounded Rectangle", RenderArea.RoundedRect)
-        self.shapeComboBox.addItem("Ellipse", RenderArea.Ellipse)
-        self.shapeComboBox.addItem("Pie", RenderArea.Pie)
-        self.shapeComboBox.addItem("Chord", RenderArea.Chord)
-        self.shapeComboBox.addItem("Path", RenderArea.Path)
-        self.shapeComboBox.addItem("Line", RenderArea.Line)
-        self.shapeComboBox.addItem("Polyline", RenderArea.Polyline)
-        self.shapeComboBox.addItem("Arc", RenderArea.Arc)
-        self.shapeComboBox.addItem("Points", RenderArea.Points)
-        self.shapeComboBox.addItem("Text", RenderArea.Text)
-        self.shapeComboBox.addItem("Pixmap", RenderArea.Pixmap)
+        close_btn  = QPushButton("Close thread")
+        layout.addWidget(close_btn)
 
-        shapeLabel = QLabel("&Shape:")
-        shapeLabel.setBuddy(self.shapeComboBox)
+        close_btn.clicked.connect(self.close)
 
-        self.penWidthSpinBox = QSpinBox()
-        self.penWidthSpinBox.setRange(0, 20)
-        self.penWidthSpinBox.setSpecialValueText("0 (cosmetic pen)")
+        self.setGeometry(900, 65, 400, 80)
+        self.setWindowTitle('MsgBox for WorkThread')
 
-        penWidthLabel = QLabel("Pen &Width:")
-        penWidthLabel.setBuddy(self.penWidthSpinBox)
 
-        self.penStyleComboBox = QComboBox()
-        self.penStyleComboBox.addItem("Solid", Qt.SolidLine)
-        self.penStyleComboBox.addItem("Dash", Qt.DashLine)
-        self.penStyleComboBox.addItem("Dot", Qt.DotLine)
-        self.penStyleComboBox.addItem("Dash Dot", Qt.DashDotLine)
-        self.penStyleComboBox.addItem("Dash Dot Dot", Qt.DashDotDotLine)
-        self.penStyleComboBox.addItem("None", Qt.NoPen)
+class MainWindow(QWidget):
+    ''' Main Window '''
 
-        penStyleLabel = QLabel("&Pen Style:")
-        penStyleLabel.setBuddy(self.penStyleComboBox)
+    def __init__(self):
+        super(MainWindow, self).__init__()
 
-        self.penCapComboBox = QComboBox()
-        self.penCapComboBox.addItem("Flat", Qt.FlatCap)
-        self.penCapComboBox.addItem("Square", Qt.SquareCap)
-        self.penCapComboBox.addItem("Round", Qt.RoundCap)
+        layout     = QVBoxLayout(self)
+        self.labelMain = QLabel("The result of the Main task: ")
+        layout.addWidget(self.labelMain)
+        self.labelThread = QLabel("The result of the Thread task: ")
+        layout.addWidget(self.labelThread)
+        validator = QIntValidator(1, 999, self)
+        validator.setBottom(1)
+        self.lineEdit = QLineEdit()
+        self.lineEdit.setPlaceholderText("Enter the initial parameter for the stream task")
+        self.lineEdit.setValidator(validator)    # self.lineEdit will only take integers from 1 to 999
+        layout.addWidget(self.lineEdit)
 
-        penCapLabel = QLabel("Pen &Cap:")
-        penCapLabel.setBuddy(self.penCapComboBox)
+        self.btn = QPushButton("Start thread!")
+        layout.addWidget(self.btn)
+        self.btnMain = QPushButton("Start Main!")
+        layout.addWidget(self.btnMain)
+        self.setGeometry(550, 65, 300, 200)
+        self.setWindowTitle('MainWindow')
 
-        self.penJoinComboBox = QComboBox()
-        self.penJoinComboBox.addItem("Miter", Qt.MiterJoin)
-        self.penJoinComboBox.addItem("Bevel", Qt.BevelJoin)
-        self.penJoinComboBox.addItem("Round", Qt.RoundJoin)
+        self.btn.clicked.connect(self.on_btn)
+        self.btnMain.clicked.connect(self.on_btnMain)
 
-        penJoinLabel = QLabel("Pen &Join:")
-        penJoinLabel.setBuddy(self.penJoinComboBox)
+        self.msg = MsgBox()
+        self.thread     = None
+        self.threadMain = None
 
-        self.brushStyleComboBox = QComboBox()
-        self.brushStyleComboBox.addItem("Linear Gradient",
-                Qt.LinearGradientPattern)
-        self.brushStyleComboBox.addItem("Radial Gradient",
-                Qt.RadialGradientPattern)
-        self.brushStyleComboBox.addItem("Conical Gradient",
-                Qt.ConicalGradientPattern)
-        self.brushStyleComboBox.addItem("Texture", Qt.TexturePattern)
-        self.brushStyleComboBox.addItem("Solid", Qt.SolidPattern)
-        self.brushStyleComboBox.addItem("Horizontal", Qt.HorPattern)
-        self.brushStyleComboBox.addItem("Vertical", Qt.VerPattern)
-        self.brushStyleComboBox.addItem("Cross", Qt.CrossPattern)
-        self.brushStyleComboBox.addItem("Backward Diagonal", Qt.BDiagPattern)
-        self.brushStyleComboBox.addItem("Forward Diagonal", Qt.FDiagPattern)
-        self.brushStyleComboBox.addItem("Diagonal Cross", Qt.DiagCrossPattern)
-        self.brushStyleComboBox.addItem("Dense 1", Qt.Dense1Pattern)
-        self.brushStyleComboBox.addItem("Dense 2", Qt.Dense2Pattern)
-        self.brushStyleComboBox.addItem("Dense 3", Qt.Dense3Pattern)
-        self.brushStyleComboBox.addItem("Dense 4", Qt.Dense4Pattern)
-        self.brushStyleComboBox.addItem("Dense 5", Qt.Dense5Pattern)
-        self.brushStyleComboBox.addItem("Dense 6", Qt.Dense6Pattern)
-        self.brushStyleComboBox.addItem("Dense 7", Qt.Dense7Pattern)
-        self.brushStyleComboBox.addItem("None", Qt.NoBrush)
+    def on_btn(self):
+        ''' Starting or Stopping an Additional Stream-WorkThread from the main window '''
 
-        brushStyleLabel = QLabel("&Brush Style:")
-        brushStyleLabel.setBuddy(self.brushStyleComboBox)
+        # Input parameters for transfer to the stream, if not specified, we pass default `0`
+        startParm = int(self.lineEdit.text()) if self.lineEdit.text()!="" else 0
+        if self.thread is None:
+            self.thread = WorkThread(startParm)
 
-        otherOptionsLabel = QLabel("Other Options:")
-        self.antialiasingCheckBox = QCheckBox("&Antialiasing")
-        self.transformationsCheckBox = QCheckBox("&Transformations")
+            self.thread.threadSignal.connect(self.on_threadSignal)
+            self.thread.start()
 
-        self.shapeComboBox.activated.connect(self.shapeChanged)
-        self.penWidthSpinBox.valueChanged.connect(self.penChanged)
-        self.penStyleComboBox.activated.connect(self.penChanged)
-        self.penCapComboBox.activated.connect(self.penChanged)
-        self.penJoinComboBox.activated.connect(self.penChanged)
-        self.brushStyleComboBox.activated.connect(self.brushChanged)
-        self.antialiasingCheckBox.toggled.connect(self.renderArea.setAntialiased)
-        self.transformationsCheckBox.toggled.connect(self.renderArea.setTransformed)
-
-        mainLayout = QGridLayout()
-        mainLayout.setColumnStretch(0, 1)
-        mainLayout.setColumnStretch(3, 1)
-        mainLayout.addWidget(self.renderArea, 0, 0, 1, 4)
-        mainLayout.setRowMinimumHeight(1, 6)
-        mainLayout.addWidget(shapeLabel, 2, 1, Qt.AlignRight)
-        mainLayout.addWidget(self.shapeComboBox, 2, 2)
-        mainLayout.addWidget(penWidthLabel, 3, 1, Qt.AlignRight)
-        mainLayout.addWidget(self.penWidthSpinBox, 3, 2)
-        mainLayout.addWidget(penStyleLabel, 4, 1, Qt.AlignRight)
-        mainLayout.addWidget(self.penStyleComboBox, 4, 2)
-        mainLayout.addWidget(penCapLabel, 5, 1, Qt.AlignRight)
-        mainLayout.addWidget(self.penCapComboBox, 5, 2)
-        mainLayout.addWidget(penJoinLabel, 6, 1, Qt.AlignRight)
-        mainLayout.addWidget(self.penJoinComboBox, 6, 2)
-        mainLayout.addWidget(brushStyleLabel, 7, 1, Qt.AlignRight)
-        mainLayout.addWidget(self.brushStyleComboBox, 7, 2)
-        mainLayout.setRowMinimumHeight(8, 6)
-        mainLayout.addWidget(otherOptionsLabel, 9, 1, Qt.AlignRight)
-        mainLayout.addWidget(self.antialiasingCheckBox, 9, 2)
-        mainLayout.addWidget(self.transformationsCheckBox, 10, 2)
-        self.setLayout(mainLayout)
-
-        self.shapeChanged()
-        self.penChanged()
-        self.brushChanged()
-        self.antialiasingCheckBox.setChecked(True)
-
-        self.setWindowTitle("Basic Drawing")
-
-    def shapeChanged(self):
-        shape = self.shapeComboBox.itemData(self.shapeComboBox.currentIndex(),
-                IdRole)
-        self.renderArea.setShape(shape)
-
-    def penChanged(self):
-        width = self.penWidthSpinBox.value()
-        style = Qt.PenStyle(self.penStyleComboBox.itemData(
-                self.penStyleComboBox.currentIndex(), IdRole))
-        cap = Qt.PenCapStyle(self.penCapComboBox.itemData(
-                self.penCapComboBox.currentIndex(), IdRole))
-        join = Qt.PenJoinStyle(self.penJoinComboBox.itemData(
-                self.penJoinComboBox.currentIndex(), IdRole))
-
-        self.renderArea.setPen(QPen(Qt.blue, width, style, cap, join))
-
-    def brushChanged(self):
-        style = Qt.BrushStyle(self.brushStyleComboBox.itemData(
-                self.brushStyleComboBox.currentIndex(), IdRole))
-
-        if style == Qt.LinearGradientPattern:
-            linearGradient = QLinearGradient(0, 0, 100, 100)
-            linearGradient.setColorAt(0.0, Qt.white)
-            linearGradient.setColorAt(0.2, Qt.green)
-            linearGradient.setColorAt(1.0, Qt.black)
-            self.renderArea.setBrush(QBrush(linearGradient))
-        elif style == Qt.RadialGradientPattern:
-            radialGradient = QRadialGradient(50, 50, 50, 70, 70)
-            radialGradient.setColorAt(0.0, Qt.white)
-            radialGradient.setColorAt(0.2, Qt.green)
-            radialGradient.setColorAt(1.0, Qt.black)
-            self.renderArea.setBrush(QBrush(radialGradient))
-        elif style == Qt.ConicalGradientPattern:
-            conicalGradient = QConicalGradient(50, 50, 150)
-            conicalGradient.setColorAt(0.0, Qt.white)
-            conicalGradient.setColorAt(0.2, Qt.green)
-            conicalGradient.setColorAt(1.0, Qt.black)
-            self.renderArea.setBrush(QBrush(conicalGradient))
-        elif style == Qt.TexturePattern:
-            self.renderArea.setBrush(QBrush(QPixmap(':/images/brick.png')))
+            self.btn.setText("Stop thread")
+            self.lineEdit.hide()
         else:
-            self.renderArea.setBrush(QBrush(Qt.green, style))
+            self.thread.terminate()
+            self.thread = None
+            self.btn.setText("Start thread")
+            self.lineEdit.show()
+
+    def on_threadSignal(self, value):
+        ''' Visualization of streaming data-WorkThread. '''
+
+        self.msg.label.setText(str(value))
+        self.labelThread.setText("The result of the Thread task: " + str(value)) # We show also in the main window
+
+        # We restore the rendering of the stream window if it was closed. The flow is working.
+        if not self.msg.isVisible():
+            self.msg.show()
+
+
+    def on_btnMain(self):
+        ''' Starting or Stopping the Main Thread-WorkThreadMain '''
+
+        cM = random.randrange(1, 100)
+        if self.threadMain is None:
+            self.threadMain = WorkThreadMain(cM)
+            self.threadMain.threadSignalMain.connect(self.on_threadSignalMain)
+            self.threadMain.start()
+            self.btnMain.setText("Stop Main")
+        else:
+            self.threadMain.terminate()
+            self.threadMain = None
+            self.btnMain.setText("Start Main")
+
+    def on_threadSignalMain(self, value):
+        ''' Visualization of streaming data WorkThreadMain '''
+
+        self.labelMain.setText("The result of the Main task: " + str(value))
 
 
 if __name__ == '__main__':
+    app = QApplication([])
+    mw  = MainWindow()
+    mw.show()
+    app.exec()
 
-    import sys
-
-    app = QApplication(sys.argv)
-    window = Window()
-    window.show()
-    sys.exit(app.exec_())
+# ----------------------------------------------------------------------------

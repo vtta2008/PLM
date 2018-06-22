@@ -22,9 +22,10 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QLineEdit, QLabel, QPush
 
 # -------------------------------------------------------------------------------------------------------------
 """ Plt tools """
+from appData import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, TIT_BLANK, USER_CHECK_REQUIRED, QUESTIONS
 import appData as app
-from utilities import utils as func
 from ui import uirc as rc
+from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign up ui """
@@ -40,6 +41,7 @@ class SignUp(QDialog):
         self.setWindowTitle("Sign Up")
         self.setWindowIcon(rc.IconPth(32, "SignUp"))
         self.setFixedSize(450, 900)
+        # from core.Settings import Settings
         self.settings = app.appSetting
 
         self.layout = QGridLayout()
@@ -156,7 +158,7 @@ class SignUp(QDialog):
         self.ques2 = QComboBox()
         self.answ1 = QLineEdit()
 
-        questions = app.QUESTIONS
+        questions = QUESTIONS
 
         for i in questions:
             self.ques1.addItem(str(i[0]))
@@ -178,7 +180,7 @@ class SignUp(QDialog):
         btn_grid = QGridLayout()
         self.btnSection.setLayout(btn_grid)
 
-        self.user_agree_checkBox = QCheckBox(app.USER_CHECK_REQUIRED)
+        self.user_agree_checkBox = QCheckBox(USER_CHECK_REQUIRED)
         btn_grid.addWidget(self.user_agree_checkBox, 0, 0, 1, 6)
 
         okBtn = QPushButton('Create Account')
@@ -208,7 +210,7 @@ class SignUp(QDialog):
         if self.check_all_conditions():
             data = self.generate_user_data()
             # usql.create_new_user_data(data)
-            QMessageBox.information(self, "Failed", app.WAITUICOMPLETE, QMessageBox.Ok)
+            QMessageBox.information(self, "Failed", WAIT_LAYOUT_COMPLETE, QMessageBox.Ok)
             # self.showPlt.emit(True)
             return
 
@@ -250,7 +252,7 @@ class SignUp(QDialog):
             if func.check_blank(section):
                 return True
             else:
-                QMessageBox.information(self, "Fail", secName[regInput.index(section)] + app.BLANKALERT, QMessageBox.Ok)
+                QMessageBox.information(self, "Fail", secName[regInput.index(section)] + "Blank", QMessageBox.Ok)
                 break
 
     def check_user_agreement(self):
@@ -288,7 +290,7 @@ class SignUp(QDialog):
         confirm = str(self.cfpwField.text())
         check_pass = func.check_match(password, confirm)
         if not check_pass:
-            QMessageBox.information(self, "Warning", app.PWUNMATCH, QMessageBox.Retry)
+            QMessageBox.information(self, "Warning", PW_UNMATCH, QMessageBox.Retry)
             return False
         return True
 

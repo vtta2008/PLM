@@ -17,20 +17,16 @@ import os, sys
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QGridLayout, QWidget, QLabel
+from PyQt5.QtWidgets import QApplication, QGridLayout, QLabel
 
 from PyQt5.QtNetwork import QHostAddress
 
 # Plt
 import appData as app
-from appData import ServerCfg
+from appData.ServerCfg import ServerCfg
 from ui import uirc as rc
 from utilities import utils as func
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
 logger = app.logger
-
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """
 
@@ -41,16 +37,16 @@ class ServerStatus(QGridLayout):
     def __init__(self, parent=None):
         super(ServerStatus, self).__init__(parent)
 
+        # from core.Settings import Settings
         self.settings = app.appSetting
 
-        self.server = ServerCfg.ServerCfg()
+        self.server = ServerCfg()
         self.server.listen(QHostAddress(app.__serverUrl__), 9000)
+
         self.serverOpen = self.server.isListening()
 
         self.connected = func.getAppIcon(16, 'Connected')
-        print(self.connected)
         self.disconnected = func.getAppIcon(16, 'Disconnected')
-
         self.networkStatus = QLabel()
         self.networkStatus.setPixmap(QPixmap(self.connected))
 

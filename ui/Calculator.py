@@ -16,9 +16,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QDialog)
 
-import appData as app
 from utilities import utils as func
 from ui import uirc as rc
+import appData as app
 
 class Calculator(QDialog):
 
@@ -27,7 +27,10 @@ class Calculator(QDialog):
 
         self.setWindowTitle('Calculator')
         self.setWindowIcon(QIcon(func.getAppIcon(32, 'Calculator')))
-        self.settings = app.appSetting
+
+        from core.SettingManager import Settings
+        self.settings = Settings()
+
         self.NumDigitButtons = 10
 
         self.layout = QGridLayout(self)

@@ -18,18 +18,10 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QRectF
 from PyQt5.QtWidgets import QApplication, QWidget, QGraphicsItem
 from PyQt5.QtGui import QColor, QPen, QBrush, QPainter
 
-# Plt
-import appData as app
-
-from appData._exception import KnobConnectionError, UnknownFlowError
+from core.ErrorManager import KnobConnectionError, UnknownFlowError
 from appData._pNN import *
 from utilities.pUtils import *
-from ui.pEdge import pEdge
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.logger
+from ui.NodeGraph.pEdge import pEdge
 
 # -------------------------------------------------------------------------------------------------------------
 """ pKnob """

@@ -21,13 +21,12 @@ from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
 
 # Plt
 import appData as app
-from ui import uirc as rc
-from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logger = app.logger
+from appData.Loggers import SetLogger
+logger = SetLogger()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """

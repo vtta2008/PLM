@@ -17,11 +17,10 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLineEdit, QTextEdit, QTextBrowser, QLabel
 
 # Plt
-import appData as app
+from appData import SiPoMin, SiPoExp, appSetting
 
 from ui import uirc as rc
 
-from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """
@@ -34,7 +33,7 @@ class CommandPrompt(QLineEdit):
         self.applySetting()
 
     def applySetting(self):
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.setSizePolicy(SiPoMin, SiPoMin)
 
 class Terminal(QTextBrowser):
 
@@ -45,7 +44,7 @@ class Terminal(QTextBrowser):
 
     def applySetting(self):
         self.setFrameStyle(QTextEdit.DrawWindowBackground)
-        self.setSizePolicy(app.SiPoExp, app.SiPoExp)
+        self.setSizePolicy(SiPoExp, SiPoExp)
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab5 """
@@ -55,7 +54,8 @@ class TopTab5(QWidget):
     def __init__(self, parent=None):
         super(TopTab5, self).__init__(parent)
 
-        self.appSetting = app.APPSETTING
+        # from core.Settings import Settings
+        self.settings = appSetting
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -110,7 +110,7 @@ class TopTab5(QWidget):
 
     def applySetting(self):
         self.layout.setSpacing(2)
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.setSizePolicy(SiPoMin, SiPoMin)
 
 def main():
     app = QApplication(sys.argv)

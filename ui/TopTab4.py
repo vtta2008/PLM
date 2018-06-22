@@ -19,9 +19,9 @@ from PyQt5.QtWidgets import QApplication, QGridLayout, QWidget, QGroupBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ Plt tools """
-import appData as app
 
 from ui import uirc as rc
+from appData import appSetting
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab4 """
@@ -31,7 +31,8 @@ class TopTab4(QWidget):
     def __init__(self, parent=None):
         super(TopTab4, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        # from core.Settings import Settings
+        self.settings = appSetting
 
         self.layout = QGridLayout()
         self.buildUI()

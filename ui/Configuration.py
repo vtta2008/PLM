@@ -18,7 +18,7 @@ import sys
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QDialog, QCheckBox, QPushButton, QGridLayout, QGroupBox
+from PyQt5.QtWidgets import QApplication, QWidget, QCheckBox, QPushButton, QGridLayout, QGroupBox
 
 # Plt
 import appData as app
@@ -28,7 +28,7 @@ logger = app.logger
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """
 
-class Configuration(QDialog):
+class Configuration(QWidget):
 
     checkboxTDSig = pyqtSignal(bool)
     checkboxCompSig = pyqtSignal(bool)
@@ -43,6 +43,7 @@ class Configuration(QDialog):
         self.setWindowTitle("Configuration")
         self.setWindowIcon(QIcon(func.getAppIcon(32, 'Configuration')))
 
+        # from core.Settings import Settings
         self.settings = app.appSetting
 
         self.layout = QGridLayout()

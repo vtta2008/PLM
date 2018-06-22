@@ -19,7 +19,6 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLabel, QHBoxLayout, QPushBut
                              QApplication, QWidget)
 
 from utilities import utils as func
-import appData as app
 
 class EnglishDictionary(QDialog):
     def __init__(self, parent=None):
@@ -72,7 +71,8 @@ class EnglishDictionary(QDialog):
         self.setLayout(hbox)
 
     def translate(self, *args):
-        filePth = os.path.join(os.getenv(app.__envKey__), 'appData', 'ED.json')
+        from appData import __envKey__
+        filePth = os.path.join(os.getenv(__envKey__), 'appData', 'ED.json')
 
         data = json.load(open(filePth))
 

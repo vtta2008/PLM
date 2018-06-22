@@ -22,7 +22,7 @@ from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
                              QLayout, QDialog)
 
 # Plt
-import appData as app
+from appData import SiPoMin
 from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
@@ -362,7 +362,7 @@ class Calendar(QDialog):
     def applySetting(self):
         self.layout.setSpacing(2)
         self.layout.setSizeConstraint(QLayout.SetFixedSize)
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.setSizePolicy(SiPoMin, SiPoMin)
 
 def main():
     calendar = QApplication(sys.argv)

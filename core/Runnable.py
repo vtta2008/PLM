@@ -21,12 +21,8 @@ from PyQt5.QtCore import pyqtSignal, QRunnable, QMetaObject
 from PyQt5.QtWidgets import QApplication
 
 # Plt
-import appData as app
 from core import (Indicator, PLMservice, Loading)
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
 
-logger = app.logger()
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -63,7 +59,7 @@ class ThreadUI(QWidget):
 
     def buildUI(self):
         self.service = PLMservice.PLMservice()
-        # self.indicator = Indicator.Indicator()
+        self.indicator = Indicator.Indicator()
         self.loading = Loading.Loading()
 
     def start_threading(self, param):

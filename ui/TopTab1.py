@@ -20,8 +20,8 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLineEdit, QPushButton
 
 # Plt
-import appData as app
 from ui import uirc as rc
+from appData import APPINFO, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE, appSetting
 
 # -------------------------------------------------------------------------------------------------------------
 """ topTab1 """
@@ -33,12 +33,13 @@ class TopTab1(QWidget):
     def __init__(self, parent=None):
         super(TopTab1, self).__init__(parent)
 
-        self.settings = app.appSetting
+        # from core.Settings import Settings
+        self.settings = appSetting
 
-        for i in app.CONFIG_TOOLS:
+        for i in CONFIG_TOOLS:
             self.settings.setValue(i, False)
 
-        self.appInfo = app.APPINFO
+        self.appInfo = APPINFO
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
@@ -53,7 +54,7 @@ class TopTab1(QWidget):
                 btn.consoleSig.connect(self.execute.emit)
                 officeBtns.append(btn)
 
-        for key in app.CONFIG_OFFICE:
+        for key in CONFIG_OFFICE:
             if key in self.appInfo:
                 btn = rc.IconBtnProcess(key)
                 btn.consoleSig.connect(self.execute.emit)
@@ -62,7 +63,7 @@ class TopTab1(QWidget):
         sec1Grp = rc.AutoSectionBtnGrp("Office", officeBtns, "IconGrid")
 
         devBtns = []
-        for key in app.CONFIG_DEV:
+        for key in CONFIG_DEV:
             if key in self.appInfo:
                 btn = rc.IconBtnProcess(key)
                 btn.consoleSig.connect(self.execute.emit)
@@ -71,7 +72,7 @@ class TopTab1(QWidget):
         sec2Grp = rc.AutoSectionBtnGrp("Dev", devBtns, "IconGrid")
 
         pyuiBtn = []
-        for key in app.CONFIG_TOOLS:
+        for key in CONFIG_TOOLS:
             if key in self.appInfo:
                 btn = rc.IconBtnLoadLayout(key)
                 btn.consoleSig.connect(self.execute.emit)
@@ -80,13 +81,15 @@ class TopTab1(QWidget):
         sec3Grp = rc.AutoSectionBtnGrp("Tools", pyuiBtn, "IconGrid")
 
         extraBtns = []
-        for key in app.CONFIG_EXTRA:
+        for key in CONFIG_EXTRA:
             if key in self.appInfo:
                 btn = rc.IconBtnProcess(key)
                 btn.consoleSig.connect(self.execute.emit)
                 extraBtns.append(btn)
 
         sec4Grp = rc.AutoSectionBtnGrp("Extra", extraBtns, "IconGrid")
+
+
 
         self.findEdit = QLineEdit()
         findBtn = QPushButton("Find Tool")

@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import QAbstractButton, QApplication
 
 class Indicator(QAbstractButton):
 
-    scaledSize = 25000.0
+    scaledSize = 1000.0
 
     def __init__(self, parent=None):
         QAbstractButton.__init__(self, parent)

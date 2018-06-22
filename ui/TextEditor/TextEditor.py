@@ -23,7 +23,7 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog, 
                              QMainWindow, QMenu, QMessageBox, QTextEdit, QToolBar, QDialog, QHBoxLayout)
 
 # Plt
-from ui import TextEditor_rc
+from ui.TextEditor import TextEditor_rc
 from utilities import utils as func
 
 if sys.platform.startswith('darwin'):

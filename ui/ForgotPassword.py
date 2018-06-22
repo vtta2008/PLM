@@ -16,7 +16,7 @@ import sys
 
 
 # PtQt5
-from PyQt5.QtWidgets import (QApplication, QMessageBox, QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QLabel,
+from PyQt5.QtWidgets import (QApplication, QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QLabel,
                              QLineEdit, QVBoxLayout)
 
 

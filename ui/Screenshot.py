@@ -20,7 +20,9 @@ from PyQt5.QtWidgets import (QDialog, QWidget, QGridLayout, QLabel, QFileDialog,
                              QCheckBox, QPushButton, QHBoxLayout, QLabel, QSizePolicy,)
 
 from ui import uirc as rc
+from appData import keepARM
 import appData as app
+logger = app.logger
 
 class Screenshot(QDialog):
 
@@ -52,7 +54,7 @@ class Screenshot(QDialog):
 
     def resizeEvent(self, event):
         scaledSize = self.originalPixmap.size()
-        scaledSize.scale(self.screenshotLabel.size(), app.keepARM)
+        scaledSize.scale(self.screenshotLabel.size(), keepARM)
         if not self.screenshotLabel.pixmap() or scaledSize != self.screenshotLabel.pixmap().size():
             self.updateScreenshotLabel()
 

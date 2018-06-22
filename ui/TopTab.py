@@ -17,7 +17,6 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import (QApplication, QSizePolicy, QWidget, QVBoxLayout, QTabWidget)
 
 # Plt
-import appData as app
 from ui import (TopTab1, TopTab2, TopTab3, TopTab4, TopTab5)
 
 # -------------------------------------------------------------------------------------------------------------
@@ -34,7 +33,8 @@ class TopTab(QWidget):
     def __init__(self, parent=None):
         super(TopTab, self).__init__(parent)
 
-        self.settings = app.appSetting
+        from core.SettingManager import Settings
+        self.settings = Settings()
 
         self.layout = QVBoxLayout()
         self.buildUI()
@@ -43,16 +43,16 @@ class TopTab(QWidget):
     def buildUI(self):
         self.tabs = QTabWidget()
 
-        tab3 = TopTab3.TopTab3()
-        tab3.showPlt.connect(self.showPlt.emit)
-        tab3.showLogin.connect(self.showLogin.emit)
-        self.updateAvatar.connect(tab3.update_avatar)
-
         tab1 = TopTab1.TopTab1()
         tab1.execute.connect(self.execute.emit)
 
         tab2 = TopTab2.TopTab2()
         tab2.execute.connect(self.execute.emit)
+
+        tab3 = TopTab3.TopTab3()
+        tab3.showPlt.connect(self.showPlt.emit)
+        tab3.showLogin.connect(self.showLogin.emit)
+        self.updateAvatar.connect(tab3.update_avatar)
 
         self.tabs.addTab(tab1, 'Tool')
         self.tabs.addTab(tab2, 'Prj')
@@ -71,7 +71,6 @@ class TopTab(QWidget):
         self.tabs.setUsesScrollButtons(True)
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.tabs.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-
 
 def main():
     app = QApplication(sys.argv)

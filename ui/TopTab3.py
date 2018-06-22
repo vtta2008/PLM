@@ -22,8 +22,8 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGraphicsView, 
                              QPushButton, QGroupBox)
 
 # Plt
-import appData as app
 
+from appData import appSetting
 from ui import uirc as rc
 from ui import UserSetting
 from utilities import localSQL as usql
@@ -40,7 +40,8 @@ class TopTab3(QWidget):
     def __init__(self, parent=None):
         super(TopTab3, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        # from core.Settings import Settings
+        self.settings = appSetting
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
@@ -85,7 +86,13 @@ class TopTab3(QWidget):
         self.applySetting()
 
     def update_avatar(self, param):
-        self.username, token, cookie, remember = self.query.query_table('curUser')
+        print("receive signal emit to update avatar: {0}".format(param))
+        # if param:
+        #     self.username, token, cookie, remember = self.query.query_table('curUser')
+        #     self.avatar = QPixmap(func.getAvatar(self.username))
+        #     self.avatarScene = QGraphicsScene()
+        #     self.avatarScene.addPixmap(self.avatar)
+        #     self.avatarScene.update()
 
     def on_userSettingBtn_clicked(self):
         layout = UserSetting.UserSetting()
@@ -94,8 +101,8 @@ class TopTab3(QWidget):
         layout.exec_()
 
     def on_signOutBtn_clicked(self):
-        self.settings.setValue("showMain", False)
-        self.settings.setValue("showLogin", True)
+        self.settings.app.setValue("showMain", False)
+        self.settings.app.setValue("showLogin", True)
         self.showPlt.emit(False)
         self.showLogin.emit(True)
 

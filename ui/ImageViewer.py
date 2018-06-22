@@ -25,14 +25,8 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphic
                              QHBoxLayout, QWidget)
 
 # Plt
-import appData as app
+
 from utilities import utils as func
-from ui import uirc as rc
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -158,8 +152,8 @@ class ImageInitUI(ViewerWindow):
 
     def __init__(self, key=None, parent=None):
         super(ImageInitUI, self).__init__(parent)
-
-        self.dbfile = app.DBPTH
+        from appData import DBPTH
+        self.dbfile = DBPTH
         self.dbdir = os.path.dirname(self.dbfile)
 
         print(self.dbfile)

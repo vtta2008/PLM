@@ -23,7 +23,7 @@ from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QAction, QApplication
 import appData as app
 from ui import uirc as rc
 from utilities import localSQL as usql
-
+logger = app.logger
 # -------------------------------------------------------------------------------------------------------------
 
 class SysTrayIconMenu(QMenu):
@@ -67,15 +67,15 @@ class SysTrayIconMenu(QMenu):
         usql.TimeLog("Log out")
         QApplication.instance().quit()
 
-    def _show_messages(self, _):
-        """Show a window with the messages."""
-        # store it in the instance otherwise it's destroyed
-        self._temp_mw = MessagesWidget(self.app.storage, self)
-
-    def _configure(self, _):
-        """Show the configuration dialog."""
-        self._temp_cw = ConfigWidget()
-        self._temp_cw.exec_()
+    # def _show_messages(self, _):
+    #     """Show a window with the messages."""
+    #     # store it in the instance otherwise it's destroyed
+    #     self._temp_mw = MessagesWidget(self.app.storage, self)
+    #
+    # def _configure(self, _):
+    #     """Show the configuration dialog."""
+    #     self._temp_cw = ConfigWidget()
+    #     self._temp_cw.exec_()
 
 class SystrayWheelEventObject(QObject):
 
@@ -101,12 +101,14 @@ class SysTrayIcon(QSystemTrayIcon):
 
         self.query = usql.QuerryDB
 
+        # from core.Settings import Settings
+        self.settings = app.appData
+
         try:
             self.username, token, cookie, remember = self.query.query_table("curUser")
         except IndexError:
             self.username = 'DemoUser'
 
-        self.settings = app.appSetting
         self.rightClickMenu = SysTrayIconMenu()
 
         self.rightClickMenu.showNor.connect(self.showNor.emit)

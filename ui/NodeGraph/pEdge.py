@@ -19,16 +19,14 @@ from PyQt5.QtWidgets import QApplication, QGraphicsPathItem
 from PyQt5.QtGui import QColor, QPainterPath, QPen
 
 # Plt
-import appData as app
+
 from appData._pNN import *
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.logger
+import appData as app
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
+
+logger = app.logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ pEdge """
@@ -98,7 +96,7 @@ class pEdge(QGraphicsPathItem):
         return pEdge.Type
 
     def mousePressEvent(self, event):
-        leftMouse = event.button() == LMBTN
+        leftMouse = event.button() == MOUSELEFTBTN
         mod = event.modifiers() == DMK
         if leftMouse and mod:
             self.destroy()

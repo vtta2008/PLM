@@ -16,6 +16,7 @@ Description:
 # Python
 import sys
 import requests
+from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
@@ -24,14 +25,9 @@ from PyQt5.QtWidgets import (QApplication, QDialog, QGridLayout, QLineEdit, QPus
 
 # Plt
 from utilities import localSQL as usql
-import appData as app
+from appData import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __serverAutho__
 from ui import uirc as rc
 from utilities import utils as func
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """
@@ -48,7 +44,8 @@ class SignIn(QDialog):
         self.setWindowTitle('Sign in')
         self.setWindowIcon(rc.IconPth(32, "SignIn"))
         self.setFixedSize(400, 300)
-        self.settings = app.appSetting
+        from core.SettingManager import Settings
+        self.settings = Settings()
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -87,9 +84,9 @@ class SignIn(QDialog):
         signupGrp.setLayout(signupGrid)
 
         signupBtn = QPushButton('Sign up')
-        signupBtn.clicked.connect(self.on_sign_up_btn_clicked)
+        signupBtn.clicked.connect(partial(self.showSignup.emit, True))
 
-        signupGrid.addWidget(rc.Label(txt=app.SIGNUP), 0, 0, 1, 6)
+        signupGrid.addWidget(rc.Label(txt=SIGNUP), 0, 0, 1, 6)
         signupGrid.addWidget(signupBtn, 1, 0, 1, 6)
 
         self.layout.addWidget(loginGrp, 0, 0, 1, 1)
@@ -97,29 +94,24 @@ class SignIn(QDialog):
 
     def on_forgot_pw_btn_clicked(self):
         from ui import ForgotPassword
-        app.reload(ForgotPassword)
         forgetPW = ForgotPassword.ForgotPassword()
         forgetPW.show()
         forgetPW.exec_()
-
-    def on_sign_up_btn_clicked(self):
-        self.showLogin.emit(False)
-        self.show_hide_sign_up(True)
 
     def on_sign_in_btn_clicked(self):
         username = str(self.userTF.text())
         pass_word = str(self.pwTF.text())
 
         if username == "" or username is None:
-            QMessageBox.critical(self, 'Login Failed', app.USERBLANK)
+            QMessageBox.critical(self, 'Login Failed', USER_BLANK)
             return
         elif pass_word == "" or pass_word is None:
-            QMessageBox.critical(self, 'Login Failed', app.PWBLANK)
+            QMessageBox.critical(self, 'Login Failed', PW_BLANK)
             return
 
         password = str(pass_word)
 
-        r = requests.post(app.__serverAutho__, verify=False, data={'user': username, 'pwd': password})
+        r = requests.post(__serverAutho__, verify=False, data={'user': username, 'pwd': password})
 
         if r.status_code == 200:
             for i in r.headers['set-cookie'].split(";"):
@@ -138,7 +130,7 @@ class SignIn(QDialog):
             self.showPlt.emit(True)
         else:
             usql.RemoveDB("curUser")
-            QMessageBox.critical(self, 'Login Failed', app.PWWRONG)
+            QMessageBox.critical(self, 'Login Failed', PW_WRONG)
             return
 
     def closeEvent(self, event):

@@ -18,12 +18,12 @@ import sys
 
 # PtQt5
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QImage, QIcon, QPixmap
+from PyQt5.QtGui import QImage, QPixmap
 from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QHBoxLayout, QPushButton, QFileDialog,
                              QMessageBox, QApplication, QLabel)
 
 # Plt
-import appData as app
+from appData import PW_CHANGED, PW_BLANK, PW_UNMATCH, PW_WRONG, __envKey__, appSetting
 from utilities import utils as func
 from utilities import localSQL as usql
 from ui import uirc as rc
@@ -40,11 +40,11 @@ class UserSetting(QDialog):
 
         super(UserSetting, self).__init__(parent)
 
-
         self.setWindowTitle('User Setting')
         self.setWindowIcon(rc.AppIcon(32, "UserSetting"))
 
-        self.settings = app.APPSETTING
+        
+        self.settings = appSetting
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -176,26 +176,27 @@ class UserSetting(QDialog):
         confirm_pass = func.text_to_hex(self.confirm_pass.text())
 
         if len(old_pass) == 0 or len(new_pass) == 0 or len(confirm_pass) == 0:
-            QMessageBox.critical(self, 'Failed', app.PWBLANK)
+            QMessageBox.critical(self, 'Failed', PW_BLANK)
             return
         elif new_pass is not confirm_pass:
-            QMessageBox.critical(self, 'Failed', app.PWUNMATCH)
+            QMessageBox.critical(self, 'Failed', PW_UNMATCH)
             return
         else:
-            checkPass = func.check_pw_match(self.username, old_pass)
-            if not checkPass:
-                QMessageBox.critical(self, 'Failed', "Password not match")
-                return
-            else:
-                newpass = func.encode(self.newPassword.text())
-                func.update_password(self.unix, newpass)
-                QMessageBox.information(self, 'Updated', app.PWCHANGED)
+            # checkPass = func.check_pw_match(self.username, old_pass)
+            # if not checkPass:
+            #     QMessageBox.critical(self, 'Failed', "Password not match")
+            #     return
+            # else:
+            #     newpass = func.encode(self.newPassword.text())
+            #     func.update_password(self.unix, newpass)
+            #     QMessageBox.information(self, 'Updated', PW_CHANGED)
+            pass
 
     def update_avatar(self):
 
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-        imgsDir = os.path.join(os.getenv(app.__envKey__), 'avatar')
+        imgsDir = os.path.join(os.getenv(__envKey__), 'avatar')
         fileName, _ = QFileDialog.getOpenFileName(self, "Your Avatar", imgsDir, "All Files (*);;Img Files (*.jpg)",
                                                   options=options)
         if fileName:

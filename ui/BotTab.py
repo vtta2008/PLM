@@ -24,11 +24,6 @@ from ui import uirc as rc
 from ui import GeneralSetting
 
 # -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.logger
-
-# -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """
 class BotTab(QWidget):
 
@@ -44,6 +39,7 @@ class BotTab(QWidget):
     def __init__(self, parent=None):
         super(BotTab, self).__init__(parent)
 
+        # from core.Settings import Settings
         self.settings = app.appSetting
 
         self.layout = QVBoxLayout()
@@ -85,10 +81,10 @@ class BotTab(QWidget):
 
 
 def main():
-    app = QApplication(sys.argv)
+    bottab = QApplication(sys.argv)
     layout = BotTab()
     layout.show()
-    app.exec_()
+    bottab.exec_()
 
 if __name__ == '__main__':
     main()

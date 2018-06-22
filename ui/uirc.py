@@ -24,12 +24,14 @@ from PyQt5.QtWidgets import (QLabel, QGridLayout, QPushButton, QAction, QApplica
                              QVBoxLayout, QToolButton, QTextEdit, QDockWidget)
 
 # Plt
-import appData as app
+from appData import (mainConfig, right, WAIT_LAYOUT_COMPLETE, SiPoMin, SiPoExp, SiPoPre, dockB, dockT, datetTimeStamp, 
+                     appSetting, ICONBTNSIZE, BTNICONSIZE, TXT, WMIN)
+
 from utilities import localSQL as usql
 from utilities import utils as func
 
 # Path
-with open(app.mainConfig, 'r') as f:
+with open(mainConfig, 'r') as f:
     APPINFO = json.load(f)
 
 # -------------------------------------------------------------------------------------------------------------
@@ -88,6 +90,7 @@ class AppIcon(QIcon):
         super(AppIcon, self).__init__(parent)
 
         sizes = [16, 24, 32, 48, 64, 96, 128, 256, 512]
+        self.name =name
 
         for s in sizes:
             self.addFile(func.getLogo(s, name), QSize(s, s))
@@ -103,7 +106,7 @@ class ImageUI(QGraphicsView):
     def __init__(self, icon="", size=None, parent=None):
         super(ImageUI, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
         self.pixmap = QPixmap(func.getAppIcon(32, icon))
 
         if size == None or len(size) == 0:
@@ -124,10 +127,10 @@ class ImageUI(QGraphicsView):
 
 class Label(QLabel):
 
-    def __init__(self, txt=app.TXT, wmin=app.WMIN, alg = None, font=None, parent=None):
+    def __init__(self, txt=TXT, wmin=WMIN, alg = None, font=None, parent=None):
         super(Label, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
 
         if alg == None:
             alg = Qt.AlignCenter
@@ -150,7 +153,7 @@ class Label(QLabel):
         self.setMinimumWidth(self.wmin)
         self.setAlignment(self.alg)
         self.setFont(self.fnt)
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.setSizePolicy(SiPoMin, SiPoMin)
         self.setScaledContents(True)
         self.setWordWrap(True)
 
@@ -159,12 +162,12 @@ class ToolBtn(QToolButton):
     def __init__(self, text, parent=None):
         super(ToolBtn, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
         self.setText(text)
         self.applySetting()
 
     def applySetting(self):
-        self.setSizePolicy(app.SiPoExp, app.SiPoPre)
+        self.setSizePolicy(SiPoExp, SiPoPre)
 
     def sizeHint(self):
         size = super(ToolBtn, self).sizeHint()
@@ -187,7 +190,7 @@ class Button(QPushButton):
         self.applySetting()
 
     def applySetting(self):
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.setSizePolicy(SiPoMin, SiPoMin)
         self.setMouseTracking(True)
 
     def sizeHint(self):
@@ -203,7 +206,7 @@ class IconBtnProcess(QPushButton):
     def __init__(self, key, parent=None):
         super(IconBtnProcess, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
 
         self.key = key
 
@@ -221,8 +224,8 @@ class IconBtnProcess(QPushButton):
         Run(data)
 
     def applySetting(self):
-        self.setFixedSize(app.BTNICONSIZE)
-        self.setIconSize(app.ICONBTNSIZE)
+        self.setFixedSize(BTNICONSIZE)
+        self.setIconSize(ICONBTNSIZE)
         self.setMouseTracking(True)
 
 class IconBtnLoadLayout(QPushButton):
@@ -232,7 +235,7 @@ class IconBtnLoadLayout(QPushButton):
     def __init__(self, key=None, parent=None):
         super(IconBtnLoadLayout, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
         self.key = key
 
         self.buildUI()
@@ -249,8 +252,8 @@ class IconBtnLoadLayout(QPushButton):
         self.consoleSig.emit(self.key)
 
     def applySetting(self):
-        self.setFixedSize(app.BTNICONSIZE)
-        self.setIconSize(app.ICONBTNSIZE)
+        self.setFixedSize(BTNICONSIZE)
+        self.setIconSize(ICONBTNSIZE)
         self.setMouseTracking(True)
 
 class ActionProcess(QAction):
@@ -259,7 +262,7 @@ class ActionProcess(QAction):
 
     def __init__(self, key, parent=None):
         super(ActionProcess, self).__init__(parent)
-        self.settings = app.APPSETTING
+        self.settings = appSetting
         self.key = key
         self.buildUI()
 
@@ -281,7 +284,7 @@ class ActionLoadLayout(QAction):
     def __init__(self, key, parent=None):
         super(ActionLoadLayout, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
         self.key = key
 
         self.buildUI()
@@ -306,7 +309,7 @@ class BatchTBProcess(QToolBar):
     def __init__(self, name="Tool bar name", apps=[], parent=None):
         super(BatchTBProcess, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
         self.name = name
         self.layout = parent
         self.apps = apps
@@ -333,7 +336,7 @@ class NoteStamp(QTextTableFormat):
         super(NoteStamp, self).__init__()
         self.setBorder(1)
         self.setCellPadding(4)
-        self.setAlignment(app.right)
+        self.setAlignment(right)
 
 class DockStamp(QTextEdit):
 
@@ -351,11 +354,11 @@ class DockStamp(QTextEdit):
         frame.setFrameFormat(frameFormat)
 
         cursor.insertTable(1, 1, NoteStamp())
-        cursor.insertText(app.datetTimeStamp, QTextCharFormat())
+        cursor.insertText(datetTimeStamp, QTextCharFormat())
 
     def applySetting(self):
         self.resize(250, 100)
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.setSizePolicy(SiPoMin, SiPoMin)
 
 class DockWidget(QDockWidget):
 
@@ -363,7 +366,7 @@ class DockWidget(QDockWidget):
         super(DockWidget, self).__init__(parent)
 
         self.setWindowTitle = name
-        self.setAllowedAreas(app.dockB | app.dockT)
+        self.setAllowedAreas(dockB | dockT)
 
         self.content = DockStamp(self)
         self.buildUI()
@@ -394,7 +397,7 @@ class TabContent(QWidget):
             layout = QGridLayout()
             layout.addWidget(Label())
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
         self.layout = layout
         self.buildUI()
         self.setLayout(self.layout)
@@ -404,20 +407,22 @@ class TabContent(QWidget):
         self.applySetting()
 
     def applySetting(self):
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.setSizePolicy(SiPoMin, SiPoMin)
 
 class TabWidget(QWidget):
 
     def __init__(self, parent=None):
         super(TabWidget, self).__init__(parent)
-        self.settings = app.APPSETTING
+        self.settings = appSetting
+
+        self.layout = QVBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
         self.tabs = QTabWidget()
         self.tabs.setTabBar(TabBar())
-        self.layout = QVBoxLayout()
+
         self.layout.addWidget(self.tabs)
 
         self.applySetting()
@@ -436,7 +441,7 @@ class AutoArrangeIconGrid(QGridLayout):
     def __init__(self, btns=[], parent=None):
         super(AutoArrangeIconGrid, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
 
         self.btns = btns
 
@@ -478,7 +483,7 @@ class AutoArrangeBtnGrid(QGridLayout):
     def __init__(self, btns=[], parent=None):
         super(AutoArrangeBtnGrid, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
         self.btns = btns
         self.buildUI()
 
@@ -518,7 +523,7 @@ class AutoArrangeImageView(QGridLayout):
     def __init__(self, imageView, parent=None):
         super(AutoArrangeImageView, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
 
         self.img = imageView
 
@@ -541,7 +546,7 @@ class AutoSectionBtnGrp(QGroupBox):
     def __init__(self, title="Section Title", btns=[], mode="IconGrid", parent=None):
         super(AutoSectionBtnGrp, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
         self.setTitle(title)
         self.btns = btns
         self.mode = mode
@@ -566,7 +571,7 @@ class AutoSectionQMainGrp(QGroupBox):
     def __init__(self, title="Section Title", subLayout=None, parent=None):
         super(AutoSectionQMainGrp, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
         self.setTitle(title)
         self.subLayout = subLayout
 
@@ -588,7 +593,7 @@ class AutoSectionQGridGrp(QGroupBox):
     def __init__(self, title="Section Title", subLayout=None, parent=None):
         super(AutoSectionQGridGrp, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
         self.setTitle(title)
 
         self.layout = subLayout
@@ -604,11 +609,11 @@ class AutoSectionLayoutGrp(QGroupBox):
     def __init__(self, title="Section Title", subLayout=None, parent=None):
         super(AutoSectionLayoutGrp, self).__init__(parent)
 
-        self.settings = app.APPSETTING
+        self.settings = appSetting
         self.setTitle(title)
 
         if subLayout == None or len(subLayout) == 0 or str(type(subLayout)) in ["Class <'Label'>", "Class <'QLabel'>",]:
-            subLayout = Label(app.WAIT_LAYOUT_COMPLETE)
+            subLayout = Label(WAIT_LAYOUT_COMPLETE)
             self.layout = QGridLayout()
             self.layout.addWidget(subLayout, 0, 0, 1, 1)
         else:
