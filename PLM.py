@@ -76,6 +76,7 @@ class PlmConsole(QApplication):
 
         self.settings = Settings(section='app', parent=self)
         self.settings.setvalueSig.connect(self.settings_setvalue)
+        self.settings.setProperty(self)
 
         # self.threadpool = QThreadPool()
         # self.numOfThread = self.threadpool.maxThreadCount()
