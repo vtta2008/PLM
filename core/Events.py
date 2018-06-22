@@ -14,14 +14,17 @@ import copy
 import logging
 import sys
 
-import appData as app
-logger = app.logger
+from appData.Loggers import SetLogger
+logger = SetLogger()
 
 class Singleton(object):
     def __new__(type):
         if not '_the_instance' in type.__dict__:
             type._the_instance = object.__new__(type)
         return type._the_instance
+
+
+
 
 
 class EventsManager(Singleton):
