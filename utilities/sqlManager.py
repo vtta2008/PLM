@@ -11,7 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 import sqlite3 as lite
-import appData as app
+from appData import DBPTH
 
 class DatabaseManager(object):
 
@@ -19,7 +19,7 @@ class DatabaseManager(object):
         self.db = database
         self.table = table
 
-        self.con = lite.connect(app.DBPTH)
+        self.con = lite.connect(DBPTH)
         self.cursor = self.con.cursor()
 
         if self.table == "userTokenLogin":

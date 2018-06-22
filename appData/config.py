@@ -11,27 +11,27 @@ Description:
 """ Import """
 
 # Python
-import os
+
+from platform import system
 import json
 import pickle
 
 from importlib import reload as r
 
-# Plm
-from appData import logger as l
-
-logger = l.online_exception_logging()
+import platform
+from PyQt5 import QtCore
 
 from appData._path import *
 from appData._docs import *
 from appData._keys import *
-from appData._meta import *
 from appData._layout import *
 from appData._format import *
 from appData._pref import *
 from appData._rcSQL import *
+from appData._meta import *
+PLATFORM = 'Windows'
+API_MINIMUM = 0.64
 
-from utilities import utils as func
 from appData import _path as p
 from appData import _meta as m
 
@@ -100,7 +100,7 @@ ABOUT = read_file(ABOUT)
 CREDIT = read_file(CREDIT)
 README = PLM_ABOUT
 
-dirLst = [CONFIGLOCALDAMGDIR, PLMCONFIGLOCAL, CONFIGDIR, SETTINGDIR, LOGDIR, FORMATDIR, CACHEDIR, PREFDIR, USERPREFDIR]
+dirLst = [CONFIGLOCALDAMGDIR, PLMCONFIGLOCAL, CONFIGDIR, SETTINGDIR, LOGDIR, CACHEDIR, PREFDIR, USERPREFDIR]
 
 for pth in dirLst:
     if not os.path.exists(pth):
@@ -109,17 +109,49 @@ for pth in dirLst:
 if not os.path.exists(DBPTH):
     GenerateResource()
 
+class SafeSaver(object):
+    """A safe saver to disk.
+    It saves to a .tmp and moves into final destination, and other
+    considerations.
+    """
+
+    def __init__(self, fname):
+        self.fname = fname
+        self.tmp = fname + ".tmp"
+        self.fh = None
+
+    def __enter__(self):
+        self.fh = open(self.tmp, 'wb')
+        return self.fh
+
+    def __exit__(self, *exc_data):
+        self.fh.close()
+
+        # only move into final destination if all went ok
+        if exc_data == (None, None, None):
+            if os.path.exists(self.fname):
+                # in Windows we need to remove the old file first
+                os.remove(self.fname)
+            os.rename(self.tmp, self.fname)
+
 def load_appInfo():
     if not os.path.exists(mainConfig):
-        from appData import LocalCfg
-        cfg = reload_module(LocalCfg)
-        cfg.LocalCfg()
+        from appData.LocalCfg import LocalCfg
+        logger.info("Storing local config")
+        LocalCfg()
     # Load info from file
+
+    logger.info("Loading local config")
     with open(mainConfig, 'r') as f:
         appInfo = json.load(f)
     return appInfo
 
 def load_iconInfo():
+    if not os.path.exists(mainConfig):
+        from appData.LocalCfg import LocalCfg
+        logger.info("Storing local icon")
+        LocalCfg()
+    logger.info("Loading local icon")
     with open(appIconCfg, 'r') as f:
         iconInfo = json.load(f)
     return iconInfo
@@ -127,60 +159,7 @@ def load_iconInfo():
 APPINFO = load_appInfo()
 ICONINFO = load_iconInfo()
 
-# --------------------------------------------------------------------------------------------------------------
-""" Combine config data """
-
-pVERSION = dict(autodesk=autodeskVer, adobe=adobeVer, foundry=foundryVer, pixologic=pixologiVer,
-                sizefx=sizefxVer, office=officeVer, jetbrains=jetbrainsVer)
-
-pPACKAGE = dict(autodesk=autodeskApp, adobe=adobeApp, foundry=foundryApp, pixologic=pixologiApp,
-                sizefx=sizefxApp, office=officeApp, jetbrains=jetbrainsApp)
-
-pTRACK = dict(TDS=TRACK_TDS, VFX=TRACK_VFX, ART=TRACK_ART, Office=TRACK_OFFICE, Dev=TRACK_DEV,
-              Tools=TRACK_TOOLS, Extra=TRACK_EXTRA, sysTray=TRACK_SYSTRAY, )
-
-# --------------------------------------------------------------------------------------------------------------
-""" Store config data """
-
-def generate_key_packages(*args):
-    keyPackage = []
-    for k in pPACKAGE:
-        for name in pPACKAGE[k]:
-            for ver in pVERSION[k]:
-                if name == 'Hiero' or name == 'HieroPlayer':
-                    key = name + ver
-                else:
-                    key = name + " " + ver
-                keyPackage.append(key)
-
-    return keyPackage + otherApp + anacondaApp + CONFIG_APPUI + ['Word', 'Excel', 'PowerPoint']
-
-def generate_config(key, *args):
-    keyPackages = generate_key_packages()
-    keys = []
-    for k in keyPackages:
-        for t in pTRACK[key]:
-            if t in k:
-                keys.append(k)
-    return list(sorted(set(keys)))
-
-KEYPACKAGE = generate_key_packages()
-
-# Toolbar config
-CONFIG_TDS = generate_config('TDS')
-CONFIG_VFX = generate_config('VFX')
-CONFIG_ART = generate_config('ART')
-
-# Tab 1 sections config
-CONFIG_OFFICE = generate_config('Office')
-CONFIG_DEV = generate_config('Dev') + ['Command Prompt']
-CONFIG_TOOLS = generate_config('Tools')
-CONFIG_EXTRA = generate_config('Extra')
-CONFIG_SYSTRAY = generate_config('sysTray')
-
-FILEPATH = os.path.join(CONFIGDIR, "PLM.cfg")
-
-class _Config(object):
+class Configurations(object):
     """The configuration."""
 
     # config options, with their default
@@ -193,6 +172,7 @@ class _Config(object):
 
     def __init__(self):
         self._needs_save = 0
+        FILEPATH = os.path.join(CONFIGDIR, 'PLM.cfg')
 
         if not os.path.exists(FILEPATH):
             # default to an empty dict
@@ -203,6 +183,9 @@ class _Config(object):
         with open(FILEPATH, 'rb') as fh:
             self._data = pickle.load(fh)
         logger.debug("Loaded: %s", self._data)
+
+        self.fix_environment()
+        self.setup_dependancies()
 
     def __getattr__(self, key):
         return self._data.get(key, self._config_options[key])
@@ -218,16 +201,31 @@ class _Config(object):
             else:
                 raise AttributeError
 
+    def fix_environment(self):
+        """Add enviroment variable on Windows systems."""
+        from PyQt5 import __file__ as pyqt_path
+        if system() == "Windows":
+            pyqt = os.path.dirname(pyqt_path)
+            qt_platform_plugins_path = os.path.join(pyqt, "plugins")
+            os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = qt_platform_plugins_path
+
+    def setup_dependancies(self):
+        dpc = ['nodegraph', 'lauescript']
+        for i in dpc:
+            pth = os.path.join(p.COREDIR, i)
+            pths = os.getenv('PYTHONPATH') + ';' + pth
+            os.environ['PYTHONPATH'] = pths
+            print(os.getenv('PYTHONPATH'))
+
     def save(self):
         """Save the config to disk."""
         if self._needs_save:
             logger.debug("Saving: %s", self._data)
-            with func.SafeSaver(FILEPATH) as fh:
+            with SafeSaver(FILEPATH) as fh:
                 pickle.dump(self._data, fh)
                 self._needs_save = 0
 
-
-config = _Config
+Configurations()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:56 PM

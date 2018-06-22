@@ -11,18 +11,19 @@ Description:
 """ Import """
 
 # Python
+import winshell, os, json
 
-import os
-import winshell
-import json
-
-# Plm
-import appData as app
+from appData._meta import __plmWiki__, __envKey__
+from appData._keys import KEYDETECT
+from appData._keys import KEYPACKAGE, CONFIG_SYSTRAY, CONFIG_APPUI
+from appData._path import DAMGLOGO, PLMLOGO, ICONDIR32, pyEnvCfg, mainConfig, appIconCfg, webIconCfg, appConfig
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logger = app.logger
+from sys import argv
+from appData.Loggers import SetLogger
+logger = SetLogger()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Collecting all info. """
@@ -54,13 +55,13 @@ class LocalCfg(object):
     def collect_icon_path(self):
         # Create dictionary for icon info
         self.iconInfo = {}
-        self.iconInfo['Logo'] = app.PLMLOGO
-        self.iconInfo['DAMG'] = app.DAMGLOGO
+        self.iconInfo['Logo'] = PLMLOGO
+        self.iconInfo['DAMG'] = DAMGLOGO
         # Custom some info to debug
         self.iconInfo['Sep'] = 'separato.png'
         self.iconInfo['File'] = 'file.png'
         # Get list of icons in imgage folder
-        iconlst = [i for i in self.get_file_path(app.ICONDIR32) if i.endswith(".png")]
+        iconlst = [i for i in self.get_file_path(ICONDIR32) if i.endswith(".png")]
 
         for i in iconlst:
             self.iconInfo[os.path.basename(i).split('.icon')[0]] = i
@@ -100,23 +101,23 @@ class LocalCfg(object):
 
         delKeys = []
         for key in self.appInfo:
-            for k in app.KEYDETECT:
+            for k in KEYDETECT:
                 if k in key:
                     delKeys.append(key)
 
         for key in delKeys:
             self.del_key(key, self.appInfo)
 
-        keepKeys = [k for k in app.KEYPACKAGE if k in self.appInfo and k in self.iconInfo]
+        keepKeys = [k for k in KEYPACKAGE if k in self.appInfo and k in self.iconInfo]
 
         # Custom functions
         self.mainInfo['About'] = ['About PLM', self.iconInfo['About'], 'About']
         self.mainInfo['Exit'] = ['Exit Pipeline Tool', self.iconInfo['Exit'], 'Exit']
         self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'CleanPyc']
         self.mainInfo['ClearData'] = ['Clean Config data', self.iconInfo['CleanConfig'], 'CleanConfigData']
-        self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['Reconfig'], 'Config']
+        self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['Reconfig'], 'Re Config']
         self.mainInfo['Command Prompt'] = ['Open command prompt', self.iconInfo['Command Prompt'], 'open_cmd']
-        self.mainInfo['PLM wiki'] = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=app.__plmWiki__)]
+        self.mainInfo['PLM wiki'] = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=__plmWiki__)]
         self.mainInfo['PLMBrowser'] = ['PlmBrowser', self.iconInfo['PLMBrowser'], "PLMBrowser"]
         self.mainInfo['OpenConfig'] = ['Open config folder', self.iconInfo['OpenConfig'], '']
 
@@ -145,16 +146,16 @@ class LocalCfg(object):
         for key in keepKeys:
             self.mainInfo[key] = [key, self.getAppIcon(32, key), "{key}".format(key=self.appInfo[key])]
 
-        for key in app.CONFIG_APPUI:
+        for key in CONFIG_APPUI:
             self.mainInfo[key] = [key, self.getAppIcon(32, key), "{key}".format(key=key)]
 
-        for key in app.CONFIG_SYSTRAY:
+        for key in CONFIG_SYSTRAY:
             self.mainInfo[key] = [key, self.getAppIcon(32, key), "{key}".format(key=key)]
 
         self.create_config_file('main', self.mainInfo)
 
     def getAppIcon(self, size=32, iconName="AboutPlm"):
-        iconPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'icons', "x" + str(size))
+        iconPth = os.path.join(os.getenv(__envKey__), 'imgs', 'icons', "x" + str(size))
         return os.path.join(iconPth, iconName + ".icon.png")
 
     def get_all_path_from_dir(self, dir):
@@ -189,15 +190,15 @@ class LocalCfg(object):
 
     def create_config_file(self, name, data):
         if name == 'envKeys':
-            filePth = app.pyEnvCfg
+            filePth = pyEnvCfg
         elif name == "main":
-            filePth = app.mainConfig
+            filePth = mainConfig
         elif name == 'icon':
-            filePth = app.appIconCfg
+            filePth = appIconCfg
         elif name == 'app':
-            filePth = app.appConfig
+            filePth = appConfig
         else:
-            filePth = app.webIconCfg
+            filePth = webIconCfg
 
         with open(filePth, 'w') as f:
             json.dump(data, f, indent=4)

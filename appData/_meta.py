@@ -10,7 +10,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ DAMG team """
 
+__envKey__ = "PIPELINE_MANAGER"
+
 __organization__ = "DAMG team"
+__groupname__ = "DAMGteam"
 __damgSlogan__ = "Comprehensive Solution Design"
 __website__ = "https://damgteam.com"
 __author1__ = "Trinh Do"

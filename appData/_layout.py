@@ -69,11 +69,7 @@ dockR = Qt.RightDockWidgetArea
 dockT = Qt.TopDockWidgetArea
 dockB = Qt.BottomDockWidgetArea
 
-# datestamp
 
-datetTimeStamp = QDateTime.currentDateTime().toString("hh:mm - dd MMMM yy")
-
-IMGEXT = "All Files (*);;Img Files (*.jpg);;Img Files (*.png)"
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 14/06/2018 - 9:58 PM

@@ -18,19 +18,19 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget
 
 # Plt
-import appData as app
+
 from ui import uirc as rc
 from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logger = app.logger
+from appData import logger, APPDATADIR
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
 
-FILEPATH = os.path.join(os.getenv(app.__envKey__), 'appData', 'PLM.pkl')
+FILEPATH = os.path.join(APPDATADIR, 'PLM.pkl')
 ELEMENTS = 'elements'
 LAST_ELEMENT_ID = 'last_elements_id'
 

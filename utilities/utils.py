@@ -14,12 +14,8 @@ Description:
 import os, sys, requests, platform, subprocess, winshell, yaml, json, pip, re, datetime, time, uuid, win32api
 
 # Plt
-import appData as app
-
-# ----------------------------------------------------------------------------------------------------------- #
-""" Simple log """
-
-logger = app.logger
+from appData.config import logger
+from appData import __envKey__, __pkgsReq__, LOGODIR, KEYPACKAGE, WEBICONDIR, TAGDIR, AVATARDIR
 
 # -------------------------------------------------------------------------------------------------------------
 """ Metadata """
@@ -97,8 +93,7 @@ def handle_path_error(directory=None):
         try:
             raise IsADirectoryError("Path is not exists: {directory}".format(directory=directory))
         except IsADirectoryError as error:
-            pass
-            # logger.info('Caught error: ' + repr(error))
+            logger.info('Caught error: ' + repr(error))
 
 # -------------------------------------------------------------------------------------------------------------
 """ Python """
@@ -115,18 +110,19 @@ def install_py_packages(name):
     else:
         subprocess.Popen('python -m pip install %s' % name, shell=True).wait()
 
-def install_required_package():
-    for pkg in app.__pkgsReq__:
-        try:
-            subprocess.Popen("python -m pip install %s" % pkg)
-        except FileNotFoundError:
-            subprocess.Popen("pip install %s" % pkg)
-        finally:
-            subprocess.Popen("python -m pip install --upgrade %s" % pkg)
+def install_require_package(package=__pkgsReq__):
+    try:
+        import package
+    except ImportError as err:
+        print("installing {0}".format(package))
+        command = "start python -m pip install {0}".format(package)
+        p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
+        (output, err) = p.communicate()
+        status = p.wait()
+        print("Command output: {0}".format(output))
 
 def uninstall_all_required_package():
-    __pkgsReq__ = app.__pkgsReq__
-    for pkg in app.__pkgsReq__:
+    for pkg in __pkgsReq__:
         try:
             subprocess.Popen("python -m pip uninstall %s" % pkg)
         except FileNotFoundError:
@@ -137,42 +133,6 @@ def uninstall_all_required_package():
         return True
     else:
         return False
-
-def get_python_pkgs():
-    pyPkgs = {}
-    pyPkgs['__mynote__'] = 'import pip; pip.get_installed_distributions()'
-
-    for package in pip.get_installed_distributions():
-        name = package.project_name  # SQLAlchemy, Django, Flask-OAuthlib
-        key = package.key  # sqlalchemy, django, flask-oauthlib
-        module_name = package._get_metadata("top_level.txt")  # sqlalchemy, django, flask_oauthlib
-        location = package.location  # virtualenv lib directory etc.
-        version = package.version  # version number
-
-        pyPkgs[name] = [key, version, location]
-
-    pkgConfig = os.path.join(app.dtDir.split('appData')[0], 'appData', 'pkgs_config.yml')
-
-    with open(pkgConfig, 'w') as f:
-        yaml.dump(pyPkgs, f, default_flow_style=False)
-
-    return pyPkgs
-
-def inspect_package(name):
-    """
-    check python component, if false, it will install component
-    :param name:
-    :return:
-    """
-    # logger.info( 'Trying to import %s' % name )
-    allPkgs = get_python_pkgs()
-    if name in allPkgs:
-        # logger.info('package "%s" is already installed' % name)
-        pass
-    else:
-        # logger.info('package "%s" is not installed, '
-        #             'execute package installation procedural' % name)
-        install_py_packages(name)
 
 def get_py_env_var(key, path):
     try:
@@ -248,34 +208,33 @@ def get_base_name(path):
     return os.path.basename(path)
 
 def getAppIcon(size=32, iconName="AboutPlt"):
-    iconPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'icons', "x" + str(size))
+    iconPth = os.path.join(os.getenv(__envKey__), 'imgs', 'icons', "x" + str(size))
     return os.path.join(iconPth, iconName + ".icon.png")
 
 def getLogo(size=32, name="DAMG"):
     if name == "Logo":
-        logoPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'logo', 'Plm', 'icons')
+        logoPth = os.path.join(LOGODIR, 'Plm', 'icons')
     elif name == 'DAMG':
-        logoPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'logo', 'DAMGteam', 'icons')
+        logoPth = os.path.join(LOGODIR, 'DAMGteam', 'icons')
     else:
-        logoPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'logo', 'Plt', 'icons')
+        logoPth = os.path.join(LOGODIR, 'Plt', 'icons')
 
     return os.path.join(logoPth, str(size) + "x" + str(size) + ".png")
 
 def getWebIcon(name):
-    webiconPth = os.path.join(os.getenv(app.__envKey__), 'imgs', 'web')
-    icons = [i for i in get_file_path(webiconPth) if ".avatar" in i]
+    icons = [i for i in get_file_path(WEBICONDIR) if ".icon" in i]
     for i in icons:
         if name in i:
             return i
 
 def getAvatar(name):
-    avatars = [a for a in get_file_path(os.path.join(os.getenv(app.__envKey__), 'imgs', 'avatar')) if '.avatar' in a]
+    avatars = [a for a in get_file_path(AVATARDIR) if '.avatar' in a]
     for a in avatars:
         if name in a:
             return a
 
 def getTag(name):
-    tags = [t for t in get_file_path(os.path.join(os.getenv(app.__envKey__), 'imgs', 'tags')) if '.tag' in t]
+    tags = [t for t in get_file_path(TAGDIR) if '.tag' in t]
     for t in tags:
         if name in t:
             return t
@@ -315,7 +274,7 @@ def dataHandle(type='json', mode='r', filePath=None, data={}):
 
 def get_local_pc():
 
-    package = app.KEYPACKAGE
+    package = KEYPACKAGE
     pythonVersion = sys.version
     windowOS = platform.system()
     windowVersion = platform.version()
@@ -445,35 +404,10 @@ def del_key(key, dict = {}):
         # logger.info("key poped: {key}".format(key=key))
 
 def clean_pyc_file(var):
-    fileNames = [f for f in get_file_path(os.getenv(app.__envKey__)) if var in f] or []
+    fileNames = [f for f in get_file_path(os.getenv(__envKey__)) if var in f] or []
     if not fileNames == []:
         for filePth in fileNames:
             os.remove(filePth)
 
 
 # ----------------------------------------------------------------------------------------------------------- #
-
-class SafeSaver(object):
-    """A safe saver to disk.
-    It saves to a .tmp and moves into final destination, and other
-    considerations.
-    """
-
-    def __init__(self, fname):
-        self.fname = fname
-        self.tmp = fname + ".tmp"
-        self.fh = None
-
-    def __enter__(self):
-        self.fh = open(self.tmp, 'wb')
-        return self.fh
-
-    def __exit__(self, *exc_data):
-        self.fh.close()
-
-        # only move into final destination if all went ok
-        if exc_data == (None, None, None):
-            if os.path.exists(self.fname):
-                # in Windows we need to remove the old file first
-                os.remove(self.fname)
-            os.rename(self.tmp, self.fname)

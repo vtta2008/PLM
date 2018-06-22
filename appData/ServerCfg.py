@@ -13,18 +13,20 @@ Description:
 """ Import """
 
 # Python
-import time
+import time, logging
 
 # PtQt5
 from PyQt5.QtCore import (pyqtSignal, QByteArray, QDataStream, QIODevice, QThread)
 from PyQt5.QtNetwork import (QTcpServer, QTcpSocket)
 
 # Plm
-import appData as app
+from appData.config import LOGPTH, LOG_FORMAT, DT_FORMAT
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
-logger = app.logger
+
+from appData.Loggers import SetLogger
+logger = SetLogger()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Thread connecting """

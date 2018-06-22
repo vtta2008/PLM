@@ -21,10 +21,7 @@ from PyQt5.QtWidgets import QGridLayout, QApplication, QWidget
 import appData as app
 from ui import uirc as rc
 
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-logger = app.logger
+from appData.config import logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Signals """
@@ -47,7 +44,7 @@ class Signals(QObject):
     dataReady = pyqtSignal(int, int)
 
     started = pyqtSignal()
-    finished = pyqtSignal()
+    finished = pyqtSignal(int)
     error = pyqtSignal(tuple)
     result = pyqtSignal(object)
     progress = pyqtSignal(int)
@@ -103,7 +100,7 @@ class Worker(QRunnable):
         else:
             self.signals.result.emit(result)                                    # Return the result of the processing
         finally:
-            self.signals.finished.emit()                                        # Done
+            self.signals.finished.emit(self.workerID)                                        # Done
 
 # -------------------------------------------------------------------------------------------------------------
 """ Thread """

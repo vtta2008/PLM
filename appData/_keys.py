@@ -13,6 +13,7 @@ Description:
 
 # Python
 import os
+from appData._path import CONFIGDIR
 
 # --------------------------------------------------------------------------------------------------------------
 """ Autodesk config """
@@ -82,7 +83,7 @@ otherApp = ['Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'S
 
 CONFIG_APPUI = ['About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary', 'FindFiles', 'ForgotPassword',
                 'ImageViewer', 'NewProject', 'Preferences', 'Screenshot', 'UserSetting', 'PLMBrowser', 'NoteReminder',
-                'TextEditor']
+                'TextEditor', 'NodeNetwork']
 
 # --------------------------------------------------------------------------------------------------------------
 """ Tracking key """
@@ -97,13 +98,66 @@ TRACK_OFFICE = ['Word', 'Excel', 'PowerPoint', 'Wordpad']
 
 TRACK_DEV = ['PyCharm', 'Sublime Text', 'QtDesigner', 'Git Bash', 'Command Prompt', 'Spyder']
 
-TRACK_TOOLS = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'Screenshot', ]
+TRACK_TOOLS = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'Screenshot', 'NodeNetwork']
 
 TRACK_EXTRA = ['3Ds Max', 'Mudbox', 'BLender', ]
 
 TRACK_SYSTRAY = ['Snipping Tool', 'Screenshot', 'Maximize', 'Minimize', 'Restore', 'Quit', ]
 
 KEYDETECT = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype"]
+
+# --------------------------------------------------------------------------------------------------------------
+""" Combine config data """
+
+pVERSION = dict(autodesk=autodeskVer, adobe=adobeVer, foundry=foundryVer, pixologic=pixologiVer,
+                sizefx=sizefxVer, office=officeVer, jetbrains=jetbrainsVer)
+
+pPACKAGE = dict(autodesk=autodeskApp, adobe=adobeApp, foundry=foundryApp, pixologic=pixologiApp,
+                sizefx=sizefxApp, office=officeApp, jetbrains=jetbrainsApp)
+
+pTRACK = dict(TDS=TRACK_TDS, VFX=TRACK_VFX, ART=TRACK_ART, Office=TRACK_OFFICE, Dev=TRACK_DEV,
+              Tools=TRACK_TOOLS, Extra=TRACK_EXTRA, sysTray=TRACK_SYSTRAY, )
+
+# --------------------------------------------------------------------------------------------------------------
+""" Store config data """
+
+def generate_key_packages(*args):
+    keyPackage = []
+    for k in pPACKAGE:
+        for name in pPACKAGE[k]:
+            for ver in pVERSION[k]:
+                if name == 'Hiero' or name == 'HieroPlayer':
+                    key = name + ver
+                else:
+                    key = name + " " + ver
+                keyPackage.append(key)
+
+    return keyPackage + otherApp + anacondaApp + CONFIG_APPUI + ['Word', 'Excel', 'PowerPoint']
+
+def generate_config(key, *args):
+    keyPackages = generate_key_packages()
+    keys = []
+    for k in keyPackages:
+        for t in pTRACK[key]:
+            if t in k:
+                keys.append(k)
+    return list(sorted(set(keys)))
+
+KEYPACKAGE = generate_key_packages()
+
+# Toolbar config
+CONFIG_TDS = generate_config('TDS')
+CONFIG_VFX = generate_config('VFX')
+CONFIG_ART = generate_config('ART')
+
+# Tab 1 sections config
+CONFIG_OFFICE = generate_config('Office')
+CONFIG_DEV = generate_config('Dev') + ['Command Prompt']
+CONFIG_TOOLS = generate_config('Tools')
+CONFIG_EXTRA = generate_config('Extra')
+CONFIG_SYSTRAY = generate_config('sysTray')
+
+FILEPATH = os.path.join(CONFIGDIR, "PLM.cfg")
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 31/05/2018 - 9:47 AM

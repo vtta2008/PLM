@@ -65,7 +65,7 @@ LTD = dict(
 
 class GenerateResource(object):
 
-    appDataDir = os.path.abspath(__file__).split(os.path.basename(os.path.abspath(__file__)))[0]
+    appDataDir = os.path.dirname(__file__)
     dbLocalFileName = "local.db"
     dbLocal = os.path.join(appDataDir, dbLocalFileName)
 

@@ -11,17 +11,22 @@ Description:
 """ Import """
 
 # Python
-import os
+import os, logging
 import shutil
 
-
 # Plm
-import appData as app
+from appData._format import LOG_FORMAT, DT_FORMAT
+from appData._path import LOGPTH
+from appData._meta import __envKey__
+from appData._keys import autodeskVer
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logger = app.logger
+from sys import argv
+from appData.Loggers import get_logger
+verbose = len(argv) > 1 and argv[1] in ('-v', '--verbose')
+logger = get_logger(verbose)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -35,9 +40,7 @@ class MayaCfg(object):
     def __init__(self):
         super(MayaCfg, self).__init__()
 
-        self.settings = app.appSetting
-
-        tk = os.path.join(os.getenv(app.__envKey__), 'tankers', 'pMaya')
+        tk = os.path.join(os.getenv(__envKey__), 'tankers', 'pMaya')
 
         tanker = dict(modules=['anim', 'lib', 'modeling', 'rendering', 'simulating', 'surfacing', ], QtPlugins=[], )
 
@@ -49,9 +52,9 @@ class MayaCfg(object):
         os.environ['PYTHONPATH'] = pVal
 
         # Copy userSetup.py from source code to properly maya folder
-        usScr = os.path.join(os.getenv(app.__envKey__), 'packages', 'maya', 'userSetup.py')
+        usScr = os.path.join(os.getenv(__envKey__), 'packages', 'maya', 'userSetup.py')
         if os.path.exists(usScr):
-            mayaVers = [os.path.join(tk, v) for v in app.autodeskVer if os.path.exists(os.path.join(tk, v))] or []
+            mayaVers = [os.path.join(tk, v) for v in autodeskVer if os.path.exists(os.path.join(tk, v))] or []
             if not len(mayaVers) == 0 or not mayaVers == []:
                 for usDes in mayaVers:
                     shutil.copy(usScr, usDes)

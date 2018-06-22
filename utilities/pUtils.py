@@ -18,13 +18,11 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt
 from PyQt5.QtWidgets import QApplication, QWidget
 from PyQt5.QtGui import QFontMetrics, QFont
 
-# Plt
-import appData as app
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-logger = app.logger
+from appData.config import logger
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -36,6 +34,10 @@ def getTextSize(text, painter=None):
         metrics = painter.fontMetrics()
     size = metrics.size(Qt.TextSingleLine, text)
     return size
+
+
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 17/06/2018 - 6:46 PM
