@@ -152,8 +152,8 @@ class ImageInitUI(ViewerWindow):
 
     def __init__(self, key=None, parent=None):
         super(ImageInitUI, self).__init__(parent)
-        from appData import DBPTH
-        self.dbfile = DBPTH
+        from appData import DB_PTH
+        self.dbfile = DB_PTH
         self.dbdir = os.path.dirname(self.dbfile)
 
         print(self.dbfile)

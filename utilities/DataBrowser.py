@@ -152,9 +152,9 @@ class DataBrowser(QTabWidget):
         super(DataBrowser, self).__init__(parent)
 
         for tableName in tableNames:
-            sqlManager.DatabaseManager(app.DBPTH, tableName)
+            sqlManager.DatabaseManager(app.DB_PTH, tableName)
 
-        self.dbu = sqlManager.DatabaseManager(app.DBPTH, "userTokenLogin")
+        self.dbu = sqlManager.DatabaseManager(app.DB_PTH, "userTokenLogin")
 
         self.tab1 = Tab1(self)
         self.tab2 = Tab2(self)

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Node.py
+Script Name: pNode.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -12,15 +12,13 @@ Description:
 import sys, uuid
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, QPointF, QRectF, QLineF, pyqtProperty
-from PyQt5.QtWidgets import QGraphicsItem, QApplication, QGraphicsScene, QGraphicsView, QGraphicsObject, QStyle, QAbstractButton
-from PyQt5.QtGui import QColor, QPen, QBrush, QRadialGradient
+from PyQt5.QtWidgets import QGraphicsObject
+from PyQt5.QtGui import QPen
 
 # Plt
 from appData import center
-from appData._pNN import *
+from appData.scr._pNN import *
 from utilities.pUtils import *
-from ui.NodeGraph.pKnob import InputKnob, OutputKnob
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -30,7 +28,7 @@ class pNodeParts(QGraphicsObject):
     def __init__(self, parent=None):
         super(pNodeParts, self).__init__(parent)
 
-        self.color = QColor(LIGHTGRAY)
+        # self.color = QColor(LIGHTGRAY)
         self.dragOver = False
         self.setAcceptDrops(True)
 
@@ -52,6 +50,9 @@ class HeaderText(pNodeParts):
 
     def boundingRect(self):
         return QRectF(0, 0, 120, 25)
+
+    def shape(self):
+        pass
 
     def paint(self, painter, option, widget=None):
         rect = self.boundingRect()
@@ -102,7 +103,7 @@ class HeaderShape(pNodeParts):
         rect = QRectF(0, 0, 120, 25)
         painter.setBrush(GRAY)
         painter.setPen(QPen(BLACK, 0))
-        painter.drawRoundedRect(rect, 10, 200, RELATIVESIZE)
+        painter.drawRoundedRect(rect, 10, 200, RELATIVE_SIZE)
 
 class BodyShape(pNodeParts):
 
@@ -115,7 +116,7 @@ class BodyShape(pNodeParts):
         rect = QRectF(0, 0, 120, 80)
         painter.setBrush(YELLOW)
         painter.setPen(QPen(BLACK, 0))
-        painter.drawRoundedRect(rect, 10, 200, RELATIVESIZE)
+        painter.drawRoundedRect(rect, 10, 200, RELATIVE_SIZE)
 
 class FooterShape(pNodeParts):
 
@@ -128,7 +129,7 @@ class FooterShape(pNodeParts):
         rect = QRectF(0, 0, 120, 25)
         painter.setBrush(GRAY)
         painter.setPen(QPen(BLACK, 0))
-        painter.drawRoundedRect(rect, 10, 200, RELATIVESIZE)
+        painter.drawRoundedRect(rect, 10, 200, RELATIVE_SIZE)
 
 class Knob(QGraphicsItem):
 
@@ -196,20 +197,14 @@ class pNode(pNodeParts):
         super(pNode, self).__init__()
 
         self.uuid = str(uuid.uuid4())
-
-        self.x, self.y = DEFAULT_POS
-        self.w, self.h = DEFAULT_WH
-
         self.fillColor = QColor(220, 220, 220)
-
         self.txt = text
-
         self.margin = MARGIN
         self.roundness = ROUNDNESS
 
         self.setFlag(SELECTABLE)
         self.setFlag(MOVEABLE)
-        self.setCursor(SIZEALLCURSOR)
+        self.setCursor(CURSOR_SIZEALL)
 
         self.setAcceptTouchEvents(True)
         self.setAcceptHoverEvents(True)
@@ -275,7 +270,7 @@ if __name__ == '__main__':
     nodeTest = QApplication(sys.argv)
     scene = QGraphicsScene(0, 0, 400, 400)
 
-    node = pNode("Test node with a name")
+    node = pNode("demo node")
     node.setPos(0, 0)
     scene.addItem(node)
 
@@ -287,7 +282,6 @@ if __name__ == '__main__':
     view.show()
 
     nodeTest.exec_()
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 17/06/2018 - 2:58 PM
+# Created by panda on 5/07/2018 - 7:04 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

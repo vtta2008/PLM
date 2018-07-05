@@ -52,6 +52,7 @@ class WebBrowser(QMainWindow):
         QNetworkProxyFactory.setUseSystemConfiguration(True)
 
         self.view = QWebEngineView(self)
+        self.view
         self.view.load(QUrl(url))
         self.view.loadFinished.connect(self.adjustLocation)
         self.view.titleChanged.connect(self.adjustTitle)

@@ -15,18 +15,17 @@ import os, logging
 import shutil
 
 # Plm
-from appData._format import LOG_FORMAT, DT_FORMAT
-from appData._path import LOGPTH
-from appData._meta import __envKey__
-from appData._keys import autodeskVer
+from appData.scr._format import LOG_FORMAT, DT_FORMAT
+from appData.scr._path import LOGO_PTH
+from appData.scr._meta import __envKey__
+from appData.scr._keys import autodeskVer
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
 from sys import argv
-from appData.Loggers import get_logger
-verbose = len(argv) > 1 and argv[1] in ('-v', '--verbose')
-logger = get_logger(verbose)
+from appData.Loggers import SetLogger
+logger = SetLogger()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """

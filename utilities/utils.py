@@ -11,11 +11,11 @@ Description:
 """ Import """
 
 # Python
-import os, sys, requests, platform, subprocess, winshell, yaml, json, pip, re, datetime, time, uuid, win32api
+import os, sys, requests, platform, subprocess, winshell, yaml, json, linecache, re, datetime, time, uuid, win32api
 
 # Plt
 from appData.config import logger
-from appData import __envKey__, __pkgsReq__, LOGODIR, KEYPACKAGE, WEBICONDIR, TAGDIR, AVATARDIR
+from appData import __envKey__, __pkgsReq__, LOGO_DIR, KEYPACKAGE, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR
 
 # -------------------------------------------------------------------------------------------------------------
 """ Metadata """
@@ -94,6 +94,22 @@ def handle_path_error(directory=None):
             raise IsADirectoryError("Path is not exists: {directory}".format(directory=directory))
         except IsADirectoryError as error:
             logger.info('Caught error: ' + repr(error))
+
+def raise_exception():
+    exc_type, exc_obj, tb = sys.exc_info()
+    f = tb.tb_frame
+    lineno = tb.tb_lineno
+    filename = f.f_code.co_filename
+    linecache.checkcache(filename)
+    line = linecache.getline(filename, lineno, f.f_globals)
+
+    logger.critical('---------------------------------------------------------------------------------')
+    logger.critical('Tracking from:   {0}'.format(os.path.basename(filename)))
+    logger.critical('At line number:  {0}'.format(lineno))
+    logger.critical('Details code:    {0}'.format(line.strip()))
+    logger.critical('{0}'.format(exc_obj))
+    logger.critical('---------------------------------------------------------------------------------')
+    return
 
 # -------------------------------------------------------------------------------------------------------------
 """ Python """
@@ -213,28 +229,28 @@ def getAppIcon(size=32, iconName="AboutPlt"):
 
 def getLogo(size=32, name="DAMG"):
     if name == "Logo":
-        logoPth = os.path.join(LOGODIR, 'Plm', 'icons')
+        logoPth = os.path.join(LOGO_DIR, 'Plm', 'icons')
     elif name == 'DAMG':
-        logoPth = os.path.join(LOGODIR, 'DAMGteam', 'icons')
+        logoPth = os.path.join(LOGO_DIR, 'DAMGteam', 'icons')
     else:
-        logoPth = os.path.join(LOGODIR, 'Plt', 'icons')
+        logoPth = os.path.join(LOGO_DIR, 'Plt', 'icons')
 
     return os.path.join(logoPth, str(size) + "x" + str(size) + ".png")
 
 def getWebIcon(name):
-    icons = [i for i in get_file_path(WEBICONDIR) if ".icon" in i]
+    icons = [i for i in get_file_path(WEB_ICON_DIR) if ".icon" in i]
     for i in icons:
         if name in i:
             return i
 
 def getAvatar(name):
-    avatars = [a for a in get_file_path(AVATARDIR) if '.avatar' in a]
+    avatars = [a for a in get_file_path(AVATAR_DIR) if '.avatar' in a]
     for a in avatars:
         if name in a:
             return a
 
 def getTag(name):
-    tags = [t for t in get_file_path(TAGDIR) if '.tag' in t]
+    tags = [t for t in get_file_path(TAG_DIR) if '.tag' in t]
     for t in tags:
         if name in t:
             return t

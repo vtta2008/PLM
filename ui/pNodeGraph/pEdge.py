@@ -16,17 +16,13 @@ import sys, math
 # PyQt5
 from PyQt5.QtCore import QPointF
 from PyQt5.QtWidgets import QApplication, QGraphicsPathItem
-from PyQt5.QtGui import QColor, QPainterPath, QPen
+from PyQt5.QtGui import QPainterPath, QPen
 
 # Plt
 
-from appData._pNN import *
-import appData as app
-
-# -------------------------------------------------------------------------------------------------------------
-""" Variables """
-
-logger = app.logger
+from appData.scr._pNN import *
+from appData.Loggers import SetLogger
+logger = SetLogger()
 
 # -------------------------------------------------------------------------------------------------------------
 """ pEdge """
@@ -96,12 +92,10 @@ class pEdge(QGraphicsPathItem):
         return pEdge.Type
 
     def mousePressEvent(self, event):
-        leftMouse = event.button() == MOUSELEFTBTN
+        leftMouse = event.button() == MOUSE_LEFT
         mod = event.modifiers() == DMK
         if leftMouse and mod:
             self.destroy()
-
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 18/06/2018 - 12:10 AM
+# Created by panda on 5/07/2018 - 7:10 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

@@ -13,10 +13,10 @@ Description:
 # Python
 import winshell, os, json
 
-from appData._meta import __plmWiki__, __envKey__
-from appData._keys import KEYDETECT
-from appData._keys import KEYPACKAGE, CONFIG_SYSTRAY, CONFIG_APPUI
-from appData._path import DAMGLOGO, PLMLOGO, ICONDIR32, pyEnvCfg, mainConfig, appIconCfg, webIconCfg, appConfig
+from appData.scr._meta import __plmWiki__, __envKey__
+from appData.scr._keys import KEYDETECT
+from appData.scr._keys import KEYPACKAGE, CONFIG_SYSTRAY, CONFIG_APPUI
+from appData.scr._path import DAMG_LOGO_32, PLM_LOGO_32, ICON_DIR_32, pyEnvCfg, mainConfig, appIconCfg, webIconCfg, appConfig
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
@@ -55,13 +55,13 @@ class LocalCfg(object):
     def collect_icon_path(self):
         # Create dictionary for icon info
         self.iconInfo = {}
-        self.iconInfo['Logo'] = PLMLOGO
-        self.iconInfo['DAMG'] = DAMGLOGO
+        self.iconInfo['Logo'] = PLM_LOGO_32
+        self.iconInfo['DAMG'] = DAMG_LOGO_32
         # Custom some info to debug
         self.iconInfo['Sep'] = 'separato.png'
         self.iconInfo['File'] = 'file.png'
         # Get list of icons in imgage folder
-        iconlst = [i for i in self.get_file_path(ICONDIR32) if i.endswith(".png")]
+        iconlst = [i for i in self.get_file_path(ICON_DIR_32) if i.endswith(".png")]
 
         for i in iconlst:
             self.iconInfo[os.path.basename(i).split('.icon')[0]] = i

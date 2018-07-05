@@ -12,15 +12,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-import time, logging
-
 # PtQt5
 from PyQt5.QtCore import (pyqtSignal, QByteArray, QDataStream, QIODevice, QThread)
 from PyQt5.QtNetwork import (QTcpServer, QTcpSocket)
-
-# Plm
-from appData.config import LOGPTH, LOG_FORMAT, DT_FORMAT
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """

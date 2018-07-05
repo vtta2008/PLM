@@ -14,7 +14,7 @@ Description:
 import os, sys
 import sqlite3 as lite
 
-from appData import DBPTH
+from appData import DB_PTH
 
 
 # Plt
@@ -23,7 +23,7 @@ from utilities import utils as func
 class QuerryDB(list):
 
     def query_table(self, tn="curUser"):
-        conn = lite.connect(DBPTH)
+        conn = lite.connect(DB_PTH)
         cur = conn.cursor()
         cur.execute("SELECT * FROM {0}".format(tn))
         data = list(cur.fetchall()[0])
@@ -31,7 +31,7 @@ class QuerryDB(list):
 
 class UpdateDB(object):
 
-    conn = lite.connect(DBPTH)
+    conn = lite.connect(DB_PTH)
     cur = conn.cursor()
 
     def __init__(self, tn="curUser", data=list):
@@ -46,7 +46,7 @@ class UpdateDB(object):
 
 class RemoveDB(object):
 
-    conn = lite.connect(DBPTH)
+    conn = lite.connect(DB_PTH)
     cur = conn.cursor()
 
     def __init__(self, tn="curUser"):
@@ -62,7 +62,7 @@ class RemoveDB(object):
 
 class TimeLog(object):
 
-    conn = lite.connect(DBPTH)
+    conn = lite.connect(DB_PTH)
     cur = conn.cursor()
 
     def __init__(self, details=None):

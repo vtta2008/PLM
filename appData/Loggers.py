@@ -11,11 +11,11 @@ Description:
 """ Import """
 
 # Python
-import sys, traceback, logging, enum, pdb
+import sys, traceback, logging, enum, pdb, linecache, os
 
 # Plm
-from appData._path import LOGPTH
-from appData._format import LOG_FORMAT, DT_FORMAT
+from appData.scr._path import LOGO_PTH
+from appData.scr._format import LOG_FORMAT, DT_FORMAT
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -36,13 +36,12 @@ class OneLineExceptionFormatter(logging.Formatter):
 
 class LogLevel(enum.IntEnum):
 
-    Silent = 0
-    Normal = 1
-    Verbose = 2
-    Debug = 3
-    Trace = 4
-    Error = 5
-    Critical = 6
+    Silent   = 0
+    Debug    = 20
+    Normal   = 40
+    Trace    = 60
+    Error    = 80
+    Critical = 100
 
     @classmethod
     def getbyname(cls, name):
@@ -64,50 +63,51 @@ class LogLevel(enum.IntEnum):
 
 class SetLogger(logging.Logger):
 
-    def __init__(self, level="debug", format=LOG_FORMAT['fullOpt'], datefmt=DT_FORMAT['fullOpt'], filemode='w', filename=LOGPTH):
+    def __init__(self, level="debug", format=LOG_FORMAT['fullOpt'], datefmt=DT_FORMAT['fullOpt'], filemode='w', filename=LOGO_PTH):
         super(SetLogger, self).__init__(filename)
 
-        self.level = self.define_level(level=level)
+        self.level = self.define_level(level)
         self.logLevel = self.level_config(self.level)
+
+        self.addLoggingLevel(levelName='TRACE', levelNum=LogLevel.Trace)
 
         self.handler = logging.StreamHandler(sys.stdout)
         self.addHandler(self.handler)
 
         sys.excepthook = self.exception_handler
 
-        logging.basicConfig(format=format, datefmt=datefmt, filename=filename, filemode=filemode, level=level, style="{")
+        logging.basicConfig(format=format, datefmt=datefmt, filename=filename, filemode=filemode, level=self.level, style="{")
 
-    def define_level(self, level):
-        if level == "info":
+    def define_level(self, logLevel):
+        if logLevel is None or logLevel == 'not set':
+            loglvl = logging.NOTSET
+        elif logLevel == "info":
             loglvl = logging.INFO
-        elif level == "warn":
+        elif logLevel == "warn":
             loglvl = logging.WARNING
-        elif level == "debug":
+        elif logLevel == "debug":
             loglvl = logging.DEBUG
-        elif level == "error":
+        elif logLevel == "error":
             loglvl = logging.ERROR
         else:
             loglvl = logging.FATAL
 
-        return loglvl
+        return loglvl*2
 
     def level_config(self, verbosity_loglevel):
 
-        logLevel = LogLevel.getbyverbosity(verbosity_loglevel)
-
-        self.addLoggingLevel('TRACE', logging.DEBUG)
+        verbose_level = LogLevel.getbyverbosity(verbosity_loglevel)
 
         logging_logLevel = {
 
-            LogLevel.Silent:    logging.WARNING,
+            LogLevel.Silent:    logging.NOTSET,
+            LogLevel.Debug:     logging.DEBUG,
             LogLevel.Normal:    logging.INFO,
-            LogLevel.Verbose:   logging.DEBUG,
-            LogLevel.Debug:     logging.TRACE,
+            LogLevel.Trace:     logging.WARN,
             LogLevel.Error:     logging.ERROR,
             LogLevel.Critical:  logging.FATAL,
 
-        }[logLevel]
-
+        }[verbose_level]
         return logging_logLevel
 
     def exception_handler(self, exc_type, exc_value, tb):
@@ -117,7 +117,7 @@ class SetLogger(logging.Logger):
             exception = traceback.format_exception(exc_type, exc_value, tb)
             pdb.post_mortem(tb)
 
-        self.error("Unhandled exception!\n%s", "".join(exception))
+        self.critical("Unhandled exception!\n%s", "".join(exception))
 
         return exception
 

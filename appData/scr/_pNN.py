@@ -10,11 +10,12 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from appData._pQt import *
-from appData._pView import *
-from appData._pScene import *
-from appData._pPainter import *
-from appData._pNode import *
+from appData.scr._pQt import *
+from appData.scr._pView import *
+from appData.scr._pScene import *
+from appData.scr._pPainter import *
+from appData.scr._pNode import *
+from appData.scr._color import *
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 15/06/2018 - 7:50 PM
@@ -33,6 +34,3 @@ MARGIN = 5
 ROUNDNESS = 0
 THICKNESS = 1
 CURRENT_ZOOM = 1
-
-DEFAULT_POS = [0, 0]
-DEFAULT_WH = [120, 30]

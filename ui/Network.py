@@ -219,7 +219,7 @@ def download_file(file_id):
 
     remote_path = data['result']['file_path']
     url = build_fileapi_url(remote_path)
-    file_path = os.path.join(app.DBPTH, uuid.uuid4().hex + '-' + os.path.basename(remote_path))
+    file_path = os.path.join(app.DB_PTH, uuid.uuid4().hex + '-' + os.path.basename(remote_path))
     logger.debug("Getting file content, storing in %r", file_path)
     downloader = _Downloader(url, file_path)
     downloaded_size = yield downloader.deferred

@@ -18,7 +18,9 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QStatusBar
 
 # Plt
-import appData as app
+from core.Settings import Settings
+from appData.Loggers import SetLogger
+logger = SetLogger()
 
 # -------------------------------------------------------------------------------------------------------------
 """ StatusBar """
@@ -32,7 +34,7 @@ class StatusBar(QStatusBar):
         super(StatusBar, self).__init__(parent)
 
         # from core.Settings import Settings
-        self.settings = app.appSetting
+        self.settings = Settings(self)
         self.applySetting()
 
     def applySetting(self):

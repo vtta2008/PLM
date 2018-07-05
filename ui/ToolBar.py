@@ -18,11 +18,13 @@ import sys
 from PyQt5.QtWidgets import QMainWindow, QSizePolicy, QApplication
 
 # Plt
-import appData as app
 from appData import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, APPINFO
 from ui import uirc as rc
 from utilities import utils as func
-logger = app.logger
+from core.Settings import Settings
+
+from appData.Loggers import SetLogger
+logger = SetLogger()
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
@@ -34,7 +36,7 @@ class ToolBar(QMainWindow):
         super(ToolBar, self).__init__(parent)
 
         # from core.Settings import Settings
-        self.settings = app.appSetting
+        self.settings = Settings(self)
         self.appInfo = APPINFO
         self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
 

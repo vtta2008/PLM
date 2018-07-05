@@ -12,8 +12,8 @@ from PyQt5.QtCore import Qt, QThread, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QLabel, QDialog, QVBoxLayout, QPushButton, QWidget, QLineEdit
 from PyQt5.QtGui import QIntValidator
 
-import appData as app
-logger = app.logger
+from appData import SetLogger
+logger = SetLogger()
 
 class WorkThread(QThread):
     ''' Streaming task in its window.

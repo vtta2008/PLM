@@ -26,7 +26,10 @@ import appData as app
 from appData.ServerCfg import ServerCfg
 from ui import uirc as rc
 from utilities import utils as func
-logger = app.logger
+from appData.Loggers import SetLogger
+logger = SetLogger()
+from core.Settings import Settings
+
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """
 
@@ -38,7 +41,7 @@ class ServerStatus(QGridLayout):
         super(ServerStatus, self).__init__(parent)
 
         # from core.Settings import Settings
-        self.settings = app.appSetting
+        self.settings = Settings(self)
 
         self.server = ServerCfg()
         self.server.listen(QHostAddress(app.__serverUrl__), 9000)

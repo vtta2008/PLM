@@ -21,8 +21,10 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QGridLayout, QCheckBox, QApplication
 
 # Plt
-import appData as app
+from core.Settings import Settings
 from utilities import utils as func
+from appData.Loggers import SetLogger
+logger = SetLogger()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Quick Setting """
@@ -42,7 +44,7 @@ class GeneralSetting(QGridLayout):
 
         self.setSpacing(2)
         # from core.Settings import Settings
-        self.settings = app.appSetting
+        self.settings = Settings(self)
 
         self.tbTDCB = QCheckBox("TD toolbar")
         self.tbCompCB = QCheckBox("Comp toolbar")

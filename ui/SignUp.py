@@ -23,9 +23,12 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QLineEdit, QLabel, QPush
 # -------------------------------------------------------------------------------------------------------------
 """ Plt tools """
 from appData import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, TIT_BLANK, USER_CHECK_REQUIRED, QUESTIONS
-import appData as app
+
 from ui import uirc as rc
 from utilities import utils as func
+from core.Settings import Settings
+from appData.Loggers import SetLogger
+logger = SetLogger()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign up ui """
@@ -42,7 +45,7 @@ class SignUp(QDialog):
         self.setWindowIcon(rc.IconPth(32, "SignUp"))
         self.setFixedSize(450, 900)
         # from core.Settings import Settings
-        self.settings = app.appSetting
+        self.settings = Settings(self)
 
         self.layout = QGridLayout()
         self.buildUI()

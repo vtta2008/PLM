@@ -12,9 +12,8 @@ Description:
 
 # Python
 import sys
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
-from PyQt5.QtWidgets import *
+from PyQt5.QtCore import Qt, QThread, QMetaObject, Q_ARG
+from PyQt5.QtWidgets import QWidget, QGridLayout
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, QRunnable, QMetaObject

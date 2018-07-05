@@ -21,7 +21,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLine
 
 # Plt
 from ui import uirc as rc
-from appData import APPINFO, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE, appSetting
+from appData import APPINFO, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE
+from core.Settings import Settings
 
 # -------------------------------------------------------------------------------------------------------------
 """ topTab1 """
@@ -34,7 +35,7 @@ class TopTab1(QWidget):
         super(TopTab1, self).__init__(parent)
 
         # from core.Settings import Settings
-        self.settings = appSetting
+        self.settings = Settings(self)
 
         for i in CONFIG_TOOLS:
             self.settings.setValue(i, False)

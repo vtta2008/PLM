@@ -23,7 +23,7 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGraphicsView, 
 
 # Plt
 
-from appData import appSetting
+from core.Settings import Settings
 from ui import uirc as rc
 from ui import UserSetting
 from utilities import localSQL as usql
@@ -41,7 +41,7 @@ class TopTab3(QWidget):
         super(TopTab3, self).__init__(parent)
 
         # from core.Settings import Settings
-        self.settings = appSetting
+        self.settings = Settings(self)
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)

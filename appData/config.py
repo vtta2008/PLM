@@ -18,22 +18,27 @@ import pickle
 
 from importlib import reload as r
 
-import platform
-from PyQt5 import QtCore
+from appData.scr._path import *
 
-from appData._path import *
-from appData._docs import *
-from appData._keys import *
-from appData._layout import *
-from appData._format import *
-from appData._pref import *
-from appData._rcSQL import *
-from appData._meta import *
+dirLst = [CONFIG_LOCAL_DAMG_DIR, CONFIG_LOCAL_PLM_DIR, CONFIG_DIR, SETTING_DIR, LOG_DIR, CACHE_DIR, PREF_DIR, USER_PREF_DIR]
+
+for pth in dirLst:
+    if not os.path.exists(pth):
+        os.mkdir(pth)
+
+from appData.scr._docs import *
+from appData.scr._keys import *
+from appData.scr._layout import *
+from appData.scr._format import *
+from appData.scr._pref import *
+from appData.scr._rcSQL import *
+from appData.scr._meta import *
+
 PLATFORM = 'Windows'
 API_MINIMUM = 0.64
 
-from appData import _path as p
-from appData import _meta as m
+from appData.scr import _path as p
+from appData.scr import _meta as m
 
 __envKey__ = p.__envKey__
 
@@ -100,13 +105,7 @@ ABOUT = read_file(ABOUT)
 CREDIT = read_file(CREDIT)
 README = PLM_ABOUT
 
-dirLst = [CONFIGLOCALDAMGDIR, PLMCONFIGLOCAL, CONFIGDIR, SETTINGDIR, LOGDIR, CACHEDIR, PREFDIR, USERPREFDIR]
-
-for pth in dirLst:
-    if not os.path.exists(pth):
-        os.mkdir(pth)
-
-if not os.path.exists(DBPTH):
+if not os.path.exists(DB_PTH):
     GenerateResource()
 
 class SafeSaver(object):
@@ -137,11 +136,11 @@ class SafeSaver(object):
 def load_appInfo():
     if not os.path.exists(mainConfig):
         from appData.LocalCfg import LocalCfg
-        logger.info("Storing local config")
+        # logger.info("Storing local config")
         LocalCfg()
     # Load info from file
 
-    logger.info("Loading local config")
+    # logger.info("Loading local config")
     with open(mainConfig, 'r') as f:
         appInfo = json.load(f)
     return appInfo
@@ -149,9 +148,9 @@ def load_appInfo():
 def load_iconInfo():
     if not os.path.exists(mainConfig):
         from appData.LocalCfg import LocalCfg
-        logger.info("Storing local icon")
+        # logger.info("Storing local icon")
         LocalCfg()
-    logger.info("Loading local icon")
+    # logger.info("Loading local icon")
     with open(appIconCfg, 'r') as f:
         iconInfo = json.load(f)
     return iconInfo
@@ -172,7 +171,7 @@ class Configurations(object):
 
     def __init__(self):
         self._needs_save = 0
-        FILEPATH = os.path.join(CONFIGDIR, 'PLM.cfg')
+        FILEPATH = os.path.join(CONFIG_DIR, 'PLM.cfg')
 
         if not os.path.exists(FILEPATH):
             # default to an empty dict
@@ -212,7 +211,7 @@ class Configurations(object):
     def setup_dependancies(self):
         dpc = ['nodegraph', 'lauescript']
         for i in dpc:
-            pth = os.path.join(p.COREDIR, i)
+            pth = os.path.join(p.CORE_DIR, i)
             pths = os.getenv('PYTHONPATH') + ';' + pth
             os.environ['PYTHONPATH'] = pths
             print(os.getenv('PYTHONPATH'))
@@ -224,8 +223,6 @@ class Configurations(object):
             with SafeSaver(FILEPATH) as fh:
                 pickle.dump(self._data, fh)
                 self._needs_save = 0
-
-Configurations()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:56 PM

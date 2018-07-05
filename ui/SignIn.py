@@ -35,7 +35,7 @@ from utilities import utils as func
 class SignIn(QDialog):
 
     showSignup = pyqtSignal(bool)
-    showPlt = pyqtSignal(bool)
+    showPlm = pyqtSignal(bool)
 
     def __init__(self, parent=None):
 
@@ -44,7 +44,7 @@ class SignIn(QDialog):
         self.setWindowTitle('Sign in')
         self.setWindowIcon(rc.IconPth(32, "SignIn"))
         self.setFixedSize(400, 300)
-        from core.SettingManager import Settings
+        from core.Settings import Settings
         self.settings = Settings()
 
         self.layout = QGridLayout()
@@ -127,7 +127,7 @@ class SignIn(QDialog):
             usql.RemoveDB("curUser")
             usql.UpdateDB("curUser", [username, token, cookie, func.str2bool(check)])
 
-            self.showPlt.emit(True)
+            self.showPlm.emit(True)
         else:
             usql.RemoveDB("curUser")
             QMessageBox.critical(self, 'Login Failed', PW_WRONG)

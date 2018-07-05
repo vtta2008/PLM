@@ -23,7 +23,8 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QHBoxLa
                              QMessageBox, QApplication, QLabel)
 
 # Plt
-from appData import PW_CHANGED, PW_BLANK, PW_UNMATCH, PW_WRONG, __envKey__, appSetting
+from appData import PW_CHANGED, PW_BLANK, PW_UNMATCH, PW_WRONG, __envKey__
+from core.Settings import Settings
 from utilities import utils as func
 from utilities import localSQL as usql
 from ui import uirc as rc
@@ -44,7 +45,7 @@ class UserSetting(QDialog):
         self.setWindowIcon(rc.AppIcon(32, "UserSetting"))
 
         
-        self.settings = appSetting
+        self.settings = Settings(self)
 
         self.layout = QGridLayout()
         self.buildUI()

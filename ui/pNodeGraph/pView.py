@@ -20,11 +20,10 @@ from PyQt5.QtGui import QColor, QBrush, QPen
 
 # Plt
 
-from appData._pNN import (CURRENT_ZOOM, SCROLLBAROFF, RUBBERDRAG, ANCHORUNDERMOUSE, CACHEBACKGROUND, UPDATEVIEWRECT,
-                          ANTIALIAS, ANCHORVIEWCENTER, ALTKEY, TABKEY, MOUSEMIDDLEBTN, NODRAG, SIZEALLCURSOR,
-                          MOUSELEFTBTN, ARROWCUSOR, BLOCK)
-from ui.NodeGraph.pNode import pNodeParts
-from ui.NodeGraph.pEdge import pEdge
+from appData.scr._pNN import (SCROLLBAROFF, RUBBERDRAG, ANCHORUNDERMOUSE, CACHEBACKGROUND, UPDATEVIEWRECT,
+                          ANTIALIAS, ANCHORVIEWCENTER, NODRAG, BLOCK)
+from ui.pNodeGraph.pNode import pNodeParts
+from ui.pNodeGraph.pEdge import pEdge
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -140,6 +139,7 @@ class pView(QGraphicsView):
         painter.restore()
         super(pView, self).drawBackground(painter, rect)
 
+
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 18/06/2018 - 6:50 AM
+# Created by panda on 5/07/2018 - 7:03 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

@@ -12,16 +12,18 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, QByteArray
+from PyQt5.QtCore import pyqtSignal, QByteArray, pyqtSlot
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QDockWidget, )
 
 # Plt
-import appData as app
+
 from appData import __homepage__, __appname__, dockB, SiPoMin, SiPoIgn
+from appData.Loggers import SetLogger
+logger = SetLogger()
+
+from core.Settings import Settings
 from utilities.utils import str2bool
-
 from ui.uirc import AutoSectionLayoutGrp, AutoSectionQMainGrp,  AppIcon
-
 from ui.SubMenuBar import SubMenuBar
 from ui.ToolBar import ToolBar
 from ui.TopTab import TopTab
@@ -30,7 +32,6 @@ from ui.ServerStatus import ServerStatus
 from ui.Footer import Footer
 from ui.StatusBar import StatusBar
 
-logger = app.logger
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
 
@@ -52,7 +53,7 @@ class PipelineManager(QMainWindow):
         self.setWindowIcon(AppIcon("Logo"))
 
         # from core.Settings import Settings
-        self.settings = app.appSetting
+        self.settings = Settings(self)
 
         self.mainWidget = QWidget()
         self.layout = QGridLayout()
@@ -113,22 +114,27 @@ class PipelineManager(QMainWindow):
 
         self.applySetting()
 
+    @pyqtSlot(bool)
     def show_tbMaster(self, param):
         self.settings.setValue("tbMaster", param)
         self.toolBarSec.setVisible(param)
 
+    @pyqtSlot(bool)
     def show_serStatus(self, param):
         self.settings.setValue("serStatus", param)
         self.networkStatus.setVisible(param)
 
+    @pyqtSlot(bool)
     def show_notifi(self, param):
         self.settings.setValue("notifi", param)
         self.notifiSec.setVisible(str2bool(param))
 
+    @pyqtSlot(bool)
     def show_subMenu(self, param):
         self.settings.setValue("subMenu", param)
         self.subMenuSec.setVisible(str2bool(param))
 
+    @pyqtSlot(bool)
     def show_statusBar(self, param):
         self.settings.setValue("statusBar", param)
         if str2bool(param):
@@ -144,6 +150,9 @@ class PipelineManager(QMainWindow):
     def add_dockWidget(self, dock):
         self.dock = dock
         self.addDockWidget(dockB, self.dock)
+
+    def showEvent(self, event):
+        self.showLogin.emit(False)
 
     def resizeEvent(self, event):
         sizeW, sizeH = self.get_layout_dimention()

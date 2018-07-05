@@ -13,7 +13,7 @@ Description:
 
 # Python
 import os
-from appData._path import CONFIGDIR
+from appData.scr._path import CONFIG_DIR
 
 # --------------------------------------------------------------------------------------------------------------
 """ Autodesk config """
@@ -157,7 +157,7 @@ CONFIG_TOOLS = generate_config('Tools')
 CONFIG_EXTRA = generate_config('Extra')
 CONFIG_SYSTRAY = generate_config('sysTray')
 
-FILEPATH = os.path.join(CONFIGDIR, "PLM.cfg")
+FILEPATH = os.path.join(CONFIG_DIR, "PLM.cfg")
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 31/05/2018 - 9:47 AM

@@ -25,12 +25,12 @@ from utilities import utils as func
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-from appData import logger, APPDATADIR
+from appData import logger, APP_DATA_DIR
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
 
-FILEPATH = os.path.join(APPDATADIR, 'PLM.pkl')
+FILEPATH = os.path.join(APP_DATA_DIR, 'PLM.pkl')
 ELEMENTS = 'elements'
 LAST_ELEMENT_ID = 'last_elements_id'
 

@@ -15,25 +15,28 @@ from PyQt5.QtCore import Qt
 windows = os.name == "nt"
 DMK = Qt.AltModifier if windows else Qt.ControlModifier
 
-MOUSEBTN = Qt.MouseButton
-MOUSELEFTBTN = Qt.LeftButton
-MOUSERIGHTBTN = Qt.RightButton
-MOUSEMIDDLEBTN = Qt.MiddleButton
+PATTERN_SOLID = Qt.SolidPattern
+LINE_SOLID = Qt.SolidLine
 
-SIZEALLCURSOR = Qt.SizeAllCursor
+MOUSEBTN = Qt.MouseButton
+MOUSE_LEFT = Qt.LeftButton
+MOUSE_RIGHT = Qt.RightButton
+MOUSE_MIDDLE = Qt.MiddleButton
+
+CURSOR_SIZEALL = Qt.SizeAllCursor
 
 KEYBOARD = Qt.Key
-ALTKEY = Qt.Key_Alt
-DELKEY = Qt.Key_Delete
-TABKEY = Qt.Key_Tab
+KEY_ALT = Qt.Key_Alt
+KEY_DEL = Qt.Key_Delete
+KEY_TAB = Qt.Key_Tab
 
 # Brush: painter.setBrush()
-NOBRUSH = Qt.NoBrush
-NOPEN = Qt.NoPen
-NOARROW = Qt.NoArrow
-ARROWCUSOR = Qt.ArrowCursor
+BRUSH_NONE = Qt.NoBrush
+PEN_NONE = Qt.NoPen
+ARROW_NONE = Qt.NoArrow
+CURSOR_ARROW = Qt.ArrowCursor
 
-RELATIVESIZE = Qt.RelativeSize
+RELATIVE_SIZE = Qt.RelativeSize
 
 # Gradient: QLinearGradient().setColorAt()
 WHITE = Qt.white

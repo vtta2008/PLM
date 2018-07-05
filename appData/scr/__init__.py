@@ -1,19 +1,14 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: _pScene.py
+Script Name: __init__.py.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
-
-from PyQt5.QtWidgets import QGraphicsScene
-
-NOINDEX = QGraphicsScene.NoIndex
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 18/06/2018 - 4:40 AM
+# Created by panda on 24/06/2018 - 12:10 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

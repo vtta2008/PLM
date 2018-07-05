@@ -18,16 +18,16 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QRectF
 from PyQt5.QtWidgets import QApplication, QWidget, QGraphicsItem
 from PyQt5.QtGui import QColor, QPen, QBrush, QPainter
 
-from core.ErrorManager import KnobConnectionError, UnknownFlowError
-from appData._pNN import *
+from core.Errors import KnobConnectionError, UnknownFlowError
+from appData.scr._pNN import *
 from utilities.pUtils import *
-from ui.NodeGraph.pEdge import pEdge
+from ui.pNodeGraph.pEdge import pEdge
 
 # -------------------------------------------------------------------------------------------------------------
 """ pKnob """
 
-class pKnob(QGraphicsItem):
 
+class pKnob(QGraphicsItem):
     Type = 'pKnob'
 
     def __init__(self, **kwargs):
@@ -146,15 +146,14 @@ class pKnob(QGraphicsItem):
             raise UnknownFlowError("Flow not recognized: {0}".format(self.flow))
 
         y = bbox.bottom()
-        
+
         painter.setPen(QPen(self.labelColor))
         painter.drawText(x, y, self.displayName)
-
 
     def hoverEnterEvent(self, event):
         self.highlight(True)
         super(pKnob, self).hoverEnterEvent(event)
-        
+
     def mousePressEvent(self, event):
         self.highlight(False)
         super(pKnob, self).mousePressEvent(event)
@@ -206,8 +205,8 @@ class pKnob(QGraphicsItem):
             self.removeEdge(self.newEdge)
             self.newEdge = None
 
-def ensureEdgeDirection(pEdge):
 
+def ensureEdgeDirection(pEdge):
     print("ensure edge direction")
     if isinstance(pEdge.target, OutputKnob):
         assert isinstance(pEdge.source, InputKnob)
@@ -223,7 +222,6 @@ def ensureEdgeDirection(pEdge):
 
 
 class InputKnob(pKnob):
-
     """A Knob that represents an input value for its Node."""
 
     def __init__(self, *args, **kwargs):
@@ -250,7 +248,6 @@ class OutputKnob(pKnob):
 
     def finalizeEdge(self, edge):
         ensureEdgeDirection(edge)
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 17/06/2018 - 3:14 PM
+# Created by panda on 5/07/2018 - 7:09 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

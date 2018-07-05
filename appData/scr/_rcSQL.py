@@ -13,14 +13,8 @@ Description:
 # Python
 import os
 import sqlite3 as lite
-import logging
-
-# -------------------------------------------------------------------------------------------------------------
-""" Simple log """
-
-logging.basicConfig()
-logger = logging.getLogger(os.path.basename(__file__))
-logger.setLevel(logging.DEBUG)
+from appData.Loggers import SetLogger
+logger = SetLogger()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """
@@ -65,7 +59,7 @@ LTD = dict(
 
 class GenerateResource(object):
 
-    appDataDir = os.path.dirname(__file__)
+    appDataDir = os.path.dirname(__file__).split('scr')[0]
     dbLocalFileName = "local.db"
     dbLocal = os.path.join(appDataDir, dbLocalFileName)
 

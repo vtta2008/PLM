@@ -22,6 +22,9 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 import appData as app
 from ui import uirc as rc
 from ui import GeneralSetting
+from appData.Loggers import SetLogger
+logger = SetLogger()
+from core.Settings import Settings
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """
@@ -40,8 +43,7 @@ class BotTab(QWidget):
         super(BotTab, self).__init__(parent)
 
         # from core.Settings import Settings
-        self.settings = app.appSetting
-
+        self.settings = Settings(self)
         self.layout = QVBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)

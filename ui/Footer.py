@@ -21,7 +21,8 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QGridLayout, QPushButton
 
 # Plt
-from appData import COPYRIGHT, appSetting
+from appData import COPYRIGHT
+from core.Settings import Settings
 from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
@@ -34,8 +35,7 @@ class Footer(QWidget):
     def __init__(self, parent=None):
         super(Footer, self).__init__(parent)
 
-        from core.SettingManager import Settings
-        self.settings = Settings()
+        self.settings = Settings(self)
         self.layout = QGridLayout()
 
         self.buildUI()

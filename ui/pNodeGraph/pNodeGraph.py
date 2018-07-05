@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: NoderViewer.py
+Script Name: pNodeGraph.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -21,11 +21,11 @@ from PyQt5.QtGui import QIcon, QColor, QFont
 # Plt
 from utilities import utils as func
 
-from appData._pNN import *
+from appData.scr._pNN import *
 
-from ui.NodeGraph.pNode import pNode
-from ui.NodeGraph.pView import pView
-from ui.NodeGraph.pMenuBar import pMenuBar
+from ui.pNodeGraph.pNode import pNode
+from ui.pNodeGraph.pView import pView
+from ui.pNodeGraph.pMenuBar import pMenuBar
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -120,5 +120,5 @@ if __name__ == '__main__':
     main()
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 17/06/2018 - 1:45 PM
+# Created by panda on 5/07/2018 - 7:07 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

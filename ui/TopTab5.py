@@ -17,9 +17,11 @@ from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLineEdit, QTextEdit, QTextBrowser, QLabel
 
 # Plt
-from appData import SiPoMin, SiPoExp, appSetting
-
+from appData import SiPoMin, SiPoExp
+from core.Settings import Settings
 from ui import uirc as rc
+from appData.Loggers import SetLogger
+logger = SetLogger()
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -29,6 +31,7 @@ class CommandPrompt(QLineEdit):
 
     def __init__(self, parent=None):
         super(CommandPrompt, self).__init__(parent)
+        self.settings = Settings(self)
 
         self.applySetting()
 
@@ -55,7 +58,7 @@ class TopTab5(QWidget):
         super(TopTab5, self).__init__(parent)
 
         # from core.Settings import Settings
-        self.settings = appSetting
+        self.settings = Settings(self)
 
         self.layout = QGridLayout()
         self.buildUI()

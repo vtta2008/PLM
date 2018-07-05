@@ -7,7 +7,7 @@ Author: Do Trinh/Jimmy - 3D artist.
 Description:
 
 """
-
+# -------------------------------------------------------------------------------------------------------------
 from PyQt5.QtWidgets import QMenuBar, QMenu
 
 # -------------------------------------------------------------------------------------------------------------
@@ -27,6 +27,7 @@ class pMenuBar(QMenuBar):
         self.addMenu(QMenu('Tools'))
         self.addMenu(QMenu('Nodes'))
 
+
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 19/06/2018 - 4:17 AM
+# Created by panda on 5/07/2018 - 7:08 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

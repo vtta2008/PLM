@@ -21,10 +21,11 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QCheckBox, QPushButton, QGridLayout, QGroupBox
 
 # Plt
-import appData as app
+from appData.Loggers import SetLogger
 from utilities import utils as func
+from core.Settings import Settings
 
-logger = app.logger
+logger = SetLogger()
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """
 
@@ -44,7 +45,7 @@ class Configuration(QWidget):
         self.setWindowIcon(QIcon(func.getAppIcon(32, 'Configuration')))
 
         # from core.Settings import Settings
-        self.settings = app.appSetting
+        self.settings = Settings('app')
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -57,7 +58,7 @@ class Configuration(QWidget):
         tbGrpBox.setLayout(tbGrid)
 
         self.toolBarTD_checkBox = QCheckBox("Show/hide TD toolbar")
-        showTDToolbar = func.str2bool(self.settings.value("showTDToolbar", True))
+        showTDToolbar = func.str2bool(self.settings.value("showTDToolbar"))
         self.toolBarTD_checkBox.setChecked(showTDToolbar)
         self.toolBarTD_checkBox.stateChanged.connect(self.checkBoxTDStateChanged)
 

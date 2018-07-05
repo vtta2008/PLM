@@ -72,7 +72,7 @@ class Worker(QRunnable):
     workerReady = signals.workerReady
     dataReady = signals.dataReady
 
-    def __init__(self, workerID=0, fn=print("Hello world"), *args, **kwargs):
+    def __init__(self, workerID=0, fn=None, *args, **kwargs):
         super(Worker, self).__init__()
 
         self.settings = app.appSetting

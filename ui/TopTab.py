@@ -33,7 +33,7 @@ class TopTab(QWidget):
     def __init__(self, parent=None):
         super(TopTab, self).__init__(parent)
 
-        from core.SettingManager import Settings
+        from core.Settings import Settings
         self.settings = Settings()
 
         self.layout = QVBoxLayout()
