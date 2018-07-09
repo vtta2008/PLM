@@ -11,187 +11,191 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Set up environment variable """
 
-from os import environ as env
-from os import path, getenv, mkdir
-
+import os
 try:
-    getenv("PIPELINE_MANAGER")
+    os.getenv("PIPELINE_MANAGER")
 except KeyError:
-    env["PIPELINE_MANAGER"] = path.join(path.dirname(path.realpath(__file__)))
+    os.environ["PIPELINE_MANAGER"] = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
 # Python
 import sys, requests, ctypes, subprocess
-from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, QCoreApplication, QThreadPool
-from PyQt5.QtWidgets import QApplication, QMessageBox, QSystemTrayIcon
+from PyQt5.QtCore import QThreadPool, pyqtSlot, pyqtSignal
+from PyQt5.QtWidgets import QApplication
 
 # Plm
-from appData import (APPINFO, __appname__, __version__, __organization__, __website__, __serverCheck__, PLMAPPID,
-                     SYSTRAY_UNAVAI, __plmWiki__)
-
-from appData.Loggers import SetLogger
-logger = SetLogger()
+from appData import (APPINFO, __serverCheck__, PLMAPPID, SYSTRAY_UNAVAI, SETTING_FILEPTH, ST_FORMAT)
 
 from core.Settings import Settings
-from core.Signals import Signals
-from utilities import localSQL as usql
-from ui import uirc as rc
-from core.StyleSheetManager import StyleSheetManager
-
-from ui.Web import PLMBrowser
-
-# -------------------------------------------------------------------------------------------------------------
-""" Convert string to boolean and revert """
-
-def str2bool(arg):
-    return str(arg).lower() in ['true', 1, '1', 'ok', '2']
+from core.Cores import AppCores
+from core.Loggers import SetLogger
+from core.Specs import Specs
+from utilities.localSQL import QuerryDB
+from utilities.utils import str2bool
+from ui.Web.PLMBrowser import PLMBrowser
+from ui.uirc import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
-stylesheet = dict(darkstyle = StyleSheetManager('darkstyle').changeStylesheet,
-                  stylesheet = StyleSheetManager('stylesheet').changeStylesheet, )
+class PLM(QApplication):
 
-class PlmConsole(QApplication):
+    key = 'console'
+    returnValue = pyqtSignal(str, str)
 
     def __init__(self):
-        super(PlmConsole, self).__init__(sys.argv)
+        super(PLM, self).__init__(sys.argv)
 
+        self.specs = Specs(self.key, self)
         self.appInfo = APPINFO
-        self.appName = __appname__
-        self.version = __version__
-        self.organization = __organization__
-        self.website = __website__
-        self.hostCheck = __serverCheck__
 
-        self.PLMcore = QCoreApplication
-        self.PLMcore.setApplicationName(self.appName)
-        self.PLMcore.setApplicationVersion(self.version)
-        self.PLMcore.setOrganizationName(self.organization)
-        self.PLMcore.setOrganizationDomain(self.website)
+        self.logger = SetLogger(self)
+        self.threadpool = QThreadPool()                                                     # Thread pool
+        self.numOfThread = self.threadpool.maxThreadCount()                                 # Maximum threads available
+        self.regUI = dict()
+        self.regUI['app'] = self
+        self.core = AppCores(self)                                                          # Core metadata
+        self.webBrowser = PLMBrowser()                                                         # Webbrowser
 
-        self.settings = Settings(section='app', parent=self)
+        self.setWindowIcon(AppIcon("Logo"))                                                 # Set up task bar icon
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)             # Change taskbar icon
 
-        self.threadpool = QThreadPool()
-        self.numOfThread = self.threadpool.maxThreadCount()
-
-        self.setWindowIcon(rc.AppIcon("Logo"))                                       # Set up task bar icon
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)  # Change taskbar icon in system
-
-        self.import_uiSet1()
+        self.login, self.signup, self.mainUI, self.sysTray = self.core.import_uiSet1()
+        for layout in [self.login, self.signup, self.mainUI, self.sysTray]:
+            self.regUI[layout.key] = layout
+        self.setupConn1()
+        self.settings = self.setting_mode(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)    # Setting
+        self.db = QuerryDB()                                                                # Query local database
 
         try:
-            self.query = usql.QuerryDB()
-            self.username, token, cookie, remember = self.query.query_table('curUser')
+            self.username, token, cookie, remember = self.db.query_table('curUser')
         except ValueError:
-            self.executeSig.emit("Login")
+            self.showLayout('login', "show")
         else:
             if not str2bool(remember):
-                self.executeSig.emit("Login")
+                self.showLayout('login', "show")
             else:
-                r = requests.get(self.hostCheck, verify=False, headers={'Authorization': 'Bearer {0}'.format(token)}, cookies={'connect.sid': cookie})
+                r = requests.get(__serverCheck__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
                 if r.status_code == 200:
-                    print(r.status_code)
-                    if not QSystemTrayIcon.isSystemTrayAvailable():
-                        QMessageBox.critical(None, SYSTRAY_UNAVAI)
+                    if not self.sysTray.isSystemTrayAvailable():
+                        self.logger.critical(SYSTRAY_UNAVAI)
                         sys.exit(1)
-                    self.executeSig.emit("MainUI")
-                    self.updateAvatar.emit(True)
-
+                    self.showLayout('mainUI', "show")
                 else:
-                    print(r.status_code)
-                    self.setValueSig.emit("Login", "True")
+                    self.showLayout('login', "show")
 
-        self.import_uiSet2()
+        self.about, self.calculator, self.calendar, self.configuration, self.credit, self.engDict,\
+        self.imageViewer, self.newProj, self.noteReminder, self.findFile, self.screenShot, self.textEditor, \
+        self.userSetting = self.core.import_uiSet2()
 
+        for layout in [self.about, self.calculator, self.calendar, self.configuration, self.credit, self.engDict,
+                       self.imageViewer, self.newProj, self.noteReminder, self.findFile, self.screenShot,
+                       self.textEditor, self.userSetting]:
+            self.regUI[layout.key] = layout
 
-
-        self.settings.saveSetting.emit('stylesheet', 'darkstyle')
-
+        self.set_styleSheet('darkstyle')
         self.setQuitOnLastWindowClosed(False)
         sys.exit(self.exec_())
 
-    def import_uiSet1(self):
+    def setupConn1(self):
+        self.login.showLayout.connect(self.showLayout)
+        self.signup.showLayout.connect(self.showLayout)
 
-        from ui.SignIn import SignIn
-        from ui.SignUp import SignUp
-        from ui.PipelineManager import PipelineManager
-        from ui.SysTrayIcon import SysTrayIcon
+        self.mainUI.showLayout.connect(self.showLayout)
+        self.mainUI.executing.connect(self.executing)
+        self.mainUI.regLayout.connect(self.addRegLayout)
+        self.mainUI.sysNotify.connect(self.sysTray.sysNotify)
+        self.mainUI.setSetting.connect(self.setSetting)
+        self.mainUI.openBrowser.connect(self.openBrowser)
+        self.returnValue.connect(self.mainUI.returnValue)
 
-        self.MainUI = PipelineManager()
-        self.MainUI.hide()
+        self.sysTray.showLayout.connect(self.showLayout)
+        self.sysTray.executing.connect(self.executing)
+        self.webBrowser.showLayout.connect(self.showLayout)
 
-        self.LoginUI = SignIn()
-        self.LoginUI.hide()
+        self.returnValue.connect(self.mainUI.returnValue)
 
-        self.SignUpUI = SignUp()
-        self.SignUpUI.hide()
+    @property
+    def registerUI(self):
+        return self.regUI
 
-        self.SysTray = SysTrayIcon()
-        self.SysTray.hide()
+    @pyqtSlot(str, str)
+    def showLayout(self, name, mode):
+        if name == 'app':
+            layout = QApplication
+        else:
+            layout = self.regUI[name]
+            self.logger.debug("define layout: {0}".format(layout))
 
-    def import_uiSet2(self):
+        if mode == "hide":
+            layout.hide()
+        elif mode == "show":
+            layout.show()
+        elif mode == 'showNor':
+            layout.showNormal()
+        elif mode == 'showMin':
+            layout.showMinimized()
+        elif mode == 'showMax':
+            layout.showMaximized()
+        elif mode == 'quit' or mode == 'exit':
+            layout.quit()
 
-        self.browser = PLMBrowser.PLMBrowser()
-        self.wiki = PLMBrowser.PLMBrowser(__plmWiki__)
+        self.settings.setValue(layout.objectName(), mode)
 
-        from ui.About import About
-        self.about = About()
+    @pyqtSlot(str)
+    def openBrowser(self, url):
+        self.webBrowser.setUrl(url)
+        self.webBrowser.update()
+        self.webBrowser.show()
 
-        from ui.Configuration import Configuration
-        self.configuration = Configuration()
+    @pyqtSlot(str, str, str)
+    def setSetting(self, key=None, value=None, grp=None):
+        self.settings.initSetValue(key, value, grp)
 
-        from ui.Screenshot import Screenshot
-        self.screenshot = Screenshot()
+    @pyqtSlot(str, str)
+    def loadSetting(self, key=None, grp=None):
+        value = self.settings.initValue(key, grp)
+        if key is not None:
+            self.returnValue.emit(key, value)
 
-        from ui.UserSetting import UserSetting
-        self.userSetting = UserSetting()
+    @pyqtSlot(str)
+    def executing(self, cmd):
+        self.logger.debug('signal comes: {0}'.format(cmd))
+        if cmd in self.regUI.keys():
+            self.logger.debug('run showlayout: {0}'.format(cmd))
+            self.showLayout(cmd, 'show')
+        elif os.path.isdir(cmd):
+            os.startfile(cmd)
+        elif cmd == 'open_cmd':
+            os.system('start /wait cmd')
+        else:
+            self.logger.trace('execute: {0}'.format(cmd))
+            subprocess.Popen(cmd)
 
-        from ui.Credit import Credit
-        self.credit = Credit()
+    @pyqtSlot(str, object)
+    def addRegLayout(self, name, layout):
 
-        from ui.EnglishDictionary import EnglishDictionary
-        self.englishDictionary = EnglishDictionary()
+        if not name in self.regUI.keys():
+            self.regUI[name] = layout
+            self.logger.trace("Registered layout '{0}': {1}".format(name, layout))
+        else:
+            self.logger.trace("Already registered: {0}".format(name))
 
-        from ui.FindFiles import FindFiles
-        self.findFiles = FindFiles()
+    def set_styleSheet(self, style):
+        from core.StyleSheets import StyleSheets
+        stylesheet = dict(darkstyle=StyleSheets('darkstyle').changeStylesheet,
+                          stylesheet=StyleSheets('stylesheet').changeStylesheet, )
+        self.setStyleSheet(stylesheet[style])
 
-        from ui.NewProject import NewProject
-        self.newProject = NewProject()
-
-        from ui.NoteReminder import NoteReminder
-        self.noteReminder = NoteReminder()
-
-        from ui.Calculator import  Calculator
-        self.calculator = Calculator()
-
-        from ui.Calendar import Calendar
-        self.calendar = Calendar()
-
-        from ui.TextEditor.TextEditor import TextEditor
-        self.textEditor = TextEditor()
-
-    def settingActions(self, mode, key, value):
-        if mode == "save":
-            self.settings.setValue(key, value)
-            logger.warning("Saving setting: {0} = {0}".format(key, value))
-            return True
-        elif mode == "load":
-            val = self.settings.value(key)
-            logger.warning("Loading setting: {0}".format(key))
-            return val
-        elif mode == "change":
-            logger.warning("Setting has been modified: {0} = {1}".format(key, value))
-            return True
-
+    def setting_mode(self, filename, fm, parent):
+        return Settings(filename, fm, parent)
 
 if __name__ == '__main__':
-    PlmConsole()
+    PLM()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 19/06/2018 - 2:26 AM

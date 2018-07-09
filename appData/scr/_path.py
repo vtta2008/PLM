@@ -14,23 +14,22 @@ Description:
 import os
 from appData.scr._meta import __appname__, __groupname__, __envKey__
 from appData.scr._name import *
-
-# PyQt5
-from PyQt5.QtCore import QSettings
-
 # -------------------------------------------------------------------------------------------------------------
 """ Directory local system """
 
-CONFIG_LOCAL_DAMG_DIR = os.path.join(os.getenv("LOCALAPPDATA"), __groupname__)        # DAMG team directory
-CONFIG_LOCAL_PLM_DIR = os.path.join(CONFIG_LOCAL_DAMG_DIR, __appname__)                  # Plm directory
+CONFIG_LOCAL_DAMG_DIR = os.path.join(os.getenv("LOCALAPPDATA"), __groupname__)       # DAMG team directory
+CONFIG_LOCAL_PLM_DIR = os.path.join(CONFIG_LOCAL_DAMG_DIR, __appname__)              # Plm directory
 
 CONFIG_DIR = os.path.join(CONFIG_LOCAL_PLM_DIR, config)                              # Config dir to store config info
 SETTING_DIR = os.path.join(CONFIG_LOCAL_PLM_DIR, settings)                           # Setting dir to store setting info
 LOG_DIR = os.path.join(CONFIG_LOCAL_PLM_DIR, logs)                                   # Log dir to store log info
 CACHE_DIR = os.path.join(CONFIG_LOCAL_PLM_DIR, cache)                                # In case caching something
+REG_DIR = os.path.join(CONFIG_LOCAL_PLM_DIR, reg)
 
 PREF_DIR = os.path.join(CONFIG_DIR, nodeBase)
 USER_PREF_DIR = os.path.join(CONFIG_DIR, userRef)
+
+DESKTOP_DIR = os.path.join(os.environ["HOMEPATH"], "desktop")                       # Desktop path
 
 # -------------------------------------------------------------------------------------------------------------
 """ Directory application """
@@ -91,13 +90,13 @@ PLM_LOGO_DIR = os.path.join(LOGO_DIR, Plm, icons)
 DAMG_LOGO_32 = os.path.join(DAMG_LOGO_DIR, logo32)
 PLM_LOGO_32 = os.path.join(PLM_LOGO_DIR, logo32)
 
-APP_SETTING = os.path.join(SETTING_DIR, PlmSetting)         # Pipeline application setting
-USER_SETTING = os.path.join(SETTING_DIR, userSetting)       # User setting
-FORMAT_SETTING = os.path.join(SETTING_DIR, formatSetting)
-UNIX_SETTING = os.path.join(SETTING_DIR, unixSetting)
+APP_SETTING = os.path.join(SETTING_DIR, appSettingFile)         # Pipeline application setting
+USER_SETTING = os.path.join(SETTING_DIR, userSettingFile)       # User setting
+FORMAT_SETTING = os.path.join(SETTING_DIR, formatSettingFile)
+UNIX_SETTING = os.path.join(SETTING_DIR, unixSettingFile)
 
-DB_PTH = os.path.join(DB_DIR, localDB)                             # Local database
-LOGO_PTH = os.path.join(LOG_DIR, appLog)                                                       # Log file
+DB_PTH = os.path.join(DB_DIR, localDatabaseFile)                             # Local database
+LOG_PTH = os.path.join(LOG_DIR, appLogFile)                                                       # Log file
 
 appIconCfg = os.path.join(CONFIG_DIR, appIcon)
 webIconCfg = os.path.join(CONFIG_DIR, webIcon)

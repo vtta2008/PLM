@@ -23,9 +23,9 @@ from utilities import utils as func
 
 from appData.scr._pNN import *
 
-from ui.pNodeGraph.pNode import pNode
-from ui.pNodeGraph.pView import pView
-from ui.pNodeGraph.pMenuBar import pMenuBar
+from ui.NodeGraph.Node import Node
+from ui.NodeGraph.pView import pView
+from ui.NodeGraph.pMenuBar import pMenuBar
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -54,7 +54,7 @@ class pNodeGraph(QWidget):
         self.view = pView()
         self.view.setScene(self.scene)
         self.view.setRenderHint(ANTIALIAS)
-        self.view.setViewportUpdateMode(FULLVIEWUPDATE)
+        self.view.setViewportUpdateMode(UPDATE_FULLVIEW)
 
         self.layout = QVBoxLayout()
         self.layout.addWidget(self.view)
@@ -62,10 +62,10 @@ class pNodeGraph(QWidget):
 
         self.pNodes = []
 
-        node1 = pNode("Node 1")
+        node1 = Node("Node 1")
         node1.setPos(0, 0)
 
-        node2 = pNode("Node 2")
+        node2 = Node("Node 2")
         node2.setPos(20, 20)
 
 
@@ -96,8 +96,8 @@ class pNodeGraph(QWidget):
         pass
 
     def keyPressEvent(self, event):
-        if event.key() == DELKEY:
-            selectedNodes = [i for i in self.scene.selectedItems() if isinstance(i, pNode)]
+        if event.key() == KEY_DEL:
+            selectedNodes = [i for i in self.scene.selectedItems() if isinstance(i, Node)]
             for node in selectedNodes:
                 node.destroy()
         super(pNodeGraph, self).keyPressEvent(event)

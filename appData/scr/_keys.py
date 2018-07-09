@@ -106,6 +106,8 @@ TRACK_SYSTRAY = ['Snipping Tool', 'Screenshot', 'Maximize', 'Minimize', 'Restore
 
 KEYDETECT = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype"]
 
+FIX_KEY = {'Screenshot': 'screenShot', 'Snipping Tool': 'SnippingTool'}
+
 # --------------------------------------------------------------------------------------------------------------
 """ Combine config data """
 

@@ -21,8 +21,7 @@ from PyQt5.QtGui import QPainterPath, QPen
 # Plt
 
 from appData.scr._pNN import *
-from appData.Loggers import SetLogger
-logger = SetLogger()
+from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
 """ pEdge """
@@ -34,6 +33,7 @@ class pEdge(QGraphicsPathItem):
     def __init__(self, **kwargs):
         super(pEdge, self).__init__(**kwargs)
 
+        self.logger = SetLogger(self)
         self.lineColor = QColor(10, 10, 10)
         self.removalColor = Qt.red
         self.thickness = 1

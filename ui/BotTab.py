@@ -19,31 +19,23 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 
 # Plt
-import appData as app
-from ui import uirc as rc
-from ui import GeneralSetting
-from appData.Loggers import SetLogger
-logger = SetLogger()
-from core.Settings import Settings
+from appData import SiPoMin
+from ui.uirc import IconPth, TabContent
+from ui.GeneralSetting import GeneralSetting
+from core.Loggers import SetLogger
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """
 class BotTab(QWidget):
 
-    tbTD = pyqtSignal(bool)
-    tbComp = pyqtSignal(bool)
-    tbArt = pyqtSignal(bool)
-    tbMaster = pyqtSignal(bool)
-    subMenu = pyqtSignal(bool)
-    statusBar = pyqtSignal(bool)
-    serStatus = pyqtSignal(bool)
-    notifi = pyqtSignal(bool)
+    key = 'botTab'
+    loadSetting = pyqtSignal(str, str)
+    returnValue = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(BotTab, self).__init__(parent)
-
-        # from core.Settings import Settings
-        self.settings = Settings(self)
+        self.logger = SetLogger(self)
         self.layout = QVBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
@@ -51,32 +43,24 @@ class BotTab(QWidget):
     def buildUI(self):
         self.tabs = QTabWidget()
 
-        self.generalSetting = GeneralSetting.GeneralSetting()
+        self.generalSetting = GeneralSetting()
 
-        self.generalSetting.tbTD.connect(self.tbTD.emit)
-        self.generalSetting.tbComp.connect(self.tbComp.emit)
-        self.generalSetting.tbArt.connect(self.tbArt.emit)
-        self.generalSetting.tbMaster.connect(self.tbMaster.emit)
-        self.generalSetting.subMenu.connect(self.subMenu.emit)
-        self.generalSetting.statusBar.connect(self.statusBar.emit)
-        self.generalSetting.serStatus.connect(self.serStatus.emit)
-        self.generalSetting.notifi.connect(self.notifi.emit)
-
-        self.tabs.addTab(rc.TabContent(self.generalSetting), "General")
-        self.tabs.addTab(rc.TabContent(), "Unit")
-        self.tabs.addTab(rc.TabContent(), "Quick")
+        self.tabs.addTab(TabContent(self.generalSetting), "General")
+        self.tabs.addTab(TabContent(), "Unit")
+        self.tabs.addTab(TabContent(), "Quick")
 
         self.layout.addWidget(self.tabs)
-
+        self.generalSetting.loadSetting.connect(self.loadSetting)
+        self.returnValue.connect(self.generalSetting.return_setting)
         self.applySetting()
 
     def applySetting(self):
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
-        self.tabs.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.setSizePolicy(SiPoMin, SiPoMin)
+        self.tabs.setSizePolicy(SiPoMin, SiPoMin)
 
-        self.tabs.setTabIcon(0, rc.IconPth(32, 'General Setting'))
-        self.tabs.setTabIcon(1, rc.IconPth(32, 'Unit Setting'))
-        self.tabs.setTabIcon(2, rc.IconPth(32, 'Quick Setting'))
+        self.tabs.setTabIcon(0, IconPth(32, 'General Setting'))
+        self.tabs.setTabIcon(1, IconPth(32, 'Unit Setting'))
+        self.tabs.setTabIcon(2, IconPth(32, 'Quick Setting'))
 
         self.tabs.setTabPosition(QTabWidget.South)
         self.tabs.setMovable(True)

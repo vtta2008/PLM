@@ -14,16 +14,8 @@ Description:
 import winshell, os, json
 
 from appData.scr._meta import __plmWiki__, __envKey__
-from appData.scr._keys import KEYDETECT
-from appData.scr._keys import KEYPACKAGE, CONFIG_SYSTRAY, CONFIG_APPUI
+from appData.scr._keys import KEYPACKAGE, CONFIG_SYSTRAY, CONFIG_APPUI, KEYDETECT, FIX_KEY
 from appData.scr._path import DAMG_LOGO_32, PLM_LOGO_32, ICON_DIR_32, pyEnvCfg, mainConfig, appIconCfg, webIconCfg, appConfig
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-from sys import argv
-from appData.Loggers import SetLogger
-logger = SetLogger()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Collecting all info. """
@@ -150,7 +142,12 @@ class LocalCfg(object):
             self.mainInfo[key] = [key, self.getAppIcon(32, key), "{key}".format(key=key)]
 
         for key in CONFIG_SYSTRAY:
-            self.mainInfo[key] = [key, self.getAppIcon(32, key), "{key}".format(key=key)]
+            print(key)
+            if key in self.appInfo:
+                self.mainInfo[key] = [key, self.getAppIcon(32, key), self.appInfo[key]]
+            else:
+                self.mainInfo[key] = [key, self.getAppIcon(32, key), FIX_KEY[key]]
+            print(self.mainInfo[key])
 
         self.create_config_file('main', self.mainInfo)
 

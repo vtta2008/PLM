@@ -19,8 +19,7 @@ from PyQt5.QtNetwork import (QTcpServer, QTcpSocket)
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-from appData.Loggers import SetLogger
-logger = SetLogger()
+from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Thread connecting """
@@ -31,7 +30,7 @@ class SocketThread(QThread):
 
     def __init__(self, socketDescriptor, text, parent):
         super(SocketThread, self).__init__(parent)
-
+        self.logger = SetLogger()
         self.socketDescriptor = socketDescriptor
         self.text = text
 
@@ -41,6 +40,7 @@ class SocketThread(QThread):
 
         if not tcpSocket.setSocketDescriptor(self.socketDescriptor):
             self.error.emit(tcpSocket.error())
+            self.logger.error(tcpSocket.error())
             return
 
         block = QByteArray()

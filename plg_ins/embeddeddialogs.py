@@ -18,7 +18,7 @@ from PyQt5.QtWidgets import (QApplication, QDialog, QGraphicsItem,
                              QWidget)
 
 # from build import embeddeddialogs_rc
-from build.embeddeddialog import Ui_embeddedDialog
+from plg_ins.embeddeddialog import Ui_embeddedDialog
 
 
 class CustomProxy(QGraphicsProxyWidget):

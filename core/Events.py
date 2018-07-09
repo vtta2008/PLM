@@ -11,10 +11,9 @@ Description:
 """ Import """
 
 import copy
-import logging
-import sys
 
-from appData.Loggers import SetLogger
+from core.Errors import StandardError
+from core.Loggers import SetLogger
 logger = SetLogger()
 
 class Singleton(object):
@@ -22,10 +21,6 @@ class Singleton(object):
         if not '_the_instance' in type.__dict__:
             type._the_instance = object.__new__(type)
         return type._the_instance
-
-
-
-
 
 class EventsManager(Singleton):
     """ A simple class that helps to manage events
@@ -191,7 +186,7 @@ class EventsManager(Singleton):
             exclude (list): if set it will exclude given events from setting paused
         Returns:
         """
-        for event_name, event_data in self.data.iteritems():
+        for event_name, event_data in self.data.items():
             if not event_data["paused"] and event_name not in exclude:
                 self.pause_event(event_name)
 
@@ -219,7 +214,7 @@ class EventsManager(Singleton):
         """ resumes all paused events
         Returns:
         """
-        for event_name, event_data in self.data.iteritems():
+        for event_name, event_data in self.data.items():
             if event_data["paused"]:
                 self.resume_event(event_name)
 
@@ -351,6 +346,17 @@ class SuppressEvents(object):
             return result
         return inner
 
+class DoSmth(object):
+
+    @SuppressEvents("my_event")
+    def do_something(self):
+        print("Do something")
+
+    @SuppressEvents("my_second_event")
+    def do_something_else(self):
+        print("Do something else")
+
+DoSmth().do_something()
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 17/06/2018 - 1:36 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

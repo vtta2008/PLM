@@ -19,33 +19,32 @@ import requests
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import (QApplication, QDialog, QGridLayout, QLineEdit, QPushButton, QMessageBox, QGroupBox,
-                             QCheckBox, )
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
+from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QCheckBox, QWidget)
 
 # Plt
 from utilities import localSQL as usql
 from appData import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __serverAutho__
-from ui import uirc as rc
-from utilities import utils as func
+from ui.uirc import IconPth, Label
+from ui.lib.LayoutPreset import GroupGrid, Button, LineEdit
+from utilities.utils import str2bool
+from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """
 
-class SignIn(QDialog):
+class SignIn(QWidget):
 
-    showSignup = pyqtSignal(bool)
-    showPlm = pyqtSignal(bool)
+    key = 'login'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
 
         super(SignIn, self).__init__(parent)
 
-        self.setWindowTitle('Sign in')
-        self.setWindowIcon(rc.IconPth(32, "SignIn"))
-        self.setFixedSize(400, 300)
-        from core.Settings import Settings
-        self.settings = Settings()
+        self.specs = Specs(self.key, self)
+        self.setWindowIcon(IconPth(32, "SignIn"))
+        self.setFixedSize(400, 250)
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -53,25 +52,18 @@ class SignIn(QDialog):
 
     def buildUI(self):
 
-        loginGrp = QGroupBox('Sign in')
-        loginGrid = QGridLayout()
-        loginGrp.setLayout(loginGrid)
+        loginGrp, loginGrid = GroupGrid('Sign in')
 
-        self.userTF = QLineEdit()
-        self.pwTF = QLineEdit()
-        self.pwTF.setEchoMode(QLineEdit.Password)
+        self.userTF = LineEdit()
+        self.pwTF = LineEdit({'mode': 'password'})
+        self.userCB = QCheckBox('Remember me?')
 
-        self.userCB = QCheckBox('Remember me.')
+        forgot_pw_btn = Button({'txt': 'Forgot your password?', 'cl': self.forgetPwClicked})
+        login_btn = Button({'txt': 'Log in', 'cl': self.signInClicked})
+        cancel_btn = Button({'txt': 'Cancel', 'cl': QApplication.quit})
 
-        forgot_pw_btn = QPushButton('Forgot your password?')
-        forgot_pw_btn.clicked.connect(self.on_forgot_pw_btn_clicked)
-        login_btn = QPushButton('Login')
-        cancel_btn = QPushButton('Cancel')
-        login_btn.clicked.connect(self.on_sign_in_btn_clicked)
-        cancel_btn.clicked.connect(QApplication.quit)
-
-        loginGrid.addWidget(rc.Label('Username'), 0, 0, 1, 2)
-        loginGrid.addWidget(rc.Label('Password'), 1, 0, 1, 2)
+        loginGrid.addWidget(Label('Username'), 0, 0, 1, 2)
+        loginGrid.addWidget(Label('Password'), 1, 0, 1, 2)
         loginGrid.addWidget(self.userTF, 0, 2, 1, 4)
         loginGrid.addWidget(self.pwTF, 1, 2, 1, 4)
         loginGrid.addWidget(self.userCB, 2, 1, 1, 2)
@@ -79,26 +71,28 @@ class SignIn(QDialog):
         loginGrid.addWidget(forgot_pw_btn, 3, 0, 1, 3)
         loginGrid.addWidget(cancel_btn, 3, 3, 1, 3)
 
-        signupGrp = QGroupBox('Sign up')
-        signupGrid = QGridLayout()
-        signupGrp.setLayout(signupGrid)
+        signupGrp, signupGrid = GroupGrid('Sign up')
+        signupBtn = Button({'txt':'Sign up', 'emit2': [self.showLayout.emit, ['signup', 'show']]})
 
-        signupBtn = QPushButton('Sign up')
-        signupBtn.clicked.connect(partial(self.showSignup.emit, True))
+        self.showLayout.connect(self.show_test)
 
-        signupGrid.addWidget(rc.Label(txt=SIGNUP), 0, 0, 1, 6)
+        signupGrid.addWidget(Label(txt=SIGNUP), 0, 0, 1, 6)
         signupGrid.addWidget(signupBtn, 1, 0, 1, 6)
 
         self.layout.addWidget(loginGrp, 0, 0, 1, 1)
         self.layout.addWidget(signupGrp, 1, 0, 1, 1)
 
-    def on_forgot_pw_btn_clicked(self):
+    @pyqtSlot(str, str)
+    def show_test(self, key, value):
+        print(key, value)
+
+    def forgetPwClicked(self):
         from ui import ForgotPassword
         forgetPW = ForgotPassword.ForgotPassword()
         forgetPW.show()
         forgetPW.exec_()
 
-    def on_sign_in_btn_clicked(self):
+    def signInClicked(self):
         username = str(self.userTF.text())
         pass_word = str(self.pwTF.text())
 
@@ -125,17 +119,24 @@ class SignIn(QDialog):
             token = r.json()['token']
             check = self.userCB.checkState()
             usql.RemoveDB("curUser")
-            usql.UpdateDB("curUser", [username, token, cookie, func.str2bool(check)])
-
-            self.showPlm.emit(True)
+            usql.UpdateDB("curUser", [username, token, cookie, str2bool(check)])
+            print('show main ui')
+            self.showLayout.emit('MainUI', 'show')
+            self.hide()
         else:
             usql.RemoveDB("curUser")
             QMessageBox.critical(self, 'Login Failed', PW_WRONG)
             return
 
-    def closeEvent(self, event):
-        QApplication.quit()
+    def showEvent(self, event):
+        self.specs.showed.emit(True)
+        self.showLayout.emit('mainUI', 'hide')
 
+    def hideEvent(self, event):
+        self.specs.showed.emit(False)
+
+    def closeEvent(self, event):
+        self.hide()
 
 def main():
     login = QApplication(sys.argv)

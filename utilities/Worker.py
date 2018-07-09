@@ -15,13 +15,10 @@ import sys, time, traceback, unittest
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, pyqtSlot,QRunnable, QObject, QThreadPool, QThread
-from PyQt5.QtWidgets import QGridLayout, QApplication, QWidget
+from PyQt5.QtWidgets import QGridLayout, QWidget
 
 # Plt
-import appData as app
 from ui import uirc as rc
-
-from appData.config import logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Signals """
@@ -54,19 +51,6 @@ class Signals(QObject):
 
 class Worker(QRunnable):
 
-    '''
-        Worker thread
-
-        Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
-
-        :param callback: The function callback to run on this worker thread. Supplied args and
-                         kwargs will be passed through to the runner.
-        :type callback: function
-        :param args: Arguments to pass to the callback function
-        :param kwargs: Keywords to pass to the callback function
-
-    '''
-
     signals = Signals()
     workerFinished = signals.workerFinished
     workerReady = signals.workerReady
@@ -75,7 +59,6 @@ class Worker(QRunnable):
     def __init__(self, workerID=0, fn=None, *args, **kwargs):
         super(Worker, self).__init__()
 
-        self.settings = app.appSetting
 
         self.workerID = workerID
         self.fn = fn                            # Store constructor arguments (re-used for processing)
@@ -84,12 +67,6 @@ class Worker(QRunnable):
 
     @pyqtSlot()
     def run(self):
-
-        '''
-        Initialise the runner function with passed args, kwargs.
-        '''
-
-        # Retrieve args/kwargs here; and fire processing using them
 
         try:
             result = self.fn(*self.args, **self.kwargs, status = self.signals.status, progress = self.signals.progress)

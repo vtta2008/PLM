@@ -24,28 +24,25 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QHBoxLa
 
 # Plt
 from appData import PW_CHANGED, PW_BLANK, PW_UNMATCH, PW_WRONG, __envKey__
-from core.Settings import Settings
+from core.Specs import Specs
 from utilities import utils as func
 from utilities import localSQL as usql
-from ui import uirc as rc
+from ui.lib.LayoutPreset import AppIcon, GroupGrid
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """
 # ----------------------------------------------------------------------------------------------------------- #
 class UserSetting(QDialog):
 
+    key = 'userSetting'
     updateAvatar = pyqtSignal(bool)
     query = usql.QuerryDB()
 
     def __init__(self, parent=None):
 
         super(UserSetting, self).__init__(parent)
-
-        self.setWindowTitle('User Setting')
-        self.setWindowIcon(rc.AppIcon(32, "UserSetting"))
-
-        
-        self.settings = Settings(self)
+        self.specs = Specs(self.key, self)
+        self.setWindowIcon(AppIcon(32, "UserSetting"))
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -67,9 +64,7 @@ class UserSetting(QDialog):
 
         self.username, token, cookie, remember = self.query.query_table('curUser')
 
-        avatar_groupBox = QGroupBox('Change Avatar')
-        avatar_layout = QHBoxLayout()
-        avatar_groupBox.setLayout(avatar_layout)
+        avatar_groupBox, avatar_layout = GroupGrid('Change Avatar')
 
         self.avatar = QLabel()
         self.avatar.setPixmap(QPixmap.fromImage(QImage(func.getAvatar(self.username))))
@@ -119,7 +114,7 @@ class UserSetting(QDialog):
         profile_layout.addWidget(QLabel('First Name'), 0, 0, 1, 2)
         profile_layout.addWidget(QLabel('Last Name'), 1, 0, 1, 2)
         profile_layout.addWidget(QLabel('Your Title'), 2, 0, 1, 2)
-        profile_layout.addWidget(QLabel('Emial'), 3, 0, 1, 2)
+        profile_layout.addWidget(QLabel('Email'), 3, 0, 1, 2)
         profile_layout.addWidget(QLabel('Phone Number'), 4, 0, 1, 2)
 
         self.firstnameField = QLineEdit()

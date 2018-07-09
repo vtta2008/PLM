@@ -21,7 +21,7 @@ from PyQt5.QtGui import QColor, QPen, QBrush, QPainter
 from core.Errors import KnobConnectionError, UnknownFlowError
 from appData.scr._pNN import *
 from utilities.pUtils import *
-from ui.pNodeGraph.pEdge import pEdge
+from ui.NodeGraph.pEdge import pEdge
 
 # -------------------------------------------------------------------------------------------------------------
 """ pKnob """

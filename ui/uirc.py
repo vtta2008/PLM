@@ -24,48 +24,10 @@ from PyQt5.QtWidgets import (QLabel, QGridLayout, QPushButton, QAction, QApplica
                              QVBoxLayout, QToolButton, QTextEdit, QDockWidget)
 
 # Plt
-from appData import (mainConfig, right, WAIT_LAYOUT_COMPLETE, SiPoMin, SiPoExp, SiPoPre, dockB, dockT, datetTimeStamp, 
+from appData import (APPINFO,center , left, right, WAIT_LAYOUT_COMPLETE, SiPoMin, SiPoExp, SiPoPre, dockB, dockT, datetTimeStamp,
                      ICONBTNSIZE, BTNICONSIZE, TXT, WMIN)
-from core.Settings import Settings
 
-from utilities import localSQL as usql
 from utilities import utils as func
-
-# Path
-with open(mainConfig, 'r') as f:
-    APPINFO = json.load(f)
-
-# -------------------------------------------------------------------------------------------------------------
-""" UI resource with signal """
-
-class Run(QObject):
-
-    def __init__(self, data=None, parent=None):
-        super(Run, self).__init__(parent)
-
-        self.data = data
-
-        if "App: " in self.data:
-            self.openApp(self.data.split("App: ")[1])
-        elif "Url: " in self.data:
-            self.openUrl(self.data.split("Url: ")[1])
-        elif "Func: " in self.data:
-            self.exeFunc(self.data.split("Func: ")[1])
-        elif "UI: " in self.data:
-            pass
-
-    def openApp(self, pth):
-        subprocess.Popen(pth)
-
-    def openUrl(self, url):
-        webbrowser.open(url)
-
-    def exeFunc(self, funcName):
-        if funcName == "Exit":
-            usql.TimeLog("Log out")
-            QApplication.instance().quit()
-        elif funcName == "open_cmd":
-            func.open_cmd()
 
 # -------------------------------------------------------------------------------------------------------------
 """ UI resource preset """
@@ -107,7 +69,6 @@ class ImageUI(QGraphicsView):
     def __init__(self, icon="", size=None, parent=None):
         super(ImageUI, self).__init__(parent)
 
-        self.settings = Settings(self)
         self.pixmap = QPixmap(func.getAppIcon(32, icon))
 
         if size == None or len(size) == 0:
@@ -126,18 +87,34 @@ class ImageUI(QGraphicsView):
     def applySetting(self):
         pass
 
+class Button(QPushButton):
+
+    def __init__(self, data=list(), parent=None):
+        super(Button, self).__init__(parent)
+
+        self.data = data
+        self.buildUI()
+
+    def buildUI(self):
+
+        self.setText(self.data[0])
+        self.setToolTip(self.data[1])
+        self.applySetting()
+
+    def applySetting(self):
+        self.setSizePolicy(SiPoMin, SiPoMin)
+        self.setMouseTracking(True)
+
+    def sizeHint(self):
+        size = super(Button, self).sizeHint()
+        size.setHeight(size.height())
+        size.setWidth(max(size.width(), size.height()))
+        return size
+
 class Label(QLabel):
 
-    def __init__(self, txt=TXT, wmin=WMIN, alg = None, font=None, parent=None):
+    def __init__(self, txt=TXT, alg = center, font=QFont("Arial, 10"), wmin=WMIN, parent=None):
         super(Label, self).__init__(parent)
-
-        self.settings = Settings(self)
-
-        if alg == None:
-            alg = Qt.AlignCenter
-
-        if font == None:
-            font = QFont("Arial, 10")
 
         self.alg = alg
         self.fnt = font
@@ -162,8 +139,6 @@ class ToolBtn(QToolButton):
 
     def __init__(self, text, parent=None):
         super(ToolBtn, self).__init__(parent)
-
-        self.settings = Settings(self)
         self.setText(text)
         self.applySetting()
 
@@ -176,53 +151,21 @@ class ToolBtn(QToolButton):
         size.setWidth(max(size.width(), size.height()))
         return size
 
-class Button(QPushButton):
-
-    def __init__(self, data=[], parent=None):
-        super(Button, self).__init__(parent)
-
-        self.data = data
-        self.buildUI()
-
-    def buildUI(self):
-
-        self.setText(self.data[0])
-        self.setToolTip(self.data[1])
-        self.applySetting()
-
-    def applySetting(self):
-        self.setSizePolicy(SiPoMin, SiPoMin)
-        self.setMouseTracking(True)
-
-    def sizeHint(self):
-        size = super(Button, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
-
 class IconBtnProcess(QPushButton):
 
     consoleSig = pyqtSignal(str)
 
     def __init__(self, key, parent=None):
         super(IconBtnProcess, self).__init__(parent)
-
-        self.settings = Settings(self)
-
         self.key = key
-
         self.buildUI()
 
     def buildUI(self):
 
         self.setToolTip(APPINFO[self.key][0])
         self.setIcon(IconPth(32, self.key))
-        self.clicked.connect(partial(self.consoleSig.emit, self.key))
-
+        self.clicked.connect(partial(self.consoleSig.emit, APPINFO[self.key][2]))
         self.applySetting()
-
-    def on_icon_btn_clicked(self, data):
-        Run(data)
 
     def applySetting(self):
         self.setFixedSize(BTNICONSIZE)
@@ -231,26 +174,18 @@ class IconBtnProcess(QPushButton):
 
 class IconBtnLoadLayout(QPushButton):
 
-    consoleSig = pyqtSignal(str)
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, key=None, parent=None):
         super(IconBtnLoadLayout, self).__init__(parent)
-
-        self.settings = Settings(self)
         self.key = key
-
         self.buildUI()
 
     def buildUI(self):
         self.setToolTip(APPINFO[self.key][0])
         self.setIcon(IconPth(32, self.key))
-        self.clicked.connect(partial(self.consoleSig.emit, self.key))
-
+        self.clicked.connect(partial(self.showLayout.emit, self.key, 'show'))
         self.applySetting()
-
-    def on_icon_btn_clicked(self):
-        self.settings.setValue(self.key, True)
-        self.consoleSig.emit(self.key)
 
     def applySetting(self):
         self.setFixedSize(BTNICONSIZE)
@@ -263,7 +198,6 @@ class ActionProcess(QAction):
 
     def __init__(self, key, parent=None):
         super(ActionProcess, self).__init__(parent)
-        self.settings = Settings(self)
         self.key = key
         self.buildUI()
 
@@ -284,23 +218,14 @@ class ActionLoadLayout(QAction):
 
     def __init__(self, key, parent=None):
         super(ActionLoadLayout, self).__init__(parent)
-
-        self.settings = Settings(self)
         self.key = key
-
         self.buildUI()
 
     def buildUI(self, key):
         self.setIcon(QIcon(APPINFO[self.key][1]))
         self.setText(key)
         self.setStatusTip(APPINFO[self.key][0])
-        self.triggered.connect(self.on_action_triggered)
-
         self.applySetting()
-
-    def on_action_triggered(self):
-        self.settings.setValue(self.key, True)
-        self.consoleSig.emit(True)
 
     def applySetting(self):
         pass
@@ -309,8 +234,6 @@ class BatchTBProcess(QToolBar):
 
     def __init__(self, name="Tool bar name", apps=[], parent=None):
         super(BatchTBProcess, self).__init__(parent)
-
-        self.settings = Settings(self)
         self.name = name
         self.layout = parent
         self.apps = apps
@@ -397,8 +320,6 @@ class TabContent(QWidget):
         if layout is None:
             layout = QGridLayout()
             layout.addWidget(Label())
-
-        self.settings = Settings(self)
         self.layout = layout
         self.buildUI()
         self.setLayout(self.layout)
@@ -414,8 +335,6 @@ class TabWidget(QWidget):
 
     def __init__(self, parent=None):
         super(TabWidget, self).__init__(parent)
-        self.settings = Settings(self)
-
         self.layout = QVBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
@@ -441,98 +360,70 @@ class AutoArrangeIconGrid(QGridLayout):
 
     def __init__(self, btns=[], parent=None):
         super(AutoArrangeIconGrid, self).__init__(parent)
-
-        self.settings = Settings(self)
-
         self.btns = btns
-
         self.buildUI()
 
     def buildUI(self):
         if not len(self.btns) == 0:
             for i in range(len(self.btns)):
-                if str(type(self.btns[i])) in ["<class 'ui.uirc.IconBtnProcess'>", "<class 'ui.uirc.IconBtnLoadLayout'>", ]:
-                    if i == 0:
-                        self.addWidget(self.btns[i], 0, 0, 1, 1)
-                    elif i == 1:
-                        self.addWidget(self.btns[i], 0, 1, 1, 1)
-                    elif i == 2:
-                        self.addWidget(self.btns[i], 0, 2, 1, 1)
-                    elif i == 3:
-                        self.addWidget(self.btns[i], 1, 0, 1, 1)
-                    elif i == 4:
-                        self.addWidget(self.btns[i], 1, 1, 1, 1)
-                    elif i == 5:
-                        self.addWidget(self.btns[i], 1, 2, 1, 1)
-                    elif i == 6:
-                        self.addWidget(self.btns[i], 2, 0, 1, 1)
-                    elif i == 7:
-                        self.addWidget(self.btns[i], 2, 1, 1, 1)
-                    elif i == 8:
-                        self.addWidget(self.btns[i], 2, 2, 1, 1)
-                else:
-                    raise TypeError("Type Object is not corrected, expected icon button class")
+                if i == 0:
+                    self.addWidget(self.btns[i], 0, 0, 1, 1)
+                elif i == 1:
+                    self.addWidget(self.btns[i], 0, 1, 1, 1)
+                elif i == 2:
+                    self.addWidget(self.btns[i], 0, 2, 1, 1)
+                elif i == 3:
+                    self.addWidget(self.btns[i], 1, 0, 1, 1)
+                elif i == 4:
+                    self.addWidget(self.btns[i], 1, 1, 1, 1)
+                elif i == 5:
+                    self.addWidget(self.btns[i], 1, 2, 1, 1)
+                elif i == 6:
+                    self.addWidget(self.btns[i], 2, 0, 1, 1)
+                elif i == 7:
+                    self.addWidget(self.btns[i], 2, 1, 1, 1)
+                elif i == 8:
+                    self.addWidget(self.btns[i], 2, 2, 1, 1)
                 i += 1
-
-        self.applySetting()
-
-    def applySetting(self):
-        pass
 
 class AutoArrangeBtnGrid(QGridLayout):
 
     def __init__(self, btns=[], parent=None):
         super(AutoArrangeBtnGrid, self).__init__(parent)
-
-        self.settings = Settings(self)
         self.btns = btns
         self.buildUI()
 
     def buildUI(self):
         if not len(self.btns) == 0:
             for i in range(len(self.btns)):
-                if str(type(self.btns[i])) in ["<class 'PyQt5.QtWidgets.QPushButton'>", "<class 'ui.uirc.Button'>"]:
-                    if i == 0:
-                        self.addWidget(self.btns[i], 0, 0, 1, 2)
-                    elif i == 1:
-                        self.addWidget(self.btns[i], 1, 0, 1, 2)
-                    elif i == 2:
-                        self.addWidget(self.btns[i], 2, 0, 1, 2)
-                    elif i == 3:
-                        self.addWidget(self.btns[i], 3, 0, 1, 2)
-                    elif i == 4:
-                        self.addWidget(self.btns[i], 4, 0, 1, 2)
-                    elif i == 5:
-                        self.addWidget(self.btns[i], 5, 0, 1, 2)
-                    elif i == 6:
-                        self.addWidget(self.btns[i], 6, 0, 1, 2)
-                    elif i == 7:
-                        self.addWidget(self.btns[i], 7, 0, 1, 2)
-                    elif i == 8:
-                        self.addWidget(self.btns[i], 8, 0, 1, 2)
-                else:
-                    raise TypeError("Type Object is not corrected, expected icon button class")
+                if i == 0:
+                    self.addWidget(self.btns[i], 0, 0, 1, 2)
+                elif i == 1:
+                    self.addWidget(self.btns[i], 1, 0, 1, 2)
+                elif i == 2:
+                    self.addWidget(self.btns[i], 2, 0, 1, 2)
+                elif i == 3:
+                    self.addWidget(self.btns[i], 3, 0, 1, 2)
+                elif i == 4:
+                    self.addWidget(self.btns[i], 4, 0, 1, 2)
+                elif i == 5:
+                    self.addWidget(self.btns[i], 5, 0, 1, 2)
+                elif i == 6:
+                    self.addWidget(self.btns[i], 6, 0, 1, 2)
+                elif i == 7:
+                    self.addWidget(self.btns[i], 7, 0, 1, 2)
+                elif i == 8:
+                    self.addWidget(self.btns[i], 8, 0, 1, 2)
                 i += 1
-
-        self.applySetting()
-
-    def applySetting(self):
-        pass
 
 class AutoArrangeImageView(QGridLayout):
 
     def __init__(self, imageView, parent=None):
         super(AutoArrangeImageView, self).__init__(parent)
-
-        self.settings = Settings(self)
-
         self.img = imageView
-
         self.buildUI()
 
-
     def buildUI(self):
-
         if self.img:
             if str(type(self.img)) in ["<class 'PyQt5.QtWidgets.QGraphicsView'>", ]:
                 self.addWidget(self.img, 0, 0, 1, 1)
@@ -546,8 +437,6 @@ class AutoSectionBtnGrp(QGroupBox):
 
     def __init__(self, title="Section Title", btns=[], mode="IconGrid", parent=None):
         super(AutoSectionBtnGrp, self).__init__(parent)
-
-        self.settings = Settings(self)
         self.setTitle(title)
         self.btns = btns
         self.mode = mode
@@ -562,17 +451,10 @@ class AutoSectionBtnGrp(QGroupBox):
         elif self.mode == "ImageView":
             self.setLayout(AutoArrangeImageView(self.btns[0]))
 
-        self.applySetting()
-
-    def applySetting(self):
-        pass
-
 class AutoSectionQMainGrp(QGroupBox):
 
     def __init__(self, title="Section Title", subLayout=None, parent=None):
         super(AutoSectionQMainGrp, self).__init__(parent)
-
-        self.settings = Settings(self)
         self.setTitle(title)
         self.subLayout = subLayout
 
@@ -593,8 +475,6 @@ class AutoSectionQGridGrp(QGroupBox):
 
     def __init__(self, title="Section Title", subLayout=None, parent=None):
         super(AutoSectionQGridGrp, self).__init__(parent)
-
-        self.settings = Settings(self)
         self.setTitle(title)
 
         self.layout = subLayout
@@ -609,10 +489,7 @@ class AutoSectionLayoutGrp(QGroupBox):
 
     def __init__(self, title="Section Title", subLayout=None, parent=None):
         super(AutoSectionLayoutGrp, self).__init__(parent)
-
-        self.settings = Settings(self)
         self.setTitle(title)
-
         if subLayout == None or len(subLayout) == 0 or str(type(subLayout)) in ["Class <'Label'>", "Class <'QLabel'>",]:
             subLayout = Label(WAIT_LAYOUT_COMPLETE)
             self.layout = QGridLayout()

@@ -26,15 +26,16 @@ from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 # Plt
 from ui.Web import PLMBrowser_rc
 from utilities import utils as func
+from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Web browser """
 
 class WebBrowser(QMainWindow):
 
-    adjTitSig = pyqtSignal(str)
-    setProgSig = pyqtSignal(int)
-    finLoadSig = pyqtSignal(str)
+    adjTitle = pyqtSignal(str)
+    setProg = pyqtSignal(int)
+    finishLoad = pyqtSignal(str)
 
     def __init__(self, url, parent=None):
         super(WebBrowser, self).__init__(parent)
@@ -52,7 +53,6 @@ class WebBrowser(QMainWindow):
         QNetworkProxyFactory.setUseSystemConfiguration(True)
 
         self.view = QWebEngineView(self)
-        self.view
         self.view.load(QUrl(url))
         self.view.loadFinished.connect(self.adjustLocation)
         self.view.titleChanged.connect(self.adjustTitle)
@@ -123,9 +123,8 @@ class WebBrowser(QMainWindow):
 
     def setProgress(self, p):
         self.progress = p
-        self.setProgSig.emit(self.progress)
+        self.setProg.emit(self.progress)
         self.adjustTitle()
-
 
     def finishLoading(self):
         self.progress = 100
@@ -182,11 +181,13 @@ class WebBrowser(QMainWindow):
 
 class PLMBrowser(QWidget):
 
-    def __init__(self, url='http://www.google.com.vn', parent=None):
-        super(PLMBrowser, self).__init__(parent)
+    key = 'browser'
+    showLayout = pyqtSignal(str, str)
 
+    def __init__(self, url='vnexpress.net', parent=None):
+        super(PLMBrowser, self).__init__(parent)
+        self.specs = Specs(self.key, self)
         self.setWindowIcon(QIcon(func.getAppIcon(32, 'PLMBrowser')))
-        self.setWindowTitle('PLM Browser')
 
         self.url = url
 
@@ -195,14 +196,12 @@ class PLMBrowser(QWidget):
         self.setLayout(self.layout)
 
     def buildUI(self):
-        viewer = WebBrowser(self.url)
-        viewer.setProgSig.connect(self.adjustTitle)
-        self.layout.addWidget(viewer)
+        self.viewer = WebBrowser(self.url)
+        self.viewer.setProg.connect(self.adjustTitle)
+        self.layout.addWidget(self.viewer)
 
         self.statusBar = QStatusBar(self)
         self.layout.addWidget(self.statusBar)
-
-        self. applySetting()
 
     def adjustTitle(self, param):
         if 0 < param < 100:
@@ -210,8 +209,17 @@ class PLMBrowser(QWidget):
         else:
             self.setWindowTitle("PLM Browser")
 
-    def applySetting(self):
-        pass
+    def setUrl(self, url):
+        self.viewer = WebBrowser(url)
+        self.viewer.update()
+
+    def showEvent(self, event):
+        self.specs.showed.emit(True)
+
+    def closeEvent(self, event):
+        self.showLayout.emit('browser', 'hide')
+        self.specs.showed.emit(False)
+        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

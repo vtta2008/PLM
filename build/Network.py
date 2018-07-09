@@ -11,11 +11,10 @@ Description:
 """ Import """
 
 # Python
-import os, json, uuid
+import os, json, uuid, defer
 
 from datetime import datetime
 from urllib import parse
-import defer
 
 # PyQt5
 from PyQt5.QtCore import QTimer, QUrl

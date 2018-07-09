@@ -15,18 +15,22 @@ import sys
 from difflib import get_close_matches
 
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QDialog, QGridLayout, QLabel, QHBoxLayout, QPushButton, QLineEdit, QTextEdit,
-                             QApplication, QWidget)
+from PyQt5.QtWidgets import (QDialog, QGridLayout, QHBoxLayout, QLineEdit, QTextEdit, QApplication, QWidget)
 
-from utilities import utils as func
+from utilities.utils import getAppIcon
+from ui.uirc import Label, Button
+from core.Specs import Specs
 
 class EnglishDictionary(QDialog):
+
+    key = 'engDict'
+
     def __init__(self, parent=None):
 
         super(EnglishDictionary, self).__init__(parent)
 
-        self.setWindowTitle("English Dictionary")
-        self.setWindowIcon(QIcon(func.getAppIcon(32, "EnglishDictionary")))
+        self.specs = Specs(self.key, self)
+        self.setWindowIcon(QIcon(getAppIcon(32, "EnglishDictionary")))
 
         central_widget = QWidget(self)
         self.layout = QGridLayout(self)
@@ -34,50 +38,41 @@ class EnglishDictionary(QDialog):
 
         self.buildUI()
 
-        # self.setCentralWidget(self.layout)
-
-        self.setContentsMargins(5, 5, 5, 5)
-
     def buildUI(self):
 
         hbox = QHBoxLayout()
-
-        GridLayout = QGridLayout()
+        grid = QGridLayout()
 
         self.lineInput = QLineEdit()
+        self.suggessLabel = Label()
 
-        self.suggessLabel = QLabel()
-
-        searchBtn = QPushButton('Translate')
+        searchBtn = Button(['Translate', ' '])
         searchBtn.clicked.connect(self.translate)
 
-        yesBtn = QPushButton('Yes')
+        yesBtn = Button(['Yes', ' '])
         yesBtn.clicked.connect(self.translate)
 
-        noBtn = QPushButton('No')
+        noBtn = Button(['No', ' '])
         noBtn.clicked.connect(self.translate)
 
         self.answer = QTextEdit()
 
-        GridLayout.addWidget(self.lineInput, 0, 0, 1, 3)
-        GridLayout.addWidget(self.suggessLabel, 1, 0, 1, 3)
-        GridLayout.addWidget(searchBtn, 2, 0, 1, 1)
-        GridLayout.addWidget(yesBtn, 2, 1, 1, 1)
-        GridLayout.addWidget(noBtn, 2, 2, 1, 1)
-        GridLayout.addWidget(self.answer, 3, 0, 4, 3)
+        grid.addWidget(self.lineInput, 0, 0, 1, 3)
+        grid.addWidget(self.suggessLabel, 1, 0, 1, 3)
+        grid.addWidget(searchBtn, 2, 0, 1, 1)
+        grid.addWidget(yesBtn, 2, 1, 1, 1)
+        grid.addWidget(noBtn, 2, 2, 1, 1)
+        grid.addWidget(self.answer, 3, 0, 4, 3)
 
-        hbox.addLayout(GridLayout)
+        hbox.addLayout(grid)
 
         self.setLayout(hbox)
 
     def translate(self, *args):
         from appData import __envKey__
         filePth = os.path.join(os.getenv(__envKey__), 'appData', 'ED.json')
-
         data = json.load(open(filePth))
-
         w = self.lineInput.text().lower()
-
         if w in data:
             answer = str(data[w])
         elif len(get_close_matches(w, data.keys())) > 0:
@@ -90,27 +85,20 @@ class EnglishDictionary(QDialog):
                 answer = "We did not understand your entry."
         else:
             answer = "The word doesn't exist. Please double check it."
-
         self.populateAnswer(answer)
 
     def populateAnswer(self, answer, *args):
-
         blocks = ["[u'", "']", "', u'", "', u", ", u'", "['"]
-
         for block in blocks:
             if block in answer:
                 stringToList = answer.split(block)
                 answer = self.listToString(stringToList)
-
         self.answer.setPlainText("%s" % answer)
 
     def listToString(self, stringToList, *args):
-
         listToString = ""
-
         for i in stringToList:
             listToString += i
-
         return listToString
 
 

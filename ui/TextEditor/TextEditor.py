@@ -20,11 +20,12 @@ from PyQt5.QtGui import (QFont, QFontDatabase, QFontInfo, QIcon, QKeySequence, Q
                          QTextCursor, QTextDocumentWriter, QTextListFormat)
 from PyQt5.QtPrintSupport import QPrintDialog, QPrinter, QPrintPreviewDialog
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog, QComboBox, QFileDialog, QFontComboBox,
-                             QMainWindow, QMenu, QMessageBox, QTextEdit, QToolBar, QDialog, QHBoxLayout)
+                             QMainWindow, QMenu, QMessageBox, QTextEdit, QToolBar, QDialog, QHBoxLayout, QWidget)
 
 # Plt
 from ui.TextEditor import TextEditor_rc
 from utilities import utils as func
+from core.Specs import Specs
 
 if sys.platform.startswith('darwin'):
     rsrcPath = ":/images/mac"
@@ -535,13 +536,14 @@ class TextEdit(QMainWindow):
 # -------------------------------------------------------------------------------------------------------------
 """ layout class """
 
-class TextEditor(QDialog):
+class TextEditor(QWidget):
+
+    key = 'textEditor'
 
     def __init__(self, parent=None):
         super(TextEditor, self).__init__(parent)
-
+        self.specs = Specs(self.key, self)
         self.setWindowIcon(QIcon(func.getAppIcon(32, 'TextEditor')))
-        self.setWindowTitle('Pipeline Text Editor')
 
         self.layout = QHBoxLayout()
         self.buildUI()

@@ -21,16 +21,16 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QCheckBox, QPushButton, QGridLayout, QGroupBox
 
 # Plt
-from appData.Loggers import SetLogger
-from utilities import utils as func
-from core.Settings import Settings
+from utilities.utils import str2bool, bool2str, getAppIcon
+from core.Loggers import SetLogger
+from core.Specs import Specs
 
-logger = SetLogger()
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """
 
 class Configuration(QWidget):
 
+    key = 'config'
     checkboxTDSig = pyqtSignal(bool)
     checkboxCompSig = pyqtSignal(bool)
     checkboxArtSig = pyqtSignal(bool)
@@ -39,13 +39,10 @@ class Configuration(QWidget):
 
     def __init__(self, parent=None):
         super(Configuration, self).__init__(parent)
-
+        self.specs = Specs(self.key, self)
+        self.logger = SetLogger(self)
         self.resize(200, 100)
-        self.setWindowTitle("Configuration")
-        self.setWindowIcon(QIcon(func.getAppIcon(32, 'Configuration')))
-
-        # from core.Settings import Settings
-        self.settings = Settings('app')
+        self.setWindowIcon(QIcon(getAppIcon(32, 'Configuration')))
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -58,23 +55,15 @@ class Configuration(QWidget):
         tbGrpBox.setLayout(tbGrid)
 
         self.toolBarTD_checkBox = QCheckBox("Show/hide TD toolbar")
-        showTDToolbar = func.str2bool(self.settings.value("showTDToolbar"))
-        self.toolBarTD_checkBox.setChecked(showTDToolbar)
         self.toolBarTD_checkBox.stateChanged.connect(self.checkBoxTDStateChanged)
 
         self.toolBarComp_checkBox = QCheckBox("Show/hide Comp toolbar")
-        showCompToolbar = func.str2bool(self.settings.value("showCompToolbar", True))
-        self.toolBarComp_checkBox.setChecked(showCompToolbar)
         self.toolBarComp_checkBox.stateChanged.connect(self.checkBoxCompStateChanged)
 
         self.toolBarArt_checkBox = QCheckBox("Show/hide Art toolbar")
-        showArtToolbar = func.str2bool(self.settings.value("showArtToolbar", True))
-        self.toolBarArt_checkBox.setChecked(showArtToolbar)
         self.toolBarArt_checkBox.stateChanged.connect(self.checkBoxArtStateChanged)
 
         self.allToolBar_checkBox = QCheckBox("Show/hide all toolbar")
-        showAllToolbar = func.str2bool(self.settings.value("showAllToolbar", True))
-        self.allToolBar_checkBox.setChecked(showAllToolbar)
         self.allToolBar_checkBox.stateChanged.connect(self.checkBoxMasterStateChanged)
 
 
@@ -90,26 +79,20 @@ class Configuration(QWidget):
         self.layout.addWidget(closeBtn, 1, 0, 1, 2)
 
     def checkBoxMasterStateChanged(self):
-        showAllToolbar = func.str2bool(self.allToolBar_checkBox.checkState())
+        showAllToolbar = str2bool(self.allToolBar_checkBox.checkState())
         self.toolBarTD_checkBox.setChecked(showAllToolbar)
         self.toolBarComp_checkBox.setChecked(showAllToolbar)
         self.toolBarArt_checkBox.setChecked(showAllToolbar)
-        self.settings.setValue("showAllToolbar", func.bool2str(showAllToolbar))
+        self.settings.setValue("showAllToolbar", bool2str(showAllToolbar))
 
     def checkBoxTDStateChanged(self):
-        showTDToolbar = func.str2bool(self.toolBarTD_checkBox.checkState())
-        self.settings.setValue("showTDToolbar", func.bool2str(showTDToolbar))
-        self.checkboxTDSig.emit(self.toolBarTD_checkBox.isChecked())
+        return str2bool(self.toolBarTD_checkBox.checkState())
 
     def checkBoxCompStateChanged(self):
-        showCompToolbar = func.str2bool(self.toolBarComp_checkBox.checkState())
-        self.settings.setValue("showCompToolbar", func.bool2str(showCompToolbar))
-        self.checkboxCompSig.emit(self.toolBarComp_checkBox.isChecked())
+        return str2bool(self.toolBarComp_checkBox.checkState())
 
     def checkBoxArtStateChanged(self):
-        showArtToolbar = func.str2bool(self.toolBarArt_checkBox.checkState())
-        self.settings.setValue("showArtToolbar", func.bool2str(showArtToolbar))
-        self.checkboxArtSig.emit(self.toolBarArt_checkBox.isChecked())
+        return str2bool(self.toolBarArt_checkBox.checkState())
 
 def main():
     app = QApplication(sys.argv)

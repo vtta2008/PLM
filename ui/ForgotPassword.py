@@ -14,18 +14,21 @@ Description:
 # Python
 import sys
 
-
 # PtQt5
-from PyQt5.QtWidgets import (QApplication, QDialog, QDialogButtonBox, QFormLayout, QGroupBox, QLabel,
-                             QLineEdit, QVBoxLayout)
+from PyQt5.QtWidgets import (QApplication, QWidget, QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit, QVBoxLayout)
 
+# Plm
+from ui.uirc import Label
+from core.Specs import Specs
 
-class ForgotPassword(QDialog):
+class ForgotPassword(QWidget):
+
+    key = 'forgotPW'
 
     def __init__(self):
         super(ForgotPassword, self).__init__()
 
-        self.setWindowTitle("Reset Password")
+        self.specs = Specs(self.key, self)
         self.setContentsMargins(0,0,0,0)
 
         self.layout = QVBoxLayout()
@@ -35,7 +38,6 @@ class ForgotPassword(QDialog):
     def buildUI(self):
 
         self.step1_form = self.step1_layout()
-
         self.step2_form = self.step2_layout()
         self.step2_form.setVisible(False)
 
@@ -55,8 +57,8 @@ class ForgotPassword(QDialog):
         step1_btn_box.accepted.connect(self.on_step1_btn_clicked)
         step1_btn_box.rejected.connect(self.close)
 
-        step1_layout.addRow(QLabel("Username:"), self.user_account)
-        step1_layout.addRow(QLabel("Email adress:"), self.user_email)
+        step1_layout.addRow(Label("Username:"), self.user_account)
+        step1_layout.addRow(Label("Email adress:"), self.user_email)
         step1_layout.addRow(step1_btn_box)
 
         return step1_groupBox
@@ -67,8 +69,8 @@ class ForgotPassword(QDialog):
         step2_layout = QVBoxLayout()
         step2_groupBox.setLayout(step2_layout)
 
-        self.question1 = QLabel("Question 1")
-        self.question2 = QLabel("Question 2")
+        self.question1 = Label("Question 1")
+        self.question2 = Label("Question 2")
 
         self.answer1 = QLineEdit()
         self.answer2 = QLineEdit()

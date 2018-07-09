@@ -15,61 +15,71 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtWidgets import QMainWindow, QSizePolicy, QApplication
+from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
 
 # Plt
-from appData import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, APPINFO
-from ui import uirc as rc
-from utilities import utils as func
-from core.Settings import Settings
+from appData import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, APPINFO, SiPoMin
+from ui.uirc import ActionProcess
+from utilities.utils import str2bool, bool2str
 
-from appData.Loggers import SetLogger
-logger = SetLogger()
+from core.Specs import Specs
+from core.Loggers import SetLogger
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
 
 class ToolBar(QMainWindow):
 
-    def __init__(self, parent=None):
+    key = 'toolBar'
 
+    showLayout = pyqtSignal(str, str)
+    executing = pyqtSignal(str)
+    regLayout = pyqtSignal(str, object)
+    openBrowser = pyqtSignal(str)
+    setSetting = pyqtSignal(str, str, str)
+
+    def __init__(self, parent=None):
         super(ToolBar, self).__init__(parent)
 
-        # from core.Settings import Settings
-        self.settings = Settings(self)
+        self.specs = Specs(self.key, self)
+        self.logger = SetLogger(self)
         self.appInfo = APPINFO
-        self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.setSizePolicy(SiPoMin, SiPoMin)
 
         self.tdToolBar = self.make_toolBar("TD", CONFIG_TDS)
         self.compToolBar = self.make_toolBar("VFX", CONFIG_VFX)
         self.artToolBar = self.make_toolBar("ART", CONFIG_ART)
 
-        self.showTDToolBar = func.str2bool(self.settings.value("showTDToolbar", True))
-        self.showCompToolBar = func.str2bool(self.settings.value("showCompToolbar", True))
-        self.showArtToolBar = func.str2bool(self.settings.value("showArtToolbar", True))
-
-        self.tdToolBar.setVisible(self.showTDToolBar)
-        self.compToolBar.setVisible(self.showCompToolBar)
-        self.artToolBar.setVisible(self.showArtToolBar)
-
     def make_toolBar(self, name="", apps=[]):
         toolBar = self.addToolBar(name)
         for key in apps:
             if key in self.appInfo:
-                toolBar.addAction(rc.ActionProcess(key, self))
+                toolBar.addAction(ActionProcess(key, self))
         return toolBar
 
-    def show_td(self, param):
-        self.settings.setValue("tbTD", func.bool2str(param))
-        self.tdToolBar.setVisible(func.str2bool(param))
+    @pyqtSlot(str, bool)
+    def showToolBar(self, toolbar, mode):
+        if toolbar == 'td':
+            self.tdToolBar.setVisible(str2bool(mode))
+            self.setSetting.emit(toolbar, 'hide', self.objectName())
+        elif toolbar == 'vfx':
+            self.compToolBar.setVisible(str2bool(mode))
+            self.setSetting.emit(toolbar, 'hide', self.objectName())
+        elif toolbar == 'art':
+            self.artToolBar.setVisible(str2bool(mode))
+            self.setSetting.emit(toolbar, 'hide', self.objectName())
+        else:
+            for tb in [self.tdToolBar, self.compToolBar, self.artToolBar]:
+                tb.setVisible(True)
 
-    def show_comp(self, param):
-        self.settings.setValue("tbComp", func.bool2str(param))
-        self.compToolBar.setVisible(func.str2bool(param))
+            self.setSetting.emit('td', 'hide', self.objectName())
+            self.setSetting.emit('vfx', 'hide', self.objectName())
+            self.setSetting.emit('art', 'hide', self.objectName())
 
-    def show_art(self, param):
-        self.settings.setValue("tbArt", func.bool2str(param))
-        self.artToolBar.setVisible(func.str2bool(param))
+    def hideEvent(self, event):
+        self.setSetting.emit(self.key, 'hide', self.objectName())
 
 def main():
     app = QApplication(sys.argv)

@@ -9,8 +9,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-localDB = "local.db"
-appLog = "plm.log"
+localDatabaseFile = "local.db"
+appLogFile = "plm.log"
 appIcon = "appIcon.cfg"
 webIcon = "webIcon.cfg"
 logoIcon = "logoIcon.cfg"
@@ -18,6 +18,7 @@ logoIcon = "logoIcon.cfg"
 pythonCfg = "envKey.cfg"
 installedAppCfg = "app.cfg"
 appPackagesCfg = "main.cfg"
+reg = 'reg'
 
 DAMGteam = 'DAMGteam'
 
@@ -60,10 +61,10 @@ QUESTION = "QUESTION"
 ABOUT = "ABOUT"
 CREDIT = "CREDIT"
 
-PlmSetting = "PlmSetting.ini"
-userSetting = "UserSetting.ini"
-formatSetting = "FormatSetting.ini"
-unixSetting = "unixSetting.ini"
+appSettingFile = "PlmSetting.ini"
+userSettingFile = "UserSetting.ini"
+formatSettingFile = "FormatSetting.ini"
+unixSettingFile = "unixSetting.ini"
 
 logo32 = '32x32.png'
 Plm = "Plm"

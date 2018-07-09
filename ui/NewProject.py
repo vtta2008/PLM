@@ -18,34 +18,12 @@ from PyQt5.QtGui import QIcon, QIntValidator
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QGroupBox, QHBoxLayout, QVBoxLayout, QLineEdit, QInputDialog,
                              QComboBox, QFileDialog, QListWidget, QListWidgetItem, QApplication)
 
-from utilities import utils as func
-from ui import uirc as rc
-import appData as app
-
-# -------------------------------------------------------------------------------------------------------------
-""" Variables """
-
-DESKTOPPTH = os.path.join(os.environ["HOMEPATH"], "desktop")
-
-PRODPROFILE = dict(name=["mwm", "Midea Wasing Machine"])
-
-WINPROFILE = dict(prodpthUI=["ProdPthUI", "Create New Project", "SET UP NEW PROJECT"])
-
-APPS = ["maya", "zbrush", "mari", "nuke", "photoshop", "houdini", "after effects"]
-
-MASTER = ["assets", "sequences", "deliverables", "documents", "editorial", "sound", "resources", "RnD"]
-TASKS = ["art", "plt_model", "rigging", "surfacing"]
-SEQTASKS = ["anim", "comp", "fx", "layout", "lighting"]
-ASSETS = {"heroObj": ["washer", "dryer"], "environment": [], "props": []}
-STEPS = ["publish", "review", "work"]
-
-MODELING = ["scenes", "fromZ", "toZ", "objImport", "objExport", "movie"]
-RIGGING = ["scenes", "reference"]
-SURFACING = ["scenes", "sourceimages", "images", "movie"]
-LAYOUT = ["scenes", "sourceimages", "images", "movie", "alembic"]
-LIGHTING = ["scenes", "sourceimages", "images", "cache", "reference"]
-FX = ["scenes", "sourceimages", "images", "cache", "reference", "alembic"]
-ANIM = LAYOUT
+# Plm
+from appData import SiPoMin
+from utilities.utils import getAppIcon
+from ui.uirc import Label, Button
+from core.Specs import Specs
+from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """
@@ -56,13 +34,12 @@ class ItemWidget(QWidget):
         super(ItemWidget, self).__init__(parent)
         self.section = section
 
-        self.item = rc.Label(name)
-        button = rc.Button(["Edit", "Edit character name"])
+        self.item = Label(name)
+        button = Button(["Edit", "Edit character name"])
         button.clicked.connect(self.setText)
         layout = QHBoxLayout()
         layout.addWidget(self.item)
         layout.addWidget(button)
-
         self.setLayout(layout)
 
     def setText(self):
@@ -76,12 +53,13 @@ class ItemWidget(QWidget):
 class NewProject(QWidget):
 
     info = {}
+    key = 'newProj'
 
     def __init__(self, parent=None):
         super(NewProject, self).__init__(parent)
-
-        self.setWindowTitle("New Project")
-        self.setWindowIcon(QIcon(func.getAppIcon(32, "NewProject")))
+        self.specs = Specs(self.key, self)
+        self.logger = SetLogger(self)
+        self.setWindowIcon(QIcon(getAppIcon(32, "NewProject")))
 
         self.layout = QGridLayout(self)
         self.buildUI()
@@ -96,7 +74,7 @@ class NewProject(QWidget):
 
         # Title
         headGrp, headGrid = self.styleGB()
-        headGrid.addWidget(rc.Label(txt=TITLE))
+        headGrid.addWidget(Label(txt=TITLE))
 
         # Project Info
         prjInfGrp, prjInfGrid = self.styleGB("Project Info")
@@ -105,19 +83,19 @@ class NewProject(QWidget):
         self.prjShort = QLineEdit("damg")
         self.prjPth = QLineEdit("E:/")
 
-        setPthBtn = rc.Button(["Set Path", "Set project path"])
+        setPthBtn = Button(["Set Path", "Set project path"])
         setPthBtn.clicked.connect(self.onSetPthBtnClicked)
 
-        prjInfGrid.addWidget(rc.Label("Project Name"), 0, 0, 1, 1)
+        prjInfGrid.addWidget(Label("Project Name"), 0, 0, 1, 1)
         prjInfGrid.addWidget(self.prjLong, 0, 1, 1, 1)
-        prjInfGrid.addWidget(rc.Label("Abbreviated as"), 0, 2, 1, 1)
+        prjInfGrid.addWidget(Label("Abbreviated as"), 0, 2, 1, 1)
         prjInfGrid.addWidget(self.prjShort, 0, 3, 1, 1)
         prjInfGrid.addWidget(setPthBtn, 1, 0, 1, 1)
         prjInfGrid.addWidget(self.prjPth, 1, 1, 1, 3)
 
         # Notice!!!
         noticeGrp, noticeGrid = self.styleGB("NOTE!!!")
-        noticeGrid.addWidget(rc.Label(MESSAGE), 0, 0, 1, 4)
+        noticeGrid.addWidget(Label(MESSAGE), 0, 0, 1, 4)
 
         # Project details
         prjDetailGrp, prjDetailGrid = self.styleGB("Project Details")
@@ -142,15 +120,15 @@ class NewProject(QWidget):
         self.numOfSeq.setValidator(QIntValidator())
         self.numOfSeq.textChanged.connect(partial(self.populate_lst, "seq"))
 
-        prjDetailGrid.addWidget(rc.Label("Project Mode"), 0,0,1,1)
+        prjDetailGrid.addWidget(Label("Project Mode"), 0,0,1,1)
         prjDetailGrid.addWidget(self.prjMode, 0, 1, 1, 1)
-        prjDetailGrid.addWidget(rc.Label("Character: "), 1,0,1,1)
+        prjDetailGrid.addWidget(Label("Character: "), 1,0,1,1)
         prjDetailGrid.addWidget(self.numOfChar, 2, 0, 1, 1)
-        prjDetailGrid.addWidget(rc.Label("Environment: "), 1,1,1,1)
+        prjDetailGrid.addWidget(Label("Environment: "), 1,1,1,1)
         prjDetailGrid.addWidget(self.numOfEnv, 2, 1, 1, 1)
-        prjDetailGrid.addWidget(rc.Label("Props: "), 1,2,1,1)
+        prjDetailGrid.addWidget(Label("Props: "), 1,2,1,1)
         prjDetailGrid.addWidget(self.numOfProp, 2, 2, 1, 1)
-        prjDetailGrid.addWidget(rc.Label("Sequences: "), 1,3,1,1)
+        prjDetailGrid.addWidget(Label("Sequences: "), 1,3,1,1)
         prjDetailGrid.addWidget(self.numOfSeq, 2, 3, 1, 1)
 
         # Asset details
@@ -164,10 +142,10 @@ class NewProject(QWidget):
         # Buttons
         btnGrp, btnGrid = self.styleGB()
 
-        prjLstBtn = rc.Button(["Project List", "Project List"])
-        crewLstBtn = rc.Button(["Crews List", "Crews List"])
-        newPrjBtn = rc.Button(["Create Project", "Create New Project"])
-        cancelBtn = rc.Button(["Cancel", "Calcel"])
+        prjLstBtn = Button(["Project List", "Project List"])
+        crewLstBtn = Button(["Crews List", "Crews List"])
+        newPrjBtn = Button(["Create Project", "Create New Project"])
+        cancelBtn = Button(["Cancel", "Calcel"])
 
         btnGrid.addWidget(prjLstBtn, 0, 0)
         btnGrid.addWidget(crewLstBtn, 0, 1)
@@ -228,7 +206,7 @@ class NewProject(QWidget):
         if dir:
             self.prjPth.setText(dir)
         else:
-            logger.debug("You should set a valid path")
+            self.logger.debug("You should set a valid path")
 
     def populate_lst(self, name="char"):
         if name.lower() == "char":
@@ -258,7 +236,7 @@ class NewProject(QWidget):
             lst.setItemWidget(item, itemWidget)
 
     def applySetting(self):
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.setSizePolicy(SiPoMin, SiPoMin)
         self.setContentsMargins(1,1,1,1)
 
         sections = ["char", "env", "prop", "seq"]

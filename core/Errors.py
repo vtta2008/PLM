@@ -18,8 +18,7 @@ from PyQt5.QtCore import QSettings
 
 # Plm
 from utilities.utils import raise_exception
-from appData.Loggers import SetLogger
-logger = SetLogger()
+from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Base """
@@ -28,30 +27,39 @@ class ErrorBase(Exception):
 
     def __init__(self, parent=None):
         super(ErrorBase, self).__init__(parent)
-
+        self.logger = SetLogger(self)
         self._parent = parent
 
-    def initialize(self, errorName, section, key, path, fm, scope):
+    def initialize(self, errorName, section, key, path, fm, scope, value):
         self.section = section
         self.key = key
         self.pth = path
         self._format = fm
         self._scope = scope
+        self.value = value
         self.errorName = str(errorName).split('class ')[-1].split('__main__.')[-1].split("'>")[0]
 
-        if self.section == 'key':
-            self.mess = self.key_error()
-        elif self.section == 'path':
-            self.mess = self.path_error()
-        elif self.section == 'format':
-            self.mess = self.format_error()
-        elif self.section == 'scope':
-            self.mess = self.scope_error()
+        self.mess = self._message()
 
         try:
             raise Exception("{0}: {1}".format(self.errorName, self.mess))
         except:
             raise_exception()
+
+    def _message(self):
+        if self.section == 'key':
+            mess = self.key_error()
+        elif self.section == 'path':
+            mess = self.path_error()
+        elif self.section == 'format':
+            mess = self.format_error()
+        elif self.section == 'scope':
+            mess = self.scope_error()
+        elif self.section == 'metavalue':
+            mess = self.meta_value_error()
+        else:
+            mess = "Unkown error."
+        return mess
 
     def key_error(self):
         if self.key is None or len(self.key) == 0:
@@ -87,6 +95,12 @@ class ErrorBase(Exception):
         else:
             return "Unknown scope."
 
+    def meta_value_error(self):
+        if self.value is None or len(self.value) == 0:
+            return "A value of a static meta object can not be None"
+        else:
+            return "Wrong type, meta value is only string type."
+
 # -------------------------------------------------------------------------------------------------------------
 """ Setting """
 
@@ -109,6 +123,14 @@ class ScopeSettingError(ErrorBase):
     def __init__(self, scope=None):
         self._scope = scope
         self.initialize(errorName=self.__class__, section='scope', key=self._scope)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Metadata """
+
+class MetaValueError(ErrorBase):
+    def __init__(self, value=None):
+        self.value = value
+        self.initialize(errorName=self.__class__, section='metavalue', value=self.value)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Setting """

@@ -100,7 +100,7 @@ class pDeBug(pDetector):
         self.detector.seek(0)
 
         s = self.detector.read(4)
-        assert (len(s) == 4)
+        # assert (len(s) == 4)
         self.detector.write(s)
 
     def message_handler(self):
@@ -139,7 +139,7 @@ class pDebugger(QWidget):
         self.setLayout(self.layout)
 
     def buildUI(self):
-        self.textEdit = pDeBug()
+        self.textEdit = pDeBug(QtFatalMsg, None, None)
         self.layout.addWidget(self.textEdit)
 
         self.applySetting()

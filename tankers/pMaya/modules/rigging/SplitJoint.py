@@ -235,8 +235,8 @@ class SplitJoint(QtWidgets.QDialog):
         cmds.setAttr(firstJnt + '_split1.translateX', offsetX)
         cmds.setAttr(firstJnt + '_split1.translateY', offsetY)
         cmds.setAttr(firstJnt + '_split1.translateZ', offsetZ)
-        cmds.parent(firstJnt + '_split1', firstJnt)
-        cmds.parent(secondJnt, captureLast)
+        cmds.parent
+        cmds.parent
         cmds.warning("CHAIN SPLIT")
 
 

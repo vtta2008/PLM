@@ -20,7 +20,7 @@ from importlib import reload as r
 
 from appData.scr._path import *
 
-dirLst = [CONFIG_LOCAL_DAMG_DIR, CONFIG_LOCAL_PLM_DIR, CONFIG_DIR, SETTING_DIR, LOG_DIR, CACHE_DIR, PREF_DIR, USER_PREF_DIR]
+dirLst = [CONFIG_LOCAL_DAMG_DIR, CONFIG_LOCAL_PLM_DIR, CONFIG_DIR, SETTING_DIR, LOG_DIR, REG_DIR, CACHE_DIR, PREF_DIR, USER_PREF_DIR]
 
 for pth in dirLst:
     if not os.path.exists(pth):
@@ -108,30 +108,13 @@ README = PLM_ABOUT
 if not os.path.exists(DB_PTH):
     GenerateResource()
 
-class SafeSaver(object):
-    """A safe saver to disk.
-    It saves to a .tmp and moves into final destination, and other
-    considerations.
-    """
-
-    def __init__(self, fname):
-        self.fname = fname
-        self.tmp = fname + ".tmp"
-        self.fh = None
-
-    def __enter__(self):
-        self.fh = open(self.tmp, 'wb')
-        return self.fh
-
-    def __exit__(self, *exc_data):
-        self.fh.close()
-
-        # only move into final destination if all went ok
-        if exc_data == (None, None, None):
-            if os.path.exists(self.fname):
-                # in Windows we need to remove the old file first
-                os.remove(self.fname)
-            os.rename(self.tmp, self.fname)
+def fix_environment():
+    """Add enviroment variable on Windows systems."""
+    from PyQt5 import __file__ as pyqt_path
+    if system() == "Windows":
+        pyqt = os.path.dirname(pyqt_path)
+        qt_platform_plugins_path = os.path.join(pyqt, "plugins")
+        os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = qt_platform_plugins_path
 
 def load_appInfo():
     if not os.path.exists(mainConfig):
@@ -148,81 +131,20 @@ def load_appInfo():
 def load_iconInfo():
     if not os.path.exists(mainConfig):
         from appData.LocalCfg import LocalCfg
-        # logger.info("Storing local icon")
         LocalCfg()
-    # logger.info("Loading local icon")
     with open(appIconCfg, 'r') as f:
         iconInfo = json.load(f)
     return iconInfo
 
+fix_environment()
 APPINFO = load_appInfo()
 ICONINFO = load_iconInfo()
 
-class Configurations(object):
-    """The configuration."""
 
-    # config options, with their default
-    _config_options = {
-        'BOT_AUTH_TOKEN': '',
-        'POLLING_TIME': 30,
-        'USER_ALLOWED': None,
-        'COL_ORDER': []
-    }
 
-    def __init__(self):
-        self._needs_save = 0
-        FILEPATH = os.path.join(CONFIG_DIR, 'PLM.cfg')
 
-        if not os.path.exists(FILEPATH):
-            # default to an empty dict
-            logger.debug("File not found, starting empty")
-            self._data = {}
-            return
 
-        with open(FILEPATH, 'rb') as fh:
-            self._data = pickle.load(fh)
-        logger.debug("Loaded: %s", self._data)
 
-        self.fix_environment()
-        self.setup_dependancies()
-
-    def __getattr__(self, key):
-        return self._data.get(key, self._config_options[key])
-
-    def __setattr__(self, key, value):
-        if key in self._config_options:
-            if key not in self._data or self._data[key] != value:
-                self._data[key] = value
-                self._needs_save += 1
-        else:
-            if key.startswith('_'):
-                super().__setattr__(key, value)
-            else:
-                raise AttributeError
-
-    def fix_environment(self):
-        """Add enviroment variable on Windows systems."""
-        from PyQt5 import __file__ as pyqt_path
-        if system() == "Windows":
-            pyqt = os.path.dirname(pyqt_path)
-            qt_platform_plugins_path = os.path.join(pyqt, "plugins")
-            os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = qt_platform_plugins_path
-
-    def setup_dependancies(self):
-        dpc = ['nodegraph', 'lauescript']
-        for i in dpc:
-            pth = os.path.join(p.CORE_DIR, i)
-            pths = os.getenv('PYTHONPATH') + ';' + pth
-            os.environ['PYTHONPATH'] = pths
-            print(os.getenv('PYTHONPATH'))
-
-    def save(self):
-        """Save the config to disk."""
-        if self._needs_save:
-            logger.debug("Saving: %s", self._data)
-            with SafeSaver(FILEPATH) as fh:
-                pickle.dump(self._data, fh)
-                self._needs_save = 0
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:56 PM

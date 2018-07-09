@@ -14,39 +14,9 @@ Description:
 import os, sys, requests, platform, subprocess, winshell, yaml, json, linecache, re, datetime, time, uuid, win32api
 
 # Plt
-from appData.config import logger
-from appData import __envKey__, __pkgsReq__, LOGO_DIR, KEYPACKAGE, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR
+from appData import __envKey__, __pkgsReq__, LOGO_DIR, KEYPACKAGE, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR, SPECS
+from core.Loggers import SetLogger
 
-# -------------------------------------------------------------------------------------------------------------
-""" Metadata """
-
-def query_metadata(key):
-    """Read the value of a variable from the package without importing."""
-    module_path = os.path.join('appData', '__init__.py')
-    with open(module_path) as module:
-        for line in module:
-            parts = line.strip().split(' ')
-            if parts and parts[0] == key:
-                return parts[-1].strip("'")
-    assert 0, "'{0}' not found in '{1}'".format(key, module_path)
-
-def get_datetime():
-    datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
-    return datetime_stamp
-
-def get_date():
-    datetimeLog = get_datetime()
-    return datetimeLog.split('||')[0]
-
-def get_time():
-    datetimeLog = get_datetime()
-    return datetimeLog.split('||')[1]
-
-def get_token():
-    return str(uuid.uuid4())
-
-def get_unix():
-    return (str(uuid.uuid4())).split('-')[-1]
 
 # -------------------------------------------------------------------------------------------------------------
 """ Destop tool """
@@ -72,9 +42,9 @@ def obj_properties_setting(directory, mode):
             elif platform.system() == "Darwin":
                 subprocess.call(["chflags", "nohidden", directory])
         else:
-            logger.debug("ERROR: (Incorrect Command) Valid commands are 'HIDE' and 'UNHIDE' (both are not case sensitive)")
+            raise("ERROR: (Incorrect Command) Valid commands are 'HIDE' and 'UNHIDE' (both are not case sensitive)")
     else:
-        logger.debug("ERROR: (Unknown Operating System) Only Windows and Darwin(Mac) are Supported")
+        raise("ERROR: (Unknown Operating System) Only Windows and Darwin(Mac) are Supported")
 
 def batch_obj_properties_setting(listObj, mode):
 
@@ -83,7 +53,7 @@ def batch_obj_properties_setting(listObj, mode):
             obj_properties_setting(obj, mode)
         else:
             pass
-            # logger.info('Could not find the specific path: %s' % obj)
+            # print('Could not find the specific path: %s' % obj)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Error handle """
@@ -93,7 +63,7 @@ def handle_path_error(directory=None):
         try:
             raise IsADirectoryError("Path is not exists: {directory}".format(directory=directory))
         except IsADirectoryError as error:
-            logger.info('Caught error: ' + repr(error))
+            raise('Caught error: ' + repr(error))
 
 def raise_exception():
     exc_type, exc_obj, tb = sys.exc_info()
@@ -103,12 +73,12 @@ def raise_exception():
     linecache.checkcache(filename)
     line = linecache.getline(filename, lineno, f.f_globals)
 
-    logger.critical('---------------------------------------------------------------------------------')
-    logger.critical('Tracking from:   {0}'.format(os.path.basename(filename)))
-    logger.critical('At line number:  {0}'.format(lineno))
-    logger.critical('Details code:    {0}'.format(line.strip()))
-    logger.critical('{0}'.format(exc_obj))
-    logger.critical('---------------------------------------------------------------------------------')
+    print('---------------------------------------------------------------------------------')
+    print('Tracking from:   {0}'.format(os.path.basename(filename)))
+    print('At line number:  {0}'.format(lineno))
+    print('Details code:    {0}'.format(line.strip()))
+    print('{0}'.format(exc_obj))
+    print('---------------------------------------------------------------------------------')
     return
 
 # -------------------------------------------------------------------------------------------------------------
@@ -120,7 +90,7 @@ def install_py_packages(name):
     :param name: name of component
     :return:
     """
-    # logger.info('Using pip to install %s' % name)
+    # print('Using pip to install %s' % name)
     if os.path.exists(name):
         subprocess.Popen('python %s install' % name)
     else:
@@ -154,10 +124,10 @@ def get_py_env_var(key, path):
     try:
         pth = os.getenv(key)
         if pth == None or pth == '':
-            # logger.info('install new environment variable')
+            print('install new environment variable')
             os.environ[key] = path
     except KeyError:
-        # logger.info('install new environment variable')
+        print('install new environment variable')
         os.environ[key] = path
     else:
         pass
@@ -172,13 +142,13 @@ def cmd_execute_py(name, path, *args):
     :param path: path to python file
     :return: executing in command prompt
     """
-    # logger.info("Executing {name} from {path}".format(name=name, path=path))
+    print("Executing {name} from {path}".format(name=name, path=path))
     pth = os.path.join(path, name)
     if os.path.exists(pth):
         subprocess.call([sys.executable, pth])
 
 def system_call(args, cwd="."):
-    # logger.info("Running '{}' in '{}'".format(str(args), cwd))
+    print("Running '{}' in '{}'".format(str(args), cwd))
     subprocess.call(args, cwd=cwd)
     pass
 
@@ -288,7 +258,7 @@ def dataHandle(type='json', mode='r', filePath=None, data={}):
 # -------------------------------------------------------------------------------------------------------------
 """ Collecting info user """
 
-def get_local_pc():
+def getLocation():
 
     package = KEYPACKAGE
     pythonVersion = sys.version
@@ -329,7 +299,7 @@ def get_window_taskbar_size():
     tbW = resW
     return tbW, tbH
 
-def get_pc_location():
+def getPcInfo():
     r = requests.get('https://api.ipdata.co').json()
 
     for key in r:
@@ -371,16 +341,34 @@ def bool2str(arg):
     else:
         return "False"
 
+def get_datetime():
+    datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
+    return datetime_stamp
+
+def getDate():
+    datetimeLog = get_datetime()
+    return datetimeLog.split('||')[0]
+
+def getTime():
+    datetimeLog = get_datetime()
+    return datetimeLog.split('||')[1]
+
+def getToken():
+    return str(uuid.uuid4())
+
+def getUnix():
+    return (str(uuid.uuid4())).split('-')[-1]
+
 # ----------------------------------------------------------------------------------------------------------- #
 """ String """
 
-def check_blank(data):
+def checkBlank(data):
     if len(data) == 0 or data == "" or data is None:
         return False
     else:
         return True
 
-def check_match(data1, data2):
+def checkMatch(data1, data2):
     check = []
     if len(data1) == len(data2):
         for i in range(len(data1)):
@@ -414,10 +402,10 @@ def get_all_even(numLst):
 def del_key(key, dict = {}):
     try:
         del dict[key]
-        # logger.info("key deleted: {key}".format(key=key))
+        print("key deleted: {key}".format(key=key))
     except KeyError:
         dict.pop(key, None)
-        # logger.info("key poped: {key}".format(key=key))
+        print("key poped: {key}".format(key=key))
 
 def clean_pyc_file(var):
     fileNames = [f for f in get_file_path(os.getenv(__envKey__)) if var in f] or []

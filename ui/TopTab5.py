@@ -13,15 +13,14 @@ Description:
 import os, sys, subprocess
 
 # PyQt5
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLineEdit, QTextEdit, QTextBrowser, QLabel
 
 # Plt
 from appData import SiPoMin, SiPoExp
-from core.Settings import Settings
 from ui import uirc as rc
-from appData.Loggers import SetLogger
-logger = SetLogger()
+from core.Specs import Specs
+from core.Loggers import SetLogger
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -31,7 +30,6 @@ class CommandPrompt(QLineEdit):
 
     def __init__(self, parent=None):
         super(CommandPrompt, self).__init__(parent)
-        self.settings = Settings(self)
 
         self.applySetting()
 
@@ -54,12 +52,15 @@ class Terminal(QTextBrowser):
 
 class TopTab5(QWidget):
 
+    key = 'topTab5'
+    executing = pyqtSignal(str)
+    showLayout = pyqtSignal(str, str)
+    regLayout = pyqtSignal(str, object)
+
     def __init__(self, parent=None):
         super(TopTab5, self).__init__(parent)
-
-        # from core.Settings import Settings
-        self.settings = Settings(self)
-
+        self.specs = Specs(self.key, self)
+        self.logger = SetLogger(self)
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)

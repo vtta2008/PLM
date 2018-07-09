@@ -11,10 +11,10 @@ Description:
 """ Import """
 
 # Python
-import sys, traceback, logging, enum, pdb, linecache, os
+import sys, traceback, logging, enum, pdb
 
 # Plm
-from appData.scr._path import LOGO_PTH
+from appData.scr._path import LOG_PTH
 from appData.scr._format import LOG_FORMAT, DT_FORMAT
 
 # -------------------------------------------------------------------------------------------------------------
@@ -37,11 +37,11 @@ class OneLineExceptionFormatter(logging.Formatter):
 class LogLevel(enum.IntEnum):
 
     Silent   = 0
-    Debug    = 20
-    Normal   = 40
-    Trace    = 60
-    Error    = 80
-    Critical = 100
+    Debug    = 10
+    Normal   = 20
+    Trace    = 30
+    Error    = 40
+    Critical = 50
 
     @classmethod
     def getbyname(cls, name):
@@ -63,8 +63,8 @@ class LogLevel(enum.IntEnum):
 
 class SetLogger(logging.Logger):
 
-    def __init__(self, level="debug", format=LOG_FORMAT['fullOpt'], datefmt=DT_FORMAT['fullOpt'], filemode='w', filename=LOGO_PTH):
-        super(SetLogger, self).__init__(filename)
+    def __init__(self, parent=None, level="debug", format=LOG_FORMAT['fullOpt'], datefmt=DT_FORMAT['fullOpt'], filemode='w', filename=LOG_PTH):
+        super(SetLogger, self).__init__(parent)
 
         self.level = self.define_level(level)
         self.logLevel = self.level_config(self.level)
@@ -75,7 +75,6 @@ class SetLogger(logging.Logger):
         self.addHandler(self.handler)
 
         sys.excepthook = self.exception_handler
-
         logging.basicConfig(format=format, datefmt=datefmt, filename=filename, filemode=filemode, level=self.level, style="{")
 
     def define_level(self, logLevel):
@@ -92,7 +91,7 @@ class SetLogger(logging.Logger):
         else:
             loglvl = logging.FATAL
 
-        return loglvl*2
+        return loglvl
 
     def level_config(self, verbosity_loglevel):
 
@@ -138,11 +137,11 @@ class SetLogger(logging.Logger):
 
         Example
         -------
-        >>> addLoggingLevel('TRACE', logging.DEBUG - 5)
-        >>> logging.getLogger(__name__).setLevel("TRACE")
-        >>> logging.getLogger(__name__).trace('that worked')
-        >>> logging.trace('so did this')
-        >>> logging.TRACE
+        # addLoggingLevel('TRACE', logging.DEBUG - 5)
+        # logging.getLogger(__name__).setLevel("TRACE")
+        # logging.getLogger(__name__).trace('that worked')
+        # logging.trace('so did this')
+        # logging.TRACE
         5
 
         """

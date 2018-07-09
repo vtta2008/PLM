@@ -22,11 +22,6 @@ from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkRequest
 # Plt
 import appData as app
 
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-from appData.Loggers import SetLogger
-logger = SetLogger()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -66,8 +61,7 @@ class HttpWindow(QDialog):
         self.progressDialog = QProgressDialog(self)
 
         self.urlLineEdit.textChanged.connect(self.enableDownloadButton)
-        self.qnam.authenticationRequired.connect(
-                self.slotAuthenticationRequired)
+        self.qnam.authenticationRequired.connect(self.slotAuthenticationRequired)
         self.qnam.sslErrors.connect(self.sslErrors)
         self.progressDialog.canceled.connect(self.cancelDownload)
         self.downloadButton.clicked.connect(self.downloadFile)

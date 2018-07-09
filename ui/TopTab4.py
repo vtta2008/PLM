@@ -16,24 +16,24 @@ import sys
 
 # PyQt5
 from PyQt5.QtWidgets import QApplication, QGridLayout, QWidget, QGroupBox
-
-# -------------------------------------------------------------------------------------------------------------
-""" Plt tools """
+from PyQt5.QtCore import pyqtSignal
 
 from ui import uirc as rc
-from core.Settings import Settings
+from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab4 """
 
 class TopTab4(QWidget):
 
+    key = 'topTab4'
+    executing = pyqtSignal(str)
+    showLayout = pyqtSignal(str, str)
+    regLayout = pyqtSignal(str, object)
+
     def __init__(self, parent=None):
         super(TopTab4, self).__init__(parent)
-
-        # from core.Settings import Settings
-        self.settings = Settings(self)
-
+        self.specs = Specs(self.key, self)
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)

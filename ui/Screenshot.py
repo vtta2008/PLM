@@ -16,21 +16,22 @@ import sys
 
 from PyQt5.QtCore import Qt, QDir, QTimer
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import (QDialog, QWidget, QGridLayout, QLabel, QFileDialog, QApplication, QGroupBox, QSpinBox,
-                             QCheckBox, QPushButton, QHBoxLayout, QLabel, QSizePolicy,)
+from PyQt5.QtWidgets import (QWidget, QGridLayout, QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox,
+                             QHBoxLayout, QLabel, QSizePolicy,)
 
-from ui import uirc as rc
+from ui.uirc import IconPth, Button
 from appData import keepARM
-import appData as app
-logger = app.logger
+from core.Specs import Specs
 
-class Screenshot(QDialog):
+class Screenshot(QWidget):
+
+    key = 'screenShot'
 
     def __init__(self, parent=None):
         super(Screenshot, self).__init__(parent)
 
-        self.setWindowTitle('Screenshot')
-        self.setWindowIcon(rc.IconPth("Screenshot"))
+        self.specs = Specs(self.key, self)
+        self.setWindowIcon(IconPth("Screenshot"))
         self.resize(960, 540)
 
         self.layout = QGridLayout()
@@ -128,7 +129,7 @@ class Screenshot(QDialog):
         self.buttonsLayout.addWidget(self.quitScreenshotButton)
 
     def createButton(self, text, member):
-        button = QPushButton(text)
+        button = Button(text)
         button.clicked.connect(member)
         return button
 

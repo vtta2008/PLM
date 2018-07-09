@@ -8,42 +8,42 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+""" Import """
 
-sender = ['senderID', 'numOfSections', ]
+# Python
 
-from PyQt5.QtCore import (pyqtSignal, QObject)
+# PyQt5
+from PyQt5.QtCore import QObject, QMetaObject
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-class Signals(QObject):
+testData = dict(a1 = 1, a2 = "string")
 
-    saveSetting = pyqtSignal(str, str)
-    loadSetting = pyqtSignal(str)
+class PureObj(QObject):
 
-    def __init__(self, parent=None):
-        super(Signals, self).__init__(parent)
+    def __new__(type):
+        if not '_the_instance' in type.__dict__:
+            type._the_instance = QObject.__new__(type)
+        return type._the_instance
 
+class ABC(PureObj):
 
+    _data = testData
 
+    @property
+    def data(self):
+        return self._data
 
-
-
-
-
-
-
-
-
-
-
-
-
+    @data.setter
+    def data(self, callbacks):
+        assert isinstance(callbacks, dict)
+        self._data = callbacks
 
 
 
-
-
+q = ABC()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 19/06/2018 - 5:51 AM

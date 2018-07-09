@@ -19,21 +19,23 @@ from PyQt5.QtCore import QDate, QLocale, Qt
 from PyQt5.QtGui import QFont, QTextCharFormat, QIcon
 from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
                              QComboBox, QDateEdit, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
-                             QLayout, QDialog)
+                             QLayout, QWidget)
 
 # Plt
 from appData import SiPoMin
 from utilities import utils as func
+from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ Clendar """
 
-class Calendar(QDialog):
+class Calendar(QWidget):
+
+    key = 'calendar'
 
     def __init__(self, parent=None):
         super(Calendar, self).__init__(parent)
-
-        self.setWindowTitle('Calendar')
+        self.specs = Specs(self.key, self)
         self.setWindowIcon(QIcon(func.getAppIcon(32, 'Calendar')))
 
         self.layout = QGridLayout(self)

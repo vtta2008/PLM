@@ -18,7 +18,7 @@ from PyQt5.QtGui import (QBrush, QColor, QDrag, QImage, QPainter, QPen,
 from PyQt5.QtWidgets import (QApplication, QGraphicsItem, QGraphicsObject,
                              QGraphicsScene, QGraphicsView)
 
-from build import dragdroprobot_rc
+from plg_ins import dragdroprobot_rc
 
 class ColorItem(QGraphicsItem):
     n = 0

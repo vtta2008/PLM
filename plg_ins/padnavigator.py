@@ -23,8 +23,8 @@ from PyQt5.QtWidgets import (QApplication, QGraphicsItem, QGraphicsObject,
         QKeyEventTransition, QWidget)
 from PyQt5.QtOpenGL import QGL, QGLFormat, QGLWidget
 
-from build import padnavigator_rc
-from build.ui_form import Ui_Form
+from plg_ins import padnavigator_rc
+from plg_ins.ui_form import Ui_Form
 
 
 class PadNavigator(QGraphicsView):

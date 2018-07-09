@@ -10,32 +10,31 @@ Description:
 
 # Python
 import sys
-import sqlite3 as lite
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, Qt
-from PyQt5.QtWidgets import (QApplication, QSizePolicy, QWidget, QVBoxLayout, QTabWidget)
+from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QTabWidget)
 
 # Plt
+from appData import SiPoMin
 from ui import (TopTab1, TopTab2, TopTab3, TopTab4, TopTab5)
+from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
 
 class TopTab(QWidget):
 
-    showPlt = pyqtSignal(bool)
-    showLogin = pyqtSignal(bool)
-    tabSizeSig = pyqtSignal(int, int)
-    updateAvatar = pyqtSignal(bool)
-    execute = pyqtSignal(str)
+    key = 'topTab'
+    executing = pyqtSignal(str)
+    showLayout = pyqtSignal(str, str)
+    regLayout = pyqtSignal(str, object)
+    updateAvatar = pyqtSignal(str)
+
 
     def __init__(self, parent=None):
         super(TopTab, self).__init__(parent)
-
-        from core.Settings import Settings
-        self.settings = Settings()
-
+        self.specs = Specs(self.key, self)
         self.layout = QVBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
@@ -43,34 +42,47 @@ class TopTab(QWidget):
     def buildUI(self):
         self.tabs = QTabWidget()
 
-        tab1 = TopTab1.TopTab1()
-        tab1.execute.connect(self.execute.emit)
+        self.tab1 = TopTab1.TopTab1()
+        self.tab2 = TopTab2.TopTab2()
+        self.tab3 = TopTab3.TopTab3()
+        self.tab4 = TopTab4.TopTab4()
+        self.tab5 = TopTab5.TopTab5()
 
-        tab2 = TopTab2.TopTab2()
-        tab2.execute.connect(self.execute.emit)
+        self.tab1.showLayout.connect(self.showLayout)
+        self.tab2.showLayout.connect(self.showLayout)
+        self.tab3.showLayout.connect(self.showLayout)
+        self.tab4.showLayout.connect(self.showLayout)
+        self.tab5.showLayout.connect(self.showLayout)
 
-        tab3 = TopTab3.TopTab3()
-        tab3.showPlt.connect(self.showPlt.emit)
-        tab3.showLogin.connect(self.showLogin.emit)
-        self.updateAvatar.connect(tab3.update_avatar)
+        self.tab1.executing.connect(self.executing)
+        self.tab2.executing.connect(self.executing)
+        self.tab3.executing.connect(self.executing)
+        self.tab4.executing.connect(self.executing)
+        self.tab5.executing.connect(self.executing)
 
-        self.tabs.addTab(tab1, 'Tool')
-        self.tabs.addTab(tab2, 'Prj')
-        self.tabs.addTab(tab3, 'User')
-        self.tabs.addTab(TopTab4.TopTab4(), 'Library')
-        self.tabs.addTab(TopTab5.TopTab5(), 'Cmd')
+        self.tab1.regLayout.connect(self.regLayout)
+        self.tab2.regLayout.connect(self.regLayout)
+        self.tab3.regLayout.connect(self.regLayout)
+        self.tab4.regLayout.connect(self.regLayout)
+        self.tab5.regLayout.connect(self.regLayout)
+
+        self.updateAvatar.connect(self.tab3.update_avatar)
+
+        self.tabs.addTab(self.tab1, 'Tool')
+        self.tabs.addTab(self.tab2, 'Prj')
+        self.tabs.addTab(self.tab3, 'User')
+        self.tabs.addTab(self.tab4, 'Library')
+        self.tabs.addTab(self.tab5, 'Cmd')
 
         self.layout.addWidget(self.tabs)
         self.applySetting()
 
     def applySetting(self):
-        # self.tabs.setTabBar(rc.TabBar())
-        # self.tabs.setDocumentMode(True)
         self.tabs.setMovable(True)
         self.tabs.setElideMode(Qt.ElideRight)
         self.tabs.setUsesScrollButtons(True)
-        self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        self.tabs.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.setSizePolicy(SiPoMin, SiPoMin)
+        self.tabs.setSizePolicy(SiPoMin, SiPoMin)
 
 def main():
     app = QApplication(sys.argv)

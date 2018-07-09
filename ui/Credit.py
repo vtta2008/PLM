@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Script Name: Credit.py
@@ -12,43 +11,44 @@ Description:
 """ Import """
 
 # Python
-import sys, os
-import appData as app
+import sys
 
 # PtQt5
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QDialog, QGridLayout, QScrollArea, QLabel, QPushButton
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 
 # Plt
-from utilities import utils as func
+from appData import CREDIT, left
+from utilities.utils import getAppIcon
+from ui.uirc import Label, Button
+from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ About Layout """
 
-class Credit(QDialog):
+class Credit(QWidget):
+
+    key = 'credit'
 
     def __init__(self, parent=None):
 
         super(Credit, self).__init__(parent)
-
-        self.setWindowTitle("Credit")
-        self.setWindowIcon(QIcon(func.getAppIcon(32, 'Credit')))
+        self.specs = Specs(self.key, self)
+        self.setWindowIcon(QIcon(getAppIcon(32, 'Credit')))
 
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
-        credit = app.CREDIT
-
         self.scrollArea = QScrollArea()
         self.scrollArea.setWidgetResizable(True)
-        self.content = QLabel(credit)
+        self.content = Label(CREDIT, left)
 
         self.content.setGeometry(0, 0, 650, 400)
         self.scrollArea.setWidget(self.content)
 
-        okBtn = QPushButton('Ok')
+        okBtn = Button(['Ok', 'Close credit window'])
         okBtn.clicked.connect(self.close)
 
         self.layout.addWidget(self.scrollArea, 0, 0, 8, 4)
@@ -59,7 +59,6 @@ def main():
     about_layout = Credit()
     about_layout.show()
     app.exec_()
-
 
 if __name__=='__main__':
     main()

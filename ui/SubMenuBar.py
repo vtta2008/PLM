@@ -17,99 +17,68 @@ from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QMainWindow, QAction, QSizePolicy, QApplication
+from PyQt5.QtWidgets import QMainWindow, QAction, QSizePolicy, QApplication, QWidget
 
 # Plt
-from utilities import localSQL as usql
+from utilities.localSQL import TimeLog
 from ui import uirc as rc
-from ui import(Configuration, About, Credit)
+from ui.lib.LayoutPreset import Action
 
-from appData import APPINFO, __plmWiki__
-from appData.Loggers import SetLogger
-logger = SetLogger()
+from appData import APPINFO, __plmWiki__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR
+from core.Specs import Specs
+from core.Loggers import SetLogger
+
 # -------------------------------------------------------------------------------------------------------------
 """ Menu bar Layout """
 
 class SubMenuBar(QMainWindow):
 
-    subMenuSig = pyqtSignal(str)
+    key = 'subMenu'
+    showLayout = pyqtSignal(str, str)
+    executing = pyqtSignal(str)
+    proceduring = pyqtSignal(str)
+    regLayout = pyqtSignal(str, object)
+    openBrowser = pyqtSignal(str)
 
     def __init__(self, parent=None):
-
         super(SubMenuBar, self).__init__(parent)
-
+        self.specs = Specs(self.key, self)
+        self.logger = SetLogger(self)
         self.appInfo = APPINFO
         self.url = __plmWiki__
-        from core.Settings import Settings
-        self.settings = Settings(self)
-        self.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
         self.buildMenu()
+        # self.regLayout.emit(self.key, self)
 
     def buildMenu(self):
 
-        prefAct = QAction(rc.AppIcon(32, 'Preferences'), 'Preferences', self)
-        prefAct.setStatusTip('Preferences')
-        prefAct.triggered.connect(partial(self.subMenuSig.emit, 'Preferences'))
-
-        aboutAct = QAction(rc.AppIcon(32, 'About'), self.appInfo['About'][0], self)
-        aboutAct.setStatusTip(self.appInfo['About'][0])
-        aboutAct.triggered.connect(partial(self.subMenuSig.emit, 'About'))
-
-        creditAct = QAction(rc.AppIcon(32, 'Credit'), self.appInfo['Credit'][0], self)
-        creditAct.setStatusTip(self.appInfo['Credit'][0])
-        creditAct.triggered.connect(partial(self.subMenuSig.emit, 'Credit'))
-
-        openConfigAct = QAction(rc.AppIcon(32, 'OpenConfig'), self.appInfo['OpenConfig'][0], self)
-        openConfigAct.setStatusTip(self.appInfo['OpenConfig'][0])
-        openConfigAct.triggered.connect(partial(self.subMenuSig.emit, 'Go to config folder'))
-
-        exitAction = QAction(rc.AppIcon(32, 'Exit'), self.appInfo['Exit'][0], self)
-        exitAction.setStatusTip(self.appInfo['Exit'][0])
-        exitAction.triggered.connect(partial(self.subMenuSig.emit, 'Exit'))
-
-        self.fileMenu = self.menuBar().addMenu("&File")
-        self.fileMenu.addAction(openConfigAct)
-        self.fileMenu.addAction(prefAct)
-        self.fileMenu.addSeparator()
-        self.fileMenu.addAction(rc.ActionProcess("Exit", self))
+        self.gotoMenu = self.menuBar().addMenu("&Goto")
+        self.gotoMenu.addAction(Action({'icon': 'OpenConfig', 'txt': self.appInfo['OpenConfig'][0], 'trg':partial(self.executing.emit, CONFIG_DIR)}, self))
+        self.gotoMenu.addAction(Action({'icon': 'IconFolder', 'txt': 'Go to Icon folder', 'trg': partial(self.executing.emit, APP_ICON_DIR)}, self))
+        self.gotoMenu.addAction(Action({'icon': 'SettingFolder', 'txt': 'Go to Setting folder', 'trg': partial(self.executing.emit, SETTING_DIR)}, self))
+        self.gotoMenu.addAction(Action({'icon': 'Preferences', 'txt': 'Preferences', 'trg': partial(self.showLayout.emit, 'config', 'show')}, self))
+        self.gotoMenu.addSeparator()
+        self.gotoMenu.addAction(Action({'icon': 'Exit', 'txt': self.appInfo['Exit'][0], 'trg': partial(self.showLayout.emit, 'app', 'exit')}, self))
 
         self.editMenu = self.menuBar().addMenu("&Edit")
-
         self.viewMenu = self.menuBar().addMenu("&View")
-
         self.toolMenu = self.menuBar().addMenu("&Tools")
+
         self.toolMenu.addSeparator()
+
         self.toolMenu.addAction(rc.ActionProcess("CleanPyc", self))
         self.toolMenu.addAction(rc.ActionProcess("ReConfig", self))
-
         self.windowMenu = self.menuBar().addMenu("&Window")
 
         self.helpMenu = self.menuBar().addMenu("&Help")
-        self.helpMenu.addAction(rc.ActionProcess("PLM wiki", self))
-        self.helpMenu.addAction(aboutAct)
-        self.helpMenu.addAction(creditAct)
-
-    def open_preferences_layout(self):
-        pref = Configuration.Configuration()
-        pref.show()
-        pref.exec_()
-
-    def open_about_layout(self):
-        dlg = About.About()
-        dlg.show()
-        dlg.exec_()
-
-    def open_credit_layout(self):
-        dlg = Credit.Credit()
-        dlg.show()
-        dlg.exec_()
+        self.helpMenu.addAction(Action({'icon': 'PLM wiki', 'txt': self.appInfo['PLM wiki'][0], 'trg': partial(self.openBrowser.emit, 'vnexpress.net')}, self))
+        self.helpMenu.addAction(Action({'icon':'About', 'txt': self.appInfo['About'][0], 'trg':partial(self.showLayout.emit, 'about', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon':'Credit', 'txt': self.appInfo['Credit'][0], 'trg':partial(self.showLayout.emit, 'credit', 'show')}, self))
 
     def on_exit_action_triggered(self):
-        usql.TimeLog("Log out")
+        TimeLog("Log out")
         QApplication.instance().quit()
 
     def show_hide_subMenuBar(self, param):
-        self.settings._app.setValue("subMenu", param)
         self.setVisible(param)
 
 def main():

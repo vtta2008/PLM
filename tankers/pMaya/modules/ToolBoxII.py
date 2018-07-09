@@ -508,7 +508,7 @@ class ChanelBox(QtWidgets.QWidget):
                     createdChannels.append(attrName)
                 channels = list(set(createdChannels) - set(transformChannels) - set(scaleChannels))
                 for channel in channels:
-                    defaultValue = cmds.addAttr(obj + "." + channel, query=True, dv=True)
+                    defaultValue = cmds.addItem(obj + "." + channel, query=True, dv=True)
                     cmds.setAttr(obj + "." + channel, defaultValue)
         elif (operation == "-keySelected"):
             for obj in objSel:
@@ -1628,7 +1628,7 @@ class ToolBoxII(QtWidgets.QWidget):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         select = cmds.select(list[0])
         cmds.rename(select, getText)
@@ -1720,12 +1720,12 @@ class ToolBoxII(QtWidgets.QWidget):
             if (ForB == 'Boolean'):
                 for i in range(len(objSel)):
                     cmds.select(objSel[i])
-                    cmds.addAttr(ln=longName, nn=shortName, at='bool', dv=1, k=True)
+                    cmds.addItem(ln=longName, nn=shortName, at='bool', dv=1, k=True)
                     i += 1
             if (ForB == 'Float'):
                 for i in range(len(objSel)):
                     cmds.select(objSel[i])
-                    cmds.addAttr(ln=longName, nn=shortName, at='float', min=minNum,
+                    cmds.addItem(ln=longName, nn=shortName, at='float', min=minNum,
                                  max=maxNum, dv=defNum, k=True)
                     i += 1
             return
@@ -1733,12 +1733,12 @@ class ToolBoxII(QtWidgets.QWidget):
             if (ForB == 'Boolean'):
                 for i in range(len(objSel)):
                     cmds.select(objSel[i])
-                    cmds.addAttr(ln=longName, nn=shortName, at='bool', dv=1, k=True)
+                    cmds.addItem(ln=longName, nn=shortName, at='bool', dv=1, k=True)
                     i += 1
             if (ForB == 'Float'):
                 for i in range(len(objSel)):
                     cmds.select(objSel[i])
-                    cmds.addAttr(ln=longName, nn=shortName, at='float', min=minNum,
+                    cmds.addItem(ln=longName, nn=shortName, at='float', min=minNum,
                                  max=maxNum, dv=defNum, k=True)
                     i += 1
 
@@ -1750,7 +1750,7 @@ class ToolBoxII(QtWidgets.QWidget):
             for item in hand:
                 longName = "L_" + item + "Finger_Curl"
                 niceName = "L_" + item + "F_Curl"
-                cmds.addAttr(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
+                cmds.addItem(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
 
     def rightHandPreset(self, *args):
         objSel = cmds.ls(sl=True)
@@ -1760,7 +1760,7 @@ class ToolBoxII(QtWidgets.QWidget):
             for item in hand:
                 longName = "R_" + item + "Finger_Curl"
                 niceName = "R_" + item + "F_Curl"
-                cmds.addAttr(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
+                cmds.addItem(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
 
     def leftFootPreset(self, *args):
         objSel = cmds.ls(sl=True)
@@ -1770,7 +1770,7 @@ class ToolBoxII(QtWidgets.QWidget):
             for item in foot:
                 longName = "L_" + item + "Toe_Curl"
                 niceName = "L_" + item + "T_Curl"
-                cmds.addAttr(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
+                cmds.addItem(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
 
     def rightFootPreset(self, *args):
         objSel = cmds.ls(sl=True)
@@ -1780,7 +1780,7 @@ class ToolBoxII(QtWidgets.QWidget):
             for item in foot:
                 longName = "R_" + item + "Toe_Curl"
                 niceName = "R_" + item + "T_Curl"
-                cmds.addAttr(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
+                cmds.addItem(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
 
                 # --------------------------------------------------------------------------------------------------------
                 # END OF CODE

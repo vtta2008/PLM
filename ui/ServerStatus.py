@@ -12,44 +12,40 @@ Description:
 """ Import """
 
 # Python
-import os, sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QApplication, QGridLayout, QLabel
-
+from PyQt5.QtWidgets import QGridLayout, QLabel
 from PyQt5.QtNetwork import QHostAddress
 
 # Plt
-import appData as app
+from appData import right, __serverUrl__
 from appData.ServerCfg import ServerCfg
-from ui import uirc as rc
-from utilities import utils as func
-from appData.Loggers import SetLogger
-logger = SetLogger()
-from core.Settings import Settings
+from ui.uirc import Label
+from utilities.utils import getAppIcon
+from core.Specs import Specs
+from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """
 
 class ServerStatus(QGridLayout):
 
+    key = 'serverStatus'
     onlineStage = pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super(ServerStatus, self).__init__(parent)
-
-        # from core.Settings import Settings
-        self.settings = Settings(self)
-
+        self.specs = Specs(self.key, self)
+        self.logger = SetLogger(self)
         self.server = ServerCfg()
-        self.server.listen(QHostAddress(app.__serverUrl__), 9000)
+        self.server.listen(QHostAddress(__serverUrl__), 9000)
 
         self.serverOpen = self.server.isListening()
 
-        self.connected = func.getAppIcon(16, 'Connected')
-        self.disconnected = func.getAppIcon(16, 'Disconnected')
+        self.connected = getAppIcon(16, 'Connected')
+        self.disconnected = getAppIcon(16, 'Disconnected')
         self.networkStatus = QLabel()
         self.networkStatus.setPixmap(QPixmap(self.connected))
 
@@ -57,18 +53,15 @@ class ServerStatus(QGridLayout):
 
         self.onlineStage.connect(self.connection_status)
         self.onlineStage.emit(self.serverOpen)
-
         if not self.serverOpen:
             self.text = "Failed to connect"
         else:
             self.text = "IP: %s\nport: %d\n\n" % (self.server.serverAddress().toString(), self.server.serverPort())
-
         self.buildUI()
 
     def buildUI(self):
 
-        self.addWidget(rc.Label(txt=self.text, alg=app.right), 0, 1, 1, 1)
-
+        self.addWidget(Label(self.text, right), 0, 1, 1, 1)
         self.applySetting()
 
     def applySetting(self):
@@ -81,17 +74,6 @@ class ServerStatus(QGridLayout):
             self.networkStatus.setPixmap(QPixmap(self.disconnected))
 
         self.networkStatus.update()
-
-
-def main():
-    app = QApplication(sys.argv)
-    layout = ServerStatus()
-    layout.show()
-    app.exec_()
-
-
-if __name__ == '__main__':
-    main()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 25/05/2018

@@ -425,25 +425,25 @@ class DAMGtoolBoxI(object):
                 if (ForB == 'Boolean'):
                     for i in range(len(objSelect)):
                         cmds.select(objSelect[i])
-                        cmds.addAttr(ln=longName, nn=shortName, at='bool', dv=1, k=True)
+                        cmds.addItem(ln=longName, nn=shortName, at='bool', dv=1, k=True)
                         i += 1
                 elif (ForB == 'Float'):
                     if (minNum == 0) and (maxNum == 0):
                         for i in range(len(objSelect)):
                             cmds.select(objSelect[i])
-                            cmds.addAttr(ln=longName, nn=shortName, at='float', dv=defNum, k=True)
+                            cmds.addItem(ln=longName, nn=shortName, at='float', dv=defNum, k=True)
                             i += 1
                         cmds.warning("Min Value and Max Value are equal, ignore!")
                     elif (minNum > defNum) or (maxNum < defNum):
                         for i in range(len(objSelect)):
                             cmds.select(objSelect[i])
-                            cmds.addAttr(ln=longName, nn=shortName, at='float', dv=defNum, k=True)
+                            cmds.addItem(ln=longName, nn=shortName, at='float', dv=defNum, k=True)
                             i += 1
                         cmds.warning("Min Value and Max Value are weird, ignore!")
                     else:
                         for i in range(len(objSelect)):
                             cmds.select(objSelect[i])
-                            cmds.addAttr(ln=longName, nn=shortName, at='float', min=minNum, max=maxNum, dv=defNum,
+                            cmds.addItem(ln=longName, nn=shortName, at='float', min=minNum, max=maxNum, dv=defNum,
                                          k=True)
                             i += 1
 
@@ -457,7 +457,7 @@ class DAMGtoolBoxI(object):
             for item in range(len(hand)):
                 longName = "L_" + hand[item] + "Finger_Curl"
                 niceName = "L_" + hand[item] + "F_Curl"
-                cmds.addAttr(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
+                cmds.addItem(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
                 item += 1
             i += 1
 
@@ -470,7 +470,7 @@ class DAMGtoolBoxI(object):
             for item in range(len(hand)):
                 longName = "R_" + hand[item] + "Finger_Curl"
                 niceName = "R_" + hand[item] + "F_Curl"
-                cmds.addAttr(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
+                cmds.addItem(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
                 item += 1
             i += 1
 
@@ -483,7 +483,7 @@ class DAMGtoolBoxI(object):
             for item in range(len(foot)):
                 longName = "L_" + foot[item] + "Toe_Curl"
                 niceName = "L_" + foot[item] + "T_Curl"
-                cmds.addAttr(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
+                cmds.addItem(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
                 item += 1
             i += 1
 
@@ -496,7 +496,7 @@ class DAMGtoolBoxI(object):
             for item in range(len(foot)):
                 longName = "R_" + foot[item] + "Toe_Curl"
                 niceName = "R_" + foot[item] + "T_Curl"
-                cmds.addAttr(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
+                cmds.addItem(ln=longName, nn=niceName, at='float', min=-5, dv=0, max=15, k=True)
                 item += 1
             i += 1
 

@@ -27,6 +27,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphic
 # Plt
 
 from utilities import utils as func
+from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -87,7 +88,6 @@ class ImageViewing(QGraphicsView):
         self.goToLocationSig.emit(True)
 
     def wheelEvent(self, event):
-
         moose = event.angleDelta().y() / 120
         if moose > 0:
             self.zoomIn()
@@ -95,7 +95,6 @@ class ImageViewing(QGraphicsView):
             self.zoomOut()
 
     def contextMenuEvent(self, event):
-
         menu = QMenu()
         menu.addSeparator()
         menu.addAction('Real Image Size             F10', self.viewRealImageSize)
@@ -169,8 +168,8 @@ class ImageInitUI(ViewerWindow):
 
         self.dbSanitise()
 
-        self.formats = ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pbm', '.pgm', '.ppm',
-                        '.xbm', '.xpm', '.dds', '.icns', '.jp2', '.mng', '.tga', '.tiff', '.wbmp', '.webp')
+        self.formats = ('.png', '.jpg', '.jpeg', '.gif', '.bmp', '.pbm', '.pgm', '.ppm', '.xbm', '.xpm', '.dds',
+                        '.icns', '.jp2', '.mng', '.tga', '.tiff', '.wbmp', '.webp')
         try:
             open(self.key, 'r')
         except IOError:
@@ -489,23 +488,24 @@ class ImageInitUI(ViewerWindow):
 # -------------------------------------------------------------------------------------------------------------
 """ Image Viewer class """
 
-class ImageViewer(QDialog):
+class ImageViewer(QWidget):
+
+    key = 'imageViewer'
+
     def __init__(self, key=None, parent=None):
         super(ImageViewer, self).__init__(parent)
-
-
-
+        self.specs = Specs(self.key, self)
         if key == None or not os.path.exists(key) or os.path.isdir(key):
-            key = self.loadImageFromFile()
+            # key = self.loadImageFromFile()
+            key = " "
 
-        self.key = key
-
+        self._key = key
         self.layout = QHBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
-        viewer = ImageInitUI(self.key)
+        viewer = ImageInitUI(self._key)
         resizeSig = viewer.resizeSig
         resizeSig.connect(self.resizeUI)
 
@@ -515,8 +515,6 @@ class ImageViewer(QDialog):
         self.setWindowIcon(QIcon(func.getAppIcon(32, "ImageViewer")))
 
         self.layout.addWidget(viewer)
-
-        self.applySetting()
 
     def loadImageFromFile(self):
         options = QFileDialog.Options()
@@ -540,11 +538,6 @@ class ImageViewer(QDialog):
 
     def resizeUI(self, w, h):
         self.resize(w, h)
-
-    def applySetting(self):
-        pass
-
-
 
 def main():
     appViewer = QApplication(sys.argv)

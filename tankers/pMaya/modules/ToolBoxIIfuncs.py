@@ -133,7 +133,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -222,7 +222,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -349,7 +349,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -378,7 +378,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -407,7 +407,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -455,7 +455,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -543,7 +543,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -566,7 +566,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -660,7 +660,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -893,7 +893,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1009,7 +1009,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1029,7 +1029,7 @@ class ToolBoxIIfuncs(object):
                                  )
                       )
 
-        cmds.parent(curve7[0], curve6[0])
+        cmds.parent
         nurbsCircle1 = []
         nurbsCircle1.append(cmds.curve(p=[(0.14113072238066665, -1.1228095718974698, 0.0),
                                           (-2.2770716313871086e-17, -1.0643513126198854, 0.0),
@@ -1062,9 +1062,9 @@ class ToolBoxIIfuncs(object):
         for x in range(len(nurbsCircle1) - 1):
             cmds.makeIdentity(nurbsCircle1[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(nurbsCircle1[x + 1], shapes=True)
-            cmds.parent(shapeNode, nurbsCircle1[0], add=True, s=True)
+            cmds.parent
             cmds.delete(nurbsCircle1[x + 1])
-        cmds.parent(nurbsCircle1[0], curve7[0])
+        cmds.parent
         fp = cmds.listRelatives(nurbsCircle1[0], f=True)[0]
         path = fp.split("|")[1]
         cmds.select(path)
@@ -1117,7 +1117,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1173,7 +1173,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1195,7 +1195,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1220,7 +1220,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1281,7 +1281,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1330,7 +1330,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1370,7 +1370,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1443,7 +1443,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1463,7 +1463,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1530,7 +1530,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1648,7 +1648,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1704,7 +1704,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1812,7 +1812,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1918,7 +1918,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -1975,7 +1975,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2006,7 +2006,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2033,7 +2033,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2095,7 +2095,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2158,7 +2158,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2208,7 +2208,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2260,7 +2260,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2291,7 +2291,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2343,7 +2343,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2397,7 +2397,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2426,7 +2426,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2490,7 +2490,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2585,7 +2585,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2610,7 +2610,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2641,7 +2641,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2694,7 +2694,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2791,7 +2791,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2891,7 +2891,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2927,7 +2927,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -2995,7 +2995,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -3064,7 +3064,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -3124,7 +3124,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -3154,7 +3154,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -3200,7 +3200,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -3285,7 +3285,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -3306,7 +3306,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -3366,7 +3366,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 
@@ -3487,7 +3487,7 @@ class ToolBoxIIfuncs(object):
         for x in range(len(list) - 1):
             cmds.makeIdentity(list[x + 1], apply=True, t=1, r=1, s=1, n=0)
             shapeNode = cmds.listRelatives(list[x + 1], shapes=True)
-            cmds.parent(shapeNode, list[0], add=True, s=True)
+            cmds.parent
             cmds.delete(list[x + 1])
         cmds.select(list[0])
 

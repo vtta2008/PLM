@@ -17,35 +17,30 @@ import os, sys, json
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtWidgets import (QApplication, QGridLayout, QLineEdit, QLabel, QPushButton, QMessageBox, QGroupBox,
-                             QCheckBox, QFileDialog, QComboBox, QDialog)
+from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QFileDialog, QWidget)
 
-# -------------------------------------------------------------------------------------------------------------
-""" Plt tools """
-from appData import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, TIT_BLANK, USER_CHECK_REQUIRED, QUESTIONS
-
-from ui import uirc as rc
-from utilities import utils as func
-from core.Settings import Settings
-from appData.Loggers import SetLogger
-logger = SetLogger()
+# Plm
+from appData import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_REQUIRED, QUESTIONS
+from ui.lib.LayoutPreset import IconPth, Label, Button, GroupGrid, LineEdit, ComboBox, CheckBox
+from utilities.utils import checkBlank, checkMatch, getAvatar, getToken, getUnix, getTime, getDate, getPcInfo, getLocation
+from core.Loggers import SetLogger
+from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign up ui """
 
-class SignUp(QDialog):
+class SignUp(QWidget):
 
-    showSignup = pyqtSignal(bool)
-    showPlt = pyqtSignal(bool)
+    key = 'signup'
+    showLayout = pyqtSignal(str, str)
+    updataAvatar = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(SignUp, self).__init__(parent)
-
-        self.setWindowTitle("Sign Up")
-        self.setWindowIcon(rc.IconPth(32, "SignUp"))
-        self.setFixedSize(450, 900)
-        # from core.Settings import Settings
-        self.settings = Settings(self)
+        self.specs = Specs(self.key, self)
+        self.logger = SetLogger(self)
+        self.setWindowIcon(IconPth(32, "SignUp"))
+        self.resize(450, 900)
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -59,7 +54,7 @@ class SignUp(QDialog):
         self.security_section()
         self.buttons_section()
 
-        self.layout.addWidget(rc.Label("ALL FIELD ARE REQUIRED!!!"), 0, 0, 1, 6)
+        self.layout.addWidget(Label({'txt':"ALL FIELD ARE REQUIRED!!!"}), 0, 0, 1, 6)
         self.layout.addWidget(self.avaSection, 1, 0, 1, 2)
         self.layout.addWidget(self.accSection, 1, 2, 1, 4)
         self.layout.addWidget(self.prfSection, 2, 0, 1, 6)
@@ -68,58 +63,48 @@ class SignUp(QDialog):
         self.layout.addWidget(self.btnSection, 5, 0, 1, 6)
 
     def avatar_section(self):
-        self.avaSection = QGroupBox("Avatar")
-        avatar_grid = QGridLayout()
-        self.avaSection.setLayout(avatar_grid)
+        self.avaSection, avatar_grid = GroupGrid("Avatar")
 
-        defaultImg = QPixmap.fromImage(QImage(func.getAvatar('default')))
-        self.userAvatar = QLabel()
-        self.userAvatar.setPixmap(defaultImg)
-        self.userAvatar.setScaledContents(True)
-        self.userAvatar.setFixedSize(100, 100)
+        # defaultImg = QPixmap.fromImage(QImage(getAvatar('default')))
+        self.userAvatar = Label({'pxm':'default', 'scc': True, 'sfs':[100, 100]})
+        # self.userAvatar.setPixmap(defaultImg)
+        # self.userAvatar.setScaledContents(True)
+        # self.userAvatar.setFixedSize(100, 100)
 
-        set_avatarBtn = QPushButton("Set Avatar")
-        set_avatarBtn.clicked.connect(self.on_set_avatar_btn_clicked)
+        set_avatarBtn = Button({'txt':'Set Avatar', 'tt':'Choose a new avatar', 'cl': self.setAvaClicked})
+        # set_avatarBtn.clicked.connect(self.setAvaClicked)
 
         avatar_grid.addWidget(self.userAvatar, 0, 0, 2, 2)
         avatar_grid.addWidget(set_avatarBtn, 2, 0, 1, 2)
 
     def account_section(self):
-        self.accSection = QGroupBox("Account")
-        account_grid = QGridLayout()
-        self.accSection.setLayout(account_grid)
+        self.accSection, account_grid = GroupGrid("Account")
+        self.userField = LineEdit()
+        self.pwField = LineEdit({'mode': 'password'})
+        self.cfpwField = LineEdit({'mode': 'password'})
 
-        account_grid.addWidget(rc.Label('User Name'), 0, 0, 1, 2)
-        account_grid.addWidget(rc.Label('Password'), 1, 0, 1, 2)
-        account_grid.addWidget(rc.Label('Confirm Password'), 2, 0, 1, 2)
-
-        self.userField = QLineEdit()
-        self.pwField = QLineEdit()
-        self.cfpwField = QLineEdit()
-
-        self.pwField.setEchoMode(QLineEdit.Password)
-        self.cfpwField.setEchoMode(QLineEdit.Password)
+        account_grid.addWidget(Label({'txt':'User Name'}), 0, 0, 1, 2)
+        account_grid.addWidget(Label({'txt':'Password'}), 1, 0, 1, 2)
+        account_grid.addWidget(Label({'txt':'Confirm Password'}), 2, 0, 1, 2)
 
         account_grid.addWidget(self.userField, 0, 3, 1, 4)
         account_grid.addWidget(self.pwField, 1, 3, 1, 4)
         account_grid.addWidget(self.cfpwField, 2, 3, 1, 4)
 
     def profile_section(self):
-        self.prfSection = QGroupBox("Profile")
-        profile_grid = QGridLayout()
-        self.prfSection.setLayout(profile_grid)
+        self.prfSection, profile_grid = GroupGrid("Profile")
 
-        profile_grid.addWidget(rc.Label('First Name'), 0, 0, 1, 2)
-        profile_grid.addWidget(rc.Label('Last Name'), 1, 0, 1, 2)
-        profile_grid.addWidget(rc.Label('Your Title'), 2, 0, 1, 2)
-        profile_grid.addWidget(rc.Label('Email'), 3, 0, 1, 2)
-        profile_grid.addWidget(rc.Label('Phone Number'), 4, 0, 1, 2)
+        profile_grid.addWidget(Label({'txt':'First Name'}), 0, 0, 1, 2)
+        profile_grid.addWidget(Label({'txt':'Last Name'}), 1, 0, 1, 2)
+        profile_grid.addWidget(Label({'txt':'Your Title'}), 2, 0, 1, 2)
+        profile_grid.addWidget(Label({'txt':'Email'}), 3, 0, 1, 2)
+        profile_grid.addWidget(Label({'txt':'Phone Number'}), 4, 0, 1, 2)
 
-        self.titleField = QLineEdit()
-        self.firstnameField = QLineEdit()
-        self.lastnameField = QLineEdit()
-        self.emailField = QLineEdit()
-        self.phoneField = QLineEdit()
+        self.titleField = LineEdit()
+        self.firstnameField = LineEdit()
+        self.lastnameField = LineEdit()
+        self.emailField = LineEdit()
+        self.phoneField = LineEdit()
 
         profile_grid.addWidget(self.firstnameField, 0, 2, 1, 4)
         profile_grid.addWidget(self.lastnameField, 1, 2, 1, 4)
@@ -128,21 +113,19 @@ class SignUp(QDialog):
         profile_grid.addWidget(self.phoneField, 4, 2, 1, 4)
 
     def location_section(self):
-        self.conSection = QGroupBox("Location")
-        conGrid = QGridLayout()
-        self.conSection.setLayout(conGrid)
+        self.conSection, conGrid = GroupGrid("Location")
 
-        conGrid.addWidget(rc.Label("Address Line 1"), 0, 0, 1, 2)
-        conGrid.addWidget(rc.Label("Address Line 2"), 1, 0, 1, 2)
-        conGrid.addWidget(rc.Label("Postal"), 2, 0, 1, 2)
-        conGrid.addWidget(rc.Label("City"), 3, 0, 1, 2)
-        conGrid.addWidget(rc.Label("Country"), 4, 0, 1, 2)
+        conGrid.addWidget(Label({'txt':"Address Line 1"}), 0, 0, 1, 2)
+        conGrid.addWidget(Label({'txt':"Address Line 2"}), 1, 0, 1, 2)
+        conGrid.addWidget(Label({'txt':"Postal"}), 2, 0, 1, 2)
+        conGrid.addWidget(Label({'txt':"City"}), 3, 0, 1, 2)
+        conGrid.addWidget(Label({'txt':"Country"}), 4, 0, 1, 2)
 
-        self.addressLine1 = QLineEdit()
-        self.addressLine2 = QLineEdit()
-        self.postalCode = QLineEdit()
-        self.city = QLineEdit()
-        self.country = QLineEdit()
+        self.addressLine1 = LineEdit()
+        self.addressLine2 = LineEdit()
+        self.postalCode = LineEdit()
+        self.city = LineEdit()
+        self.country = LineEdit()
 
         conGrid.addWidget(self.addressLine1, 0, 2, 1, 4)
         conGrid.addWidget(self.addressLine2, 1, 2, 1, 4)
@@ -152,26 +135,17 @@ class SignUp(QDialog):
 
     def security_section(self):
 
-        self.serSection = QGroupBox("Security Question")
-        questions_grid = QGridLayout()
-        self.serSection.setLayout(questions_grid)
+        self.serSection, questions_grid = GroupGrid("Security Question")
 
-        self.ques1 = QComboBox()
-        self.answ2 = QLineEdit()
-        self.ques2 = QComboBox()
-        self.answ1 = QLineEdit()
+        self.ques1 = ComboBox({'items': [str(i[0]) for i in QUESTIONS]})
+        self.answ2 = LineEdit()
+        self.ques2 = ComboBox({'items': [str(i[0]) for i in QUESTIONS]})
+        self.answ1 = LineEdit()
 
-        questions = QUESTIONS
-
-        for i in questions:
-            self.ques1.addItem(str(i[0]))
-            if i != 0:
-                self.ques2.addItem(str(i[0]))
-
-        questions_grid.addWidget(rc.Label('Question 1'), 0, 0, 1, 3)
-        questions_grid.addWidget(rc.Label('Answer 1'), 1, 0, 1, 3)
-        questions_grid.addWidget(rc.Label('Question 2'), 2, 0, 1, 3)
-        questions_grid.addWidget(rc.Label('Answer 2'), 3, 0, 1, 3)
+        questions_grid.addWidget(Label({'txt':'Question 1'}), 0, 0, 1, 3)
+        questions_grid.addWidget(Label({'txt':'Answer 1'}), 1, 0, 1, 3)
+        questions_grid.addWidget(Label({'txt':'Question 2'}), 2, 0, 1, 3)
+        questions_grid.addWidget(Label({'txt':'Answer 2'}), 3, 0, 1, 3)
 
         questions_grid.addWidget(self.ques1, 0, 3, 1, 6)
         questions_grid.addWidget(self.answ1, 1, 3, 1, 6)
@@ -179,47 +153,36 @@ class SignUp(QDialog):
         questions_grid.addWidget(self.answ2, 3, 3, 1, 6)
 
     def buttons_section(self):
-        self.btnSection = QGroupBox()
-        btn_grid = QGridLayout()
-        self.btnSection.setLayout(btn_grid)
+        self.btnSection, btn_grid = GroupGrid()
 
-        self.user_agree_checkBox = QCheckBox(USER_CHECK_REQUIRED)
+        self.user_agree_checkBox = CheckBox({'txt': USER_CHECK_REQUIRED})
+        okBtn = Button({'txt':'Create Account', 'tt':'Confirm to create an account', 'cl': self.createBtnClicked})
+        cancelBtn = Button({'txt':'Cancel', 'tt':'Go back to Login stage', 'cl': self.cacelBtnClicked})
+        quitBtn = Button({'txt': 'Quit', 'tt': 'Quit the application', 'cl': QApplication.quit})
+
         btn_grid.addWidget(self.user_agree_checkBox, 0, 0, 1, 6)
-
-        okBtn = QPushButton('Create Account')
-        okBtn.clicked.connect(self.on_create_btn_clicked)
         btn_grid.addWidget(okBtn, 1, 0, 1, 2)
-
-        cancelBtn = QPushButton('Cancel')
-        cancelBtn.clicked.connect(self.on_cancel_btn_clicked)
         btn_grid.addWidget(cancelBtn, 1, 2, 1, 2)
-
-        quitBtn = QPushButton('Quit')
-        quitBtn.clicked.connect(QApplication.quit)
         btn_grid.addWidget(quitBtn, 1,4,1,2)
 
-    def on_set_avatar_btn_clicked(self):
+    def setAvaClicked(self):
         options = QFileDialog.Options()
         options |= QFileDialog.DontUseNativeDialog
-
-        self.rawAvatarPth, _ = QFileDialog.getOpenFileName(self, "Your Avatar", os.path.join('imgs', 'avatar'),
-                                                           "All Files (*);;Img Files (*.jpg)", options=options)
+        self.rawAvatarPth, _ = QFileDialog.getOpenFileName(self, "Your Avatar", os.path.join('imgs', 'avatar'), "All Files (*);;Img Files (*.jpg)", options=options)
 
         if self.rawAvatarPth:
             self.userAvatar.setPixmap(QPixmap.fromImage(QImage(self.rawAvatarPth)))
             self.userAvatar.update()
 
-    def on_create_btn_clicked(self):
+    def createBtnClicked(self):
         if self.check_all_conditions():
             data = self.generate_user_data()
-            # usql.create_new_user_data(data)
             QMessageBox.information(self, "Failed", WAIT_LAYOUT_COMPLETE, QMessageBox.Ok)
-            # self.showPlt.emit(True)
             return
 
-    def on_cancel_btn_clicked(self):
+    def cacelBtnClicked(self):
         self.close()
-        self.showSignup.emit(True)
+        self.showLayout.emit('login', 'show')
 
     def collect_input(self):
         username = str(self.userField.text())
@@ -252,7 +215,7 @@ class SignUp(QDialog):
         secName = ["Username", "Password", "Confirm Password", "Firstname", "Lastname", "Email", "Phone",
                    "Address line 1", "Address line 2", "Postal", "City", "Country", "Answer 1", "Answer 2"]
         for section in regInput:
-            if func.check_blank(section):
+            if checkBlank(section):
                 return True
             else:
                 QMessageBox.information(self, "Fail", secName[regInput.index(section)] + "Blank", QMessageBox.Ok)
@@ -267,19 +230,19 @@ class SignUp(QDialog):
         question2 = str(self.ques2.currentText())
         title = str(self.titleField.text()) or "Guess"
 
-        token = func.get_token()
-        timelog = func.get_time()
-        sysInfo = func.get_local_pc()
+        token = getToken()
+        timelog = getTime()
+        sysInfo = getLocation()
         productID = sysInfo['Product ID']
-        ip, cityIP, countryIP = func.get_pc_location()
-        unix = func.get_unix()
-        datelog = func.get_date()
+        ip, cityIP, countryIP = getPcInfo()
+        unix = getUnix()
+        datelog = getDate()
         pcOS = sysInfo['os']
         pcUser = sysInfo['pcUser']
         pcPython = sysInfo['python']
 
         if not os.path.exists(self.rawAvatarPth):
-            avatar = func.getAvatar('default')
+            avatar = getAvatar('default')
         else:
             avatar = self.rawAvatarPth
 
@@ -291,14 +254,17 @@ class SignUp(QDialog):
     def check_pw_matching(self):
         password = str(self.pwField.text())
         confirm = str(self.cfpwField.text())
-        check_pass = func.check_match(password, confirm)
+        check_pass = checkMatch(password, confirm)
         if not check_pass:
             QMessageBox.information(self, "Warning", PW_UNMATCH, QMessageBox.Retry)
             return False
         return True
 
+    def showEvent(self, event):
+        self.showLayout.emit('login', 'hide')
+
     def closeEvent(self, event):
-        self.on_cancel_btn_clicked()
+        self.cacelBtnClicked()
 
 def main():
     app = QApplication(sys.argv)

@@ -17,20 +17,23 @@ import sys
 
 from PyQt5.QtCore import (QDir, QIODevice, QFile, QFileInfo, Qt, QTextStream, QUrl)
 from PyQt5.QtGui import QDesktopServices, QIcon
-from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QComboBox,
-                             QDialog, QFileDialog, QGridLayout, QHBoxLayout, QHeaderView, QLabel,
-                             QProgressDialog, QPushButton, QSizePolicy, QTableWidget,
-                             QTableWidgetItem, QWidget)
+from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFileDialog, QGridLayout, QHBoxLayout, QWidget,
+                             QHeaderView, QProgressDialog, QSizePolicy, QTableWidget, QTableWidgetItem, )
 
-from utilities import utils as func
+from appData import SiPoExp, SiPoPre
+from utilities.utils import getAppIcon
+from ui.uirc import Button, Label
+from core.Specs import Specs
 
-class FindFiles(QDialog):
+class FindFiles(QWidget):
+
+    key = 'findFile'
 
     def __init__(self, parent=None):
         super(FindFiles, self).__init__(parent)
 
-        self.setWindowTitle("Find Files")
-        self.setWindowIcon(QIcon(func.getAppIcon(32, "FindFiles")))
+        self.specs = Specs(self.key, self)
+        self.setWindowIcon(QIcon(getAppIcon(32, "FindFiles")))
 
         central_widget = QWidget(self)
         self.layout = QGridLayout(self)
@@ -40,18 +43,18 @@ class FindFiles(QDialog):
 
     def buildUI(self):
 
-        browseButton = self.createButton("&Browse...", self.browse)
-        findButton = self.createButton("&Find", self.find)
+        browseButton = self.makeBtn("&Browse...", self.browse)
+        findButton = self.makeBtn("&Find", self.find)
 
         self.fileComboBox = self.createComboBox("*")
         self.textComboBox = self.createComboBox()
         self.directoryComboBox = self.createComboBox(QDir.currentPath())
 
-        fileLabel = QLabel("Named:")
-        textLabel = QLabel("Containing text:")
-        directoryLabel = QLabel("In directory:")
+        fileLabel = Label("Named:")
+        textLabel = Label("Containing text:")
+        directoryLabel = Label("In directory:")
 
-        self.filesFoundLabel = QLabel()
+        self.filesFoundLabel = Label()
         self.createFilesTable()
 
         buttonsLayout = QHBoxLayout()
@@ -160,8 +163,8 @@ class FindFiles(QDialog):
 
         self.filesFoundLabel.setText("%d file(s) found (Double click on a file to open it)" % len(files))
 
-    def createButton(self, text, member):
-        button = QPushButton(text)
+    def makeBtn(self, text, member):
+        button = Button([text, ' '])
         button.clicked.connect(member)
         return button
 
@@ -169,7 +172,7 @@ class FindFiles(QDialog):
         comboBox = QComboBox()
         comboBox.setEditable(True)
         comboBox.addItem(text)
-        comboBox.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Preferred)
+        comboBox.setSizePolicy(SiPoExp, SiPoPre)
         return comboBox
 
     def createFilesTable(self):
@@ -185,7 +188,6 @@ class FindFiles(QDialog):
 
     def openFileOfItem(self, row, column):
         item = self.filesTable.item(row, 0)
-
         QDesktopServices.openUrl(QUrl(self.currentDir.absoluteFilePath(item.text())))
 
 def main():

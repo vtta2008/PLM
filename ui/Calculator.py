@@ -14,22 +14,22 @@ import math
 
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QDialog)
+from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QWidget)
 
 from utilities import utils as func
 from ui import uirc as rc
-import appData as app
+from appData import SiPoMin
+from core.Specs import Specs
 
-class Calculator(QDialog):
+class Calculator(QWidget):
+
+    key = 'calculator'
 
     def __init__(self, parent=None):
         super(Calculator, self).__init__(parent)
 
-        self.setWindowTitle('Calculator')
+        self.specs = Specs(self.key, self)
         self.setWindowIcon(QIcon(func.getAppIcon(32, 'Calculator')))
-
-        from core.Settings import Settings
-        self.settings = Settings()
 
         self.NumDigitButtons = 10
 
@@ -299,7 +299,7 @@ class Calculator(QDialog):
 
         self.layout.setSpacing(2)
         self.layout.setSizeConstraint(QLayout.SetFixedSize)
-        self.setSizePolicy(app.SiPoMin, app.SiPoMin)
+        self.setSizePolicy(SiPoMin, SiPoMin)
 
 def main():
     appCal = QApplication(sys.argv)

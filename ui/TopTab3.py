@@ -17,13 +17,13 @@ from functools import partial
 
 # PyQt5
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtCore import pyqtSignal, Qt
+from PyQt5.QtCore import pyqtSignal, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGraphicsView, QGraphicsScene, QSizePolicy,
                              QPushButton, QGroupBox)
 
 # Plt
 
-from core.Settings import Settings
+from core.Specs import Specs
 from ui import uirc as rc
 from ui import UserSetting
 from utilities import localSQL as usql
@@ -34,14 +34,14 @@ from utilities import utils as func
 
 class TopTab3(QWidget):
 
-    showPlt = pyqtSignal(bool)
-    showLogin = pyqtSignal(bool)
+    key = 'topTab3'
+    executing = pyqtSignal(str)
+    showLayout = pyqtSignal(str, str)
+    regLayout = pyqtSignal(str, object)
 
     def __init__(self, parent=None):
         super(TopTab3, self).__init__(parent)
-
-        # from core.Settings import Settings
-        self.settings = Settings(self)
+        self.specs = Specs(self.key, self)
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
@@ -68,7 +68,7 @@ class TopTab3(QWidget):
         btn1.clicked.connect(self.on_userSettingBtn_clicked)
 
         btn2 = QPushButton('Log Out')
-        btn2.clicked.connect(partial(self.showLogin.emit, True))
+        btn2.clicked.connect(partial(self.showLayout.emit, 'login', 'show'))
 
         btns = [btn1, btn2]
 
@@ -85,6 +85,7 @@ class TopTab3(QWidget):
 
         self.applySetting()
 
+    @pyqtSlot(str)
     def update_avatar(self, param):
         print("receive signal emit to update avatar: {0}".format(param))
         # if param:

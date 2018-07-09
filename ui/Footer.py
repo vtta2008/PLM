@@ -18,40 +18,40 @@ from functools import partial
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, QSize
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QGridLayout, QPushButton
+from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QGridLayout
 
 # Plt
 from appData import COPYRIGHT
-from core.Settings import Settings
-from utilities import utils as func
+from utilities.utils import getLogo, getAppIcon
+from ui.uirc import Button
+from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ Footer """
 
 class Footer(QWidget):
 
-    footerSig = pyqtSignal(str)
+    key = 'footer'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(Footer, self).__init__(parent)
-
-        self.settings = Settings(self)
+        self.specs = Specs(self.key, self)
         self.layout = QGridLayout()
-
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
 
-        self.logoBtn = QPushButton()
+        self.logoBtn = Button([" ", " "])
         self.logoBtn.setToolTip(COPYRIGHT)
-        self.logoBtn.setIcon(QIcon(func.getLogo(24, 'DAMG')))
-        self.logoBtn.clicked.connect(partial(self.footerSig.emit, "Credit"))
+        self.logoBtn.setIcon(QIcon(getLogo(24, 'DAMG')))
+        self.logoBtn.clicked.connect(partial(self.showLayout.emit, "credit", "show"))
 
-        self.browserBtn = QPushButton()
+        self.browserBtn = Button([" ", " "])
         self.browserBtn.setToolTip("PLM web browser")
-        self.browserBtn.setIcon(QIcon(func.getAppIcon(32, 'PLMBrowser')))
-        self.browserBtn.clicked.connect(partial(self.footerSig.emit, "PLMBrowser"))
+        self.browserBtn.setIcon(QIcon(getAppIcon(32, 'PLMBrowser')))
+        self.browserBtn.clicked.connect(partial(self.showLayout.emit, "browser", "show"))
 
         for i in range(7):
             self.layout.addWidget(QLabel(), 0, i, 1, 1)

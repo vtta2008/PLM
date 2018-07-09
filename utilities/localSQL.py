@@ -68,8 +68,8 @@ class TimeLog(object):
     def __init__(self, details=None):
         super(TimeLog, self).__init__()
         self.username, token, cookie, remember = QuerryDB().query_table("curUser")
-        self.time = func.get_time()
-        self.date = func.get_date()
+        self.time = func.getTime()
+        self.date = func.getDate()
         self.details = details
         self.cur.execute("INSERT INTO timelog (username, time, date, details) VALUES (?,?,?,?)", (self.username, self.time, self.date, self.details))
         self.conn.commit()

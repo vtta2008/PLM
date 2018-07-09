@@ -12,48 +12,42 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, QByteArray, pyqtSlot
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QDockWidget, )
 
 # Plt
+from appData import __homepage__, dockB, SiPoMin, SiPoIgn
+from core.Loggers import SetLogger
 
-from appData import __homepage__, __appname__, dockB, SiPoMin, SiPoIgn
-from appData.Loggers import SetLogger
-logger = SetLogger()
-
-from core.Settings import Settings
-from utilities.utils import str2bool
 from ui.uirc import AutoSectionLayoutGrp, AutoSectionQMainGrp,  AppIcon
-from ui.SubMenuBar import SubMenuBar
-from ui.ToolBar import ToolBar
-from ui.TopTab import TopTab
-from ui.BotTab import BotTab
-from ui.ServerStatus import ServerStatus
-from ui.Footer import Footer
-from ui.StatusBar import StatusBar
+from ui import SubMenuBar, ToolBar, TopTab, BotTab, ServerStatus, Footer, StatusBar
+from core.Specs import Specs
+from utilities.pUtils import get_layout_dimention
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
 
 class PipelineManager(QMainWindow):
 
-    showPlt = pyqtSignal(bool)
-    showLogin = pyqtSignal(bool)
-    close_event = pyqtSignal(bool)
-    timelogSig = pyqtSignal(str)
-    updateAvatar = pyqtSignal(bool)
-    execute = pyqtSignal(str)
+    key = 'mainUI'
+
+    showLayout = pyqtSignal(str, str)
+    executing = pyqtSignal(str)
+    regLayout = pyqtSignal(str, object)
+    openBrowser = pyqtSignal(str)
+    setSetting = pyqtSignal(str, str, str)
+    sysNotify = pyqtSignal(str, str, str, int)
+    loadSetting = pyqtSignal(str, str)
+    returnValue = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
 
         super(PipelineManager, self).__init__(parent)
-
+        self.specs = Specs(self.key, self)
+        self.logger = SetLogger(self)
         self.url = __homepage__
-        self.setWindowTitle(__appname__)
-        self.setWindowIcon(AppIcon("Logo"))
 
-        # from core.Settings import Settings
-        self.settings = Settings(self)
+        self.setWindowIcon(AppIcon("Logo"))
 
         self.mainWidget = QWidget()
         self.layout = QGridLayout()
@@ -64,43 +58,52 @@ class PipelineManager(QMainWindow):
 
     def buildUI(self):
 
-        subMenuBar = SubMenuBar()                                                           # Sub menu
-        toolBar = ToolBar()                                                                 # Toolbar
-        serverStatus = ServerStatus()                                                       # Server Status
-        self.subMenuSec = AutoSectionQMainGrp("Sub Menu", subMenuBar)
-        self.networkStatus = AutoSectionLayoutGrp("Server Status", serverStatus)
-        self.toolBarSec = AutoSectionQMainGrp("Tool Bar", toolBar)
+        self.subMenuBar = SubMenuBar.SubMenuBar()                                                        # Sub menu
+        self.toolBar = ToolBar.ToolBar()                                                                 # Toolbar
+        self.serverStatus = ServerStatus.ServerStatus()                                                  # Server Status
+        self.subMenuSec = AutoSectionQMainGrp("Sub Menu", self.subMenuBar)
+        self.networkStatus = AutoSectionLayoutGrp("Server Status", self.serverStatus)
+        self.toolBarSec = AutoSectionQMainGrp("Tool Bar", self.toolBar)
 
-        self.topTabUI = TopTab()                                                            # Tab layout
+        self.topTabUI = TopTab.TopTab()                                                            # Tab layout
+        self.botTabUI = BotTab.BotTab()                                                            # Bot build 1
+        self.notifiSec = AutoSectionLayoutGrp("Notification", None)                                # Bot build 2
 
-        self.botTabUI = BotTab()                                                            # Bot build 1
-        self.notifiSec = AutoSectionLayoutGrp("Notification", None)                         # Bot build 2
+        self.subMenuBar.showLayout.connect(self.showLayout)
+        self.subMenuBar.executing.connect(self.executing)
+        self.subMenuBar.regLayout.connect(self.regLayout)
+        self.subMenuBar.openBrowser.connect(self.openBrowser)
 
-        self.footer = Footer()
-        self.stBar = StatusBar()                                                            # Status bar viewing message
+        self.topTabUI.executing.connect(self.executing)
+        self.topTabUI.showLayout.connect(self.showLayout)
+        self.topTabUI.regLayout.connect(self.regLayout)
 
+        self.toolBar.showLayout.connect(self.showLayout)
+        self.toolBar.executing.connect(self.executing)
+        self.toolBar.regLayout.connect(self.regLayout)
+        self.toolBar.openBrowser.connect(self.openBrowser)
+        self.toolBar.setSetting.connect(self.setSetting)
+
+        self.footer = Footer.Footer()
+        self.stBar = StatusBar.StatusBar()                                                         # Status bar viewing message
         self.setStatusBar(self.stBar)
 
+        self.botTabUI.generalSetting.tbTDCB.stateChanged.connect(self.toolBar.tdToolBar.setVisible)
+        self.botTabUI.generalSetting.tbCompCB.stateChanged.connect(self.toolBar.compToolBar.setVisible)
+        self.botTabUI.generalSetting.tbArtCB.stateChanged.connect(self.toolBar.artToolBar.setVisible)
+        self.botTabUI.generalSetting.tbMasterCB.stateChanged.connect(self.toolBarSec.setVisible)
+        self.botTabUI.generalSetting.statusBarCB.stateChanged.connect(self.stBar.setVisible)
+        self.botTabUI.generalSetting.subMenuCB.stateChanged.connect(self.subMenuSec.setVisible)
+        self.botTabUI.generalSetting.serStatusCB.stateChanged.connect(self.networkStatus.setVisible)
+        self.botTabUI.generalSetting.notifiCB.stateChanged.connect(self.notifiSec.setVisible)
+
+        self.botTabUI.generalSetting.setSetting.connect(self.setSetting)
+        self.returnValue.connect(self.botTabUI.returnValue)
+
+        self.botTabUI.loadSetting.connect(self.loadSetting)
+        self.footer.showLayout.connect(self.showLayout)
+
         # Signal
-        subMenuBar.subMenuSig.connect(self.execute.emit)
-
-        self.botTabUI.tbTD.connect(toolBar.show_td)
-        self.botTabUI.tbComp.connect(toolBar.show_comp)
-        self.botTabUI.tbArt.connect(toolBar.show_art)
-        self.botTabUI.tbMaster.connect(self.toolBarSec.setVisible)
-
-        self.botTabUI.subMenu.connect(self.show_subMenu)
-        # self.botTabUI.statusBar.connect(self.stBar.show_statusBar)
-        self.botTabUI.serStatus.connect(self.show_serStatus)
-        self.botTabUI.notifi.connect(self.show_notifi)
-
-        self.topTabUI.showPlt.connect(self.showPlt.emit)
-        self.topTabUI.execute.connect(self.execute.emit)
-        self.topTabUI.showLogin.connect(self.showLogin.emit)
-
-        self.stBar.statusBarSig.connect(self.execute.emit)
-
-        self.updateAvatar.connect(self.topTabUI.updateAvatar)
 
         self.layout.addWidget(self.subMenuSec, 0, 0, 1, 6)
         self.layout.addWidget(self.networkStatus, 0, 6, 1, 3)
@@ -112,85 +115,23 @@ class PipelineManager(QMainWindow):
 
         self.layout.addWidget(self.footer, 10, 0, 1, 9)
 
-        self.applySetting()
-
-    @pyqtSlot(bool)
-    def show_tbMaster(self, param):
-        self.settings.setValue("tbMaster", param)
-        self.toolBarSec.setVisible(param)
-
-    @pyqtSlot(bool)
-    def show_serStatus(self, param):
-        self.settings.setValue("serStatus", param)
-        self.networkStatus.setVisible(param)
-
-    @pyqtSlot(bool)
-    def show_notifi(self, param):
-        self.settings.setValue("notifi", param)
-        self.notifiSec.setVisible(str2bool(param))
-
-    @pyqtSlot(bool)
-    def show_subMenu(self, param):
-        self.settings.setValue("subMenu", param)
-        self.subMenuSec.setVisible(str2bool(param))
-
-    @pyqtSlot(bool)
-    def show_statusBar(self, param):
-        self.settings.setValue("statusBar", param)
-        if str2bool(param):
-            self.show()
-        else:
-            self.hide()
-
-    def get_layout_dimention(self):
-        sizeW = self.frameGeometry().width()
-        sizeH = self.frameGeometry().height()
-        return sizeW, sizeH
-
     def add_dockWidget(self, dock):
         self.dock = dock
         self.addDockWidget(dockB, self.dock)
 
-    def showEvent(self, event):
-        self.showLogin.emit(False)
-
     def resizeEvent(self, event):
-        sizeW, sizeH = self.get_layout_dimention()
-        self.settings.setValue("appW", sizeW)
-        self.settings.setValue("appH", sizeH)
+        sizeW, sizeH = get_layout_dimention(self)
+        self.setSetting.emit('width', str(sizeW), self.objectName())
+        self.setSetting.emit('height', str(sizeH), self.objectName())
 
-    def windowState(self):
-        self.settings.setValue("layoutState", self.saveState().data())
+    def showEvent(self, event):
+        self.showLayout.emit('login', 'hide')
+        self.showLayout.emit('sysTray', 'show')
 
     def closeEvent(self, event):
-        self.settings.setValue("layoutState", QByteArray(self.saveState().data()).toBase64())
-        self.close_event.emit(True)
+        self.sysNotify.emit('notice', "PLM hide in system tray", 'info', 500)
         self.hide()
         event.ignore()
-
-    def applySetting(self):
-        self.networkStatus.setSizePolicy(SiPoMin, SiPoMin)
-        self.toolBarSec.setSizePolicy(SiPoMin, SiPoMin)
-        self.subMenuSec.setSizePolicy(SiPoMin, SiPoMin)
-        self.mainWidget.setSizePolicy(SiPoMin, SiPoMin)
-        self.notifiSec.setSizePolicy(SiPoMin, SiPoMin)
-        self.setSizePolicy(SiPoIgn, SiPoIgn)
-
-        self.networkStatus.setMaximumSize(150, 75)
-        self.toolBarSec.setFixedHeight(75)
-        self.subMenuSec.setFixedHeight(75)
-        self.layout.setSpacing(1)
-
-        keys = ["subMenu", "tbMaster", "statusBar", "serStatus", "notifi"]
-        funcs = [self.show_subMenu, self.show_tbMaster, self.show_statusBar, self.show_serStatus, self.show_notifi]
-
-        for key in keys:
-            value = str2bool(self.settings.value(key, True))
-            funcs[keys.index(key)](value)
-
-    def exit_action_trigger(self):
-        self.timelogSig.emit("log out")
-        QApplication.instance().quit()
 
 # -------------------------------------------------------------------------------------------------------------
 def main():

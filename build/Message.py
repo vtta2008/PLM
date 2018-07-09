@@ -19,12 +19,9 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication, QTableWidget, QTableWidgetItem
 from PyQt5.QtGui import QIcon
 
-# Plt
-import appData as app
-from appData.config import config
-from utilities import utils as func
-
-logger = app.logger
+# Plm
+from core.Loggers import SetLogger
+# logger = SetLogger()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -45,7 +42,7 @@ class Message(QTableWidget):
         self._messages = storage.get_elements()
         self._storage = storage
         self._systray = systray
-        super().__init__(len(self._messages), len(self.titles))
+        super(Message, self).__init__(len(self._messages), len(self.titles))
 
         item_builders = [
             self._build_item_datetime,
@@ -55,21 +52,17 @@ class Message(QTableWidget):
         ]
 
         for row, msg in enumerate(self._messages):
-            # logger.debug("Set message for row %d: %s", row, msg)
+            logger.debug("Set message for row %d: %s", row, msg)
             for col in range(len(self.titles)):
-                # get the builder according to the column and build the item
-                builder = item_builders[col]
+                builder = item_builders[col]            # get the builder according to the column and build the item
                 item = builder(msg)
-
-                # if no specific item, build and empty one, and add a tooltip in any case
-                if item is None:
+                if item is None:                        # if no specific item, build and empty one, and add a tooltip in any case
                     item = QTableWidgetItem()
                     item.setToolTip(self.tooltips_missing[col])
                 else:
                     item.setToolTip(self.tooltips_present[col])
 
-                # set it to not editable and put it in the table
-                item.setFlags(item.flags() & Qt.ItemIsEditable)
+                item.setFlags(item.flags() & Qt.ItemIsEditable)     # set it to not editable and put it in the table
                 self.setItem(row, col, item)
 
         self.setHorizontalHeaderLabels(self.titles)

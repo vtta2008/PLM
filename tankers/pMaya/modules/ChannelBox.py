@@ -319,7 +319,7 @@ class ChannelBox(QtWidgets.QWidget):
                     createdChannels.append(attrName)
                 channels = list(set(createdChannels) - set(transformChannels) - set(scaleChannels))
                 for channel in channels:
-                    defaultValue = cmds.addAttr(obj + "." + channel, query=True, dv=True)
+                    defaultValue = cmds.addItem(obj + "." + channel, query=True, dv=True)
                     cmds.setAttr(obj + "." + channel, defaultValue)
         elif (operation == "-keySelected"):
             print 'Channel Box', channelSel, objSel

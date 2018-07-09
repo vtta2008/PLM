@@ -16,7 +16,7 @@ import shutil
 
 # Plm
 from appData.scr._format import LOG_FORMAT, DT_FORMAT
-from appData.scr._path import LOGO_PTH
+from appData.scr._path import LOG_PTH
 from appData.scr._meta import __envKey__
 from appData.scr._keys import autodeskVer
 

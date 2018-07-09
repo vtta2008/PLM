@@ -13,24 +13,28 @@ Description:
 from PyQt5.QtWidgets import QGraphicsView, QGraphicsItem
 
 RUBBERDRAG = QGraphicsView.RubberBandDrag
+POS_CHANGE = QGraphicsItem.ItemPositionChange
+
 NODRAG = QGraphicsView.NoDrag
-
 NOFRAME = QGraphicsView.NoFrame
-
 NOANCHOR = QGraphicsView.NoAnchor
-ANCHORUNDERMOUSE = QGraphicsView.AnchorUnderMouse
-ANCHORVIEWCENTER = QGraphicsView.AnchorViewCenter
 
-CACHEBACKGROUND = QGraphicsView.CacheBackground
-UPDATEVIEWRECT = QGraphicsView.BoundingRectViewportUpdate
+ANCHOR_UNDERMICE = QGraphicsView.AnchorUnderMouse
+ANCHOR_VIEWCENTER = QGraphicsView.AnchorViewCenter
 
-FULLVIEWUPDATE = QGraphicsView.FullViewportUpdate
-BOUNDINGVIEWPORTUPDATE = QGraphicsView.BoundingRectViewportUpdate
+CACHE_BACKGROUND = QGraphicsView.CacheBackground
+
+UPDATE_VIEWRECT = QGraphicsView.BoundingRectViewportUpdate
+UPDATE_FULLVIEW = QGraphicsView.FullViewportUpdate
+UPDATE_SMARTVIEW = QGraphicsView.SmartViewportUpdate
+UPDATE_BOUNDINGVIEW = QGraphicsView.BoundingRectViewportUpdate
+UPDATE_MINIMALVIEW = QGraphicsView.MinimalViewportUpdate
 
 SELECTABLE = QGraphicsItem.ItemIsSelectable
 MOVEABLE = QGraphicsItem.ItemIsMovable
+FOCUSABLE = QGraphicsItem.ItemIsFocusable
+PANEL = QGraphicsItem.ItemIsPanel
 
-POSHASCHANGE = QGraphicsItem.ItemPositionChange
 
 
 # -------------------------------------------------------------------------------------------------------------

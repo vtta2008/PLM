@@ -21,25 +21,23 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLine
 
 # Plt
 from ui import uirc as rc
-from appData import APPINFO, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE
-from core.Settings import Settings
+from appData import APPINFO, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE, BTNICONSIZE, ICONBTNSIZE, FIX_KEYS
+from core.Specs import Specs
+from ui.lib.LayoutPreset import Button
 
 # -------------------------------------------------------------------------------------------------------------
 """ topTab1 """
 
 class TopTab1(QWidget):
 
-    execute = pyqtSignal(str)
+    regLayout = pyqtSignal(str, object)
+    showLayout = pyqtSignal(str, str)
+    executing = pyqtSignal(str)
+    key = 'topTab1'
 
     def __init__(self, parent=None):
         super(TopTab1, self).__init__(parent)
-
-        # from core.Settings import Settings
-        self.settings = Settings(self)
-
-        for i in CONFIG_TOOLS:
-            self.settings.setValue(i, False)
-
+        self.specs = Specs(self.key, self)
         self.appInfo = APPINFO
         self.layout = QGridLayout()
         self.buildUI()
@@ -51,14 +49,12 @@ class TopTab1(QWidget):
         keys = ['TextEditor', 'NoteReminder']
         for key in keys:
             if key in self.appInfo:
-                btn = rc.IconBtnLoadLayout(key)
-                btn.consoleSig.connect(self.execute.emit)
+                btn = Button({'icon':key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit2':[self.showLayout.emit, [FIX_KEYS[key], 'show']]})
                 officeBtns.append(btn)
 
         for key in CONFIG_OFFICE:
             if key in self.appInfo:
-                btn = rc.IconBtnProcess(key)
-                btn.consoleSig.connect(self.execute.emit)
+                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit1': [self.executing.emit, self.appInfo[key][2]]})
                 officeBtns.append(btn)
 
         sec1Grp = rc.AutoSectionBtnGrp("Office", officeBtns, "IconGrid")
@@ -66,8 +62,7 @@ class TopTab1(QWidget):
         devBtns = []
         for key in CONFIG_DEV:
             if key in self.appInfo:
-                btn = rc.IconBtnProcess(key)
-                btn.consoleSig.connect(self.execute.emit)
+                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit1': [self.executing.emit, self.appInfo[key][2]]})
                 devBtns.append(btn)
 
         sec2Grp = rc.AutoSectionBtnGrp("Dev", devBtns, "IconGrid")
@@ -75,8 +70,7 @@ class TopTab1(QWidget):
         pyuiBtn = []
         for key in CONFIG_TOOLS:
             if key in self.appInfo:
-                btn = rc.IconBtnLoadLayout(key)
-                btn.consoleSig.connect(self.execute.emit)
+                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit2': [self.showLayout.emit, [FIX_KEYS[key], 'show']]})
                 pyuiBtn.append(btn)
 
         sec3Grp = rc.AutoSectionBtnGrp("Tools", pyuiBtn, "IconGrid")
@@ -84,13 +78,10 @@ class TopTab1(QWidget):
         extraBtns = []
         for key in CONFIG_EXTRA:
             if key in self.appInfo:
-                btn = rc.IconBtnProcess(key)
-                btn.consoleSig.connect(self.execute.emit)
+                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit2': [self.showLayout.emit, [FIX_KEYS[key], 'show']]})
                 extraBtns.append(btn)
 
         sec4Grp = rc.AutoSectionBtnGrp("Extra", extraBtns, "IconGrid")
-
-
 
         self.findEdit = QLineEdit()
         findBtn = QPushButton("Find Tool")
@@ -112,13 +103,11 @@ class TopTab1(QWidget):
     def applySetting(self):
         self.layout.setSpacing(2)
 
-
 def main():
     app = QApplication(sys.argv)
     layout = TopTab1()
     layout.show()
     app.exec_()
-
 
 if __name__ == '__main__':
     main()

@@ -17,15 +17,14 @@ import os, platform
 from PyQt5.QtCore import QObject, QFile, QTextStream
 
 # Plm
-from appData import QSS_DIR
-from appData.Loggers import SetLogger
-logger = SetLogger()
+from appData.scr._path import QSS_DIR
+# from core.Loggers import SetLogger
 
-class StyleSheetManager(QObject):
+class StyleSheets(QObject):
 
     def __init__(self, style=None, parent=None):
-        super(StyleSheetManager, self).__init__(parent)
-
+        super(StyleSheets, self).__init__(parent)
+        self.logger = SetLogger(self)
         self.style = style
         if self.style == 'darkstyle':
             stylesheet = self.darkstyle()
@@ -37,19 +36,19 @@ class StyleSheetManager(QObject):
         self.changeStylesheet = stylesheet
 
     def darkstyle(self):
-        from plg_ins import pyqt5_style_rc
         f = QFile(os.path.join(QSS_DIR, 'darkstyle.qss'))
         stylesheet = self.load_stylesheet(f)
         return stylesheet
 
     def stylesheet(self):
+        from plg_ins import pyqt5_style_rc
         f = QFile(os.path.join(QSS_DIR, 'stylesheet.qss'))
         stylesheet = self.load_stylesheet(f)
         return stylesheet
 
     def load_stylesheet(self, f):
         if not f.exists():
-            logger.error('Unable to load stylesheet, file not found in resources')
+            self.logger.error('Unable to load stylesheet, file not found in resources')
             return ''
         else:
             f.open(QFile.ReadOnly | QFile.Text)
@@ -67,7 +66,6 @@ class StyleSheetManager(QObject):
                 stylesheet += mac_fix
             return stylesheet
 
-StyleSheetManager()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 22/06/2018 - 3:51 AM

@@ -88,12 +88,12 @@ def runAtStartup():
     m.setAttr(str(name[0]) + '.overrideEnabled', 1)
     m.setAttr(str(name[0]) + '.overrideColor', 17)  # Yellow
 
-    m.parent('MainWing_CON', 'Wings')
-    m.parent('FeatherGroups', 'XForm')
-    m.parent('Joints', 'XForm')
-    m.parent('WingControls', 'XForm')
-    m.parent('NoXForm', 'Wings')
-    m.parent('XForm', 'MainWing_CON')
+    m.parent
+    m.parent
+    m.parent
+    m.parent
+    m.parent
+    m.parent
 
     m.select(cl=True)
 
@@ -206,13 +206,13 @@ class WingGroup():
         m.delete(m.orientConstraint(side + grpName + repr(int(endFeather)),
                                     side + grpName + 'Con_2_GRP'))  # Orient down the feather
         m.delete(m.pointConstraint(side + jointB, side + grpName + 'Con_2_GRP'))  # Position at the Joint
-        m.parent(side + grpName + 'Con_2_GRP2', side + grpName + 'Con_2_GRP')  # Parent the two groups properly
+        m.parent  # Parent the two groups properly
 
         m.group(em=True, name=side + grpName + 'Con_2_GRP_FLD')
         m.delete(m.orientConstraint(side + grpName + repr(int(endFeather)),
                                     side + grpName + 'Con_2_GRP_FLD'))  # Orient down the feather
         m.delete(m.pointConstraint(side + jointB, side + grpName + 'Con_2_GRP_FLD'))  # Position at the Joint
-        m.parent(side + grpName + 'Con_2_GRP_FLD', side + grpName + 'Con_2_GRP2')  # Parent the two groups properly
+        m.parent  # Parent the two groups properly
 
         m.duplicate('ArrowConBase', n=side + grpName + 'Con_2')
         m.showHidden(side + grpName + 'Con_2')
@@ -224,7 +224,7 @@ class WingGroup():
         m.select(side + grpName + 'Con_2')
         m.scale(scaleAmount2, scaleAmount2, scaleAmount2, r=True)  # Scale control based on the feathers locators
 
-        m.parent(side + grpName + 'Con_2', side + grpName + 'Con_2_GRP_FLD')
+        m.parent
         m.select(side + grpName + 'Con_2')
         m.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
 
@@ -242,13 +242,13 @@ class WingGroup():
         m.delete(m.orientConstraint(side + grpName + repr(int(startFeather)),
                                     side + grpName + 'Con_1_GRP'))  # Orient down the feather
         m.delete(m.pointConstraint(side + jointA, side + grpName + 'Con_1_GRP'))  # Position at the Joint
-        m.parent(side + grpName + 'Con_1_GRP2', side + grpName + 'Con_1_GRP')  # Parent the two groups properly
+        m.parent  # Parent the two groups properly
 
         m.group(em=True, name=side + grpName + 'Con_1_GRP_FLD')
         m.delete(m.orientConstraint(side + grpName + repr(int(startFeather)),
                                     side + grpName + 'Con_1_GRP_FLD'))  # Orient down the feather
         m.delete(m.pointConstraint(side + jointA, side + grpName + 'Con_1_GRP_FLD'))  # Position at the Joint
-        m.parent(side + grpName + 'Con_1_GRP_FLD', side + grpName + 'Con_1_GRP2')  # Parent the two groups properly
+        m.parent  # Parent the two groups properly
 
         m.duplicate('ArrowConBase', n=side + grpName + 'Con_1')
         m.showHidden(side + grpName + 'Con_1')
@@ -258,7 +258,7 @@ class WingGroup():
 
         m.select(side + grpName + 'Con_1')
         m.scale(scaleAmount1, scaleAmount1, scaleAmount1, r=True)  # Scale control based on the feathers locators
-        m.parent(side + grpName + 'Con_1', side + grpName + 'Con_1_GRP_FLD')
+        m.parent
         m.select(side + grpName + 'Con_1')
         m.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
 
@@ -285,8 +285,8 @@ class WingGroup():
             m.move(tester[0], Loc3Coord[1], tester[2],
                    ws=True)  # Move the group to the feathers rotate point so they're the same
             m.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
-            m.parent(FeatherName, GRPName)  # Parent feather to it's group
-            m.parent(GRPName, NAME + 'GRP')  # Parent feather under proper main group
+            m.parent  # Parent feather to it's group
+            m.parent  # Parent feather under proper main group
             i = i + 1
         m.select(cl=True)
 
@@ -562,13 +562,13 @@ def controlsSetup():
     m.group(em=True, name=side + '_Shoulder_Con_GRP')  # create the group
     m.delete(m.orientConstraint(side + '_Wing_1_JNT', side + '_Shoulder_Con_GRP'))
     m.delete(m.pointConstraint(side + '_Wing_1_JNT', side + '_Shoulder_Con_GRP'))  # position it
-    m.parent(side + '_Shoulder_Con_GRP2', side + '_Shoulder_Con_GRP')  # Parent the groups properly
+    m.parent  # Parent the groups properly
 
     m.duplicate('MoveAllConBase', n=side + '_Shoulder_CON')  # make the controller
     m.showHidden(side + '_Shoulder_CON')
     m.delete(m.orientConstraint(side + '_Wing_1_JNT', side + '_Shoulder_CON'))  # Position it to the joint
     m.delete(m.pointConstraint(side + '_Wing_1_JNT', side + '_Shoulder_CON'))  # Position it to the joint
-    m.parent(side + '_Shoulder_CON', side + '_Shoulder_Con_GRP2')
+    m.parent
     m.select(side + '_Shoulder_CON')
     m.makeIdentity(apply=True, t=1, r=1, s=1, n=0)  # Cleanup channels
 
@@ -580,7 +580,7 @@ def controlsSetup():
     m.duplicate('BoxConBase', n=side + '_Wrist_CON')  # create the control
     m.showHidden(side + '_Wrist_CON')
     m.delete(m.pointConstraint(side + '_Wing_3_JNT', side + '_Wrist_CON'))  # Position it to the joint
-    m.parent(side + '_Wrist_CON', side + '_Wrist_Con_GRP')
+    m.parent
     m.select(side + '_Wrist_CON')
     m.makeIdentity(apply=True, t=1, r=1, s=1, n=0)  # Cleanup channels
 
@@ -625,8 +625,8 @@ def controlsSetup():
     m.orientConstraint(weight=1, mo=True)
 
     # Correctly Parent control system
-    m.parent(side + '_Wrist_Con_GRP', side + '_Shoulder_CON')
-    m.parent(side + '_Wing_Pole_CON', side + '_Shoulder_CON')
+    m.parent
+    m.parent
 
     # Constrain the pole vector
     m.poleVectorConstraint(side + '_Wing_Pole_CON', side + '_Wing_IK')
@@ -646,8 +646,8 @@ def controlsSetup():
     m.pointConstraint(weight=1, mo=True)
 
     # Parent FK controls to shoulder control
-    m.parent(side + '_Wing2_FK_Con_GRP', side + '_Shoulder_CON')
-    m.parent(side + '_Wing3_FK_Con_GRP', side + '_Wing2_FK_CON')
+    m.parent
+    m.parent
 
     # Add colors to controls
     colorControls('_Wrist_CON', 0)
@@ -693,8 +693,8 @@ def createWingControls():
         m.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
         m.xform(cp=1)
         # parent the wing flex conrtols to the curve control
-        m.parent('Wing_Flex_1', 'CurveConBase')
-        m.parent('Wing_Flex_2', 'CurveConBase')
+        m.parent
+        m.parent
 
 
 def removeConstraints(target):
@@ -747,7 +747,7 @@ def IKFKControlSetup():
     m.setAttr(side + '_Wing_3_JNT_orientConstraint1.interpType', 2);
 
     # Create Switch attribute
-    m.addAttr(side + '_Shoulder_CON', longName='IK_FK_Switch', defaultValue=0.0, minValue=0.0, maxValue=10.0)
+    m.addItem(side + '_Shoulder_CON', longName='IK_FK_Switch', defaultValue=0.0, minValue=0.0, maxValue=10.0)
     m.setAttr(side + '_Shoulder_CON.' + 'IK_FK_Switch', k=1)  # Make it keyable
 
     # Set switch to alternate between IK and FK orient constraints using set driven keys
@@ -809,13 +809,13 @@ def IKFKControlSetup():
     m.group(em=True, name=side + '_Wing2_FK_Con_GRP')
     m.delete(m.orientConstraint(side + '_Wing_2_JNT', side + '_Wing2_FK_Con_GRP'))  # Orient down the feather
     m.delete(m.pointConstraint(side + '_Wing_2_JNT', side + '_Wing2_FK_Con_GRP'))  # Position at the Joint
-    m.parent(side + '_Wing2_FK_Con_GRP2', side + '_Wing2_FK_Con_GRP')  # Parent them properly
+    m.parent  # Parent them properly
 
     m.circle(nr=(4, 0, 0), c=(0, 0, 0), r=5, n=side + '_Wing2_FK_CON')
     m.delete(m.orientConstraint(side + '_Wing_2_JNT', side + '_Wing2_FK_CON'))  # Orient down the feather
     m.delete(m.pointConstraint(side + '_Wing_2_JNT', side + '_Wing2_FK_CON'))  # Position at the Joint
 
-    m.parent(side + '_Wing2_FK_CON', side + '_Wing2_FK_Con_GRP2')
+    m.parent
     m.select(side + '_Wing2_FK_CON')
     m.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
 
@@ -829,13 +829,13 @@ def IKFKControlSetup():
     m.group(em=True, name=side + '_Wing3_FK_Con_GRP')
     m.delete(m.orientConstraint(side + '_Wing_3_JNT', side + '_Wing3_FK_Con_GRP'))  # Orient down the feather
     m.delete(m.pointConstraint(side + '_Wing_3_JNT', side + '_Wing3_FK_Con_GRP'))  # Position at the Joint
-    m.parent(side + '_Wing3_FK_Con_GRP2', side + '_Wing3_FK_Con_GRP')  # Parent them properly
+    m.parent  # Parent them properly
 
     m.circle(nr=(4, 0, 0), c=(0, 0, 0), r=5, n=side + '_Wing3_FK_CON')
     m.delete(m.orientConstraint(side + '_Wing_3_JNT', side + '_Wing3_FK_CON'))  # Orient down the feather
     m.delete(m.pointConstraint(side + '_Wing_3_JNT', side + '_Wing3_FK_CON'))  # Position at the Joint
 
-    m.parent(side + '_Wing3_FK_CON', side + '_Wing3_FK_Con_GRP2')
+    m.parent
     m.select(side + '_Wing3_FK_CON')
     m.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
 
@@ -905,13 +905,13 @@ def mainControls():
     m.delete(m.orientConstraint(side + '_Primaries_' + repr(int(numPrimaries)),
                                 side + '_TipFeathers_GRP'))  # Orient down the feather
     m.delete(m.pointConstraint(side + '_Wing_3_JNT', side + '_TipFeathers_GRP'))  # Position it
-    m.parent(side + '_TipFeathers_GRP2', side + '_TipFeathers_GRP')  # Parent them properly
+    m.parent  # Parent them properly
 
     m.group(em=True, name=side + '_TipFeathers_GRP_FLD')
     m.delete(m.orientConstraint(side + '_Primaries_' + repr(int(numPrimaries)),
                                 side + '_TipFeathers_GRP_FLD'))  # Orient down the feather
     m.delete(m.pointConstraint(side + '_Wing_3_JNT', side + '_TipFeathers_GRP_FLD'))  # Position it
-    m.parent(side + '_TipFeathers_GRP_FLD', side + '_TipFeathers_GRP2')  # Parent them properly
+    m.parent  # Parent them properly
 
     # Make the control
     m.duplicate('CurveConBase', n=side + '_TipFeathers_CON')
@@ -926,7 +926,7 @@ def mainControls():
     # the feather tips and don't get lost in them
     scaleLengthTip = (facingDirection) * (tipLength + (0.15 * tipLength))
     m.scale(scaleLengthTip, scaleLengthTip, scaleLengthTip, r=True)
-    m.parent(side + '_TipFeathers_CON', side + '_TipFeathers_GRP_FLD')
+    m.parent
     m.select(side + '_TipFeathers_CON')
     m.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
 
@@ -952,13 +952,13 @@ def mainControls():
     m.rotate(SecondaryPos[0] + HalfwayPos[0], SecondaryPos[1] + HalfwayPos[1],
              SecondaryPos[2] + HalfwayPos[2])  # Rotate it in between the two controls
     m.delete(m.pointConstraint(side + '_Wing_3_JNT', side + '_MiddleFeathers_GRP'))  # Position it
-    m.parent(side + '_MiddleFeathers_GRP2', side + '_MiddleFeathers_GRP')  # Parent them properly
+    m.parent  # Parent them properly
 
     m.group(em=True, name=side + '_MiddleFeathers_GRP_FLD')
     m.rotate(SecondaryPos[0] + HalfwayPos[0], SecondaryPos[1] + HalfwayPos[1],
              SecondaryPos[2] + HalfwayPos[2])  # Rotate it in between the two controls
     m.delete(m.pointConstraint(side + '_Wing_3_JNT', side + '_MiddleFeathers_GRP_FLD'))  # Position it
-    m.parent(side + '_MiddleFeathers_GRP_FLD', side + '_MiddleFeathers_GRP2')  # Parent them properly
+    m.parent  # Parent them properly
 
     # Make the control
     m.duplicate('CurveConBase', n=side + '_MiddleFeathers_CON')
@@ -973,7 +973,7 @@ def mainControls():
     # the feather tips and don't get lost in them
     scaleLengthMiddle = (facingDirection) * (middleLength + (0.2 * middleLength))
     m.scale(scaleLengthMiddle, scaleLengthMiddle, scaleLengthMiddle, r=True)
-    m.parent(side + '_MiddleFeathers_CON', side + '_MiddleFeathers_GRP_FLD')
+    m.parent
     m.select(side + '_MiddleFeathers_CON')
     m.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
 
@@ -990,13 +990,13 @@ def mainControls():
     m.delete(m.orientConstraint(side + '_Secondaries_' + repr(int(numSecondaries)),
                                 side + '_EndFeathers_GRP'))  # Orient down the feather
     m.delete(m.pointConstraint(side + '_Wing_2_JNT', side + '_EndFeathers_GRP'))  # Position it
-    m.parent(side + '_EndFeathers_GRP2', side + '_EndFeathers_GRP')  # Parent them properly
+    m.parent  # Parent them properly
 
     m.group(em=True, name=side + '_EndFeathers_GRP_FLD')
     m.delete(m.orientConstraint(side + '_Secondaries_' + repr(int(numSecondaries)),
                                 side + '_EndFeathers_GRP_FLD'))  # Orient down the feather
     m.delete(m.pointConstraint(side + '_Wing_2_JNT', side + '_EndFeathers_GRP_FLD'))  # Position it
-    m.parent(side + '_EndFeathers_GRP_FLD', side + '_EndFeathers_GRP2')  # Parent them properly
+    m.parent  # Parent them properly
 
     # Make the control
     m.duplicate('CurveConBase', n=side + '_EndFeathers_CON')
@@ -1011,7 +1011,7 @@ def mainControls():
     # the feather tips and don't get lost in them
     scaleLengthEnd = (facingDirection) * (insideLength + (0.3 * insideLength))
     m.scale(scaleLengthEnd, scaleLengthEnd, scaleLengthEnd, r=True)
-    m.parent(side + '_EndFeathers_CON', side + '_EndFeathers_GRP_FLD')
+    m.parent
     m.select(side + '_EndFeathers_CON')
     m.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
 
@@ -1059,28 +1059,28 @@ def mainControls():
     m.parentConstraint(weight=1, mo=True)
 
     # Parent The minor controls
-    m.parent(side + '_Secondaries_Con_2_GRP', side + '_MiddleFeathers_CON')
-    m.parent(side + '_Secondaries_Con_1_GRP', side + '_EndFeathers_CON')
+    m.parent
+    m.parent
 
-    m.parent(side + '_Primaries_Con_2_GRP', side + '_MiddleFeathers_CON')
-    m.parent(side + '_Primaries_Con_1_GRP', side + '_TipFeathers_CON')
+    m.parent
+    m.parent
 
-    m.parent(side + '_SecondaryCoverts_Con_2_GRP', side + '_MiddleFeathers_CON')
-    m.parent(side + '_SecondaryCoverts_Con_1_GRP', side + '_EndFeathers_CON')
+    m.parent
+    m.parent
 
-    m.parent(side + '_PrimaryCoverts_Con_2_GRP', side + '_MiddleFeathers_CON')
-    m.parent(side + '_PrimaryCoverts_Con_1_GRP', side + '_TipFeathers_CON')
+    m.parent
+    m.parent
 
-    m.parent(side + '_MedianCoverts_Con_2_GRP', side + '_MiddleFeathers_CON')
-    m.parent(side + '_MedianCoverts_Con_1_GRP', side + '_EndFeathers_CON')
+    m.parent
+    m.parent
 
-    m.parent(side + '_Alula_Con_1_GRP', side + '_TipFeathers_CON')
-    m.parent(side + '_Alula_Con_2_GRP', side + '_MiddleFeathers_CON')
+    m.parent
+    m.parent
 
     # Setup visibility Controls on the Overall Controls
     # Tip Feathers Controls #
     # Create Control Attributes
-    m.addAttr(side + '_TipFeathers_CON', longName='GroupControls', defaultValue=0.0, minValue=0.0, maxValue=1.0)
+    m.addItem(side + '_TipFeathers_CON', longName='GroupControls', defaultValue=0.0, minValue=0.0, maxValue=1.0)
     m.setAttr(side + '_TipFeathers_CON.GroupControls', k=1)  # Make it keyable
 
     # Key them for on and off
@@ -1104,7 +1104,7 @@ def mainControls():
 
     # Middle Feathers Controls #
     # Create Control Attributes
-    m.addAttr(side + '_MiddleFeathers_CON', longName='GroupControls', defaultValue=0.0, minValue=0.0, maxValue=1.0)
+    m.addItem(side + '_MiddleFeathers_CON', longName='GroupControls', defaultValue=0.0, minValue=0.0, maxValue=1.0)
     m.setAttr(side + '_MiddleFeathers_CON.GroupControls', k=1)  # Make it keyable
 
     # Key them for on and off
@@ -1140,7 +1140,7 @@ def mainControls():
 
     # End Feathers Controls #
     # Create Control Attributes
-    m.addAttr(side + '_EndFeathers_CON', longName='GroupControls', defaultValue=0.0, minValue=0.0, maxValue=1.0)
+    m.addItem(side + '_EndFeathers_CON', longName='GroupControls', defaultValue=0.0, minValue=0.0, maxValue=1.0)
     m.setAttr(side + '_EndFeathers_CON.GroupControls', k=1)  # Make it keyable
 
     # Key them for on and off
@@ -1171,7 +1171,7 @@ def mainControls():
     # Tip Feathers Blendshape Controls #
     # Create Control Attributes
     if (m.objExists(side + '_Primaries_BLND')) or (m.objExists(side + '_Secondaries_BLND')):
-        m.addAttr(side + '_TipFeathers_CON', longName='FlexControls', defaultValue=0.0, minValue=0.0, maxValue=1.0)
+        m.addItem(side + '_TipFeathers_CON', longName='FlexControls', defaultValue=0.0, minValue=0.0, maxValue=1.0)
         m.setAttr(side + '_TipFeathers_CON.FlexControls', k=1)  # Make it keyable
 
         m.setAttr(side + '_TipFeathers_CON.FlexControls', 0)
@@ -1183,7 +1183,7 @@ def mainControls():
 
         # Middle Feathers Blendshape Controls #
         # Create Control Attributes
-        m.addAttr(side + '_MiddleFeathers_CON', longName='FlexControls', defaultValue=0.0, minValue=0.0, maxValue=1.0)
+        m.addItem(side + '_MiddleFeathers_CON', longName='FlexControls', defaultValue=0.0, minValue=0.0, maxValue=1.0)
         m.setAttr(side + '_MiddleFeathers_CON.FlexControls', k=1)  # Make it keyable
 
         m.setAttr(side + '_MiddleFeathers_CON.FlexControls', 0)
@@ -1200,7 +1200,7 @@ def mainControls():
 
         # End Feathers Blendshape Controls #
         # Create Control Attributes
-        m.addAttr(side + '_EndFeathers_CON', longName='FlexControls', defaultValue=0.0, minValue=0.0, maxValue=1.0)
+        m.addItem(side + '_EndFeathers_CON', longName='FlexControls', defaultValue=0.0, minValue=0.0, maxValue=1.0)
         m.setAttr(side + '_EndFeathers_CON.FlexControls', k=1)  # Make it keyable
 
         m.setAttr(side + '_EndFeathers_CON.FlexControls', 0)
@@ -1219,23 +1219,23 @@ def mainControls():
     if ((m.objExists('R_Wing_1_JNT') == 0) and (m.objExists('L_Wing_1_JNT') == 1)) or (
                 (m.objExists('R_Wing_1_JNT') == 1) and (m.objExists('L_Wing_1_JNT') == 0)):
         # if only one exists, then parent the joints properly
-        m.parent(side + '_Wing_1_JNT', 'Joints')
-        m.parent(side + '_Wing_1_JNT_IK', 'Joints')
-        m.parent(side + '_Wing_1_JNT_FK', 'Joints')
+        m.parent
+        m.parent
+        m.parent
 
-    m.parent(side + '_Shoulder_Con_GRP', 'WingControls')
-    m.parent(side + '_TipFeathers_GRP', 'WingControls')
-    m.parent(side + '_MiddleFeathers_GRP', 'WingControls')
-    m.parent(side + '_EndFeathers_GRP', 'WingControls')
+    m.parent
+    m.parent
+    m.parent
+    m.parent
     # Parent Feather Groups properly
-    m.parent(side + '_Primaries_GRP', 'FeatherGroups')
-    m.parent(side + '_PrimaryCoverts_GRP', 'FeatherGroups')
-    m.parent(side + '_Secondaries_GRP', 'FeatherGroups')
-    m.parent(side + '_SecondaryCoverts_GRP', 'FeatherGroups')
-    m.parent(side + '_Alula_GRP', 'FeatherGroups')
-    m.parent(side + '_MedianCoverts_GRP', 'FeatherGroups')
+    m.parent
+    m.parent
+    m.parent
+    m.parent
+    m.parent
+    m.parent
 
-    m.parent(side + '_Wing_IK', 'NoXForm')  # Function to create the blendshapes for each feather
+    m.parent  # Function to create the blendshapes for each feather
 
 
 def makeBlends(featherName, numFeathers):
@@ -1297,7 +1297,7 @@ def blendshapeSys(featherName, numFeathers, control1, control2):
 # Function that creates the wingfold control
 def foldControls():
     # Add control Atribute
-    m.addAttr(side + '_Shoulder_CON', longName='_AutoWingfold', defaultValue=0.0, minValue=0.0, maxValue=10.0)
+    m.addItem(side + '_Shoulder_CON', longName='_AutoWingfold', defaultValue=0.0, minValue=0.0, maxValue=10.0)
     m.setAttr(side + '_Shoulder_CON.' + '_AutoWingfold', k=1)  # Make it keyable
 
     # Temp variables to fix a problem with the _FLG group inheriting variables it shouldn't (Need to fix this, can't find

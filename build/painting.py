@@ -1,3 +1,13 @@
+# -*- coding: utf-8 -*-
+"""
+
+Script Name: painting.py
+Author: Do Trinh/Jimmy - 3D artist.
+
+Description:
+
+"""
+# -------------------------------------------------------------------------------------------------------------
 from PyQt5.QtCore import QDir, QPoint, QRect, QSize, Qt
 from PyQt5.QtGui import QImage, QImageWriter, QPainter, QPen, qRgb
 from PyQt5.QtWidgets import (QAction, QApplication, QColorDialog, QFileDialog,
@@ -274,3 +284,6 @@ if __name__ == '__main__':
     window = MainWindow()
     window.show()
     sys.exit(app.exec_())
+# -------------------------------------------------------------------------------------------------------------
+# Created by panda on 10/07/2018 - 10:05 AM
+# © 2017 - 2018 DAMGteam. All rights reserved

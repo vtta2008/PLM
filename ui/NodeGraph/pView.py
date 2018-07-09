@@ -20,10 +20,11 @@ from PyQt5.QtGui import QColor, QBrush, QPen
 
 # Plt
 
-from appData.scr._pNN import (SCROLLBAROFF, RUBBERDRAG, ANCHORUNDERMOUSE, CACHEBACKGROUND, UPDATEVIEWRECT,
-                          ANTIALIAS, ANCHORVIEWCENTER, NODRAG, BLOCK)
-from ui.pNodeGraph.pNode import pNodeParts
-from ui.pNodeGraph.pEdge import pEdge
+from appData.scr._pNN import (SCROLLBAROFF, RUBBERDRAG, ANCHOR_UNDERMICE, CACHE_BACKGROUND, UPDATE_VIEWRECT,
+                              ANTIALIAS, ANCHOR_VIEWCENTER, NODRAG, BLOCK, CURRENT_ZOOM, KEY_ALT, KEY_TAB, MOUSE_MIDDLE,
+                              CURSOR_SIZEALL, MOUSE_LEFT, CURSOR_ARROW)
+from ui.NodeGraph.Node import pNodeParts
+from ui.NodeGraph.pEdge import pEdge
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -50,12 +51,12 @@ class pView(QGraphicsView):
         self.setVerticalScrollBarPolicy(SCROLLBAROFF)
 
         self.setDragMode(RUBBERDRAG)
-        self.setTransformationAnchor(ANCHORUNDERMOUSE)
-        self.setCacheMode(CACHEBACKGROUND)
-        self.setViewportUpdateMode(UPDATEVIEWRECT)
+        self.setTransformationAnchor(ANCHOR_UNDERMICE)
+        self.setCacheMode(CACHE_BACKGROUND)
+        self.setViewportUpdateMode(UPDATE_VIEWRECT)
         self.setRenderHint(ANTIALIAS)
-        self.setTransformationAnchor(ANCHORVIEWCENTER)
-        self.setResizeAnchor(ANCHORVIEWCENTER)
+        self.setTransformationAnchor(ANCHOR_VIEWCENTER)
+        self.setResizeAnchor(ANCHOR_VIEWCENTER)
 
     def pNodes(self):
         return [i for i in self.scene().items() if isinstance(i, pNodeParts)]
@@ -68,26 +69,26 @@ class pView(QGraphicsView):
             pEdge.updatePath()
 
     def keyPressEvent(self, event):
-        if event.key() == ALTKEY:
+        if event.key() == KEY_ALT:
             self.reDrawEdge()
-        elif event.key() == TABKEY:
+        elif event.key() == KEY_TAB:
             print("open qline edit window")
 
         super(pView, self).keyPressEvent(event)
 
     def keyReleaseEvent(self, event):
-        if event.key() == ALTKEY:
+        if event.key() == KEY_ALT:
             self.reDrawEdge()
         super(pView, self).keyReleaseEvent(event)
 
     def mousePressEvent(self, event):
 
-        if event.button() == MOUSEMIDDLEBTN:
+        if event.button() == MOUSE_MIDDLE:
             self.setDragMode(NODRAG)
             self.panning = True
             self.prevPos = event.pos()
-            self.setCursor(SIZEALLCURSOR)
-        elif event.button() == MOUSELEFTBTN:
+            self.setCursor(CURSOR_SIZEALL)
+        elif event.button() == MOUSE_LEFT:
             self.setDragMode(RUBBERDRAG)
         super(pView, self).mousePressEvent(event)
 
@@ -106,7 +107,7 @@ class pView(QGraphicsView):
     def mouseReleaseEvent(self, event):
         if self.panning:
             self.panning = False
-            self.setCursor(ARROWCUSOR)
+            self.setCursor(CURSOR_ARROW)
         super(pView, self).mouseReleaseEvent(event)
 
     def wheelEvent(self, event):

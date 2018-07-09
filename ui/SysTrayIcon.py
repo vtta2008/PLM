@@ -12,70 +12,48 @@ Description:
 """ Import """
 
 # Python
-import sys
+import sys, os
+from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import QObject, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QWheelEvent
-from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QAction, QApplication
+from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QApplication
 
 # Plt
-import appData as app
-from ui import uirc as rc
-from utilities import localSQL as usql
-logger = app.logger
+from appData import CONFIG_SYSTRAY, APPINFO, __plmSlogan__, __appname__, FIX_KEY
+from ui.uirc import ActionProcess
+from ui.lib.LayoutPreset import Action, AppIcon
+from utilities.localSQL import TimeLog, QuerryDB
+from core.Loggers import SetLogger
+from core.Specs import Specs
+
 # -------------------------------------------------------------------------------------------------------------
 
 class SysTrayIconMenu(QMenu):
 
-    showNor = pyqtSignal(bool)
-    showMin = pyqtSignal(bool)
-    showMax = pyqtSignal(bool)
+    key = 'sysTray'
+    showLayout = pyqtSignal(str, str)
+    executing = pyqtSignal(str)
 
     def __init__(self, parent=None):
-
         super(SysTrayIconMenu, self).__init__(parent)
+        self.info = APPINFO
+        self.addSeparator()
+        for k in CONFIG_SYSTRAY:
+            if k == 'Screenshot':
+                self.addAction(Action({'icon':k, 'txt': k, 'trg': partial(self.showLayout.emit, APPINFO[k][2], 'show')}, self))
+            elif k == 'Snipping Tool':
+                self.addAction(Action({'icon': k, 'txt': k, 'trg': partial(self.executing.emit, APPINFO[k][2])}, self))
 
         self.addSeparator()
 
-        for key in app.CONFIG_SYSTRAY:
-            self.addAction(rc.ActionProcess(key, self))
+        self.addAction(Action({'icon':'Maximize','txt':'Maximize','trg':partial(self.showLayout.emit, 'mainUI', 'showMax')}, self))
+        self.addAction(Action({'icon':'Minimize','txt':"Minimize",'trg':partial(self.showLayout.emit, 'mainUI', 'showMin')}, self))
+        self.addAction(Action({'icon':'Restore','txt':"Restore", 'trg':partial(self.showLayout.emit, 'mainUI', 'showNor')}, self))
 
         self.addSeparator()
-
-        maxAction = QAction(rc.IconPth(32, "Maximize"), "Maximize", self)
-        maxAction.triggered.connect(self.showMax.emit)
-
-        minAction = QAction(rc.IconPth(32, 'Minimize'), "Minimize", self)
-        minAction.triggered.connect(self.showMin.emit)
-
-        norAction = QAction(rc.IconPth(32, 'Restore'), "Restore", self)
-        norAction.triggered.connect(self.showNor.emit)
-
-        self.addAction(maxAction)
-        self.addAction(minAction)
-        self.addAction(norAction)
-
-        self.addSeparator()
-
-        quitAction = QAction(rc.IconPth(32, 'Close'), "Quit", self)
-        quitAction.triggered.connect(self.exit_action_trigger)
-
-        self.addAction(quitAction)
-
-    def exit_action_trigger(self):
-        usql.TimeLog("Log out")
-        QApplication.instance().quit()
-
-    # def _show_messages(self, _):
-    #     """Show a window with the messages."""
-    #     # store it in the instance otherwise it's destroyed
-    #     self._temp_mw = MessagesWidget(self.app.storage, self)
-    #
-    # def _configure(self, _):
-    #     """Show the configuration dialog."""
-    #     self._temp_cw = ConfigWidget()
-    #     self._temp_cw.exec_()
+        self.addAction(Action({'icon':'Close','txt':"Quit", 'trg':partial(self.showLayout.emit, 'app', 'quit')}, self))
 
 class SystrayWheelEventObject(QObject):
 
@@ -91,32 +69,28 @@ class SystrayWheelEventObject(QObject):
 
 class SysTrayIcon(QSystemTrayIcon):
 
-    showNor = pyqtSignal(bool)
-    showMin = pyqtSignal(bool)
-    showMax = pyqtSignal(bool)
+    key = 'sysTray'
+    showLayout = pyqtSignal(str, str)
+    executing = pyqtSignal(str)
 
     def __init__(self, parent=None):
 
         super(SysTrayIcon, self).__init__(parent)
-
-        self.query = usql.QuerryDB
-
-        # from core.Settings import Settings
-        self.settings = app.appData
+        self.specs = Specs(self.key, self)
+        self.logger = SetLogger(self)
+        self.db = QuerryDB()
 
         try:
-            self.username, token, cookie, remember = self.query.query_table("curUser")
+            self.username, token, cookie, remember = self.db.query_table('curUser')
         except IndexError:
             self.username = 'DemoUser'
 
         self.rightClickMenu = SysTrayIconMenu()
+        self.rightClickMenu.executing.connect(self.executing.emit)
+        self.rightClickMenu.showLayout.connect(self.showLayout.emit)
 
-        self.rightClickMenu.showNor.connect(self.showNor.emit)
-        self.rightClickMenu.showMin.connect(self.showMin.emit)
-        self.rightClickMenu.showMax.connect(self.showMax.emit)
-
-        self.setIcon(rc.AppIcon('Logo'))
-        self.setToolTip(app.__appname__)
+        self.setIcon(AppIcon('Logo'))
+        self.setToolTip(__plmSlogan__)
         self.activated.connect(self.sys_tray_icon_activated)
         self.setContextMenu(self.rightClickMenu)
 
@@ -125,19 +99,27 @@ class SysTrayIcon(QSystemTrayIcon):
 
     def sys_tray_icon_activated(self, reason):
         if reason == QSystemTrayIcon.DoubleClick:
-            self.showNor.emit(True)
+            self.showLayout.emit('mainUI', 'showNor')
 
     def log_in(self):
-        self.showMessage('Welcome', "Log in as {0}".format(self.username),
-                         QSystemTrayIcon.Information, 500)
+        self.showMessage('Welcome', "Log in as {0}".format(self.username), QSystemTrayIcon.Information, 500)
 
     def log_out(self):
-        self.showMessage('Welcome', "Log out",
-                         QSystemTrayIcon.Information, 500)
+        self.showMessage('Log out', "{0} Loged out".format(self.username), QSystemTrayIcon.Information, 500)
 
     def close_event(self):
-        self.showMessage('Notice', "{0} will keep running in the system tray.".format(app.__appname__),
-                         QSystemTrayIcon.Information, 500)
+        self.showMessage('Notice', "{0} will keep running in the system tray.".format(__appname__), QSystemTrayIcon.Information, 500)
+
+    @pyqtSlot(str, str, str, int)
+    def sysNotify(self, title, mess, iconType, timeDelay):
+        if iconType == 'info':
+            icon = self.Information
+        elif iconType == 'crit':
+            icon = self.Critical
+        else:
+            icon = self.Context
+
+        self.showMessage(title, mess, icon, timeDelay)
 
 def main():
     sysApp = QApplication(sys.argv)

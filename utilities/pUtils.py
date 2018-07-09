@@ -14,15 +14,11 @@ Description:
 import sys, uuid, json, re
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, Qt, QSize, QSizeF, QRectF, QRect
-from PyQt5.QtWidgets import QApplication, QWidget
+from PyQt5.QtCore import Qt, QSize, QRectF, QRect
 from PyQt5.QtGui import QFontMetrics, QFont, QColor
 
+# Plm
 
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-from appData.config import logger
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -199,6 +195,10 @@ def _loadData(filePath):
     print("Data successfully loaded !")
     return j_data
 
+def get_layout_dimention(layout):
+    sizeW = layout.frameGeometry().width()
+    sizeH = layout.frameGeometry().height()
+    return sizeW, sizeH
 
 
 # -------------------------------------------------------------------------------------------------------------

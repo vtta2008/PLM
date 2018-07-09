@@ -8,7 +8,7 @@ Description:
 
 """
 
-from PyQt5.QtCore import QDateTime
+from PyQt5.QtCore import QDateTime, QSettings
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -26,6 +26,12 @@ DT_FORMAT = dict(
     dmyhms = "%d/%m/%Y %H:%M:%S",
     mdhm = "'%m-%d %H:%M'",
     fullOpt = "hh:mm - dd MMMM yy",
+)
+
+ST_FORMAT = dict(
+    ini = QSettings.IniFormat,
+    native = QSettings.NativeFormat,
+    invalid = QSettings.InvalidFormat,
 )
 
 # datestamp
