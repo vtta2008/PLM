@@ -15,7 +15,7 @@ import sys
 
 # PtQt5
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QGridLayout, QScrollArea, QWidget
+from PyQt5.QtWidgets import QApplication, QGridLayout, QScrollArea, QWidget, QMenuBar
 
 # Plt
 from utilities.utils import getAppIcon

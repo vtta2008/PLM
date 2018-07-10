@@ -22,15 +22,11 @@ from core.Loggers import SetLogger
 
 class Settings(QSettings):
 
-
     setFormat = pyqtSignal(str)
     setScope = pyqtSignal(str)
 
     def __init__(self, filename, fm=QSettings.IniFormat, parent=None):
         super(Settings, self).__init__(filename, fm, parent)
-
-        if parent is None:
-            raise (EnvironmentError("Need to have specific parent to be able to log"))
 
         self.logger = SetLogger(self)
         self.setObjectName("Settings")
@@ -77,6 +73,9 @@ class Settings(QSettings):
         self.grpLst.append(grpName)
         return True
 
+    def delete_file(self):
+        return os.remove(self.fileName())
+
     @pyqtSlot(str)
     def removeGrp(self, grpName):
         if grpName in self.grpLst:
@@ -84,9 +83,6 @@ class Settings(QSettings):
             return True
         else:
             return False
-
-    def delete_file(self):
-        return os.remove(self.fileName())
 
     @pyqtSlot(str)
     def set_format(self, fm):

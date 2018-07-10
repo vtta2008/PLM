@@ -24,8 +24,8 @@ from utilities import utils as func
 from appData.scr._pNN import *
 
 from ui.NodeGraph.Node import Node
-from ui.NodeGraph.pView import pView
-from ui.NodeGraph.pMenuBar import pMenuBar
+from ui.NodeGraph.View import pView
+from ui.NodeGraph.MenuBar import pMenuBar
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -40,10 +40,10 @@ class pScene(QGraphicsScene):
 
         self.setSceneRect(0, 0, 100, 30)
 
-class pNodeGraph(QWidget):
+class NodeGraph(QWidget):
 
     def __init__(self, parent=None):
-        super(pNodeGraph, self).__init__(parent)
+        super(NodeGraph, self).__init__(parent)
 
         self.setWindowTitle("Scenegraph PLM")
         self.setWindowIcon(QIcon(func.getLogo(32, 'Logo')))
@@ -60,7 +60,7 @@ class pNodeGraph(QWidget):
         self.layout.addWidget(self.view)
         self.setLayout(self.layout)
 
-        self.pNodes = []
+        self.Nodes = []
 
         node1 = Node("Node 1")
         node1.setPos(0, 0)
@@ -100,7 +100,7 @@ class pNodeGraph(QWidget):
             selectedNodes = [i for i in self.scene.selectedItems() if isinstance(i, Node)]
             for node in selectedNodes:
                 node.destroy()
-        super(pNodeGraph, self).keyPressEvent(event)
+        super(NodeGraph, self).keyPressEvent(event)
 
     def contextMenuEvent(self, event):
         pass
@@ -111,7 +111,7 @@ class pNodeGraph(QWidget):
 def main():
     nodeGrahp = QApplication(sys.argv)
     # nodeGrahp.setStyleSheet(nodeGrahp.load_stylesheet())
-    layout = pNodeGraph()
+    layout = NodeGraph()
     layout.show()
     nodeGrahp.exec_()
 

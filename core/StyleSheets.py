@@ -18,7 +18,7 @@ from PyQt5.QtCore import QObject, QFile, QTextStream
 
 # Plm
 from appData.scr._path import QSS_DIR
-# from core.Loggers import SetLogger
+from core.Loggers import SetLogger
 
 class StyleSheets(QObject):
 

@@ -12,15 +12,16 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, pyqtSlot
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QDockWidget, )
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, )
 
 # Plt
-from appData import __homepage__, dockB, SiPoMin, SiPoIgn
+from appData import __homepage__, dockB
 from core.Loggers import SetLogger
 
 from ui.uirc import AutoSectionLayoutGrp, AutoSectionQMainGrp,  AppIcon
-from ui import SubMenuBar, ToolBar, TopTab, BotTab, ServerStatus, Footer, StatusBar
+from ui import ToolBar, TopTab, BotTab, ServerStatus, Footer, StatusBar
+from ui.Menus import MainMenuBar, SubMenuBar
 from core.Specs import Specs
 from utilities.pUtils import get_layout_dimention
 
@@ -58,11 +59,15 @@ class PipelineManager(QMainWindow):
 
     def buildUI(self):
 
+        self.mainMenuBar = MainMenuBar.MainMenuBar()
         self.subMenuBar = SubMenuBar.SubMenuBar()                                                        # Sub menu
         self.toolBar = ToolBar.ToolBar()                                                                 # Toolbar
         self.serverStatus = ServerStatus.ServerStatus()                                                  # Server Status
         self.subMenuSec = AutoSectionQMainGrp("Sub Menu", self.subMenuBar)
+        self.mainMenuSec = AutoSectionQMainGrp("Main Menu", self.mainMenuBar)
+
         self.networkStatus = AutoSectionLayoutGrp("Server Status", self.serverStatus)
+        self.networkStatus.setMaximumHeight(self.subMenuBar.maximumHeight()*3)
         self.toolBarSec = AutoSectionQMainGrp("Tool Bar", self.toolBar)
 
         self.topTabUI = TopTab.TopTab()                                                            # Tab layout
@@ -72,7 +77,7 @@ class PipelineManager(QMainWindow):
         self.subMenuBar.showLayout.connect(self.showLayout)
         self.subMenuBar.executing.connect(self.executing)
         self.subMenuBar.regLayout.connect(self.regLayout)
-        self.subMenuBar.openBrowser.connect(self.openBrowser)
+        self.subMenuBar.openUrl.connect(self.openBrowser)
 
         self.topTabUI.executing.connect(self.executing)
         self.topTabUI.showLayout.connect(self.showLayout)
@@ -104,20 +109,20 @@ class PipelineManager(QMainWindow):
         self.footer.showLayout.connect(self.showLayout)
 
         # Signal
+        self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 9)
+        self.layout.addWidget(self.subMenuSec, 1, 0, 1, 6)
+        self.layout.addWidget(self.networkStatus, 1, 6, 1, 3)
+        self.layout.addWidget(self.toolBarSec, 2, 0, 2, 9)
 
-        self.layout.addWidget(self.subMenuSec, 0, 0, 1, 6)
-        self.layout.addWidget(self.networkStatus, 0, 6, 1, 3)
-        self.layout.addWidget(self.toolBarSec, 1, 0, 2, 9)
+        self.layout.addWidget(self.topTabUI, 4, 0, 4, 9)
+        self.layout.addWidget(self.botTabUI, 8, 0, 3, 6)
+        self.layout.addWidget(self.notifiSec, 8, 6, 3, 3)
 
-        self.layout.addWidget(self.topTabUI, 3, 0, 4, 9)
-        self.layout.addWidget(self.botTabUI, 7, 0, 3, 6)
-        self.layout.addWidget(self.notifiSec, 7, 6, 3, 3)
+        self.layout.addWidget(self.footer, 11, 0, 1, 9)
 
-        self.layout.addWidget(self.footer, 10, 0, 1, 9)
-
-    def add_dockWidget(self, dock):
+    def add_dockWidget(self, dock, pos=dockB):
         self.dock = dock
-        self.addDockWidget(dockB, self.dock)
+        self.addDockWidget(pos, self.dock)
 
     def resizeEvent(self, event):
         sizeW, sizeH = get_layout_dimention(self)

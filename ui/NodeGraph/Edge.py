@@ -26,12 +26,12 @@ from core.Loggers import SetLogger
 # -------------------------------------------------------------------------------------------------------------
 """ pEdge """
 
-class pEdge(QGraphicsPathItem):
+class Edge(QGraphicsPathItem):
 
-    Type = 'pEdge'
+    Type = 'Edge'
 
     def __init__(self, **kwargs):
-        super(pEdge, self).__init__(**kwargs)
+        super(Edge, self).__init__(**kwargs)
 
         self.logger = SetLogger(self)
         self.lineColor = QColor(10, 10, 10)
@@ -72,7 +72,7 @@ class pEdge(QGraphicsPathItem):
         self.setPath(path)
 
     def destroy(self):
-        logger.info("Destroy pEdge: {0}".format(self))
+        self.logger.info("Destroy pEdge: {0}".format(self))
         self.srcKnob.removeEdge(self)
         self.tarKnob.removeEdge(self)
 
@@ -86,10 +86,10 @@ class pEdge(QGraphicsPathItem):
 
         self.setBrush(Qt.NoBrush)
         self.setZValue(-1)
-        super(pEdge, self).paint(painter, option, widget)
+        super(Edge, self).paint(painter, option, widget)
 
     def type(self):
-        return pEdge.Type
+        return Edge.Type
 
     def mousePressEvent(self, event):
         leftMouse = event.button() == MOUSE_LEFT

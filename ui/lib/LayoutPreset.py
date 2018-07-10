@@ -74,6 +74,8 @@ class Label(QLabel):
                 self.setScaledContents(value)
             elif key == 'sfs':
                 self.setFixedSize(value[0], value[1])
+            elif key == 'setBuddy':
+                self.setBuddy(value)
             else:
                 self.setAlignment(center)
 
@@ -170,12 +172,13 @@ class Action(QAction):
                 self.setText(value)
             elif key == 'trg':
                 self.triggered.connect(value)
+            elif key == 'shortcut':
+                self.setShortcut(value)
+            elif key == 'checkable':
+                self.setChecked(value)
+            elif key == 'enabled':
+                self.setDisabled(value)
 
-    def sizeHint(self):
-        size = super(Action, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
 
 class ComboBox(QComboBox):
 
@@ -190,6 +193,11 @@ class ComboBox(QComboBox):
             if key == 'items':
                 for item in value:
                     self.addItem(item)
+            elif key == 'editable':
+                self.setEditable(value)
+            elif key == 'curIndex':
+                self.setCurrentIndex(value)
+
 
     def sizeHint(self):
         size = super(ComboBox, self).sizeHint()

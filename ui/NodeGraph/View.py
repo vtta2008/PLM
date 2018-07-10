@@ -23,8 +23,7 @@ from PyQt5.QtGui import QColor, QBrush, QPen
 from appData.scr._pNN import (SCROLLBAROFF, RUBBERDRAG, ANCHOR_UNDERMICE, CACHE_BACKGROUND, UPDATE_VIEWRECT,
                               ANTIALIAS, ANCHOR_VIEWCENTER, NODRAG, BLOCK, CURRENT_ZOOM, KEY_ALT, KEY_TAB, MOUSE_MIDDLE,
                               CURSOR_SIZEALL, MOUSE_LEFT, CURSOR_ARROW)
-from ui.NodeGraph.Node import pNodeParts
-from ui.NodeGraph.pEdge import pEdge
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """

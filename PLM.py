@@ -164,9 +164,9 @@ class PLM(QApplication):
 
     @pyqtSlot(str)
     def executing(self, cmd):
-        self.logger.debug('signal comes: {0}'.format(cmd))
+        self.logger.trace('signal comes: {0}'.format(cmd))
         if cmd in self.regUI.keys():
-            self.logger.debug('run showlayout: {0}'.format(cmd))
+            self.logger.trace('run showlayout: {0}'.format(cmd))
             self.showLayout(cmd, 'show')
         elif os.path.isdir(cmd):
             os.startfile(cmd)

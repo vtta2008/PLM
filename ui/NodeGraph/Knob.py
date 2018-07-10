@@ -21,7 +21,7 @@ from PyQt5.QtGui import QColor, QPen, QBrush, QPainter
 from core.Errors import KnobConnectionError, UnknownFlowError
 from appData.scr._pNN import *
 from utilities.pUtils import *
-from ui.NodeGraph.pEdge import pEdge
+from ui.NodeGraph.Edge import Edge
 
 # -------------------------------------------------------------------------------------------------------------
 """ pKnob """
@@ -62,7 +62,7 @@ class pKnob(QGraphicsItem):
 
         self.checkMaxConnections(pKnob)
 
-        edge = pEdge()
+        edge = Edge()
         edge.source = self
         edge.target = pKnob
         edge.updatePath()
