@@ -36,7 +36,7 @@ class ToolBar(QMainWindow):
 
     showLayout = pyqtSignal(str, str)
     executing = pyqtSignal(str)
-    regLayout = pyqtSignal(str, object)
+    addLayout = pyqtSignal(object)
     openBrowser = pyqtSignal(str)
     setSetting = pyqtSignal(str, str, str)
 

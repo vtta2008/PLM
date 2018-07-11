@@ -22,7 +22,6 @@ from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QApplication
 
 # Plt
 from appData import CONFIG_SYSTRAY, APPINFO, __plmSlogan__, __appname__, FIX_KEY
-from ui.uirc import ActionProcess
 from ui.lib.LayoutPreset import Action, AppIcon
 from utilities.localSQL import TimeLog, QuerryDB
 from core.Loggers import SetLogger

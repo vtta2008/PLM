@@ -38,7 +38,7 @@ class SubMenuBar(QMainWindow):
     showLayout = pyqtSignal(str, str)
     executing = pyqtSignal(str)
     proceduring = pyqtSignal(str)
-    regLayout = pyqtSignal(str, object)
+    addLayout = pyqtSignal(object)
     setSetting = pyqtSignal(str, str, str)
     openUrl = pyqtSignal(str)
 
@@ -53,16 +53,20 @@ class SubMenuBar(QMainWindow):
 
     def buildMenu(self):
 
-        self.plmMenu = self.menuBar().addMenu("&PLM")
-        self.plmMenu.addAction(Action({'icon': 'OpenConfig', 'txt': self.appInfo['OpenConfig'][0], 'trg':partial(self.executing.emit, CONFIG_DIR)}, self))
-        self.plmMenu.addAction(Action({'icon': 'IconFolder', 'txt': 'Go to Icon folder', 'trg': partial(self.executing.emit, APP_ICON_DIR)}, self))
-        self.plmMenu.addAction(Action({'icon': 'SettingFolder', 'txt': 'Go to Setting folder', 'trg': partial(self.executing.emit, SETTING_DIR)}, self))
-        self.plmMenu.addAction(Action({'icon': 'Preferences', 'txt': 'Preferences', 'trg': partial(self.showLayout.emit, 'config', 'show')}, self))
-        # self.plmMenu.addAction(Action({'icon': 'Setting', 'txt': 'Settings', 'trg': partial(self.showLayout.emit, 'setting', 'show')}, self))
+        self.plmMenu = self.menuBar().addMenu("&File")
+        self.gotoMenu = self.plmMenu.addMenu('Go to')
+        self.gotoMenu.addAction(Action({'icon': 'OpenConfig', 'txt': 'Config folder', 'trg':partial(self.executing.emit, CONFIG_DIR)}, self))
+        self.gotoMenu.addAction(Action({'icon': 'IconFolder', 'txt': 'Icon folder', 'trg': partial(self.executing.emit, APP_ICON_DIR)}, self))
+        self.gotoMenu.addAction(Action({'icon': 'SettingFolder', 'txt': 'Setting folder', 'trg': partial(self.executing.emit, SETTING_DIR)}, self))
+
         self.plmMenu.addSeparator()
         self.plmMenu.addAction(Action({'icon': 'Exit', 'txt': self.appInfo['Exit'][0], 'trg': partial(self.showLayout.emit, 'app', 'exit')}, self))
 
         self.editMenu = self.menuBar().addMenu("&Edit")
+        self.editMenu.addMenu('Copy')
+        self.editMenu.addMenu('Copy')
+        self.editMenu.addMenu('Cut')
+        self.editMenu.addMenu('Paste')
 
         self.viewMenu = self.menuBar().addMenu("&View")
 

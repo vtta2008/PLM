@@ -1,54 +1,70 @@
-import sys
+import os, sys
 
-from PyQt5.QtCore import (QByteArray, QDate, QDateTime, QEvent, QPoint, QRect,
-                          QRegExp, QSettings, QSize, Qt, QTime, QTimer)
+from PyQt5.QtCore import (QByteArray, QDate, QDateTime, QEvent, QPoint, QRect, QRegExp, QSettings, QSize, Qt, QTime,
+                          QTimer, pyqtSignal, pyqtSlot)
 from PyQt5.QtGui import QColor, QIcon, QRegExpValidator, QValidator
 from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar, QWidget,
                              QFileDialog, QGridLayout, QGroupBox, QHeaderView, QInputDialog, QItemDelegate, QLineEdit,
-                             QMessageBox, QStyle, QStyleOptionViewItem, QTableWidget, QTableWidgetItem, QTreeWidget,
+                             QStyle, QStyleOptionViewItem, QTableWidget, QTableWidgetItem, QTreeWidget,
                              QTreeWidgetItem, QVBoxLayout)
-import os
-from appData import SETTING_FILEPTH
+
+from appData import SETTING_FILEPTH, ST_FORMAT, __organization__, __appname__
+from core.Specs import Specs
+from core.Loggers import SetLogger
+from core.Errors import KeySettingError
+# from core.Settings import Settings
 from ui.lib.LayoutPreset import ComboBox, Label
 
 class SettingUI(QWidget):
 
+    key = 'settingUI'
+    showLayout = pyqtSignal(str, str)
+
     def __init__(self, parent=None):
         super(SettingUI, self).__init__(parent)
+        self.specs = Specs(self.key, self)
+        self._parent = parent
+        self.menubar = QMenuBar(self)
+        self.regValue = RegOutput()
+        self.regInfo = RegInput()
+        self.createMenus()
+
+        self.settings = self.setting_mode(self.settingPth(), self.settingFormat(), self._parent)
+        print(self.settings.organizationName(), self.settings.applicationName())
 
         self.layout = QGridLayout()
-        self.settingsTree = SettingsTree()
-        # self.setCentralWidget(self.settingsTree)
-        self.menubar = QMenuBar(self)
-        self.locationDialog = AppSetting()
-        self.layout.addWidget(self.menubar, 0, 0, 1, 1)
-        self.layout.addWidget(self.locationDialog, 1, 0, 1, 1)
-        self.layout.addWidget(self.settingsTree, 2, 0, 1, 1)
-        self.locationDialog.setMinimumHeight(300)
-        self.setLayout(self.layout)
 
-        self.createMenus()
+        self.layout.addWidget(self.menubar, 0, 0, 1, 1)
+        self.layout.addWidget(self.regInfo, 1, 0, 1, 1)
+        self.layout.addWidget(self.regValue, 2, 0, 1, 1)
+
+        self.setLayout(self.layout)
 
         self.autoRefreshAct.setChecked(True)
         self.fallbacksAct.setChecked(True)
 
         self.setWindowTitle("PLM settings")
-        # self.resize(500, 600)
+        self.resize(500, 600)
+
+    def settingPth(self, pth = SETTING_FILEPTH['app']):
+        return pth
+
+    def settingFormat(self):
+        return self.regInfo.format()
+
+    def settingOrganization(self):
+        return self.regInfo.organization()
+
+    def settingApplication(self):
+        return self.regInfo.application()
 
     def openSettings(self):
-        # if self.locationDialog is None:
-        #     self.locationDialog = LocationDialog(self)
-        #
-        # if self.locationDialog.exec_():
-        settings = QSettings(self.locationDialog.format(),
-                             self.locationDialog.scope(),
-                             self.locationDialog.organization(),
-                             self.locationDialog.application())
-        self.setSettingsObject(settings)
+        self.settings = QSettings(self.regInfo.format(), self.regInfo.scope(), self.regInfo.organization(), self.regInfo.application())
+        self.setSettingsObject(self.settings)
         self.fallbacksAct.setEnabled(True)
 
     def openIniFile(self):
-        if not os.path.exists(SETTING_FILEPTH['app']):
+        if not os.path.exists(self.settingPth()):
             fileName, _ = QFileDialog.getOpenFileName(self, "Open INI File", '',  "INI Files (*.ini *.conf)")
 
             if fileName:
@@ -70,40 +86,31 @@ class SettingUI(QWidget):
     def openRegistryPath(self):
         path, ok = QInputDialog.getText(self, "Open Registry Path",
                                         "Enter the path in the Windows registry:", QLineEdit.Normal,
-                                        'HKEY_CURRENT_USER\\')
+                                        'HKEY_CURRENT_USER\\Software\\{0}\\{1}'.format(__organization__, __appname__))
 
         if ok and path != '':
             settings = QSettings(path, QSettings.NativeFormat)
             self.setSettingsObject(settings)
             self.fallbacksAct.setEnabled(False)
 
-    def about(self):
-        QMessageBox.about(self, "About Settings Editor",
-                          "The <b>Settings Editor</b> example shows how to access "
-                          "application settings using Qt.")
-
     def createActions(self):
         self.openSettingsAct = QAction("&Open Application Settings...", self, shortcut="Ctrl+O", triggered=self.openSettings)
-
         self.openIniFileAct = QAction("Open I&NI File...", self, shortcut="Ctrl+N", triggered=self.openIniFile)
-
         self.openPropertyListAct = QAction("Open Mac &Property List...", self, shortcut="Ctrl+P", triggered=self.openPropertyList)
+        self.openRegistryPathAct = QAction("Open Windows &Registry Path...", self, shortcut="Ctrl+G", triggered=self.openRegistryPath)
+        self.refreshAct = QAction("&Refresh", self, shortcut="Ctrl+R", enabled=False, triggered=self.regValue.refresh)
+        self.exitAct = QAction("E&xit", self, shortcut="Ctrl+Q", triggered=self.close)
+        self.autoRefreshAct = QAction("&Auto-Refresh", self, shortcut="Ctrl+A", checkable=True, enabled=False)
+        self.fallbacksAct = QAction("&Fallbacks", self, shortcut="Ctrl+F", checkable=True, enabled=False, triggered=self.regValue.setFallbacksEnabled)
+
         if sys.platform != 'darwin':
             self.openPropertyListAct.setEnabled(False)
 
-        self.openRegistryPathAct = QAction("Open Windows &Registry Path...", self, shortcut="Ctrl+G", triggered=self.openRegistryPath)
         if sys.platform != 'win32':
             self.openRegistryPathAct.setEnabled(False)
 
-        self.refreshAct = QAction("&Refresh", self, shortcut="Ctrl+R", enabled=False, triggered=self.settingsTree.refresh)
-
-        self.exitAct = QAction("E&xit", self, shortcut="Ctrl+Q", triggered=self.close)
-
-        self.autoRefreshAct = QAction("&Auto-Refresh", self, shortcut="Ctrl+A", checkable=True, enabled=False)
-        self.autoRefreshAct.triggered.connect(self.settingsTree.setAutoRefresh)
+        self.autoRefreshAct.triggered.connect(self.regValue.setAutoRefresh)
         self.autoRefreshAct.triggered.connect(self.refreshAct.setDisabled)
-
-        self.fallbacksAct = QAction("&Fallbacks", self, shortcut="Ctrl+F", checkable=True, enabled=False, triggered=self.settingsTree.setFallbacksEnabled)
 
     def createMenus(self):
         self.createActions()
@@ -123,7 +130,7 @@ class SettingUI(QWidget):
 
     def setSettingsObject(self, settings):
         settings.setFallbacksEnabled(self.fallbacksAct.isChecked())
-        self.settingsTree.setSettingsObject(settings)
+        self.regValue.setSettingsObject(settings)
 
         self.refreshAct.setEnabled(True)
         self.autoRefreshAct.setEnabled(True)
@@ -137,22 +144,34 @@ class SettingUI(QWidget):
 
         self.setWindowTitle("%s - Settings Editor" % niceName)
 
-class AppSetting(QWidget):
+    def setting_mode(self, filename, fm, parent):
+        return Settings(filename, fm, parent)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
+
+class RegInput(QWidget):
 
     def __init__(self, parent=None):
-        super(AppSetting, self).__init__(parent)
+        super(RegInput, self).__init__(parent)
 
-        self.formatComboBox = ComboBox({'items': ["Native", "INI"]})
+        self.formatComboBox = ComboBox({'items': ["INI", "Native"]})
         self.scopeComboBox = ComboBox({'items': ["User", "System"]})
         self.organizationComboBox = ComboBox({'items':['DAMGteam'], 'editable':True})
         self.applicationComboBox = ComboBox({'items': ['PLM'], 'editable':True, 'curIndex':0})
 
-        formatLabel = Label({'txt':"&Format: ", 'setBuddy': self.scopeComboBox})
+        for cb in [self.formatComboBox, self.scopeComboBox, self.organizationComboBox, self.applicationComboBox]:
+            cb.currentIndexChanged.connect(self.updateLocationsTable)
+
+        formatLabel = Label({'txt':"&Format: ", 'setBuddy': self.formatComboBox})
         scopeLabel = Label({'txt':"&Scope:", 'setBuddy': self.scopeComboBox})
         organizationLabel = Label({'txt':"&Organization:", 'setBuddy': self.organizationComboBox})
         applicationLabel = Label({'txt':"&Application:", 'setBuddy': self.applicationComboBox})
 
-        self.locationsGroupBox = QGroupBox("Setting Locations")
+        grpBox = QGroupBox("Setting Locations")
+        grid = QGridLayout()
+
         self.locationsTable = QTableWidget()
         self.locationsTable.setSelectionMode(QAbstractItemView.SingleSelection)
         self.locationsTable.setSelectionBehavior(QAbstractItemView.SelectRows)
@@ -161,37 +180,29 @@ class AppSetting(QWidget):
         self.locationsTable.setHorizontalHeaderLabels(("Location", "Access"))
         self.locationsTable.horizontalHeader().setSectionResizeMode(0, QHeaderView.Stretch)
         self.locationsTable.horizontalHeader().resizeSection(1, 180)
-
-        # self.buttonBox = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
+        self.locationsTable.setMinimumHeight(180)
 
         self.formatComboBox.activated.connect(self.updateLocationsTable)
         self.scopeComboBox.activated.connect(self.updateLocationsTable)
         self.organizationComboBox.lineEdit().editingFinished.connect(self.updateLocationsTable)
         self.applicationComboBox.lineEdit().editingFinished.connect(self.updateLocationsTable)
-        # self.buttonBox.accepted.connect(self.accept)
-        # self.buttonBox.rejected.connect(self.reject)
 
-        locationsLayout = QVBoxLayout()
-        locationsLayout.addWidget(self.locationsTable)
-        self.locationsGroupBox.setLayout(locationsLayout)
+        self.layout = QGridLayout()
 
-        mainLayout = QGridLayout()
-        mainLayout.addWidget(formatLabel, 0, 0)
-        mainLayout.addWidget(self.formatComboBox, 0, 1)
-        mainLayout.addWidget(scopeLabel, 1, 0)
-        mainLayout.addWidget(self.scopeComboBox, 1, 1)
-        mainLayout.addWidget(organizationLabel, 2, 0)
-        mainLayout.addWidget(self.organizationComboBox, 2, 1)
-        mainLayout.addWidget(applicationLabel, 3, 0)
-        mainLayout.addWidget(self.applicationComboBox, 3, 1)
-        mainLayout.addWidget(self.locationsGroupBox, 4, 0, 1, 2)
-        # mainLayout.addWidget(self.buttonBox, 5, 0, 1, 2)
-        self.setLayout(mainLayout)
-
+        grid.addWidget(formatLabel, 1, 0)
+        grid.addWidget(self.formatComboBox, 1, 1)
+        grid.addWidget(scopeLabel, 2, 0)
+        grid.addWidget(self.scopeComboBox, 2, 1)
+        grid.addWidget(organizationLabel, 3, 0)
+        grid.addWidget(self.organizationComboBox, 3, 1)
+        grid.addWidget(applicationLabel, 4, 0)
+        grid.addWidget(self.applicationComboBox, 4, 1)
+        grid.addWidget(self.locationsTable, 0, 2, 6, 4)
+        grpBox.setLayout(grid)
         self.updateLocationsTable()
+        self.layout.addWidget(grpBox)
 
-        # self.setWindowTitle("Open Application Settings")
-        # self.resize(650, 400)
+        self.setLayout(self.layout)
 
     def format(self):
         if self.formatComboBox.currentIndex() == 0:
@@ -222,7 +233,6 @@ class AppSetting(QWidget):
             if i == 0:
                 if self.scope() == QSettings.SystemScope:
                     continue
-
                 actualScope = QSettings.UserScope
             else:
                 actualScope = QSettings.SystemScope
@@ -264,13 +274,12 @@ class AppSetting(QWidget):
 
                 self.locationsTable.setItem(row, 0, item0)
                 self.locationsTable.setItem(row, 1, item1)
-
         self.locationsTable.setUpdatesEnabled(True)
 
-class SettingsTree(QTreeWidget):
+class RegOutput(QTreeWidget):
 
     def __init__(self, parent=None):
-        super(SettingsTree, self).__init__(parent)
+        super(RegOutput, self).__init__(parent)
 
         self.setItemDelegate(VariantDelegate(self))
 
@@ -345,7 +354,7 @@ class SettingsTree(QTreeWidget):
             if self.isActiveWindow() and self.autoRefresh:
                 self.maybeRefresh()
 
-        return super(SettingsTree, self).event(event)
+        return super(RegOutput, self).event(event)
 
     def updateSetting(self, item):
         key = item.text(0)
@@ -451,6 +460,88 @@ class SettingsTree(QTreeWidget):
     def moveItemForward(self, parent, oldIndex, newIndex):
         for int in range(oldIndex - newIndex):
             self.deleteItem(parent, newIndex)
+
+class Settings(QSettings):
+
+    setFormat = pyqtSignal(str)
+    setScope = pyqtSignal(str)
+
+    def __init__(self, filename, fm=QSettings.IniFormat, parent=None):
+        super(Settings, self).__init__(filename, fm, parent)
+
+        self.logger = SetLogger(self)
+        self.setObjectName("Settings")
+
+        self._parent = parent
+        self._filename = filename
+        self.grpLst = self.childGroups()
+
+    @property
+    def groups(self):
+        return self.grpLst
+
+    def checkGrp(self, grp):
+        if grp is None:
+            return 'General'
+        else:
+            if not grp in self.grpLst:
+                self.addGrp(grp)
+            return grp
+
+    def initSetValue(self, key=None, value=None, grp=None):
+        grpChecked = self.checkGrp(grp)
+        self.beginGroup(grpChecked)
+        # self.logger.debug("Saving setting: {0} = {1}".format(key, value))
+        if key is None or key == "":
+            KeySettingError(key)
+        else:
+            self.setValue(key, value)
+        while self.group():
+            self.endGroup()
+
+    def initValue(self, key=None, grp=None):
+        grpChecked = self.checkGrp(grp)
+        # self.logger.debug("Loading setting: {0}".format(key))
+        self.beginGroup(grpChecked)
+        if key is None or key == "":
+            KeySettingError(key)
+        else:
+            return self.value(key)
+        while self.group():
+            self.endGroup()
+
+    def addGrp(self, grpName):
+        self.grpLst.append(grpName)
+        return True
+
+    def delete_file(self):
+        return os.remove(self.fileName())
+
+    @pyqtSlot(str)
+    def removeGrp(self, grpName):
+        if grpName in self.grpLst:
+            self.grpLst.remove(grpName)
+            return True
+        else:
+            return False
+
+    @pyqtSlot(str)
+    def set_format(self, fm):
+        if fm == 'ini':
+            _format = QSettings.IniFormat
+        elif fm == 'native':
+            _format = QSettings.NativeFormat
+        else:
+            _format = QSettings.InvalidFormat
+        self.setDefaultFormat(_format)
+        return _format
+
+    @pyqtSlot(str)
+    def set_scope(self, scope):
+        if scope == 'system':
+            return QSettings.SystemScope
+        else:
+            return QSettings.UserScope
 
 class VariantDelegate(QItemDelegate):
 

@@ -55,7 +55,7 @@ class TopTab5(QWidget):
     key = 'topTab5'
     executing = pyqtSignal(str)
     showLayout = pyqtSignal(str, str)
-    regLayout = pyqtSignal(str, object)
+    addLayout = pyqtSignal(object)
 
     def __init__(self, parent=None):
         super(TopTab5, self).__init__(parent)
@@ -64,6 +64,7 @@ class TopTab5(QWidget):
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
+        self.addLayout.emit(self)
 
     def buildUI(self):
         self.basePth = os.getcwd() + ">"

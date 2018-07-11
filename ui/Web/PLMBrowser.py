@@ -186,9 +186,8 @@ class PLMBrowser(QWidget):
 
     def __init__(self, url='vnexpress.net', parent=None):
         super(PLMBrowser, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.setWindowIcon(QIcon(func.getAppIcon(32, 'PLMBrowser')))
-
+        self.specs = Specs(self.key, self)
         self.url = url
 
         self.layout = QVBoxLayout()
@@ -214,11 +213,11 @@ class PLMBrowser(QWidget):
         self.viewer.update()
 
     def showEvent(self, event):
-        self.specs.showed.emit(True)
+        self.specs.set_showed.emit(True)
 
     def closeEvent(self, event):
         self.showLayout.emit('browser', 'hide')
-        self.specs.showed.emit(False)
+        self.specs.set_closed.emit(False)
         event.ignore()
 
 def main():

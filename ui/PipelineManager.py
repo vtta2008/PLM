@@ -10,16 +10,18 @@ Description:
 
 # Python
 import sys
+from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, )
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QMenu)
 
 # Plt
-from appData import __homepage__, dockB
+from appData import __homepage__, dockB, APPINFO, CONFIG_SYSTRAY
 from core.Loggers import SetLogger
 
 from ui.uirc import AutoSectionLayoutGrp, AutoSectionQMainGrp,  AppIcon
+from ui.lib.LayoutPreset import Action
 from ui import ToolBar, TopTab, BotTab, ServerStatus, Footer, StatusBar
 from ui.Menus import MainMenuBar, SubMenuBar
 from core.Specs import Specs
@@ -34,7 +36,7 @@ class PipelineManager(QMainWindow):
 
     showLayout = pyqtSignal(str, str)
     executing = pyqtSignal(str)
-    regLayout = pyqtSignal(str, object)
+    addLayout = pyqtSignal(object)
     openBrowser = pyqtSignal(str)
     setSetting = pyqtSignal(str, str, str)
     sysNotify = pyqtSignal(str, str, str, int)
@@ -49,7 +51,7 @@ class PipelineManager(QMainWindow):
         self.url = __homepage__
 
         self.setWindowIcon(AppIcon("Logo"))
-
+        self.settings = None
         self.mainWidget = QWidget()
         self.layout = QGridLayout()
         self.mainWidget.setLayout(self.layout)
@@ -76,16 +78,21 @@ class PipelineManager(QMainWindow):
 
         self.subMenuBar.showLayout.connect(self.showLayout)
         self.subMenuBar.executing.connect(self.executing)
-        self.subMenuBar.regLayout.connect(self.regLayout)
+        self.subMenuBar.addLayout.connect(self.addLayout)
         self.subMenuBar.openUrl.connect(self.openBrowser)
+
+        self.mainMenuBar.showLayout.connect(self.showLayout)
+        self.mainMenuBar.executing.connect(self.executing)
+        self.mainMenuBar.addLayout.connect(self.addLayout)
+        self.mainMenuBar.openUrl.connect(self.openBrowser)
 
         self.topTabUI.executing.connect(self.executing)
         self.topTabUI.showLayout.connect(self.showLayout)
-        self.topTabUI.regLayout.connect(self.regLayout)
+        self.topTabUI.regLayout.connect(self.addLayout)
 
         self.toolBar.showLayout.connect(self.showLayout)
         self.toolBar.executing.connect(self.executing)
-        self.toolBar.regLayout.connect(self.regLayout)
+        self.toolBar.addLayout.connect(self.addLayout)
         self.toolBar.openBrowser.connect(self.openBrowser)
         self.toolBar.setSetting.connect(self.setSetting)
 
@@ -124,19 +131,53 @@ class PipelineManager(QMainWindow):
         self.dock = dock
         self.addDockWidget(pos, self.dock)
 
+    def contextMenuEvent(self, event):
+        SysTrayIconMenu()
+
     def resizeEvent(self, event):
         sizeW, sizeH = get_layout_dimention(self)
         self.setSetting.emit('width', str(sizeW), self.objectName())
         self.setSetting.emit('height', str(sizeH), self.objectName())
 
     def showEvent(self, event):
+        self.specs.showState.emit(True)
         self.showLayout.emit('login', 'hide')
         self.showLayout.emit('sysTray', 'show')
+        self.restoreGeometry(self.settings.value("geometry").toByteArray())
+        self.restoreState(self.settings.value("windowState").toByteArray())
 
     def closeEvent(self, event):
+        self.specs.showState.emit(False)
         self.sysNotify.emit('notice', "PLM hide in system tray", 'info', 500)
+        self.settings.setValue('geometry', self.saveGeometry())
+        self.settings.setValue("windowState", self.saveState())
         self.hide()
         event.ignore()
+
+class SysTrayIconMenu(QMenu):
+
+    key = 'sysTray'
+    showLayout = pyqtSignal(str, str)
+    executing = pyqtSignal(str)
+
+    def __init__(self, parent=None):
+        super(SysTrayIconMenu, self).__init__(parent)
+        self.info = APPINFO
+        self.addSeparator()
+        for k in CONFIG_SYSTRAY:
+            if k == 'Screenshot':
+                self.addAction(Action({'icon':k, 'txt': k, 'trg': partial(self.showLayout.emit, APPINFO[k][2], 'show')}, self))
+            elif k == 'Snipping Tool':
+                self.addAction(Action({'icon': k, 'txt': k, 'trg': partial(self.executing.emit, APPINFO[k][2])}, self))
+
+        self.addSeparator()
+
+        self.addAction(Action({'icon':'Maximize','txt':'Maximize','trg':partial(self.showLayout.emit, 'mainUI', 'showMax')}, self))
+        self.addAction(Action({'icon':'Minimize','txt':"Minimize",'trg':partial(self.showLayout.emit, 'mainUI', 'showMin')}, self))
+        self.addAction(Action({'icon':'Restore','txt':"Restore", 'trg':partial(self.showLayout.emit, 'mainUI', 'showNor')}, self))
+
+        self.addSeparator()
+        self.addAction(Action({'icon':'Close','txt':"Quit", 'trg':partial(self.showLayout.emit, 'app', 'quit')}, self))
 
 # -------------------------------------------------------------------------------------------------------------
 def main():

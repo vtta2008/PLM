@@ -28,9 +28,9 @@ from core.Specs import Specs
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """
 
-class Configuration(QWidget):
+class Preferences(QWidget):
 
-    key = 'config'
+    key = 'preferences'
     checkboxTDSig = pyqtSignal(bool)
     checkboxCompSig = pyqtSignal(bool)
     checkboxArtSig = pyqtSignal(bool)
@@ -38,7 +38,7 @@ class Configuration(QWidget):
     _msg_user_not_set = "Not configured yet, will be set with the first message received"
 
     def __init__(self, parent=None):
-        super(Configuration, self).__init__(parent)
+        super(Preferences, self).__init__(parent)
         self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         self.resize(200, 100)
@@ -96,7 +96,7 @@ class Configuration(QWidget):
 
 def main():
     app = QApplication(sys.argv)
-    pref_layout = Configuration()
+    pref_layout = Preferences()
     pref_layout.show()
     app.exec_()
 

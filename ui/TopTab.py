@@ -28,8 +28,8 @@ class TopTab(QWidget):
     key = 'topTab'
     executing = pyqtSignal(str)
     showLayout = pyqtSignal(str, str)
-    regLayout = pyqtSignal(str, object)
-    updateAvatar = pyqtSignal(str)
+    regLayout = pyqtSignal(object)
+    updateAvatar = pyqtSignal(bool)
 
 
     def __init__(self, parent=None):
@@ -48,32 +48,16 @@ class TopTab(QWidget):
         self.tab4 = TopTab4.TopTab4()
         self.tab5 = TopTab5.TopTab5()
 
-        self.tab1.showLayout.connect(self.showLayout)
-        self.tab2.showLayout.connect(self.showLayout)
-        self.tab3.showLayout.connect(self.showLayout)
-        self.tab4.showLayout.connect(self.showLayout)
-        self.tab5.showLayout.connect(self.showLayout)
+        self.tabLst = [self.tab1, self.tab2, self.tab3, self.tab4, self.tab5]
+        self.tabNames = ['Tool', 'Prj', 'User', 'Testlayout', 'Cmd']
 
-        self.tab1.executing.connect(self.executing)
-        self.tab2.executing.connect(self.executing)
-        self.tab3.executing.connect(self.executing)
-        self.tab4.executing.connect(self.executing)
-        self.tab5.executing.connect(self.executing)
-
-        self.tab1.regLayout.connect(self.regLayout)
-        self.tab2.regLayout.connect(self.regLayout)
-        self.tab3.regLayout.connect(self.regLayout)
-        self.tab4.regLayout.connect(self.regLayout)
-        self.tab5.regLayout.connect(self.regLayout)
+        for layout in self.tabLst:
+            layout.showLayout.connect(self.showLayout)
+            layout.executing.connect(self.executing)
+            layout.addLayout.connect(self.regLayout)
+            self.tabs.addTab(layout, self.tabNames[self.tabLst.index(layout)])
 
         self.updateAvatar.connect(self.tab3.update_avatar)
-
-        self.tabs.addTab(self.tab1, 'Tool')
-        self.tabs.addTab(self.tab2, 'Prj')
-        self.tabs.addTab(self.tab3, 'User')
-        self.tabs.addTab(self.tab4, 'Library')
-        self.tabs.addTab(self.tab5, 'Cmd')
-
         self.layout.addWidget(self.tabs)
         self.applySetting()
 

@@ -31,7 +31,7 @@ from core.Specs import Specs
 """ TopTab2 """
 
 class TopTab2(QWidget):
-    regLayout = pyqtSignal(str, object)
+    addLayout = pyqtSignal(object)
     executing = pyqtSignal(str)
     showLayout = pyqtSignal(str, str)
 
@@ -43,6 +43,7 @@ class TopTab2(QWidget):
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
+        self.addLayout.emit(self)
 
     def buildUI(self):
 

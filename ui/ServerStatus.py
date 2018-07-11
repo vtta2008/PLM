@@ -20,7 +20,7 @@ from PyQt5.QtWidgets import QGridLayout, QLabel
 from PyQt5.QtNetwork import QHostAddress
 
 # Plt
-from appData import right, __serverUrl__
+from appData import left, __serverUrl__
 from appData.ServerCfg import ServerCfg
 from ui.uirc import Label
 from utilities.utils import getAppIcon
@@ -46,22 +46,21 @@ class ServerStatus(QGridLayout):
 
         self.connected = getAppIcon(16, 'Connected')
         self.disconnected = getAppIcon(16, 'Disconnected')
+
         self.networkStatus = QLabel()
+        self.networkStatus.setMaximumWidth(20)
         self.networkStatus.setPixmap(QPixmap(self.connected))
 
         self.addWidget(self.networkStatus, 0, 0, 1, 1)
 
         self.onlineStage.connect(self.connection_status)
         self.onlineStage.emit(self.serverOpen)
-        if not self.serverOpen:
-            self.text = "Failed to connect"
-        else:
-            self.text = "IP: %s\nport: %d\n\n" % (self.server.serverAddress().toString(), self.server.serverPort())
+        self.txt = Label("Connecting", left)
         self.buildUI()
 
     def buildUI(self):
 
-        self.addWidget(Label(self.text, right), 0, 1, 1, 1)
+        self.addWidget(self.txt, 0, 1, 1, 1)
         self.applySetting()
 
     def applySetting(self):
@@ -70,10 +69,13 @@ class ServerStatus(QGridLayout):
     def connection_status(self, param):
         if param:
             self.networkStatus.setPixmap(QPixmap(self.connected))
+            self.txt.setText("Connected")
         else:
             self.networkStatus.setPixmap(QPixmap(self.disconnected))
+            self.txt.setText("Disconnected")
 
         self.networkStatus.update()
+        self.txt.update()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 25/05/2018

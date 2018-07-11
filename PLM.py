@@ -52,25 +52,23 @@ class PLM(QApplication):
 
         self.specs = Specs(self.key, self)
         self.appInfo = APPINFO
-
+        self.core = AppCores(self)                                                          # Core metadata
+        self.layouts = dict()
         self.logger = SetLogger(self)
         self.threadpool = QThreadPool()                                                     # Thread pool
         self.numOfThread = self.threadpool.maxThreadCount()                                 # Maximum threads available
-        self.regUI = dict()
-        self.regUI['app'] = self
-        self.core = AppCores(self)                                                          # Core metadata
-        self.webBrowser = PLMBrowser()                                                         # Webbrowser
-
         self.setWindowIcon(AppIcon("Logo"))                                                 # Set up task bar icon
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)             # Change taskbar icon
 
-        self.login, self.signup, self.mainUI, self.sysTray = self.core.import_uiSet1()
-        for layout in [self.login, self.signup, self.mainUI, self.sysTray]:
-            self.regUI[layout.key] = layout
-        self.setupConn1()
-        self.settings = self.setting_mode(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)    # Setting
+        self.core.addLayout.connect(self.addLayout)
+        self.settings = self.core.settings                                                  # Setting
+        self.settingUI = self.core.settingUI
         self.db = QuerryDB()                                                                # Query local database
 
+        self.login, self.signup, self.mainUI, self.sysTray = self.core.import_uiSet1()
+        self.mainUI.settings = self.settings
+        self.webBrowser = self.core.webBrowser
+        self.setupConn1()
         try:
             self.username, token, cookie, remember = self.db.query_table('curUser')
         except ValueError:
@@ -81,21 +79,16 @@ class PLM(QApplication):
             else:
                 r = requests.get(__serverCheck__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
                 if r.status_code == 200:
-                    if not self.sysTray.isSystemTrayAvailable():
+                    if not self.core.sysTray.isSystemTrayAvailable():
                         self.logger.critical(SYSTRAY_UNAVAI)
                         sys.exit(1)
                     self.showLayout('mainUI', "show")
                 else:
                     self.showLayout('login', "show")
 
-        self.about, self.calculator, self.calendar, self.configuration, self.credit, self.engDict,\
-        self.imageViewer, self.newProj, self.noteReminder, self.findFile, self.screenShot, self.textEditor, \
-        self.userSetting = self.core.import_uiSet2()
-
-        for layout in [self.about, self.calculator, self.calendar, self.configuration, self.credit, self.engDict,
-                       self.imageViewer, self.newProj, self.noteReminder, self.findFile, self.screenShot,
-                       self.textEditor, self.userSetting]:
-            self.regUI[layout.key] = layout
+        [self.about, self.calculator, self.calendar, self.preferences, self.configuration, self.credit,
+        self.engDict, self.imageViewer, self.newProj, self.noteReminder, self.findFile, self.screenShot,
+        self.textEditor, self.userSetting] = self.core.import_uiSet2()
 
         self.set_styleSheet('darkstyle')
         self.setQuitOnLastWindowClosed(False)
@@ -107,7 +100,7 @@ class PLM(QApplication):
 
         self.mainUI.showLayout.connect(self.showLayout)
         self.mainUI.executing.connect(self.executing)
-        self.mainUI.regLayout.connect(self.addRegLayout)
+        self.mainUI.addLayout.connect(self.addLayout)
         self.mainUI.sysNotify.connect(self.sysTray.sysNotify)
         self.mainUI.setSetting.connect(self.setSetting)
         self.mainUI.openBrowser.connect(self.openBrowser)
@@ -121,14 +114,14 @@ class PLM(QApplication):
 
     @property
     def registerUI(self):
-        return self.regUI
+        return self.layouts
 
     @pyqtSlot(str, str)
     def showLayout(self, name, mode):
         if name == 'app':
             layout = QApplication
         else:
-            layout = self.regUI[name]
+            layout = self.layouts[name]
             self.logger.debug("define layout: {0}".format(layout))
 
         if mode == "hide":
@@ -144,7 +137,7 @@ class PLM(QApplication):
         elif mode == 'quit' or mode == 'exit':
             layout.quit()
 
-        self.settings.setValue(layout.objectName(), mode)
+        self.setSetting(layout.objectName(), mode)
 
     @pyqtSlot(str)
     def openBrowser(self, url):
@@ -176,14 +169,14 @@ class PLM(QApplication):
             self.logger.trace('execute: {0}'.format(cmd))
             subprocess.Popen(cmd)
 
-    @pyqtSlot(str, object)
-    def addRegLayout(self, name, layout):
-
-        if not name in self.regUI.keys():
-            self.regUI[name] = layout
-            self.logger.trace("Registered layout '{0}': {1}".format(name, layout))
+    @pyqtSlot(object)
+    def addLayout(self, layout):
+        key = layout.key
+        if not key in self.layouts.keys():
+            self.layouts[key] = layout
+            self.logger.debug("Registered layout '{0}': {1}".format(key, layout))
         else:
-            self.logger.trace("Already registered: {0}".format(name))
+            self.logger.debug("Already registered: {0}".format(key))
 
     def set_styleSheet(self, style):
         from core.StyleSheets import StyleSheets

@@ -14,8 +14,9 @@ Description:
 import os, sys, json
 
 # PyQt5
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
 from PyQt5.QtWidgets import QWidget, QHBoxLayout, QApplication
+from PyQt5.QtQml import QQmlApplicationEngine
 
 # Plm
 from appData import SPECS, REG_DIR
@@ -25,17 +26,37 @@ from ui.lib.LayoutPreset import Button
 # -------------------------------------------------------------------------------------------------------------
 """ Attribute class """
 
-class Specs(QObject):
+class Manager(QObject):
+    stationsChanged = pyqtSignal()
+    def __init__(self):
+        QObject.__init__(self)
+        self.m_stations =[]
+
+    @pyqtProperty('QVariantList', notify=stationsChanged)
+    def stations(self):
+        return self.m_stations
+
+    @stations.setter
+    def set_stations(self, val):
+        if self.m_stations == val:
+            return
+        self.m_stations = val[:]
+        self.stationsChanged.emit()
+
+    def list_fill(self, my_list):
+        self.stations = my_list
+
+
+class Specs(Manager):
 
     changeSetting = pyqtSignal(str, str, str)
     imported = pyqtSignal(bool)
-    showed = pyqtSignal(bool)
-    closed = pyqtSignal(bool)
+    showState = pyqtSignal(bool)
+    closeState = pyqtSignal(bool)
     regInfo = {}
 
     def __init__(self, name=None, parent=None):
-        super(Specs, self).__init__(parent)
-
+        super(Specs, self).__init__()
         self._parent = parent
         self._data = SPECS[name]
 
@@ -57,8 +78,8 @@ class Specs(QObject):
         self._register = os.path.exists(self.regFile)
 
         self.imported.connect(self.set_imported)
-        self.showed.connect(self.set_showed)
-        self.closed.connect(self.set_close)
+        self.showState.connect(self.set_showed)
+        self.closeState.connect(self.set_closed)
 
         self.initialize()
 
@@ -79,6 +100,23 @@ class Specs(QObject):
 
         self.register()
         self.imported.emit(True)
+
+        # engine = QQmlApplicationEngine()
+        # manager = Manager()
+        # ctx = engine.rootContext()
+        # ctx.setContextProperty("Manager", manager)
+        # engine.load('main.qml')
+        # if not engine.rootObjects():
+        #     sys.exit(-1)
+        # manager.list_fill()
+
+        # if self._parent.isWidgetType():
+        #     if self._parent.hide():
+        #         self._parent.saveState(QEvent)
+        #         self.set_showed(True)
+        #     elif self._parent.closeEvent(QEvent):
+        #         self._parent.loadState()
+        #         self.set_closed(True)
 
     def register(self):
 
@@ -157,20 +195,21 @@ class Specs(QObject):
     @pyqtSlot(bool)
     def set_imported(self, param):
         self._import = param
-        # print('{0} has been imported'.format(self._parent.name))
+        print('--- IMPORT: {0} ---'.format(self._parent.name))
 
     @pyqtSlot(bool)
     def set_showed(self, param):
         self._show = param
         if param:
-            print('{0} has showed'.format(self._parent.name))
+            print('--- SHOWED: {0} ---'.format(self._parent.name))
         else:
-            print('{0} has hided'.format(self._parent.name))
+            print('--- HIDED: {0} ---'.format(self._parent.name))
 
     @pyqtSlot(bool)
-    def set_close(self, param):
+    def set_closed(self, param):
         if param:
             print('{0} has closed'.format(self._parent.name))
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 8/07/2018 - 2:19 PM

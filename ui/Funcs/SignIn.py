@@ -16,7 +16,6 @@ Description:
 # Python
 import sys
 import requests
-from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
@@ -87,7 +86,7 @@ class SignIn(QWidget):
         print(key, value)
 
     def forgetPwClicked(self):
-        from ui import ForgotPassword
+        from ui.Funcs import ForgotPassword
         forgetPW = ForgotPassword.ForgotPassword()
         forgetPW.show()
         forgetPW.exec_()
@@ -129,11 +128,11 @@ class SignIn(QWidget):
             return
 
     def showEvent(self, event):
-        self.specs.showed.emit(True)
+        self.specs.showState.emit(True)
         self.showLayout.emit('mainUI', 'hide')
 
     def hideEvent(self, event):
-        self.specs.showed.emit(False)
+        self.specs.showState.emit(False)
 
     def closeEvent(self, event):
         self.hide()

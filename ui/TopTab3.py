@@ -25,9 +25,9 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGraphicsView, 
 
 from core.Specs import Specs
 from ui import uirc as rc
-from ui import UserSetting
+from ui.Settings import UserSetting
 from utilities import localSQL as usql
-from utilities import utils as func
+from utilities.utils import getAvatar
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab3 """
@@ -37,7 +37,7 @@ class TopTab3(QWidget):
     key = 'topTab3'
     executing = pyqtSignal(str)
     showLayout = pyqtSignal(str, str)
-    regLayout = pyqtSignal(str, object)
+    addLayout = pyqtSignal(object)
 
     def __init__(self, parent=None):
         super(TopTab3, self).__init__(parent)
@@ -45,6 +45,7 @@ class TopTab3(QWidget):
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
+        self.addLayout.emit(self)
 
     def buildUI(self):
         self.query = usql.QuerryDB()
@@ -53,7 +54,7 @@ class TopTab3(QWidget):
         except IndexError:
             self.username = 'DemoUser'
 
-        self.avatar = QPixmap(func.getAvatar(self.username))
+        self.avatar = QPixmap(getAvatar(self.username))
         self.avatarScene = QGraphicsScene()
         self.avatarScene.addPixmap(self.avatar)
 
@@ -85,7 +86,7 @@ class TopTab3(QWidget):
 
         self.applySetting()
 
-    @pyqtSlot(str)
+    @pyqtSlot(bool)
     def update_avatar(self, param):
         print("receive signal emit to update avatar: {0}".format(param))
         # if param:

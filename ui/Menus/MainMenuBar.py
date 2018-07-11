@@ -12,10 +12,11 @@ Description:
 
 # Python
 import os, sys
+from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, QSettings
-from PyQt5.QtWidgets import QMainWindow, QApplication, QFileDialog, QInputDialog, QLineEdit
+from PyQt5.QtCore import pyqtSlot, pyqtSignal
+from PyQt5.QtWidgets import QMainWindow, QApplication
 
 # Plm
 from appData import APPINFO, __plmWiki__
@@ -28,7 +29,12 @@ from ui.Settings.SettingUI import SettingUI
 class MainMenuBar(QMainWindow):
 
     key = 'mainMenu'
+    showLayout = pyqtSignal(str, str)
+    executing = pyqtSignal(str)
+    proceduring = pyqtSignal(str)
+    addLayout = pyqtSignal(object)
     setSetting = pyqtSignal(str, str, str)
+    openUrl = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(MainMenuBar, self).__init__(parent)
@@ -43,29 +49,35 @@ class MainMenuBar(QMainWindow):
         self.mainMenu = self.menuBar()
 
         self.appMenu = self.mainMenu.addMenu("&App")
-
         self.appMenu.addMenu("New Organisation")
         self.appMenu.addMenu("New group/team")
         self.appMenu.addSeparator()
-        self.appMenu.addMenu("New freelancer project")
-        self.appMenu.addMenu("New studio project")
+        self.appMenu.addMenu("New project")
 
         self.settingMenu = self.mainMenu.addMenu('Settings')
         self.settingMenu.addAction(Action({'txt':"&PLM Settings", 'trg': self.openSetting}, self))
 
         self.config = self.mainMenu.addMenu("&Config")
-        self.config.addMenu("Configurations")
-        self.config.addMenu("Preference")
+        self.config.addAction(Action({'icon': 'Configurations', 'txt': 'Config', 'trg': partial(self.showLayout.emit, 'config', 'show')}, self))
+        self.config.addAction(Action({'icon': 'Preferences', 'txt': 'Preferences', 'trg': partial(self.showLayout.emit, 'preferences', 'show')}, self))
 
         self.mainMenu.addMenu("&Pipeline")
 
         self.mainMenu.addMenu("&Lib")
 
-        self.mainMenu.addMenu("&Docs")
+        self.docs = self.mainMenu.addMenu("&Docs")
+        self.docs.addMenu('About')
+        self.docs.addMenu('Code of conduct')
+        self.docs.addMenu('Contributing')
+        self.docs.addMenu('Copyright')
+        self.docs.addMenu('Credit')
+        self.docs.addMenu('Link')
+        self.docs.addMenu('Reference')
+        self.docs.addMenu('Version')
 
         self.feedback = self.mainMenu.addMenu("&Feedback")
 
-        self.feedback.addMenu("Use feedback tool")
+        self.feedback.addMenu("User feedbac ticket")
         self.feedback.addMenu("Contact us")
 
     @pyqtSlot(bool)
@@ -73,9 +85,13 @@ class MainMenuBar(QMainWindow):
         self.setVisible(param)
 
     def openSetting(self):
-        from ui.Settings.AppSetting import AppSetting
-        self.appSetting = AppSetting()
+        self.appSetting = SettingUI()
         self.appSetting.show()
+
+    def openConfig(self):
+        from ui.Menus.config.Configuration import ServerConfig
+        self.config = ServerConfig()
+        self.config.show()
 
     def resizeEvent(self, event):
         sizeW, sizeH = get_layout_dimention(self)
