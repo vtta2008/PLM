@@ -55,7 +55,7 @@ class MainMenuBar(QMainWindow):
         self.appMenu.addMenu("New project")
 
         self.settingMenu = self.mainMenu.addMenu('Settings')
-        self.settingMenu.addAction(Action({'txt':"&PLM Settings", 'trg': self.openSetting}, self))
+        self.settingMenu.addAction(Action({'txt':"&PLM Settings", 'trg': partial(self.showLayout.emit, 'settingUI', 'show')}, self))
 
         self.config = self.mainMenu.addMenu("&Config")
         self.config.addAction(Action({'icon': 'Configurations', 'txt': 'Config', 'trg': partial(self.showLayout.emit, 'config', 'show')}, self))
@@ -82,21 +82,8 @@ class MainMenuBar(QMainWindow):
 
     @pyqtSlot(bool)
     def show_layout(self, param):
+        self.specs.showState.emit(True)
         self.setVisible(param)
-
-    def openSetting(self):
-        self.appSetting = SettingUI()
-        self.appSetting.show()
-
-    def openConfig(self):
-        from ui.Menus.config.Configuration import ServerConfig
-        self.config = ServerConfig()
-        self.config.show()
-
-    def resizeEvent(self, event):
-        sizeW, sizeH = get_layout_dimention(self)
-        self.setSetting.emit('width', str(sizeW), self.objectName())
-        self.setSetting.emit('height', str(sizeH), self.objectName())
 
 def main():
     app = QApplication(sys.argv)

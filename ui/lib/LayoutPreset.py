@@ -95,7 +95,7 @@ class LineEdit(QLineEdit):
 
     def precedural(self):
         for key, value in self.preset.items():
-            if key == 'echo':
+            if key == 'mode':
                 self.setEchoMode(PRS[value])
 
     def sizeHint(self):
@@ -178,7 +178,6 @@ class Action(QAction):
                 self.setChecked(value)
             elif key == 'enabled':
                 self.setDisabled(value)
-
 
 class ComboBox(QComboBox):
 

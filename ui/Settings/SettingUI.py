@@ -6,13 +6,12 @@ from PyQt5.QtGui import QColor, QIcon, QRegExpValidator, QValidator
 from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar, QWidget,
                              QFileDialog, QGridLayout, QGroupBox, QHeaderView, QInputDialog, QItemDelegate, QLineEdit,
                              QStyle, QStyleOptionViewItem, QTableWidget, QTableWidgetItem, QTreeWidget,
-                             QTreeWidgetItem, QVBoxLayout)
+                             QTreeWidgetItem)
 
 from appData import SETTING_FILEPTH, ST_FORMAT, __organization__, __appname__
 from core.Specs import Specs
 from core.Loggers import SetLogger
 from core.Errors import KeySettingError
-# from core.Settings import Settings
 from ui.lib.LayoutPreset import ComboBox, Label
 
 class SettingUI(QWidget):
@@ -147,8 +146,16 @@ class SettingUI(QWidget):
     def setting_mode(self, filename, fm, parent):
         return Settings(filename, fm, parent)
 
+    def showEvent(self, event):
+        self.specs.showState.emit(True)
+        self.restoreGeometry(self.settings.value("geometry").toByteArray())
+        self.restoreState(self.settings.value("windowState").toByteArray())
+
     def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
+        self.specs.showState.emit(False)
+        self.settings.setValue('geometry', self.saveGeometry())
+        self.settings.setValue("windowState", self.saveState())
+        self.hide()
         event.ignore()
 
 class RegInput(QWidget):
@@ -468,7 +475,6 @@ class Settings(QSettings):
 
     def __init__(self, filename, fm=QSettings.IniFormat, parent=None):
         super(Settings, self).__init__(filename, fm, parent)
-
         self.logger = SetLogger(self)
         self.setObjectName("Settings")
 

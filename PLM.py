@@ -24,11 +24,13 @@ except KeyError:
 import sys, requests, ctypes, subprocess
 
 # PyQt5
-from PyQt5.QtCore import QThreadPool, pyqtSlot, pyqtSignal
+from ui.Web.PLMBrowser import PLMBrowser
+from PyQt5.QtCore import QThreadPool, pyqtSlot, pyqtSignal, QCoreApplication
 from PyQt5.QtWidgets import QApplication
 
 # Plm
-from appData import (APPINFO, __serverCheck__, PLMAPPID, SYSTRAY_UNAVAI, SETTING_FILEPTH, ST_FORMAT)
+from appData import (APPINFO, __serverCheck__, PLMAPPID, SYSTRAY_UNAVAI, SETTING_FILEPTH, ST_FORMAT, __appname__,
+                     __version__, __organization__, __website__)
 
 from core.Settings import Settings
 from core.Cores import AppCores
@@ -36,7 +38,6 @@ from core.Loggers import SetLogger
 from core.Specs import Specs
 from utilities.localSQL import QuerryDB
 from utilities.utils import str2bool
-from ui.Web.PLMBrowser import PLMBrowser
 from ui.uirc import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
@@ -50,24 +51,38 @@ class PLM(QApplication):
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
 
-        self.specs = Specs(self.key, self)
-        self.appInfo = APPINFO
-        self.core = AppCores(self)                                                          # Core metadata
+        self.organization = __organization__
+        self.appName = __appname__
+        self.version = __version__
+        self.website = __website__
+        self.core = QApplication
+        self.core.setOrganizationName(self.organization)
+        self.core.setApplicationName(self.appName)
+        self.core.setOrganizationDomain(self.website)
+        self.core.setApplicationVersion(self.version)
         self.layouts = dict()
+
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.appInfo = APPINFO
+        self.specs = Specs(self.key, self)
+        self.core = AppCores(self)                                                          # Core metadata
+
         self.logger = SetLogger(self)
         self.threadpool = QThreadPool()                                                     # Thread pool
         self.numOfThread = self.threadpool.maxThreadCount()                                 # Maximum threads available
         self.setWindowIcon(AppIcon("Logo"))                                                 # Set up task bar icon
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)             # Change taskbar icon
 
+        from ui.Settings.SettingUI import SettingUI
+        self.settingUI = SettingUI()
         self.core.addLayout.connect(self.addLayout)
-        self.settings = self.core.settings                                                  # Setting
-        self.settingUI = self.core.settingUI
+        self.addLayout(self.settingUI)
         self.db = QuerryDB()                                                                # Query local database
-
+        self.webBrowser = PLMBrowser()  # Webbrowser
+        self.addLayout(self.webBrowser)
         self.login, self.signup, self.mainUI, self.sysTray = self.core.import_uiSet1()
         self.mainUI.settings = self.settings
-        self.webBrowser = self.core.webBrowser
+
         self.setupConn1()
         try:
             self.username, token, cookie, remember = self.db.query_table('curUser')
@@ -85,6 +100,9 @@ class PLM(QApplication):
                     self.showLayout('mainUI', "show")
                 else:
                     self.showLayout('login', "show")
+
+        self.sysTray.showLayout.connect(self.showLayout)
+        self.sysTray.executing.connect(self.executing)
 
         [self.about, self.calculator, self.calendar, self.preferences, self.configuration, self.credit,
         self.engDict, self.imageViewer, self.newProj, self.noteReminder, self.findFile, self.screenShot,
@@ -106,9 +124,12 @@ class PLM(QApplication):
         self.mainUI.openBrowser.connect(self.openBrowser)
         self.returnValue.connect(self.mainUI.returnValue)
 
-        self.sysTray.showLayout.connect(self.showLayout)
-        self.sysTray.executing.connect(self.executing)
         self.webBrowser.showLayout.connect(self.showLayout)
+
+        self.webBrowser.showLayout.connect(self.showLayout)
+        self.settingUI.showLayout.connect(self.showLayout)
+
+        print("setup connected")
 
         self.returnValue.connect(self.mainUI.returnValue)
 
@@ -137,7 +158,7 @@ class PLM(QApplication):
         elif mode == 'quit' or mode == 'exit':
             layout.quit()
 
-        self.setSetting(layout.objectName(), mode)
+        self.setSetting(layout.key, mode)
 
     @pyqtSlot(str)
     def openBrowser(self, url):
@@ -158,7 +179,7 @@ class PLM(QApplication):
     @pyqtSlot(str)
     def executing(self, cmd):
         self.logger.trace('signal comes: {0}'.format(cmd))
-        if cmd in self.regUI.keys():
+        if cmd in self.layouts.keys():
             self.logger.trace('run showlayout: {0}'.format(cmd))
             self.showLayout(cmd, 'show')
         elif os.path.isdir(cmd):
@@ -180,12 +201,8 @@ class PLM(QApplication):
 
     def set_styleSheet(self, style):
         from core.StyleSheets import StyleSheets
-        stylesheet = dict(darkstyle=StyleSheets('darkstyle').changeStylesheet,
-                          stylesheet=StyleSheets('stylesheet').changeStylesheet, )
+        stylesheet = dict(darkstyle=StyleSheets('darkstyle').changeStylesheet, stylesheet=StyleSheets('stylesheet').changeStylesheet, )
         self.setStyleSheet(stylesheet[style])
-
-    def setting_mode(self, filename, fm, parent):
-        return Settings(filename, fm, parent)
 
 if __name__ == '__main__':
     PLM()

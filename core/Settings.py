@@ -8,17 +8,14 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" import """
 
-# Python
-import os, platform
+import os
 
-# PyQt5
-from PyQt5.QtCore import QSettings, pyqtSlot, pyqtSignal
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, QSettings
 
-# Plm
-from core.Errors import KeySettingError
+from appData import SETTING_FILEPTH
 from core.Loggers import SetLogger
+from core.Errors import KeySettingError
 
 class Settings(QSettings):
 
@@ -27,7 +24,6 @@ class Settings(QSettings):
 
     def __init__(self, filename, fm=QSettings.IniFormat, parent=None):
         super(Settings, self).__init__(filename, fm, parent)
-
         self.logger = SetLogger(self)
         self.setObjectName("Settings")
 
@@ -103,5 +99,5 @@ class Settings(QSettings):
             return QSettings.UserScope
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 19/06/2018 - 11:52 AM
+# Created by panda on 12/07/2018 - 10:45 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

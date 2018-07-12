@@ -13,7 +13,7 @@ Description:
 # Python
 
 # PyQt5
-from PyQt5.QtCore import QObject, QMetaObject
+from PyQt5.QtCore import QObject
 
 
 # -------------------------------------------------------------------------------------------------------------

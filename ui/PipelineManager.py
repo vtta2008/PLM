@@ -17,9 +17,9 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QMenu)
 
 # Plt
-from appData import __homepage__, dockB, APPINFO, CONFIG_SYSTRAY
+from appData import __homepage__, dockB, APPINFO, CONFIG_SYSTRAY, ST_FORMAT, SETTING_FILEPTH
 from core.Loggers import SetLogger
-
+from core.Settings import Settings
 from ui.uirc import AutoSectionLayoutGrp, AutoSectionQMainGrp,  AppIcon
 from ui.lib.LayoutPreset import Action
 from ui import ToolBar, TopTab, BotTab, ServerStatus, Footer, StatusBar
@@ -51,7 +51,7 @@ class PipelineManager(QMainWindow):
         self.url = __homepage__
 
         self.setWindowIcon(AppIcon("Logo"))
-        self.settings = None
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.mainWidget = QWidget()
         self.layout = QGridLayout()
         self.mainWidget.setLayout(self.layout)
@@ -143,14 +143,15 @@ class PipelineManager(QMainWindow):
         self.specs.showState.emit(True)
         self.showLayout.emit('login', 'hide')
         self.showLayout.emit('sysTray', 'show')
-        self.restoreGeometry(self.settings.value("geometry").toByteArray())
-        self.restoreState(self.settings.value("windowState").toByteArray())
+        self.restoreGeometry(self.settings.value(self.key + "/geo").toByteArray())
+        self.restoreState(self.settings.value(self.key + "/state").toByteArray())
 
     def closeEvent(self, event):
         self.specs.showState.emit(False)
         self.sysNotify.emit('notice', "PLM hide in system tray", 'info', 500)
-        self.settings.setValue('geometry', self.saveGeometry())
-        self.settings.setValue("windowState", self.saveState())
+        self.settings.setValue(self.key + "/geo", self.saveGeometry())
+        self.settings.setValue(self.key + "/state", self.saveState())
+
         self.hide()
         event.ignore()
 

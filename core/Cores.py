@@ -31,34 +31,16 @@ class AppCores(QObject):
         super(AppCores, self).__init__(parent)
         self.logger = SetLogger(self)
         self.specs = Specs(self.key, self)
-
-        self.appName      = __appname__
-        self.version      = __version__
-        self.organization = __organization__
-        self.website      = __website__
         self._parent      = parent
-
-        self.pCore = QCoreApplication
-        self.initMetadata()
 
         self.layouts = dict()
         self.layouts['app'] = self
-        from ui.Web.PLMBrowser import PLMBrowser
-        self.webBrowser = PLMBrowser()  # Webbrowser
-        self.register_layout(self.webBrowser)
-        self.addLayout.emit(self.webBrowser)
+
 
         from ui.Settings.SettingUI import SettingUI
         self.settingUI = SettingUI()
         self.settings = self.settingUI.settings
         self.register_layout(self.settingUI)
-
-    def initMetadata(self):
-        self.pCore.setApplicationName(self.appName)
-        self.pCore.setApplicationVersion(self.version)
-        self.pCore.setOrganizationName(self.organization)
-        self.pCore.setOrganizationDomain(self.website)
-        self.logger.info("Finish setup application metadata")
 
     def import_uiSet1(self):
 
@@ -109,6 +91,10 @@ class AppCores(QObject):
 
         return self.set2Layout
 
+    @pyqtSlot(str)
+    def redirectConnection(self, param):
+        print(param)
+
     @property
     def objects(self):
         return self.layouts
@@ -119,7 +105,7 @@ class AppCores(QObject):
         if not key in self.layouts.keys():
             self.layouts[key] = layout
             self.addLayout.emit(layout)
-            # self.logger.debug("Registered layout '{0}': {1}".format(key, layout))
+            self.logger.debug("did emit signal to regis layout '{0}': {1}".format(key, layout))
 
         # self.logger.debug("Already registered: {0}".format(key))
 

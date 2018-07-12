@@ -36,6 +36,7 @@ class SignIn(QWidget):
 
     key = 'login'
     showLayout = pyqtSignal(str, str)
+    setSetting = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
 
@@ -120,7 +121,7 @@ class SignIn(QWidget):
             usql.RemoveDB("curUser")
             usql.UpdateDB("curUser", [username, token, cookie, str2bool(check)])
             print('show main ui')
-            self.showLayout.emit('MainUI', 'show')
+            self.showLayout.emit('mainUI', 'show')
             self.hide()
         else:
             usql.RemoveDB("curUser")
@@ -130,12 +131,13 @@ class SignIn(QWidget):
     def showEvent(self, event):
         self.specs.showState.emit(True)
         self.showLayout.emit('mainUI', 'hide')
+        self.showLayout.emit('sysTray', 'hide')
 
     def hideEvent(self, event):
         self.specs.showState.emit(False)
 
     def closeEvent(self, event):
-        self.hide()
+        self.setSetting.emit('app', 'quit')
 
 def main():
     login = QApplication(sys.argv)
