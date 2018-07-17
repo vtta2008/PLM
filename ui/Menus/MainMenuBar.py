@@ -73,7 +73,7 @@ class MainMenuBar(QMainWindow):
 
         self.helpMenu.addSeparator()
 
-        self.helpMenu.addAction(Action({'txt': 'Licence', 'trg': partial(self.showLayout.emit, 'licence', 'show')}, self))
+        self.helpMenu.addAction(Action({'txt': 'Licence', 'trg': partial(self.showLayout.emit, 'licenceMIT', 'show')}, self))
         self.helpMenu.addAction(Action({'txt': 'Version', 'trg': partial(self.showLayout.emit, 'version', 'show')}, self))
 
 

@@ -30,7 +30,8 @@ class SocketThread(QThread):
 
     def __init__(self, socketDescriptor, text, parent):
         super(SocketThread, self).__init__(parent)
-        self.logger = SetLogger()
+
+        self.logger = SetLogger(self)
         self.socketDescriptor = socketDescriptor
         self.text = text
 

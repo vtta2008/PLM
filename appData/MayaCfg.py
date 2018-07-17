@@ -11,24 +11,13 @@ Description:
 """ Import """
 
 # Python
-import os, logging
+import os
 import shutil
 
 # Plm
-from appData.scr._format import LOG_FORMAT, DT_FORMAT
-from appData.scr._path import LOG_PTH
 from appData.scr._meta import __envKey__
 from appData.scr._keys import autodeskVer
-
-# -------------------------------------------------------------------------------------------------------------
-""" Configure the current level to make it disable certain log """
-
-from sys import argv
-from appData.Loggers import SetLogger
-logger = SetLogger()
-
-# -------------------------------------------------------------------------------------------------------------
-""" Variables """
+from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
 """ MayaCfg """
@@ -38,7 +27,7 @@ class MayaCfg(object):
 
     def __init__(self):
         super(MayaCfg, self).__init__()
-
+        self.logger = SetLogger(self)
         tk = os.path.join(os.getenv(__envKey__), 'tankers', 'pMaya')
 
         tanker = dict(modules=['anim', 'lib', 'modeling', 'rendering', 'simulating', 'surfacing', ], QtPlugins=[], )
