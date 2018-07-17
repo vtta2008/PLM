@@ -1,11 +1,31 @@
-from PyQt5.QtCore import QDate, QSize, Qt
+# -*- coding: utf-8 -*-
+"""
+
+Script Name: Configurations.py
+Author: Do Trinh/Jimmy - 3D artist.
+
+Description:
+
+"""
+# -------------------------------------------------------------------------------------------------------------
+""" Import """
+
+# Python
+
+
+# PyQt5
+from PyQt5.QtCore import QDate, QSize, Qt, pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit, QGridLayout, QGroupBox,
                              QHBoxLayout, QLabel, QLineEdit, QListView, QListWidget, QListWidgetItem, QPushButton,
                              QSpinBox, QStackedWidget, QVBoxLayout, QWidget)
 
+# PLM
 from core.Specs import Specs
-from ui.Menus.config import configdialog_rc
+from ui.Menus.config import config_rc
+
+# -------------------------------------------------------------------------------------------------------------
+""" Server """
 
 class ServerConfig(QWidget):
 
@@ -36,6 +56,8 @@ class ServerConfig(QWidget):
 
         self.setLayout(mainLayout)
 
+# -------------------------------------------------------------------------------------------------------------
+""" Update """
 
 class UpdatePage(QWidget):
     def __init__(self, parent=None):
@@ -77,6 +99,8 @@ class UpdatePage(QWidget):
 
         self.setLayout(mainLayout)
 
+# -------------------------------------------------------------------------------------------------------------
+""" Query """
 
 class QueryPage(QWidget):
     def __init__(self, parent=None):
@@ -121,10 +145,13 @@ class QueryPage(QWidget):
 
         self.setLayout(mainLayout)
 
+# -------------------------------------------------------------------------------------------------------------
+""" Config window """
 
 class Configuration(QWidget):
 
     key = 'config'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(Configuration, self).__init__(parent)
@@ -193,6 +220,12 @@ class Configuration(QWidget):
 
         self.contentsWidget.currentItemChanged.connect(self.changePage)
 
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 if __name__ == '__main__':
     import sys
@@ -201,3 +234,8 @@ if __name__ == '__main__':
     dialog = Configuration()
     dialog.show()
     app.exec_()
+
+
+# -------------------------------------------------------------------------------------------------------------
+# Created by panda on 18/07/2018 - 5:46 AM
+# © 2017 - 2018 DAMGteam. All rights reserved

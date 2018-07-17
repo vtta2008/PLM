@@ -137,7 +137,9 @@ class SignIn(QWidget):
         self.specs.showState.emit(False)
 
     def closeEvent(self, event):
-        self.setSetting.emit('app', 'quit')
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
+
 
 def main():
     login = QApplication(sys.argv)

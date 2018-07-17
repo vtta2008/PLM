@@ -49,35 +49,36 @@ class MainMenuBar(QMainWindow):
         self.mainMenu = self.menuBar()
 
         self.appMenu = self.mainMenu.addMenu("&App")
-        self.appMenu.addMenu("New Organisation")
-        self.appMenu.addMenu("New group/team")
-        self.appMenu.addSeparator()
-        self.appMenu.addMenu("New project")
+        self.appMenu.addAction(Action({'icon': 'Exit', 'txt': self.appInfo['Exit'][0], 'trg': partial(self.showLayout.emit, 'app', 'exit')}, self))
 
         self.settingMenu = self.mainMenu.addMenu('Settings')
-        self.settingMenu.addAction(Action({'txt':"&PLM Settings", 'trg': partial(self.showLayout.emit, 'settingUI', 'show')}, self))
-
-        self.config = self.mainMenu.addMenu("&Config")
-        self.config.addAction(Action({'icon': 'Configurations', 'txt': 'Config', 'trg': partial(self.showLayout.emit, 'config', 'show')}, self))
-        self.config.addAction(Action({'icon': 'Preferences', 'txt': 'Preferences', 'trg': partial(self.showLayout.emit, 'preferences', 'show')}, self))
+        self.settingMenu.addAction(Action({'icon': 'Settings', 'txt':"&Settings", 'trg': partial(self.showLayout.emit, 'settingUI', 'show')}, self))
+        self.settingMenu.addAction(Action({'icon': 'Configurations', 'txt': '&Config', 'trg': partial(self.showLayout.emit, 'config', 'show')}, self))
+        self.settingMenu.addAction(Action({'icon': 'Preferences', 'txt': '&Preferences', 'trg': partial(self.showLayout.emit, 'preferences', 'show')}, self))
 
         self.mainMenu.addMenu("&Pipeline")
 
         self.mainMenu.addMenu("&Lib")
 
-        self.docs = self.mainMenu.addMenu("&Docs")
-        self.docs.addMenu('About')
-        self.docs.addMenu('Code of conduct')
-        self.docs.addMenu('Contributing')
-        self.docs.addMenu('Copyright')
-        self.docs.addMenu('Credit')
-        self.docs.addMenu('Link')
-        self.docs.addMenu('Reference')
-        self.docs.addMenu('Version')
+        self.helpMenu = self.menuBar().addMenu("&Help")
+        self.helpMenu.addAction(Action({'icon': 'PLM wiki', 'txt': self.appInfo['PLM wiki'][0], 'trg': partial(self.openUrl.emit, 'vnexpress.net')}, self))
+        self.helpMenu.addAction(Action({'icon': 'About', 'txt': self.appInfo['About'][0], 'trg':partial(self.showLayout.emit, 'about', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon': 'Credit', 'txt': self.appInfo['Credit'][0], 'trg':partial(self.showLayout.emit, 'credit', 'show')}, self))
+
+        self.helpMenu.addSeparator()
+
+        self.helpMenu.addAction(Action({'icon': 'CodeConduct', 'txt': self.appInfo['CodeConduct'][0], 'trg': partial(self.showLayout.emit, 'codeConduct', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon': 'Contributing', 'txt': self.appInfo['Contributing'][0], 'trg': partial(self.showLayout.emit, 'contributing', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon': 'Reference', 'txt': self.appInfo['Reference'][0], 'trg': partial(self.showLayout.emit, 'reference', 'show')}, self))
+
+        self.helpMenu.addSeparator()
+
+        self.helpMenu.addAction(Action({'txt': 'Licence', 'trg': partial(self.showLayout.emit, 'licence', 'show')}, self))
+        self.helpMenu.addAction(Action({'txt': 'Version', 'trg': partial(self.showLayout.emit, 'version', 'show')}, self))
+
 
         self.feedback = self.mainMenu.addMenu("&Feedback")
-
-        self.feedback.addMenu("User feedbac ticket")
+        self.feedback.addMenu("Feedback ticket")
         self.feedback.addMenu("Contact us")
 
     @pyqtSlot(bool)

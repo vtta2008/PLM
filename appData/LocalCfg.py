@@ -104,14 +104,18 @@ class LocalCfg(object):
 
         # Custom functions
         self.mainInfo['About'] = ['About PLM', self.iconInfo['About'], 'About']
-        self.mainInfo['Exit'] = ['Exit Pipeline Tool', self.iconInfo['Exit'], 'Exit']
+        self.mainInfo['Exit'] = ['Exit Pipeline Manager', self.iconInfo['Exit'], 'Exit']
         self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'CleanPyc']
-        self.mainInfo['ClearData'] = ['Clean Config data', self.iconInfo['CleanConfig'], 'CleanConfigData']
+        self.mainInfo['CodeConduct'] = ['Code of Conduct', self.iconInfo['CodeConduct'], 'Code of Conduct']
+        self.mainInfo['Contributing'] = ['Contributing', self.iconInfo['Contributing'], 'Contributing']
         self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['Reconfig'], 'Re Config']
+        self.mainInfo['Reference'] = ['Reference', self.iconInfo['Reference'], 'Reference']
         self.mainInfo['Command Prompt'] = ['Open command prompt', self.iconInfo['Command Prompt'], 'open_cmd']
         self.mainInfo['PLM wiki'] = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=__plmWiki__)]
         self.mainInfo['PLMBrowser'] = ['PlmBrowser', self.iconInfo['PLMBrowser'], "PLMBrowser"]
         self.mainInfo['OpenConfig'] = ['Open config folder', self.iconInfo['OpenConfig'], '']
+        self.mainInfo['Version'] = ['Version Info', 'VersionInfo.icon.png', 'Version Info']
+        self.mainInfo['licence'] = ['Licence Info', 'LicenceInfo.icon.png', 'Licence Info']
 
         for key in self.appInfo:
             if 'NukeX' in key:

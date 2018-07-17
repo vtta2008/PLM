@@ -8,7 +8,7 @@ from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar,
                              QStyle, QStyleOptionViewItem, QTableWidget, QTableWidgetItem, QTreeWidget,
                              QTreeWidgetItem)
 
-from appData import SETTING_FILEPTH, ST_FORMAT, __organization__, __appname__
+from appData import SETTING_FILEPTH, __organization__, __appname__
 from core.Specs import Specs
 from core.Loggers import SetLogger
 from core.Errors import KeySettingError
@@ -733,6 +733,13 @@ class VariantDelegate(QItemDelegate):
             return '<Invalid>'
 
         return '<%s>' % value
+
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 
 if __name__ == '__main__':

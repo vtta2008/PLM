@@ -78,6 +78,10 @@ DEPENDANCIES_DIR = os.path.join(CORE_DIR, dependencies)
 QUESTIONS = os.path.join(DOC_DIR, QUESTION)
 ABOUT = os.path.join(DOC_DIR, ABOUT)
 CREDIT = os.path.join(DOC_DIR, CREDIT)
+CODECONDUCT = os.path.join(DOC_DIR, CODECONDUCT)
+CONTRIBUTING = os.path.join(DOC_DIR, CONTRIBUTING)
+REFERENCE = os.path.join(DOC_DIR, REFERENCE)
+
 from appData.scr._docs import PLM_ABOUT
 README = PLM_ABOUT
 

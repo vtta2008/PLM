@@ -14,7 +14,7 @@ Description:
 
 import sys
 
-from PyQt5.QtCore import Qt, QDir, QTimer
+from PyQt5.QtCore import Qt, QDir, QTimer, pyqtSignal
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox,
                              QHBoxLayout, QLabel, QSizePolicy,)
@@ -26,6 +26,7 @@ from core.Specs import Specs
 class Screenshot(QWidget):
 
     key = 'screenShot'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(Screenshot, self).__init__(parent)
@@ -137,6 +138,13 @@ class Screenshot(QWidget):
         self.screenshotLabel.setPixmap(self.originalPixmap.scaled(
                 self.screenshotLabel.size(), Qt.KeepAspectRatio,
                 Qt.SmoothTransformation))
+
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

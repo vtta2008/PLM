@@ -15,7 +15,7 @@ Description:
 import os
 import sys
 
-from PyQt5.QtCore import (QDir, QIODevice, QFile, QFileInfo, Qt, QTextStream, QUrl)
+from PyQt5.QtCore import (QDir, QIODevice, QFile, QFileInfo, Qt, QTextStream, QUrl, pyqtSignal)
 from PyQt5.QtGui import QDesktopServices, QIcon
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFileDialog, QGridLayout, QHBoxLayout, QWidget,
                              QHeaderView, QProgressDialog, QSizePolicy, QTableWidget, QTableWidgetItem, )
@@ -28,6 +28,7 @@ from core.Specs import Specs
 class FindFiles(QWidget):
 
     key = 'findFile'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(FindFiles, self).__init__(parent)
@@ -189,6 +190,13 @@ class FindFiles(QWidget):
     def openFileOfItem(self, row, column):
         item = self.filesTable.item(row, 0)
         QDesktopServices.openUrl(QUrl(self.currentDir.absoluteFilePath(item.text())))
+
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

@@ -263,8 +263,12 @@ class SignUp(QWidget):
     def showEvent(self, event):
         self.showLayout.emit('login', 'hide')
 
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
     def closeEvent(self, event):
-        self.cacelBtnClicked()
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

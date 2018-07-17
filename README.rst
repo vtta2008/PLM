@@ -33,9 +33,7 @@ Also require extra python packages (will update more):
 
 .. code:: bash
 
-    deprecated, jupyter-console, ipywidgets,'pywinauto, winshell, pandas,
-    notebook, juppyter, opencv-python, pyunpack, argparse, qdarkgraystyle,
-    asyncio, websockets, cx_Freeze, py2exe, versioneer, pychecker
+    deprecated, winshell, pandas
 
 To install extra packages, run command in CMD:
 
@@ -46,7 +44,7 @@ To install extra packages, run command in CMD:
 LIST SOFTWARE PACKAGE
 ======================
 
-    - `Maya 2017 <https://www.autodesk.com/education/free-software/maya>`_
+    - `Maya 2017 and/or Maya 2018 <https://www.autodesk.com/education/free-software/maya>`_
     - `Vray 3.6 <https://www.chaosgroup.com/vray/maya>`_
     - `Phoenix FD 3.0 <https://www.chaosgroup.com/phoenix-fd/maya>`_
     - `VMM for maya <https://www.mediafire.com/#gu9s1tbb2u4g9>`_
@@ -60,7 +58,6 @@ LIST SOFTWARE PACKAGE
 NOTE:
 
     - You can install Photoshop, Premiere, After Effects or anything you want with `Adobe Creative Cloud <https://www.adobe.com/creativecloud/catalog/desktop.html>`_
-
     - For VMM for maya, remember to configure the path once it is opened in Maya. (sadly, the author has stopped developing the plugin.)
 
 LIBRARY SUPPORT
@@ -83,7 +80,7 @@ Run directly:
 
 .. code:: bash
 
-    start python Plt.py
+    start python PLM.py
 
 Complie executable file:
 
@@ -94,6 +91,6 @@ Complie executable file:
 REFERENCE
 =========
 
-For Plugins/Files that I am using, you can see `here <docs/reference.rst>`_.
+For Plugins/Files that I am using, you can see `here <appData/scr/reference.rst>`_.
 
-Copyright (C) 2017 - 2018 by DAMGteam - `details <docs/copyright.rst>`_.
+Copyright (C) 2017 - 2018 by DAMGteam - `details <appData/scr/copyright.rst>`_.

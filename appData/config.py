@@ -14,7 +14,6 @@ Description:
 
 from platform import system
 import json
-import pickle
 
 from importlib import reload as r
 
@@ -103,7 +102,9 @@ def read_file(filePth):
 QUESTIONS = read_file(QUESTIONS)
 ABOUT = read_file(ABOUT)
 CREDIT = read_file(CREDIT)
-README = PLM_ABOUT
+CODECONDUCT = read_file(CODECONDUCT)
+CONTRIBUTING = read_file(CONTRIBUTING)
+REFERENCE = read_file(REFERENCE)
 
 if not os.path.exists(DB_PTH):
     GenerateResource()

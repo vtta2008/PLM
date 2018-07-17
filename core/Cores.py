@@ -62,7 +62,7 @@ class AppCores(QObject):
 
         from ui.Settings import UserSetting
         from ui.Projects import NewProject
-        from ui.Info import Credit, About
+        from ui.Info import Credit, About, CodeConduct, Contrubuting, Reference, Version, LicenceMIT
         from ui.Tools import Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary, Calendar, Calculator
         from ui.Menus.config import Preferences, Configuration
         from ui.TextEditor import TextEditor
@@ -70,21 +70,27 @@ class AppCores(QObject):
         self.about = About.About()
         self.calculator = Calculator.Calculator()
         self.calendar = Calendar.Calendar()
-        self.preferences = Preferences.Preferences()
+        self.codeConduct = CodeConduct.CodeConduct()
         self.configuration = Configuration.Configuration()
+        self.contributing = Contrubuting.Contributing()
         self.credit = Credit.Credit()
         self.engDict = EnglishDictionary.EnglishDictionary()
+        self.findFile = FindFiles.FindFiles()
         self.imageViewer = ImageViewer.ImageViewer()
+        self.licence = LicenceMIT.LicenceMIT()
         self.newProj = NewProject.NewProject()
         self.noteReminder = NoteReminder.NoteReminder()
-        self.findFile = FindFiles.FindFiles()
+        self.preferences = Preferences.Preferences()
+        self.reference = Reference.Reference()
         self.screenShot = Screenshot.Screenshot()
         self.textEditor = TextEditor.TextEditor()
         self.userSetting = UserSetting.UserSetting()
+        self.version = Version.Version()
 
-        self.set2Layout = [self.about, self.calculator, self.calendar, self.preferences, self.configuration, self.credit,
-                           self.engDict, self.imageViewer, self.newProj, self.noteReminder, self.findFile, self.screenShot,
-                           self.textEditor, self.userSetting]
+        self.set2Layout = [self.about, self.calculator, self.calendar, self.codeConduct, self.configuration,
+                           self.contributing, self.credit, self.engDict, self.findFile, self.imageViewer, self.licence,
+                           self.newProj, self.noteReminder, self.preferences, self.reference, self.screenShot,
+                           self.textEditor, self.userSetting, self.version]
 
         for layout in self.set2Layout:
             self.addLayout.emit(layout)

@@ -31,6 +31,7 @@ from core.Specs import Specs
 class Preferences(QWidget):
 
     key = 'preferences'
+    showLayout = pyqtSignal(str, str)
     checkboxTDSig = pyqtSignal(bool)
     checkboxCompSig = pyqtSignal(bool)
     checkboxArtSig = pyqtSignal(bool)
@@ -93,6 +94,13 @@ class Preferences(QWidget):
 
     def checkBoxArtStateChanged(self):
         return str2bool(self.toolBarArt_checkBox.checkState())
+
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

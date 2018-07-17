@@ -15,7 +15,7 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import QDate, QLocale, Qt
+from PyQt5.QtCore import QDate, QLocale, Qt, pyqtSignal
 from PyQt5.QtGui import QFont, QTextCharFormat, QIcon
 from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
                              QComboBox, QDateEdit, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
@@ -32,6 +32,7 @@ from core.Specs import Specs
 class Calendar(QWidget):
 
     key = 'calendar'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(Calendar, self).__init__(parent)
@@ -365,6 +366,13 @@ class Calendar(QWidget):
         self.layout.setSpacing(2)
         self.layout.setSizeConstraint(QLayout.SetFixedSize)
         self.setSizePolicy(SiPoMin, SiPoMin)
+
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     calendar = QApplication(sys.argv)

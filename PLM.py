@@ -25,7 +25,7 @@ import sys, requests, ctypes, subprocess
 
 # PyQt5
 from ui.Web.PLMBrowser import PLMBrowser
-from PyQt5.QtCore import QThreadPool, pyqtSlot, pyqtSignal, QCoreApplication
+from PyQt5.QtCore import QThreadPool, pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QApplication
 
 # Plm
@@ -81,6 +81,7 @@ class PLM(QApplication):
         self.webBrowser = PLMBrowser()  # Webbrowser
         self.addLayout(self.webBrowser)
         self.login, self.signup, self.mainUI, self.sysTray = self.core.import_uiSet1()
+        self.uiSet1 = [self.login, self.signup, self.mainUI, self.sysTray]
         self.mainUI.settings = self.settings
 
         self.setupConn1()
@@ -104,9 +105,12 @@ class PLM(QApplication):
         self.sysTray.showLayout.connect(self.showLayout)
         self.sysTray.executing.connect(self.executing)
 
-        [self.about, self.calculator, self.calendar, self.preferences, self.configuration, self.credit,
-        self.engDict, self.imageViewer, self.newProj, self.noteReminder, self.findFile, self.screenShot,
-        self.textEditor, self.userSetting] = self.core.import_uiSet2()
+        self.uiSet2 = [self.about, self.calculator, self.calendar, self.codeConduct, self.configuration, self.contributing,
+                       self.credit, self.engDict, self.findFile, self.imageViewer, self.licence, self.newProj, self.noteReminder,
+                       self.preferences, self.reference, self.screenShot, self.textEditor, self.userSetting,
+                       self.version] = self.core.import_uiSet2()
+
+        self.setupConn2()
 
         self.set_styleSheet('darkstyle')
         self.setQuitOnLastWindowClosed(False)
@@ -115,23 +119,28 @@ class PLM(QApplication):
     def setupConn1(self):
         self.login.showLayout.connect(self.showLayout)
         self.signup.showLayout.connect(self.showLayout)
-
         self.mainUI.showLayout.connect(self.showLayout)
+
         self.mainUI.executing.connect(self.executing)
         self.mainUI.addLayout.connect(self.addLayout)
         self.mainUI.sysNotify.connect(self.sysTray.sysNotify)
         self.mainUI.setSetting.connect(self.setSetting)
         self.mainUI.openBrowser.connect(self.openBrowser)
-        self.returnValue.connect(self.mainUI.returnValue)
 
-        self.webBrowser.showLayout.connect(self.showLayout)
+        self.returnValue.connect(self.mainUI.returnValue)
 
         self.webBrowser.showLayout.connect(self.showLayout)
         self.settingUI.showLayout.connect(self.showLayout)
 
-        print("setup connected")
+        print("setup connected 1")
 
         self.returnValue.connect(self.mainUI.returnValue)
+
+    def setupConn2(self):
+        for layout in self.uiSet2:
+            layout.showLayout.connect(self.showLayout)
+
+        print("setup connected 2")
 
     @property
     def registerUI(self):
@@ -159,6 +168,7 @@ class PLM(QApplication):
             layout.quit()
 
         self.setSetting(layout.key, mode)
+        self.logger.info("{0} layout: {1}".format(mode, layout))
 
     @pyqtSlot(str)
     def openBrowser(self, url):

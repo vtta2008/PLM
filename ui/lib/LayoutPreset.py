@@ -76,6 +76,8 @@ class Label(QLabel):
                 self.setFixedSize(value[0], value[1])
             elif key == 'setBuddy':
                 self.setBuddy(value)
+            elif key == 'link':
+                self.setOpenExternalLinks(value)
             else:
                 self.setAlignment(center)
 

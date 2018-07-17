@@ -491,6 +491,7 @@ class ImageInitUI(ViewerWindow):
 class ImageViewer(QWidget):
 
     key = 'imageViewer'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, key=None, parent=None):
         super(ImageViewer, self).__init__(parent)
@@ -538,6 +539,13 @@ class ImageViewer(QWidget):
 
     def resizeUI(self, w, h):
         self.resize(w, h)
+
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     appViewer = QApplication(sys.argv)

@@ -25,7 +25,7 @@ from ui import uirc as rc
 from ui.lib.LayoutPreset import Action
 from utilities.pUtils import get_layout_dimention
 
-from appData import APPINFO, __plmWiki__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR
+from appData import APPINFO, __plmWiki__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR
 from core.Specs import Specs
 from core.Loggers import SetLogger
 
@@ -44,6 +44,7 @@ class SubMenuBar(QMainWindow):
 
     def __init__(self, parent=None):
         super(SubMenuBar, self).__init__(parent)
+
         self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         self.appInfo = APPINFO
@@ -53,14 +54,20 @@ class SubMenuBar(QMainWindow):
 
     def buildMenu(self):
 
-        self.plmMenu = self.menuBar().addMenu("&File")
-        self.gotoMenu = self.plmMenu.addMenu('Go to')
-        self.gotoMenu.addAction(Action({'icon': 'OpenConfig', 'txt': 'Config folder', 'trg':partial(self.executing.emit, CONFIG_DIR)}, self))
+        self.fileMenu = self.menuBar().addMenu("&File")
+        self.fileMenu.addMenu("New Organisation")
+        self.fileMenu.addMenu("New group/team")
+        self.fileMenu.addSeparator()
+        self.fileMenu.addMenu("New project")
+        self.fileMenu.addSeparator()
+
+        self.gotoMenu = self.menuBar().addMenu('Go to')
+        self.gotoMenu.addAction(Action({'icon': 'ConfigFolder', 'txt': 'Config folder', 'trg':partial(self.executing.emit, CONFIG_DIR)}, self))
         self.gotoMenu.addAction(Action({'icon': 'IconFolder', 'txt': 'Icon folder', 'trg': partial(self.executing.emit, APP_ICON_DIR)}, self))
         self.gotoMenu.addAction(Action({'icon': 'SettingFolder', 'txt': 'Setting folder', 'trg': partial(self.executing.emit, SETTING_DIR)}, self))
+        self.gotoMenu.addAction(Action({'icon': 'AppFolder', 'txt': 'Application folder', 'trg': partial(self.executing.emit, ROOT_DIR)}, self))
 
-        self.plmMenu.addSeparator()
-        self.plmMenu.addAction(Action({'icon': 'Exit', 'txt': self.appInfo['Exit'][0], 'trg': partial(self.showLayout.emit, 'app', 'exit')}, self))
+
 
         self.editMenu = self.menuBar().addMenu("&Edit")
         self.editMenu.addMenu('Copy')
@@ -77,11 +84,6 @@ class SubMenuBar(QMainWindow):
         self.toolMenu.addAction(rc.ActionProcess("CleanPyc", self))
         self.toolMenu.addAction(rc.ActionProcess("ReConfig", self))
         self.windowMenu = self.menuBar().addMenu("&Window")
-
-        self.helpMenu = self.menuBar().addMenu("&Help")
-        self.helpMenu.addAction(Action({'icon': 'PLM wiki', 'txt': self.appInfo['PLM wiki'][0], 'trg': partial(self.openUrl.emit, 'vnexpress.net')}, self))
-        self.helpMenu.addAction(Action({'icon':'About', 'txt': self.appInfo['About'][0], 'trg':partial(self.showLayout.emit, 'about', 'show')}, self))
-        self.helpMenu.addAction(Action({'icon':'Credit', 'txt': self.appInfo['Credit'][0], 'trg':partial(self.showLayout.emit, 'credit', 'show')}, self))
 
     def on_exit_action_triggered(self):
         TimeLog("Log out")

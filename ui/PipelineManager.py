@@ -100,14 +100,19 @@ class PipelineManager(QMainWindow):
         self.stBar = StatusBar.StatusBar()                                                         # Status bar viewing message
         self.setStatusBar(self.stBar)
 
-        self.botTabUI.generalSetting.tbTDCB.stateChanged.connect(self.toolBar.tdToolBar.setVisible)
-        self.botTabUI.generalSetting.tbCompCB.stateChanged.connect(self.toolBar.compToolBar.setVisible)
-        self.botTabUI.generalSetting.tbArtCB.stateChanged.connect(self.toolBar.artToolBar.setVisible)
-        self.botTabUI.generalSetting.tbMasterCB.stateChanged.connect(self.toolBarSec.setVisible)
-        self.botTabUI.generalSetting.statusBarCB.stateChanged.connect(self.stBar.setVisible)
-        self.botTabUI.generalSetting.subMenuCB.stateChanged.connect(self.subMenuSec.setVisible)
-        self.botTabUI.generalSetting.serStatusCB.stateChanged.connect(self.networkStatus.setVisible)
-        self.botTabUI.generalSetting.notifiCB.stateChanged.connect(self.notifiSec.setVisible)
+        cbs = [self.botTabUI.generalSetting.tbTDCB, self.botTabUI.generalSetting.tbCompCB,
+                     self.botTabUI.generalSetting.tbArtCB, self.botTabUI.generalSetting.tbMasterCB,
+                     self.botTabUI.generalSetting.statusBarCB, self.botTabUI.generalSetting.subMenuCB,
+                     self.botTabUI.generalSetting.serStatusCB, self.botTabUI.generalSetting.notifiCB]
+
+        sections = [self.toolBar.tdToolBar, self.toolBar.compToolBar, self.toolBar.artToolBar, self.toolBarSec,
+                    self.stBar, self.subMenuSec, self.networkStatus, self.notifiSec]
+
+        for i in range(len(sections)):
+            cbs[i].stateChanged.connect(sections[i].setVisible)
+            cbs[i].setChecked(not sections[i].isVisible())
+            print(sections[i].isVisible())
+
 
         self.botTabUI.generalSetting.setSetting.connect(self.setSetting)
         self.returnValue.connect(self.botTabUI.returnValue)
@@ -131,9 +136,6 @@ class PipelineManager(QMainWindow):
         self.dock = dock
         self.addDockWidget(pos, self.dock)
 
-    def contextMenuEvent(self, event):
-        SysTrayIconMenu()
-
     def resizeEvent(self, event):
         sizeW, sizeH = get_layout_dimention(self)
         self.setSetting.emit('width', str(sizeW), self.objectName())
@@ -143,8 +145,8 @@ class PipelineManager(QMainWindow):
         self.specs.showState.emit(True)
         self.showLayout.emit('login', 'hide')
         self.showLayout.emit('sysTray', 'show')
-        self.restoreGeometry(self.settings.value(self.key + "/geo").toByteArray())
-        self.restoreState(self.settings.value(self.key + "/state").toByteArray())
+        # self.restoreGeometry(self.settings.value(self.key + "/geo").toByteArray())
+        # self.restoreState(self.settings.value(self.key + "/state").toByteArray())
 
     def closeEvent(self, event):
         self.specs.showState.emit(False)
@@ -154,31 +156,6 @@ class PipelineManager(QMainWindow):
 
         self.hide()
         event.ignore()
-
-class SysTrayIconMenu(QMenu):
-
-    key = 'sysTray'
-    showLayout = pyqtSignal(str, str)
-    executing = pyqtSignal(str)
-
-    def __init__(self, parent=None):
-        super(SysTrayIconMenu, self).__init__(parent)
-        self.info = APPINFO
-        self.addSeparator()
-        for k in CONFIG_SYSTRAY:
-            if k == 'Screenshot':
-                self.addAction(Action({'icon':k, 'txt': k, 'trg': partial(self.showLayout.emit, APPINFO[k][2], 'show')}, self))
-            elif k == 'Snipping Tool':
-                self.addAction(Action({'icon': k, 'txt': k, 'trg': partial(self.executing.emit, APPINFO[k][2])}, self))
-
-        self.addSeparator()
-
-        self.addAction(Action({'icon':'Maximize','txt':'Maximize','trg':partial(self.showLayout.emit, 'mainUI', 'showMax')}, self))
-        self.addAction(Action({'icon':'Minimize','txt':"Minimize",'trg':partial(self.showLayout.emit, 'mainUI', 'showMin')}, self))
-        self.addAction(Action({'icon':'Restore','txt':"Restore", 'trg':partial(self.showLayout.emit, 'mainUI', 'showNor')}, self))
-
-        self.addSeparator()
-        self.addAction(Action({'icon':'Close','txt':"Quit", 'trg':partial(self.showLayout.emit, 'app', 'quit')}, self))
 
 # -------------------------------------------------------------------------------------------------------------
 def main():

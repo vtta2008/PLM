@@ -19,11 +19,11 @@ import sys
 # PtQt5
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QHBoxLayout, QPushButton, QFileDialog,
-                             QMessageBox, QApplication, QLabel)
+from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QPushButton, QFileDialog, QMessageBox,
+                             QApplication, QLabel)
 
 # Plt
-from appData import PW_CHANGED, PW_BLANK, PW_UNMATCH, PW_WRONG, __envKey__
+from appData import PW_BLANK, PW_UNMATCH, __envKey__
 from core.Specs import Specs
 from utilities import utils as func
 from utilities import localSQL as usql
@@ -35,6 +35,7 @@ from ui.lib.LayoutPreset import AppIcon, GroupGrid
 class UserSetting(QDialog):
 
     key = 'userSetting'
+    showLayout = pyqtSignal(str, str)
     updateAvatar = pyqtSignal(bool)
     query = usql.QuerryDB()
 
@@ -220,6 +221,12 @@ class UserSetting(QDialog):
     def update_location(self):
         pass
 
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

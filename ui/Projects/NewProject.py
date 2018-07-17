@@ -11,14 +11,19 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+""" Import """
+
+# Python
 import os, sys
 from functools import partial
 
+# PyQt5
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QIcon, QIntValidator
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QGroupBox, QHBoxLayout, QVBoxLayout, QLineEdit, QInputDialog,
                              QComboBox, QFileDialog, QListWidget, QListWidgetItem, QApplication)
 
-# Plm
+# PLM
 from appData import SiPoMin
 from utilities.utils import getAppIcon
 from ui.uirc import Label, Button
@@ -48,12 +53,13 @@ class ItemWidget(QWidget):
             self.item.setText(text)
 
 # -------------------------------------------------------------------------------------------------------------
-""" New Project Layout """
+""" Create Project Window """
 
 class NewProject(QWidget):
 
     info = {}
     key = 'newProj'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(NewProject, self).__init__(parent)
@@ -243,8 +249,12 @@ class NewProject(QWidget):
         for section in sections:
             self.populate_lst(section)
 
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
     def closeEvent(self, event):
-        self.hide()
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
     # def setPth(self, *args):
     #     pth = cmds.fileDialog2(cap="set production path", fm=3, okc="Set")

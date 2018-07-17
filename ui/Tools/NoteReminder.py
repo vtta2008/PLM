@@ -15,7 +15,7 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import QFile, QRegExp, QTextCodec, QTextStream
+from PyQt5.QtCore import QFile, QRegExp, QTextCodec, QTextStream, pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QAction, QApplication, QComboBox, QWidget, QDialog, QDialogButtonBox, QFileDialog,
                              QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
@@ -206,6 +206,7 @@ class PreviewForm(QDialog):
 class NoteReminder(QWidget):
 
     key = 'noteReminder'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(NoteReminder, self).__init__(parent)
@@ -219,6 +220,13 @@ class NoteReminder(QWidget):
     def buildUI(self):
         self.mainMenu = Menu_layout()
         self.layout.addWidget(self.mainMenu, 0,0,1,1)
+
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

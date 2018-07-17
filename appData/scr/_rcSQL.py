@@ -13,7 +13,7 @@ Description:
 # Python
 import os
 import sqlite3 as lite
-# from core.Loggers import SetLogger
+from core.Loggers import SetLogger
 
 
 # -------------------------------------------------------------------------------------------------------------

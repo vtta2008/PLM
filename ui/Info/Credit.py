@@ -12,23 +12,26 @@ Description:
 
 # Python
 import sys
+from functools import partial
 
 # PtQt5
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 
-# Plt
-from appData import CREDIT, left
+# Plm
 from utilities.utils import getAppIcon
-from ui.uirc import Label, Button
+from appData import CREDIT
+from ui.lib.LayoutPreset import Button, Label
 from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
-""" About Layout """
+""" Credit Layout """
 
 class Credit(QWidget):
 
     key = 'credit'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
 
@@ -39,20 +42,24 @@ class Credit(QWidget):
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
+        self.resize(500, 600)
 
     def buildUI(self):
         self.scrollArea = QScrollArea()
         self.scrollArea.setWidgetResizable(True)
-        self.content = Label(CREDIT, left)
+        self.content = Label({'txt':CREDIT, 'alg':'left', 'link': True})
 
-        self.content.setGeometry(0, 0, 650, 400)
+        self.content.setGeometry(0, 0, 500, 600)
         self.scrollArea.setWidget(self.content)
 
-        okBtn = Button(['Ok', 'Close credit window'])
-        okBtn.clicked.connect(self.close)
+        closeBtn = Button({'txt': 'Close', 'tt': 'Close window', 'cl': partial(self.showLayout.emit, self.key, 'hide')})
 
         self.layout.addWidget(self.scrollArea, 0, 0, 8, 4)
-        self.layout.addWidget(okBtn, 8, 3, 1, 1)
+        self.layout.addWidget(closeBtn, 8, 3, 1, 1)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

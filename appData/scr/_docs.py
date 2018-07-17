@@ -10,18 +10,18 @@ Description:
 
 PLM_ABOUT = """
 
-PIPELINE MANAGER TO MAKE A SHORT FILM
+    PIPELINE MANAGER TO MAKE A SHORT FILM
 
-This application is built to handle and manage productions as a pipeline tool.
-Currently, it is working with software package: maya, ZBrush, mari, nuke with V-ray plugin.
+    This application is built to handle and manage productions as a pipeline tool.
+    Currently, it is working with software package: maya, ZBrush, mari, nuke with V-ray plugin.
 
-The largest version of Python is Python 3.5, however Python 3.x has introduced many breaking changes to Python. 
-These changes are for the better but due to large investment into Python 2 code, maya will continue to be on 
-Python 2 for a while longer.
+    The largest version of Python is Python 3.5, however Python 3.x has introduced many breaking changes to Python. 
+    These changes are for the better but due to large investment into Python 2 code, maya will continue to be on 
+    Python 2 for a while longer.
 
-You can see the details off platforms that is agreed by industry: www.vfxplatform.com.
+    You can see the details off platforms that is agreed by industry: www.vfxplatform.com.
 
-For feedback or questions, feel free to email me: damgteam@gmail.com or dot@damgteam.com
+    For feedback or questions, feel free to email me: damgteam@gmail.com or dot@damgteam.com
 
 """
 

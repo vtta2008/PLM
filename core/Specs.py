@@ -74,7 +74,7 @@ class Specs(Manager):
         self._import   = False                            # Check if the object is imported or not
         self._show     = False                            # Check if the object is showed or not (for layout object)
 
-        self.regFile = os.path.join(REG_DIR, self.name() + ".r")
+        self.regFile = os.path.join(REG_DIR, self.name() + ".reg")
         self._register = os.path.exists(self.regFile)
 
         self.imported.connect(self.set_imported)

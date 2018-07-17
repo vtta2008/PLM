@@ -15,6 +15,7 @@ Description:
 import sys
 
 # PtQt5
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QWidget, QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit, QVBoxLayout)
 
 # Plm
@@ -24,6 +25,7 @@ from core.Specs import Specs
 class ForgotPassword(QWidget):
 
     key = 'forgotPW'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self):
         super(ForgotPassword, self).__init__()
@@ -116,6 +118,10 @@ class ForgotPassword(QWidget):
 
     def on_step2_btn_clicked(self):
         pass
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

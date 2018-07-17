@@ -12,7 +12,7 @@ Description:
 import sys
 import math
 
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QWidget)
 
@@ -24,6 +24,7 @@ from core.Specs import Specs
 class Calculator(QWidget):
 
     key = 'calculator'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(Calculator, self).__init__(parent)
@@ -300,6 +301,13 @@ class Calculator(QWidget):
         self.layout.setSpacing(2)
         self.layout.setSizeConstraint(QLayout.SetFixedSize)
         self.setSizePolicy(SiPoMin, SiPoMin)
+
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     appCal = QApplication(sys.argv)

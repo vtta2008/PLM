@@ -15,14 +15,14 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import QFile, QFileInfo, Qt, QTextCodec
+from PyQt5.QtCore import QFile, QFileInfo, Qt, QTextCodec, pyqtSignal
 from PyQt5.QtGui import (QFont, QFontDatabase, QFontInfo, QIcon, QKeySequence, QPixmap, QTextBlockFormat, QTextCharFormat,
                          QTextCursor, QTextDocumentWriter, QTextListFormat)
 from PyQt5.QtPrintSupport import QPrintDialog, QPrinter, QPrintPreviewDialog
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog, QComboBox, QFileDialog, QFontComboBox,
-                             QMainWindow, QMenu, QMessageBox, QTextEdit, QToolBar, QDialog, QHBoxLayout, QWidget)
+                             QMainWindow, QMenu, QMessageBox, QTextEdit, QToolBar, QHBoxLayout, QWidget)
 
-# Plt
+# PLM
 from ui.TextEditor import TextEditor_rc
 from utilities import utils as func
 from core.Specs import Specs
@@ -539,6 +539,7 @@ class TextEdit(QMainWindow):
 class TextEditor(QWidget):
 
     key = 'textEditor'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(TextEditor, self).__init__(parent)
@@ -552,6 +553,13 @@ class TextEditor(QWidget):
     def buildUI(self):
         textEditor = TextEdit()
         self.layout.addWidget(textEditor)
+
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

@@ -9,14 +9,18 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
+# Python
 import json
 import os
 import sys
 from difflib import get_close_matches
 
+# PyQt5
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QDialog, QGridLayout, QHBoxLayout, QLineEdit, QTextEdit, QApplication, QWidget)
 
+# PLM
 from utilities.utils import getAppIcon
 from ui.uirc import Label, Button
 from core.Specs import Specs
@@ -24,6 +28,7 @@ from core.Specs import Specs
 class EnglishDictionary(QDialog):
 
     key = 'engDict'
+    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
 
@@ -101,6 +106,12 @@ class EnglishDictionary(QDialog):
             listToString += i
         return listToString
 
+    def hideEvent(self, event):
+        self.specs.showState.emit(False)
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def initialize():
     app = QApplication(sys.argv)
