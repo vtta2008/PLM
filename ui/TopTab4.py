@@ -21,7 +21,6 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox
 from PyQt5.QtGui import QRadialGradient, QColor, QPainter, QBrush, QPen
 
 # Plt
-from ui import uirc as rc
 from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------

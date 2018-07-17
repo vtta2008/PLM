@@ -22,16 +22,13 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 from appData import APPINFO, __plmWiki__
 from core.Loggers import SetLogger
 from core.Specs import Specs
-from utilities.pUtils import get_layout_dimention
-from ui.lib.LayoutPreset import Action
-from ui.Settings.SettingUI import SettingUI
+from ui.Libs.Action import Action
 
 class MainMenuBar(QMainWindow):
 
     key = 'mainMenu'
     showLayout = pyqtSignal(str, str)
     executing = pyqtSignal(str)
-    proceduring = pyqtSignal(str)
     addLayout = pyqtSignal(object)
     setSetting = pyqtSignal(str, str, str)
     openUrl = pyqtSignal(str)

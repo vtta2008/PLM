@@ -15,17 +15,17 @@ import sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, QRectF
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QMenu, QGraphicsScene, QMenuBar
-from PyQt5.QtGui import QIcon, QColor, QFont
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 
 # Plt
-from utilities import utils as func
-
+from core.Specs import Specs
+from core.Loggers import SetLogger
 from appData.scr._pNN import *
 
 from ui.NodeGraph.Node import Node
-from ui.NodeGraph.View import pView
-from ui.NodeGraph.MenuBar import pMenuBar
+from ui.NodeGraph.View import View
+from ui.NodeGraph.MenuBar import MenuBar
+from ui.Libs.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -33,31 +33,36 @@ from ui.NodeGraph.MenuBar import pMenuBar
 # -------------------------------------------------------------------------------------------------------------
 """ NoderViewer """
 
-class pScene(QGraphicsScene):
+class Scene(QGraphicsScene):
 
     def __init__(self, parent=None):
-        super(pScene, self).__init__(parent)
+        super(Scene, self).__init__(parent)
 
         self.setSceneRect(0, 0, 100, 30)
 
 class NodeGraph(QWidget):
 
+    key = 'nodeGraph'
+    showLayout = pyqtSignal(str, str)
+
     def __init__(self, parent=None):
         super(NodeGraph, self).__init__(parent)
 
-        self.setWindowTitle("Scenegraph PLM")
-        self.setWindowIcon(QIcon(func.getLogo(32, 'Logo')))
+        self.specs = Specs(self.key, self)
+        self.logger = SetLogger(self)
 
-        self.menuBar = pMenuBar(self)
+        self.setWindowIcon(IconPth(32, 'NodeGraph'))
+        self.menuBar = MenuBar(self)
 
-        self.scene = pScene()
-        self.view = pView()
+        self.scene = Scene()
+        self.view = View()
         self.view.setScene(self.scene)
         self.view.setRenderHint(ANTIALIAS)
         self.view.setViewportUpdateMode(UPDATE_FULLVIEW)
 
-        self.layout = QVBoxLayout()
-        self.layout.addWidget(self.view)
+        self.layout = QGridLayout()
+        self.layout.addWidget(self.menuBar, 0, 0, 1, 1)
+        self.layout.addWidget(self.view, 1, 0, 1, 1)
         self.setLayout(self.layout)
 
         self.Nodes = []

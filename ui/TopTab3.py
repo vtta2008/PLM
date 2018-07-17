@@ -24,7 +24,7 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGraphicsView, 
 # Plt
 
 from core.Specs import Specs
-from ui import uirc as rc
+from ui.Libs.GroupBox import GroupBox
 from ui.Settings import UserSetting
 from utilities import localSQL as usql
 from utilities.utils import getAvatar
@@ -73,8 +73,8 @@ class TopTab3(QWidget):
 
         btns = [btn1, btn2]
 
-        sec1Grp = rc.AutoSectionBtnGrp(self.username, [self.avatarView], "ImageView")
-        sec2Grp = rc.AutoSectionBtnGrp("Setting", btns, "BtnGrid")
+        sec1Grp = GroupBox(self.username, [self.avatarView], "ImageView")
+        sec2Grp = GroupBox("Setting", btns, "BtnGrid")
 
         sec3Grp = QGroupBox("Messenger")
         sec3Grid = QGridLayout()

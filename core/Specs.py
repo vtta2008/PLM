@@ -21,7 +21,7 @@ from PyQt5.QtQml import QQmlApplicationEngine
 # Plm
 from appData import SPECS, REG_DIR
 from utilities.utils import getUnix, get_datetime
-from ui.lib.LayoutPreset import Button
+from ui.Libs.Button import Button
 
 # -------------------------------------------------------------------------------------------------------------
 """ Attribute class """
@@ -74,7 +74,7 @@ class Specs(Manager):
         self._import   = False                            # Check if the object is imported or not
         self._show     = False                            # Check if the object is showed or not (for layout object)
 
-        self.regFile = os.path.join(REG_DIR, self.name() + ".reg")
+        self.regFile = os.path.join(REG_DIR, self.name() + ".r")
         self._register = os.path.exists(self.regFile)
 
         self.imported.connect(self.set_imported)
@@ -100,23 +100,6 @@ class Specs(Manager):
 
         self.register()
         self.imported.emit(True)
-
-        # engine = QQmlApplicationEngine()
-        # manager = Manager()
-        # ctx = engine.rootContext()
-        # ctx.setContextProperty("Manager", manager)
-        # engine.load('main.qml')
-        # if not engine.rootObjects():
-        #     sys.exit(-1)
-        # manager.list_fill()
-
-        # if self._parent.isWidgetType():
-        #     if self._parent.hide():
-        #         self._parent.saveState(QEvent)
-        #         self.set_showed(True)
-        #     elif self._parent.closeEvent(QEvent):
-        #         self._parent.loadState()
-        #         self.set_closed(True)
 
     def register(self):
 

@@ -26,7 +26,8 @@ from PyQt5.QtWidgets import (QWidget, QGridLayout, QGroupBox, QHBoxLayout, QVBox
 # PLM
 from appData import SiPoMin
 from utilities.utils import getAppIcon
-from ui.uirc import Label, Button
+from ui.Libs.UiPreset import Label
+from ui.Libs.Button import Button
 from core.Specs import Specs
 from core.Loggers import SetLogger
 
@@ -39,9 +40,8 @@ class ItemWidget(QWidget):
         super(ItemWidget, self).__init__(parent)
         self.section = section
 
-        self.item = Label(name)
-        button = Button(["Edit", "Edit character name"])
-        button.clicked.connect(self.setText)
+        self.item = Label({'txt': name})
+        button = Button({'txt':"Edit", 'stt':"Edit character name", 'cl': self.setText})
         layout = QHBoxLayout()
         layout.addWidget(self.item)
         layout.addWidget(button)
@@ -80,7 +80,7 @@ class NewProject(QWidget):
 
         # Title
         headGrp, headGrid = self.styleGB()
-        headGrid.addWidget(Label(txt=TITLE))
+        headGrid.addWidget(Label({'txt': TITLE}))
 
         # Project Info
         prjInfGrp, prjInfGrid = self.styleGB("Project Info")
@@ -89,19 +89,18 @@ class NewProject(QWidget):
         self.prjShort = QLineEdit("damg")
         self.prjPth = QLineEdit("E:/")
 
-        setPthBtn = Button(["Set Path", "Set project path"])
-        setPthBtn.clicked.connect(self.onSetPthBtnClicked)
+        setPthBtn = Button({'txt': "Set Path", 'stt': "Set project path", 'cl': self.onSetPthBtnClicked})
 
-        prjInfGrid.addWidget(Label("Project Name"), 0, 0, 1, 1)
+        prjInfGrid.addWidget(Label({'txt': "Project Name"}), 0, 0, 1, 1)
         prjInfGrid.addWidget(self.prjLong, 0, 1, 1, 1)
-        prjInfGrid.addWidget(Label("Abbreviated as"), 0, 2, 1, 1)
+        prjInfGrid.addWidget(Label({'txt': "Abbreviated as"}), 0, 2, 1, 1)
         prjInfGrid.addWidget(self.prjShort, 0, 3, 1, 1)
         prjInfGrid.addWidget(setPthBtn, 1, 0, 1, 1)
         prjInfGrid.addWidget(self.prjPth, 1, 1, 1, 3)
 
         # Notice!!!
         noticeGrp, noticeGrid = self.styleGB("NOTE!!!")
-        noticeGrid.addWidget(Label(MESSAGE), 0, 0, 1, 4)
+        noticeGrid.addWidget(Label({'txt': MESSAGE}), 0, 0, 1, 4)
 
         # Project details
         prjDetailGrp, prjDetailGrid = self.styleGB("Project Details")
@@ -126,15 +125,15 @@ class NewProject(QWidget):
         self.numOfSeq.setValidator(QIntValidator())
         self.numOfSeq.textChanged.connect(partial(self.populate_lst, "seq"))
 
-        prjDetailGrid.addWidget(Label("Project Mode"), 0,0,1,1)
+        prjDetailGrid.addWidget(Label({'txt':"Project Mode"}), 0,0,1,1)
         prjDetailGrid.addWidget(self.prjMode, 0, 1, 1, 1)
-        prjDetailGrid.addWidget(Label("Character: "), 1,0,1,1)
+        prjDetailGrid.addWidget(Label({'txt':"Character: "}), 1,0,1,1)
         prjDetailGrid.addWidget(self.numOfChar, 2, 0, 1, 1)
-        prjDetailGrid.addWidget(Label("Environment: "), 1,1,1,1)
+        prjDetailGrid.addWidget(Label({'txt':"Environment: "}), 1,1,1,1)
         prjDetailGrid.addWidget(self.numOfEnv, 2, 1, 1, 1)
-        prjDetailGrid.addWidget(Label("Props: "), 1,2,1,1)
+        prjDetailGrid.addWidget(Label({'txt':"Props: "}), 1,2,1,1)
         prjDetailGrid.addWidget(self.numOfProp, 2, 2, 1, 1)
-        prjDetailGrid.addWidget(Label("Sequences: "), 1,3,1,1)
+        prjDetailGrid.addWidget(Label({'txt':"Sequences: "}), 1,3,1,1)
         prjDetailGrid.addWidget(self.numOfSeq, 2, 3, 1, 1)
 
         # Asset details
@@ -148,10 +147,10 @@ class NewProject(QWidget):
         # Buttons
         btnGrp, btnGrid = self.styleGB()
 
-        prjLstBtn = Button(["Project List", "Project List"])
-        crewLstBtn = Button(["Crews List", "Crews List"])
-        newPrjBtn = Button(["Create Project", "Create New Project"])
-        cancelBtn = Button(["Cancel", "Calcel"])
+        prjLstBtn = Button({'txt': "Project List", 'stt': "Project List"})
+        crewLstBtn = Button({'txt': "Crews List", 'stt': "Crews List"})
+        newPrjBtn = Button({'txt': "Create Project", 'stt': "Create New Project"})
+        cancelBtn = Button({'txt': "Cancel", 'stt': "Cancel"})
 
         btnGrid.addWidget(prjLstBtn, 0, 0)
         btnGrid.addWidget(crewLstBtn, 0, 1)

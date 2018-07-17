@@ -83,7 +83,7 @@ otherApp = ['Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'S
 
 CONFIG_APPUI = ['About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary', 'FindFiles', 'ForgotPassword',
                 'ImageViewer', 'NewProject', 'Preferences', 'Screenshot', 'UserSetting', 'PLMBrowser', 'NoteReminder',
-                'TextEditor', 'NodeNetwork']
+                'TextEditor', 'NodeGraph']
 
 # --------------------------------------------------------------------------------------------------------------
 """ Tracking key """
@@ -98,7 +98,7 @@ TRACK_OFFICE = ['Word', 'Excel', 'PowerPoint', 'Wordpad']
 
 TRACK_DEV = ['PyCharm', 'Sublime Text', 'QtDesigner', 'Git Bash', 'Command Prompt', 'Spyder']
 
-TRACK_TOOLS = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'Screenshot', 'NodeNetwork']
+TRACK_TOOLS = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'Screenshot', 'NodeGraph']
 
 TRACK_EXTRA = ['3Ds Max', 'Mudbox', 'BLender', ]
 

@@ -13,6 +13,7 @@ Description:
 
 # Python
 import sys
+from functools import partial
 
 # PyQt5
 from PyQt5.QtWidgets import QMainWindow, QApplication
@@ -20,9 +21,8 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot
 
 # Plt
 from appData import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, APPINFO, SiPoMin
-from ui.uirc import ActionProcess
-from utilities.utils import str2bool, bool2str
-
+from ui.Libs.Action import Action
+from utilities.utils import str2bool
 from core.Specs import Specs
 from core.Loggers import SetLogger
 
@@ -46,17 +46,22 @@ class ToolBar(QMainWindow):
         self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         self.appInfo = APPINFO
+
+        self.tdToolBar = self.create_toolBar("TD", CONFIG_TDS)
+        self.compToolBar = self.create_toolBar("VFX", CONFIG_VFX)
+        self.artToolBar = self.create_toolBar("ART", CONFIG_ART)
+
         self.setSizePolicy(SiPoMin, SiPoMin)
 
-        self.tdToolBar = self.make_toolBar("TD", CONFIG_TDS)
-        self.compToolBar = self.make_toolBar("VFX", CONFIG_VFX)
-        self.artToolBar = self.make_toolBar("ART", CONFIG_ART)
-
-    def make_toolBar(self, name="", apps=[]):
+    def create_toolBar(self, name="", apps=[]):
         toolBar = self.addToolBar(name)
         for key in apps:
             if key in self.appInfo:
-                toolBar.addAction(ActionProcess(key, self))
+                toolBar.addAction(Action({'icon':key,
+                                          'stt':self.appInfo[key][0],
+                                          'txt':key,
+                                          'trg':(partial(self.executing.emit, self.appInfo[key][2]))},
+                                         self))
         return toolBar
 
     @pyqtSlot(str, bool)

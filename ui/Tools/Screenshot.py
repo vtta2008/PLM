@@ -12,14 +12,19 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
+# Python
 import sys
+from functools import partial
 
+# PyQt5
 from PyQt5.QtCore import Qt, QDir, QTimer, pyqtSignal
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox,
                              QHBoxLayout, QLabel, QSizePolicy,)
 
-from ui.uirc import IconPth, Button
+# PLM
+from ui.Libs.UiPreset import IconPth
+from ui.Libs.Button import Button
 from appData import keepARM
 from core.Specs import Specs
 
@@ -119,20 +124,15 @@ class Screenshot(QWidget):
         self.optionsGroupBox.setLayout(optionsGroupBoxLayout)
 
     def createButtonsLayout(self):
-        self.newScreenshotButton = self.createButton("New Screenshot", self.newScreenshot)
-        self.saveScreenshotButton = self.createButton("Save Screenshot", self.saveScreenshot)
-        self.quitScreenshotButton = self.createButton("Quit", self.close)
+        self.newScreenshotButton = Button({'txt': "New Screenshot", 'cl': self.newScreenshot})
+        self.saveScreenshotButton = Button({'txt': "Save Screenshot", 'cl': self.saveScreenshot})
+        self.quitScreenshotButton = Button({'txt': "Quit", 'cl': partial(self.showLayout.emit, self.key, 'hide')})
 
         self.buttonsLayout = QHBoxLayout()
         self.buttonsLayout.addStretch()
         self.buttonsLayout.addWidget(self.newScreenshotButton)
         self.buttonsLayout.addWidget(self.saveScreenshotButton)
         self.buttonsLayout.addWidget(self.quitScreenshotButton)
-
-    def createButton(self, text, member):
-        button = Button(text)
-        button.clicked.connect(member)
-        return button
 
     def updateScreenshotLabel(self):
         self.screenshotLabel.setPixmap(self.originalPixmap.scaled(

@@ -21,8 +21,7 @@ from PyQt5.QtWidgets import (QAction, QApplication, QComboBox, QWidget, QDialog,
                              QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
 
 # Plm
-from utilities.utils import getAppIcon
-from ui.uirc import Label
+from ui.Libs.UiPreset import Label, AppIcon
 from core.Specs import Specs
 
 
@@ -157,7 +156,7 @@ class PreviewForm(QDialog):
         super(PreviewForm, self).__init__(parent)
 
         self.encodingComboBox = QComboBox()
-        encodingLabel = Label("&Encoding:")
+        encodingLabel = Label({'txt':"&Encoding:"})
         encodingLabel.setBuddy(self.encodingComboBox)
 
         self.textEdit = QTextEdit()
@@ -211,7 +210,7 @@ class NoteReminder(QWidget):
     def __init__(self, parent=None):
         super(NoteReminder, self).__init__(parent)
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(QIcon(getAppIcon(32, 'NoteReminder')))
+        self.setWindowIcon(AppIcon('NoteReminder'))
 
         self.layout = QGridLayout()
         self.buildUI()

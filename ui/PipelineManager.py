@@ -17,11 +17,11 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QMenu)
 
 # Plt
-from appData import __homepage__, dockB, APPINFO, CONFIG_SYSTRAY, ST_FORMAT, SETTING_FILEPTH
+from appData import __homepage__, dockB, ST_FORMAT, SETTING_FILEPTH
 from core.Loggers import SetLogger
 from core.Settings import Settings
-from ui.uirc import AutoSectionLayoutGrp, AutoSectionQMainGrp,  AppIcon
-from ui.lib.LayoutPreset import Action
+from ui.Libs.GroupBox import AutoSectionLayoutGrp, AutoSectionQMainGrp
+from ui.Libs.UiPreset import AppIcon
 from ui import ToolBar, TopTab, BotTab, ServerStatus, Footer, StatusBar
 from ui.Menus import MainMenuBar, SubMenuBar
 from core.Specs import Specs
@@ -111,8 +111,6 @@ class PipelineManager(QMainWindow):
         for i in range(len(sections)):
             cbs[i].stateChanged.connect(sections[i].setVisible)
             cbs[i].setChecked(not sections[i].isVisible())
-            print(sections[i].isVisible())
-
 
         self.botTabUI.generalSetting.setSetting.connect(self.setSetting)
         self.returnValue.connect(self.botTabUI.returnValue)

@@ -13,12 +13,11 @@ import sys
 import math
 
 from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QWidget)
 
-from utilities import utils as func
-from ui import uirc as rc
 from appData import SiPoMin
+from ui.Libs.Button import ToolBtn
+from ui.Libs.UiPreset import AppIcon
 from core.Specs import Specs
 
 class Calculator(QWidget):
@@ -30,7 +29,7 @@ class Calculator(QWidget):
         super(Calculator, self).__init__(parent)
 
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(QIcon(func.getAppIcon(32, 'Calculator')))
+        self.setWindowIcon(AppIcon('Calculator'))
 
         self.NumDigitButtons = 10
 
@@ -268,7 +267,7 @@ class Calculator(QWidget):
         self.sumInMemory += float(self.display.text())
 
     def createButton(self, text, member):
-        button = rc.ToolBtn(text)
+        button = ToolBtn(text)
         button.clicked.connect(member)
         return button
 

@@ -31,10 +31,10 @@ from appData.scr._pNN import (SCROLLBAROFF, RUBBERDRAG, ANCHOR_UNDERMICE, CACHE_
 # -------------------------------------------------------------------------------------------------------------
 """ pView """
 
-class pView(QGraphicsView):
+class View(QGraphicsView):
 
     def __init__(self, *args, **kwargs):
-        super(pView, self).__init__(*args, **kwargs)
+        super(View, self).__init__(*args, **kwargs)
 
         self.fillColor = QColor(250, 250, 250)
         self.lineColor = QColor(230, 230, 230)
@@ -73,12 +73,12 @@ class pView(QGraphicsView):
         elif event.key() == KEY_TAB:
             print("open qline edit window")
 
-        super(pView, self).keyPressEvent(event)
+        super(View, self).keyPressEvent(event)
 
     def keyReleaseEvent(self, event):
         if event.key() == KEY_ALT:
             self.reDrawEdge()
-        super(pView, self).keyReleaseEvent(event)
+        super(View, self).keyReleaseEvent(event)
 
     def mousePressEvent(self, event):
 
@@ -89,7 +89,7 @@ class pView(QGraphicsView):
             self.setCursor(CURSOR_SIZEALL)
         elif event.button() == MOUSE_LEFT:
             self.setDragMode(RUBBERDRAG)
-        super(pView, self).mousePressEvent(event)
+        super(View, self).mousePressEvent(event)
 
     def mouseMoveEvent(self, event):
         if self.panning:
@@ -101,13 +101,13 @@ class pView(QGraphicsView):
             self.centerOn(newCenter)
             self.prevPos = event.pos()
             return
-        super(pView, self).mouseMoveEvent(event)
+        super(View, self).mouseMoveEvent(event)
 
     def mouseReleaseEvent(self, event):
         if self.panning:
             self.panning = False
             self.setCursor(CURSOR_ARROW)
-        super(pView, self).mouseReleaseEvent(event)
+        super(View, self).mouseReleaseEvent(event)
 
     def wheelEvent(self, event):
         value = event.angleDelta().y()
@@ -137,7 +137,7 @@ class pView(QGraphicsView):
             painter.drawLine(gr.left(), y, gr.right(), y)
 
         painter.restore()
-        super(pView, self).drawBackground(painter, rect)
+        super(View, self).drawBackground(painter, rect)
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -22,7 +22,8 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QHBoxLayout, QLineEdit, QText
 
 # PLM
 from utilities.utils import getAppIcon
-from ui.uirc import Label, Button
+from ui.Libs.UiPreset import Label
+from ui.Libs.Button import Button
 from core.Specs import Specs
 
 class EnglishDictionary(QDialog):
@@ -51,14 +52,11 @@ class EnglishDictionary(QDialog):
         self.lineInput = QLineEdit()
         self.suggessLabel = Label()
 
-        searchBtn = Button(['Translate', ' '])
-        searchBtn.clicked.connect(self.translate)
+        searchBtn = Button({'txt': 'Translate', 'cl':self.translate})
 
-        yesBtn = Button(['Yes', ' '])
-        yesBtn.clicked.connect(self.translate)
+        yesBtn = Button({'txt': 'Yes', 'cl':self.translate})
 
-        noBtn = Button(['No', ' '])
-        noBtn.clicked.connect(self.translate)
+        noBtn = Button({'txt': 'No', 'cl':self.translate})
 
         self.answer = QTextEdit()
 

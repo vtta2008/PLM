@@ -63,6 +63,7 @@ CREDIT = "CREDIT"
 CODECONDUCT = "CODECONDUCT"
 CONTRIBUTING = "CONTRIBUTING"
 REFERENCE = "REFERENCE"
+LICENSE_MIT = "LICENSE_MIT"
 
 appSettingFile = "PlmSetting.ini"
 userSettingFile = "UserSetting.ini"

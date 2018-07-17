@@ -213,11 +213,11 @@ class PLMBrowser(QWidget):
         self.viewer.update()
 
     def showEvent(self, event):
-        self.specs.set_showed.emit(True)
+        self.specs.set_showed(True)
 
     def closeEvent(self, event):
         self.showLayout.emit('browser', 'hide')
-        self.specs.set_closed.emit(False)
+        self.specs.set_closed(False)
         event.ignore()
 
 def main():

@@ -37,8 +37,8 @@ from core.Cores import AppCores
 from core.Loggers import SetLogger
 from core.Specs import Specs
 from utilities.localSQL import QuerryDB
-from utilities.utils import str2bool
-from ui.uirc import AppIcon
+from utilities.utils import str2bool, clean_file_ext
+from ui.Libs.UiPreset import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -106,9 +106,9 @@ class PLM(QApplication):
         self.sysTray.executing.connect(self.executing)
 
         self.uiSet2 = [self.about, self.calculator, self.calendar, self.codeConduct, self.configuration, self.contributing,
-                       self.credit, self.engDict, self.findFile, self.imageViewer, self.licence, self.newProj, self.noteReminder,
-                       self.preferences, self.reference, self.screenShot, self.textEditor, self.userSetting,
-                       self.version] = self.core.import_uiSet2()
+                       self.credit, self.engDict, self.findFile, self.imageViewer, self.licence, self.newProj,
+                       self.nodeGraph, self.noteReminder, self.preferences, self.reference, self.screenShot,
+                       self.textEditor, self.userSetting, self.version] = self.core.import_uiSet2()
 
         self.setupConn2()
 
@@ -148,6 +148,7 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str)
     def showLayout(self, name, mode):
+        self.logger.trace('signal comes: {0}, {1}'.format(name, mode))
         if name == 'app':
             layout = QApplication
         else:
@@ -196,6 +197,15 @@ class PLM(QApplication):
             os.startfile(cmd)
         elif cmd == 'open_cmd':
             os.system('start /wait cmd')
+        elif cmd == 'Remove pyc':
+            print("clean .pyc files")
+            clean_file_ext('.pyc')
+            return
+        elif cmd == 'Re-config local':
+            from appData.LocalCfg import LocalCfg
+            print('re config data')
+            LocalCfg()
+            return
         else:
             self.logger.trace('execute: {0}'.format(cmd))
             subprocess.Popen(cmd)

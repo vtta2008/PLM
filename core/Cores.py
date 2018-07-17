@@ -14,10 +14,9 @@ Description:
 import os, sys, subprocess
 
 # PyQt5
-from PyQt5.QtCore import QObject, QCoreApplication, pyqtSlot, pyqtSignal
+from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
 
-# Plm
-from appData import __appname__, __version__, __organization__, __website__
+# PLM
 from core.Loggers import SetLogger
 from core.Specs import Specs
 
@@ -66,6 +65,7 @@ class AppCores(QObject):
         from ui.Tools import Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary, Calendar, Calculator
         from ui.Menus.config import Preferences, Configuration
         from ui.TextEditor import TextEditor
+        from ui.NodeGraph import NodeGraph
 
         self.about = About.About()
         self.calculator = Calculator.Calculator()
@@ -79,6 +79,7 @@ class AppCores(QObject):
         self.imageViewer = ImageViewer.ImageViewer()
         self.licence = LicenceMIT.LicenceMIT()
         self.newProj = NewProject.NewProject()
+        self.nodeGraph = NodeGraph.NodeGraph()
         self.noteReminder = NoteReminder.NoteReminder()
         self.preferences = Preferences.Preferences()
         self.reference = Reference.Reference()
@@ -89,8 +90,8 @@ class AppCores(QObject):
 
         self.set2Layout = [self.about, self.calculator, self.calendar, self.codeConduct, self.configuration,
                            self.contributing, self.credit, self.engDict, self.findFile, self.imageViewer, self.licence,
-                           self.newProj, self.noteReminder, self.preferences, self.reference, self.screenShot,
-                           self.textEditor, self.userSetting, self.version]
+                           self.newProj, self.nodeGraph, self.noteReminder, self.preferences, self.reference,
+                           self.screenShot, self.textEditor, self.userSetting, self.version]
 
         for layout in self.set2Layout:
             self.addLayout.emit(layout)

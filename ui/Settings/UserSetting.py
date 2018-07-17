@@ -27,7 +27,8 @@ from appData import PW_BLANK, PW_UNMATCH, __envKey__
 from core.Specs import Specs
 from utilities import utils as func
 from utilities import localSQL as usql
-from ui.lib.LayoutPreset import AppIcon, GroupGrid
+from ui.Libs.UiPreset import AppIcon
+from ui.Libs.GroupBox import GroupGrid
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """

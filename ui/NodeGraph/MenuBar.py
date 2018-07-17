@@ -12,10 +12,10 @@ from PyQt5.QtWidgets import QMenuBar, QMenu
 
 # -------------------------------------------------------------------------------------------------------------
 
-class pMenuBar(QMenuBar):
+class MenuBar(QMenuBar):
 
     def __init__(self, parent=None):
-        super(pMenuBar, self).__init__(parent)
+        super(MenuBar, self).__init__(parent)
 
         self.fm = QMenu('File')
         self.fm.addMenu(QMenu('New Scene'))

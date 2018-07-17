@@ -16,15 +16,14 @@ import sys, random
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt, QPointF, QTimer, QSize, QRectF, QSizeF
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLineEdit, QPushButton
-from PyQt5.QtGui import QRadialGradient, QColor, QPainter, QBrush, QPen
 
 # Plt
-from ui import uirc as rc
 from appData import APPINFO, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE, BTNICONSIZE, ICONBTNSIZE, FIX_KEYS
 from core.Specs import Specs
-from ui.lib.LayoutPreset import Button
+from ui.Libs.Button import Button
+from ui.Libs.GroupBox import GroupBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ topTab1 """
@@ -77,10 +76,10 @@ class TopTab1(QWidget):
                 btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit2': [self.showLayout.emit, [FIX_KEYS[key], 'show']]})
                 extraBtns.append(btn)
 
-        sec1Grp = rc.AutoSectionBtnGrp("Office", officeBtns, "IconGrid")
-        sec2Grp = rc.AutoSectionBtnGrp("Dev", devBtns, "IconGrid")
-        sec3Grp = rc.AutoSectionBtnGrp("Tools", pyuiBtn, "IconGrid")
-        sec4Grp = rc.AutoSectionBtnGrp("Extra", extraBtns, "IconGrid")
+        sec1Grp = GroupBox("Office", officeBtns, "IconGrid")
+        sec2Grp = GroupBox("Dev", devBtns, "IconGrid")
+        sec3Grp = GroupBox("Tools", pyuiBtn, "IconGrid")
+        sec4Grp = GroupBox("Extra", extraBtns, "IconGrid")
 
         self.findEdit = QLineEdit()
         findBtn = QPushButton("Find Tool")

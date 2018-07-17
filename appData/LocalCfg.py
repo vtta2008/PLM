@@ -201,7 +201,12 @@ class LocalCfg(object):
         else:
             filePth = webIconCfg
 
+        if os.path.exists(filePth):
+            print('Remove old config file: {0}'.format(filePth))
+            os.remove(filePth)
+
         with open(filePth, 'w') as f:
+            print('Create new config file: {0}'.format(filePth))
             json.dump(data, f, indent=4)
 
     def handle_path_error(self, dir=None):

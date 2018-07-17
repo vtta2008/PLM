@@ -14,9 +14,7 @@ Description:
 import os, sys, requests, platform, subprocess, winshell, yaml, json, linecache, re, datetime, time, uuid, win32api
 
 # Plt
-from appData import __envKey__, __pkgsReq__, LOGO_DIR, KEYPACKAGE, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR, SPECS
-from core.Loggers import SetLogger
-
+from appData import __envKey__, __pkgsReq__, LOGO_DIR, KEYPACKAGE, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR
 
 # -------------------------------------------------------------------------------------------------------------
 """ Destop tool """
@@ -407,7 +405,7 @@ def del_key(key, dict = {}):
         dict.pop(key, None)
         print("key poped: {key}".format(key=key))
 
-def clean_pyc_file(var):
+def clean_file_ext(var):
     fileNames = [f for f in get_file_path(os.getenv(__envKey__)) if var in f] or []
     if not fileNames == []:
         for filePth in fileNames:

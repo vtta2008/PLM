@@ -18,9 +18,9 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLineEdit, QText
 
 # Plt
 from appData import SiPoMin, SiPoExp
-from ui import uirc as rc
 from core.Specs import Specs
 from core.Loggers import SetLogger
+from ui.Libs.Button import Button
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -69,9 +69,9 @@ class TopTab5(QWidget):
     def buildUI(self):
         self.basePth = os.getcwd() + ">"
 
-        self.cmdBtn = rc.Button(["Run", "Excute command"])
-        self.cmdBtn.clicked.connect(self.on_btn_clicked)
-        self.cmdBtn.setAutoDefault(True)
+        self.cmdBtn = Button({'txt': 'Run', 'stt': 'Execute command', 'cl': self.on_btn_clicked})
+        # self.cmdBtn.clicked.connect(self.on_btn_clicked)
+        # self.cmdBtn.setAutoDefault(True)
 
         self.terminal = Terminal()
         self.cmdConsole = CommandPrompt()
@@ -81,13 +81,13 @@ class TopTab5(QWidget):
         self.layout.addWidget(self.cmdConsole, 4, 0, 1, 6)
         self.layout.addWidget(self.cmdBtn, 4, 6, 1, 2)
 
-        btn1 = rc.Button(["Create New", "Create django project"])
-        btn2 = rc.Button(["Create app", "Create django app"])
-        btn3 = rc.Button(["Start Server", "Operate running server"])
-        btn4 = rc.Button(["Save preset", "Save app preset"])
-        btn5 = rc.Button(["Run Preset", "Create data tables"])
-        btn6 = rc.Button(["Create SQL", "Create database"])
-        btn7 = rc.Button(["Create Admin", "Create Admin Account"])
+        btn1 = Button({'txt': "Create New", 'stt': "Create django project"})
+        btn2 = Button({'txt': "Create app", 'stt': "Create django app"})
+        btn3 = Button({'txt': "Start Server", 'stt': "Operate running server"})
+        btn4 = Button({'txt': "Save preset", 'stt': "Save app preset"})
+        btn5 = Button({'txt': "Run Preset", 'stt': "Create data tables"})
+        btn6 = Button({'txt': "Create SQL", 'stt': "Create database"})
+        btn7 = Button({'txt': "Create Admin", 'stt': "Create Admin Account"})
 
         self.layout.addWidget(QLabel())
 

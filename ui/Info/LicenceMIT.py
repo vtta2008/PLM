@@ -20,9 +20,9 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 
 # Plm
-from utilities.utils import getAppIcon
-from appData import REFERENCE
-from ui.lib.LayoutPreset import Button, Label
+from appData import LICENSE_MIT
+from ui.Libs.UiPreset import Label, IconPth
+from ui.Libs.Button import Button
 from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
@@ -37,19 +37,19 @@ class LicenceMIT(QWidget):
 
         super(LicenceMIT, self).__init__(parent)
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(QIcon(getAppIcon(32, 'Credit')))
+        self.setWindowIcon(IconPth(32, 'Credit'))
 
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
-        self.resize(450, 400)
+        self.resize(500, 400)
 
     def buildUI(self):
         self.scrollArea = QScrollArea()
         self.scrollArea.setWidgetResizable(True)
-        self.content = Label({'txt':REFERENCE, 'alg':'left', 'link': True})
+        self.content = Label({'txt':LICENSE_MIT, 'alg':'left', 'link': True})
 
-        self.content.setGeometry(0, 0, 450, 400)
+        self.content.setGeometry(0, 0, 500, 400)
         self.scrollArea.setWidget(self.content)
 
         closeBtn = Button({'txt': 'Close', 'tt': 'Close window', 'cl': partial(self.showLayout.emit, self.key, 'hide')})

@@ -21,8 +21,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 
 # Plt
 from utilities.localSQL import TimeLog
-from ui import uirc as rc
-from ui.lib.LayoutPreset import Action
+from ui.Libs.Action import Action
 from utilities.pUtils import get_layout_dimention
 
 from appData import APPINFO, __plmWiki__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR
@@ -37,7 +36,6 @@ class SubMenuBar(QMainWindow):
     key = 'subMenu'
     showLayout = pyqtSignal(str, str)
     executing = pyqtSignal(str)
-    proceduring = pyqtSignal(str)
     addLayout = pyqtSignal(object)
     setSetting = pyqtSignal(str, str, str)
     openUrl = pyqtSignal(str)
@@ -67,8 +65,6 @@ class SubMenuBar(QMainWindow):
         self.gotoMenu.addAction(Action({'icon': 'SettingFolder', 'txt': 'Setting folder', 'trg': partial(self.executing.emit, SETTING_DIR)}, self))
         self.gotoMenu.addAction(Action({'icon': 'AppFolder', 'txt': 'Application folder', 'trg': partial(self.executing.emit, ROOT_DIR)}, self))
 
-
-
         self.editMenu = self.menuBar().addMenu("&Edit")
         self.editMenu.addMenu('Copy')
         self.editMenu.addMenu('Copy')
@@ -81,8 +77,8 @@ class SubMenuBar(QMainWindow):
 
         self.toolMenu.addSeparator()
 
-        self.toolMenu.addAction(rc.ActionProcess("CleanPyc", self))
-        self.toolMenu.addAction(rc.ActionProcess("ReConfig", self))
+        self.toolMenu.addAction(Action({'icon': "CleanPyc", 'txt': 'Remove .pyc files', 'trg':partial(self.executing.emit, 'Remove pyc')}, self))
+        self.toolMenu.addAction(Action({'icon': "ReConfig", 'txt': 'Re-configure', 'trg':partial(self.executing.emit, 'Re-config local')}, self))
         self.windowMenu = self.menuBar().addMenu("&Window")
 
     def on_exit_action_triggered(self):

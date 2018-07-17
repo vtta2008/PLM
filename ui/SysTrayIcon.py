@@ -21,9 +21,10 @@ from PyQt5.QtGui import QWheelEvent
 from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QApplication
 
 # Plt
-from appData import CONFIG_SYSTRAY, APPINFO, __plmSlogan__, __appname__, FIX_KEY
-from ui.lib.LayoutPreset import Action, AppIcon
-from utilities.localSQL import TimeLog, QuerryDB
+from appData import CONFIG_SYSTRAY, APPINFO, __plmSlogan__, __appname__
+from ui.Libs.UiPreset import AppIcon
+from ui.Libs.Action import Action
+from utilities.localSQL import QuerryDB
 from core.Loggers import SetLogger
 from core.Specs import Specs
 

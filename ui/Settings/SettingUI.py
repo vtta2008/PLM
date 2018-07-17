@@ -12,7 +12,7 @@ from appData import SETTING_FILEPTH, __organization__, __appname__
 from core.Specs import Specs
 from core.Loggers import SetLogger
 from core.Errors import KeySettingError
-from ui.lib.LayoutPreset import ComboBox, Label
+from ui.Libs.UiPreset import ComboBox, Label
 
 class SettingUI(QWidget):
 
@@ -153,8 +153,8 @@ class SettingUI(QWidget):
 
     def closeEvent(self, event):
         self.specs.showState.emit(False)
-        self.settings.setValue('geometry', self.saveGeometry())
-        self.settings.setValue("windowState", self.saveState())
+        # self.settings.setValue('geometry', self.saveGeometry())
+        # self.settings.setValue("windowState", self.saveState())
         self.hide()
         event.ignore()
 

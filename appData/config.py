@@ -25,6 +25,10 @@ for pth in dirLst:
     if not os.path.exists(pth):
         os.mkdir(pth)
 
+from appData.LocalCfg import LocalCfg
+
+localCfg = LocalCfg()
+
 from appData.scr._docs import *
 from appData.scr._keys import *
 from appData.scr._layout import *
@@ -105,6 +109,7 @@ CREDIT = read_file(CREDIT)
 CODECONDUCT = read_file(CODECONDUCT)
 CONTRIBUTING = read_file(CONTRIBUTING)
 REFERENCE = read_file(REFERENCE)
+LICENSE_MIT = read_file(LICENSE_MIT)
 
 if not os.path.exists(DB_PTH):
     GenerateResource()
@@ -140,12 +145,6 @@ def load_iconInfo():
 fix_environment()
 APPINFO = load_appInfo()
 ICONINFO = load_iconInfo()
-
-
-
-
-
-
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:56 PM

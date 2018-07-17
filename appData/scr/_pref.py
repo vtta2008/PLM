@@ -85,6 +85,7 @@ SPECS = dict(about         = {'ordinal': 'u01', 'objName': 'About',          'ty
              mainUI        = {'ordinal': 'u14', 'objName': 'MainUI',         'type': PLM_TYPES['main'],    'lvl': UI_LVL['nd'], 'title': __appname__          , 'id': 'PML', 'tag': 'PLM MAIN UI'        , 'flag': 'Master Layout'   , 'cls': QMainWindow, },
              mainMenu      = {'ordinal': 'u15', 'objName': 'MainUI',         'type': PLM_TYPES['main'],    'lvl': UI_LVL['nd'], 'title': 'Main Menu Bar'      , 'id': 'PML', 'tag': 'PLM MAIN MENU'      , 'flag': 'Master Menu'     , 'cls': QMainWindow, },
              newProj       = {'ordinal': 'u16', 'objName': 'NewProject',     'type': PLM_TYPES['layout'],  'lvl': UI_LVL['nd'], 'title': 'New Project'        , 'id': 'PNP', 'tag': None                 , 'flag': None              , 'cls': QWidget, },
+             nodeGraph     = {'ordinal': 'u17', 'objName': 'NodeGraph',      'type': PLM_TYPES['layout'],  'lvl': UI_LVL['nd'], 'title': 'Note Graph'         , 'id': 'PNR', 'tag': None                 , 'flag': None              , 'cls': QWidget, },
              noteReminder  = {'ordinal': 'u17', 'objName': 'NoteReminder',   'type': PLM_TYPES['layout'],  'lvl': UI_LVL['nd'], 'title': 'Note Reminder'      , 'id': 'PNR', 'tag': None                 , 'flag': None              , 'cls': QWidget, },
              notification  = {'ordinal': 'u18', 'objName': 'Notification',   'type': PLM_TYPES['layout'],  'lvl': UI_LVL['nd'], 'title': 'Notification'       , 'id': 'PNT', 'tag': None                 , 'flag': None              , 'cls': QWidget, },
              preferences   = {'ordinal': 'u19', 'objName': 'Configuration',  'type': PLM_TYPES['config'],  'lvl': UI_LVL['nd'], 'title': 'Pipeline Config'    , 'id': 'PBR', 'tag': None                 , 'flag': None              , 'cls': QWidget, },
@@ -173,7 +174,7 @@ PRJ_INFO = dict(APPS       = ["maya", "zbrush", "mari", "nuke", "photoshop", "ho
 
 FIX_KEYS = dict(
     TextEditor = 'textEditor', NoteReminder = 'noteReminder', Calculator = 'calculator', Calendar = 'calendar',
-    EnglishDictionary = 'engDict', FindFiles = 'findFile', ImageViewer = 'imageViewer', NodeNetwork = 'nodeNetwork',
+    EnglishDictionary = 'engDict', FindFiles = 'findFile', ImageViewer = 'imageViewer', NodeGraph = 'nodeGraph',
     Screenshot = 'screenShot',
 )
 

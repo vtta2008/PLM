@@ -81,6 +81,7 @@ CREDIT = os.path.join(DOC_DIR, CREDIT)
 CODECONDUCT = os.path.join(DOC_DIR, CODECONDUCT)
 CONTRIBUTING = os.path.join(DOC_DIR, CONTRIBUTING)
 REFERENCE = os.path.join(DOC_DIR, REFERENCE)
+LICENSE_MIT = os.path.join(DOC_DIR, LICENSE_MIT)
 
 from appData.scr._docs import PLM_ABOUT
 README = PLM_ABOUT

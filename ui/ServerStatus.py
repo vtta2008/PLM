@@ -22,7 +22,7 @@ from PyQt5.QtNetwork import QHostAddress
 # Plt
 from appData import left, __serverUrl__
 from appData.ServerCfg import ServerCfg
-from ui.uirc import Label
+from ui.Libs.UiPreset import Label
 from utilities.utils import getAppIcon
 from core.Specs import Specs
 from core.Loggers import SetLogger
@@ -55,7 +55,7 @@ class ServerStatus(QGridLayout):
 
         self.onlineStage.connect(self.connection_status)
         self.onlineStage.emit(self.serverOpen)
-        self.txt = Label("Connecting", left)
+        self.txt = Label({'txt': "Connecting"})
         self.buildUI()
 
     def buildUI(self):

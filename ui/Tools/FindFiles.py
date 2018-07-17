@@ -18,11 +18,12 @@ import sys
 from PyQt5.QtCore import (QDir, QIODevice, QFile, QFileInfo, Qt, QTextStream, QUrl, pyqtSignal)
 from PyQt5.QtGui import QDesktopServices, QIcon
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFileDialog, QGridLayout, QHBoxLayout, QWidget,
-                             QHeaderView, QProgressDialog, QSizePolicy, QTableWidget, QTableWidgetItem, )
+                             QHeaderView, QProgressDialog, QTableWidget, QTableWidgetItem, )
 
 from appData import SiPoExp, SiPoPre
 from utilities.utils import getAppIcon
-from ui.uirc import Button, Label
+from ui.Libs.UiPreset import Label
+from ui.Libs.Button import Button
 from core.Specs import Specs
 
 class FindFiles(QWidget):
@@ -44,16 +45,16 @@ class FindFiles(QWidget):
 
     def buildUI(self):
 
-        browseButton = self.makeBtn("&Browse...", self.browse)
-        findButton = self.makeBtn("&Find", self.find)
+        browseButton = Button({'txt': "&Browse...", 'cl': self.browse})
+        findButton = Button({'txt': "&Find", 'cl': self.find})
 
         self.fileComboBox = self.createComboBox("*")
         self.textComboBox = self.createComboBox()
         self.directoryComboBox = self.createComboBox(QDir.currentPath())
 
-        fileLabel = Label("Named:")
-        textLabel = Label("Containing text:")
-        directoryLabel = Label("In directory:")
+        fileLabel = Label({'txt': "Named:"})
+        textLabel = Label({'txt': "Containing text: "})
+        directoryLabel = Label({'txt': "In directory: "})
 
         self.filesFoundLabel = Label()
         self.createFilesTable()
@@ -163,11 +164,6 @@ class FindFiles(QWidget):
             self.filesTable.setItem(row, 1, sizeItem)
 
         self.filesFoundLabel.setText("%d file(s) found (Double click on a file to open it)" % len(files))
-
-    def makeBtn(self, text, member):
-        button = Button([text, ' '])
-        button.clicked.connect(member)
-        return button
 
     def createComboBox(self, text=""):
         comboBox = QComboBox()

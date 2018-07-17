@@ -24,8 +24,9 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QCheckBox, 
 # Plt
 from utilities import localSQL as usql
 from appData import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __serverAutho__
-from ui.uirc import IconPth, Label
-from ui.lib.LayoutPreset import GroupGrid, Button, LineEdit
+from ui.Libs.UiPreset import IconPth, Label, LineEdit
+from ui.Libs.GroupBox import GroupGrid
+from ui.Libs.Button import Button
 from utilities.utils import str2bool
 from core.Specs import Specs
 
@@ -62,8 +63,8 @@ class SignIn(QWidget):
         login_btn = Button({'txt': 'Log in', 'cl': self.signInClicked})
         cancel_btn = Button({'txt': 'Cancel', 'cl': QApplication.quit})
 
-        loginGrid.addWidget(Label('Username'), 0, 0, 1, 2)
-        loginGrid.addWidget(Label('Password'), 1, 0, 1, 2)
+        loginGrid.addWidget(Label({'txt': 'Username'}), 0, 0, 1, 2)
+        loginGrid.addWidget(Label({'txt': 'Password'}), 1, 0, 1, 2)
         loginGrid.addWidget(self.userTF, 0, 2, 1, 4)
         loginGrid.addWidget(self.pwTF, 1, 2, 1, 4)
         loginGrid.addWidget(self.userCB, 2, 1, 1, 2)
@@ -76,7 +77,7 @@ class SignIn(QWidget):
 
         self.showLayout.connect(self.show_test)
 
-        signupGrid.addWidget(Label(txt=SIGNUP), 0, 0, 1, 6)
+        signupGrid.addWidget(Label({'txt': SIGNUP}), 0, 0, 1, 6)
         signupGrid.addWidget(signupBtn, 1, 0, 1, 6)
 
         self.layout.addWidget(loginGrp, 0, 0, 1, 1)
