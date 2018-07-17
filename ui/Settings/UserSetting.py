@@ -27,7 +27,7 @@ from appData import PW_BLANK, PW_UNMATCH, __envKey__
 from core.Specs import Specs
 from utilities import utils as func
 from utilities import localSQL as usql
-from ui.Libs.UiPreset import AppIcon
+from ui.Libs.UiPreset import IconPth
 from ui.Libs.GroupBox import GroupGrid
 
 # ----------------------------------------------------------------------------------------------------------- #
@@ -44,7 +44,7 @@ class UserSetting(QDialog):
 
         super(UserSetting, self).__init__(parent)
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(AppIcon(32, "UserSetting"))
+        self.setWindowIcon(IconPth(32, "UserSetting"))
 
         self.layout = QGridLayout()
         self.buildUI()

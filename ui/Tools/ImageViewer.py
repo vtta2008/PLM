@@ -21,17 +21,14 @@ from functools import partial
 from PyQt5 import QtSql
 from PyQt5.QtCore import Qt, QDir, pyqtSignal
 from PyQt5.QtGui import QPixmap, QTransform, QIcon
-from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QDialog,
-                             QHBoxLayout, QWidget)
+from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout,
+                             QWidget)
 
 # Plt
 
 from utilities import utils as func
 from core.Specs import Specs
-
-# -------------------------------------------------------------------------------------------------------------
-""" Variables """
-
+from ui.Libs.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Graphic View class """
@@ -513,7 +510,7 @@ class ImageViewer(QWidget):
         self.title = viewer.title
 
         self.setWindowTitle("Image Viewer: " + str(self.title))
-        self.setWindowIcon(QIcon(func.getAppIcon(32, "ImageViewer")))
+        self.setWindowIcon(IconPth(32, "ImageViewer"))
 
         self.layout.addWidget(viewer)
 

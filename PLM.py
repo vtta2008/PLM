@@ -179,10 +179,12 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str, str)
     def setSetting(self, key=None, value=None, grp=None):
+        self.logger.trace('signal comes: {0}, {1}, {2}'.format(key, value, grp))
         self.settings.initSetValue(key, value, grp)
 
     @pyqtSlot(str, str)
     def loadSetting(self, key=None, grp=None):
+        self.logger.trace('signal comes: {0}, {1}'.format(key, grp))
         value = self.settings.initValue(key, grp)
         if key is not None:
             self.returnValue.emit(key, value)

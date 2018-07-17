@@ -23,8 +23,8 @@ from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
 
 # Plt
 from appData import SiPoMin
-from utilities import utils as func
 from core.Specs import Specs
+from ui.Libs.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Clendar """
@@ -37,9 +37,9 @@ class Calendar(QWidget):
     def __init__(self, parent=None):
         super(Calendar, self).__init__(parent)
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(QIcon(func.getAppIcon(32, 'Calendar')))
+        self.setWindowIcon(IconPth(32, 'Calendar'))
 
-        self.layout = QGridLayout(self)
+        self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 

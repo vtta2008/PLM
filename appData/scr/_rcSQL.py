@@ -13,8 +13,6 @@ Description:
 # Python
 import os
 import sqlite3 as lite
-from core.Loggers import SetLogger
-
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """
@@ -68,7 +66,6 @@ class GenerateResource(object):
 
     def __init__(self):
         super(GenerateResource, self).__init__()
-        self.logger = SetLogger(self)
         for tn in TN:
             self.create_table(tn)
 
@@ -83,7 +80,7 @@ class GenerateResource(object):
     def create_table(self, tn = TN[0]):
         cmd = self.generate_command(tn)
         self.cur.execute("CREATE TABLE IF NOT EXISTS `{0}` ({1})".format(tn, cmd))
-        self.logger.info(" Created table: {0}".format(tn))
+        print(" Created table: {0}".format(tn))
         self.conn.commit()
 
 if __name__ == '__main__':

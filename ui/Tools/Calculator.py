@@ -17,7 +17,7 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QWid
 
 from appData import SiPoMin
 from ui.Libs.Button import ToolBtn
-from ui.Libs.UiPreset import AppIcon
+from ui.Libs.UiPreset import IconPth
 from core.Specs import Specs
 
 class Calculator(QWidget):
@@ -29,7 +29,7 @@ class Calculator(QWidget):
         super(Calculator, self).__init__(parent)
 
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(AppIcon('Calculator'))
+        self.setWindowIcon(IconPth(32, 'Calculator'))
 
         self.NumDigitButtons = 10
 

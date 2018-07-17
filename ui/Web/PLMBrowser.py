@@ -20,13 +20,14 @@ from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
 from PyQt5.QtCore import QFile, QIODevice, Qt, QTextStream, QUrl, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QApplication, QLineEdit, QMainWindow, QWidget, QSizePolicy, QStyle, QTextEdit,
                              QStatusBar, QVBoxLayout)
-from PyQt5.QtGui import QIcon
+
 from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 
 # Plt
 from ui.Web import PLMBrowser_rc
-from utilities import utils as func
+from core.Loggers import SetLogger
 from core.Specs import Specs
+from ui.Libs.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Web browser """
@@ -186,8 +187,10 @@ class PLMBrowser(QWidget):
 
     def __init__(self, url='vnexpress.net', parent=None):
         super(PLMBrowser, self).__init__(parent)
-        self.setWindowIcon(QIcon(func.getAppIcon(32, 'PLMBrowser')))
         self.specs = Specs(self.key, self)
+        self.logger = SetLogger(self)
+
+        self.setWindowIcon(IconPth(32, 'PLMBrowser'))
         self.url = url
 
         self.layout = QVBoxLayout()
@@ -213,11 +216,11 @@ class PLMBrowser(QWidget):
         self.viewer.update()
 
     def showEvent(self, event):
-        self.specs.set_showed(True)
+        self.specs.showState.emit(True)
 
     def closeEvent(self, event):
-        self.showLayout.emit('browser', 'hide')
-        self.specs.set_closed(False)
+        self.showLayout.emit(self.key, 'hide')
+        self.specs.showState.emit(False)
         event.ignore()
 
 def main():

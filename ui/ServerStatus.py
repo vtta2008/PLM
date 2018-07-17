@@ -69,13 +69,10 @@ class ServerStatus(QGridLayout):
     def connection_status(self, param):
         if param:
             self.networkStatus.setPixmap(QPixmap(self.connected))
-            self.txt.setText("Connected")
         else:
             self.networkStatus.setPixmap(QPixmap(self.disconnected))
-            self.txt.setText("Disconnected")
-
         self.networkStatus.update()
-        self.txt.update()
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 25/05/2018

@@ -148,7 +148,7 @@ class PipelineManager(QMainWindow):
 
     def closeEvent(self, event):
         self.specs.showState.emit(False)
-        self.sysNotify.emit('notice', "PLM hide in system tray", 'info', 500)
+        # self.sysNotify.emit('notice', "PLM hide in system tray", 'info', 500)
         self.settings.setValue(self.key + "/geo", self.saveGeometry())
         self.settings.setValue(self.key + "/state", self.saveState())
 

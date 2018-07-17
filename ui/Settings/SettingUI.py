@@ -148,14 +148,9 @@ class SettingUI(QWidget):
 
     def showEvent(self, event):
         self.specs.showState.emit(True)
-        self.restoreGeometry(self.settings.value("geometry").toByteArray())
-        self.restoreState(self.settings.value("windowState").toByteArray())
 
     def closeEvent(self, event):
         self.specs.showState.emit(False)
-        # self.settings.setValue('geometry', self.saveGeometry())
-        # self.settings.setValue("windowState", self.saveState())
-        self.hide()
         event.ignore()
 
 class RegInput(QWidget):

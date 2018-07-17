@@ -21,8 +21,7 @@ from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFileDi
                              QHeaderView, QProgressDialog, QTableWidget, QTableWidgetItem, )
 
 from appData import SiPoExp, SiPoPre
-from utilities.utils import getAppIcon
-from ui.Libs.UiPreset import Label
+from ui.Libs.UiPreset import Label, IconPth
 from ui.Libs.Button import Button
 from core.Specs import Specs
 
@@ -35,7 +34,7 @@ class FindFiles(QWidget):
         super(FindFiles, self).__init__(parent)
 
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(QIcon(getAppIcon(32, "FindFiles")))
+        self.setWindowIcon(IconPth(32, "FindFiles"))
 
         central_widget = QWidget(self)
         self.layout = QGridLayout(self)

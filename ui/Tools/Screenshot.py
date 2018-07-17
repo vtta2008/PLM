@@ -37,7 +37,7 @@ class Screenshot(QWidget):
         super(Screenshot, self).__init__(parent)
 
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(IconPth("Screenshot"))
+        self.setWindowIcon(IconPth(32, "Screenshot"))
         self.resize(960, 540)
 
         self.layout = QGridLayout()

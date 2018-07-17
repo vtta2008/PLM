@@ -21,8 +21,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import (QDialog, QGridLayout, QHBoxLayout, QLineEdit, QTextEdit, QApplication, QWidget)
 
 # PLM
-from utilities.utils import getAppIcon
-from ui.Libs.UiPreset import Label
+from ui.Libs.UiPreset import Label, IconPth
 from ui.Libs.Button import Button
 from core.Specs import Specs
 
@@ -36,7 +35,7 @@ class EnglishDictionary(QDialog):
         super(EnglishDictionary, self).__init__(parent)
 
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(QIcon(getAppIcon(32, "EnglishDictionary")))
+        self.setWindowIcon(IconPth(32, "EnglishDictionary"))
 
         central_widget = QWidget(self)
         self.layout = QGridLayout(self)

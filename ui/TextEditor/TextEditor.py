@@ -24,8 +24,9 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog, 
 
 # PLM
 from ui.TextEditor import TextEditor_rc
-from utilities import utils as func
 from core.Specs import Specs
+from core.Loggers import SetLogger
+from ui.Libs.UiPreset import IconPth
 
 if sys.platform.startswith('darwin'):
     rsrcPath = ":/images/mac"
@@ -544,7 +545,8 @@ class TextEditor(QWidget):
     def __init__(self, parent=None):
         super(TextEditor, self).__init__(parent)
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(QIcon(func.getAppIcon(32, 'TextEditor')))
+        self.logger = SetLogger(self)
+        self.setWindowIcon(IconPth(32, 'TextEditor'))
 
         self.layout = QHBoxLayout()
         self.buildUI()

@@ -21,7 +21,7 @@ from PyQt5.QtWidgets import (QAction, QApplication, QComboBox, QWidget, QDialog,
                              QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
 
 # Plm
-from ui.Libs.UiPreset import Label, AppIcon
+from ui.Libs.UiPreset import Label, IconPth
 from core.Specs import Specs
 
 
@@ -210,7 +210,7 @@ class NoteReminder(QWidget):
     def __init__(self, parent=None):
         super(NoteReminder, self).__init__(parent)
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(AppIcon('NoteReminder'))
+        self.setWindowIcon(IconPth(32, 'NoteReminder'))
 
         self.layout = QGridLayout()
         self.buildUI()
