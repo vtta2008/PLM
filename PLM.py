@@ -70,6 +70,7 @@ class PLM(QApplication):
         self.logger = SetLogger(self)
         self.threadpool = QThreadPool()                                                     # Thread pool
         self.numOfThread = self.threadpool.maxThreadCount()                                 # Maximum threads available
+
         self.setWindowIcon(AppIcon("Logo"))                                                 # Set up task bar icon
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)             # Change taskbar icon
 
@@ -78,7 +79,7 @@ class PLM(QApplication):
         self.core.addLayout.connect(self.addLayout)
         self.addLayout(self.settingUI)
         self.db = QuerryDB()                                                                # Query local database
-        self.webBrowser = PLMBrowser()  # Webbrowser
+        self.webBrowser = PLMBrowser()                                                      # Webbrowser
         self.addLayout(self.webBrowser)
         self.login, self.signup, self.mainUI, self.sysTray = self.core.import_uiSet1()
         self.uiSet1 = [self.login, self.signup, self.mainUI, self.sysTray]

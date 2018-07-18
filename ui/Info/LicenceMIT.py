@@ -37,7 +37,7 @@ class LicenceMIT(QWidget):
 
         super(LicenceMIT, self).__init__(parent)
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(IconPth(32, 'Credit'))
+        self.setWindowIcon(IconPth(32, 'Licence'))
 
         self.layout = QGridLayout()
         self.buildUI()

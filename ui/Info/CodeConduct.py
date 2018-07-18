@@ -37,7 +37,7 @@ class CodeConduct(QWidget):
 
         super(CodeConduct, self).__init__(parent)
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(IconPth(32, 'Credit'))
+        self.setWindowIcon(IconPth(32, 'CodeConduct'))
 
         self.layout = QGridLayout()
         self.buildUI()

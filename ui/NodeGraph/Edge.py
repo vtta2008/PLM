@@ -20,7 +20,7 @@ from PyQt5.QtGui import QPainterPath, QPen
 
 # Plt
 
-from appData.scr._pNN import *
+from appData.scr._nodeGraph import *
 from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------

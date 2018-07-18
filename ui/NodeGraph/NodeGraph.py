@@ -20,15 +20,12 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 # Plt
 from core.Specs import Specs
 from core.Loggers import SetLogger
-from appData.scr._pNN import *
+from appData.scr._nodeGraph import *
 
 from ui.NodeGraph.Node import Node
 from ui.NodeGraph.View import View
 from ui.NodeGraph.MenuBar import MenuBar
 from ui.Libs.UiPreset import IconPth
-
-# -------------------------------------------------------------------------------------------------------------
-""" Variables """
 
 # -------------------------------------------------------------------------------------------------------------
 """ NoderViewer """
@@ -67,10 +64,10 @@ class NodeGraph(QWidget):
 
         self.Nodes = []
 
-        node1 = Node("Node 1")
+        node1 = Node({'name': 'Node1'})
         node1.setPos(0, 0)
 
-        node2 = Node("Node 2")
+        node2 = Node({'name': 'Node2'})
         node2.setPos(20, 20)
 
 

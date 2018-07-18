@@ -37,7 +37,7 @@ class Reference(QWidget):
 
         super(Reference, self).__init__(parent)
         self.specs = Specs(self.key, self)
-        self.setWindowIcon(IconPth(32, 'Credit'))
+        self.setWindowIcon(IconPth(32, 'Reference'))
 
         self.layout = QGridLayout()
         self.buildUI()

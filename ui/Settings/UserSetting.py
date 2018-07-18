@@ -226,6 +226,7 @@ class UserSetting(QDialog):
         self.specs.showState.emit(False)
 
     def closeEvent(self, event):
+        self.specs.showState.emit(True)
         self.showLayout.emit(self.key, 'hide')
         event.ignore()
 

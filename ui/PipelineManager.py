@@ -17,7 +17,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QMenu)
 
 # Plt
-from appData import __homepage__, dockB, ST_FORMAT, SETTING_FILEPTH
+from appData import __homepage__, dockB, ST_FORMAT, SETTING_FILEPTH, SiPoMin, SiPoExp
 from core.Loggers import SetLogger
 from core.Settings import Settings
 from ui.Libs.GroupBox import AutoSectionLayoutGrp, AutoSectionQMainGrp
@@ -58,6 +58,8 @@ class PipelineManager(QMainWindow):
 
         self.buildUI()
         self.setCentralWidget(self.mainWidget)
+        self.setSizePolicy(SiPoMin, SiPoMin)
+        self.setContentsMargins(5,5,5,5)
 
     def buildUI(self):
 

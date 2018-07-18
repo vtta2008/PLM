@@ -151,6 +151,7 @@ class SettingUI(QWidget):
 
     def closeEvent(self, event):
         self.specs.showState.emit(False)
+        self.showLayout.emit(self.key, 'hide')
         event.ignore()
 
 class RegInput(QWidget):

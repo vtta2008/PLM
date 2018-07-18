@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGraphicsView, 
 
 from core.Specs import Specs
 from ui.Libs.GroupBox import GroupBox
-from ui.Settings import UserSetting
+from ui.Libs.Button import Button
 from utilities import localSQL as usql
 from utilities.utils import getAvatar
 
@@ -65,11 +65,8 @@ class TopTab3(QWidget):
         self.avatarView.scale(100 / self.avatar.width(), 100 / self.avatar.height())
         self.avatarView.setFixedSize(100, 100)
 
-        btn1 = QPushButton('Account Setting')
-        btn1.clicked.connect(self.on_userSettingBtn_clicked)
-
-        btn2 = QPushButton('Log Out')
-        btn2.clicked.connect(partial(self.showLayout.emit, 'login', 'show'))
+        btn1 = Button({'txt':'Account Setting', 'cl': partial(self.showLayout.emit, 'userSetting', 'show')})
+        btn2 = Button({'txt':'Log Out', 'cl': partial(self.showLayout.emit, 'login', 'show')})
 
         btns = [btn1, btn2]
 
@@ -95,12 +92,6 @@ class TopTab3(QWidget):
         #     self.avatarScene = QGraphicsScene()
         #     self.avatarScene.addPixmap(self.avatar)
         #     self.avatarScene.update()
-
-    def on_userSettingBtn_clicked(self):
-        layout = UserSetting.UserSetting()
-        layout.show()
-        layout.updateAvatar.connect(self.update_avatar)
-        layout.exec_()
 
     def on_signOutBtn_clicked(self):
         self.settings.app.setValue("showMain", False)

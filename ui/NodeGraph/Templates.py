@@ -14,7 +14,7 @@ from PyQt5.QtGui import QPen, QBrush, QPainterPath
 
 # Plt
 from appData import center
-from appData.scr._pNN import *
+from appData.scr._nodeGraph import *
 from utilities.pUtils import *
 from core.Specs import Specs
 from core.Loggers import SetLogger

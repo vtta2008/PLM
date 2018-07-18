@@ -56,7 +56,7 @@ class SubMenuBar(QMainWindow):
         self.fileMenu.addMenu("New Organisation")
         self.fileMenu.addMenu("New group/team")
         self.fileMenu.addSeparator()
-        self.fileMenu.addMenu("New project")
+        self.fileMenu.addAction(Action({'icon': 'NewProject', 'txt': 'Create new project', 'trg': partial(self.showLayout.emit, 'newProj', 'show')}, self))
         self.fileMenu.addSeparator()
 
         self.gotoMenu = self.menuBar().addMenu('Go to')
