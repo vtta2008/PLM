@@ -44,7 +44,7 @@ class ToolBar(QToolBar):
                 self.addAction(action)
 
     def applySetting(self):
-        self.resize(len(self.acts)*32, 32)
+        self.resize((len(self.acts) + 1)*32, 32)
 
 class ToolBarDock(QDockWidget):
 
@@ -52,9 +52,11 @@ class ToolBarDock(QDockWidget):
     executing = pyqtSignal(str)
     addLayout = pyqtSignal(object)
     setSetting = pyqtSignal(str, str, str)
+    key = 'Toolbar'
 
-    def __init__(self, name="TD", parent=None):
+    def __init__(self, name="TEXTURE", parent=None):
         super(ToolBarDock, self).__init__(parent)
+        # print(self.__class__.isWindowType())
         self.name = name
         self.setWindowTitle(self.name)
         self.layout = QGridLayout()
@@ -68,6 +70,13 @@ class ToolBarDock(QDockWidget):
     def applySetting(self):
         self.setAllowedAreas(Qt.AllDockWidgetAreas)
         self.setSizePolicy(SiPoExp, SiPoExp)
+
+    def showEvent(self, event):
+        pass
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 21/07/2018 - 6:43 AM

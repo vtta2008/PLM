@@ -115,8 +115,6 @@ class SetLogger(logging.Logger):
         self.addHandler(self.sh)
         self.addHandler(self.fh)
 
-        # logging.basicConfig(format=self.fmt, datefmt=self.dtfmt, filename=self.fn, filemode=self.mode, level=self.level)
-
     def define_level(self, logLevel):
 
         if logLevel is None or logLevel == 'not set':

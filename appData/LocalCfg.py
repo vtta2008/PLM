@@ -162,13 +162,13 @@ class LocalCfg(object):
 
         for key in eKeys:
             if os.path.exists(eVal[eKeys.index(key)]):
-                self.mainInfo[key] = [key, self.getAppIcon(32, key), "{key}".format(key=eVal[eKeys.index(key)])]
+                self.mainInfo[key] = [key, self.getAppIcon(32, key), "{0}".format(eVal[eKeys.index(key)])]
 
         for key in keepKeys:
-            self.mainInfo[key] = [key, self.getAppIcon(32, key), "{key}".format(key=self.appInfo[key])]
+            self.mainInfo[key] = [key, self.getAppIcon(32, key), "{0}".format(self.appInfo[key])]
 
         for key in CONFIG_APPUI:
-            self.mainInfo[key] = [key, self.getAppIcon(32, key), "{key}".format(key=key)]
+            self.mainInfo[key] = [key, self.getAppIcon(32, key), "{0}".format(key)]
 
         for key in CONFIG_SYSTRAY:
             if key in self.appInfo:

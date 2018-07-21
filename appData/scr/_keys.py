@@ -94,11 +94,15 @@ CONFIG_APPUI = ['About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary'
 # --------------------------------------------------------------------------------------------------------------
 """ Tracking key """
 
-TRACK_TDS = ['Maya', 'ZBrush', 'Mari', 'Houdini', 'Painter', ]
+TRACK_TDS = ['Maya', 'ZBrush', 'Houdini', '3Ds Max', 'Mudbox', 'BLender', ]
 
-TRACK_VFX = ['NukeX', 'Davinci Resolve', 'Hiero', 'HieroPlayer', 'After Effects', 'Premiere Pro', 'Media Encoder',]
+TRACK_VFX = ['NukeX', 'After Effects', ]
 
 TRACK_ART = ['Photoshop', 'Illustrator', 'Storyboarder']
+
+TRACK_TEXTURE = ['Mari', 'Painter', ]
+
+TRACK_POST = ['Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro']
 
 TRACK_OFFICE = ['Word', 'Excel', 'PowerPoint', 'Wordpad']
 
@@ -106,7 +110,7 @@ TRACK_DEV = ['PyCharm', 'Sublime Text', 'QtDesigner', 'Git Bash', 'Command Promp
 
 TRACK_TOOLS = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'Screenshot', 'NodeGraph']
 
-TRACK_EXTRA = ['3Ds Max', 'Mudbox', 'BLender', ]
+TRACK_EXTRA = []
 
 TRACK_SYSTRAY = ['Snipping Tool', 'Screenshot', 'Maximize', 'Minimize', 'Restore', 'Quit', ]
 
@@ -123,8 +127,8 @@ pVERSION = dict(adobe=adobeVer, autodesk=autodeskVer, allegorithmic = allegorith
 pPACKAGE = dict(adobe=adobeApp, autodesk=autodeskApp, allegorithmic = allegorithmicApp, foundry=foundryApp,
                 pixologic=pixologiApp, sizefx=sizefxApp, office=officeApp, jetbrains=jetbrainsApp, wonderUnit=wonderUniApp,)
 
-pTRACK = dict(TDS=TRACK_TDS, VFX=TRACK_VFX, ART=TRACK_ART, Office=TRACK_OFFICE, Dev=TRACK_DEV,
-              Tools=TRACK_TOOLS, Extra=TRACK_EXTRA, sysTray=TRACK_SYSTRAY, )
+pTRACK = dict(TDS=TRACK_TDS, VFX=TRACK_VFX, ART=TRACK_ART, TEXTURE = TRACK_TEXTURE, POST = TRACK_POST,
+              Office=TRACK_OFFICE, Dev=TRACK_DEV, Tools=TRACK_TOOLS, Extra=TRACK_EXTRA, sysTray=TRACK_SYSTRAY, )
 
 # --------------------------------------------------------------------------------------------------------------
 """ Store config data """
@@ -161,15 +165,17 @@ def generate_config(key, *args):
 KEYPACKAGE = generate_key_packages()
 
 # Toolbar config
-CONFIG_TDS = generate_config('TDS')
-CONFIG_VFX = generate_config('VFX')
-CONFIG_ART = generate_config('ART')
+CONFIG_TDS = generate_config('TDS')                         # TD artist
+CONFIG_VFX = generate_config('VFX')                         # VFX artist
+CONFIG_ART = generate_config('ART')                         # 2D artist
+CONFIG_TEXTURE = generate_config('TEXTURE')                 # ShadingTD artist
+CONFIG_POST = generate_config('POST')                       # Post production
 
 # Tab 1 sections config
-CONFIG_OFFICE = generate_config('Office')
-CONFIG_DEV = generate_config('Dev') + ['Command Prompt']
-CONFIG_TOOLS = generate_config('Tools')
-CONFIG_EXTRA = generate_config('Extra')
+CONFIG_OFFICE = generate_config('Office')                   # Paper work department
+CONFIG_DEV = generate_config('Dev') + ['Command Prompt']    # Rnd - Research and development
+CONFIG_TOOLS = generate_config('Tools')                     # useful/custom tool supporting for the whole pipeline
+CONFIG_EXTRA = generate_config('Extra')                     # Extra tool may be considering to use
 CONFIG_SYSTRAY = generate_config('sysTray')
 
 FILEPATH = os.path.join(CONFIG_DIR, "PLM.cfg")
