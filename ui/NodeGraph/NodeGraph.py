@@ -21,66 +21,60 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 from core.Specs import Specs
 from core.Loggers import SetLogger
 from appData.scr._nodeGraph import *
-
-from ui.NodeGraph.Node import Node
+from utilities.utils import getUnix
+from ui.NodeGraph.Node import Node, NodeAttr, Knob, Edge
 from ui.NodeGraph.View import View
+from ui.NodeGraph.Scene import Scene
 from ui.NodeGraph.MenuBar import MenuBar
 from ui.Libs.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ NoderViewer """
 
-class Scene(QGraphicsScene):
-
-    def __init__(self, parent=None):
-        super(Scene, self).__init__(parent)
-
-        self.setSceneRect(0, 0, 100, 30)
-
 class NodeGraph(QWidget):
 
     key = 'nodeGraph'
     showLayout = pyqtSignal(str, str)
+    setSetting = pyqtSignal(str, str, str)
 
     def __init__(self, parent=None):
         super(NodeGraph, self).__init__(parent)
 
         self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
-
+        self.mtd = {}
+        self.Nodes = []
         self.setWindowIcon(IconPth(32, 'NodeGraph'))
         self.menuBar = MenuBar(self)
 
-        self.scene = Scene()
         self.view = View()
-        self.view.setScene(self.scene)
+        self.sceneView = Scene(self)                                         # Setup scene.
+        self.view.setScene(self.sceneView)
         self.view.setRenderHint(ANTIALIAS)
         self.view.setViewportUpdateMode(UPDATE_FULLVIEW)
+
+        sceneWidth = 1000
+        sceneHeight = 500
+
+        self.sceneView.nodeMoved.connect(self.view.nodeMoved)                # Connect scene node moved signal
+        self.sceneView.selectionChanged.connect(self.view._returnSelection)  # Connect signals.
+        self.sceneView.setSceneRect(0, 0, sceneWidth, sceneHeight)
+
+        node1 = self.createNode({'name': 'Node1', 'pos': [0, 0]})
+        node2 = self.createNode({'name': 'Node2', 'pos': [20, 20]})
 
         self.layout = QGridLayout()
         self.layout.addWidget(self.menuBar, 0, 0, 1, 1)
         self.layout.addWidget(self.view, 1, 0, 1, 1)
         self.setLayout(self.layout)
-
-        self.Nodes = []
-
-        node1 = Node({'name': 'Node1'})
-        node1.setPos(0, 0)
-
-        node2 = Node({'name': 'Node2'})
-        node2.setPos(20, 20)
-
-
-        self.scene.addItem(node1)
-        self.scene.addItem(node2)
-
         self.resize(1000, 500)
 
-    def createNode(self):
-        pass
+        self.mtd['objName'] = '{0} {1}'.format(self.key, str(1))
+        self.mtd['unix'] = getUnix()
+        self.mtd['nodes'] = self.view.getNodes()
 
-    def regisNode(self):
-        pass
+    def createNode(self, nodeData):
+        return self.view.createNode(nodeData)
 
     def clearScene(self):
         pass
@@ -97,6 +91,22 @@ class NodeGraph(QWidget):
     def storeCurrentScene(self):
         pass
 
+    def createEdge(self, sourceNode, sourceAttr, targetNode, targetAttr):
+
+        plug = self.scene().nodes[sourceNode].plugs[sourceAttr]
+        socket = self.scene().nodes[targetNode].sockets[targetAttr]
+
+        edge = Edge(plug.center(), socket.center(), plug, socket)
+
+        edge.plugNode = plug.parentItem().name
+        edge.plugAttr = plug.attribute
+        edge.socketNode = socket.parentItem().name
+        edge.socketAttr = socket.attribute
+        plug.connect(socket, edge)
+        socket.connect(plug, edge)
+        edge.updatePath()
+        self.scene().addItem(edge)
+
     def keyPressEvent(self, event):
         if event.key() == KEY_DEL:
             selectedNodes = [i for i in self.scene.selectedItems() if isinstance(i, Node)]
@@ -108,11 +118,15 @@ class NodeGraph(QWidget):
         pass
 
     def resizeEvent(self, event):
-        print(self.width(), self.height())
+        self.setSetting.emit('width', str(self.width()), self.objectName())
+        self.setSetting.emit('height', str(self.height()), self.objectName())
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     nodeGrahp = QApplication(sys.argv)
-    # nodeGrahp.setStyleSheet(nodeGrahp.load_stylesheet())
     layout = NodeGraph()
     layout.show()
     nodeGrahp.exec_()

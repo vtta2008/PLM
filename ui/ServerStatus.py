@@ -23,7 +23,7 @@ from PyQt5.QtNetwork import QHostAddress
 from appData import left, __serverUrl__
 from appData.ServerCfg import ServerCfg
 from ui.Libs.UiPreset import Label
-from utilities.utils import getAppIcon
+from utilities.utils import get_app_icon
 from core.Specs import Specs
 from core.Loggers import SetLogger
 
@@ -44,8 +44,8 @@ class ServerStatus(QGridLayout):
 
         self.serverOpen = self.server.isListening()
 
-        self.connected = getAppIcon(16, 'Connected')
-        self.disconnected = getAppIcon(16, 'Disconnected')
+        self.connected = get_app_icon(16, 'Connected')
+        self.disconnected = get_app_icon(16, 'Disconnected')
 
         self.networkStatus = QLabel()
         self.networkStatus.setMaximumWidth(20)

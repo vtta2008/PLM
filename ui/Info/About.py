@@ -20,7 +20,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QGridLayout, QScrollArea, QWidget
 
 # Plm
-from utilities.utils import getAppIcon
+from utilities.utils import get_app_icon
 from appData import ABOUT
 from ui.Libs.UiPreset import Label, IconPth
 from ui.Libs.Button import Button

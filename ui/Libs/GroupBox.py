@@ -17,7 +17,7 @@ Description:
 from PyQt5.QtWidgets import QGroupBox, QGridLayout, QHBoxLayout
 
 # PLM
-from appData import WAIT_LAYOUT_COMPLETE
+from appData import WAIT_LAYOUT_COMPLETE, SiPoMin
 from ui.Libs.UiPreset import Label
 from ui.Libs.GridLayout import AutoPreset1, AutoPreset2, AutoPreset3
 
@@ -42,7 +42,8 @@ class AutoSectionQMainGrp(QGroupBox):
         self.applySetting()
 
     def applySetting(self):
-        pass
+        self.setSizePolicy(SiPoMin, SiPoMin)
+        self.setContentsMargins(5, 5, 5, 5)
 
 class AutoSectionLayoutGrp(QGroupBox):
 
@@ -63,7 +64,8 @@ class AutoSectionLayoutGrp(QGroupBox):
         self.applySetting()
 
     def applySetting(self):
-        pass
+        self.setSizePolicy(SiPoMin, SiPoMin)
+        self.setContentsMargins(5, 5, 5, 5)
 
 class GroupBox(QGroupBox):
 
@@ -74,6 +76,7 @@ class GroupBox(QGroupBox):
         self.mode = mode
 
         self.buildUI()
+        self.applySetting()
 
     def buildUI(self):
         if self.mode == "IconGrid":
@@ -82,6 +85,10 @@ class GroupBox(QGroupBox):
             self.setLayout(AutoPreset2(self.btns))
         elif self.mode == "ImageView":
             self.setLayout(AutoPreset3(self.btns[0]))
+
+    def applySetting(self):
+        self.setSizePolicy(SiPoMin, SiPoMin)
+        self.setContentsMargins(5, 5, 5, 5)
 
 def GroupGrid(txt=None):
     if txt is None:

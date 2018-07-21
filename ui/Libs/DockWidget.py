@@ -69,7 +69,6 @@ class DockWidget(QDockWidget):
         self.setWidget(self.content)
 
     def buildUI(self):
-
         cursor = self.content.textCursor()
         cursor.insertBlock()
         cursor.insertText("Note info")

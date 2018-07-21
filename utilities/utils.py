@@ -13,7 +13,11 @@ Description:
 # Python
 import os, sys, requests, platform, subprocess, winshell, yaml, json, linecache, re, datetime, time, uuid, win32api
 
-# Plt
+# PyQt5
+from PyQt5.QtCore import Qt, QRectF, QRect, QSize
+from PyQt5.QtGui import QColor, QFont, QFontMetrics
+
+# PLM
 from appData import __envKey__, __pkgsReq__, LOGO_DIR, KEYPACKAGE, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR
 
 # -------------------------------------------------------------------------------------------------------------
@@ -191,45 +195,78 @@ def get_base_folder(path):
 def get_base_name(path):
     return os.path.basename(path)
 
-def getAppIcon(size=32, iconName="AboutPlt"):
+def get_app_icon(size=32, iconName="AboutPlt"):
     iconPth = os.path.join(os.getenv(__envKey__), 'imgs', 'icons', "x" + str(size))
     return os.path.join(iconPth, iconName + ".icon.png")
 
-def getLogo(size=32, name="DAMG"):
+def get_logo_icon(size=32, name="DAMG"):
     if name == "Logo":
         logoPth = os.path.join(LOGO_DIR, 'Plm', 'icons')
     elif name == 'DAMG':
         logoPth = os.path.join(LOGO_DIR, 'DAMGteam', 'icons')
     else:
         logoPth = os.path.join(LOGO_DIR, 'Plt', 'icons')
-
     return os.path.join(logoPth, str(size) + "x" + str(size) + ".png")
 
-def getWebIcon(name):
+def get_web_icon(name):
     icons = [i for i in get_file_path(WEB_ICON_DIR) if ".icon" in i]
     for i in icons:
         if name in i:
             return i
 
-def getAvatar(name):
+def get_avatar_icon(name):
     avatars = [a for a in get_file_path(AVATAR_DIR) if '.avatar' in a]
     for a in avatars:
         if name in a:
             return a
 
-def getTag(name):
+def get_tag_icon(name):
     tags = [t for t in get_file_path(TAG_DIR) if '.tag' in t]
     for t in tags:
         if name in t:
             return t
 
-# -------------------------------------------------------------------------------------------------------------
-""" Read, Write, Edit json/yaml data """
+def generate_alternative_color(color, av):
+    lightness = color.lightness()
+    mult = float(lightness)/255
+    return mult
 
-def dataHandle(type='json', mode='r', filePath=None, data={}):
-    """
-    json and yaml: read, write, edit... etc
-    """
+def convert_to_QColor(data=None, alternate=False, av=20):
+    if len(data) == 3:
+        color = QColor(data[0], data[1], data[2])
+        if alternate:
+            mult = generate_alternative_color(color, av)
+            color = QColor(max(0, data[0]-(av*mult)), max(0, data[1]-(av*mult)), max(0, data[2]-(av*mult)))
+        return color
+    elif len(data) == 4:
+        color = QColor(data[0], data[1], data[2], data[3])
+        if alternate:
+            mult = generate_alternative_color(color, av)
+            color = QColor(max(0, data[0]-(av*mult)), max(0, data[1]-(av*mult)), max(0, data[2]-(av*mult)), data[3])
+        return color
+    else:
+        print('Color from configuration is not recognized : ', data)
+        print('Can only be [R, G, B] or [R, G, B, A]')
+        print('Using default color !')
+        color = QColor(120, 120, 120)
+        if alternate:
+            color = QColor(120-av, 120-av, 120-av)
+        return color
+
+def get_pointer_bounding_box(pointerPos, bbSize):
+    point = pointerPos
+    mbbPos = point
+    point.setX(point.x() - bbSize / 2)
+    point.setY(point.y() - bbSize / 2)
+    size = QSize(bbSize, bbSize)
+    bb = QRect(mbbPos, size)
+    bb = QRectF(bb)
+    return bb
+
+# -------------------------------------------------------------------------------------------------------------
+""" Read, Write, Edit json/yaml/config info """
+
+def data_handler(type='json', mode='r', filePath=None, data={}):
     info = {}
     if type == 'json':
         if mode == 'r' or mode == 'r+':
@@ -253,10 +290,37 @@ def dataHandle(type='json', mode='r', filePath=None, data={}):
                 info = yaml.dump(data, f, default_flow_style=False)
     return info
 
+def swap_list_index(inputList, oldIndex, newIndex):
+    if oldIndex == -1:
+        oldIndex = len(inputList)-1
+    if newIndex == -1:
+        newIndex = len(inputList)
+    value = inputList[oldIndex]
+    inputList.pop(oldIndex)
+    inputList.insert(newIndex, value)
+
+def load_config(filePath):
+    with open(filePath, 'r') as myfile:
+        fileString = myfile.read()
+        cleanString = re.sub('//.*?\n|/\*.*?\*/', '', fileString, re.S)                 # remove comments
+        data = json.loads(cleanString)
+    return data
+
+def save_data(filePath, data):
+    f = open(filePath, "w")
+    f.write(json.dumps(data, sort_keys = True, indent = 4, ensure_ascii=False))
+    f.close()
+
+def load_data(filePath):
+    with open(filePath) as json_file:
+        j_data = json.load(json_file)
+    json_file.close()
+    return j_data
+
 # -------------------------------------------------------------------------------------------------------------
 """ Collecting info user """
 
-def getLocation():
+def get_user_location():
 
     package = KEYPACKAGE
     pythonVersion = sys.version
@@ -297,21 +361,31 @@ def get_window_taskbar_size():
     tbW = resW
     return tbW, tbH
 
-def getPcInfo():
+def get_local_pc_info():
     r = requests.get('https://api.ipdata.co').json()
-
+    info = dict()
     for key in r:
         k = (str(key))
-        if k == 'ip':
-            ip = str(r[key])
-        elif k == 'city':
-            city = str(r[key])
-        elif k == 'country_name':
-            country = str(r[key])
-        else:
-            ip = city = country = 'unknown'
+        for c in ['ip', 'city', 'country_name']:
+            if k == c:
+                info[k] = str(r[key])
+            else:
+                info[k] = 'unknown'
 
-    return ip, city, country
+    return info['ip'], info['city'], info['country_name']
+
+def get_layout_size(layout):
+    sizeW = layout.frameGeometry().width()
+    sizeH = layout.frameGeometry().height()
+    return sizeW, sizeH
+
+def get_text_size(text, painter=None):
+    if not painter:
+        metrics = QFontMetrics(QFont())
+    else:
+        metrics = painter.fontMetrics()
+    size = metrics.size(Qt.TextSingleLine, text)
+    return size
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Encode, decode, convert """
@@ -360,13 +434,13 @@ def getUnix():
 # ----------------------------------------------------------------------------------------------------------- #
 """ String """
 
-def checkBlank(data):
+def check_blank(data):
     if len(data) == 0 or data == "" or data is None:
         return False
     else:
         return True
 
-def checkMatch(data1, data2):
+def check_match(data1, data2):
     check = []
     if len(data1) == len(data2):
         for i in range(len(data1)):
@@ -410,6 +484,9 @@ def clean_file_ext(var):
     if not fileNames == []:
         for filePth in fileNames:
             os.remove(filePth)
+
+
+
 
 
 # ----------------------------------------------------------------------------------------------------------- #

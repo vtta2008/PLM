@@ -30,7 +30,7 @@ from core.Loggers import SetLogger
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
 
-class ToolBar(QMainWindow):
+class MainToolBar(QMainWindow):
 
     key = 'toolBar'
 
@@ -41,7 +41,7 @@ class ToolBar(QMainWindow):
     setSetting = pyqtSignal(str, str, str)
 
     def __init__(self, parent=None):
-        super(ToolBar, self).__init__(parent)
+        super(MainToolBar, self).__init__(parent)
 
         self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
@@ -60,8 +60,7 @@ class ToolBar(QMainWindow):
                 toolBar.addAction(Action({'icon':key,
                                           'stt':self.appInfo[key][0],
                                           'txt':key,
-                                          'trg':(partial(self.executing.emit, self.appInfo[key][2]))},
-                                         self))
+                                          'trg':(partial(self.executing.emit, self.appInfo[key][2]))}, self))
         return toolBar
 
     @pyqtSlot(str, bool)
@@ -88,7 +87,7 @@ class ToolBar(QMainWindow):
 
 def main():
     app = QApplication(sys.argv)
-    toolBar = ToolBar()
+    toolBar = MainToolBar()
     toolBar.show()
     app.exec_()
 

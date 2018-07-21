@@ -151,10 +151,10 @@ class PLM(QApplication):
     def showLayout(self, name, mode):
         self.logger.trace('signal comes: {0}, {1}'.format(name, mode))
         if name == 'app':
-            layout = QApplication
+            layout = self
         else:
             layout = self.layouts[name]
-            self.logger.debug("define layout: {0}".format(layout))
+            self.logger.loginfo("define layout: {0}".format(layout))
 
         if mode == "hide":
             layout.hide()
@@ -170,7 +170,7 @@ class PLM(QApplication):
             layout.quit()
 
         self.setSetting(layout.key, mode)
-        self.logger.info("{0} layout: {1}".format(mode, layout))
+        self.logger.loginfo("{0} layout: {1}".format(mode, layout))
 
     @pyqtSlot(str)
     def openBrowser(self, url):
@@ -180,37 +180,36 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str, str)
     def setSetting(self, key=None, value=None, grp=None):
-        self.logger.trace('signal comes: {0}, {1}, {2}'.format(key, value, grp))
+        self.logger.loginfo('signal comes: {0}, {1}, {2}'.format(key, value, grp))
         self.settings.initSetValue(key, value, grp)
 
     @pyqtSlot(str, str)
     def loadSetting(self, key=None, grp=None):
-        self.logger.trace('signal comes: {0}, {1}'.format(key, grp))
+        self.logger.loginfo('signal comes: {0}, {1}'.format(key, grp))
         value = self.settings.initValue(key, grp)
         if key is not None:
             self.returnValue.emit(key, value)
 
     @pyqtSlot(str)
     def executing(self, cmd):
-        self.logger.trace('signal comes: {0}'.format(cmd))
+        self.logger.loginfo('signal comes: {0}'.format(cmd))
         if cmd in self.layouts.keys():
-            self.logger.trace('run showlayout: {0}'.format(cmd))
+            self.logger.loginfo('run showlayout: {0}'.format(cmd))
             self.showLayout(cmd, 'show')
         elif os.path.isdir(cmd):
             os.startfile(cmd)
         elif cmd == 'open_cmd':
+            self.logger.loginfo('open command prompt')
             os.system('start /wait cmd')
         elif cmd == 'Remove pyc':
-            print("clean .pyc files")
+            self.logger.loginfo("clean .pyc files")
             clean_file_ext('.pyc')
-            return
         elif cmd == 'Re-config local':
             from appData.LocalCfg import LocalCfg
-            print('re config data')
+            self.logger.loginfo('re config data')
             LocalCfg()
-            return
         else:
-            self.logger.trace('execute: {0}'.format(cmd))
+            self.logger.loginfo('execute: {0}'.format(cmd))
             subprocess.Popen(cmd)
 
     @pyqtSlot(object)

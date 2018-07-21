@@ -11,12 +11,15 @@ Description:
 """ Import """
 
 # Python
-import winshell, os, json
+import winshell, os, json, pprint, logging
 
 from appData.scr._meta import __plmWiki__, __envKey__
 from appData.scr._keys import KEYPACKAGE, CONFIG_SYSTRAY, CONFIG_APPUI, KEYDETECT, FIX_KEY
 from appData.scr._path import DAMG_LOGO_32, PLM_LOGO_32, ICON_DIR_32, pyEnvCfg, mainConfig, appIconCfg, webIconCfg, appConfig
+from appData.scr._format import LOG_FORMAT, DT_FORMAT
 
+logger = logging.getLogger(__name__)
+logging.basicConfig(format=LOG_FORMAT['fullOpt'], datefmt=DT_FORMAT['fullOpt'], level=logging.INFO)
 # -------------------------------------------------------------------------------------------------------------
 """ Collecting all info. """
 
@@ -96,11 +99,34 @@ class LocalCfg(object):
             for k in KEYDETECT:
                 if k in key:
                     delKeys.append(key)
+                    logger.info("KEY DETECTED: {0}. Append to list to be deleted later".format(key))
 
         for key in delKeys:
             self.del_key(key, self.appInfo)
 
         keepKeys = [k for k in KEYPACKAGE if k in self.appInfo and k in self.iconInfo]
+
+        appNuke = []
+        myNuke = []
+        iconNuke = []
+        for key in self.appInfo:
+            if 'NukeX' in key:
+                print(key)
+                appNuke.append(key)
+
+        for key in KEYPACKAGE:
+            if 'NukeX' in key:
+                print(key)
+                myNuke.append(key)
+
+        for key in self.iconInfo:
+            if 'NukeX' in key:
+                print(key)
+                iconNuke.append(key)
+
+        pprint.pprint(myNuke)
+        pprint.pprint(appNuke)
+        pprint.pprint(iconNuke)
 
         # Custom functions
         self.mainInfo['About'] = ['About PLM', self.iconInfo['About'], 'About']
@@ -128,7 +154,6 @@ class LocalCfg(object):
         # Extra app come along with plm but not be installed in local.
 
         qtDesigner = os.path.join(os.getenv('PROGRAMDATA'), 'Anaconda3', 'Library', 'bin', 'designer.exe')
-
         davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
 
         eVal = [qtDesigner, davinciPth]
@@ -146,12 +171,12 @@ class LocalCfg(object):
             self.mainInfo[key] = [key, self.getAppIcon(32, key), "{key}".format(key=key)]
 
         for key in CONFIG_SYSTRAY:
-            print(key)
             if key in self.appInfo:
                 self.mainInfo[key] = [key, self.getAppIcon(32, key), self.appInfo[key]]
             else:
                 self.mainInfo[key] = [key, self.getAppIcon(32, key), FIX_KEY[key]]
-            print(self.mainInfo[key])
+
+            # pprint.pprint(self.mainInfo[key])
 
         self.create_config_file('main', self.mainInfo)
 
@@ -184,10 +209,10 @@ class LocalCfg(object):
     def del_key(self, key, dict={}):
         try:
             del dict[key]
-            # logger.debug("key deleted: {key}".format(key=key))
+            logger.info("key deleted: {key}".format(key=key))
         except KeyError:
             dict.pop(key, None)
-            # logger.debug("key poped: {key}".format(key=key))
+            logger.info("key poped: {key}".format(key=key))
 
     def create_config_file(self, name, data):
         if name == 'envKeys':
@@ -202,11 +227,11 @@ class LocalCfg(object):
             filePth = webIconCfg
 
         if os.path.exists(filePth):
-            print('Remove old config file: {0}'.format(filePth))
+            logger.info('Remove old config file: {0}'.format(filePth))
             os.remove(filePth)
 
         with open(filePth, 'w') as f:
-            print('Create new config file: {0}'.format(filePth))
+            logger.info('Create new config file: {0}'.format(filePth))
             json.dump(data, f, indent=4)
 
     def handle_path_error(self, dir=None):
@@ -214,8 +239,8 @@ class LocalCfg(object):
             try:
                 raise IsADirectoryError("Path is not exists: {0}".format(dir))
             except IsADirectoryError as error:
-                pass
-                # logger.debug('Caught error: ' + repr(error))
+                logger.debug('Caught error: ' + repr(error))
+                return
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 4/06/2018 - 12:34 AM

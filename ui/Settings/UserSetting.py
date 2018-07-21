@@ -69,7 +69,7 @@ class UserSetting(QDialog):
         avatar_groupBox, avatar_layout = GroupGrid('Change Avatar')
 
         self.avatar = QLabel()
-        self.avatar.setPixmap(QPixmap.fromImage(QImage(func.getAvatar(self.username))))
+        self.avatar.setPixmap(QPixmap.fromImage(QImage(func.get_avatar_icon(self.username))))
         self.avatar.setScaledContents(True)
         self.avatar.setFixedSize(100, 100)
 

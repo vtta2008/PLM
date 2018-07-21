@@ -14,7 +14,7 @@ from PyQt5.QtCore import QDateTime, QSettings
 
 LOG_FORMAT = dict(
 
-    fullOpt = "{asctime:-15s}: %{name:-18s}[{levelname:-8s}] - %{module:-15s} - %{funcName:-20s} - %{lineno:-6d} - %{message}",
+    fullOpt = "%(asctime)s: %(filename)s: %(levelname)s: %(funcName)s: line %(lineno)s: %(message)s",
     rlm = "{relativeCreated:d} [levelname}: {message}",
     tlm1 = "{asctime:[{lvelname}: :{message}",
     tnlm1 = "%(asctime)s  %(name)-22s  %(levelname)-8s %(message)s",
@@ -25,7 +25,7 @@ LOG_FORMAT = dict(
 DT_FORMAT = dict(
     dmyhms = "%d/%m/%Y %H:%M:%S",
     mdhm = "'%m-%d %H:%M'",
-    fullOpt = "hh:mm - dd MMMM yy",
+    fullOpt = '(%d/%m/%Y %H:%M:%S)',
 )
 
 ST_FORMAT = dict(

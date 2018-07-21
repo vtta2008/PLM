@@ -11,11 +11,8 @@ Description:
 """ Import """
 
 # Python
-import os, sys
 import sqlite3 as lite
-
 from appData import DB_PTH
-
 
 # Plt
 from utilities import utils as func

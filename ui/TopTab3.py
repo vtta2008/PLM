@@ -27,7 +27,7 @@ from core.Specs import Specs
 from ui.Libs.GroupBox import GroupBox
 from ui.Libs.Button import Button
 from utilities import localSQL as usql
-from utilities.utils import getAvatar
+from utilities.utils import get_avatar_icon
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab3 """
@@ -54,7 +54,7 @@ class TopTab3(QWidget):
         except IndexError:
             self.username = 'DemoUser'
 
-        self.avatar = QPixmap(getAvatar(self.username))
+        self.avatar = QPixmap(get_avatar_icon(self.username))
         self.avatarScene = QGraphicsScene()
         self.avatarScene.addPixmap(self.avatar)
 

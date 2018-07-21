@@ -17,8 +17,8 @@ import sys, time, traceback, unittest
 from PyQt5.QtCore import pyqtSignal, pyqtSlot,QRunnable, QObject, QThreadPool, QThread
 from PyQt5.QtWidgets import QGridLayout, QWidget
 
-# Plt
-from ui import uirc as rc
+# PLM
+from ui.Libs.UiPreset import Label
 
 # -------------------------------------------------------------------------------------------------------------
 """ Signals """
@@ -141,7 +141,7 @@ class ThreadConsole(QWidget):
         self.labels = []
 
         for i in range(self.numOfThread):
-            label = rc.Label("0")
+            label = Label({'txt':'0'})
             self.labels.append(label)
             self.layout.addWidget(label, 0, i, 1, 1)
             i += 1

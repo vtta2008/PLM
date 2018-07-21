@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import (QWidget, QGridLayout, QGroupBox, QHBoxLayout, QVBox
 
 # PLM
 from appData import SiPoMin
-from utilities.utils import getAppIcon
+from utilities.utils import get_app_icon
 from ui.Libs.UiPreset import Label
 from ui.Libs.Button import Button
 from core.Specs import Specs
@@ -65,7 +65,7 @@ class NewProject(QWidget):
         super(NewProject, self).__init__(parent)
         self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
-        self.setWindowIcon(QIcon(getAppIcon(32, "NewProject")))
+        self.setWindowIcon(QIcon(get_app_icon(32, "NewProject")))
 
         self.layout = QGridLayout(self)
         self.buildUI()

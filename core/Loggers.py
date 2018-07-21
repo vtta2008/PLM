@@ -8,16 +8,38 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __future__ import unicode_literals
 """ Import """
 
 # Python
-import sys, traceback, logging, enum, pdb
+import sys, traceback, logging, enum, pdb, json
 
 # Plm
 from appData.scr._path import LOG_PTH
 from appData.scr._format import LOG_FORMAT, DT_FORMAT
 
 # -------------------------------------------------------------------------------------------------------------
+try:
+    unicode
+except NameError:
+    unicode = str
+
+class Encoder(json.JSONEncoder):
+    def default(self, o):
+        if isinstance(o, set):
+            return tuple(o)
+        elif isinstance(o, unicode):
+            return o.encode('unicode_escape').decode('ascii')
+        return super(Encoder, self).default(o)
+
+class StructuredMessage(object):
+    def __init__(self, message, **kwargs):
+        self.message = message
+        self.kwargs = kwargs
+
+    def __str__(self):
+        s = Encoder().encode(self.kwargs)
+        return 'message: >>> %s >>> %s' % (self.message, s)
 
 class OneLineExceptionFormatter(logging.Formatter):
 
@@ -32,7 +54,7 @@ class OneLineExceptionFormatter(logging.Formatter):
         s = super(OneLineExceptionFormatter, self).format(record)
         if record.exc_text:
             s = s.replace('\n', '') + '|'
-        return
+        return s
 
 class LogLevel(enum.IntEnum):
 
@@ -63,21 +85,40 @@ class LogLevel(enum.IntEnum):
 
 class SetLogger(logging.Logger):
 
-    def __init__(self, parent=None, level="debug", format=LOG_FORMAT['fullOpt'], datefmt=DT_FORMAT['fullOpt'], filemode='w', filename=LOG_PTH):
+    def __init__(self, parent=None, level="info", fmt=LOG_FORMAT['fullOpt'], dtfmt=DT_FORMAT['fullOpt'], filemode='a+', filename=LOG_PTH):
         super(SetLogger, self).__init__(parent)
+
+        if parent is not None:
+            logID = parent.__class__.__name__
+        else:
+            logID = self.__class__.__name__
+
+        logging.getLogger(logID)
 
         self.level = self.define_level(level)
         self.logLevel = self.level_config(self.level)
-
+        self.fmt = fmt                                                          # format
+        self.dtfmt = dtfmt                                                      # datetime format
+        self.fn = filename
+        self.mode = filemode
         self.addLoggingLevel(levelName='TRACE', levelNum=LogLevel.Trace)
 
-        self.handler = logging.StreamHandler(sys.stdout)
-        self.addHandler(self.handler)
-
         sys.excepthook = self.exception_handler
-        logging.basicConfig(format=format, datefmt=datefmt, filename=filename, filemode=filemode, level=self.level, style="{")
+        self.sh = logging.StreamHandler(sys.stdout)
+        self.sh.setFormatter(logging.Formatter(self.fmt, self.dtfmt))
+        self.sh.setLevel(logging.DEBUG)
+
+        self.fh = logging.FileHandler(self.fn)
+        self.fh.setFormatter(OneLineExceptionFormatter(self.fmt, self.dtfmt))
+        self.fh.setLevel(logging.DEBUG)
+
+        self.addHandler(self.sh)
+        self.addHandler(self.fh)
+
+        # logging.basicConfig(format=self.fmt, datefmt=self.dtfmt, filename=self.fn, filemode=self.mode, level=self.level)
 
     def define_level(self, logLevel):
+
         if logLevel is None or logLevel == 'not set':
             loglvl = logging.NOTSET
         elif logLevel == "info":
@@ -121,30 +162,7 @@ class SetLogger(logging.Logger):
         return exception
 
     def addLoggingLevel(self, levelName, levelNum, methodName=None):
-        """
-        Comprehensively adds a new logging level to the `logging` module and the
-        currently configured logging class.
 
-        `levelName` becomes an attribute of the `logging` module with the value
-        `levelNum`. `methodName` becomes a convenience method for both `logging`
-        itself and the class returned by `logging.getLoggerClass()` (usually just
-        `logging.Logger`). If `methodName` is not specified, `levelName.lower()` is
-        used.
-
-        To avoid accidental clobberings of existing attributes, this method will
-        raise an `AttributeError` if the level name is already an attribute of the
-        `logging` module or if the method name is already present
-
-        Example
-        -------
-        # addLoggingLevel('TRACE', logging.DEBUG - 5)
-        # logging.getLogger(__name__).setLevel("TRACE")
-        # logging.getLogger(__name__).trace('that worked')
-        # logging.trace('so did this')
-        # logging.TRACE
-        5
-
-        """
         if not methodName:
             methodName = levelName.lower()
 
@@ -166,6 +184,9 @@ class SetLogger(logging.Logger):
         setattr(logging, levelName, levelNum)
         setattr(logging.getLoggerClass(), methodName, logForLevel)
         setattr(logging, methodName, logToRoot)
+
+    def loginfo(self, mess, *args, **kwargs):
+        self.debug(StructuredMessage(mess))
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 15/06/2018 - 6:49 PM

@@ -21,7 +21,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QCheckBox, QPushButton, QGridLayout, QGroupBox
 
 # Plt
-from utilities.utils import str2bool, bool2str, getAppIcon
+from utilities.utils import str2bool, bool2str, get_app_icon
 from core.Loggers import SetLogger
 from core.Specs import Specs
 
@@ -43,7 +43,7 @@ class Preferences(QWidget):
         self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         self.resize(200, 100)
-        self.setWindowIcon(QIcon(getAppIcon(32, 'Configuration')))
+        self.setWindowIcon(QIcon(get_app_icon(32, 'Configuration')))
 
         self.layout = QGridLayout()
         self.buildUI()

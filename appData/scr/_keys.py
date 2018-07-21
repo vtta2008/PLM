@@ -30,12 +30,12 @@ userMayaDir = os.path.expanduser(r"~/Documents/maya")
 adobeVer = ["CC 2017", "CC 2018", "CC 2019", ]
 
 adobeApp = ["Adobe Photoshop", "Adobe Illustrator", "Adobe Audition", "Adobe After Effects", "Adobe Premiere Pro",
-            "Adobe Media Encoder"]
+            "Adobe Media Encoder", ]
 
 # --------------------------------------------------------------------------------------------------------------
 """ Foundry config """
 
-foundryVer = ["11.1v1", "4.0v1", "2.6v3"]
+foundryVer = ["11.1v1", "11.2v1", "4.0v1", "4.1v1", "2.6v3"]
 
 foundryApp = ['Hiero', 'HieroPlayer', 'Mari', 'NukeX', 'Katana',]
 
@@ -51,12 +51,12 @@ pixologiApp = ['ZBrush', ]
 
 allegorithmicVer = []
 
-allegorithmicApp = ['Substance Painter', ]
+allegorithmicApp = ['Substance Painter', 'Substance Designer']
 
 # --------------------------------------------------------------------------------------------------------------
 """ SideFX config """
 
-sizefxVer = ['15.0', '15.5', '16.0']
+sizefxVer = ['16.5.439', '16.5.496']
 
 sizefxApp = ['Houdini FX', ]
 
@@ -73,6 +73,12 @@ officeApp = ['Word', 'Excel', 'PowerPoint', 'Wordpad', 'TextEditor', 'NoteRemind
 jetbrainsVer = ['2017.3.3', '2018.1', ]
 
 jetbrainsApp = ['JetBrains PyCharm', ]
+# --------------------------------------------------------------------------------------------------------------
+""" Wonder Unit """
+
+wonderUnitVer = []
+
+wonderUniApp = ['Storyboarder']
 
 # --------------------------------------------------------------------------------------------------------------
 """ another app config """
@@ -88,11 +94,11 @@ CONFIG_APPUI = ['About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary'
 # --------------------------------------------------------------------------------------------------------------
 """ Tracking key """
 
-TRACK_TDS = ['Maya', 'ZBrush', 'Mari', 'Houdini', 'Substance', ]
+TRACK_TDS = ['Maya', 'ZBrush', 'Mari', 'Houdini', 'Painter', ]
 
-TRACK_VFX = ['NukeX', 'Davinci Resolve', 'Hiero', 'HieroPlayer', 'After Effects', 'Premiere Pro', 'Media Encoder', ]
+TRACK_VFX = ['NukeX', 'Davinci Resolve', 'Hiero', 'HieroPlayer', 'After Effects', 'Premiere Pro', 'Media Encoder',]
 
-TRACK_ART = ['Photoshop', 'Illustrator', ]
+TRACK_ART = ['Photoshop', 'Illustrator', 'Storyboarder']
 
 TRACK_OFFICE = ['Word', 'Excel', 'PowerPoint', 'Wordpad']
 
@@ -104,18 +110,18 @@ TRACK_EXTRA = ['3Ds Max', 'Mudbox', 'BLender', ]
 
 TRACK_SYSTRAY = ['Snipping Tool', 'Screenshot', 'Maximize', 'Minimize', 'Restore', 'Quit', ]
 
-KEYDETECT = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype"]
+KEYDETECT = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url"]
 
 FIX_KEY = {'Screenshot': 'screenShot', 'Snipping Tool': 'SnippingTool'}
 
 # --------------------------------------------------------------------------------------------------------------
 """ Combine config data """
 
-pVERSION = dict(autodesk=autodeskVer, adobe=adobeVer, foundry=foundryVer, pixologic=pixologiVer,
-                sizefx=sizefxVer, office=officeVer, jetbrains=jetbrainsVer)
+pVERSION = dict(adobe=adobeVer, autodesk=autodeskVer, allegorithmic = allegorithmicVer, foundry=foundryVer,
+                pixologic=pixologiVer, sizefx=sizefxVer, office=officeVer, jetbrains=jetbrainsVer, wonderUnit=wonderUnitVer, )
 
-pPACKAGE = dict(autodesk=autodeskApp, adobe=adobeApp, foundry=foundryApp, pixologic=pixologiApp,
-                sizefx=sizefxApp, office=officeApp, jetbrains=jetbrainsApp)
+pPACKAGE = dict(adobe=adobeApp, autodesk=autodeskApp, allegorithmic = allegorithmicApp, foundry=foundryApp,
+                pixologic=pixologiApp, sizefx=sizefxApp, office=officeApp, jetbrains=jetbrainsApp, wonderUnit=wonderUniApp,)
 
 pTRACK = dict(TDS=TRACK_TDS, VFX=TRACK_VFX, ART=TRACK_ART, Office=TRACK_OFFICE, Dev=TRACK_DEV,
               Tools=TRACK_TOOLS, Extra=TRACK_EXTRA, sysTray=TRACK_SYSTRAY, )
@@ -127,12 +133,19 @@ def generate_key_packages(*args):
     keyPackage = []
     for k in pPACKAGE:
         for name in pPACKAGE[k]:
-            for ver in pVERSION[k]:
-                if name == 'Hiero' or name == 'HieroPlayer':
-                    key = name + ver
-                else:
-                    key = name + " " + ver
+            if len(pVERSION[k]) == 0:
+                key = name
                 keyPackage.append(key)
+            else:
+                for ver in pVERSION[k]:
+                    if name == 'Hiero' or name == 'HieroPlayer' or name == 'NukeX':
+                        key = name + ver
+                    else:
+                        if not ver or ver == []:
+                            key = name
+                        else:
+                            key = name + " " + ver
+                    keyPackage.append(key)
 
     return keyPackage + otherApp + anacondaApp + CONFIG_APPUI + ['Word', 'Excel', 'PowerPoint']
 

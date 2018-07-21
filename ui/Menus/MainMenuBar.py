@@ -19,7 +19,7 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
 # Plm
-from appData import APPINFO, __plmWiki__
+from appData import APPINFO, __plmWiki__, SiPoMin
 from core.Loggers import SetLogger
 from core.Specs import Specs
 from ui.Libs.Action import Action
@@ -82,6 +82,10 @@ class MainMenuBar(QMainWindow):
     def show_layout(self, param):
         self.specs.showState.emit(True)
         self.setVisible(param)
+
+    def applySetting(self):
+        self.setSizePolicy(SiPoMin, SiPoMin)
+        self.setContentsMargins(5, 5, 5, 5)
 
 def main():
     app = QApplication(sys.argv)

@@ -668,7 +668,7 @@ _common_members = {
 
 
 def _qInstallMessageHandler(handler):
-    """Install a message handler that works in all bindings
+    """Install a message stream that works in all bindings
     Args:
         handler: A function that takes 3 arguments, or None
     """
@@ -685,7 +685,7 @@ def _qInstallMessageHandler(handler):
             logContext = None
         else:
             raise TypeError(
-                "handler expected 2 or 3 arguments, got {0}".format(len(args)))
+                "stream expected 2 or 3 arguments, got {0}".format(len(args)))
 
         if isinstance(msg, bytes):
             # In python 3, some bindings pass a bytestring, which cannot be

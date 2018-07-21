@@ -16,12 +16,12 @@ import sys
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, QSize
-from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QGridLayout
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 
 # Plt
-from appData import COPYRIGHT
-from ui.Libs.Button import Button
+from appData import COPYRIGHT, VERSION, SiPoMin
+from ui.Libs.UiPreset import Label
 from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
@@ -41,34 +41,17 @@ class Footer(QWidget):
 
     def buildUI(self):
 
-        self.logoBtn = Button({'stt':COPYRIGHT, 'icon':'TeamLogo', 'cl':partial(self.showLayout.emit, "credit", "show")})
-        # self.logoBtn.setToolTip(COPYRIGHT)
-        # self.logoBtn.setIcon(QIcon(getLogo(24, 'DAMG')))
-        # self.logoBtn.clicked.connect(partial(self.showLayout.emit, "credit", "show"))
+        version = Label({'txt': VERSION, 'alg': 'right'})
+        copyR = Label({'txt': COPYRIGHT, 'alg': 'right'})
 
-        self.browserBtn = Button({'stt':'Browser', 'icon':'PLMBrowser', 'cl':partial(self.showLayout.emit, "browser", "show")})
-        # self.browserBtn.setToolTip("PLM web browser")
-        # self.browserBtn.setIcon(QIcon(getAppIcon(32, 'PLMBrowser')))
-        # self.browserBtn.clicked.connect(partial(self.showLayout.emit, "browser", "show"))
-
-        for i in range(7):
-            self.layout.addWidget(QLabel(), 0, i, 1, 1)
-
-        self.layout.addWidget(self.browserBtn, 0, 8, 1, 1)
-        self.layout.addWidget(self.logoBtn, 0, 9, 1, 1)
+        self.layout.addWidget(version, 0, 0, 1, 9)
+        self.layout.addWidget(copyR, 1, 0, 1, 9)
 
         self.applySetting()
 
     def applySetting(self):
-        self.layout.setSpacing(0)
-
-        self.logoBtn.setFixedSize(QSize(25, 25))
-        self.logoBtn.setIconSize(QSize(24, 24))
-        # self.logoBtn.setMouseTracking(True)
-
-        self.browserBtn.setFixedSize(QSize(25, 25))
-        self.browserBtn.setIconSize(QSize(24, 24))
-        # self.browserBtn.setMouseTracking(True)
+        self.setSizePolicy(SiPoMin, SiPoMin)
+        self.setContentsMargins(5, 5, 5, 5)
 
 def main():
     app = QApplication(sys.argv)

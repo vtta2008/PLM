@@ -21,8 +21,8 @@ from PyQt5.QtWidgets import QWidget, QMainWindow, QSystemTrayIcon, QGridLayout, 
 # Plm
 from appData.scr._path import APP_SETTING, UNIX_SETTING, USER_SETTING, FORMAT_SETTING
 from appData.scr._nodeGraph import (ANCHOR_UNDERMICE, ANCHOR_VIEWCENTER, FOCUSABLE, MOVEABLE, NODRAG, NOANCHOR, PANEL,
-                                POS_CHANGE, RUBBERDRAG, SELECTABLE, UPDATE_FULLVIEW, UPDATE_SMARTVIEW, UPDATE_BOUNDINGVIEW,
-                                UPDATE_MINIMALVIEW, UPDATE_VIEWRECT, )
+                                    POS_CHANGE, RUBBER_DRAG, SELECTABLE, UPDATE_FULLVIEW, UPDATE_SMARTVIEW, UPDATE_BOUNDINGVIEW,
+                                    UPDATE_MINIMALVIEW, UPDATE_VIEWRECT, )
 from appData.scr._meta import __appname__
 
 # -------------------------------------------------------------------------------------------------------------
@@ -149,7 +149,7 @@ VALID_FONTS = dict( ui   = ['Arial', 'Cantarell', 'Corbel', 'DejaVu Sans', 'Deja
 
 EDGE_TYPES      = dict(bezier  = 'bezier',       polygon = 'polygon')
 POS_EVENTS      = dict(change = POS_CHANGE)
-DRAG_MODES      = dict(none   = NODRAG,          rubber = RUBBERDRAG)
+DRAG_MODES      = dict(none   = NODRAG, rubber = RUBBER_DRAG)
 VIEWPORT_MODES  = dict(full   = UPDATE_FULLVIEW, smart  = UPDATE_SMARTVIEW,  minimal = UPDATE_MINIMALVIEW, bounding = UPDATE_BOUNDINGVIEW, viewrect = UPDATE_VIEWRECT)
 FLAG_MODES      = dict(select = SELECTABLE,      move   = MOVEABLE,          focus   = FOCUSABLE,          panel    = PANEL)
 ANCHOR_MODES    = dict(none   = NOANCHOR,        under  = ANCHOR_UNDERMICE,  center  = ANCHOR_VIEWCENTER, )

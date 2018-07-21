@@ -11,17 +11,14 @@ Description:
 """ Import """
 
 # Python
-import os, sys, json
+import os, json
 
 # PyQt5
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
-from PyQt5.QtWidgets import QWidget, QHBoxLayout, QApplication
-from PyQt5.QtQml import QQmlApplicationEngine
 
 # Plm
 from appData import SPECS, REG_DIR
 from utilities.utils import getUnix, get_datetime
-from ui.Libs.Button import Button
 
 # -------------------------------------------------------------------------------------------------------------
 """ Attribute class """

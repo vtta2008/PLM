@@ -3,12 +3,11 @@ import os, sys
 from PyQt5.QtCore import (QByteArray, QDate, QDateTime, QEvent, QPoint, QRect, QRegExp, QSettings, QSize, Qt, QTime,
                           QTimer, pyqtSignal, pyqtSlot)
 from PyQt5.QtGui import QColor, QIcon, QRegExpValidator, QValidator
-from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar, QWidget,
-                             QFileDialog, QGridLayout, QGroupBox, QHeaderView, QInputDialog, QItemDelegate, QLineEdit,
-                             QStyle, QStyleOptionViewItem, QTableWidget, QTableWidgetItem, QTreeWidget,
-                             QTreeWidgetItem)
+from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar, QWidget, QFileDialog, QGridLayout,
+                             QGroupBox, QHeaderView, QInputDialog, QItemDelegate, QLineEdit, QStyle, QStyleOptionViewItem,
+                             QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
 
-from appData import SETTING_FILEPTH, __organization__, __appname__
+from appData import SETTING_FILEPTH, __organization__, __appname__, SiPoMin
 from core.Specs import Specs
 from core.Loggers import SetLogger
 from core.Errors import KeySettingError
@@ -43,7 +42,7 @@ class SettingUI(QWidget):
         self.fallbacksAct.setChecked(True)
 
         self.setWindowTitle("PLM settings")
-        self.resize(500, 600)
+        self.applySetting()
 
     def settingPth(self, pth = SETTING_FILEPTH['app']):
         return pth
@@ -153,6 +152,10 @@ class SettingUI(QWidget):
         self.specs.showState.emit(False)
         self.showLayout.emit(self.key, 'hide')
         event.ignore()
+
+    def applySetting(self):
+        self.setSizePolicy(SiPoMin, SiPoMin)
+        self.openIniFile()
 
 class RegInput(QWidget):
 

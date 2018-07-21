@@ -14,18 +14,18 @@ from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout, QMenu)
+from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout)
 
 # Plt
 from appData import __homepage__, dockB, ST_FORMAT, SETTING_FILEPTH, SiPoMin, SiPoExp
 from core.Loggers import SetLogger
 from core.Settings import Settings
+from ui import MainToolBar, TopTab, BotTab, ServerStatus, Footer, StatusBar
+from ui.Menus import MainMenuBar, SubMenuBar
 from ui.Libs.GroupBox import AutoSectionLayoutGrp, AutoSectionQMainGrp
 from ui.Libs.UiPreset import AppIcon
-from ui import ToolBar, TopTab, BotTab, ServerStatus, Footer, StatusBar
-from ui.Menus import MainMenuBar, SubMenuBar
 from core.Specs import Specs
-from utilities.pUtils import get_layout_dimention
+from utilities.utils import get_layout_size
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
@@ -58,21 +58,20 @@ class PipelineManager(QMainWindow):
 
         self.buildUI()
         self.setCentralWidget(self.mainWidget)
-        self.setSizePolicy(SiPoMin, SiPoMin)
-        self.setContentsMargins(5,5,5,5)
+        self.applySetting()
 
     def buildUI(self):
 
         self.mainMenuBar = MainMenuBar.MainMenuBar()
-        self.subMenuBar = SubMenuBar.SubMenuBar()                                                        # Sub menu
-        self.toolBar = ToolBar.ToolBar()                                                                 # Toolbar
-        self.serverStatus = ServerStatus.ServerStatus()                                                  # Server Status
+        self.subMenuBar = SubMenuBar.SubMenuBar()                                                   # Sub menu
+        self.toolBar = MainToolBar.MainToolBar()                                                            # Toolbar
+        self.serverStatus = ServerStatus.ServerStatus()                                             # Server Status
         self.subMenuSec = AutoSectionQMainGrp("Sub Menu", self.subMenuBar)
         self.mainMenuSec = AutoSectionQMainGrp("Main Menu", self.mainMenuBar)
 
         self.networkStatus = AutoSectionLayoutGrp("Server Status", self.serverStatus)
         self.networkStatus.setMaximumHeight(self.subMenuBar.maximumHeight()*3)
-        self.toolBarSec = AutoSectionQMainGrp("Tool Bar", self.toolBar)
+        self.subToolBarSec = AutoSectionQMainGrp("Tool Bar", self.toolBar)
 
         self.topTabUI = TopTab.TopTab()                                                            # Tab layout
         self.botTabUI = BotTab.BotTab()                                                            # Bot build 1
@@ -103,12 +102,13 @@ class PipelineManager(QMainWindow):
         self.setStatusBar(self.stBar)
 
         cbs = [self.botTabUI.generalSetting.tbTDCB, self.botTabUI.generalSetting.tbCompCB,
-                     self.botTabUI.generalSetting.tbArtCB, self.botTabUI.generalSetting.tbMasterCB,
-                     self.botTabUI.generalSetting.statusBarCB, self.botTabUI.generalSetting.subMenuCB,
-                     self.botTabUI.generalSetting.serStatusCB, self.botTabUI.generalSetting.notifiCB]
+               self.botTabUI.generalSetting.tbArtCB, self.botTabUI.generalSetting.subToolBarCB,
+               self.botTabUI.generalSetting.mainToolBarCB, self.botTabUI.generalSetting.statusBarCB,
+               self.botTabUI.generalSetting.subMenuCB, self.botTabUI.generalSetting.serStatusCB,
+               self.botTabUI.generalSetting.notifiCB]
 
-        sections = [self.toolBar.tdToolBar, self.toolBar.compToolBar, self.toolBar.artToolBar, self.toolBarSec,
-                    self.stBar, self.subMenuSec, self.networkStatus, self.notifiSec]
+        sections = [self.toolBar.tdToolBar, self.toolBar.compToolBar, self.toolBar.artToolBar, self.subToolBarSec,
+                    self.mainMenuSec, self.stBar, self.subMenuSec, self.networkStatus, self.notifiSec]
 
         for i in range(len(sections)):
             cbs[i].stateChanged.connect(sections[i].setVisible)
@@ -124,7 +124,7 @@ class PipelineManager(QMainWindow):
         self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 9)
         self.layout.addWidget(self.subMenuSec, 1, 0, 1, 6)
         self.layout.addWidget(self.networkStatus, 1, 6, 1, 3)
-        self.layout.addWidget(self.toolBarSec, 2, 0, 2, 9)
+        self.layout.addWidget(self.subToolBarSec, 2, 0, 2, 9)
 
         self.layout.addWidget(self.topTabUI, 4, 0, 4, 9)
         self.layout.addWidget(self.botTabUI, 8, 0, 3, 6)
@@ -132,12 +132,21 @@ class PipelineManager(QMainWindow):
 
         self.layout.addWidget(self.footer, 11, 0, 1, 9)
 
+        from ui.ToolBarDock import ToolBarDock
+        self.add_dockWidget(ToolBarDock('TD'))
+        self.add_dockWidget(ToolBarDock('VFX'))
+        self.add_dockWidget(ToolBarDock('ART'))
+
     def add_dockWidget(self, dock, pos=dockB):
         self.dock = dock
+        self.dock.showLayout.connect(self.showLayout)
+        self.dock.setSetting.connect(self.setSetting)
+        self.dock.executing.connect(self.executing)
+        self.dock.addLayout.connect(self.addLayout)
         self.addDockWidget(pos, self.dock)
 
     def resizeEvent(self, event):
-        sizeW, sizeH = get_layout_dimention(self)
+        sizeW, sizeH = get_layout_size(self)
         self.setSetting.emit('width', str(sizeW), self.objectName())
         self.setSetting.emit('height', str(sizeH), self.objectName())
 
@@ -145,17 +154,16 @@ class PipelineManager(QMainWindow):
         self.specs.showState.emit(True)
         self.showLayout.emit('login', 'hide')
         self.showLayout.emit('sysTray', 'show')
-        # self.restoreGeometry(self.settings.value(self.key + "/geo").toByteArray())
-        # self.restoreState(self.settings.value(self.key + "/state").toByteArray())
 
     def closeEvent(self, event):
         self.specs.showState.emit(False)
         # self.sysNotify.emit('notice', "PLM hide in system tray", 'info', 500)
-        self.settings.setValue(self.key + "/geo", self.saveGeometry())
-        self.settings.setValue(self.key + "/state", self.saveState())
-
-        self.hide()
+        self.showLayout.emit(self.key, 'hide')
         event.ignore()
+
+    def applySetting(self):
+        self.setSizePolicy(SiPoMin, SiPoMin)
+        self.setContentsMargins(5,15,5,15)
 
 # -------------------------------------------------------------------------------------------------------------
 def main():

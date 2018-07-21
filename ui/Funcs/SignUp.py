@@ -24,7 +24,7 @@ from appData import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_REQUIRED, QUEST
 from ui.Libs.UiPreset import IconPth, Label, LineEdit, ComboBox, CheckBox
 from ui.Libs.Button import Button
 from ui.Libs.GroupBox import GroupGrid
-from utilities.utils import checkBlank, checkMatch, getAvatar, getToken, getUnix, getTime, getDate, getPcInfo, getLocation
+from utilities.utils import check_blank, check_match, get_avatar_icon, getToken, getUnix, getTime, getDate, get_local_pc_info, get_user_location
 from core.Loggers import SetLogger
 from core.Specs import Specs
 
@@ -217,7 +217,7 @@ class SignUp(QWidget):
         secName = ["Username", "Password", "Confirm Password", "Firstname", "Lastname", "Email", "Phone",
                    "Address line 1", "Address line 2", "Postal", "City", "Country", "Answer 1", "Answer 2"]
         for section in regInput:
-            if checkBlank(section):
+            if check_blank(section):
                 return True
             else:
                 QMessageBox.information(self, "Fail", secName[regInput.index(section)] + "Blank", QMessageBox.Ok)
@@ -234,9 +234,9 @@ class SignUp(QWidget):
 
         token = getToken()
         timelog = getTime()
-        sysInfo = getLocation()
+        sysInfo = get_user_location()
         productID = sysInfo['Product ID']
-        ip, cityIP, countryIP = getPcInfo()
+        ip, cityIP, countryIP = get_local_pc_info()
         unix = getUnix()
         datelog = getDate()
         pcOS = sysInfo['os']
@@ -244,7 +244,7 @@ class SignUp(QWidget):
         pcPython = sysInfo['python']
 
         if not os.path.exists(self.rawAvatarPth):
-            avatar = getAvatar('default')
+            avatar = get_avatar_icon('default')
         else:
             avatar = self.rawAvatarPth
 
@@ -256,7 +256,7 @@ class SignUp(QWidget):
     def check_pw_matching(self):
         password = str(self.pwField.text())
         confirm = str(self.cfpwField.text())
-        check_pass = checkMatch(password, confirm)
+        check_pass = check_match(password, confirm)
         if not check_pass:
             QMessageBox.information(self, "Warning", PW_UNMATCH, QMessageBox.Retry)
             return False

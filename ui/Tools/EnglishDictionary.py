@@ -17,15 +17,14 @@ from difflib import get_close_matches
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QDialog, QGridLayout, QHBoxLayout, QLineEdit, QTextEdit, QApplication, QWidget)
+from PyQt5.QtWidgets import (QGridLayout, QLineEdit, QTextEdit, QApplication, QWidget)
 
 # PLM
 from ui.Libs.UiPreset import Label, IconPth
 from ui.Libs.Button import Button
 from core.Specs import Specs
 
-class EnglishDictionary(QDialog):
+class EnglishDictionary(QWidget):
 
     key = 'engDict'
     showLayout = pyqtSignal(str, str)
@@ -37,17 +36,12 @@ class EnglishDictionary(QDialog):
         self.specs = Specs(self.key, self)
         self.setWindowIcon(IconPth(32, "EnglishDictionary"))
 
-        central_widget = QWidget(self)
+        # central_widget = QWidget(self)
         self.layout = QGridLayout(self)
-        central_widget.setLayout(self.layout)
-
         self.buildUI()
+        self.setLayout(self.layout)
 
     def buildUI(self):
-
-        hbox = QHBoxLayout()
-        grid = QGridLayout()
-
         self.lineInput = QLineEdit()
         self.suggessLabel = Label()
 
@@ -59,16 +53,12 @@ class EnglishDictionary(QDialog):
 
         self.answer = QTextEdit()
 
-        grid.addWidget(self.lineInput, 0, 0, 1, 3)
-        grid.addWidget(self.suggessLabel, 1, 0, 1, 3)
-        grid.addWidget(searchBtn, 2, 0, 1, 1)
-        grid.addWidget(yesBtn, 2, 1, 1, 1)
-        grid.addWidget(noBtn, 2, 2, 1, 1)
-        grid.addWidget(self.answer, 3, 0, 4, 3)
-
-        hbox.addLayout(grid)
-
-        self.setLayout(hbox)
+        self.layout.addWidget(self.lineInput, 0, 0, 1, 3)
+        self.layout.addWidget(self.suggessLabel, 1, 0, 1, 3)
+        self.layout.addWidget(searchBtn, 2, 0, 1, 1)
+        self.layout.addWidget(yesBtn, 2, 1, 1, 1)
+        self.layout.addWidget(noBtn, 2, 2, 1, 1)
+        self.layout.addWidget(self.answer, 3, 0, 4, 3)
 
     def translate(self, *args):
         from appData import __envKey__

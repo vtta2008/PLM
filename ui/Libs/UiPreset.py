@@ -14,7 +14,7 @@ from functools import partial
 from PyQt5.QtWidgets import QLabel, QLineEdit, QComboBox, QCheckBox
 from PyQt5.QtCore import pyqtSignal, QSize
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QImage
-from utilities.utils import getAppIcon, getLogo, getAvatar
+from utilities.utils import get_app_icon, get_logo_icon, get_avatar_icon
 from appData import center, left, right, SiPoMin, SiPoPre, SiPoMax, SiPoExp, SiPoIgn
 
 PRS = dict(
@@ -33,7 +33,7 @@ class IconPth(QIcon):
     def __init__(self, size=32, name="AboutPlt"):
         super(IconPth, self).__init__()
 
-        self.iconPth = getAppIcon(size, name)
+        self.iconPth = get_app_icon(size, name)
         self.addFile(self.iconPth, QSize(32, 32))
 
 class AppIcon(QIcon):
@@ -42,7 +42,7 @@ class AppIcon(QIcon):
         sizes = [16, 24, 32, 48, 64, 96, 128, 256, 512]
         self.name =name
         for s in sizes:
-            self.addFile(getLogo(s, name), QSize(s, s))
+            self.addFile(get_logo_icon(s, name), QSize(s, s))
 
 class Label(QLabel):
 
@@ -69,7 +69,7 @@ class Label(QLabel):
             elif key == 'sizePolicy':
                 self.setSizePolicy(PRS[value])
             elif key == 'pxm':
-                self.setPixmap(QPixmap.fromImage(QImage(getAvatar(value))))
+                self.setPixmap(QPixmap.fromImage(QImage(get_avatar_icon(value))))
             elif key == 'scc':
                 self.setScaledContents(value)
             elif key == 'sfs':

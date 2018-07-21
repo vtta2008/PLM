@@ -22,9 +22,9 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 # Plt
 from utilities.localSQL import TimeLog
 from ui.Libs.Action import Action
-from utilities.pUtils import get_layout_dimention
+from utilities.utils import get_layout_size
 
-from appData import APPINFO, __plmWiki__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR
+from appData import APPINFO, __plmWiki__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR, SiPoMin
 from core.Specs import Specs
 from core.Loggers import SetLogger
 
@@ -90,10 +90,13 @@ class SubMenuBar(QMainWindow):
         self.setVisible(param)
 
     def resizeEvent(self, event):
-        sizeW, sizeH = get_layout_dimention(self)
+        sizeW, sizeH = get_layout_size(self)
         self.setSetting.emit('width', str(sizeW), self.objectName())
         self.setSetting.emit('height', str(sizeH), self.objectName())
 
+    def applySetting(self):
+        self.setSizePolicy(SiPoMin, SiPoMin)
+        self.setContentsMargins(5, 5, 5, 5)
 
 def main():
     app = QApplication(sys.argv)
