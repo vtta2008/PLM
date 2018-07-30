@@ -16,10 +16,9 @@ import sys
 from functools import partial
 
 # PyQt5
-from PyQt5.QtGui import QPixmap
+from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtCore import pyqtSignal, Qt, pyqtSlot
-from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGraphicsView, QGraphicsScene, QSizePolicy,
-                             QPushButton, QGroupBox)
+from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGroupBox, QLabel)
 
 # Plt
 
@@ -54,23 +53,17 @@ class TopTab3(QWidget):
         except IndexError:
             self.username = 'DemoUser'
 
-        self.avatar = QPixmap(get_avatar_icon(self.username))
-        self.avatarScene = QGraphicsScene()
-        self.avatarScene.addPixmap(self.avatar)
-
-        self.avatarView = QGraphicsView()
-        self.avatarView.setScene(self.avatarScene)
-        self.avatarView.aspectRatioMode = Qt.KeepAspectRatio
-        self.avatarView.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
-        self.avatarView.scale(100 / self.avatar.width(), 100 / self.avatar.height())
-        self.avatarView.setFixedSize(100, 100)
+        self.avatar = QLabel()
+        self.avatar.setPixmap(QPixmap.fromImage(QImage(get_avatar_icon(self.username))))
+        self.avatar.setScaledContents(True)
+        self.avatar.setFixedSize(100, 100)
 
         btn1 = Button({'txt':'Account Setting', 'cl': partial(self.showLayout.emit, 'userSetting', 'show')})
         btn2 = Button({'txt':'Log Out', 'cl': partial(self.showLayout.emit, 'login', 'show')})
 
         btns = [btn1, btn2]
 
-        sec1Grp = GroupBox(self.username, [self.avatarView], "ImageView")
+        sec1Grp = GroupBox(self.username, [self.avatar], "ImageView")
         sec2Grp = GroupBox("Setting", btns, "BtnGrid")
 
         sec3Grp = QGroupBox("Messenger")

@@ -37,7 +37,7 @@ else:
 
 # PyQt5
 from ui.Web.PLMBrowser import PLMBrowser
-from PyQt5.QtCore import QThreadPool, pyqtSlot, pyqtSignal
+from PyQt5.QtCore import QThreadPool, pyqtSlot, pyqtSignal, QCoreApplication
 from PyQt5.QtWidgets import QApplication
 
 # Plm
@@ -66,7 +66,7 @@ class PLM(QApplication):
         self.appName = __appname__
         self.version = __version__
         self.website = __website__
-        self.core = QApplication
+        self.core = QCoreApplication
         self.core.setOrganizationName(self.organization)
         self.core.setApplicationName(self.appName)
         self.core.setOrganizationDomain(self.website)
@@ -76,7 +76,7 @@ class PLM(QApplication):
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.appInfo = APPINFO
         self.specs = Specs(self.key, self)
-        self.core = AppCores(self)                                                          # Core metadata
+        self.cores = AppCores(self)                                                          # Core metadata
 
         self.logger = SetLogger(self)
         self.threadpool = QThreadPool()                                                     # Thread pool
@@ -87,12 +87,12 @@ class PLM(QApplication):
 
         from ui.Settings.SettingUI import SettingUI
         self.settingUI = SettingUI()
-        self.core.addLayout.connect(self.addLayout)
+        self.cores.addLayout.connect(self.addLayout)
         self.addLayout(self.settingUI)
         self.db = QuerryDB()                                                                # Query local database
         self.webBrowser = PLMBrowser()                                                      # Webbrowser
         self.addLayout(self.webBrowser)
-        self.login, self.signup, self.mainUI, self.sysTray = self.core.import_uiSet1()
+        self.login, self.signup, self.mainUI, self.sysTray = self.cores.import_uiSet1()
         self.uiSet1 = [self.login, self.signup, self.mainUI, self.sysTray]
         self.mainUI.settings = self.settings
         self.setupConn1()
@@ -107,7 +107,7 @@ class PLM(QApplication):
             else:
                 r = requests.get(__serverCheck__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
                 if r.status_code == 200:
-                    if not self.core.sysTray.isSystemTrayAvailable():
+                    if not self.cores.sysTray.isSystemTrayAvailable():
                         self.logger.critical(SYSTRAY_UNAVAI)
                         sys.exit(1)
                     self.showLayout('mainUI', "show")
@@ -120,7 +120,7 @@ class PLM(QApplication):
         self.uiSet2 = [self.about, self.calculator, self.calendar, self.codeConduct, self.configuration, self.contributing,
                        self.credit, self.engDict, self.findFile, self.imageViewer, self.licence, self.newProj,
                        self.nodeGraph, self.noteReminder, self.preferences, self.reference, self.screenShot,
-                       self.textEditor, self.userSetting, self.version] = self.core.import_uiSet2()
+                       self.textEditor, self.userSetting, self.version] = self.cores.import_uiSet2()
 
         self.setupConn2()
         self.set_styleSheet('darkstyle')
@@ -163,8 +163,13 @@ class PLM(QApplication):
         if name == 'app':
             layout = self
         else:
-            layout = self.layouts[name]
-            self.logger.trace("define layout: {0}".format(layout))
+            try:
+                layout = self.layouts[name]
+            except KeyError:
+                self.logger.debug('Key is not registered')
+                return
+            else:
+                self.logger.trace("define layout: {0}".format(layout))
 
         if mode == "hide":
             layout.hide()

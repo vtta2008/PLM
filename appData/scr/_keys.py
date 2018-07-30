@@ -78,7 +78,7 @@ jetbrainsApp = ['JetBrains PyCharm', ]
 
 wonderUnitVer = []
 
-wonderUniApp = ['Storyboarder']
+wonderUniApp = ['Storyboarder', 'Krita (x64)']
 
 # --------------------------------------------------------------------------------------------------------------
 """ another app config """
@@ -98,7 +98,7 @@ TRACK_TDS = ['Maya', 'ZBrush', 'Houdini', '3Ds Max', 'Mudbox', 'BLender', ]
 
 TRACK_VFX = ['NukeX', 'After Effects', ]
 
-TRACK_ART = ['Photoshop', 'Illustrator', 'Storyboarder']
+TRACK_ART = ['Photoshop', 'Illustrator', 'Storyboarder', 'Krita (x64)']
 
 TRACK_TEXTURE = ['Mari', 'Painter', ]
 

@@ -32,7 +32,7 @@ from core.Loggers import SetLogger
 
 class MainToolBar(QMainWindow):
 
-    key = 'toolBar'
+    key = 'mainToolBar'
 
     showLayout = pyqtSignal(str, str)
     executing = pyqtSignal(str)
@@ -84,6 +84,10 @@ class MainToolBar(QMainWindow):
 
     def hideEvent(self, event):
         self.setSetting.emit(self.key, 'hide', self.objectName())
+
+    def closeEvent(self, event):
+        self.showLayout.emit(self.key, 'hide')
+        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

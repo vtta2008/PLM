@@ -215,8 +215,6 @@ class SettingError(ErrorBase):
     def __init__(self):
         ErrorBase(errorName=self.__class__)
 
-DropException()
-
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 22/06/2018 - 6:07 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

@@ -18,23 +18,25 @@ from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
 
 # PLM
 from core.Loggers import SetLogger
+from core.Storage import PObj
 from core.Specs import Specs
 
-class AppCores(QObject):
+class AppCores(PObj):
 
     key = 'core'
     returnValue = pyqtSignal(str, str)
     addLayout = pyqtSignal(object)
 
     def __init__(self, parent=None):
+
+        PObj.__init__(self)
         super(AppCores, self).__init__(parent)
-        self.logger = SetLogger(self)
-        self.specs = Specs(self.key, self)
-        self._parent      = parent
+        self.logger         = SetLogger(self)
+        # self.specs          = Specs(self.key, self)
+        self._parent        = parent
 
-        self.layouts = dict()
+        self.layouts        = dict()
         self.layouts['app'] = self
-
 
         from ui.Settings.SettingUI import SettingUI
         self.settingUI = SettingUI()

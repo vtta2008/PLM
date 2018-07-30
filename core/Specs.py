@@ -24,7 +24,9 @@ from utilities.utils import getUnix, get_datetime
 """ Attribute class """
 
 class Manager(QObject):
+
     stationsChanged = pyqtSignal()
+
     def __init__(self):
         QObject.__init__(self)
         self.m_stations =[]

@@ -20,7 +20,7 @@ from appData import __homepage__, dockB, ST_FORMAT, SETTING_FILEPTH, SiPoMin
 from core.Loggers import SetLogger
 from core.Settings import Settings
 from ui import TopTab, BotTab, Footer, StatusBar
-from ui.AppToolbar import MainToolBar, ToolBarDock
+from ui.AppToolbar import MainToolBar, DockToolBar
 from ui.Network import ServerStatus
 from ui.Menus import MainMenuBar, SubMenuBar
 from ui.uikits.GroupBox import AutoSectionLayoutGrp, AutoSectionQMainGrp
@@ -133,8 +133,8 @@ class PipelineManager(QMainWindow):
 
         self.layout.addWidget(self.footer, 11, 0, 1, 9)
 
-        self.add_dockWidget(ToolBarDock.ToolBarDock('TEXTURE'))
-        self.add_dockWidget(ToolBarDock.ToolBarDock('POST'))
+        self.add_dockWidget(DockToolBar.DockToolBar('TEXTURE'))
+        self.add_dockWidget(DockToolBar.DockToolBar('POST'))
 
     def add_dockWidget(self, dock, pos=dockB):
         self.dock = dock
