@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: painter.py
+Script Name: __init__.py.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -10,5 +10,5 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 19/06/2018 - 6:05 AM
+# Created by panda on 22/07/2018 - 10:04 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

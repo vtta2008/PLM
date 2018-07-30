@@ -23,8 +23,8 @@ from PyQt5.QtWidgets import (QWidget, QGridLayout, QFileDialog, QApplication, QG
                              QHBoxLayout, QLabel, QSizePolicy,)
 
 # PLM
-from ui.Libs.UiPreset import IconPth
-from ui.Libs.Button import Button
+from ui.uikits.UiPreset import IconPth
+from ui.uikits.Button import Button
 from appData import keepARM
 from core.Specs import Specs
 

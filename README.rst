@@ -13,12 +13,12 @@ SHORT FILM PIPELINE
 This application can be used to build, manage, and optimise film making pipelines. The latest version is compatible
 with Windows 10 and may run on earlier versions. It does not run in Maya 2016 or lower.
 
-Due to VFX Reference Platform and the large invention, we need to stay with python 2.7 but expect to migrate to python 3 in 2019.
+Due to VFX Reference Platform and the large invention, we need to stay with python 2.7 but expect to migrate to python 3 in 2019 (Delayed to 2020).
 Details are `here <http://www.vfxplatform.com>`_
 
 NOTE:
 
-    - Currently I am working on setup a server, some functions may not work :bowtie: :bowtie: :bowtie:.
+    - It is still under developing, some function will not be working yet.
 
 REQUIREMENTS
 ============

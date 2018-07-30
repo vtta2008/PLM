@@ -26,7 +26,7 @@ from ui.NodeGraph.Node import Node, NodeAttr, Knob, Edge
 from ui.NodeGraph.View import View
 from ui.NodeGraph.Scene import Scene
 from ui.NodeGraph.MenuBar import MenuBar
-from ui.Libs.UiPreset import IconPth
+from ui.uikits.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ NoderViewer """

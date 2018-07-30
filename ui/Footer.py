@@ -21,7 +21,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 
 # Plt
 from appData import COPYRIGHT, VERSION, SiPoMin
-from ui.Libs.UiPreset import Label
+from ui.uikits.UiPreset import Label
 from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------

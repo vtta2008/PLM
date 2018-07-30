@@ -13,7 +13,6 @@ import os
 
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, QSettings
 
-from appData import SETTING_FILEPTH
 from core.Loggers import SetLogger
 from core.Errors import KeySettingError
 

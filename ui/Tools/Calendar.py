@@ -24,7 +24,7 @@ from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
 # Plt
 from appData import SiPoMin
 from core.Specs import Specs
-from ui.Libs.UiPreset import IconPth
+from ui.uikits.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Clendar """
@@ -160,7 +160,7 @@ class Calendar(QWidget):
         lang_country = {}
         for lid in range(QLocale.C, QLocale.LastLanguage + 1):
             lang = (QLocale(lid).nativeLanguageName())
-            country = (QLocale(lid).nativeCountryName())
+            country = u' '.join(QLocale(lid).nativeCountryName()).encode('utf-8').strip()
             lang_country[country] = [lang, lid]
             lid += 1
 
@@ -168,7 +168,7 @@ class Calendar(QWidget):
         countries.remove(countries[0])
         for country in countries:
             lang = lang_country[country][0]
-            label = "{0}/{1}".format(lang, country)
+            label = "%s - %s" % ((u' '.join(lang).encode('Utf-8').strip()), country)
             locale = QLocale(lang_country[country][1])
 
             if self.locale().language() == lang and self.locale().country() == country:
@@ -199,7 +199,7 @@ class Calendar(QWidget):
                                         QCalendarWidget.SingleSelection)
         self.selectionModeCombo.addItem("None",
                                         QCalendarWidget.NoSelection)
-        self.selectionModeLabel = QLabel("&Selection mode:")
+        self.selectionModeLabel = QLabel("&Selection fm:")
         self.selectionModeLabel.setBuddy(self.selectionModeCombo)
 
         self.gridCheckBox = QCheckBox("&Grid")

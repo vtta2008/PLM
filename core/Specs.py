@@ -53,6 +53,7 @@ class Specs(Manager):
     regInfo = {}
 
     def __init__(self, name=None, parent=None):
+        Manager.__init__(self)
         super(Specs, self).__init__()
         self._parent = parent
         self._data = SPECS[name]
@@ -165,8 +166,6 @@ class Specs(Manager):
         return self._tag
 
     def flag(self):
-        if self._flag is None:
-            self._flag = 'NO_FLAG'
         return self._flag
 
     def cls(self):

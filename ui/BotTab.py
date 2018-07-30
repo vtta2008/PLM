@@ -21,9 +21,9 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 # Plt
 from appData import SiPoMin
 from core.Loggers import SetLogger
-from ui.Libs.UiPreset import IconPth
+from ui.uikits.UiPreset import IconPth
 from ui.GeneralSetting import GeneralSetting
-from ui.Libs.TabWidget import TabContent
+from ui.uikits.TabWidget import TabContent
 
 
 # -------------------------------------------------------------------------------------------------------------

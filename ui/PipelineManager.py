@@ -10,20 +10,20 @@ Description:
 
 # Python
 import sys
-from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout)
 
 # Plt
-from appData import __homepage__, dockB, ST_FORMAT, SETTING_FILEPTH, SiPoMin, SiPoExp
+from appData import __homepage__, dockB, ST_FORMAT, SETTING_FILEPTH, SiPoMin
 from core.Loggers import SetLogger
 from core.Settings import Settings
-from ui import MainToolBar, TopTab, BotTab, ServerStatus, Footer, StatusBar
+from ui import MainToolBar, TopTab, BotTab, Footer, StatusBar
+from ui.Network import ServerStatus
 from ui.Menus import MainMenuBar, SubMenuBar
-from ui.Libs.GroupBox import AutoSectionLayoutGrp, AutoSectionQMainGrp
-from ui.Libs.UiPreset import AppIcon
+from ui.uikits.GroupBox import AutoSectionLayoutGrp, AutoSectionQMainGrp
+from ui.uikits.UiPreset import AppIcon
 from core.Specs import Specs
 from utilities.utils import get_layout_size
 
@@ -133,9 +133,8 @@ class PipelineManager(QMainWindow):
         self.layout.addWidget(self.footer, 11, 0, 1, 9)
 
         from ui.ToolBarDock import ToolBarDock
-        self.add_dockWidget(ToolBarDock('TD'))
-        self.add_dockWidget(ToolBarDock('VFX'))
-        self.add_dockWidget(ToolBarDock('ART'))
+        self.add_dockWidget(ToolBarDock('TEXTURE'))
+        self.add_dockWidget(ToolBarDock('POST'))
 
     def add_dockWidget(self, dock, pos=dockB):
         self.dock = dock

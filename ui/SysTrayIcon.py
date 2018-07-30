@@ -22,8 +22,8 @@ from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QApplication
 
 # Plt
 from appData import CONFIG_SYSTRAY, APPINFO, __plmSlogan__, __appname__
-from ui.Libs.UiPreset import AppIcon
-from ui.Libs.Action import Action
+from ui.uikits.UiPreset import AppIcon
+from ui.uikits.Action import Action
 from utilities.localSQL import QuerryDB
 from core.Loggers import SetLogger
 from core.Specs import Specs

@@ -15,10 +15,15 @@ from functools import partial
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QToolBar, QDockWidget, QGridLayout
 
-from appData import APPINFO, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, SiPoExp
-from ui.Libs.Action import Action
+from appData import APPINFO, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEXTURE, CONFIG_TOOLS, CONFIG_POST, SiPoExp
+from ui.uikits.Action import Action
 
-TOOLBAR_DATA = dict(TD = CONFIG_TDS, VFX = CONFIG_VFX, ART = CONFIG_ART)
+TOOLBAR_DATA = dict(TD = CONFIG_TDS,
+                    VFX = CONFIG_VFX,
+                    ART = CONFIG_ART,
+                    TEXTURE = CONFIG_TEXTURE,
+                    TOOLS = CONFIG_TOOLS,
+                    POST = CONFIG_POST)
 
 class ToolBar(QToolBar):
 
@@ -34,17 +39,25 @@ class ToolBar(QToolBar):
         self.add_actions()
         self.applySetting()
 
+    def applySetting(self):
+        self.setMinimumWidth((len(self.acts) + 1)*32 + 32)
+
     def add_actions(self):
         apps = self.tbData[self.key]
         for app in apps:
             if app in self.appInfo:
-                action = Action({'icon': app, 'stt': self.appInfo[app][0], 'txt': app,
-                                        'trg': (partial(self.executing.emit, self.appInfo[app][2]))}, self)
+                action = Action({'icon': app,
+                                 'stt': self.appInfo[app][0],
+                                 'txt': app,
+                                 'trg': (partial(self.executing.emit, self.appInfo[app][2]))}, self)
                 self.acts.append(action)
                 self.addAction(action)
 
-    def applySetting(self):
-        self.resize((len(self.acts) + 1)*32, 32)
+    def sizeHint(self):
+        size = super(ToolBar, self).sizeHint()
+        size.setHeight(size.height())
+        size.setWidth(max(size.width(), size.height()))
+        return size
 
 class ToolBarDock(QDockWidget):
 

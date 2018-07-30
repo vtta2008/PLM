@@ -72,7 +72,7 @@ It is based on a "lowest common denominator" of all bindings;
 including members found in each of the 4 bindings.
 
 The "_common_members" dictionary is generated using the
-build_membership.sh script.
+build_membership.handler script.
 
 """
 

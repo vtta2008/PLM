@@ -18,8 +18,8 @@ from PyQt5.QtWidgets import QGroupBox, QGridLayout, QHBoxLayout
 
 # PLM
 from appData import WAIT_LAYOUT_COMPLETE, SiPoMin
-from ui.Libs.UiPreset import Label
-from ui.Libs.GridLayout import AutoPreset1, AutoPreset2, AutoPreset3
+from ui.uikits.UiPreset import Label
+from ui.uikits.GridLayout import AutoPreset1, AutoPreset2, AutoPreset3
 
 # -------------------------------------------------------------------------------------------------------------
 """ Groupbox presets """

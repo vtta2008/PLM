@@ -16,10 +16,10 @@ import winshell, os, json, pprint, logging
 from appData.scr._meta import __plmWiki__, __envKey__
 from appData.scr._keys import KEYPACKAGE, CONFIG_SYSTRAY, CONFIG_APPUI, KEYDETECT, FIX_KEY
 from appData.scr._path import DAMG_LOGO_32, PLM_LOGO_32, ICON_DIR_32, pyEnvCfg, mainConfig, appIconCfg, webIconCfg, appConfig
-from appData.scr._format import LOG_FORMAT, DT_FORMAT
 
-logger = logging.getLogger(__name__)
-logging.basicConfig(format=LOG_FORMAT['fullOpt'], datefmt=DT_FORMAT['fullOpt'], level=logging.INFO)
+from core.Loggers import SetLogger
+
+
 # -------------------------------------------------------------------------------------------------------------
 """ Collecting all info. """
 
@@ -35,7 +35,8 @@ class LocalCfg(object):
     def __init__(self):
 
         super(LocalCfg, self).__init__()
-
+        self.logger = SetLogger(self)
+        self.report = self.logger.report
         self.collect_env_variables()
         self.collect_icon_path()
         self.collect_all_app()
@@ -99,34 +100,12 @@ class LocalCfg(object):
             for k in KEYDETECT:
                 if k in key:
                     delKeys.append(key)
-                    logger.info("KEY DETECTED: {0}. Append to list to be deleted later".format(key))
+                    self.report("KEY DETECTED: {0}. Append to list to be deleted later".format(key))
 
         for key in delKeys:
             self.del_key(key, self.appInfo)
 
         keepKeys = [k for k in KEYPACKAGE if k in self.appInfo and k in self.iconInfo]
-
-        appNuke = []
-        myNuke = []
-        iconNuke = []
-        for key in self.appInfo:
-            if 'NukeX' in key:
-                print(key)
-                appNuke.append(key)
-
-        for key in KEYPACKAGE:
-            if 'NukeX' in key:
-                print(key)
-                myNuke.append(key)
-
-        for key in self.iconInfo:
-            if 'NukeX' in key:
-                print(key)
-                iconNuke.append(key)
-
-        pprint.pprint(myNuke)
-        pprint.pprint(appNuke)
-        pprint.pprint(iconNuke)
 
         # Custom functions
         self.mainInfo['About'] = ['About PLM', self.iconInfo['About'], 'About']
@@ -209,10 +188,10 @@ class LocalCfg(object):
     def del_key(self, key, dict={}):
         try:
             del dict[key]
-            logger.info("key deleted: {key}".format(key=key))
+            self.report("key deleted: {key}".format(key=key))
         except KeyError:
             dict.pop(key, None)
-            logger.info("key poped: {key}".format(key=key))
+            self.report("key poped: {key}".format(key=key))
 
     def create_config_file(self, name, data):
         if name == 'envKeys':
@@ -227,19 +206,20 @@ class LocalCfg(object):
             filePth = webIconCfg
 
         if os.path.exists(filePth):
-            logger.info('Remove old config file: {0}'.format(filePth))
+            self.report('Remove old config file: {0}'.format(filePth))
             os.remove(filePth)
 
         with open(filePth, 'w') as f:
-            logger.info('Create new config file: {0}'.format(filePth))
+            self.report('Create new config file: {0}'.format(filePth))
             json.dump(data, f, indent=4)
 
     def handle_path_error(self, dir=None):
+        from core.Errors import IsADirectoryError
         if not os.path.exists(dir) or dir is None:
             try:
                 raise IsADirectoryError("Path is not exists: {0}".format(dir))
             except IsADirectoryError as error:
-                logger.debug('Caught error: ' + repr(error))
+                self.report('Caught error: ' + repr(error))
                 return
 
 # -------------------------------------------------------------------------------------------------------------

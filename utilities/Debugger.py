@@ -26,7 +26,7 @@ from PyQt5.QtGui import QTextCursor
 from PyQt5.QtCore import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
 
 # PLM
-from ui.Libs.UiPreset import IconPth
+from ui.uikits.UiPreset import IconPth
 
 def print_variable(varName, varData):
     print('###-------------------------------------------------------------------------------###')

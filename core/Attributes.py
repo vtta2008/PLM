@@ -14,9 +14,6 @@ Description:
 
 
 # PyQt5
-from PyQt5.QtCore import QPoint, QSize, Qt, QTime, QTimer
-from PyQt5.QtGui import QColor, QPainter, QPolygon, QRegion
-from PyQt5.QtWidgets import QAction, QApplication, QWidget
 
 
 # PLM
@@ -75,8 +72,6 @@ from PyQt5.QtCore import QEvent, QPoint, QPointF, QSize, Qt
 from PyQt5.QtGui import QColor, QIcon, QPainter, QPainterPath, QPalette
 from PyQt5.QtWidgets import (QApplication, QStyle, QToolButton, QToolTip,
                              QWidget)
-
-from build import tooltips_rc
 
 
 class ShapeItem(object):

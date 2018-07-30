@@ -12,11 +12,27 @@ from __future__ import unicode_literals
 """ Import """
 
 # Python
-import sys, traceback, logging, enum, pdb, json
+import sys, os, logging, json, enum, pdb, traceback, linecache
 
-# Plm
-from appData.scr._path import LOG_PTH
-from appData.scr._format import LOG_FORMAT, DT_FORMAT
+# -------------------------------------------------------------------------------------------------------------
+
+LOG_PTH = os.path.join(os.getenv('LOCALAPPDATA'), 'DAMGteam', 'PLM', 'logs', 'PLM.log')
+
+LOG_FORMAT = dict(
+
+    fullOpt = "%(funcName)s: %(levelname)s: %(asctime)s %(filename)s, line %(lineno)s: %(message)s",
+    rlm = "(relativeCreated:d) (levelname): (message)",
+    tlm1 = "{asctime:[{lvelname}: :{message}",
+    tnlm1 = "%(asctime)s  %(name)-22s  %(levelname)-8s %(message)s",
+    tlm2 = '%(asctime)s|%(levelname)s|%(message)s|',
+    tnlm2 = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+)
+
+DT_FORMAT = dict(
+    dmyhms = "%d/%m/%Y %H:%M:%S",
+    mdhm = "'%m-%d %H:%M'",
+    fullOpt = '(%d/%m/%Y %H:%M:%S)',
+)
 
 # -------------------------------------------------------------------------------------------------------------
 try:
@@ -25,6 +41,7 @@ except NameError:
     unicode = str
 
 class Encoder(json.JSONEncoder):
+
     def default(self, o):
         if isinstance(o, set):
             return tuple(o)
@@ -32,8 +49,9 @@ class Encoder(json.JSONEncoder):
             return o.encode('unicode_escape').decode('ascii')
         return super(Encoder, self).default(o)
 
-class StructuredMessage(object):
+class StyleMessage(object):
     def __init__(self, message, **kwargs):
+        super(StyleMessage, self).__init__()
         self.message = message
         self.kwargs = kwargs
 
@@ -83,37 +101,76 @@ class LogLevel(enum.IntEnum):
             intvalue = maxvalue
         return cls(intvalue)
 
+class Stream_Handler(logging.StreamHandler):
+
+    def __init__(self, level=None, fmt=None, dtfmt=None):
+        sys.excepthook = self.exception_handler
+        super(Stream_Handler, self).__init__(sys.stdout)
+
+        self.fmt      = fmt                     # Formatter
+        self.dtfmt    = dtfmt                   # Datetime Fommater
+        self.logLevel = level                   # Log level
+
+        self.setFormatter(self.get_formatter())
+        self.setLevel(self.logLevel)
+
+    def get_formatter(self):
+        return logging.Formatter(self.fmt, self.dtfmt)
+
+    def exception_handler(self, exc_type, exc_value, tb):
+        if hasattr(sys, 'ps1') or not sys.stderr.isatty():
+            exception = sys.__excepthook__(exc_type, exc_value, tb)
+        else:
+            exception = traceback.format_exception(exc_type, exc_value, tb)
+
+        pdb.post_mortem(tb)
+        print("Unhandled exception!\n%s", "".join(exception))
+
+        return exception
+
+class File_Handler(logging.FileHandler):
+
+    def __init__(self, filename=None, level=None, fmt=None, dtfmt=None):
+        super(File_Handler, self).__init__(filename)
+
+        self.fm       = filename                # File name (full path)
+        self.fmt      = fmt                     # Formatter
+        self.dtfmt    = dtfmt                   # Datetime Fommater
+        self.logLevel = level                   # Log level
+
+        self.setFormatter(self.get_formatter())
+        self.setLevel(self.logLevel)
+
+    def get_formatter(self):
+        return OneLineExceptionFormatter(self.fmt, self.dtfmt)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Import """
+
 class SetLogger(logging.Logger):
 
-    def __init__(self, parent=None, level="info", fmt=LOG_FORMAT['fullOpt'], dtfmt=DT_FORMAT['fullOpt'], filemode='a+', filename=LOG_PTH):
+    def __init__(self, parent=None, level="debug", fmt=LOG_FORMAT['fullOpt'], dtfmt=DT_FORMAT['fullOpt'], filemode='a+', filename=LOG_PTH):
         super(SetLogger, self).__init__(parent)
 
-        if parent is not None:
-            logID = parent.__class__.__name__
-        else:
-            logID = self.__class__.__name__
+        self.logID = os.path.basename(__file__)
 
-        logging.getLogger(logID)
+        logging.getLogger(self.logID)
 
         self.level = self.define_level(level)
         self.logLevel = self.level_config(self.level)
         self.fmt = fmt                                                          # format
         self.dtfmt = dtfmt                                                      # datetime format
         self.fn = filename
-        self.mode = filemode
+        self.fm = filemode
         self.addLoggingLevel(levelName='TRACE', levelNum=LogLevel.Trace)
 
-        sys.excepthook = self.exception_handler
-        self.sh = logging.StreamHandler(sys.stdout)
-        self.sh.setFormatter(logging.Formatter(self.fmt, self.dtfmt))
-        self.sh.setLevel(logging.DEBUG)
-
-        self.fh = logging.FileHandler(self.fn)
-        self.fh.setFormatter(OneLineExceptionFormatter(self.fmt, self.dtfmt))
-        self.fh.setLevel(logging.DEBUG)
-
+        self.sh = Stream_Handler(self.logLevel, self.fmt, self.dtfmt)
         self.addHandler(self.sh)
+        self.fh = File_Handler(self.fn, self.logLevel, self.fmt, self.dtfmt)
         self.addHandler(self.fh)
+
+    def id(self):
+        return self.logID
 
     def define_level(self, logLevel):
 
@@ -148,28 +205,17 @@ class SetLogger(logging.Logger):
         }[verbose_level]
         return logging_logLevel
 
-    def exception_handler(self, exc_type, exc_value, tb):
-        if hasattr(sys, 'ps1') or not sys.stderr.isatty():
-            exception = sys.__excepthook__(exc_type, exc_value, tb)
-        else:
-            exception = traceback.format_exception(exc_type, exc_value, tb)
-            pdb.post_mortem(tb)
-
-        self.critical("Unhandled exception!\n%s", "".join(exception))
-
-        return exception
-
     def addLoggingLevel(self, levelName, levelNum, methodName=None):
 
         if not methodName:
             methodName = levelName.lower()
 
         if hasattr(logging, levelName):
-            self.debug('AttributeError: {} already defined in logging module'.format(levelName))
+            self.report('AttributeError: {} already defined in logging module'.format(levelName))
         if hasattr(logging, methodName):
-            self.debug('AttributeError: {} already defined in logging module'.format(methodName))
+            self.report('AttributeError: {} already defined in logging module'.format(methodName))
         if hasattr(logging.getLoggerClass(), methodName):
-            self.debug('AttributeError: {} already defined in logger class'.format(methodName))
+            self.report('AttributeError: {} already defined in logger class'.format(methodName))
 
         def logForLevel(self, message, *args, **kwargs):
             if self.isEnabledFor(levelNum):
@@ -183,8 +229,29 @@ class SetLogger(logging.Logger):
         setattr(logging.getLoggerClass(), methodName, logForLevel)
         setattr(logging, methodName, logToRoot)
 
-    def loginfo(self, mess, *args, **kwargs):
-        self.debug(StructuredMessage(mess))
+    def report(self, mess, **kwargs):
+        self.trace(StyleMessage(mess))
+
+    def drop_exception(self):
+        exc_type, exc_obj, tb = sys.exc_info()
+
+        if exc_obj is None:
+            exc_obj = self.logID
+
+        lineno = traceback.tb_lineno(traceback)
+        filename = os.path.basename(__file__)
+        linecache.checkcache(filename)
+        line = linecache.getline(filename, lineno, globals())
+
+        self.report("\n"
+                    "--------------------------------------------------------------------------------- \n"
+                        "Tracking from:   {0} \n"
+                        "At line number:  {1} \n"
+                        "Details code:    {2} \n"
+                        "{3} \n"
+                    "--------------------------------------------------------------------------------- \n".format(
+            os.path.basename(filename), lineno, line.strip(), exc_obj))
+        return
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 15/06/2018 - 6:49 PM

@@ -18,7 +18,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot,QRunnable, QObject, QThreadPool, Q
 from PyQt5.QtWidgets import QGridLayout, QWidget
 
 # PLM
-from ui.Libs.UiPreset import Label
+from ui.uikits.UiPreset import Label
 
 # -------------------------------------------------------------------------------------------------------------
 """ Signals """

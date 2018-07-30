@@ -26,8 +26,8 @@ from PyQt5.QtWidgets import (QWidget, QGridLayout, QGroupBox, QHBoxLayout, QVBox
 # PLM
 from appData import SiPoMin
 from utilities.utils import get_app_icon
-from ui.Libs.UiPreset import Label
-from ui.Libs.Button import Button
+from ui.uikits.UiPreset import Label
+from ui.uikits.Button import Button
 from core.Specs import Specs
 from core.Loggers import SetLogger
 
@@ -280,7 +280,7 @@ class NewProject(QWidget):
     #     self.numOfEnv = cmds.intField(self.numEnv, q=True, v=True)
     #     self.numOfProps = cmds.intField(self.numProps, q=True, v=True)
     #
-    #     # Create content by set mode
+    #     # Create content by set fm
     #     if self.modeSetting == "Studio Mode":
     #         self.prjStudioMode()
     #     elif self.modeSetting == "Group Mode":

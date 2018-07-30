@@ -21,7 +21,7 @@ from PyQt5.QtWidgets import (QAction, QApplication, QComboBox, QWidget, QDialog,
                              QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
 
 # Plm
-from ui.Libs.UiPreset import Label, IconPth
+from ui.uikits.UiPreset import Label, IconPth
 from core.Specs import Specs
 
 

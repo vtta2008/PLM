@@ -21,9 +21,9 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QFileDialog
 
 # Plm
 from appData import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_REQUIRED, QUESTIONS
-from ui.Libs.UiPreset import IconPth, Label, LineEdit, ComboBox, CheckBox
-from ui.Libs.Button import Button
-from ui.Libs.GroupBox import GroupGrid
+from ui.uikits.UiPreset import IconPth, Label, LineEdit, ComboBox, CheckBox
+from ui.uikits.Button import Button
+from ui.uikits.GroupBox import GroupGrid
 from utilities.utils import check_blank, check_match, get_avatar_icon, getToken, getUnix, getTime, getDate, get_local_pc_info, get_user_location
 from core.Loggers import SetLogger
 from core.Specs import Specs
@@ -82,8 +82,8 @@ class SignUp(QWidget):
     def account_section(self):
         self.accSection, account_grid = GroupGrid("Account")
         self.userField = LineEdit()
-        self.pwField = LineEdit({'mode': 'password'})
-        self.cfpwField = LineEdit({'mode': 'password'})
+        self.pwField = LineEdit({'fm': 'password'})
+        self.cfpwField = LineEdit({'fm': 'password'})
 
         account_grid.addWidget(Label({'txt':'User Name'}), 0, 0, 1, 2)
         account_grid.addWidget(Label({'txt':'Password'}), 1, 0, 1, 2)

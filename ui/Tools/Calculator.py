@@ -16,8 +16,8 @@ from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QWidget)
 
 from appData import SiPoMin
-from ui.Libs.Button import ToolBtn
-from ui.Libs.UiPreset import IconPth
+from ui.uikits.Button import ToolBtn
+from ui.uikits.UiPreset import IconPth
 from core.Specs import Specs
 
 class Calculator(QWidget):

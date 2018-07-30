@@ -146,7 +146,7 @@ class LightWidget(QtWidgets.QWidget):
         intensityLight.textChanged.connect(lambda val: self.light.intensity.set(float(val)))
         layout.addWidget(intensityLight, 0, 3)
 
-        # Change mode of light
+        # Change fm of light
         self.colorBtn = QtWidgets.QPushButton()
         self.colorBtn.setMaximumSize(20, 20)
         self.setButtonColor()

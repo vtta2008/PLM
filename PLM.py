@@ -11,17 +11,29 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Set up environment variable """
 
-import os
-try:
-    os.getenv("PIPELINE_MANAGER")
-except KeyError:
-    os.environ["PIPELINE_MANAGER"] = os.path.join(os.path.dirname(os.path.realpath(__file__)))
-
-# -------------------------------------------------------------------------------------------------------------
-""" Import """
-
 # Python
-import sys, requests, ctypes, subprocess
+import os, sys, subprocess, requests, ctypes, pkg_resources
+from core.Loggers import SetLogger
+logger = SetLogger()
+report = logger.report
+
+key = "PIPELINE_MANAGER"
+ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
+
+try:
+    os.getenv(key)
+except KeyError:
+    report("Environment key has not been set !!!")
+    os.environ[key] = ROOT
+    report("set key: {0} = {1}".format(key, os.getenv(key)))
+else:
+    if not  os.environ[key] == ROOT:
+        report("wrong local path directory !!!, relocate environment variable")
+        os.environ[key] = ROOT
+        report("set key: {0} = {1}".format(key, os.getenv(key)))
+    else:
+        report("Env key setup corrected")
+        report("Environment configuration finished: {0}: {1}".format(key, os.getenv(key)))
 
 # PyQt5
 from ui.Web.PLMBrowser import PLMBrowser
@@ -34,11 +46,10 @@ from appData import (APPINFO, __serverCheck__, PLMAPPID, SYSTRAY_UNAVAI, SETTING
 
 from core.Settings import Settings
 from core.Cores import AppCores
-from core.Loggers import SetLogger
 from core.Specs import Specs
 from utilities.localSQL import QuerryDB
 from utilities.utils import str2bool, clean_file_ext
-from ui.Libs.UiPreset import AppIcon
+from ui.uikits.UiPreset import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -84,8 +95,8 @@ class PLM(QApplication):
         self.login, self.signup, self.mainUI, self.sysTray = self.core.import_uiSet1()
         self.uiSet1 = [self.login, self.signup, self.mainUI, self.sysTray]
         self.mainUI.settings = self.settings
-
         self.setupConn1()
+
         try:
             self.username, token, cookie, remember = self.db.query_table('curUser')
         except ValueError:
@@ -112,7 +123,6 @@ class PLM(QApplication):
                        self.textEditor, self.userSetting, self.version] = self.core.import_uiSet2()
 
         self.setupConn2()
-
         self.set_styleSheet('darkstyle')
         self.setQuitOnLastWindowClosed(False)
         sys.exit(self.exec_())
@@ -120,8 +130,8 @@ class PLM(QApplication):
     def setupConn1(self):
         self.login.showLayout.connect(self.showLayout)
         self.signup.showLayout.connect(self.showLayout)
-        self.mainUI.showLayout.connect(self.showLayout)
 
+        self.mainUI.showLayout.connect(self.showLayout)
         self.mainUI.executing.connect(self.executing)
         self.mainUI.addLayout.connect(self.addLayout)
         self.mainUI.sysNotify.connect(self.sysTray.sysNotify)
@@ -154,7 +164,7 @@ class PLM(QApplication):
             layout = self
         else:
             layout = self.layouts[name]
-            self.logger.loginfo("define layout: {0}".format(layout))
+            self.logger.trace("define layout: {0}".format(layout))
 
         if mode == "hide":
             layout.hide()
@@ -170,7 +180,7 @@ class PLM(QApplication):
             layout.quit()
 
         self.setSetting(layout.key, mode)
-        self.logger.loginfo("{0} layout: {1}".format(mode, layout))
+        self.logger.trace("{0} layout: {1}".format(mode, layout))
 
     @pyqtSlot(str)
     def openBrowser(self, url):
@@ -180,36 +190,36 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str, str)
     def setSetting(self, key=None, value=None, grp=None):
-        self.logger.loginfo('signal comes: {0}, {1}, {2}'.format(key, value, grp))
+        self.logger.trace('signal comes: {0}, {1}, {2}'.format(key, value, grp))
         self.settings.initSetValue(key, value, grp)
 
     @pyqtSlot(str, str)
     def loadSetting(self, key=None, grp=None):
-        self.logger.loginfo('signal comes: {0}, {1}'.format(key, grp))
+        self.logger.trace('signal comes: {0}, {1}'.format(key, grp))
         value = self.settings.initValue(key, grp)
         if key is not None:
             self.returnValue.emit(key, value)
 
     @pyqtSlot(str)
     def executing(self, cmd):
-        self.logger.loginfo('signal comes: {0}'.format(cmd))
+        self.logger.trace('signal comes: {0}'.format(cmd))
         if cmd in self.layouts.keys():
-            self.logger.loginfo('run showlayout: {0}'.format(cmd))
+            self.logger.trace('run showlayout: {0}'.format(cmd))
             self.showLayout(cmd, 'show')
         elif os.path.isdir(cmd):
             os.startfile(cmd)
         elif cmd == 'open_cmd':
-            self.logger.loginfo('open command prompt')
+            self.logger.trace('open command prompt')
             os.system('start /wait cmd')
         elif cmd == 'Remove pyc':
-            self.logger.loginfo("clean .pyc files")
+            self.logger.trace("clean .pyc files")
             clean_file_ext('.pyc')
         elif cmd == 'Re-config local':
             from appData.LocalCfg import LocalCfg
-            self.logger.loginfo('re config data')
+            self.logger.trace('re config data')
             LocalCfg()
         else:
-            self.logger.loginfo('execute: {0}'.format(cmd))
+            self.logger.trace('execute: {0}'.format(cmd))
             subprocess.Popen(cmd)
 
     @pyqtSlot(object)

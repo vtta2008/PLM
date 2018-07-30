@@ -74,10 +74,10 @@ class DataHandle(object):
         cmds.rowColumnLayout()
 
     def snapshotUI(self):
-        print 'snapshotUI group mode'
+        print 'snapshotUI group fm'
 
     def publishUI(self):
-        print 'publishUI group mode'
+        print 'publishUI group fm'
 
     def loaderUI(self):
-        print 'loaderUI group mode'
+        print 'loaderUI group fm'

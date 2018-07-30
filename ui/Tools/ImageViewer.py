@@ -28,7 +28,7 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphic
 
 from utilities import utils as func
 from core.Specs import Specs
-from ui.Libs.UiPreset import IconPth
+from ui.uikits.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Graphic View class """

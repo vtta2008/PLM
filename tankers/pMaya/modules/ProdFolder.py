@@ -330,7 +330,7 @@ class ProdFolder(object):
         self.numOfEnv = cmds.intField(self.numEnv, q=True, v=True)
         self.numOfProps = cmds.intField(self.numProps, q=True, v=True)
 
-        # Create content by set mode
+        # Create content by set fm
         if self.modeSetting == 'Studio Mode':
             self.prjStudioMode()
         elif self.modeSetting == 'Group Mode':

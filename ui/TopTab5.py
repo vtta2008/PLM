@@ -20,7 +20,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLineEdit, QText
 from appData import SiPoMin, SiPoExp
 from core.Specs import Specs
 from core.Loggers import SetLogger
-from ui.Libs.Button import Button
+from ui.uikits.Button import Button
 
 
 # -------------------------------------------------------------------------------------------------------------

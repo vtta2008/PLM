@@ -24,9 +24,9 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QCheckBox, 
 # Plt
 from utilities import localSQL as usql
 from appData import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __serverAutho__
-from ui.Libs.UiPreset import IconPth, Label, LineEdit
-from ui.Libs.GroupBox import GroupGrid
-from ui.Libs.Button import Button
+from ui.uikits.UiPreset import IconPth, Label, LineEdit
+from ui.uikits.GroupBox import GroupGrid
+from ui.uikits.Button import Button
 from utilities.utils import str2bool
 from core.Specs import Specs
 
@@ -56,7 +56,7 @@ class SignIn(QWidget):
         loginGrp, loginGrid = GroupGrid('Sign in')
 
         self.userTF = LineEdit()
-        self.pwTF = LineEdit({'mode': 'password'})
+        self.pwTF = LineEdit({'fm': 'password'})
         self.userCB = QCheckBox('Remember me?')
 
         forgot_pw_btn = Button({'txt': 'Forgot your password?', 'cl': self.forgetPwClicked})

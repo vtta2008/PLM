@@ -20,8 +20,8 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QGridLayout, QLineEdit, QTextEdit, QApplication, QWidget)
 
 # PLM
-from ui.Libs.UiPreset import Label, IconPth
-from ui.Libs.Button import Button
+from ui.uikits.UiPreset import Label, IconPth
+from ui.uikits.Button import Button
 from core.Specs import Specs
 
 class EnglishDictionary(QWidget):

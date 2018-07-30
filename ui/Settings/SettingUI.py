@@ -4,18 +4,21 @@ from PyQt5.QtCore import (QByteArray, QDate, QDateTime, QEvent, QPoint, QRect, Q
                           QTimer, pyqtSignal, pyqtSlot)
 from PyQt5.QtGui import QColor, QIcon, QRegExpValidator, QValidator
 from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar, QWidget, QFileDialog, QGridLayout,
-                             QGroupBox, QHeaderView, QInputDialog, QItemDelegate, QLineEdit, QStyle, QStyleOptionViewItem,
+                             QGroupBox, QHeaderView, QInputDialog, QItemDelegate, QLineEdit, QStyle,
+                             QStyleOptionViewItem,
                              QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
 
 from appData import SETTING_FILEPTH, __organization__, __appname__, SiPoMin
 from core.Specs import Specs
 from core.Loggers import SetLogger
 from core.Errors import KeySettingError
-from ui.Libs.UiPreset import ComboBox, Label
+from ui.uikits.UiPreset import ComboBox, Label
+
 
 class SettingUI(QWidget):
 
     key = 'settingUI'
+
     showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
@@ -23,8 +26,8 @@ class SettingUI(QWidget):
         self.specs = Specs(self.key, self)
         self._parent = parent
         self.menubar = QMenuBar(self)
-        self.regValue = RegOutput()
-        self.regInfo = RegInput()
+        self.regValue = SettingOutput()
+        self.regInfo = SettingInput()
         self.createMenus()
 
         self.settings = self.setting_mode(self.settingPth(), self.settingFormat(), self._parent)
@@ -44,7 +47,7 @@ class SettingUI(QWidget):
         self.setWindowTitle("PLM settings")
         self.applySetting()
 
-    def settingPth(self, pth = SETTING_FILEPTH['app']):
+    def settingPth(self, pth=SETTING_FILEPTH['app']):
         return pth
 
     def settingFormat(self):
@@ -57,13 +60,14 @@ class SettingUI(QWidget):
         return self.regInfo.application()
 
     def openSettings(self):
-        self.settings = QSettings(self.regInfo.format(), self.regInfo.scope(), self.regInfo.organization(), self.regInfo.application())
+        self.settings = QSettings(self.regInfo.format(), self.regInfo.scope(), self.regInfo.organization(),
+                                  self.regInfo.application())
         self.setSettingsObject(self.settings)
         self.fallbacksAct.setEnabled(True)
 
     def openIniFile(self):
         if not os.path.exists(self.settingPth()):
-            fileName, _ = QFileDialog.getOpenFileName(self, "Open INI File", '',  "INI Files (*.ini *.conf)")
+            fileName, _ = QFileDialog.getOpenFileName(self, "Open INI File", '', "INI Files (*.ini *.conf)")
 
             if fileName:
                 settings = QSettings(fileName, QSettings.IniFormat)
@@ -92,14 +96,18 @@ class SettingUI(QWidget):
             self.fallbacksAct.setEnabled(False)
 
     def createActions(self):
-        self.openSettingsAct = QAction("&Open Application Settings...", self, shortcut="Ctrl+O", triggered=self.openSettings)
+        self.openSettingsAct = QAction("&Open Application Settings...", self, shortcut="Ctrl+O",
+                                       triggered=self.openSettings)
         self.openIniFileAct = QAction("Open I&NI File...", self, shortcut="Ctrl+N", triggered=self.openIniFile)
-        self.openPropertyListAct = QAction("Open Mac &Property List...", self, shortcut="Ctrl+P", triggered=self.openPropertyList)
-        self.openRegistryPathAct = QAction("Open Windows &Registry Path...", self, shortcut="Ctrl+G", triggered=self.openRegistryPath)
+        self.openPropertyListAct = QAction("Open Mac &Property List...", self, shortcut="Ctrl+P",
+                                           triggered=self.openPropertyList)
+        self.openRegistryPathAct = QAction("Open Windows &Registry Path...", self, shortcut="Ctrl+G",
+                                           triggered=self.openRegistryPath)
         self.refreshAct = QAction("&Refresh", self, shortcut="Ctrl+R", enabled=False, triggered=self.regValue.refresh)
         self.exitAct = QAction("E&xit", self, shortcut="Ctrl+Q", triggered=self.close)
         self.autoRefreshAct = QAction("&Auto-Refresh", self, shortcut="Ctrl+A", checkable=True, enabled=False)
-        self.fallbacksAct = QAction("&Fallbacks", self, shortcut="Ctrl+F", checkable=True, enabled=False, triggered=self.regValue.setFallbacksEnabled)
+        self.fallbacksAct = QAction("&Fallbacks", self, shortcut="Ctrl+F", checkable=True, enabled=False,
+                                    triggered=self.regValue.setFallbacksEnabled)
 
         if sys.platform != 'darwin':
             self.openPropertyListAct.setEnabled(False)
@@ -157,26 +165,28 @@ class SettingUI(QWidget):
         self.setSizePolicy(SiPoMin, SiPoMin)
         self.openIniFile()
 
-class RegInput(QWidget):
+
+class SettingInput(QWidget):
 
     def __init__(self, parent=None):
-        super(RegInput, self).__init__(parent)
+        super(SettingInput, self).__init__(parent)
 
         self.formatComboBox = ComboBox({'items': ["INI", "Native"]})
         self.scopeComboBox = ComboBox({'items': ["User", "System"]})
-        self.organizationComboBox = ComboBox({'items':['DAMGteam'], 'editable':True})
-        self.applicationComboBox = ComboBox({'items': ['PLM'], 'editable':True, 'curIndex':0})
+        self.organizationComboBox = ComboBox({'items': ['DAMGteam'], 'editable': True})
+        self.applicationComboBox = ComboBox({'items': ['PLM'], 'editable': True, 'curIndex': 0})
 
         for cb in [self.formatComboBox, self.scopeComboBox, self.organizationComboBox, self.applicationComboBox]:
             cb.currentIndexChanged.connect(self.updateLocationsTable)
 
-        formatLabel = Label({'txt':"&Format: ", 'setBuddy': self.formatComboBox})
-        scopeLabel = Label({'txt':"&Scope:", 'setBuddy': self.scopeComboBox})
-        organizationLabel = Label({'txt':"&Organization:", 'setBuddy': self.organizationComboBox})
-        applicationLabel = Label({'txt':"&Application:", 'setBuddy': self.applicationComboBox})
+        formatLabel = Label({'txt': "&Format: ", 'setBuddy': self.formatComboBox})
+        scopeLabel = Label({'txt': "&Scope:", 'setBuddy': self.scopeComboBox})
+        organizationLabel = Label({'txt': "&Organization:", 'setBuddy': self.organizationComboBox})
+        applicationLabel = Label({'txt': "&Application:", 'setBuddy': self.applicationComboBox})
 
         grpBox = QGroupBox("Setting Locations")
         grid = QGridLayout()
+        grpBox.setLayout(grid)
 
         self.locationsTable = QTableWidget()
         self.locationsTable.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -204,7 +214,7 @@ class RegInput(QWidget):
         grid.addWidget(applicationLabel, 4, 0)
         grid.addWidget(self.applicationComboBox, 4, 1)
         grid.addWidget(self.locationsTable, 0, 2, 6, 4)
-        grpBox.setLayout(grid)
+
         self.updateLocationsTable()
         self.layout.addWidget(grpBox)
 
@@ -232,6 +242,7 @@ class RegInput(QWidget):
         return self.applicationComboBox.currentText()
 
     def updateLocationsTable(self):
+
         self.locationsTable.setUpdatesEnabled(False)
         self.locationsTable.setRowCount(0)
 
@@ -282,10 +293,11 @@ class RegInput(QWidget):
                 self.locationsTable.setItem(row, 1, item1)
         self.locationsTable.setUpdatesEnabled(True)
 
-class RegOutput(QTreeWidget):
+
+class SettingOutput(QTreeWidget):
 
     def __init__(self, parent=None):
-        super(RegOutput, self).__init__(parent)
+        super(SettingOutput, self).__init__(parent)
 
         self.setItemDelegate(VariantDelegate(self))
 
@@ -360,7 +372,7 @@ class RegOutput(QTreeWidget):
             if self.isActiveWindow() and self.autoRefresh:
                 self.maybeRefresh()
 
-        return super(RegOutput, self).event(event)
+        return super(SettingOutput, self).event(event)
 
     def updateSetting(self, item):
         key = item.text(0)
@@ -467,8 +479,8 @@ class RegOutput(QTreeWidget):
         for int in range(oldIndex - newIndex):
             self.deleteItem(parent, newIndex)
 
-class Settings(QSettings):
 
+class Settings(QSettings):
     setFormat = pyqtSignal(str)
     setScope = pyqtSignal(str)
 
@@ -547,6 +559,7 @@ class Settings(QSettings):
             return QSettings.SystemScope
         else:
             return QSettings.UserScope
+
 
 class VariantDelegate(QItemDelegate):
 

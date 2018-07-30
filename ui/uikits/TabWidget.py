@@ -19,7 +19,7 @@ from PyQt5.QtWidgets import QTabWidget, QGridLayout, QTabBar, QWidget, QVBoxLayo
 
 # PLM
 from appData import SiPoMin
-from ui.Libs.UiPreset import Label
+from ui.uikits.UiPreset import Label
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tab layout element"""

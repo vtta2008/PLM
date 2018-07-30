@@ -13,9 +13,12 @@ Description:
 # Python
 
 from platform import system
-import json
+import sys, pkg_resources, subprocess, json
 
-from importlib import reload as r
+try:
+    from importlib import reload
+except ImportError:
+    pass
 
 from appData.scr._path import *
 
@@ -96,7 +99,7 @@ __pkgsReq__ = m.__pkgsReq__
 # ----------------------------------------------------------------------------------------------------------- #
 
 def reload_module(module):
-    return r(module)
+    return reload(module)
 
 def read_file(filePth):
     with open(filePth, 'r') as f:
@@ -114,8 +117,29 @@ LICENSE_MIT = read_file(LICENSE_MIT)
 if not os.path.exists(DB_PTH):
     GenerateResource()
 
+def config_python():
+    configPython = False
+    for pth in os.getenv('PATH').split(';'):
+        if not pth == sys.exec_prefix:
+            pass
+        else:
+            configPython = True
+            break
+
+    if not configPython:
+        os.environ['PATH'] = os.getenv('PATH') + sys.exec_prefix
+
+    install_packages = [(d.project_name, d.version) for d in pkg_resources.working_set]
+    packages = [p[0] for p in install_packages]
+    versions = [v[1] for v in install_packages]
+
+    for pkg in ['deprecate', 'msgpack', 'winshell', 'pandas', 'wheel', 'argparse', 'green', 'cx_Freeze']:
+        if pkg not in packages:
+            subprocess.Popen('python -m pip install --user --upgrade {0}'.format(pkg), shell=True).wait()
+
 def fix_environment():
     """Add enviroment variable on Windows systems."""
+    config_python()
     from PyQt5 import __file__ as pyqt_path
     if system() == "Windows":
         pyqt = os.path.dirname(pyqt_path)
@@ -141,6 +165,7 @@ def load_iconInfo():
     with open(appIconCfg, 'r') as f:
         iconInfo = json.load(f)
     return iconInfo
+
 
 fix_environment()
 APPINFO = load_appInfo()

@@ -11,15 +11,15 @@ Description:
 """ Import """
 
 # Python
-import os
+import os, sys, linecache
 
 # PyQt5
 from PyQt5.QtCore import QSettings
 
 # Plm
-from utilities.utils import raise_exception
 from core.Loggers import SetLogger
 
+logger = SetLogger().report
 # -------------------------------------------------------------------------------------------------------------
 """ Base """
 
@@ -27,10 +27,10 @@ class ErrorBase(Exception):
 
     def __init__(self, parent=None):
         super(ErrorBase, self).__init__(parent)
-        self.logger = SetLogger(self)
+
         self._parent = parent
 
-    def initialize(self, errorName, section, key, path, fm, scope, value):
+    def initialize(self, errorName=None, section=None, key=None, path=None, fm=None, scope=None, value=None):
         self.section = section
         self.key = key
         self.pth = path
@@ -44,7 +44,7 @@ class ErrorBase(Exception):
         try:
             raise Exception("{0}: {1}".format(self.errorName, self.mess))
         except:
-            raise_exception()
+            self.raise_exception()
 
     def _message(self):
         if self.section == 'key':
@@ -58,7 +58,7 @@ class ErrorBase(Exception):
         elif self.section == 'metavalue':
             mess = self.meta_value_error()
         else:
-            mess = "Unkown error."
+            mess = self.drop_exception_error()
         return mess
 
     def key_error(self):
@@ -79,9 +79,9 @@ class ErrorBase(Exception):
         if self._format is None or self._format == QSettings.InvalidFormat:
             return "Invalid format setting, not set or wrong format"
         elif self._format == QSettings.IniFormat:
-            return "INI format setting could not work in this mode."
+            return "INI format setting could not work in this fm."
         elif self._format == QSettings.NativeFormat:
-            return "Native format setting could not work in this mode."
+            return "Native format setting could not work in this fm."
         else:
             return "Unknown format setting"
 
@@ -89,9 +89,9 @@ class ErrorBase(Exception):
         if self._scope is None:
             return "Expected scope type, not None."
         elif self._scope == QSettings.UserScope:
-            return "User scope could not work in this mode."
+            return "User scope could not work in this fm."
         elif self._scope == QSettings.SystemScope:
-            return "System scope setting could not work in this mode."
+            return "System scope setting could not work in this fm."
         else:
             return "Unknown scope."
 
@@ -100,6 +100,64 @@ class ErrorBase(Exception):
             return "A value of a static meta object can not be None"
         else:
             return "Wrong type, meta value is only string type."
+
+    def drop_exception_error(self):
+        return "Drop an exception here"
+
+    def raise_exception(self):
+
+        exc_type, exc_obj, tb = sys.exc_info()
+        f = tb.tb_frame
+        lineno = tb.tb_lineno
+        filename = f.f_code.co_filename
+        linecache.checkcache(filename)
+        line = linecache.getline(filename, lineno, f.f_globals)
+
+        logger(" \n"
+              "Caught error: {0} \n"
+              "--------------------------------------------------------------------------------- \n"
+              "   Tracking from:   {1} \n"
+              "   At line number:  {2} \n"
+              "   Details code:    [line {3}]: {4} \n"
+              "   {5} \n"
+              "--------------------------------------------------------------------------------- \n"
+              " \n ".format(self.errorName.upper(), filename, lineno, lineno, line.strip(), exc_obj))
+        return
+
+#-------------------------------------------------------------------------------------------------------------
+""" Error handle """
+
+def handle_path_error(directory=None):
+    if not os.path.exists(directory) or directory is None:
+        try:
+            raise IsADirectoryError("Path is not exists: {directory}".format(directory=directory))
+        except IsADirectoryError as error:
+            raise('Caught error: ' + repr(error))
+
+# -------------------------------------------------------------------------------------------------------------
+""" Utilities """
+
+class IsADirectoryError(ErrorBase):
+    def __init__(self, dir = None):
+        self.dir = dir
+        self.initialize(errorName=self.__class__, section='directory', value=self.dir)
+
+class FileNotFoundError(ErrorBase):
+    def __init__(self, dir=None):
+        self.dir = dir
+        self.initialize(errorName=self.__class__, section='directory', value=self.dir)
+
+class DropException(ErrorBase):
+    def __init__(self):
+        self.initialize(errorName=self.__class__)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Metadata """
+
+class MetaValueError(ErrorBase):
+    def __init__(self, value=None):
+        self.value = value
+        self.initialize(errorName=self.__class__, section='metavalue', value=self.value)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Setting """
@@ -123,17 +181,6 @@ class ScopeSettingError(ErrorBase):
     def __init__(self, scope=None):
         self._scope = scope
         self.initialize(errorName=self.__class__, section='scope', key=self._scope)
-
-# -------------------------------------------------------------------------------------------------------------
-""" Metadata """
-
-class MetaValueError(ErrorBase):
-    def __init__(self, value=None):
-        self.value = value
-        self.initialize(errorName=self.__class__, section='metavalue', value=self.value)
-
-# -------------------------------------------------------------------------------------------------------------
-""" Setting """
 
 class QtNodesError(ErrorBase):
     """Base custom exception."""
@@ -167,6 +214,8 @@ class StandardError(ErrorBase):
 class SettingError(ErrorBase):
     def __init__(self):
         ErrorBase(errorName=self.__class__)
+
+DropException()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 22/06/2018 - 6:07 AM

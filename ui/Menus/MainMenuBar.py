@@ -22,7 +22,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 from appData import APPINFO, __plmWiki__, SiPoMin
 from core.Loggers import SetLogger
 from core.Specs import Specs
-from ui.Libs.Action import Action
+from ui.uikits.Action import Action
 
 class MainMenuBar(QMainWindow):
 

@@ -18,7 +18,7 @@ from PyQt5.QtWidgets import QPushButton, QToolButton, QButtonGroup
 
 # PLM
 from appData import SiPoExp, SiPoPre
-from ui.Libs.UiPreset import check_preset, IconPth
+from ui.uikits.UiPreset import check_preset, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Button presets """

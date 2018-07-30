@@ -22,7 +22,7 @@ from PyQt5.QtNetwork import QHostAddress
 # Plt
 from appData import left, __serverUrl__
 from appData.ServerCfg import ServerCfg
-from ui.Libs.UiPreset import Label
+from ui.uikits.UiPreset import Label
 from utilities.utils import get_app_icon
 from core.Specs import Specs
 from core.Loggers import SetLogger

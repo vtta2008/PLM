@@ -21,7 +21,7 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 
 # Plt
 from utilities.localSQL import TimeLog
-from ui.Libs.Action import Action
+from ui.uikits.Action import Action
 from utilities.utils import get_layout_size
 
 from appData import APPINFO, __plmWiki__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR, SiPoMin

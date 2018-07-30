@@ -22,8 +22,8 @@ from PyQt5.QtWidgets import QApplication, QGridLayout, QScrollArea, QWidget
 # Plm
 from utilities.utils import get_app_icon
 from appData import ABOUT
-from ui.Libs.UiPreset import Label, IconPth
-from ui.Libs.Button import Button
+from ui.uikits.UiPreset import Label, IconPth
+from ui.uikits.Button import Button
 from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------

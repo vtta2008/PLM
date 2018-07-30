@@ -24,8 +24,8 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGraphicsView, 
 # Plt
 
 from core.Specs import Specs
-from ui.Libs.GroupBox import GroupBox
-from ui.Libs.Button import Button
+from ui.uikits.GroupBox import GroupBox
+from ui.uikits.Button import Button
 from utilities import localSQL as usql
 from utilities.utils import get_avatar_icon
 

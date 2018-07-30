@@ -856,7 +856,7 @@ def IKFKControlSetup():
     # set visibility of IK/FK switch
     m.setAttr(side + '_Shoulder_CON.IK_FK_Switch', 0)
 
-    # Visibility for IK mode
+    # Visibility for IK fm
     m.setAttr(side + '_Wing2_FK_Con_GRP.visibility', 0)
     m.setAttr(side + '_Wing3_FK_Con_GRP.visibility', 0)
     m.setAttr(side + '_Wing_1_JNT_FK.visibility', 0)
@@ -871,7 +871,7 @@ def IKFKControlSetup():
     m.setDrivenKeyframe(side + '_Wing_1_JNT_FK.visibility', cd=side + '_Shoulder_CON.IK_FK_Switch')
     m.setDrivenKeyframe(side + '_Wing_Pole_CON.visibility', cd=side + '_Shoulder_CON.IK_FK_Switch')
 
-    # Visibility for FK mode
+    # Visibility for FK fm
     m.setAttr(side + '_Shoulder_CON.IK_FK_Switch', 1)
     m.setAttr(side + '_Wing2_FK_Con_GRP.visibility', 1)
     m.setAttr(side + '_Wing3_FK_Con_GRP.visibility', 1)
@@ -887,7 +887,7 @@ def IKFKControlSetup():
     m.setDrivenKeyframe(side + '_Wing_1_JNT_FK.visibility', cd=side + '_Shoulder_CON.IK_FK_Switch')
     m.setDrivenKeyframe(side + '_Wing_Pole_CON.visibility', cd=side + '_Shoulder_CON.IK_FK_Switch')
 
-    # Set control back to Default 0 (sets it to default IK mode)
+    # Set control back to Default 0 (sets it to default IK fm)
     m.setAttr(side + '_Shoulder_CON.IK_FK_Switch', 0)
     m.select(cl=True)
 

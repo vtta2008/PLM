@@ -21,7 +21,7 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot
 
 # Plt
 from appData import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, APPINFO, SiPoMin
-from ui.Libs.Action import Action
+from ui.uikits.Action import Action
 from utilities.utils import str2bool
 from core.Specs import Specs
 from core.Loggers import SetLogger

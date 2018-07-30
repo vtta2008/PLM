@@ -11,7 +11,11 @@ Description:
 """ Import """
 
 # Python
-import builtins
+try:
+    import buildins
+except ImportError:
+    import future_builtins as buildins
+
 import re
 
 # PyQt5
@@ -28,23 +32,23 @@ from appData.scr._meta import __appname__
 # -------------------------------------------------------------------------------------------------------------
 """ Python Types """
 
-def get_all_types():
-    allTypes = {}
-    errorTypes = {}
-    normalTypes = {}
-    types = [getattr(builtins, d) for d in dir(builtins) if isinstance(getattr(builtins, d), type)]
-    keys = [str(t).split("<class '")[-1].split("'>")[0] for t in types]
-
-    for key in keys:
-        allTypes[key] = types[keys.index(key)]
-        if 'Error' in key:
-            errorTypes[key]= types[keys.index(key)]
-        else:
-            normalTypes[key]= types[keys.index(key)]
-
-    return errorTypes, normalTypes, allTypes
-
-ERROR_TYPES, NORMAL_TYPES, ALL_TYPES = get_all_types()
+# def get_all_types():
+#     allTypes = {}
+#     errorTypes = {}
+#     normalTypes = {}
+#     types = [getattr(builtins, d) for d in dir(builtins) if isinstance(getattr(builtins, d), type)]
+#     keys = [str(t).split("<class '")[-1].split("'>")[0] for t in types]
+#
+#     for key in keys:
+#         allTypes[key] = types[keys.index(key)]
+#         if 'Error' in key:
+#             errorTypes[key]= types[keys.index(key)]
+#         else:
+#             normalTypes[key]= types[keys.index(key)]
+#
+#     return errorTypes, normalTypes, allTypes
+#
+# ERROR_TYPES, NORMAL_TYPES, ALL_TYPES = get_all_types()
 
 # -------------------------------------------------------------------------------------------------------------
 """ PLM Types """
@@ -140,7 +144,7 @@ PREFERENCES = dict(
     stylesheet_name =    {"default": "default", "desc": "Stylesheet to use.",                               "label": "Stylesheet",                  "class": "global"},
     palette_style =      {"default": "default", "desc": "Color palette to use.",                            "label": "Palette",                     "class": "global"},
     font_style =         {"default": "default", "desc": "font style to use.",                               "label": "Font style",                  "class": "global"},
-    viewport_mode =      {"default": "smart",   "desc": "viewport update mode.",                            "label": "Viewport Mode",               "class": "global"}
+    viewport_mode =      {"default": "smart",   "desc": "viewport update fm.",                            "label": "Viewport Mode",               "class": "global"}
 )
 
 VALID_FONTS = dict( ui   = ['Arial', 'Cantarell', 'Corbel', 'DejaVu Sans', 'DejaVu Serif', 'FreeSans', 'Liberation Sans', 'Lucida Sans Unicode', 'MS Sans Serif', 'Open Sans', 'PT Sans', 'Tahoma', 'Verdana'],

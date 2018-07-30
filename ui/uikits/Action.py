@@ -17,7 +17,7 @@ from functools import partial
 from PyQt5.QtWidgets import QAction
 
 # PLM
-from ui.Libs.UiPreset import check_preset, IconPth
+from ui.uikits.UiPreset import check_preset, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Action presets """

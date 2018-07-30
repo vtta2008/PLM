@@ -26,7 +26,7 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog, 
 from ui.TextEditor import TextEditor_rc
 from core.Specs import Specs
 from core.Loggers import SetLogger
-from ui.Libs.UiPreset import IconPth
+from ui.uikits.UiPreset import IconPth
 
 if sys.platform.startswith('darwin'):
     rsrcPath = ":/images/mac"

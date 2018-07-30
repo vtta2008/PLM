@@ -22,8 +22,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLine
 # Plt
 from appData import APPINFO, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE, BTNICONSIZE, ICONBTNSIZE, FIX_KEYS
 from core.Specs import Specs
-from ui.Libs.Button import Button
-from ui.Libs.GroupBox import GroupBox
+from ui.uikits.Button import Button
+from ui.uikits.GroupBox import GroupBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ topTab1 """

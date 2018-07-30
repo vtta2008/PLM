@@ -15,7 +15,11 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
+try:
+    from PyQt5.QtWebKitWidgets import QWebView as QWebEngineView
+    from PyQt5.QtWebKitWidgets import QWebPage as QWebEnginePage
+except ImportError:
+    from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
 
 from PyQt5.QtCore import QFile, QIODevice, Qt, QTextStream, QUrl, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QApplication, QLineEdit, QMainWindow, QWidget, QSizePolicy, QStyle, QTextEdit,
@@ -27,7 +31,7 @@ from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 from ui.Web import PLMBrowser_rc
 from core.Loggers import SetLogger
 from core.Specs import Specs
-from ui.Libs.UiPreset import IconPth
+from ui.uikits.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Web browser """
@@ -130,7 +134,7 @@ class WebBrowser(QMainWindow):
     def finishLoading(self):
         self.progress = 100
         self.adjustTitle()
-        self.view.page().runJavaScript(self.jQuery)
+        self.view.page().mainFrame().evaluateJavaScript(self.jQuery)
         self.rotateImages(self.rotateAction.isChecked())
 
     def highlightAllLinks(self):
@@ -139,7 +143,7 @@ class WebBrowser(QMainWindow):
                         $(this).css('background-color', 'yellow') 
                     } 
                   )"""
-        self.view.page().runJavaScript(code)
+        self.view.page().javaScriptPrompt(code)
 
     def rotateImages(self, invert):
         if invert:
@@ -159,7 +163,7 @@ class WebBrowser(QMainWindow):
                     } 
                 )"""
 
-        self.view.page().runJavaScript(code)
+        self.view.page().mainFrame().evaluateJavaScript(code)
 
     def removeGifImages(self):
         code = "$('[src*=gif]').remove()"

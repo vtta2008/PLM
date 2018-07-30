@@ -21,8 +21,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox
 
 # Plt
 # from ui.uirc import AutoSectionBtnGrp
-from ui.Libs.Button import Button
-from ui.Libs.GroupBox import GroupBox
+from ui.uikits.Button import Button
+from ui.uikits.GroupBox import GroupBox
 from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------

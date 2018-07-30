@@ -97,7 +97,7 @@ class LineEdit(QLineEdit):
 
     def precedural(self):
         for key, value in self.preset.items():
-            if key == 'mode':
+            if key == 'fm':
                 self.setEchoMode(PRS[value])
 
     def sizeHint(self):
