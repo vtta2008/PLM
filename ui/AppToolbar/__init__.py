@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: abstract.py
+Script Name: __init__.py.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -10,5 +10,5 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 19/06/2018 - 6:06 AM
+# Created by panda on 31/07/2018 - 1:23 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

@@ -19,7 +19,8 @@ from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout)
 from appData import __homepage__, dockB, ST_FORMAT, SETTING_FILEPTH, SiPoMin
 from core.Loggers import SetLogger
 from core.Settings import Settings
-from ui import MainToolBar, TopTab, BotTab, Footer, StatusBar
+from ui import TopTab, BotTab, Footer, StatusBar
+from ui.AppToolbar import MainToolBar, ToolBarDock
 from ui.Network import ServerStatus
 from ui.Menus import MainMenuBar, SubMenuBar
 from ui.uikits.GroupBox import AutoSectionLayoutGrp, AutoSectionQMainGrp
@@ -64,7 +65,7 @@ class PipelineManager(QMainWindow):
 
         self.mainMenuBar = MainMenuBar.MainMenuBar()
         self.subMenuBar = SubMenuBar.SubMenuBar()                                                   # Sub menu
-        self.toolBar = MainToolBar.MainToolBar()                                                            # Toolbar
+        self.toolBar = MainToolBar.MainToolBar()                                                    # Toolbar
         self.serverStatus = ServerStatus.ServerStatus()                                             # Server Status
         self.subMenuSec = AutoSectionQMainGrp("Sub Menu", self.subMenuBar)
         self.mainMenuSec = AutoSectionQMainGrp("Main Menu", self.mainMenuBar)
@@ -132,9 +133,8 @@ class PipelineManager(QMainWindow):
 
         self.layout.addWidget(self.footer, 11, 0, 1, 9)
 
-        from ui.ToolBarDock import ToolBarDock
-        self.add_dockWidget(ToolBarDock('TEXTURE'))
-        self.add_dockWidget(ToolBarDock('POST'))
+        self.add_dockWidget(ToolBarDock.ToolBarDock('TEXTURE'))
+        self.add_dockWidget(ToolBarDock.ToolBarDock('POST'))
 
     def add_dockWidget(self, dock, pos=dockB):
         self.dock = dock

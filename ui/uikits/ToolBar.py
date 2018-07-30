@@ -1,22 +1,28 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: ToolBarDock.py
+Script Name: ToolBar.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+""" Import """
 
-import sys
+# Python
 from functools import partial
 
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtWidgets import QToolBar, QDockWidget, QGridLayout
+# PyQt5
+from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtWidgets import QToolBar
 
-from appData import APPINFO, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEXTURE, CONFIG_TOOLS, CONFIG_POST, SiPoExp
+# PLM
+from appData import APPINFO, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEXTURE, CONFIG_TOOLS, CONFIG_POST
 from ui.uikits.Action import Action
+
+# -------------------------------------------------------------------------------------------------------------
+""" Tool bar data preset """
 
 TOOLBAR_DATA = dict(TD = CONFIG_TDS,
                     VFX = CONFIG_VFX,
@@ -24,6 +30,9 @@ TOOLBAR_DATA = dict(TD = CONFIG_TDS,
                     TEXTURE = CONFIG_TEXTURE,
                     TOOLS = CONFIG_TOOLS,
                     POST = CONFIG_POST)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Tool bar class """
 
 class ToolBar(QToolBar):
 
@@ -58,39 +67,6 @@ class ToolBar(QToolBar):
         size.setHeight(size.height())
         size.setWidth(max(size.width(), size.height()))
         return size
-
-class ToolBarDock(QDockWidget):
-
-    showLayout = pyqtSignal(str, str)
-    executing = pyqtSignal(str)
-    addLayout = pyqtSignal(object)
-    setSetting = pyqtSignal(str, str, str)
-    key = 'Toolbar'
-
-    def __init__(self, name="TEXTURE", parent=None):
-        super(ToolBarDock, self).__init__(parent)
-        # print(self.__class__.isWindowType())
-        self.name = name
-        self.setWindowTitle(self.name)
-        self.layout = QGridLayout()
-        self.toolbar = ToolBar(self.name, self)
-        # self.toolbar.move(0, 30)
-        self.layout.addWidget(self.toolbar, 0, 0, 1, 1)
-        self.setLayout(self.layout)
-
-        self.applySetting()
-
-    def applySetting(self):
-        self.setAllowedAreas(Qt.AllDockWidgetAreas)
-        self.setSizePolicy(SiPoExp, SiPoExp)
-
-    def showEvent(self, event):
-        pass
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 21/07/2018 - 6:43 AM
+# Created by panda on 31/07/2018 - 12:50 AM
 # © 2017 - 2018 DAMGteam. All rights reserved
