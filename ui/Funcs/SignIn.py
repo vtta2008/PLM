@@ -91,7 +91,6 @@ class SignIn(QWidget):
         from ui.Funcs import ForgotPassword
         forgetPW = ForgotPassword.ForgotPassword()
         forgetPW.show()
-        forgetPW.exec_()
 
     def signInClicked(self):
         username = str(self.userTF.text())

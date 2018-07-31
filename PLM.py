@@ -12,7 +12,7 @@ Description:
 """ Set up environment variable """
 
 # Python
-import os, sys, subprocess, requests, ctypes, pkg_resources
+import os, sys, subprocess, requests, ctypes
 from core.Loggers import SetLogger
 logger = SetLogger()
 report = logger.report
@@ -47,6 +47,7 @@ from appData import (APPINFO, __serverCheck__, PLMAPPID, SYSTRAY_UNAVAI, SETTING
 from core.Settings import Settings
 from core.Cores import AppCores
 from core.Specs import Specs
+from utilities import Worker
 from utilities.localSQL import QuerryDB
 from utilities.utils import str2bool, clean_file_ext
 from ui.uikits.UiPreset import AppIcon
@@ -92,8 +93,8 @@ class PLM(QApplication):
         self.db = QuerryDB()                                                                # Query local database
         self.webBrowser = PLMBrowser()                                                      # Webbrowser
         self.addLayout(self.webBrowser)
-        self.login, self.signup, self.mainUI, self.sysTray = self.cores.import_uiSet1()
-        self.uiSet1 = [self.login, self.signup, self.mainUI, self.sysTray]
+        self.login, self.forgotPW, self.signup, self.mainUI, self.sysTray = self.cores.import_uiSet1()
+        self.uiSet1 = [self.login, self.forgotPW, self.signup, self.mainUI, self.sysTray]
         self.mainUI.settings = self.settings
         self.setupConn1()
 
@@ -129,6 +130,7 @@ class PLM(QApplication):
 
     def setupConn1(self):
         self.login.showLayout.connect(self.showLayout)
+        self.forgotPW.showLayout.connect(self.showLayout)
         self.signup.showLayout.connect(self.showLayout)
 
         self.mainUI.showLayout.connect(self.showLayout)
@@ -240,6 +242,23 @@ class PLM(QApplication):
         from core.StyleSheets import StyleSheets
         stylesheet = dict(darkstyle=StyleSheets('darkstyle').changeStylesheet, stylesheet=StyleSheets('stylesheet').changeStylesheet, )
         self.setStyleSheet(stylesheet[style])
+
+    def multiThread(self, fn):
+        worker = Worker.Worker(fn)
+        worker.signals.result.connect(self.print_output)
+        worker.signals.finished.connect(self.thread_complete)
+        worker.signals.progress.connect(self.progress_fn)
+        self.threadpool.start(worker)
+        return worker
+
+    def progress_fn(self, n):
+        print("%d%% done" % n)
+
+    def print_output(self, s):
+        print(s)
+
+    def thread_complete(self):
+        print("THREAD COMPLETE")
 
 if __name__ == '__main__':
     PLM()

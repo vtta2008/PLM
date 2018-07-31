@@ -8,132 +8,167 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PyQt5.QtWidgets import (QWidget, QSlider, QApplication,
-                             QHBoxLayout, QVBoxLayout)
-from PyQt5.QtCore import QObject, Qt, pyqtSignal
-from PyQt5.QtGui import QPainter, QFont, QColor, QPen
+# Python
 import sys
+import types
+import doctest
+from io import StringIO
+from code import InteractiveConsole
 
+# PyQt5
+from PyQt5.QtWidgets import QTextEdit, QApplication, QWidget, QHBoxLayout
+from PyQt5.QtGui import QTextCursor, QIcon
+from PyQt5.QtCore import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg,
+                          QtFatalMsg)
 
-class Communicate(QObject):
-    updateBW = pyqtSignal(int)
+# Plt
+import appData as app
+from utilities import utils as func
+from core.Loggers import SetLogger
 
+# -------------------------------------------------------------------------------------------------------------
+""" Configure the current level to make it disable certain log """
 
-class BurningWidget(QWidget):
+logger = SetLogger()
 
-    def __init__(self):
-        super(BurningWidget, self).__init__()
+# -------------------------------------------------------------------------------------------------------------
+""" Processing User Input """
 
-        self.initUI()
+class Console(InteractiveConsole):
 
-    def initUI(self):
+    def __init__(self, names=None):
 
-        self.setMinimumSize(1, 30)
-        self.value = 75
-        self.num = [75, 150, 225, 300, 375, 450, 525, 600, 675]
+        names = names or {}
+        names['console'] = self
+        InteractiveConsole.__init__(self, names)
+        self.superspace = types.ModuleType('superspace')
 
-    def setValue(self, value):
+    def enter(self, source):
+        source = self.preprocess(source)
+        self.runcode(source)
 
-        self.value = value
+    @staticmethod
+    def preprocess(source):
+        return source
 
-    def paintEvent(self, e):
+# -------------------------------------------------------------------------------------------------------------
+""" Bug detector """
 
-        qp = QPainter()
-        qp.begin(self)
-        self.drawWidget(qp)
-        qp.end()
+class pDetector(QTextEdit):
+    '''
+    A simple QTextEdit, with a few pre-set attributes and a file-like
+    interface.
+    '''
+    def __init__(self, parent=None):
+        super(pDetector, self).__init__(parent)
 
-    def drawWidget(self, qp):
+        self._buffer = StringIO()
+        self.setReadOnly(True)
 
-        MAX_CAPACITY = 700
-        OVER_CAPACITY = 750
+    def write(self, msg):
+        '''Add msg to the console's output, on a new line.'''
+        self.insertPlainText(msg)
+        # Autoscroll
+        self.moveCursor(QTextCursor.End)
+        self._buffer.write(msg)
 
-        font = QFont('Serif', 7, QFont.Light)
-        qp.setFont(font)
+    def __getattr__(self, attr):
+        '''
+        Fall back to the buffer object if an attribute can't be found.
+        '''
+        return getattr(self._buffer, attr)
 
-        size = self.size()
-        w = size.width()
-        h = size.height()
+# -------------------------------------------------------------------------------------------------------------
+""" Bug detector """
 
-        step = int(round(w / 10))
+class pDeBug(pDetector):
 
-        till = int(((w / OVER_CAPACITY) * self.value))
-        full = int(((w / OVER_CAPACITY) * MAX_CAPACITY))
+    """
+    It's main use case is to serve as an output console, for debugging or
+    other purposes.
+    It provides a file-like interface for ease of integration with other
+    python features such as the logging module, on top of a slightly
+    pre-set QTextEdit widget.
+    Since it inherits QTextEdit directly, all of the widget's methods are
+    available directly for further customization or GUI integration.
+    """
 
-        if self.value >= MAX_CAPACITY:
+    def __init__(self, mode, context, message, parent=None):
+        super(pDeBug, self).__init__(parent)
 
-            qp.setPen(QColor(255, 255, 255))
-            qp.setBrush(QColor(255, 255, 184))
-            qp.drawRect(0, 0, full, h)
-            qp.setPen(QColor(255, 175, 175))
-            qp.setBrush(QColor(255, 175, 175))
-            qp.drawRect(full, 0, till - full, h)
+        self.mode = mode
+        self.context = context
+        self.message = message
 
+        self.detector = pDetector()
+        self.seeking()
+
+        qInstallMessageHandler(self.message_handler)
+
+    def seeking(self):
+
+        self.detector.seek(0)
+        self.detector.seek(0)
+        self.detector.read()
+        self.detector.seek(0)
+
+        s = self.detector.read(4)
+        assert (len(s) == 4)
+        self.detector.write(s)
+
+    def message_handler(self):
+        if self.mode == QtInfoMsg:
+            self.mode = 'INFO'
+        if self.mode == QtInfoMsg:
+            self.mode = 'INFO'
+        elif self.mode == QtWarningMsg:
+            self.mode = 'WARNING'
+        elif self.mode == QtCriticalMsg:
+            self.mode = 'CRITICAL'
+        elif self.mode == QtFatalMsg:
+            self.mode = 'FATAL'
         else:
+            self.mode = 'DEBUG'
 
-            qp.setPen(QColor(255, 255, 255))
-            qp.setBrush(QColor(255, 255, 184))
-            qp.drawRect(0, 0, till, h)
+        line = self.context.line
+        funct = self.context.function
+        file = self.context.file
 
-        pen = QPen(QColor(20, 20, 20), 1,
-                   Qt.SolidLine)
+        qDebug('message_handler: line: {0}, func: {1}(), file: {2}'.format(line, funct, file))
+        qDebug('  %s: %s\n' % (self.mode, self.message))
 
-        qp.setPen(pen)
-        qp.setBrush(Qt.NoBrush)
-        qp.drawRect(0, 0, w - 1, h - 1)
+class pDebugger(QWidget):
 
-        j = 0
+    def __init__(self, parent=None):
+        super(pDebugger, self).__init__(parent)
 
-        for i in range(step, 10 * step, step):
-            qp.drawLine(i, 0, i, 5)
-            metrics = qp.fontMetrics()
-            fw = metrics.width(str(self.num[j]))
-            qp.drawText(i - fw / 2, h / 2, str(self.num[j]))
-            j = j + 1
+        doctest.testmod(verbose=True)
 
+        self.setWindowIcon(QIcon(func.get_app_icon(32, 'DeBug')))
+        self.setWindowTitle('Pipeline debug')
 
-class Example(QWidget):
+        self.layout = QHBoxLayout()
+        self.buildUI()
+        self.setLayout(self.layout)
 
-    def __init__(self):
-        super(Example, self).__init__()
+    def buildUI(self):
+        self.textEdit = pDeBug()
+        self.layout.addWidget(self.textEdit)
 
-        self.initUI()
+        self.applySetting()
 
-    def initUI(self):
-        OVER_CAPACITY = 750
+    def applySetting(self):
+        pass
 
-        sld = QSlider(Qt.Horizontal, self)
-        sld.setFocusPolicy(Qt.NoFocus)
-        sld.setRange(1, OVER_CAPACITY)
-        sld.setValue(75)
-        sld.setGeometry(30, 40, 150, 30)
+def main():
 
-        self.c = Communicate()
-        self.wid = BurningWidget()
-        self.c.updateBW[int].connect(self.wid.setValue)
-
-        sld.valueChanged[int].connect(self.changeValue)
-        hbox = QHBoxLayout()
-        hbox.addWidget(self.wid)
-        vbox = QVBoxLayout()
-        vbox.addStretch(1)
-        vbox.addLayout(hbox)
-        self.setLayout(vbox)
-
-        self.setGeometry(300, 300, 390, 210)
-        self.setWindowTitle('Burning widget')
-        self.show()
-
-    def changeValue(self, value):
-        self.c.updateBW.emit(value)
-        self.wid.repaint()
-
+    debug = QApplication(sys.argv)
+    layout = pDebugger()
+    layout.show()
+    debug.exec_()
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = Example()
-    sys.exit(app.exec_())
-
+    main()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 21/07/2018 - 12:23 AM

@@ -51,6 +51,15 @@ class MainToolBar(QMainWindow):
         self.compToolBar = self.create_toolBar("VFX", CONFIG_VFX)
         self.artToolBar = self.create_toolBar("ART", CONFIG_ART)
 
+        # self.tdToolBar = ToolBar('TD', self)
+        # self.addToolBar(self.tdToolBar)
+        #
+        # self.compToolBar = ToolBar('VFX', self)
+        # self.addToolBar(self.compToolBar)
+        #
+        # self.artToolBar = ToolBar('ART', self)
+        # self.addToolBar(self.artToolBar)
+
         self.setSizePolicy(SiPoMin, SiPoMin)
 
     def create_toolBar(self, name="", apps=[]):

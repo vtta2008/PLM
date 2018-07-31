@@ -19,7 +19,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QWidget, QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit, QVBoxLayout)
 
 # Plm
-from ui.uirc import Label
+from ui.uikits.UiPreset import Label
 from core.Specs import Specs
 
 class ForgotPassword(QWidget):
@@ -59,8 +59,8 @@ class ForgotPassword(QWidget):
         step1_btn_box.accepted.connect(self.on_step1_btn_clicked)
         step1_btn_box.rejected.connect(self.close)
 
-        step1_layout.addRow(Label("Username:"), self.user_account)
-        step1_layout.addRow(Label("Email adress:"), self.user_email)
+        step1_layout.addRow(Label({'txt': "Username: "}), self.user_account)
+        step1_layout.addRow(Label({'txt': "Email adress: "}), self.user_email)
         step1_layout.addRow(step1_btn_box)
 
         return step1_groupBox
@@ -71,8 +71,8 @@ class ForgotPassword(QWidget):
         step2_layout = QVBoxLayout()
         step2_groupBox.setLayout(step2_layout)
 
-        self.question1 = Label("Question 1")
-        self.question2 = Label("Question 2")
+        self.question1 = Label({'txt': "Question 1"})
+        self.question2 = Label({'txt': "Question 2"})
 
         self.answer1 = QLineEdit()
         self.answer2 = QLineEdit()

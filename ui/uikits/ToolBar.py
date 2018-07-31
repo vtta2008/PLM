@@ -43,13 +43,14 @@ class ToolBar(QToolBar):
         self.appInfo = APPINFO
         self._parent = parent
         self.key = key
+        self.setAccessibleName(self.key)
         self.acts = []
         self.tbData = TOOLBAR_DATA
         self.add_actions()
         self.applySetting()
 
     def applySetting(self):
-        self.setMinimumWidth((len(self.acts) + 1)*32 + 32)
+        self.setMinimumWidth((len(self.acts) + 1)*32)
 
     def add_actions(self):
         apps = self.tbData[self.key]

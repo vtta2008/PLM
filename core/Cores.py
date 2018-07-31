@@ -14,12 +14,11 @@ Description:
 import os, sys, subprocess
 
 # PyQt5
-from PyQt5.QtCore import QObject, pyqtSlot, pyqtSignal
+from PyQt5.QtCore import pyqtSlot, pyqtSignal
 
 # PLM
 from core.Loggers import SetLogger
 from core.Storage import PObj
-from core.Specs import Specs
 
 class AppCores(PObj):
 
@@ -32,7 +31,6 @@ class AppCores(PObj):
         PObj.__init__(self)
         super(AppCores, self).__init__(parent)
         self.logger         = SetLogger(self)
-        # self.specs          = Specs(self.key, self)
         self._parent        = parent
 
         self.layouts        = dict()
@@ -46,18 +44,18 @@ class AppCores(PObj):
     def import_uiSet1(self):
 
         from ui import PipelineManager, SysTrayIcon
-        from ui.Funcs import SignIn
-        from ui.Funcs import SignUp
+        from ui.Funcs import SignUp, SignIn, ForgotPassword
 
         self.login = SignIn.SignIn()
         self.signup = SignUp.SignUp()
+        self.forgotPW = ForgotPassword.ForgotPassword()
         self.mainUI = PipelineManager.PipelineManager()
         self.sysTray = SysTrayIcon.SysTrayIcon()
 
-        for layout in [self.login, self.signup, self.mainUI, self.sysTray]:
+        for layout in [self.login, self.forgotPW, self.signup, self.mainUI, self.sysTray]:
             self.register_layout(layout)
 
-        return self.login, self.signup, self.mainUI, self.sysTray
+        return self.login, self.forgotPW, self.signup, self.mainUI, self.sysTray
 
     def import_uiSet2(self):
 
