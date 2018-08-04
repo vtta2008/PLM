@@ -11,7 +11,7 @@ Description:
 
 variable = dict(
 
-    varCfg = ['docs', 'keys', 'metadata', 'path', 'pref'],
+    varCfg = ['docs', 'envKeys', 'metadata', 'path', 'pref'],
 
     varLib = ['color', 'format', 'classAttr', 'nodeGraph'],
 

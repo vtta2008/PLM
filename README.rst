@@ -25,9 +25,9 @@ REQUIREMENTS
 
 Python 3.6 for Windows:
 
-    - 64 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86_64.exe>`_
+    - 64 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.2.0-Windows-x86_64.exe>`_
 
-    - 32 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.1.0-Windows-x86.exe>`_
+    - 32 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.2.0-Windows-x86.exe>`_
 
 Also require extra python packages (will update more):
 

@@ -1264,7 +1264,7 @@ def _build_compatibility_members(binding, decorators=None):
         decorators (dict, optional): Provides the ability to decorate the
             original Qt methods when needed by a binding. This can be used
             to change the returned value to a standard value. The key should
-            be the classname, the value is a dict where the keys are the
+            be the classname, the value is a dict where the envKeys are the
             target method names, and the values are the decorator functions.
 
     """

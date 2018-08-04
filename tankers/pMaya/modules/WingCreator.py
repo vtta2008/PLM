@@ -750,7 +750,7 @@ def IKFKControlSetup():
     m.addItem(side + '_Shoulder_CON', longName='IK_FK_Switch', defaultValue=0.0, minValue=0.0, maxValue=10.0)
     m.setAttr(side + '_Shoulder_CON.' + 'IK_FK_Switch', k=1)  # Make it keyable
 
-    # Set switch to alternate between IK and FK orient constraints using set driven keys
+    # Set switch to alternate between IK and FK orient constraints using set driven envKeys
     m.setAttr(side + '_Wing_1_JNT_orientConstraint1.' + side + '_Wing_1_JNT_IKW0', 1)
     m.setAttr(side + '_Wing_1_JNT_orientConstraint1.' + side + '_Wing_1_JNT_FKW1', 0)
 
@@ -1334,7 +1334,7 @@ def foldControls():
     m.setAttr(side + '_Alula_Con_1_GRP_FLD.rotateY', 0)
     m.setAttr(side + '_Alula_Con_2_GRP_FLD.rotateY', 0)
 
-    # Set the driven keys for those position
+    # Set the driven envKeys for those position
     m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
                         ott='linear')
     m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
@@ -1465,7 +1465,7 @@ def foldControls():
         m.setAttr(side + '_Alula_Con_2_GRP_FLD.rotateY', (-1 * tempVarAlula2))
 
 
-        # Set the driven keys for those position
+        # Set the driven envKeys for those position
     m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateX', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',
                         ott='linear')
     m.setDrivenKeyframe(side + '_Shoulder_Con_GRP2.rotateY', cd=side + '_Shoulder_CON.' + '_AutoWingfold', itt='linear',

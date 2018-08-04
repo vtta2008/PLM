@@ -12,28 +12,181 @@ Description:
 """ Set up environment variable """
 
 # Python
-import os, sys, subprocess, requests, ctypes
+import os, sys, subprocess, requests, ctypes, pkg_resources
 from core.Loggers import SetLogger
 logger = SetLogger()
 report = logger.report
 
 key = "PIPELINE_MANAGER"
 ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
+requirements = ['deprecate', 'msgpack', 'winshell', 'pandas', 'wheel', 'argparse', 'green']
+envKeys = [k for k in os.environ.keys()]
+program86 = os.getenv('PROGRAMFILES(X86)')
+program64 = os.getenv('PROGRAMW6432')
 
 try:
     os.getenv(key)
 except KeyError:
-    report("Environment key has not been set !!!")
     os.environ[key] = ROOT
-    report("set key: {0} = {1}".format(key, os.getenv(key)))
 else:
-    if not  os.environ[key] == ROOT:
-        report("wrong local path directory !!!, relocate environment variable")
+    if os.getenv(key) != ROOT:
         os.environ[key] = ROOT
-        report("set key: {0} = {1}".format(key, os.getenv(key)))
-    else:
-        report("Env key setup corrected")
-        report("Environment configuration finished: {0}: {1}".format(key, os.getenv(key)))
+
+class Configurations(object):
+
+    checkList = dict()
+
+    def __init__(self):
+        super(Configurations, self).__init__()
+
+        self.install_packages = []
+        self.packages = []
+        self.versions = []
+        self.cfgs = True
+        self.pyVersion = float(sys.version[:3])
+        pyRoot, pyFolder = self.get_installed_pyPth()
+        pyPth = os.path.join(pyRoot, pyFolder)
+
+        self.cfgPyVer = True
+        self.cfgPyPth = self.add_python_into_path(pyPth)
+        self.cfgPip = self.config_pip()
+        self.cfgFree = self.config_deepFreeze()
+        self.cfgReqs = self.check_pkg_required()
+
+        self.checkList['python version'] = self.cfgPyVer
+        self.checkList['python path'] = self.cfgPyPth
+        self.checkList['config pip'] = self.cfgPip
+        self.checkList['config deepFreeze'] = self.cfgFree
+        self.checkList['python requirement'] = self.cfgReqs
+
+        for key in self.checkList.keys():
+            value = self.checkList[key]
+            if value is True:
+                continue
+            else:
+                self.cfgs = False
+
+        from pprint import pprint
+        pprint(self.checkList)
+
+        if not self.cfgs:
+            print('configurations is not completed!')
+        else:
+            print('configuration completed!')
+
+
+    def config_pip(self):
+        pipVer = self.get_pkg_version('pip')
+        if pipVer is None:
+            subprocess.Popen('python -m pip install --user --upgrade pip', shell=True).wait()
+        else:
+            if pipVer < 18.0:
+                subprocess.Popen('python -m pip install --user --upgrade pip', shell=True).wait()
+        return True
+
+    def config_deepFreeze(self):
+        try:
+            import cx_Freeze
+        except ImportError:
+            subprocess.Popen('python -m pip install --user --upgrade cx_Freeze', shell=True).wait()
+        finally:
+            return True
+
+    def check_pkg_install(self, pkg):
+        self.install_packages = self.get_installed_pkgs()
+        self.packages = [p[0] for p in self.install_packages]
+        self.versions = [v[1] for v in self.install_packages]
+        if pkg in self.packages:
+            return True
+        else:
+            return False
+
+    def check_pkg_required(self):
+        for pkg in requirements:
+            check = self.check_pkg_install(pkg)
+            print('check package: {0}'.format(pkg))
+            if not check:
+                subprocess.Popen('python -m pip install --user --upgrade {0}'.format(pkg), shell=True).wait()
+        return True
+
+    def add_python_into_path(self, pyPth):
+        sysPths = self.get_system_path()
+        addPyPath = False
+        for pth in sysPths:
+            if pth == pyPth:
+                continue
+            else:
+                addPyPath = True
+
+        if addPyPath:
+            return True
+        else:
+            os.environ['PATH'] = os.getenv('PATH') + pyPth
+            return True
+
+    def get_pkg_version(self, pkg):
+        check = self.check_pkg_install(pkg)
+        if check:
+            return float(self.versions[self.packages.index(pkg)][:4])
+        else:
+            return None
+
+    def get_system_path(self):
+        return os.getenv('PATH').split(';')[0:-1]
+
+    def get_installed_pkgs(self):
+        return [(d.project_name, d.version) for d in pkg_resources.working_set]
+
+    def get_installed_pyPth(self):
+
+        if 'Anaconda' in sys.version:
+            pyRoot = os.getenv('PROGRAMDATA')
+            if self.pyVersion > 2:
+                pyFolder = 'Anaconda3'
+            else:
+                pyFolder = 'Anaconda2'
+        else:
+            pyOrgDefault = os.path.join(os.getenv('LOCALAPPDATA'), 'Programs', 'Python')
+            if not os.path.exists(pyOrgDefault):
+                folder86 = self.get_folder_path(program86)
+                folder64 = self.get_folder_path(program64)
+                paths = folder86 + folder64
+                pyFolder = None
+                pyRoot = None
+                for pth in paths:
+                    if 'python' in pth:
+                        pyFolder = os.path.basename(pth)
+                        pyRoot = pth.split(pyFolder)[0]
+                        break
+            else:
+                pyRoot = pyOrgDefault
+                pyFolder = self.get_folder_path(pyRoot)[0]
+
+        return pyRoot, pyFolder
+
+    def get_all_path_from_dir(self, directory):
+        filePths = []                                                       # List which will store all file paths.
+        dirPths = []                                                        # List which will store all folder paths.
+        for root, directories, files in os.walk(directory, topdown=False):  # Walk the tree.
+            for filename in files:
+                filePths.append(os.path.join(root, filename))               # Add to file list.
+            for folder in directories:
+                dirPths.append(os.path.join(root, folder))                  # Add to folder list.
+        return [filePths, dirPths]
+
+    def get_folder_path(self, directory):
+        self.handle_path_error(directory)
+        return self.get_all_path_from_dir(directory)[1]
+
+    def handle_path_error(self, directory=None):
+        if not os.path.exists(directory) or directory is None:
+            try:
+                raise IsADirectoryError("Path is not exists: {directory}".format(directory=directory))
+            except IsADirectoryError as error:
+                raise ('Caught error: ' + repr(error))
+
+cfg = Configurations()
+print(cfg.cfgs)
 
 # PyQt5
 from ui.Web.PLMBrowser import PLMBrowser

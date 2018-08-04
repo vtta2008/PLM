@@ -75,17 +75,11 @@ class SignIn(QWidget):
         signupGrp, signupGrid = GroupGrid('Sign up')
         signupBtn = Button({'txt':'Sign up', 'emit2': [self.showLayout.emit, ['signup', 'show']]})
 
-        self.showLayout.connect(self.show_test)
-
         signupGrid.addWidget(Label({'txt': SIGNUP}), 0, 0, 1, 6)
         signupGrid.addWidget(signupBtn, 1, 0, 1, 6)
 
         self.layout.addWidget(loginGrp, 0, 0, 1, 1)
         self.layout.addWidget(signupGrp, 1, 0, 1, 1)
-
-    @pyqtSlot(str, str)
-    def show_test(self, key, value):
-        print(key, value)
 
     def forgetPwClicked(self):
         from ui.Funcs import ForgotPassword
@@ -122,7 +116,7 @@ class SignIn(QWidget):
             usql.UpdateDB("curUser", [username, token, cookie, str2bool(check)])
             print('show main ui')
             self.showLayout.emit('mainUI', 'show')
-            self.hide()
+            # self.hide()
         else:
             usql.RemoveDB("curUser")
             QMessageBox.critical(self, 'Login Failed', PW_WRONG)

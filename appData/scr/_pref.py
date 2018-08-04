@@ -8,13 +8,9 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
+import builtins
 
-# Python
-try:
-    import buildins
-except ImportError:
-    import future_builtins as buildins
+""" Import """
 
 import re
 
@@ -37,14 +33,14 @@ from appData.scr._meta import __appname__
 #     errorTypes = {}
 #     normalTypes = {}
 #     types = [getattr(builtins, d) for d in dir(builtins) if isinstance(getattr(builtins, d), type)]
-#     keys = [str(t).split("<class '")[-1].split("'>")[0] for t in types]
+#     envKeys = [str(t).split("<class '")[-1].split("'>")[0] for t in types]
 #
-#     for key in keys:
-#         allTypes[key] = types[keys.index(key)]
+#     for key in envKeys:
+#         allTypes[key] = types[envKeys.index(key)]
 #         if 'Error' in key:
-#             errorTypes[key]= types[keys.index(key)]
+#             errorTypes[key]= types[envKeys.index(key)]
 #         else:
-#             normalTypes[key]= types[keys.index(key)]
+#             normalTypes[key]= types[envKeys.index(key)]
 #
 #     return errorTypes, normalTypes, allTypes
 #

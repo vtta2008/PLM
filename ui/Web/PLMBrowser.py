@@ -134,7 +134,7 @@ class WebBrowser(QMainWindow):
     def finishLoading(self):
         self.progress = 100
         self.adjustTitle()
-        self.view.page().mainFrame().evaluateJavaScript(self.jQuery)
+        # self.view.page().mainFrame().evaluateJavaScript(self.jQuery)
         self.rotateImages(self.rotateAction.isChecked())
 
     def highlightAllLinks(self):
@@ -163,7 +163,7 @@ class WebBrowser(QMainWindow):
                     } 
                 )"""
 
-        self.view.page().mainFrame().evaluateJavaScript(code)
+        # self.view.page().mainFrame().evaluateJavaScript(code)
 
     def removeGifImages(self):
         code = "$('[src*=gif]').remove()"
