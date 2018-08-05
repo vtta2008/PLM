@@ -10,9 +10,26 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
+# Python
 import os, datetime, time, uuid, json
 
+# PyQt5
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
+
+# -------------------------------------------------------------------------------------------------------------
+""" Dataset template """
+
+metadataPth = os.path.join(os.getenv('PIPELINE_MANAGER'), 'mtd')
+if not os.path.exists(metadataPth):
+    os.mkdir(metadataPth)
+
+class PureData(dict):
+    def __init__(self):
+        super(PureData, self).__init__()
+        self['datetime'] = None
+
+# -------------------------------------------------------------------------------------------------------------
+""" Original object """
 
 class PureObject(QObject):
 
@@ -37,21 +54,22 @@ class PureObject(QObject):
     def list_fill(self, my_list):
         self.stations = my_list
 
-class PureData(dict):
 
-    def __init__(self):
-        self['datetime'] = None
+# -------------------------------------------------------------------------------------------------------------
+""" PLM object type """
 
 class PObj(PureObject):
 
-    Type = 'object'
+    Type = 'PObject'
     _attributes = {}
     imported = pyqtSignal(bool)
 
     def __init__(self, parent=None, **kwargs):
         PureObject.__init__(self)
         self._name = self.__class__.__name__
-        self.regFile = os.path.join(os.getenv('PIPELINE_MANAGER'), 'mtd', self.name() + ".{0}".format('pObj'))
+        self._parent = parent
+
+        self.regFile = os.path.join(metadataPth, self.name() + ".{0}".format('mtd'))
         self._register = os.path.exists(self.regFile)
 
         if self._register:
@@ -177,9 +195,12 @@ class PObj(PureObject):
         attr.name = new_name
         self._attributes.update({attr.name: attr})
 
+# -------------------------------------------------------------------------------------------------------------
+""" Ui object type """
+
 class UiObj(PureObject):
 
-    Type = 'layout'
+    Type = 'UiObject'
     _attributes = {}
     imported = pyqtSignal(bool)
 
@@ -187,7 +208,7 @@ class UiObj(PureObject):
         PureObject.__init__(self)
         self._parent = parent
         self._name = self._parent.__name__
-        self.regFile = os.path.join(os.getenv('PIPELINE_MANAGER'), 'mtd', self.name() + ".{0}".format('pObj'))
+        self.regFile = os.path.join(metadataPth, self.name() + ".{0}".format('mtd'))
         self._register = os.path.exists(self.regFile)
 
         if self._register:
@@ -221,13 +242,13 @@ class UiObj(PureObject):
 
     def __setattr__(self, name, value):
         if name in self._attributes:
-            super(PObj, self).__setattr__(name, value)
+            super(UiObj, self).__setattr__(name, value)
             attribute = self._attributes.get(name)
 
             if value != attribute.value:
                 attribute.value = value
         else:
-            super(PObj, self).__setattr__(name, value)
+            super(UiObj, self).__setattr__(name, value)
 
     @property
     def data(self):

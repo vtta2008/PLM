@@ -12,7 +12,7 @@ Description:
 
 __envKey__ = "PIPELINE_MANAGER"
 
-__organization__ = "DAMG team"
+__organization__ = "DAMGteam"
 __groupname__ = "DAMGteam"
 __damgSlogan__ = "Comprehensive Solution Design"
 __website__ = "https://damgteam.com"

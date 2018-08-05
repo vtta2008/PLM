@@ -203,19 +203,25 @@ class SetLogger(logging.Logger):
             LogLevel.Critical:  logging.FATAL,
 
         }[verbose_level]
+
         return logging_logLevel
 
     def addLoggingLevel(self, levelName, levelNum, methodName=None):
 
-        if not methodName:
+        if not methodName or methodName is None:
             methodName = levelName.lower()
 
         if hasattr(logging, levelName):
-            self.report('AttributeError: {} already defined in logging module'.format(levelName))
-        if hasattr(logging, methodName):
-            self.report('AttributeError: {} already defined in logging module'.format(methodName))
-        if hasattr(logging.getLoggerClass(), methodName):
-            self.report('AttributeError: {} already defined in logger class'.format(methodName))
+            self.info('{0} registered (level)'.format(levelName))
+            regisable = False
+        elif hasattr(logging, methodName):
+            self.info('{0} registered (method)'.format(methodName))
+            regisable = False
+        elif hasattr(logging.getLoggerClass(), methodName):
+            self.info('{0} registered (class)'.format(methodName))
+            regisable = False
+        else:
+            regisable = True
 
         def logForLevel(self, message, *args, **kwargs):
             if self.isEnabledFor(levelNum):
@@ -224,10 +230,11 @@ class SetLogger(logging.Logger):
         def logToRoot(message, *args, **kwargs):
             logging.log(levelNum, message, *args, **kwargs)
 
-        logging.addLevelName(levelNum, levelName)
-        setattr(logging, levelName, levelNum)
-        setattr(logging.getLoggerClass(), methodName, logForLevel)
-        setattr(logging, methodName, logToRoot)
+        if regisable:
+            logging.addLevelName(levelNum, levelName)
+            setattr(logging, levelName, levelNum)
+            setattr(logging.getLoggerClass(), methodName, logForLevel)
+            setattr(logging, methodName, logToRoot)
 
     def report(self, mess, **kwargs):
         self.trace(StyleMessage(mess))

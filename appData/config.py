@@ -11,9 +11,7 @@ Description:
 """ Import """
 
 # Python
-
-from platform import system
-import sys, pkg_resources, subprocess, json
+import json
 
 try:
     from importlib import reload
@@ -114,46 +112,13 @@ CONTRIBUTING = read_file(CONTRIBUTING)
 REFERENCE = read_file(REFERENCE)
 LICENSE_MIT = read_file(LICENSE_MIT)
 
-if not os.path.exists(DB_PTH):
-    GenerateResource()
-
-def config_python():
-    configPython = False
-    for pth in os.getenv('PATH').split(';'):
-        if not pth == sys.exec_prefix:
-            pass
-        else:
-            configPython = True
-            break
-
-    if not configPython:
-        os.environ['PATH'] = os.getenv('PATH') + sys.exec_prefix
-
-    install_packages = [(d.project_name, d.version) for d in pkg_resources.working_set]
-    packages = [p[0] for p in install_packages]
-    versions = [v[1] for v in install_packages]
-
-    for pkg in ['deprecate', 'msgpack', 'winshell', 'pandas', 'wheel', 'argparse', 'green', 'cx_Freeze']:
-        if pkg not in packages:
-            subprocess.Popen('python -m pip install --user --upgrade {0}'.format(pkg), shell=True).wait()
-
-def fix_environment():
-    """Add enviroment variable on Windows systems."""
-    config_python()
-    from PyQt5 import __file__ as pyqt_path
-    if system() == "Windows":
-        pyqt = os.path.dirname(pyqt_path)
-        qt_platform_plugins_path = os.path.join(pyqt, "plugins")
-        os.environ['QT_QPA_PLATFORM_PLUGIN_PATH'] = qt_platform_plugins_path
+# if not os.path.exists(DB_PTH):
+#     GenerateResource()
 
 def load_appInfo():
     if not os.path.exists(mainConfig):
         from appData.LocalCfg import LocalCfg
-        # logger.info("Storing local config")
         LocalCfg()
-    # Load info from file
-
-    # logger.info("Loading local config")
     with open(mainConfig, 'r') as f:
         appInfo = json.load(f)
     return appInfo
@@ -166,8 +131,6 @@ def load_iconInfo():
         iconInfo = json.load(f)
     return iconInfo
 
-
-fix_environment()
 APPINFO = load_appInfo()
 ICONINFO = load_iconInfo()
 
