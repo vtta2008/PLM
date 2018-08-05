@@ -442,6 +442,7 @@ class Knob(QGraphicsItem):
 class NodeAttr(QGraphicsItem):
 
     Type = "Node attribute"
+    key = Type
 
     def __init__(self, attrData, parent=None):
         super(NodeAttr, self).__init__(parent)
@@ -609,7 +610,7 @@ class NodeBase(QGraphicsObject):
 class Node(NodeBase):
 
     Type = 'Custome Node'
-
+    key = 'nodeBase'
     plugConnected = pyqtSignal(object, object, object, object)
     plugDisconnected = pyqtSignal(object, object, object, object)
     socketConnected = pyqtSignal(object, object, object, object)

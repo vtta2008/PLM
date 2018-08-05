@@ -18,6 +18,7 @@ from core.Errors import KeySettingError
 
 class Settings(QSettings):
 
+    key = 'settings'
     setFormat = pyqtSignal(str)
     setScope = pyqtSignal(str)
 

@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # Python
-import os, sys, subprocess, pkg_resources, json
+import os, sys, subprocess, pkg_resources, json, winshell, shutil
 from platform import system
 
 # PyQt5
@@ -20,14 +20,18 @@ from PyQt5.QtCore import pyqtSignal
 
 # PLM
 from core.Storage import PObj
+from core.Metadata import __groupname__, __appname__, __plmWiki__, __envKey__
+from core.keys import autodeskVer, KEYDETECT, KEYPACKAGE, CONFIG_APPUI, CONFIG_SYSTRAY, FIX_KEY
+from core.paths import PLM_LOGO_32, DAMG_LOGO_32, ICON_DIR_32
 
-key = "PIPELINE_MANAGER"
+key = __envKey__
 ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 requirements = ['deprecate', 'msgpack', 'winshell', 'pandas', 'wheel', 'argparse', 'green']
 program86 = os.getenv('PROGRAMFILES(X86)')
 program64 = os.getenv('PROGRAMW6432')
-__groupname__ = "DAMGteam"
-__appname__ = "PLM"
+
+# -------------------------------------------------------------------------------------------------------------
+""" Configurations """
 
 class Configurations(PObj):
 
@@ -42,11 +46,17 @@ class Configurations(PObj):
         self.appKey                     = appKey
         self.rootDir                    = rootDir
         self.mode                       = mode
+
         self.install_packages           = list()
         self.packages                   = list()
         self.versions                   = list()
-        self._pthInfo                   = False
+
         self.cfgs                       = True
+
+        self._pthInfo                   = False
+        self._iconInfo                  = False
+        self._mainPkgs                  = False
+        self._appInfo                   = False
 
         self.cfgOs                      = self.cfg_platform()
         self.cfgRoot                    = self.cfg_envVariable(self.appKey, self.rootDir)
@@ -58,6 +68,11 @@ class Configurations(PObj):
         self.cfgPip                     = self.cfg_pip()
         self.cfgFree                    = self.cfg_deepFreeze()
         self.cfgReqs                    = self.cfg_requirements()
+        self.cfgMaya                    = self.cfg_maya()
+        self.cfgEvnKeys                 = self.store_envVars()
+        self.cfgIconPth                 = self.cfg_iconPth()
+        self.cfgApps                    = self.get_app_installed()
+        self.cfgMainPkgs                = self.cfg_mainPkgs()
 
         self.checkList['platform']      = self.cfgOs
         self.checkList['root']          = self.cfgRoot
@@ -69,17 +84,17 @@ class Configurations(PObj):
         self.checkList['pip']           = self.cfgPip
         self.checkList['deepFreeze']    = self.cfgFree
         self.checkList['requirement']   = self.cfgReqs
+        self.checkList['maya']          = self.cfgMaya
+        self.checkList['envKeys']       = self.cfgEvnKeys
+        self.checkList['iconPths']      = self.cfgIconPth
+        self.checkList['apps']          = self.cfgApps
+        self.checkList['mainPkg']       = self.cfgMainPkgs
 
         for key in self.checkList.keys():
             if self.checkList[key]:
                 continue
             else:
                 self.cfgs = False
-
-        if not self.cfgs:
-            self.send_report('configurations is not completed!')
-        else:
-            self.send_report('configuration completed!')
 
     def cfg_platform(self):
         self.checkInfo['platform'] = system()
@@ -143,7 +158,9 @@ class Configurations(PObj):
         self.pthInfo = pthInfo
         self._pthInfo = True
         pth = os.path.join(pthInfo['config'], fileName)
-        return self.compare_data(pth, pthInfo)
+        self.compare_data(pth, pthInfo)
+        return True
+
 
     def cfg_localDB(self):
         if self._pthInfo:
@@ -207,6 +224,147 @@ class Configurations(PObj):
                 subprocess.Popen('python -m pip install --user --upgrade {0}'.format(pkg), shell=True).wait()
         return True
 
+    def cfg_maya(self):
+        tk = os.path.join(os.getenv(__envKey__), 'tankers', 'pMaya')
+        tanker = dict(modules=['anim', 'lib', 'modeling', 'rendering', 'simulating', 'surfacing', ], )
+
+        pVal = ""
+        pyList = [os.path.join(tk, k) for k in tanker] + [os.path.join(tk, "modules", p) for p in tanker["modules"]]
+
+        for p in pyList:
+            pVal += p + ';'
+        os.environ['PYTHONPATH'] = pVal
+
+        usScr = os.path.join(os.getenv(__envKey__), 'packages', 'maya', 'userSetup.py')
+        if os.path.exists(usScr):
+            mayaVers = [os.path.join(tk, v) for v in autodeskVer if os.path.exists(os.path.join(tk, v))] or []
+            if not len(mayaVers) == 0 or not mayaVers == []:
+                for usDes in mayaVers:
+                    shutil.copy(usScr, usDes)
+
+        self.send_report('Maya is implemented')
+        return True
+
+    def store_envVars(self, fileName='envKey.cfg', **envKeys):
+        for key in os.environ.keys():
+            envKeys[key] = os.getenv(key)
+        pth = os.path.join(self.pthInfo['config'], fileName)
+        self.compare_data(pth, envKeys)
+        return True
+
+    def cfg_iconPth(self, fileName='appIcon.cfg', **iconInfo):
+        iconInfo['Logo'] = PLM_LOGO_32
+        iconInfo['DAMG'] = DAMG_LOGO_32
+
+        iconInfo['Sep'] = 'separato.png'                                           # Custom some info to debug
+        iconInfo['File'] = 'file.png'
+
+        iconlst = [i for i in self.get_file_path(ICON_DIR_32) if i.endswith(".png")]    # Get list of icons in imgage folder
+
+        for i in iconlst:
+            iconInfo[os.path.basename(i).split('.icon')[0]] = i
+
+        self.iconInfo = iconInfo
+        self._iconInfo = True
+
+        pth = os.path.join(self.pthInfo['config'], fileName)
+        self.compare_data(pth, self.iconInfo)
+        return True
+
+    def cfg_mainPkgs(self, fileName='main.cfg', **mainInfo):
+        self.mainInfo = mainInfo
+
+        delKeys = []
+        for key in self.appInfo:
+            for k in KEYDETECT:
+                if k in key:
+                    delKeys.append(key)
+                    self.send_report("KEY DETECTED: {0}. Append to list to be deleted later".format(key))
+
+        for key in delKeys:
+            self.del_key(key, self.appInfo)
+
+        keepKeys = [k for k in KEYPACKAGE if k in self.appInfo and k in self.iconInfo]
+
+        # Custom functions
+        self.mainInfo['About'] = ['About PLM', self.iconInfo['About'], 'About']
+        self.mainInfo['Exit'] = ['Exit Pipeline Manager', self.iconInfo['Exit'], 'Exit']
+        self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'CleanPyc']
+        self.mainInfo['CodeConduct'] = ['Code of Conduct', self.iconInfo['CodeConduct'], 'Code of Conduct']
+        self.mainInfo['Contributing'] = ['Contributing', self.iconInfo['Contributing'], 'Contributing']
+        self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['Reconfig'], 'Re Config']
+        self.mainInfo['Reference'] = ['Reference', self.iconInfo['Reference'], 'Reference']
+        self.mainInfo['Command Prompt'] = ['Open command prompt', self.iconInfo['Command Prompt'], 'open_cmd']
+        self.mainInfo['PLM wiki'] = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=__plmWiki__)]
+        self.mainInfo['PLMBrowser'] = ['PlmBrowser', self.iconInfo['PLMBrowser'], "PLMBrowser"]
+        self.mainInfo['OpenConfig'] = ['Open config folder', self.iconInfo['OpenConfig'], '']
+        self.mainInfo['Version'] = ['Version Info', 'VersionInfo.icon.png', 'Version Info']
+        self.mainInfo['licence'] = ['Licence Info', 'LicenceInfo.icon.png', 'Licence Info']
+
+        for key in self.appInfo:
+            if 'NukeX' in key:
+                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --nukex"
+            elif 'Hiero' in key:
+                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --hiero"
+            elif 'UVLayout' in key:
+                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " -launch"
+
+        qtDesigner = os.path.join(os.getenv('PROGRAMDATA'), 'Anaconda3', 'Library', 'bin', 'designer.exe')
+        davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
+
+        eVal = [qtDesigner, davinciPth]
+        eKeys = ['QtDesigner', 'Davinci Resolve 14']
+
+        for key in eKeys:
+            if os.path.exists(eVal[eKeys.index(key)]):
+                self.mainInfo[key] = [key, self.getAppIcon(32, key), "{0}".format(eVal[eKeys.index(key)])]
+
+        for key in keepKeys:
+            self.mainInfo[key] = [key, self.getAppIcon(32, key), "{0}".format(self.appInfo[key])]
+
+        for key in CONFIG_APPUI:
+            self.mainInfo[key] = [key, self.getAppIcon(32, key), "{0}".format(key)]
+
+        for key in CONFIG_SYSTRAY:
+            if key in self.appInfo:
+                self.mainInfo[key] = [key, self.getAppIcon(32, key), self.appInfo[key]]
+            else:
+                self.mainInfo[key] = [key, self.getAppIcon(32, key), FIX_KEY[key]]
+
+        pth = os.path.join(self.pthInfo['config'], fileName)
+        self.compare_data(pth, self.mainInfo)
+        return True
+
+    def getAppIcon(self, size=32, iconName="AboutPlm"):
+        iconPth = os.path.join(os.getenv(__envKey__), 'imgs', 'icons', "x" + str(size))
+        return os.path.join(iconPth, iconName + ".icon.png")
+
+    def get_app_installed(self, fileName='appInfo.cfg', **appInfo):
+        shortcuts = {}
+        appName = []
+        appPth = []
+
+        all_programs = winshell.programs(common=1)
+
+        for dirpath, dirnames, filenames in os.walk(all_programs):
+            relpath = dirpath[1 + len(all_programs):]
+            shortcuts.setdefault(relpath, []).extend([winshell.shortcut(os.path.join(dirpath, f)) for f in filenames])
+        for relpath, lnks in sorted(shortcuts.items()):
+            for lnk in lnks:
+                name, _ = os.path.splitext(os.path.basename(lnk.lnk_filepath))
+                appName.append(name)
+                appPth.append(lnk.path)
+
+        for name in appName:
+            appInfo[str(name)] = str(appPth[appName.index(name)])
+
+        self.appInfo = appInfo
+        self._appInfo = True
+
+        pth = os.path.join(self.pthInfo['config'], fileName)
+        self.compare_data(pth, self.appInfo)
+        return True
+
     def get_pkg_version(self, pkg):
         check = self.check_pyPkg(pkg)
         if check:
@@ -260,6 +418,10 @@ class Configurations(PObj):
     def get_dir_path(self, directory):
         self.path_error(directory)
         return self.get_all_paths(directory)[1]
+
+    def get_file_path(self, directory):
+        self.path_error(directory)
+        return self.get_all_paths(directory)[0]
 
     def set_dir(self, folName, subRoot=None):
         if self.mode in ['alpha', 'dev', 'test']:
@@ -315,9 +477,18 @@ class Configurations(PObj):
             return self.save_data(pth, newData)
 
     def save_data(self, filePth, data):
+        if os.path.exists(filePth):
+            os.remove(filePth)
+
         with open(filePth, 'w') as f:
             json.dump(data, f, indent=4)
         return True
+
+    def del_key(self, key, data):
+        try:
+            del data[key]
+        except KeyError:
+            dict.pop(key, None)
 
     def send_report(self, mess):
         self.cfgReport.emit(mess)

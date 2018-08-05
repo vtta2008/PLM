@@ -12,7 +12,7 @@ Description:
 
 # Python
 import sqlite3 as lite
-from appData import DB_PTH
+from core.paths import DB_PTH
 
 # Plt
 from utilities import utils as func

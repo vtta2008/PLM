@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # Python
-import sys
+import sys, os, json
 from functools import partial
 
 # PyQt5
@@ -20,12 +20,13 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 
 # Plt
-from appData import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, APPINFO, SiPoMin
+from appData import SiPoMin
 from ui.uikits.Action import Action
 from utilities.utils import str2bool
 from core.Specs import Specs
 from core.Loggers import SetLogger
-
+from core.keys import CONFIG_TDS, CONFIG_VFX, CONFIG_ART
+from core.Metadata import __envKey__
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
@@ -45,7 +46,9 @@ class MainToolBar(QMainWindow):
 
         self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
-        self.appInfo = APPINFO
+
+        with open(os.path.join(os.getenv(__envKey__), 'cfg', 'main.cfg'), 'r') as f:
+            self.appInfo = json.load(f)
 
         self.tdToolBar = self.create_toolBar("TD", CONFIG_TDS)
         self.compToolBar = self.create_toolBar("VFX", CONFIG_VFX)

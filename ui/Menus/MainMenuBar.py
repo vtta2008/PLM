@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # Python
-import os, sys
+import os, sys, json
 from functools import partial
 
 # PyQt5
@@ -19,7 +19,7 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
 # Plm
-from appData import APPINFO, __plmWiki__, SiPoMin
+from appData import __plmWiki__, __envKey__, SiPoMin
 from core.Loggers import SetLogger
 from core.Specs import Specs
 from ui.uikits.Action import Action
@@ -37,7 +37,8 @@ class MainMenuBar(QMainWindow):
         super(MainMenuBar, self).__init__(parent)
         self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
-        self.appInfo = APPINFO
+        with open(os.path.join(os.getenv(__envKey__), 'cfg', 'main.cfg'), 'r') as f:
+            self.appInfo = json.load(f)
         self.url = __plmWiki__
         self.buildMenu()
         self.setMaximumHeight(20)

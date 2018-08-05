@@ -11,40 +11,27 @@ Description:
 """ Import """
 
 # Python
-import json
 
 try:
     from importlib import reload
 except ImportError:
     pass
 
-from appData.scr._path import *
-
-dirLst = [CONFIG_LOCAL_DAMG_DIR, CONFIG_LOCAL_PLM_DIR, CONFIG_DIR, SETTING_DIR, LOG_DIR, REG_DIR, CACHE_DIR, PREF_DIR, USER_PREF_DIR]
-
-for pth in dirLst:
-    if not os.path.exists(pth):
-        os.mkdir(pth)
-
-from appData.LocalCfg import LocalCfg
-
-localCfg = LocalCfg()
-
-from appData.scr._docs import *
-from appData.scr._keys import *
-from appData.scr._layout import *
-from appData.scr._format import *
-from appData.scr._pref import *
-from appData.scr._rcSQL import *
-from appData.scr._meta import *
+from core.paths import *
 
 PLATFORM = 'Windows'
 API_MINIMUM = 0.64
 
-from appData.scr import _path as p
-from appData.scr import _meta as m
+from core import Metadata as m
 
-__envKey__ = p.__envKey__
+__envKey__ = m.__envKey__
+
+from appData.scr._attr import *
+from appData.scr._docs import *
+from appData.scr._format import *
+from appData.scr._layout import *
+from appData.scr._name import *
+from appData.scr._pref import *
 
 # -------------------------------------------------------------------------------------------------------------
 """ DAMG team """
@@ -99,40 +86,19 @@ __pkgsReq__ = m.__pkgsReq__
 def reload_module(module):
     return reload(module)
 
-def read_file(filePth):
+def read_file(fileName):
+    filePth = os.path.join(os.getenv(__envKey__), 'appData', 'docs', fileName)
     with open(filePth, 'r') as f:
         data = f.read()
     return data
 
-QUESTIONS = read_file(QUESTIONS)
-ABOUT = read_file(ABOUT)
-CREDIT = read_file(CREDIT)
-CODECONDUCT = read_file(CODECONDUCT)
-CONTRIBUTING = read_file(CONTRIBUTING)
-REFERENCE = read_file(REFERENCE)
-LICENSE_MIT = read_file(LICENSE_MIT)
-
-# if not os.path.exists(DB_PTH):
-#     GenerateResource()
-
-def load_appInfo():
-    if not os.path.exists(mainConfig):
-        from appData.LocalCfg import LocalCfg
-        LocalCfg()
-    with open(mainConfig, 'r') as f:
-        appInfo = json.load(f)
-    return appInfo
-
-def load_iconInfo():
-    if not os.path.exists(mainConfig):
-        from appData.LocalCfg import LocalCfg
-        LocalCfg()
-    with open(appIconCfg, 'r') as f:
-        iconInfo = json.load(f)
-    return iconInfo
-
-APPINFO = load_appInfo()
-ICONINFO = load_iconInfo()
+QUESTIONS = read_file('QUESTION')
+ABOUT = read_file('ABOUT')
+CREDIT = read_file('CREDIT')
+CODECONDUCT = read_file('CODECONDUCT')
+CONTRIBUTING = read_file('CONTRIBUTING')
+REFERENCE = read_file('REFERENCE')
+LICENSE_MIT = read_file('LICENSE_MIT')
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:56 PM

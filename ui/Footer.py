@@ -20,9 +20,10 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 
 # Plt
-from appData import COPYRIGHT, VERSION, SiPoMin
+from appData import SiPoMin
 from ui.uikits.UiPreset import Label
 from core.Specs import Specs
+from core.Metadata import COPYRIGHT, VERSION
 
 # -------------------------------------------------------------------------------------------------------------
 """ Footer """

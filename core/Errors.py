@@ -19,15 +19,18 @@ from PyQt5.QtCore import QSettings
 # Plm
 from core.Loggers import SetLogger
 
-logger = SetLogger().report
+
 # -------------------------------------------------------------------------------------------------------------
 """ Base """
 
 class ErrorBase(Exception):
 
+    key = 'errorBase'
+
     def __init__(self, parent=None):
         super(ErrorBase, self).__init__(parent)
-
+        logger = SetLogger(self)
+        self.report = logger.report
         self._parent = parent
 
     def initialize(self, errorName=None, section=None, key=None, path=None, fm=None, scope=None, value=None):
@@ -113,7 +116,7 @@ class ErrorBase(Exception):
         linecache.checkcache(filename)
         line = linecache.getline(filename, lineno, f.f_globals)
 
-        logger(" \n"
+        self.report(" \n"
               "Caught error: {0} \n"
               "--------------------------------------------------------------------------------- \n"
               "   Tracking from:   {1} \n"

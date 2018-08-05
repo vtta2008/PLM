@@ -12,16 +12,19 @@ Description:
 """ Import """
 
 # Python
-import sys, random
-from functools import partial
+import sys, os, json
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLineEdit, QPushButton
 
 # Plt
-from appData import APPINFO, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE, BTNICONSIZE, ICONBTNSIZE, FIX_KEYS
+from core.keys import CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE
 from core.Specs import Specs
+from core.Metadata import __envKey__
+
+from appData import BTNICONSIZE, ICONBTNSIZE, FIX_KEYS
+
 from ui.uikits.Button import Button
 from ui.uikits.GroupBox import GroupBox
 
@@ -38,7 +41,10 @@ class TopTab1(QWidget):
     def __init__(self, parent=None):
         super(TopTab1, self).__init__(parent)
         self.specs = Specs(self.key, self)
-        self.appInfo = APPINFO
+
+        with open(os.path.join(os.getenv(__envKey__), 'cfg', 'main.cfg'), 'r') as f:
+            self.appInfo = json.load(f)
+
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)

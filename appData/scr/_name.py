@@ -22,7 +22,7 @@ reg = 'reg'
 
 DAMGteam = 'DAMGteam'
 
-config = "config"
+config = "cfg"
 settings = "settings"
 logs = "logs"
 cache = 'cache'
@@ -56,15 +56,6 @@ x128 = 'x128'
 dependencies = 'dependencies'
 
 # -------------------------------------------------------------------------------------------------------------
-docs = "docs"
-QUESTION = "QUESTION"
-ABOUT = "ABOUT"
-CREDIT = "CREDIT"
-CODECONDUCT = "CODECONDUCT"
-CONTRIBUTING = "CONTRIBUTING"
-REFERENCE = "REFERENCE"
-LICENSE_MIT = "LICENSE_MIT"
-
 appSettingFile = "PlmSetting.ini"
 userSettingFile = "UserSetting.ini"
 formatSettingFile = "FormatSetting.ini"

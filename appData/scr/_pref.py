@@ -8,43 +8,27 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-import builtins
 
 """ Import """
 
-import re
+import os, re
 
 # PyQt5
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtWidgets import QWidget, QMainWindow, QSystemTrayIcon, QGridLayout, QApplication
 
 # Plm
-from appData.scr._path import APP_SETTING, UNIX_SETTING, USER_SETTING, FORMAT_SETTING
+from core.Metadata import __appname__, __envKey__
+
+SETTING_DIR = os.path.join(os.getenv(__envKey__), 'cfg', 'settings')
+APP_SETTING = os.path.join(SETTING_DIR, 'PLM.ini')              # Pipeline application setting
+USER_SETTING = os.path.join(SETTING_DIR, 'user.ini')            # User setting
+FORMAT_SETTING = os.path.join(SETTING_DIR, 'format.ini')
+UNIX_SETTING = os.path.join(SETTING_DIR, 'unix.ini')
 from appData.scr._nodeGraph import (ANCHOR_UNDERMICE, ANCHOR_VIEWCENTER, FOCUSABLE, MOVEABLE, NODRAG, NOANCHOR, PANEL,
                                     POS_CHANGE, RUBBER_DRAG, SELECTABLE, UPDATE_FULLVIEW, UPDATE_SMARTVIEW, UPDATE_BOUNDINGVIEW,
                                     UPDATE_MINIMALVIEW, UPDATE_VIEWRECT, )
-from appData.scr._meta import __appname__
 
-# -------------------------------------------------------------------------------------------------------------
-""" Python Types """
-
-# def get_all_types():
-#     allTypes = {}
-#     errorTypes = {}
-#     normalTypes = {}
-#     types = [getattr(builtins, d) for d in dir(builtins) if isinstance(getattr(builtins, d), type)]
-#     envKeys = [str(t).split("<class '")[-1].split("'>")[0] for t in types]
-#
-#     for key in envKeys:
-#         allTypes[key] = types[envKeys.index(key)]
-#         if 'Error' in key:
-#             errorTypes[key]= types[envKeys.index(key)]
-#         else:
-#             normalTypes[key]= types[envKeys.index(key)]
-#
-#     return errorTypes, normalTypes, allTypes
-#
-# ERROR_TYPES, NORMAL_TYPES, ALL_TYPES = get_all_types()
 
 # -------------------------------------------------------------------------------------------------------------
 """ PLM Types """

@@ -17,10 +17,12 @@ import os, platform
 from PyQt5.QtCore import QObject, QFile, QTextStream
 
 # Plm
-from appData.scr._path import QSS_DIR
+from core.paths import QSS_DIR
 from core.Loggers import SetLogger
 
 class StyleSheets(QObject):
+
+    key = 'styleSheets'
 
     def __init__(self, style=None, parent=None):
         super(StyleSheets, self).__init__(parent)
@@ -36,12 +38,12 @@ class StyleSheets(QObject):
         self.changeStylesheet = stylesheet
 
     def darkstyle(self):
+        from plg_ins import pyqt5_style_rc
         f = QFile(os.path.join(QSS_DIR, 'darkstyle.qss'))
         stylesheet = self.load_stylesheet(f)
         return stylesheet
 
     def stylesheet(self):
-        from plg_ins import pyqt5_style_rc
         f = QFile(os.path.join(QSS_DIR, 'stylesheet.qss'))
         stylesheet = self.load_stylesheet(f)
         return stylesheet

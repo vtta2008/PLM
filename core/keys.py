@@ -1,8 +1,7 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 
-Script Name: subData.py
+Script Name: keys.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -13,7 +12,7 @@ Description:
 
 # Python
 import os
-from appData.scr._path import CONFIG_DIR
+from core.paths import CONFIG_DIR
 
 # --------------------------------------------------------------------------------------------------------------
 """ Autodesk config """
@@ -179,6 +178,6 @@ CONFIG_EXTRA = generate_config('Extra')                     # Extra tool may be 
 CONFIG_SYSTRAY = generate_config('sysTray')
 
 FILEPATH = os.path.join(CONFIG_DIR, "PLM.cfg")
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 31/05/2018 - 9:47 AM
+# Created by panda on 6/08/2018 - 2:30 AM
+# © 2017 - 2018 DAMGteam. All rights reserved

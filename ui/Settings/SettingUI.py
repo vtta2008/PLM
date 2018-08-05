@@ -8,7 +8,9 @@ from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar,
                              QStyleOptionViewItem,
                              QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
 
-from appData import SETTING_FILEPTH, __organization__, __appname__, SiPoMin
+from appData.scr._pref import SETTING_FILEPTH, __appname__
+from appData.scr._layout import SiPoMin
+from core.Metadata import __organization__
 from core.Specs import Specs
 from core.Loggers import SetLogger
 from core.Errors import KeySettingError
@@ -481,6 +483,8 @@ class SettingOutput(QTreeWidget):
 
 
 class Settings(QSettings):
+
+    key = 'settings'
     setFormat = pyqtSignal(str)
     setScope = pyqtSignal(str)
 

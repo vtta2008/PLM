@@ -18,10 +18,11 @@ from PyQt5.QtCore import Qt, QRectF, QRect, QSize
 from PyQt5.QtGui import QColor, QFont, QFontMetrics
 
 # PLM
-from appData import __envKey__, __pkgsReq__, LOGO_DIR, KEYPACKAGE, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR
+from appData import __envKey__, __pkgsReq__, LOGO_DIR, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR
+from core.keys import KEYPACKAGE
 from core.Errors import IsADirectoryError, FileNotFoundError
 from core.Loggers import SetLogger
-logger = SetLogger()
+logger = SetLogger(__name__)
 logInfo = logger.report
 
 # -------------------------------------------------------------------------------------------------------------

@@ -11,6 +11,7 @@ Description:
 """ Import """
 
 # Python
+import os, json
 from functools import partial
 
 # PyQt5
@@ -18,8 +19,11 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QToolBar
 
 # PLM
-from appData import APPINFO, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEXTURE, CONFIG_TOOLS, CONFIG_POST
+from core.Metadata import __envKey__
+from core.keys import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEXTURE, CONFIG_TOOLS, CONFIG_POST
 from ui.uikits.Action import Action
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar data preset """
@@ -40,7 +44,10 @@ class ToolBar(QToolBar):
 
     def __init__(self, key, parent=None):
         super(ToolBar, self).__init__(parent)
-        self.appInfo = APPINFO
+
+        with open(os.path.join(os.getenv(__envKey__), 'cfg', 'main.cfg'), 'r') as f:
+            self.appInfo = json.load(f)
+
         self._parent = parent
         self.key = key
         self.setAccessibleName(self.key)

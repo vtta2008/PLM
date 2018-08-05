@@ -15,7 +15,7 @@ from PyQt5.QtWidgets import QLabel, QLineEdit, QComboBox, QCheckBox
 from PyQt5.QtCore import pyqtSignal, QSize
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QImage
 from utilities.utils import get_app_icon, get_logo_icon, get_avatar_icon
-from appData import center, left, right, SiPoMin, SiPoPre, SiPoMax, SiPoExp, SiPoIgn
+from appData.scr._layout import center, left, right, SiPoMin, SiPoPre, SiPoMax, SiPoExp, SiPoIgn
 
 PRS = dict(
     password = QLineEdit.Password,

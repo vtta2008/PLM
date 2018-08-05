@@ -22,7 +22,7 @@ from core.Storage import PObj
 
 class AppCores(PObj):
 
-    key = 'core'
+    key = 'coreService'
     returnValue = pyqtSignal(str, str)
     addLayout = pyqtSignal(object)
 
@@ -30,7 +30,8 @@ class AppCores(PObj):
 
         PObj.__init__(self)
         super(AppCores, self).__init__(parent)
-        self.logger         = SetLogger(self)
+        logger              = SetLogger()
+        self.report         = logger.report
         self._parent        = parent
 
         self.layouts        = dict()
@@ -39,7 +40,7 @@ class AppCores(PObj):
         from ui.Settings.SettingUI import SettingUI
         self.settingUI = SettingUI()
         self.settings = self.settingUI.settings
-        self.register_layout(self.settingUI)
+        self.addLayout.emit(self.settingUI)
 
     def import_uiSet1(self):
 
@@ -53,7 +54,7 @@ class AppCores(PObj):
         self.sysTray = SysTrayIcon.SysTrayIcon()
 
         for layout in [self.login, self.forgotPW, self.signup, self.mainUI, self.sysTray]:
-            self.register_layout(layout)
+            self.addLayout.emit(layout)
 
         return self.login, self.forgotPW, self.signup, self.mainUI, self.sysTray
 
@@ -106,15 +107,12 @@ class AppCores(PObj):
     def objects(self):
         return self.layouts
 
-    @pyqtSlot(object)
-    def register_layout(self, layout):
-        key = layout.key
-        if not key in self.layouts.keys():
-            self.layouts[key] = layout
-            self.addLayout.emit(layout)
-            self.logger.debug("did emit signal to regis layout '{0}': {1}".format(key, layout))
-
-        # self.logger.debug("Already registered: {0}".format(key))
+    # @pyqtSlot(object)
+    # def register_layout(self, layout):
+    #     key = layout.key
+    #     if not key in self.layouts.keys():
+    #         self.layouts[key] = layout
+    #         self.addLayout.emit(layout)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/07/2018 - 11:31 AM

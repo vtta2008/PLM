@@ -16,12 +16,21 @@ import os, datetime, time, uuid, json
 # PyQt5
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
 
+# PLM
+from core.Metadata import __envKey__
+
 # -------------------------------------------------------------------------------------------------------------
 """ Dataset template """
 
-metadataPth = os.path.join(os.getenv('PIPELINE_MANAGER'), 'mtd')
+cfgPth = os.path.join(os.getenv(__envKey__), 'cfg')
+metadataPth = os.path.join(cfgPth, 'mtd')
 if not os.path.exists(metadataPth):
-    os.mkdir(metadataPth)
+    try:
+        os.mkdir(metadataPth)
+    except FileNotFoundError:
+        os.mkdir(cfgPth)
+    finally:
+        os.mkdir(metadataPth)
 
 class PureData(dict):
     def __init__(self):
@@ -91,25 +100,25 @@ class PObj(PureObject):
     def __repr__(self):
         return json.dumps(self.data, default=lambda obj: obj.data, indent=4)
 
-    def __getattr__(self, name):
-        if name in self._attributes:
-            attribute = self._attributes.get(name)
-            return attribute.value
-
-        elif hasattr(self, name):
-            return getattr(self, name)
-
-        raise AttributeError('no attribute exists {0}'.format(name))
-
-    def __setattr__(self, name, value):
-        if name in self._attributes:
-            super(PObj, self).__setattr__(name, value)
-            attribute = self._attributes.get(name)
-
-            if value != attribute.value:
-                attribute.value = value
-        else:
-            super(PObj, self).__setattr__(name, value)
+    # def __getattr__(self, name):
+    #     if name in self._attributes:
+    #         attribute = self._attributes.get(name)
+    #         return attribute.value
+    #
+    #     elif hasattr(self, name):
+    #         return getattr(self, name)
+    #
+    #     raise AttributeError('no attribute exists {0}'.format(name))
+    #
+    # def __setattr__(self, name, value):
+    #     if name in self._attributes:
+    #         super(PObj, self).__setattr__(name, value)
+    #         attribute = self._attributes.get(name)
+    #
+    #         if value != attribute.value:
+    #             attribute.value = value
+    #     else:
+    #         super(PObj, self).__setattr__(name, value)
 
     @property
     def data(self):

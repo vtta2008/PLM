@@ -13,8 +13,9 @@ Description:
 
 # Python
 import os, sys, subprocess, requests, ctypes
+from core.Metadata import __envKey__
 
-key = "PIPELINE_MANAGER"
+key = __envKey__
 ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
 try:
@@ -36,20 +37,22 @@ from PyQt5.QtCore import QThreadPool, pyqtSlot, pyqtSignal, QCoreApplication
 from PyQt5.QtWidgets import QApplication
 
 # Plm
-from appData import (APPINFO, __serverCheck__, PLMAPPID, SYSTRAY_UNAVAI, SETTING_FILEPTH, ST_FORMAT, __appname__,
-                     __version__, __organization__, __website__)
-
 from core.Settings import Settings
 from core.Cores import AppCores
 from core.Specs import Specs
 from core.Loggers import SetLogger
-logger = SetLogger()
-report = logger.report
+from core.Metadata import __appname__, __version__, __organization__, __website__, __serverCheck__, PLMAPPID
+from core.paths import APP_SETTING, UNIX_SETTING, USER_SETTING, FORMAT_SETTING
+
+from appData.scr._format import ST_FORMAT
+from appData.scr._docs import SYSTRAY_UNAVAI
 
 from utilities import Worker
 from utilities.localSQL import QuerryDB
 from utilities.utils import str2bool, clean_file_ext
 from ui.uikits.UiPreset import AppIcon
+
+SETTING_FILEPTH = dict(app = APP_SETTING, user = USER_SETTING, unix = UNIX_SETTING, format = FORMAT_SETTING)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -61,6 +64,9 @@ class PLM(QApplication):
 
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
+
+        logger = SetLogger(self)
+        self.report = logger.report
 
         self.organization = __organization__
         self.appName = __appname__
@@ -74,7 +80,7 @@ class PLM(QApplication):
         self.layouts = dict()
 
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.appInfo = APPINFO
+        self.appInfo = cfg.appInfo
         self.specs = Specs(self.key, self)
         self.cores = AppCores(self)                                                          # Core metadata
 
@@ -107,7 +113,7 @@ class PLM(QApplication):
                 r = requests.get(__serverCheck__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
                 if r.status_code == 200:
                     if not self.cores.sysTray.isSystemTrayAvailable():
-                        logger.critical(SYSTRAY_UNAVAI)
+                        self.report(SYSTRAY_UNAVAI)
                         sys.exit(1)
                     self.showLayout('mainUI', "show")
                 else:
@@ -127,6 +133,8 @@ class PLM(QApplication):
         sys.exit(self.exec_())
 
     def setupConn1(self):
+        cfg.cfgReport.connect(self.get_report)
+
         self.login.showLayout.connect(self.showLayout)
         self.forgotPW.showLayout.connect(self.showLayout)
         self.signup.showLayout.connect(self.showLayout)
@@ -157,17 +165,17 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str)
     def showLayout(self, name, mode):
-        report('signal comes: {0}, {1}'.format(name, mode))
+        # self.report('signal comes: {0}, {1}'.format(name, mode))
         if name == 'app':
             layout = self
         else:
             try:
                 layout = self.layouts[name]
             except KeyError:
-                report('Key is not registered')
+                self.report('Key is not registered')
                 return
             else:
-                report("define layout: {0}".format(layout))
+                self.report("define layout: {0}".format(layout))
 
         if mode == "hide":
             layout.hide()
@@ -183,7 +191,7 @@ class PLM(QApplication):
             layout.quit()
 
         self.setSetting(layout.key, mode)
-        report("{0} layout: {1}".format(mode, layout))
+        # self.report("{0} layout: {1}".format(mode, layout))
 
     @pyqtSlot(str)
     def openBrowser(self, url):
@@ -193,36 +201,36 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str, str)
     def setSetting(self, key=None, value=None, grp=None):
-        report('signal comes: {0}, {1}, {2}'.format(key, value, grp))
+        # self.report('signal comes: {0}, {1}, {2}'.format(key, value, grp))
         self.settings.initSetValue(key, value, grp)
 
     @pyqtSlot(str, str)
     def loadSetting(self, key=None, grp=None):
-        report('signal comes: {0}, {1}'.format(key, grp))
+        # self.report('signal comes: {0}, {1}'.format(key, grp))
         value = self.settings.initValue(key, grp)
         if key is not None:
             self.returnValue.emit(key, value)
 
     @pyqtSlot(str)
     def executing(self, cmd):
-        report('signal comes: {0}'.format(cmd))
+        # self.report('signal comes: {0}'.format(cmd))
         if cmd in self.layouts.keys():
-            report('run showlayout: {0}'.format(cmd))
+            # self.report('run showlayout: {0}'.format(cmd))
             self.showLayout(cmd, 'show')
         elif os.path.isdir(cmd):
             os.startfile(cmd)
         elif cmd == 'open_cmd':
-            report('open command prompt')
+            # self.report('open command prompt')
             os.system('start /wait cmd')
         elif cmd == 'Remove pyc':
-            report("clean .pyc files")
+            self.report("clean .pyc files")
             clean_file_ext('.pyc')
         elif cmd == 'Re-config local':
             from appData.LocalCfg import LocalCfg
-            report('re config data')
+            # self.report('re config data')
             LocalCfg()
         else:
-            report('execute: {0}'.format(cmd))
+            # self.report('execute: {0}'.format(cmd))
             subprocess.Popen(cmd)
 
     @pyqtSlot(object)
@@ -230,9 +238,13 @@ class PLM(QApplication):
         key = layout.key
         if not key in self.layouts.keys():
             self.layouts[key] = layout
-            report("Registered layout '{0}': {1}".format(key, layout))
+            # self.report("Registered layout '{0}': {1}".format(key, layout))
         else:
-            report("Already registered: {0}".format(key))
+            self.report("Already registered: {0}".format(key))
+
+    @pyqtSlot(str)
+    def get_report(self, param):
+        self.report(param)
 
     def set_styleSheet(self, style):
         from core.StyleSheets import StyleSheets

@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # Python
-import sys, os
+import sys, os, json
 from functools import partial
 
 # PyQt5
@@ -24,7 +24,7 @@ from utilities.localSQL import TimeLog
 from ui.uikits.Action import Action
 from utilities.utils import get_layout_size
 
-from appData import APPINFO, __plmWiki__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR, SiPoMin
+from appData import __plmWiki__, __envKey__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR, SiPoMin
 from core.Specs import Specs
 from core.Loggers import SetLogger
 
@@ -45,7 +45,8 @@ class SubMenuBar(QMainWindow):
 
         self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
-        self.appInfo = APPINFO
+        with open(os.path.join(os.getenv(__envKey__), 'cfg', 'main.cfg'), 'r') as f:
+            self.appInfo = json.load(f)
         self.url = __plmWiki__
         self.buildMenu()
         self.setMaximumHeight(20)

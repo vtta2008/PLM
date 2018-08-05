@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # Python
-import sys, os
+import sys, os, json
 from functools import partial
 
 # PyQt5
@@ -20,13 +20,15 @@ from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QWheelEvent
 from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QApplication
 
+
 # Plt
-from appData import CONFIG_SYSTRAY, APPINFO, __plmSlogan__, __appname__
+from appData import __plmSlogan__, __appname__, __envKey__
 from ui.uikits.UiPreset import AppIcon
 from ui.uikits.Action import Action
 from utilities.localSQL import QuerryDB
 from core.Loggers import SetLogger
 from core.Specs import Specs
+from core.keys import CONFIG_SYSTRAY
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -38,13 +40,16 @@ class SysTrayIconMenu(QMenu):
 
     def __init__(self, parent=None):
         super(SysTrayIconMenu, self).__init__(parent)
-        self.info = APPINFO
+
+        with open(os.path.join(os.getenv(__envKey__), 'cfg', 'main.cfg'), 'r') as f:
+            self.appInfo = json.load(f)
+
         self.addSeparator()
         for k in CONFIG_SYSTRAY:
             if k == 'Screenshot':
-                self.addAction(Action({'icon':k, 'txt': k, 'trg': partial(self.showLayout.emit, APPINFO[k][2], 'show')}, self))
+                self.addAction(Action({'icon':k, 'txt': k, 'trg': partial(self.showLayout.emit, self.appInfo[k][2], 'show')}, self))
             elif k == 'Snipping Tool':
-                self.addAction(Action({'icon': k, 'txt': k, 'trg': partial(self.executing.emit, APPINFO[k][2])}, self))
+                self.addAction(Action({'icon': k, 'txt': k, 'trg': partial(self.executing.emit, self.appInfo[k][2])}, self))
 
         self.addSeparator()
 

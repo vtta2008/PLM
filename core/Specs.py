@@ -17,7 +17,8 @@ import os, json
 from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot, pyqtProperty
 
 # Plm
-from appData import SPECS, REG_DIR
+from appData.scr._pref import SPECS
+from core.paths import REG_DIR
 from utilities.utils import getUnix, get_datetime
 
 # -------------------------------------------------------------------------------------------------------------
@@ -73,6 +74,9 @@ class Specs(Manager):
         self._datetime = self._data.get('datetime')       # Date time stamp
         self._import   = False                            # Check if the object is imported or not
         self._show     = False                            # Check if the object is showed or not (for layout object)
+
+        if not os.path.exists(REG_DIR):
+            os.mkdir(REG_DIR)
 
         self.regFile = os.path.join(REG_DIR, self.name() + ".r")
         self._register = os.path.exists(self.regFile)

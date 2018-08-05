@@ -152,7 +152,10 @@ class SetLogger(logging.Logger):
     def __init__(self, parent=None, level="debug", fmt=LOG_FORMAT['fullOpt'], dtfmt=DT_FORMAT['fullOpt'], filemode='a+', filename=LOG_PTH):
         super(SetLogger, self).__init__(parent)
 
-        self.logID = os.path.basename(__file__)
+        try:
+            self.logID = os.path.basename(parent.key)
+        except AttributeError:
+            self.logID = parent
 
         logging.getLogger(self.logID)
 
