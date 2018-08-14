@@ -77,6 +77,8 @@ class SubMenuBar(QMainWindow):
 
         self.toolMenu.addAction(Action({'icon': "CleanPyc", 'txt': 'Remove .pyc files', 'trg':partial(self.executing.emit, 'Remove pyc')}, self))
         self.toolMenu.addAction(Action({'icon': "ReConfig", 'txt': 'Re-configure', 'trg':partial(self.executing.emit, 'Re-config local')}, self))
+        self.toolMenu.addAction(Action({'icon': "Debug", 'txt': 'Run PLM Debugger', 'trg': self.run_debugger}, self))
+
         self.windowMenu = self.menuBar().addMenu("&Window")
 
     def on_exit_action_triggered(self):
@@ -95,6 +97,12 @@ class SubMenuBar(QMainWindow):
     def applySetting(self):
         self.setSizePolicy(SiPoMin, SiPoMin)
         self.setContentsMargins(5, 5, 5, 5)
+
+    def run_debugger(self):
+        from ui.Debugger import pDebugger
+        debugger = pDebugger()
+        debugger.show()
+        return debugger
 
 def main():
     app = QApplication(sys.argv)
