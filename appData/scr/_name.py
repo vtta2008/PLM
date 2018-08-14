@@ -32,7 +32,7 @@ userRef = 'userRef'
 
 appData = 'appData'
 build = 'build'
-core = 'core'
+core = 'appCore'
 imgs = 'imgs'
 plg_ins = 'plg_ins'
 qss = 'qss'

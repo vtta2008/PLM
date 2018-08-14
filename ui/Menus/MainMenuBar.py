@@ -21,7 +21,6 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 # Plm
 from appData import __plmWiki__, __envKey__, SiPoMin
 from core.Loggers import SetLogger
-from core.Specs import Specs
 from ui.uikits.Action import Action
 
 class MainMenuBar(QMainWindow):
@@ -35,7 +34,6 @@ class MainMenuBar(QMainWindow):
 
     def __init__(self, parent=None):
         super(MainMenuBar, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         with open(os.path.join(os.getenv(__envKey__), 'cfg', 'main.cfg'), 'r') as f:
             self.appInfo = json.load(f)

@@ -47,8 +47,9 @@ class BotTab(QWidget):
         self.generalSetting = GeneralSetting()
 
         self.tabs.addTab(TabContent(self.generalSetting), "General")
-        self.tabs.addTab(TabContent(), "Unit")
-        self.tabs.addTab(TabContent(), "Quick")
+        self.tabs.addTab(TabContent(), "Debug")
+        # self.tabs.addTab(TabContent(), "Unit")
+        # self.tabs.addTab(TabContent(), "Quick")
 
         self.layout.addWidget(self.tabs)
         self.generalSetting.loadSetting.connect(self.loadSetting)
@@ -60,8 +61,9 @@ class BotTab(QWidget):
         self.tabs.setSizePolicy(SiPoMin, SiPoMin)
 
         self.tabs.setTabIcon(0, IconPth(32, 'General Setting'))
-        self.tabs.setTabIcon(1, IconPth(32, 'Unit Setting'))
-        self.tabs.setTabIcon(2, IconPth(32, 'Quick Setting'))
+        self.tabs.setTabIcon(1, IconPth(32, 'Debug'))
+        self.tabs.setTabIcon(2, IconPth(32, 'Unit Setting'))
+        self.tabs.setTabIcon(3, IconPth(32, 'Quick Setting'))
 
         self.tabs.setTabPosition(QTabWidget.South)
         self.tabs.setMovable(True)

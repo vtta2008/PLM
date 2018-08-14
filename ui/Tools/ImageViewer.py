@@ -27,7 +27,6 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphic
 # Plt
 
 from utilities import utils as func
-from core.Specs import Specs
 from ui.uikits.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
@@ -492,7 +491,6 @@ class ImageViewer(QWidget):
 
     def __init__(self, key=None, parent=None):
         super(ImageViewer, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         if key == None or not os.path.exists(key) or os.path.isdir(key):
             # key = self.loadImageFromFile()
             key = " "
@@ -538,7 +536,8 @@ class ImageViewer(QWidget):
         self.resize(w, h)
 
     def hideEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
+        pass
 
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')

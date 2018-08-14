@@ -18,7 +18,6 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QWid
 from appData import SiPoMin
 from ui.uikits.Button import ToolBtn
 from ui.uikits.UiPreset import IconPth
-from core.Specs import Specs
 
 class Calculator(QWidget):
 
@@ -27,8 +26,6 @@ class Calculator(QWidget):
 
     def __init__(self, parent=None):
         super(Calculator, self).__init__(parent)
-
-        self.specs = Specs(self.key, self)
         self.setWindowIcon(IconPth(32, 'Calculator'))
 
         self.NumDigitButtons = 10
@@ -302,7 +299,8 @@ class Calculator(QWidget):
         self.setSizePolicy(SiPoMin, SiPoMin)
 
     def hideEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
+        pass
 
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')

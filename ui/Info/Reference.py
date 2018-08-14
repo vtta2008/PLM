@@ -23,7 +23,6 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 from appData import REFERENCE
 from ui.uikits.UiPreset import Label, IconPth
 from ui.uikits.Button import Button
-from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ Contributing Layout """
@@ -36,7 +35,6 @@ class Reference(QWidget):
     def __init__(self, parent=None):
 
         super(Reference, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.setWindowIcon(IconPth(32, 'Reference'))
 
         self.layout = QGridLayout()

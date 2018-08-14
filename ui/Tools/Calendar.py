@@ -16,14 +16,13 @@ import sys
 
 # PyQt5
 from PyQt5.QtCore import QDate, QLocale, Qt, pyqtSignal
-from PyQt5.QtGui import QFont, QTextCharFormat, QIcon
+from PyQt5.QtGui import QFont, QTextCharFormat
 from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
                              QComboBox, QDateEdit, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
                              QLayout, QWidget)
 
 # Plt
 from appData import SiPoMin
-from core.Specs import Specs
 from ui.uikits.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
@@ -36,7 +35,6 @@ class Calendar(QWidget):
 
     def __init__(self, parent=None):
         super(Calendar, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.setWindowIcon(IconPth(32, 'Calendar'))
 
         self.layout = QGridLayout()
@@ -368,7 +366,8 @@ class Calendar(QWidget):
         self.setSizePolicy(SiPoMin, SiPoMin)
 
     def hideEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
+        pass
 
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')

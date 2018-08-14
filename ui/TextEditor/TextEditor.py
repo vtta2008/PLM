@@ -24,7 +24,6 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog, 
 
 # PLM
 from ui.TextEditor import TextEditor_rc
-from core.Specs import Specs
 from core.Loggers import SetLogger
 from ui.uikits.UiPreset import IconPth
 
@@ -544,7 +543,6 @@ class TextEditor(QWidget):
 
     def __init__(self, parent=None):
         super(TextEditor, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         self.setWindowIcon(IconPth(32, 'TextEditor'))
 
@@ -557,7 +555,8 @@ class TextEditor(QWidget):
         self.layout.addWidget(textEditor)
 
     def hideEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
+        pass
 
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')

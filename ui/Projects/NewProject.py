@@ -28,7 +28,6 @@ from appData import SiPoMin
 from utilities.utils import get_app_icon
 from ui.uikits.UiPreset import Label
 from ui.uikits.Button import Button
-from core.Specs import Specs
 from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
@@ -38,6 +37,7 @@ class ItemWidget(QWidget):
 
     def __init__(self, section, name="", parent=None):
         super(ItemWidget, self).__init__(parent)
+
         self.section = section
 
         self.item = Label({'txt': name})
@@ -63,7 +63,6 @@ class NewProject(QWidget):
 
     def __init__(self, parent=None):
         super(NewProject, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         self.setWindowIcon(QIcon(get_app_icon(32, "NewProject")))
 
@@ -249,7 +248,8 @@ class NewProject(QWidget):
             self.populate_lst(section)
 
     def hideEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
+        pass
 
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')

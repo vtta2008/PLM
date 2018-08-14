@@ -18,7 +18,6 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLineEdit, QText
 
 # Plt
 from appData import SiPoMin, SiPoExp
-from core.Specs import Specs
 from core.Loggers import SetLogger
 from ui.uikits.Button import Button
 
@@ -59,7 +58,6 @@ class TopTab5(QWidget):
 
     def __init__(self, parent=None):
         super(TopTab5, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         self.layout = QGridLayout()
         self.buildUI()

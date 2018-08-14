@@ -26,7 +26,6 @@ from ui.uikits.Button import Button
 from ui.uikits.GroupBox import GroupGrid
 from utilities.utils import check_blank, check_match, get_avatar_icon, getToken, getUnix, getTime, getDate, get_local_pc_info, get_user_location
 from core.Loggers import SetLogger
-from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign up ui """
@@ -39,7 +38,6 @@ class SignUp(QWidget):
 
     def __init__(self, parent=None):
         super(SignUp, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         self.setWindowIcon(IconPth(32, "SignUp"))
         self.resize(450, 900)
@@ -266,7 +264,8 @@ class SignUp(QWidget):
         self.showLayout.emit('login', 'hide')
 
     def hideEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
+        pass
 
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')

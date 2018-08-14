@@ -23,7 +23,6 @@ from PyQt5.QtWidgets import QApplication, QWidget, QCheckBox, QPushButton, QGrid
 # Plt
 from utilities.utils import str2bool, bool2str, get_app_icon
 from core.Loggers import SetLogger
-from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """
@@ -40,7 +39,6 @@ class Preferences(QWidget):
 
     def __init__(self, parent=None):
         super(Preferences, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         self.resize(200, 100)
         self.setWindowIcon(QIcon(get_app_icon(32, 'Configuration')))
@@ -96,7 +94,8 @@ class Preferences(QWidget):
         return str2bool(self.toolBarArt_checkBox.checkState())
 
     def hideEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
+        pass
 
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')

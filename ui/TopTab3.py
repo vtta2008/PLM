@@ -21,8 +21,6 @@ from PyQt5.QtCore import pyqtSignal, Qt, pyqtSlot
 from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGroupBox, QLabel)
 
 # Plt
-
-from core.Specs import Specs
 from ui.uikits.GroupBox import GroupBox
 from ui.uikits.Button import Button
 from utilities import localSQL as usql
@@ -40,7 +38,6 @@ class TopTab3(QWidget):
 
     def __init__(self, parent=None):
         super(TopTab3, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)

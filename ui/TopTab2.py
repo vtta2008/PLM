@@ -23,7 +23,6 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox
 # from ui.uirc import AutoSectionBtnGrp
 from ui.uikits.Button import Button
 from ui.uikits.GroupBox import GroupBox
-from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -40,7 +39,6 @@ class TopTab2(QWidget):
 
     def __init__(self, parent=None):
         super(TopTab2, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)

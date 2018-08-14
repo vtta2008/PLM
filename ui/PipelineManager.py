@@ -25,7 +25,6 @@ from ui.Network import ServerStatus
 from ui.Menus import MainMenuBar, SubMenuBar
 from ui.uikits.GroupBox import AutoSectionLayoutGrp, AutoSectionQMainGrp
 from ui.uikits.UiPreset import AppIcon
-from core.Specs import Specs
 from utilities.utils import get_layout_size
 
 # -------------------------------------------------------------------------------------------------------------
@@ -47,7 +46,6 @@ class PipelineManager(QMainWindow):
     def __init__(self, parent=None):
 
         super(PipelineManager, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         self.url = __homepage__
 
@@ -103,12 +101,14 @@ class PipelineManager(QMainWindow):
         self.setStatusBar(self.stBar)
 
         cbs = [self.botTabUI.generalSetting.tbTDCB, self.botTabUI.generalSetting.tbCompCB,
-               self.botTabUI.generalSetting.tbArtCB, self.botTabUI.generalSetting.subToolBarCB,
+               self.botTabUI.generalSetting.tbArtCB, self.botTabUI.generalSetting.tbTexCB,
+               self.botTabUI.generalSetting.tbPostCB, self.botTabUI.generalSetting.subToolBarCB,
                self.botTabUI.generalSetting.mainToolBarCB, self.botTabUI.generalSetting.statusBarCB,
                self.botTabUI.generalSetting.subMenuCB, self.botTabUI.generalSetting.serStatusCB,
                self.botTabUI.generalSetting.notifiCB]
 
-        sections = [self.toolBar.tdToolBar, self.toolBar.compToolBar, self.toolBar.artToolBar, self.subToolBarSec,
+        sections = [self.toolBar.tdToolBar, self.toolBar.compToolBar, self.toolBar.artToolBar, self.toolBar.textureToolBar,
+                    self.toolBar.postToolBar, self.subToolBarSec,
                     self.mainMenuSec, self.stBar, self.subMenuSec, self.networkStatus, self.notifiSec]
 
         for i in range(len(sections)):
@@ -150,12 +150,12 @@ class PipelineManager(QMainWindow):
         self.setSetting.emit('height', str(sizeH), self.objectName())
 
     def showEvent(self, event):
-        self.specs.showState.emit(True)
+        # self.specs.showState.emit(True)
         self.showLayout.emit('login', 'hide')
         self.showLayout.emit('sysTray', 'show')
 
     def closeEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
         # self.sysNotify.emit('notice', "PLM hide in system tray", 'info', 500)
         self.showLayout.emit(self.key, 'hide')
         event.ignore()

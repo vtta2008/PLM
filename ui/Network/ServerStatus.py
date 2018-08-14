@@ -24,7 +24,6 @@ from appData import left, __serverUrl__
 from appData.ServerCfg import ServerCfg
 from ui.uikits.UiPreset import Label
 from utilities.utils import get_app_icon
-from core.Specs import Specs
 from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
@@ -37,7 +36,6 @@ class ServerStatus(QGridLayout):
 
     def __init__(self, parent=None):
         super(ServerStatus, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         self.server = ServerCfg()
         self.server.listen(QHostAddress(__serverUrl__), 9000)

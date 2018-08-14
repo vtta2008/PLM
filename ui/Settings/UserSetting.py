@@ -24,7 +24,6 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QPushBu
 
 # Plt
 from appData import PW_BLANK, PW_UNMATCH, __envKey__
-from core.Specs import Specs
 from utilities import utils as func
 from utilities import localSQL as usql
 from ui.uikits.UiPreset import IconPth
@@ -43,9 +42,8 @@ class UserSetting(QDialog):
     def __init__(self, parent=None):
 
         super(UserSetting, self).__init__(parent)
-        self.specs = Specs(self.key, self)
-        self.setWindowIcon(IconPth(32, "UserSetting"))
 
+        self.setWindowIcon(IconPth(32, "UserSetting"))
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
@@ -223,10 +221,11 @@ class UserSetting(QDialog):
         pass
 
     def hideEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
+        pass
 
     def closeEvent(self, event):
-        self.specs.showState.emit(True)
+        # self.specs.showState.emit(True)
         self.showLayout.emit(self.key, 'hide')
         event.ignore()
 

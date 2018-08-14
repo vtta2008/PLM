@@ -20,7 +20,6 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QDialogButtonBox, QFormLayou
 
 # Plm
 from ui.uikits.UiPreset import Label
-from core.Specs import Specs
 
 class ForgotPassword(QWidget):
 
@@ -29,8 +28,6 @@ class ForgotPassword(QWidget):
 
     def __init__(self):
         super(ForgotPassword, self).__init__()
-
-        self.specs = Specs(self.key, self)
         self.setContentsMargins(0,0,0,0)
 
         self.layout = QVBoxLayout()

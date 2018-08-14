@@ -58,39 +58,24 @@ class Configurations(PObj):
         self._mainPkgs                  = False
         self._appInfo                   = False
 
-        self.cfgOs                      = self.cfg_platform()
-        self.cfgRoot                    = self.cfg_envVariable(self.appKey, self.rootDir)
-        self.cfgCfgPth                  = self.cfg_cfgDir()
-        self.cfgLocalDB                 = self.cfg_localDB()
-        self.cfgPyQt                    = self.cfg_pyqt_env()
-        self.cfgPyVer                   = self.cfg_pyVersion()
-        self.cfgPyPth                   = self.cfg_pyPath(self.get_pyPth())
-        self.cfgPip                     = self.cfg_pip()
-        self.cfgFree                    = self.cfg_deepFreeze()
-        self.cfgReqs                    = self.cfg_requirements()
-        self.cfgMaya                    = self.cfg_maya()
-        self.cfgEvnKeys                 = self.store_envVars()
-        self.cfgIconPth                 = self.cfg_iconPth()
-        self.cfgApps                    = self.get_app_installed()
-        self.cfgMainPkgs                = self.cfg_mainPkgs()
-
-        self.checkList['platform']      = self.cfgOs
-        self.checkList['root']          = self.cfgRoot
-        self.checkList['paths']         = self.cfgCfgPth
-        self.checkList['localDB']       = self.cfgLocalDB
-        self.checkList['pyqt']          = self.cfgPyQt
-        self.checkList['version']       = self.cfgPyVer
-        self.checkList['path']          = self.cfgPyPth
-        self.checkList['pip']           = self.cfgPip
-        self.checkList['deepFreeze']    = self.cfgFree
-        self.checkList['requirement']   = self.cfgReqs
-        self.checkList['maya']          = self.cfgMaya
-        self.checkList['envKeys']       = self.cfgEvnKeys
-        self.checkList['iconPths']      = self.cfgIconPth
-        self.checkList['apps']          = self.cfgApps
-        self.checkList['mainPkg']       = self.cfgMainPkgs
+        self.checkList['platform']      = self.cfg_platform()
+        self.checkList['root']          = self.cfg_envVariable(self.appKey, self.rootDir)
+        self.checkList['paths']         = self.cfg_cfgDir()
+        self.checkList['localDB']       = self.cfg_localDB()
+        self.checkList['pyqt']          = self.cfg_pyqt_env()
+        self.checkList['version']       = self.cfg_pyVersion()
+        self.checkList['path']          = self.cfg_pyPath(self.get_pyPth())
+        self.checkList['pip']           = self.cfg_pip()
+        self.checkList['deepFreeze']    = self.cfg_deepFreeze()
+        self.checkList['requirement']   = self.cfg_requirements()
+        self.checkList['maya']          = self.cfg_maya()
+        self.checkList['envKeys']       = self.cfg_envVars()
+        self.checkList['iconPths']      = self.cfg_iconPth()
+        self.checkList['apps']          = self.get_app_installed()
+        self.checkList['mainPkg']       = self.cfg_mainPkgs()
 
         for key in self.checkList.keys():
+
             if self.checkList[key]:
                 continue
             else:
@@ -128,7 +113,7 @@ class Configurations(PObj):
         pthInfo['documents']    = self.set_dir('docs', 'appData')
         pthInfo['source']       = self.set_dir('scr', 'appData')
 
-        pthInfo['core']         = self.set_dir('core')
+        pthInfo['core']      = self.set_dir('core')
 
         pthInfo['img']          = self.set_dir('imgs')
         pthInfo['icon']         = self.set_dir('icons', 'imgs')
@@ -161,7 +146,6 @@ class Configurations(PObj):
         self.compare_data(pth, pthInfo)
         return True
 
-
     def cfg_localDB(self):
         if self._pthInfo:
             self.pthInfo['localDB'] = os.path.join(self.pthInfo['appData'], 'local.db')
@@ -172,7 +156,7 @@ class Configurations(PObj):
         return self._pthInfo
 
     def cfg_pyqt_env(self):
-        if self.cfgOs:
+        if self.checkList['platform']:
             pyqt = os.path.dirname(pyqt_path)
             key = 'QT_QPA_PLATFORM_PLUGIN_PATH'
             value = os.path.join(pyqt, "plugins")
@@ -245,7 +229,7 @@ class Configurations(PObj):
         self.send_report('Maya is implemented')
         return True
 
-    def store_envVars(self, fileName='envKey.cfg', **envKeys):
+    def cfg_envVars(self, fileName='envKey.cfg', **envKeys):
         for key in os.environ.keys():
             envKeys[key] = os.getenv(key)
         pth = os.path.join(self.pthInfo['config'], fileName)

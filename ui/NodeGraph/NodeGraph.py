@@ -18,7 +18,6 @@ from PyQt5.QtCore import pyqtSignal, QRectF
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 
 # Plt
-from core.Specs import Specs
 from core.Loggers import SetLogger
 from appData.scr._nodeGraph import *
 from utilities.utils import getUnix
@@ -39,8 +38,6 @@ class NodeGraph(QWidget):
 
     def __init__(self, parent=None):
         super(NodeGraph, self).__init__(parent)
-
-        self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         self.mtd = {}
         self.Nodes = []

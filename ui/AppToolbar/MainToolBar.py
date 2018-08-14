@@ -22,10 +22,9 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot
 # Plt
 from appData import SiPoMin
 from ui.uikits.Action import Action
-from utilities.utils import str2bool
-from core.Specs import Specs
+from utilities.utils import str2bool, bool2str
 from core.Loggers import SetLogger
-from core.keys import CONFIG_TDS, CONFIG_VFX, CONFIG_ART
+from core.keys import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEXTURE, CONFIG_POST
 from core.Metadata import __envKey__
 
 # -------------------------------------------------------------------------------------------------------------
@@ -43,8 +42,6 @@ class MainToolBar(QMainWindow):
 
     def __init__(self, parent=None):
         super(MainToolBar, self).__init__(parent)
-
-        self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
 
         with open(os.path.join(os.getenv(__envKey__), 'cfg', 'main.cfg'), 'r') as f:
@@ -53,15 +50,10 @@ class MainToolBar(QMainWindow):
         self.tdToolBar = self.create_toolBar("TD", CONFIG_TDS)
         self.compToolBar = self.create_toolBar("VFX", CONFIG_VFX)
         self.artToolBar = self.create_toolBar("ART", CONFIG_ART)
+        self.textureToolBar = self.create_toolBar('TEX', CONFIG_TEXTURE)
+        self.postToolBar = self.create_toolBar('POST', CONFIG_POST)
 
-        # self.tdToolBar = ToolBar('TD', self)
-        # self.addToolBar(self.tdToolBar)
-        #
-        # self.compToolBar = ToolBar('VFX', self)
-        # self.addToolBar(self.compToolBar)
-        #
-        # self.artToolBar = ToolBar('ART', self)
-        # self.addToolBar(self.artToolBar)
+        self.toolBars = [self.tdToolBar, self.compToolBar, self.artToolBar, self.textureToolBar, self.postToolBar]
 
         self.setSizePolicy(SiPoMin, SiPoMin)
 
@@ -79,20 +71,23 @@ class MainToolBar(QMainWindow):
     def showToolBar(self, toolbar, mode):
         if toolbar == 'td':
             self.tdToolBar.setVisible(str2bool(mode))
-            self.setSetting.emit(toolbar, 'hide', self.objectName())
+            self.setSetting.emit(toolbar, bool2str(mode), self.objectName())
         elif toolbar == 'vfx':
             self.compToolBar.setVisible(str2bool(mode))
-            self.setSetting.emit(toolbar, 'hide', self.objectName())
+            self.setSetting.emit(toolbar, bool2str(mode), self.objectName())
         elif toolbar == 'art':
             self.artToolBar.setVisible(str2bool(mode))
-            self.setSetting.emit(toolbar, 'hide', self.objectName())
+            self.setSetting.emit(toolbar, bool2str(mode), self.objectName())
+        elif toolbar == 'tex':
+            self.textureToolBar.setVisible(str2bool(mode))
+            self.setSetting.emit(toolbar, bool2str(mode), self.objectName())
+        elif toolbar == 'post':
+            self.postToolBar.setVisible(str2bool(mode))
+            self.setSetting.emit(toolbar, bool2str(mode), self.objectName())
         else:
-            for tb in [self.tdToolBar, self.compToolBar, self.artToolBar]:
-                tb.setVisible(True)
-
-            self.setSetting.emit('td', 'hide', self.objectName())
-            self.setSetting.emit('vfx', 'hide', self.objectName())
-            self.setSetting.emit('art', 'hide', self.objectName())
+            for tb in self.toolBars:
+                tb.setVisible(str2bool(mode))
+                self.setSetting.emit(tb, bool2str(mode), self.objectName())
 
     def hideEvent(self, event):
         self.setSetting.emit(self.key, 'hide', self.objectName())

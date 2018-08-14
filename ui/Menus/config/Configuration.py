@@ -21,7 +21,6 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit, 
                              QSpinBox, QStackedWidget, QVBoxLayout, QWidget)
 
 # PLM
-from core.Specs import Specs
 from ui.Menus.config import config_rc
 
 # -------------------------------------------------------------------------------------------------------------
@@ -155,7 +154,6 @@ class Configuration(QWidget):
 
     def __init__(self, parent=None):
         super(Configuration, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.contentsWidget = QListWidget()
         self.contentsWidget.setViewMode(QListView.IconMode)
         self.contentsWidget.setIconSize(QSize(96, 84))
@@ -221,7 +219,8 @@ class Configuration(QWidget):
         self.contentsWidget.currentItemChanged.connect(self.changePage)
 
     def hideEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
+        pass
 
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')

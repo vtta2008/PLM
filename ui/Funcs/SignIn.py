@@ -16,6 +16,7 @@ Description:
 # Python
 import sys
 import requests
+from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
@@ -28,7 +29,6 @@ from ui.uikits.UiPreset import IconPth, Label, LineEdit
 from ui.uikits.GroupBox import GroupGrid
 from ui.uikits.Button import Button
 from utilities.utils import str2bool
-from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """
@@ -43,9 +43,8 @@ class SignIn(QWidget):
 
         super(SignIn, self).__init__(parent)
 
-        self.specs = Specs(self.key, self)
         self.setWindowIcon(IconPth(32, "SignIn"))
-        self.setFixedSize(400, 250)
+        self.setFixedSize(400, 300)
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -59,7 +58,7 @@ class SignIn(QWidget):
         self.pwTF = LineEdit({'fm': 'password'})
         self.userCB = QCheckBox('Remember me?')
 
-        forgot_pw_btn = Button({'txt': 'Forgot your password?', 'cl': self.forgetPwClicked})
+        forgot_pw_btn = Button({'txt': 'Forgot your password?', 'cl': partial(self.showLayout.emit, 'forgotpw', 'show')})
         login_btn = Button({'txt': 'Log in', 'cl': self.signInClicked})
         cancel_btn = Button({'txt': 'Cancel', 'cl': QApplication.quit})
 
@@ -123,12 +122,13 @@ class SignIn(QWidget):
             return
 
     def showEvent(self, event):
-        self.specs.showState.emit(True)
+        # self.specs.showState.emit(True)
         self.showLayout.emit('mainUI', 'hide')
         self.showLayout.emit('sysTray', 'hide')
 
     def hideEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
+        pass
 
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')

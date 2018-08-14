@@ -21,7 +21,6 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox
 from PyQt5.QtGui import QRadialGradient, QColor, QPainter, QBrush, QPen
 
 # Plt
-from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab4 """
@@ -35,7 +34,6 @@ class TopTab4(QWidget):
 
     def __init__(self, parent=None):
         super(TopTab4, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)

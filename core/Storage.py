@@ -24,6 +24,7 @@ from core.Metadata import __envKey__
 
 cfgPth = os.path.join(os.getenv(__envKey__), 'cfg')
 metadataPth = os.path.join(cfgPth, 'mtd')
+
 if not os.path.exists(metadataPth):
     try:
         os.mkdir(metadataPth)
@@ -32,15 +33,10 @@ if not os.path.exists(metadataPth):
     finally:
         os.mkdir(metadataPth)
 
-class PureData(dict):
-    def __init__(self):
-        super(PureData, self).__init__()
-        self['datetime'] = None
-
 # -------------------------------------------------------------------------------------------------------------
 """ Original object """
 
-class PureObject(QObject):
+class Base(QObject):
 
     stationsChanged = pyqtSignal()
     _attributes = {}
@@ -67,32 +63,31 @@ class PureObject(QObject):
 # -------------------------------------------------------------------------------------------------------------
 """ PLM object type """
 
-class PObj(PureObject):
+class PObj(Base):
 
     Type = 'PObject'
     _attributes = {}
     imported = pyqtSignal(bool)
 
     def __init__(self, parent=None, **kwargs):
-        PureObject.__init__(self)
+        Base.__init__(self)
         self._name = self.__class__.__name__
         self._parent = parent
 
         self.regFile = os.path.join(metadataPth, self.name() + ".{0}".format('mtd'))
         self._register = os.path.exists(self.regFile)
+        self.imported.connect(self.set_imported)
 
         if self._register:
             with open(self.regFile, 'r') as f:
-                self._data = json.load(f)
+                self._attributes = json.load(f)
         else:
-            self._data = PureData()
+            self._type = self.type()
+            self._datetime = self.get_datetime()
+            self._unix = self.getUnix()
+            self.register()
 
-        self._type = self.type()
-        self._datetime = self._data['datetime']
-        self._unix = self.getUnix()
-        self.imported.connect(self.set_imported)
-        self.register()
-        self.imported.emit(True)
+        # self.imported.emit(True)
 
     def __str__(self):
         return json.dumps(self.data, default=lambda obj: obj.data, indent=4)
@@ -100,42 +95,20 @@ class PObj(PureObject):
     def __repr__(self):
         return json.dumps(self.data, default=lambda obj: obj.data, indent=4)
 
-    # def __getattr__(self, name):
-    #     if name in self._attributes:
-    #         attribute = self._attributes.get(name)
-    #         return attribute.value
-    #
-    #     elif hasattr(self, name):
-    #         return getattr(self, name)
-    #
-    #     raise AttributeError('no attribute exists {0}'.format(name))
-    #
-    # def __setattr__(self, name, value):
-    #     if name in self._attributes:
-    #         super(PObj, self).__setattr__(name, value)
-    #         attribute = self._attributes.get(name)
-    #
-    #         if value != attribute.value:
-    #             attribute.value = value
-    #     else:
-    #         super(PObj, self).__setattr__(name, value)
-
     @property
     def data(self):
-        return self._data
+        return self._attributes
 
     def register(self):
-
         self._attributes['name'] = self.name()
         self._attributes['type'] = self.type()
         self._attributes['datetime'] = self.datetime()
         self._attributes['unix'] = self.unix()
         self._attributes['objName'] = self.__class__.key
 
-        if not self._register:
-            with open(self.regFile, 'w') as f:
-                json.dump(self._attributes, f, indent=4)
-            self._register = True
+        with open(self.regFile, 'w') as f:
+            json.dump(self._attributes, f, indent=4)
+        self._register = True
 
         return self._register
 
@@ -158,9 +131,12 @@ class PObj(PureObject):
         return self.Type
 
     def datetime(self):
-        if self._data['datetime'] is None:
+        try:
+            self._attributes['datetime']
+        except KeyError:
             self._datetime = self.get_datetime()
-        return self._datetime
+        finally:
+            return self._datetime
 
     def unix(self):
         if not self._register:
@@ -193,44 +169,32 @@ class PObj(PureObject):
             self.add_attr(name)
         return self._attributes.get(name)
 
-    def rename_attr(self, name, new_name):
-        if name not in self._attributes:
-            raise AttributeError(name)
-
-        if hasattr(self, new_name):
-            raise AttributeError('attribute "%s" already exists.' % new_name)
-
-        attr = self._attributes.pop(name)
-        attr.name = new_name
-        self._attributes.update({attr.name: attr})
-
 # -------------------------------------------------------------------------------------------------------------
 """ Ui object type """
 
-class UiObj(PureObject):
+class UiObj(Base):
 
     Type = 'UiObject'
     _attributes = {}
     imported = pyqtSignal(bool)
 
     def __init__(self, parent=None, **kwargs):
-        PureObject.__init__(self)
+        Base.__init__(self)
         self._parent = parent
         self._name = self._parent.__name__
         self.regFile = os.path.join(metadataPth, self.name() + ".{0}".format('mtd'))
         self._register = os.path.exists(self.regFile)
+        self.imported.connect(self.set_imported)
 
         if self._register:
             with open(self.regFile, 'r') as f:
-                self._data = json.load(f)
+                self._attributes = json.load(f)
         else:
-            self._data = PureData()
+            self._type = self.type()
+            self._datetime = self.get_datetime()
+            self._unix = self.getUnix()
+            self.register()
 
-        self._type = self.type()
-        self._datetime = self._data['datetime']
-        self._unix = self.getUnix()
-        self.imported.connect(self.set_imported)
-        self.register()
         self.imported.emit(True)
 
     def __str__(self):
@@ -261,7 +225,7 @@ class UiObj(PureObject):
 
     @property
     def data(self):
-        return self._data
+        return self._attributes
 
     def register(self):
 

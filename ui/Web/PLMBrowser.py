@@ -30,7 +30,6 @@ from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 # Plt
 from ui.Web import PLMBrowser_rc
 from core.Loggers import SetLogger
-from core.Specs import Specs
 from ui.uikits.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
@@ -191,7 +190,6 @@ class PLMBrowser(QWidget):
 
     def __init__(self, url='vnexpress.net', parent=None):
         super(PLMBrowser, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
 
         self.setWindowIcon(IconPth(32, 'PLMBrowser'))
@@ -220,11 +218,12 @@ class PLMBrowser(QWidget):
         self.viewer.update()
 
     def showEvent(self, event):
-        self.specs.showState.emit(True)
+        # self.specs.showState.emit(True)
+        pass
 
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
         event.ignore()
 
 def main():

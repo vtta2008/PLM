@@ -34,7 +34,7 @@ from appData.scr._nodeGraph import (ANCHOR_UNDERMICE, ANCHOR_VIEWCENTER, FOCUSAB
 """ PLM Types """
 
 PLM_TYPES  = dict(base    = 'PLM base object',     config  = 'PLM config ui',       console = 'PLM console',
-                  core    = 'PLM core object',     flag    = 'PLM flag',            footer  = 'PLM footer ui',
+                  core    = 'PLM appCore object',  flag    = 'PLM flag',            footer  = 'PLM footer ui',
                   header  = 'PLM header ui',       id      = 'PLM id',              index   = 'PLM index',
                   info    = 'PLM info ui',         layout  = 'PLM ui',              service = 'PLM background service',
                   setting = 'PLM setting ui',      sysTray = 'PLM system tray',     main    = 'PLM main ui',
@@ -57,7 +57,7 @@ SPECS = dict(about         = {'ordinal': 1,  'objName': 'About',          'type'
              codeConduct   = {'ordinal': 7,  'objName': 'CodeConduct',    'type': PLM_TYPES['info'],    'lvl': UI_LVL['nd'], 'title': 'Code of Conduct'    , 'id': 'PCC', 'tag': None                 , 'flag': None              , 'cls': QWidget, },
              console       = {'ordinal': 8,  'objName': 'PLM',            'type': PLM_TYPES['console'], 'lvl': UI_LVL['st'], 'title': None                 , 'id': 'PLM', 'tag': 'PIPELINE MANAGER'   , 'flag': 'Master console'  , 'cls': QApplication, },
              contributing  = {'ordinal': 9,  'objName': 'Contributing',   'type': PLM_TYPES['info'],    'lvl': UI_LVL['nd'], 'title': 'Contributing'       , 'id': 'PCB', 'tag': None                 , 'flag': None              , 'cls': QWidget, },
-             core          = {'ordinal': 10, 'objName': 'core',           'type': PLM_TYPES['core'],    'lvl': UI_LVL['st'], 'title': None                 , 'id': 'PCO', 'tag': None                 , 'flag': None              , 'cls': QCoreApplication},
+             coreService   = {'ordinal': 10, 'objName': 'appCore',        'type': PLM_TYPES['core'],    'lvl': UI_LVL['st'], 'title': None                 , 'id': 'PCO', 'tag': None                 , 'flag': None              , 'cls': QCoreApplication},
              credit        = {'ordinal': 11, 'objName': 'Credit',         'type': PLM_TYPES['info'],    'lvl': UI_LVL['nd'], 'title': 'Credit'             , 'id': 'PCR', 'tag': None                 , 'flag': None              , 'cls': QWidget, },
              engDict       = {'ordinal': 12, 'objName': 'EngDict',        'type': PLM_TYPES['layout'],  'lvl': UI_LVL['nd'], 'title': 'English Dictionary' , 'id': 'PED', 'tag': None                 , 'flag': None              , 'cls': QWidget, },
              findFile      = {'ordinal': 13, 'objName': 'FindFile',       'type': PLM_TYPES['layout'],  'lvl': UI_LVL['nd'], 'title': 'File Hunting'       , 'id': 'PFF', 'tag': None                 , 'flag': None              , 'cls': QWidget, },

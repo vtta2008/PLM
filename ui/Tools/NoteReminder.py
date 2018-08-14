@@ -22,7 +22,6 @@ from PyQt5.QtWidgets import (QAction, QApplication, QComboBox, QWidget, QDialog,
 
 # Plm
 from ui.uikits.UiPreset import Label, IconPth
-from core.Specs import Specs
 
 
 def codec_name(codec):
@@ -209,7 +208,6 @@ class NoteReminder(QWidget):
 
     def __init__(self, parent=None):
         super(NoteReminder, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.setWindowIcon(IconPth(32, 'NoteReminder'))
 
         self.layout = QGridLayout()
@@ -221,7 +219,8 @@ class NoteReminder(QWidget):
         self.layout.addWidget(self.mainMenu, 0,0,1,1)
 
     def hideEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
+        pass
 
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')

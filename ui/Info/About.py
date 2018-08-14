@@ -20,11 +20,9 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QGridLayout, QScrollArea, QWidget
 
 # Plm
-from utilities.utils import get_app_icon
 from appData import ABOUT
 from ui.uikits.UiPreset import Label, IconPth
 from ui.uikits.Button import Button
-from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ About Layout """
@@ -37,7 +35,6 @@ class About(QWidget):
     def __init__(self, parent=None):
 
         super(About, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.setWindowIcon(IconPth(32, 'About'))
         self.layout = QGridLayout()
         self.buildUI()

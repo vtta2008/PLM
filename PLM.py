@@ -28,8 +28,7 @@ else:
 
 from core.Configurations import Configurations
 
-cfg = Configurations(key, ROOT)
-print(cfg.cfgs)
+# cfg = Configurations(key, ROOT)
 
 # PyQt5
 from ui.Web.PLMBrowser import PLMBrowser
@@ -39,10 +38,9 @@ from PyQt5.QtWidgets import QApplication
 # Plm
 from core.Settings import Settings
 from core.Cores import AppCores
-from core.Specs import Specs
 from core.Loggers import SetLogger
 from core.Metadata import __appname__, __version__, __organization__, __website__, __serverCheck__, PLMAPPID
-from core.paths import APP_SETTING, UNIX_SETTING, USER_SETTING, FORMAT_SETTING
+from core.paths import SETTING_FILEPTH
 
 from appData.scr._format import ST_FORMAT
 from appData.scr._docs import SYSTRAY_UNAVAI
@@ -51,8 +49,6 @@ from utilities import Worker
 from utilities.localSQL import QuerryDB
 from utilities.utils import str2bool, clean_file_ext
 from ui.uikits.UiPreset import AppIcon
-
-SETTING_FILEPTH = dict(app = APP_SETTING, user = USER_SETTING, unix = UNIX_SETTING, format = FORMAT_SETTING)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -72,17 +68,35 @@ class PLM(QApplication):
         self.appName = __appname__
         self.version = __version__
         self.website = __website__
-        self.core = QCoreApplication
-        self.core.setOrganizationName(self.organization)
-        self.core.setApplicationName(self.appName)
-        self.core.setOrganizationDomain(self.website)
-        self.core.setApplicationVersion(self.version)
-        self.layouts = dict()
 
+        self.appCore = QCoreApplication
+        self.appCore.setOrganizationName(self.organization)
+        self.appCore.setApplicationName(self.appName)
+        self.appCore.setOrganizationDomain(self.website)
+        self.appCore.setApplicationVersion(self.version)
+
+        self.layouts = dict()
+        self.cfg = Configurations(key, ROOT)
+        self.cfg.cfgReport.connect(self.get_report)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.appInfo = cfg.appInfo
-        self.specs = Specs(self.key, self)
-        self.cores = AppCores(self)                                                          # Core metadata
+
+        if not self.cfg.cfgs:
+            self.report("Configurations has not completed yet!")
+        else:
+            self.report("Configurations has completed", **self.cfg.checkList)
+
+        from ui.Settings.SettingUI import SettingUI
+        self.settingUI = SettingUI(self.settings)
+
+        self.settingUI.showLayout.connect(self.showLayout)
+
+        self.appInfo = self.cfg.appInfo
+        self.cores = AppCores(self)
+        self.cores.addLayout.connect(self.addLayout)# Core metadata
+        self.cores.showLayout.connect(self.showLayout)
+        self.cores.executing.connect(self.executing)
+        self.cores.setSetting.connect(self.setSetting)
+        self.cores.openBrowser.connect(self.openBrowser)
 
         self.threadpool = QThreadPool()                                                     # Thread pool
         self.numOfThread = self.threadpool.maxThreadCount()                                 # Maximum threads available
@@ -90,17 +104,14 @@ class PLM(QApplication):
         self.setWindowIcon(AppIcon("Logo"))                                                 # Set up task bar icon
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)             # Change taskbar icon
 
-        from ui.Settings.SettingUI import SettingUI
-        self.settingUI = SettingUI()
-        self.cores.addLayout.connect(self.addLayout)
         self.addLayout(self.settingUI)
         self.db = QuerryDB()                                                                # Query local database
         self.webBrowser = PLMBrowser()                                                      # Webbrowser
         self.addLayout(self.webBrowser)
+        self.webBrowser.showLayout.connect(self.showLayout)
+
         self.login, self.forgotPW, self.signup, self.mainUI, self.sysTray = self.cores.import_uiSet1()
-        self.uiSet1 = [self.login, self.forgotPW, self.signup, self.mainUI, self.sysTray]
         self.mainUI.settings = self.settings
-        self.setupConn1()
 
         try:
             self.username, token, cookie, remember = self.db.query_table('curUser')
@@ -122,42 +133,14 @@ class PLM(QApplication):
         self.sysTray.showLayout.connect(self.showLayout)
         self.sysTray.executing.connect(self.executing)
 
-        self.uiSet2 = [self.about, self.calculator, self.calendar, self.codeConduct, self.configuration, self.contributing,
-                       self.credit, self.engDict, self.findFile, self.imageViewer, self.licence, self.newProj,
-                       self.nodeGraph, self.noteReminder, self.preferences, self.reference, self.screenShot,
-                       self.textEditor, self.userSetting, self.version] = self.cores.import_uiSet2()
+        self.about, self.calculator, self.calendar, self.codeConduct, self.configuration, self.contributing, \
+        self.credit, self.engDict, self.findFile, self.imageViewer, self.licence, self.newProj, self.nodeGraph, \
+        self.noteReminder, self.preferences, self.reference, self.screenShot, self.textEditor, self.userSetting, \
+        self.version = self.cores.import_uiSet2()
 
-        self.setupConn2()
         self.set_styleSheet('darkstyle')
         self.setQuitOnLastWindowClosed(False)
         sys.exit(self.exec_())
-
-    def setupConn1(self):
-        cfg.cfgReport.connect(self.get_report)
-
-        self.login.showLayout.connect(self.showLayout)
-        self.forgotPW.showLayout.connect(self.showLayout)
-        self.signup.showLayout.connect(self.showLayout)
-
-        self.mainUI.showLayout.connect(self.showLayout)
-        self.mainUI.executing.connect(self.executing)
-        self.mainUI.addLayout.connect(self.addLayout)
-        self.mainUI.sysNotify.connect(self.sysTray.sysNotify)
-        self.mainUI.setSetting.connect(self.setSetting)
-        self.mainUI.openBrowser.connect(self.openBrowser)
-
-        self.returnValue.connect(self.mainUI.returnValue)
-
-        self.webBrowser.showLayout.connect(self.showLayout)
-        self.settingUI.showLayout.connect(self.showLayout)
-
-        self.returnValue.connect(self.mainUI.returnValue)
-
-    def setupConn2(self):
-        for layout in self.uiSet2:
-            layout.showLayout.connect(self.showLayout)
-
-        print("setup connected 2")
 
     @property
     def registerUI(self):
@@ -172,10 +155,11 @@ class PLM(QApplication):
             try:
                 layout = self.layouts[name]
             except KeyError:
-                self.report('Key is not registered')
+                self.report('Key "{0}" is not registered'.format(name))
                 return
             else:
-                self.report("define layout: {0}".format(layout))
+                # self.report("define layout: {0}".format(layout))
+                pass
 
         if mode == "hide":
             layout.hide()

@@ -22,7 +22,6 @@ from PyQt5.QtWidgets import (QGridLayout, QLineEdit, QTextEdit, QApplication, QW
 # PLM
 from ui.uikits.UiPreset import Label, IconPth
 from ui.uikits.Button import Button
-from core.Specs import Specs
 
 class EnglishDictionary(QWidget):
 
@@ -32,8 +31,6 @@ class EnglishDictionary(QWidget):
     def __init__(self, parent=None):
 
         super(EnglishDictionary, self).__init__(parent)
-
-        self.specs = Specs(self.key, self)
         self.setWindowIcon(IconPth(32, "EnglishDictionary"))
 
         # central_widget = QWidget(self)
@@ -94,7 +91,8 @@ class EnglishDictionary(QWidget):
         return listToString
 
     def hideEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
+        pass
 
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')

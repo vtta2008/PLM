@@ -26,7 +26,6 @@ from PyQt5.QtWidgets import (QWidget, QGridLayout, QFileDialog, QApplication, QG
 from ui.uikits.UiPreset import IconPth
 from ui.uikits.Button import Button
 from appData import keepARM
-from core.Specs import Specs
 
 class Screenshot(QWidget):
 
@@ -35,8 +34,6 @@ class Screenshot(QWidget):
 
     def __init__(self, parent=None):
         super(Screenshot, self).__init__(parent)
-
-        self.specs = Specs(self.key, self)
         self.setWindowIcon(IconPth(32, "Screenshot"))
         self.resize(960, 540)
 
@@ -140,7 +137,8 @@ class Screenshot(QWidget):
                 Qt.SmoothTransformation))
 
     def hideEvent(self, event):
-        self.specs.showState.emit(False)
+        # self.specs.showState.emit(False)
+        pass
 
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')

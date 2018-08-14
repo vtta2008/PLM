@@ -42,6 +42,8 @@ else:
     CONFIG_LOCAL_PLM_DIR = os.path.join(CONFIG_LOCAL_DAMG_DIR, __appname__)          # Plm directory
     CONFIG_DIR = os.path.join(CONFIG_LOCAL_PLM_DIR, config)                          # Config dir to store config info
 
+print(CONFIG_LOCAL_PLM_DIR)
+
 SETTING_DIR = os.path.join(CONFIG_LOCAL_PLM_DIR, settings)                           # Setting dir to store setting info
 LOG_DIR = os.path.join(CONFIG_LOCAL_PLM_DIR, logs)                                   # Log dir to store log info
 CACHE_DIR = os.path.join(CONFIG_LOCAL_PLM_DIR, cache)                                # In case caching something
@@ -60,7 +62,7 @@ APP_DATA_DIR = os.path.join(ROOT_DIR, 'appData')
 DB_DIR = APP_DATA_DIR
 NODEGRAPH_CONFIG_DIR = APP_DATA_DIR
 BUILD_DIR = os.path.join(ROOT_DIR, 'build')
-CORE_DIR = os.path.join(ROOT_DIR, 'core')
+CORE_DIR = os.path.join(ROOT_DIR, 'appCore')
 IMG_DIR = os.path.join(ROOT_DIR, 'imgs')
 PLUGIN_DIR = os.path.join(ROOT_DIR, 'plg_ins')
 QSS_DIR = os.path.join(ROOT_DIR, 'qss')
@@ -123,6 +125,9 @@ pyEnvCfg = os.path.join(CONFIG_DIR, 'pythonCfg')
 appConfig = os.path.join(CONFIG_DIR, 'installedAppCfg')
 mainConfig = os.path.join(CONFIG_DIR, 'appPackagesCfg')
 nodeGraphConfig = os.path.join(NODEGRAPH_CONFIG_DIR)
+
+
+SETTING_FILEPTH = dict(app = APP_SETTING, user = USER_SETTING, unix = UNIX_SETTING, format = FORMAT_SETTING)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:45 PM

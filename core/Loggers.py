@@ -14,9 +14,10 @@ from __future__ import unicode_literals
 # Python
 import sys, os, logging, json, enum, pdb, traceback, linecache
 
-# -------------------------------------------------------------------------------------------------------------
+# PLM
+from core.paths import LOG_PTH
 
-LOG_PTH = os.path.join(os.getenv('LOCALAPPDATA'), 'DAMGteam', 'PLM', 'logs', 'PLM.log')
+# -------------------------------------------------------------------------------------------------------------
 
 LOG_FORMAT = dict(
 
@@ -145,33 +146,38 @@ class File_Handler(logging.FileHandler):
         return OneLineExceptionFormatter(self.fmt, self.dtfmt)
 
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
+""" Logger """
 
 class SetLogger(logging.Logger):
 
     def __init__(self, parent=None, level="debug", fmt=LOG_FORMAT['fullOpt'], dtfmt=DT_FORMAT['fullOpt'], filemode='a+', filename=LOG_PTH):
         super(SetLogger, self).__init__(parent)
 
+        self._parent = parent
+
         try:
-            self.logID = os.path.basename(parent.key)
+            self.logID = os.path.basename(self._parent.key)
         except AttributeError:
-            self.logID = parent
+            self.logID = self._parent.__class__.__name__
 
         logging.getLogger(self.logID)
 
         self.level = self.define_level(level)
         self.logLevel = self.level_config(self.level)
+
         self.fmt = fmt                                                          # format
         self.dtfmt = dtfmt                                                      # datetime format
         self.fn = filename
         self.fm = filemode
+
         self.addLoggingLevel(levelName='TRACE', levelNum=LogLevel.Trace)
 
         self.sh = Stream_Handler(self.logLevel, self.fmt, self.dtfmt)
-        self.addHandler(self.sh)
         self.fh = File_Handler(self.fn, self.logLevel, self.fmt, self.dtfmt)
+        self.addHandler(self.sh)
         self.addHandler(self.fh)
 
+    @property
     def id(self):
         return self.logID
 

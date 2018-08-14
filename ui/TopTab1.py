@@ -20,7 +20,6 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLine
 
 # Plt
 from core.keys import CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE
-from core.Specs import Specs
 from core.Metadata import __envKey__
 
 from appData import BTNICONSIZE, ICONBTNSIZE, FIX_KEYS
@@ -40,8 +39,6 @@ class TopTab1(QWidget):
 
     def __init__(self, parent=None):
         super(TopTab1, self).__init__(parent)
-        self.specs = Specs(self.key, self)
-
         with open(os.path.join(os.getenv(__envKey__), 'cfg', 'main.cfg'), 'r') as f:
             self.appInfo = json.load(f)
 

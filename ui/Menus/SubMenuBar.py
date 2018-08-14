@@ -25,7 +25,6 @@ from ui.uikits.Action import Action
 from utilities.utils import get_layout_size
 
 from appData import __plmWiki__, __envKey__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR, SiPoMin
-from core.Specs import Specs
 from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
@@ -42,8 +41,6 @@ class SubMenuBar(QMainWindow):
 
     def __init__(self, parent=None):
         super(SubMenuBar, self).__init__(parent)
-
-        self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         with open(os.path.join(os.getenv(__envKey__), 'cfg', 'main.cfg'), 'r') as f:
             self.appInfo = json.load(f)

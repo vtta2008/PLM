@@ -23,6 +23,12 @@ from core.Storage import PObj
 class AppCores(PObj):
 
     key = 'coreService'
+
+    showLayout = pyqtSignal(str, str)
+    executing = pyqtSignal(str)
+    setSetting = pyqtSignal(str, str, str)
+    openBrowser = pyqtSignal(str)
+
     returnValue = pyqtSignal(str, str)
     addLayout = pyqtSignal(object)
 
@@ -52,6 +58,8 @@ class AppCores(PObj):
         self.forgotPW = ForgotPassword.ForgotPassword()
         self.mainUI = PipelineManager.PipelineManager()
         self.sysTray = SysTrayIcon.SysTrayIcon()
+
+        self.setupConn1()
 
         for layout in [self.login, self.forgotPW, self.signup, self.mainUI, self.sysTray]:
             self.addLayout.emit(layout)
@@ -94,6 +102,8 @@ class AppCores(PObj):
                            self.newProj, self.nodeGraph, self.noteReminder, self.preferences, self.reference,
                            self.screenShot, self.textEditor, self.userSetting, self.version]
 
+        self.setupConn2()
+
         for layout in self.set2Layout:
             self.addLayout.emit(layout)
 
@@ -107,12 +117,28 @@ class AppCores(PObj):
     def objects(self):
         return self.layouts
 
-    # @pyqtSlot(object)
-    # def register_layout(self, layout):
-    #     key = layout.key
-    #     if not key in self.layouts.keys():
-    #         self.layouts[key] = layout
-    #         self.addLayout.emit(layout)
+    def setupConn1(self):
+
+        self.login.showLayout.connect(self.showLayout)
+        self.forgotPW.showLayout.connect(self.showLayout)
+        self.signup.showLayout.connect(self.showLayout)
+
+        self.mainUI.showLayout.connect(self.showLayout)
+        self.mainUI.executing.connect(self.executing)
+        self.mainUI.addLayout.connect(self.addLayout)
+        self.mainUI.sysNotify.connect(self.sysTray.sysNotify)
+        self.mainUI.setSetting.connect(self.setSetting)
+        self.mainUI.openBrowser.connect(self.openBrowser)
+
+        self.returnValue.connect(self.mainUI.returnValue)
+
+        self.settingUI.showLayout.connect(self.showLayout)
+
+        self.returnValue.connect(self.mainUI.returnValue)
+
+    def setupConn2(self):
+        for layout in self.set2Layout:
+            layout.showLayout.connect(self.showLayout)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/07/2018 - 11:31 AM

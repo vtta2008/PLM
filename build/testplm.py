@@ -22,7 +22,6 @@ from PyQt5.QtCore import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMs
                           QtFatalMsg)
 
 # Plt
-import appData as app
 from utilities import utils as func
 from core.Loggers import SetLogger
 

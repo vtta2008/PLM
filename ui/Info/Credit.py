@@ -23,7 +23,6 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 from appData import CREDIT
 from ui.uikits.UiPreset import Label, IconPth
 from ui.uikits.Button import Button
-from core.Specs import Specs
 
 # -------------------------------------------------------------------------------------------------------------
 """ Credit Layout """
@@ -36,7 +35,6 @@ class Credit(QWidget):
     def __init__(self, parent=None):
 
         super(Credit, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.setWindowIcon(IconPth(32, 'Credit'))
 
         self.layout = QGridLayout()

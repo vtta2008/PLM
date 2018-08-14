@@ -22,7 +22,6 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 # Plt
 from appData import SiPoMin
 from ui.uikits.UiPreset import Label
-from core.Specs import Specs
 from core.Metadata import COPYRIGHT, VERSION
 
 # -------------------------------------------------------------------------------------------------------------
@@ -35,7 +34,6 @@ class Footer(QWidget):
 
     def __init__(self, parent=None):
         super(Footer, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)

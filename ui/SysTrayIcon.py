@@ -27,7 +27,6 @@ from ui.uikits.UiPreset import AppIcon
 from ui.uikits.Action import Action
 from utilities.localSQL import QuerryDB
 from core.Loggers import SetLogger
-from core.Specs import Specs
 from core.keys import CONFIG_SYSTRAY
 
 # -------------------------------------------------------------------------------------------------------------
@@ -81,7 +80,6 @@ class SysTrayIcon(QSystemTrayIcon):
     def __init__(self, parent=None):
 
         super(SysTrayIcon, self).__init__(parent)
-        self.specs = Specs(self.key, self)
         self.logger = SetLogger(self)
         self.db = QuerryDB()
 

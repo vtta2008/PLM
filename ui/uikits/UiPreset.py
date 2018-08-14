@@ -100,11 +100,11 @@ class LineEdit(QLineEdit):
             if key == 'fm':
                 self.setEchoMode(PRS[value])
 
-    def sizeHint(self):
-        size = super(LineEdit, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
+    # def sizeHint(self):
+    #     size = super(LineEdit, self).sizeHint()
+    #     size.setHeight(size.height())
+    #     size.setWidth(max(size.width(), size.height()))
+    #     return size
 
 class CheckBox(QCheckBox):
 
