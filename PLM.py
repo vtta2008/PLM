@@ -55,7 +55,7 @@ from ui.uikits.UiPreset import AppIcon
 
 class PLM(QApplication):
 
-    key = 'console'
+    key = 'PLM console'
     returnValue = pyqtSignal(str, str)
 
     def __init__(self):
