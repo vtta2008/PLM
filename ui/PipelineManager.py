@@ -17,8 +17,10 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout)
 
 # Plt
-from appData import __homepage__, dockB, SiPoMin
+from core.Metadata import __homepage__
+from core.paths import dockB, SiPoMin
 from core.Loggers import SetLogger
+
 from ui import TopTab, BotTab, Footer, StatusBar
 from ui.AppToolbar import MainToolBar
 from ui.Network import ServerStatus
@@ -115,7 +117,13 @@ class PipelineManager(QMainWindow):
             grp = self.botTabUI.generalSetting.settingGrp
 
             self.settings.beginGroup(grp)
-            val = str2bool(self.settings.value(key))
+            if self.settings.value(key) is None:
+                if i == 3 or i == 4:
+                    val = False
+                else:
+                    val = True
+            else:
+                val = str2bool(self.settings.value(key))
             self.settings.endGroup()
 
             cbs[i].setChecked(val)

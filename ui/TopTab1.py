@@ -22,7 +22,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLine
 from core.keys import CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE
 from core.Metadata import __envKey__
 
-from appData import BTNICONSIZE, ICONBTNSIZE, FIX_KEYS
+from core.paths import BTNICONSIZE, ICONBTNSIZE, FIX_KEYS
 
 from ui.uikits.Button import Button
 from ui.uikits.GroupBox import GroupBox

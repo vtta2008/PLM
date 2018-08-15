@@ -20,12 +20,12 @@ from PyQt5.QtWidgets import QMainWindow, QApplication
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 
 # Plt
-from appData import SiPoMin
-from ui.uikits.Action import Action
-from utilities.utils import str2bool, bool2str
 from core.Loggers import SetLogger
 from core.keys import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEXTURE, CONFIG_POST
 from core.Metadata import __envKey__
+from core.paths import SiPoMin
+from ui.uikits.Action import Action
+from utilities.utils import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """

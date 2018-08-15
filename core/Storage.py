@@ -14,10 +14,11 @@ Description:
 import os, datetime, time, uuid, json, inspect
 
 # PyQt5
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot, QSettings
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
 
 # PLM
 from core.Metadata import __envKey__
+print(os.path.dirname(__file__))
 
 # -------------------------------------------------------------------------------------------------------------
 """ Dataset template """
@@ -32,19 +33,6 @@ if not os.path.exists(metadataPth):
         os.mkdir(cfgPth)
     finally:
         os.mkdir(metadataPth)
-
-
-def realtime_setting():
-    pth = os.path.join(os.getenv(__envKey__), 'cfg', '.tmp', 'realtime_setting.ini')
-    return QSettings(pth, QSettings.IniFormat)
-
-def setting_path():
-    settings = realtime_setting()
-    pth = settings.value('setting path')
-    fmt = settings.format()
-
-    settings = QSettings(pth, fmt)
-    return pth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Original object """
@@ -104,11 +92,6 @@ class PObj(Base):
             self._unix = self.getUnix()
             self.register()
 
-
-
-
-        # self.imported.emit(True)
-
     def __str__(self):
         return json.dumps(self.data, default=lambda obj: obj.data, indent=4)
 
@@ -120,6 +103,7 @@ class PObj(Base):
         return self._attributes
 
     def register(self):
+
         self._attributes['class name'] = self.name()
         self._attributes['type'] = self.type()
         self._attributes['datetime'] = self.datetime()

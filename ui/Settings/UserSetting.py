@@ -23,16 +23,17 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QPushBu
                              QApplication, QLabel)
 
 # Plt
-from appData import PW_BLANK, PW_UNMATCH, __envKey__
+from appData.scr._docs import PW_BLANK, PW_UNMATCH
+from core.Metadata import __envKey__
+from core.Storage import PObj
 from utilities import utils as func
 from utilities import localSQL as usql
 from ui.uikits.UiPreset import IconPth
 from ui.uikits.GroupBox import GroupGrid
-from core.Storage import PObj
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """
-# ----------------------------------------------------------------------------------------------------------- #
+
 class UserSetting(QDialog):
 
     key = 'userSetting'

@@ -9,23 +9,45 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
+
+# Python
 import os
 import sys
+import pprint
 import setuptools
 from cx_Freeze import setup, Executable
 
-import appData as app
-from utilities import utils as func
+# PLM
+from core.Metadata import (appKey, __project__, __version__, __packages_dir__, __website__, __download__,
+                           __author1__, __author2__, __email__, __modules__, __pkgsReq__, __classifiers__)
+from core.Configurations import Configurations
+from appData import LICENCE_MIT, ABOUT
 
-base = None
+key = appKey
+ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
+
+try:
+    os.getenv(key)
+except KeyError:
+    os.environ[key] = ROOT
+else:
+    if os.getenv(key) != ROOT:
+        os.environ[key] = ROOT
+
+cfg = Configurations(key, ROOT)
+
+if not cfg.cfgs:
+    print("Configurations has not completed yet!")
+else:
+    print("Configurations has completed")
 
 if sys.platform == "win32":
     base = "Win32GUI"
+else:
+    base = None
 
-os.environ[app.__envKey__] = os.getcwd()
-
-for dir in os.listdir(os.getenv(app.__envKey__)):
-    pltPth = os.path.join(os.getenv(app.__envKey__), dir)
+for dir in os.listdir(os.getenv(appKey)):
+    pltPth = os.path.join(os.getenv(appKey), dir)
     if os.path.isdir(pltPth):
         if not pltPth in sys.path:
             sys.path.append(pltPth)
@@ -33,25 +55,35 @@ for dir in os.listdir(os.getenv(app.__envKey__)):
 with open('README.rst', 'r') as f:
     readme = f.read()
 
-includes = ["atexit", "re"]
+includefiles = ["appData.docs.ABOUT", "appData.docs.CODECONDUCT", "appData.docs.CONTRIBUTING", "appData.docs.CREDIT",
+                "appData.docs.LICENCE_MIT", "appData.docs.QUESTION", "appData.docs.REFERENCE", "appData.ED.json",
+                "preSetup.krita-x64-4.1.1-setup.exe", "preSetup.storyboarder-setup-1.7.1.exe", "qss.darkstyle.qss",
+                "qss.nuke.qss", "qss.stylessheet.qss"]
+includes = ["PyQt5", "tankers"]
+excludes = ["Tkinter"]
+packages = ['os', 'sys', 'subprocess', 'logging', 'requests', 'ctypes', 'pprint', 're', 'platform', 'winshell', 'json',
+            'yaml', 'linecache', 'datetime', 'time', 'uuid', 'win32api', 'traceback', 'unittest', 'pbd', 'sqlite3',
+            'types', 'shutil', 'enum', 'pkg_resources', '__future__', 'random', 'importlib']
+
+build_exe_options = {'includes':includes, 'packages':packages, 'excludes':excludes, 'include_files':includefiles}
 
 setup(
-    name = app.__project__,
-    version = app.__version__,
+    name = __project__,
+    version = __version__,
     packages = setuptools.find_packages(),
-    package_dir = app.__packages_dir__,
-    url = app.__website__,
-    download_url = app.__download__,
-    license = func.query_metadata("__licence__"),
-    author = func.query_metadata("__author__"),
-    author_email= func.query_metadata("__email__"),
-    maintainer = func.query_metadata("__author__"),
-    maintainer_email = func.query_metadata("__email__"),
-    description = func.query_metadata("__description__"),
+    package_dir = __packages_dir__,
+    url = __website__,
+    download_url = __download__,
+    license = LICENCE_MIT,
+    author = __author1__ + "&" + __author2__,
+    author_email= __email__,
+    maintainer = __author1__,
+    maintainer_email = __author1__,
+    description = ABOUT,
     long_description = readme,
-    py_modules = func.query_metadata("__modules__"),
-    install_requires =func.query_metadata("__description__"),
-    classifiers = func.query_metadata("__classifiers__"),
-    options = {"build_exe" : {"includes" : includes }},
-    executables = [Executable("Plt.py", base = base)],
+    py_modules = __modules__,
+    install_requires = __pkgsReq__,
+    classifiers = __classifiers__,
+    options = {"build_exe" : build_exe_options},
+    executables = [Executable("PLM.py", base=base)],
 )

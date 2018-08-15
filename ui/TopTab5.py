@@ -17,7 +17,7 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLineEdit, QTextEdit, QTextBrowser, QLabel
 
 # Plt
-from appData import SiPoMin, SiPoExp
+from core.paths import SiPoMin, SiPoExp
 from core.Loggers import SetLogger
 from ui.uikits.Button import Button
 

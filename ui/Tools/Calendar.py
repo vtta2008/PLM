@@ -22,7 +22,7 @@ from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
                              QLayout, QWidget)
 
 # Plt
-from appData import SiPoMin
+from core.paths import SiPoMin
 from ui.uikits.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------

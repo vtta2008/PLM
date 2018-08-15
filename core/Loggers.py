@@ -125,14 +125,16 @@ class Stream_Handler(logging.StreamHandler):
         else:
             exception = traceback.format_exception(exc_type, exc_value, tb)
 
-        pdb.post_mortem(tb)
-        print("Unhandled exception!\n%s", "".join(exception))
+        # pdb.post_mortem(tb)
+        pdb.post_mortem()
+        print(tb, type(tb))
 
         return exception
 
 class File_Handler(logging.FileHandler):
 
     def __init__(self, filename=None, level=None, fmt=None, dtfmt=None):
+
         super(File_Handler, self).__init__(filename)
 
         self.fm       = filename                # File name (full path)
@@ -174,6 +176,8 @@ class SetLogger(logging.Logger):
         self.fm = filemode
 
         self.addLoggingLevel(levelName='TRACE', levelNum=LogLevel.Trace)
+
+        print(self.fn)
 
         self.sh = Stream_Handler(self.logLevel, self.fmt, self.dtfmt)
         self.fh = File_Handler(self.fn, self.logLevel, self.fmt, self.dtfmt)

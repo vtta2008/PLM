@@ -20,15 +20,9 @@ from PyQt5.QtCore import pyqtSignal
 
 # PLM
 from core.Storage import PObj
-from core.Metadata import __groupname__, __appname__, __plmWiki__, __envKey__
+from core.Metadata import __groupname__, __appname__, __plmWiki__, __pkgsReq__
 from core.keys import autodeskVer, KEYDETECT, KEYPACKAGE, CONFIG_APPUI, CONFIG_SYSTRAY, FIX_KEY
-from core.paths import PLM_LOGO_32, DAMG_LOGO_32, ICON_DIR_32
-
-key = __envKey__
-ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
-requirements = ['deprecate', 'msgpack', 'winshell', 'pandas', 'wheel', 'argparse', 'green']
-program86 = os.getenv('PROGRAMFILES(X86)')
-program64 = os.getenv('PROGRAMW6432')
+from core.paths import PLM_LOGO_32, DAMG_LOGO_32, ICON_DIR_32, PROGRAM64, PROGRAM86, LOCALAPPDATA, PROGRAMDATA
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configurations """
@@ -37,7 +31,8 @@ class Configurations(PObj):
 
     key  = 'configurations'
     checkList = dict()
-    checkInfo = dict()
+    cfgInfo = dict()
+    cfgError = dict()
     cfgReport = pyqtSignal(str)
 
     def __init__(self, appKey, rootDir, mode='alpha', parent=None):
@@ -87,21 +82,22 @@ class Configurations(PObj):
         self.batch_folder_settings(listObj, 'h')
 
     def cfg_platform(self):
-        self.checkInfo['platform'] = system()
+        self.cfgInfo['platform'] = system()
         if system() == 'Windows':
             return True
         else:
             return False
 
     def cfg_envVariable(self, key, value):
+
         envKeys = [k for k in os.environ.keys()]
+
         if not key in envKeys:
             os.environ[key] = value
         else:
             if os.getenv(key) != value:
                 os.environ[key] = value
 
-        self.checkInfo[key] = value
         return True
 
     def cfg_cfgDir(self, fileName='PLM.cfg', **pthInfo):
@@ -120,7 +116,7 @@ class Configurations(PObj):
         pthInfo['documents']    = self.set_dir('docs', 'appData')
         pthInfo['source']       = self.set_dir('scr', 'appData')
 
-        pthInfo['core']      = self.set_dir('core')
+        pthInfo['core']         = self.set_dir('core')
 
         pthInfo['img']          = self.set_dir('imgs')
         pthInfo['icon']         = self.set_dir('icons', 'imgs')
@@ -149,8 +145,15 @@ class Configurations(PObj):
 
         pthInfo['utilities'] = self.set_dir('utilities')
 
+        for pth in pthInfo.values():
+            self.create_folder(pth)
+            if not os.path.exists(pth):
+                print("Could not create folder: {0}".format(pth))
+                self.cfgError['paths error'] = pth
+
         self.pthInfo = pthInfo
         self._pthInfo = True
+
         pth = os.path.join(pthInfo['config'], fileName)
         self.compare_data(pth, pthInfo)
         return True
@@ -176,7 +179,7 @@ class Configurations(PObj):
 
     def cfg_pyVersion(self):
         self.pyVersion = float(sys.version[:3])
-        self.checkInfo['version'] = sys.version
+        self.cfgInfo['version'] = sys.version
         return True
 
     def cfg_pyPath(self, pyPth):
@@ -190,8 +193,6 @@ class Configurations(PObj):
         if not addPyPath:
             os.environ['PATH'] = os.getenv('PATH') + pyPth
             addPyPath = True
-
-        self.checkInfo['PATH'] = self.get_system_path()
 
         return addPyPath
 
@@ -213,14 +214,14 @@ class Configurations(PObj):
             return True
 
     def cfg_requirements(self):
-        for pkg in requirements:
+        for pkg in __pkgsReq__:
             check = self.check_pyPkg(pkg)
             if not check:
                 subprocess.Popen('python -m pip install --user --upgrade {0}'.format(pkg), shell=True).wait()
         return True
 
     def cfg_maya(self):
-        tk = os.path.join(os.getenv(__envKey__), 'tankers', 'pMaya')
+        tk = os.path.join(os.getenv(self.appKey), 'tankers', 'pMaya')
         tanker = dict(modules=['anim', 'lib', 'modeling', 'rendering', 'simulating', 'surfacing', ], )
 
         pVal = ""
@@ -230,7 +231,7 @@ class Configurations(PObj):
             pVal += p + ';'
         os.environ['PYTHONPATH'] = pVal
 
-        usScr = os.path.join(os.getenv(__envKey__), 'packages', 'maya', 'userSetup.py')
+        usScr = os.path.join(os.getenv(self.appKey), 'packages', 'maya', 'userSetup.py')
         if os.path.exists(usScr):
             mayaVers = [os.path.join(tk, v) for v in autodeskVer if os.path.exists(os.path.join(tk, v))] or []
             if not len(mayaVers) == 0 or not mayaVers == []:
@@ -331,7 +332,7 @@ class Configurations(PObj):
         return True
 
     def getAppIcon(self, size=32, iconName="AboutPlm"):
-        iconPth = os.path.join(os.getenv(__envKey__), 'imgs', 'icons', "x" + str(size))
+        iconPth = os.path.join(os.getenv(self.appKey), 'imgs', 'icons', "x" + str(size))
         return os.path.join(iconPth, iconName + ".icon.png")
 
     def get_app_installed(self, fileName='appInfo.cfg', **appInfo):
@@ -376,29 +377,34 @@ class Configurations(PObj):
     def get_pyPth(self):
 
         if 'Anaconda' in sys.version:
-            pyRoot = os.getenv('PROGRAMDATA')
-            if self.pyVersion > 2:
-                pyFolder = 'Anaconda3'
-            else:
-                pyFolder = 'Anaconda2'
+            pyDirName = [f for f in os.listdir(PROGRAMDATA) if 'Anaconda' in f]
+            pyPth = os.path.join(PROGRAMDATA, pyDirName[0])
         else:
-            pyOrgDefault = os.path.join(os.getenv('LOCALAPPDATA'), 'Programs', 'Python')
-            if not os.path.exists(pyOrgDefault):
-                folder86 = self.get_dir_path(program86)
-                folder64 = self.get_dir_path(program64)
-                paths = folder86 + folder64
-                pyFolder = None
-                pyRoot = None
-                for pth in paths:
-                    if 'python' in pth:
-                        pyFolder = os.path.basename(pth)
-                        pyRoot = pth.split(pyFolder)[0]
-                        break
+            pyDirName = [f for f in (os.listdir(PROGRAM86) + os.listdir(PROGRAM64) + os.listdir(LOCALAPPDATA)) if 'python' in f]
+            if os.path.exists(os.path.join(PROGRAM86, pyDirName[0])):
+                pyPth = os.path.join(PROGRAM86, pyDirName[0])
+            elif os.path.exists(os.path.join(PROGRAM64, pyDirName[0])):
+                pyPth = os.path.join(PROGRAM64, pyDirName[0])
             else:
-                pyRoot = pyOrgDefault
-                pyFolder = self.get_dir_path(pyRoot)[0]
+                pyPth = os.path.join(LOCALAPPDATA, pyDirName[0])
 
-        return os.path.join(pyRoot, pyFolder)
+        if not os.path.exists(os.path.join(pyPth, 'python.exe')):
+            for root, directories, files in os.walk(pyPth, topdown=False):
+                for filename in files:
+                    if filename == 'python.exe':
+                        pyPth = os.path.dirname(filename)
+                        break
+
+        pths = [f for f in os.getenv('PATH').split(';') if not f == '']
+
+        if not pyPth in pths:
+            pth = ""
+            for p in pths:
+                pth = pth + p + "; "
+            pth = pth + pyPth + "; "
+            os.environ['PATH'] = pth
+
+        return pyPth
 
     def get_all_paths(self, directory):
         filePths = []                                                       # List which will store all file paths.
@@ -428,6 +434,7 @@ class Configurations(PObj):
             localAppData = self.check_dir(os.getenv('LOCALAPPDATA'))
             cfgCompany = self.check_dir(localAppData, __groupname__)
             root = self.check_dir(cfgCompany, __appname__)
+
         pth = self.check_dir(root, folName)
         return pth
 
@@ -436,8 +443,6 @@ class Configurations(PObj):
             pth = root
         else:
             pth = os.path.join(root, folName)
-        if not os.path.exists(pth):
-            os.mkdir(pth)
         return pth
 
     def check_pyPkg(self, pkg):
@@ -512,6 +517,23 @@ class Configurations(PObj):
                 self.folder_settings(obj, mode)
             else:
                 print('Could not find the specific path: %s' % obj)
+
+    def create_folder(self, pth, mode=0o770):
+        if os.path.exists(pth):
+            return []
+
+        (head, tail) = os.path.split(pth)
+        res = self.create_folder(head, mode)
+        try:
+            original_umask = os.umask(0)
+            os.makedirs(pth, mode)
+        finally:
+            os.umask(original_umask)
+
+        os.chmod(pth, mode)
+
+        res += [pth]
+        return res
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 5/08/2018 - 6:20 PM

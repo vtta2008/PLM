@@ -14,10 +14,10 @@ Description:
 from functools import partial
 
 # PyQt5
-from PyQt5.QtWidgets import QPushButton, QToolButton, QButtonGroup
+from PyQt5.QtWidgets import QPushButton, QToolButton
 
 # PLM
-from appData import SiPoExp, SiPoPre
+from core.paths import SiPoExp, SiPoPre
 from ui.uikits.UiPreset import check_preset, IconPth
 
 # -------------------------------------------------------------------------------------------------------------

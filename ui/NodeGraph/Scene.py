@@ -15,9 +15,10 @@ Description:
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, QLineF
 from PyQt5.QtGui import QColor, QPen
+from PyQt5.QtWidgets import QGraphicsScene
 
 # PLM
-from appData.scr._nodeGraph import *
+from core.paths import GRID_SIZE, ACTION_MOVE
 from ui.NodeGraph.NodeGraph import Edge
 
 # -------------------------------------------------------------------------------------------------------------
@@ -38,11 +39,11 @@ class Scene(QGraphicsScene):
         return self.gridSize
 
     def dragEnterEvent(self, event):
-        event.setDropAction(Qt.MoveAction)
+        event.setDropAction(ACTION_MOVE)
         event.accept()
 
     def dragMoveEvent(self, event):
-        event.setDropAction(Qt.MoveAction)
+        event.setDropAction(ACTION_MOVE)
         event.accept()
 
     def dropEvent(self, event):

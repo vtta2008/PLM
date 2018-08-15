@@ -12,16 +12,14 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-import os
+# Python
 
 # PtQt5
-from PyQt5.QtCore import pyqtSignal, QSettings
 from PyQt5.QtWidgets import QGridLayout, QCheckBox
 
 # Plt
-from utilities.utils import bool2str
 from core.Loggers import SetLogger
-from core.Storage import setting_path, PObj
+from core.Storage import PObj
 
 # -------------------------------------------------------------------------------------------------------------
 """ Quick Setting """
@@ -34,8 +32,6 @@ class GeneralSetting(QGridLayout):
         super(GeneralSetting, self).__init__(parent)
         self.logger = SetLogger(self)
         self.setSpacing(2)
-
-        self.settings = QSettings(setting_path(), QSettings.IniFormat)
 
         self.tbTDCB = QCheckBox("TD toolbar")
         self.tbTDCB.setChecked(False)

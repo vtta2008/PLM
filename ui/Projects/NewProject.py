@@ -24,11 +24,11 @@ from PyQt5.QtWidgets import (QWidget, QGridLayout, QGroupBox, QHBoxLayout, QVBox
                              QComboBox, QFileDialog, QListWidget, QListWidgetItem, QApplication)
 
 # PLM
-from appData import SiPoMin
+from core.paths import SiPoMin
+from core.Loggers import SetLogger
 from utilities.utils import get_app_icon
 from ui.uikits.UiPreset import Label
 from ui.uikits.Button import Button
-from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """

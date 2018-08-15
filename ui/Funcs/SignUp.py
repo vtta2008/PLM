@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # Python
-import os, sys, json
+import os, sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
@@ -21,11 +21,12 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QFileDialog
 
 # Plm
 from appData import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_REQUIRED, QUESTIONS
+from core.Loggers import SetLogger
+from core.Storage import PObj
 from ui.uikits.UiPreset import IconPth, Label, LineEdit, ComboBox, CheckBox
 from ui.uikits.Button import Button
 from ui.uikits.GroupBox import GroupGrid
 from utilities.utils import check_blank, check_match, get_avatar_icon, getToken, getUnix, getTime, getDate, get_local_pc_info, get_user_location
-from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign up ui """
@@ -45,6 +46,7 @@ class SignUp(QWidget):
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
+        self.reg = PObj(self)
 
     def buildUI(self):
         self.avatar_section()
@@ -62,17 +64,14 @@ class SignUp(QWidget):
         self.layout.addWidget(self.serSection, 4, 0, 1, 6)
         self.layout.addWidget(self.btnSection, 5, 0, 1, 6)
 
+        self.applySetting()
+
     def avatar_section(self):
         self.avaSection, avatar_grid = GroupGrid("Avatar")
 
-        # defaultImg = QPixmap.fromImage(QImage(getAvatar('default')))
         self.userAvatar = Label({'pxm':'default', 'scc': True, 'sfs':[100, 100]})
-        # self.userAvatar.setPixmap(defaultImg)
-        # self.userAvatar.setScaledContents(True)
-        # self.userAvatar.setFixedSize(100, 100)
 
         set_avatarBtn = Button({'txt':'Set Avatar', 'tt':'Choose a new avatar', 'cl': self.setAvaClicked})
-        # set_avatarBtn.clicked.connect(self.setAvaClicked)
 
         avatar_grid.addWidget(self.userAvatar, 0, 0, 2, 2)
         avatar_grid.addWidget(set_avatarBtn, 2, 0, 1, 2)
@@ -137,9 +136,9 @@ class SignUp(QWidget):
 
         self.serSection, questions_grid = GroupGrid("Security Question")
 
-        self.ques1 = ComboBox({'items': [str(i[0]) for i in QUESTIONS]})
+        self.ques1 = ComboBox({'items': [str(i) for i in QUESTIONS.split('\n')]})
         self.answ2 = LineEdit()
-        self.ques2 = ComboBox({'items': [str(i[0]) for i in QUESTIONS]})
+        self.ques2 = ComboBox({'items': [str(i) for i in QUESTIONS.split('\n')]})
         self.answ1 = LineEdit()
 
         questions_grid.addWidget(Label({'txt':'Question 1'}), 0, 0, 1, 3)
@@ -270,6 +269,9 @@ class SignUp(QWidget):
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')
         event.ignore()
+
+    def applySetting(self):
+        pass
 
 def main():
     app = QApplication(sys.argv)

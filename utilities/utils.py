@@ -11,19 +11,20 @@ Description:
 """ Import """
 
 # Python
-import os, sys, requests, platform, subprocess, winshell, yaml, json, linecache, re, datetime, time, uuid, win32api
+import os, sys, requests, platform, subprocess, winshell, yaml, json, linecache, re, datetime, time, uuid, win32api, pprint
 
 # PyQt5
 from PyQt5.QtCore import Qt, QRectF, QRect, QSize
 from PyQt5.QtGui import QColor, QFont, QFontMetrics
 
 # PLM
-from appData import __envKey__, __pkgsReq__, LOGO_DIR, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR
+from core.Metadata import __envKey__, __pkgsReq__
+from core.paths import LOGO_DIR, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR
 from core.keys import KEYPACKAGE
 from core.Errors import IsADirectoryError, FileNotFoundError
 from core.Loggers import SetLogger
 logger = SetLogger(__name__)
-logInfo = logger.report
+report = logger.report
 
 # -------------------------------------------------------------------------------------------------------------
 """ Destop tool """
@@ -35,6 +36,22 @@ def create_shotcut(target, icon, shortcut, description):
         Icon=(icon, 0),
         Description=description
     )
+
+def create_folder(pth, mode=0o770):
+    if not pth or os.path.exists(pth):
+        return []
+
+    (head, tail) = os.path.split(pth)
+    res = create_folder(head, mode)
+    try:
+        original_umask = os.umask(0)
+        os.makedirs(pth, mode)
+    except:
+        os.chmod(pth, mode)
+    finally:
+        os.umask(original_umask)
+    res += [pth]
+    return res
 
 def obj_properties_setting(directory, mode):
     if platform.system() == "Windows" or platform.system() == "Darwin":
@@ -59,7 +76,7 @@ def batch_obj_properties_setting(listObj, mode):
         if os.path.exists(obj):
             obj_properties_setting(obj, mode)
         else:
-            logInfo('Could not find the specific path: %s' % obj)
+            report('Could not find the specific path: %s' % obj)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Error handle """
@@ -80,13 +97,28 @@ def raise_exception():
     linecache.checkcache(filename)
     line = linecache.getline(filename, lineno, f.f_globals)
 
-    logInfo("--------------------------------------------------------------------------------- \n"
+    report("--------------------------------------------------------------------------------- \n"
             "Tracking from:   {0} \n"
             "At line number:  {1} \n"
             "Details code:    {2} \n"
             "{3} \n"
             "---------------------------------------------------------------------------------".format(os.path.basename(filename), lineno, line.strip(), exc_obj))
     return
+
+def print_variable(varName, varData):
+    print('###-------------------------------------------------------------------------------###')
+    print('-------- CHECK VARIABLE: {0}'.format(varName))
+    print('------------ File location: {0}'.format(__file__))
+    print('------------ Variable type: {0}'.format(type(varName)))
+    print(' ')
+    print('-------- VARIABLE CONTENT')
+    print(' ')
+
+    pprint.pprint(varData)
+
+    print(' ')
+    print('-------- END CHECK')
+    print('###-------------------------------------------------------------------------------###')
 
 # -------------------------------------------------------------------------------------------------------------
 """ Python """
@@ -107,12 +139,12 @@ def install_require_package(package=__pkgsReq__):
     try:
         import package
     except ImportError as err:
-        logInfo("installing {0}".format(package))
+        report("installing {0}".format(package))
         command = "start python -m pip install {0}".format(package)
         p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
         (output, err) = p.communicate()
         status = p.wait()
-        logInfo("Command output: {0}".format(output))
+        report("Command output: {0}".format(output))
 
 def uninstall_all_required_package():
     for pkg in __pkgsReq__:
@@ -131,10 +163,10 @@ def get_py_env_var(key, path):
     try:
         pth = os.getenv(key)
         if pth == None or pth == '':
-            logInfo('install new environment variable')
+            report('install new environment variable')
             os.environ[key] = path
     except KeyError:
-        logInfo('install new environment variable')
+        report('install new environment variable')
         os.environ[key] = path
     else:
         pass
@@ -142,20 +174,20 @@ def get_py_env_var(key, path):
 # -------------------------------------------------------------------------------------------------------------
 """ Command Prompt """
 
-def cmd_execute_py(name, path, *args):
+def cmd_execute_py(name, path):
     """
     Executing a python file
     :param name: python file name
     :param path: path to python file
     :return: executing in command prompt
     """
-    logInfo("Executing {name} from {path}".format(name=name, path=path))
+    report("Executing {name} from {path}".format(name=name, path=path))
     pth = os.path.join(path, name)
     if os.path.exists(pth):
         subprocess.call([sys.executable, pth])
 
 def system_call(args, cwd="."):
-    logInfo("Running '{}' in '{}'".format(str(args), cwd))
+    report("Running '{}' in '{}'".format(str(args), cwd))
     subprocess.call(args, cwd=cwd)
     pass
 
@@ -250,9 +282,9 @@ def convert_to_QColor(data=None, alternate=False, av=20):
             color = QColor(max(0, data[0]-(av*mult)), max(0, data[1]-(av*mult)), max(0, data[2]-(av*mult)), data[3])
         return color
     else:
-        logInfo('Color from configuration is not recognized : ', data)
-        logInfo('Can only be [R, G, B] or [R, G, B, A]')
-        logInfo('Using default color !')
+        report('Color from configuration is not recognized : ', data)
+        report('Can only be [R, G, B] or [R, G, B, A]')
+        report('Using default color !')
         color = QColor(120, 120, 120)
         if alternate:
             color = QColor(120-av, 120-av, 120-av)
@@ -486,10 +518,10 @@ def get_all_even(numLst):
 def del_key(key, dict = {}):
     try:
         del dict[key]
-        logInfo("key deleted: {key}".format(key=key))
+        report("key deleted: {key}".format(key=key))
     except KeyError:
         dict.pop(key, None)
-        logInfo("key poped: {key}".format(key=key))
+        report("key poped: {key}".format(key=key))
 
 def clean_file_ext(ext):
     fileNames = [f for f in get_file_path(os.getenv(__envKey__)) if ext in f] or []

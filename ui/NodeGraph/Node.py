@@ -12,13 +12,15 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtWidgets import QGraphicsObject, QApplication, QGraphicsPathItem
-from PyQt5.QtGui import QPen, QBrush, QPainterPath, QFontMetrics, QTransform, QFont
+from PyQt5.QtWidgets import QGraphicsObject, QApplication, QGraphicsPathItem, QGraphicsItem, QGraphicsScene
+from PyQt5.QtGui import QPen, QBrush, QPainterPath, QFontMetrics, QTransform, QFont, QColor
 from PyQt5.QtCore import QPointF, QRect, QRectF, pyqtSignal
 
 # Plt
-from appData import center
-from appData.scr._nodeGraph import *
+from core.paths import ( DMK, BRUSH_NONE, COLOR_LIBS, PATTERN_SOLID, ITEMPOSCHANGE, LINE_SOLID, ROUND_CAP, ROUND_JOIN,
+                         MOUSE_LEFT, POSX, POSY, NODE_WIDTH, ATTR_HEIGHT, ATTR_ROUND, ATTR_REC, NODE_BORDER, NODE_ROUND,
+                         NODE_STAMP, NODE_REC, MOVEABLE, SELECTABLE, NODE_HEADER_HEIGHT, NODE_FOOTER_HEIGHT, POS_CHANGE,
+                         UPDATE_BOUNDINGVIEW, center, MARGIN)
 from utilities.utils import get_pointer_bounding_box, convert_to_QColor
 from core.Loggers import SetLogger
 from utilities.utils import getUnix
@@ -54,7 +56,7 @@ class Edge(QGraphicsPathItem):
 
     def applySetting(self):
         self.lineColor = QColor(10, 10, 10)
-        self.removalColor = Qt.red
+        self.removalColor = COLOR_LIBS['RED']
         self.thickness = 1
         self.srcPos = QPointF(0, 0)
         self.tarPos = QPointF(0, 0)
@@ -354,11 +356,11 @@ class Knob(QGraphicsItem):
             brush = QBrush(self.off_color_1)
 
         pen = QPen()
-        pen.setStyle(Qt.SolidLine)
+        pen.setStyle(LINE_SOLID)
         pen.setWidthF(1)
         pen.setWidth(2)
-        pen.setCapStyle(Qt.RoundCap)
-        pen.setJoinStyle(Qt.RoundJoin)
+        pen.setCapStyle(ROUND_CAP)
+        pen.setJoinStyle(ROUND_JOIN)
         painter.setBrush(brush)
         painter.setPen(pen)
         painter.drawEllipse(-5, -5, 10, 10)
@@ -824,7 +826,7 @@ if __name__ == '__main__':
 
     view = QGraphicsView(scene)
     view.setViewportUpdateMode(UPDATE_BOUNDINGVIEW)
-    view.setBackgroundBrush(DARKGRAY)
+    view.setBackgroundBrush(COLOR_LIBS['DARKGRAY'])
     view.setWindowTitle("pNode test")
     view.show()
 

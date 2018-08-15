@@ -19,7 +19,8 @@ from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
 # Plm
-from appData import __plmWiki__, __envKey__, SiPoMin
+from core.Metadata import __plmWiki__, __envKey__
+from core.paths import SiPoMin
 from core.Loggers import SetLogger
 from ui.uikits.Action import Action
 

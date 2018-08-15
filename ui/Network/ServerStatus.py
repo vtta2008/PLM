@@ -20,11 +20,11 @@ from PyQt5.QtWidgets import QGridLayout, QLabel
 from PyQt5.QtNetwork import QHostAddress
 
 # Plt
-from appData import left, __serverUrl__
+from core.Loggers import SetLogger
+from core.Metadata import __serverUrl__
 from appData.ServerCfg import ServerCfg
 from ui.uikits.UiPreset import Label
 from utilities.utils import get_app_icon
-from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """

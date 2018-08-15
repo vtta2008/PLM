@@ -11,14 +11,36 @@ Description:
 """ Import """
 
 # Python
-import os, sys, subprocess
 
 # PyQt5
-from PyQt5.QtCore import pyqtSlot, pyqtSignal
+from PyQt5.QtCore import pyqtSignal, QCoreApplication
 
 # PLM
 from core.Loggers import SetLogger
 from core.Storage import PObj
+from core.Metadata import __organization__, __appname__, __version__, __website__
+
+class CoreApplication(PObj):                                                    # Core metadata
+
+    key = 'PLM core application'
+
+    def __init__(self, parent=None):
+        super(CoreApplication, self).__init__(parent)
+
+        self.organization = __organization__
+        self.appName = __appname__
+        self.version = __version__
+        self.website = __website__
+
+        QCoreApplication.setOrganizationName(self.organization)
+        QCoreApplication.setApplicationName(self.appName)
+        QCoreApplication.setOrganizationDomain(self.website)
+        QCoreApplication.setApplicationVersion(self.version)
+
+        self.cfg = True
+
+# -------------------------------------------------------------------------------------------------------------
+""" Object handle importing task """
 
 class AppCores(PObj):
 
@@ -71,7 +93,7 @@ class AppCores(PObj):
         from ui.Info import Credit, About, CodeConduct, Contrubuting, Reference, Version, LicenceMIT
         from ui.Tools import Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary, Calendar, Calculator
         from ui.Menus.config import Preferences, Configuration
-        from ui.TextEditor import TextEditor
+        from ui.Tools.TextEditor import TextEditor
         from ui.NodeGraph import NodeGraph
 
         self.about = About.About()

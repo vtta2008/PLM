@@ -14,33 +14,33 @@ Description:
 # Python
 import os, sys, subprocess, requests, ctypes, pprint
 from core.Metadata import __envKey__
-
-key = __envKey__
 ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
 try:
-    os.getenv(key)
+    os.getenv(__envKey__)
 except KeyError:
-    os.environ[key] = ROOT
+    cfgable = False
+    os.environ[__envKey__] = ROOT
 else:
-    if os.getenv(key) != ROOT:
-        os.environ[key] = ROOT
+    if os.getenv(__envKey__) != ROOT:
+        os.environ[__envKey__] = ROOT
+    cfgable = True
+
+from core.Configurations import Configurations
+CFG = Configurations(__envKey__, ROOT)
 
 # PyQt5
-from ui.Web.PLMBrowser import PLMBrowser
-from PyQt5.QtCore import QThreadPool, pyqtSlot, pyqtSignal, QCoreApplication
+from PyQt5.QtCore import QThreadPool, pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QApplication
 
 # Plm
-from core.Configurations import Configurations
+from ui.Web.PLMBrowser import PLMBrowser
 from core.Settings import Settings
-from core.Cores import AppCores
+from core.Cores import AppCores, CoreApplication
 from core.Loggers import SetLogger
-from core.Metadata import __appname__, __version__, __organization__, __website__, __serverCheck__, PLMAPPID
-from core.paths import SETTING_FILEPTH
-from core.Storage import PObj
+from core.Metadata import __serverCheck__, PLMAPPID
+from core.paths import SETTING_FILEPTH, ST_FORMAT
 
-from appData.scr._format import ST_FORMAT
 from appData.scr._docs import SYSTRAY_UNAVAI
 
 from utilities import Worker
@@ -50,26 +50,6 @@ from ui.uikits.UiPreset import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
-
-class CoreApplication(PObj):                                                    # Core metadata
-
-    key = 'PLM core application'
-
-    def __init__(self, parent=None):
-        super(CoreApplication, self).__init__(parent)
-
-        self.organization = __organization__
-        self.appName = __appname__
-        self.version = __version__
-        self.website = __website__
-
-        QCoreApplication.setOrganizationName(self.organization)
-        QCoreApplication.setApplicationName(self.appName)
-        QCoreApplication.setOrganizationDomain(self.website)
-        QCoreApplication.setApplicationVersion(self.version)
-
-        self.cfg = True
-
 
 class PLM(QApplication):
 
@@ -85,14 +65,14 @@ class PLM(QApplication):
         self.appCore = CoreApplication()
 
         self.layouts = dict()
-        self.cfg = Configurations(key, ROOT)
+        self.cfg = CFG
         self.cfg.cfgReport.connect(self.get_report)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         if not self.cfg.cfgs:
             self.report("Configurations has not completed yet!")
         else:
-            self.report("Configurations has completed", **self.cfg.checkInfo)
+            self.report("Configurations has completed", **self.cfg.cfgInfo)
 
         from ui.Settings.SettingUI import SettingUI
         self.settingUI = SettingUI(self.settings)
@@ -158,7 +138,6 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str)
     def showLayout(self, name, mode):
-        # self.report('signal comes: {0}, {1}'.format(name, mode))
         if name == 'app':
             layout = self
         else:
@@ -168,7 +147,6 @@ class PLM(QApplication):
                 self.report('Key "{0}" is not registered'.format(name))
                 return
             else:
-                # self.report("define layout: {0}".format(layout))
                 pass
 
         if mode == "hide":
@@ -185,7 +163,6 @@ class PLM(QApplication):
             layout.quit()
 
         self.setSetting(layout.key, mode)
-        # self.report("{0} layout: {1}".format(mode, layout))
 
     @pyqtSlot(str)
     def openBrowser(self, url):
@@ -195,29 +172,23 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str, str)
     def setSetting(self, key=None, value=None, grp=None):
-        # self.report('signal comes: {0}, {1}, {2}'.format(key, value, grp))
         self.settings.initSetValue(key, value, grp)
 
     @pyqtSlot(str)
     def executing(self, cmd):
-        # self.report('signal comes: {0}'.format(cmd))
         if cmd in self.layouts.keys():
-            # self.report('run showlayout: {0}'.format(cmd))
             self.showLayout(cmd, 'show')
         elif os.path.isdir(cmd):
             os.startfile(cmd)
         elif cmd == 'open_cmd':
-            # self.report('open command prompt')
             os.system('start /wait cmd')
         elif cmd == 'Remove pyc':
             self.report("clean .pyc files")
             clean_file_ext('.pyc')
         elif cmd == 'Re-config local':
             from appData.LocalCfg import LocalCfg
-            # self.report('re config data')
             LocalCfg()
         else:
-            # self.report('execute: {0}'.format(cmd))
             subprocess.Popen(cmd)
 
     @pyqtSlot(object)
@@ -225,7 +196,6 @@ class PLM(QApplication):
         key = layout.key
         if not key in self.layouts.keys():
             self.layouts[key] = layout
-            # self.report("Registered layout '{0}': {1}".format(key, layout))
         else:
             self.report("Already registered: {0}".format(key))
 

@@ -11,7 +11,6 @@ Description:
 """ Import """
 
 # Python
-import sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, QRect, QRectF, QSize
@@ -19,14 +18,12 @@ from PyQt5.QtWidgets import QRubberBand, QGraphicsView
 from PyQt5.QtGui import QColor, QBrush, QPen, QCursor, QTransform, QPainterPath
 
 # PLM
-
-from appData.scr._nodeGraph import (ASPEC_RATIO, CACHE_BG, SCROLLBAROFF, RUBBER_DRAG, UPDATE_VIEWRECT, UPDATE_FULLVIEW,
-                                    ANCHOR_VIEWCENTER, ANCHOR_UNDERMICE, ANTIALIAS, ANTIALIAS_TEXT, ANTIALIAS_HIGH_QUALITY,
-                                    SMOOTH_PIXMAP_TRANSFORM, NON_COSMETIC_PEN, ALT_MODIFIER, MOUSE_LEFT, MOUSE_MIDDLE,
-                                    MOUSE_RIGHT, KEY_SHIFT, KEY_CTRL, SHIFT_MODIFIER, NO_MODIFIER, CTRL_MODIFIER,
-                                    CLOSE_HAND_CUSOR, NOANCHOR, CURSOR_ARROW, KEY_DEL, KEY_BACKSPACE, KEY_F, KEY_S,
-                                    GRID_SIZE, RUBBER_REC)
-from ui.NodeGraph.Node import Edge, Knob, NodeAttr, Node
+from core.paths import (ASPEC_RATIO, CACHE_BG, SCROLLBAROFF, RUBBER_DRAG, UPDATE_VIEWRECT, UPDATE_FULLVIEW, ANCHOR_VIEWCENTER,
+                        ANCHOR_UNDERMICE, ANTIALIAS, ANTIALIAS_TEXT, ANTIALIAS_HIGH_QUALITY, SMOOTH_PIXMAP_TRANSFORM,
+                        NON_COSMETIC_PEN, ALT_MODIFIER, MOUSE_LEFT, MOUSE_MIDDLE, MOUSE_RIGHT, KEY_SHIFT, KEY_CTRL,
+                        SHIFT_MODIFIER, NO_MODIFIER, CTRL_MODIFIER, CLOSE_HAND_CUSOR, NOANCHOR, CURSOR_ARROW, KEY_DEL,
+                        KEY_BACKSPACE, KEY_F, KEY_S, GRID_SIZE, RUBBER_REC)
+from ui.NodeGraph.Node import Edge, Node
 
 # -------------------------------------------------------------------------------------------------------------
 """ Viewer """

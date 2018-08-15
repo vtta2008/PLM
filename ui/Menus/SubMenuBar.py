@@ -19,13 +19,13 @@ from functools import partial
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
-# Plt
+# PLM
+from core.Metadata import __plmWiki__, __envKey__
+from core.paths import CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR, SiPoMin
+from core.Loggers import SetLogger
 from utilities.localSQL import TimeLog
 from ui.uikits.Action import Action
 from utilities.utils import get_layout_size
-
-from appData import __plmWiki__, __envKey__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR, SiPoMin
-from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Menu bar Layout """

@@ -18,7 +18,7 @@ from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtWidgets import QTabWidget, QGridLayout, QTabBar, QWidget, QVBoxLayout
 
 # PLM
-from appData import SiPoMin
+from core.paths import SiPoMin
 from ui.uikits.UiPreset import Label
 
 # -------------------------------------------------------------------------------------------------------------

@@ -87,13 +87,29 @@ __description__ = "This applications can be used to build, manage, and optimise 
 
 __readme__ = "README.rst"
 
-__modules__ = ["plm", "globals", "_version", "appData.templates.pyTemplate", "utilities.variables", "utilities.utils",
-               "utilities.sql_server", "utilities.sql_local", "utilities.message", "ui.ui_acc_setting", "ui.ui_calculator",
-               "ui.ui_calendar", "ui.ui_english_dict", "ui.ui_find_files", "ui.ui_image_viewer", "ui.ui_info_template",
-               "ui.ui_new_project", "ui.ui_note_reminder", "ui.ui_preference", "ui.ui_pw_reset_form", "ui.ui_screenshot", ]
+__modules__ = ["PLM", "appData.scr._attr", "appData.scr._color", "appData.scr._docs", "appData.scr._format",
+               "appData.scr._layout", "appData.scr._name", "appData.scr._nodeGraph", "appData.scr._pref",
+               "appData.config", "appData.ServerCfg", "appData.__init__", "core.Attributes", "core.Configurations",
+               "core.Cores", "core.Errors", "core.EventHandler", "core.keys", "core.Loggers", "core.Metadata",
+               "core.paths", "core.Settings", "core.SQLS", "core.Storages", "core.StyleSheets", "core.vlogging",
+               "plg_ins.pyqt5_style_rc", "plg_ins.Qt", "plg_ins.tooltips_rc", "ui.AppToolbar.DockToolBar",
+               "ui.AppToolbar.MainToolBar", "ui.Funcs.ForgotPassword", "ui.Funcs.SignIn", "ui.Funcs.SignUp",
+               "ui.Info.About", "ui.Info.CodeConduct", "ui.Info.Contributing", "ui.Info.Credit", "ui.Info.LicenceMIT",
+               "ui.Info.Reference", "ui.Info.Version", "ui.Menus.config.config_rc", "ui.Menus.config.Configuration",
+               "ui.Menus.config.Preferences", "ui.Menus.MainMenuBar", "ui.Menus.SubMenuBar", "ui.Network.ServerMonitor",
+               "ui.Network.ServerStatus", "ui.Network.connector.mainwindow", "ui.Network.connector.resources",
+               "ui.Network.connector.server", "ui.NodeGraph.MenuBar",  "ui.NodeGraph.Node",  "ui.NodeGraph.NodeGraph",
+               "ui.NodeGraph.Scene",  "ui.NodeGraph.View", "ui.Projects.NewProject", "ui.Settings.SettingUI",
+               "ui.Settings.UserSetting", "ui.Tools.TextEditor.TextEditor", "ui.Tools.TextEditor.TextEditor_rc",
+               "ui.Calculator", "ui.Calendar", "ui.EngishDictionary", "ui.FindFiles", "ui.ImageViewer", "ui.NoteReminder",
+               "ui.Screenshot", "ui.uikits.Action", "ui.uikits.Button", "ui.uikits.DockWidget", "ui.uikits.GridLayout",
+               "ui.uikits.GroupBox", "ui.uikits.node_widgets", "ui.uikits.TabWidget", "ui.uikits.ToolBar",
+               "ui.uikits.UiPreset", "ui.uikits.Widget", "ui.Web.PLMBrowser", "ui.Web.PLMBrowser_rc", "ui.BotTab",
+               "ui.Debugger", "ui.Footer", "ui.GeneralSetting", "ui.PipelineManager", "ui.StatusBar", "ui.SysTrayIcon",
+               "ui.TopTab", "ui.TopTab1", "ui.TopTab2", "ui.TopTab3", "ui.TopTab4", "ui.TopTab5", "utilities.localSQL",
+               "utilities.utils", "utilities.Worker",]
 
-__pkgsReq__ = [ "deprecated", "jupyter-console", "ipywidgets","pywinauto", "winshell", "pandas", "notebook", "juppyter",
-                "opencv-python", "pyunpack", "argparse", "qdarkgraystyle", "asyncio", "websockets", "cx_Freeze", ]
+__pkgsReq__ = ['deprecate', 'msgpack', 'winshell', 'pandas', 'wheel', 'argparse', 'green']
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 25/07/2018 - 12:41 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """
+
 Script Name: debugger.py
 Author: Do Trinh/Jimmy - 3D artist.
 
@@ -14,6 +15,7 @@ Description:
 
     Since it inherits QTextEdit directly, all of the widget's methods are
     available directly for further customization or GUI integration.
+
 """
 # -------------------------------------------------------------------------------------------------------------
 import sys, types, doctest, pprint
@@ -21,27 +23,12 @@ from io import StringIO
 from code import InteractiveConsole
 
 # PyQt5
-from PyQt5.QtWidgets import QTextEdit, QApplication, QWidget, QHBoxLayout, QGridLayout
+from PyQt5.QtWidgets import QTextEdit, QApplication, QGridLayout
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtCore import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
 
 # PLM
-from ui.uikits.UiPreset import IconPth
-
-def print_variable(varName, varData):
-    print('###-------------------------------------------------------------------------------###')
-    print('-------- CHECK VARIABLE: {0}'.format(varName))
-    print('------------ File location: {0}'.format(__file__))
-    print('------------ Variable type: {0}'.format(type(varName)))
-    print(' ')
-    print('-------- VARIABLE CONTENT')
-    print(' ')
-
-    pprint.pprint(varData)
-
-    print(' ')
-    print('-------- END CHECK')
-    print('###-------------------------------------------------------------------------------###')
+from core.paths import SiPoMin
 
 # -------------------------------------------------------------------------------------------------------------
 """ Processing User Input """
@@ -76,9 +63,10 @@ class pDetector(QTextEdit):              # A simple QTextEdit, with a few pre-se
         self.setReadOnly(True)
 
     def write(self, msg):                   # Add msg to the console's output, on a new line.
+        self._buffer.write(msg)
         self.insertPlainText(msg)
         self.moveCursor(QTextCursor.End)    # Autoscroll
-        self._buffer.write(msg)
+
 
     def __getattr__(self, attr):
         return getattr(self._buffer, attr)  # Fall back to the buffer object if an attribute can't be found.
@@ -150,7 +138,8 @@ class pDebugger(QGridLayout):
         self.applySetting()
 
     def applySetting(self):
-        pass
+        self.textEdit.setSizePolicy(SiPoMin, SiPoMin)
+        self.textEdit.setMaximumHeight(100)
 
     def debug_trace(self):
         """Set a tracepoint in the Python debugger that works with Qt."""

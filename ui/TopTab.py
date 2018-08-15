@@ -16,7 +16,7 @@ from PyQt5.QtCore import pyqtSignal, Qt
 from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QTabWidget)
 
 # Plt
-from appData import SiPoMin
+from core.paths import SiPoMin
 from ui import (TopTab1, TopTab2, TopTab3, TopTab4, TopTab5)
 
 # -------------------------------------------------------------------------------------------------------------

@@ -14,14 +14,14 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, QRectF
+from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 
 # Plt
 from core.Loggers import SetLogger
-from appData.scr._nodeGraph import *
+from core.paths import ANTIALIAS, UPDATE_FULLVIEW, KEY_DEL
 from utilities.utils import getUnix
-from ui.NodeGraph.Node import Node, NodeAttr, Knob, Edge
+from ui.NodeGraph.Node import Node, Edge
 from ui.NodeGraph.View import View
 from ui.NodeGraph.Scene import Scene
 from ui.NodeGraph.MenuBar import MenuBar

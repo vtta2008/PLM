@@ -20,7 +20,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 
 # Plm
-from appData import LICENSE_MIT
+from appData import LICENCE_MIT
 from ui.uikits.UiPreset import Label, IconPth
 from ui.uikits.Button import Button
 
@@ -45,7 +45,7 @@ class LicenceMIT(QWidget):
     def buildUI(self):
         self.scrollArea = QScrollArea()
         self.scrollArea.setWidgetResizable(True)
-        self.content = Label({'txt':LICENSE_MIT, 'alg':'left', 'link': True})
+        self.content = Label({'txt':LICENCE_MIT, 'alg': 'left', 'link': True})
 
         self.content.setGeometry(0, 0, 500, 400)
         self.scrollArea.setWidget(self.content)

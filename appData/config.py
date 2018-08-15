@@ -17,22 +17,15 @@ try:
 except ImportError:
     pass
 
-from core.paths import *
-
 PLATFORM = 'Windows'
 API_MINIMUM = 0.64
 
 from core import Metadata as m
-
+from core.paths import *
 __envKey__ = m.__envKey__
 
-from appData.scr._attr import *
 from appData.scr._docs import *
-from appData.scr._format import *
-from appData.scr._layout import *
-from appData.scr._name import *
-from appData.scr._pref import *
-#
+
 # -------------------------------------------------------------------------------------------------------------
 """ DAMG team """
 
@@ -98,7 +91,7 @@ CREDIT = read_file('CREDIT')
 CODECONDUCT = read_file('CODECONDUCT')
 CONTRIBUTING = read_file('CONTRIBUTING')
 REFERENCE = read_file('REFERENCE')
-LICENSE_MIT = read_file('LICENSE_MIT')
+LICENCE_MIT = read_file('LICENCE_MIT')
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:56 PM

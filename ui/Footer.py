@@ -13,14 +13,13 @@ Description:
 
 # Python
 import sys
-from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 
 # Plt
-from appData import SiPoMin
+from core.paths import SiPoMin
 from ui.uikits.UiPreset import Label
 from core.Metadata import COPYRIGHT, VERSION
 

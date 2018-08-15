@@ -1,20 +1,36 @@
+# -*- coding: utf-8 -*-
+"""
+
+Script Name: SettingUI.py.py
+Author: Do Trinh/Jimmy - 3D artist.
+
+Description:
+
+"""
+# -------------------------------------------------------------------------------------------------------------
+""" Import """
+
+# Python
 import os, sys
 
+# PyQt5
 from PyQt5.QtCore import (QByteArray, QDate, QDateTime, QEvent, QPoint, QRect, QRegExp, QSettings, QSize, Qt, QTime,
-                          QTimer, pyqtSignal, pyqtSlot)
+                          QTimer, pyqtSignal)
 from PyQt5.QtGui import QColor, QIcon, QRegExpValidator, QValidator
 from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar, QWidget, QFileDialog, QGridLayout,
                              QGroupBox, QHeaderView, QInputDialog, QItemDelegate, QLineEdit, QStyle,
                              QStyleOptionViewItem,
                              QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
 
-from appData.scr._pref import SETTING_FILEPTH, __appname__
-from appData.scr._layout import SiPoMin
-from core.Metadata import __organization__, __envKey__
+# PLM
+from core.paths import SETTING_FILEPTH, SiPoMin
+from core.Metadata import __organization__, __appname__
 from core.Settings import Settings
-from core.Storage import PObj, realtime_setting
+from core.Storage import PObj
 from ui.uikits.UiPreset import ComboBox, Label
 
+# -------------------------------------------------------------------------------------------------------------
+""" Setting Manager """
 
 class SettingUI(QWidget):
 
@@ -52,8 +68,6 @@ class SettingUI(QWidget):
         self.reg = PObj(self)
 
     def filename(self, pth=SETTING_FILEPTH['app']):
-        setting = realtime_setting()
-        setting.setValue('setting path', pth)
         return pth
 
     def fmt(self, fmt=QSettings.IniFormat):
@@ -679,3 +693,7 @@ if __name__ == '__main__':
     mainWin = SettingUI()
     mainWin.show()
     sys.exit(app.exec_())
+
+# -------------------------------------------------------------------------------------------------------------
+# Created by panda on 11/07/2018 - 1:59 AM
+# © 2017 - 2018 DAMGteam. All rights reserved

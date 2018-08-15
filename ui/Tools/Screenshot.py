@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import (QWidget, QGridLayout, QFileDialog, QApplication, QG
 # PLM
 from ui.uikits.UiPreset import IconPth
 from ui.uikits.Button import Button
-from appData import keepARM
+from core.paths import keepARM
 
 class Screenshot(QWidget):
 
