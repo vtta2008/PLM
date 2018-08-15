@@ -13,7 +13,9 @@ Description:
 # Python
 import os
 import sys
-from core.Metadata import __envKey__
+import setuptools
+
+from scr.core.Metadata import __envKey__
 ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
 try:
@@ -23,20 +25,18 @@ except KeyError:
 else:
     if os.getenv(__envKey__) != ROOT:
         os.environ[__envKey__] = ROOT
-from core.Configurations import Configurations
+from scr.core.Configurations import Configurations
 cfg = Configurations(__envKey__, ROOT)
 
 from cx_Freeze import setup, Executable
-from setuptools import find_packages
-
 
 # PLM
-from core.Metadata import (__envKey__, __project__, __version__, __plmSlogan__, __website__, __download__,
+from scr.core.Metadata import (__envKey__, __project__, __version__, __plmSlogan__, __website__, __download__,
                            __author1__, __author2__, __email__, __modules__, __pkgsReq__, __classifiers__,
                            __packages_dir__, COPYRIGHT)
 
-from core.paths import DESKTOP_DIR
-from appData import LICENCE_MIT, ABOUT
+from scr.core.paths import DESKTOP_DIR
+from scr.appData import LICENCE_MIT, ABOUT
 
 print(DESKTOP_DIR)
 
@@ -56,7 +56,7 @@ if sys.platform == "win32":
 else:
     base = None
 
-from core.Loggers import SetLogger
+from scr.core.Loggers import SetLogger
 logger = SetLogger(__file__)
 report = logger.report
 
@@ -79,7 +79,7 @@ includefiles = [
     ["build/appData/docs/ABOUT", "build/appData/docs/CODECONDUCT", "build/appData/docs/CONTRIBUTING", "build/appData/docs/CREDIT",
      "build/appData/docs/LICENCE_MIT", "appData/docs/QUESTION", "build/appData/docs/REFERENCE", "build/appData/ED.json",
      "build/preSetup/krita-x64-4.1.1-setup.exe", "build/preSetup/storyboarder-setup-1.7.1.exe", "build/qss/darkstyle.qss",
-     "build/qss/nuke.qss", "build/qss/stylesheet.qss", "build/LICENSE", "build/README.rst"]
+     "build/qss/nuke.qss", "build/qss/stylesheet.qss", "build/LICENSE", "build/README.rst"],
 ]
 
 includes = ['imgs']
@@ -90,19 +90,17 @@ packages = __packages_dir__
 
 build_exe_options = {'includes': includes, 'packages':packages, 'excludes':excludes, 'include_files': includefiles,}
 
-print(COPYRIGHT)
-
 setup(  name = application_title,
 
-        version          = __version__     , packages          = find_packages(exclude=["*.test", "*.test.*", "test.*", "test"]),
-        url              = __website__     , download_url      = __download__    , license          = LICENCE_MIT               ,
-        author           = __author1__ + " & " + __author2__                     , author_email     = __email__                 ,
-        maintainer       = __author1__     , maintainer_email  = __author1__     , description      = ABOUT                     ,
-        long_description = readme          , py_modules        = __modules__     , install_requires = __pkgsReq__               ,
-        classifiers      = __classifiers__ ,
+        version          = __version__     , packages          = setuptools.find_packages(),
+        url              = __website__     , download_url      = __download__    , license          = LICENCE_MIT,
+        author           = __author1__ + " & " + __author2__                     , author_email     = __email__  ,
+        maintainer       = __author1__     , maintainer_email  = __author1__     , description      = ABOUT      ,
+        long_description = readme          , py_modules        = __modules__     , install_requires = __pkgsReq__,
+        classifiers      = __classifiers__ , package_dir       = {"": "src"}     , zip_safe         = False      ,
 
         keywords                = __plmSlogan__                     ,
         options                 = {"build_exe" : build_exe_options} ,
-        executables = [Executable(main_python_file, base=base, icon="imgs/logo/Plm/icons/32x32.png",
-                                  copyright=COPYRIGHT, trademarks=True)],
+
+        executables = [Executable(main_python_file, base=base, icon=["scr/imgs/logo/Plm/icons/32x32.png"], copyright=COPYRIGHT)],
 )
