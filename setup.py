@@ -104,3 +104,7 @@ setup(  name = application_title,
 
         executables = [Executable(main_python_file, base=base, icon=["scr/imgs/logo/Plm/icons/32x32.png"], copyright=COPYRIGHT)],
 )
+
+# -------------------------------------------------------------------------------------------------------------
+# Created by panda on 19/06/2018 - 2:26 AM
+# © 2017 - 2018 DAMGteam. All rights reserved
