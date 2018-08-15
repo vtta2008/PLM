@@ -163,7 +163,7 @@ class Configurations(PObj):
             self.pthInfo['localDB'] = os.path.join(self.pthInfo['appData'], 'local.db')
             if not os.path.exists(self.pthInfo['localDB']):
                 from core.SQLS import SQLS
-                SQLS()
+                SQLS(self.pthInfo['localDB'])
 
         return self._pthInfo
 

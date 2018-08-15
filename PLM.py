@@ -105,7 +105,7 @@ class PLM(QApplication):
 
         try:
             self.username, token, cookie, remember = self.db.query_table('curUser')
-        except ValueError:
+        except (ValueError, IndexError):
             self.showLayout('login', "show")
         else:
             if not str2bool(remember):

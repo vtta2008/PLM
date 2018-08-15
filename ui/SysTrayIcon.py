@@ -28,6 +28,7 @@ from ui.uikits.Action import Action
 from utilities.localSQL import QuerryDB
 from core.Loggers import SetLogger
 from core.keys import CONFIG_SYSTRAY
+from core.Storage import PObj
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -85,7 +86,7 @@ class SysTrayIcon(QSystemTrayIcon):
 
         try:
             self.username, token, cookie, remember = self.db.query_table('curUser')
-        except IndexError:
+        except (ValueError, IndexError):
             self.username = 'DemoUser'
 
         self.rightClickMenu = SysTrayIconMenu()
@@ -99,6 +100,7 @@ class SysTrayIcon(QSystemTrayIcon):
 
         self.eventObj=SystrayWheelEventObject()
         self.installEventFilter(self.eventObj)
+        self.reg = PObj(self)
 
     def sys_tray_icon_activated(self, reason):
         if reason == QSystemTrayIcon.DoubleClick:

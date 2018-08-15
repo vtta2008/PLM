@@ -15,7 +15,8 @@ from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QDockWidget, QGridLayout
 
 # PLM
-from appData import SiPoExp
+from core.Storage import PObj
+from core.paths import SiPoExp
 from ui.uikits.ToolBar import ToolBar
 
 # -------------------------------------------------------------------------------------------------------------
@@ -23,6 +24,7 @@ from ui.uikits.ToolBar import ToolBar
 
 class DockToolBar(QDockWidget):
 
+    key = 'docker toolbar'
     showLayout = pyqtSignal(str, str)
     executing = pyqtSignal(str)
     addLayout = pyqtSignal(object)
@@ -41,6 +43,7 @@ class DockToolBar(QDockWidget):
         self.layout.addWidget(self.toolbar, 0, 0, 1, 1)
         self.setLayout(self.layout)
         self.applySetting()
+        self.reg = PObj(self)
 
     def applySetting(self):
         self.setAllowedAreas(Qt.AllDockWidgetAreas)

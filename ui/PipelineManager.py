@@ -22,7 +22,7 @@ from core.paths import dockB, SiPoMin
 from core.Loggers import SetLogger
 
 from ui import TopTab, BotTab, Footer, StatusBar
-from ui.AppToolbar import MainToolBar
+from ui.AppToolbar import MainToolBar, DockToolBar
 from ui.Network import ServerStatus
 from ui.Menus import MainMenuBar, SubMenuBar
 from ui.uikits.GroupBox import AutoSectionLayoutGrp, AutoSectionQMainGrp
@@ -145,8 +145,16 @@ class PipelineManager(QMainWindow):
 
         self.layout.addWidget(self.footer, 11, 0, 1, 9)
 
-        # self.add_dockWidget(DockToolBar.DockToolBar('TEXTURE'))
-        # self.add_dockWidget(DockToolBar.DockToolBar('POST'))
+        self.tdDock = DockToolBar.DockToolBar('TD')
+        self.vfxDock = DockToolBar.DockToolBar('VFX')
+        self.artDock = DockToolBar.DockToolBar('ART')
+        self.texDock = DockToolBar.DockToolBar('TEXTURE')
+        self.postDock = DockToolBar.DockToolBar('POST')
+
+        self.docks = [self.tdDock, self.vfxDock, self.artDock, self.texDock, self.postDock]
+        for dock in self.docks:
+            self.addLayout.emit(dock)
+            self.add_dockWidget(dock)
 
     def add_dockWidget(self, dock, pos=dockB):
         self.dock = dock

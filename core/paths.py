@@ -46,6 +46,7 @@ prefs                       = 'prefs'
 """ Name variables """
 
 ROOT_DIR = os.getenv(__envKey__)
+print('this is: {0}'.format(ROOT_DIR))
 cfgFile = os.path.join(ROOT_DIR, 'cfg', 'PLM.cfg')
 
 if os.path.exists(cfgFile):

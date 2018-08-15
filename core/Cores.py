@@ -90,7 +90,7 @@ class AppCores(PObj):
 
         from ui.Settings import UserSetting
         from ui.Projects import NewProject
-        from ui.Info import Credit, About, CodeConduct, Contrubuting, Reference, Version, LicenceMIT
+        from ui.Info import Credit, About, CodeConduct, Contributing, Reference, Version, LicenceMIT
         from ui.Tools import Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary, Calendar, Calculator
         from ui.Menus.config import Preferences, Configuration
         from ui.Tools.TextEditor import TextEditor
@@ -101,7 +101,7 @@ class AppCores(PObj):
         self.calendar = Calendar.Calendar()
         self.codeConduct = CodeConduct.CodeConduct()
         self.configuration = Configuration.Configuration()
-        self.contributing = Contrubuting.Contributing()
+        self.contributing = Contributing.Contributing()
         self.credit = Credit.Credit()
         self.engDict = EnglishDictionary.EnglishDictionary()
         self.findFile = FindFiles.FindFiles()

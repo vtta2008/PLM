@@ -47,7 +47,7 @@ class TopTab3(QWidget):
         self.query = usql.QuerryDB()
         try:
             self.username, token, cookie, remember = self.query.query_table('curUser')
-        except IndexError:
+        except (ValueError, IndexError):
             self.username = 'DemoUser'
 
         self.avatar = QLabel()

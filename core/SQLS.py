@@ -51,15 +51,15 @@ LTD = dict(
 
 class SQLS(PObj):
 
-    appDataDir = os.path.dirname(__file__).split('scr')[0]
-    dbLocalFileName = "local.db"
-    dbLocal = os.path.join(appDataDir, dbLocalFileName)
+    key = "Resource DB"
 
-    conn = lite.connect(dbLocal)
-    cur = conn.cursor()
+    def __init__(self, filename, parent=None):
+        super(SQLS, self).__init__(parent)
 
-    def __init__(self):
-        super(SQLS, self).__init__()
+        self.fn = filename
+        self.conn = lite.connect(self.fn)
+        self.cur = self.conn.cursor()
+
         for tn in TN:
             self.create_table(tn)
 

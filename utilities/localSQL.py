@@ -13,21 +13,31 @@ Description:
 # Python
 import sqlite3 as lite
 from core.paths import DB_PTH
+from core.Storage import PObj
 
 # Plt
 from utilities import utils as func
 
 class QuerryDB(list):
 
+    key = 'query db'
+
+    def __init__(self):
+        self.reg = PObj(self)
+
     def query_table(self, tn="curUser"):
         conn = lite.connect(DB_PTH)
         cur = conn.cursor()
         cur.execute("SELECT * FROM {0}".format(tn))
-        data = list(cur.fetchall()[0])
-        return data
 
-class UpdateDB(object):
+        if len(cur.fetchall()) == 0:
+            return []
+        else:
+            return list(cur.fetchall()[0])
 
+class UpdateDB(PObj):
+
+    key = 'update db'
     conn = lite.connect(DB_PTH)
     cur = conn.cursor()
 
@@ -41,7 +51,9 @@ class UpdateDB(object):
         self.conn.commit()
         return True
 
-class RemoveDB(object):
+class RemoveDB(PObj):
+
+    key = 'delete db'
 
     conn = lite.connect(DB_PTH)
     cur = conn.cursor()
@@ -57,7 +69,9 @@ class RemoveDB(object):
         self.cur.execute("DELETE FROM {0}".format(tn))
         self.conn.commit()
 
-class TimeLog(object):
+class TimeLog(PObj):
+
+    key = 'timelog object'
 
     conn = lite.connect(DB_PTH)
     cur = conn.cursor()
@@ -72,9 +86,5 @@ class TimeLog(object):
         self.conn.commit()
 
 # -------------------------------------------------------------------------------------------------------------
-"""
-
-Created by panda on 3/06/2018 - 3:58 AM
-Pipeline manager - DAMGteam
-
-"""
+# Created by panda on 3/06/2018 - 3:58 AM
+# Pipeline manager - DAMGteam

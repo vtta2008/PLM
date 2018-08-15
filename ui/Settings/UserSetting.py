@@ -65,7 +65,10 @@ class UserSetting(QDialog):
 
     def change_avatar_section(self):
 
-        self.username, token, cookie, remember = self.query.query_table('curUser')
+        try:
+            self.username, token, cookie, remember = self.query.query_table('curUser')
+        except (ValueError, IndexError):
+            self.username = 'DemoUser'
 
         avatar_groupBox, avatar_layout = GroupGrid('Change Avatar')
 
