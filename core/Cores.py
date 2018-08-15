@@ -28,11 +28,9 @@ class AppCores(PObj):
     executing = pyqtSignal(str)
     setSetting = pyqtSignal(str, str, str)
     openBrowser = pyqtSignal(str)
-
-    returnValue = pyqtSignal(str, str)
     addLayout = pyqtSignal(object)
 
-    def __init__(self, parent=None):
+    def __init__(self, settings, parent=None):
 
         PObj.__init__(self)
         super(AppCores, self).__init__(parent)
@@ -45,7 +43,7 @@ class AppCores(PObj):
 
         from ui.Settings.SettingUI import SettingUI
         self.settingUI = SettingUI()
-        self.settings = self.settingUI.settings
+        self.settings = settings
         self.addLayout.emit(self.settingUI)
 
     def import_uiSet1(self):
@@ -56,7 +54,7 @@ class AppCores(PObj):
         self.login = SignIn.SignIn()
         self.signup = SignUp.SignUp()
         self.forgotPW = ForgotPassword.ForgotPassword()
-        self.mainUI = PipelineManager.PipelineManager()
+        self.mainUI = PipelineManager.PipelineManager(self.settings)
         self.sysTray = SysTrayIcon.SysTrayIcon()
 
         self.setupConn1()
@@ -109,10 +107,6 @@ class AppCores(PObj):
 
         return self.set2Layout
 
-    @pyqtSlot(str)
-    def redirectConnection(self, param):
-        print(param)
-
     @property
     def objects(self):
         return self.layouts
@@ -130,11 +124,7 @@ class AppCores(PObj):
         self.mainUI.setSetting.connect(self.setSetting)
         self.mainUI.openBrowser.connect(self.openBrowser)
 
-        self.returnValue.connect(self.mainUI.returnValue)
-
         self.settingUI.showLayout.connect(self.showLayout)
-
-        self.returnValue.connect(self.mainUI.returnValue)
 
     def setupConn2(self):
         for layout in self.set2Layout:

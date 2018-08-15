@@ -10,8 +10,9 @@ from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar,
 
 from appData.scr._pref import SETTING_FILEPTH, __appname__
 from appData.scr._layout import SiPoMin
-from core.Metadata import __organization__
+from core.Metadata import __organization__, __envKey__
 from core.Settings import Settings
+from core.Storage import PObj, realtime_setting
 from ui.uikits.UiPreset import ComboBox, Label
 
 
@@ -23,16 +24,18 @@ class SettingUI(QWidget):
 
     def __init__(self, settings=None, parent=None):
         super(SettingUI, self).__init__(parent)
+
         self._parent = parent
         self.menubar = QMenuBar(self)
-        self.regValue = SettingOutput()
-        self.regInfo = SettingInput()
-        self.createMenus()
+        self.settings = settings
 
-        if settings is None:
-            self.settings = self.setting_mode(self.settingPth(), self.settingFormat(), self._parent)
-        else:
-            self.settings = settings
+        if self.settings is None:
+            self.settings = self.setting_mode(self.filename(), self.fmt(), self._parent)
+
+        self.regValue = SettingOutput(self.settings)
+        self.regInfo = SettingInput(self.settings)
+
+        self.createMenus()
 
         self.layout = QGridLayout()
         self.layout.addWidget(self.menubar, 0, 0, 1, 1)
@@ -46,27 +49,30 @@ class SettingUI(QWidget):
 
         self.setWindowTitle("PLM settings")
         self.applySetting()
+        self.reg = PObj(self)
 
-    def settingPth(self, pth=SETTING_FILEPTH['app']):
+    def filename(self, pth=SETTING_FILEPTH['app']):
+        setting = realtime_setting()
+        setting.setValue('setting path', pth)
         return pth
 
-    def settingFormat(self):
-        return self.regInfo.format()
+    def fmt(self, fmt=QSettings.IniFormat):
+        return fmt
 
-    def settingOrganization(self):
+    def organization(self):
         return self.regInfo.organization()
 
-    def settingApplication(self):
+    def application(self):
         return self.regInfo.application()
 
     def openSettings(self):
-        self.settings = QSettings(self.regInfo.format(), self.regInfo.scope(), self.regInfo.organization(),
-                                  self.regInfo.application())
+        if not self.settings:
+            self.settings = QSettings(self.regInfo.format(), self.regInfo.scope(), self.regInfo.organization(), self.regInfo.application())
         self.setSettingsObject(self.settings)
         self.fallbacksAct.setEnabled(True)
 
     def openIniFile(self):
-        if not os.path.exists(self.settingPth()):
+        if not os.path.exists(self.filename()):
             fileName, _ = QFileDialog.getOpenFileName(self, "Open INI File", '', "INI Files (*.ini *.conf)")
 
             if fileName:
@@ -77,8 +83,7 @@ class SettingUI(QWidget):
             self.fallbacksAct.setEnabled(False)
 
     def openPropertyList(self):
-        fileName, _ = QFileDialog.getOpenFileName(self, "Open Property List",
-                                                  '', "Property List Files (*.plist)")
+        fileName, _ = QFileDialog.getOpenFileName(self, "Open Property List", '', "Property List Files (*.plist)")
 
         if fileName:
             settings = QSettings(fileName, QSettings.NativeFormat)
@@ -163,14 +168,16 @@ class SettingUI(QWidget):
 
     def applySetting(self):
         self.setSizePolicy(SiPoMin, SiPoMin)
-        if os.path.exists(self.settingPth()):
+        if os.path.exists(self.filename()):
             self.openIniFile()
 
 
 class SettingInput(QWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, settings, parent=None):
         super(SettingInput, self).__init__(parent)
+
+        self.settings = settings
 
         self.formatComboBox = ComboBox({'items': ["INI", "Native"]})
         self.scopeComboBox = ComboBox({'items': ["User", "System"]})
@@ -297,7 +304,7 @@ class SettingInput(QWidget):
 
 class SettingOutput(QTreeWidget):
 
-    def __init__(self, parent=None):
+    def __init__(self, settings, parent=None):
         super(SettingOutput, self).__init__(parent)
 
         self.setItemDelegate(VariantDelegate(self))
@@ -306,7 +313,7 @@ class SettingOutput(QTreeWidget):
         self.header().setSectionResizeMode(0, QHeaderView.Stretch)
         self.header().setSectionResizeMode(2, QHeaderView.Stretch)
 
-        self.settings = None
+        self.settings = settings
         self.refreshTimer = QTimer()
         self.refreshTimer.setInterval(2000)
         self.autoRefresh = False
@@ -479,6 +486,7 @@ class SettingOutput(QTreeWidget):
     def moveItemForward(self, parent, oldIndex, newIndex):
         for int in range(oldIndex - newIndex):
             self.deleteItem(parent, newIndex)
+
 
 class VariantDelegate(QItemDelegate):
 
@@ -664,13 +672,6 @@ class VariantDelegate(QItemDelegate):
             return '<Invalid>'
 
         return '<%s>' % value
-
-    def hideEvent(self, event):
-        self.specs.showState.emit(False)
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 
 if __name__ == '__main__':

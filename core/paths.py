@@ -42,8 +42,6 @@ else:
     CONFIG_LOCAL_PLM_DIR = os.path.join(CONFIG_LOCAL_DAMG_DIR, __appname__)          # Plm directory
     CONFIG_DIR = os.path.join(CONFIG_LOCAL_PLM_DIR, config)                          # Config dir to store config info
 
-print(CONFIG_LOCAL_PLM_DIR)
-
 SETTING_DIR = os.path.join(CONFIG_LOCAL_PLM_DIR, settings)                           # Setting dir to store setting info
 LOG_DIR = os.path.join(CONFIG_LOCAL_PLM_DIR, logs)                                   # Log dir to store log info
 CACHE_DIR = os.path.join(CONFIG_LOCAL_PLM_DIR, cache)                                # In case caching something

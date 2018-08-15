@@ -31,8 +31,6 @@ from ui.uikits.TabWidget import TabContent
 class BotTab(QWidget):
 
     key = 'botTab'
-    loadSetting = pyqtSignal(str, str)
-    returnValue = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(BotTab, self).__init__(parent)
@@ -52,8 +50,6 @@ class BotTab(QWidget):
         # self.tabs.addTab(TabContent(), "Quick")
 
         self.layout.addWidget(self.tabs)
-        self.generalSetting.loadSetting.connect(self.loadSetting)
-        self.returnValue.connect(self.generalSetting.return_setting)
         self.applySetting()
 
     def applySetting(self):

@@ -16,6 +16,7 @@ import sys, os, logging, json, enum, pdb, traceback, linecache
 
 # PLM
 from core.paths import LOG_PTH
+from core.Storage import PObj
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -58,7 +59,7 @@ class StyleMessage(object):
 
     def __str__(self):
         s = Encoder().encode(self.kwargs)
-        return 'message: >>> %s >>> %s' % (self.message, s)
+        return 'message: >>> {0} >>> {1}'.format(self.message, s)
 
 class OneLineExceptionFormatter(logging.Formatter):
 
@@ -150,6 +151,8 @@ class File_Handler(logging.FileHandler):
 
 class SetLogger(logging.Logger):
 
+    key = 'PLM super logger'
+
     def __init__(self, parent=None, level="debug", fmt=LOG_FORMAT['fullOpt'], dtfmt=DT_FORMAT['fullOpt'], filemode='a+', filename=LOG_PTH):
         super(SetLogger, self).__init__(parent)
 
@@ -176,6 +179,8 @@ class SetLogger(logging.Logger):
         self.fh = File_Handler(self.fn, self.logLevel, self.fmt, self.dtfmt)
         self.addHandler(self.sh)
         self.addHandler(self.fh)
+
+        self.reg = PObj(self)
 
     @property
     def id(self):

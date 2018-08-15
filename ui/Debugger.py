@@ -21,7 +21,7 @@ from io import StringIO
 from code import InteractiveConsole
 
 # PyQt5
-from PyQt5.QtWidgets import QTextEdit, QApplication, QWidget, QHBoxLayout
+from PyQt5.QtWidgets import QTextEdit, QApplication, QWidget, QHBoxLayout, QGridLayout
 from PyQt5.QtGui import QTextCursor
 from PyQt5.QtCore import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
 
@@ -108,7 +108,8 @@ class pDeBug(pDetector):
         self.detector.seek(0)
 
         s = self.detector.read(4)
-        # assert (len(s) == 3)
+        print(len(s))
+        assert (len(s) == 0)
         self.detector.write(s)
 
     def message_handler(self):
@@ -132,24 +133,20 @@ class pDeBug(pDetector):
         qDebug('message_handler: line: {0}, func: {1}(), file: {2}'.format(line, funct, file))
         qDebug('  %s: %s\n' % (self.mode, self.message))
 
-class pDebugger(QWidget):
+        print(self.mode, self.message)
+
+class pDebugger(QGridLayout):
 
     def __init__(self, parent=None):
         super(pDebugger, self).__init__(parent)
 
         doctest.testmod(verbose=True)
-
-        self.setWindowIcon(IconPth(32, 'DeBug'))
-        self.setWindowTitle('PLM debug')
         self.console = Console()
-
-        self.layout = QHBoxLayout()
         self.buildUI()
-        self.setLayout(self.layout)
 
     def buildUI(self):
         self.textEdit = pDeBug(QtFatalMsg, self.console, None)
-        self.layout.addWidget(self.textEdit)
+        self.addWidget(self.textEdit)
         self.applySetting()
 
     def applySetting(self):

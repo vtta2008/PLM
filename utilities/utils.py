@@ -223,7 +223,6 @@ def get_avatar_icon(name):
     avatars = [a for a in get_file_path(AVATAR_DIR) if '.avatar' in a]
     for a in avatars:
         if name in a:
-            print(a)
             return a
 
 def get_tag_icon(name):

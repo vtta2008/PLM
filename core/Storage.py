@@ -11,10 +11,10 @@ Description:
 """ Import """
 
 # Python
-import os, datetime, time, uuid, json
+import os, datetime, time, uuid, json, inspect
 
 # PyQt5
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot
+from PyQt5.QtCore import QObject, pyqtSignal, pyqtProperty, pyqtSlot, QSettings
 
 # PLM
 from core.Metadata import __envKey__
@@ -32,6 +32,19 @@ if not os.path.exists(metadataPth):
         os.mkdir(cfgPth)
     finally:
         os.mkdir(metadataPth)
+
+
+def realtime_setting():
+    pth = os.path.join(os.getenv(__envKey__), 'cfg', '.tmp', 'realtime_setting.ini')
+    return QSettings(pth, QSettings.IniFormat)
+
+def setting_path():
+    settings = realtime_setting()
+    pth = settings.value('setting path')
+    fmt = settings.format()
+
+    settings = QSettings(pth, fmt)
+    return pth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Original object """
@@ -65,15 +78,19 @@ class Base(QObject):
 
 class PObj(Base):
 
-    Type = 'PObject'
+    Type = 'PLM object'
     _attributes = {}
     imported = pyqtSignal(bool)
 
     def __init__(self, parent=None, **kwargs):
         Base.__init__(self)
-        self._name = self.__class__.__name__
         self._parent = parent
+        if parent is None:
+            self.cls = self.__class__
+        else:
+            self.cls = self._parent.__class__
 
+        self._name = self.cls.__name__
         self.regFile = os.path.join(metadataPth, self.name() + ".{0}".format('mtd'))
         self._register = os.path.exists(self.regFile)
         self.imported.connect(self.set_imported)
@@ -86,6 +103,9 @@ class PObj(Base):
             self._datetime = self.get_datetime()
             self._unix = self.getUnix()
             self.register()
+
+
+
 
         # self.imported.emit(True)
 
@@ -100,11 +120,12 @@ class PObj(Base):
         return self._attributes
 
     def register(self):
-        self._attributes['name'] = self.name()
+        self._attributes['class name'] = self.name()
         self._attributes['type'] = self.type()
         self._attributes['datetime'] = self.datetime()
         self._attributes['unix'] = self.unix()
-        self._attributes['objName'] = self.__class__.key
+        self._attributes['objName'] = self.cls.key
+        self._attributes['attrs'] = [a for a in inspect.getmembers(self.cls, lambda a:not(inspect.isroutine(a))) if not a[0].startswith('__') and a[0].endswith('__')]
 
         with open(self.regFile, 'w') as f:
             json.dump(self._attributes, f, indent=4)
@@ -150,7 +171,6 @@ class PObj(Base):
     @pyqtSlot(bool)
     def set_imported(self, param):
         self._import = param
-        print('--- IMPORT: {0} ---'.format(self.__class__.key))
 
     def attributes(self, *args):
         if not args:
@@ -168,144 +188,6 @@ class PObj(Base):
         if name not in self._attributes:
             self.add_attr(name)
         return self._attributes.get(name)
-
-# -------------------------------------------------------------------------------------------------------------
-""" Ui object type """
-
-class UiObj(Base):
-
-    Type = 'UiObject'
-    _attributes = {}
-    imported = pyqtSignal(bool)
-
-    def __init__(self, parent=None, **kwargs):
-        Base.__init__(self)
-        self._parent = parent
-        self._name = self._parent.__name__
-        self.regFile = os.path.join(metadataPth, self.name() + ".{0}".format('mtd'))
-        self._register = os.path.exists(self.regFile)
-        self.imported.connect(self.set_imported)
-
-        if self._register:
-            with open(self.regFile, 'r') as f:
-                self._attributes = json.load(f)
-        else:
-            self._type = self.type()
-            self._datetime = self.get_datetime()
-            self._unix = self.getUnix()
-            self.register()
-
-        self.imported.emit(True)
-
-    def __str__(self):
-        return json.dumps(self.data, default=lambda obj: obj.data, indent=4)
-
-    def __repr__(self):
-        return json.dumps(self.data, default=lambda obj: obj.data, indent=4)
-
-    def __getattr__(self, name):
-        if name in self._attributes:
-            attribute = self._attributes.get(name)
-            return attribute.value
-
-        elif hasattr(self, name):
-            return getattr(self, name)
-
-        raise AttributeError('no attribute exists {0}'.format(name))
-
-    def __setattr__(self, name, value):
-        if name in self._attributes:
-            super(UiObj, self).__setattr__(name, value)
-            attribute = self._attributes.get(name)
-
-            if value != attribute.value:
-                attribute.value = value
-        else:
-            super(UiObj, self).__setattr__(name, value)
-
-    @property
-    def data(self):
-        return self._attributes
-
-    def register(self):
-
-        self._attributes['name'] = self.name()
-        self._attributes['type'] = self.type()
-        self._attributes['datetime'] = self.datetime()
-        self._attributes['unix'] = self.unix()
-        self._attributes['objName'] = self._parent.key
-
-        if not self._register:
-            with open(self.regFile, 'w') as f:
-                json.dump(self._attributes, f, indent=4)
-            self._register = True
-
-        return self._register
-
-    def deRegister(self):
-        os.remove(self.regFile)
-        self._register = False
-        self._attributes = {}
-
-    def get_datetime(self):
-        datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
-        return datetime_stamp
-
-    def getUnix(self):
-        return str(uuid.uuid4())
-
-    def name(self):
-        return self._name
-
-    def type(self):
-        return self.Type
-
-    def datetime(self):
-        if self._data['datetime'] is None:
-            self._datetime = self.get_datetime()
-        return self._datetime
-
-    def unix(self):
-        if not self._register:
-            _unix = self.getUnix()
-        else:
-            with open(self.regFile, 'r') as f:
-                data = json.load(f)
-            _unix = data['unix']
-        return _unix
-
-    @pyqtSlot(bool)
-    def set_imported(self, param):
-        self._import = param
-        print('--- IMPORT: {0} ---'.format(self.__class__.key))
-
-    def attributes(self, *args):
-        if not args:
-            return self._attributes.values()
-        else:
-            attrs = [x for x in self._attributes.values() if x.name in args]
-            if attrs and len(attrs) == 1:
-                return attrs[0]
-            return attrs
-
-    def list_attrs(self):
-        return self._attributes.keys()
-
-    def get_attr(self, name):
-        if name not in self._attributes:
-            self.add_attr(name)
-        return self._attributes.get(name)
-
-    def rename_attr(self, name, new_name):
-        if name not in self._attributes:
-            raise AttributeError(name)
-
-        if hasattr(self, new_name):
-            raise AttributeError('attribute "%s" already exists.' % new_name)
-
-        attr = self._attributes.pop(name)
-        attr.name = new_name
-        self._attributes.update({attr.name: attr})
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -10,22 +10,22 @@ Description:
 
 # Python
 import sys
+from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout)
 
 # Plt
-from appData import __homepage__, dockB, ST_FORMAT, SETTING_FILEPTH, SiPoMin
+from appData import __homepage__, dockB, SiPoMin
 from core.Loggers import SetLogger
-from core.Settings import Settings
 from ui import TopTab, BotTab, Footer, StatusBar
-from ui.AppToolbar import MainToolBar, DockToolBar
+from ui.AppToolbar import MainToolBar
 from ui.Network import ServerStatus
 from ui.Menus import MainMenuBar, SubMenuBar
 from ui.uikits.GroupBox import AutoSectionLayoutGrp, AutoSectionQMainGrp
 from ui.uikits.UiPreset import AppIcon
-from utilities.utils import get_layout_size
+from utilities.utils import get_layout_size, str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
@@ -40,17 +40,16 @@ class PipelineManager(QMainWindow):
     openBrowser = pyqtSignal(str)
     setSetting = pyqtSignal(str, str, str)
     sysNotify = pyqtSignal(str, str, str, int)
-    loadSetting = pyqtSignal(str, str)
-    returnValue = pyqtSignal(str, str)
 
-    def __init__(self, parent=None):
+    def __init__(self, settings, parent=None):
 
         super(PipelineManager, self).__init__(parent)
         self.logger = SetLogger(self)
         self.url = __homepage__
-
+        self.setObjectName(self.key)
         self.setWindowIcon(AppIcon("Logo"))
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.settings = settings
+
         self.mainWidget = QWidget()
         self.layout = QGridLayout()
         self.mainWidget.setLayout(self.layout)
@@ -108,17 +107,22 @@ class PipelineManager(QMainWindow):
                self.botTabUI.generalSetting.notifiCB]
 
         sections = [self.toolBar.tdToolBar, self.toolBar.compToolBar, self.toolBar.artToolBar, self.toolBar.textureToolBar,
-                    self.toolBar.postToolBar, self.subToolBarSec,
-                    self.mainMenuSec, self.stBar, self.subMenuSec, self.networkStatus, self.notifiSec]
+                    self.toolBar.postToolBar, self.subToolBarSec, self.mainMenuSec, self.stBar, self.subMenuSec,
+                    self.networkStatus, self.notifiSec]
 
         for i in range(len(sections)):
+            key = self.botTabUI.generalSetting.keys[i]
+            grp = self.botTabUI.generalSetting.settingGrp
+
+            self.settings.beginGroup(grp)
+            val = str2bool(self.settings.value(key))
+            self.settings.endGroup()
+
+            cbs[i].setChecked(val)
+            sections[i].setVisible(val)
             cbs[i].stateChanged.connect(sections[i].setVisible)
-            cbs[i].setChecked(not sections[i].isVisible())
+            cbs[i].stateChanged.connect(partial(self.setSetting.emit, key, bool2str(val), grp))
 
-        self.botTabUI.generalSetting.setSetting.connect(self.setSetting)
-        self.returnValue.connect(self.botTabUI.returnValue)
-
-        self.botTabUI.loadSetting.connect(self.loadSetting)
         self.footer.showLayout.connect(self.showLayout)
 
         # Signal
@@ -133,8 +137,8 @@ class PipelineManager(QMainWindow):
 
         self.layout.addWidget(self.footer, 11, 0, 1, 9)
 
-        self.add_dockWidget(DockToolBar.DockToolBar('TEXTURE'))
-        self.add_dockWidget(DockToolBar.DockToolBar('POST'))
+        # self.add_dockWidget(DockToolBar.DockToolBar('TEXTURE'))
+        # self.add_dockWidget(DockToolBar.DockToolBar('POST'))
 
     def add_dockWidget(self, dock, pos=dockB):
         self.dock = dock

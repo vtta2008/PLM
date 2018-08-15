@@ -12,7 +12,7 @@ Description:
 """ Set up environment variable """
 
 # Python
-import os, sys, subprocess, requests, ctypes
+import os, sys, subprocess, requests, ctypes, pprint
 from core.Metadata import __envKey__
 
 key = __envKey__
@@ -26,21 +26,19 @@ else:
     if os.getenv(key) != ROOT:
         os.environ[key] = ROOT
 
-from core.Configurations import Configurations
-
-# cfg = Configurations(key, ROOT)
-
 # PyQt5
 from ui.Web.PLMBrowser import PLMBrowser
 from PyQt5.QtCore import QThreadPool, pyqtSlot, pyqtSignal, QCoreApplication
 from PyQt5.QtWidgets import QApplication
 
 # Plm
+from core.Configurations import Configurations
 from core.Settings import Settings
 from core.Cores import AppCores
 from core.Loggers import SetLogger
 from core.Metadata import __appname__, __version__, __organization__, __website__, __serverCheck__, PLMAPPID
 from core.paths import SETTING_FILEPTH
+from core.Storage import PObj
 
 from appData.scr._format import ST_FORMAT
 from appData.scr._docs import SYSTRAY_UNAVAI
@@ -53,6 +51,26 @@ from ui.uikits.UiPreset import AppIcon
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
+class CoreApplication(PObj):                                                    # Core metadata
+
+    key = 'PLM core application'
+
+    def __init__(self, parent=None):
+        super(CoreApplication, self).__init__(parent)
+
+        self.organization = __organization__
+        self.appName = __appname__
+        self.version = __version__
+        self.website = __website__
+
+        QCoreApplication.setOrganizationName(self.organization)
+        QCoreApplication.setApplicationName(self.appName)
+        QCoreApplication.setOrganizationDomain(self.website)
+        QCoreApplication.setApplicationVersion(self.version)
+
+        self.cfg = True
+
+
 class PLM(QApplication):
 
     key = 'PLM console'
@@ -64,16 +82,7 @@ class PLM(QApplication):
         logger = SetLogger(self)
         self.report = logger.report
 
-        self.organization = __organization__
-        self.appName = __appname__
-        self.version = __version__
-        self.website = __website__
-
-        self.appCore = QCoreApplication
-        self.appCore.setOrganizationName(self.organization)
-        self.appCore.setApplicationName(self.appName)
-        self.appCore.setOrganizationDomain(self.website)
-        self.appCore.setApplicationVersion(self.version)
+        self.appCore = CoreApplication()
 
         self.layouts = dict()
         self.cfg = Configurations(key, ROOT)
@@ -83,7 +92,7 @@ class PLM(QApplication):
         if not self.cfg.cfgs:
             self.report("Configurations has not completed yet!")
         else:
-            self.report("Configurations has completed", **self.cfg.checkList)
+            self.report("Configurations has completed", **self.cfg.checkInfo)
 
         from ui.Settings.SettingUI import SettingUI
         self.settingUI = SettingUI(self.settings)
@@ -91,8 +100,9 @@ class PLM(QApplication):
         self.settingUI.showLayout.connect(self.showLayout)
 
         self.appInfo = self.cfg.appInfo
-        self.cores = AppCores(self)
-        self.cores.addLayout.connect(self.addLayout)# Core metadata
+
+        self.cores = AppCores(self.settings, self)
+        self.cores.addLayout.connect(self.addLayout)
         self.cores.showLayout.connect(self.showLayout)
         self.cores.executing.connect(self.executing)
         self.cores.setSetting.connect(self.setSetting)
@@ -188,13 +198,6 @@ class PLM(QApplication):
         # self.report('signal comes: {0}, {1}, {2}'.format(key, value, grp))
         self.settings.initSetValue(key, value, grp)
 
-    @pyqtSlot(str, str)
-    def loadSetting(self, key=None, grp=None):
-        # self.report('signal comes: {0}, {1}'.format(key, grp))
-        value = self.settings.initValue(key, grp)
-        if key is not None:
-            self.returnValue.emit(key, value)
-
     @pyqtSlot(str)
     def executing(self, cmd):
         # self.report('signal comes: {0}'.format(cmd))
@@ -251,6 +254,9 @@ class PLM(QApplication):
 
     def thread_complete(self):
         print("THREAD COMPLETE")
+
+    def pPrint(self, obj):
+        pprint.pprint(obj)
 
 if __name__ == '__main__':
     PLM()

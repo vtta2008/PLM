@@ -81,6 +81,11 @@ class Configurations(PObj):
             else:
                 self.cfgs = False
 
+        self.folder_settings(self.pthInfo['config'], 'h')
+        pths, fns = self.get_all_paths(self.pthInfo['config'])
+        listObj = pths + fns
+        self.batch_folder_settings(listObj, 'h')
+
     def cfg_platform(self):
         self.checkInfo['platform'] = system()
         if system() == 'Windows':
@@ -102,12 +107,14 @@ class Configurations(PObj):
     def cfg_cfgDir(self, fileName='PLM.cfg', **pthInfo):
 
         pthInfo['root']         = self.rootDir
+
         pthInfo['config']       = self.set_dir('cfg')
         pthInfo['mtd']          = self.set_dir('mtd', 'cfg')
         pthInfo['setting']      = self.set_dir('settings', 'cfg')
         pthInfo['log']          = self.set_dir('logs', 'cfg')
         pthInfo['cache']        = self.set_dir('cache', 'cfg')
         pthInfo['preferences']  = self.set_dir('preferences', 'cfg')
+        pthInfo['tmp']          = self.set_dir('.tmp', 'cfg')
 
         pthInfo['appData']      = self.set_dir('appData')
         pthInfo['documents']    = self.set_dir('docs', 'appData')
@@ -125,6 +132,8 @@ class Configurations(PObj):
 
         pthInfo['plugin']       = self.set_dir('plg_ins')
 
+        pthInfo['preSetup']     = self.set_dir('preSetup')
+
         pthInfo['qss']          = self.set_dir('qss')
 
         pthInfo['tanker']       = self.set_dir('tankers')
@@ -134,7 +143,7 @@ class Configurations(PObj):
         pthInfo['nuke']         = self.set_dir('pNuke', 'tankers')
         pthInfo['zbrush']       = self.set_dir('pZBrush', 'tankers')
 
-        pthInfo['tool'] = self.set_dir('tools')
+        pthInfo['tools'] = self.set_dir('tools')
 
         pthInfo['ui'] = self.set_dir('ui')
 
@@ -181,6 +190,8 @@ class Configurations(PObj):
         if not addPyPath:
             os.environ['PATH'] = os.getenv('PATH') + pyPth
             addPyPath = True
+
+        self.checkInfo['PATH'] = self.get_system_path()
 
         return addPyPath
 
@@ -476,6 +487,31 @@ class Configurations(PObj):
 
     def send_report(self, mess):
         self.cfgReport.emit(mess)
+
+    def folder_settings(self, directory, mode):
+        if system() == "Windows" or system() == "Darwin":
+            if mode == "h":
+                if system() == "Windows":
+                    subprocess.call(["attrib", "+H", directory])
+                elif system() == "Darwin":
+                    subprocess.call(["chflags", "hidden", directory])
+            elif mode == "s":
+                if system() == "Windows":
+                    subprocess.call(["attrib", "-H", directory])
+                elif system() == "Darwin":
+                    subprocess.call(["chflags", "nohidden", directory])
+            else:
+                raise (
+                    "ERROR: (Incorrect Command) Valid commands are 'HIDE' and 'UNHIDE' (both are not case sensitive)")
+        else:
+            raise ("ERROR: (Unknown Operating System) Only Windows and Darwin(Mac) are Supported")
+
+    def batch_folder_settings(self, listObj, mode):
+        for obj in listObj:
+            if os.path.exists(obj):
+                self.folder_settings(obj, mode)
+            else:
+                print('Could not find the specific path: %s' % obj)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 5/08/2018 - 6:20 PM

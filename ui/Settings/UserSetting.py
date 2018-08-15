@@ -28,6 +28,7 @@ from utilities import utils as func
 from utilities import localSQL as usql
 from ui.uikits.UiPreset import IconPth
 from ui.uikits.GroupBox import GroupGrid
+from core.Storage import PObj
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """
@@ -47,6 +48,7 @@ class UserSetting(QDialog):
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
+        self.reg = PObj(self)
 
     def buildUI(self):
 

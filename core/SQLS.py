@@ -83,7 +83,6 @@ class SQLS(PObj):
     def create_table(self, tn = TN[0]):
         cmd = self.generate_command(tn)
         self.cur.execute("CREATE TABLE IF NOT EXISTS `{0}` ({1})".format(tn, cmd))
-        print(" Created table: {0}".format(tn))
         self.conn.commit()
 
 if __name__ == '__main__':

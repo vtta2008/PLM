@@ -151,9 +151,6 @@ class ImageInitUI(ViewerWindow):
         self.dbfile = DB_PTH
         self.dbdir = os.path.dirname(self.dbfile)
 
-        print(self.dbfile)
-        print(self.dbdir)
-
         if not os.path.isfile(self.dbfile):
             self.createDB()
 
@@ -169,8 +166,9 @@ class ImageInitUI(ViewerWindow):
         try:
             open(self.key, 'r')
         except IOError:
-            print('There was an error opening the file')
+            # print('There was an error opening the file')
             # sys.exit(1)
+            pass
 
         if self.key.lower().endswith(self.formats):
             # If inshuft = 0, the image is not in shufti's image database
@@ -238,8 +236,9 @@ class ImageInitUI(ViewerWindow):
             else:
                 self.oldImage()
         else:
-            print("Unsupported file format")
+            # print("Unsupported file format")
             # sys.exit(1)
+            pass
 
     def getValueRotate(self, value):
         self.rotateImg(value)

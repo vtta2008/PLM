@@ -13,6 +13,7 @@ import os
 
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, QSettings
 
+from core.Storage import PObj
 from core.Loggers import SetLogger
 from core.Errors import KeySettingError
 
@@ -30,6 +31,7 @@ class Settings(QSettings):
         self._parent = parent
         self._filename = filename
         self.grpLst = self.childGroups()
+        self.reg = PObj(self)
 
     @property
     def groups(self):
@@ -46,7 +48,7 @@ class Settings(QSettings):
     def initSetValue(self, key=None, value=None, grp=None):
         grpChecked = self.checkGrp(grp)
         self.beginGroup(grpChecked)
-        # self.logger.debug("Saving setting: {0} = {1}".format(key, value))
+
         if key is None or key == "":
             KeySettingError(key)
         else:
