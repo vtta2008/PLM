@@ -8,14 +8,14 @@ include setup.py
 include LICENSE
 include README.rst
 
-include appData/ED.json
-include appData/EnglishDIctionary.json
+include scr/appData/ED.json
+include scr/appData/EnglishDIctionary.json
 
-include appData/docs/ABOUT
-include appData/docs/CODECONDUCT
-include appData/docs/CONTRIBUTING
-include appData/docs/CREDIT
-include appData/docs/LICENCE_MIT
-include appData/docs/QUESTION
-include appData/docs/REFERENCE
+include scr/appData/docs/ABOUT
+include scr/appData/docs/CODECONDUCT
+include scr/appData/docs/CONTRIBUTING
+include scr/appData/docs/CREDIT
+include scr/appData/docs/LICENCE_MIT
+include scr/appData/docs/QUESTION
+include scr/appData/docs/REFERENCE
 
