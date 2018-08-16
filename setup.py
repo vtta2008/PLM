@@ -8,40 +8,41 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
+""" Setup envronment key to be able to work """
 
-# Python
 import os
-import sys
-import setuptools
-
-from scr.core.Metadata import __envKey__
+from core.Metadata import __envKey__
 ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
 try:
     os.getenv(__envKey__)
 except KeyError:
-    os.environ[__envKey__] = ROOT
+    os.environ[__envKey__]      = ROOT
 else:
-    if os.getenv(__envKey__) != ROOT:
-        os.environ[__envKey__] = ROOT
-from scr.core.Configurations import Configurations
-cfg = Configurations(__envKey__, ROOT)
+    if os.getenv(__envKey__)   != ROOT:
+        os.environ[__envKey__]  = ROOT
 
+from core.Configurations import Configurations
+cfg                             = Configurations(__envKey__, ROOT)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Import """
+
+# Python
+
+import sys
+import setuptools
 from cx_Freeze import setup, Executable
 
 # PLM
-from scr.core.Metadata import (__envKey__, __project__, __version__, __plmSlogan__, __website__, __download__,
-                           __author1__, __author2__, __email__, __modules__, __pkgsReq__, __classifiers__,
-                           __packages_dir__, COPYRIGHT)
-
-from scr.core.paths import DESKTOP_DIR
-from scr.appData import LICENCE_MIT, ABOUT
+from appData import (LICENCE_MIT, ABOUT, DESKTOP_DIR, __envKey__, __project__, __version__, __plmSlogan__, __website__,
+                     __download__, __author1__, __author2__, __email__, __modules__, __pkgsReq__, __classifiers__,
+                     __packages_dir__, COPYRIGHT)
 
 print(DESKTOP_DIR)
 
-os.environ['TCL_LIBRARY'] = "C:/ProgramData/Anaconda3/tcl/tcl8.6"
-os.environ['TK_LIBRARY'] = "C:/ProgramData/Anaconda3/tcl/tk8.6"
+os.environ['TCL_LIBRARY']   = "C:/ProgramData/Anaconda3/tcl/tcl8.6"
+os.environ['TK_LIBRARY']    = "C:/ProgramData/Anaconda3/tcl/tk8.6"
 
 application_title = __project__
 main_python_file = "PLM.py"
@@ -56,7 +57,7 @@ if sys.platform == "win32":
 else:
     base = None
 
-from scr.core.Loggers import SetLogger
+from core.Loggers import SetLogger
 logger = SetLogger(__file__)
 report = logger.report
 
@@ -70,25 +71,13 @@ for dir in os.listdir(os.getenv(__envKey__)):
 with open('README.rst', 'r') as f:
     readme = f.read()
 
-includefiles = [
-    ["appData/docs/ABOUT", "appData/docs/CODECONDUCT", "appData/docs/CONTRIBUTING", "appData/docs/CREDIT",
-     "appData/docs/LICENCE_MIT", "appData/docs/QUESTION", "appData/docs/REFERENCE", "appData/ED.json",
-     "preSetup/krita-x64-4.1.1-setup.exe", "preSetup/storyboarder-setup-1.7.1.exe", "qss/darkstyle.qss",
-     "qss/nuke.qss", "qss/stylesheet.qss", "LICENSE", "README.rst"],
-
-    ["build/appData/docs/ABOUT", "build/appData/docs/CODECONDUCT", "build/appData/docs/CONTRIBUTING", "build/appData/docs/CREDIT",
-     "build/appData/docs/LICENCE_MIT", "appData/docs/QUESTION", "build/appData/docs/REFERENCE", "build/appData/ED.json",
-     "build/preSetup/krita-x64-4.1.1-setup.exe", "build/preSetup/storyboarder-setup-1.7.1.exe", "build/qss/darkstyle.qss",
-     "build/qss/nuke.qss", "build/qss/stylesheet.qss", "build/LICENSE", "build/README.rst"],
-]
-
 includes = ['imgs']
 
 excludes = ["tkinter"]
 
 packages = __packages_dir__
 
-build_exe_options = {'includes': includes, 'packages':packages, 'excludes':excludes, 'include_files': includefiles,}
+build_exe_options = {'includes': includes, 'packages':packages, 'excludes':excludes, }      #'include_files': includefiles,}
 
 setup(  name = application_title,
 

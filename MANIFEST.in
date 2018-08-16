@@ -19,3 +19,17 @@ include scr/appData/docs/LICENCE_MIT
 include scr/appData/docs/QUESTION
 include scr/appData/docs/REFERENCE
 
+include scr/preSetup/krita-x64-4.1.1-setup.exe
+include scr/preSetup/storyboarder-setup-1.7.1.exe
+
+include scr/qss/darkstyle.qss
+include scr/qss/nuke.qss
+include scr/qss/stylesheet.qss
+
+include scr/tools
+
+include scr/scripts
+
+include scr/plg_ins
+
+include scr/imgs
