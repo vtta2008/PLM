@@ -39,10 +39,9 @@ LICENSE
 """
 
 import os
+import shutil
 import sys
 import types
-import shutil
-
 
 __version__ = "1.2.0.b2"
 

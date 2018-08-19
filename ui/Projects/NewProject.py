@@ -23,12 +23,12 @@ from PyQt5.QtGui import QIcon, QIntValidator
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QGroupBox, QHBoxLayout, QVBoxLayout, QLineEdit, QInputDialog,
                              QComboBox, QFileDialog, QListWidget, QListWidgetItem, QApplication)
 
+from core.Loggers import SetLogger
 # PLM
 from core.paths import SiPoMin
-from core.Loggers import SetLogger
-from utilities.utils import get_app_icon
-from ui.uikits.UiPreset import Label
 from ui.uikits.Button import Button
+from ui.uikits.UiPreset import Label
+from utilities.utils import get_app_icon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """

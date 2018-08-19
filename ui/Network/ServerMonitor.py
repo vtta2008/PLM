@@ -3,9 +3,9 @@
 # Copyright (c) 2018 Thomas Grime http://www.radiandynamics.com
 
 import sys
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtGui import QIcon
 
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication
 from scr.ui.Network.connector.mainwindow import MainWindow
 from scr.ui.Network.connector.resources import *
 

@@ -8,6 +8,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __future__ import absolute_import
+
 """ Import """
 
 # Python
@@ -41,13 +43,20 @@ class UpdateDB(PObj):
     conn = lite.connect(DB_PTH)
     cur = conn.cursor()
 
-    def __init__(self, tn="curUser", data=list):
+    def __init__(self, tn="curUser", data=[]):
         super(UpdateDB, self).__init__()
         if tn == "curUser":
             self.update_curUser(data)
+        elif tn == 'tmpConfig':
+            self.update_tmpCfg(data[0])
 
     def update_curUser(self, data):
         self.cur.execute("INSERT INTO curUser (username, token, cookie, remember) VALUES (?,?,?,?)", (data[0], data[1], data[2], data[3]))
+        self.conn.commit()
+        return True
+
+    def update_tmpCfg(self, data):
+        self.cur.execute("INSERT INTO curUser (username, token, cookie, remember) VALUES (?,?)", (data[0], data[1]))
         self.conn.commit()
         return True
 

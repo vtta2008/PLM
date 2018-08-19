@@ -16,15 +16,14 @@ from functools import partial
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout)
 
+from core.Loggers import SetLogger
 # Plt
 from core.Metadata import __homepage__
 from core.paths import dockB, SiPoMin
-from core.Loggers import SetLogger
-
 from ui import TopTab, BotTab, Footer, StatusBar
 from ui.AppToolbar import MainToolBar, DockToolBar
-from ui.Network import ServerStatus
 from ui.Menus import MainMenuBar, SubMenuBar
+from ui.Network import ServerStatus
 from ui.uikits.GroupBox import AutoSectionLayoutGrp, AutoSectionQMainGrp
 from ui.uikits.UiPreset import AppIcon
 from utilities.utils import get_layout_size, str2bool, bool2str

@@ -11,13 +11,8 @@ Description:
 """ Import """
 
 # Python
-import sys, os, webbrowser
-import json
-import subprocess
-from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSize, pyqtSignal, QObject
 from PyQt5.QtGui import QTextTableFormat, QTextCharFormat
 from PyQt5.QtWidgets import QTextEdit, QDockWidget
 

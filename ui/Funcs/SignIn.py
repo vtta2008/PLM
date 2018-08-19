@@ -15,19 +15,19 @@ Description:
 
 # Python
 import sys
-import requests
 from functools import partial
 
+import requests
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QCheckBox, QWidget)
 
+from appData import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __serverAutho__
+from ui.uikits.Button import Button
+from ui.uikits.GroupBox import GroupGrid
+from ui.uikits.UiPreset import IconPth, Label, LineEdit
 # Plt
 from utilities import localSQL as usql
-from appData import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __serverAutho__
-from ui.uikits.UiPreset import IconPth, Label, LineEdit
-from ui.uikits.GroupBox import GroupGrid
-from ui.uikits.Button import Button
 from utilities.utils import str2bool
 
 # -------------------------------------------------------------------------------------------------------------

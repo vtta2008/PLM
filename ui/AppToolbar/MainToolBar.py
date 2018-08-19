@@ -12,17 +12,19 @@ Description:
 """ Import """
 
 # Python
-import sys, os, json
+import json
+import os
+import sys
 from functools import partial
 
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
 # PyQt5
 from PyQt5.QtWidgets import QMainWindow, QApplication
-from PyQt5.QtCore import pyqtSignal, pyqtSlot
 
 # Plt
 from core.Loggers import SetLogger
-from core.keys import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_POST
 from core.Metadata import __envKey__
+from core.keys import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_POST
 from core.paths import SiPoMin
 from ui.uikits.Action import Action
 from utilities.utils import str2bool, bool2str

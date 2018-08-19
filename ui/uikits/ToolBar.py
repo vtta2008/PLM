@@ -11,7 +11,8 @@ Description:
 """ Import """
 
 # Python
-import os, json
+import json
+import os
 from functools import partial
 
 # PyQt5
@@ -22,8 +23,6 @@ from PyQt5.QtWidgets import QToolBar
 from core.Metadata import __envKey__
 from core.keys import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_TOOLS, CONFIG_POST
 from ui.uikits.Action import Action
-
-
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar data preset """

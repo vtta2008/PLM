@@ -8,13 +8,12 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-import sys
 import math
 import weakref
+
 from scr.PySide import QtCore, QtGui
 from scr.SceneGraph.core import log
-from scr.SceneGraph import options
-from scr.SceneGraph.ui.commands import SceneNodesCommand, SceneChangedCommand
+from scr.SceneGraph.ui.commands import SceneNodesCommand
 
 
 class NodeWidget(QtGui.QGraphicsObject):

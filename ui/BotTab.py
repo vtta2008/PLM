@@ -17,14 +17,13 @@ import sys
 # PyQt5
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 
+from core.Loggers import SetLogger
 # Plt
 from core.paths import SiPoMin
-from core.Loggers import SetLogger
-from ui.uikits.UiPreset import IconPth
-from ui.GeneralSetting import GeneralSetting
 from ui.Debugger import pDebugger
+from ui.GeneralSetting import GeneralSetting
 from ui.uikits.TabWidget import TabContent
-
+from ui.uikits.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """

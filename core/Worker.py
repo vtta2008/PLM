@@ -11,14 +11,15 @@ Description:
 """ Import """
 
 # Python
-import sys, traceback
+import sys
+import traceback
 
 # PyQt5
-from PyQt5.QtCore       import pyqtSignal, pyqtSlot,QRunnable
-from core.Storage       import PObj
+from PyQt5.QtCore import pyqtSignal, pyqtSlot, QRunnable
+
+from core.Storage import PObj
 
 # PLM
-from ui.uikits.UiPreset import Label
 
 # -------------------------------------------------------------------------------------------------------------
 """ Signals """

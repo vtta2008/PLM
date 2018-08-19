@@ -14,7 +14,9 @@ Description:
 """ Import """
 
 # Python
-import os, sys, glob
+import glob
+import os
+import sys
 from functools import partial
 
 # PyQt5
@@ -24,10 +26,10 @@ from PyQt5.QtGui import QPixmap, QTransform, QIcon
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout,
                              QWidget)
 
-# Plt
-
-from utilities import utils as func
 from ui.uikits.UiPreset import IconPth
+from utilities import utils as func
+
+# Plt
 
 # -------------------------------------------------------------------------------------------------------------
 """ Graphic View class """

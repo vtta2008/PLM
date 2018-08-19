@@ -9,8 +9,8 @@ Description:
 
 """
 """ Import """
-import sys
 import math
+import sys
 
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QWidget)
@@ -18,6 +18,7 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QWid
 from core.paths import SiPoMin
 from ui.uikits.Button import ToolBtn
 from ui.uikits.UiPreset import IconPth
+
 
 class Calculator(QWidget):
 

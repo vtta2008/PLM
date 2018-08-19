@@ -2,12 +2,13 @@
 
 # Copyright (c) 2018 Thomas Grime http://www.radiandynamics.com
 
-from PyQt5.QtWidgets import QMainWindow
-from PyQt5.QtWidgets import QAction
 from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets import QMainWindow
 
-from ui.Network.connector.server import Server
 from ui.Network.connector.resources import resource_path
+from ui.Network.connector.server import Server
+
 
 class MainWindow(QMainWindow):
     def __init__(self):

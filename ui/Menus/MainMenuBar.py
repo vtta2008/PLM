@@ -11,18 +11,21 @@ Description:
 """ Import """
 
 # Python
-import os, sys, json
+import json
+import os
+import sys
 from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
+from core.Loggers import SetLogger
 # Plm
 from core.Metadata import __plmWiki__, __envKey__
 from core.paths import SiPoMin
-from core.Loggers import SetLogger
 from ui.uikits.Action import Action
+
 
 class MainMenuBar(QMainWindow):
 

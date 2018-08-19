@@ -20,12 +20,13 @@ from functools import partial
 from PyQt5.QtCore import Qt, QDir, QTimer, pyqtSignal
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox,
-                             QHBoxLayout, QLabel, QSizePolicy,)
+                             QHBoxLayout, QLabel, QSizePolicy, )
 
+from core.paths import keepARM
+from ui.uikits.Button import Button
 # PLM
 from ui.uikits.UiPreset import IconPth
-from ui.uikits.Button import Button
-from core.paths import keepARM
+
 
 class Screenshot(QWidget):
 

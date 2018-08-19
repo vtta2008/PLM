@@ -11,7 +11,6 @@ Description:
 """ Import """
 
 # Python
-from functools import partial
 
 # PyQt5
 from PyQt5.QtWidgets import QAction

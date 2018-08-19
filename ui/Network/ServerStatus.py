@@ -16,13 +16,13 @@ Description:
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QGridLayout, QLabel
 from PyQt5.QtNetwork import QHostAddress
+from PyQt5.QtWidgets import QGridLayout, QLabel
 
+from appData.ServerCfg import ServerCfg
 # Plt
 from core.Loggers import SetLogger
 from core.Metadata import __serverUrl__
-from appData.ServerCfg import ServerCfg
 from ui.uikits.UiPreset import Label
 from utilities.utils import get_app_icon
 

@@ -20,12 +20,12 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 # Plt
 from core.Loggers import SetLogger
 from core.paths import ANTIALIAS, UPDATE_FULLVIEW, KEY_DEL
-from utilities.utils import getUnix
-from ui.NodeGraph.Node import Node, Edge
-from ui.NodeGraph.View import View
-from ui.NodeGraph.Scene import Scene
 from ui.NodeGraph.MenuBar import MenuBar
+from ui.NodeGraph.Node import Node, Edge
+from ui.NodeGraph.Scene import Scene
+from ui.NodeGraph.View import View
 from ui.uikits.UiPreset import IconPth
+from utilities.utils import getUnix
 
 # -------------------------------------------------------------------------------------------------------------
 """ NoderViewer """

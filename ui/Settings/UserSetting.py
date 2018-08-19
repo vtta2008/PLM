@@ -26,9 +26,9 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QPushBu
 from appData.documents._docs import PW_BLANK, PW_UNMATCH
 from core.Metadata import __envKey__
 from core.Storage import PObj
-from utilities import utils as func, localSQL as usql
-from ui.uikits.UiPreset import IconPth
 from ui.uikits.GroupBox import GroupGrid
+from ui.uikits.UiPreset import IconPth
+from utilities import utils as func, localSQL as usql
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """

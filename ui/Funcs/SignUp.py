@@ -12,7 +12,8 @@ Description:
 """ Import """
 
 # Python
-import os, sys
+import os
+import sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
@@ -23,10 +24,11 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QFileDialog
 from appData import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_REQUIRED, QUESTIONS
 from core.Loggers import SetLogger
 from core.Storage import PObj
-from ui.uikits.UiPreset import IconPth, Label, LineEdit, ComboBox, CheckBox
 from ui.uikits.Button import Button
 from ui.uikits.GroupBox import GroupGrid
-from utilities.utils import check_blank, check_match, get_avatar_icon, getToken, getUnix, getTime, getDate, get_local_pc_info, get_user_location
+from ui.uikits.UiPreset import IconPth, Label, LineEdit, ComboBox, CheckBox
+from utilities.utils import check_blank, check_match, get_avatar_icon, getToken, getUnix, getTime, getDate, \
+    get_local_pc_info, get_user_location
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign up ui """

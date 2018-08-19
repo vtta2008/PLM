@@ -2,17 +2,17 @@
 
 # Copyright (c) 2018 Thomas Grime http://www.radiandynamics.com
 
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QVBoxLayout
-from PyQt5.QtWidgets import QLineEdit
-from PyQt5.QtWidgets import QTextEdit
-from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtGui import QTextCursor
-from PyQt5.QtNetwork import QTcpSocket
-from PyQt5.QtNetwork import QTcpServer
 from PyQt5.QtNetwork import QHostAddress
+from PyQt5.QtNetwork import QTcpServer
+from PyQt5.QtWidgets import QLineEdit
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QTextEdit
+from PyQt5.QtWidgets import QVBoxLayout
+from PyQt5.QtWidgets import QWidget
 
 from appData import __serverUrl__
+
 
 class Server(QWidget):
     def __init__(self):

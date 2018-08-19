@@ -2,8 +2,9 @@
 
 # Copyright (c) 2018 Thomas Grime http://www.radiandynamics.com
 
-import sys
 import os
+import sys
+
 
 def resource_path(relative_path):
     try:

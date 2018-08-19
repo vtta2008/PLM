@@ -11,7 +11,8 @@ Description:
 """ Import """
 
 # Python
-import os, sys
+import os
+import sys
 
 # PyQt5
 from PyQt5.QtCore import (QByteArray, QDate, QDateTime, QEvent, QPoint, QRect, QRegExp, QSettings, QSize, Qt, QTime,
@@ -22,11 +23,11 @@ from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar,
                              QStyleOptionViewItem,
                              QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
 
-# PLM
-from core.paths import SETTING_FILEPTH, SiPoMin
 from core.Metadata import __organization__, __appname__
 from core.Settings import Settings
 from core.Storage import PObj
+# PLM
+from core.paths import SETTING_FILEPTH, SiPoMin
 from ui.uikits.UiPreset import ComboBox, Label
 
 # -------------------------------------------------------------------------------------------------------------

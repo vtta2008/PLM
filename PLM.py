@@ -9,11 +9,13 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __future__ import absolute_import
+
 """ Set up environment variable """
 
-import os
+import os, sys
 from core.Metadata import __envKey__
-ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
+ROOT = os.path.abspath(os.getcwd())
 
 try:
     os.getenv(__envKey__)
@@ -24,6 +26,10 @@ else:
     if os.getenv(__envKey__)   != ROOT:
         os.environ[__envKey__]  = ROOT
     cfgable                     = True
+
+if not cfgable:
+    print("CONFIGERROR: environment variable not set !!!")
+    sys.exit()
 
 from core.Configurations import Configurations
 CFG = Configurations(__envKey__, os.path.join(ROOT, 'scr'))
@@ -52,10 +58,11 @@ from core.Worker        import Worker
 
 from appData.documents._docs  import SYSTRAY_UNAVAI
 
-
 from utilities.localSQL import QuerryDB
-from utilities.utils    import str2bool, clean_file_ext
+from utilities.utils    import str2bool, clean_file_ext, get_file_path
 
+pths = get_file_path(os.path.join(os.getcwd(), 'tankers'))
+pprint.pprint(pths)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """

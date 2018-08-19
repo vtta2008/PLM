@@ -20,9 +20,9 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QWidget, QCheckBox, QPushButton, QGridLayout, QGroupBox
 
+from core.Loggers import SetLogger
 # Plt
 from utilities.utils import str2bool, bool2str, get_app_icon
-from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """

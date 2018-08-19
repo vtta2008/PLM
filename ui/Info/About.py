@@ -16,13 +16,12 @@ from functools import partial
 
 # PtQt5
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication, QGridLayout, QScrollArea, QWidget
 
 # Plm
 from appData import ABOUT
-from ui.uikits.UiPreset import Label, IconPth
 from ui.uikits.Button import Button
+from ui.uikits.UiPreset import Label, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ About Layout """

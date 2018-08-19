@@ -12,13 +12,13 @@ Description:
 """ Import """
 
 # Python
-import sys, random
-from functools import partial
+import random
+import sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt, QPointF, QTimer, QSize, QRectF, QSizeF
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox
 from PyQt5.QtGui import QRadialGradient, QColor, QPainter, QBrush, QPen
+from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox
 
 # PLM
 

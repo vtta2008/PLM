@@ -19,9 +19,10 @@ from difflib import get_close_matches
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QGridLayout, QLineEdit, QTextEdit, QApplication, QWidget)
 
+from ui.uikits.Button import Button
 # PLM
 from ui.uikits.UiPreset import Label, IconPth
-from ui.uikits.Button import Button
+
 
 class EnglishDictionary(QWidget):
 

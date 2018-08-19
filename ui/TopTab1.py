@@ -12,18 +12,18 @@ Description:
 """ Import """
 
 # Python
-import sys, os, json
+import json
+import os
+import sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLineEdit, QPushButton
 
+from core.Metadata import __envKey__
 # Plt
 from core.keys import CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE
-from core.Metadata import __envKey__
-
 from core.paths import BTNICONSIZE, ICONBTNSIZE, FIX_KEYS
-
 from ui.uikits.Button import Button
 from ui.uikits.GroupBox import GroupBox
 

@@ -21,7 +21,6 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit, 
                              QSpinBox, QStackedWidget, QVBoxLayout, QWidget)
 
 # PLM
-from ui.Menus.config import config_rc
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """

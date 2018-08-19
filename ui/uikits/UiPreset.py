@@ -12,14 +12,14 @@ Description:
 
 # Python
 
-# PyQt5
-from PyQt5.QtWidgets import QLabel, QLineEdit, QComboBox, QCheckBox
 from PyQt5.QtCore import QSize
 from PyQt5.QtGui import QFont, QIcon, QPixmap, QImage
+# PyQt5
+from PyQt5.QtWidgets import QLabel, QLineEdit, QComboBox, QCheckBox
 
+from appData import center, left, right, SiPoMin, SiPoPre, SiPoMax, SiPoExp, SiPoIgn
 # PLM
 from utilities.utils import get_app_icon, get_logo_icon, get_avatar_icon
-from appData import center, left, right, SiPoMin, SiPoPre, SiPoMax, SiPoExp, SiPoIgn
 
 PRS = dict( password = QLineEdit.Password,  center = center , left  = left   , right  = right, spmin = SiPoMin,
             spmax    = SiPoMax           ,  sppre  = SiPoPre, spexp = SiPoExp, spign  = SiPoIgn,  )

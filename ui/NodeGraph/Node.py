@@ -11,18 +11,18 @@ Description:
 """ Import """
 import sys
 
+from PyQt5.QtCore import QPointF, QRect, QRectF, pyqtSignal
+from PyQt5.QtGui import QPen, QBrush, QPainterPath, QFontMetrics, QTransform, QFont, QColor
 # PyQt5
 from PyQt5.QtWidgets import QGraphicsObject, QApplication, QGraphicsPathItem, QGraphicsItem, QGraphicsScene
-from PyQt5.QtGui import QPen, QBrush, QPainterPath, QFontMetrics, QTransform, QFont, QColor
-from PyQt5.QtCore import QPointF, QRect, QRectF, pyqtSignal
 
+from core.Loggers import SetLogger
 # Plt
 from core.paths import (DMK, BRUSH_NONE, COLOR_LIBS, PATTERN_SOLID, ITEMPOSCHANGE, LINE_SOLID, ROUND_CAP, ROUND_JOIN,
                         MOUSE_LEFT, POSX, POSY, NODE_WIDTH, ATTR_HEIGHT, ATTR_ROUND, ATTR_REC, NODE_BORDER, NODE_ROUND,
                         NODE_STAMP, NODE_REC, MOVEABLE, SELECTABLE, NODE_HEADER_HEIGHT, NODE_FOOTER_HEIGHT, POS_CHANGE,
                         UPDATE_BOUNDINGVIEW, center, MARGIN)
 from utilities.utils import get_pointer_bounding_box, convert_to_QColor, getUnix
-from core.Loggers import SetLogger
 
 # -------------------------------------------------------------------------------------------------------------
 """ pEdge """

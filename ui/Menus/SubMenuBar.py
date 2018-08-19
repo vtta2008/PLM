@@ -12,19 +12,21 @@ Description:
 """ Import """
 
 # Python
-import sys, os, json
+import json
+import os
+import sys
 from functools import partial
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
+from core.Loggers import SetLogger
 # PLM
 from core.Metadata import __plmWiki__, __envKey__
 from core.paths import CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR, SiPoMin
-from core.Loggers import SetLogger
-from utilities.localSQL import TimeLog
 from ui.uikits.Action import Action
+from utilities.localSQL import TimeLog
 from utilities.utils import get_layout_size
 
 # -------------------------------------------------------------------------------------------------------------

@@ -20,8 +20,8 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 
 # Plm
 from core.Metadata import VERSION
-from ui.uikits.UiPreset import Label, IconPth
 from ui.uikits.Button import Button
+from ui.uikits.UiPreset import Label, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Contributing Layout """

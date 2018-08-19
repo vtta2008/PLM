@@ -20,8 +20,9 @@ from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFileDi
                              QHeaderView, QProgressDialog, QTableWidget, QTableWidgetItem, )
 
 from core.paths import SiPoExp, SiPoPre
-from ui.uikits.UiPreset import Label, IconPth
 from ui.uikits.Button import Button
+from ui.uikits.UiPreset import Label, IconPth
+
 
 class FindFiles(QWidget):
 

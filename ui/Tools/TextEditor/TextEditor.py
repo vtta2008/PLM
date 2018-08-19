@@ -16,7 +16,8 @@ import sys
 
 # PyQt5
 from PyQt5.QtCore import QFile, QFileInfo, Qt, QTextCodec, pyqtSignal
-from PyQt5.QtGui import (QFont, QFontDatabase, QFontInfo, QIcon, QKeySequence, QPixmap, QTextBlockFormat, QTextCharFormat,
+from PyQt5.QtGui import (QFont, QFontDatabase, QFontInfo, QIcon, QKeySequence, QPixmap, QTextBlockFormat,
+                         QTextCharFormat,
                          QTextCursor, QTextDocumentWriter, QTextListFormat)
 from PyQt5.QtPrintSupport import QPrintDialog, QPrinter, QPrintPreviewDialog
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog, QComboBox, QFileDialog, QFontComboBox,

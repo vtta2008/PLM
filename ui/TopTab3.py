@@ -15,14 +15,14 @@ Description:
 import sys
 from functools import partial
 
+from PyQt5.QtCore import pyqtSignal, pyqtSlot
 # PyQt5
 from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtCore import pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGroupBox, QLabel)
 
+from ui.uikits.Button import Button
 # Plt
 from ui.uikits.GroupBox import GroupBox
-from ui.uikits.Button import Button
 from utilities import localSQL as usql
 from utilities.utils import get_avatar_icon
 

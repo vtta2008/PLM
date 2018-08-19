@@ -21,6 +21,7 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QDialogButtonBox, QFormLayou
 # Plm
 from ui.uikits.UiPreset import Label
 
+
 class ForgotPassword(QWidget):
 
     key = 'forgotPW'

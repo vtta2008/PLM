@@ -10,15 +10,17 @@ Description:
 """ Import """
 
 # Python
-import os, sys, subprocess
+import os
+import subprocess
+import sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLineEdit, QTextEdit, QTextBrowser, QLabel
 
+from core.Loggers import SetLogger
 # Plt
 from core.paths import SiPoMin, SiPoExp
-from core.Loggers import SetLogger
 from ui.uikits.Button import Button
 
 # -------------------------------------------------------------------------------------------------------------

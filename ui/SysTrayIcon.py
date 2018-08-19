@@ -12,7 +12,9 @@ Description:
 """ Import """
 
 # Python
-import sys, os, json
+import json
+import os
+import sys
 from functools import partial
 
 # PyQt5
@@ -20,14 +22,15 @@ from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
 from PyQt5.QtGui import QWheelEvent
 from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QApplication
 
+from core.Loggers import SetLogger
 # PLM
 from core.Metadata import __plmSlogan__, __appname__, __envKey__
-from ui.uikits.UiPreset import AppIcon
-from ui.uikits.Action import Action
-from utilities.localSQL import QuerryDB
-from core.Loggers import SetLogger
-from core.keys import CONFIG_SYSTRAY
 from core.Storage import PObj
+from core.keys import CONFIG_SYSTRAY
+from ui.uikits.Action import Action
+from ui.uikits.UiPreset import AppIcon
+from utilities.localSQL import QuerryDB
+
 
 # -------------------------------------------------------------------------------------------------------------
 

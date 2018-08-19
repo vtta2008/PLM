@@ -8,9 +8,12 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __future__ import absolute_import
+
 """ Setup envronment key to be able to work """
 
 import os
+import setuptools
 from core.Metadata import __envKey__
 ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
@@ -31,12 +34,11 @@ cfg                             = Configurations(__envKey__, ROOT)
 # Python
 
 import sys
-import setuptools
 from cx_Freeze import setup, Executable
 
 # PLM
-from appData import (LICENCE_MIT, ABOUT, DESKTOP_DIR, __envKey__, __project__, __version__, __plmSlogan__, __website__,
-                     __download__, __author1__, __author2__, __email__, __modules__, __pkgsReq__, __classifiers__,
+from appData import (LICENCE_MIT, DESKTOP_DIR, __envKey__, __project__, __version__, __plmSlogan__, __website__,
+                     __download__, __author1__, __author2__, __email__, __pkgsReq__, __classifiers__, __appname__,
                      __packages_dir__, COPYRIGHT)
 
 print(DESKTOP_DIR)
@@ -71,27 +73,25 @@ for dir in os.listdir(os.getenv(__envKey__)):
 with open('README.rst', 'r') as f:
     readme = f.read()
 
-includes = ['imgs']
-
-excludes = ["tkinter"]
-
 packages = __packages_dir__
 
-build_exe_options = {'includes': includes, 'packages':packages, 'excludes':excludes, }      #'include_files': includefiles,}
+build_exe_options = {'packages':packages}      #'include_files': includefiles,}
 
-setup(  name = application_title,
+setup(  name = __appname__,
 
         version          = __version__     , packages          = setuptools.find_packages(),
-        url              = __website__     , download_url      = __download__    , license          = LICENCE_MIT,
-        author           = __author1__ + " & " + __author2__                     , author_email     = __email__  ,
-        maintainer       = __author1__     , maintainer_email  = __author1__     , description      = ABOUT      ,
-        long_description = readme          , py_modules        = __modules__     , install_requires = __pkgsReq__,
-        classifiers      = __classifiers__ , package_dir       = {"": "src"}     , zip_safe         = False      ,
+        url              = __website__     , download_url      = __download__    , license          = LICENCE_MIT      ,
+        author           = __author1__ + " & " + __author2__                     , author_email     = __email__        ,
+        maintainer       = __author1__     , maintainer_email  = __author1__     , description      = application_title,
+        long_description = readme          , install_requires = __pkgsReq__,
+        classifiers      = __classifiers__ ,
 
-        keywords                = __plmSlogan__                     ,
-        options                 = {"build_exe" : build_exe_options} ,
+        package_data     = {'imgs': [ '{}/*'.format(item) for item in os.listdir('imgs') if os.path.isdir(os.path.join('imgs', item))]},
 
-        executables = [Executable(main_python_file, base=base, icon=["scr/imgs/logo/Plm/icons/32x32.png"], copyright=COPYRIGHT)],
+        keywords                = __plmSlogan__                                                                        ,
+        options                 = {"build_exe" : build_exe_options, 'bdist_msi': {}}                                   ,
+        zip_safe=True,
+        executables = [Executable(main_python_file, base=base, copyright=COPYRIGHT,icon = 'logo.ico',), ]
 )
 
 # -------------------------------------------------------------------------------------------------------------
