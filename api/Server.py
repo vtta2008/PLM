@@ -15,14 +15,6 @@ import os
 from __rc__.element import DObj, DDict
 from __rc__.paths import Paths
 
-import docker
-class User(DObj):
-
-    def __init__(self):
-        super(User, self).__init__()
-
-
-
 class Server(DObj):
 
     _id         = 'objServer'
