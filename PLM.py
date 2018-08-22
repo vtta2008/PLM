@@ -13,26 +13,12 @@ from __future__ import absolute_import
 
 """ Set up environment variable """
 
-import os, sys
-from core.Metadata import __envKey__
+import os
+
 ROOT = os.path.abspath(os.getcwd())
 
-try:
-    os.getenv(__envKey__)
-except KeyError:
-    cfgable                     = False
-    os.environ[__envKey__]      = ROOT
-else:
-    if os.getenv(__envKey__)   != ROOT:
-        os.environ[__envKey__]  = ROOT
-    cfgable                     = True
-
-if not cfgable:
-    print("CONFIGERROR: environment variable not set !!!")
-    sys.exit()
-
-from core.Configurations import Configurations
-CFG = Configurations(__envKey__, os.path.join(ROOT, 'scr'))
+from docker.Configurations import ConfigSystem
+CFG = ConfigSystem(ROOT, 'alpha')
 
 # -------------------------------------------------------------------------------------------------------------
 """ import """
@@ -56,7 +42,7 @@ from core.Metadata      import __serverCheck__, PLMAPPID
 from core.paths         import SETTING_FILEPTH, ST_FORMAT
 from core.Worker        import Worker
 
-from appData.documents._docs  import SYSTRAY_UNAVAI
+from docker.data._docs import SYSTRAY_UNAVAI
 
 from utilities.localSQL import QuerryDB
 from utilities.utils    import str2bool, clean_file_ext, get_file_path

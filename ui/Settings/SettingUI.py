@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar,
 
 from core.Metadata import __organization__, __appname__
 from core.Settings import Settings
-from core.Storage import PObj
+from docker.Storage import PObj
 # PLM
 from core.paths import SETTING_FILEPTH, SiPoMin
 from ui.uikits.UiPreset import ComboBox, Label

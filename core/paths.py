@@ -20,9 +20,6 @@ from PyQt5.QtCore import Qt, QSettings, QDateTime, QSize
 from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy
 
-# PLM
-from core.Metadata import __appname__, __groupname__, __envKey__
-
 # -------------------------------------------------------------------------------------------------------------
 """ Directory local system """
 
@@ -126,7 +123,7 @@ PLM_LOGO_32                 = os.path.join(PLM_LOGO_DIR, 'logo32')
 # -------------------------------------------------------------------------------------------------------------
 """ Documentations """
 
-from appData.documents._docs import PLM_ABOUT
+from docker.data._docs import PLM_ABOUT
 
 DOC_DIR                     = os.path.join(APP_DATA_DIR, 'docs')
 README                      = PLM_ABOUT

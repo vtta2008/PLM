@@ -25,7 +25,7 @@ else:
     if os.getenv(__envKey__)   != ROOT:
         os.environ[__envKey__]  = ROOT
 
-from core.Configurations import Configurations
+from docker.Configurations import Configurations
 cfg                             = Configurations(__envKey__, ROOT)
 
 # -------------------------------------------------------------------------------------------------------------

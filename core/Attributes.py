@@ -24,30 +24,30 @@ class Attribute(object):
     def __init__(self, name, value, dagnode=None, user=True, **kwargs):
 
         # private attributes
-        self._dag = weakref.ref(dagnode) if dagnode else None
-        self._type = kwargs.get('attr_type', None)
-        self._edges = []
+        self._dag               = weakref.ref(dagnode) if dagnode else None
+        self._type              = kwargs.get('attr_type', None)
+        self._edges             = []
 
-        self.name = name
-        self.label = kwargs.get('label', "")
-        self.default_value = kwargs.get('default_value', "")
-        self.value = value
+        self.name               = name
+        self.label              = kwargs.get('label', "")
+        self.default_value      = kwargs.get('default_value', "")
+        self.value              = value
 
-        self.doctstring = kwargs.get('doctstring', '')
-        self.desc = kwargs.get('desc', '')
+        self.doctstring         = kwargs.get('doctstring', '')
+        self.desc               = kwargs.get('desc', '')
 
         # globals
-        self.user = user
-        self.private = kwargs.get('private', False)  # hidden
-        self.hidden = kwargs.get('hidden', False)
-        self.connectable = kwargs.get('connectable', False)
-        self.locked = kwargs.get('locked', False)
-        self.required = kwargs.get('required', False)
+        self.user               = user
+        self.private            = kwargs.get('private', False)  # hidden
+        self.hidden             = kwargs.get('hidden', False)
+        self.connectable        = kwargs.get('connectable', False)
+        self.locked             = kwargs.get('locked', False)
+        self.required           = kwargs.get('required', False)
 
         # connection
-        self.connection_type = kwargs.get('connection_type', 'input')
-        self.data_type = kwargs.get('data_type', None)
-        self.max_connections = kwargs.get('max_connections', 1)  # 0 = infinite
+        self.connection_type    = kwargs.get('connection_type', 'input')
+        self.data_type          = kwargs.get('data_type', None)
+        self.max_connections    = kwargs.get('max_connections', 1)  # 0 = infinite
 
         if self.connectable:
             pass

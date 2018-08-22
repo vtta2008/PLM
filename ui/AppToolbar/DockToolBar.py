@@ -15,7 +15,7 @@ from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import QDockWidget, QGridLayout
 
 # PLM
-from core.Storage import PObj
+from docker.Storage import PObj
 from core.paths import SiPoExp
 from ui.uikits.ToolBar import ToolBar
 

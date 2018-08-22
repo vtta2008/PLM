@@ -12,7 +12,7 @@ import contextlib
 
 __all__ = ["Signal", "Signals", "NotRregisteredSignal", "InvalidSlot"]
 
-from core.Storage import PObj
+from docker.Storage import PObj
 
 class InvalidSlot(Exception):
     """Slot is not longer valid"""
@@ -301,42 +301,42 @@ class Signals(PObj):
     def __delitem__(self, signal):
         del self._signal_registry[signal]
 
-if __name__ == "__main__":
-    def greet1(name):
-        print("Hello,", name)
-    def greet2(name):
-        print("Hi,", name)
-    connection = Signals()
-    connection.on('Greet', greet1)
-    slot = connection.on('Greet', greet2)
-    connection.emit('Greet', "John")
-    connection.disconnect_from("Greet", slot)
-    connection.emit('Greet', "Albert")
-    print("------------------")
-    connection.clear('Greet')
-    print("Greet has %d slots" % connection.signal("Greet").number_of_slots)
-    slot = connection.on('Greet', greet2)
-    # It's possible to disconnect directly without indicating the name of signal.
-    connection.disconnect(slot)
-    print("No output because there is no handler..")
-    connection.emit('Greet', "Albert")
-    print("------------------")
-    connection2 = Signals()
-    @connection2.on('foo')
-    def my_callback1():
-        print("called my_callback1()")
-    @connection2.on('foo', max_calls=4)
-    def my_callback2():
-        print("called my_callback2()")
-    with connection2.emitting('foo'):
-        print("inside first with statement")
-    print("------------------")
-    def exit_func():
-        print("exit of context manager")
-    connection2.on('bar', exit_func)
-    # 'foo' emitted on enter, 'bar' emitted on exit
-    with connection2.emitting(enter='foo', exit='bar'):
-        print("inside second with statement")
+# if __mtdname__ == "__main__":
+#     def greet1(name):
+#         print("Hello,", name)
+#     def greet2(name):
+#         print("Hi,", name)
+#     connection = Signals()
+#     connection.on('Greet', greet1)
+#     slot = connection.on('Greet', greet2)
+#     connection.emit('Greet', "John")
+#     connection.disconnect_from("Greet", slot)
+#     connection.emit('Greet', "Albert")
+#     print("------------------")
+#     connection.clear('Greet')
+#     print("Greet has %d slots" % connection.signal("Greet").number_of_slots)
+#     slot = connection.on('Greet', greet2)
+#     # It's possible to disconnect directly without indicating the name of signal.
+#     connection.disconnect(slot)
+#     print("No output because there is no handler..")
+#     connection.emit('Greet', "Albert")
+#     print("------------------")
+#     connection2 = Signals()
+#     @connection2.on('foo')
+#     def my_callback1():
+#         print("called my_callback1()")
+#     @connection2.on('foo', max_calls=4)
+#     def my_callback2():
+#         print("called my_callback2()")
+#     with connection2.emitting('foo'):
+#         print("inside first with statement")
+#     print("------------------")
+#     def exit_func():
+#         print("exit of context manager")
+#     connection2.on('bar', exit_func)
+#     # 'foo' emitted on enter, 'bar' emitted on exit
+#     with connection2.emitting(enter='foo', exit='bar'):
+#         print("inside second with statement")
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 10/07/2018 - 3:07 AM

@@ -18,7 +18,7 @@ from PyQt5.QtCore import pyqtSignal, QCoreApplication
 # PLM
 from core.Loggers import SetLogger
 from core.Metadata import __organization__, __appname__, __version__, __website__
-from core.Storage import PObj
+from docker.Storage import PObj
 
 
 class CoreApplication(PObj):                                                    # Core metadata

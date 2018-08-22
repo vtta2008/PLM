@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QApplication
 from core.Loggers import SetLogger
 # PLM
 from core.Metadata import __plmSlogan__, __appname__, __envKey__
-from core.Storage import PObj
+from docker.Storage import PObj
 from core.keys import CONFIG_SYSTRAY
 from ui.uikits.Action import Action
 from ui.uikits.UiPreset import AppIcon

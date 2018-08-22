@@ -23,9 +23,9 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QPushBu
                              QApplication, QLabel)
 
 # Plt
-from appData.documents._docs import PW_BLANK, PW_UNMATCH
+from docker.data._docs import PW_BLANK, PW_UNMATCH
 from core.Metadata import __envKey__
-from core.Storage import PObj
+from docker.Storage import PObj
 from ui.uikits.GroupBox import GroupGrid
 from ui.uikits.UiPreset import IconPth
 from utilities import utils as func, localSQL as usql

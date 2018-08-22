@@ -17,7 +17,7 @@ import traceback
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, QRunnable
 
-from core.Storage import PObj
+from docker.Storage import PObj
 
 # PLM
 

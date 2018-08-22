@@ -7,17 +7,155 @@ Author: Do Trinh/Jimmy - 3D artist.
 Description:
 
 """
-from core import Commands
-from core.Loggers import SetLogger
 # -------------------------------------------------------------------------------------------------------------
-from core.Storage import PObj
+from __future__ import absolute_import
 
-logger = SetLogger()
-log = logger.report
+import re, sys, json
 
-class SceneEventHandler(PObj):
+from PyQt5.QtWidgets import QUndoCommand
+
+from __rc__.element import DObj
+from core.Loggers import Loggers
+logger = Loggers
+report = logger.report
+
+class EventHandler(DObj):
+
+    def __init__(self, sender):
+
+        self.callbacks = []
+        self.sender = sender
+        self.blocked = False
+
+    def __call__(self, *args, **kwargs):
+        if not self.blocked:
+            return [callback(self.sender, *args, **kwargs) for callback in self.callbacks]
+        return []
+
+    def __iadd__(self, callback):
+        self.add(callback)
+        return self
+
+    def __isub__(self, callback):
+        self.remove(callback)
+        return self
+
+    def __len__(self):
+        return len(self.callbacks)
+
+    def __getitem__(self, index):
+        return self.callbacks[index]
+
+    def __setitem__(self, index, value):
+        self.callbacks[index] = value
+
+    def __delitem__(self, index):
+        del self.callbacks[index]
+
+    def blockSignals(self, block):
+        self.blocked = block
+
+    def add(self, callback):
+        if not callable(callback):
+            raise TypeError("callback must be callable")
+        self.callbacks.append(callback)
+
+    def remove(self, callback):
+        self.callbacks.remove(callback)
+
+
+class SceneNodesCommand(QUndoCommand):
+
+    def __init__(self, old, new, scene, msg=None, parent=None):
+        QUndoCommand.__init__(self, parent)
+
+        self.restored = True
+        self.scene = scene
+
+        self.data_old = old
+        self.data_new = new
+
+        self.diff = DictDiffer(old, new)
+        self.setText(self.diff.output())
+
+        # set the current undo view message
+        if msg is not None:
+            self.setText(msg)
+
+    def id(self):
+        return (0xAC00 + 0x0002)
+
+    def undo(self):
+        self.scene.restoreNodes(self.data_old)
+
+    def redo(self):
+        if not self.restored:
+            self.scene.restoreNodes(self.data_new)
+        self.restored = False
+
+
+class SceneChangedCommand(QUndoCommand):
+
+    def __init__(self, old, new, scene, msg=None, parent=None):
+        QUndoCommand.__init__(self, parent)
+
+        self.restored = True
+        self.scene = scene
+
+        self.data_old = old
+        self.data_new = new
+
+        self.diff = DictDiffer(old, new)
+        self.setText(self.diff.output())
+
+        if msg is not None:
+            self.setText(msg)
+
+    def id(self):
+        return (0xAC00 + 0x0003)
+
+    def undo(self):
+        self.scene.restoreNodes(self.data_old)
+
+    def redo(self):
+        if not self.restored:
+            self.scene.restoreNodes(self.data_new)
+        self.restored = False
+
+
+class DictDiffer(object):
+
+    def __init__(self, current_dict, past_dict):
+        self.current_dict, self.past_dict = current_dict, past_dict
+        self.set_current, self.set_past = set(current_dict.keys()), set(past_dict.keys())
+        self.intersect = self.set_current.intersection(self.set_past)
+
+    def added(self):
+        return self.set_current - self.intersect
+
+    def removed(self):
+        return self.set_past - self.intersect
+
+    def changed(self):
+        return set(o for o in self.intersect if self.past_dict[o] != self.current_dict[o])
+
+    def unchanged(self):
+        return set(o for o in self.intersect if self.past_dict[o] == self.current_dict[o])
+
+    def output(self):
+        msg = ""
+        if self.changed():
+            for x in self.changed():
+                msg += "%s," % x
+            msg = re.sub(",$", "", msg)
+            msg += " changed"
+
+        return msg
+
+
+class SceneEventHandler(DObj):
     def __init__(self, parent=None):
-        PObj.__init__(self, parent)
+        DObj.__init__(self, parent)
 
         self.ui = None  # reference to the parent MainWindow
         self.graph = None  # reference to the Graph instance
@@ -29,7 +167,7 @@ class SceneEventHandler(PObj):
             self.ui.action_update_graph.triggered.connect(self.graphUpdated)
 
             if not self.connectGraph(parent):
-                log('cannot connect SceneEventHandler to Graph.')
+                report('cannot connect SceneEventHandler to Graph.')
 
     def updateStatus(self, msg, level='info'):
         self.ui.updateStatus(msg, level=level)
@@ -63,7 +201,7 @@ class SceneEventHandler(PObj):
                 self.graph.graphRead += self.graphReadEvent
 
                 self.graph.mode = 'ui'
-                log.info('SceneHandler: connecting Graph...')
+                report('SceneHandler: connecting Graph...')
 
                 # start the autosave timer for 2min (120s x 1000)
                 self.ui.autosave_timer.start(30000)
@@ -103,20 +241,20 @@ class SceneEventHandler(PObj):
         self.scene.addNodes(ids)
 
         new_snapshot = self.graph.snapshot()
-        self.undo_stack.push(Commands.SceneNodesCommand(old_snapshot, new_snapshot, self.scene, msg='nodes added'))
+        self.undo_stack.push(SceneNodesCommand(old_snapshot, new_snapshot, self.scene, msg='nodes added'))
 
     def edgesAddedEvent(self, graph, edges):
         old_snapshot = self.graph.snapshot()
         self.scene.addEdges(edges)
 
         new_snapshot = self.graph.snapshot()
-        self.undo_stack.push(Commands.SceneNodesCommand(old_snapshot, new_snapshot, self.scene, msg='edges added'))
+        self.undo_stack.push(SceneNodesCommand(old_snapshot, new_snapshot, self.scene, msg='edges added'))
 
     def removeSceneNodes(self, nodes):
 
         old_snapshot = self.graph.snapshot()
         if not nodes:
-            log('no nodes specified.')
+            report('no nodes specified.')
             return False
 
         for node in nodes:
@@ -125,17 +263,17 @@ class SceneEventHandler(PObj):
                     dag = node.dagnode
                     nid = dag.id
                     if self.graph.remove_node(nid):
-                        log.debug('removing dag node: %s' % nid)
+                        report('removing dag node: %s' % nid)
                     node.close()
 
             if self.scene.is_edge(node):
                 if node.ids in self.graph.network.edges():
-                    log.debug('removing edge: %s' % str(node.ids))
+                    report('removing edge: %s' % str(node.ids))
                     self.graph.remove_edge(*node.ids)
                 node.close()
 
         new_snapshot = self.graph.snapshot()
-        self.undo_stack.push(Commands.SceneNodesCommand(old_snapshot, new_snapshot, self.scene, msg='nodes deleted'))
+        self.undo_stack.push(SceneNodesCommand(old_snapshot, new_snapshot, self.scene, msg='nodes deleted'))
 
     def getInterfacePreferences(self):
         result = dict()
@@ -167,12 +305,11 @@ class SceneEventHandler(PObj):
                 src_conn = node.source_item
                 dest_conn = node.dest_item
 
-                log('# DEBUG: removing edge: {}'.format(node))
+                report('# DEBUG: removing edge: {}'.format(node))
                 node.close()
 
             if self.scene.is_node(node):
-                print
-                log('# DEBUG: removing node: {}'.format(node))
+                report('# DEBUG: removing node: {}'.format(node))
                 node.close()
 
     def dagNodesUpdatedEvent(self, dagnodes):
@@ -181,5 +318,5 @@ class SceneEventHandler(PObj):
             '# DEBUG: dag nodes updated: ', [node.name for node in dagnodes]
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 17/08/2018 - 12:44 AM
+# Created by panda on 22/08/2018 - 10:04 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

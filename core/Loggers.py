@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: logger.py
+Script Name: Loggers.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import unicode_literals
+from __future__ import absolute_import
+
 """ Import """
 
 # Python
 import sys, os, logging, json, enum, pdb, traceback, linecache
 
 # PLM
-from core.paths import LOG_PTH
-from core.Storage import PObj
+from __rc__ import paths
+from __rc__.element import DLogger
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -148,12 +149,12 @@ class File_Handler(logging.FileHandler):
 # -------------------------------------------------------------------------------------------------------------
 """ Logger """
 
-class SetLogger(logging.Logger):
+class Loggers(DLogger):
 
     key = 'PLM super logger'
 
     def __init__(self, parent=None, level="debug", fmt=LOG_FORMAT['fullOpt'], dtfmt=DT_FORMAT['fullOpt'], filemode='a+', filename=LOG_PTH):
-        super(SetLogger, self).__init__(parent)
+        super(Loggers, self).__init__(parent)
 
         self._parent = parent
 
@@ -179,7 +180,7 @@ class SetLogger(logging.Logger):
         self.addHandler(self.sh)
         self.addHandler(self.fh)
 
-        self.reg = PObj(self)
+        self.reg = DLogger(self)
 
     @property
     def id(self):
@@ -274,5 +275,5 @@ class SetLogger(logging.Logger):
         return
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 15/06/2018 - 6:49 PM
+# Created by panda on 22/08/2018 - 10:05 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

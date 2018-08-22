@@ -15,7 +15,7 @@ from __future__ import absolute_import
 # Python
 import sqlite3 as lite
 from core.paths             import DB_PTH
-from core.Storage           import PObj
+from docker.Storage import PObj
 
 # Plt
 from utilities import utils as func

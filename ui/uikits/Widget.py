@@ -11,7 +11,7 @@ Description:
 
 from PyQt5.QtWidgets import QWidget
 
-from core.Storage import UiObj
+from docker.Storage import UiObj
 
 
 class Widget(QWidget):
