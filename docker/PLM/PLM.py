@@ -44,8 +44,8 @@ from core.Worker        import Worker
 
 from docker.data._docs import SYSTRAY_UNAVAI
 
-from utilities.localSQL import QuerryDB
-from utilities.utils    import str2bool, clean_file_ext, get_file_path
+from docker.data.localSQL import QuerryDB
+from docker.utils import str2bool, clean_file_ext, get_file_path
 
 pths = get_file_path(os.path.join(os.getcwd(), 'tankers'))
 pprint.pprint(pths)

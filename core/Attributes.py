@@ -13,7 +13,7 @@ Description:
 import json
 import weakref
 
-from utilities import utils as util
+from docker import utils as util
 
 
 class Attribute(object):

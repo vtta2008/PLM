@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: paths.py
+Script Name: config.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -62,56 +62,39 @@ class Paths(DObj):
     def root(self):
         return self._root
 
-    def resource(self):
-        return os.path.join(self._root, '__rc__')
+    def resource(self): return os.path.join(self._root, '__rc__')
 
-    def imgs(self):
-        return os.path.join(self.resource(), 'imgs')
+    def imgs(self): return os.path.join(self.resource(), 'imgs')
 
-    def avatar(self):
-        return os.path.join(self.imgs(), 'avatar')
+    def avatar(self): return os.path.join(self.imgs(), 'avatar')
 
-    def icons(self):
-        return os.path.join(self.imgs(), 'icons')
+    def icons(self): return os.path.join(self.imgs(), 'icons')
 
-    def logo(self):
-        return os.path.join(self.imgs(), 'logo')
+    def logo(self): return os.path.join(self.imgs(), 'logo')
 
-    def maya(self):
-        return os.path.join(self.imgs(), 'maya')
+    def maya(self): return os.path.join(self.imgs(), 'maya')
 
-    def pics(self):
-        return os.path.join(self.imgs(), 'pics')
+    def pics(self): return os.path.join(self.imgs(), 'pics')
 
-    def tags(self):
-        return os.path.join(self.imgs(), 'tags')
+    def tags(self): return os.path.join(self.imgs(), 'tags')
 
-    def web(self):
-        return os.path.join(self.imgs(), 'web')
+    def web(self): return os.path.join(self.imgs(), 'web')
 
-    def qss(self):
-        return os.path.join(self.resource(), 'qss')
+    def qss(self): return os.path.join(self.resource(), 'qss')
 
-    def api(self):
-        return os.path.join(self.root(), 'api')
+    def api(self): return os.path.join(self.root(), 'api')
 
-    def containers(self):
-        return os.path.join(self.root(), 'docker_storages')
+    def containers(self): return os.path.join(self.root(), 'docker_storages')
 
-    def config(self):
-        return os.path.join(self.containers(), '.config')
+    def config(self): return os.path.join(self.containers(), '.config')
 
-    def log(self):
-        return os.path.join(self.containers(), '.logs')
+    def log(self): return os.path.join(self.containers(), '.logs')
 
-    def core(self):
-        return os.path.join(self.root(), 'core')
+    def core(self): return os.path.join(self.root(), 'core')
 
-    def utils(self):
-        return os.path.join(self.root(), 'utils')
+    def utils(self): return os.path.join(self.root(), 'utils')
 
-    def docker(self):
-        return os.path.join(self.root(), 'docker')
+    def docker(self): return os.path.join(self.root(), 'docker')
 
 
 class Metadata(DMtd):
@@ -119,7 +102,6 @@ class Metadata(DMtd):
     def __init__(self):
         pass
 
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 22/08/2018 - 8:48 PM
+# Created by panda on 23/08/2018 - 12:11 AM
 # © 2017 - 2018 DAMGteam. All rights reserved
