@@ -7,7 +7,7 @@ SHORT FILM PIPELINE
 .. image:: https://github.com/vtta2008/DAMGTEAM/tree/master/__rc__/imgs/tags/version.tag.png
     :target: https://github.com/vtta2008/PipelineTool/releases
 
-.. image:: https://github.com/vtta2008/DAMGTEAM/tree/master/__rc__/imgs/tags/licence.tag.png
+.. image:: https://github.com/vtta2008/DAMGTEAM/blob/master/__rc__/imgs/tags/licence.tag.png
     :target: https://github.com/vtta2008/PipelineTool/blob/master/LICENSE
 
 This application can be used to build, manage, and optimise film making pipelines. The latest version is compatible
@@ -29,17 +29,20 @@ Python 3.6 for Windows:
 
     - 32 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.2.0-Windows-x86.exe>`_
 
-Also require extra python packages (will update more):
+Also require extra python packages (will update more) ||  To install extra packages, run command in CMD:
 
 .. code:: bash
 
-    deprecated, winshell, pandas
-
-To install extra packages, run command in CMD:
-
-.. code:: bash
-
-    python -m pip install {packagename}
+    PyQt5>=5.11.2                                           python -m pip install {packagename} --user --upgrade
+    msgpack>=0.5.6
+    pip>=18
+    appdirs>=1.4.3
+    deprecate>=1.0.5
+    winshell>=11.0.6
+    pandas>=0.23.4
+    wheel>=0.31.1
+    argparse>=1.4.0
+    green>=2.12.1
 
 LIST SOFTWARE PACKAGE
 ======================
