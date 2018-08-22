@@ -14,8 +14,8 @@ import os
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, QSettings
 
 from core.Errors import KeySettingError
-from core.Loggers import SetLogger
-from docker.Storage import PObj
+from core.Loggers import Loggers
+from docker.Storage import D
 
 
 class Settings(QSettings):

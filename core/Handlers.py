@@ -10,14 +10,138 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
 
-import re, sys, json
+import re
 
 from PyQt5.QtWidgets import QUndoCommand
 
+from __rc__.element import DError
 from __rc__.element import DObj
 from core.Loggers import Loggers
 logger = Loggers
 report = logger.report
+
+class AuthorityError(DError):
+    pass
+
+class IsADirectoryError(DError):
+    pass
+
+class FileNotFoundError(DError):
+    pass
+
+class DropException(DError):
+    pass
+
+class MetaValueError(DError):
+    pass
+
+class FormatSettingError(DError):
+    pass
+
+class PathSettingError(DError):
+    pass
+
+class KeySettingError(DError):
+    pass
+
+class ScopeSettingError(DError):
+    pass
+
+class QtNodesError(DError):
+    """Base custom exception."""
+    pass
+
+class UnregisteredNodeClassError(DError):
+    """The Node class is not registered."""
+    pass
+
+class UnknownFlowError(DError):
+    """The flow style can not be recognized."""
+    pass
+
+class KnobConnectionError(DError):
+    """Something went wrong while trying to connect two Knobs."""
+    pass
+
+class DuplicateKnobNameError(DError):
+    """A Node's Knobs must have unique names."""
+    pass
+
+class StandardError(DError):
+    pass
+
+class SettingError(DError):
+    pass
+
+
+class InvalidSlot(DError):
+    """Slot is not longer valid"""
+    pass
+
+class NotRregisteredSignal(DError):
+    """Signal not registered in factory beforehand"""
+    pass
+
+class DockerException(DError):
+    pass
+
+
+class Errors(DError):
+
+    def AuthorityError(self):
+        return AuthorityError()
+
+    def IsADirectoryError(self):
+        return IsADirectoryError()
+
+    def FileNotFoundError(self):
+        return FileNotFoundError()
+
+    def DropException(self):
+        return DropException()
+
+    def MetaValueError(self):
+        return MetaValueError()
+
+    def FormatSettingError(self):
+        return FormatSettingError()
+
+    def PathSettingError(self):
+        return PathSettingError()
+
+    def KeySettingError(self):
+        return KeySettingError()
+
+    def ScopeSettingError(self):
+        return ScopeSettingError
+
+    def UnregisteredNodeClassError(self):
+        return UnregisteredNodeClassError()
+
+    def UnknownFlowError(self):
+        return UnknownFlowError()
+
+    def KnobConnectionError(self):
+        return KnobConnectionError()
+
+    def DuplicateKnobNameError(self):
+        return DuplicateKnobNameError()
+
+    def StandardError(self):
+        return StandardError()
+
+    def SettingError(self):
+        return SettingError
+
+    def InvalidSlot(self):
+        return InvalidSlot()
+
+    def NotRregisteredSignal(self):
+        return NotRregisteredSignal()
+
+    def DockerException(self):
+        return DockerException()
+
 
 class EventHandler(DObj):
 

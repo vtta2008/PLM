@@ -21,36 +21,7 @@ class User(DObj):
     def __init__(self):
         super(User, self).__init__()
 
-class Organization(DObj):
 
-    def __init__(self, *args,**kwargs):
-        super(Organization, self).__init__(kwargs)
-
-        self._name          = kwargs['organizationName']
-        self._id            = kwargs['organizationID']
-        self._slogan        = kwargs['slogan']
-        self._website       = kwargs['website']
-
-        self._founders      = kwargs['founders']
-        self._coFounders    = kwargs['coFounders']
-
-        self._authors       = kwargs['authors']
-        self._emails        = kwargs['emails']
-
-    def __emails__(self):
-        return self._emails
-
-    def __slogan__(self):
-        return self._slogan
-
-    def __website__(self):
-        return self._website
-
-    def __founders__(self):
-        return self._founders
-
-    def __authors__(self):
-        return self._authors
 
 class Server(DObj):
 
