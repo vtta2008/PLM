@@ -272,7 +272,6 @@ class DictDiffer(object):
 
         return msg
 
-
 class SceneEventHandler(DObj):
     def __init__(self, parent=None):
         DObj.__init__(self, parent)
