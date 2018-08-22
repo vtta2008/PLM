@@ -10,6 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
 
+import os
+
 from __rc__.element import DObj, DDict
 from __rc__.paths import Paths
 
@@ -21,17 +23,22 @@ class User(DObj):
 
 class Organization(DObj):
 
-    def __init__(self, organizationName, organizationID, slogan, website, founders, authors):
-        super(Organization, self).__init__()
+    def __init__(self, *args,**kwargs):
+        super(Organization, self).__init__(kwargs)
 
-        self._name      = organizationName
-        self._id        = organizationID
+        self._name          = kwargs['organizationName']
+        self._id            = kwargs['organizationID']
+        self._slogan        = kwargs['slogan']
+        self._website       = kwargs['website']
 
-        self._slogan    = slogan
-        self._website   = website
-        self._founder   = founders
-        self._authors   = authors
+        self._founders      = kwargs['founders']
+        self._coFounders    = kwargs['coFounders']
 
+        self._authors       = kwargs['authors']
+        self._emails        = kwargs['emails']
+
+    def __emails__(self):
+        return self._emails
 
     def __slogan__(self):
         return self._slogan
@@ -39,8 +46,8 @@ class Organization(DObj):
     def __website__(self):
         return self._website
 
-    def __founder__(self):
-        return self._founder
+    def __founders__(self):
+        return self._founders
 
     def __authors__(self):
         return self._authors
@@ -51,36 +58,35 @@ class Server(DObj):
     _name       = 'Server Name'
     _data       = DDict()
 
-    def __init__(self, organization=None, root=None, version=None, api=None, api_version=None, docker=None, serverID=None, serverName=None,  host=None):
-        super(Server, self).__init__()
+    def __init__(self, *args, **kwargs):
+        super(Server, self).__init__(kwargs)
 
-        self._name          = serverName
-        self._id            = serverID
-        self._organization  = organization
-        self._root = root
-        self.pths = Paths(self._root, self)
+        self.kwargs             = kwargs
+        self._name              = self.kwargs['serverName'],
+        self._id                = self.kwargs['serverID'],
+        self._organization      = self.kwargs['organization'],
+        self._root              = os.getenv('ROOT'),
+        self.pths = Paths()
 
-        self._version = version
-        self._api = api
-        self._api_version = api_version
-        self._docker = docker
-        self._host = host
+        self._version           = self.kwargs['version'],
+        self._api               = self.kwargs['api'],
+        self._api_version       = self.kwargs['api_version'],
+        self._docker            = self.kwargs['docker'],
+        self._host              = self.kwargs['host'],
+
         self._check_connection = self._host + '/check'
         self._authority = self._host + '/autho'
 
     @property
     def data(self):
-        self._data.add_item('servername', self._name)
-        self._data.add_item('serverID', self._id)
-        self._data.add_item('organization', self._organization)
-        self._data.add_item('root', self._root)
-        self._data.add_item('version', self._version)
-        self._data.add_item('api', self._api)
-        self._data.add_item('api_version', self._api_version)
-        self._data.add_item('docker', self._docker)
-        self._data.add_item('host', self._host)
-        self._data.add_item('check connection', self._check_connection)
-        self._data.add_item('authority', self._authority)
+        self._data.add_item('paths', self.pths)
+
+        for key, value in self.kwargs.items():
+            self._data.add_item(key, value)
+
+        self._data.add_item('_check_connection', self._check_connection)
+        self._data.add_item('_authority', self._authority)
+
         return self._data
 
     def __organization__(self):

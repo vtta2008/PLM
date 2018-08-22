@@ -25,7 +25,7 @@ from PyQt5.QtNetwork import (QTcpServer, QTcpSocket)
 # -------------------------------------------------------------------------------------------------------------
 """ Configure the current level to make it disable certain log """
 
-from core.Loggers import SetLogger
+from core.Loggers import Loggers
 
 
 
@@ -41,12 +41,12 @@ class ConfigSystem(DCfg):
             else:
                 self._root = root
                 try:
-                    os.getenv(__envKey__)
+                    os.getenv('ROOT')
                 except KeyError:
-                    subprocess.Popen('SetX {0} {1}'.format(__envKey__, self._root), shell=True).wait()
+                    subprocess.Popen('SetX {0} {1}'.format('ROOT', self._root), shell=True).wait()
                 else:
-                    if os.getenv(__envKey__) != self._root:
-                        subprocess.Popen('SetX {0} {1}'.format(__envKey__, self._root), shell=True).wait()
+                    if os.getenv('ROOT') != self._root:
+                        subprocess.Popen('SetX {0} {1}'.format('ROOT', self._root), shell=True).wait()
 
         self._device_name               = platform.node()
 
@@ -102,7 +102,7 @@ class SocketThread(QThread):
     def __init__(self, socketDescriptor, text, parent):
         super(SocketThread, self).__init__(parent)
 
-        self.logger = SetLogger(self)
+        self.logger = Loggers(self)
         self.socketDescriptor = socketDescriptor
         self.text = text
 
@@ -286,7 +286,7 @@ class Configurations(DCfg):
         if self._pthInfo:
             self.pthInfo['localDB'] = os.path.join(self.pthInfo['appData'], 'local.db')
             if not os.path.exists(self.pthInfo['localDB']):
-                from core.SQLS import SQLS
+                from docker.data.SQLS import SQLS
                 SQLS(self.pthInfo['localDB'])
 
         return self._pthInfo

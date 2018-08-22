@@ -20,18 +20,19 @@ class Paths(DObj):
     _objname    = 'DAMG paths'
     _data       = DDict()
 
-    def __init__(self, root, parent=None):
+    def __init__(self, parent=None):
         super(Paths, self).__init__()
 
-        self._root      = root
+        self._root      = os.getenv('ROOT')
         self._parent    = parent
 
         if self._parent is not None:
             self.setID(self._parent.__id__() + '.' + self._name)
 
         self._data.add_item('root', self.root())
+        self._data.add_item('plugins', self.plugins())
         self._data.add_item('resource', self.resource())
-        self._data.add_item('imgs'), self.imgs()
+        self._data.add_item('imgs', self.imgs())
         self._data.add_item('avatar', self.avatar())
         self._data.add_item('icons', self.icons())
         self._data.add_item('logo', self.icons())
@@ -61,6 +62,9 @@ class Paths(DObj):
 
     def root(self):
         return self._root
+
+    def plugins(self):
+        return os.path.join(self._root, '__plugins__')
 
     def resource(self):
         return os.path.join(self._root, '__rc__')
@@ -114,10 +118,7 @@ class Paths(DObj):
         return os.path.join(self.root(), 'docker')
 
 
-class Metadata(DMtd):
 
-    def __init__(self):
-        pass
 
 
 # -------------------------------------------------------------------------------------------------------------
