@@ -29,20 +29,15 @@ Python 3.6 for Windows:
 
     - 32 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.2.0-Windows-x86.exe>`_
 
-Also require extra python packages (will update more) ||  To install extra packages, run command in CMD:
+Also require extra python packages (will update more)   || To install extra packages, run command in CMD:
 
 .. code:: bash
 
-    PyQt5>=5.11.2                                           python -m pip install {packagename} --user --upgrade
-    msgpack>=0.5.6
-    pip>=18
-    appdirs>=1.4.3
-    deprecate>=1.0.5
-    winshell>=11.0.6
-    pandas>=0.23.4
-    wheel>=0.31.1
-    argparse>=1.4.0
-    green>=2.12.1
+    PyQt5       >= 5.11.2       deprecate   >= 1.0.5    || python -m pip install {packagename} --user --upgrade
+    msgpack     >=0.5.6         winshell    >= 11.0.6   ||
+    pip         >=18            pandas      >=0.23.4    ||
+    wheel       >=0.31.1        appdirs     >=1.4.3     ||
+    argparse    >=1.4.0         green       >=2.12.1    ||
 
 LIST SOFTWARE PACKAGE
 ======================
@@ -79,21 +74,14 @@ HOW TO USE PIPELINE MANAGER
 Go to the diretory of 'PipelineTool' folder, hold down Shift + right-click -> Open PowerShell window here/Open command window here
 In CommandPrompt/WindowShell:
 
-Run directly:
+Run directly:                                       Complie executable file:
 
 .. code:: bash
 
-    start python PLM.py
-
-Complie executable file:
-
-.. code:: bash
-
-    python setup.py build
+    start python PLM.py                             python setup.py build
 
 REFERENCE
 =========
 
 For Plugins/Files that I am using, you can see `here <appData/docs/reference>`_.
-
 Copyright (C) 2017 - 2018 by DAMGteam - `details <appData/docs/copyright>`_.
