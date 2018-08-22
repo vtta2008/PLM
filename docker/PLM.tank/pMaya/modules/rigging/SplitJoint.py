@@ -22,8 +22,8 @@ from maya import cmds  # Maya_tk Python command
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT QT MODULES
 # -------------------------------------------------------------------------------------------------------------
-from __plugins    import Qt  # plugin module go with DAMGtool to make UI
-from __plugins.Qt import QtWidgets, QtCore
+from __plugins__    import Qt  # plugin module go with DAMGtool to make UI
+from __plugins__.Qt import QtWidgets, QtCore
 
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES

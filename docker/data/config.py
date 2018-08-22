@@ -39,9 +39,10 @@ __CoFonders__           = ['Duong Minh Duc'],
 __emails__              = ["dot@damgteam.com", "up@damgteam.com"],
 
 # -------------------------------------------------------------------------------------------------------------
-""" PipelineTool """
+""" PLM """
 
 __project__             = "Pipeline Manager (Plm)"
+
 __appname__             = "PLM"
 __appShortcut__         = "Plm.ink"
 __version__             = "13.0.1"

@@ -719,9 +719,9 @@ SCENE           = dict( width               = 2000                  , height = 2
 
 PRJ_INFO = dict( APPS               = ["maya", "zbrush", "mari", "nuke", "photoshop", "houdini", "after effects"],
                  MASTER             = ["assets", "sequences", "deliverables", "documents", "editorial", "sound", "resources", "RnD"],
-                 TASKS              = ["art", "plt_model", "rigging", "surfacing"],
+                 TASKS              = ["art", "model", "rigging", "surfacing"],
                  SEQTASKS           = ["anim", "comp", "fx", "layout", "lighting"],
-                 ASSETS             = {"heroObj": ["washer", "dryer"], "environment": [], "props": []},
+                 ASSETS             = ["characters", "environment", "props", ],
                  STEPS              = ["publish", "review", "work"],
                  MODELING           = ["scenes", "fromZ", "toZ", "objImport", "objExport", "movie"],
                  RIGGING            = ["scenes", "reference"],
