@@ -18,10 +18,10 @@ from PyQt5.QtCore import pyqtSignal, QCoreApplication
 # PLM
 from core.Loggers import Loggers
 from docker import __organization__, __appname__, __version__, __website__
-from docker.Storage import PObj
+from __rc__.element import DObj
 
 
-class CoreApplication(PObj):                                                    # Core metadata
+class CoreApplication(DObj):                                                    # Core metadata
 
     key = 'PLM core application'
 
@@ -43,7 +43,7 @@ class CoreApplication(PObj):                                                    
 # -------------------------------------------------------------------------------------------------------------
 """ Object handle importing task """
 
-class AppCores(PObj):
+class AppCores(DObj):
 
     key = 'coreService'
 
@@ -55,25 +55,25 @@ class AppCores(PObj):
 
     def __init__(self, settings, parent=None):
 
-        PObj.__init__(self)
+        DObj.__init__(self)
         super(AppCores, self).__init__(parent)
 
-        logger              = SetLogger()
+        logger              = Loggers()
         self.report         = logger.report
         self._parent        = parent
 
         self.layouts        = dict()
         self.layouts['app'] = self
 
-        from ui.Settings.SettingUI import SettingUI
+        from docker.PLM.Settings.SettingUI import SettingUI
         self.settingUI = SettingUI()
         self.settings = settings
         self.addLayout.emit(self.settingUI)
 
     def import_uiSet1(self):
 
-        from ui import PipelineManager, SysTrayIcon
-        from ui.Funcs import SignUp, SignIn, ForgotPassword
+        from docker.PLM import PipelineManager, SysTrayIcon
+        from docker.PLM.Funcs import SignUp, SignIn, ForgotPassword
 
         self.login = SignIn.SignIn()
         self.signup = SignUp.SignUp()
@@ -90,13 +90,13 @@ class AppCores(PObj):
 
     def import_uiSet2(self):
 
-        from ui.Settings import UserSetting
-        from ui.Projects import NewProject
-        from ui.Info import Credit, About, CodeConduct, Contributing, Reference, Version, LicenceMIT
-        from ui.Tools import Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary, Calendar, Calculator
-        from ui.Menus.config import Preferences, Configuration
-        from ui.Tools.TextEditor import TextEditor
-        from ui.NodeGraph import NodeGraph
+        from docker.PLM.Settings import UserSetting
+        from docker.PLM.Projects import NewProject
+        from docker.PLM.Info import Credit, About, CodeConduct, Contributing, Reference, Version, LicenceMIT
+        from docker.PLM.Tools import Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary, Calendar, Calculator
+        from docker.PLM.Menus.config import Preferences, Configuration
+        from docker.PLM.Funcs.Tools.TextEditor import TextEditor
+        from docker.PLM.NodeGraph import NodeGraph
 
         self.about = About.About()
         self.calculator = Calculator.Calculator()
@@ -141,14 +141,14 @@ class AppCores(PObj):
         self.forgotPW.showLayout.connect(self.showLayout)
         self.signup.showLayout.connect(self.showLayout)
 
-        self.mainUI.showLayout.connect(self.showLayout)
-        self.mainUI.executing.connect(self.executing)
-        self.mainUI.addLayout.connect(self.addLayout)
-        self.mainUI.sysNotify.connect(self.sysTray.sysNotify)
-        self.mainUI.setSetting.connect(self.setSetting)
-        self.mainUI.openBrowser.connect(self.openBrowser)
+        self.maindocker.PLMshowLayout.connect(self.showLayout)
+        self.maindocker.PLMexecuting.connect(self.executing)
+        self.maindocker.PLMaddLayout.connect(self.addLayout)
+        self.maindocker.PLMsysNotify.connect(self.sysTray.sysNotify)
+        self.maindocker.PLMsetSetting.connect(self.setSetting)
+        self.maindocker.PLMopenBrowser.connect(self.openBrowser)
 
-        self.settingUI.showLayout.connect(self.showLayout)
+        self.settingdocker.PLMshowLayout.connect(self.showLayout)
 
     def setupConn2(self):
         for layout in self.set2Layout:

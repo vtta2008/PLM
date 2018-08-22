@@ -17,7 +17,7 @@ import platform
 # PyQt5
 from PyQt5.QtCore import QObject, QFile, QTextStream
 
-from core.Loggers import SetLogger
+from core.Loggers import Loggers
 # Plm
 from core.paths import QSS_DIR
 

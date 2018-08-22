@@ -14,8 +14,7 @@ from __future__ import absolute_import
 
 # Python
 import sqlite3 as lite
-from core.paths             import DB_PTH
-from docker.Storage import PObj
+from __rc__.element import DObj
 
 # Plt
 from docker import utils as func
@@ -88,7 +87,7 @@ class QuerryDB(list):
         self.reg = PObj(self)
 
     def query_table(self, tn="curUser"):
-        conn = lite.connect(DB_PTH)
+        conn = lite.connect('local.db')
         cur = conn.cursor()
         cur.execute("SELECT * FROM {0}".format(tn))
 
@@ -100,7 +99,7 @@ class QuerryDB(list):
 class UpdateDB(PObj):
 
     key = 'update db'
-    conn = lite.connect(DB_PTH)
+    conn = lite.connect('local.db')
     cur = conn.cursor()
 
     def __init__(self, tn="curUser", data=[]):
@@ -124,7 +123,7 @@ class RemoveDB(PObj):
 
     key = 'delete db'
 
-    conn = lite.connect(DB_PTH)
+    conn = lite.connect('local.db')
     cur = conn.cursor()
 
     def __init__(self, tn="curUser"):
@@ -142,7 +141,7 @@ class TimeLog(PObj):
 
     key = 'timelog object'
 
-    conn = lite.connect(DB_PTH)
+    conn = lite.connect('local.db')
     cur = conn.cursor()
 
     def __init__(self, details=None):

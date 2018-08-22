@@ -142,7 +142,6 @@ class Errors(DError):
     def DockerException(self):
         return DockerException()
 
-
 class EventHandler(DObj):
 
     def __init__(self, sender):
@@ -187,7 +186,6 @@ class EventHandler(DObj):
     def remove(self, callback):
         self.callbacks.remove(callback)
 
-
 class SceneNodesCommand(QUndoCommand):
 
     def __init__(self, old, new, scene, msg=None, parent=None):
@@ -217,7 +215,6 @@ class SceneNodesCommand(QUndoCommand):
             self.scene.restoreNodes(self.data_new)
         self.restored = False
 
-
 class SceneChangedCommand(QUndoCommand):
 
     def __init__(self, old, new, scene, msg=None, parent=None):
@@ -245,7 +242,6 @@ class SceneChangedCommand(QUndoCommand):
         if not self.restored:
             self.scene.restoreNodes(self.data_new)
         self.restored = False
-
 
 class DictDiffer(object):
 
