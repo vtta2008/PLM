@@ -74,11 +74,9 @@ HOW TO USE PIPELINE MANAGER
 Go to the diretory of 'PipelineTool' folder, hold down Shift + right-click -> Open PowerShell window here/Open command window here
 In CommandPrompt/WindowShell:
 
-Run directly:                                       Complie executable file:
-
 .. code:: bash
 
-    start python PLM.py                             python setup.py build
+    start python main.py                             python setup.py build
 
 REFERENCE
 =========
