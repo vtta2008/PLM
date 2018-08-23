@@ -1,13 +1,13 @@
 SHORT FILM PIPELINE
 ===================
 
-.. image:: https://github.com/vtta2008/DAMGTEAM/blob/master/bin/resources/imgs/tags/python.tag.png
+.. image:: bin/resources/imgs/tags/python.tag.png
     :target: https://www.anaconda.com/download/
 
-.. image:: https://github.com/vtta2008/DAMGTEAM/blob/master/bin/resources/imgs/tags/version.tag.png
+.. image:: bin/resources/imgs/tags/version.tag.png
     :target: https://github.com/vtta2008/DAMGTEAM/releases
 
-.. image:: https://github.com/vtta2008/DAMGTEAM/blob/master/bin/resources/imgs/tags/licence.tag.png
+.. image::bin/resources/imgs/tags/licence.tag.png
     :target: https://github.com/vtta2008/DAMGTEAM/blob/master/LICENCE
 
 This application can be used to build, manage, and optimise film making pipelines. The latest version is compatible
@@ -83,5 +83,5 @@ Run directly:                                       Complie executable file:
 REFERENCE
 =========
 
-For Plugins/Files that I am using, you can see `here <blob/master/bin/data/doc/reference.rst>`_.
-Copyright (C) 2017 - 2018 by DAMGteam - `details </blob/master/bin/data/doc/copyright.rst>`_.
+For Plugins/Files that I am using, you can see `here <bin/data/doc/reference.rst>`_.
+Copyright (C) 2017 - 2018 by DAMGteam - `details <bin/data/doc/copyright.rst>`_.
