@@ -42,11 +42,16 @@ Also require extra python packages (will update more)   || To install extra pack
 LIST SOFTWARE PACKAGE
 ======================
 
-    - `Maya 2017 and/or Maya 2018 <https://www.autodesk.com/education/free-software/maya>`_           - `Mari <https://www.foundry.com/products/mari>`_
-    - `Vray 3.6 <https://www.chaosgroup.com/vray/maya>`_                                              - Mari extension: "Will update later"
-    - `Phoenix FD 3.0 <https://www.chaosgroup.com/phoenix-fd/maya>`_                                  - `Nuke <https://www.foundry.com/products/nuke>`_
-    - `VMM for maya <https://www.mediafire.com/#gu9s1tbb2u4g9>`_                                      - `ZBrush <https://pixologic.com/zbrush/downloadcenter/>`_
-    - `Houdini <https://www.sidefx.com/download/>`_                                                   - `Davinci Resolve <https://www.blackmagicdesign.com/nz/products/davinciresolve/>`_
+    - `Maya 2017 and/or Maya 2018 <https://www.autodesk.com/education/free-software/maya>`_
+    - `Mari <https://www.foundry.com/products/mari>`_
+    - `Vray 3.6 <https://www.chaosgroup.com/vray/maya>`_
+    - Mari extension: "Will update later"
+    - `Phoenix FD 3.0 <https://www.chaosgroup.com/phoenix-fd/maya>`_
+    - `Nuke <https://www.foundry.com/products/nuke>`_
+    - `VMM for maya <https://www.mediafire.com/#gu9s1tbb2u4g9>`_
+    - `ZBrush <https://pixologic.com/zbrush/downloadcenter/>`_
+    - `Houdini <https://www.sidefx.com/download/>`_
+    - `Davinci Resolve <https://www.blackmagicdesign.com/nz/products/davinciresolve/>`_
 
 NOTE:
 
