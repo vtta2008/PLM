@@ -83,5 +83,5 @@ Run directly:                                       Complie executable file:
 REFERENCE
 =========
 
-For Plugins/Files that I am using, you can see `here <appData/docs/reference>`_.
-Copyright (C) 2017 - 2018 by DAMGteam - `details <appData/docs/copyright>`_.
+For Plugins/Files that I am using, you can see `here <blob/master/bin/data/doc/reference.rst>`_.
+Copyright (C) 2017 - 2018 by DAMGteam - `details </blob/master/bin/data/doc/copyright.rst>`_.
