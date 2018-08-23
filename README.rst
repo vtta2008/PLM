@@ -8,7 +8,7 @@ SHORT FILM PIPELINE
     :target: https://github.com/vtta2008/DAMGTEAM/releases
 
 .. image:: https://github.com/vtta2008/DAMGTEAM/bin/resources/imgs/tags/licence.tag.png
-    :target: https://github.com/vtta2008/DAMGTEAM/blob/master/LICENSE
+    :target: https://github.com/vtta2008/DAMGTEAM/blob/master/LICENCE
 
 This application can be used to build, manage, and optimise film making pipelines. The latest version is compatible
 with Windows 10 and may run on earlier versions. It does not run in Maya 2016 or lower.
