@@ -1,13 +1,13 @@
 SHORT FILM PIPELINE
 ===================
 
-.. image:: https://github.com/vtta2008/DAMGTEAM/bin/resources/imgs/tags/python.tag.png
+.. image:: https://github.com/vtta2008/DAMGTEAM/blob/master/bin/resources/imgs/tags/python.tag.png
     :target: https://www.anaconda.com/download/
 
-.. image:: https://github.com/vtta2008/DAMGTEAM/bin/resources/imgs/tags/version.tag.png
+.. image:: https://github.com/vtta2008/DAMGTEAM/blob/master/bin/resources/imgs/tags/version.tag.png
     :target: https://github.com/vtta2008/DAMGTEAM/releases
 
-.. image:: https://github.com/vtta2008/DAMGTEAM/bin/resources/imgs/tags/licence.tag.png
+.. image:: https://github.com/vtta2008/DAMGTEAM/blob/master/bin/resources/imgs/tags/licence.tag.png
     :target: https://github.com/vtta2008/DAMGTEAM/blob/master/LICENCE
 
 This application can be used to build, manage, and optimise film making pipelines. The latest version is compatible
