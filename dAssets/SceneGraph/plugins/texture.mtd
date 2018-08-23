@@ -1,0 +1,37 @@
+# texture node attributes
+[group Node Attributes]
+    [attr force_expand]
+        default             BOOL      false
+        label               STRING    "Expand Node"
+        private             BOOL      true
+
+[group Texture Collection]
+    [input diffuse]
+        label               STRING  "Diffuse"
+        default             DIR     ""     
+        desc                STRING  "Diffuse texture directory."
+
+    [input specular]
+        label               STRING  "Specular"
+        default             DIR     ""        
+        desc                STRING  "Specular texture directory."
+
+    [input gloss]
+        label               STRING  "Glossiness"
+        default             DIR     ""        
+        desc                STRING  "Glossiness texture directory."
+
+    [input bump]
+        label               STRING  "Bump"
+        default             DIR     ""        
+        desc                STRING  "Bump texture directory."
+
+    [input normal]
+        label               STRING  "Normal Map"
+        default             DIR     ""
+        desc                STRING  "Normal texture directory."
+
+    [input disp]
+        label               STRING  "Displacement"
+        default             DIR     ""
+        desc                STRING  "Displacement texture directory."

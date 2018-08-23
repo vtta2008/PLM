@@ -22,9 +22,21 @@ def update_python_packages():
 
     print('all finished')
 
-subprocess.Popen("python -m pip install docker --user --upgrade")
 
-import docker
+from dCore.DRegistry import ClassRegistry, ClassRegistryInstanceCache
+
+pokedex = ClassRegistry('element')
+
+@pokedex.register
+class Pikachu(object):
+  element = 'electric'
+
+@pokedex.register
+class Alakazam(object):
+  element = 'psychic'
+
+print(type(pokedex))
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 18/08/2018 - 8:42 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

@@ -10,16 +10,15 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
 
-import os, subprocess
-ROOT = os.path.dirname(__file__).split(__name__)[0]
+""" Import """
 
-try:
-    os.getenv('ROOT')
-except KeyError:
-    subprocess.Popen('SetX ROOT %CD%', shell=True).wait()
-else:
-    if ROOT != os.getenv('ROOT'):
-        subprocess.Popen('SetX ROOT %CD%', shell=True).wait()
+# Python
+import os
+import subprocess
+
+# DAMG
+from app import ROOT, __envKey__
+
 
 
 # -------------------------------------------------------------------------------------------------------------

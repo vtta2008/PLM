@@ -14,7 +14,7 @@ from __future__ import absolute_import
 
 import os
 import setuptools
-from core.Metadata import __envKey__
+from bin.config import __envKey__
 ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
 try:
@@ -25,7 +25,7 @@ else:
     if os.getenv(__envKey__)   != ROOT:
         os.environ[__envKey__]  = ROOT
 
-from docker.Configurations import Configurations
+from dCore.Configurations import Configurations
 cfg                             = Configurations(__envKey__, ROOT)
 
 # -------------------------------------------------------------------------------------------------------------
@@ -37,9 +37,9 @@ import sys
 from cx_Freeze import setup, Executable
 
 # PLM
-from appData import (LICENCE_MIT, DESKTOP_DIR, __envKey__, __project__, __version__, __plmSlogan__, __website__,
-                     __download__, __author1__, __author2__, __email__, __pkgsReq__, __classifiers__, __appname__,
-                     __packages_dir__, COPYRIGHT)
+from app import (LICENCE_MIT, DESKTOP_DIR, __envKey__, __project__, __version__, __plmSlogan__, __website__,
+                 __download__, __author1__, __author2__, __email__, __pkgsReq__, __classifiers__, __appname__,
+                 __packages_dir__, COPYRIGHT)
 
 print(DESKTOP_DIR)
 
@@ -59,7 +59,7 @@ if sys.platform == "win32":
 else:
     base = None
 
-from core.Loggers import SetLogger
+from dCore.Loggers import SetLogger
 logger = SetLogger(__file__)
 report = logger.report
 

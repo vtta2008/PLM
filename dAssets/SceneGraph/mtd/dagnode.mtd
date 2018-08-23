@@ -1,0 +1,64 @@
+# base DagNode metadata
+[group Node Transform]
+    [attr pos]
+        default             FLOAT2    [0.0, 0.0]
+        required            BOOL      true
+        label               STRING    "Position"
+        label.0             STRING    "x"
+        label.1             STRING    "y"
+        tooltip             STRING    "node x,y coordinates"
+
+    [attr width]
+        default             FLOAT     100.0
+        required            BOOL      true
+        label               STRING    "Width"     
+
+[group Node Attributes]
+    [attr base_height]
+        default             FLOAT     15.0
+        required            BOOL      true
+        label               STRING    "Base Height"
+        desc                STRING    "node base height (multiplied by the number of connections)."
+        private             BOOL      true
+        
+    [attr id]
+        default             STRING    ""
+        required            BOOL      true
+        label               STRING    "Node ID"
+        private             BOOL      true
+
+    [attr name]
+        default             STRING    "dagnode"
+        required            BOOL      true
+        label               STRING    "Node Name" 
+
+    [attr node_type]
+        default             STRING    "dagnode"
+        required            BOOL      true
+        label               STRING    "Node Type"
+        private             BOOL      true
+
+    [attr docstring]
+        default             STRING    ""
+        required            BOOL      true
+        label               STRING    "Doc"
+        desc                STRING    "node docstring."
+
+    [attr color]
+        default             COLOR     [172, 172, 172]
+        required            BOOL      true
+        desc                STRING    "node background color."
+        label               STRING    "Color"
+
+    [attr enabled]
+        default             BOOL      true
+        required            BOOL      true
+        label               STRING    "Enabled"
+
+    [attr force_expand]
+        default             BOOL      false
+        label               STRING    "Expand Node"
+
+    [output output]
+        default             MULTI     ""
+        

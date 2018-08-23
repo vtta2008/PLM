@@ -1,14 +1,14 @@
 SHORT FILM PIPELINE
 ===================
 
-.. image:: https://github.com/vtta2008/DAMGTEAM/__rc__/imgs/tags/python.tag.png
+.. image:: https://github.com/vtta2008/DAMGTEAM/bin/resources/imgs/tags/python.tag.png
     :target: https://www.anaconda.com/download/
 
-.. image:: https://github.com/vtta2008/DAMGTEAM/__rc__/imgs/tags/version.tag.png
-    :target: https://github.com/vtta2008/PipelineTool/releases
+.. image:: https://github.com/vtta2008/DAMGTEAM/bin/resources/imgs/tags/version.tag.png
+    :target: https://github.com/vtta2008/DAMGTEAM/releases
 
-.. image:: https://github.com/vtta2008/DAMGTEAM/__rc__/imgs/tags/licence.tag.png
-    :target: https://github.com/vtta2008/PipelineTool/blob/master/LICENSE
+.. image:: https://github.com/vtta2008/DAMGTEAM/bin/resources/imgs/tags/licence.tag.png
+    :target: https://github.com/vtta2008/DAMGTEAM/blob/master/LICENSE
 
 This application can be used to build, manage, and optimise film making pipelines. The latest version is compatible
 with Windows 10 and may run on earlier versions. It does not run in Maya 2016 or lower.
