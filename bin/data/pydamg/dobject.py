@@ -193,7 +193,6 @@ class DAMG_COPYRIGHT(object):
 
     __dict__ = _data
 
-
 class JimJim(object):
 
     founder             = "The founder of DAMGTEAM"
@@ -259,7 +258,7 @@ class JimJim(object):
 class DucDM(object):
 
     coFounder           = "The co-founder of DAMGTEAM"
-    _id                 = "JimJim"
+    _id                 = "DUCDM"
     _name               = "Duong Minh Duc (a.k.a Up)"
     _objname            = "co-Founder"
     _data               = DDict()
@@ -487,7 +486,7 @@ class DAMGTEAM(object):
     __dict__ = _data
 
 organization = DAMGTEAM()
-print(organization)
+
 __organization__        = organization.__organization__()
 __envKey__              = organization.__envKey__()
 __version__             = organization.__version__()
