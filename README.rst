@@ -29,17 +29,17 @@ Python 3.6 for Windows:
 
     - 32 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.2.0-Windows-x86.exe>`_
 
-Also require extra python packages (will update more)   || To install extra packages, run command in CMD:
+Also require extra python packages, you do not have to worry about it, it will be automatically installed.
 
 .. code:: bash
 
-    PyQt5       >= 5.11.2       deprecate   >= 1.0.5    || python -m pip install {packagename} --user --upgrade
-    msgpack     >=0.5.6         winshell    >= 11.0.6   ||
-    pip         >=18            pandas      >=0.23.4    ||
-    wheel       >=0.31.1        appdirs     >=1.4.3     ||
-    argparse    >=1.4.0         green       >=2.12.1    ||
+    PyQt5       >= 5.11.2       deprecate   >= 1.0.5
+    msgpack     >=0.5.6         winshell    >= 11.0.6
+    pip         >=18            pandas      >=0.23.4
+    wheel       >=0.31.1        appdirs     >=1.4.3
+    argparse    >=1.4.0         green       >=2.12.1
 
-LIST SOFTWARE PACKAGE
+SOFTWARE PACKAGE
 ======================
 
     - `Maya 2017 and/or Maya 2018 <https://www.autodesk.com/education/free-software/maya>`_

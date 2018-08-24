@@ -134,8 +134,6 @@ version                 = "version"
 version_info            = "version_info"
 api_version             = "api_version"
 authors                 = "authors"
-copyright               = "copyright"
-
 config                  = '.config'
 logs                    = 'logs'
 cache                   = 'cache'
