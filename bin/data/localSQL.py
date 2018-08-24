@@ -16,7 +16,7 @@ from __future__ import absolute_import
 import sqlite3 as lite
 
 # Plt
-from dDock import utils as func
+from dock import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """

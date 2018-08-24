@@ -16,15 +16,13 @@ from bin.data.pydamg.build import DObj, DDict
 
 from bin.data.pydamg.registry import ClassRegistry
 
-
-
 damgteam    = ClassRegistry('damg').register
 damgAssets  = ClassRegistry('assets').register
 thefounder     = ClassRegistry('founder').register
 thecoFounder   = ClassRegistry('coFounder').register
 
 __all__ = ['damgteam', 'damgAssets', 'thecoFounder', 'thefounder', 'DAMG_SERVER', 'DAMG_COPYRIGHT', 'DAMG_VERSION',
-           'DAMGTEAM', 'trinhdo', 'duongminhduc', ]
+           'DAMGTEAM', 'JimJim', 'DucDM', ]
 
 class DAMG_VERSION(object):
 
@@ -195,8 +193,8 @@ class DAMG_COPYRIGHT(object):
 
     __dict__ = _data
 
-@thefounder
-class trinhdo(object):
+
+class JimJim(object):
 
     founder             = "The founder of DAMGTEAM"
     _id                 = "JimJim"
@@ -205,7 +203,7 @@ class trinhdo(object):
     _data               = DDict()
 
     def __init__(self):
-        super(trinhdo, self).__init__()
+        super(JimJim, self).__init__()
 
         self._eProfile  = "http://dot.damgteam.com/"
         self._title     = "PipelineTD"
@@ -258,7 +256,7 @@ class trinhdo(object):
         return self.__dict__
 
 @thecoFounder
-class duongminhduc(object):
+class DucDM(object):
 
     coFounder           = "The co-founder of DAMGTEAM"
     _id                 = "JimJim"
@@ -267,7 +265,7 @@ class duongminhduc(object):
     _data               = DDict()
 
     def __init__(self):
-        super(duongminhduc, self).__init__()
+        super(DucDM, self).__init__()
 
         self._eProfile  = "https://up209d.github.io/UPPortfolio/"
         self._title     = "Front End Developer"
@@ -312,8 +310,8 @@ class duongminhduc(object):
 
     __dict__ = _data
 
-dolsm = trinhdo()
-duclsm = duongminhduc()
+dolsm = JimJim()
+duclsm = DucDM()
 
 @damgteam
 class DAMGTEAM(object):
@@ -489,7 +487,7 @@ class DAMGTEAM(object):
     __dict__ = _data
 
 organization = DAMGTEAM()
-
+print(organization)
 __organization__        = organization.__organization__()
 __envKey__              = organization.__envKey__()
 __version__             = organization.__version__()
@@ -498,10 +496,7 @@ __author__              = organization.__author__()
 __email__               = organization.__email__()
 __copyright__           = organization._copyright
 
-print(organization)
-
-@damgAssets
-class PLM(DObj):
+class PLM(object):
     key = "PLM"
     _name = "PLM"
     _id = "{0}.{1}.{2}".format(__organization__, _name, __version__)

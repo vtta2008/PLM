@@ -1,299 +1,91 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: config.py
+Script Name: __init__.py.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __future__ import absolute_import
+
+# -------------------------------------------------------------------------------------------------------------
 """ Import """
-import re, os, sys, json, webbrowser
 
 # Python
+import json
+import os
+import re
+
+# PyQt5
 from PyQt5.QtCore import Qt, QSettings, QDateTime, QSize
-from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView, QGraphicsScene, QSizePolicy, QRubberBand, QFrame
-from PyQt5.QtGui import QPainter, QPen, QColor, QBrush
+from PyQt5.QtGui import QPainter, QColor
+from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy
+
 
 try:
     from importlib import reload
 except ImportError:
     pass
 
+PLATFORM = 'Windows'
+API_MINIMUM = 0.64
 
-PLUGINVERSION           = "DAMG.13.cfg.0.1"
+# -------------------------------------------------------------------------------------------------------------
+""" DAMG team """
+
+__envKey__              = "DAMG_TEAM",
+__organization__        = "DAMGteam"
+__organizationID__      = "DAMG",
+__organizationName__    = 'Digital Animation Motion Graphic',
+__groupname__           = "DAMGteam",
+__damgSlogan__          = "Comprehensive Solution Design",
+__website__             = "https://damgteam.com",
+
+__authors__             = ["Trinh Do", "Duong Minh Duc"],
+__Founders__            = ['Trinh Do'],
+__CoFonders__           = ['Duong Minh Duc'],
+__emails__              = ["dot@damgteam.com", "up@damgteam.com"],
+
+# -------------------------------------------------------------------------------------------------------------
+""" PipelineTool """
+
+__project__             = "Pipeline Manager (Plm)"
+__appname__             = "PLM"
+__appShortcut__         = "Plm.ink"
+__version__             = "13.0.1"
+__cfgVersion__          = "0.8.6"
+__verType__             = "Dev"
+__reverType__           = "2"
+__about__               = "About Pipeline Manager"
+__homepage__            = "https://pipeline.damgteam.com"
+__plmSlogan__           = "Creative your own pipeline"
+__plmWiki__             = "https://github.com/vtta2008/PipelineTool/wiki"
+
+# -------------------------------------------------------------------------------------------------------------
+""" Server """
+
+__serverLocal__         = "http://127.0.0.1:8000/"
+__serverUrl__           = "https://pipeline.damgteam.com"
+__serverCheck__         = "https://pipeline.damgteam.com/check"
+__serverAutho__         = "https://pipeline.damgteam.com/auth"
+__google__              = "https://google.com.vn"
+
+# -------------------------------------------------------------------------------------------------------------
+""" Metadata """
+
+VERSION                 = "{0} v{1}.{2}-{3}".format(__project__, __version__, __verType__, __reverType__)
+COPYRIGHT               = "{0} software (c) 2017-2018 {1}. All rights reserved.".format(__appname__, __organization__)
+PLUGINVERSION           = "{0}.13.cfg.{1}".format(__appname__, __cfgVersion__)
+PLMAPPID                = "{0}.{1}.{2}.{3}".format(__organization__, __project__, __appname__, VERSION)
+
 API_MAJOR_VERSION       = 0.69
 API_REVISION            = 0
 API_VERSION             = float('%s%s' % (API_MAJOR_VERSION, API_REVISION))
 API_VERSION_AS_STRING   = '%.02f.%d' % (API_MAJOR_VERSION, API_REVISION)
 PLATFORM                = 'Windows'
 API_MINIMUM             = 0.64
-
-__organization__        = organization.__organization__
-__envKey__              = organization.__envKey__
-__version__             = organization.__version__
-__api_version__         = organization.__api_version__
-
-__authors__             = organization.__authors__
-__emails__              = organization.__emails__
-__serverLocal__         = "http://127.0.0.1:8000/"
-__googleVN__            = "https://google.com.vn"
-
-name                    = "name"
-product                 = "product"
-shortcut                = "shortcut"
-state                   = "state"
-status                  = "status"
-about                   = "about"
-website                 = "website"
-slogan                  = "slogan"
-wiki                    = "wiki"
-version                 = "version"
-version_info            = "version_info"
-api_version             = "api_version"
-authors                 = "authors"
-config                  = '.config'
-logs                    = 'logs'
-cache                   = 'cache'
-settings                = 'settings'
-reg                     = 'reg'
-nodegraph               = 'nodegraph'
-scenegraph              = 'SceneGraph'
-userPrefs               = 'userPrefs'
-prefs                   = 'prefs'
-
-@founder
-class trinhdo:
-
-    founder = organization.__organizationName__
-    _data = dict(email ="dot@damgteam.com", name ="Trinh Do (a.k.a Jimmy)", title ='PipelineTD')
-
-    def __init__(self):
-        super(trinhdo, self).__init__()
-        pass
-
-    def __str__(self):
-        return json.dumps({self._name:self.data}, indent=4)
-
-    def __repr__(self):
-        return json.dumps({self._name: self.data}, indent=4)
-
-    @property
-    def data(self):
-        return self._data['name']
-
-    @property
-    def email(self):
-        return self._data['email']
-
-    @property
-    def title(self):
-        return self._data['title']
-
-    def eProfile(self):
-        return webbrowser.open("http://dot.damgteam.com/")
-
-    @property
-    def profile(self):
-        return self.__dict__
-
-    __dict__ = _data
-
-@coFounder
-class duongminhduc:
-
-    coFounder = organization.__organizationName__
-    _data = dict(email = "up@damgteam.com", name = "Duong Minh Duc (a.k.a Up)", title = 'Front End Developer')
-
-    def __init__(self):
-        super(duongminhduc, self).__init__()
-        pass
-
-    def __str__(self):
-        return json.dumps({self._name: self.data}, indent=4)
-
-    def __repr__(self):
-        return json.dumps({self._name: self.data}, indent=4)
-
-    @property
-    def data(self):
-        return self._data['name']
-
-    @property
-    def email(self):
-        return self._data['email']
-
-    @property
-    def title(self):
-        return self._data['title']
-
-    def eProfile(self):
-        return webbrowser.open("https://up209d.github.io/UPPortfolio/")
-
-    @property
-    def profile(self):
-        return self.__dict__
-
-    __dict__ = _data
-
-@damgAssets
-class PLM:
-    key = "PLM"
-    __name__ = "PLM"
-    id = "{0}.{1}.{2}".format(organization.__organizationID__, __name__, __version__)
-    assets = __organization__
-
-    __product__ = "application/software"
-    __appShortcut__ = "PLM.ink"
-    __state__ = "2"
-    __status__ = "Development/Unstable"
-    __about__ = "Pipeline Manager (PLM)"
-    __website__ = organization.__website__
-    __slogan__ = "Comprehensive Design Solution"
-    __wiki__ = "https://github.com/vtta2008/PipelineTool/wiki"
-    __version__ = "13.0.1"
-    __version_info__ = "{0} v{1}.{2}-{3}".format(__organization__, __version__, __state__, __status__)
-    __api_version__ = "0.8.6",
-    __authors__ = __authors__
-
-    def __init__(self):
-        super(PLM, self).__init__()
-
-        self._name = "PLM"
-        self._product = "application/software"
-        self._shortcut = "PLM.ink"
-        self._state = "2"
-        self._status = "Development/Unstable"
-        self._about = "Pipeline Manager (PLM)"
-        self._website = organization.__website__
-        self._slogan = "Comprehensive Design Solution"
-        self._wiki = "https://github.com/vtta2008/PipelineTool/wiki"
-        self._version = "13.0.1"
-        self._version_info = "{0} v{1}.{2}-{3}".format(__organization__, __version__, self._state, self._status)
-        self._api_version = organization.__api_version__
-        self._authors = __authors__
-        self._copyright = "{0} software (c) 2017-2018 {1}. All rights reserved.".format(self.__about__, organization.__organization__)
-
-        self._data = dict()
-
-        self._data['key'] = "PLM"
-        self._data['name'] = "PLM"
-        self._data['id'] = self.id
-        self._data['product'] = "application/software"
-        self._data['shortcut'] = "PLM.ink"
-        self._data['state'] = "2"
-        self._data['status'] = "Development/Unstable"
-        self._data['about'] = "Pipeline Manager (PLM)"
-        self._data['website'] = organization.__website__
-        self._data['slogan'] = "Comprehensive Design Solution"
-        self._data['wiki'] = "https://github.com/vtta2008/PipelineTool/wiki"
-        self._data['version'] = "13.0.1"
-        self._data['version_info'] = "{0} v{1}.{2}-{3}".format(__organization__, __version__, self._state, self._status)
-        self._data['api_version'] = organization.__api_version__
-        self._data['authors'] = __authors__
-        self._data['copyright'] = "{0} software (c) 2017-2018 {1}. All rights reserved.".format(self.__about__, organization.__organization__)
-
-    def __str__(self):
-        return json.dumps({self._name: self.data}, indent=4)
-
-    def __repr__(self):
-        return json.dumps({self._name: self.data}, indent=4)
-
-    @property
-    def data(self):
-        return self._data
-
-    @property
-    def __name__(self):
-        return self._name
-
-    @property
-    def product(self):
-        return self._product
-
-    @property
-    def shortcut(self):
-        return self._shortcut
-
-    @property
-    def state(self):
-        return self._state
-
-    @property
-    def status(self):
-        return self._status
-
-    @property
-    def about(self):
-        return self._about
-
-    @property
-    def website(self):
-        return self._website
-
-    @property
-    def slogan(self):
-        return self._slogan
-
-    @property
-    def wiki(self):
-        return self._website
-
-    @property
-    def version(self):
-        return self._version
-
-    @property
-    def version_info(self):
-        return self._version_info
-
-    @property
-    def api_version(self):
-        return self._api_version
-
-    @property
-    def authors(self):
-        return self._authors
-
-    @property
-    def copyright(self):
-        return self._copyright
-
-plm = PLM()
-
-@damgAssets
-class dAssets:
-
-    assets              = __organization__
-    _data = dict(PLM = plm)
-
-    def __init__(self):
-        super(dAssets, self).__init__()
-
-    def __str__(self):
-        return json.dumps({self._name:self.data}, indent=4)
-
-    def __repr__(self):
-        return json.dumps({self._name: self.data}, indent=4)
-
-    def add_asset(self, project):
-        if not project.name() in self._data.keys():
-            self._data[project.name()] = project
-
-    @property
-    def data(self):
-        return self._data
-
-    @property
-    def damgAssets(self):
-        return self._data
-
-    @damgAssets.setter
-    def damgAssets(self, prjs):
-        self._project = prjs
-
-    __dict__ = _data
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Setup.py options """
@@ -319,167 +111,163 @@ def reload_module(module):
     return reload(module)
 
 def read_file(fileName):
-    filePth = os.path.join(os.getenv('ROOT'), 'bin', 'resources', 'docs', fileName + '.txt')
+
+    filePth = os.path.join(os.getenv('ROOT'), '__rc__', 'docs', fileName)
     with open(filePth, 'r') as f:
         data = f.read()
     return data
 
-QUESTIONS           = read_file('QUESTION')
-ABOUT               = read_file('ABOUT')
-CREDIT              = read_file('CREDIT')
-CODECONDUCT         = read_file('CODECONDUCT')
-CONTRIBUTING        = read_file('CONTRIBUTING')
-REFERENCE           = read_file('REFERENCE')
-LICENCE_MIT         = read_file('LICENCE/MIT')
-LICENCE_APACHE      = read_file('LICENCE/APACHE')
+QUESTIONS = read_file('QUESTION')
+ABOUT = read_file('ABOUT')
+CREDIT = read_file('CREDIT')
+CODECONDUCT = read_file('CODECONDUCT')
+CONTRIBUTING = read_file('CONTRIBUTING')
+REFERENCE = read_file('REFERENCE')
+LICENCE_MIT = read_file('LICENCE/MIT')
+
+DAMG = dict(
+
+organizationID          = __organizationID__,
+organizationName        = __organizationName__,
+slogan                  = __damgSlogan__,
+website                 = __website__,
+
+founders                = __Founders__,
+coFounders              = __CoFonders__,
+authors                 = __authors__,
+emails                  = __emails__,
+
+)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Directory local system """
+
+PROGRAM86                   = os.getenv('PROGRAMFILES(X86)')
+PROGRAM64                   = os.getenv('PROGRAMW6432')
+LOCALAPPDATA                = os.getenv('LOCALAPPDATA')
+PROGRAMDATA                 = os.getenv('PROGRAMDATA')
+DESKTOP_DIR                 = os.path.join(os.environ["HOMEPATH"], "desktop")           # Desktop path
+
+# -------------------------------------------------------------------------------------------------------------
+""" Name variables """
+
+config                      = 'cfg'
+logs                        = 'logs'
+cache                       = 'cache'
+settings                    = 'settings'
+reg                         = 'reg'
+nodegraph                   = 'nodegraph'
+userPrefs                   = 'userPrefs'
+prefs                       = 'prefs'
+
+# -------------------------------------------------------------------------------------------------------------
+""" Name variables """
+
+ROOT_DIR = os.getenv('ROOT')
+cfgFile = os.path.join(ROOT_DIR, 'PLM.cfg')
+
+if os.path.exists(cfgFile):
+    with open(cfgFile, 'r') as f:
+        cfgPths = json.load(f)
+
+CONFIG_DIR                  = os.path.join(os.getenv('ROOT'), 'docker')
+CONFIG_LOCAL_DAMG_DIR       = os.path.join(os.getenv('ROOT'), 'docker', 'DAMGteam')     # Config dir to store config info
+CONFIG_LOCAL_PLM_DIR        = os.path.join(os.getenv('ROOT'), 'docker', 'PLM')
+SETTING_DIR                 = os.path.join(CONFIG_LOCAL_PLM_DIR, settings)              # Setting dir
+LOG_DIR                     = os.path.join(CONFIG_LOCAL_PLM_DIR, logs)                  # Log dir
+CACHE_DIR                   = os.path.join(CONFIG_LOCAL_PLM_DIR, cache)                 # Cache dir
+
+NODEGRAPH_DIR               = os.path.join(CONFIG_DIR, nodegraph)                       # Nodegraph dir
+PREF_DIR                    = os.path.join(CONFIG_DIR, prefs)                           # Preferences dir
+USER_PREF_DIR               = os.path.join(CONFIG_DIR, userPrefs)                       # User preferences dir
 
 # -------------------------------------------------------------------------------------------------------------
 """ App (python) """
 
-class DIRECTORIES:
+APP_DATA_DIR                = os.path.join(ROOT_DIR, 'appData')
+BUILD_DIR                   = os.path.join(ROOT_DIR, 'build')
+CORE_DIR                    = os.path.join(ROOT_DIR, 'appCore')
+IMG_DIR                     = os.path.join(ROOT_DIR, 'imgs')
+PLUGIN_DIR                  = os.path.join(ROOT_DIR, 'plg_ins')
+UI_DIR                      = os.path.join(ROOT_DIR, 'ui')
+TEST_DIR                    = os.path.join(ROOT_DIR, 'test')
 
-    ROOT_DIR = os.getenv('ROOT')
-    _data = dict(
-    DAMG_DIR                    = os.getenv('ROOT'),
-    DAMG_CFG_DIR                = os.path.join(ROOT_DIR, 'app', config),
-    DAMG_CFG_SETTING_DIR        = os.path.join(ROOT_DIR, 'app', config, settings),
-    DAMG_CFG_LOG_DIR            = os.path.join(ROOT_DIR, 'app', config, logs),
-    DAMG_CFG_CACHE_DIR          = os.path.join(ROOT_DIR, 'app', config, cache),
-    DAMG_CFG_PREF_DIR           = os.path.join(ROOT_DIR, 'app', config, prefs),
+# -------------------------------------------------------------------------------------------------------------
+""" Dependancies """
 
-    BIN_DIR                     = os.path.join(ROOT_DIR, 'bin'),
+DEPENDANCIES_DIR            = os.path.join(CORE_DIR, 'dependencies')
 
-    DEPENDANCIES_DIR            = os.path.join(ROOT_DIR, 'bin', 'dependencies'),
+# -------------------------------------------------------------------------------------------------------------
+""" App (Non python) """
 
-    SCRIPTS_DIR                 = os.path.join(ROOT_DIR, 'bin', 'scripts'),
+BIN_DIR                     = os.path.join(ROOT_DIR, 'bin')
+SCRIPTS_DIR                 = os.path.join(ROOT_DIR, 'scripts')
+QSS_DIR                     = os.path.join(SCRIPTS_DIR, 'qss')
+DB_DIR                      = APP_DATA_DIR
 
-    DATA_DIR                    = os.path.join(ROOT_DIR, 'bin', 'data'),
-    DATA_JSON_DIR               = os.path.join(ROOT_DIR, 'bin', 'data', 'json'),
-    DATA_DOC_DIR                = os.path.join(ROOT_DIR, 'bin', 'data', 'doc'),
+# -------------------------------------------------------------------------------------------------------------
+""" Image """
 
-    DATA_SCR_DIR                = os.path.join(ROOT_DIR, 'bin', 'resources'),
-    DATA_SCR_DOC_DIR            = os.path.join(ROOT_DIR, 'bin', 'resources', 'docs'),
-    # LICENCE_DIR                 = os.path.join(ROOT_DIR, 'bin', 'resources', 'doc', 'licence'),
+APP_ICON_DIR                = os.path.join(IMG_DIR, 'icons')
+WEB_ICON_DIR                = os.path.join(IMG_DIR, 'web')
+AVATAR_DIR                  = os.path.join(IMG_DIR, 'avatar')
+LOGO_DIR                    = os.path.join(IMG_DIR, 'logo')
+PIC_DIR                     = os.path.join(IMG_DIR, 'pics')
+TAG_DIR                     = os.path.join(IMG_DIR, 'tags')
 
-    QSS_DIR                     = os.path.join(ROOT_DIR, 'bin', 'resources', 'qss'),
+ICON_DIR_16                 = os.path.join(APP_ICON_DIR, 'x16')
+ICON_DIR_24                 = os.path.join(APP_ICON_DIR, 'x24')
+ICON_DIR_32                 = os.path.join(APP_ICON_DIR, 'x32')
+ICON_DIR_48                 = os.path.join(APP_ICON_DIR, 'x48')
+ICON_DIR_64                 = os.path.join(APP_ICON_DIR, 'x64')
 
-    IMG_DIR                     = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs'),
+WEB_ICON_16                 = os.path.join(WEB_ICON_DIR, 'x16')
+WEB_ICON_24                 = os.path.join(WEB_ICON_DIR, 'x24')
+WEB_ICON_32                 = os.path.join(WEB_ICON_DIR, 'x32')
+WEB_ICON_48                 = os.path.join(WEB_ICON_DIR, 'x48')
+WEB_ICON_64                 = os.path.join(WEB_ICON_DIR, 'x64')
+WEB_ICON_128                = os.path.join(WEB_ICON_DIR, 'x128')
 
-    ICON_DIR                    = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'icons'),
-    ICON_DIR_16                 = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'icons', 'x16'),
-    ICON_DIR_24                 = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'icons', 'x24'),
-    ICON_DIR_32                 = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'icons', 'x32'),
-    ICON_DIR_48                 = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'icons', 'x48'),
-    ICON_DIR_64                 = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'icons', 'x64'),
+DAMG_LOGO_DIR               = os.path.join(LOGO_DIR, 'DAMGteam', 'icons')
+PLM_LOGO_DIR                = os.path.join(LOGO_DIR, 'Plm', 'icons')
 
-    WEB_ICON_DIR                = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'web'),
-    WEB_ICON_16                 = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'web', 'x16'),
-    WEB_ICON_24                 = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'web', 'x24'),
-    WEB_ICON_32                 = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'web', 'x32'),
-    WEB_ICON_48                 = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'web', 'x48'),
-    WEB_ICON_64                 = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'web', 'x64'),
-    WEB_ICON_128                = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'web', 'x128'),
-
-    AVATAR_DIR                  = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'avatar'),
-    LOGO_DIR                    = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'logo'),
-    PIC_DIR                     = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'pics'),
-    TAG_DIR                     = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'tags'),
-
-    DAMG_LOGO_DIR               = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'logo', 'DAMGteam', 'icons'),
-    PLM_LOGO_DIR                = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'logo', 'Plm', 'icons'),
-
-    DAMG_LOGO_32                = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'logo', 'DAMGteam', 'icons', 'logo32'),
-    PLM_LOGO_32                 = os.path.join(ROOT_DIR, 'bin', 'resources', 'imgs', 'logo', 'Plm', 'icons', 'logo32'),
-
-    BUILD_DIR                   = os.path.join(ROOT_DIR, 'build'),
-
-    CORE_DIR                    = os.path.join(ROOT_DIR, 'dCore'),
-
-    PLUGIN_DIR                  = os.path.join(ROOT_DIR, 'dPlugins'),
-
-    TEST_DIR                    = os.path.join(ROOT_DIR, 't'),
-
-    ASSETS_DIR                  = os.path.join(ROOT_DIR, 'dAssets'),
-    ASSETS_CFG_DIR              = os.path.join(ROOT_DIR, 'apps'),
-
-    PLM_DIR                     = os.path.join(ROOT_DIR, 'dAssets', plm.__name__),
-    PLM_CFG_DIR                 = os.path.join(ROOT_DIR, 'apps', config),
-    PLM_CFG_SETTING_DIR         = os.path.join(ROOT_DIR, 'apps', settings),
-    PLM_CFG_LOG_DIR             = os.path.join(ROOT_DIR, 'apps', logs),
-    PLM_CFG_CACHE_DIR           = os.path.join(ROOT_DIR, 'apps', cache),
-    PLM_CFG_PREF_DIR            = os.path.join(ROOT_DIR, 'apps', prefs),
-
-    SCENEGRAPH_DIR              = os.path.join(ROOT_DIR, 'dAssets', scenegraph),
-    SCENEGRAPH_CFG_DIR          = os.path.join(ROOT_DIR, 'apps', config),
-    SCENEGRAPH_CFG_SETTING_DIR  = os.path.join(ROOT_DIR, 'apps', settings),
-    SCENEGRAPH_CFG_LOG_DIR      = os.path.join(ROOT_DIR, 'apps', logs),
-    SCENEGRAPH_CFG_CACHE_DIR    = os.path.join(ROOT_DIR, 'apps', cache),
-    SCENEGRAPH_CFG_PREF_DIR     = os.path.join(ROOT_DIR, 'apps', prefs),
-
-    NODEGRAPH_DIR               = os.path.join(ROOT_DIR, 'dAssets', nodegraph),                      # Nodegraph dir
-    NODEGRAPH_CFG_DIR           = os.path.join(ROOT_DIR, 'apps', config),
-    NODEGRAPH_CFG_SETTING_DIR   = os.path.join(ROOT_DIR, 'apps', settings),
-    NODEGRAPH_CFG_LOG_DIR       = os.path.join(ROOT_DIR, 'apps', logs),
-    NODEGRAPH_CFG_CACHE_DIR     = os.path.join(ROOT_DIR, 'apps', cache),
-    NODEGRAPH_CFG_PREF_DIR      = os.path.join(ROOT_DIR, 'apps', prefs),
-    )
-
-    def __str__(self):
-        return json.dumps({self.__class__.__name__: self.data}, indent=4)
-
-    def __repr__(self):
-        return json.dumps({self.__class__.__name__: self.data}, indent=4)
-
-    def __init__(self):
-        super(DIRECTORIES, self).__init__()
-
-        for key, value in self._data.items():
-            value = value.replace('\\', '/')
-            if not os.path.exists(value):
-                os.mkdir(value)
-
-    @property
-    def data(self):
-        return self._data
-
-    __dict__ = _data
-
-paths = DIRECTORIES()
-damg_dirs = paths.__dict__
+DAMG_LOGO_32                = os.path.join(DAMG_LOGO_DIR, 'logo32')
+PLM_LOGO_32                 = os.path.join(PLM_LOGO_DIR, 'logo32')
 
 # -------------------------------------------------------------------------------------------------------------
 """ Documentations """
 
-from bin.data._docs import PLM_ABOUT
+from assets.data._docs import PLM_ABOUT
 
+DOC_DIR                     = os.path.join(APP_DATA_DIR, 'docs')
 README                      = PLM_ABOUT
 
 # -------------------------------------------------------------------------------------------------------------
 """ File path configurations """
 
-iconcfg                     = os.path.join(damg_dirs.get('PLM_CFG_DIR'), 'icons.cfg')                    # Config app icon path
-webIconCfg                  = os.path.join(damg_dirs.get('PLM_CFG_DIR'), 'webIcon.cfg')                  # Config Web icon path
-logoIconCfg                 = os.path.join(damg_dirs.get('PLM_CFG_DIR'), 'logoIcon.cfg')                 # Config logo icon path
+appIconCfg                  = os.path.join(CONFIG_DIR, 'appIcon.cfg')                   # Config app icon path
+webIconCfg                  = os.path.join(CONFIG_DIR, 'webIcon.cfg')                   # Config Web icon path
+logoIconCfg                 = os.path.join(CONFIG_DIR, 'logoIcon.cfg')                  # Config logo icon path
 
-pyEnvCfg                    = os.path.join(damg_dirs.get('PLM_CFG_DIR'), 'envKey.cfg')                   # Config python env variables
-appConfig                   = os.path.join(damg_dirs.get('PLM_CFG_DIR'), 'main.cfg')                     # Config pipeline soft package
-mainConfig                  = os.path.join(damg_dirs.get('PLM_CFG_DIR'), 'PLM.cfg')                      # Master config
+pyEnvCfg                    = os.path.join(CONFIG_DIR, 'envKey.cfg')                    # Config python env variables
+appConfig                   = os.path.join(CONFIG_DIR, 'main.cfg')                      # Config pipeline soft package
+mainConfig                  = os.path.join(CONFIG_DIR, 'PLM.cfg')                       # Master config
 
 # -------------------------------------------------------------------------------------------------------------
 """ Settings """
 
-APP_SETTING                 = os.path.join(damg_dirs.get('PLM_CFG_SETTING_DIR'), 'PLM.ini')               # Pipeline application setting
-USER_SETTING                = os.path.join(damg_dirs.get('PLM_CFG_SETTING_DIR'), 'user.ini')              # User setting
-FORMAT_SETTING              = os.path.join(damg_dirs.get('PLM_CFG_SETTING_DIR'), 'format.ini')
-UNIX_SETTING                = os.path.join(damg_dirs.get('PLM_CFG_SETTING_DIR'), 'unix.ini')
+APP_SETTING                 = os.path.join(SETTING_DIR, 'PLM.ini')                      # Pipeline application setting
+USER_SETTING                = os.path.join(SETTING_DIR, 'user.ini')                     # User setting
+FORMAT_SETTING              = os.path.join(SETTING_DIR, 'format.ini')
+UNIX_SETTING                = os.path.join(SETTING_DIR, 'unix.ini')
 
 SETTING_FILEPTH = dict( app = APP_SETTING, user = USER_SETTING, unix = UNIX_SETTING, format = FORMAT_SETTING)
 
 # -------------------------------------------------------------------------------------------------------------
 """ File path """
 
-DB_PTH                      = os.path.join(damg_dirs.get('DATA_DIR'), 'local.db')                          # Local database
-LOG_PTH                     = os.path.join(damg_dirs.get('PLM_CFG_LOG_DIR'), 'PLM.logs')                         # Log file
+DB_PTH                      = os.path.join(DB_DIR, 'local.db')                          # Local database
+LOG_PTH                     = os.path.join(LOG_DIR, 'PLM.logs')                         # Log file
 
 # --------------------------------------------------------------------------------------------------------------
 """ Autodesk config """
@@ -623,7 +411,7 @@ CONFIG_TOOLS    = generate_config('Tools')                          # useful/cus
 CONFIG_EXTRA    = generate_config('Extra')                          # Extra tool may be considering to use
 CONFIG_SYSTRAY  = generate_config('sysTray')
 
-CONFIG_MASTER   = os.path.join(damg_dirs.get('PLM_CFG_DIR'), "PLM.cfg")
+CONFIG_MASTER   = os.path.join(CONFIG_DIR, "PLM.cfg")
 
 # -------------------------------------------------------------------------------------------------------------
 """ Format """
@@ -699,7 +487,6 @@ PATTERN_SOLID               = Qt.SolidPattern                                   
 LINE_SOLID                  = Qt.SolidLine                                              # Line
 
 COLOR_LIBS = dict(
-
     WHITE                   = Qt.white,                                                  # Color
     LIGHTGRAY               = Qt.lightGray,
     GRAY                    = Qt.gray,
@@ -926,9 +713,9 @@ SCENE           = dict( width               = 2000                  , height = 2
 
 PRJ_INFO = dict( APPS               = ["maya", "zbrush", "mari", "nuke", "photoshop", "houdini", "after effects"],
                  MASTER             = ["assets", "sequences", "deliverables", "documents", "editorial", "sound", "resources", "RnD"],
-                 TASKS              = ["art", "plt_model", "rigging", "surfacing"],
+                 TASKS              = ["art", "model", "rigging", "surfacing"],
                  SEQTASKS           = ["anim", "comp", "fx", "layout", "lighting"],
-                 ASSETS             = {"heroObj": ["washer", "dryer"], "environment": [], "props": []},
+                 ASSETS             = ["characters", "environment", "props", ],
                  STEPS              = ["publish", "review", "work"],
                  MODELING           = ["scenes", "fromZ", "toZ", "objImport", "objExport", "movie"],
                  RIGGING            = ["scenes", "reference"],
@@ -942,7 +729,6 @@ FIX_KEYS = dict( TextEditor         = 'textEditor', NoteReminder = 'noteReminder
                  EnglishDictionary  = 'engDict',    FindFiles    = 'findFile',      ImageViewer = 'imageViewer', NodeGraph = 'nodeGraph',
                  Screenshot         = 'screenShot', )
 
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 3/06/2018 - 10:56 PM
-# Pipeline manager - DAMGteam
+# Created by panda on 20/08/2018 - 8:27 PM
+# © 2017 - 2018 DAMGteam. All rights reserved

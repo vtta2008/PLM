@@ -25,7 +25,7 @@ else:
     if os.getenv(__envKey__)   != ROOT:
         os.environ[__envKey__]  = ROOT
 
-from dCore.Configurations import Configurations
+from core.Configurations import Configurations
 cfg                             = Configurations(__envKey__, ROOT)
 
 # -------------------------------------------------------------------------------------------------------------
@@ -59,7 +59,7 @@ if sys.platform == "win32":
 else:
     base = None
 
-from dCore.Loggers import SetLogger
+from core.Loggers import SetLogger
 logger = SetLogger(__file__)
 report = logger.report
 

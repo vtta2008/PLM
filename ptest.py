@@ -23,7 +23,7 @@ def update_python_packages():
     print('all finished')
 
 
-from dCore.DRegistry import ClassRegistry, ClassRegistryInstanceCache
+from core.DRegistry import ClassRegistry, ClassRegistryInstanceCache
 
 pokedex = ClassRegistry('element')
 
