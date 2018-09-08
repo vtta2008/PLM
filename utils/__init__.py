@@ -723,12 +723,6 @@ def is_newer(file1, file2):
     return time1 > time2
 
 
-# - Testing -----
-def test_func(w, h):
-    print
-    '# width: %.2f, height: %.2f' % (float(w), float(h))
-
-
 def nodeParse(node):
     t = node[u"type"]
 

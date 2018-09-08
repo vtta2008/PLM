@@ -27,8 +27,7 @@ else:
     if os.getenv('ROOT') != ROOT:
         subprocess.Popen('SetX {} %CD%'.format('ROOT'), shell=True).wait()
 
-from bin.config import __envKey__, DAMGTEAM, trinhdo, duongminhduc, damgteam, damgAssets, founder, coFounder, copyright, \
-    __pkgsReq__, damg_dirs, KEYPACKAGE
+from bin.damgdock.types import damg_dirs
 
 DAMG_DIR = damg_dirs['DAMG_DIR']
 DAMG_CFG_DIR = damg_dirs['DAMG_CFG_DIR']

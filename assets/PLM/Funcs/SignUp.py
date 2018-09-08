@@ -173,7 +173,7 @@ class SignUp(QWidget):
 
         if self.rawAvatarPth:
             self.userAvatar.setPixmap(QPixmap.fromImage(QImage(self.rawAvatarPth)))
-            self.userAvatar.update()
+            self.userAvatar.initialize()
 
     def createBtnClicked(self):
         if self.check_all_conditions():

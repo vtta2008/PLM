@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import
 
 import os, json
-from bin.types.element import DObj, DDict
+from bin.data.pydamg.element import DObj, DDict
 
 
 class Paths(DObj):

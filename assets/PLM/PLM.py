@@ -31,24 +31,23 @@ from PyQt5.QtCore       import QThreadPool, pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets    import QApplication
 
 # Plm
-from ui.Web.PLMBrowser  import PLMBrowser
-from ui.uikits.UiPreset import AppIcon
+from apps.Webbrowser.PLMBrowser import PLMBrowser
+from assets.toolkit.UiPreset import AppIcon
 
 from core.StyleSheets   import StyleSheets
 from core.Settings      import Settings
 from core.Cores         import AppCores, CoreApplication
-from core.Loggers       import SetLogger
-from core.Metadata      import __serverCheck__, PLMAPPID
-from core.paths         import SETTING_FILEPTH, ST_FORMAT
+
+from bin.config         import , PLMAPPID
+from core.paths         import , ST_FORMAT
 from core.Worker        import Worker
 
-from assets.data._docs import SYSTRAY_UNAVAI
+from bin.data._docs import SYSTRAY_UNAVAI
 
-from assets.data.localSQL import QuerryDB
-from dock.utils import str2bool, clean_file_ext, get_file_path
+from bin.data.localSQL import QuerryDB
+from utils import str2bool, clean_file_ext
 
-pths = get_file_path(os.path.join(os.getcwd(), 'tankers'))
-pprint.pprint(pths)
+SETTING_FILEPTH =
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """

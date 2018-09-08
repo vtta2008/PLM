@@ -17,7 +17,7 @@ from PyQt5.QtCore import pyqtSignal, QCoreApplication
 
 # PLM
 from core.Loggers import Loggers
-from assets import __organizscration__, __appname__, __version__, __website__
+from assets import __appname__, __version__, __website__
 from bin.scr.element import DObj
 
 
@@ -93,7 +93,13 @@ class AppCores(DObj):
         from assets.PLM.Settings import UserSetting
         from assets.PLM.Projects import NewProject
         from assets.PLM.Info import Credit, About, CodeConduct, Contributing, Reference, Version, LicenceMIT
-        from assets.PLM.Tools import Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary, Calendar, Calculator
+        from assets.PLM.Tools import FindFiles
+        from apps.Storyboarder import Screenshot
+        from apps.Calendar import NoteReminder
+        from apps.Iimageviewer import ImageViewer
+        from apps.Dictionary import EnglishDictionary
+        from apps.Calendar import Calendar
+        from apps.Calculator import Calculator
         from assets.PLM.Menus.config import Preferences, Configuration
         from assets.PLM.Funcs.Tools.TextEditor import TextEditor
         from assets.PLM.NodeGraph import NodeGraph

@@ -712,7 +712,7 @@ SCENE           = dict( width               = 2000                  , height = 2
 """ PLM project base """
 
 PRJ_INFO = dict( APPS               = ["maya", "zbrush", "mari", "nuke", "photoshop", "houdini", "after effects"],
-                 MASTER             = ["assets", "sequences", "deliverables", "documents", "editorial", "sound", "resources", "RnD"],
+                 MASTER             = ["_assets", "sequences", "deliverables", "documents", "editorial", "sound", "resources", "RnD"],
                  TASKS              = ["art", "model", "rigging", "surfacing"],
                  SEQTASKS           = ["anim", "comp", "fx", "layout", "lighting"],
                  ASSETS             = ["characters", "environment", "props", ],

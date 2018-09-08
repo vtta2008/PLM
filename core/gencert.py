@@ -10,8 +10,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
 
-# ! /usr/bin/python
-
 """
     This simple script makes it easy to create server certificates
     that are signed by your own Certificate Authority.

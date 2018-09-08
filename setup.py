@@ -14,7 +14,7 @@ from __future__ import absolute_import
 
 import os
 import setuptools
-from bin.config import __envKey__
+from bin.damgdock.types import __envKey__
 ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
 try:

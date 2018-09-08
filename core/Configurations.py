@@ -16,7 +16,7 @@ from __future__ import absolute_import, print_function, unicode_literals
 import os, sys, platform, json, subprocess, pkg_resources, shutil
 
 # PLM
-from bin.types.element import DCfg
+from bin.data.pydamg.element import DCfg
 
 # PtQt5
 from PyQt5.QtCore import (pyqtSignal, QByteArray, QDataStream, QIODevice, QThread)

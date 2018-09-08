@@ -15,9 +15,8 @@ from __future__ import absolute_import
 # Python
 import sys, os, logging, json, enum, pdb, traceback, linecache
 
-# PLM
-from dRC import paths
-from dRC.element import DLogger
+from damgdock.types.config import CONFIGS
+paths = CONFIGS()
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -149,11 +148,11 @@ class File_Handler(logging.FileHandler):
 # -------------------------------------------------------------------------------------------------------------
 """ Logger """
 
-class Loggers(DLogger):
+class Loggers(logging.Logger):
 
     key = 'PLM super logger'
 
-    def __init__(self, parent=None, level="debug", fmt=LOG_FORMAT['fullOpt'], dtfmt=DT_FORMAT['fullOpt'], filemode='a+', filename=LOG_PTH):
+    def __init__(self, parent=None, level="debug", fmt=LOG_FORMAT['fullOpt'], dtfmt=DT_FORMAT['fullOpt'], filemode='a+', filename=paths.LOG_PTH):
         super(Loggers, self).__init__(parent)
 
         self._parent = parent
@@ -179,8 +178,6 @@ class Loggers(DLogger):
         self.fh = File_Handler(self.fn, self.logLevel, self.fmt, self.dtfmt)
         self.addHandler(self.sh)
         self.addHandler(self.fh)
-
-        self.reg = DLogger(self)
 
     @property
     def id(self):

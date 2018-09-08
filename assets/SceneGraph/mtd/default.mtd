@@ -1,8 +1,0 @@
-# default node attributes
-[group Default Attributes]
-
-    [attr docstring]
-        default             STRING    "default node"
-
-    [input input]
-        default             MULTI     ""  

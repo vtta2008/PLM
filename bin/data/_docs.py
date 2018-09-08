@@ -8,6 +8,8 @@ Description:
 
 """
 
+TRADE_MARK = '™'
+
 PLM_ABOUT = """
 
     PIPELINE MANAGER TO MAKE A SHORT FILM

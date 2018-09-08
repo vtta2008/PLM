@@ -290,7 +290,7 @@ class NewProject(QWidget):
     #     # Create master folder
     #     os.mkdir(self.rootPth)
     #     # Create content of master Folder
-    #     master = ["assets", "sequences", "deliverables", "documents", "editorial", "sound", "resources", "RnD"]
+    #     master = ["_assets", "sequences", "deliverables", "documents", "editorial", "sound", "resources", "RnD"]
     #     steps = ["publish", "review", "work"]
     #     mayaFolders = ["scenes", "sourceimages", "images", "movie", "alembic", "reference"]
     #
@@ -302,7 +302,7 @@ class NewProject(QWidget):
     #     assetsTasks = ["art", "plt_model", "surfacing", "rigging"]
     #     assetsSections = ["characters", "environment", "props"]
     #
-    #     assetsPth = os.path.join(self.rootPth, "assets")
+    #     assetsPth = os.path.join(self.rootPth, "_assets")
     #     for section in assetsSections:
     #         assetsSectionsPth = os.path.join(assetsPth, section)
     #         os.mkdir(assetsSectionsPth)

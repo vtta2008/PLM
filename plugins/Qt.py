@@ -25,9 +25,9 @@ DOCUMENTATION
         >> button.show()
         >> app.exec_()
 
-    All members of PySide2 are mapped from other bindings, should they exist.
+    All _members of PySide2 are mapped from other bindings, should they exist.
     If no equivalent member exist, it is excluded from Qt.py and inaccessible.
-    The idea is to highlight members that exist across all supported binding,
+    The idea is to highlight _members that exist across all supported binding,
     and guarantee that code that runs on one binding runs on all others.
 
     For more details, visit https://github.com/mottosso/Qt.py
@@ -64,11 +64,11 @@ except NameError:
     long = int
 
 
-"""Common members of all bindings
+"""Common _members of all bindings
 
 This is where each member of Qt.py is explicitly defined.
 It is based on a "lowest common denominator" of all bindings;
-including members found in each of the 4 bindings.
+including _members found in each of the 4 bindings.
 
 The "_common_members" dictionary is generated using the
 build_membership.handler script.
@@ -910,9 +910,9 @@ def _loadUi(uifile, baseinstance=None):
         raise NotImplementedError("No implementation available for loadUi")
 
 
-"""Misplaced members
+"""Misplaced _members
 
-These members from the original submodule are misplaced relative PySide2
+These _members from the original submodule are misplaced relative PySide2
 
 """
 _misplaced_members = {
@@ -1035,7 +1035,7 @@ _misplaced_members = {
 """ Compatibility Members
 
 This dictionary is used to build Qt.QtCompat objects that provide a consistent
-interface for obsolete members, and differences in binding return values.
+interface for obsolete _members, and differences in binding return values.
 
 {
     "binding": {
@@ -1184,10 +1184,10 @@ def _setup(module, extras):
 
 
 def _reassign_misplaced_members(binding):
-    """Apply misplaced members from `binding` to Qt.py
+    """Apply misplaced _members from `binding` to Qt.py
 
     Arguments:
-        binding (dict): Misplaced members
+        binding (dict): Misplaced _members
 
     """
 
@@ -1270,7 +1270,7 @@ def _build_compatibility_members(binding, decorators=None):
 
     decorators = decorators or dict()
 
-    # Allow optional site-level customization of the compatibility members.
+    # Allow optional site-level customization of the compatibility _members.
     # This method does not need to be implemented in QtSiteConfig.
     try:
         import QtSiteConfig
@@ -1290,7 +1290,7 @@ def _build_compatibility_members(binding, decorators=None):
                 src_object = getattr(Qt, "_" + namespaces[0])
             except AttributeError as e:
                 _log("QtCompat: AttributeError: %s" % e)
-                # Skip reassignment of non-existing members.
+                # Skip reassignment of non-existing _members.
                 # This can happen if a request was made to
                 # rename a member that didn't exist, for example
                 # if QtWidgets isn't available on the target platform.
@@ -1321,7 +1321,7 @@ def _pyside2():
 
     These functions serve to test the existence of a binding
     along with set it up in such a way that it aligns with
-    the final step; adding members from the original binding
+    the final step; adding _members from the original binding
     to Qt.py
 
     """
@@ -1679,7 +1679,7 @@ def _install():
         # If not binding were found, throw this error
         raise ImportError("No Qt binding were found.")
 
-    # Install individual members
+    # Install individual _members
     for name, members in _common_members.items():
         try:
             their_submodule = getattr(Qt, "_%s" % name)
@@ -1696,7 +1696,7 @@ def _install():
         sys.modules[__name__ + "." + name] = our_submodule
 
         for member in members:
-            # Accept that a submodule may miss certain members.
+            # Accept that a submodule may miss certain _members.
             try:
                 their_member = getattr(their_submodule, member)
             except AttributeError:
@@ -1725,7 +1725,7 @@ Qt.IsPyQt4 = Qt.__binding__ == 'PyQt4'
 
 QtCompat contains wrappers and added functionality
 to the original bindings, such as the CLI interface
-and otherwise incompatible members between bindings,
+and otherwise incompatible _members between bindings,
 such as `QHeaderView.setSectionResizeMode`.
 
 """
@@ -1796,7 +1796,7 @@ if __name__ == "__main__":
 # PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
 # CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
 # EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, BINDATA, OR
 # PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
 # LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
 # NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS

@@ -10,14 +10,30 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
 
-""" Import """
+import os, sys, requests
+import docker
 
-# Python
-import os
-import subprocess
+from PyQt5.QtWidgets import QApplication
 
-# DAMG
-from app import ROOT, __envKey__
+from damgdock.types.api import FOUNDER, COFOUNDER
+from damgdock.types.model import VERSION, COPYRIGHT, SERVER
+from damgdock.types.asset import PLM
+from damgdock.types.build import DAMGTEAM
+
+from core.Cores import CoreApplication
+from core.Settings import Settings
+
+version                                     = VERSION()
+copyright                                   = COPYRIGHT()
+server                                      = SERVER()
+founder                                     = FOUNDER()
+cofounder                                   = COFOUNDER()
+
+
+class DamgDock(QApplication):
+
+    def __init__(self):
+        super(DamgDock, self).__init__(sys.argv)
 
 
 
