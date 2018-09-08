@@ -1,0 +1,30 @@
+# note node attributes
+[group Node Transform]
+
+    [attr width]
+        default             FLOAT     100.0
+        required            BOOL      true
+        private             BOOL      true   
+
+[group Node Attributes]
+
+    [attr font_size]
+        default             INT       6
+        label               STRING    "Font Size"
+
+    [attr base_height]
+        default             FLOAT     75.0
+        private             BOOL      true
+
+    [attr doc_text]
+        default             DOC       "Sample note text."
+        label               STRING    "Text"
+
+    [attr force_expand]
+        default             BOOL      false
+        label               STRING    "Expand Node"
+        private             BOOL      true  
+
+    [attr show_name]
+        default             BOOL      false
+        label               STRING    "Show name"

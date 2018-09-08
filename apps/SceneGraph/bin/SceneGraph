@@ -1,0 +1,75 @@
+#!/usr/bin/env python
+import os
+import sys
+from PySide import QtGui, QtCore
+from optparse import OptionParser
+
+
+def _path_fix():
+    """
+    Append path for windows.
+    """
+    dname = os.path.dirname(__file__)
+    rootdir = os.path.dirname(os.path.dirname(dname))
+    sys.path.append(rootdir)
+
+
+if __name__ == "__main__":
+    _path_fix()
+    from SceneGraph import scenegraph
+    from SceneGraph.options import PACKAGE, PLATFORM, EDGE_TYPES, VIEWPORT_MODES
+
+    APP_STYLES = [s.lower() for s in QtGui.QStyleFactory.keys()]
+
+    filename = None
+    args = sys.argv
+    if len(args)>1:
+        if os.path.exists(args[1]):            
+            filename = args[1]
+
+    parser = OptionParser()
+    parser.add_option("-g", "--use_gl", action="store_true", dest="use_gl", default=False, help='use OpenGL renderer.')
+    parser.add_option("--fx", action="store_true", dest="render_fx", default=True, help='render node dropshadow & glow effects.')
+    parser.add_option("-m", action="store", dest="viewport_mode", help='set the Qt viewport mode (ie. "full", "smart", "minimal").')
+    parser.add_option("-e", action="store", dest="edge_type", help='node edge style (ie. "bezier", "polygon").')
+    parser.add_option("-s", action="store", dest="app_style", help='Qt application style (ie. "%s").' % '", "'.join(APP_STYLES))
+    parser.add_option("--style", action="store_false", dest="use_stylesheet", default=True, help='ignore builtin stylsheet.')
+
+    # oxygen looks better in linux overall, but plastique groupBoxes look better
+    # Designer previews in GTK+
+    # Maya style is close to plastique
+    if PLATFORM == 'Linux':
+        parser.set_default('app_style', 'plastique')
+
+    if PLATFORM == 'MacOSX':
+        parser.set_default('app_style', 'cleanlooks')
+
+    if PLATFORM == 'Windows':
+        parser.set_default('app_style', 'plastique')
+
+    (options, args) = parser.parse_args()
+
+    app = QtGui.QApplication(sys.argv)
+
+    # set the application style
+    if options.app_style:
+        if options.app_style.lower() in APP_STYLES:
+            #print '[%s]: INFO: setting Qt style: "%s".' % (PACKAGE, options.app_style)
+            app.setStyle(options.app_style)
+
+    # update prefs
+    prefs = dict()
+    if options.viewport_mode:
+        if options.viewport_mode.lower() in VIEWPORT_MODES:
+            prefs.update(viewport_mode=options.viewport_mode.lower())
+
+    if options.edge_type:
+        if options.edge_type.lower() in EDGE_TYPES:
+            prefs.update(edge_type=options.edge_type.lower())
+
+    sgui = scenegraph.SceneGraphUI(use_gl=options.use_gl, render_fx=options.render_fx, use_stylesheet=options.use_stylesheet, **prefs)
+    sgui.show()
+
+    if filename:
+        sgui.readGraph(filename)
+    sys.exit(app.exec_())
