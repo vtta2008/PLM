@@ -7,15 +7,16 @@ Description:
     Here is where a lot of function need to use multiple times overall
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # Python
-import os, sys, requests, platform, subprocess, winshell, yaml, json, linecache, re, datetime, time, uuid, win32api, pprint
+import os, sys, platform, subprocess, winshell
+import requests, yaml, json, linecache, re
+import datetime, time, uuid, win32api, pprint
 
-__all__ = ['attr_type', 'auto_convert', 'camel_case_to_lower_case_underscore', 'camel_case_to_title', 'clean_name',
-            'is_bool', 'is_dict', 'is_list', 'is_none', 'is_number', 'is_string', 'list_attr_types',
-            'lower_case_underscore_to_camel_case', 'is_newer', 'test_func']
+from functools import WRAPPER_ASSIGNMENTS, WRAPPER_UPDATES, update_wrapper as _update_wrapper, partial
+
 
 # PyQt5
 from PyQt5.QtCore   import Qt, QRectF, QRect, QSize
@@ -533,32 +534,41 @@ def clean_file_ext(ext):
             os.remove(filePth)
 
 
-# - Naming ----
+# ----------------------------------------------------------------------------------------------------------- #
+""" Naming """
+
 def clean_name(text):
     """
+
     Return a cleaned version of a string - removes everything
     but alphanumeric characters and dots.
     :param str text: string to clean.
     :returns: cleaned string.
     :rtype: str
+
     """
     return re.sub(r'[^a-zA-Z0-9\n\.]', '_', text)
 
 
 def camel_case_to_lower_case_underscore(text):
     """
+
     Split string by upper case letters.
     F.e. useful to convert camel case strings to underscore separated ones.
     :param str text: string to convert.
     :returns: formatted string.
     :rtype: str
+
     """
     words = []
     from_char_position = 0
+
     for current_char_position, char in enumerate(text):
+
         if char.isupper() and from_char_position < text:
             words.append(s[from_char_position:current_char_position].lower())
             from_char_position = current_char_position
+
     words.append(text[from_char_position:].lower())
     return '_'.join(words)
 
@@ -593,7 +603,10 @@ def lower_case_underscore_to_camel_case(text):
     return split_string[0] + class_.join('', map(class_.capitalize, split_string[1:]))
 
 
-# - Attribute Functions ----
+
+# ----------------------------------------------------------------------------------------------------------- #
+""" Attribute Functions """
+
 def auto_convert(value):
     """
     Auto-convert a value to it's given type.
@@ -728,6 +741,7 @@ def nodeParse(node):
 
     if t == u"Program":
         body = [parse(block) for block in node[u"body"]]
+
         return Program(body)
 
     elif t == u"VariableDeclaration":
@@ -754,6 +768,16 @@ def nodeParse(node):
     else:
         raise ValueError("Invalid data structure.")
 
+def update_wrapper(wrapper, wrapped, *args, **kwargs):
+    """Update wrapper, also setting .__wrapped__."""
+    wrapper = _update_wrapper(wrapper, wrapped, *args, **kwargs)
+    wrapper.__wrapped__ = wrapped
+    return wrapper
+
+
+def wraps(wrapped, assigned=WRAPPER_ASSIGNMENTS, updated=WRAPPER_UPDATES):
+    """ Backport of Python 3.5 wraps that adds .__wrapped__. """
+    return partial(update_wrapper, wrapped=wrapped, assigned=assigned, updated=updated)
 
 # ----------------------------------------------------------------------------------------------------------- #
 

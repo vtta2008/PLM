@@ -12,7 +12,7 @@ from __future__ import absolute_import
 
 import json
 
-from damgdock.types.base import DAMGDICT, DAMG
+from damgteam.types.base import DAMGDICT, DAMG
 from bin.data._docs import PLM_ABOUT
 
 class PLM(DAMG):

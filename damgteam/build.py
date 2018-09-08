@@ -10,11 +10,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
 
-from damgdock.base import DAMGDICT, DAMG
-from damgdock.types.api import FOUNDER, COFOUNDER
-from damgdock.types.model import VERSION, COPYRIGHT, SERVER
-from damgdock.types.asset import PLM
-from damgdock.types.config import CONFIGS
+from damgteam.base import DAMGDICT, DAMG
+from damgteam.types.api import FOUNDER, COFOUNDER
+from damgteam.types.model import VERSION, COPYRIGHT, SERVER
+from damgteam.types.asset import PLM
+from app.config import CONFIGS
 
 version                                     = VERSION()
 copyright                                   = COPYRIGHT()
@@ -22,12 +22,9 @@ server                                      = SERVER()
 founder                                     = FOUNDER()
 cofounder                                   = COFOUNDER()
 
-class DAMGTEAM(DAMG):
 
-    _id                                     = "DAMG"
-    _name                                   = "DAMGTEAM"
-    _data                                   = DAMGDICT(_id, _name)
-    __dict__                                = DAMGDICT(_id, _name)
+
+class DAMGTEAM(DAMG):
 
     configs                                 = CONFIGS()
 
@@ -38,8 +35,6 @@ class DAMGTEAM(DAMG):
     _slogan                                 = "Comprehensive Design Solution"
     _website                                = "https://damgteam.com"
 
-    _members                                = DAMGDICT(_id, _name)
-    _assets                                 = DAMGDICT(_id, _name)
 
     def __init__(self, version=None, copyright=None, server=None, founder=None, cofounder=None):
         super(DAMGTEAM, self).__init__()

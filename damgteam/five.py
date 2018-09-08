@@ -1,15 +1,21 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: __init__.py.py
+Script Name: five.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import
+from __future__ import absolute_import, unicode_literals
+
+import sys
+
+from damgteam.vine import five
+
+sys.modules[__name__] = five
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 31/08/2018 - 7:22 PM
+# Created by panda on 8/09/2018 - 4:16 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

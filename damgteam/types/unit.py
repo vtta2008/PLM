@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
 
-from damgdock.types import DAMG, DAMGdict
+from damgteam.types import DAMG, DAMGdict
 
 class year(DAMG):
     _id = 'Unit'

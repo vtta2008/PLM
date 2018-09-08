@@ -15,10 +15,10 @@ import docker
 
 from PyQt5.QtWidgets import QApplication
 
-from damgdock.types.api import FOUNDER, COFOUNDER
-from damgdock.types.model import VERSION, COPYRIGHT, SERVER
-from damgdock.types.asset import PLM
-from damgdock.types.build import DAMGTEAM
+from damgteam.types.api import FOUNDER, COFOUNDER
+from damgteam.types.model import VERSION, COPYRIGHT, SERVER
+from damgteam.types.asset import PLM
+from damgteam.types.build import DAMGTEAM
 
 from core.Cores import CoreApplication
 from core.Settings import Settings

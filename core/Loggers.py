@@ -15,7 +15,7 @@ from __future__ import absolute_import
 # Python
 import sys, os, logging, json, enum, pdb, traceback, linecache
 
-from damgdock.types.config import CONFIGS
+from damgteam.types.config import CONFIGS
 paths = CONFIGS()
 
 # -------------------------------------------------------------------------------------------------------------
