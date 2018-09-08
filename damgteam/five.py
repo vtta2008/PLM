@@ -12,9 +12,9 @@ from __future__ import absolute_import, unicode_literals
 
 import sys
 
-from damgteam.vine import five
+import vine.five
 
-sys.modules[__name__] = five
+sys.modules[__name__] = vine.five
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 8/09/2018 - 4:16 PM

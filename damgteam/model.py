@@ -67,10 +67,6 @@ class COFOUNDER(PERSON):
     __profile__                             = PERSON.__dict__
 
 
-obj = FOUNDER()
-obj2 = COFOUNDER()
-print(obj, obj2)
-
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 9/09/2018 - 5:21 AM
 # © 2017 - 2018 DAMGteam. All rights reserved
