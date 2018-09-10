@@ -13,9 +13,7 @@ from __future__ import absolute_import, unicode_literals
 # Python
 import os, sys
 
-
 root = os.path.abspath(os.getcwd())
-print(root)
 
 
 # -------------------------------------------------------------------------------------------------------------

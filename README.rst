@@ -1,4 +1,3 @@
-
 NOTE:
 ====
 
@@ -62,5 +61,5 @@ In CommandPrompt/WindowShell:
 REFERENCE
 =========
 
-For Plugins/Files that I am using, you can see `here <bin/data/doc/reference.rst>`_.
-Copyright (C) 2017 - 2018 by DAMGteam - `details <bin/data/doc/copyright.rst>`_.
+For Plugins/Files that I am using, you can see `here <bin/data/docs/reference.rst>`_.
+Copyright (C) 2017 - 2018 by DAMGteam - `details <bin/data/docs/copyright.rst>`_.

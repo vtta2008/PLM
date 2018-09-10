@@ -76,6 +76,8 @@ class Iterator(object):
 
 class NAME(object):
 
+    """ Object name """
+
     def generateName(self, cls=None):
         if cls is None:
             key                             = self.__class__.__name__
@@ -87,6 +89,7 @@ class NAME(object):
 
 class OID(object):
 
+    """ Object ID """
 
     def __init__(self):
         super(OID, self).__init__()
@@ -200,14 +203,29 @@ oidsObj = OID()
 
 
 def IID(obj):
+
+    """
+    Return the identity of an object.
+
+    This is guaranteed to be unique among simultaneously existing objects.
+    (CPython uses the object's memory address.)
+
+    """
+
     return id(obj)
 
 
 def UID():
+
+    """ Unique ID """
+
     return uuid.uuid4()
 
 
 def get_datetime(mode='long'):
+
+    """ Today and current time """
+
     if mode == 'long':
         return QDateTime.currentDateTime().toString(Qt.DefaultLocaleLongDate).replace(', ', '_').replace(' ', '_')
     else:
@@ -224,7 +242,7 @@ class DAMGERROR(Exception):
 
 class DAMG(object):
     """
-    New style object.
+    Base Damg team object.
 
     """
 
@@ -260,31 +278,44 @@ class DAMG(object):
         self.initialize()
 
     def __str__(self):
+
         """ Print object ill return json data type """
+
         return json.dumps({self._name: self.data}, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     def __repr__(self):
+
         """ Print object ill return json data type """
+
         return json.dumps({self._name: self.data}, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     def __call__(self):
+
         """ Make object callable """
+
         if isinstance(self, object):
             return True
         else:
             return False
 
     def initialize(self):
+
         """ Store data into __dict__ """
+
         for key, value in self._data.items():
             if not key in ['oid', 'iid', 'uid', 'metadatetime', 'name', 'type', 'copyright']:
                 self.__dict__[key]          = value
 
     def to_json(self):
+
         """ Debug json serizalable error. """
+
         return {self.__class__.__name__: 'YES'}
 
     def to_dict(self):
+
+        """ Return the data as a normal dict """
+
         return self.__dict__
 
     @property
@@ -364,7 +395,6 @@ class DAMG(object):
     @metadata.setter
     def metadata(self, newMetadata):
         self._metadata                      = newMetadata
-
 
     __copyright__                           = _copyright
 
@@ -847,319 +877,6 @@ class DAMGLIST(list):                                                           
         self._metadata                      = newMetadata
 
     __copyright__                           = _copyright
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" Datatypes: Unit --> date & time"""
-
-
-class UNIT(DAMG):
-
-    _unit = 'Unit'
-
-    @property
-    def unit(self):
-        return self._unit
-
-    @unit.setter
-    def unit(self, newUnit):
-        self._unit                              = newUnit
-
-
-class DATETIME(UNIT):
-
-    _unit                                   = 'Duration'
-
-    def __init__(self):
-        UNIT.__init__(self)
-
-        self.get_tonow()
-        self.get_today()
-        self.set_time()
-        self.set_date()
-
-    def days_distance(self, daystart, dayend):
-        return daystart.daysTo(dayend)
-
-    def set_date(self, day=1, month=1, year=2013):
-
-        self._year                          = year
-        self._month                         = month
-        self._day                           = day
-
-        self._setdate                       = QDate(self._year, self._month, self._day)
-
-        self._date                          = self._setdate.toString(damgvar.fmts)
-        self.__date__                       = self._setdate.toString(damgvar.fmtl)
-
-        return self._date, self.__date__
-
-    def set_time(self, hour=1, minute=30, second=30):
-        self._hour                          = hour
-        self._minute                        = minute
-        self._second                        = second
-
-        self._settime                       = QTime(self._hour, self._minute, self._second)
-
-        self._time                          = self._settime.toString(damgvar.fmts)
-        self.__time__                       = self._settime.toString(damgvar.fmtl)
-
-        return self._time, self.__time__
-
-    def get_tonow(self):
-        now                                 = QTime.currentTime()
-        self._now                           = now.toString(damgvar.fmts)
-        self.__now__                        = now.toString(damgvar.fmtl)
-
-        return self._now, self.__now__
-
-    def get_today(self):
-
-        now                                 = QDate.currentDate()
-        self._today                         = now.toString(damgvar.fmts)
-        self.__today__                      = now.toString(damgvar.fmtl)
-
-        return self._today, self.__today__
-
-    @property
-    def date(self):
-        return self._date
-
-    @property
-    def today(self):
-        return self._today
-
-    @property
-    def totime(self):
-        return self._now
-
-    @date.setter
-    def date(self, newdate):
-        self._date                          = newdate
-
-    @today.setter
-    def today(self, date):
-        self._today                         = date
-
-    @totime.setter
-    def totime(self, newtime):
-        self._now                           = newtime
-
-
-class DOB(DATETIME):
-
-    _unit                                   = 'Birthday'
-
-    def __init__(self, day=1, month=1, year=1900):
-        DATETIME.__init__(self)
-
-        self._day                           = day
-        self._month                         = month
-        self._year                          = year
-
-        self._data                          = DAMGDICT()
-        self.__dict__                       = DAMGDICT()
-
-        self._dob                           =  QDate(self._year, self._month, self._day)
-        self.__dob__                        = self._dob.toString(damgvar.fmtl)
-        self.dobs                           = self._dob.toString(damgvar.fmts)
-
-        self.initialize()
-
-    @property
-    def data(self):
-        self._data.add_item('metadata'      , self._metadata)
-        self._data.add_item('name'          , self._name)
-        self._data.add_item('dob'           , self.dobs)
-        self._data.add_item('__dob__'       , self.__dob__)
-        self._data.add_item('unit'          , self._unit)
-
-        return self._data
-
-    @property
-    def dob(self):
-        return self._dob
-
-    @dob.setter
-    def dob(self, newDob):
-        self._dob                           = newDob
-
-
-class YEAR(DATETIME):
-    _unit = 'Year(s)'
-
-
-class MONTH(DATETIME):
-    _unit = 'Month(s)'
-
-
-class WEEK(DATETIME):
-    _unit = 'Week(s)'
-
-
-class DAY(DATETIME):
-    _unit = 'Day(s)'
-
-
-class HOUR(DATETIME):
-    _unit = 'Hr(s)'
-
-
-class MINUTE(DATETIME):
-    _unit = 'Min(s)'
-
-
-class SECOND(DATETIME):
-    _unit = 'Sec(s)'
-
-
-class Monday(DAY):
-    _unit = 'Monday'
-
-
-class Tuesday(DAY):
-    _unit = 'Tuesday'
-
-
-class Wednesday(DAY):
-    _unit = 'Wednesday'
-
-
-class Thursday(DAY):
-    _unit = 'Thursday'
-
-
-class Friday(DAY):
-    _unit = 'Friday'
-
-
-class Saturday(DAY):
-    _unit = 'Saturday'
-
-
-class Sunday(DAY):
-    _unit = 'Sunday'
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" Datatypes: Person """
-
-
-class PERSON(DAMG):
-
-    _data                                   = DAMGDICT()
-    __dict__                                = DAMGDICT()
-
-    def __init__(self, pid=None, firstname=None, lastname=None, aka=None, title=None, artistTitle=None, eProfile=None, email=None,
-                 dob=None, coo=None, gender=None):
-        DAMG.__init__(self)
-
-        self._pid                           = pid
-        self._firstname                     = firstname
-        self._lastname                      = lastname
-        self._aka                           = aka
-        self._title                         = title
-        self._artistTitle                   = artistTitle
-        self._eProfile                      = eProfile
-        self._email                         = email
-        self._dob                           = dob
-        self._coo                           = coo
-
-        self._name                          = "{0} {1}".format(self._firstname, self._lastname)
-        self._fullname                      = "{0} {1} (a.k.a {2})".format(self._firstname, self._lastname, self._aka)
-
-        self.__fullname__                   = self._fullname
-        self.__title__                      = self._title
-        self.__email__                      = self._email
-
-
-    @property
-    def data(self):
-        self._data.add_item('pid'           , self._pid)
-        self._data.add_item('name'          , self._name)
-        self._data.add_item('fullname'      , self._fullname)
-        self._data.add_item('title'         , self._title)
-        self._data.add_item('artistTitle'   , self._artistTitle)
-        self._data.add_item('DOB'           , self._dob)
-        self._data.add_item('email'         , self._email)
-        self._data.add_item('eProfile'      , self._eProfile)
-        self._data.add_item('coo'           , self._coo)
-
-        self._data.add_item('metadata'      , self._metadata)
-
-        return self._data
-
-    @property
-    def pid(self):
-        return self._pid
-
-    @property
-    def fullname(self):
-        return self._fullname
-
-    @property
-    def email(self):
-        return self._email
-
-    @property
-    def title(self):
-        return self._title
-
-    @property
-    def artistTitle(self):
-        return self._artistTitle
-
-    @property
-    def dob(self):
-        return self._dob
-
-    @property
-    def eProfile(self):
-        return self._eProfile
-
-    @property
-    def profile(self):
-        return self.__dict__
-
-    @property
-    def coo(self):
-        return self._coo
-
-    @pid.setter
-    def pid(self, newData):
-        self._pid                           = newData
-
-    @fullname.setter
-    def fullname(self, newData):
-        self._fullname                      = newData
-
-    @email.setter
-    def email(self, newData):
-        self._email                         = newData
-
-    @title.setter
-    def title(self, newData):
-        self._title                         = newData
-
-    @artistTitle.setter
-    def artistTitle(self, newData):
-        self._artistTitle                   = newData
-
-    @dob.setter
-    def dob(self, newData):
-        self._dob                           = newData
-
-    @eProfile.setter
-    def eProfile(self, newData):
-        self._eProfile                      = newData
-
-    @profile.setter
-    def profile(self, newData):
-        self.__dict__                       = newData
-
-    @coo.setter
-    def coo(self, newData):
-        self._coo                           = newData
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 30/08/2018 - 8:18 PM

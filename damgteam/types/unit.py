@@ -10,140 +10,227 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
 
-from damgteam.types import DAMG, DAMGdict
+# PyQt5
+from PyQt5.QtCore import QDate, QTime, QDateTime
 
-class year(DAMG):
-    _id = 'Unit'
-    _name = 'Year(s)'
-
-class month(DAMG):
-    _id = 'Unit'
-    _name = 'Month(s)'
-
-class week(DAMG):
-    _id = 'Unit'
-    _name = 'Week(s)'
-
-class day(DAMG):
-    _id = 'Unit'
-    _name = 'Day(s)'
-
-class hour(DAMG):
-    _id = 'Unit'
-    _name = 'Hr(s)'
-
-class minute(DAMG):
-    _id = 'Unit'
-    _name = 'Min(s)'
-
-class second(DAMG):
-    _id = 'Unit'
-    _name = 'Sec(s)'
-
-class mon(DAMG):
-    _id = 'Unit'
-    _name = 'Monday'
-
-class tue(DAMG):
-    _id = 'Unit'
-    _name = 'Tuesday'
-
-class wed(DAMG):
-    _id = 'Unit'
-    _name = 'Wednesday'
-
-class thu(DAMG):
-    _id = 'Unit'
-    _name = 'Thursday'
-
-class fri(DAMG):
-    _id = 'Unit'
-    _name = 'Friday'
-
-class sat(DAMG):
-    _id = 'Unit'
-    _name = 'Saturday'
-
-class sun(DAMG):
-    _id = 'Unit'
-    _name = 'Sunday'
+from damgteam.base import DAMG, DAMGDICT, damgvar
 
 
+# -------------------------------------------------------------------------------------------------------------
+""" Unit base """
 
-class km(DAMG):
-    _id = 'Unit'
-    _name = 'Kilometter(s)'
+class UNIT(DAMG):
 
-class m(DAMG):
-    _id = 'Unit'
-    _name = 'Metter(s)'
+    _unit = 'Unit'
 
-class dm(DAMG):
-    _id = 'Unit'
-    _name = 'Decimetter(s)'
+    @property
+    def unit(self):
+        return self._unit
 
-class cm(DAMG):
-    _id = 'Unit'
-    _name = 'Centimeter(s)'
+    @unit.setter
+    def unit(self, newUnit):
+        self._unit                          = newUnit
 
-class mm(DAMG):
-    _id = 'Unit'
-    _name = 'Milimeter(s)'
+# -------------------------------------------------------------------------------------------------------------
+""" Unit --> date & time"""
 
+class DATETIME(UNIT):
 
-
-class Unit(DAMG):
-
-    _id = "Unit"
-    _name = "DAMGUNIT"
-    _data = DAMGdict(_id, _name)
-
-    _year = year()
-    _month = month()
-    _week = week()
-    _day = day()
-    _hr = hour()
-    _min = minute()
-    _sec = second()
-
-    _mon = mon()
-    _tue = tue()
-    _wed = wed()
-    _thu = thu()
-    _fri = fri()
-    _sat = sat()
-    _sun = sun()
-
-    _km = km()
-    _m = m()
-    _dm = dm()
-    _cm = cm()
-    _mm = mm()
+    _unit                                   = 'Duration'
 
     def __init__(self):
-        super(Unit, self).__init__()
+        UNIT.__init__(self)
 
-        self.year = self._year.__name__
-        self.month = self._month.__name__
-        self.week = self._week.__name__
-        self.day = self._day.__name__
-        self.hr = self._hr.__name__
-        self.min = self._min.__name__
-        self.sec = self._sec.__name__
+        self.get_tonow()
+        self.get_today()
+        self.set_time()
+        self.set_date()
 
-        self.mon = self._mon.__name__
-        self.tue = self._tue.__name__
-        self.wed = self._wed.__name__
-        self.thu = self._thu.__name__
-        self.fri = self._fri.__name__
-        self.sat = self._sat.__name__
-        self.sun = self._sun.__name__
+    def days_distance(self, daystart, dayend):
+        return daystart.daysTo(dayend)
 
-        self.km = self._km.__name__
-        self.m = self._m.__name__
-        self.dm = self._dm.__name__
-        self.cm = self._cm.__name__
-        self.mm = self._mm.__name__
+    def set_date(self, day=1, month=1, year=2013):
+
+        self._year                          = year
+        self._month                         = month
+        self._day                           = day
+
+        self._setdate                       = QDate(self._year, self._month, self._day)
+
+        self._date                          = self._setdate.toString(damgvar.fmts)
+        self.__date__                       = self._setdate.toString(damgvar.fmtl)
+
+        return self._date, self.__date__
+
+    def set_time(self, hour=1, minute=30, second=30):
+        self._hour                          = hour
+        self._minute                        = minute
+        self._second                        = second
+
+        self._settime                       = QTime(self._hour, self._minute, self._second)
+
+        self._time                          = self._settime.toString(damgvar.fmts)
+        self.__time__                       = self._settime.toString(damgvar.fmtl)
+
+        return self._time, self.__time__
+
+    def get_tonow(self):
+        now                                 = QTime.currentTime()
+        self._now                           = now.toString(damgvar.fmts)
+        self.__now__                        = now.toString(damgvar.fmtl)
+
+        return self._now, self.__now__
+
+    def get_today(self):
+
+        now                                 = QDate.currentDate()
+        self._today                         = now.toString(damgvar.fmts)
+        self.__today__                      = now.toString(damgvar.fmtl)
+
+        return self._today, self.__today__
+
+    @property
+    def date(self):
+        return self._date
+
+    @property
+    def today(self):
+        return self._today
+
+    @property
+    def totime(self):
+        return self._now
+
+    @date.setter
+    def date(self, newdate):
+        self._date                          = newdate
+
+    @today.setter
+    def today(self, date):
+        self._today                         = date
+
+    @totime.setter
+    def totime(self, newtime):
+        self._now                           = newtime
+
+
+class DOB(DATETIME):
+
+    _unit                                   = 'Birthday'
+
+    def __init__(self, day=1, month=1, year=1900):
+        DATETIME.__init__(self)
+
+        self._day                           = day
+        self._month                         = month
+        self._year                          = year
+
+        self._data                          = DAMGDICT()
+        self.__dict__                       = DAMGDICT()
+
+        self._dob                           =  QDate(self._year, self._month, self._day)
+        self.__dob__                        = self._dob.toString(damgvar.fmtl)
+        self.dobs                           = self._dob.toString(damgvar.fmts)
+
+        self.initialize()
+
+    @property
+    def data(self):
+        self._data.add_item('metadata'      , self._metadata)
+        self._data.add_item('name'          , self._name)
+        self._data.add_item('dob'           , self.dobs)
+        self._data.add_item('__dob__'       , self.__dob__)
+        self._data.add_item('unit'          , self._unit)
+
+        return self._data
+
+    @property
+    def dob(self):
+        return self._dob
+
+    @dob.setter
+    def dob(self, newDob):
+        self._dob                           = newDob
+
+
+class Year(DATETIME):
+    _unit = 'Year(s)'
+
+
+class Month(DATETIME):
+    _unit = 'Month(s)'
+
+
+class Week(DATETIME):
+    _unit = 'Week(s)'
+
+
+class Day(DATETIME):
+    _unit = 'Day(s)'
+
+
+class Hour(DATETIME):
+    _unit = 'Hr(s)'
+
+
+class Minute(DATETIME):
+    _unit = 'Min(s)'
+
+
+class Second(DATETIME):
+    _unit = 'Sec(s)'
+
+
+class Monday(Day):
+    _unit = 'Mon'
+
+
+class Tuesday(Day):
+    _unit = 'Tue'
+
+
+class Wednesday(Day):
+    _unit = 'Wed'
+
+
+class Thursday(Day):
+    _unit = 'Thu'
+
+
+class Friday(Day):
+    _unit = 'Fri'
+
+
+class Saturday(Day):
+    _unit = 'Sat'
+
+
+class Sunday(Day):
+    _unit = 'Sun'
+
+
+# -------------------------------------------------------------------------------------------------------------
+""" Unit --> long """
+
+
+class Kilometer(DAMG):
+    _unit = 'km(s)'
+
+class Meter(DAMG):
+    _unit = 'm(s)'
+
+class Decimeter(DAMG):
+    _unit = 'dm(s)'
+
+class Centimeter(DAMG):
+    _unit = 'cm(s)'
+
+class Milimeter(DAMG):
+    _unit = 'mm(s)'
+
+
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 31/08/2018 - 1:20 PM
