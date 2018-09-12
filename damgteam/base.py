@@ -73,6 +73,35 @@ class Iterator(object):
 # -------------------------------------------------------------------------------------------------------------
 """ Identification """
 
+def IID(obj):
+
+    """
+    Return the identity of an object.
+
+    This is guaranteed to be unique among simultaneously existing objects.
+    (CPython uses the object's memory address.)
+
+    """
+
+    return id(obj)
+
+
+def UID():
+
+    """ Unique ID """
+
+    return uuid.uuid4()
+
+
+def get_datetime(mode='long'):
+
+    """ Today and current time """
+
+    if mode == 'long':
+        return QDateTime.currentDateTime().toString(Qt.DefaultLocaleLongDate).replace(', ', '_').replace(' ', '_')
+    else:
+        return QDateTime.currentDateTime().toString(Qt.DefaultLocaleShortDate).replace(', ', '_').replace(' ', '_')
+
 
 class NAME(object):
 
@@ -202,36 +231,6 @@ namesObj = NAME()
 oidsObj = OID()
 
 
-def IID(obj):
-
-    """
-    Return the identity of an object.
-
-    This is guaranteed to be unique among simultaneously existing objects.
-    (CPython uses the object's memory address.)
-
-    """
-
-    return id(obj)
-
-
-def UID():
-
-    """ Unique ID """
-
-    return uuid.uuid4()
-
-
-def get_datetime(mode='long'):
-
-    """ Today and current time """
-
-    if mode == 'long':
-        return QDateTime.currentDateTime().toString(Qt.DefaultLocaleLongDate).replace(', ', '_').replace(' ', '_')
-    else:
-        return QDateTime.currentDateTime().toString(Qt.DefaultLocaleShortDate).replace(', ', '_').replace(' ', '_')
-
-
 # -------------------------------------------------------------------------------------------------------------
 """ Base object """
 
@@ -239,12 +238,13 @@ def get_datetime(mode='long'):
 class DAMGERROR(Exception):
     """ Common subclass for all DAMG exceptions """
 
+    _copyright                              = 'This is an asset of DAMGTEAM'                # Copyright
+
+    __copyright__                           = _copyright
+
 
 class DAMG(object):
-    """
-    Base Damg team object.
-
-    """
+    """ Base Damg team object. """
 
     _copyright                              = 'This is an asset of DAMGTEAM'                # Copyright
     _data                                   = dict()

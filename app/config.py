@@ -12,7 +12,7 @@ Description:
 
 import os, json
 
-from damgteam.base import DAMGDICT, DAMG, NAME, OID
+from damgteam.base import DAMGDICT, DAMG
 
 # -------------------------------------------------------------------------------------------------------------
 """ App (python) """
@@ -93,6 +93,7 @@ class CONFIG_PATHS(DAMG):
     x128                        = "x128"
 
     _root                       = os.getenv('ROOT')
+
     DAMG                        = _root
     DAMG_CFG                    = os.path.join(_root        , app           , config)
     DAMG_SETTING                = os.path.join(DAMG_CFG     , settings)
@@ -219,163 +220,12 @@ class CONFIG_PATHS(DAMG):
     SETTING_FILEPTH             = dict(app=APP_SETTING, user=USER_SETTING, unix=UNIX_SETTING, format=FORMAT_SETTING)
 
     def __init__(self):
-        super(CONFIG_PATHS, self).__init__()
+        DAMG.__init__(self)
 
         for key, value in self._data.items():
             value = value.replace('\\', '/')
             if not os.path.exists(value):
                 os.mkdir(value)
-
-        self._id                = OID(self)
-        self._name              = NAME(self)
-        self.__id__             = self._id.__oid__
-        self.__name__           = self._name.__name__
-
-        self._data              = DAMGDICT(self.__id__, self.__name__)
-        self.__dict__           = DAMGDICT(self._id.dictID, self.__name__)
-
-        self.initialize()
-
-    def __str__(self):
-        return json.dumps({self.__class__.__name__: self.data}, indent=4)
-
-    def __repr__(self):
-        return json.dumps({self.__class__.__name__: self.data}, indent=4)
-
-    @property
-    def data(self):
-
-        self._data.add_item('id', self._id)
-        self._data.add_item('name', self._name)
-
-        self._data.add_item('root', self._root)
-        self._data.add_item('DAMG', self._root)
-        self._data.add_item('DAMG_CFG', self.DAMG_CFG)
-        self._data.add_item('DAMG_SETTING', self.DAMG_SETTING)
-        self._data.add_item('DAMG_LOG', self.DAMG_LOG)
-        self._data.add_item('DAMG_CACHE', self.DAMG_CACHE)
-        self._data.add_item('DAMG_PREF', self.DAMG_PREF)
-
-        self._data.add_item('BIN', self.BIN)
-
-        self._data.add_item('BINDATA', self.BINDATA)
-        self._data.add_item('BINDATA_JSON', self.BINDATA_JSON)
-        self._data.add_item('BINDATA_DOC', self.BINDATA_DOC)
-
-        self._data.add_item('DEPENDANCIES', self.DEPENDANCIES)
-
-        self._data.add_item('BINRESCR', self.BINRESCR)
-        self._data.add_item('BINRESCR_DOC', self.BINRESCR_DOC)
-        self._data.add_item('LICENCE', self.LICENCE)
-
-        self._data.add_item('SCRIPTS', self.SCRIPTS)
-
-        self._data.add_item('TYPES', self.TYPES)
-
-        self._data.add_item('IMG', self.IMG)
-
-        self._data.add_item('AVATAR', self.AVATAR)
-
-        self._data.add_item('ICON', self.ICON)
-        self._data.add_item('ICON_16', self.ICON_16)
-        self._data.add_item('ICON_24', self.ICON_24)
-        self._data.add_item('ICON_32', self.ICON_32)
-        self._data.add_item('ICON_48', self.ICON_48)
-        self._data.add_item('ICON_64', self.ICON_64)
-
-        self._data.add_item('LOGO', self.LOGO)
-
-        self._data.add_item('DAMG_LOGO', self.DAMG_LOGO)
-        self._data.add_item('DAMG_ICO', self.DAMG_ICO)
-        self._data.add_item('DAMG_ICON', self.DAMG_ICON)
-        self._data.add_item('DAMG_ICON_32', self.DAMG_ICON_32)
-
-        self._data.add_item('PLM_LOGO', self.PLM_LOGO)
-        self._data.add_item('PLM_ICO', self.PLM_ICO)
-        self._data.add_item('PLM_ICON', self.PLM_ICON)
-        self._data.add_item('PLM_ICON_32', self.PLM_ICON_32)
-
-        self._data.add_item('MAYA_ICON', self.MAYA_ICON)
-
-        self._data.add_item('PIC', self.PIC)
-
-        self._data.add_item('TAG', self.TAG)
-
-        self._data.add_item('WEB_ICON', self.WEB_ICON)
-        self._data.add_item('WEB_ICON_16', self.WEB_ICON_16)
-        self._data.add_item('WEB_ICON_24', self.WEB_ICON_24)
-        self._data.add_item('WEB_ICON_32', self.WEB_ICON_32)
-        self._data.add_item('WEB_ICON_48', self.WEB_ICON_48)
-        self._data.add_item('WEB_ICON_64', self.WEB_ICON_64)
-        self._data.add_item('WEB_ICON_128', self.WEB_ICON_128)
-
-        self._data.add_item('INSTALLATION', self.INSTALLATION)
-
-        self._data.add_item('QSS', self.QSS)
-
-        self._data.add_item('BUILD', self.BUILD)
-
-        self._data.add_item('CORE', self.CORE)
-
-        self._data.add_item('DOCK', self.DOCK)
-
-        self._data.add_item('PLUGINS', self.PLUGINS)
-
-        self._data.add_item('TEST', self.TEST)
-
-        self._data.add_item('ASSETS', self.ASSETS)
-        self._data.add_item('ASSETS_CFG', self.ASSETS_CFG)
-
-        self._data.add_item('PLM', self.PLM)
-        self._data.add_item('PLM_CFG', self.PLM_CFG)
-        self._data.add_item('PLM_SETTING', self.PLM_SETTING)
-        self._data.add_item('PLM_LOG', self.PLM_LOG)
-        self._data.add_item('PLM_CACHE', self.PLM_CACHE)
-        self._data.add_item('PLM_PREF', self.PLM_PREF)
-
-        self._data.add_item('PLM_TANK', self.PLM_TANK)
-        self._data.add_item('PLM_TANK_CFG', self.PLM_TANK_CFG)
-        self._data.add_item('PLM_TANK_SETTING', self.PLM_TANK_SETTING)
-        self._data.add_item('PLM_TANK_LOG', self.PLM_TANK_LOG)
-        self._data.add_item('PLM_TANK_CACHE', self.PLM_TANK_CACHE)
-        self._data.add_item('PLM_TANK_PREF', self.PLM_TANK_PREF)
-
-        self._data.add_item('SCENEGRAPH', self.SCENEGRAPH)
-        self._data.add_item('SCENEGRAPH_CFG', self.SCENEGRAPH_CFG)
-        self._data.add_item('SCENEGRAPH_SETTING', self.SCENEGRAPH_SETTING)
-        self._data.add_item('SCENEGRAPH_LOG', self.SCENEGRAPH_LOG)
-        self._data.add_item('SCENEGRAPH_CACHE', self.SCENEGRAPH_CACHE)
-        self._data.add_item('SCENEGRAPH_PREF', self.SCENEGRAPH_PREF)
-
-        self._data.add_item('TOOLKITS', self.TOOLKITS)
-
-        self._data.add_item('NODEGRAPH', self.NODEGRAPH)
-        self._data.add_item('NODEGRAPH_CFG', self.NODEGRAPH_CFG)
-        self._data.add_item('NODEGRAPH_SETTING', self.NODEGRAPH_SETTING)
-        self._data.add_item('NODEGRAPH_LOG', self.NODEGRAPH_LOG)
-        self._data.add_item('NODEGRAPH_CACHE', self.NODEGRAPH_CACHE)
-        self._data.add_item('NODEGRAPH_PREF', self.NODEGRAPH_PREF)
-
-        self._data.add_item('iconcfg', self.iconcfg)
-        self._data.add_item('webIconCfg', self.webIconCfg)
-        self._data.add_item('logoIconCfg', self.logoIconCfg)
-
-        self._data.add_item('pyEnvCfg', self.pyEnvCfg)
-        self._data.add_item('appConfig', self.appConfig)
-        self._data.add_item('mainConfig', self.mainConfig)
-
-        self._data.add_item('APP_SETTING', self.APP_SETTING)
-        self._data.add_item('USER_SETTING', self.USER_SETTING)
-        self._data.add_item('FORMAT_SETTING', self.FORMAT_SETTING)
-        self._data.add_item('UNIX_SETTING', self.UNIX_SETTING)
-
-        self._data.add_item('DB_PTH', self.DB_PTH)
-        self._data.add_item('LOG_PTH', self.LOG_PTH)
-
-        self._data.add_item('SETTING_FILEPTH', self.SETTING_FILEPTH)
-
-        return self._data
-
 
 class CONFIG_SETUP(DAMG):
 
@@ -405,17 +255,10 @@ class CONFIGS(DAMG):
     paths                                       = CONFIG_PATHS()
 
     def __init__(self):
-        super(CONFIGS, self).__init__()
+        DAMG.__init__(self)
 
-        self._id                                = OID(self)
-        self._name                              = NAME(self)
-        self.__id__                             = self._id.__oid__
-        self.__name__                           = self._name.__name__
-
-        self._data                              = DAMGDICT(self.__id__, self.__name__)
-        self.__dict__                           = DAMGDICT(self._id.dictID, self.__name__)
-
-        self.initialize()
+        self._data                              = DAMGDICT()
+        self.__dict__                           = DAMGDICT()
 
     _configPths = CONFIG_PATHS()
 

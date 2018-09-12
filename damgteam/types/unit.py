@@ -23,6 +23,9 @@ class UNIT(DAMG):
 
     _unit = 'Unit'
 
+    def to_unit(self):
+        return self._unit
+
     @property
     def unit(self):
         return self._unit
@@ -41,8 +44,8 @@ class DATETIME(UNIT):
     def __init__(self):
         UNIT.__init__(self)
 
-        self.get_tonow()
-        self.get_today()
+        self.to_now()
+        self.to_day()
         self.set_time()
         self.set_date()
 
@@ -74,14 +77,14 @@ class DATETIME(UNIT):
 
         return self._time, self.__time__
 
-    def get_tonow(self):
+    def to_now(self):
         now                                 = QTime.currentTime()
         self._now                           = now.toString(damgvar.fmts)
         self.__now__                        = now.toString(damgvar.fmtl)
 
         return self._now, self.__now__
 
-    def get_today(self):
+    def to_day(self):
 
         now                                 = QDate.currentDate()
         self._today                         = now.toString(damgvar.fmts)
@@ -102,16 +105,16 @@ class DATETIME(UNIT):
         return self._now
 
     @date.setter
-    def date(self, newdate):
-        self._date                          = newdate
+    def date(self, newData):
+        self._date                          = newData
 
     @today.setter
-    def today(self, date):
-        self._today                         = date
+    def today(self, newData):
+        self._today                         = newData
 
     @totime.setter
-    def totime(self, newtime):
-        self._now                           = newtime
+    def totime(self, newData):
+        self._now                           = newData
 
 
 class DOB(DATETIME):

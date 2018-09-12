@@ -12,6 +12,8 @@ from __future__ import absolute_import, unicode_literals
 
 # Python
 import os, sys
+from app import ROOT
+
 
 root = os.path.abspath(os.getcwd())
 
