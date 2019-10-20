@@ -1,17 +1,24 @@
-NOTE:
-====
-
-    - Big innovating, rebuild the whole project.
-
-
 SHORT FILM PIPELINE
 ===================
+
+.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/tags/python.tag.png
+    :target: https://www.anaconda.com/download/
+
+.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/tags/version.tag.png
+    :target: https://github.com/vtta2008/PipelineTool/releases
+
+.. image:: https://github.com/vtta2008/PipelineTool/blob/master/imgs/tags/licence.tag.png
+    :target: https://github.com/vtta2008/PipelineTool/blob/master/LICENSE
 
 This application can be used to build, manage, and optimise film making pipelines. The latest version is compatible
 with Windows 10 and may run on earlier versions. It does not run in Maya 2016 or lower.
 
 Due to VFX Reference Platform and the large invention, we need to stay with python 2.7 but expect to migrate to python 3 in 2019 (Delayed to 2020).
 Details are `here <http://www.vfxplatform.com>`_
+
+NOTE:
+
+    - It is still under developing, some function will not be working yet.
 
 REQUIREMENTS
 ============
@@ -22,16 +29,31 @@ Python 3.6 for Windows:
 
     - 32 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.2.0-Windows-x86.exe>`_
 
-Also require extra python packages, you do not have to worry about it, it will be automatically installed.
+Also require extra python packages (will update more):
 
-SOFTWARE PACKAGE
+.. code:: bash
+
+    deprecated, winshell, pandas
+
+To install extra packages, run command in CMD:
+
+.. code:: bash
+
+    python -m pip install {packagename}
+
+LIST SOFTWARE PACKAGE
 ======================
 
-    - `Maya 2017 and/or Maya 2018 <https://www.autodesk.com/education/free-software/maya>`_ with `VMM for maya <https://www.mediafire.com/#gu9s1tbb2u4g9>`_, `Vray 3.6 <https://www.chaosgroup.com/vray/maya>`_ & `Phoenix FD 3.0 <https://www.chaosgroup.com/phoenix-fd/maya>`_
+    - `Maya 2017 and/or Maya 2018 <https://www.autodesk.com/education/free-software/maya>`_
+    - `Vray 3.6 <https://www.chaosgroup.com/vray/maya>`_
+    - `Phoenix FD 3.0 <https://www.chaosgroup.com/phoenix-fd/maya>`_
+    - `VMM for maya <https://www.mediafire.com/#gu9s1tbb2u4g9>`_
+    - `Houdini <https://www.sidefx.com/download/>`_
     - `Mari <https://www.foundry.com/products/mari>`_
+    - Mari extension: "Will update later"
     - `Nuke <https://www.foundry.com/products/nuke>`_
     - `ZBrush <https://pixologic.com/zbrush/downloadcenter/>`_
-    - `Houdini <https://www.sidefx.com/download/>`_
+    - `Davinci Resolve <https://www.blackmagicdesign.com/nz/products/davinciresolve/>`_
 
 NOTE:
 
@@ -54,12 +76,21 @@ HOW TO USE PIPELINE MANAGER
 Go to the diretory of 'PipelineTool' folder, hold down Shift + right-click -> Open PowerShell window here/Open command window here
 In CommandPrompt/WindowShell:
 
+Run directly:
+
 .. code:: bash
 
-    start python main.py                             python setup.py build
+    start python PLM.py
+
+Complie executable file:
+
+.. code:: bash
+
+    python setup.py build
 
 REFERENCE
 =========
 
-For Plugins/Files that I am using, you can see `here <bin/data/docs/reference.rst>`_.
-Copyright (C) 2017 - 2018 by DAMGteam - `details <bin/data/docs/copyright.rst>`_.
+For Plugins/Files that I am using, you can see `here <appData/docs/reference>`_.
+
+Copyright (C) 2017 - 2019 by DAMGTEAM - `details <appData/docs/copyright>`_.

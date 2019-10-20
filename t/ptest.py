@@ -70,9 +70,13 @@ Description:
 # for f in files:
 #     print(os.stat(f))
 
-from six import PY2, PY3
+import os, pprint
 
-print(PY2, PY3)
+for k in os.environ.keys():
+    print(k)
+
+print(os.getenv('PROGRAMFILES'))
+print(os.getenv('PROGRAMFILES(X86)'))
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 18/08/2018 - 8:42 PM
