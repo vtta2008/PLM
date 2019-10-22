@@ -12,12 +12,11 @@ from __future__ import absolute_import, unicode_literals
 
 import socket
 import threading
-import SocketServer
-
+import socketserver
 
 # MyAwesomelyNamedServerScript.py
 
-class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
+class ThreadedTCPRequestHandler(socketserver.BaseRequestHandler):
 
     def handle(self):
         def func1(scr1):
@@ -46,7 +45,7 @@ class ThreadedTCPRequestHandler(SocketServer.BaseRequestHandler):
         self.request.sendall(response
                              )
 
-class ThreadedTCPServer(SocketServer.ThreadingMixIn, SocketServer.TCPServer):
+class ThreadedTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     pass
 
 def setupServer(ip = None, port = None, message = None):
