@@ -246,7 +246,7 @@ def get_app_icon(size=32, iconName="AboutPlt"):
 
     # Check icon file path
     if not os.path.exists(iconFilePth):
-        logger.report('could not find: {0}, please try a gain')
+        logger.report('could not find: {0}, please try a gain'.format(iconFilePth))
 
     return iconFilePth
 
