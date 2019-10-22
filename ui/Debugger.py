@@ -24,13 +24,13 @@ import types
 from code import InteractiveConsole
 from io import StringIO
 
-from PyQt5.QtCore import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
-from PyQt5.QtGui import QTextCursor
 # PyQt5
-from PyQt5.QtWidgets import QTextEdit, QApplication, QGridLayout
+from PyQt5.QtCore       import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
+from PyQt5.QtGui        import QTextCursor
+from PyQt5.QtWidgets    import QTextEdit, QApplication, QGridLayout
 
 # PLM
-from appData.paths import SiPoMin
+from appData            import SiPoMin
 
 # -------------------------------------------------------------------------------------------------------------
 """ Processing User Input """
@@ -146,7 +146,6 @@ class pDebugger(QGridLayout):
     def debug_trace(self):
         """Set a tracepoint in the Python debugger that works with Qt."""
         from PyQt5.QtCore import pyqtRemoveInputHook
-
         from pdb import set_trace
         pyqtRemoveInputHook()
         set_trace()

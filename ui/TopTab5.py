@@ -10,19 +10,17 @@ Description:
 """ Import """
 
 # Python
-import os
-import subprocess
-import sys
+import os, subprocess, sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSlot, pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLineEdit, QTextEdit, QTextBrowser, QLabel
+from PyQt5.QtCore       import pyqtSlot, pyqtSignal
+from PyQt5.QtWidgets    import QApplication, QWidget, QGridLayout, QLineEdit, QTextEdit, QTextBrowser, QLabel
 
 # Plt
-from cores.Loggers import Loggers
-from cores.base import DAMG
-from appData.paths import SiPoMin, SiPoExp
-from ui.uikits.Button import Button
+from cores.Loggers      import Loggers
+from cores.base         import DAMG
+from appData            import SiPoMin, SiPoExp
+from ui.uikits.Button   import Button
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """

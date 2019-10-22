@@ -23,16 +23,17 @@ from utilities import utils as func
 class QuerryDB(DAMGLIST):
 
     key = 'query db'
+    conn = lite.connect(DB_PTH)
+    cur = conn.cursor()
 
     def query_table(self, tn="curUser"):
-        conn = lite.connect(DB_PTH)
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM {0}".format(tn))
 
-        if len(cur.fetchall()) == 0:
-            return []
-        else:
-            return list(cur.fetchall()[0])
+        self.cur.execute("SELECT * FROM {0}".format(tn))
+
+        data = self.cur.fetchall()
+
+        return list(data[0])
+
 
 class UpdateDB(DAMG):
 
@@ -40,20 +41,22 @@ class UpdateDB(DAMG):
     conn = lite.connect(DB_PTH)
     cur = conn.cursor()
 
-    def __init__(self, tn="curUser", data=[]):
+    def __init__(self, tableName="curUser", tableValue=[]):
         super(UpdateDB, self).__init__()
-        if tn == "curUser":
-            self.update_curUser(data)
-        elif tn == 'tmpConfig':
-            self.update_tmpCfg(data[0])
+        if tableName == "curUser":
+            self.update_curUser(tableValue)
+        elif tableName == 'tmpConfig':
+            self.update_tmpCfg(tableValue[0])
 
-    def update_curUser(self, data):
-        self.cur.execute("INSERT INTO curUser (username, token, cookie, remember) VALUES (?,?,?,?)", (data[0], data[1], data[2], data[3]))
-        self.conn.commit()
+    def update_curUser(self, value):
+        """ Update value of table curUser in local database """
+        self.cur.execute("INSERT INTO curUser (username, token, cookie, remember) VALUES (?,?,?,?)", (value[0], value[1], value[2], value[3]))
+        commit = self.conn.commit()
         return True
 
-    def update_tmpCfg(self, data):
-        self.cur.execute("INSERT INTO curUser (username, token, cookie, remember) VALUES (?,?)", (data[0], data[1]))
+    def update_tmpCfg(self, value):
+        """ Update temporary config """
+        self.cur.execute("INSERT INTO curUser (username, token, cookie, remember) VALUES (?,?)", (value[0], value[1]))
         self.conn.commit()
         return True
 

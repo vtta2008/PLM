@@ -22,7 +22,7 @@ import requests
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QCheckBox, QWidget)
 
-from appData import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __serverLocalAutho__
+from appData import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __serverLocalCheck__
 from ui.uikits.Button import Button
 from ui.uikits.GroupBox import GroupGrid
 from ui.uikits.UiPreset import IconPth, Label, LineEdit
@@ -98,7 +98,7 @@ class SignIn(QWidget):
 
         password = str(pass_word)
 
-        r = requests.post(__serverLocalAutho__, verify=False, data={'user': username, 'pwd': password})
+        r = requests.post(__serverLocalCheck__, verify=False, data={'user': username, 'pwd': password})
 
         if r.status_code == 200:
             for i in r.headers['set-cookie'].split(";"):
@@ -111,6 +111,7 @@ class SignIn(QWidget):
 
             token = r.json()['token']
             check = self.userCB.checkState()
+
             usql.RemoveDB("curUser")
             usql.UpdateDB("curUser", [username, token, cookie, str2bool(check)])
 

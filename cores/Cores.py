@@ -15,6 +15,7 @@ from PyQt5.QtCore           import pyqtSignal, QCoreApplication
 
 # PLM
 from cores.base             import DAMG
+from cores.Errors           import BuildingUIError
 from ui                     import PipelineManager, SysTrayIcon
 from ui.Funcs               import SignUp, SignIn, ForgotPassword
 from ui.Settings            import UserSetting
@@ -33,15 +34,10 @@ class AppStoreage(DAMG):                                                    # Co
     key = 'PLM core application'
 
     showLayout              = pyqtSignal(str, str)
-
     addLayout               = pyqtSignal(DAMG)
-
     executing               = pyqtSignal(str)
-
     setSetting              = pyqtSignal(str, str, str)
-
     openBrowser             = pyqtSignal(str)
-
 
     def __init__(self, orgName, appName, orgWeb, version, settings, parent=None):
         super(AppStoreage, self).__init__(parent)
@@ -54,6 +50,8 @@ class AppStoreage(DAMG):                                                    # Co
         self._version       = version
         self.settings       = settings
 
+        self._buildUI       = False
+
         QCoreApplication.setOrganizationName(self._orgName)
         QCoreApplication.setApplicationName(self._appName)
         QCoreApplication.setOrganizationDomain(self._orgWeb)
@@ -65,6 +63,11 @@ class AppStoreage(DAMG):                                                    # Co
 
         self.settingUI      = SettingUI()
         self.settings       = settings
+
+        self.buildUI()
+        self.build_connection()
+
+    def buildUI(self):
 
         self.login          = SignIn.SignIn()
         self.forgotPW       = ForgotPassword.ForgotPassword()
@@ -93,43 +96,48 @@ class AppStoreage(DAMG):                                                    # Co
         self.userSetting    = UserSetting.UserSetting()
         self.version        = Version.Version()
 
+        self._buildUI       = True
 
-        self.login.showLayout.connect(self.showLayout)
-        self.forgotPW.showLayout.connect(self.showLayout)
-        self.signup.showLayout.connect(self.showLayout)
-        self.mainUI.showLayout.connect(self.showLayout)
-        self.settingUI.showLayout.connect(self.showLayout)
-        self.about.showLayout.connect(self.showLayout)
-        self.calculator.showLayout.connect(self.showLayout)
-        self.calendar.showLayout.connect(self.showLayout)
-        self.codeConduct.showLayout.connect(self.showLayout)
-        self.configuration.showLayout.connect(self.showLayout)
-        self.contributing.showLayout.connect(self.showLayout)
-        self.credit.showLayout.connect(self.showLayout)
-        self.engDict.showLayout.connect(self.showLayout)
-        self.findFile.showLayout.connect(self.showLayout)
-        self.imageViewer.showLayout.connect(self.showLayout)
-        self.licence.showLayout.connect(self.showLayout)
-        self.newProject.showLayout.connect(self.showLayout)
-        self.nodeGraph.showLayout.connect(self.showLayout)
-        self.noteReminder.showLayout.connect(self.showLayout)
-        self.preferences.showLayout.connect(self.showLayout)
-        self.reference.showLayout.connect(self.showLayout)
-        self.screenShot.showLayout.connect(self.showLayout)
-        self.textEditor.showLayout.connect(self.showLayout)
-        self.userSetting.showLayout.connect(self.showLayout)
-        self.version.showLayout.connect(self.showLayout)
+        return self._buildUI
 
-        self.mainUI.executing.connect(self.executing)
+    def build_connection(self):
 
-        self.mainUI.addLayout.connect(self.addLayout)
+        if self._buildUI:
 
-        self.mainUI.sysNotify.connect(self.sysTray.sysNotify)
+            self.login.showLayout.connect(self.showLayout)
+            self.forgotPW.showLayout.connect(self.showLayout)
+            self.signup.showLayout.connect(self.showLayout)
+            self.mainUI.showLayout.connect(self.showLayout)
+            self.settingUI.showLayout.connect(self.showLayout)
+            self.about.showLayout.connect(self.showLayout)
+            self.calculator.showLayout.connect(self.showLayout)
+            self.calendar.showLayout.connect(self.showLayout)
+            self.codeConduct.showLayout.connect(self.showLayout)
+            self.configuration.showLayout.connect(self.showLayout)
+            self.contributing.showLayout.connect(self.showLayout)
+            self.credit.showLayout.connect(self.showLayout)
+            self.engDict.showLayout.connect(self.showLayout)
+            self.findFile.showLayout.connect(self.showLayout)
+            self.imageViewer.showLayout.connect(self.showLayout)
+            self.licence.showLayout.connect(self.showLayout)
+            self.newProject.showLayout.connect(self.showLayout)
+            self.nodeGraph.showLayout.connect(self.showLayout)
+            self.noteReminder.showLayout.connect(self.showLayout)
+            self.preferences.showLayout.connect(self.showLayout)
+            self.reference.showLayout.connect(self.showLayout)
+            self.screenShot.showLayout.connect(self.showLayout)
+            self.textEditor.showLayout.connect(self.showLayout)
+            self.userSetting.showLayout.connect(self.showLayout)
+            self.version.showLayout.connect(self.showLayout)
 
-        self.mainUI.setSetting.connect(self.setSetting)
+            self.mainUI.executing.connect(self.executing)
+            self.mainUI.addLayout.connect(self.addLayout)
+            self.mainUI.sysNotify.connect(self.sysTray.sysNotify)
+            self.mainUI.setSetting.connect(self.setSetting)
+            self.mainUI.openBrowser.connect(self.openBrowser)
 
-        self.mainUI.openBrowser.connect(self.openBrowser)
-
+        else:
+            raise BuildingUIError("UI is not built to connect")
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/07/2018 - 11:31 AM

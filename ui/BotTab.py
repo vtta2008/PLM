@@ -15,15 +15,15 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
+from PyQt5.QtWidgets        import QApplication, QWidget, QVBoxLayout, QTabWidget
 
-from cores.Loggers import Loggers
-# Plt
-from appData.paths import SiPoMin
-from ui.Debugger import pDebugger
-from ui.GeneralSetting import GeneralSetting
-from ui.uikits.TabWidget import TabContent
-from ui.uikits.UiPreset import IconPth
+# PLM
+from appData                import SiPoMin
+from cores.Loggers          import Loggers
+from ui.Debugger            import pDebugger
+from ui.GeneralSetting      import GeneralSetting
+from ui.uikits.TabWidget    import TabContent
+from ui.uikits.UiPreset     import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """

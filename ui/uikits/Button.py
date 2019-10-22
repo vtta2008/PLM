@@ -11,14 +11,14 @@ Description:
 """ Import """
 
 # Python
-from functools import partial
+from functools              import partial
 
 # PyQt5
-from PyQt5.QtWidgets import QPushButton, QToolButton
+from PyQt5.QtWidgets        import QPushButton, QToolButton
 
 # PLM
-from appData.paths import SiPoExp, SiPoPre
-from ui.uikits.UiPreset import check_preset, IconPth
+from appData                import SiPoExp, SiPoPre
+from ui.uikits.UiPreset     import check_preset, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Button presets """

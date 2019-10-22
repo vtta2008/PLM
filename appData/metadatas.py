@@ -54,6 +54,7 @@ __serverCheck__         = "https://server.damgteam.com/check"
 __serverAutho__         = "https://server.damgteam.com/auth"
 
 __localPort__           = "20987"
+__localHost__           = "http://localhost:"
 __serverLocal__         = "http://localhost:{}".format(__localPort__)
 __serverLocalCheck__    = "http://localhost:{}/check".format(__localPort__)
 __serverLocalAutho__    = "http://localhost:{}/auth".format(__localPort__)

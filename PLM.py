@@ -52,16 +52,15 @@ from ui.Settings.SettingUI          import SettingUI
 from ui.Web.PLMBrowser              import PLMBrowser
 from ui.uikits.UiPreset             import AppIcon
 
+from appData                        import (__serverLocalAutho__, __serverLocalCheck__, __serverLocal__, PLMAPPID, __organization__, __appname__, __version__,
+                                            __website__, SETTING_FILEPTH, ST_FORMAT, SYSTRAY_UNAVAI)
+
 from cores.base                     import DAMG, DAMGDICT
 from cores.StyleSheets              import StyleSheets
 from cores.Settings                 import Settings
 from cores.Cores                    import AppStoreage
 from cores.Loggers                  import Loggers
-from appData                        import __serverLocalCheck__, PLMAPPID, __organization__, __appname__, __version__, __website__
-from appData.paths                  import SETTING_FILEPTH, ST_FORMAT
 from cores.Task                     import ThreadManager
-
-from appData.documentations._docs   import SYSTRAY_UNAVAI
 
 from utilities.localSQL             import QuerryDB
 from utilities.utils                import str2bool, clean_file_ext
@@ -122,9 +121,7 @@ class PLM(QApplication):
 
         self.sysTray.executing.connect(self.executing)
         self.appCore.executing.connect(self.executing)
-
         self.appCore.setSetting.connect(self.setSetting)
-
         self.appCore.openBrowser.connect(self.openBrowser)
 
 
@@ -134,12 +131,14 @@ class PLM(QApplication):
         try:
             self.username, token, cookie, remember = self.database.query_table('curUser')
         except (ValueError, IndexError):
+            print("Error occur, can not query data")
             self.showLayout('login', "show")
         else:
             if not str2bool(remember):
                 self.showLayout('login', "show")
             else:
-                r = requests.get(__serverLocalCheck__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
+                r = requests.get(__serverLocal__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
+
                 if r.status_code == 200:
                     if not self.appCore.sysTray.isSystemTrayAvailable():
                         self.report(SYSTRAY_UNAVAI)
@@ -240,6 +239,7 @@ class PLM(QApplication):
     def addLayout(self, layout):
         key = layout.key
         if not key in self.layouts.keys():
+            # print("Registing layout: {0} \n {1}".format(key, layout))
             self.layouts[key] = layout
         else:
             self.report("Already registered: {0}".format(key))

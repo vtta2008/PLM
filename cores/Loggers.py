@@ -12,7 +12,7 @@ from __future__ import unicode_literals
 """ Import """
 
 # Python
-import sys, os, logging, json, enum, pdb, traceback, linecache
+import sys, os, logging, json, enum, traceback, linecache
 
 # PLM
 from appData.paths import LOG_PTH
@@ -36,10 +36,6 @@ DT_FORMAT = dict(
 )
 
 # -------------------------------------------------------------------------------------------------------------
-try:
-    unicode
-except NameError:
-    unicode = str
 
 class Encoder(json.JSONEncoder):
 
@@ -120,15 +116,17 @@ class Stream_Handler(logging.StreamHandler):
         return logging.Formatter(self.fmt, self.dtfmt)
 
     def exception_handler(self, exc_type, exc_value, tb):
+
+        # if tb is None:
+        #     pass
+        # else:
+        #     pdb.post_mortem(tb)
+
         if hasattr(sys, 'ps1') or not sys.stderr.isatty():
             exception = sys.__excepthook__(exc_type, exc_value, tb)
         else:
             exception = traceback.format_exception(exc_type, exc_value, tb)
 
-        if tb is None:
-            pass
-        else:
-            pdb.post_mortem(tb)
         return exception
 
 class File_Handler(logging.FileHandler):

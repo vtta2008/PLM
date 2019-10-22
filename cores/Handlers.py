@@ -10,14 +10,14 @@ Description:
 from cores import Commands
 from cores.Loggers import Loggers
 # -------------------------------------------------------------------------------------------------------------
-from cores.Storage import PObj
+from cores.base import DAMG
 
 logger = Loggers()
 log = logger.report
 
-class SceneEventHandler(PObj):
+class SceneEventHandler(DAMG):
     def __init__(self, parent=None):
-        PObj.__init__(self, parent)
+        DAMG.__init__(self, parent)
 
         self.ui = None  # reference to the parent MainWindow
         self.graph = None  # reference to the Graph instance
@@ -177,8 +177,7 @@ class SceneEventHandler(PObj):
 
     def dagNodesUpdatedEvent(self, dagnodes):
         if dagnodes:
-            print
-            '# DEBUG: dag nodes updated: ', [node.name for node in dagnodes]
+            print('# DEBUG: dag nodes updated: ', [node.name for node in dagnodes])
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 17/08/2018 - 12:44 AM

@@ -11,13 +11,13 @@ Description:
 """ Import """
 
 # PyQt5
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtWidgets import QDockWidget, QGridLayout
+from PyQt5.QtCore       import Qt, pyqtSignal
+from PyQt5.QtWidgets    import QDockWidget, QGridLayout
 
 # PLM
-from cores.base import DAMG
-from appData.paths import SiPoExp
-from ui.uikits.ToolBar import ToolBar
+from cores.base         import DAMG
+from appData            import SiPoExp
+from ui.uikits.ToolBar  import ToolBar
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar docking class """

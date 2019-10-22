@@ -25,6 +25,8 @@ from appData                        import metadatas as m
 from appData.paths                  import *
 from appData.text                   import *
 from appData.keys                   import *
+from appData.settingFormats         import *
+from appData.settingOptions         import *
 
 # -------------------------------------------------------------------------------------------------------------
 """ Environment key """
@@ -71,6 +73,8 @@ __serverGlobal__        = m.__serverGlobal__
 __serverCheck__         = m.__serverCheck__
 __serverAutho__         = m.__serverAutho__
 
+__localPort__           = m.__localPort__
+__localHost__           = m.__localHost__
 __serverLocal__         = m.__serverLocal__
 __serverLocalCheck__    = m.__serverLocalCheck__
 __serverLocalAutho__    = m.__serverLocalAutho__

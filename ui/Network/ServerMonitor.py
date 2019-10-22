@@ -6,8 +6,8 @@ import sys
 
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QApplication
-from scr.ui.Network.connector.mainwindow import MainWindow
-from scr.ui.Network.connector.resources import *
+from ui.Network.connector.mainwindow import MainWindow
+from ui.Network.connector.resources import *
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)

@@ -19,60 +19,7 @@ PLMAPPID                = c.PLMAPPID
 VERSION                 = c.VERSION
 
 # -------------------------------------------------------------------------------------------------------------
-""" Directory paths """
-
-LOGO_DIR                = c.LOGO_DIR
-APP_ICON_DIR            = c.APP_ICON_DIR
-WEB_ICON_DIR            = c.WEB_ICON_DIR
-TAG_DIR                 = c.TAG_DIR
-AVATAR_DIR              = c.AVATAR_DIR
-CONFIG_LOCAL_PLM_DIR    = c.CONFIG_LOCAL_PLM_DIR
-
-# -------------------------------------------------------------------------------------------------------------
-""" File paths """
-
-appIconCfg              = c.appIconCfg
-webIconCfg              = c.webIconCfg
-logoIconCfg             = c.logoIconCfg
-
-pyEnvCfg                = c.pyEnvCfg
-appConfig               = c.appConfig
-mainConfig              = c.mainConfig
-
-DB_PTH                  = c.DB_PTH
-LOG_PTH                 = c.LOG_PTH
-
-APP_SETTING             = c.APP_SETTING
-USER_SETTING            = c.USER_SETTING
-FORMAT_SETTING          = c.FORMAT_SETTING
-UNIX_SETTING            = c.UNIX_SETTING
-
-# -------------------------------------------------------------------------------------------------------------
-""" Text data """
-
-CREDIT                  = c.CREDIT
-ABOUT                   = c.ABOUT
-CODECONDUCT             = c.CODECONDUCT
-CONTRIBUTING            = c.CONTRIBUTING
-REFERENCE               = c.REFERENCE
-LICENCE_MIT             = c.LICENCE_MIT
-
-WAIT_LAYOUT_COMPLETE    = c.WAIT_LAYOUT_COMPLETE
-PW_UNMATCH              = c.PW_UNMATCH
-USER_CHECK_REQUIRED     = c.USER_CHECK_REQUIRED
-QUESTIONS               = c.QUESTIONS
-
-SIGNUP                  = c.SIGNUP
-PW_BLANK                = c.PW_BLANK
-USER_BLANK              = c.USER_BLANK
-PW_WRONG                = c.PW_WRONG
-
-CONFIG_DIR              = c.CONFIG_DIR
-SETTING_DIR             = c.SETTING_DIR
-ROOT_DIR                = c.ROOT_DIR
-
-# -------------------------------------------------------------------------------------------------------------
-""" DAMG team """
+""" DAMG metadata """
 
 __copyright__           = c.__copyright__
 __organization__        = c.__organization__
@@ -87,7 +34,7 @@ __email1__              = c.__email1__
 __email2__              = c.__email2__
 
 # -------------------------------------------------------------------------------------------------------------
-""" PipelineTool """
+""" PLM metadata """
 
 __project__             = c.__project__
 __appname__             = c.__appname__
@@ -101,6 +48,27 @@ __about__               = c.__about__
 __homepage__            = c.__homepage__
 __plmSlogan__           = c.__plmSlogan__
 __plmWiki__             = c.__plmWiki__
+
+# -------------------------------------------------------------------------------------------------------------
+""" Server metadata """
+
+__serverGlobal__        = c.__serverGlobal__
+__serverCheck__         = c.__serverCheck__
+__serverAutho__         = c.__serverAutho__
+
+__serverLocal__         = c.__serverLocal__
+__serverLocalCheck__    = c.__serverLocalCheck__
+__serverLocalAutho__    = c.__serverLocalAutho__
+
+__google__              = c.__google__
+__email__               = c.__email__
+__packages_dir__        = c.__packages_dir__
+__classifiers__         = c.__classifiers__
+__download__            = c.__download__
+__description__         = c.__description__
+__readme__              = c.__readme__
+__modules__             = c.__modules__
+__pkgsReq__             = c.__pkgsReq__
 
 # -------------------------------------------------------------------------------------------------------------
 """ key packages """
@@ -124,25 +92,70 @@ CONFIG_POST             = c.CONFIG_POST
 CONFIG_SYSTRAY          = c.CONFIG_SYSTRAY
 
 # -------------------------------------------------------------------------------------------------------------
-""" Server """
+""" Directory """
 
-__serverGlobal__        = c.__serverGlobal__
-__serverCheck__         = c.__serverCheck__
-__serverAutho__         = c.__serverAutho__
+LOGO_DIR                = c.LOGO_DIR
+APP_ICON_DIR            = c.APP_ICON_DIR
+WEB_ICON_DIR            = c.WEB_ICON_DIR
+TAG_DIR                 = c.TAG_DIR
+AVATAR_DIR              = c.AVATAR_DIR
+CONFIG_LOCAL_PLM_DIR    = c.CONFIG_LOCAL_PLM_DIR
+CONFIG_DIR              = c.CONFIG_DIR
+SETTING_DIR             = c.SETTING_DIR
+ROOT_DIR                = c.ROOT_DIR
 
-__serverLocal__         = c.__serverLocal__
-__serverLocalCheck__    = c.__serverLocalCheck__
-__serverLocalAutho__    = c.__serverLocalAutho__
+# -------------------------------------------------------------------------------------------------------------
+""" File paths """
 
-__google__              = c.__google__
-__email__               = c.__email__
-__packages_dir__        = c.__packages_dir__
-__classifiers__         = c.__classifiers__
-__download__            = c.__download__
-__description__         = c.__description__
-__readme__              = c.__readme__
-__modules__             = c.__modules__
-__pkgsReq__             = c.__pkgsReq__
+appIconCfg              = c.appIconCfg
+webIconCfg              = c.webIconCfg
+logoIconCfg             = c.logoIconCfg
+
+pyEnvCfg                = c.pyEnvCfg
+appConfig               = c.appConfig
+mainConfig              = c.mainConfig
+
+DB_PTH                  = c.DB_PTH
+LOG_PTH                 = c.LOG_PTH
+
+SETTING_FILEPTH         = c.SETTING_FILEPTH
+
+APP_SETTING             = c.APP_SETTING
+USER_SETTING            = c.USER_SETTING
+FORMAT_SETTING          = c.FORMAT_SETTING
+UNIX_SETTING            = c.UNIX_SETTING
+
+# -------------------------------------------------------------------------------------------------------------
+""" Format """
+
+ST_FORMAT               = c.ST_FORMAT
+
+# -------------------------------------------------------------------------------------------------------------
+""" Text data """
+
+CREDIT                  = c.CREDIT
+ABOUT                   = c.ABOUT
+CODECONDUCT             = c.CODECONDUCT
+CONTRIBUTING            = c.CONTRIBUTING
+REFERENCE               = c.REFERENCE
+LICENCE_MIT             = c.LICENCE_MIT
+
+WAIT_LAYOUT_COMPLETE    = c.WAIT_LAYOUT_COMPLETE
+PW_UNMATCH              = c.PW_UNMATCH
+USER_CHECK_REQUIRED     = c.USER_CHECK_REQUIRED
+QUESTIONS               = c.QUESTIONS
+
+SIGNUP                  = c.SIGNUP
+PW_BLANK                = c.PW_BLANK
+USER_BLANK              = c.USER_BLANK
+PW_WRONG                = c.PW_WRONG
+
+SYSTRAY_UNAVAI          = c.SYSTRAY_UNAVAI
+keepARM                 = c.keepARM
+
+ANTIALIAS               = c.ANTIALIAS
+UPDATE_FULLVIEW         = c.UPDATE_FULLVIEW
+KEY_DEL                 = c.KEY_DEL
 
 # -------------------------------------------------------------------------------------------------------------
 """ Setting """

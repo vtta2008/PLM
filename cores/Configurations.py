@@ -135,7 +135,7 @@ class Configurations(DAMG):
         pthInfo['tag']          = self.set_dir('imgs/tags')
         pthInfo['webIcon']      = self.set_dir('imgs/web')
 
-        pthInfo['plugin']       = self.set_dir('plg_ins')
+        pthInfo['plugin']       = self.set_dir('plugins')
 
         pthInfo['apps']         = self.set_dir('bin/apps')
         pthInfo['houdini']      = self.set_dir('bin/apps/Houdini')
@@ -439,7 +439,7 @@ class Configurations(DAMG):
             root = self.check_dir(cfgCompany, __appname__)
 
         pth = self.check_dir(root, folName)
-        print("Set directory: {}".format(pth))
+        # print("Set directory: {}".format(pth))
         return pth
 
     def check_dir(self, root, folName=None):

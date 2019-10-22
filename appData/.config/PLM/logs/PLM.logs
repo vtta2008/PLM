@@ -295,3 +295,136 @@ report: TRACE: (23/10/2019 02:30:53) Loggers.py, line 254: message: >>> Configur
 report: TRACE: (23/10/2019 02:30:54) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
 report: TRACE: (23/10/2019 02:30:54) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
 report: TRACE: (23/10/2019 02:30:54) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 03:18:33) Loggers.py, line 254: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 03:18:34) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 03:18:34) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 03:18:35) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 03:25:53) Loggers.py, line 254: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 03:25:55) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 03:25:55) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 03:25:55) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 03:30:12) Loggers.py, line 256: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 03:30:13) Loggers.py, line 256: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 03:30:13) Loggers.py, line 256: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 03:30:13) Loggers.py, line 256: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 03:35:09) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 03:35:11) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 03:35:11) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 03:35:11) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:28:40) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 05:28:41) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:28:42) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:28:42) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:30:06) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 05:30:07) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:30:07) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:30:07) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:31:19) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 05:31:21) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:31:21) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:31:21) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:35:27) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 05:35:28) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:35:28) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:35:28) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:37:40) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 05:37:41) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:37:41) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:37:42) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:38:52) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 05:38:53) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:38:54) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:38:54) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:44:55) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 05:44:57) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:44:57) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:44:57) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:47:00) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 05:47:03) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:47:03) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:47:03) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:49:08) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 05:50:07) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 05:50:08) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:50:08) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:50:08) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:51:39) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 05:51:40) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:51:40) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:51:40) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:55:22) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 05:55:23) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:55:23) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:55:24) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:59:06) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 05:59:07) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:59:07) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 05:59:07) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:00:27) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:00:28) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:00:28) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:00:28) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:01:40) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:01:41) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:01:41) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:01:41) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:01:59) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:02:00) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:02:00) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:02:00) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:02:28) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:02:29) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:02:29) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:02:29) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:03:31) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:03:33) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:03:33) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:03:33) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:04:58) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:04:59) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:04:59) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:04:59) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:05:39) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:05:41) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:05:41) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:05:41) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:06:06) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:06:08) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:06:08) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:06:08) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:08:03) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:08:04) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:08:04) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:08:04) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:11:10) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:11:11) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:11:11) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:11:11) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:16:34) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:16:35) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:16:35) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:16:35) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:18:35) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:18:36) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:18:36) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:18:36) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:19:06) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:19:07) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:19:07) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:19:08) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:21:39) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:21:40) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:21:40) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:21:40) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:22:51) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:22:52) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:22:52) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:22:52) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:23:16) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:23:18) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:23:18) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:23:18) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:23:30) Loggers.py, line 252: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 06:23:32) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:23:32) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 06:23:32) Loggers.py, line 252: message: >>> could not find: {0}, please try a gain >>> {}

@@ -19,7 +19,7 @@ from PyQt5.QtGui import QDesktopServices
 from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFileDialog, QGridLayout, QHBoxLayout, QWidget,
                              QHeaderView, QProgressDialog, QTableWidget, QTableWidgetItem, )
 
-from appData.paths import SiPoExp, SiPoPre
+from appData import SiPoExp, SiPoPre
 from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label, IconPth
 

@@ -18,7 +18,7 @@ from PyQt5.QtGui import QColor, QBrush, QPen, QCursor, QTransform, QPainterPath
 from PyQt5.QtWidgets import QRubberBand, QGraphicsView
 
 # PLM
-from appData.paths import (ASPEC_RATIO, CACHE_BG, SCROLLBAROFF, RUBBER_DRAG, UPDATE_VIEWRECT, UPDATE_FULLVIEW,
+from appData.config import (ASPEC_RATIO, CACHE_BG, SCROLLBAROFF, RUBBER_DRAG, UPDATE_VIEWRECT, UPDATE_FULLVIEW,
                            ANCHOR_VIEWCENTER,
                            ANCHOR_UNDERMICE, ANTIALIAS, ANTIALIAS_TEXT, ANTIALIAS_HIGH_QUALITY, SMOOTH_PIXMAP_TRANSFORM,
                            NON_COSMETIC_PEN, ALT_MODIFIER, MOUSE_LEFT, MOUSE_MIDDLE, MOUSE_RIGHT, KEY_SHIFT, KEY_CTRL,

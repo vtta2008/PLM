@@ -22,6 +22,7 @@ from cores.base import DAMG
 from cores.Loggers import Loggers
 from appData.paths import QSS_DIR
 
+from bin.resources.qss import darkstyle_rc, tooltips_rc
 
 class StyleSheets(DAMG):
 

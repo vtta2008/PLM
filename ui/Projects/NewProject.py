@@ -18,17 +18,18 @@ import sys
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QIcon, QIntValidator
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QGroupBox, QHBoxLayout, QVBoxLayout, QLineEdit, QInputDialog,
-                             QComboBox, QFileDialog, QListWidget, QListWidgetItem, QApplication)
+from PyQt5.QtCore       import pyqtSignal
+from PyQt5.QtGui        import QIcon, QIntValidator
+from PyQt5.QtWidgets    import (QWidget, QGridLayout, QGroupBox, QHBoxLayout, QVBoxLayout, QLineEdit, QInputDialog,
+                                QComboBox, QFileDialog, QListWidget, QListWidgetItem, QApplication)
 
-from cores.Loggers import Loggers
+
 # PLM
-from appData.paths import SiPoMin
-from ui.uikits.Button import Button
+from appData            import SiPoMin
+from cores.Loggers      import Loggers
+from ui.uikits.Button   import Button
 from ui.uikits.UiPreset import Label
-from utilities.utils import get_app_icon
+from utilities.utils    import get_app_icon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """

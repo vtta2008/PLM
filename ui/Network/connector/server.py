@@ -11,7 +11,7 @@ from PyQt5.QtWidgets import QTextEdit
 from PyQt5.QtWidgets import QVBoxLayout
 from PyQt5.QtWidgets import QWidget
 
-from appData import __serverUrl__
+from appData import __serverLocal__
 
 
 class Server(QWidget):
@@ -56,7 +56,7 @@ class Server(QWidget):
             QMessageBox.critical(self, "Error", "You must enter a response")
             return False
 
-        self.tcpServer.listen(QHostAddress(__serverUrl__), 9000)
+        self.tcpServer.listen(QHostAddress(__serverLocal__), 9000)
 
         self.serverOpen = self.tcpServer.isListening()
 

@@ -14,11 +14,11 @@ Description:
 
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSize
-from PyQt5.QtWidgets import QTabWidget, QGridLayout, QTabBar, QWidget, QVBoxLayout
+from PyQt5.QtCore       import Qt, QSize
+from PyQt5.QtWidgets    import QTabWidget, QGridLayout, QTabBar, QWidget, QVBoxLayout
 
 # PLM
-from appData.paths import SiPoMin
+from appData            import SiPoMin
 from ui.uikits.UiPreset import Label
 
 # -------------------------------------------------------------------------------------------------------------

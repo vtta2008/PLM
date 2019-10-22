@@ -15,7 +15,7 @@ import sys
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QWidget)
 
-from appData.paths import SiPoMin
+from appData import SiPoMin
 from ui.uikits.Button import ToolBtn
 from ui.uikits.UiPreset import IconPth
 

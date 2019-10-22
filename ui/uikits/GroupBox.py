@@ -18,7 +18,7 @@ from PyQt5.QtWidgets import QGroupBox, QGridLayout, QHBoxLayout
 
 from appData import SiPoMin
 # PLM
-from appData.documentations._docs import WAIT_LAYOUT_COMPLETE
+from appData.documentations.text_message import WAIT_LAYOUT_COMPLETE
 from ui.uikits.GridLayout import AutoPreset1, AutoPreset2, AutoPreset3
 from ui.uikits.UiPreset import Label
 
