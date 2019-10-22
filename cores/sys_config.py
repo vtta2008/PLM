@@ -10,11 +10,12 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
+""" Import """
+
+# Python
 import os, subprocess
 
-from cores.base import DAMG
-
-class envVariable(DAMG):
+class envVariable(object):
 
     """
     This class is all about system environment variable, you can set new, edit or delete or put path into PATH variable.
@@ -24,6 +25,7 @@ class envVariable(DAMG):
     _envKeys                                            = [k for k in os.environ.keys()]        # Environtment keys
     _envVals                                            = [v for v in os.environ.values()]      # Environtment variables
     _paths                                              = os.getenv('PATH').split(';')          # Paths in PATH
+    _data                                               = dict()
 
     def __init__(self, envKey=None, envVal=None, mode='add'):
         """

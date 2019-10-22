@@ -18,7 +18,7 @@ from PyQt5.QtGui import QColor, QPen
 from PyQt5.QtWidgets import QGraphicsScene
 
 # PLM
-from cores.paths import GRID_SIZE, ACTION_MOVE
+from appData.paths import GRID_SIZE, ACTION_MOVE
 from ui.NodeGraph.NodeGraph import Edge
 
 # -------------------------------------------------------------------------------------------------------------

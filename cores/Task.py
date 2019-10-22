@@ -34,7 +34,6 @@ class ThreadManager(ThreadPoolBase):
         worker.signals.progress.connect(self.progress_fn)
 
         self.workers.append(worker)
-
         self.threadpool.start(worker)
 
     def startThread(self):

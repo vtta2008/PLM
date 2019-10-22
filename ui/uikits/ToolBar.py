@@ -20,8 +20,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QToolBar
 
 # PLM
-from cores.Metadata import __envKey__
-from cores.keys import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_TOOLS, CONFIG_POST
+from appData import __envKey__, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_TOOLS, CONFIG_POST
 from ui.uikits.Action import Action
 
 # -------------------------------------------------------------------------------------------------------------

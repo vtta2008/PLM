@@ -16,6 +16,7 @@ from appData import config as c
 __envKey__              = c.__envKey__
 
 PLMAPPID                = c.PLMAPPID
+VERSION                 = c.VERSION
 
 # -------------------------------------------------------------------------------------------------------------
 """ Directory paths """
@@ -100,6 +101,27 @@ __about__               = c.__about__
 __homepage__            = c.__homepage__
 __plmSlogan__           = c.__plmSlogan__
 __plmWiki__             = c.__plmWiki__
+
+# -------------------------------------------------------------------------------------------------------------
+""" key packages """
+
+KEYPACKAGE              = c.KEYPACKAGE
+CONFIG_TOOLS            = c.CONFIG_TOOLS
+CONFIG_DEV              = c.CONFIG_DEV
+CONFIG_EXTRA            = c.CONFIG_EXTRA
+CONFIG_OFFICE           = c.CONFIG_OFFICE
+
+BTNICONSIZE             = c.BTNICONSIZE
+ICONBTNSIZE             = c.ICONBTNSIZE
+
+FIX_KEYS                = c.FIX_KEYS
+
+CONFIG_TDS              = c.CONFIG_TDS
+CONFIG_VFX              = c.CONFIG_VFX
+CONFIG_ART              = c.CONFIG_ART
+CONFIG_TEX              = c.CONFIG_TEX
+CONFIG_POST             = c.CONFIG_POST
+CONFIG_SYSTRAY          = c.CONFIG_SYSTRAY
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """

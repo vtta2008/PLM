@@ -17,7 +17,7 @@ from functools import partial
 from PyQt5.QtWidgets import QPushButton, QToolButton
 
 # PLM
-from cores.paths import SiPoExp, SiPoPre
+from appData.paths import SiPoExp, SiPoPre
 from ui.uikits.UiPreset import check_preset, IconPth
 
 # -------------------------------------------------------------------------------------------------------------

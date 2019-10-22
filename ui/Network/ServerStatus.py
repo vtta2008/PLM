@@ -19,10 +19,11 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtNetwork import QHostAddress
 from PyQt5.QtWidgets import QGridLayout, QLabel
 
-from appData.ServerCfg import ServerCfg
+
 # Plt
+from appData import __serverGlobal__, __serverLocal__
+from appData.ServerCfg import ServerCfg
 from cores.Loggers import Loggers
-from cores.Metadata import __serverGlobal__
 from ui.uikits.UiPreset import Label
 from utilities.utils import get_app_icon
 
@@ -38,7 +39,7 @@ class ServerStatus(QGridLayout):
         super(ServerStatus, self).__init__(parent)
         self.logger = Loggers(self)
         self.server = ServerCfg()
-        self.server.listen(QHostAddress(__serverGlobal__), 9000)
+        self.server.listen(QHostAddress(__serverLocal__))
 
         self.serverOpen = self.server.isListening()
 

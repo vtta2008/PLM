@@ -12,8 +12,7 @@ Description:
 
 # Python
 
-import os, platform, subprocess
-import re
+import os, re
 
 # PyQt5
 from PyQt5.QtCore import Qt, QSettings, QDateTime, QSize
@@ -21,7 +20,7 @@ from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy
 
 # PLM
-from cores.Metadata import __appname__, __groupname__, __envKey__
+from appData.metadatas import __appname__, __groupname__, __envKey__
 
 # -------------------------------------------------------------------------------------------------------------
 """ Directory local system """
@@ -47,16 +46,15 @@ prefs                       = 'prefs'
 # -------------------------------------------------------------------------------------------------------------
 """ Name variables """
 
-ROOT_DIR = os.path.join(os.getenv(__envKey__))
+print(os.getenv(__envKey__))
 
-cfgpath = os.path.join(ROOT_DIR, 'appData', '.config')
+ROOT_DIR                    = os.path.join(os.getenv(__envKey__))
 
-cfgFile = os.path.join(cfgpath, 'PLM.configuration')
+CFG_DIR                     = os.path.join(ROOT_DIR, 'appData', '.config')
 
-
-CONFIG_LOCAL_DAMG_DIR   = os.path.join(cfgpath, __groupname__)                      # DAMG team directory
-CONFIG_LOCAL_PLM_DIR    = os.path.join(cfgpath, __appname__)                        # Plm directory
-CONFIG_DIR              = os.path.join(cfgpath, 'common')                           # Config dir to store config info
+CONFIG_LOCAL_DAMG_DIR       = os.path.join(CFG_DIR, __groupname__)                      # DAMG team directory
+CONFIG_LOCAL_PLM_DIR        = os.path.join(CFG_DIR, __appname__)                        # Plm directory
+CONFIG_DIR                  = os.path.join(CFG_DIR, 'common')                           # Config dir to store config info
 
 SETTING_DIR                 = os.path.join(CONFIG_LOCAL_PLM_DIR, settings)              # Setting dir
 LOG_DIR                     = os.path.join(CONFIG_LOCAL_PLM_DIR, logs)                  # Log dir
@@ -89,6 +87,7 @@ BIN_DIR                     = os.path.join(ROOT_DIR, 'bin')
 SCRIPTS_DIR                 = os.path.join(ROOT_DIR, 'scripts')
 QSS_DIR                     = os.path.join(SCRIPTS_DIR, 'qss')
 DB_DIR                      = APP_DATA_DIR
+APPS_DIR                    = os.path.join(BIN_DIR, 'apps')
 
 # -------------------------------------------------------------------------------------------------------------
 """ Image """
@@ -128,13 +127,15 @@ DOCUMENTATION_DIR           = os.path.join(APP_DATA_DIR, 'documentations')
 # -------------------------------------------------------------------------------------------------------------
 """ File path configurations """
 
-appIconCfg                  = os.path.join(CONFIG_DIR, 'appIcon.configuration')                   # Config app icon path
-webIconCfg                  = os.path.join(CONFIG_DIR, 'webIcon.configuration')                   # Config Web icon path
-logoIconCfg                 = os.path.join(CONFIG_DIR, 'logoIcon.configuration')                  # Config logo icon path
+cfgFile                     = os.path.join(CFG_DIR, 'PLM.cfg')
 
-pyEnvCfg                    = os.path.join(CONFIG_DIR, 'envKey.configuration')                    # Config python env variables
-appConfig                   = os.path.join(CONFIG_DIR, 'main.configuration')                      # Config pipeline soft package
-mainConfig                  = os.path.join(CONFIG_DIR, 'PLM.configuration')                       # Master config
+appIconCfg                  = os.path.join(CONFIG_DIR, 'appIcon.cfg')                   # Config app icon path
+webIconCfg                  = os.path.join(CONFIG_DIR, 'webIcon.cfg')                   # Config Web icon path
+logoIconCfg                 = os.path.join(CONFIG_DIR, 'logoIcon.cfg')                  # Config logo icon path
+
+pyEnvCfg                    = os.path.join(CONFIG_DIR, 'envKey.cfg')                    # Config python env variables
+appConfig                   = os.path.join(CONFIG_DIR, 'main.cfg')                      # Config pipeline soft package
+mainConfig                  = os.path.join(CONFIG_DIR, 'PLM.cfg')                       # Master config
 
 # -------------------------------------------------------------------------------------------------------------
 """ Settings """

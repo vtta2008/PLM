@@ -19,7 +19,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 
 # Plt
 from cores.Loggers import Loggers
-from cores.paths import ANTIALIAS, UPDATE_FULLVIEW, KEY_DEL
+from appData.paths import ANTIALIAS, UPDATE_FULLVIEW, KEY_DEL
 from ui.NodeGraph.MenuBar import MenuBar
 from ui.NodeGraph.Node import Node, Edge
 from ui.NodeGraph.Scene import Scene

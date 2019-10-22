@@ -1,15 +1,15 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 
-Script Name: sql_server.py
+Script Name: ServerCfg.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
-    This script is main file to create, modify and/or query server data
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __future__ import absolute_import, unicode_literals
+
 """ Import """
 
 # PtQt5
@@ -63,4 +63,6 @@ class ServerCfg(QTcpServer):
         thread = SocketThread(socketDescriptor, "You have notification", self)
         thread.finished.connect(thread.deleteLater)
         thread.start()
-
+# -------------------------------------------------------------------------------------------------------------
+# Created by panda on 23/10/2019 - 1:13 AM
+# © 2017 - 2018 DAMGteam. All rights reserved

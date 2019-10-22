@@ -23,9 +23,7 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QPushBu
                              QApplication, QLabel)
 
 # Plt
-from appData.documentations._docs import PW_BLANK, PW_UNMATCH
-from cores.Metadata import __envKey__
-
+from appData import PW_BLANK, PW_UNMATCH, __envKey__
 from ui.uikits.GroupBox import GroupGrid
 from ui.uikits.UiPreset import IconPth
 from utilities import utils as func, localSQL as usql

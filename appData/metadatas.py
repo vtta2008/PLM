@@ -14,17 +14,22 @@ from __future__ import absolute_import, unicode_literals
 """ DAMG team """
 
 __envKey__              = "DAMGTEAM"
+
 __organization__        = "DAMG TEAM"
 __organizationID__      = "DAMG"
-__organizationName__    = 'DAMG GROUP'
+__organizationName__    = 'DAMGTEAM'
 __groupname__           = "DAMGTEAM"
+__softwareName__        = "Pipeline Manager"
 __damgSlogan__          = "Comprehensive Solution Design"
 __website__             = "https://damgteam.com"
-
-__authors__             = ["Trinh Do", "Duong Minh Duc"]
-__Founders__            = ['Trinh Do']
-__CoFonders__           = ['Duong Minh Duc']
-__emails__              = ["dot@damgteam.com", "up@damgteam.com"]
+__authors__             = "Trinh Do & Duong Minh Duc"
+__author1__             = "Trinh Do"
+__author2__             = "Duong Minh Duc"
+__Founders__            = __author1__
+__CoFonders__           = __author2__
+__emails__              = "damgteam@gmail.com"
+__email1__              = "dot@damgteam.com"
+__email2__              = "up@damgteam.com"
 
 # -------------------------------------------------------------------------------------------------------------
 """ PipelineTool """
@@ -44,10 +49,15 @@ __plmWiki__             = "https://github.com/vtta2008/PipelineTool/wiki"
 # -------------------------------------------------------------------------------------------------------------
 """ Server """
 
-__serverLocal__         = "http://127.0.0.1:8000/"
-__serverUrl__           = "https://pipeline.damgteam.com"
-__serverCheck__         = "https://pipeline.damgteam.com/check"
-__serverAutho__         = "https://pipeline.damgteam.com/auth"
+__serverGlobal__        = "https://server.damgteam.com"
+__serverCheck__         = "https://server.damgteam.com/check"
+__serverAutho__         = "https://server.damgteam.com/auth"
+
+__localPort__           = "20987"
+__serverLocal__         = "http://localhost:{}".format(__localPort__)
+__serverLocalCheck__    = "http://localhost:{}/check".format(__localPort__)
+__serverLocalAutho__    = "http://localhost:{}/auth".format(__localPort__)
+
 __google__              = "https://google.com.vn"
 
 # -------------------------------------------------------------------------------------------------------------
@@ -62,6 +72,8 @@ API_MAJOR_VERSION = 0.69
 API_REVISION = 0
 API_VERSION = float('%s%s' % (API_MAJOR_VERSION, API_REVISION))
 API_VERSION_AS_STRING = '%.02f.%d' % (API_MAJOR_VERSION, API_REVISION)
+PLATFORM                = 'Windows'
+API_MINIMUM             = 0.64
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Setup.py options """

@@ -15,10 +15,10 @@ from __future__ import absolute_import
 # Python
 import sqlite3 as lite
 
-from PyQt5.QtCore import QObject
+from cores.base import DAMG, DAMGLIST
 
 # Plt
-import utils as func
+from utilities import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """
@@ -52,7 +52,7 @@ LTD = dict(
 # -------------------------------------------------------------------------------------------------------------
 """ Create database """
 
-class SQLS(QObject):
+class SQLS(DAMG):
 
     key = "Resource DB"
 
@@ -80,7 +80,7 @@ class SQLS(QObject):
         self.conn.commit()
 
 
-class QuerryDB(list):
+class QuerryDB(DAMGLIST):
 
     key = 'query db'
 
@@ -97,7 +97,7 @@ class QuerryDB(list):
         else:
             return list(cur.fetchall()[0])
 
-class UpdateDB(QObject):
+class UpdateDB(DAMG):
 
     key = 'update db'
     conn = lite.connect('local.db')
@@ -120,7 +120,7 @@ class UpdateDB(QObject):
         self.conn.commit()
         return True
 
-class RemoveDB(QObject):
+class RemoveDB(DAMG):
 
     key = 'delete db'
 
@@ -138,7 +138,7 @@ class RemoveDB(QObject):
         self.cur.execute("DELETE FROM {0}".format(tn))
         self.conn.commit()
 
-class TimeLog(QObject):
+class TimeLog(DAMG):
 
     key = 'timelog object'
 

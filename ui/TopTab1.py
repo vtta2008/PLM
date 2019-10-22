@@ -12,22 +12,18 @@ Description:
 """ Import """
 
 # Python
-import json
-import os
-import sys
+import json, os, sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox, QLineEdit, QPushButton
-
-from cores.Metadata import __envKey__
+from PyQt5.QtCore               import pyqtSignal
+from PyQt5.QtWidgets            import QApplication, QWidget, QGridLayout, QGroupBox, QLineEdit, QPushButton
 
 # Plt
-from cores.base import DAMG
-from cores.keys import CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE
-from cores.paths import BTNICONSIZE, ICONBTNSIZE, FIX_KEYS
-from ui.uikits.Button import Button
-from ui.uikits.GroupBox import GroupBox
+from appData                    import (__envKey__, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE, BTNICONSIZE,
+                                        ICONBTNSIZE, FIX_KEYS)
+from cores.base                 import DAMG
+from ui.uikits.Button           import Button
+from ui.uikits.GroupBox         import GroupBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ topTab1 """

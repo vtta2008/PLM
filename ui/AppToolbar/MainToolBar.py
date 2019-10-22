@@ -21,12 +21,10 @@ from PyQt5.QtCore import pyqtSignal, pyqtSlot
 # PyQt5
 from PyQt5.QtWidgets import QMainWindow, QApplication
 
-# Plt
+# PLM
 from cores.base import DAMG
 from cores.Loggers import Loggers
-from cores.Metadata import __envKey__
-from cores.keys import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_POST
-from cores.paths import SiPoMin
+from appData import __envKey__, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_POST, SiPoMin
 from ui.uikits.Action import Action
 from utilities.utils import str2bool, bool2str
 

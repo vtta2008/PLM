@@ -13,8 +13,9 @@ from __future__ import absolute_import
 
 """ Set up environment variable """
 
+__envKey__ = "DAMGTEAM"
+
 import os, sys
-from cores.Metadata import __envKey__
 from cores.sys_config import envVariable
 
 ROOT = os.path.abspath(os.getcwd())
@@ -46,7 +47,7 @@ configuration = Configurations(__envKey__, os.path.join(ROOT))
 import sys, subprocess, requests, ctypes
 
 # PyQt5
-from PyQt5.QtCore                   import QTimer, pyqtSlot, pyqtSignal
+from PyQt5.QtCore                   import pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets                import QApplication
 
 # Plm
@@ -60,7 +61,7 @@ from cores.Settings                 import Settings
 from cores.Cores                    import AppStoreage
 from cores.Loggers                  import Loggers
 from appData                        import __serverLocalCheck__, PLMAPPID, __organization__, __appname__, __version__, __website__
-from cores.paths                    import SETTING_FILEPTH, ST_FORMAT
+from appData.paths                  import SETTING_FILEPTH, ST_FORMAT
 from cores.Task                     import ThreadManager
 
 from appData.documentations._docs   import SYSTRAY_UNAVAI
@@ -253,15 +254,6 @@ class PLM(QApplication):
     def set_styleSheet(self, style):
         stylesheet = dict(darkstyle=StyleSheets('dark').changeStylesheet, stylesheet=StyleSheets('bright').changeStylesheet, )
         self.setStyleSheet(stylesheet[style])
-
-    def progress_fn(self, n):
-        print("%d%% done" % n)
-
-    def print_output(self, s):
-        print(s)
-
-    def thread_complete(self):
-        print("THREAD COMPLETE")
 
     def closeEvent(self, *args, **kwargs):
         self._closing = True

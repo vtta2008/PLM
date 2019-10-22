@@ -13,7 +13,7 @@ Description:
 # Python
 import os
 
-from cores.paths import CONFIG_DIR
+from appData.paths import CONFIG_DIR
 
 # --------------------------------------------------------------------------------------------------------------
 """ Autodesk config """

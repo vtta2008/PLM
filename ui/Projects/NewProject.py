@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import (QWidget, QGridLayout, QGroupBox, QHBoxLayout, QVBox
 
 from cores.Loggers import Loggers
 # PLM
-from cores.paths import SiPoMin
+from appData.paths import SiPoMin
 from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label
 from utilities.utils import get_app_icon

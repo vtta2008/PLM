@@ -19,7 +19,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 
 from cores.Loggers import Loggers
 # Plt
-from cores.paths import SiPoMin
+from appData.paths import SiPoMin
 from ui.Debugger import pDebugger
 from ui.GeneralSetting import GeneralSetting
 from ui.uikits.TabWidget import TabContent

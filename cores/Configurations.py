@@ -27,8 +27,8 @@ from PyQt5.QtCore import pyqtSignal
 from appData import __groupname__, __appname__, __plmWiki__, __pkgsReq__
 # PLM
 from cores.base import DAMG, DAMGDICT, DAMGLIST
-from cores.keys import autodeskVer, KEYDETECT, KEYPACKAGE, CONFIG_APPUI, CONFIG_SYSTRAY, FIX_KEY
-from cores.paths import PLM_LOGO_32, DAMG_LOGO_32, ICON_DIR_32, PROGRAM64, PROGRAM86, LOCALAPPDATA, PROGRAMDATA
+from appData.keys import autodeskVer, KEYDETECT, KEYPACKAGE, CONFIG_APPUI, CONFIG_SYSTRAY, FIX_KEY
+from appData.paths import PLM_LOGO_32, DAMG_LOGO_32, ICON_DIR_32, PROGRAM64, PROGRAM86, LOCALAPPDATA, PROGRAMDATA
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configurations """
@@ -137,12 +137,12 @@ class Configurations(DAMG):
 
         pthInfo['plugin']       = self.set_dir('plg_ins')
 
-        pthInfo['tanker']       = self.set_dir('bin/tankers')
-        pthInfo['houdini']      = self.set_dir('bin/tankers/Houdini')
-        pthInfo['mari']         = self.set_dir('bin/tankers/Mari')
-        pthInfo['maya']         = self.set_dir('bin/tankers/Maya')
-        pthInfo['nuke']         = self.set_dir('bin/tankers/Nuke')
-        pthInfo['zbrush']       = self.set_dir('bin/tankers/ZBrush')
+        pthInfo['apps']       = self.set_dir('bin/apps')
+        pthInfo['houdini']      = self.set_dir('bin/apps/Houdini')
+        pthInfo['mari']         = self.set_dir('bin/apps/Mari')
+        pthInfo['maya']         = self.set_dir('bin/apps/Maya')
+        pthInfo['nuke']         = self.set_dir('bin/apps/Nuke')
+        pthInfo['zbrush']       = self.set_dir('bin/apps/ZBrush')
 
         pthInfo['ui'] = self.set_dir('ui')
 
@@ -224,7 +224,7 @@ class Configurations(DAMG):
         return True
 
     def cfg_maya(self):
-        tk = os.path.join(os.getenv(self.appKey), 'tankers', 'pMaya')
+        tk = os.path.join(os.getenv(self.appKey), 'apps', 'pMaya')
         tanker = dict(modules=['anim', 'lib', 'modeling', 'rendering', 'simulating', 'surfacing', ], )
 
         pVal = ""

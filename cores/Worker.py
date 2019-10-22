@@ -141,10 +141,9 @@ class ThreadPoolBase(QThreadPool):
 
 class DAMGWORKER(WorkerBase):
 
-    def __init__(self, task, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(DAMGWORKER, self).__init__(self)
 
-        self.task           = task
         self.args           = args
         self.kwargs         = kwargs
 

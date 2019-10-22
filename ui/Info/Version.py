@@ -19,7 +19,7 @@ from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 
 # Plm
-from cores.Metadata import VERSION
+from appData import VERSION
 from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label, IconPth
 

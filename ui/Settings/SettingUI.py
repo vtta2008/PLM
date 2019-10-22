@@ -23,11 +23,10 @@ from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar,
                              QStyleOptionViewItem,
                              QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
 
-from cores.Metadata import __organization__, __appname__
+from appData import __organization__, __appname__
 from cores.Settings import Settings
-from cores.base import DAMG
 # PLM
-from cores.paths import SETTING_FILEPTH, SiPoMin
+from appData.paths import SETTING_FILEPTH, SiPoMin
 from ui.uikits.UiPreset import ComboBox, Label
 
 # -------------------------------------------------------------------------------------------------------------

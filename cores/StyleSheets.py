@@ -20,9 +20,7 @@ from PyQt5.QtCore import QFile, QTextStream
 # Plm
 from cores.base import DAMG
 from cores.Loggers import Loggers
-from cores.paths import QSS_DIR
-
-from bin.resources import pyqt5_style_rc, tooltips_rc
+from appData.paths import QSS_DIR
 
 
 class StyleSheets(DAMG):

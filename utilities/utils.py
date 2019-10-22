@@ -13,23 +13,21 @@ from __future__ import absolute_import
 
 # Python
 import os, sys, requests, platform, subprocess, winshell, yaml, json, linecache, re, datetime, time, uuid, win32api
-import pprint, parser
+import pprint
 
 __all__ = ['attr_type', 'auto_convert', 'camel_case_to_lower_case_underscore', 'camel_case_to_title', 'clean_name',
             'is_bool', 'is_dict', 'is_list', 'is_none', 'is_number', 'is_string', 'list_attr_types',
             'lower_case_underscore_to_camel_case', 'is_newer', 'test_func']
 
 # PyQt5
-from PyQt5.QtCore   import Qt, QRectF, QRect, QSize
-from PyQt5.QtGui    import QColor, QFont, QFontMetrics
+from PyQt5.QtCore       import Qt, QRectF, QRect, QSize
+from PyQt5.QtGui        import QColor, QFont, QFontMetrics
 
 # PLM
-from appData        import LOGO_DIR, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR, APP_ICON_DIR
-
-from cores.Metadata  import __envKey__, __pkgsReq__
-from cores.keys      import KEYPACKAGE
-from cores.Errors    import IsADirectoryError, FileNotFoundError
-from cores.Loggers   import Loggers
+from appData            import (__envKey__, __pkgsReq__, KEYPACKAGE, LOGO_DIR, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR,
+                                APP_ICON_DIR)
+from cores.Errors       import IsADirectoryError, FileNotFoundError
+from cores.Loggers      import Loggers
 
 logger = Loggers(__name__)
 

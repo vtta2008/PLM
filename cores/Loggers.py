@@ -15,7 +15,7 @@ from __future__ import unicode_literals
 import sys, os, logging, json, enum, pdb, traceback, linecache
 
 # PLM
-from cores.paths import LOG_PTH
+from appData.paths import LOG_PTH
 
 # -------------------------------------------------------------------------------------------------------------
 

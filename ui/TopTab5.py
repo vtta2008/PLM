@@ -21,7 +21,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLineEdit, QText
 # Plt
 from cores.Loggers import Loggers
 from cores.base import DAMG
-from cores.paths import SiPoMin, SiPoExp
+from appData.paths import SiPoMin, SiPoExp
 from ui.uikits.Button import Button
 
 # -------------------------------------------------------------------------------------------------------------

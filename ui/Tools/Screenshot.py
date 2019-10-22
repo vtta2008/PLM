@@ -22,7 +22,7 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import (QWidget, QGridLayout, QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox,
                              QHBoxLayout, QLabel, QSizePolicy, )
 
-from cores.paths import keepARM
+from appData.paths import keepARM
 from ui.uikits.Button import Button
 # PLM
 from ui.uikits.UiPreset import IconPth

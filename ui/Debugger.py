@@ -30,7 +30,7 @@ from PyQt5.QtGui import QTextCursor
 from PyQt5.QtWidgets import QTextEdit, QApplication, QGridLayout
 
 # PLM
-from cores.paths import SiPoMin
+from appData.paths import SiPoMin
 
 # -------------------------------------------------------------------------------------------------------------
 """ Processing User Input """

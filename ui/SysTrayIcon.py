@@ -24,8 +24,7 @@ from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QApplication
 
 from cores.Loggers import Loggers
 # PLM
-from cores.Metadata import __plmSlogan__, __appname__, __envKey__
-from cores.keys import CONFIG_SYSTRAY
+from appData import __plmSlogan__, __appname__, __envKey__, CONFIG_SYSTRAY
 from ui.uikits.Action import Action
 from ui.uikits.UiPreset import AppIcon
 from utilities.localSQL import QuerryDB

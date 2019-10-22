@@ -16,7 +16,7 @@ from PyQt5.QtWidgets import QDockWidget, QGridLayout
 
 # PLM
 from cores.base import DAMG
-from cores.paths import SiPoExp
+from appData.paths import SiPoExp
 from ui.uikits.ToolBar import ToolBar
 
 # -------------------------------------------------------------------------------------------------------------
