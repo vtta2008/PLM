@@ -30,9 +30,6 @@ else:
         envVariable(__envKey__, ROOT)
     cfgable                     = True
 
-# Check for install/update python package required.
-# subprocess.Popen('pip install -r requirements.txt', shell=True).wait()
-
 if not cfgable:
     print("CONFIGERROR: environment variable not set !!!")
     sys.exit()
