@@ -69,25 +69,24 @@ USER_PREF_DIR               = os.path.join(CONFIG_DIR, userPrefs)               
 
 APP_DATA_DIR                = os.path.join(ROOT_DIR, 'appData')
 BUILD_DIR                   = os.path.join(ROOT_DIR, 'build')
-CORE_DIR                    = os.path.join(ROOT_DIR, 'appCore')
 IMG_DIR                     = os.path.join(ROOT_DIR, 'imgs')
 PLUGIN_DIR                  = os.path.join(ROOT_DIR, 'plugins')
 UI_DIR                      = os.path.join(ROOT_DIR, 'ui')
-TEST_DIR                    = os.path.join(ROOT_DIR, 'test')
-
-# -------------------------------------------------------------------------------------------------------------
-""" Dependancies """
-
-DEPENDANCIES_DIR            = os.path.join(CORE_DIR, 'dependencies')
-
+TEST_DIR                    = os.path.join(ROOT_DIR, 't')
+DB_DIR                      = APP_DATA_DIR
 # -------------------------------------------------------------------------------------------------------------
 """ App (Non python) """
 
 BIN_DIR                     = os.path.join(ROOT_DIR, 'bin')
+APPS_DIR                    = os.path.join(BIN_DIR, 'apps')
+DATA_DIR                    = os.path.join(BIN_DIR, 'data')
+DEPENDANCIES_DIR            = os.path.join(BIN_DIR, 'dependencies')
+RESOURCES_DIR               = os.path.join(BIN_DIR, 'resources')
+
 SCRIPTS_DIR                 = os.path.join(ROOT_DIR, 'scripts')
 QSS_DIR                     = os.path.join(SCRIPTS_DIR, 'qss')
-DB_DIR                      = APP_DATA_DIR
-APPS_DIR                    = os.path.join(BIN_DIR, 'apps')
+JSON_DIR                    = os.path.join(SCRIPTS_DIR, 'json')
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Image """

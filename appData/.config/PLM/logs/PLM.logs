@@ -283,3 +283,15 @@ report: TRACE: (23/10/2019 02:00:56) Loggers.py, line 254: message: >>> Configur
 report: TRACE: (23/10/2019 02:00:57) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
 report: TRACE: (23/10/2019 02:00:57) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
 report: TRACE: (23/10/2019 02:00:57) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 02:18:14) Loggers.py, line 254: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 02:18:15) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 02:18:15) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 02:18:15) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 02:19:43) Loggers.py, line 254: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 02:19:44) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 02:19:44) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 02:19:44) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 02:30:53) Loggers.py, line 254: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+report: TRACE: (23/10/2019 02:30:54) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 02:30:54) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}
+report: TRACE: (23/10/2019 02:30:54) Loggers.py, line 254: message: >>> could not find: {0}, please try a gain >>> {}

@@ -109,9 +109,9 @@ class Configurations(DAMG):
     def cfg_cfgDir(self, fileName='PLM.cfg', **pthInfo):
 
         pthInfo['root']         = self.rootDir
-
+        pthInfo['appData']      = self.set_dir('appData')
         pthInfo['bin']          = self.set_dir('bin')
-        pthInfo['resource']     = self.set_dir('bin/resource')
+        pthInfo['resource']     = self.set_dir('bin/resources')
 
         pthInfo['config']       = self.set_dir('appData/.config')
         pthInfo['mtd']          = self.set_dir('appData/.config/PLM/mtd')
@@ -137,16 +137,16 @@ class Configurations(DAMG):
 
         pthInfo['plugin']       = self.set_dir('plg_ins')
 
-        pthInfo['apps']       = self.set_dir('bin/apps')
+        pthInfo['apps']         = self.set_dir('bin/apps')
         pthInfo['houdini']      = self.set_dir('bin/apps/Houdini')
         pthInfo['mari']         = self.set_dir('bin/apps/Mari')
         pthInfo['maya']         = self.set_dir('bin/apps/Maya')
         pthInfo['nuke']         = self.set_dir('bin/apps/Nuke')
         pthInfo['zbrush']       = self.set_dir('bin/apps/ZBrush')
 
-        pthInfo['ui'] = self.set_dir('ui')
+        pthInfo['ui']           = self.set_dir('ui')
 
-        pthInfo['utilities'] = self.set_dir('utilities')
+        pthInfo['utilities']    = self.set_dir('utilities')
 
         for pth in pthInfo.values():
             self.create_folder(pth)
@@ -224,7 +224,7 @@ class Configurations(DAMG):
         return True
 
     def cfg_maya(self):
-        tk = os.path.join(os.getenv(self.appKey), 'apps', 'pMaya')
+        tk = os.path.join(os.getenv(self.appKey), 'bin', 'apps', 'maya')
         tanker = dict(modules=['anim', 'lib', 'modeling', 'rendering', 'simulating', 'surfacing', ], )
 
         pVal = ""
@@ -439,6 +439,7 @@ class Configurations(DAMG):
             root = self.check_dir(cfgCompany, __appname__)
 
         pth = self.check_dir(root, folName)
+        print("Set directory: {}".format(pth))
         return pth
 
     def check_dir(self, root, folName=None):
