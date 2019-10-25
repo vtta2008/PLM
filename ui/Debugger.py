@@ -25,17 +25,18 @@ from code import InteractiveConsole
 from io import StringIO
 
 # PyQt5
-from PyQt5.QtCore       import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
-from PyQt5.QtGui        import QTextCursor
-from PyQt5.QtWidgets    import QTextEdit, QApplication, QGridLayout
+from PyQt5.QtCore           import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
+from PyQt5.QtGui            import QTextCursor
+from PyQt5.QtWidgets        import QTextEdit, QApplication, QGridLayout
 
 # PLM
-from appData            import SiPoMin
+from appData                import SiPoMin
+from ui.uikits.GridLayout import GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Processing User Input """
 
-class Console(InteractiveConsole):
+class Console(GridLayout):
 
     def __init__(self, names=None):
         super(Console, self).__init__(names)
@@ -125,13 +126,13 @@ class pDeBug(pDetector):
 
         print(self.mode, self.message)
 
-class pDebugger(QGridLayout):
+class Debugger(GridLayout):
 
     def __init__(self, parent=None):
-        super(pDebugger, self).__init__(parent)
+        super(Debugger, self).__init__(parent)
 
         doctest.testmod(verbose=True)
-        self.console = Console()
+        self.console = Console
         self.buildUI()
 
     def buildUI(self):
@@ -153,7 +154,7 @@ class pDebugger(QGridLayout):
 def main():
 
     debug = QApplication(sys.argv)
-    layout = pDebugger()
+    layout = Debugger()
     layout.show()
     debug.exec_()
 

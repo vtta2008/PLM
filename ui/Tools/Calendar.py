@@ -23,15 +23,15 @@ from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
 
 # Plt
 from appData import SiPoMin
+from ui.uikits.Widget import Widget
 from ui.uikits.UiPreset import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Clendar """
 
-class Calendar(QWidget):
+class Calendar(Widget):
 
     key = 'calendar'
-    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(Calendar, self).__init__(parent)
@@ -197,7 +197,7 @@ class Calendar(QWidget):
                                         QCalendarWidget.SingleSelection)
         self.selectionModeCombo.addItem("None",
                                         QCalendarWidget.NoSelection)
-        self.selectionModeLabel = QLabel("&Selection fm:")
+        self.selectionModeLabel = QLabel("&Selection fn:")
         self.selectionModeLabel.setBuddy(self.selectionModeCombo)
 
         self.gridCheckBox = QCheckBox("&Grid")

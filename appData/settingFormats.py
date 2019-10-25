@@ -15,9 +15,29 @@ from PyQt5.QtCore import QSettings, QDateTime
 # -------------------------------------------------------------------------------------------------------------
 """ Format """
 
-ST_FORMAT = dict(   ini       = QSettings.IniFormat,
-                    native    = QSettings.NativeFormat,
-                    invalid   = QSettings.InvalidFormat, )
+LOG_FORMAT = dict(
+
+    fullOpt                 = "%(levelname)s: %(asctime)s %(name)s, line %(lineno)s: %(message)s",
+    rlm                     = "(relativeCreated:d) (levelname): (message)",
+    tlm1                    = "{asctime:[{lvelname}: :{message}",
+    tnlm1                   = "%(asctime)s  %(name)-22s  %(levelname)-8s %(message)s",
+    tlm2                    = '%(asctime)s|%(levelname)s|%(message)s|',
+    tnlm2                   = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+)
+
+DT_FORMAT = dict(
+
+    dmyhms                  = "%d/%m/%Y %H:%M:%S",
+    mdhm                    = "'%m-%d %H:%M'",
+    fullOpt                 = '(%d/%m/%Y %H:%M:%S)',
+)
+
+ST_FORMAT = dict(
+
+    ini                     = QSettings.IniFormat,
+    native                  = QSettings.NativeFormat,
+    invalid                 = QSettings.InvalidFormat,
+)
 
 datetTimeStamp = QDateTime.currentDateTime().toString("hh:mm - dd MMMM yy")             # datestamp
 

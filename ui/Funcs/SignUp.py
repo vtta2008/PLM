@@ -24,10 +24,11 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QFileDialog
 from appData import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_REQUIRED, QUESTIONS
 from cores.Loggers import Loggers
 
+from ui.UiSignals import UiSignals
 from ui.uikits.Button import Button
 from ui.uikits.GroupBox import GroupGrid
 from ui.uikits.UiPreset import IconPth, Label, LineEdit, ComboBox, CheckBox
-from utilities.utils import check_blank, check_match, get_avatar_icon, getToken, getUnix, getTime, getDate, \
+from utils.utils import check_blank, check_match, get_avatar_icon, getToken, getUnix, getTime, getDate, \
     get_local_pc_info, get_user_location
 
 # -------------------------------------------------------------------------------------------------------------
@@ -36,19 +37,17 @@ from utilities.utils import check_blank, check_match, get_avatar_icon, getToken,
 class SignUp(QWidget):
 
     key = 'signup'
-    showLayout = pyqtSignal(str, str)
-    updataAvatar = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(SignUp, self).__init__(parent)
-        self.logger = Loggers(self)
+
         self.setWindowIcon(IconPth(32, "SignUp"))
-        self.resize(450, 900)
+        self.logger = Loggers(__file__)
+        self.signals = UiSignals(self)
 
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
-
 
     def buildUI(self):
         self.avatar_section()
@@ -81,8 +80,8 @@ class SignUp(QWidget):
     def account_section(self):
         self.accSection, account_grid = GroupGrid("Account")
         self.userField = LineEdit()
-        self.pwField = LineEdit({'fm': 'password'})
-        self.cfpwField = LineEdit({'fm': 'password'})
+        self.pwField = LineEdit({'fn': 'password'})
+        self.cfpwField = LineEdit({'fn': 'password'})
 
         account_grid.addWidget(Label({'txt':'User Name'}), 0, 0, 1, 2)
         account_grid.addWidget(Label({'txt':'Password'}), 1, 0, 1, 2)
@@ -225,6 +224,9 @@ class SignUp(QWidget):
 
     def check_user_agreement(self):
         return self.user_agree_checkBox.checkState()
+
+    def applySetting(self):
+        self.resize(450, 900)
 
     def generate_user_data(self):
         regInput = self.collect_input()

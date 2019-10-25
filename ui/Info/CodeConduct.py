@@ -20,6 +20,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 
 # Plm
 from appData import CODECONDUCT
+from ui.UiSignals import UiSignals
 from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label, IconPth
 
@@ -35,6 +36,7 @@ class CodeConduct(QWidget):
 
         super(CodeConduct, self).__init__(parent)
         self.setWindowIcon(IconPth(32, 'CodeConduct'))
+        self.signals = UiSignals(self)
 
         self.layout = QGridLayout()
         self.buildUI()

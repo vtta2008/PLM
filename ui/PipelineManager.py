@@ -10,38 +10,32 @@ Description:
 
 # Python
 import sys
-from functools import partial
+from functools              import partial
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import (QApplication, QMainWindow, QWidget, QGridLayout)
+from PyQt5.QtCore           import pyqtSignal
+from PyQt5.QtWidgets        import (QApplication, QMainWindow, QWidget, QGridLayout)
 
-
-# Plt
-from cores.Loggers import Loggers
-from cores.base import DAMG
-from appData import __homepage__, dockB, SiPoMin
-from ui import TopTab, BotTab, Footer, StatusBar
-from ui.AppToolbar import MainToolBar, DockToolBar
-from ui.Menus import MainMenuBar, SubMenuBar
-from ui.Network import ServerStatus
-from ui.uikits.GroupBox import AutoSectionLayoutGrp, AutoSectionQMainGrp
-from ui.uikits.UiPreset import AppIcon
-from utilities.utils import get_layout_size, str2bool, bool2str
+# PLM
+from cores.Loggers          import Loggers
+from cores.base             import DAMG
+from ui.UiSignals           import UiSignals
+from appData                import __homepage__, dockB, SiPoMin
+from ui                     import TopTab, BotTab, Footer, StatusBar
+from ui.uikits.MainWindow   import MainWindow
+from ui.AppToolbar          import MainToolBar, DockToolBar
+from ui.Menus               import MainMenuBar, SubMenuBar
+from ui.Network             import ServerStatus
+from ui.uikits.GroupBox     import AutoSectionLayoutGrp, AutoSectionQMainGrp
+from ui.uikits.UiPreset     import AppIcon
+from utils.utils            import get_layout_size, str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
 
-class PipelineManager(QMainWindow):
+class PipelineManager(MainWindow):
 
     key = 'mainUI'
-
-    showLayout = pyqtSignal(str, str)
-    executing = pyqtSignal(str)
-    addLayout = pyqtSignal(DAMG)
-    openBrowser = pyqtSignal(str)
-    setSetting = pyqtSignal(str, str, str)
-    sysNotify = pyqtSignal(str, str, str, int)
 
     def __init__(self, settings, parent=None):
         super(PipelineManager, self).__init__(parent)
@@ -50,13 +44,12 @@ class PipelineManager(QMainWindow):
         self.url = __homepage__
 
         self.setObjectName(self.key)
-
         self.setWindowIcon(AppIcon("Logo"))
 
-        self.settings = settings
+        self.settings       = settings
 
-        self.mainWidget = QWidget()
-        self.layout = QGridLayout()
+        self.mainWidget     = QWidget()
+        self.layout         = QGridLayout()
         self.mainWidget.setLayout(self.layout)
 
         self.buildUI()
@@ -65,44 +58,45 @@ class PipelineManager(QMainWindow):
 
     def buildUI(self):
 
-        self.mainMenuBar = MainMenuBar.MainMenuBar()
-        self.subMenuBar = SubMenuBar.SubMenuBar()                                                   # Sub menu
-        self.toolBar = MainToolBar.MainToolBar()                                                    # Toolbar
-        self.serverStatus = ServerStatus.ServerStatus()                                             # Server Status
-        self.subMenuSec = AutoSectionQMainGrp("Sub Menu", self.subMenuBar)
-        self.mainMenuSec = AutoSectionQMainGrp("Main Menu", self.mainMenuBar)
+        self.mainMenuBar    = MainMenuBar.MainMenuBar()
+        self.subMenuBar     = SubMenuBar.SubMenuBar()                                                   # Sub menu
+        self.toolBar        = MainToolBar.MainToolBar()                                                 # Toolbar
+        self.serverStatus   = ServerStatus.ServerStatus()                                               # Server Status
+        self.subMenuSec     = AutoSectionQMainGrp("Sub Menu", self.subMenuBar)
+        self.mainMenuSec    = AutoSectionQMainGrp("Main Menu", self.mainMenuBar)
 
-        self.networkStatus = AutoSectionLayoutGrp("Server Status", self.serverStatus)
+        self.networkStatus  = AutoSectionLayoutGrp("Server Status", self.serverStatus)
         self.networkStatus.setMaximumHeight(self.subMenuBar.maximumHeight()*3)
-        self.subToolBarSec = AutoSectionQMainGrp("Tool Bar", self.toolBar)
+        self.subToolBarSec  = AutoSectionQMainGrp("Tool Bar", self.toolBar)
 
-        self.topTabUI = TopTab.TopTab()                                                            # Tab layout
-        self.botTabUI = BotTab.BotTab()                                                            # Bot build 1
-        self.notifiSec = AutoSectionLayoutGrp("Notification", None)                                # Bot build 2
+        self.topTabUI       = TopTab.TopTab()                                                           # Tab layout
+        self.botTabUI       = BotTab.BotTab()                                                           # Bot build 1
+        self.notifiSec      = AutoSectionLayoutGrp("Notification", None)                                # Bot build 2
 
-        self.subMenuBar.showLayout.connect(self.showLayout)
-        self.subMenuBar.executing.connect(self.executing)
-        self.subMenuBar.addLayout.connect(self.addLayout)
-        self.subMenuBar.openUrl.connect(self.openBrowser)
+        self.footer         = Footer.Footer()
+        self.statusBar      = StatusBar.StatusBar()                                                     # Status bar viewing message
+        self.setStatusBar(self.statusBar)
 
-        self.mainMenuBar.showLayout.connect(self.showLayout)
-        self.mainMenuBar.executing.connect(self.executing)
-        self.mainMenuBar.addLayout.connect(self.addLayout)
-        self.mainMenuBar.openUrl.connect(self.openBrowser)
+        self.subMenuBar.signals.showLayout.connect(self.signals.showLayout)
+        self.subMenuBar.signals.executing.connect(self.signals.executing)
+        self.subMenuBar.signals.regisLayout.connect(self.signals.regisLayout)
+        self.subMenuBar.signals.openBrowser.connect(self.signals.openBrowser)
 
-        self.topTabUI.executing.connect(self.executing)
-        self.topTabUI.showLayout.connect(self.showLayout)
-        self.topTabUI.addLayout.connect(self.addLayout)
+        self.mainMenuBar.signals.showLayout.connect(self.signals.showLayout)
+        self.mainMenuBar.signals.executing.connect(self.signals.executing)
+        self.mainMenuBar.signals.regisLayout.connect(self.signals.regisLayout)
+        self.mainMenuBar.signals.openBrowser.connect(self.signals.openBrowser)
 
-        self.toolBar.showLayout.connect(self.showLayout)
-        self.toolBar.executing.connect(self.executing)
-        self.toolBar.addLayout.connect(self.addLayout)
-        self.toolBar.openBrowser.connect(self.openBrowser)
-        self.toolBar.setSetting.connect(self.setSetting)
+        self.topTabUI.signals.executing.connect(self.signals.executing)
+        self.topTabUI.signals.showLayout.connect(self.signals.showLayout)
+        self.topTabUI.signals.regisLayout.connect(self.signals.regisLayout)
 
-        self.footer = Footer.Footer()
-        self.stBar = StatusBar.StatusBar()                                                         # Status bar viewing message
-        self.setStatusBar(self.stBar)
+        self.toolBar.signals.showLayout.connect(self.signals.showLayout)
+        self.toolBar.signals.executing.connect(self.signals.executing)
+        self.toolBar.signals.regisLayout.connect(self.signals.regisLayout)
+        self.toolBar.signals.openBrowser.connect(self.signals.openBrowser)
+        self.toolBar.signals.setSetting.connect(self.signals.setSetting)
+
 
         cbs = [self.botTabUI.generalSetting.tbTDCB, self.botTabUI.generalSetting.tbCompCB,
                self.botTabUI.generalSetting.tbArtCB, self.botTabUI.generalSetting.tbTexCB,
@@ -112,7 +106,7 @@ class PipelineManager(QMainWindow):
                self.botTabUI.generalSetting.notifiCB]
 
         sections = [self.toolBar.tdToolBar, self.toolBar.compToolBar, self.toolBar.artToolBar, self.toolBar.textureToolBar,
-                    self.toolBar.postToolBar, self.subToolBarSec, self.mainMenuSec, self.stBar, self.subMenuSec,
+                    self.toolBar.postToolBar, self.subToolBarSec, self.mainMenuSec, self.statusBar, self.subMenuSec,
                     self.networkStatus, self.notifiSec]
 
         for i in range(len(sections)):
@@ -132,9 +126,9 @@ class PipelineManager(QMainWindow):
             cbs[i].setChecked(val)
             sections[i].setVisible(val)
             cbs[i].stateChanged.connect(sections[i].setVisible)
-            cbs[i].stateChanged.connect(partial(self.setSetting.emit, key, bool2str(val), grp))
+            cbs[i].stateChanged.connect(partial(self.signals.setSetting.emit, key, bool2str(val), grp))
 
-        self.footer.showLayout.connect(self.showLayout)
+        self.footer.signals.showLayout.connect(self.signals.showLayout)
 
         # Signal
         self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 9)
@@ -148,46 +142,47 @@ class PipelineManager(QMainWindow):
 
         self.layout.addWidget(self.footer, 11, 0, 1, 9)
 
-        self.tdDock = DockToolBar.DockToolBar('TD')
-        self.vfxDock = DockToolBar.DockToolBar('VFX')
-        self.artDock = DockToolBar.DockToolBar('ART')
-        self.texDock = DockToolBar.DockToolBar('TEXTURE')
-        self.postDock = DockToolBar.DockToolBar('POST')
+        self.tdDock         = DockToolBar.DockToolBar('TD')
+        self.vfxDock        = DockToolBar.DockToolBar('VFX')
+        self.artDock        = DockToolBar.DockToolBar('ART')
+        self.texDock        = DockToolBar.DockToolBar('TEXTURE')
+        self.postDock       = DockToolBar.DockToolBar('POST')
 
         self.docks = [self.tdDock, self.vfxDock, self.artDock, self.texDock, self.postDock]
         for dock in self.docks:
-            self.addLayout.emit(dock)
+            self.signals.regisLayout.emit(dock)
             self.add_dockWidget(dock)
 
     def add_dockWidget(self, dock, pos=dockB):
+
         self.dock = dock
-        self.dock.showLayout.connect(self.showLayout)
-        self.dock.setSetting.connect(self.setSetting)
-        self.dock.executing.connect(self.executing)
-        self.dock.addLayout.connect(self.addLayout)
+
+        self.dock.signals.showLayout.connect(self.signals.showLayout)
+        self.dock.signals.setSetting.connect(self.signals.setSetting)
+        self.dock.signals.executing.connect(self.signals.executing)
+        self.dock.signals.regisLayout.connect(self.signals.regisLayout)
+
         self.addDockWidget(pos, self.dock)
 
-    def resizeEvent(self, event):
-        sizeW, sizeH = get_layout_size(self)
-        self.setSetting.emit('width', str(sizeW), self.objectName())
-        self.setSetting.emit('height', str(sizeH), self.objectName())
+    def hideEvent(self, event):
+        pass
 
     def showEvent(self, event):
         # self.specs.showState.emit(True)
-        self.showLayout.emit('login', 'hide')
-        self.showLayout.emit('sysTray', 'show')
+        self.signals.showLayout.emit('login', 'hide')
+        self.signals.showLayout.emit('sysTray', 'show')
 
     def closeEvent(self, event):
 
         # self.specs.showState.emit(False)
         # self.sysNotify.emit('notice', "PLM hide in system tray", 'info', 500)
 
-        self.showLayout.emit(self.key, 'hide')
+        self.signals.showLayout.emit(self.key, 'hide')
         event.ignore()
 
     def applySetting(self):
         self.setSizePolicy(SiPoMin, SiPoMin)
-        self.setContentsMargins(5,15,5,15)
+        self.setContentsMargins(5,5,5,5)
 
 # -------------------------------------------------------------------------------------------------------------
 def main():

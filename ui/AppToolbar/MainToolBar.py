@@ -15,18 +15,18 @@ Description:
 import json
 import os
 import sys
-from functools import partial
+from functools              import partial
 
-from PyQt5.QtCore import pyqtSignal, pyqtSlot
 # PyQt5
-from PyQt5.QtWidgets import QMainWindow, QApplication
+from PyQt5.QtCore           import pyqtSlot
+from PyQt5.QtWidgets        import QMainWindow, QApplication
 
 # PLM
-from cores.base import DAMG
-from cores.Loggers import Loggers
-from appData import __envKey__, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_POST, SiPoMin
-from ui.uikits.Action import Action
-from utilities.utils import str2bool, bool2str
+from cores.Loggers          import Loggers
+from appData                import __envKey__, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_POST, SiPoMin
+from ui.UiSignals           import UiSignals
+from ui.uikits.Action       import Action
+from utils.utils            import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
@@ -35,16 +35,11 @@ class MainToolBar(QMainWindow):
 
     key = 'mainToolBar'
 
-    showLayout = pyqtSignal(str, str)
-    executing = pyqtSignal(str)
-    addLayout = pyqtSignal(DAMG)
-    openBrowser = pyqtSignal(str)
-    setSetting = pyqtSignal(str, str, str)
-
     def __init__(self, parent=None):
         super(MainToolBar, self).__init__(parent)
-        self.logger = Loggers(self)
-
+        self.logger = Loggers(__file__)
+        self.signals = UiSignals(self)
+        
         with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
             self.appInfo = json.load(f)
 
@@ -60,41 +55,43 @@ class MainToolBar(QMainWindow):
 
     def create_toolBar(self, name="", apps=[]):
         toolBar = self.addToolBar(name)
+        
         for key in apps:
             if key in self.appInfo:
                 toolBar.addAction(Action({'icon':key,
                                           'stt':self.appInfo[key][0],
                                           'txt':key,
-                                          'trg':(partial(self.executing.emit, self.appInfo[key][2]))}, self))
+                                          'trg':(partial(self.signals.executing.emit, self.appInfo[key][2]))}, self))
+        
         return toolBar
 
     @pyqtSlot(str, bool)
     def showToolBar(self, toolbar, mode):
         if toolbar == 'td':
             self.tdToolBar.setVisible(str2bool(mode))
-            self.setSetting.emit(toolbar, bool2str(mode), self.objectName())
+            self.signals.setSetting.emit(toolbar, bool2str(mode), self.objectName())
         elif toolbar == 'vfx':
             self.compToolBar.setVisible(str2bool(mode))
-            self.setSetting.emit(toolbar, bool2str(mode), self.objectName())
+            self.signals.setSetting.emit(toolbar, bool2str(mode), self.objectName())
         elif toolbar == 'art':
             self.artToolBar.setVisible(str2bool(mode))
-            self.setSetting.emit(toolbar, bool2str(mode), self.objectName())
+            self.signals.setSetting.emit(toolbar, bool2str(mode), self.objectName())
         elif toolbar == 'tex':
             self.textureToolBar.setVisible(str2bool(mode))
-            self.setSetting.emit(toolbar, bool2str(mode), self.objectName())
+            self.signals.setSetting.emit(toolbar, bool2str(mode), self.objectName())
         elif toolbar == 'post':
             self.postToolBar.setVisible(str2bool(mode))
-            self.setSetting.emit(toolbar, bool2str(mode), self.objectName())
+            self.signals.setSetting.emit(toolbar, bool2str(mode), self.objectName())
         else:
             for tb in self.toolBars:
                 tb.setVisible(str2bool(mode))
-                self.setSetting.emit(tb, bool2str(mode), self.objectName())
+                self.signals.setSetting.emit(tb, bool2str(mode), self.objectName())
 
     def hideEvent(self, event):
-        self.setSetting.emit(self.key, 'hide', self.objectName())
+        self.signals.setSetting.emit(self.key, 'hide', self.objectName())
 
     def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
+        self.signals.regisLayout.emit(self.key, 'hide')
         event.ignore()
 
 def main():

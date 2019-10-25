@@ -14,18 +14,33 @@ Description:
 
 
 # PyQt5
-from PyQt5.QtWidgets import QGridLayout
+from PyQt5.QtWidgets        import QGridLayout
 
 # PLM
-
+from ui.UiSignals           import UiSignals
 
 # -------------------------------------------------------------------------------------------------------------
 """ Gridlayout presets """
 
-class AutoPreset1(QGridLayout):
+class GridLayout(QGridLayout):
+
+    def __init__(self, parent=None):
+        QGridLayout.__init__(self)
+
+        self.parent = parent
+        self.signals = UiSignals(self)
+
+    def sizeHint(self):
+        size = super(GridLayout, self).sizeHint()
+        size.setHeight(size.height())
+        size.setWidth(max(size.width(), size.height()))
+        return size
+
+class AutoPreset1(GridLayout):
 
     def __init__(self, btns=[], parent=None):
         super(AutoPreset1, self).__init__(parent)
+
         self.btns = btns
         self.buildUI()
 
@@ -52,16 +67,12 @@ class AutoPreset1(QGridLayout):
                     self.addWidget(self.btns[i], 2, 2, 1, 1)
                 i += 1
 
-    def sizeHint(self):
-        size = super(AutoPreset1, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
-
-class AutoPreset2(QGridLayout):
+class AutoPreset2(GridLayout):
 
     def __init__(self, btns=[], parent=None):
         super(AutoPreset2, self).__init__(parent)
+
+        self.signals = UiSignals(self)
         self.btns = btns
         self.buildUI()
 
@@ -88,28 +99,18 @@ class AutoPreset2(QGridLayout):
                     self.addWidget(self.btns[i], 8, 0, 1, 2)
                 i += 1
 
-    def sizeHint(self):
-        size = super(AutoPreset2, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
-
-class AutoPreset3(QGridLayout):
+class AutoPreset3(GridLayout):
 
     def __init__(self, imageView, parent=None):
         super(AutoPreset3, self).__init__(parent)
+
+        self.signals = UiSignals(self)
         self.img = imageView
         self.buildUI()
 
     def buildUI(self):
         if self.img:
             self.addWidget(self.img, 0, 0, 1, 1)
-
-    def sizeHint(self):
-        size = super(AutoPreset3, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -22,6 +22,7 @@ from PyQt5.QtWidgets            import QApplication, QWidget, QGridLayout, QGrou
 from appData                    import (__envKey__, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE, BTNICONSIZE,
                                         ICONBTNSIZE, FIX_KEYS)
 from cores.base                 import DAMG
+from ui.UiSignals               import UiSignals
 from ui.uikits.Button           import Button
 from ui.uikits.GroupBox         import GroupBox
 
@@ -30,20 +31,22 @@ from ui.uikits.GroupBox         import GroupBox
 
 class TopTab1(QWidget):
 
-    addLayout = pyqtSignal(DAMG)
-    showLayout = pyqtSignal(str, str)
-    executing = pyqtSignal(str)
     key = 'topTab1'
 
     def __init__(self, parent=None):
         super(TopTab1, self).__init__(parent)
+
+        self.signals = UiSignals(self)
+
         with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
             self.appInfo = json.load(f)
 
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
-        self.addLayout.emit(self)
+        self.applySetting()
+
+        self.signals.regisLayout.emit(self)
 
     def buildUI(self):
 
@@ -51,30 +54,30 @@ class TopTab1(QWidget):
         keys = ['TextEditor', 'NoteReminder']
         for key in keys:
             if key in self.appInfo:
-                btn = Button({'icon':key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit2':[self.showLayout.emit, [FIX_KEYS[key], 'show']]})
+                btn = Button({'icon':key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit2':[self.signals.showLayout.emit, [FIX_KEYS[key], 'show']]})
                 officeBtns.append(btn)
 
         for key in CONFIG_OFFICE:
             if key in self.appInfo:
-                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit1': [self.executing.emit, self.appInfo[key][2]]})
+                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit1': [self.signals.executing.emit, self.appInfo[key][2]]})
                 officeBtns.append(btn)
 
         devBtns = []
         for key in CONFIG_DEV:
             if key in self.appInfo:
-                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit1': [self.executing.emit, self.appInfo[key][2]]})
+                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit1': [self.signals.executing.emit, self.appInfo[key][2]]})
                 devBtns.append(btn)
 
         pyuiBtn = []
         for key in CONFIG_TOOLS:
             if key in self.appInfo:
-                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit2': [self.showLayout.emit, [FIX_KEYS[key], 'show']]})
+                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit2': [self.signals.showLayout.emit, [FIX_KEYS[key], 'show']]})
                 pyuiBtn.append(btn)
 
         extraBtns = []
         for key in CONFIG_EXTRA:
             if key in self.appInfo:
-                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit2': [self.showLayout.emit, [FIX_KEYS[key], 'show']]})
+                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit2': [self.signals.showLayout.emit, [FIX_KEYS[key], 'show']]})
                 extraBtns.append(btn)
 
         sec1Grp = GroupBox("Office", officeBtns, "IconGrid")
@@ -97,7 +100,7 @@ class TopTab1(QWidget):
         self.layout.addWidget(sec4Grp, 0, 6, 4, 3)
         self.layout.addWidget(sec5Grp, 4, 0, 1, 9)
 
-        self.applySetting()
+
 
     def applySetting(self):
         self.layout.setSpacing(2)

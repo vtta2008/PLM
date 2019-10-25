@@ -26,16 +26,15 @@ from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QPushBu
 from appData import PW_BLANK, PW_UNMATCH, __envKey__
 from ui.uikits.GroupBox import GroupGrid
 from ui.uikits.UiPreset import IconPth
-from utilities import utils as func, localSQL as usql
+from ui.uikits.Widget import Widget
+from utils import utils as func, localSQL as usql
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """
 
-class UserSetting(QDialog):
+class UserSetting(Widget):
 
     key = 'userSetting'
-    showLayout = pyqtSignal(str, str)
-    updateAvatar = pyqtSignal(bool)
     query = usql.QuerryDB()
 
     def __init__(self, parent=None):

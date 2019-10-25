@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # Python
-import requests
+import requests, sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
@@ -20,10 +20,12 @@ from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QGridLayout, QLabel
 
 # Plt
-from appData import __serverGlobal__, __serverLocal__
+from appData import __globalServer__, __localServer__, SERVER_CONNECT_FAIL
 from cores.Loggers import Loggers
+from ui.UiSignals import UiSignals
+from ui.MessageBox import MessageBox
 from ui.uikits.UiPreset import Label
-from utilities.utils import get_app_icon
+from utils.utils import get_app_icon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """
@@ -35,16 +37,21 @@ class ServerStatus(QGridLayout):
 
     def __init__(self, parent=None):
         super(ServerStatus, self).__init__(parent)
-        self.logger = Loggers(self)
+        self.logger = Loggers(__file__)
+        self.signals = UiSignals(self)
 
         self.serverConnectable = False
 
-        r = requests.get(__serverLocal__)
-
-        if r.status_code == 200:
-            self.serverConnectable = True
+        try:
+            r = requests.get(__localServer__)
+        except Exception:
+            MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+            sys.exit()
         else:
-            self.serverConnectable = False
+            if r.status_code == 200:
+                self.serverConnectable = True
+            else:
+                self.serverConnectable = False
 
         self.connected = get_app_icon(16, 'Connected')
         self.disconnected = get_app_icon(16, 'Disconnected')

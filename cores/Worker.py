@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # Python
-import time, traceback, sys
+import traceback, sys
 
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, QRunnable, QThread, QThreadPool
@@ -25,18 +25,48 @@ from appData import __copyright__
 """ Signals """
 
 class WorkerSignals(DAMG):
+    """
+    Defines the signals available from a running worker thread.
+
+    Supported signals are:
+
+    finished
+        No data
+
+    error
+        `tuple` (exctype, value, traceback.format_exc() )
+
+    result
+        `object` data returned from processing, anything
+
+    progress
+        `int` indicating % progress
+
+    """
 
     finished            = pyqtSignal()
     error               = pyqtSignal(tuple)
     result              = pyqtSignal(object)
     progress            = pyqtSignal(int)
-
-    quit_thread         = pyqtSignal(name='close_thread')
+    status              = pyqtSignal()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Worker & Thread """
 
 class WorkerBase(QRunnable):
+
+    """
+    Worker thread
+
+    Inherits from QRunnable to handler worker thread setup, signals and wrap-up.
+
+    :param callback: The function callback to run on this worker thread. Supplied args and 
+                     kwargs will be passed through to the runner.
+    :type callback: function
+    :param args: Arguments to pass to the callback function
+    :param kwargs: Keywords to pass to the callback function
+
+    """
 
     Type                    = 'DAMGWORKER'
     _id                     = 'DAMG worker'
@@ -51,18 +81,25 @@ class WorkerBase(QRunnable):
         self.kwargs         = kwargs
         self.signals        = WorkerSignals()
 
+        # Add the callback to our kwargs
+        self.kwargs['progress_callback'] = self.signals.progress
+
     @pyqtSlot()
     def run(self):
+        """ Initialise the runner function with passed args, kwargs. """
 
+        # Retrieve args/kwargs here; and fire processing using them
         try:
-            self.task(*self.args, **self.kwargs, status = self.signals.status, progress=self.signals.progress)
+            result = self.task(*self.args, **self.kwargs)
         except:
             traceback.print_exc()
             exctype, value = sys.exc_info()[:2]
             self.signals.error.emit((exctype, value, traceback.format_exc()))
         else:
-            self.signals.result.emit()                                          # Return the result of the processing
+            # Return the result of the processing
+            self.signals.result.emit(result)                                    # Return the result of the processing
         finally:
+            # Done
             self.signals.finished.emit()                                        # Done
 
     @property
@@ -141,9 +178,10 @@ class ThreadPoolBase(QThreadPool):
 
 class DAMGWORKER(WorkerBase):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, task, *args, **kwargs):
         super(DAMGWORKER, self).__init__(self)
 
+        self.task           = task
         self.args           = args
         self.kwargs         = kwargs
 

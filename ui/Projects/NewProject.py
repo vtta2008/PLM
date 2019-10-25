@@ -27,14 +27,15 @@ from PyQt5.QtWidgets    import (QWidget, QGridLayout, QGroupBox, QHBoxLayout, QV
 # PLM
 from appData            import SiPoMin
 from cores.Loggers      import Loggers
+from ui.uikits.Widget   import Widget
 from ui.uikits.Button   import Button
 from ui.uikits.UiPreset import Label
-from utilities.utils    import get_app_icon
+from utils.utils        import get_app_icon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """
 
-class ItemWidget(QWidget):
+class ItemWidget(Widget):
 
     def __init__(self, section, name="", parent=None):
         super(ItemWidget, self).__init__(parent)
@@ -56,7 +57,7 @@ class ItemWidget(QWidget):
 # -------------------------------------------------------------------------------------------------------------
 """ Create Project Window """
 
-class NewProject(QWidget):
+class NewProject(Widget):
 
     info = {}
     key = 'newProject'
@@ -257,7 +258,7 @@ class NewProject(QWidget):
         event.ignore()
 
     # def setPth(self, *args):
-    #     pth = cmds.fileDialog2(cap="set production path", fm=3, okc="Set")
+    #     pth = cmds.fileDialog2(cap="set production path", fn=3, okc="Set")
     #     dir = self.getDirFromUnicode(pth[0])
     #     cmds.textField(self.setPath, edit=True, tx=dir)
     #
@@ -281,7 +282,7 @@ class NewProject(QWidget):
     #     self.numOfEnv = cmds.intField(self.numEnv, q=True, v=True)
     #     self.numOfProps = cmds.intField(self.numProps, q=True, v=True)
     #
-    #     # Create content by set fm
+    #     # Create content by set fn
     #     if self.modeSetting == "Studio Mode":
     #         self.prjStudioMode()
     #     elif self.modeSetting == "Group Mode":

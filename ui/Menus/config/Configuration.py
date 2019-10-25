@@ -21,7 +21,8 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit, 
                              QSpinBox, QStackedWidget, QVBoxLayout, QWidget)
 
 # PLM
-from appData            import __serverGlobal__, __serverLocal__
+from appData            import __globalServer__, __localServer__
+from ui.uikits.Widget   import Widget
 from ui.uikits.UiPreset import Label, ComboBox, HBoxLayout, VBoxLayout, LineEdit
 from ui.uikits.Button   import Button
 from ui.uikits.GroupBox import GroupBox
@@ -29,13 +30,13 @@ from ui.uikits.GroupBox import GroupBox
 # -------------------------------------------------------------------------------------------------------------
 """ Server """
 
-class ServerConfig(QWidget):
+class ServerConfig(Widget):
 
     def __init__(self, parent=None):
         super(ServerConfig, self).__init__(parent)
 
         serverLabel             = Label({'txt':"Server:"})
-        serverCombo             = ComboBox({'items': ['Local: {}'.format(__serverLocal__), 'Global: {}'.format(__serverGlobal__)]})
+        serverCombo             = ComboBox({'items': ['Local: {}'.format(__localServer__), 'Global: {}'.format(__globalServer__)]})
         serverLayout            = HBoxLayout({'addWidget': [serverLabel, serverCombo]})
         serverConfigLayout      = VBoxLayout({'addLayout': [serverLayout]})
         serverConfigGroup       = GroupBox("Server configuration", [serverConfigLayout], 'setLayout')
@@ -54,7 +55,8 @@ class ServerConfig(QWidget):
 # -------------------------------------------------------------------------------------------------------------
 """ Update """
 
-class UpdatePage(QWidget):
+class UpdatePage(Widget):
+
     def __init__(self, parent=None):
         super(UpdatePage, self).__init__(parent)
 
@@ -99,7 +101,8 @@ class UpdatePage(QWidget):
 # -------------------------------------------------------------------------------------------------------------
 """ Query """
 
-class QueryPage(QWidget):
+class QueryPage(Widget):
+
     def __init__(self, parent=None):
         super(QueryPage, self).__init__(parent)
 
@@ -145,10 +148,10 @@ class QueryPage(QWidget):
 # -------------------------------------------------------------------------------------------------------------
 """ Config window """
 
-class Configuration(QWidget):
+class Configuration(Widget):
 
     key = 'config'
-    showLayout = pyqtSignal(str, str)
+    cfgReport = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(Configuration, self).__init__(parent)
@@ -189,8 +192,6 @@ class Configuration(QWidget):
         mainLayout.addLayout(buttonsLayout)
 
         self.setLayout(mainLayout)
-
-
 
     def changePage(self, current, previous):
         if not current:

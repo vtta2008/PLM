@@ -17,24 +17,26 @@ from cores.Worker   import ThreadPoolBase, DAMGTHREAD, DAMGWORKER
 
 class ThreadManager(ThreadPoolBase):
 
-    def __init__(self, parent=None):
+    def __init__(self):
         super(ThreadManager, self).__init__()
 
+        self.counter = 0
         self.tasks = self.get_tasks()
         self.timer = QTimer()
 
         self.threads = DAMGLIST()
         self.workers = DAMGLIST()
 
-    def startWorker(self):
-        worker = DAMGWORKER()
+    def startWorker(self, task):
+        worker = DAMGWORKER(task)
 
         worker.signals.result.connect(self.print_output)
         worker.signals.finished.connect(self.thread_complete)
         worker.signals.progress.connect(self.progress_fn)
 
         self.workers.append(worker)
-        self.threadpool.start(worker)
+
+        self.start(worker)
 
     def startThread(self):
         """ Create task to run """
@@ -70,6 +72,10 @@ class ThreadManager(ThreadPoolBase):
             task.quit_thread.emit()
 
         print('Tasks finished')
+
+    def recurring_timmer(self):
+        self.counter += 1
+        print(self.counter)
 
     @staticmethod
     def get_tasks():

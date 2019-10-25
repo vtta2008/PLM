@@ -69,17 +69,20 @@ __plmWiki__             = m.__plmWiki__
 # -------------------------------------------------------------------------------------------------------------
 """ Server """
 
-__serverGlobal__        = m.__serverGlobal__
-__serverCheck__         = m.__serverCheck__
-__serverAutho__         = m.__serverAutho__
+__globalServer__        = m.__globalServer__
+__globalServerCheck__   = m.__globalServerCheck__
+__globalServerAutho__   = m.__globalServerAutho__
 
 __localPort__           = m.__localPort__
 __localHost__           = m.__localHost__
-__serverLocal__         = m.__serverLocal__
-__serverLocalCheck__    = m.__serverLocalCheck__
-__serverLocalAutho__    = m.__serverLocalAutho__
+__localServer           = m.__localServer__
+__localServerCheck__    = m.__localServerCheck__
+__localServerAutho__    = m.__localServerAutho__
 
 __google__              = m.__google__
+__googleVN__            = m.__googleVN__
+__googleNZ__            = m.__googleNZ__
+
 __email__               = m.__email__
 
 __packages_dir__        = m.__packages_dir__

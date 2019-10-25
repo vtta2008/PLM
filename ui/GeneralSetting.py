@@ -15,11 +15,11 @@ Description:
 # Python
 
 # PtQt5
-from PyQt5.QtWidgets import QGridLayout, QCheckBox
+from PyQt5.QtWidgets    import QGridLayout, QCheckBox
 
 # Plt
-from cores.Loggers import Loggers
-from cores.base import DAMG
+from cores.Loggers      import Loggers
+from ui.UiSignals       import UiSignals
 
 # -------------------------------------------------------------------------------------------------------------
 """ Quick Setting """
@@ -30,29 +30,9 @@ class GeneralSetting(QGridLayout):
     def __init__(self, parent=None):
 
         super(GeneralSetting, self).__init__(parent)
-        self.logger = Loggers(self)
-        self.setSpacing(2)
 
-        self.tbTDCB = QCheckBox("TD toolbar")
-        self.tbTDCB.setChecked(False)
-        self.tbCompCB = QCheckBox("Comp toolbar")
-        self.tbArtCB = QCheckBox("Art toolbar")
-        self.tbTexCB = QCheckBox("Tex toolbar")
-        self.tbPostCB = QCheckBox('Post toolbar')
-
-        self.subToolBarCB = QCheckBox("Sub Toolbar")
-        self.mainToolBarCB = QCheckBox("Main Toolbar")
-        self.statusBarCB = QCheckBox("Status Bar")
-
-        self.subMenuCB = QCheckBox("Sub Menu")
-        self.serStatusCB = QCheckBox("Server Status")
-        self.notifiCB = QCheckBox("Notification")
-
-        self.checkBoxes = [self.tbTDCB, self.tbCompCB, self.tbArtCB, self.tbTexCB, self.tbPostCB, self.subToolBarCB,
-                           self.mainToolBarCB, self.statusBarCB, self.subMenuCB, self.serStatusCB, self.notifiCB]
-
-        self.keys = ['toolbarTD', 'toolbarComp', 'toolbarArt', 'toolbarTex', 'toolbarPost', 'subToolbar',
-                     'toolbarMain', 'toolbarStatus', 'toolbarSubMenu', 'toolbarServer', 'toolbarNotifi']
+        self.signals = UiSignals(self)
+        self.logger = Loggers(__file__)
 
         self.settingGrp = 'mainUI'
 
@@ -60,6 +40,20 @@ class GeneralSetting(QGridLayout):
 
 
     def buildUI(self):
+
+        self.tbTDCB         = QCheckBox("TD toolbar")
+        self.tbCompCB       = QCheckBox("Comp toolbar")
+        self.tbArtCB        = QCheckBox("Art toolbar")
+        self.tbTexCB        = QCheckBox("Tex toolbar")
+        self.tbPostCB       = QCheckBox('Post toolbar')
+
+        self.subToolBarCB   = QCheckBox("Sub Toolbar")
+        self.mainToolBarCB  = QCheckBox("Main Toolbar")
+        self.statusBarCB    = QCheckBox("Status Bar")
+
+        self.subMenuCB      = QCheckBox("Sub Menu")
+        self.serStatusCB    = QCheckBox("Server Status")
+        self.notifiCB       = QCheckBox("Notification")
 
         self.addWidget(self.tbTDCB, 0, 0, 1, 2)
         self.addWidget(self.tbCompCB, 1, 0, 1, 2)
@@ -74,3 +68,12 @@ class GeneralSetting(QGridLayout):
         self.addWidget(self.subMenuCB, 0, 4, 1, 2)
         self.addWidget(self.serStatusCB, 1, 4, 1, 2)
         self.addWidget(self.notifiCB, 2, 4, 1, 2)
+
+        self.checkBoxes = [self.tbTDCB, self.tbCompCB, self.tbArtCB, self.tbTexCB, self.tbPostCB, self.subToolBarCB,
+                           self.mainToolBarCB, self.statusBarCB, self.subMenuCB, self.serStatusCB, self.notifiCB]
+
+        self.keys = ['toolbarTD', 'toolbarComp', 'toolbarArt', 'toolbarTex', 'toolbarPost', 'subToolbar',
+                     'toolbarMain', 'toolbarStatus', 'toolbarSubMenu', 'toolbarServer', 'toolbarNotifi']
+
+    def applySetting(self):
+        self.setSpacing(2)

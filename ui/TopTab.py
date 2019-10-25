@@ -17,7 +17,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 
 # Plt
 from appData import SiPoMin
-from cores.base import DAMG
+from ui.UiSignals import UiSignals
 from ui import (TopTab1, TopTab2, TopTab3, TopTab4, TopTab5)
 
 # -------------------------------------------------------------------------------------------------------------
@@ -26,14 +26,12 @@ from ui import (TopTab1, TopTab2, TopTab3, TopTab4, TopTab5)
 class TopTab(QWidget):
 
     key                 = 'topTab'
-    executing           = pyqtSignal(str)
-    showLayout          = pyqtSignal(str, str)
-
-    updateAvatar        = pyqtSignal(bool)
-    addLayout           = pyqtSignal(DAMG)
 
     def __init__(self, parent=None):
         super(TopTab, self).__init__(parent)
+
+        self.signals = UiSignals(self)
+
         self.layout = QVBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
@@ -51,12 +49,12 @@ class TopTab(QWidget):
         self.tabNames = ['Tool', 'Prj', 'User', 'Testlayout', 'Cmd']
 
         for layout in self.tabLst:
-            layout.showLayout.connect(self.showLayout)
-            layout.executing.connect(self.executing)
-            layout.addLayout.connect(self.addLayout)
+            layout.signals.showLayout.connect(self.signals.showLayout)
+            layout.signals.executing.connect(self.signals.executing)
+            layout.signals.regisLayout.connect(self.signals.regisLayout)
             self.tabs.addTab(layout, self.tabNames[self.tabLst.index(layout)])
 
-        self.updateAvatar.connect(self.tab3.update_avatar)
+        self.signals.updateAvatar.connect(self.tab3.update_avatar)
         self.layout.addWidget(self.tabs)
         self.applySetting()
 

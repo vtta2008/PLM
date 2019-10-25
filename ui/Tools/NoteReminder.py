@@ -21,6 +21,7 @@ from PyQt5.QtWidgets import (QAction, QApplication, QComboBox, QWidget, QDialog,
 
 # Plm
 from ui.uikits.UiPreset import Label, IconPth
+from ui.uikits.Widget import Widget
 
 
 def codec_name(codec):
@@ -200,7 +201,7 @@ class PreviewForm(QDialog):
         self.decodedStr = data.readAll()
         self.textEdit.setPlainText(self.decodedStr)
 
-class NoteReminder(QWidget):
+class NoteReminder(Widget):
 
     key = 'noteReminder'
     showLayout = pyqtSignal(str, str)

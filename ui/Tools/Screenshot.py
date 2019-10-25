@@ -26,9 +26,10 @@ from PyQt5.QtWidgets import (QWidget, QGridLayout, QFileDialog, QApplication, QG
 from appData                import keepARM
 from ui.uikits.Button       import Button
 from ui.uikits.UiPreset     import IconPth
+from ui.uikits.Widget       import Widget
 
 
-class Screenshot(QWidget):
+class Screenshot(Widget):
 
     key = 'screenShot'
     showLayout = pyqtSignal(str, str)

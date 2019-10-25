@@ -11,7 +11,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
-from appData import config as c
+from appData        import config as c
+from appData.config import *
 
 __envKey__              = c.__envKey__
 
@@ -52,15 +53,19 @@ __plmWiki__             = c.__plmWiki__
 # -------------------------------------------------------------------------------------------------------------
 """ Server metadata """
 
-__serverGlobal__        = c.__serverGlobal__
-__serverCheck__         = c.__serverCheck__
-__serverAutho__         = c.__serverAutho__
+__globalServer__        = c.__globalServer__
+__globalServerCheck__   = c.__globalServerCheck__
+__globalServerAutho__   = c.__globalServerAutho__
 
-__serverLocal__         = c.__serverLocal__
-__serverLocalCheck__    = c.__serverLocalCheck__
-__serverLocalAutho__    = c.__serverLocalAutho__
+__localPort__           = c.__localPort__
+__localHost__           = c.__localHost__
+__localServer__         = c.__localServer
+__localServerCheck__    = c.__localServerCheck__
+__localServerAutho__    = c.__localServerAutho__
 
 __google__              = c.__google__
+__googleVN__            = c.__googleVN__
+__googleNZ__            = c.__googleNZ__
 __email__               = c.__email__
 __packages_dir__        = c.__packages_dir__
 __classifiers__         = c.__classifiers__
@@ -73,103 +78,106 @@ __pkgsReq__             = c.__pkgsReq__
 # -------------------------------------------------------------------------------------------------------------
 """ key packages """
 
-KEYPACKAGE              = c.KEYPACKAGE
-CONFIG_TOOLS            = c.CONFIG_TOOLS
-CONFIG_DEV              = c.CONFIG_DEV
-CONFIG_EXTRA            = c.CONFIG_EXTRA
-CONFIG_OFFICE           = c.CONFIG_OFFICE
-
-BTNICONSIZE             = c.BTNICONSIZE
-ICONBTNSIZE             = c.ICONBTNSIZE
-
-FIX_KEYS                = c.FIX_KEYS
-
-CONFIG_TDS              = c.CONFIG_TDS
-CONFIG_VFX              = c.CONFIG_VFX
-CONFIG_ART              = c.CONFIG_ART
-CONFIG_TEX              = c.CONFIG_TEX
-CONFIG_POST             = c.CONFIG_POST
-CONFIG_SYSTRAY          = c.CONFIG_SYSTRAY
-
-# -------------------------------------------------------------------------------------------------------------
-""" Directory """
-
-LOGO_DIR                = c.LOGO_DIR
-APP_ICON_DIR            = c.APP_ICON_DIR
-WEB_ICON_DIR            = c.WEB_ICON_DIR
-TAG_DIR                 = c.TAG_DIR
-AVATAR_DIR              = c.AVATAR_DIR
-CONFIG_LOCAL_PLM_DIR    = c.CONFIG_LOCAL_PLM_DIR
-CONFIG_DIR              = c.CONFIG_DIR
-SETTING_DIR             = c.SETTING_DIR
-ROOT_DIR                = c.ROOT_DIR
-
-# -------------------------------------------------------------------------------------------------------------
-""" File paths """
-
-appIconCfg              = c.appIconCfg
-webIconCfg              = c.webIconCfg
-logoIconCfg             = c.logoIconCfg
-
-pyEnvCfg                = c.pyEnvCfg
-appConfig               = c.appConfig
-mainConfig              = c.mainConfig
-
-DB_PTH                  = c.DB_PTH
-LOG_PTH                 = c.LOG_PTH
-
-SETTING_FILEPTH         = c.SETTING_FILEPTH
-
-APP_SETTING             = c.APP_SETTING
-USER_SETTING            = c.USER_SETTING
-FORMAT_SETTING          = c.FORMAT_SETTING
-UNIX_SETTING            = c.UNIX_SETTING
-
-# -------------------------------------------------------------------------------------------------------------
-""" Format """
-
-ST_FORMAT               = c.ST_FORMAT
-
-# -------------------------------------------------------------------------------------------------------------
-""" Text data """
-
-CREDIT                  = c.CREDIT
-ABOUT                   = c.ABOUT
-CODECONDUCT             = c.CODECONDUCT
-CONTRIBUTING            = c.CONTRIBUTING
-REFERENCE               = c.REFERENCE
-LICENCE_MIT             = c.LICENCE_MIT
-
-WAIT_LAYOUT_COMPLETE    = c.WAIT_LAYOUT_COMPLETE
-PW_UNMATCH              = c.PW_UNMATCH
-USER_CHECK_REQUIRED     = c.USER_CHECK_REQUIRED
-QUESTIONS               = c.QUESTIONS
-
-SIGNUP                  = c.SIGNUP
-PW_BLANK                = c.PW_BLANK
-USER_BLANK              = c.USER_BLANK
-PW_WRONG                = c.PW_WRONG
-
-SYSTRAY_UNAVAI          = c.SYSTRAY_UNAVAI
-keepARM                 = c.keepARM
-
-ANTIALIAS               = c.ANTIALIAS
-UPDATE_FULLVIEW         = c.UPDATE_FULLVIEW
-KEY_DEL                 = c.KEY_DEL
-
-# -------------------------------------------------------------------------------------------------------------
-""" Setting """
-
-center                  = c.center
-left                    = c.left
-right                   = c.right
-SiPoMin                 = c.SiPoMin
-SiPoPre                 = c.SiPoPre
-SiPoMax                 = c.SiPoMax
-SiPoExp                 = c.SiPoExp
-SiPoIgn                 = c.SiPoIgn
-
-dockT                   = c.dockT
-dockL                   = c.dockL
-dockR                   = c.dockR
-dockB                   = c.dockB
+# KEYPACKAGE              = c.KEYPACKAGE
+# CONFIG_TOOLS            = c.CONFIG_TOOLS
+# CONFIG_DEV              = c.CONFIG_DEV
+# CONFIG_EXTRA            = c.CONFIG_EXTRA
+# CONFIG_OFFICE           = c.CONFIG_OFFICE
+#
+# BTNICONSIZE             = c.BTNICONSIZE
+# ICONBTNSIZE             = c.ICONBTNSIZE
+#
+# FIX_KEYS                = c.FIX_KEYS
+#
+# CONFIG_TDS              = c.CONFIG_TDS
+# CONFIG_VFX              = c.CONFIG_VFX
+# CONFIG_ART              = c.CONFIG_ART
+# CONFIG_TEX              = c.CONFIG_TEX
+# CONFIG_POST             = c.CONFIG_POST
+# CONFIG_SYSTRAY          = c.CONFIG_SYSTRAY
+#
+# # -------------------------------------------------------------------------------------------------------------
+# """ Directory """
+#
+# LOGO_DIR                = c.LOGO_DIR
+# APP_ICON_DIR            = c.APP_ICON_DIR
+# WEB_ICON_DIR            = c.WEB_ICON_DIR
+# TAG_DIR                 = c.TAG_DIR
+# AVATAR_DIR              = c.AVATAR_DIR
+# CONFIG_LOCAL_PLM_DIR    = c.CONFIG_LOCAL_PLM_DIR
+# CONFIG_DIR              = c.CONFIG_DIR
+# SETTING_DIR             = c.SETTING_DIR
+# ROOT_DIR                = c.ROOT_DIR
+#
+# # -------------------------------------------------------------------------------------------------------------
+# """ File paths """
+#
+# appIconCfg              = c.appIconCfg
+# webIconCfg              = c.webIconCfg
+# logoIconCfg             = c.logoIconCfg
+#
+# pyEnvCfg                = c.pyEnvCfg
+# appConfig               = c.appConfig
+# mainConfig              = c.mainConfig
+#
+# DB_PTH                  = c.DB_PTH
+# LOG_PTH                 = c.LOG_PTH
+#
+# SETTING_FILEPTH         = c.SETTING_FILEPTH
+#
+# APP_SETTING             = c.APP_SETTING
+# USER_SETTING            = c.USER_SETTING
+# FORMAT_SETTING          = c.FORMAT_SETTING
+# UNIX_SETTING            = c.UNIX_SETTING
+#
+# # -------------------------------------------------------------------------------------------------------------
+# """ Format """
+#
+# ST_FORMAT               = c.ST_FORMAT
+#
+# # -------------------------------------------------------------------------------------------------------------
+# """ Text data """
+#
+# SERVER_CONNECT_FAIL     = c.SERVER_CONNECT_FAIL
+#
+# CREDIT                  = c.CREDIT
+# ABOUT                   = c.ABOUT
+# CODECONDUCT             = c.CODECONDUCT
+# CONTRIBUTING            = c.CONTRIBUTING
+# REFERENCE               = c.REFERENCE
+# LICENCE_MIT             = c.LICENCE_MIT
+#
+# WAIT_LAYOUT_COMPLETE    = c.WAIT_LAYOUT_COMPLETE
+# PW_UNMATCH              = c.PW_UNMATCH
+# USER_CHECK_REQUIRED     = c.USER_CHECK_REQUIRED
+# QUESTIONS               = c.QUESTIONS
+#
+# SIGNUP                  = c.SIGNUP
+# PW_BLANK                = c.PW_BLANK
+# USER_BLANK              = c.USER_BLANK
+# PW_WRONG                = c.PW_WRONG
+#
+# SYSTRAY_UNAVAI          = c.SYSTRAY_UNAVAI
+# keepARM                 = c.keepARM
+#
+# ANTIALIAS               = c.ANTIALIAS
+# UPDATE_FULLVIEW         = c.UPDATE_FULLVIEW
+# KEY_DEL                 = c.KEY_DEL
+#
+# # -------------------------------------------------------------------------------------------------------------
+# """ Setting """
+#
+# center                  = c.center
+# left                    = c.left
+# right                   = c.right
+# SiPoMin                 = c.SiPoMin
+# SiPoPre                 = c.SiPoPre
+# SiPoMax                 = c.SiPoMax
+# SiPoExp                 = c.SiPoExp
+# SiPoIgn                 = c.SiPoIgn
+#
+# dockT                   = c.dockT
+# dockL                   = c.dockL
+# dockR                   = c.dockR
+# dockB                   = c.dockB
+# dateTimeStamp           = c.datetTimeStamp

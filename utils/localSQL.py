@@ -18,7 +18,7 @@ from appData                 import DB_PTH
 from cores.base              import DAMG, DAMGLIST
 
 # Plt
-from utilities import utils as func
+from utils import utils as func
 
 class QuerryDB(DAMGLIST):
 
@@ -27,11 +27,8 @@ class QuerryDB(DAMGLIST):
     cur = conn.cursor()
 
     def query_table(self, tn="curUser"):
-
         self.cur.execute("SELECT * FROM {0}".format(tn))
-
         data = self.cur.fetchall()
-
         return list(data[0])
 
 

@@ -18,7 +18,7 @@ import sqlite3 as lite
 from cores.base import DAMG, DAMGLIST
 
 # Plt
-from utilities import utils as func
+from utils import utils as func
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """

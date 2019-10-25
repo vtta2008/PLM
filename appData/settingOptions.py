@@ -277,7 +277,7 @@ PREFERENCES = dict(
     stylesheet_name     = {"default": "default", "desc": "Stylesheet to use.",                               "label": "Stylesheet",                  "class": "global"},
     palette_style       = {"default": "default", "desc": "Color palette to use.",                            "label": "Palette",                     "class": "global"},
     font_style          = {"default": "default", "desc": "font style to use.",                               "label": "Font style",                  "class": "global"},
-    viewport_mode       = {"default": "smart",   "desc": "viewport update fm.",                              "label": "Viewport Mode",               "class": "global"}, )
+    viewport_mode       = {"default": "smart",   "desc": "viewport update fn.",                              "label": "Viewport Mode",               "class": "global"}, )
 
 VALID_FONTS = dict( ui   = [ 'Arial', 'Cantarell', 'Corbel', 'DejaVu Sans', 'DejaVu Serif', 'FreeSans', 'Liberation Sans',
                              'Lucida Sans Unicode', 'MS Sans Serif', 'Open Sans', 'PT Sans', 'Tahoma', 'Verdana'],

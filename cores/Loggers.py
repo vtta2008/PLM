@@ -15,25 +15,8 @@ from __future__ import unicode_literals
 import sys, os, logging, json, enum, traceback, linecache
 
 # PLM
-from appData.paths import LOG_PTH
-
-# -------------------------------------------------------------------------------------------------------------
-
-LOG_FORMAT = dict(
-
-    fullOpt = "%(funcName)s: %(levelname)s: %(asctime)s %(filename)s, line %(lineno)s: %(message)s",
-    rlm = "(relativeCreated:d) (levelname): (message)",
-    tlm1 = "{asctime:[{lvelname}: :{message}",
-    tnlm1 = "%(asctime)s  %(name)-22s  %(levelname)-8s %(message)s",
-    tlm2 = '%(asctime)s|%(levelname)s|%(message)s|',
-    tnlm2 = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
-)
-
-DT_FORMAT = dict(
-    dmyhms = "%d/%m/%Y %H:%M:%S",
-    mdhm = "'%m-%d %H:%M'",
-    fullOpt = '(%d/%m/%Y %H:%M:%S)',
-)
+from appData            import LOG_PTH
+from appData.config     import LOG_FORMAT, DT_FORMAT
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -47,6 +30,7 @@ class Encoder(json.JSONEncoder):
         return super(Encoder, self).default(o)
 
 class StyleMessage(object):
+
     def __init__(self, message, **kwargs):
         super(StyleMessage, self).__init__()
         self.message = message
@@ -135,7 +119,7 @@ class File_Handler(logging.FileHandler):
 
         super(File_Handler, self).__init__(filename)
 
-        self.fm       = filename                                                # File name (full path)
+        self.fn       = filename                                                # File name (full path)
         self.fmt      = fmt                                                     # Formatter
         self.dtfmt    = dtfmt                                                   # Datetime Fommater
         self.logLevel = level                                                   # Log level
@@ -158,12 +142,7 @@ class Loggers(logging.Logger):
 
         self._parent = parent
 
-        try:
-            self.logID = os.path.basename(self._parent.key)
-        except AttributeError:
-            self.logID = self._parent.__class__.__name__
-
-        logging.getLogger(self.logID)
+        logging.getLogger(__name__)
 
         self.level = self.define_level(level)
         self.logLevel = self.level_config(self.level)
@@ -179,10 +158,6 @@ class Loggers(logging.Logger):
         self.fh = File_Handler(self.fn, self.logLevel, self.fmt, self.dtfmt)
         self.addHandler(self.sh)
         self.addHandler(self.fh)
-
-    @property
-    def id(self):
-        return self.logID
 
     def define_level(self, logLevel):
 

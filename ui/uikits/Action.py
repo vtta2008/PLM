@@ -16,6 +16,7 @@ Description:
 from PyQt5.QtWidgets import QAction
 
 # PLM
+from ui.UiSignals import UiSignals
 from ui.uikits.UiPreset import check_preset, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
@@ -25,11 +26,14 @@ class Action(QAction):
 
     def __init__(self, preset={}, parent=None):
         super(Action, self).__init__(parent)
-        self.preset = preset
-        if check_preset(self.preset):
-            self.procedural()
 
-    def procedural(self):
+        self.preset = preset
+        self.signals = UiSignals(self)
+
+        if check_preset(self.preset):
+            self.buildUI()
+
+    def buildUI(self):
         for key, value in self.preset.items():
             if key == 'icon':
                 self.setIcon(IconPth(32, value))

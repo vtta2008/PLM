@@ -27,7 +27,8 @@ from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphic
                              QWidget)
 
 from ui.uikits.UiPreset import IconPth
-from utilities import utils as func
+from ui.uikits.Widget import Widget
+from utils import utils as func
 
 # Plt
 
@@ -485,10 +486,9 @@ class ImageInitUI(ViewerWindow):
 # -------------------------------------------------------------------------------------------------------------
 """ Image Viewer class """
 
-class ImageViewer(QWidget):
+class ImageViewer(Widget):
 
     key = 'imageViewer'
-    showLayout = pyqtSignal(str, str)
 
     def __init__(self, key=None, parent=None):
         super(ImageViewer, self).__init__(parent)

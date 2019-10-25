@@ -20,13 +20,14 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 
 # Plm
 from appData import CONTRIBUTING
+from ui.uikits.Widget import Widget
 from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Contributing Layout """
 
-class Contributing(QWidget):
+class Contributing(Widget):
 
     key = 'contributing'
     showLayout = pyqtSignal(str, str)

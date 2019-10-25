@@ -49,7 +49,7 @@ CFG_DIR                     = os.path.join(ROOT_DIR, 'appData', '.config')
 
 CONFIG_LOCAL_DAMG_DIR       = os.path.join(CFG_DIR, __groupname__)                      # DAMG team directory
 CONFIG_LOCAL_PLM_DIR        = os.path.join(CFG_DIR, __appname__)                        # Plm directory
-CONFIG_DIR                  = os.path.join(CFG_DIR, 'common')                           # Config dir to store config info
+CONFIG_DIR                  = CFG_DIR                                                   # Config dir to store config info
 
 SETTING_DIR                 = os.path.join(CONFIG_LOCAL_PLM_DIR, settings)              # Setting dir
 LOG_DIR                     = os.path.join(CONFIG_LOCAL_PLM_DIR, logs)                  # Log dir

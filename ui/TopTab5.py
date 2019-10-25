@@ -13,13 +13,13 @@ Description:
 import os, subprocess, sys
 
 # PyQt5
-from PyQt5.QtCore       import pyqtSlot, pyqtSignal
+from PyQt5.QtCore       import pyqtSlot
 from PyQt5.QtWidgets    import QApplication, QWidget, QGridLayout, QLineEdit, QTextEdit, QTextBrowser, QLabel
 
 # Plt
 from cores.Loggers      import Loggers
-from cores.base         import DAMG
 from appData            import SiPoMin, SiPoExp
+from ui.UiSignals       import UiSignals
 from ui.uikits.Button   import Button
 
 # -------------------------------------------------------------------------------------------------------------
@@ -52,17 +52,17 @@ class Terminal(QTextBrowser):
 class TopTab5(QWidget):
 
     key = 'topTab5'
-    executing = pyqtSignal(str)
-    showLayout = pyqtSignal(str, str)
-    addLayout = pyqtSignal(DAMG)
 
     def __init__(self, parent=None):
         super(TopTab5, self).__init__(parent)
-        self.logger = Loggers(self)
+
+        self.logger = Loggers(__file__)
+        self.signals = UiSignals(self)
+
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
-        self.addLayout.emit(self)
+        self.signals.regisLayout.emit(self)
 
     def buildUI(self):
         self.basePth = os.getcwd() + ">"

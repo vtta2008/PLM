@@ -19,12 +19,13 @@ from difflib import get_close_matches
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import (QGridLayout, QLineEdit, QTextEdit, QApplication, QWidget)
 
-from ui.uikits.Button import Button
 # PLM
+from ui.uikits.Widget import Widget
+from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label, IconPth
 
 
-class EnglishDictionary(QWidget):
+class EnglishDictionary(Widget):
 
     key = 'engDict'
     showLayout = pyqtSignal(str, str)

@@ -88,3 +88,5 @@ tooltips_missing = [
 ]
 
 N_MESSAGES_TEXT = "{quantity} new messages"
+
+SERVER_CONNECT_FAIL = " Connection to server failed. PLM can not run without connecting to server. Please try again "

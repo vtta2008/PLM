@@ -12,15 +12,15 @@ Description:
 
 # Python
 
-from PyQt5.QtCore import QSize
-from PyQt5.QtGui import QFont, QIcon, QPixmap, QImage
 
 # PyQt5
 from PyQt5.QtWidgets import QLabel, QLineEdit, QComboBox, QCheckBox, QVBoxLayout, QHBoxLayout, QWidget
+from PyQt5.QtCore import QSize
+from PyQt5.QtGui import QFont, QIcon, QPixmap, QImage
 
-from appData import center, left, right, SiPoMin, SiPoPre, SiPoMax, SiPoExp, SiPoIgn
 # PLM
-from utilities.utils import get_app_icon, get_logo_icon, get_avatar_icon
+from appData import center, left, right, SiPoMin, SiPoPre, SiPoMax, SiPoExp, SiPoIgn, appIconCfg
+from utils.utils import get_app_icon, get_logo_icon, get_avatar_icon, data_handler
 
 PRS = dict( password = QLineEdit.Password,  center = center , left  = left   , right  = right, spmin = SiPoMin,
             spmax    = SiPoMax           ,  sppre  = SiPoPre, spexp = SiPoExp, spign  = SiPoIgn,  )
@@ -32,11 +32,25 @@ def check_preset(data):
         return True
 
 class IconPth(QIcon):
+
     def __init__(self, size=32, name="AboutPlt"):
         super(IconPth, self).__init__()
 
-        self.iconPth = get_app_icon(size, name)
-        self.addFile(self.iconPth, QSize(32, 32))
+        self._found = False
+        self.iconSize = size
+        self.iconName = name
+
+        iconInfo = data_handler(filePath=appIconCfg)
+        for icon in iconInfo.keys():
+            if self.iconName == icon:
+                self._found = True
+
+        if self._found:
+            self.iconPth = get_app_icon(self.iconSize, self.iconName)
+            self.addFile(self.iconPth, QSize(self.iconSize, self.iconSize))
+        else:
+            # raise FileNotFoundError("Could not find icon name: {0}".format(self.iconName))
+            print("FILENOTFOUNDERROR: {0}: Could not find icon name: {1}".format(__name__, self.iconName))
 
 class AppIcon(QIcon):
     def __init__(self, name="Logo", parent=None):
@@ -99,7 +113,7 @@ class LineEdit(QLineEdit):
 
     def precedural(self):
         for key, value in self.preset.items():
-            if key == 'fm':
+            if key == 'fn':
                 self.setEchoMode(PRS[value])
 
     # def sizeHint(self):
@@ -145,6 +159,8 @@ class ComboBox(QComboBox):
                 self.setEditable(value)
             elif key == 'curIndex':
                 self.setCurrentIndex(value)
+            elif key == 'setObjName':
+                self.setObjectName(value)
 
     def sizeHint(self):
         size = super(ComboBox, self).sizeHint()

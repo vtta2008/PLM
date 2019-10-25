@@ -23,6 +23,9 @@ from cores.base import DAMGERROR
 
 # -------------------------------------------------------------------------------------------------------------
 
+class PopupMessageLevelError(DAMGERROR):
+    """ When an DAMG object already regiested """
+
 class DuplicateKnobNameError(DAMGERROR):
     """ When an DAMG object already regiested """
 

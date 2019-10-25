@@ -62,7 +62,7 @@ class Aligner(object):
 
         cmds.setParent(mlo)
 
-        # Add radio buttons for fm
+        # Add radio buttons for fn
         cmds.frameLayout(l='Choose where to algin')
 
         cmds.rowLayout(nc=3)
@@ -99,7 +99,7 @@ class Aligner(object):
         else:
             axis = 'z'
 
-        # Get the fm
+        # Get the fn
         if cmds.radioButton(self.minMode, q=True, select=True):
             mode = 'min'
         elif cmds.radioButton(self.midMode, q=True, select=True):

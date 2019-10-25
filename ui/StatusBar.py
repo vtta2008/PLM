@@ -14,11 +14,11 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QStatusBar
+from PyQt5.QtWidgets        import QApplication, QStatusBar
 
 # Plm
-from cores.Loggers import Loggers
+from cores.Loggers          import Loggers
+from ui.UiSignals           import UiSignals
 
 # -------------------------------------------------------------------------------------------------------------
 """ StatusBar """
@@ -27,11 +27,13 @@ from cores.Loggers import Loggers
 class StatusBar(QStatusBar):
 
     key = 'statusBar'
-    statusBarSig = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(StatusBar, self).__init__(parent)
-        self.logger = Loggers(self)
+
+        self.logger         = Loggers(__file__)
+        self.signals        = UiSignals(self)
+
 
 def main():
     app = QApplication(sys.argv)

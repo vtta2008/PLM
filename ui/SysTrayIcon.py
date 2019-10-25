@@ -25,9 +25,10 @@ from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QApplication
 from cores.Loggers import Loggers
 # PLM
 from appData import __plmSlogan__, __appname__, __envKey__, CONFIG_SYSTRAY
+from ui.UiSignals import UiSignals
 from ui.uikits.Action import Action
 from ui.uikits.UiPreset import AppIcon
-from utilities.localSQL import QuerryDB
+from utils.localSQL import QuerryDB
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -35,11 +36,11 @@ from utilities.localSQL import QuerryDB
 class SysTrayIconMenu(QMenu):
 
     key = 'sysTray'
-    showLayout = pyqtSignal(str, str)
-    executing = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(SysTrayIconMenu, self).__init__(parent)
+
+        self.signals = UiSignals(self)
 
         with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
             self.appInfo = json.load(f)
@@ -47,18 +48,18 @@ class SysTrayIconMenu(QMenu):
         self.addSeparator()
         for k in CONFIG_SYSTRAY:
             if k == 'Screenshot':
-                self.addAction(Action({'icon':k, 'txt': k, 'trg': partial(self.showLayout.emit, self.appInfo[k][2], 'show')}, self))
+                self.addAction(Action({'icon':k, 'txt': k, 'trg': partial(self.signals.showLayout.emit, self.appInfo[k][2], 'show')}, self))
             elif k == 'Snipping Tool':
-                self.addAction(Action({'icon': k, 'txt': k, 'trg': partial(self.executing.emit, self.appInfo[k][2])}, self))
+                self.addAction(Action({'icon': k, 'txt': k, 'trg': partial(self.signals.executing.emit, self.appInfo[k][2])}, self))
 
         self.addSeparator()
 
-        self.addAction(Action({'icon':'Maximize','txt':'Maximize','trg':partial(self.showLayout.emit, 'mainUI', 'showMax')}, self))
-        self.addAction(Action({'icon':'Minimize','txt':"Minimize",'trg':partial(self.showLayout.emit, 'mainUI', 'showMin')}, self))
-        self.addAction(Action({'icon':'Restore','txt':"Restore", 'trg':partial(self.showLayout.emit, 'mainUI', 'showNor')}, self))
+        self.addAction(Action({'icon':'Maximize','txt':'Maximize','trg':partial(self.signals.showLayout.emit, 'mainUI', 'showMax')}, self))
+        self.addAction(Action({'icon':'Minimize','txt':"Minimize",'trg':partial(self.signals.showLayout.emit, 'mainUI', 'showMin')}, self))
+        self.addAction(Action({'icon':'Restore','txt':"Restore", 'trg':partial(self.signals.showLayout.emit, 'mainUI', 'showNor')}, self))
 
         self.addSeparator()
-        self.addAction(Action({'icon':'Close','txt':"Quit", 'trg':partial(self.showLayout.emit, 'app', 'quit')}, self))
+        self.addAction(Action({'icon':'Close','txt':"Quit", 'trg':partial(self.signals.showLayout.emit, 'app', 'quit')}, self))
 
 class SystrayWheelEventObject(QObject):
 
@@ -75,13 +76,13 @@ class SystrayWheelEventObject(QObject):
 class SysTrayIcon(QSystemTrayIcon):
 
     key = 'sysTray'
-    showLayout = pyqtSignal(str, str)
-    executing = pyqtSignal(str)
+
 
     def __init__(self, parent=None):
 
         super(SysTrayIcon, self).__init__(parent)
-        self.logger = Loggers(self)
+        self.logger = Loggers(__file__)
+        self.signals = UiSignals(self)
         self.db = QuerryDB()
 
         try:
@@ -90,8 +91,8 @@ class SysTrayIcon(QSystemTrayIcon):
             self.username = 'DemoUser'
 
         self.rightClickMenu = SysTrayIconMenu()
-        self.rightClickMenu.executing.connect(self.executing.emit)
-        self.rightClickMenu.showLayout.connect(self.showLayout.emit)
+        self.rightClickMenu.signals.executing.connect(self.signals.executing.emit)
+        self.rightClickMenu.signals.showLayout.connect(self.signals.showLayout.emit)
 
         self.setIcon(AppIcon('Logo'))
         self.setToolTip(__plmSlogan__)
@@ -103,7 +104,7 @@ class SysTrayIcon(QSystemTrayIcon):
 
     def sys_tray_icon_activated(self, reason):
         if reason == QSystemTrayIcon.DoubleClick:
-            self.showLayout.emit('mainUI', 'showNor')
+            self.signals.showLayout.emit('mainUI', 'showNor')
 
     def log_in(self):
         self.showMessage('Welcome', "Log in as {0}".format(self.username), QSystemTrayIcon.Information, 500)

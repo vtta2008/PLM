@@ -20,13 +20,14 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 
 # Plm
 from appData import LICENCE_MIT
+from ui.uikits.Widget import Widget
 from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Contributing Layout """
 
-class LicenceMIT(QWidget):
+class LicenceMIT(Widget):
 
     key = 'licenceMIT'
     showLayout = pyqtSignal(str, str)

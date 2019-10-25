@@ -183,11 +183,11 @@ class SplitJoint(QtWidgets.QDialog):
         # mainLayout
         mainLayout = QtWidgets.QVBoxLayout()
         mainLayout.setContentsMargins(10, 4, 10, 8)
-        mainLayout.addLayout(select_lbl_layout)
-        mainLayout.addLayout(fjButton_layout)
-        mainLayout.addLayout(sjButton_layout)
-        mainLayout.addLayout(splitCount_layout)
-        mainLayout.addLayout(splitButton_layout)
+        mainLayout.regisLayout(select_lbl_layout)
+        mainLayout.regisLayout(fjButton_layout)
+        mainLayout.regisLayout(sjButton_layout)
+        mainLayout.regisLayout(splitCount_layout)
+        mainLayout.regisLayout(splitButton_layout)
 
         # bindLayout
         self.setLayout(mainLayout)

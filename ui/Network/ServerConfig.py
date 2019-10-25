@@ -1,4 +1,16 @@
-#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+"""
+
+Script Name: ServerConfig.py
+Author: Do Trinh/Jimmy - 3D artist.
+
+Description:
+
+"""
+# -------------------------------------------------------------------------------------------------------------
+from __future__ import absolute_import, unicode_literals
+
+""" Import """
 
 # Python
 import sys
@@ -8,16 +20,16 @@ from PyQt5.QtWidgets import QApplication, QStackedWidget, QWidget
 from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal, QSize
 
 # PLM
-from appData            import __globalServer__, __localPort__, __localHost__
+from appData            import __globalServer__, __localPort__, __localHost__, __localServer__
 from ui.uikits.UiPreset import Label, ComboBox, VBoxLayout, IconPth, HBoxLayout
 from ui.MessageBox      import MessageBox
 from ui.uikits.Button   import Button
 from ui.uikits.Widget   import Widget
 
-
 class ServerConfigPage1(Widget):
+
     key = "ServerConfigPage1"
-    name = "Local server"
+    name = "localServer"
 
     def __init__(self, parent=None):
         super(ServerConfigPage1, self).__init__(parent)
@@ -33,8 +45,9 @@ class ServerConfigPage1(Widget):
 
 
 class ServerConfigPage2(Widget):
+
     key = "ServerConfigPage2"
-    name = "Online server"
+    name = "globalServer"
 
     def __init__(self, parent=None):
         super(ServerConfigPage2, self).__init__(parent)
@@ -56,22 +69,25 @@ class ServerConfig(Widget):
 
     key = "ServerConfig"
 
-    def __init__(self, settings, parent=None):
+    def __init__(self, parent=None):
         super(ServerConfig, self).__init__(parent)
 
         self.setWindowTitle("Server Configuration")
         self.setWindowIcon(IconPth(32, self.key))
-        self.settings = settings
+        self.parent             = parent
+        self.settings           = self.parent.settings
 
-        self.comboBox = ComboBox({'setObjName': self.key})
-        self.stackWidget = QStackedWidget()
+        self.comboBox           = ComboBox({'setObjName': self.key})
+        self.stackWidget        = QStackedWidget()
+
         self.comboBox.activated.connect(self.setCurrentIndex)
 
-        self.btnOk = Button({'txt': 'Config'})
+        self.btnOk              = Button({'txt': 'Config'})
+        self.btnQuit            = Button({'txt': 'Quit'})
+        self.HboxLayout         = HBoxLayout({'addWidget': [self.btnOk, self.btnQuit]})
+
         self.btnOk.clicked.connect(self.get_chose_option)
-        self.btnQuit = Button({'txt': 'Quit'})
         self.btnQuit.clicked.connect(self.close)
-        self.HboxLayout = HBoxLayout({'addWidget': [self.btnOk, self.btnQuit]})
 
         self.addPage(ServerConfigPage1())
         self.addPage(ServerConfigPage2())
@@ -80,12 +96,12 @@ class ServerConfig(Widget):
         self.setLayout(self.layout)
 
     def get_chose_option(self):
-        index = self.getCurrentIndex()
-        widget = self.stackWidget.widget(index)
+        index                   = self.getCurrentIndex()
+        widget                  = self.stackWidget.widget(index)
         print("widget index: {0} - widget name: {1}".format(index, widget.name))
         print("send to setting: ServerConfig, {0}, {1}".format(widget.name, None))
-        self.sendToSetting.emit("ServerConfig", widget.name, None)
-        self.settings.initSetValue("ServerConfig", widget.name, None)
+        # self.sendToSetting.emit("ServerConfig", widget.name, None)
+        self.settings.initSetValue("ServerConfig", __localServer__, 'Server')
 
     def sizeHint(self):
         return QSize(200, 150)
@@ -164,3 +180,7 @@ if __name__ == '__main__':
     widget.addPage(ServerConfigPage2())
     widget.show()
     sys.exit(app.exec_())
+
+# -------------------------------------------------------------------------------------------------------------
+# Created by panda on 23/10/2019 - 6:23 PM
+# © 2017 - 2018 DAMGteam. All rights reserved

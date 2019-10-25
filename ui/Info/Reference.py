@@ -22,14 +22,14 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 from appData import REFERENCE
 from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label, IconPth
+from ui.uikits.Widget import Widget
 
 # -------------------------------------------------------------------------------------------------------------
 """ Contributing Layout """
 
-class Reference(QWidget):
+class Reference(Widget):
 
     key = 'reference'
-    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
 
@@ -49,7 +49,7 @@ class Reference(QWidget):
         self.content.setGeometry(0, 0, 450, 400)
         self.scrollArea.setWidget(self.content)
 
-        closeBtn = Button({'txt': 'Close', 'tt': 'Close window', 'cl': partial(self.showLayout.emit, self.key, 'hide')})
+        closeBtn = Button({'txt': 'Close', 'tt': 'Close window', 'cl': partial(self.signals.showLayout.emit, self.key, 'hide')})
 
         self.layout.addWidget(self.scrollArea, 0, 0, 8, 4)
         self.layout.addWidget(closeBtn, 8, 3, 1, 1)

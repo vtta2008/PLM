@@ -22,13 +22,13 @@ from platform import system
 
 # PyQt5
 from PyQt5 import __file__ as pyqt_path
-from PyQt5.QtCore import pyqtSignal
 
-from appData import __groupname__, __appname__, __plmWiki__, __pkgsReq__
 # PLM
 from cores.base import DAMG, DAMGDICT, DAMGLIST
-from appData.keys import autodeskVer, KEYDETECT, KEYPACKAGE, CONFIG_APPUI, CONFIG_SYSTRAY, FIX_KEY
-from appData.paths import PLM_LOGO_32, DAMG_LOGO_32, ICON_DIR_32, PROGRAM64, PROGRAM86, LOCALAPPDATA, PROGRAMDATA
+from appData import (__groupname__, __appname__, __plmWiki__, __pkgsReq__, autodeskVer, KEYDETECT, KEYPACKAGE,
+                     CONFIG_APPUI, CONFIG_SYSTRAY, FIX_KEY, PLM_LOGO_32, DAMG_LOGO_32, ICON_DIR_32, PROGRAM64,
+                     PROGRAM86, LOCALAPPDATA, PROGRAMDATA)
+from ui.UiSignals import UiSignals
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configurations """
@@ -39,7 +39,9 @@ class Configurations(DAMG):
     checkList                           = DAMGDICT()
     cfgInfo                             = DAMGDICT()
     cfgError                            = DAMGDICT()
-    cfgReport                           = pyqtSignal(str)
+    install_packages                    = DAMGDICT()
+    packages                            = DAMGLIST()
+    versions                            = DAMGLIST()
 
     def __init__(self, appKey, rootDir, mode='alpha', parent=None):
         super(Configurations, self).__init__(parent)
@@ -48,12 +50,9 @@ class Configurations(DAMG):
         self.rootDir                    = rootDir
         self.mode                       = mode
 
-        self.install_packages           = DAMGLIST()
-        self.packages                   = DAMGLIST()
-        self.versions                   = DAMGLIST()
+        self.signals                    = UiSignals(self)
 
         self.cfgs                       = True
-
         self._pthInfo                   = False
         self._iconInfo                  = False
         self._mainPkgs                  = False
@@ -114,11 +113,11 @@ class Configurations(DAMG):
         pthInfo['resource']     = self.set_dir('bin/resources')
 
         pthInfo['config']       = self.set_dir('appData/.config')
-        pthInfo['mtd']          = self.set_dir('appData/.config/PLM/mtd')
-        pthInfo['setting']      = self.set_dir('appData/.config/PLM/settings')
-        pthInfo['log']          = self.set_dir('appData/.config/PLM/logs')
-        pthInfo['cache']        = self.set_dir('appData/.config/PLM/cache')
-        pthInfo['preferences']  = self.set_dir('appData/.config/PLM/preferences')
+        pthInfo['mtd']          = self.set_dir('appData/.config/Pipeline Manager (PLM)/mtd')
+        pthInfo['setting']      = self.set_dir('appData/.config/Pipeline Manager (PLM)/settings')
+        pthInfo['log']          = self.set_dir('appData/.config/Pipeline Manager (PLM)/logs')
+        pthInfo['cache']        = self.set_dir('appData/.config/Pipeline Manager (PLM)/cache')
+        pthInfo['preferences']  = self.set_dir('appData/.config/Pipeline Manager (PLM)/preferences')
         pthInfo['tmp']          = self.set_dir('appData/.tmp')
 
         pthInfo['appData']      = self.set_dir('appData')
@@ -146,7 +145,7 @@ class Configurations(DAMG):
 
         pthInfo['ui']           = self.set_dir('ui')
 
-        pthInfo['utilities']    = self.set_dir('utilities')
+        pthInfo['utils']    = self.set_dir('utils')
 
         for pth in pthInfo.values():
             self.create_folder(pth)
@@ -241,7 +240,7 @@ class Configurations(DAMG):
                 for usDes in mayaVers:
                     shutil.copy(usScr, usDes)
 
-        self.send_report('Maya is implemented')
+        print('Maya is implemented')
         return True
 
     def cfg_envVars(self, fileName='envKey.cfg', **envKeys):
@@ -280,7 +279,7 @@ class Configurations(DAMG):
             for k in KEYDETECT:
                 if k in key:
                     delKeys.append(key)
-                    self.send_report("KEY DETECTED: {0}. Append to list to be deleted later".format(key))
+                    print("KEY DETECTED: {0}. Append to list to be deleted later".format(key))
 
         for key in delKeys:
             self.del_key(key, self.appInfo)
@@ -486,9 +485,6 @@ class Configurations(DAMG):
             del data[key]
         except KeyError:
             dict.pop(key, None)
-
-    def send_report(self, mess):
-        self.cfgReport.emit(mess)
 
     def folder_settings(self, directory, mode):
         if system() == "Windows" or system() == "Darwin":

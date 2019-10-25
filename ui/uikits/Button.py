@@ -18,6 +18,7 @@ from PyQt5.QtWidgets        import QPushButton, QToolButton
 
 # PLM
 from appData                import SiPoExp, SiPoPre
+from ui.UiSignals           import UiSignals
 from ui.uikits.UiPreset     import check_preset, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
@@ -27,7 +28,11 @@ class Button(QPushButton):
 
     def __init__(self, preset={}, parent=None):
         super(Button, self).__init__(parent)
+
+        self.signals = UiSignals(self)
+
         self.preset = preset
+
         if check_preset(self.preset):
             self.procedural()
 

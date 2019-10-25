@@ -163,7 +163,7 @@ class MayaMainUI(QtWidgets.QWidget):
 
         self.curMode = self.getMode()
 
-        logger.info('get fm: %s' % self.curMode.upper())
+        logger.info('get fn: %s' % self.curMode.upper())
 
         self.buildUI()
 

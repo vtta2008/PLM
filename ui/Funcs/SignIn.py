@@ -14,21 +14,23 @@ Description:
 """ Import """
 
 # Python
-import sys
-from functools import partial
+import sys, requests
+from functools              import partial
 
-import requests
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QCheckBox, QWidget)
+from PyQt5.QtCore           import pyqtSignal
+from PyQt5.QtWidgets        import (QApplication, QGridLayout, QCheckBox, QWidget)
 
-from appData import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __serverLocalCheck__
-from ui.uikits.Button import Button
-from ui.uikits.GroupBox import GroupGrid
-from ui.uikits.UiPreset import IconPth, Label, LineEdit
+from appData                import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerCheck__, __localServerAutho__, __localServer__
+from ui.UiSignals           import UiSignals
+from ui.MessageBox          import MessageBox
+from ui.uikits.Button       import Button
+from ui.uikits.GroupBox     import GroupGrid
+from ui.uikits.UiPreset     import IconPth, Label, LineEdit
+
 # Plt
-from utilities import localSQL as usql
-from utilities.utils import str2bool
+from utils                  import localSQL as usql
+from utils.utils            import str2bool
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """
@@ -36,8 +38,6 @@ from utilities.utils import str2bool
 class SignIn(QWidget):
 
     key = 'login'
-    showLayout = pyqtSignal(str, str)
-    setSetting = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
 
@@ -45,6 +45,7 @@ class SignIn(QWidget):
 
         self.setWindowIcon(IconPth(32, "SignIn"))
         self.setFixedSize(400, 300)
+        self.signals = UiSignals(self)
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -55,10 +56,10 @@ class SignIn(QWidget):
         loginGrp, loginGrid = GroupGrid('Sign in')
 
         self.userTF = LineEdit()
-        self.pwTF = LineEdit({'fm': 'password'})
+        self.pwTF = LineEdit({'fn': 'password'})
         self.userCB = QCheckBox('Remember me?')
 
-        forgot_pw_btn = Button({'txt': 'Forgot your password?', 'cl': partial(self.showLayout.emit, 'forgotpw', 'show')})
+        forgot_pw_btn = Button({'txt': 'Forgot your password?', 'cl': partial(self.signals.showLayout.emit, 'forgotpw', 'show')})
         login_btn = Button({'txt': 'Log in', 'cl': self.signInClicked})
         cancel_btn = Button({'txt': 'Cancel', 'cl': QApplication.quit})
 
@@ -72,7 +73,7 @@ class SignIn(QWidget):
         loginGrid.addWidget(cancel_btn, 3, 3, 1, 3)
 
         signupGrp, signupGrid = GroupGrid('Sign up')
-        signupBtn = Button({'txt':'Sign up', 'emit2': [self.showLayout.emit, ['signup', 'show']]})
+        signupBtn = Button({'txt':'Sign up', 'emit2': [self.signals.showLayout.emit, ['signup', 'show']]})
 
         signupGrid.addWidget(Label({'txt': SIGNUP}), 0, 0, 1, 6)
         signupGrid.addWidget(signupBtn, 1, 0, 1, 6)
@@ -90,15 +91,15 @@ class SignIn(QWidget):
         pass_word = str(self.pwTF.text())
 
         if username == "" or username is None:
-            QMessageBox.critical(self, 'Login Failed', USER_BLANK)
+            MessageBox(self, 'Login Failed', 'critical', USER_BLANK)
             return
         elif pass_word == "" or pass_word is None:
-            QMessageBox.critical(self, 'Login Failed', PW_BLANK)
+            MessageBox(self, 'Login Failed', 'critical', PW_BLANK)
             return
 
         password = str(pass_word)
 
-        r = requests.post(__serverLocalCheck__, verify=False, data={'user': username, 'pwd': password})
+        r = requests.post(__localServerAutho__, verify=False, data={'user': username, 'pwd': password})
 
         if r.status_code == 200:
             for i in r.headers['set-cookie'].split(";"):
@@ -118,7 +119,7 @@ class SignIn(QWidget):
             self.showLayout.emit('mainUI', 'show')
         else:
             usql.RemoveDB("curUser")
-            QMessageBox.critical(self, 'Login Failed', PW_WRONG)
+            MessageBox(self, 'Login Failed', 'critical', PW_WRONG)
             return
 
     def showEvent(self, event):
@@ -135,12 +136,8 @@ class SignIn(QWidget):
         event.ignore()
 
 
-def main():
+if __name__ == '__main__':
     login = QApplication(sys.argv)
     layout = SignIn()
     layout.show()
     login.exec_()
-
-
-if __name__ == '__main__':
-    main()

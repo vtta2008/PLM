@@ -15,49 +15,52 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtWidgets        import QApplication, QWidget, QVBoxLayout, QTabWidget
+from PyQt5.QtWidgets        import QApplication, QVBoxLayout, QTabWidget
 
 # PLM
 from appData                import SiPoMin
 from cores.Loggers          import Loggers
-from ui.Debugger            import pDebugger
+from ui.Debugger            import Debugger
 from ui.GeneralSetting      import GeneralSetting
 from ui.uikits.TabWidget    import TabContent
+from ui.uikits.Widget       import Widget
 from ui.uikits.UiPreset     import IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """
-class BotTab(QWidget):
+class BotTab(Widget):
 
     key = 'botTab'
 
     def __init__(self, parent=None):
         super(BotTab, self).__init__(parent)
-        self.logger = Loggers(self)
-        self.layout = QVBoxLayout()
+        self.logger         = Loggers(__file__)
+
+        self.layout         = QVBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
+        self.applySetting()
 
     def buildUI(self):
-        self.tabs = QTabWidget()
+        self.tabs           = QTabWidget()
 
         self.generalSetting = GeneralSetting()
-        self.debugger = pDebugger()
+        self.debugger       = Debugger()
 
         self.tabs.addTab(TabContent(self.generalSetting), "General")
-        self.tabs.addTab(TabContent(), "Unit")
+        # self.tabs.addTab(TabContent(), "Unit")
         self.tabs.addTab(TabContent(self.debugger), "Debug")
         # self.tabs.addTab(TabContent(), "Quick")
 
         self.layout.addWidget(self.tabs)
-        self.applySetting()
+
 
     def applySetting(self):
         self.setSizePolicy(SiPoMin, SiPoMin)
         self.tabs.setSizePolicy(SiPoMin, SiPoMin)
 
         self.tabs.setTabIcon(0, IconPth(32, 'General Setting'))
-        self.tabs.setTabIcon(1, IconPth(32, 'Unit Setting'))
+        # self.tabs.setTabIcon(1, IconPth(32, 'Unit Setting'))
         self.tabs.setTabIcon(2, IconPth(32, 'Debug'))
         # self.tabs.setTabIcon(3, IconPth(32, 'Quick Setting'))
 

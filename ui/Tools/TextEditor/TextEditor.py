@@ -26,6 +26,7 @@ from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog, 
 # PLM
 from cores.Loggers import Loggers
 from ui.uikits.UiPreset import IconPth
+from ui.uikits.Widget import Widget
 
 if sys.platform.startswith('darwin'):
     rsrcPath = ":/images/mac"
@@ -36,6 +37,8 @@ else:
 """ Main class """
 
 class TextEdit(QMainWindow):
+
+    key = "TextEditor"
 
     def __init__(self, fileName=None, parent=None):
         super(TextEdit, self).__init__(parent)
@@ -536,10 +539,9 @@ class TextEdit(QMainWindow):
 # -------------------------------------------------------------------------------------------------------------
 """ layout class """
 
-class TextEditor(QWidget):
+class TextEditor(Widget):
 
     key = 'textEditor'
-    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(TextEditor, self).__init__(parent)

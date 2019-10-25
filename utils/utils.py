@@ -29,7 +29,7 @@ from appData            import (__envKey__, __pkgsReq__, KEYPACKAGE, LOGO_DIR, W
 from cores.Errors       import IsADirectoryError, FileNotFoundError
 from cores.Loggers      import Loggers
 
-logger = Loggers(__name__)
+logger = Loggers(__file__)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Destop tool """
@@ -93,37 +93,37 @@ def handle_path_error(directory=None):
         except IsADirectoryError as error:
             raise('Caught error: ' + repr(error))
 
-def raise_exception():
-
-    exc_type, exc_obj, tb = sys.exc_info()
-    f = tb.tb_frame
-    lineno = tb.tb_lineno
-    filename = f.f_code.co_filename
-    linecache.checkcache(filename)
-    line = linecache.getline(filename, lineno, f.f_globals)
-
-    print("--------------------------------------------------------------------------------- \n"
-            "Tracking from:   {0} \n"
-            "At line number:  {1} \n"
-            "Details code:    {2} \n"
-            "{3} \n"
-            "---------------------------------------------------------------------------------".format(os.path.basename(filename), lineno, line.strip(), exc_obj))
-    return
-
-def print_variable(varName, varData):
-    print('###-------------------------------------------------------------------------------###')
-    print('-------- CHECK VARIABLE: {0}'.format(varName))
-    print('------------ File location: {0}'.format(__file__))
-    print('------------ Variable type: {0}'.format(type(varName)))
-    print(' ')
-    print('-------- VARIABLE CONTENT')
-    print(' ')
-
-    pprint.pprint(varData)
-
-    print(' ')
-    print('-------- END CHECK')
-    print('###-------------------------------------------------------------------------------###')
+# def raise_exception():
+#
+#     exc_type, exc_obj, tb = sys.exc_info()
+#     f = tb.tb_frame
+#     lineno = tb.tb_lineno
+#     filename = f.f_code.co_filename
+#     linecache.checkcache(filename)
+#     line = linecache.getline(filename, lineno, f.f_globals)
+#
+#     print("--------------------------------------------------------------------------------- \n"
+#             "Tracking from:   {0} \n"
+#             "At line number:  {1} \n"
+#             "Details code:    {2} \n"
+#             "{3} \n"
+#             "---------------------------------------------------------------------------------".format(os.path.basename(filename), lineno, line.strip(), exc_obj))
+#     return
+#
+# def print_variable(varName, varData):
+#     print('###-------------------------------------------------------------------------------###')
+#     print('-------- CHECK VARIABLE: {0}'.format(varName))
+#     print('------------ File location: {0}'.format(__file__))
+#     print('------------ Variable type: {0}'.format(type(varName)))
+#     print(' ')
+#     print('-------- VARIABLE CONTENT')
+#     print(' ')
+#
+#     pprint.pprint(varData)
+#
+#     print(' ')
+#     print('-------- END CHECK')
+#     print('###-------------------------------------------------------------------------------###')
 
 # -------------------------------------------------------------------------------------------------------------
 """ Python """
@@ -237,7 +237,7 @@ def get_base_folder(path):
 def get_base_name(path):
     return os.path.basename(path)
 
-def get_app_icon(size=32, iconName="AboutPlt"):
+def get_app_icon(size=32, iconName="About"):
     # Get the right directory base on icon size
     iconPth = os.path.join(APP_ICON_DIR, "x{0}".format(str(size)))
 
@@ -327,7 +327,7 @@ def get_pointer_bounding_box(pointerPos, bbSize):
 """ Read, Write, Edit json/yaml/config info """
 
 def data_handler(type='json', mode='r', filePath=None, data={}):
-    info = {}
+
     if type == 'json':
         if mode == 'r' or mode == 'r+':
             with open(filePath, mode) as f:

@@ -22,6 +22,7 @@ from PyQt5.QtWidgets import QToolBar
 # PLM
 from appData import __envKey__, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_TOOLS, CONFIG_POST
 from ui.uikits.Action import Action
+from ui.UiSignals import UiSignals
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar data preset """
@@ -48,13 +49,15 @@ class ToolBar(QToolBar):
 
         self._parent = parent
         self.key = key
-        self.setAccessibleName(self.key)
+        self.signals = UiSignals(self)
+
         self.acts = []
         self.tbData = TOOLBAR_DATA
         self.add_actions()
         self.applySetting()
 
     def applySetting(self):
+        self.setAccessibleName(self.key)
         self.setMinimumWidth((len(self.acts) + 1)*32)
 
     def add_actions(self):

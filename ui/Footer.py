@@ -15,26 +15,28 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
+from PyQt5.QtWidgets            import QApplication, QWidget, QGridLayout
 
 # Plt
-from appData import SiPoMin, __copyright__, __version__
-from ui.uikits.UiPreset import Label
+from appData                    import SiPoMin, __copyright__, __version__
+from ui.uikits.Widget           import Widget
+from ui.uikits.GridLayout       import GridLayout
+from ui.uikits.UiPreset         import Label
 
 # -------------------------------------------------------------------------------------------------------------
 """ Footer """
 
-class Footer(QWidget):
+class Footer(Widget):
 
     key = 'footer'
-    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(Footer, self).__init__(parent)
-        self.layout = QGridLayout()
+
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
+        self.applySetting()
 
     def buildUI(self):
 
@@ -43,8 +45,6 @@ class Footer(QWidget):
 
         self.layout.addWidget(version, 0, 0, 1, 9)
         self.layout.addWidget(copyR, 1, 0, 1, 9)
-
-        self.applySetting()
 
     def applySetting(self):
         self.setSizePolicy(SiPoMin, SiPoMin)

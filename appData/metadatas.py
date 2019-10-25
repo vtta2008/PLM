@@ -34,8 +34,8 @@ __email2__              = "up@damgteam.com"
 # -------------------------------------------------------------------------------------------------------------
 """ PipelineTool """
 
-__project__             = "Pipeline Manager (Plm)"
-__appname__             = "PLM"
+__project__             = "PLM"
+__appname__             = "Pipeline Manager (PLM)"
 __appShortcut__         = "Plm.ink"
 __version__             = "13.0.1"
 __cfgVersion__          = "0.8.6"
@@ -49,30 +49,32 @@ __plmWiki__             = "https://github.com/vtta2008/PipelineTool/wiki"
 # -------------------------------------------------------------------------------------------------------------
 """ Server """
 
-__serverGlobal__        = "https://server.damgteam.com"
-__serverCheck__         = "https://server.damgteam.com/check"
-__serverAutho__         = "https://server.damgteam.com/auth"
+__globalServer__        = "https://server.damgteam.com"
+__globalServerCheck__         = "https://server.damgteam.com/check"
+__globalServerAutho__         = "https://server.damgteam.com/auth"
 
 __localPort__           = "20987"
 __localHost__           = "http://localhost:"
-__serverLocal__         = "http://localhost:{}".format(__localPort__)
-__serverLocalCheck__    = "http://localhost:{}/check".format(__localPort__)
-__serverLocalAutho__    = "http://localhost:{}/auth".format(__localPort__)
+__localServer__         = "{0}{1}".format(__localHost__, __localPort__)
+__localServerCheck__    = "{0}/check".format(__localServer__)
+__localServerAutho__    = "{0}/auth".format(__localServer__)
 
-__google__              = "https://google.com.vn"
+__google__              = "www.google.com"
+__googleVN__            = "www.google.com.vn"
+__googleNZ__            = "www.google.co.nz"
 
 # -------------------------------------------------------------------------------------------------------------
 """ Metadata """
 
-VERSION = "{0} v{1}.{2}-{3}".format(__project__, __version__, __verType__, __reverType__)
-COPYRIGHT = "{0} software (c) 2017-2018 {1}. All rights reserved.".format(__appname__, __organization__)
-PLUGINVERSION = "{0}.13.cfg.{1}".format(__appname__, __cfgVersion__)
-PLMAPPID = "{0}.{1}.{2}.{3}".format(__organization__, __project__, __appname__, VERSION)
+VERSION                 = "{0} v{1}.{2}-{3}".format(__project__, __version__, __verType__, __reverType__)
+COPYRIGHT               = "{0} software (c) 2017-2018 {1}. All rights reserved.".format(__appname__, __organization__)
+PLUGINVERSION           = "{0}.13.cfg.{1}".format(__appname__, __cfgVersion__)
+PLMAPPID                = "{0}.{1}.{2}.{3}".format(__organization__, __project__, __appname__, VERSION)
 
-API_MAJOR_VERSION = 0.69
-API_REVISION = 0
-API_VERSION = float('%s%s' % (API_MAJOR_VERSION, API_REVISION))
-API_VERSION_AS_STRING = '%.02f.%d' % (API_MAJOR_VERSION, API_REVISION)
+API_MAJOR_VERSION       = 0.69
+API_REVISION            = 0
+API_VERSION             = float('%s%s' % (API_MAJOR_VERSION, API_REVISION))
+API_VERSION_AS_STRING   = '%.02f.%d' % (API_MAJOR_VERSION, API_REVISION)
 PLATFORM                = 'Windows'
 API_MINIMUM             = 0.64
 
@@ -80,11 +82,12 @@ API_MINIMUM             = 0.64
 """ Setup.py options """
 
 __email__ = __emails__
-__packages_dir__ = ["", 'appData', 'bin', 'core', 'imgs', 'plg_ins', 'ui', 'utilities']
+__packages_dir__ = ["", 'appData', 'bin', 'core', 'imgs', 'plugins', 'scripts', 'ui', 'utils']
 __download__ = "https://github.com/vtta2008/PipelineTool/releases"
 __description__ = "This applications can be used to build, manage, and optimise film making pipelines."
 __readme__ = "README.rst"
-__pkgsReq__ = ['appdirs', 'deprecate', 'msgpack', 'winshell', 'pandas', 'wheel', 'argparse', 'green']
+__pkgsReq__ = ['PyQt5', 'pip', 'urllib3', 'chardet', 'appdirs', 'deprecate', 'msgpack', 'winshell',
+               'pyqtwebengine', 'pandas', 'wheel', 'argparse', 'green']
 __modules__ = []
 __classifiers__ = [
 

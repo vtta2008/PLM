@@ -17,29 +17,26 @@ import sys
 from functools              import partial
 
 # PyQt5
-from PyQt5.QtCore           import pyqtSlot, pyqtSignal
+from PyQt5.QtCore           import pyqtSlot
 from PyQt5.QtWidgets        import QMainWindow, QApplication
 
 from cores.Loggers          import Loggers
 # Plm
 from appData                import __plmWiki__, __envKey__, SiPoMin
-from cores.base             import DAMG
+from ui.UiSignals           import UiSignals
 from ui.uikits.Action       import Action
 
 
 class MainMenuBar(QMainWindow):
 
     key                     = 'mainMenu'
-    showLayout              = pyqtSignal(str, str)
-    executing               = pyqtSignal(str)
-    addLayout               = pyqtSignal(DAMG)
-    setSetting              = pyqtSignal(str, str, str)
-    openUrl                 = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(MainMenuBar, self).__init__(parent)
-        self.logger = Loggers(self)
-
+        
+        self.logger = Loggers(__file__)
+        self.signals = UiSignals(self)
+        
         with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
             self.appInfo = json.load(f)
 
@@ -52,32 +49,32 @@ class MainMenuBar(QMainWindow):
         self.mainMenu = self.menuBar()
 
         self.appMenu = self.mainMenu.addMenu("&App")
-        self.appMenu.addAction(Action({'icon': 'Exit', 'txt': self.appInfo['Exit'][0], 'trg': partial(self.showLayout.emit, 'app', 'exit')}, self))
+        self.appMenu.addAction(Action({'icon': 'Exit', 'txt': self.appInfo['Exit'][0], 'trg': partial(self.signals.executing.emit, 'appExit')}, self))
 
         self.settingMenu = self.mainMenu.addMenu('Settings')
-        self.settingMenu.addAction(Action({'icon': 'Settings', 'txt':"&Settings", 'trg': partial(self.showLayout.emit, 'settingUI', 'show')}, self))
-        self.settingMenu.addAction(Action({'icon': 'Configurations', 'txt': '&Config', 'trg': partial(self.showLayout.emit, 'config', 'show')}, self))
-        self.settingMenu.addAction(Action({'icon': 'Preferences', 'txt': '&Preferences', 'trg': partial(self.showLayout.emit, 'preferences', 'show')}, self))
+        self.settingMenu.addAction(Action({'icon': 'Settings', 'txt':"&Settings", 'trg': partial(self.signals.regisLayout.emit, 'settingUI', 'show')}, self))
+        self.settingMenu.addAction(Action({'icon': 'Configurations', 'txt': '&Config', 'trg': partial(self.signals.regisLayout.emit, 'config', 'show')}, self))
+        self.settingMenu.addAction(Action({'icon': 'Preferences', 'txt': '&Preferences', 'trg': partial(self.signals.regisLayout.emit, 'preferences', 'show')}, self))
 
         self.mainMenu.addMenu("&Pipeline")
 
         self.mainMenu.addMenu("&Lib")
 
         self.helpMenu = self.menuBar().addMenu("&Help")
-        self.helpMenu.addAction(Action({'icon': 'PLM wiki', 'txt': self.appInfo['PLM wiki'][0], 'trg': partial(self.openUrl.emit, 'vnexpress.net')}, self))
-        self.helpMenu.addAction(Action({'icon': 'About', 'txt': self.appInfo['About'][0], 'trg':partial(self.showLayout.emit, 'about', 'show')}, self))
-        self.helpMenu.addAction(Action({'icon': 'Credit', 'txt': self.appInfo['Credit'][0], 'trg':partial(self.showLayout.emit, 'credit', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon': 'PLM wiki', 'txt': self.appInfo['PLM wiki'][0], 'trg': partial(self.signals.openBrowser.emit, 'vnexpress.net')}, self))
+        self.helpMenu.addAction(Action({'icon': 'About', 'txt': self.appInfo['About'][0], 'trg':partial(self.signals.regisLayout.emit, 'about', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon': 'Credit', 'txt': self.appInfo['Credit'][0], 'trg':partial(self.signals.regisLayout.emit, 'credit', 'show')}, self))
 
         self.helpMenu.addSeparator()
 
-        self.helpMenu.addAction(Action({'icon': 'CodeConduct', 'txt': self.appInfo['CodeConduct'][0], 'trg': partial(self.showLayout.emit, 'codeConduct', 'show')}, self))
-        self.helpMenu.addAction(Action({'icon': 'Contributing', 'txt': self.appInfo['Contributing'][0], 'trg': partial(self.showLayout.emit, 'contributing', 'show')}, self))
-        self.helpMenu.addAction(Action({'icon': 'Reference', 'txt': self.appInfo['Reference'][0], 'trg': partial(self.showLayout.emit, 'reference', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon': 'CodeConduct', 'txt': self.appInfo['CodeConduct'][0], 'trg': partial(self.signals.regisLayout.emit, 'codeConduct', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon': 'Contributing', 'txt': self.appInfo['Contributing'][0], 'trg': partial(self.signals.regisLayout.emit, 'contributing', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon': 'Reference', 'txt': self.appInfo['Reference'][0], 'trg': partial(self.signals.regisLayout.emit, 'reference', 'show')}, self))
 
         self.helpMenu.addSeparator()
 
-        self.helpMenu.addAction(Action({'txt': 'Licence', 'trg': partial(self.showLayout.emit, 'licenceMIT', 'show')}, self))
-        self.helpMenu.addAction(Action({'txt': 'Version', 'trg': partial(self.showLayout.emit, 'version', 'show')}, self))
+        self.helpMenu.addAction(Action({'txt': 'Licence', 'trg': partial(self.signals.regisLayout.emit, 'licenceMIT', 'show')}, self))
+        self.helpMenu.addAction(Action({'txt': 'Version', 'trg': partial(self.signals.regisLayout.emit, 'version', 'show')}, self))
 
 
         self.feedback = self.mainMenu.addMenu("&Feedback")

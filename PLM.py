@@ -34,36 +34,40 @@ if not cfgable:
     print("CONFIGERROR: environment variable not set !!!")
     sys.exit()
 
-from cores.Configurations import Configurations
-configuration = Configurations(__envKey__, os.path.join(ROOT))
+
+# configuration = Configurations(__envKey__, os.path.join(ROOT))
 
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
 # Python
-import sys, subprocess, requests, ctypes
+import sys, requests, ctypes
 
 # PyQt5
 from PyQt5.QtCore                   import pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets                import QApplication
 
 # Plm
+from ui.Network.ServerConfig        import ServerConfig
 from ui.Settings.SettingUI          import SettingUI
 from ui.Web.PLMBrowser              import PLMBrowser
 from ui.uikits.UiPreset             import AppIcon
 
-from appData                        import (__serverLocalAutho__, __serverLocalCheck__, __serverLocal__, PLMAPPID, __organization__, __appname__, __version__,
-                                            __website__, SETTING_FILEPTH, ST_FORMAT, SYSTRAY_UNAVAI)
+from appData                        import (__localServer__, __localPort__, __localHost__, PLMAPPID, __organization__,
+                                            __appname__, __version__, __website__, __globalServer__, SETTING_FILEPTH,
+                                            ST_FORMAT, SYSTRAY_UNAVAI)
 
+from cores.Configurations           import Configurations
 from cores.base                     import DAMG, DAMGDICT
 from cores.StyleSheets              import StyleSheets
 from cores.Settings                 import Settings
-from cores.Cores                    import AppStoreage
+from cores.AppCore                  import AppCore
 from cores.Loggers                  import Loggers
 from cores.Task                     import ThreadManager
-
-from utilities.localSQL             import QuerryDB
-from utilities.utils                import str2bool, clean_file_ext
+from cores.TestConnection           import TestConnection
+from utils.localSQL                 import QuerryDB
+from utils.utils                    import str2bool, clean_file_ext
+from ui.UiSignals import UiSignals
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -72,28 +76,48 @@ class PLM(QApplication):
 
     key = 'PLM console'
 
-    returnValue = pyqtSignal(str, str)
-
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
 
-        self.threadpool             = ThreadManager()                                 # Thread pool
+        # Run all neccessary configuration to start PLM
+        self.configs          = Configurations(__envKey__, os.path.join(ROOT))
 
-        self.logger                 = Loggers(self)
+        # Setting setting tools.
+        self.settings               = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+
+        self.signals                = UiSignals(self)
+
+        # Setup logging
+        self.logger                 = Loggers(__file__)
         self.report                 = self.logger.report
-        self.layouts                = DAMGDICT()
-        self.configuration          = configuration
+        self.info                   = self.logger.info
+        self.debug                  = self.logger.debug
 
-        if not self.configuration.cfgs:
+        # Setup layout manager
+        self.layout_manager         = DAMGDICT()
+
+        self.serverConfig           = ServerConfig(self)
+        self.serverConfig.sendToSetting.connect(self.setSetting)
+        self.regisLayout(self.serverConfig)
+
+        # Multithreading.
+        self.thread_manager         = ThreadManager()
+
+        # Check server connection.
+        # self.serverConnected        = self.server_connect()
+        # if not self.serverConnected:
+        #     print("No server connection available")
+        #     self.serverConfig.show()
+
+        if not self.configs.cfgs:
             self.report("Configurations has not completed yet!")
         else:
-            self.report("Configurations has completed", **self.configuration.cfgInfo)
+            self.report("Configurations has completed", **self.configs.cfgInfo)
 
-        self.settings               = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.settingUI              = SettingUI(self.settings)
-        self.appCore                = AppStoreage(__organization__, __appname__, __version__, __website__, self.settings, self)
+        self.appCore                = AppCore(__organization__, __appname__, __version__, __website__, self)
 
-        self.appInfo                = self.configuration.appInfo                    # Configuration data
+        self.appInfo                = self.configs.appInfo                          # Configuration data
 
         self.database               = QuerryDB()                                    # Database tool
         self.webBrowser             = PLMBrowser()                                  # Webbrowser
@@ -110,34 +134,35 @@ class PLM(QApplication):
         self.mainUI                 = self.appCore.mainUI
         self.sysTray                = self.appCore.sysTray
 
-        self.sysTray.showLayout.connect(self.showLayout)
-        self.settingUI.showLayout.connect(self.showLayout)
-        self.appCore.showLayout.connect(self.showLayout)
-        self.webBrowser.showLayout.connect(self.showLayout)
+        self.mainUI.signals.showLayout.connect(self.showLayout)
+        self.sysTray.signals.showLayout.connect(self.showLayout)
+        self.settingUI.signals.showLayout.connect(self.showLayout)
+        self.appCore.signals.showLayout.connect(self.showLayout)
+        self.webBrowser.signals.showLayout.connect(self.showLayout)
 
-        self.appCore.addLayout.connect(self.addLayout)
+        self.appCore.signals.regisLayout.connect(self.regisLayout)
 
-        self.configuration.cfgReport.connect(self.get_report)
+        self.configs.signals.cfgReport.connect(self.get_report)
 
-        self.sysTray.executing.connect(self.executing)
-        self.appCore.executing.connect(self.executing)
-        self.appCore.setSetting.connect(self.setSetting)
-        self.appCore.openBrowser.connect(self.openBrowser)
+        self.sysTray.signals.executing.connect(self.executing)
+        self.appCore.signals.executing.connect(self.executing)
+        self.appCore.signals.setSetting.connect(self.setSetting)
+        self.appCore.signals.openBrowser.connect(self.openBrowser)
 
 
-        for layout in [self.login, self.forgotPW, self.signup, self. mainUI, self.sysTray]:
-            self.addLayout(layout)
+        for layout in [self.login, self.forgotPW, self.signup, self. mainUI, self.sysTray, self.settingUI]:
+            self.regisLayout(layout)
 
         try:
             self.username, token, cookie, remember = self.database.query_table('curUser')
         except (ValueError, IndexError):
-            print("Error occur, can not query data")
-            self.showLayout('login', "show")
+            self.info("Error occur, can not query data")
+            self.signals.showLayout('login', "show")
         else:
             if not str2bool(remember):
-                self.showLayout('login', "show")
+                self.signals.showLayout('login', "show")
             else:
-                r = requests.get(__serverLocal__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
+                r = requests.get(__localServer__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
 
                 if r.status_code == 200:
                     if not self.appCore.sysTray.isSystemTrayAvailable():
@@ -172,14 +197,14 @@ class PLM(QApplication):
                        self.contributing, self.credit, self.engDict, self.findFile, self.imageViewer, self.licence,
                        self.newProject, self.nodeGraph, self.noteReminder, self.preferences, self.reference,
                        self.screenShot, self.textEditor, self.userSetting, self.version]:
-            self.addLayout(layout)
+            self.regisLayout(layout)
 
         self.setQuitOnLastWindowClosed(False)
         sys.exit(self.exec_())
 
     @property
     def registerUI(self):
-        return self.layouts
+        return self.layout_manager
 
     @pyqtSlot(str, str)
     def showLayout(self, name, mode):
@@ -187,12 +212,10 @@ class PLM(QApplication):
             layout = self
         else:
             try:
-                layout = self.layouts[name]
+                layout = self.layout_manager[name]
             except KeyError:
-                self.report('Key "{0}" is not registered'.format(name))
+                self.report('Layout "{0}" is not registered'.format(name))
                 return
-            else:
-                pass
 
         if mode == "hide":
             layout.hide()
@@ -217,12 +240,13 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str, str)
     def setSetting(self, key=None, value=None, grp=None):
+        # print("receive setting: key: {0}, to value: {1}, in group {2}".format(key, value, grp))
         self.settings.initSetValue(key, value, grp)
 
     @pyqtSlot(str)
     def executing(self, cmd):
-        if cmd in self.layouts.keys():
-            self.showLayout(cmd, 'show')
+        if cmd in self.layout_manager.keys():
+            self.signals.showLayout(cmd, 'show')
         elif os.path.isdir(cmd):
             os.startfile(cmd)
         elif cmd == 'open_cmd':
@@ -231,16 +255,18 @@ class PLM(QApplication):
             self.report("clean .pyc files")
             clean_file_ext('.pyc')
         elif cmd == 'Re-config local':
-            configuration.cfg_mainPkgs()
+            self.configs.cfg_mainPkgs()
+        elif cmd == 'appExit':
+            self.exit()
         else:
-            subprocess.Popen(cmd)
+            print("This command is not regiested yet: {0}".format(cmd))
 
     @pyqtSlot(DAMG)
-    def addLayout(self, layout):
+    def regisLayout(self, layout):
         key = layout.key
-        if not key in self.layouts.keys():
-            # print("Registing layout: {0} \n {1}".format(key, layout))
-            self.layouts[key] = layout
+        if not key in self.layout_manager.keys():
+            print("Registing layout: {0} \n {1}".format(key, layout))
+            self.layout_manager[key] = layout
         else:
             self.report("Already registered: {0}".format(key))
 
@@ -248,13 +274,69 @@ class PLM(QApplication):
     def get_report(self, param):
         self.report(param)
 
+    def server_connect(self):
+
+        internet = self.connect_internet()
+
+        serverConfig = self.settings.value('serverConfig')
+
+        if serverConfig is None:
+            print("No server config")
+            if internet:
+                globalConnect = self.connect_global_server()
+                if not globalConnect:
+                    return self.connect_local_server()
+                else:
+                    return globalConnect
+            else:
+                return self.connect_local_server()
+        else:
+            if serverConfig == 'localServer':
+                return self.connect_local_server()
+            else:
+                return self.connect_global_server()
+
+    def connect_internet(self):
+        print("Try to connect internet")
+        connection = TestConnection()
+
+        if not connection.connectable:
+            print("Connect internet failed.")
+            return False
+        else:
+            print("Connect internet successed.")
+            return True
+
+    def connect_local_server(self):
+        print("Try to connect local server")
+        connection = TestConnection(__localHost__, __localPort__)
+
+        if not connection.connectable:
+            print("Connect local server failed.")
+            return False
+        else:
+            print("Connect local server successed.")
+            return True
+
+    def connect_global_server(self):
+        print("Try to connect global server")
+        connection = TestConnection(__globalServer__, None)
+
+        if not connection.connectable:
+            print("Connect global sercer failed.")
+            return False
+        else:
+            print("Connect global server successed.")
+            return True
+
     def set_styleSheet(self, style):
         stylesheet = dict(darkstyle=StyleSheets('dark').changeStylesheet, stylesheet=StyleSheets('bright').changeStylesheet, )
         self.setStyleSheet(stylesheet[style])
+        self.settings.initSetValue('styleSheet', 'dark')
 
     def closeEvent(self, *args, **kwargs):
         self._closing = True
-        self.threadpool.waitForDone()
+        self.thread_manager.waitForDone()
 
 
 if __name__ == '__main__':

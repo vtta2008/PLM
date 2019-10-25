@@ -17,7 +17,7 @@ from PyQt5.QtGui import QTextTableFormat, QTextCharFormat
 from PyQt5.QtWidgets import QTextEdit, QDockWidget
 
 # PLM
-from scr.appData import (right, SiPoMin, dockB, dockT, datetTimeStamp)
+from appData import (right, SiPoMin, dockB, dockT, datetTimeStamp)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Dock widget """

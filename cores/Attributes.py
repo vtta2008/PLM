@@ -12,7 +12,7 @@ Description:
 
 import weakref
 
-from utilities import utils as util
+from utils import utils as util
 from cores.base import DAMG
 
 

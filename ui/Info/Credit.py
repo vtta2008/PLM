@@ -20,13 +20,14 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 
 # Plm
 from appData import CREDIT
+from ui.uikits.Widget import Widget
 from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Credit Layout """
 
-class Credit(QWidget):
+class Credit(Widget):
 
     key = 'credit'
     showLayout = pyqtSignal(str, str)

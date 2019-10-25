@@ -23,7 +23,7 @@ from appData.config import (DMK, BRUSH_NONE, COLOR_LIBS, PATTERN_SOLID, ITEMPOSC
                            NODE_STAMP, NODE_REC, MOVEABLE, SELECTABLE, NODE_HEADER_HEIGHT, NODE_FOOTER_HEIGHT, POS_CHANGE,
                            UPDATE_BOUNDINGVIEW, center, MARGIN)
 
-from utilities.utils import get_pointer_bounding_box, convert_to_QColor, getUnix
+from utils.utils import get_pointer_bounding_box, convert_to_QColor, getUnix
 
 # -------------------------------------------------------------------------------------------------------------
 """ pEdge """

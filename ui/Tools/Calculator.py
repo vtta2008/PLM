@@ -12,62 +12,63 @@ Description:
 import math
 import sys
 
-from PyQt5.QtCore import Qt, pyqtSignal
-from PyQt5.QtWidgets import (QApplication, QGridLayout, QLayout, QLineEdit, QWidget)
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QApplication, QGridLayout, QLayout, QLineEdit
 
-from appData import SiPoMin
-from ui.uikits.Button import ToolBtn
-from ui.uikits.UiPreset import IconPth
+from appData                import SiPoMin
+from cores.base             import DAMGLIST
+from ui.uikits.Widget       import Widget
+from ui.uikits.Button       import ToolBtn
+from ui.uikits.UiPreset     import IconPth
 
 
-class Calculator(QWidget):
+class Calculator(Widget):
 
     key = 'calculator'
-    showLayout = pyqtSignal(str, str)
+    NumDigitButtons = 10
+    digitButtons = DAMGLIST()
 
     def __init__(self, parent=None):
         super(Calculator, self).__init__(parent)
-        self.setWindowIcon(IconPth(32, 'Calculator'))
 
-        self.NumDigitButtons = 10
+        self.setWindowIcon(IconPth(32, 'Calculator'))
 
         self.layout = QGridLayout(self)
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
-        self.pendingAdditiveOperator = ''
-        self.pendingMultiplicativeOperator = ''
-        self.sumInMemory = 0.0
-        self.sumSoFar = 0.0
-        self.factorSoFar = 0.0
-        self.waitingForOperand = True
+        self.pendingAdditiveOperator            = ''
+        self.pendingMultiplicativeOperator      = ''
+        self.sumInMemory                        = 0.0
+        self.sumSoFar                           = 0.0
+        self.factorSoFar                        = 0.0
+        self.waitingForOperand                  = True
+
         self.display = QLineEdit('0')
         self.display.setReadOnly(True)
         self.display.setAlignment(Qt.AlignRight)
 
-
-        self.digitButtons = []
         for i in range(self.NumDigitButtons):
             self.digitButtons.append(self.createButton(str(i), self.digitClicked))
 
-        self.pointButton = self.createButton(".", self.pointClicked)
-        self.changeSignButton = self.createButton(u"\N{PLUS-MINUS SIGN}",  self.changeSignClicked)
-        self.backspaceButton = self.createButton("Backspace", self.backspaceClicked)
-        self.clearButton = self.createButton("Clear", self.clear)
-        self.clearAllButton = self.createButton("Clear All", self.clearAll)
-        self.clearMemoryButton = self.createButton("MC", self.clearMemory)
-        self.readMemoryButton = self.createButton("MR", self.readMemory)
-        self.setMemoryButton = self.createButton("MS", self.setMemory)
-        self.addToMemoryButton = self.createButton("M+", self.addToMemory)
-        self.divisionButton = self.createButton(u"\N{DIVISION SIGN}", self.multiplicativeOperatorClicked)
-        self.timesButton = self.createButton(u"\N{MULTIPLICATION SIGN}", self.multiplicativeOperatorClicked)
-        self.minusButton = self.createButton("-", self.additiveOperatorClicked)
-        self.plusButton = self.createButton("+", self.additiveOperatorClicked)
-        self.squareRootButton = self.createButton("Sqrt", self.unaryOperatorClicked)
-        self.powerButton = self.createButton(u"x\N{SUPERSCRIPT TWO}", self.unaryOperatorClicked)
-        self.reciprocalButton = self.createButton("1/x", self.unaryOperatorClicked)
-        self.equalButton = self.createButton("=", self.equalClicked)
+        self.pointButton            = self.createButton(".", self.pointClicked)
+        self.changeSignButton       = self.createButton(u"\N{PLUS-MINUS SIGN}",  self.changeSignClicked)
+        self.backspaceButton        = self.createButton("Backspace", self.backspaceClicked)
+        self.clearButton            = self.createButton("Clear", self.clear)
+        self.clearAllButton         = self.createButton("Clear All", self.clearAll)
+        self.clearMemoryButton      = self.createButton("MC", self.clearMemory)
+        self.readMemoryButton       = self.createButton("MR", self.readMemory)
+        self.setMemoryButton        = self.createButton("MS", self.setMemory)
+        self.addToMemoryButton      = self.createButton("M+", self.addToMemory)
+        self.divisionButton         = self.createButton(u"\N{DIVISION SIGN}", self.multiplicativeOperatorClicked)
+        self.timesButton            = self.createButton(u"\N{MULTIPLICATION SIGN}", self.multiplicativeOperatorClicked)
+        self.minusButton            = self.createButton("-", self.additiveOperatorClicked)
+        self.plusButton             = self.createButton("+", self.additiveOperatorClicked)
+        self.squareRootButton       = self.createButton("Sqrt", self.unaryOperatorClicked)
+        self.powerButton            = self.createButton(u"x\N{SUPERSCRIPT TWO}", self.unaryOperatorClicked)
+        self.reciprocalButton       = self.createButton("1/x", self.unaryOperatorClicked)
+        self.equalButton            = self.createButton("=", self.equalClicked)
 
         self.layout.addWidget(self.display, 0,0,1,6)
         self.layout.addWidget(self.backspaceButton, 1,0,1,2)
@@ -304,7 +305,7 @@ class Calculator(QWidget):
         pass
 
     def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
+        self.signals.showLayout.emit(self.key, 'hide')
         event.ignore()
 
 def main():

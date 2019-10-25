@@ -22,12 +22,13 @@ from PyQt5.QtWidgets import QApplication, QWidget, QCheckBox, QPushButton, QGrid
 
 from cores.Loggers import Loggers
 # Plt
-from utilities.utils import str2bool, bool2str, get_app_icon
+from utils.utils import str2bool, bool2str, get_app_icon
+from ui.uikits.Widget import Widget
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """
 
-class Preferences(QWidget):
+class Preferences(Widget):
 
     key = 'preferences'
     showLayout = pyqtSignal(str, str)

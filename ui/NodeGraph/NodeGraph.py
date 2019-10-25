@@ -20,17 +20,18 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
 # Plt
 from cores.Loggers import Loggers
 from appData import ANTIALIAS, UPDATE_FULLVIEW, KEY_DEL
+from ui.uikits.Widget import Widget
 from ui.NodeGraph.MenuBar import MenuBar
 from ui.NodeGraph.Node import Node, Edge
 from ui.NodeGraph.Scene import Scene
 from ui.NodeGraph.View import View
 from ui.uikits.UiPreset import IconPth
-from utilities.utils import getUnix
+from utils.utils import getUnix
 
 # -------------------------------------------------------------------------------------------------------------
 """ NoderViewer """
 
-class NodeGraph(QWidget):
+class NodeGraph(Widget):
 
     key = 'nodeGraph'
     showLayout = pyqtSignal(str, str)

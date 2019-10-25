@@ -22,6 +22,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox
 
 # PLM
 from cores.base import DAMG
+from ui.UiSignals import UiSignals
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab4 """
@@ -29,16 +30,16 @@ from cores.base import DAMG
 class TopTab4(QWidget):
 
     key = 'topTab4'
-    executing = pyqtSignal(str)
-    showLayout = pyqtSignal(str, str)
-    addLayout = pyqtSignal(DAMG)
 
     def __init__(self, parent=None):
         super(TopTab4, self).__init__(parent)
+
+        self.signals = UiSignals(self)
+
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)
-        self.addLayout.emit(self)
+        self.signals.regisLayout.emit(self)
 
     def buildUI(self):
 

@@ -15,8 +15,13 @@ from PyQt5.QtCore           import pyqtSignal, QCoreApplication
 
 # PLM
 from cores.base             import DAMG
+from cores.Loggers          import Loggers
 from cores.Errors           import BuildingUIError
+
+from ui.Settings.SettingUI  import SettingUI
+
 from ui                     import PipelineManager, SysTrayIcon
+from ui.UiSignals           import UiSignals
 from ui.Funcs               import SignUp, SignIn, ForgotPassword
 from ui.Settings            import UserSetting
 from ui.Projects            import NewProject
@@ -27,42 +32,31 @@ from ui.Tools.TextEditor    import TextEditor
 from ui.NodeGraph           import NodeGraph
 
 
-class AppStoreage(DAMG):                                                    # Core metadata
+class AppCore(DAMG):                                                    # Core metadata
 
     """ Metadata QCoreApplication """
 
-    key = 'PLM core application'
+    key = 'PLMCORE'
 
-    showLayout              = pyqtSignal(str, str)
-    addLayout               = pyqtSignal(DAMG)
-    executing               = pyqtSignal(str)
-    setSetting              = pyqtSignal(str, str, str)
-    openBrowser             = pyqtSignal(str)
+    def __init__(self, orgName, appName, orgWeb, version, parent=None):
+        super(AppCore, self).__init__(parent)
 
-    def __init__(self, orgName, appName, orgWeb, version, settings, parent=None):
-        super(AppStoreage, self).__init__(parent)
-
-        self._parent        = parent
-
+        self.parent         = parent
         self._orgName       = orgName
         self._appName       = appName
         self._orgWeb        = orgWeb
         self._version       = version
-        self.settings       = settings
 
-        self._buildUI       = False
+        self.settings       = self.parent.settings
+        self.logger         = Loggers(__file__)
+        self.signals        = UiSignals(self)
 
         QCoreApplication.setOrganizationName(self._orgName)
         QCoreApplication.setApplicationName(self._appName)
         QCoreApplication.setOrganizationDomain(self._orgWeb)
         QCoreApplication.setApplicationVersion(self._version)
 
-        self.cfg = True
-
-        from ui.Settings.SettingUI import SettingUI
-
-        self.settingUI      = SettingUI()
-        self.settings       = settings
+        self.settingUI      = SettingUI(self)
 
         self.buildUI()
         self.build_connection()
@@ -104,37 +98,37 @@ class AppStoreage(DAMG):                                                    # Co
 
         if self._buildUI:
 
-            self.login.showLayout.connect(self.showLayout)
-            self.forgotPW.showLayout.connect(self.showLayout)
-            self.signup.showLayout.connect(self.showLayout)
-            self.mainUI.showLayout.connect(self.showLayout)
-            self.settingUI.showLayout.connect(self.showLayout)
-            self.about.showLayout.connect(self.showLayout)
-            self.calculator.showLayout.connect(self.showLayout)
-            self.calendar.showLayout.connect(self.showLayout)
-            self.codeConduct.showLayout.connect(self.showLayout)
-            self.configuration.showLayout.connect(self.showLayout)
-            self.contributing.showLayout.connect(self.showLayout)
-            self.credit.showLayout.connect(self.showLayout)
-            self.engDict.showLayout.connect(self.showLayout)
-            self.findFile.showLayout.connect(self.showLayout)
-            self.imageViewer.showLayout.connect(self.showLayout)
-            self.licence.showLayout.connect(self.showLayout)
-            self.newProject.showLayout.connect(self.showLayout)
-            self.nodeGraph.showLayout.connect(self.showLayout)
-            self.noteReminder.showLayout.connect(self.showLayout)
-            self.preferences.showLayout.connect(self.showLayout)
-            self.reference.showLayout.connect(self.showLayout)
-            self.screenShot.showLayout.connect(self.showLayout)
-            self.textEditor.showLayout.connect(self.showLayout)
-            self.userSetting.showLayout.connect(self.showLayout)
-            self.version.showLayout.connect(self.showLayout)
+            self.login.signals.showLayout.connect(self.signals.showLayout)
+            self.forgotPW.signals.showLayout.connect(self.signals.showLayout)
+            self.signup.signals.showLayout.connect(self.signals.showLayout)
+            self.mainUI.signals.showLayout.connect(self.signals.showLayout)
+            self.settingUI.signals.showLayout.connect(self.signals.showLayout)
+            self.about.signals.showLayout.connect(self.signals.showLayout)
+            self.calculator.signals.showLayout.connect(self.signals.showLayout)
+            self.calendar.signals.showLayout.connect(self.signals.showLayout)
+            self.codeConduct.signals.showLayout.connect(self.signals.showLayout)
+            self.configuration.signals.showLayout.connect(self.signals.showLayout)
+            self.contributing.signals.showLayout.connect(self.signals.showLayout)
+            self.credit.signals.showLayout.connect(self.signals.showLayout)
+            self.engDict.signals.showLayout.connect(self.signals.showLayout)
+            self.findFile.signals.showLayout.connect(self.signals.showLayout)
+            self.imageViewer.signals.showLayout.connect(self.signals.showLayout)
+            self.licence.signals.showLayout.connect(self.signals.showLayout)
+            self.newProject.signals.showLayout.connect(self.signals.showLayout)
+            self.nodeGraph.signals.showLayout.connect(self.signals.showLayout)
+            self.noteReminder.signals.showLayout.connect(self.signals.showLayout)
+            self.preferences.signals.showLayout.connect(self.signals.showLayout)
+            self.reference.signals.showLayout.connect(self.signals.showLayout)
+            self.screenShot.signals.showLayout.connect(self.signals.showLayout)
+            self.textEditor.signals.showLayout.connect(self.signals.showLayout)
+            self.userSetting.signals.showLayout.connect(self.signals.showLayout)
+            self.version.signals.showLayout.connect(self.signals.showLayout)
 
-            self.mainUI.executing.connect(self.executing)
-            self.mainUI.addLayout.connect(self.addLayout)
-            self.mainUI.sysNotify.connect(self.sysTray.sysNotify)
-            self.mainUI.setSetting.connect(self.setSetting)
-            self.mainUI.openBrowser.connect(self.openBrowser)
+            self.mainUI.signals.executing.connect(self.signals.executing)
+            self.mainUI.signals.regisLayout.connect(self.signals.regisLayout)
+            self.mainUI.signals.sysNotify.connect(self.sysTray.signals.sysNotify)
+            self.mainUI.signals.setSetting.connect(self.signals.setSetting)
+            self.mainUI.signals.openBrowser.connect(self.signals.openBrowser)
 
         else:
             raise BuildingUIError("UI is not built to connect")

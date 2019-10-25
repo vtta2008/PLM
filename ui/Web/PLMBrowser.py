@@ -30,6 +30,8 @@ from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 # Plt
 from cores.Loggers import Loggers
 from ui.uikits.UiPreset import IconPth
+from ui.UiSignals import UiSignals
+from ui.uikits.Widget import Widget
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Web browser """
@@ -182,10 +184,9 @@ class WebBrowser(QMainWindow):
 # -------------------------------------------------------------------------------------------------------------
 """ layout class """
 
-class PLMBrowser(QWidget):
+class PLMBrowser(Widget):
 
     key = 'browser'
-    showLayout = pyqtSignal(str, str)
 
     def __init__(self, url='vnexpress.net', parent=None):
         super(PLMBrowser, self).__init__(parent)

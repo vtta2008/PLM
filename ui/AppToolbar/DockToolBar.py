@@ -11,24 +11,20 @@ Description:
 """ Import """
 
 # PyQt5
-from PyQt5.QtCore       import Qt, pyqtSignal
+from PyQt5.QtCore       import Qt
 from PyQt5.QtWidgets    import QDockWidget, QGridLayout
 
 # PLM
-from cores.base         import DAMG
 from appData            import SiPoExp
 from ui.uikits.ToolBar  import ToolBar
+from ui.UiSignals       import UiSignals
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar docking class """
 
 class DockToolBar(QDockWidget):
 
-    key = 'docker toolbar'
-    showLayout = pyqtSignal(str, str)
-    executing = pyqtSignal(str)
-    addLayout = pyqtSignal(DAMG)
-    setSetting = pyqtSignal(str, str, str)
+    key = 'dockToolBar'
 
     def __init__(self, name="TEXTURE", parent=None):
         super(DockToolBar, self).__init__(parent)
@@ -36,14 +32,15 @@ class DockToolBar(QDockWidget):
         self.name = name
         self.key = 'dockToolBar' + " {0}".format(self.name)
         self.setWindowTitle(self.name)
+        self.signals = UiSignals(self)
+
         self.layout = QGridLayout()
         self.toolbar = ToolBar(self.name, self)
-        self.toolbar.executing.connect(self.executing)
+        self.toolbar.signals.executing.connect(self.signals.executing)
 
         self.layout.addWidget(self.toolbar, 0, 0, 1, 1)
         self.setLayout(self.layout)
         self.applySetting()
-        self.reg = DAMG(self)
 
     def applySetting(self):
         self.setAllowedAreas(Qt.AllDockWidgetAreas)
@@ -53,7 +50,7 @@ class DockToolBar(QDockWidget):
         pass
 
     def closeEvent(self, event):
-        self.addLayout.emit(self)
+        self.signals.regisLayout.emit(self)
         self.showLayout.emit(self.key, 'hide')
         event.ignore()
 

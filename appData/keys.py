@@ -141,7 +141,7 @@ def generate_config(key, *args):
                 keys.append(k)
     return list(sorted(set(keys)))
 
-KEYPACKAGE = generate_key_packages()
+KEYPACKAGE      = generate_key_packages()
 
 # Toolbar config
 CONFIG_TDS      = generate_config('TDS')                            # TD artist

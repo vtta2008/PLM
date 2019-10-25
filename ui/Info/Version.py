@@ -15,21 +15,20 @@ import sys
 from functools import partial
 
 # PtQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
+from PyQt5.QtWidgets import QApplication, QGridLayout, QScrollArea
 
 # Plm
 from appData import VERSION
+from ui.uikits.Widget import Widget
 from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ Contributing Layout """
 
-class Version(QWidget):
+class Version(Widget):
 
     key = 'version'
-    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
 
@@ -59,7 +58,7 @@ class Version(QWidget):
         self.content.setGeometry(0, 0, 450, 150)
         self.scrollArea.setWidget(self.content)
 
-        closeBtn = Button({'txt': 'Close', 'tt': 'Close window', 'cl': partial(self.showLayout.emit, self.key, 'hide')})
+        closeBtn = Button({'txt': 'Close', 'tt': 'Close window', 'cl': partial(self.signals.showLayout.emit, self.key, 'hide')})
 
         self.layout.addWidget(self.scrollArea, 0, 0, 8, 4)
         self.layout.addWidget(closeBtn, 8, 3, 1, 1)

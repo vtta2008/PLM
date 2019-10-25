@@ -56,10 +56,13 @@ class Settings(QSettings):
             self.setValue(key, value)
         while self.group():
             self.endGroup()
+        self.logger.info("setting key: {0}, value: {1}, group: {2}".format(key, value, grp))
 
     def initValue(self, key=None, grp=None):
         grpChecked = self.checkGrp(grp)
-        # self.logger.debug("Loading setting: {0}".format(key))
+
+        self.logger.info("Loading setting: {0}".format(key))
+
         self.beginGroup(grpChecked)
         if key is None or key == "":
             KeySettingError(key)
