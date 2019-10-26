@@ -253,6 +253,7 @@ def get_app_icon(size=32, iconName="About"):
 def get_logo_icon(size=32, name="DAMG"):
     if name == "Logo":
         logoPth = os.path.join(LOGO_DIR, 'Plm', 'icons')
+        print(os.path.exists(logoPth))
     elif name == 'DAMG':
         logoPth = os.path.join(LOGO_DIR, 'DAMGteam', 'icons')
     else:
@@ -541,10 +542,10 @@ def get_all_even(numLst):
 def del_key(key, dict = {}):
     try:
         del dict[key]
-        print("key deleted: {key}".format(key=key))
+        print("configKey deleted: {key}".format(key=key))
     except KeyError:
         dict.pop(key, None)
-        print("key poped: {key}".format(key=key))
+        print("configKey poped: {key}".format(key=key))
 
 def clean_file_ext(ext):
     fileNames = [f for f in get_file_path(os.getenv(__envKey__)) if ext in f] or []

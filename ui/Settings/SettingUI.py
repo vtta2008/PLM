@@ -16,9 +16,9 @@ import sys
 
 # PyQt5
 from PyQt5.QtCore import (QByteArray, QDate, QDateTime, QEvent, QPoint, QRect, QRegExp, QSettings, QSize, Qt, QTime,
-                          QTimer, pyqtSignal)
+                          QTimer)
 from PyQt5.QtGui import QColor, QIcon, QRegExpValidator, QValidator
-from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar, QWidget, QFileDialog, QGridLayout,
+from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar, QFileDialog, QGridLayout,
                              QGroupBox, QHeaderView, QInputDialog, QItemDelegate, QLineEdit, QStyle,
                              QStyleOptionViewItem,
                              QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
@@ -27,23 +27,21 @@ from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar,
 from cores.Settings import Settings
 from appData import __organization__, __appname__, SETTING_FILEPTH, SiPoMin
 from ui.uikits.UiPreset import ComboBox, Label
-from ui.UiSignals import UiSignals
+from ui.uikits.Widget import Widget
+from ui.uikits.GridLayout import GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Setting Manager """
 
-class SettingUI(QWidget):
+class SettingUI(Widget):
 
-    key = 'settingUI'
-
-    showLayout = pyqtSignal(str, str)
+    key = 'SettingUI'
 
     def __init__(self, settings=None, parent=None):
         super(SettingUI, self).__init__(parent)
 
         self.parent = parent
         self.menubar = QMenuBar(self)
-        self.signals = UiSignals(self)
         self.settings = settings
 
         if self.settings is None:
@@ -54,7 +52,7 @@ class SettingUI(QWidget):
 
         self.createMenus()
 
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.layout.addWidget(self.menubar, 0, 0, 1, 1)
         self.layout.addWidget(self.regInfo, 1, 0, 1, 1)
         self.layout.addWidget(self.regValue, 2, 0, 1, 1)
@@ -115,8 +113,7 @@ class SettingUI(QWidget):
             self.fallbacksAct.setEnabled(False)
 
     def createActions(self):
-        self.openSettingsAct = QAction("&Open Application Settings...", self, shortcut="Ctrl+O",
-                                       triggered=self.openSettings)
+        self.openSettingsAct = QAction("&Open Application Settings...", self, shortcut="Ctrl+O", triggered=self.openSettings)
         self.openIniFileAct = QAction("Open I&NI File...", self, shortcut="Ctrl+N", triggered=self.openIniFile)
         self.openPropertyListAct = QAction("Open Mac &Property List...", self, shortcut="Ctrl+P",
                                            triggered=self.openPropertyList)
@@ -172,21 +169,15 @@ class SettingUI(QWidget):
     def setting_mode(self, filename, fm, parent):
         return Settings(filename, fm, parent)
 
-    def showEvent(self, event):
-        pass
-
-    def closeEvent(self, event):
-        # self.specs.showState.emit(False)
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
-
     def applySetting(self):
         self.setSizePolicy(SiPoMin, SiPoMin)
         if os.path.exists(self.filename()):
             self.openIniFile()
 
 
-class SettingInput(QWidget):
+class SettingInput(Widget):
+
+    key = "SettingInput"
 
     def __init__(self, settings, parent=None):
         super(SettingInput, self).__init__(parent)
@@ -317,6 +308,8 @@ class SettingInput(QWidget):
 
 
 class SettingOutput(QTreeWidget):
+
+    key = "SettingOutput"
 
     def __init__(self, settings, parent=None):
         super(SettingOutput, self).__init__(parent)
@@ -503,6 +496,8 @@ class SettingOutput(QTreeWidget):
 
 
 class VariantDelegate(QItemDelegate):
+
+    key = "VariantDelegate"
 
     def __init__(self, parent=None):
         super(VariantDelegate, self).__init__(parent)

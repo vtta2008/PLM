@@ -333,7 +333,7 @@ class ImageInitUI(ViewerWindow):
         self.db.setDatabaseName(self.dbfile)
         self.query = QtSql.QSqlQuery()
         self.db.open()
-        self.query.exec_("create table shuftery(filename text primary key, "
+        self.query.exec_("create table shuftery(filename text primary configKey, "
                          "zoom real, winposx int, winposy int, winsizex int, winsizey int, "
                          "hscroll int, vscroll int, rotate int)")
         return True
@@ -493,7 +493,7 @@ class ImageViewer(Widget):
     def __init__(self, key=None, parent=None):
         super(ImageViewer, self).__init__(parent)
         if key == None or not os.path.exists(key) or os.path.isdir(key):
-            # key = self.loadImageFromFile()
+            # configKey = self.loadImageFromFile()
             key = " "
 
         self._key = key
@@ -502,6 +502,7 @@ class ImageViewer(Widget):
         self.setLayout(self.layout)
 
     def buildUI(self):
+
         viewer = ImageInitUI(self._key)
         resizeSig = viewer.resizeSig
         resizeSig.connect(self.resizeUI)

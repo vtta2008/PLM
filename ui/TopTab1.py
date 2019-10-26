@@ -22,7 +22,7 @@ from PyQt5.QtWidgets            import QApplication, QWidget, QGridLayout, QGrou
 from appData                    import (__envKey__, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE, BTNICONSIZE,
                                         ICONBTNSIZE, FIX_KEYS)
 from cores.base                 import DAMG
-from ui.UiSignals               import UiSignals
+from ui.SignalManager               import SignalManager
 from ui.uikits.Button           import Button
 from ui.uikits.GroupBox         import GroupBox
 
@@ -33,13 +33,15 @@ class TopTab1(QWidget):
 
     key = 'topTab1'
 
+    with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
+        appInfo = json.load(f)
+
     def __init__(self, parent=None):
         super(TopTab1, self).__init__(parent)
 
-        self.signals = UiSignals(self)
+        self.signals = SignalManager(self)
 
-        with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
-            self.appInfo = json.load(f)
+
 
         self.layout = QGridLayout()
         self.buildUI()

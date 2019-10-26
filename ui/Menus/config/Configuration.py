@@ -16,9 +16,9 @@ Description:
 # PyQt5
 from PyQt5.QtCore import QDate, QSize, Qt, pyqtSignal
 from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QApplication, QCheckBox, QComboBox, QDateTimeEdit, QGridLayout, QGroupBox,
+from PyQt5.QtWidgets import (QApplication, QCheckBox, QDateTimeEdit, QGridLayout, QGroupBox,
                              QHBoxLayout, QLabel, QLineEdit, QListView, QListWidget, QListWidgetItem, QPushButton,
-                             QSpinBox, QStackedWidget, QVBoxLayout, QWidget)
+                             QSpinBox, QStackedWidget, QVBoxLayout)
 
 # PLM
 from appData            import __globalServer__, __localServer__

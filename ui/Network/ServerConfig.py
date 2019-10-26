@@ -161,13 +161,6 @@ class ServerConfig(Widget):
             self.comboBox.setCurrentIndex(index)
             self.currentIndexChanged.emit(index)
 
-    def closeEvent(self, QCloseEvent):
-        messBox = MessageBox(self, 'Sure?', 'question', 'Are you sure?', 'yes_no')
-        if messBox.Yes:
-            self.close()
-        else:
-            pass
-
     pageTitle = pyqtProperty(str, fget=getPageTitle, fset=setPageTitle, stored=False)
     currentIndex = pyqtProperty(int, fget=getCurrentIndex, fset=setCurrentIndex)
 

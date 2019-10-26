@@ -15,7 +15,7 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtWidgets            import QApplication, QWidget, QGridLayout
+from PyQt5.QtWidgets            import QApplication
 
 # Plt
 from appData                    import SiPoMin, __copyright__, __version__
@@ -28,27 +28,25 @@ from ui.uikits.UiPreset         import Label
 
 class Footer(Widget):
 
-    key = 'footer'
+    key = 'Footer'
 
     def __init__(self, parent=None):
         super(Footer, self).__init__(parent)
 
-        self.layout = GridLayout()
+        self.parent     = parent
         self.buildUI()
-        self.setLayout(self.layout)
-        self.applySetting()
+
 
     def buildUI(self):
+        layout          = GridLayout()
 
-        version = Label({'txt': __version__, 'alg': 'right'})
-        copyR = Label({'txt': __copyright__, 'alg': 'right'})
+        version         = Label({'txt': __version__, 'alg': 'right'})
+        copyR           = Label({'txt': __copyright__, 'alg': 'right'})
 
-        self.layout.addWidget(version, 0, 0, 1, 9)
-        self.layout.addWidget(copyR, 1, 0, 1, 9)
+        layout.addWidget(version, 0, 0, 1, 9)
+        layout.addWidget(copyR, 1, 0, 1, 9)
+        self.setLayout(layout)
 
-    def applySetting(self):
-        self.setSizePolicy(SiPoMin, SiPoMin)
-        self.setContentsMargins(5, 5, 5, 5)
 
 def main():
     app = QApplication(sys.argv)

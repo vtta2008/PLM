@@ -16,7 +16,7 @@ Description:
 from PyQt5.QtWidgets import QAction
 
 # PLM
-from ui.UiSignals import UiSignals
+from ui.SignalManager import SignalManager
 from ui.uikits.UiPreset import check_preset, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
@@ -24,11 +24,13 @@ from ui.uikits.UiPreset import check_preset, IconPth
 
 class Action(QAction):
 
+    key = 'Action'
+
     def __init__(self, preset={}, parent=None):
         super(Action, self).__init__(parent)
 
         self.preset = preset
-        self.signals = UiSignals(self)
+        self.signals = SignalManager(self)
 
         if check_preset(self.preset):
             self.buildUI()

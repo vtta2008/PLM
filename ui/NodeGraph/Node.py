@@ -456,7 +456,7 @@ class NodeAttr(QGraphicsItem):
         self.AttrsData = dict()
         self.attrData = attrData
         self.dataType = None
-        self.key = self.attrData['key']
+        self.key = self.attrData['configKey']
         self.value = self.attrData['value']
         self.tooltip = self.attrData['tooltip']
         self.alternate = self.attrData['alternate']
@@ -590,10 +590,10 @@ class NodeAttr(QGraphicsItem):
 # -------------------------------------------------------------------------------------------------------------
 """ Node """
 
-attrData1 = {'key': 'int', 'value': 5, 'tooltip': 'attr int', 'alternate': 20}
-attrData2 = {'key': 'float', 'value': 5.0, 'tooltip': 'attr float', 'alternate': 20}
-attrData3 = {'key': 'string', 'value': 'abcd', 'tooltip': 'attr string', 'alternate': 20}
-attrData4 = {'key': 'func', 'value': None, 'tooltip': 'attr func', 'alternate': 20}
+attrData1 = {'configKey': 'int', 'value': 5, 'tooltip': 'attr int', 'alternate': 20}
+attrData2 = {'configKey': 'float', 'value': 5.0, 'tooltip': 'attr float', 'alternate': 20}
+attrData3 = {'configKey': 'string', 'value': 'abcd', 'tooltip': 'attr string', 'alternate': 20}
+attrData4 = {'configKey': 'func', 'value': None, 'tooltip': 'attr func', 'alternate': 20}
 
 class NodeBase(QGraphicsObject):
 

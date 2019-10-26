@@ -15,13 +15,14 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import QFile, QRegExp, QTextCodec, QTextStream, pyqtSignal
-from PyQt5.QtWidgets import (QAction, QApplication, QComboBox, QWidget, QDialog, QDialogButtonBox, QFileDialog,
+from PyQt5.QtCore import QFile, QRegExp, QTextCodec, QTextStream
+from PyQt5.QtWidgets import (QAction, QApplication, QComboBox, QDialog, QDialogButtonBox, QFileDialog,
                              QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
 
 # Plm
-from ui.uikits.UiPreset import Label, IconPth
-from ui.uikits.Widget import Widget
+from ui.uikits.UiPreset     import Label, IconPth
+from ui.uikits.GridLayout   import GridLayout
+from ui.uikits.Widget       import Widget
 
 
 def codec_name(codec):
@@ -204,19 +205,22 @@ class PreviewForm(QDialog):
 class NoteReminder(Widget):
 
     key = 'noteReminder'
-    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(NoteReminder, self).__init__(parent)
         self.setWindowIcon(IconPth(32, 'NoteReminder'))
 
-        self.layout = QGridLayout()
         self.buildUI()
-        self.setLayout(self.layout)
+
 
     def buildUI(self):
+
+        layout = GridLayout()
+
         self.mainMenu = Menu_layout()
-        self.layout.addWidget(self.mainMenu, 0,0,1,1)
+        layout.addWidget(self.mainMenu, 0,0,1,1)
+
+        self.setLayout(layout)
 
     def hideEvent(self, event):
         # self.specs.showState.emit(False)

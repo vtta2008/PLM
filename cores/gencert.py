@@ -18,14 +18,14 @@ from __future__ import absolute_import
     in http://www.tc.umn.edu/~brams006/selfsign.html.
 
     Before using this script, you'll need to create a private
-    key and certificate file using OpenSSL. Create the ca.key
+    configKey and certificate file using OpenSSL. Create the ca.configKey
     file with:
 
-        openssl genrsa -des3 -out ca.key 4096
+        openssl genrsa -des3 -out ca.configKey 4096
 
     Then, create the ca.cert file with:
 
-        openssl req -new -x509 -days 3650 -key ca.key -out ca.cert
+        openssl req -new -x509 -days 3650 -configKey ca.configKey -out ca.cert
 
     Put those files in the same directory as this script. 
 
@@ -38,7 +38,7 @@ from __future__ import absolute_import
         gencert.py mydomain.org
 
     The output will tell you where your server's certificate and
-    private key are. The certificate will be valid for mydomain.org
+    private configKey are. The certificate will be valid for mydomain.org
     and all its subdomains.
 
     If you have any questions about this script, feel free to
@@ -80,7 +80,7 @@ OPENSSL = '/usr/bin/openssl'
 KEY_SIZE = 1024
 DAYS = 3650
 CA_CERT = 'ca.cert'
-CA_KEY = 'ca.key'
+CA_KEY = 'ca.configKey'
 
 # Extra X509 args. Consider using e.g. ('-passin', 'pass:blah') if your
 # CA password is 'blah'. For more information, see:
@@ -104,14 +104,14 @@ def gencert(domain, rootdir=MYDIR, keysize=KEY_SIZE, days=DAYS,
     if not os.path.exists('domains'):
         os.mkdir('domains')
 
-    if not os.path.exists(dfile('key')):
-        openssl('genrsa', '-out', dfile('key'), str(keysize))
+    if not os.path.exists(dfile('configKey')):
+        openssl('genrsa', '-out', dfile('configKey'), str(keysize))
 
     config = open(dfile('config'), 'w')
     config.write(OPENSSL_CONFIG_TEMPLATE % {'domain': domain})
     config.close()
 
-    openssl('req', '-new', '-key', dfile('key'), '-out', dfile('request'),
+    openssl('req', '-new', '-configKey', dfile('configKey'), '-out', dfile('request'),
             '-config', dfile('config'))
 
     openssl('x509', '-req', '-days', str(days), '-in', dfile('request'),
@@ -123,8 +123,8 @@ def gencert(domain, rootdir=MYDIR, keysize=KEY_SIZE, days=DAYS,
             '-extensions', 'v3_req', '-extfile', dfile('config'),
             *X509_EXTRA_ARGS)
 
-    print("Done. The private key is at %s, the cert is at %s, and the " \
-    "CA cert is at %s." % (dfile('key'), dfile('cert'), ca_cert))
+    print("Done. The private configKey is at %s, the cert is at %s, and the " \
+    "CA cert is at %s." % (dfile('configKey'), dfile('cert'), ca_cert))
 
 
 if __name__ == "__main__":

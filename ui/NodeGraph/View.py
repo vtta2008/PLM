@@ -139,7 +139,7 @@ class View(QGraphicsView):
             return
 
         for attr in node.Attrs:
-            if attrData['key'] == attr.key:
+            if attrData['configKey'] == attr.key:
                 print('Node object does not exist! Attribute creation aborted !')
                 return
 

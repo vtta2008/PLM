@@ -37,11 +37,11 @@ class Calendar(Widget):
         super(Calendar, self).__init__(parent)
         self.setWindowIcon(IconPth(32, 'Calendar'))
 
-        self.layout = QGridLayout()
         self.buildUI()
-        self.setLayout(self.layout)
+
 
     def buildUI(self):
+        self.layout = QGridLayout()
 
         self.createPreviewGroupBox()
         self.createGeneralOptionsGroupBox()
@@ -53,7 +53,11 @@ class Calendar(Widget):
         self.layout.addWidget(self.datesGroupBox, 1, 0)
         self.layout.addWidget(self.textFormatsGroupBox, 1, 1)
 
-        self.applySetting()
+        self.layout.setSpacing(2)
+        self.layout.setSizeConstraint(QLayout.SetFixedSize)
+        self.setSizePolicy(SiPoMin, SiPoMin)
+
+        self.setLayout(self.layout)
 
     def localeChanged(self, index):
         self.calendar.setLocale(self.localeCombo.itemData(index))
@@ -359,19 +363,6 @@ class Calendar(Widget):
         comboBox.addItem("Black", Qt.black)
         comboBox.addItem("Magenta", Qt.magenta)
         return comboBox
-
-    def applySetting(self):
-        self.layout.setSpacing(2)
-        self.layout.setSizeConstraint(QLayout.SetFixedSize)
-        self.setSizePolicy(SiPoMin, SiPoMin)
-
-    def hideEvent(self, event):
-        # self.specs.showState.emit(False)
-        pass
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def main():
     calendar = QApplication(sys.argv)

@@ -24,7 +24,7 @@ from ui.Debugger            import Debugger
 from ui.GeneralSetting      import GeneralSetting
 from ui.uikits.TabWidget    import TabContent
 from ui.uikits.Widget       import Widget
-from ui.uikits.UiPreset     import IconPth
+from ui.uikits.UiPreset     import IconPth, VBoxLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """
@@ -36,12 +36,13 @@ class BotTab(Widget):
         super(BotTab, self).__init__(parent)
         self.logger         = Loggers(__file__)
 
-        self.layout         = QVBoxLayout()
+
         self.buildUI()
-        self.setLayout(self.layout)
+
         self.applySetting()
 
     def buildUI(self):
+        layout = VBoxLayout()
         self.tabs           = QTabWidget()
 
         self.generalSetting = GeneralSetting()
@@ -52,20 +53,22 @@ class BotTab(Widget):
         self.tabs.addTab(TabContent(self.debugger), "Debug")
         # self.tabs.addTab(TabContent(), "Quick")
 
-        self.layout.addWidget(self.tabs)
-
-
-    def applySetting(self):
-        self.setSizePolicy(SiPoMin, SiPoMin)
-        self.tabs.setSizePolicy(SiPoMin, SiPoMin)
-
         self.tabs.setTabIcon(0, IconPth(32, 'General Setting'))
         # self.tabs.setTabIcon(1, IconPth(32, 'Unit Setting'))
         self.tabs.setTabIcon(2, IconPth(32, 'Debug'))
         # self.tabs.setTabIcon(3, IconPth(32, 'Quick Setting'))
 
+        self.tabs.setSizePolicy(SiPoMin, SiPoMin)
         self.tabs.setTabPosition(QTabWidget.South)
         self.tabs.setMovable(True)
+
+        layout.addWidget(self.tabs)
+        self.setLayout(layout)
+
+    def applySetting(self):
+        self.setSizePolicy(SiPoMin, SiPoMin)
+
+
 
 
 def main():

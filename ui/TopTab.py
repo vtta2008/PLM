@@ -17,26 +17,27 @@ from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QTabWidget
 
 # Plt
 from appData import SiPoMin
-from ui.UiSignals import UiSignals
+from ui.uikits.Widget import Widget
+from ui.uikits.UiPreset import VBoxLayout
+from ui.uikits.TabWidget import TabWidget
 from ui import (TopTab1, TopTab2, TopTab3, TopTab4, TopTab5)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
 
-class TopTab(QWidget):
+class TopTab(Widget):
 
-    key                 = 'topTab'
+    key                 = 'TopTab'
 
     def __init__(self, parent=None):
         super(TopTab, self).__init__(parent)
 
-        self.signals = UiSignals(self)
-
-        self.layout = QVBoxLayout()
+        self.layout = VBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
+
         self.tabs = QTabWidget()
 
         self.tab1 = TopTab1.TopTab1()

@@ -27,7 +27,7 @@ from ui.uikits.UiPreset import Label, IconPth
 
 class FindFiles(Widget):
 
-    key = 'findFile'
+    key = 'FindFiles'
 
     def __init__(self, parent=None):
         super(FindFiles, self).__init__(parent)

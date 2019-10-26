@@ -30,7 +30,7 @@ class envVariable(object):
     def __init__(self, envKey=None, envVal=None, mode='add'):
         """
         Do something with environment variable.
-        :param envKey: environment key.
+        :param envKey: environment configKey.
         :param envVar: environment variable.
         """
 
@@ -43,11 +43,11 @@ class envVariable(object):
 
         if self.mode == 'add':
             if not self.envKey is None and not self.envVal is None:
-                print('Adding key: {0} and value: {1}'.format(self.envKey, self.envVal))
+                print('Adding configKey: {0} and value: {1}'.format(self.envKey, self.envVal))
                 self.set_env_var(self.envKey, self.envVal)
         elif self.mode == 'remove' or self.add == 'del' or self.add == 'delete':
             if self.check_envKey(self.envKey):
-                print('Removing key: {0}'.format(self.envKey))
+                print('Removing configKey: {0}'.format(self.envKey))
                 self.remove_env_var(self.envKey)
         elif self.mode == 'add_to_path':
             if not self.envVal is None:
@@ -63,7 +63,7 @@ class envVariable(object):
         try:
             os.getenv(envKey)
         except KeyError:
-            print('{0} is not existed, create new environment key.'.format(envKey))
+            print('{0} is not existed, create new environment configKey.'.format(envKey))
             subprocess.Popen('SetX {0} {1}'.format(envKey, envVal), shell=True).wait()
         else:
             if os.getenv(envKey) is None:
@@ -85,18 +85,18 @@ class envVariable(object):
         try:
             os.getenv(envKey)
         except KeyError:
-            KeyError('Environment key: {0} does not exist'.format(envKey))
+            KeyError('Environment configKey: {0} does not exist'.format(envKey))
         else:
-            print('Delete environment key: {0}'.format(envKey))
+            print('Delete environment configKey: {0}'.format(envKey))
             subprocess.Popen('REG delete HKCU\Environment /F /V {0}'.format(envKey), shell=True).wait()
             self.deregister(envKey)
 
     def register(self, envKey, envVal):
         """
-        Add key and value into data
+        Add configKey and value into data
         """
         if not envKey in self._envKeys:
-            # print('append {0} to environment key list'.format(envKey))
+            # print('append {0} to environment configKey list'.format(envKey))
             self._envKeys.append(envKey)
 
         if not envVal in self._envVals:
@@ -106,7 +106,7 @@ class envVariable(object):
         if os.getenv(envKey) == envVal:
             if envKey in self._envKeys and envVal in self._envVals:
                 if not envKey in self._data.keys() or self._data[envKey] != envVal:
-                    # print('append key: {0} and value: {1} into data'.format(envKey, envVal))
+                    # print('append configKey: {0} and value: {1} into data'.format(envKey, envVal))
                     self._data[envKey]                   = envVal
         else:
             print('Key: {0}, value: {1} are already in data.'.format(envKey, envVal))
@@ -119,7 +119,7 @@ class envVariable(object):
             if self.check_envVal(os.getenv(envKey)):
                 print('Remove environment value: {0}'.format(os.getenv(envKey)))
 
-            # print('Remove environment key: {0}'.format(envKey))
+            # print('Remove environment configKey: {0}'.format(envKey))
             self._envKeys.remove(envKey)
 
         if envKey in self._data.keys():
@@ -153,8 +153,8 @@ class envVariable(object):
 
     def check_envKey(self, key):
         """
-        Check if key is exist or not.
-        :param key: key should be a string
+        Check if configKey is exist or not.
+        :param key: configKey should be a string
         :return: True or False
         """
         if not key in self._envKeys:

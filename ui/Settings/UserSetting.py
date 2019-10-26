@@ -17,16 +17,17 @@ import shutil
 import sys
 
 # PtQt5
-from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import (QDialog, QGridLayout, QLineEdit, QGroupBox, QPushButton, QFileDialog, QMessageBox,
+from PyQt5.QtWidgets import (QGridLayout, QLineEdit, QGroupBox, QPushButton, QFileDialog, QMessageBox,
                              QApplication, QLabel)
 
 # Plt
 from appData import PW_BLANK, PW_UNMATCH, __envKey__
-from ui.uikits.GroupBox import GroupGrid
-from ui.uikits.UiPreset import IconPth
+from ui.uikits.GroupBox import GroupGrid, GroupBox
+from ui.uikits.UiPreset import IconPth, Label
 from ui.uikits.Widget import Widget
+from ui.uikits.Button import Button
+from ui.uikits.GridLayout import GridLayout
 from utils import utils as func, localSQL as usql
 
 # ----------------------------------------------------------------------------------------------------------- #
@@ -34,7 +35,7 @@ from utils import utils as func, localSQL as usql
 
 class UserSetting(Widget):
 
-    key = 'userSetting'
+    key = 'UserSetting'
     query = usql.QuerryDB()
 
     def __init__(self, parent=None):
@@ -42,10 +43,9 @@ class UserSetting(Widget):
         super(UserSetting, self).__init__(parent)
 
         self.setWindowIcon(IconPth(32, "UserSetting"))
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
-
 
     def buildUI(self):
 
@@ -68,13 +68,12 @@ class UserSetting(Widget):
 
         avatar_groupBox, avatar_layout = GroupGrid('Change Avatar')
 
-        self.avatar = QLabel()
+        self.avatar = Label()
         self.avatar.setPixmap(QPixmap.fromImage(QImage(func.get_avatar_icon(self.username))))
         self.avatar.setScaledContents(True)
         self.avatar.setFixedSize(100, 100)
 
-        change_avatar_btn = QPushButton('Change Avatar')
-        change_avatar_btn.clicked.connect(self.update_avatar)
+        change_avatar_btn = Button({'txt':'Change Avatar', 'cl': self.update_avatar})
         avatar_layout.addWidget(self.avatar)
         avatar_layout.addWidget(change_avatar_btn)
 
@@ -82,8 +81,8 @@ class UserSetting(Widget):
 
     def change_pass_section(self):
 
-        password_groupBox = QGroupBox('Change Password')
-        password_layout = QGridLayout()
+        password_groupBox = GroupBox('Change Password')
+        password_layout = GridLayout()
         password_groupBox.setLayout(password_layout)
 
         self.old_pass = QLineEdit()
@@ -221,15 +220,6 @@ class UserSetting(Widget):
 
     def update_location(self):
         pass
-
-    def hideEvent(self, event):
-        # self.specs.showState.emit(False)
-        pass
-
-    def closeEvent(self, event):
-        # self.specs.showState.emit(True)
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

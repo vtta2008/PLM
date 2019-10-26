@@ -339,7 +339,7 @@ CONFIG_APPUI        = [ 'About', 'Calculator', 'Calendar', 'Credit', 'EnglishDic
                         'TextEditor', 'NodeGraph']
 
 # --------------------------------------------------------------------------------------------------------------
-""" Tracking key """
+""" Tracking configKey """
 
 TRACK_TDS           = [ 'Maya', 'ZBrush', 'Houdini', '3Ds Max', 'Mudbox', 'BLender', ]
 TRACK_VFX           = [ 'NukeX', 'After Effects', 'katana']

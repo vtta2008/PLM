@@ -15,25 +15,22 @@ Description:
 import sys
 
 # PtQt5
-from PyQt5.QtWidgets        import (QApplication, QWidget, QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit, QVBoxLayout)
+from PyQt5.QtWidgets        import (QApplication, QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit, QVBoxLayout)
 
 # Plm
 from cores.Loggers          import Loggers
-from ui.UiSignals           import UiSignals
-from ui.uikits.UiPreset     import Label
+from ui.uikits.Widget       import Widget
+from ui.uikits.UiPreset     import Label, VBoxLayout
 
 
-class ForgotPassword(QWidget):
+class ForgotPassword(Widget):
 
     key = 'forgotPW'
 
     def __init__(self, parent=None):
         super(ForgotPassword, self).__init__(parent)
 
-        self.logger         = Loggers(__file__)
-        self.signals        = UiSignals(self)
-
-        self.layout         = QVBoxLayout()
+        self.layout         = VBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
@@ -116,15 +113,8 @@ class ForgotPassword(QWidget):
         #         self.step1_form.setDisabled(True)
         #         self.step2_form.setVisible(True)
 
-    def apply_settings(self):
-        self.setContentsMargins(0, 0, 0, 0)
-
     def on_step2_btn_clicked(self):
         pass
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

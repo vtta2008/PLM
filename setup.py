@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
 
-""" Setup envronment key to be able to work """
+""" Setup envronment configKey to be able to work """
 
 import os
 import setuptools
@@ -40,8 +40,6 @@ from cx_Freeze import setup, Executable
 from appData import (LICENCE_MIT, DESKTOP_DIR, __envKey__, __project__, __version__, __plmSlogan__, __website__,
                      __download__, __author1__, __author2__, __email__, __pkgsReq__, __classifiers__, __appname__,
                      __packages_dir__, COPYRIGHT)
-
-print(DESKTOP_DIR)
 
 os.environ['TCL_LIBRARY']   = "C:/ProgramData/Anaconda3/tcl/tcl8.6"
 os.environ['TK_LIBRARY']    = "C:/ProgramData/Anaconda3/tcl/tk8.6"

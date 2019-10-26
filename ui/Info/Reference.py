@@ -15,7 +15,6 @@ import sys
 from functools import partial
 
 # PtQt5
-from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 
 # Plm
@@ -35,6 +34,7 @@ class Reference(Widget):
 
         super(Reference, self).__init__(parent)
         self.setWindowIcon(IconPth(32, 'Reference'))
+        self.setWindowTitle('REFERENCE')
 
         self.layout = QGridLayout()
         self.buildUI()
@@ -53,10 +53,6 @@ class Reference(Widget):
 
         self.layout.addWidget(self.scrollArea, 0, 0, 8, 4)
         self.layout.addWidget(closeBtn, 8, 3, 1, 1)
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

@@ -20,6 +20,7 @@ from PyQt5.QtWidgets import QApplication, QGridLayout, QScrollArea
 # Plm
 from appData import VERSION
 from ui.uikits.Widget import Widget
+from ui.uikits.GridLayout import GridLayout
 from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label, IconPth
 
@@ -35,7 +36,7 @@ class Version(Widget):
         super(Version, self).__init__(parent)
         self.setWindowIcon(IconPth(32, 'Version'))
 
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
         self.resize(450, 150)

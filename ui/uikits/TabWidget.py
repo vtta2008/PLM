@@ -14,24 +14,36 @@ Description:
 
 
 # PyQt5
-from PyQt5.QtCore       import Qt, QSize
-from PyQt5.QtWidgets    import QTabWidget, QGridLayout, QTabBar, QWidget, QVBoxLayout
+from PyQt5.QtCore           import Qt, QSize
+from PyQt5.QtWidgets        import QTabWidget, QGridLayout, QTabBar
+
 
 # PLM
-from appData            import SiPoMin
-from ui.uikits.UiPreset import Label
+from ui.SignalManager       import SignalManager
+from ui.uikits.UiPreset     import Label
+from ui.uikits.Widget       import Widget
+from ui.uikits.GridLayout   import GridLayout
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tab layout element"""
 
 class TabBar(QTabBar):
 
+    key = 'TabBar'
+
+    def __init__(self, parent=None):
+        QTabBar.__init__(self)
+
+        self.parent = parent
+        self.signals = SignalManager(self)
+
     def tabSizeHint(self, index):
         size = QTabBar.tabSizeHint(self, index)
         w = int(self.width()/self.count())
         return QSize(w, size.height())
 
-class TabContent(QWidget):
+class TabContent(Widget):
 
     def __init__(self, layout=None, parent=None):
         super(TabContent, self).__init__(parent)
@@ -44,27 +56,26 @@ class TabContent(QWidget):
         self.setLayout(self.layout)
 
     def buildUI(self):
+        pass
 
-        self.applySetting()
+class TabWidget(Widget):
 
-    def applySetting(self):
-        self.setSizePolicy(SiPoMin, SiPoMin)
-
-class TabWidget(QWidget):
+    key = 'TabWidget'
 
     def __init__(self, parent=None):
         super(TabWidget, self).__init__(parent)
-        self.layout = QVBoxLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
+        self.applySetting()
+
     def buildUI(self):
         self.tabs = QTabWidget()
+        self.tabs.key = 'tabs'
         self.tabs.setTabBar(TabBar())
 
         self.layout.addWidget(self.tabs)
-
-        self.applySetting()
 
     def applySetting(self):
         self.tabs.setMovable(True)

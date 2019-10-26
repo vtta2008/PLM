@@ -18,15 +18,15 @@ import sys, requests
 from functools              import partial
 
 # PyQt5
-from PyQt5.QtCore           import pyqtSignal
-from PyQt5.QtWidgets        import (QApplication, QGridLayout, QCheckBox, QWidget)
+from PyQt5.QtWidgets        import (QApplication, QGridLayout, QCheckBox)
 
 from appData                import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerCheck__, __localServerAutho__, __localServer__
-from ui.UiSignals           import UiSignals
 from ui.MessageBox          import MessageBox
 from ui.uikits.Button       import Button
 from ui.uikits.GroupBox     import GroupGrid
 from ui.uikits.UiPreset     import IconPth, Label, LineEdit
+from ui.uikits.Widget       import Widget
+from ui.uikits.GridLayout   import GridLayout
 
 # Plt
 from utils                  import localSQL as usql
@@ -35,7 +35,7 @@ from utils.utils            import str2bool
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """
 
-class SignIn(QWidget):
+class SignIn(Widget):
 
     key = 'login'
 
@@ -45,9 +45,8 @@ class SignIn(QWidget):
 
         self.setWindowIcon(IconPth(32, "SignIn"))
         self.setFixedSize(400, 300)
-        self.signals = UiSignals(self)
 
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
@@ -116,24 +115,17 @@ class SignIn(QWidget):
             usql.RemoveDB("curUser")
             usql.UpdateDB("curUser", [username, token, cookie, str2bool(check)])
 
-            self.showLayout.emit('mainUI', 'show')
+            self.signals.showLayout.emit('mainUI', 'show')
         else:
             usql.RemoveDB("curUser")
             MessageBox(self, 'Login Failed', 'critical', PW_WRONG)
             return
 
-    def showEvent(self, event):
-        # self.specs.showState.emit(True)
-        self.showLayout.emit('mainUI', 'hide')
-        self.showLayout.emit('sysTray', 'hide')
-
-    def hideEvent(self, event):
-        # self.specs.showState.emit(False)
-        pass
-
     def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
+        if __name__ == '__main__':
+            self.close()
+        else:
+            self.hide()
 
 
 if __name__ == '__main__':

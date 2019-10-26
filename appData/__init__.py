@@ -18,6 +18,7 @@ __envKey__              = c.__envKey__
 
 PLMAPPID                = c.PLMAPPID
 VERSION                 = c.VERSION
+margin = 5
 
 # -------------------------------------------------------------------------------------------------------------
 """ DAMG metadata """
@@ -76,7 +77,7 @@ __modules__             = c.__modules__
 __pkgsReq__             = c.__pkgsReq__
 
 # -------------------------------------------------------------------------------------------------------------
-""" key packages """
+""" configKey packages """
 
 # KEYPACKAGE              = c.KEYPACKAGE
 # CONFIG_TOOLS            = c.CONFIG_TOOLS

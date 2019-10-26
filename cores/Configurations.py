@@ -28,14 +28,14 @@ from cores.base import DAMG, DAMGDICT, DAMGLIST
 from appData import (__groupname__, __appname__, __plmWiki__, __pkgsReq__, autodeskVer, KEYDETECT, KEYPACKAGE,
                      CONFIG_APPUI, CONFIG_SYSTRAY, FIX_KEY, PLM_LOGO_32, DAMG_LOGO_32, ICON_DIR_32, PROGRAM64,
                      PROGRAM86, LOCALAPPDATA, PROGRAMDATA)
-from ui.UiSignals import UiSignals
+from ui.SignalManager import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configurations """
 
 class Configurations(DAMG):
 
-    key                                 = 'configurations'
+    key                                 = 'Configurations'
     checkList                           = DAMGDICT()
     cfgInfo                             = DAMGDICT()
     cfgError                            = DAMGDICT()
@@ -50,7 +50,7 @@ class Configurations(DAMG):
         self.rootDir                    = rootDir
         self.mode                       = mode
 
-        self.signals                    = UiSignals(self)
+        self.signals                    = SignalManager(self)
 
         self.cfgs                       = True
         self._pthInfo                   = False
@@ -240,7 +240,7 @@ class Configurations(DAMG):
                 for usDes in mayaVers:
                     shutil.copy(usScr, usDes)
 
-        print('Maya is implemented')
+        # print('Maya is implemented')
         return True
 
     def cfg_envVars(self, fileName='envKey.cfg', **envKeys):
@@ -279,7 +279,7 @@ class Configurations(DAMG):
             for k in KEYDETECT:
                 if k in key:
                     delKeys.append(key)
-                    print("KEY DETECTED: {0}. Append to list to be deleted later".format(key))
+                    # print("KEY DETECTED: {0}. Append to list to be deleted later".format(configKey))
 
         for key in delKeys:
             self.del_key(key, self.appInfo)

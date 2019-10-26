@@ -81,6 +81,7 @@ ROUND_JOIN                  = Qt.RoundJoin
 PATTERN_SOLID               = Qt.SolidPattern                                           # Pattern
 
 LINE_SOLID                  = Qt.SolidLine                                              # Line
+LINE_DASH                   = Qt.DashLine
 
 COLOR_LIBS = dict(
     WHITE                   = Qt.white,                                                  # Color
@@ -250,6 +251,7 @@ dockL                       = Qt.LeftDockWidgetArea                             
 dockR                       = Qt.RightDockWidgetArea
 dockT                       = Qt.TopDockWidgetArea
 dockB                       = Qt.BottomDockWidgetArea
+dockAll                     = Qt.AllDockWidgetAreas
 
 # -------------------------------------------------------------------------------------------------------------
 """ Node graph pre setting """

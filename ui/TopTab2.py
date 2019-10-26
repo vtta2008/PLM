@@ -19,7 +19,7 @@ from functools              import partial
 from PyQt5.QtWidgets        import QApplication, QWidget, QGridLayout, QGroupBox
 
 # Plt
-from ui.UiSignals           import UiSignals
+from ui.SignalManager           import SignalManager
 from ui.uikits.Button       import Button
 from ui.uikits.GroupBox     import GroupBox
 
@@ -36,7 +36,7 @@ class TopTab2(QWidget):
     def __init__(self, parent=None):
         super(TopTab2, self).__init__(parent)
 
-        self.signals = UiSignals(self)
+        self.signals = SignalManager(self)
         self.layout = QGridLayout()
         self.buildUI()
         self.setLayout(self.layout)

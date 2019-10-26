@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # PyQt5
-from PyQt5.QtCore           import pyqtSignal, QCoreApplication
+from PyQt5.QtCore           import QCoreApplication
 
 # PLM
 from cores.base             import DAMG
@@ -21,7 +21,7 @@ from cores.Errors           import BuildingUIError
 from ui.Settings.SettingUI  import SettingUI
 
 from ui                     import PipelineManager, SysTrayIcon
-from ui.UiSignals           import UiSignals
+from ui.SignalManager           import SignalManager
 from ui.Funcs               import SignUp, SignIn, ForgotPassword
 from ui.Settings            import UserSetting
 from ui.Projects            import NewProject
@@ -49,7 +49,7 @@ class AppCore(DAMG):                                                    # Core m
 
         self.settings       = self.parent.settings
         self.logger         = Loggers(__file__)
-        self.signals        = UiSignals(self)
+        self.signals        = SignalManager(self)
 
         QCoreApplication.setOrganizationName(self._orgName)
         QCoreApplication.setApplicationName(self._appName)
@@ -60,6 +60,7 @@ class AppCore(DAMG):                                                    # Core m
 
         self.buildUI()
         self.build_connection()
+        self.sysTray.signals.regisLayout.emit(self)
 
     def buildUI(self):
 
@@ -125,7 +126,7 @@ class AppCore(DAMG):                                                    # Core m
             self.version.signals.showLayout.connect(self.signals.showLayout)
 
             self.mainUI.signals.executing.connect(self.signals.executing)
-            self.mainUI.signals.regisLayout.connect(self.signals.regisLayout)
+            # self.mainUI.signals.regisLayout.connect(self.signals.regisLayout)
             self.mainUI.signals.sysNotify.connect(self.sysTray.signals.sysNotify)
             self.mainUI.signals.setSetting.connect(self.signals.setSetting)
             self.mainUI.signals.openBrowser.connect(self.signals.openBrowser)

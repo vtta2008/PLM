@@ -16,13 +16,17 @@ import os
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QToolBar
 
 # PLM
-from appData import __envKey__, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_TOOLS, CONFIG_POST
-from ui.uikits.Action import Action
-from ui.UiSignals import UiSignals
+from appData                    import (__envKey__, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_TOOLS,
+                                        CONFIG_POST, SETTING_FILEPTH, ST_FORMAT)
+from cores.base                 import DAMGLIST, DAMGDICT
+from ui.uikits.Action           import Action
+from ui.SignalManager               import SignalManager
+from cores.Loggers              import Loggers
+from cores.Settings             import Settings
+from utils.utils                import get_layout_size
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar data preset """
@@ -39,22 +43,104 @@ TOOLBAR_DATA = dict(TD = CONFIG_TDS,
 
 class ToolBar(QToolBar):
 
-    executing = pyqtSignal(str)
+    key = "ToolBar"
 
-    def __init__(self, key, parent=None):
-        super(ToolBar, self).__init__(parent)
+    def __init__(self, configKey=None, parent=None):
+        QToolBar.__init__(self)
+
+        self.parent             = parent
+        self.signals            = SignalManager(self)
+        self.logger             = Loggers(self.__class__.__name__)
+        self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.configKey = configKey
+
+        self.buildUI()
+
+        self.applySetting()
+
+    def add_multiple_actions(self, actions=[]):
+        for action in actions:
+            self.addAction(action)
+
+    def add_actions_by_key(self, key):
+
+        apps = self.tbData[self.configKey]
+        for app in apps:
+            if app in self.appInfo:
+                action = Action({'icon': app, 'stt': self.appInfo[app][0], 'txt': app, 'trg': (partial(self.executing.emit, self.appInfo[app][2]))}, self)
+                self.acts.append(action)
+                self.addAction(action)
+
+    def setValue(self, key, value):
+        return self.settings.initSetValue(key, value, self.configKey)
+
+    def getValue(self, key):
+        return self.settings.initValue(key, self.configKey)
+
+    def showEvent(self, event):
+        sizeX = self.getValue('width')
+        sizeY = self.getValue('height')
+
+        if not sizeX is None and not sizeY is None:
+            self.resize(int(sizeX), int(sizeY))
+
+        posX = self.getValue('posX')
+        posY = self.getValue('posY')
+
+        if not posX is None and not posX is None:
+            self.move(posX, posY)
+
+    def moveEvent(self, event):
+        self.setValue('posX', self.x())
+        self.setValue('posY', self.y())
+
+    def resizeEvent(self, event):
+        self.setValue('width', self.frameGeometry().width())
+        self.setValue('height', self.frameGeometry().height())
+
+    def sizeHint(self):
+        size = super(ToolBar, self).sizeHint()
+        size.setHeight(size.height())
+        size.setWidth(max(size.width(), size.height()))
+        return size
+
+    def closeEvent(self, event):
+        if __name__=='__main__':
+            self.close()
+        else:
+            self.signals.showLayout.emit(self.configKey, 'hide')
+            event.ignore()
+
+    def hideEvent(self, event):
+        if __name__=='__main__':
+            self.hide()
+        else:
+            self.signals.showLayout.emit(self.configKey, 'hide')
+            event.ignore()
+
+
+class ToolBarPreset(ToolBar):
+
+    key = "ToolBarPreset"
+    toolbarPreset = DAMGDICT()
+    toolbarPreset.input(TOOLBAR_DATA)
+
+    def __init__(self, configKey, parent=None):
+        super(ToolBarPreset, self).__init__(parent)
 
         with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
             self.appInfo = json.load(f)
 
         self._parent = parent
-        self.key = key
-        self.signals = UiSignals(self)
+        self.key = configKey
+        self.signals = SignalManager(self)
 
-        self.acts = []
-        self.tbData = TOOLBAR_DATA
-        self.add_actions()
+        self.acts = DAMGLIST()
+
         self.applySetting()
+
+    def buildUI(self):
+        self.add_actions()
 
     def applySetting(self):
         self.setAccessibleName(self.key)
@@ -64,18 +150,10 @@ class ToolBar(QToolBar):
         apps = self.tbData[self.key]
         for app in apps:
             if app in self.appInfo:
-                action = Action({'icon': app,
-                                 'stt': self.appInfo[app][0],
-                                 'txt': app,
-                                 'trg': (partial(self.executing.emit, self.appInfo[app][2]))}, self)
+                action = Action({'icon': app, 'stt': self.appInfo[app][0], 'txt': app, 'trg': (partial(self.executing.emit, self.appInfo[app][2]))}, self)
                 self.acts.append(action)
                 self.addAction(action)
 
-    def sizeHint(self):
-        size = super(ToolBar, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 31/07/2018 - 12:50 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

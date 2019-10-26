@@ -30,7 +30,7 @@ from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 # Plt
 from cores.Loggers import Loggers
 from ui.uikits.UiPreset import IconPth
-from ui.UiSignals import UiSignals
+from ui.SignalManager import SignalManager
 from ui.uikits.Widget import Widget
 
 # -------------------------------------------------------------------------------------------------------------

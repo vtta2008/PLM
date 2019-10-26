@@ -16,7 +16,6 @@ import os
 import sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QFileDialog, QWidget)
 
@@ -24,17 +23,19 @@ from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QFileDialog
 from appData import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_REQUIRED, QUESTIONS
 from cores.Loggers import Loggers
 
-from ui.UiSignals import UiSignals
+from ui.MessageBox import MessageBox
 from ui.uikits.Button import Button
 from ui.uikits.GroupBox import GroupGrid
 from ui.uikits.UiPreset import IconPth, Label, LineEdit, ComboBox, CheckBox
+from ui.uikits.Widget import Widget
+from ui.uikits.GridLayout import GridLayout
 from utils.utils import check_blank, check_match, get_avatar_icon, getToken, getUnix, getTime, getDate, \
     get_local_pc_info, get_user_location
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign up ui """
 
-class SignUp(QWidget):
+class SignUp(Widget):
 
     key = 'signup'
 
@@ -43,9 +44,8 @@ class SignUp(QWidget):
 
         self.setWindowIcon(IconPth(32, "SignUp"))
         self.logger = Loggers(__file__)
-        self.signals = UiSignals(self)
 
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
@@ -158,7 +158,7 @@ class SignUp(QWidget):
 
         self.user_agree_checkBox = CheckBox({'txt': USER_CHECK_REQUIRED})
         okBtn = Button({'txt':'Create Account', 'tt':'Confirm to create an account', 'cl': self.createBtnClicked})
-        cancelBtn = Button({'txt':'Cancel', 'tt':'Go back to Login stage', 'cl': self.cacelBtnClicked})
+        cancelBtn = Button({'txt':'Cancel', 'tt':'Go back to Login stage', 'cl': self.close})
         quitBtn = Button({'txt': 'Quit', 'tt': 'Quit the application', 'cl': QApplication.quit})
 
         btn_grid.addWidget(self.user_agree_checkBox, 0, 0, 1, 6)
@@ -178,12 +178,8 @@ class SignUp(QWidget):
     def createBtnClicked(self):
         if self.check_all_conditions():
             data = self.generate_user_data()
-            QMessageBox.information(self, "Failed", WAIT_LAYOUT_COMPLETE, QMessageBox.Ok)
+            MessageBox(self, "Failed", "information", WAIT_LAYOUT_COMPLETE, 'ok')
             return
-
-    def cacelBtnClicked(self):
-        self.close()
-        self.showLayout.emit('login', 'show')
 
     def collect_input(self):
         username = str(self.userField.text())
@@ -274,9 +270,6 @@ class SignUp(QWidget):
     def closeEvent(self, event):
         self.showLayout.emit(self.key, 'hide')
         event.ignore()
-
-    def applySetting(self):
-        pass
 
 def main():
     app = QApplication(sys.argv)

@@ -31,10 +31,6 @@ from ui.uikits.Widget import Widget
 class Preferences(Widget):
 
     key = 'preferences'
-    showLayout = pyqtSignal(str, str)
-    checkboxTDSig = pyqtSignal(bool)
-    checkboxCompSig = pyqtSignal(bool)
-    checkboxArtSig = pyqtSignal(bool)
 
     _msg_user_not_set = "Not configured yet, will be set with the first message received"
 
@@ -94,13 +90,6 @@ class Preferences(Widget):
     def checkBoxArtStateChanged(self):
         return str2bool(self.toolBarArt_checkBox.checkState())
 
-    def hideEvent(self, event):
-        # self.specs.showState.emit(False)
-        pass
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

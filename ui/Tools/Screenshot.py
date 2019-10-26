@@ -17,22 +17,21 @@ import sys
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import Qt, QDir, QTimer, pyqtSignal
+from PyQt5.QtCore import Qt, QDir, QTimer
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import (QWidget, QGridLayout, QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox,
+from PyQt5.QtWidgets import (QGridLayout, QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox,
                              QHBoxLayout, QLabel, QSizePolicy, )
 
 # PLM
 from appData                import keepARM
 from ui.uikits.Button       import Button
-from ui.uikits.UiPreset     import IconPth
+from ui.uikits.UiPreset     import IconPth, HBoxLayout
 from ui.uikits.Widget       import Widget
 
 
 class Screenshot(Widget):
 
     key = 'screenShot'
-    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
         super(Screenshot, self).__init__(parent)
@@ -125,13 +124,13 @@ class Screenshot(Widget):
     def createButtonsLayout(self):
         self.newScreenshotButton = Button({'txt': "New Screenshot", 'cl': self.newScreenshot})
         self.saveScreenshotButton = Button({'txt': "Save Screenshot", 'cl': self.saveScreenshot})
-        self.quitScreenshotButton = Button({'txt': "Quit", 'cl': partial(self.showLayout.emit, self.key, 'hide')})
+        self.quitScreenshotButton = Button({'txt': "Quit", 'cl': partial(self.signals.showLayout.emit, self.key, 'hide')})
 
-        self.buttonsLayout = QHBoxLayout()
+        self.buttonsLayout = HBoxLayout({'addWidget': [self.newScreenshotButton, self.saveScreenshotButton, self.quitScreenshotButton]})
         self.buttonsLayout.addStretch()
-        self.buttonsLayout.addWidget(self.newScreenshotButton)
-        self.buttonsLayout.addWidget(self.saveScreenshotButton)
-        self.buttonsLayout.addWidget(self.quitScreenshotButton)
+        # self.buttonsLayout.addWidget(self.newScreenshotButton)
+        # self.buttonsLayout.addWidget(self.saveScreenshotButton)
+        # self.buttonsLayout.addWidget(self.quitScreenshotButton)
 
     def updateScreenshotLabel(self):
         self.screenshotLabel.setPixmap(self.originalPixmap.scaled(
@@ -143,7 +142,7 @@ class Screenshot(Widget):
         pass
 
     def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
+        self.signals.showLayout.emit(self.key, 'hide')
         event.ignore()
 
 def main():

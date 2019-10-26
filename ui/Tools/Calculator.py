@@ -33,11 +33,12 @@ class Calculator(Widget):
 
         self.setWindowIcon(IconPth(32, 'Calculator'))
 
-        self.layout = QGridLayout(self)
+
         self.buildUI()
-        self.setLayout(self.layout)
 
     def buildUI(self):
+        self.layout = QGridLayout(self)
+
         self.pendingAdditiveOperator            = ''
         self.pendingMultiplicativeOperator      = ''
         self.sumInMemory                        = 0.0
@@ -96,7 +97,16 @@ class Calculator(Widget):
         self.layout.addWidget(self.reciprocalButton,4,5)
         self.layout.addWidget(self.equalButton,5,5)
 
-        self.applySetting()
+        self.display.setMaxLength(15)
+        font = self.display.font()
+        font.setPointSize(font.pointSize() + 8)
+        self.display.setFont(font)
+
+        self.layout.setSpacing(2)
+        self.layout.setSizeConstraint(QLayout.SetFixedSize)
+        self.setSizePolicy(SiPoMin, SiPoMin)
+
+        self.setLayout(self.layout)
 
     def digitClicked(self):
         clickedButton = self.sender()
@@ -288,17 +298,6 @@ class Calculator(Widget):
             self.factorSoFar /= rightOperand
 
         return True
-
-    def applySetting(self):
-
-        self.display.setMaxLength(15)
-        font = self.display.font()
-        font.setPointSize(font.pointSize() + 8)
-        self.display.setFont(font)
-
-        self.layout.setSpacing(2)
-        self.layout.setSizeConstraint(QLayout.SetFixedSize)
-        self.setSizePolicy(SiPoMin, SiPoMin)
 
     def hideEvent(self, event):
         # self.specs.showState.emit(False)

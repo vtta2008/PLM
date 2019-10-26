@@ -10,19 +10,15 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PyQt5.QtCore       import Qt
-from PyQt5.QtWidgets    import QDockWidget, QGridLayout
-
 # PLM
-from appData            import SiPoExp
-from ui.uikits.ToolBar  import ToolBar
-from ui.UiSignals       import UiSignals
+from ui.uikits.ToolBar      import ToolBarPreset
+from ui.uikits.DockWidget   import DockWidget
+from ui.uikits.GridLayout   import GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar docking class """
 
-class DockToolBar(QDockWidget):
+class DockToolBar(DockWidget):
 
     key = 'dockToolBar'
 
@@ -32,27 +28,16 @@ class DockToolBar(QDockWidget):
         self.name = name
         self.key = 'dockToolBar' + " {0}".format(self.name)
         self.setWindowTitle(self.name)
-        self.signals = UiSignals(self)
 
-        self.layout = QGridLayout()
-        self.toolbar = ToolBar(self.name, self)
+        self.buildUI()
+
+    def buildUI(self):
+        self.layout = GridLayout()
+        self.toolbar = ToolBarPreset(self.name, self)
         self.toolbar.signals.executing.connect(self.signals.executing)
 
         self.layout.addWidget(self.toolbar, 0, 0, 1, 1)
         self.setLayout(self.layout)
-        self.applySetting()
-
-    def applySetting(self):
-        self.setAllowedAreas(Qt.AllDockWidgetAreas)
-        self.setSizePolicy(SiPoExp, SiPoExp)
-
-    def showEvent(self, event):
-        pass
-
-    def closeEvent(self, event):
-        self.signals.regisLayout.emit(self)
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 21/07/2018 - 6:43 AM

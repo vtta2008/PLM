@@ -22,23 +22,23 @@ from PyQt5.QtWidgets import QGridLayout, QLabel
 # Plt
 from appData import __globalServer__, __localServer__, SERVER_CONNECT_FAIL
 from cores.Loggers import Loggers
-from ui.UiSignals import UiSignals
+from ui.SignalManager import SignalManager
 from ui.MessageBox import MessageBox
+from ui.uikits.GridLayout import GridLayout
 from ui.uikits.UiPreset import Label
 from utils.utils import get_app_icon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """
 
-class ServerStatus(QGridLayout):
+class ServerStatus(GridLayout):
 
-    key = 'serverStatus'
+    key = 'ServerStatus'
+
     onlineStage = pyqtSignal(bool)
 
     def __init__(self, parent=None):
         super(ServerStatus, self).__init__(parent)
-        self.logger = Loggers(__file__)
-        self.signals = UiSignals(self)
 
         self.serverConnectable = False
 
@@ -69,15 +69,8 @@ class ServerStatus(QGridLayout):
         self.onlineStage.connect(self.connection_status)
         self.onlineStage.emit(self.serverConnectable)
         self.txt = Label({'txt': "Connecting"})
-        self.buildUI()
-
-    def buildUI(self):
 
         self.addWidget(self.txt, 0, 1, 1, 1)
-        self.applySetting()
-
-    def applySetting(self):
-        pass
 
     def connection_status(self, param):
         if param:

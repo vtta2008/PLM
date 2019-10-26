@@ -103,27 +103,15 @@ class BaseList(list):
     Type                                = 'DAMGLIST'
     _name                               = 'DAMG list'
     _count                              = 0
-    _data                               = dict()
 
     def __init__(self):
         list.__init__(self)
 
         self._copyright                 = __copyright__
 
-    def __str__(self):
-        """ Print object will return data string """
-        return json.dumps(self, cls=ObjectEncoder, indent=4, sort_keys=True)
-
-    def __repr__(self):
-        return json.dumps(self, cls=ObjectEncoder, indent=4, sort_keys=True)
-
     @pyqtSlot(int)
     def count_notified_change(self, val):
         self._count = val
-
-    @property
-    def data(self):
-        return self._data
 
     @property
     def copyright(self):
@@ -132,18 +120,6 @@ class BaseList(list):
     @property
     def name(self):
         return self._name
-
-    @property
-    def count(self):
-        return self._count
-
-    @count.setter
-    def count(self, newVal):
-        self._count = newVal
-
-    @data.setter
-    def data(self, newData):
-        self._data = newData
 
     @name.setter
     def name(self, newName):
@@ -154,33 +130,30 @@ class BaseDict(dict):
 
     Type                                = 'DAMGDICT'
     _name                               = 'DAMG dict'
-
     _count                              = 0
-    _data                               = dict()
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         dict.__init__(self)
 
         self._copyright                 = __copyright__
+
+    def add(self, key, value):
+        self[key] = value
+
+    def input(self, data={}):
+        if data == {}:
+            self.clear()
+        else:
+            for k, v in data.items():
+                self.add(k, v)
 
     def __iter__(self):
         """ Make object iterable """
         return Iterator(self)
 
-    def __str__(self):
-        """ Print object will return data string """
-        return json.dumps(self, cls=ObjectEncoder, indent=4, sort_keys=True)
-
-    def __repr__(self):
-        return json.dumps(self, cls=ObjectEncoder, indent=4, sort_keys=True)
-
     @pyqtSlot(int)
     def count_notified_change(self, val):
         self._count = val
-
-    @property
-    def data(self):
-        return self._data
 
     @property
     def copyright(self):
@@ -197,10 +170,6 @@ class BaseDict(dict):
     @count.setter
     def count(self, newVal):
         self._count = newVal
-
-    @data.setter
-    def data(self, newData):
-        self._data = newData
 
     @name.setter
     def name(self, newName):
@@ -368,11 +337,16 @@ class DAMGREGIS(BaseDict):
         if objName in self.keys():
             raise DuplicatedObjectError('Duplicated object detected!!!')
         else:
-
-            self[objName] = obj.data
-            self.object_name.append(obj.data['ObjectName'])
-            self.object_id.append(obj.data['ObjectID'])
-            self._count = self._count + self._step
+            try:
+                self[objName] = obj.data
+            except AttributeError:
+                self.object_name.append(obj.name)
+                self.object_id.append(str(uuid.uuid4()))
+            else:
+                self.object_name.append(obj.data['ObjectName'])
+                self.object_id.append(obj.data['ObjectID'])
+            finally:
+                self._count = self._count + self._step
 
             # self.report('objName registered')
 
@@ -455,26 +429,18 @@ class DAMGLIST(BaseList):
 
         self._name = "{0} {1}".format(self._name, objRegistry.count + 1)
 
-        self._data['ObjectName'] = self._name
-        self._data['ObjectID'] = str(uuid.uuid4())
-        self._data['datetime'] = str(datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S|%d.%m.%Y'))
-
         objRegistry.register(self)
 
 class DAMGDICT(BaseDict):
 
     """ Base Damg team dictionary """
 
-    def __init__(self, parent=None, **kwargs):
+    def __init__(self, parent=None, *args, **kwargs):
         BaseDict.__init__(self)
 
         self._parent                        = parent
 
         self._name = "{0} {1}".format(self._name, objRegistry.count + 1)
-
-        self._data['ObjectName'] = self._name
-        self._data['ObjectID'] = str(uuid.uuid4())
-        self._data['datetime'] = str(datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S|%d.%m.%Y'))
 
         objRegistry.register(self)
 

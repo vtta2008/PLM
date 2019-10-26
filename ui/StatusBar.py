@@ -18,7 +18,7 @@ from PyQt5.QtWidgets        import QApplication, QStatusBar
 
 # Plm
 from cores.Loggers          import Loggers
-from ui.UiSignals           import UiSignals
+from ui.SignalManager           import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ StatusBar """
@@ -32,7 +32,7 @@ class StatusBar(QStatusBar):
         super(StatusBar, self).__init__(parent)
 
         self.logger         = Loggers(__file__)
-        self.signals        = UiSignals(self)
+        self.signals        = SignalManager(self)
 
 
 def main():

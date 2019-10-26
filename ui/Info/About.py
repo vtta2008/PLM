@@ -19,14 +19,15 @@ from PyQt5.QtWidgets import QApplication, QGridLayout, QScrollArea, QWidget
 
 # Plm
 from appData import ABOUT
-from ui.UiSignals import UiSignals
+from ui.uikits.Widget import Widget
+from ui.uikits.GridLayout import GridLayout
 from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ About Layout """
 
-class About(QWidget):
+class About(Widget):
 
     key = 'about'
 
@@ -34,9 +35,8 @@ class About(QWidget):
         super(About, self).__init__(parent)
 
         self.setWindowIcon(IconPth(32, 'About'))
-        self.signals = UiSignals(self)
 
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
         self.resize(800, 600)

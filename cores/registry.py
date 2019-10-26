@@ -151,7 +151,7 @@ class MutableRegistry(with_metaclass(ABCMeta, BaseRegistry, MutableMapping)):
                 self._register(getattr(key, self.attr_name), key)
                 return key
             else:
-                raise ValueError('Registry key is required.')
+                raise ValueError('Registry configKey is required.')
 
         def _decorator(cls):
             self._register(key, cls)
@@ -206,10 +206,10 @@ class ClassRegistry(MutableRegistry):
     def _register(self, key, class_):
         # type: (Hashable, type) -> None
         if key in ['', None]:
-            raise ValueError('Attempting to register class {cls} with empty registry key {key!r}.'.format(cls = class_.__name__, key = key,  ),  )
+            raise ValueError('Attempting to register class {cls} with empty registry configKey {key!r}.'.format(cls = class_.__name__, key = key,  ),  )
 
         if self.unique and (key in self._registry):
-            raise RegistryKeyError('{cls} with key {key!r} is already registered.'.format(cls = class_.__name__, key = key,),)
+            raise RegistryKeyError('{cls} with configKey {key!r} is already registered.'.format(cls = class_.__name__, key = key,),)
 
         self._registry[key] = class_
 

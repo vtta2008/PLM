@@ -21,7 +21,7 @@ from PyQt5.QtGui import QPixmap, QImage
 from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGroupBox, QLabel)
 
 # Plt
-from ui.UiSignals import UiSignals
+from ui.SignalManager import SignalManager
 from ui.uikits.Button import Button
 from ui.uikits.GroupBox import GroupBox
 from utils import localSQL as usql
@@ -37,7 +37,7 @@ class TopTab3(QWidget):
     def __init__(self, parent=None):
         super(TopTab3, self).__init__(parent)
         
-        self.signals = UiSignals(self)
+        self.signals = SignalManager(self)
         
         self.layout = QGridLayout()
         self.buildUI()
@@ -58,7 +58,7 @@ class TopTab3(QWidget):
         self.avatar.setScaledContents(True)
         self.avatar.setFixedSize(100, 100)
 
-        btn1 = Button({'txt':'Account Setting', 'cl': partial(self.signals.showLayout.emit, 'userSetting', 'show')})
+        btn1 = Button({'txt':'Account Setting', 'cl': partial(self.signals.showLayout.emit, 'UserSetting', 'show')})
         btn2 = Button({'txt':'Log Out', 'cl': partial(self.signals.showLayout.emit, 'login', 'show')})
 
         btns = [btn1, btn2]

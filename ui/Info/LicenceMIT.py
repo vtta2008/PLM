@@ -15,12 +15,12 @@ import sys
 from functools import partial
 
 # PtQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
+from PyQt5.QtWidgets import QApplication, QScrollArea
 
 # Plm
 from appData import LICENCE_MIT
 from ui.uikits.Widget import Widget
+from ui.uikits.GridLayout import GridLayout
 from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label, IconPth
 
@@ -30,19 +30,20 @@ from ui.uikits.UiPreset import Label, IconPth
 class LicenceMIT(Widget):
 
     key = 'licenceMIT'
-    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
 
         super(LicenceMIT, self).__init__(parent)
         self.setWindowIcon(IconPth(32, 'Licence'))
+        self.setWindowTitle('LICENCE')
 
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
         self.resize(500, 400)
 
     def buildUI(self):
+
         self.scrollArea = QScrollArea()
         self.scrollArea.setWidgetResizable(True)
         self.content = Label({'txt':LICENCE_MIT, 'alg': 'left', 'link': True})
@@ -50,14 +51,10 @@ class LicenceMIT(Widget):
         self.content.setGeometry(0, 0, 500, 400)
         self.scrollArea.setWidget(self.content)
 
-        closeBtn = Button({'txt': 'Close', 'tt': 'Close window', 'cl': partial(self.showLayout.emit, self.key, 'hide')})
+        closeBtn = Button({'txt': 'Close', 'tt': 'Close window', 'cl': self.close})
 
         self.layout.addWidget(self.scrollArea, 0, 0, 8, 4)
         self.layout.addWidget(closeBtn, 8, 3, 1, 1)
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

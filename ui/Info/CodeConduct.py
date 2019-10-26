@@ -20,14 +20,15 @@ from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
 
 # Plm
 from appData import CODECONDUCT
-from ui.UiSignals import UiSignals
+from ui.uikits.Widget import Widget
+from ui.uikits.GridLayout import GridLayout
 from ui.uikits.Button import Button
 from ui.uikits.UiPreset import Label, IconPth
 
 # -------------------------------------------------------------------------------------------------------------
 """ CodeConduct Layout """
 
-class CodeConduct(QWidget):
+class CodeConduct(Widget):
 
     key = 'codeConduct'
     showLayout = pyqtSignal(str, str)
@@ -36,9 +37,9 @@ class CodeConduct(QWidget):
 
         super(CodeConduct, self).__init__(parent)
         self.setWindowIcon(IconPth(32, 'CodeConduct'))
-        self.signals = UiSignals(self)
+        self.setWindowTitle("CODE OF CONDUCT")
 
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
         self.resize(650, 800)
@@ -51,14 +52,10 @@ class CodeConduct(QWidget):
         self.content.setGeometry(0, 0, 650, 800)
         self.scrollArea.setWidget(self.content)
 
-        closeBtn = Button({'txt': 'Close', 'tt': 'Close window', 'cl': partial(self.showLayout.emit, self.key, 'hide')})
+        closeBtn = Button({'txt': 'Close', 'tt': 'Close window', 'cl': partial(self.close)})
 
         self.layout.addWidget(self.scrollArea, 0, 0, 8, 4)
-        self.layout.addWidget(closeBtn, 8, 3, 1, 1)
 
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

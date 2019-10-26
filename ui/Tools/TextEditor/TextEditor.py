@@ -15,18 +15,19 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import QFile, QFileInfo, Qt, QTextCodec, pyqtSignal
+from PyQt5.QtCore import QFile, QFileInfo, Qt, QTextCodec
 from PyQt5.QtGui import (QFont, QFontDatabase, QFontInfo, QIcon, QKeySequence, QPixmap, QTextBlockFormat,
                          QTextCharFormat,
                          QTextCursor, QTextDocumentWriter, QTextListFormat)
 from PyQt5.QtPrintSupport import QPrintDialog, QPrinter, QPrintPreviewDialog
 from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog, QComboBox, QFileDialog, QFontComboBox,
-                             QMainWindow, QMenu, QMessageBox, QTextEdit, QToolBar, QHBoxLayout, QWidget)
+                             QMenu, QMessageBox, QTextEdit, QToolBar, QHBoxLayout)
 
 # PLM
 from cores.Loggers import Loggers
 from ui.uikits.UiPreset import IconPth
 from ui.uikits.Widget import Widget
+from ui.uikits.MainWindow import MainWindow
 
 if sys.platform.startswith('darwin'):
     rsrcPath = ":/images/mac"
@@ -36,7 +37,7 @@ else:
 # -------------------------------------------------------------------------------------------------------------
 """ Main class """
 
-class TextEdit(QMainWindow):
+class TextEdit(MainWindow):
 
     key = "TextEditor"
 
@@ -541,7 +542,7 @@ class TextEdit(QMainWindow):
 
 class TextEditor(Widget):
 
-    key = 'textEditor'
+    key = 'TextEditor'
 
     def __init__(self, parent=None):
         super(TextEditor, self).__init__(parent)
@@ -556,13 +557,6 @@ class TextEditor(Widget):
         textEditor = TextEdit()
         self.layout.addWidget(textEditor)
 
-    def hideEvent(self, event):
-        # self.specs.showState.emit(False)
-        pass
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

@@ -25,7 +25,7 @@ from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QApplication
 from cores.Loggers import Loggers
 # PLM
 from appData import __plmSlogan__, __appname__, __envKey__, CONFIG_SYSTRAY
-from ui.UiSignals import UiSignals
+from ui.SignalManager import SignalManager
 from ui.uikits.Action import Action
 from ui.uikits.UiPreset import AppIcon
 from utils.localSQL import QuerryDB
@@ -35,12 +35,12 @@ from utils.localSQL import QuerryDB
 
 class SysTrayIconMenu(QMenu):
 
-    key = 'sysTray'
+    key = 'SysTrayIconMenu'
 
     def __init__(self, parent=None):
         super(SysTrayIconMenu, self).__init__(parent)
 
-        self.signals = UiSignals(self)
+        self.signals = SignalManager(self)
 
         with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
             self.appInfo = json.load(f)
@@ -75,14 +75,13 @@ class SystrayWheelEventObject(QObject):
 
 class SysTrayIcon(QSystemTrayIcon):
 
-    key = 'sysTray'
-
+    key = 'SysTrayIcon'
 
     def __init__(self, parent=None):
 
         super(SysTrayIcon, self).__init__(parent)
         self.logger = Loggers(__file__)
-        self.signals = UiSignals(self)
+        self.signals = SignalManager(self)
         self.db = QuerryDB()
 
         try:

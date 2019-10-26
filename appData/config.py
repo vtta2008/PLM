@@ -29,7 +29,7 @@ from appData.settingFormats         import *
 from appData.settingOptions         import *
 
 # -------------------------------------------------------------------------------------------------------------
-""" Environment key """
+""" Environment configKey """
 
 __envKey__              = m.__envKey__
 PLMAPPID                = m.PLMAPPID

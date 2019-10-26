@@ -24,21 +24,20 @@ from PyQt5.QtWidgets        import QMainWindow, QApplication
 # PLM
 from cores.Loggers          import Loggers
 from appData                import __envKey__, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_POST, SiPoMin
-from ui.UiSignals           import UiSignals
+from ui.SignalManager           import SignalManager
 from ui.uikits.Action       import Action
+from ui.uikits.MainWindow   import MainWindow
 from utils.utils            import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
 
-class MainToolBar(QMainWindow):
+class MainToolBar(MainWindow):
 
     key = 'mainToolBar'
 
     def __init__(self, parent=None):
         super(MainToolBar, self).__init__(parent)
-        self.logger = Loggers(__file__)
-        self.signals = UiSignals(self)
         
         with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
             self.appInfo = json.load(f)
@@ -50,8 +49,6 @@ class MainToolBar(QMainWindow):
         self.postToolBar = self.create_toolBar('POST', CONFIG_POST)
 
         self.toolBars = [self.tdToolBar, self.compToolBar, self.artToolBar, self.textureToolBar, self.postToolBar]
-
-        self.setSizePolicy(SiPoMin, SiPoMin)
 
     def create_toolBar(self, name="", apps=[]):
         toolBar = self.addToolBar(name)

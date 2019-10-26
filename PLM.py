@@ -44,7 +44,7 @@ if not cfgable:
 import sys, requests, ctypes
 
 # PyQt5
-from PyQt5.QtCore                   import pyqtSlot, pyqtSignal
+from PyQt5.QtCore                   import pyqtSlot
 from PyQt5.QtWidgets                import QApplication
 
 # Plm
@@ -67,28 +67,24 @@ from cores.Task                     import ThreadManager
 from cores.TestConnection           import TestConnection
 from utils.localSQL                 import QuerryDB
 from utils.utils                    import str2bool, clean_file_ext
-from ui.UiSignals import UiSignals
+from ui.SignalManager import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
 class PLM(QApplication):
 
-    key = 'PLM console'
+    key = 'PLM'
 
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
 
         # Run all neccessary configuration to start PLM
-        self.configs          = Configurations(__envKey__, os.path.join(ROOT))
+        self.configs                = Configurations(__envKey__, os.path.join(ROOT))
 
-        # Setting setting tools.
+        self.signals                = SignalManager(self)
+        self.logger                 = Loggers(self.__class__.__name__)
         self.settings               = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-
-        self.signals                = UiSignals(self)
-
-        # Setup logging
-        self.logger                 = Loggers(__file__)
         self.report                 = self.logger.report
         self.info                   = self.logger.info
         self.debug                  = self.logger.debug
@@ -104,10 +100,10 @@ class PLM(QApplication):
         self.thread_manager         = ThreadManager()
 
         # Check server connection.
-        # self.serverConnected        = self.server_connect()
-        # if not self.serverConnected:
-        #     print("No server connection available")
-        #     self.serverConfig.show()
+        self.serverConnected        = self.server_connect()
+        if not self.serverConnected:
+            print("No server connection available")
+            self.serverConfig.show()
 
         if not self.configs.cfgs:
             self.report("Configurations has not completed yet!")
@@ -123,9 +119,7 @@ class PLM(QApplication):
         self.webBrowser             = PLMBrowser()                                  # Webbrowser
 
         self.set_styleSheet('darkstyle')                                            # Layout style
-
         self.setWindowIcon(AppIcon("Logo"))                                         # Set up task bar icon
-
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)     # Change taskbar icon
 
         self.login                  = self.appCore.login
@@ -168,7 +162,7 @@ class PLM(QApplication):
                     if not self.appCore.sysTray.isSystemTrayAvailable():
                         self.report(SYSTRAY_UNAVAI)
                         sys.exit(1)
-                    self.showLayout('mainUI', "show")
+                    self.showLayout('MainUI', "show")
                 else:
                     self.showLayout('login', "show")
 
@@ -196,7 +190,7 @@ class PLM(QApplication):
         for layout in [self.about, self.calculator, self.calendar, self.codeConduct, self.configuration,
                        self.contributing, self.credit, self.engDict, self.findFile, self.imageViewer, self.licence,
                        self.newProject, self.nodeGraph, self.noteReminder, self.preferences, self.reference,
-                       self.screenShot, self.textEditor, self.userSetting, self.version]:
+                       self.screenShot, self.textEditor, self.userSetting, self.version, self.sysTray]:
             self.regisLayout(layout)
 
         self.setQuitOnLastWindowClosed(False)
@@ -218,8 +212,10 @@ class PLM(QApplication):
                 return
 
         if mode == "hide":
+            # print('hide: {}'.format(layout))
             layout.hide()
         elif mode == "show":
+            # print('show: {}'.format(layout))
             layout.show()
         elif mode == 'showNor':
             layout.showNormal()
@@ -240,7 +236,7 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str, str)
     def setSetting(self, key=None, value=None, grp=None):
-        # print("receive setting: key: {0}, to value: {1}, in group {2}".format(key, value, grp))
+        # print("receive setting: configKey: {0}, to value: {1}, in group {2}".format(configKey, value, grp))
         self.settings.initSetValue(key, value, grp)
 
     @pyqtSlot(str)
@@ -265,7 +261,7 @@ class PLM(QApplication):
     def regisLayout(self, layout):
         key = layout.key
         if not key in self.layout_manager.keys():
-            print("Registing layout: {0} \n {1}".format(key, layout))
+            # self.report("Registing layout: {0} \n {1}".format(configKey, layout))
             self.layout_manager[key] = layout
         else:
             self.report("Already registered: {0}".format(key))
@@ -334,7 +330,8 @@ class PLM(QApplication):
         self.setStyleSheet(stylesheet[style])
         self.settings.initSetValue('styleSheet', 'dark')
 
-    def closeEvent(self, *args, **kwargs):
+    pyqtSlot()
+    def closeEvent(self, event):
         self._closing = True
         self.thread_manager.waitForDone()
 
