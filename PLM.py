@@ -133,11 +133,8 @@ class PLM(QApplication):
         self.settingUI.signals.showLayout.connect(self.showLayout)
         self.appCore.signals.showLayout.connect(self.showLayout)
         self.webBrowser.signals.showLayout.connect(self.showLayout)
-
         self.appCore.signals.regisLayout.connect(self.regisLayout)
-
         self.configs.signals.cfgReport.connect(self.get_report)
-
         self.sysTray.signals.executing.connect(self.executing)
         self.appCore.signals.executing.connect(self.executing)
         self.appCore.signals.setSetting.connect(self.setSetting)

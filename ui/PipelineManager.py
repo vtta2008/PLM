@@ -147,6 +147,7 @@ class PipelineManager(MainWindow):
         self.dock.signals.setSetting.connect(self.signals.setSetting)
         self.dock.signals.executing.connect(self.signals.executing)
         self.dock.signals.regisLayout.connect(self.signals.regisLayout)
+        self.dock.signals.openBrowser.connect(self.signals.openBrowser)
 
         self.addDockWidget(pos, self.dock)
 

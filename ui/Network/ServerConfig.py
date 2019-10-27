@@ -28,7 +28,7 @@ from ui.uikits.Widget   import Widget
 class ServerConfigPage1(Widget):
 
     key = "ServerConfigPage1"
-    name = "localServer"
+    _name = "localServer"
 
     def __init__(self, parent=None):
         super(ServerConfigPage1, self).__init__(parent)
@@ -46,7 +46,7 @@ class ServerConfigPage1(Widget):
 class ServerConfigPage2(Widget):
 
     key = "ServerConfigPage2"
-    name = "globalServer"
+    _name = "globalServer"
 
     def __init__(self, parent=None):
         super(ServerConfigPage2, self).__init__(parent)
@@ -61,12 +61,6 @@ class ServerConfigPage2(Widget):
 
 
 class ServerConfig(Widget):
-
-    currentIndexChanged = pyqtSignal(int)
-    pageTitleChanged = pyqtSignal(str)
-    sendToSetting = pyqtSignal(str, str, str)
-
-    key = "ServerConfig"
 
     def __init__(self, parent=None):
         super(ServerConfig, self).__init__(parent)

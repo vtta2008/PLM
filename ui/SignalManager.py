@@ -17,17 +17,17 @@ from appData import SiPoMin, SiPoMax, SiPoExp, SiPoIgn, SiPoPre
 
 class SignalManager(DAMG):
 
-    key = "SignalManager"
+    key                             = "SignalManager"
 
-    showLayout = pyqtSignal(str, str)
-    executing = pyqtSignal(str)
-    regisLayout = pyqtSignal(DAMG)
-    openBrowser = pyqtSignal(str)
-    setSetting = pyqtSignal(str, str, str)
-    sysNotify = pyqtSignal(str, str, str, int)
+    showLayout                      = pyqtSignal(str, str)
+    executing                       = pyqtSignal(str)
+    regisLayout                     = pyqtSignal(DAMG)
+    openBrowser                     = pyqtSignal(str)
+    setSetting                      = pyqtSignal(str, str, str)
+    sysNotify                       = pyqtSignal(str, str, str, int)
 
-    updateAvatar = pyqtSignal(bool)
-    cfgReport = pyqtSignal(str)
+    updateAvatar                    = pyqtSignal(bool)
+    cfgReport                       = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(SignalManager, self).__init__(parent)
