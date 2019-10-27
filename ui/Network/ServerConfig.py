@@ -22,7 +22,6 @@ from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal, QSize
 # PLM
 from appData            import __globalServer__, __localPort__, __localHost__, __localServer__
 from ui.uikits.UiPreset import Label, ComboBox, VBoxLayout, IconPth, HBoxLayout
-from ui.MessageBox      import MessageBox
 from ui.uikits.Button   import Button
 from ui.uikits.Widget   import Widget
 
@@ -75,7 +74,6 @@ class ServerConfig(Widget):
         self.setWindowTitle("Server Configuration")
         self.setWindowIcon(IconPth(32, self.key))
         self.parent             = parent
-        self.settings           = self.parent.settings
 
         self.comboBox           = ComboBox({'setObjName': self.key})
         self.stackWidget        = QStackedWidget()

@@ -53,7 +53,7 @@ from ui.Settings.SettingUI          import SettingUI
 from ui.Web.PLMBrowser              import PLMBrowser
 from ui.uikits.UiPreset             import AppIcon
 
-from appData                        import (__localServer__, __localPort__, __localHost__, PLMAPPID, __organization__,
+from appData                        import (__localServer__, __localPort__, PLMAPPID, __organization__,
                                             __appname__, __version__, __website__, __globalServer__, SETTING_FILEPTH,
                                             ST_FORMAT, SYSTRAY_UNAVAI)
 
@@ -100,10 +100,10 @@ class PLM(QApplication):
         self.thread_manager         = ThreadManager()
 
         # Check server connection.
-        self.serverConnected        = self.server_connect()
-        if not self.serverConnected:
-            print("No server connection available")
-            self.serverConfig.show()
+        # self.serverConnected        = self.server_connect()
+        # if not self.serverConnected:
+        #     print("No server connection available")
+        #     self.serverConfig.show()
 
         if not self.configs.cfgs:
             self.report("Configurations has not completed yet!")
@@ -146,7 +146,6 @@ class PLM(QApplication):
 
         for layout in [self.login, self.forgotPW, self.signup, self. mainUI, self.sysTray, self.settingUI]:
             self.regisLayout(layout)
-
         try:
             self.username, token, cookie, remember = self.database.query_table('curUser')
         except (ValueError, IndexError):
@@ -305,7 +304,7 @@ class PLM(QApplication):
 
     def connect_local_server(self):
         print("Try to connect local server")
-        connection = TestConnection(__localHost__, __localPort__)
+        connection = TestConnection("http://192.168.1.6", __localPort__)
 
         if not connection.connectable:
             print("Connect local server failed.")

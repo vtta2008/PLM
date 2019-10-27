@@ -1342,3 +1342,23 @@ TRACE: (26/10/2019 18:06:50) PLM, line 227: message: >>> Layout "findFile" is no
 TRACE: (26/10/2019 18:06:50) PLM, line 227: message: >>> Layout "findFile" is not registered >>> {}
 TRACE: (26/10/2019 18:06:58) PLM, line 227: message: >>> Layout "findFile" is not registered >>> {}
 TRACE: (26/10/2019 18:06:58) PLM, line 227: message: >>> Layout "findFile" is not registered >>> {}
+TRACE: (27/10/2019 10:58:12) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 10:58:35) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 10:59:42) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 10:59:47) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 10:59:56) PLM, line 227: message: >>> Layout "newProject" is not registered >>> {}
+TRACE: (27/10/2019 10:59:56) PLM, line 227: message: >>> Layout "newProject" is not registered >>> {}
+TRACE: (27/10/2019 10:59:58) PLM, line 227: message: >>> Layout "newGrp" is not registered >>> {}
+TRACE: (27/10/2019 10:59:58) PLM, line 227: message: >>> Layout "newGrp" is not registered >>> {}
+TRACE: (27/10/2019 11:00:00) PLM, line 227: message: >>> Layout "yourPrj" is not registered >>> {}
+TRACE: (27/10/2019 11:00:00) PLM, line 227: message: >>> Layout "yourPrj" is not registered >>> {}
+TRACE: (27/10/2019 11:00:03) PLM, line 227: message: >>> Layout "newGrp" is not registered >>> {}
+TRACE: (27/10/2019 11:00:03) PLM, line 227: message: >>> Layout "newGrp" is not registered >>> {}
+TRACE: (27/10/2019 11:00:04) PLM, line 227: message: >>> Layout "newProject" is not registered >>> {}
+TRACE: (27/10/2019 11:00:04) PLM, line 227: message: >>> Layout "newProject" is not registered >>> {}
+TRACE: (27/10/2019 11:00:08) PLM, line 227: message: >>> Layout "findCrew" is not registered >>> {}
+TRACE: (27/10/2019 11:00:08) PLM, line 227: message: >>> Layout "findCrew" is not registered >>> {}
+TRACE: (27/10/2019 11:00:08) PLM, line 227: message: >>> Layout "getCrew" is not registered >>> {}
+TRACE: (27/10/2019 11:00:08) PLM, line 227: message: >>> Layout "getCrew" is not registered >>> {}
+TRACE: (27/10/2019 11:00:09) PLM, line 227: message: >>> Layout "yourCrew" is not registered >>> {}
+TRACE: (27/10/2019 11:00:09) PLM, line 227: message: >>> Layout "yourCrew" is not registered >>> {}

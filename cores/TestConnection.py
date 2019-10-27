@@ -70,8 +70,8 @@ class TestConnection(DAMG):
 
 
 if __name__ == "__main__":
-    # TestConnection()
-    TestConnection(__localHost__, __localPort__)
+    TestConnection()
+    # TestConnection(__localHost__, __localPort__)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 23/10/2019 - 1:47 PM

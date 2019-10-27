@@ -13,7 +13,7 @@ import sys
 
 from PyQt5.QtWidgets            import QWidget, QVBoxLayout, QLabel, QApplication
 
-from appData                    import SETTING_FILEPTH, ST_FORMAT, SiPoMin, margin
+from appData                    import SETTING_FILEPTH, ST_FORMAT
 
 from ui.SignalManager               import SignalManager
 from cores.Loggers              import Loggers

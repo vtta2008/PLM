@@ -131,11 +131,10 @@ class BaseDict(dict):
     Type                                = 'DAMGDICT'
     _name                               = 'DAMG dict'
     _count                              = 0
+    _copyright                          = __copyright__
 
     def __init__(self, *args, **kwargs):
         dict.__init__(self)
-
-        self._copyright                 = __copyright__
 
     def add(self, key, value):
         self[key] = value
