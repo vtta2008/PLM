@@ -21,17 +21,16 @@ Description:
 import doctest
 import sys
 import types
-from code import InteractiveConsole
 from io import StringIO
 
 # PyQt5
 from PyQt5.QtCore           import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
 from PyQt5.QtGui            import QTextCursor
-from PyQt5.QtWidgets        import QTextEdit, QApplication, QGridLayout
+from PyQt5.QtWidgets        import QTextEdit, QApplication
 
 # PLM
 from appData                import SiPoMin
-from ui.uikits.GridLayout import GridLayout
+from ui                     import GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Processing User Input """

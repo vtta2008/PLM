@@ -16,14 +16,11 @@ from functools import partial
 
 # PtQt5
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QGridLayout, QScrollArea
+from PyQt5.QtWidgets import QApplication, QScrollArea
 
 # Plm
 from appData import CREDIT
-from ui.uikits.Widget import Widget
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Button import Button
-from ui.uikits.UiPreset import Label, IconPth
+from ui import Widget, GridLayout, Button, Label, AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Credit Layout """
@@ -37,7 +34,7 @@ class Credit(Widget):
 
         super(Credit, self).__init__(parent)
 
-        self.setWindowIcon(IconPth(32, 'Credit'))
+        self.setWindowIcon(AppIcon(32, 'Credit'))
         self.setWindowTitle('CREDIT')
 
         self.buildUI()

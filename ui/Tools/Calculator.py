@@ -17,21 +17,18 @@ from PyQt5.QtWidgets import QApplication, QGridLayout, QLayout, QLineEdit
 
 from appData                import SiPoMin
 from cores.base             import DAMGLIST
-from ui.uikits.Widget       import Widget
-from ui.uikits.Button       import ToolBtn
-from ui.uikits.UiPreset     import IconPth
-
+from ui                     import Widget, ToolButton, AppIcon
 
 class Calculator(Widget):
 
-    key = 'calculator'
+    key = 'Calculator'
     NumDigitButtons = 10
     digitButtons = DAMGLIST()
 
     def __init__(self, parent=None):
         super(Calculator, self).__init__(parent)
 
-        self.setWindowIcon(IconPth(32, 'Calculator'))
+        self.setWindowIcon(AppIcon(32, 'Calculator'))
 
 
         self.buildUI()
@@ -276,7 +273,7 @@ class Calculator(Widget):
         self.sumInMemory += float(self.display.text())
 
     def createButton(self, text, member):
-        button = ToolBtn(text)
+        button = ToolButton(text)
         button.clicked.connect(member)
         return button
 

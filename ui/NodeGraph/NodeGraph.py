@@ -25,7 +25,7 @@ from ui.NodeGraph.MenuBar import MenuBar
 from ui.NodeGraph.Node import Node, Edge
 from ui.NodeGraph.Scene import Scene
 from ui.NodeGraph.View import View
-from ui.uikits.UiPreset import IconPth
+from ui import AppIcon
 from utils.utils import getUnix
 
 # -------------------------------------------------------------------------------------------------------------
@@ -33,16 +33,14 @@ from utils.utils import getUnix
 
 class NodeGraph(Widget):
 
-    key = 'nodeGraph'
-    showLayout = pyqtSignal(str, str)
-    setSetting = pyqtSignal(str, str, str)
+    key = 'NodeGraph'
 
     def __init__(self, parent=None):
         super(NodeGraph, self).__init__(parent)
         self.logger = Loggers(self)
         self.mtd = {}
         self.Nodes = []
-        self.setWindowIcon(IconPth(32, 'NodeGraph'))
+        self.setWindowIcon(AppIcon(32, 'NodeGraph'))
         self.menuBar = MenuBar(self)
 
         self.view = View()
@@ -114,14 +112,6 @@ class NodeGraph(Widget):
 
     def contextMenuEvent(self, event):
         pass
-
-    def resizeEvent(self, event):
-        self.setSetting.emit('width', str(self.width()), self.objectName())
-        self.setSetting.emit('height', str(self.height()), self.objectName())
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def main():
     nodeGrahp = QApplication(sys.argv)

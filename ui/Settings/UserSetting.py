@@ -23,11 +23,7 @@ from PyQt5.QtWidgets import (QGridLayout, QLineEdit, QGroupBox, QPushButton, QFi
 
 # Plt
 from appData import PW_BLANK, PW_UNMATCH, __envKey__
-from ui.uikits.GroupBox import GroupGrid, GroupBox
-from ui.uikits.UiPreset import IconPth, Label
-from ui.uikits.Widget import Widget
-from ui.uikits.Button import Button
-from ui.uikits.GridLayout import GridLayout
+from ui import GroupGrid, GroupBox, AppIcon, Label, Widget, Button, GridLayout
 from utils import utils as func, localSQL as usql
 
 # ----------------------------------------------------------------------------------------------------------- #
@@ -42,7 +38,7 @@ class UserSetting(Widget):
 
         super(UserSetting, self).__init__(parent)
 
-        self.setWindowIcon(IconPth(32, "UserSetting"))
+        self.setWindowIcon(AppIcon(32, "UserSetting"))
         self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)

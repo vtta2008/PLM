@@ -15,7 +15,7 @@ from __future__ import absolute_import, unicode_literals
 # Python
 import os, subprocess
 
-class envVariable(object):
+class EnvVariableManager(object):
 
     """
     This class is all about system environment variable, you can set new, edit or delete or put path into PATH variable.

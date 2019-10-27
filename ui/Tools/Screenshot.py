@@ -24,18 +24,15 @@ from PyQt5.QtWidgets import (QGridLayout, QFileDialog, QApplication, QGroupBox, 
 
 # PLM
 from appData                import keepARM
-from ui.uikits.Button       import Button
-from ui.uikits.UiPreset     import IconPth, HBoxLayout
-from ui.uikits.Widget       import Widget
-
+from ui                     import Button, AppIcon, HBoxLayout, Widget
 
 class Screenshot(Widget):
 
-    key = 'screenShot'
+    key = 'Screenshot'
 
     def __init__(self, parent=None):
         super(Screenshot, self).__init__(parent)
-        self.setWindowIcon(IconPth(32, "Screenshot"))
+        self.setWindowIcon(AppIcon(32, "Screenshot"))
         self.resize(960, 540)
 
         self.layout = QGridLayout()

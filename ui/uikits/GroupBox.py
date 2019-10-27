@@ -19,10 +19,11 @@ from PyQt5.QtWidgets                import QGroupBox
 
 
 # PLM
-from appData                        import WAIT_LAYOUT_COMPLETE, SiPoMin, SETTING_FILEPTH, ST_FORMAT
+from appData                        import WAIT_LAYOUT_COMPLETE, SETTING_FILEPTH, ST_FORMAT, __copyright__
 from ui.uikits.GridLayout           import AutoPreset1, AutoPreset2, AutoPreset3, GridLayout
-from ui.uikits.UiPreset             import Label, HBoxLayout
-from ui.SignalManager                   import SignalManager
+from ui.uikits.Label                import Label
+from ui.uikits.HBoxLayout           import HBoxLayout
+from ui.SignalManager               import SignalManager
 from cores.Loggers                  import Loggers
 from cores.Settings                 import Settings
 
@@ -31,7 +32,11 @@ from cores.Settings                 import Settings
 
 class GroupBox(QGroupBox):
 
-    key = "GroupBox"
+    Type                                    = 'DAMGUI'
+    key                                     = 'GroupBox'
+    _name                                   = 'DAMG Group Box'
+    _copyright                              = __copyright__
+    _data                                   = dict()
 
     def __init__(self, title="Section Title", layouts=None, mode="IconGrid", parent=None):
         QGroupBox.__init__(self)

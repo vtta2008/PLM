@@ -12,7 +12,6 @@ import re
 
 from PyQt5.QtWidgets import QUndoCommand
 
-
 class SceneNodesCommand(QUndoCommand):
 
     def __init__(self, old, new, scene, msg=None, parent=None):

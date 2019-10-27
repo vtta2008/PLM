@@ -15,35 +15,28 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtWidgets        import QApplication, QVBoxLayout, QTabWidget
+from PyQt5.QtWidgets        import QApplication
 
 # PLM
-from appData                import SiPoMin
-from cores.Loggers          import Loggers
 from ui.Debugger            import Debugger
 from ui.GeneralSetting      import GeneralSetting
-from ui.uikits.TabWidget    import TabContent
-from ui.uikits.Widget       import Widget
-from ui.uikits.UiPreset     import IconPth, VBoxLayout
+from ui                     import Widget, TabWidget, TabContent, VBoxLayout, AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """
 class BotTab(Widget):
 
-    key = 'botTab'
+    key = 'BotTab'
 
     def __init__(self, parent=None):
         super(BotTab, self).__init__(parent)
-        self.logger         = Loggers(__file__)
 
-
+        self.layout = VBoxLayout()
         self.buildUI()
-
-        self.applySetting()
+        self.setLayout(self.layout)
 
     def buildUI(self):
-        layout = VBoxLayout()
-        self.tabs           = QTabWidget()
+        self.tabs           = TabWidget()
 
         self.generalSetting = GeneralSetting()
         self.debugger       = Debugger()
@@ -53,23 +46,15 @@ class BotTab(Widget):
         self.tabs.addTab(TabContent(self.debugger), "Debug")
         # self.tabs.addTab(TabContent(), "Quick")
 
-        self.tabs.setTabIcon(0, IconPth(32, 'General Setting'))
+        self.tabs.setTabIcon(0, AppIcon(32, 'General Setting'))
         # self.tabs.setTabIcon(1, IconPth(32, 'Unit Setting'))
-        self.tabs.setTabIcon(2, IconPth(32, 'Debug'))
+        self.tabs.setTabIcon(2, AppIcon(32, 'Debug'))
         # self.tabs.setTabIcon(3, IconPth(32, 'Quick Setting'))
 
-        self.tabs.setSizePolicy(SiPoMin, SiPoMin)
-        self.tabs.setTabPosition(QTabWidget.South)
+        self.tabs.setTabPosition(TabWidget.South)
         self.tabs.setMovable(True)
 
-        layout.addWidget(self.tabs)
-        self.setLayout(layout)
-
-    def applySetting(self):
-        self.setSizePolicy(SiPoMin, SiPoMin)
-
-
-
+        self.layout.addWidget(self.tabs)
 
 def main():
     bottab = QApplication(sys.argv)

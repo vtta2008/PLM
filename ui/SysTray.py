@@ -18,7 +18,7 @@ import sys
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import QObject, pyqtSignal, pyqtSlot
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui import QWheelEvent
 from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QApplication
 
@@ -26,8 +26,8 @@ from cores.Loggers import Loggers
 # PLM
 from appData import __plmSlogan__, __appname__, __envKey__, CONFIG_SYSTRAY
 from ui.SignalManager import SignalManager
-from ui.uikits.Action import Action
-from ui.uikits.UiPreset import AppIcon
+from ui import Action, LogoIcon, SystemTrayIcon
+from cores.base import DAMG
 from utils.localSQL import QuerryDB
 
 
@@ -61,7 +61,7 @@ class SysTrayIconMenu(QMenu):
         self.addSeparator()
         self.addAction(Action({'icon':'Close','txt':"Quit", 'trg':partial(self.signals.showLayout.emit, 'app', 'quit')}, self))
 
-class SystrayWheelEventObject(QObject):
+class SystrayWheelEventObject(DAMG):
 
     def eventFilter(self, object, event):
         if type(event) == QWheelEvent:
@@ -73,15 +73,14 @@ class SystrayWheelEventObject(QObject):
             return True
         return False
 
-class SysTrayIcon(QSystemTrayIcon):
+class SysTray(SystemTrayIcon):
 
-    key = 'SysTrayIcon'
+    key = 'SysTray'
 
     def __init__(self, parent=None):
 
-        super(SysTrayIcon, self).__init__(parent)
-        self.logger = Loggers(__file__)
-        self.signals = SignalManager(self)
+        super(SysTray, self).__init__(parent)
+
         self.db = QuerryDB()
 
         try:
@@ -93,7 +92,7 @@ class SysTrayIcon(QSystemTrayIcon):
         self.rightClickMenu.signals.executing.connect(self.signals.executing.emit)
         self.rightClickMenu.signals.showLayout.connect(self.signals.showLayout.emit)
 
-        self.setIcon(AppIcon('Logo'))
+        self.setIcon(LogoIcon('Logo'))
         self.setToolTip(__plmSlogan__)
         self.activated.connect(self.sys_tray_icon_activated)
         self.setContextMenu(self.rightClickMenu)
@@ -127,7 +126,7 @@ class SysTrayIcon(QSystemTrayIcon):
 
 def main():
     sysApp = QApplication(sys.argv)
-    sysTray = SysTrayIcon()
+    sysTray = SysTray()
     sysTray.show()
     sysApp.exec_()
 

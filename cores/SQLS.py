@@ -14,7 +14,7 @@ Description:
 import sqlite3 as lite
 
 # PLM
-from cores.Storage import PObj
+from cores import DAMG
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """
@@ -48,9 +48,9 @@ LTD = dict(
 # -------------------------------------------------------------------------------------------------------------
 """ Create database """
 
-class SQLS(PObj):
+class SQLS(DAMG):
 
-    key = "Resource DB"
+    key = "SQLS"
 
     def __init__(self, filename, parent=None):
         super(SQLS, self).__init__(parent)

@@ -26,9 +26,7 @@ from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar,
 # PLM
 from cores.Settings import Settings
 from appData import __organization__, __appname__, SETTING_FILEPTH, SiPoMin
-from ui.uikits.UiPreset import ComboBox, Label
-from ui.uikits.Widget import Widget
-from ui.uikits.GridLayout import GridLayout
+from ui import ComboBox, Label, Widget, GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Setting Manager """

@@ -18,17 +18,11 @@ import sys, requests
 from functools              import partial
 
 # PyQt5
-from PyQt5.QtWidgets        import (QApplication, QGridLayout, QCheckBox)
+from PyQt5.QtWidgets        import (QApplication, QCheckBox)
 
-from appData                import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerCheck__, __localServerAutho__, __localServer__
-from ui.MessageBox          import MessageBox
-from ui.uikits.Button       import Button
-from ui.uikits.GroupBox     import GroupGrid
-from ui.uikits.UiPreset     import IconPth, Label, LineEdit
-from ui.uikits.Widget       import Widget
-from ui.uikits.GridLayout   import GridLayout
-
-# Plt
+# PLM
+from appData                import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
+from ui                     import MessageBox, Button, GridLayout, AppIcon, Label, LineEdit, Widget, GroupGrid
 from utils                  import localSQL as usql
 from utils.utils            import str2bool
 
@@ -43,7 +37,7 @@ class SignIn(Widget):
 
         super(SignIn, self).__init__(parent)
 
-        self.setWindowIcon(IconPth(32, "SignIn"))
+        self.setWindowIcon(AppIcon(32, "SignIn"))
         self.setFixedSize(400, 300)
 
         self.layout = GridLayout()

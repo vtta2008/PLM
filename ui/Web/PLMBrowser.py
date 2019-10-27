@@ -22,16 +22,14 @@ except ImportError:
     from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
 
 from PyQt5.QtCore import QFile, QIODevice, Qt, QTextStream, QUrl, pyqtSignal
-from PyQt5.QtWidgets import (QAction, QApplication, QLineEdit, QMainWindow, QWidget, QSizePolicy, QStyle, QTextEdit,
+from PyQt5.QtWidgets import (QAction, QApplication, QLineEdit, QMainWindow, QSizePolicy, QStyle, QTextEdit,
                              QStatusBar, QVBoxLayout)
 
 from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 
 # Plt
 from cores.Loggers import Loggers
-from ui.uikits.UiPreset import IconPth
-from ui.SignalManager import SignalManager
-from ui.uikits.Widget import Widget
+from ui import AppIcon, Widget
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Web browser """
@@ -192,7 +190,7 @@ class PLMBrowser(Widget):
         super(PLMBrowser, self).__init__(parent)
         self.logger = Loggers(self)
 
-        self.setWindowIcon(IconPth(32, 'PLMBrowser'))
+        self.setWindowIcon(AppIcon(32, 'PLMBrowser'))
         self.url = url
 
         self.layout = QVBoxLayout()

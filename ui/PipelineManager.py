@@ -13,20 +13,14 @@ import sys
 from functools              import partial
 
 # PyQt5
-from PyQt5.QtWidgets        import (QApplication, QWidget, QGridLayout)
+from PyQt5.QtWidgets        import QApplication
 
 # PLM
-from cores.Loggers          import Loggers
-from appData                import __homepage__, dockB, SiPoMin
-from ui                     import TopTab, BotTab, Footer, StatusBar
-from ui.uikits.Widget       import Widget
-from ui.uikits.GridLayout   import GridLayout
-from ui.uikits.MainWindow   import MainWindow
-from ui.AppToolbar          import MainToolBar, DockToolBar
-from ui.Menus               import MainMenuBar, SubMenuBar
-from ui.Network             import ServerStatus
-from ui.uikits.GroupBox     import GroupBox
-from ui.uikits.UiPreset     import AppIcon
+from appData                import __homepage__, dockB, __appname__
+from ui                     import (Footer, StatusBar, Widget, GridLayout, MainWindow, GroupBox, LogoIcon, ServerStatus,
+                                    MainMenuBar, SubMenuBar, MainToolBar, DockToolBar)
+from ui.BotTab              import BotTab
+from ui.TopTab              import TopTab
 from utils.utils            import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
@@ -35,15 +29,15 @@ from utils.utils            import str2bool, bool2str
 class PipelineManager(MainWindow):
 
     key = 'MainUI'
+    _name = __appname__
 
     def __init__(self, settings, parent=None):
         super(PipelineManager, self).__init__(parent)
 
-        self.logger = Loggers()
         self.url = __homepage__
 
-        self.setObjectName(self.key)
-        self.setWindowIcon(AppIcon("Logo"))
+        self.setObjectName(self._name)
+        self.setWindowIcon(LogoIcon("Logo"))
 
         self.settings       = settings
 
@@ -56,28 +50,33 @@ class PipelineManager(MainWindow):
 
     def buildUI(self):
 
-        self.mainMenuBar    = MainMenuBar.MainMenuBar()
-        self.subMenuBar     = SubMenuBar.SubMenuBar()                                                   # Sub menu
-        self.toolBar        = MainToolBar.MainToolBar()                                                 # Toolbar
-        self.serverStatus   = ServerStatus.ServerStatus()                                               # Server Status
+        self.mainMenuBar    = MainMenuBar()
+        self.subMenuBar     = SubMenuBar()                                                  # Sub menu
+        self.toolBar        = MainToolBar()                                                 # Toolbar
+        self.serverStatus   = ServerStatus()                                                # Server Status
         self.subMenuSec     = GroupBox("Sub Menu", self.subMenuBar, "qmainLayout")
+        self.subMenuSec.key = "SubMenuSection"
         self.mainMenuSec    = GroupBox("Main Menu", self.mainMenuBar, "qmainLayout")
-
+        self.mainMenuSec.key = "MainMenuSection"
         self.networkStatus  = GroupBox("Server Status", self.serverStatus, "autoGrid")
         self.networkStatus.setMaximumHeight(self.subMenuBar.maximumHeight()*3)
+        self.networkStatus.key = "NetworkStatus"
         self.subToolBarSec  = GroupBox("Tool Bar", self.toolBar, "qmainLayout")
+        self.subToolBarSec.key = "SubtoolBarSec"
 
-        self.topTabUI       = TopTab.TopTab()                                                           # Tab layout
-        self.botTabUI       = BotTab.BotTab()                                                           # Bot build 1
+        self.topTabUI       = TopTab()                                                           # Tab layout
+        self.botTabUI       = BotTab()                                                           # Bot build 1
         self.notifiSec      = GroupBox("Notification", None, "autoGrid")                                # Bot build 2
+        self.notifiSec.key = "Notification"
 
-        self.footer         = Footer.Footer()
-        self.statusBar      = StatusBar.StatusBar()                                                     # Status bar viewing message
+        self.footer         = Footer()
+        self.statusBar      = StatusBar()                                                     # Status bar viewing message
 
         self.setStatusBar(self.statusBar)
 
-        for layout in [self.subMenuBar, self.mainMenuBar, self.topTabUI, self.botTabUI, self.notifiSec, self.statusBar,
-                       self.footer, self.toolBar, self.serverStatus, self.subMenuSec, self.networkStatus, self.subToolBarSec, ]:
+        for layout in [self.subMenuBar, self.mainMenuBar, self.toolBar, self.serverStatus,
+                       self.subMenuSec, self.mainMenuSec, self.networkStatus, self.subToolBarSec, self.topTabUI,
+                       self.botTabUI, self.notifiSec, self.statusBar, self.footer, ]:
 
             layout.signals.showLayout.connect(self.signals.showLayout)
             layout.signals.executing.connect(self.signals.executing)

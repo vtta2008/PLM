@@ -12,17 +12,13 @@ Description:
 
 # Python
 import sys
-from functools import partial
 
 # PtQt5
 from PyQt5.QtWidgets import QApplication, QScrollArea
 
 # Plm
 from appData import LICENCE_MIT
-from ui.uikits.Widget import Widget
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Button import Button
-from ui.uikits.UiPreset import Label, IconPth
+from ui import Widget, GridLayout, Button, Label, AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Contributing Layout """
@@ -34,7 +30,7 @@ class LicenceMIT(Widget):
     def __init__(self, parent=None):
 
         super(LicenceMIT, self).__init__(parent)
-        self.setWindowIcon(IconPth(32, 'Licence'))
+        self.setWindowIcon(AppIcon(32, 'Licence'))
         self.setWindowTitle('LICENCE')
 
         self.layout = GridLayout()

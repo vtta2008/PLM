@@ -20,10 +20,7 @@ from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFileDi
                              QHeaderView, QProgressDialog, QTableWidget, QTableWidgetItem, )
 
 from appData import SiPoExp, SiPoPre
-from ui.uikits.Widget import Widget
-from ui.uikits.Button import Button
-from ui.uikits.UiPreset import Label, IconPth
-
+from ui import Widget, Button, Label, AppIcon
 
 class FindFiles(Widget):
 
@@ -31,7 +28,7 @@ class FindFiles(Widget):
 
     def __init__(self, parent=None):
         super(FindFiles, self).__init__(parent)
-        self.setWindowIcon(IconPth(32, "FindFiles"))
+        self.setWindowIcon(AppIcon(32, "FindFiles"))
 
         central_widget = QWidget(self)
         self.layout = QGridLayout(self)
@@ -182,14 +179,6 @@ class FindFiles(Widget):
     def openFileOfItem(self, row, column):
         item = self.filesTable.item(row, 0)
         QDesktopServices.openUrl(QUrl(self.currentDir.absoluteFilePath(item.text())))
-
-    def hideEvent(self, event):
-        # self.specs.showState.emit(False)
-        pass
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

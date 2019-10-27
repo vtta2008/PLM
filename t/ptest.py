@@ -9,8 +9,8 @@ from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal, QSize
 
 # PLM
 from appData            import __globalServer__, __localPort__, __localHost__
-from ui.uikits.UiPreset import Label, ComboBox, VBoxLayout, IconPth, HBoxLayout
-from ui.MessageBox      import MessageBox
+from ui.uikits.UiPreset import Label, ComboBox, VBoxLayout, AppIcon, HBoxLayout
+from ui.uikits.MessageBox import MessageBox
 from ui.uikits.Button   import Button
 from ui.uikits.Widget   import Widget
 
@@ -60,7 +60,7 @@ class ServerConfig(Widget):
         super(ServerConfig, self).__init__(parent)
 
         self.setWindowTitle("Server Configuration")
-        self.setWindowIcon(IconPth(32, self.key))
+        self.setWindowIcon(AppIcon(32, self.key))
         self.settings = settings
 
         self.comboBox = ComboBox({'setObjName': self.key})

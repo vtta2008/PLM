@@ -15,23 +15,19 @@ Description:
 import json, os, sys
 
 # PyQt5
-from PyQt5.QtCore               import pyqtSignal
-from PyQt5.QtWidgets            import QApplication, QWidget, QGridLayout, QGroupBox, QLineEdit, QPushButton
+from PyQt5.QtWidgets            import QApplication
 
 # Plt
 from appData                    import (__envKey__, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE, BTNICONSIZE,
                                         ICONBTNSIZE, FIX_KEYS)
-from cores.base                 import DAMG
-from ui.SignalManager               import SignalManager
-from ui.uikits.Button           import Button
-from ui.uikits.GroupBox         import GroupBox
+from ui                         import Widget, GridLayout, Button, GroupBox, LineEdit
 
 # -------------------------------------------------------------------------------------------------------------
 """ topTab1 """
 
-class TopTab1(QWidget):
+class TopTab1(Widget):
 
-    key = 'topTab1'
+    key = 'TopTab1'
 
     with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
         appInfo = json.load(f)
@@ -39,14 +35,9 @@ class TopTab1(QWidget):
     def __init__(self, parent=None):
         super(TopTab1, self).__init__(parent)
 
-        self.signals = SignalManager(self)
-
-
-
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
-        self.applySetting()
 
         self.signals.regisLayout.emit(self)
 
@@ -87,11 +78,11 @@ class TopTab1(QWidget):
         sec3Grp = GroupBox("Tools", pyuiBtn, "IconGrid")
         sec4Grp = GroupBox("Extra", extraBtns, "IconGrid")
 
-        self.findEdit = QLineEdit()
-        findBtn = QPushButton("Find Tool")
+        self.findEdit = LineEdit()
+        findBtn = Button({'txt':"Find Tool"})
 
-        sec5Grp = QGroupBox("Find Tool")
-        sec5Grid = QGridLayout()
+        sec5Grp = GroupBox("Find Tool")
+        sec5Grid = GridLayout()
         sec5Grid.addWidget(self.findEdit, 0, 0, 1, 7)
         sec5Grid.addWidget(findBtn, 0, 7, 1, 2)
         sec5Grp.setLayout(sec5Grid)
@@ -101,11 +92,6 @@ class TopTab1(QWidget):
         self.layout.addWidget(sec3Grp, 0, 3, 4, 3)
         self.layout.addWidget(sec4Grp, 0, 6, 4, 3)
         self.layout.addWidget(sec5Grp, 4, 0, 1, 9)
-
-
-
-    def applySetting(self):
-        self.layout.setSpacing(2)
 
 def main():
     app = QApplication(sys.argv)

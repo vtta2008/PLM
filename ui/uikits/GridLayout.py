@@ -17,7 +17,7 @@ Description:
 from PyQt5.QtWidgets        import QGridLayout
 
 # PLM
-from appData                    import SETTING_FILEPTH, ST_FORMAT, SiPoMin
+from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
 from ui.SignalManager               import SignalManager
 from cores.Loggers              import Loggers
 from cores.Settings             import Settings
@@ -27,7 +27,11 @@ from cores.Settings             import Settings
 
 class GridLayout(QGridLayout):
 
-    key = "GridLayout"
+    Type = 'DAMGUI'
+    key = 'GridLayout'
+    _name = 'DAMG Grid Layout'
+    _copyright = __copyright__
+    _data = dict()
 
     def __init__(self, parent=None):
         QGridLayout.__init__(self)

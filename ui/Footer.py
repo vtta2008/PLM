@@ -18,10 +18,8 @@ import sys
 from PyQt5.QtWidgets            import QApplication
 
 # Plt
-from appData                    import SiPoMin, __copyright__, __version__
-from ui.uikits.Widget           import Widget
-from ui.uikits.GridLayout       import GridLayout
-from ui.uikits.UiPreset         import Label
+from appData                    import __copyright__, __version__
+from ui                         import Widget, GridLayout, Label
 
 # -------------------------------------------------------------------------------------------------------------
 """ Footer """

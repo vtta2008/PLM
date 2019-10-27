@@ -15,13 +15,11 @@ import sys
 from functools import partial
 
 # PtQt5
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
+from PyQt5.QtWidgets import QApplication, QScrollArea
 
 # Plm
 from appData import REFERENCE
-from ui.uikits.Button import Button
-from ui.uikits.UiPreset import Label, IconPth
-from ui.uikits.Widget import Widget
+from ui import Button, Label, Widget, AppIcon, Widget, GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Contributing Layout """
@@ -33,10 +31,10 @@ class Reference(Widget):
     def __init__(self, parent=None):
 
         super(Reference, self).__init__(parent)
-        self.setWindowIcon(IconPth(32, 'Reference'))
+        self.setWindowIcon(AppIcon(32, 'Reference'))
         self.setWindowTitle('REFERENCE')
 
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
         self.resize(450, 400)

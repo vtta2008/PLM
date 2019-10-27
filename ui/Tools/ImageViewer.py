@@ -23,11 +23,9 @@ from functools import partial
 from PyQt5 import QtSql
 from PyQt5.QtCore import Qt, QDir, pyqtSignal
 from PyQt5.QtGui import QPixmap, QTransform, QIcon
-from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout,
-                             QWidget)
+from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout)
 
-from ui.uikits.UiPreset import IconPth
-from ui.uikits.Widget import Widget
+from ui import AppIcon, Widget
 from utils import utils as func
 
 # Plt
@@ -488,7 +486,7 @@ class ImageInitUI(ViewerWindow):
 
 class ImageViewer(Widget):
 
-    key = 'imageViewer'
+    key = 'ImageViewer'
 
     def __init__(self, key=None, parent=None):
         super(ImageViewer, self).__init__(parent)
@@ -510,7 +508,7 @@ class ImageViewer(Widget):
         self.title = viewer.title
 
         self.setWindowTitle("Image Viewer: " + str(self.title))
-        self.setWindowIcon(IconPth(32, "ImageViewer"))
+        self.setWindowIcon(AppIcon(32, "ImageViewer"))
 
         self.layout.addWidget(viewer)
 
@@ -536,14 +534,6 @@ class ImageViewer(Widget):
 
     def resizeUI(self, w, h):
         self.resize(w, h)
-
-    def hideEvent(self, event):
-        # self.specs.showState.emit(False)
-        pass
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def main():
     appViewer = QApplication(sys.argv)

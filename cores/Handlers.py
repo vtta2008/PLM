@@ -15,7 +15,7 @@ from cores.base import DAMG
 logger = Loggers()
 log = logger.report
 
-class SceneEventHandler(DAMG):
+class EventHandler(DAMG):
     def __init__(self, parent=None):
         DAMG.__init__(self, parent)
 

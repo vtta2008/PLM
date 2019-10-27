@@ -1362,3 +1362,186 @@ TRACE: (27/10/2019 11:00:08) PLM, line 227: message: >>> Layout "getCrew" is not
 TRACE: (27/10/2019 11:00:08) PLM, line 227: message: >>> Layout "getCrew" is not registered >>> {}
 TRACE: (27/10/2019 11:00:09) PLM, line 227: message: >>> Layout "yourCrew" is not registered >>> {}
 TRACE: (27/10/2019 11:00:09) PLM, line 227: message: >>> Layout "yourCrew" is not registered >>> {}
+TRACE: (27/10/2019 16:30:10) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 16:31:23) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 16:31:27) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 16:32:10) PLM, line 227: message: >>> Layout "newProject" is not registered >>> {}
+TRACE: (27/10/2019 16:32:10) PLM, line 227: message: >>> Layout "newProject" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "MainMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "MainMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "SubMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "SubMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "TopTab" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "TopTab" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "botTab" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "botTab" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "Footer" is not registered >>> {}
+TRACE: (27/10/2019 16:32:18) PLM, line 227: message: >>> Layout "Footer" is not registered >>> {}
+TRACE: (27/10/2019 16:49:59) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 16:50:01) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 17:00:41) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 17:00:43) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 17:00:58) PLM, line 227: message: >>> Layout "NoteReminder" is not registered >>> {}
+TRACE: (27/10/2019 17:00:58) PLM, line 227: message: >>> Layout "NoteReminder" is not registered >>> {}
+TRACE: (27/10/2019 17:01:02) PLM, line 227: message: >>> Layout "NoteReminder" is not registered >>> {}
+TRACE: (27/10/2019 17:01:02) PLM, line 227: message: >>> Layout "NoteReminder" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "MainMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "MainMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "SubMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "SubMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "TopTab1" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "TopTab1" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "TopTab" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "TopTab" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "botTab" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "botTab" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "Footer" is not registered >>> {}
+TRACE: (27/10/2019 17:01:04) PLM, line 227: message: >>> Layout "Footer" is not registered >>> {}
+TRACE: (27/10/2019 17:12:16) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 17:12:18) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 17:12:27) PLM, line 227: message: >>> Layout "NoteReminder" is not registered >>> {}
+TRACE: (27/10/2019 17:12:27) PLM, line 227: message: >>> Layout "NoteReminder" is not registered >>> {}
+TRACE: (27/10/2019 18:01:59) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 18:02:26) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 18:02:28) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 18:02:35) PLM, line 227: message: >>> Layout "Calculator" is not registered >>> {}
+TRACE: (27/10/2019 18:02:38) PLM, line 227: message: >>> Layout "Calculator" is not registered >>> {}
+TRACE: (27/10/2019 18:02:39) PLM, line 227: message: >>> Layout "Calendar" is not registered >>> {}
+TRACE: (27/10/2019 18:02:40) PLM, line 227: message: >>> Layout "EngDict" is not registered >>> {}
+TRACE: (27/10/2019 18:02:42) PLM, line 227: message: >>> Layout "FindFile" is not registered >>> {}
+TRACE: (27/10/2019 18:02:51) PLM, line 227: message: >>> Layout "NoteReminder" is not registered >>> {}
+TRACE: (27/10/2019 18:02:59) PLM, line 227: message: >>> Layout "MainMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 18:02:59) PLM, line 227: message: >>> Layout "SubMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 18:02:59) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:02:59) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:02:59) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:02:59) PLM, line 227: message: >>> Layout "TopTab1" is not registered >>> {}
+TRACE: (27/10/2019 18:02:59) PLM, line 227: message: >>> Layout "TopTab" is not registered >>> {}
+TRACE: (27/10/2019 18:02:59) PLM, line 227: message: >>> Layout "botTab" is not registered >>> {}
+TRACE: (27/10/2019 18:02:59) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:02:59) PLM, line 227: message: >>> Layout "Footer" is not registered >>> {}
+TRACE: (27/10/2019 18:06:51) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 18:06:53) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 18:07:01) PLM, line 227: message: >>> Layout "Calculator" is not registered >>> {}
+TRACE: (27/10/2019 18:07:07) PLM, line 227: message: >>> Layout "MainMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 18:07:07) PLM, line 227: message: >>> Layout "SubMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 18:07:07) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:07:07) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:07:07) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:07:07) PLM, line 227: message: >>> Layout "TopTab1" is not registered >>> {}
+TRACE: (27/10/2019 18:07:07) PLM, line 227: message: >>> Layout "TopTab" is not registered >>> {}
+TRACE: (27/10/2019 18:07:07) PLM, line 227: message: >>> Layout "botTab" is not registered >>> {}
+TRACE: (27/10/2019 18:07:07) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:07:07) PLM, line 227: message: >>> Layout "Footer" is not registered >>> {}
+TRACE: (27/10/2019 18:12:11) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 18:12:13) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 18:12:24) PLM, line 227: message: >>> Layout "NoteReminder" is not registered >>> {}
+TRACE: (27/10/2019 18:12:29) PLM, line 227: message: >>> Layout "Calculator" is not registered >>> {}
+TRACE: (27/10/2019 18:12:34) PLM, line 227: message: >>> Layout "EngDict" is not registered >>> {}
+TRACE: (27/10/2019 18:12:38) PLM, line 227: message: >>> Layout "EngDict" is not registered >>> {}
+TRACE: (27/10/2019 18:12:40) PLM, line 227: message: >>> Layout "NoteReminder" is not registered >>> {}
+TRACE: (27/10/2019 18:12:42) PLM, line 227: message: >>> Layout "FindFile" is not registered >>> {}
+TRACE: (27/10/2019 18:12:45) PLM, line 227: message: >>> Layout "ScreenShot" is not registered >>> {}
+TRACE: (27/10/2019 18:14:05) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 18:14:07) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 18:14:52) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 18:14:53) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "MainMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "SubMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "TopTab1" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "TopTab" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "botTab" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "Footer" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "MainMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "SubMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "TopTab1" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "TopTab" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "botTab" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:15:19) PLM, line 227: message: >>> Layout "Footer" is not registered >>> {}
+TRACE: (27/10/2019 18:15:56) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 18:15:57) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 18:16:13) PLM, line 227: message: >>> Layout "Calculator" is not registered >>> {}
+TRACE: (27/10/2019 18:17:52) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 18:17:54) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 18:17:55) PLM, line 227: message: >>> Layout "Calculator" is not registered >>> {}
+TRACE: (27/10/2019 18:18:06) PLM, line 227: message: >>> Layout "Calculator" is not registered >>> {}
+TRACE: (27/10/2019 18:18:08) PLM, line 227: message: >>> Layout "MainMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 18:18:08) PLM, line 227: message: >>> Layout "SubMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 18:18:08) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:18:08) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:18:08) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:18:08) PLM, line 227: message: >>> Layout "TopTab1" is not registered >>> {}
+TRACE: (27/10/2019 18:18:08) PLM, line 227: message: >>> Layout "TopTab" is not registered >>> {}
+TRACE: (27/10/2019 18:18:08) PLM, line 227: message: >>> Layout "botTab" is not registered >>> {}
+TRACE: (27/10/2019 18:18:08) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:18:08) PLM, line 227: message: >>> Layout "Footer" is not registered >>> {}
+TRACE: (27/10/2019 18:19:54) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 18:19:56) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 18:20:09) PLM, line 227: message: >>> Layout "MainMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 18:20:09) PLM, line 227: message: >>> Layout "SubMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 18:20:09) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:20:09) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:20:09) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:20:09) PLM, line 227: message: >>> Layout "TopTab1" is not registered >>> {}
+TRACE: (27/10/2019 18:20:09) PLM, line 227: message: >>> Layout "TopTab" is not registered >>> {}
+TRACE: (27/10/2019 18:20:09) PLM, line 227: message: >>> Layout "botTab" is not registered >>> {}
+TRACE: (27/10/2019 18:20:09) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 18:20:09) PLM, line 227: message: >>> Layout "Footer" is not registered >>> {}
+TRACE: (27/10/2019 18:21:11) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 18:21:13) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 18:22:29) PLM, line 227: message: >>> Layout "Calculator" is not registered >>> {}
+TRACE: (27/10/2019 18:23:38) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 18:23:40) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 18:23:48) PLM, line 227: message: >>> Layout "NodeGraph" is not registered >>> {}
+TRACE: (27/10/2019 18:24:35) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 18:24:37) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 18:25:19) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 18:25:20) PLM, line 227: message: >>> Already registered: SysTrayIcon >>> {}
+TRACE: (27/10/2019 21:13:34) PLM, line 227: message: >>> Configurations has completed >>> {"platform": "Windows", "version": "3.6.5 |Anaconda custom (64-bit)| (default, Mar 29 2018, 13:32:41) [MSC v.1900 64 bit (AMD64)]"}
+TRACE: (27/10/2019 21:13:34) PLM, line 227: message: >>> Already registered: SysTray >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "MainMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "SubMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "TopTab1" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "TopTab" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "botTab" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "Footer" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "MainMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "SubMenuBar" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "TopTab1" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "TopTab" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "botTab" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "GroupBox" is not registered >>> {}
+TRACE: (27/10/2019 21:14:06) PLM, line 227: message: >>> Layout "Footer" is not registered >>> {}

@@ -17,15 +17,11 @@ import requests, sys
 # PyQt5
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QGridLayout, QLabel
+from PyQt5.QtWidgets import QLabel
 
 # Plt
-from appData import __globalServer__, __localServer__, SERVER_CONNECT_FAIL
-from cores.Loggers import Loggers
-from ui.SignalManager import SignalManager
-from ui.MessageBox import MessageBox
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.UiPreset import Label
+from appData import __localServer__, SERVER_CONNECT_FAIL
+from ui import MessageBox,GridLayout, Label
 from utils.utils import get_app_icon
 
 # -------------------------------------------------------------------------------------------------------------

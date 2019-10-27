@@ -14,10 +14,7 @@ Description:
 """ Import """
 
 # Plt
-from cores.Loggers      import Loggers
-from ui.SignalManager       import SignalManager
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.UiPreset import CheckBox
+from ui import GridLayout, CheckBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ Quick Setting """

@@ -11,8 +11,8 @@ Description:
 import math
 import weakref
 
-from PyQt5.QtCore import pyqtSlot, pyqtSignal, QPointF, QRectF, QRect
-from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QGraphicsDropShadowEffect
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, QPointF, QRectF, QRect, QObject, Qt
+from PyQt5.QtWidgets import QGraphicsObject, QGraphicsItem, QGraphicsDropShadowEffect, QGraphicsSimpleTextItem
 from PyQt5.QtGui import QColor, QPen
 
 from cores.Loggers import Loggers
@@ -22,6 +22,7 @@ from appData import BRUSH_NONE, LINE_SOLID, LINE_DASH
 
 
 class NodeWidget(QGraphicsObject):
+
     Type = QGraphicsObject.UserType + 1
     doubleClicked = pyqtSlot()
     nodeChanged = pyqtSignal(object)
@@ -274,7 +275,7 @@ class NodeWidget(QGraphicsObject):
         h = self.height + 4
         bx = self.bufferX
         by = self.bufferY
-        path = QtGui.QPainterPath()
+        path = QPainterPath()
         path.addRoundedRect(QRectF(-w / 2, -h / 2, w, h), 7, 7)
         return path
 
@@ -502,10 +503,10 @@ class NodeWidget(QGraphicsObject):
         self.is_selected = False
         self.is_hover = False
 
-        if option.state & QtGui.QStyle.State_Selected:
+        if option.state & QStyle.State_Selected:
             self.is_selected = True
 
-        if option.state & QtGui.QStyle.State_MouseOver:
+        if option.state & QStyle.State_MouseOver:
             self.is_hover = True
 
         # translate the label
@@ -658,9 +659,9 @@ class EdgeWidget(QGraphicsObject):
         self.center_point = QPointF(0, 0)
 
         # geometry
-        self.gline = QtGui.QGraphicsLineItem(self)
-        self.bezier_path = QtGui.QPainterPath()
-        self.poly_line = QtGui.QPolygonF()
+        self.gline = QGraphicsLineItem(self)
+        self.bezier_path = QPainterPath()
+        self.poly_line = QPolygonF()
 
         # flags
         self.setFlag(QGraphicsItem.ItemIsSelectable, True)
@@ -888,7 +889,7 @@ class EdgeWidget(QGraphicsObject):
         Crude, but works.
         """
         line = self.getLine()
-        path = QtGui.QPainterPath()
+        path = QPainterPath()
         path.moveTo(line.p1().x(), line.p1().y())
 
         # some very crude bezier math here
@@ -919,7 +920,7 @@ class EdgeWidget(QGraphicsObject):
         self.dest_point = QPointF(cx2, cy2)
 
         # create a polyline
-        self.poly_line = QtGui.QPolygonF([line.p1(), self.source_point, self.dest_point, line.p2()])
+        self.poly_line = QPolygonF([line.p1(), self.source_point, self.dest_point, line.p2()])
         path.cubicTo(self.source_point, self.dest_point, line.p2())
         # path.quadTo(line.p1(), line.p2())
         return path
@@ -959,8 +960,8 @@ class EdgeWidget(QGraphicsObject):
          .. todo::
             - add some adjustments to the line to make it more selectable.
         """
-        path = QtGui.QPainterPath()
-        stroker = QtGui.QPainterPathStroker()
+        path = QPainterPath()
+        stroker = QPainterPathStroker()
         stroker.setWidth(30)
         line = self.getLine()
         path.moveTo(line.p1())
@@ -974,17 +975,17 @@ class EdgeWidget(QGraphicsObject):
         self.is_selected = False
         self.is_hover = False
 
-        if option.state & QtGui.QStyle.State_Selected:
+        if option.state & QStyle.State_Selected:
             self.is_selected = True
 
-        if option.state & QtGui.QStyle.State_MouseOver:
+        if option.state & QStyle.State_MouseOver:
             self.is_hover = True
 
         self.setToolTip(self.name)
         self.show_conn = False
 
         painter.setRenderHints(
-            QtGui.QPainter.Antialiasing | QtGui.QPainter.TextAntialiasing | QtGui.QPainter.HighQualityAntialiasing)
+            QPainter.Antialiasing | QPainter.TextAntialiasing | QPainter.HighQualityAntialiasing)
 
         line = self.getLine()
         painter.setBrush(self.line_color)
@@ -1021,7 +1022,7 @@ class EdgeWidget(QGraphicsObject):
                 math.cos(angle + math.pi - math.pi / 3.0) * self.arrow_size * revArrow)
 
             # build the arrowhead
-            arrowhead = QtGui.QPolygonF()
+            arrowhead = QPolygonF()
 
             # set the polygon points
             for point in [center_point, arrow_p1, arrow_p2]:
@@ -1068,7 +1069,7 @@ class EdgeWidget(QGraphicsObject):
 
 class Connection(QGraphicsObject):
     Type = QGraphicsObject.UserType + 4
-    clickedSignal = pyqtSignal(QtCore.QObject)
+    clickedSignal = pyqtSignal(QObject)
     nodeChanged = pyqtSignal(object)
     PRIVATE = []
     node_class = 'connection'
@@ -1104,7 +1105,7 @@ class Connection(QGraphicsObject):
         self.is_hover = False
 
         # label
-        self.label = QtGui.QGraphicsSimpleTextItem(self)
+        self.label = QGraphicsSimpleTextItem(self)
 
         # dict: {(id, id) : edge widget}
         self.connections = dict()
@@ -1329,8 +1330,8 @@ class Connection(QGraphicsObject):
         """
         Aids in selection.
         """
-        path = QtGui.QPainterPath()
-        polyon = QtGui.QPolygonF(self.boundingRect())
+        path = QPainterPath()
+        polyon = QPolygonF(self.boundingRect())
         path.addPolygon(polyon)
         return path
 
@@ -1342,24 +1343,24 @@ class Connection(QGraphicsObject):
         self.is_hover = False
 
         # set node selection/hover states
-        if option.state & QtGui.QStyle.State_Selected:
+        if option.state & QStyle.State_Selected:
             # if the entire node is selected, ignore
             if not self.node.isSelected():
                 self.is_selected = True
 
-        if option.state & QtGui.QStyle.State_MouseOver:
+        if option.state & QStyle.State_MouseOver:
             self.is_hover = True
 
         self.setToolTip('%s.%s (%s)' % (self.dagnode.name, self.name, self.dagconn.attr_type))
 
         # background
-        gradient = QtGui.QLinearGradient(0, - self.draw_radius, 0, self.draw_radius)
+        gradient = QLinearGradient(0, - self.draw_radius, 0, self.draw_radius)
         gradient.setColorAt(0, self.bg_color)
         gradient.setColorAt(1, self.bg_color.darker(125))
 
-        painter.setRenderHints(QtGui.QPainter.Antialiasing)
-        painter.setPen(QPen(QtGui.QBrush(self.pen_color), self.pen_width, LINE_SOLID))
-        painter.setBrush(QtGui.QBrush(gradient))
+        painter.setRenderHints(QPainter.Antialiasing)
+        painter.setPen(QPen(QBrush(self.pen_color), self.pen_width, LINE_SOLID))
+        painter.setBrush(QBrush(gradient))
 
         # draw a circle
         if self.node_shape == 'circle':
@@ -1381,7 +1382,7 @@ class Connection(QGraphicsObject):
         if self.dagnode.get_attr(self.name).user:
             italic = True
 
-        label_font = QtGui.QFont(self.node._cfont, self.node._cfont_size, italic=italic)
+        label_font = QFont(self.node._cfont, self.node._cfont_size, italic=italic)
         self.label.hide()
         if self.is_expanded:
             self.label.setBrush(label_color)
@@ -1591,9 +1592,9 @@ class DotWidget(QGraphicsObject):
                     painter.setBrush(BRUSH_NONE)
                     painter.setPen(QPen(conn_widget.bg_color, 0.5, LINE_DASH))
                     painter.drawLine(line)
-                    qfont = QtGui.QFont("Monospace")
+                    qfont = QFont("Monospace")
                     qfont.setPointSize(10)
-                    conn_widget.debug_label = QtGui.QGraphicsTextItem(conn_widget)
+                    conn_widget.debug_label = QGraphicsTextItem(conn_widget)
                     conn_widget.debug_label.setFlag(QGraphicsItem.ItemIgnoresTransformations)
                     conn_widget.debug_label.setFont(qfont)
                     conn_widget.debug_label.setDefaultTextColor(QColor(conn_widget.bg_color))
@@ -1729,7 +1730,7 @@ class DotWidget(QGraphicsObject):
         h = self.height + 4
         bx = self.bufferX
         by = self.bufferY
-        path = QtGui.QPainterPath()
+        path = QPainterPath()
         path.addRoundedRect(QRectF(-w / 2, -h / 2, w, h), 7, 7)
         return path
 
@@ -1883,10 +1884,10 @@ class DotWidget(QGraphicsObject):
         self.is_selected = False
         self.is_hover = False
 
-        if option.state & QtGui.QStyle.State_Selected:
+        if option.state & QStyle.State_Selected:
             self.is_selected = True
 
-        if option.state & QtGui.QStyle.State_MouseOver:
+        if option.state & QStyle.State_MouseOver:
             self.is_hover = True
 
         # setup colors
@@ -1894,7 +1895,7 @@ class DotWidget(QGraphicsObject):
         bg_clr2 = bg_clr1.darker(150)
 
         # background gradient
-        gradient = QtGui.QLinearGradient(0, -self.height / 2, 0, self.height / 2)
+        gradient = QLinearGradient(0, -self.height / 2, 0, self.height / 2)
         gradient.setColorAt(0, bg_clr1)
         gradient.setColorAt(1, bg_clr2)
 
@@ -1902,11 +1903,11 @@ class DotWidget(QGraphicsObject):
         pcolor = self.pen_color
         qpen = QPen(pcolor)
         qpen.setWidthF(self.pen_width)
-        qbrush = QtGui.QBrush(gradient)
+        qbrush = QBrush(gradient)
 
         if self._debug:
             qpen = QPen(QColor(*[220, 220, 220]))
-            qbrush = QtGui.QBrush(BRUSH_NONE)
+            qbrush = QBrush(BRUSH_NONE)
 
         painter.setPen(qpen)
         painter.setBrush(qbrush)
@@ -1991,8 +1992,8 @@ class NoteWidget(QGraphicsObject):
         # label
         self._evaluate_tag = False  # indicates the node is set to "evaluate" (a la Houdini)
         self.label = NodeText(self)
-        self.resize_handle = QtGui.QGraphicsRectItem(self)
-        self.center_label = QtGui.QGraphicsTextItem(self)  # debug
+        self.resize_handle = QGraphicsRectItem(self)
+        self.center_label = QGraphicsTextItem(self)  # debug
 
         # undo/redo snapshots
         self._current_pos = QPointF(0, 0)
@@ -2182,7 +2183,7 @@ class NoteWidget(QGraphicsObject):
         h = self.height + 4
         bx = self.bufferX
         by = self.bufferY
-        path = QtGui.QPainterPath()
+        path = QPainterPath()
         path.addRoundedRect(QRectF(-w / 2, -h / 2, w, h), 7, 7)
         return path
 
@@ -2266,7 +2267,7 @@ class NoteWidget(QGraphicsObject):
 
         p2.setX(p2.x() - self.corner_size)
         p3.setY(p2.y() + self.corner_size)
-        return QtGui.QPolygonF([p1, p2, p3, p4, p5, p1])
+        return QPolygonF([p1, p2, p3, p4, p5, p1])
 
     def getCornerShape(self):
         """
@@ -2283,7 +2284,7 @@ class NoteWidget(QGraphicsObject):
         p2.setY(p1.y() + self.corner_size)
 
         p3 = QPointF(p1.x(), p2.y())
-        return QtGui.QPolygonF([p1, p2, p3, p1])
+        return QPolygonF([p1, p2, p3, p1])
 
     def handleRect(self):
         """
@@ -2303,10 +2304,10 @@ class NoteWidget(QGraphicsObject):
         self.is_selected = False
         self.is_hover = False
 
-        if option.state & QtGui.QStyle.State_Selected:
+        if option.state & QStyle.State_Selected:
             self.is_selected = True
 
-        if option.state & QtGui.QStyle.State_MouseOver:
+        if option.state & QStyle.State_MouseOver:
             self.is_hover = True
 
         # draw resize handle
@@ -2317,7 +2318,7 @@ class NoteWidget(QGraphicsObject):
         hpen_color = handle_color.darker(200)
         hpen_color.setAlpha(125)
         self.resize_handle.setPen(QPen(hpen_color))
-        self.resize_handle.setBrush(QtGui.QBrush(handle_color))
+        self.resize_handle.setBrush(QBrush(handle_color))
 
         self.label.setPos(self.label_pos)
         self.label.label.setTextWidth(self.width * 0.8)
@@ -2329,7 +2330,7 @@ class NoteWidget(QGraphicsObject):
         bg_color3.setAlpha(125)
 
         # background gradient
-        gradient = QtGui.QLinearGradient(0, -self.height / 2, 0, self.height / 2)
+        gradient = QLinearGradient(0, -self.height / 2, 0, self.height / 2)
         gradient.setColorAt(0, bg_color1)
         gradient.setColorAt(1, bg_color2)
 
@@ -2341,11 +2342,11 @@ class NoteWidget(QGraphicsObject):
         cpen = QPen(QtCore.Qt.NoPen)
 
         # background brush
-        qbrush = QtGui.QBrush(gradient)
+        qbrush = QBrush(gradient)
         # corner brush
-        cbrush = QtGui.QBrush(bg_color2.darker(80))
+        cbrush = QBrush(bg_color2.darker(80))
         # handle brush
-        hbrush = QtGui.QBrush(bg_color3)
+        hbrush = QBrush(bg_color3)
 
         if self._debug:
             qpen = QPen(QColor(*[220, 220, 220]))
@@ -2356,8 +2357,8 @@ class NoteWidget(QGraphicsObject):
             cpen.setStyle(LINE_DASH)
             cpen.setWidthF(0.5)
 
-            qbrush = QtGui.QBrush(BRUSH_NONE)
-            cbrush = QtGui.QBrush(BRUSH_NONE)
+            qbrush = QBrush(BRUSH_NONE)
+            cbrush = QBrush(BRUSH_NONE)
             painter.drawRect(self.boundingRect())
 
             center_color = QColor(*[164, 224, 255, 75])
@@ -2401,7 +2402,7 @@ class NoteWidget(QGraphicsObject):
         # if the handle is selected, update the position
         if self.handle_selected:
             painter.setPen(QPen(QtCore.Qt.NoPen))
-            painter.setBrush(QtGui.QBrush(QColor(*[200, 200, 200, 255])))
+            painter.setBrush(QBrush(QColor(*[200, 200, 200, 255])))
             clabel = '%.2f, %.2f' % (cpos.x(), cpos.y())
             self.center_label.setPlainText(clabel)
 
@@ -2458,7 +2459,7 @@ class NodeLabel(QGraphicsObject):
         self.dagnode = parent.dagnode
         self._debug = False
 
-        self.label = QtGui.QGraphicsTextItem(self.dagnode.name, self)
+        self.label = QGraphicsTextItem(self.dagnode.name, self)
         self.label.node = parent
         self._document = self.label.document()
 
@@ -2473,7 +2474,7 @@ class NodeLabel(QGraphicsObject):
         self.label.setFlag(QGraphicsItem.ItemIsFocusable, False)
 
         # bounding shape
-        self.rect_item = QtGui.QGraphicsRectItem(self.boundingRect(), self)
+        self.rect_item = QGraphicsRectItem(self.boundingRect(), self)
         self.rect_item.setPen(QPen(QtCore.Qt.NoPen))
         # self.rect_item.setPen(QPen(QColor(125,125,125)))
         self.rect_item.pen().setStyle(LINE_DASH)
@@ -2483,7 +2484,7 @@ class NodeLabel(QGraphicsObject):
     def __repr__(self):
         return '%s("%s")' % (self.__class__.__name__, self.dagnode.name)
 
-    @QtCore.Slot()
+    @pyqtSlot()
     def nodeNameChanged(self):
         """
         Runs when the node name is changed.
@@ -2498,10 +2499,10 @@ class NodeLabel(QGraphicsObject):
 
     @property
     def is_editable(self):
-        return self.label.textInteractionFlags() == QtCore.Qt.TextEditorInteraction
+        return self.label.textInteractionFlags() == Qt.TextEditorInteraction
 
     def keyPressEvent(self, event):
-        if event.key() == QtCore.Qt.Key_Enter or event.key() == QtCore.Qt.Key_Return:
+        if event.key() == Qt.Key_Enter or event.key() == Qt.Key_Return:
             self.nodeNameChanged()
         else:
             QGraphicsObject.keyPressEvent(self, event)
@@ -2550,8 +2551,8 @@ class NodeLabel(QGraphicsObject):
         """
         Define a shape for selection.
         """
-        path = QtGui.QPainterPath()
-        polyon = QtGui.QPolygonF(self.boundingRect())
+        path = QPainterPath()
+        polyon = QPolygonF(self.boundingRect())
         path.addPolygon(polyon)
         return path
 
@@ -2566,8 +2567,8 @@ class NodeLabel(QGraphicsObject):
         if not self.node.is_enabled:
             label_italic = True
 
-        # painter.setRenderHints(QtGui.QPainter.Antialiasing | QtGui.QPainter.TextAntialiasing)
-        qfont = QtGui.QFont(self.node._font)
+        # painter.setRenderHints(QPainter.Antialiasing | QPainter.TextAntialiasing)
+        qfont = QFont(self.node._font)
         qfont.setPointSize(self.node._font_size)
         qfont.setBold(self.node._font_bold)
         qfont.setItalic(label_italic)
@@ -2636,7 +2637,7 @@ class NodeBackground(QGraphicsItem):
         bg_clr2 = bg_clr1.darker(150)
 
         # background gradient
-        gradient = QtGui.QLinearGradient(0, -self.node.height / 2, 0, self.node.height / 2)
+        gradient = QLinearGradient(0, -self.node.height / 2, 0, self.node.height / 2)
         gradient.setColorAt(0, bg_clr1)
         gradient.setColorAt(1, bg_clr2)
 
@@ -2644,14 +2645,14 @@ class NodeBackground(QGraphicsItem):
         pcolor = self.node.pen_color
         qpen = QPen(pcolor)
         qpen.setWidthF(self.pen_width)
-        qbrush = QtGui.QBrush(gradient)
+        qbrush = QBrush(gradient)
 
         if self._debug:
             pcolor = QColor(*[220, 220, 220])
             if self.node.is_selected:
                 pcolor = QColor(*[255, 180, 74])
             qpen = QPen(pcolor)
-            qbrush = QtGui.QBrush(BRUSH_NONE)
+            qbrush = QBrush(BRUSH_NONE)
 
         painter.setPen(qpen)
         painter.setBrush(qbrush)
@@ -2685,7 +2686,7 @@ class NodeText(QGraphicsObject):
         self.dagnode = parent.dagnode
         self._debug = False
 
-        self.label = QtGui.QGraphicsTextItem(self.dagnode.doc_text, self)
+        self.label = QGraphicsTextItem(self.dagnode.doc_text, self)
         self.label.node = parent
         self._document = self.label.document()
 
@@ -2700,14 +2701,14 @@ class NodeText(QGraphicsObject):
         self.label.setFlag(QGraphicsItem.ItemIsFocusable, False)
 
         # bounding shape
-        self.rect_item = QtGui.QGraphicsRectItem(self.boundingRect(), self)
-        self.rect_item.setPen(QPen(QtCore.Qt.NoPen))
+        self.rect_item = QGraphicsRectItem(self.boundingRect(), self)
+        self.rect_item.setPen(QPen(Qt.NoPen))
         # self.rect_item.setPen(QPen(QColor(125,125,125)))
         self.rect_item.pen().setStyle(LINE_DASH)
         self.rect_item.stackBefore(self.label)
         self.setHandlesChildEvents(False)
 
-    @QtCore.Slot()
+    @pyqtSlot()
     def nodeTextChanged(self):
         """
         Runs when the node name is changed.
@@ -2753,8 +2754,8 @@ class NodeText(QGraphicsObject):
         """
         Aids in selection.
         """
-        path = QtGui.QPainterPath()
-        polyon = QtGui.QPolygonF(self.boundingRect())
+        path = QPainterPath()
+        polyon = QPolygonF(self.boundingRect())
         path.addPolygon(polyon)
         return path
 
@@ -2769,8 +2770,8 @@ class NodeText(QGraphicsObject):
         if not self.node.is_enabled:
             label_italic = True
 
-        # painter.setRenderHints(QtGui.QPainter.Antialiasing | QtGui.QPainter.TextAntialiasing)
-        qfont = QtGui.QFont(self.node._font)
+        # painter.setRenderHints(QPainter.Antialiasing | QPainter.TextAntialiasing)
+        qfont = QFont(self.node._font)
         qfont.setPointSize(self.dagnode.font_size)
         qfont.setBold(self.node._font_bold)
         qfont.setItalic(label_italic)
@@ -2823,7 +2824,7 @@ class DotConnection(QGraphicsObject):
         self._debug = False
         self.is_selected = False
         self.is_hover = False
-        self.debug_label = QtGui.QGraphicsTextItem(self)
+        self.debug_label = QGraphicsTextItem(self)
         self._angle = '0'
         self._rotated = False
 
@@ -3006,8 +3007,8 @@ class DotConnection(QGraphicsObject):
         """
         Aids in selection.
         """
-        path = QtGui.QPainterPath()
-        polyon = QtGui.QPolygonF(self.boundingRect())
+        path = QPainterPath()
+        polyon = QPolygonF(self.boundingRect())
         path.addPolygon(polyon)
         return path
 
@@ -3022,24 +3023,24 @@ class DotConnection(QGraphicsObject):
         self.is_hover = False
 
         # set node selection/hover states
-        if option.state & QtGui.QStyle.State_Selected:
+        if option.state & QStyle.State_Selected:
             # if the entire node is selected, ignore
             if not self.node.isSelected():
                 self.is_selected = True
 
-        if option.state & QtGui.QStyle.State_MouseOver:
+        if option.state & QStyle.State_MouseOver:
             self.is_hover = True
 
         self.setToolTip('%s.%s' % (self.dagnode.name, self.name))
 
         # background
-        gradient = QtGui.QLinearGradient(0, -self.draw_radius, 0, self.draw_radius)
+        gradient = QLinearGradient(0, -self.draw_radius, 0, self.draw_radius)
         gradient.setColorAt(0, self.bg_color)
         gradient.setColorAt(1, self.bg_color.darker(125))
 
-        painter.setRenderHints(QtGui.QPainter.Antialiasing)
-        painter.setPen(QPen(QtGui.QBrush(self.pen_color), self.pen_width, LINE_SOLID))
-        painter.setBrush(QtGui.QBrush(gradient))
+        painter.setRenderHints(QPainter.Antialiasing)
+        painter.setPen(QPen(QBrush(self.pen_color), self.pen_width, LINE_SOLID))
+        painter.setBrush(QBrush(gradient))
 
         # draw the connector shape
         if self.node_shape == 'circle':
@@ -3063,13 +3064,13 @@ class DotConnection(QGraphicsObject):
             bg_color = self.bg_color
             bg_color.setAlpha(125)
 
-            painter.setBrush(QtGui.QBrush(bg_color))
+            painter.setBrush(QBrush(bg_color))
 
             # connection center point (blue)
             painter.drawEllipse(self.transformOriginPoint(), 2, 2)
 
             # dot node center (red)
-            painter.setBrush(QtGui.QBrush(QColor(*[255, 0, 0, 150])))
+            painter.setBrush(QBrush(QColor(*[255, 0, 0, 150])))
             painter.drawEllipse(self.parent_center, 2, 2)
 
             self.setToolTip('rotation: %.2f' % self.rotation())
@@ -3154,7 +3155,7 @@ class NoteBackground(QGraphicsObject):
 
         p2.setX(p2.x() - corner_w)
         p3.setY(p2.y() + corner_w)
-        return QtGui.QPolygonF([p1, p2, p3, p4, p5, p1])
+        return QPolygonF([p1, p2, p3, p4, p5, p1])
 
     def getCornerShape(self):
         """
@@ -3174,7 +3175,7 @@ class NoteBackground(QGraphicsObject):
 
         p3 = p2
         p3.setX(p2.x() - corner_w)
-        return QtGui.QPolygonF([p1, p2, p3, p1])
+        return QPolygonF([p1, p2, p3, p1])
 
     def paint(self, painter, option, widget):
         """
@@ -3185,7 +3186,7 @@ class NoteBackground(QGraphicsObject):
         bg_color2 = bg_color1.darker(150)
 
         # background gradient
-        gradient = QtGui.QLinearGradient(0, -self.node.height / 2, 0, self.node.height / 2)
+        gradient = QLinearGradient(0, -self.node.height / 2, 0, self.node.height / 2)
         gradient.setColorAt(0, bg_color1)
         gradient.setColorAt(1, bg_color2)
 
@@ -3194,8 +3195,8 @@ class NoteBackground(QGraphicsObject):
         qpen = QPen(pcolor)
         qpen.setWidthF(self.node.pen_width)
 
-        qbrush = QtGui.QBrush(gradient)
-        cbrush = QtGui.QBrush(QColor(*[225, 189, 10, 55]))
+        qbrush = QBrush(gradient)
+        cbrush = QBrush(QColor(*[225, 189, 10, 55]))
 
         painter.setPen(qpen)
         painter.setBrush(qbrush)
@@ -3303,7 +3304,7 @@ class ResizeHandle(QGraphicsObject):
         p2 = QPointF(p1.x() - self.width, p1.y())
         p3 = QPointF(p2.x(), p2.y() - self.width)
         p4 = QPointF(p3.x() + self.width, p3.y())
-        return QtGui.QPolygonF([p1, p2, p3, p4, p1])
+        return QPolygonF([p1, p2, p3, p4, p1])
 
     def paint(self, painter, option, widget):
         """
@@ -3312,16 +3313,16 @@ class ResizeHandle(QGraphicsObject):
         self.is_selected = False
         self.is_hover = False
 
-        if option.state & QtGui.QStyle.State_Selected:
+        if option.state & QStyle.State_Selected:
             self.is_selected = True
 
-        if option.state & QtGui.QStyle.State_MouseOver:
+        if option.state & QStyle.State_MouseOver:
             self.is_hover = True
 
         # setup colors
         bg_color = self.bg_color.darker(100)
         qpen = QPen(QtCore.Qt.NoPen)
-        qbrush = QtGui.QBrush(bg_color)
+        qbrush = QBrush(bg_color)
 
         painter.setPen(qpen)
         painter.setBrush(qbrush)

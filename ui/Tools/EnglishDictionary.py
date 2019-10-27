@@ -16,20 +16,15 @@ import sys
 from difflib import get_close_matches
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QTextEdit, QApplication, QLineEdit
+from PyQt5.QtWidgets import QTextEdit, QApplication
 
 # PLM
 from appData import JSON_DIR
-from ui.uikits.Widget import Widget
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Button import Button
-from ui.uikits.UiPreset import Label, IconPth, LineEdit
-
+from ui import Widget, GridLayout, Button, Label, AppIcon, LineEdit
 
 class EnglishDictionary(Widget):
 
-    key = 'engDict'
+    key = 'EnglishDictionary'
     dataPth = os.path.join(JSON_DIR, 'ED.json')
 
     with open(dataPth, 'r') as f:
@@ -38,7 +33,7 @@ class EnglishDictionary(Widget):
     def __init__(self, parent=None):
         super(EnglishDictionary, self).__init__(parent)
 
-        self.setWindowIcon(IconPth(32, "EnglishDictionary"))
+        self.setWindowIcon(AppIcon(32, "EnglishDictionary"))
         self.inputText = ""
 
         self.buildUI()

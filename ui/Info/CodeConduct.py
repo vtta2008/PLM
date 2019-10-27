@@ -16,14 +16,11 @@ from functools import partial
 
 # PtQt5
 from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QScrollArea
+from PyQt5.QtWidgets import QApplication, QScrollArea
 
 # Plm
 from appData import CODECONDUCT
-from ui.uikits.Widget import Widget
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Button import Button
-from ui.uikits.UiPreset import Label, IconPth
+from ui import Widget, GridLayout, Button, Label, AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ CodeConduct Layout """
@@ -36,7 +33,7 @@ class CodeConduct(Widget):
     def __init__(self, parent=None):
 
         super(CodeConduct, self).__init__(parent)
-        self.setWindowIcon(IconPth(32, 'CodeConduct'))
+        self.setWindowIcon(AppIcon(32, 'CodeConduct'))
         self.setWindowTitle("CODE OF CONDUCT")
 
         self.layout = GridLayout()

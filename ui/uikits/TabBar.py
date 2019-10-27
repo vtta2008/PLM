@@ -1,75 +1,37 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Widget.py
+Script Name: TabBar.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
+from __future__ import absolute_import, unicode_literals
 
-# Python
+from PyQt5.QtCore               import QSize
+from PyQt5.QtWidgets            import QTabBar
 
-# PyQt5
-from PyQt5.QtGui            import QTextTableFormat, QTextCharFormat
-from PyQt5.QtWidgets        import QTextEdit, QDockWidget
+from appData                    import __copyright__, SETTING_FILEPTH, ST_FORMAT
 
-# PLM
-from appData                import right, datetTimeStamp, SETTING_FILEPTH, ST_FORMAT, __copyright__
 from ui.SignalManager           import SignalManager
-from cores.Loggers          import Loggers
-from cores.Settings         import Settings
+from cores.Loggers              import Loggers
+from cores.Settings             import Settings
 
-# -------------------------------------------------------------------------------------------------------------
-""" Dock widget """
-
-class NoteStamp(QTextTableFormat):
-    def __init__(self):
-        super(NoteStamp, self).__init__()
-        self.setBorder(1)
-        self.setCellPadding(4)
-        self.setAlignment(right)
-
-class DockStamp(QTextEdit):
-
-    def __init__(self, parent=None):
-        super(DockStamp, self).__init__(parent)
-
-        self.buildStamp()
-
-    def buildStamp(self):
-
-        cursor              = self.textCursor()
-        frame               = cursor.currentFrame()
-        frameFormat         = frame.frameFormat()
-        frameFormat.setPadding(1)
-        frame.setFrameFormat(frameFormat)
-
-        cursor.insertTable(1, 1, NoteStamp())
-        cursor.insertText(datetTimeStamp, QTextCharFormat())
-        self.resize(250, 100)
-
-
-class DockWidget(QDockWidget):
-
-    # self.content = DockStamp(self)
-    # self.setWidget(self.content)
-    # cursor = self.content.textCursor()
-    # cursor.insertBlock()
-    # cursor.insertText("Note info")
+class TabBar(QTabBar):
 
     Type                                    = 'DAMGUI'
-    key                                     = 'DockWidget'
-    _name                                   = 'DAMG Dock Widget'
+    key                                     = 'TabBar'
+    _name                                   = 'DAMG Tab Bar'
     _copyright                              = __copyright__
     _data                                   = dict()
 
     def __init__(self, parent=None):
-        QDockWidget.__init__(self)
+        QTabBar.__init__(self)
+
         self.parent = parent
-        self._name = self.__class__.__name__
+
         self.signals = SignalManager(self)
         self.logger = Loggers(self.__class__.__name__)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
@@ -101,12 +63,6 @@ class DockWidget(QDockWidget):
         self.setValue('width', self.frameGeometry().width())
         self.setValue('height', self.frameGeometry().height())
 
-    def sizeHint(self):
-        size = super(DockWidget, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
-
     def closeEvent(self, event):
         if __name__ == '__main__':
             self.close()
@@ -121,6 +77,31 @@ class DockWidget(QDockWidget):
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
 
+    def tabSizeHint(self, index):
+        size = QTabBar.tabSizeHint(self, index)
+        w = int(self.width()/self.count())
+        return QSize(w, size.height())
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def name(self):
+        return self._name
+
+    @data.setter
+    def data(self, newData):
+        self._data                      = newData
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
+
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 18/07/2018 - 10:07 AM
+# Created by panda on 27/10/2019 - 4:39 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

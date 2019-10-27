@@ -24,11 +24,11 @@ from platform import system
 from PyQt5 import __file__ as pyqt_path
 
 # PLM
-from cores.base import DAMG, DAMGDICT, DAMGLIST
+from cores import DAMG, DAMGDICT, DAMGLIST
 from appData import (__groupname__, __appname__, __plmWiki__, __pkgsReq__, autodeskVer, KEYDETECT, KEYPACKAGE,
                      CONFIG_APPUI, CONFIG_SYSTRAY, FIX_KEY, PLM_LOGO_32, DAMG_LOGO_32, ICON_DIR_32, PROGRAM64,
                      PROGRAM86, LOCALAPPDATA, PROGRAMDATA)
-from ui.SignalManager import SignalManager
+from ui import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configurations """

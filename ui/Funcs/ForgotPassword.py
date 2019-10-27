@@ -17,15 +17,13 @@ import sys
 # PtQt5
 from PyQt5.QtWidgets        import (QApplication, QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit, QVBoxLayout)
 
-# Plm
-from cores.Loggers          import Loggers
-from ui.uikits.Widget       import Widget
-from ui.uikits.UiPreset     import Label, VBoxLayout
+# PLM
+from ui                     import Widget, Label, VBoxLayout
 
 
 class ForgotPassword(Widget):
 
-    key = 'forgotPW'
+    key = 'ForgotPassword'
 
     def __init__(self, parent=None):
         super(ForgotPassword, self).__init__(parent)

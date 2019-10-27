@@ -21,9 +21,7 @@ from PyQt5.QtCore import pyqtProperty, pyqtSlot, pyqtSignal, QSize
 
 # PLM
 from appData            import __globalServer__, __localPort__, __localHost__, __localServer__
-from ui.uikits.UiPreset import Label, ComboBox, VBoxLayout, IconPth, HBoxLayout
-from ui.uikits.Button   import Button
-from ui.uikits.Widget   import Widget
+from ui                  import Label, ComboBox, VBoxLayout, AppIcon, HBoxLayout, Button, Widget
 
 class ServerConfigPage1(Widget):
 
@@ -62,11 +60,15 @@ class ServerConfigPage2(Widget):
 
 class ServerConfig(Widget):
 
+    key = 'ServerConfig'
+    _name = 'ServerConfig'
+    currentIndexChanged = pyqtSignal(int)
+
     def __init__(self, parent=None):
         super(ServerConfig, self).__init__(parent)
 
         self.setWindowTitle("Server Configuration")
-        self.setWindowIcon(IconPth(32, self.key))
+        self.setWindowIcon(AppIcon(32, self.key))
         self.parent             = parent
 
         self.comboBox           = ComboBox({'setObjName': self.key})
@@ -90,9 +92,6 @@ class ServerConfig(Widget):
     def get_chose_option(self):
         index                   = self.getCurrentIndex()
         widget                  = self.stackWidget.widget(index)
-        print("widget index: {0} - widget name: {1}".format(index, widget.name))
-        print("send to setting: ServerConfig, {0}, {1}".format(widget.name, None))
-        # self.sendToSetting.emit("ServerConfig", widget.name, None)
         self.settings.initSetValue("ServerConfig", __localServer__, 'Server')
 
     def sizeHint(self):
@@ -161,8 +160,8 @@ if __name__ == '__main__':
 
     app = QApplication(sys.argv)
     widget = ServerConfig(QSettings)
-    widget.addPage(ServerConfigPage1())
-    widget.addPage(ServerConfigPage2())
+    # widget.addPage(ServerConfigPage1())
+    # widget.addPage(ServerConfigPage2())
     widget.show()
     sys.exit(app.exec_())
 

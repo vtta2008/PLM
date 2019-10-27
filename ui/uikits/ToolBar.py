@@ -20,13 +20,12 @@ from PyQt5.QtWidgets import QToolBar
 
 # PLM
 from appData                    import (__envKey__, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_TOOLS,
-                                        CONFIG_POST, SETTING_FILEPTH, ST_FORMAT)
+                                        CONFIG_POST, SETTING_FILEPTH, ST_FORMAT, __copyright__)
 from cores.base                 import DAMGLIST, DAMGDICT
 from ui.uikits.Action           import Action
 from ui.SignalManager               import SignalManager
 from cores.Loggers              import Loggers
 from cores.Settings             import Settings
-from utils.utils                import get_layout_size
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar data preset """
@@ -43,7 +42,11 @@ TOOLBAR_DATA = dict(TD = CONFIG_TDS,
 
 class ToolBar(QToolBar):
 
-    key = "ToolBar"
+    Type                                    = 'DAMGUI'
+    key                                     = 'ToolBar'
+    _name                                   = 'DAMG Tool Bar'
+    _copyright                              = __copyright__
+    _data                                   = dict()
 
     def __init__(self, configKey=None, parent=None):
         QToolBar.__init__(self)
@@ -118,6 +121,33 @@ class ToolBar(QToolBar):
             self.signals.showLayout.emit(self.configKey, 'hide')
             event.ignore()
 
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def count(self):
+        return self._count
+
+    @count.setter
+    def count(self, newVal):
+        self._count                     = newVal
+
+    @data.setter
+    def data(self, newData):
+        self._data                      = newData
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
 
 class ToolBarPreset(ToolBar):
 

@@ -16,9 +16,9 @@ from __future__ import absolute_import, unicode_literals
 import re, os
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSettings, QDateTime, QSize
+from PyQt5.QtCore import Qt, QSize
 from PyQt5.QtGui import QPainter, QColor
-from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy
+from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy, QLineEdit
 
 # -------------------------------------------------------------------------------------------------------------
 """ Nodegraph setting variables """
@@ -254,7 +254,10 @@ dockB                       = Qt.BottomDockWidgetArea
 dockAll                     = Qt.AllDockWidgetAreas
 
 # -------------------------------------------------------------------------------------------------------------
-""" Node graph pre setting """
+""" setting """
+
+PRS = dict( password = QLineEdit.Password,  center = center , left  = left   , right  = right, spmin = SiPoMin,
+            spmax    = SiPoMax           ,  sppre  = SiPoPre, spexp = SiPoExp, spign  = SiPoIgn,  )
 
 # node connection property types
 PROPERTY = dict( simple = ['FLOAT', 'STRING', 'BOOL', 'INT'] , arrays  = ['FLOAT2', 'FLOAT3', 'INT2', 'INT3', 'COLOR'],
@@ -323,9 +326,9 @@ PRJ_INFO = dict( APPS               = ["maya", "zbrush", "mari", "nuke", "photos
                  FX                 = ["scenes", "sourceimages", "images", "cache", "reference", "alembic"],
                  ANIM               = ["scenes", "sourceimages", "images", "movie", "alembic"],)
 
-FIX_KEYS = dict( TextEditor         = 'textEditor', NoteReminder = 'noteReminder',  Calculator  = 'calculator',  Calendar  = 'calendar',
-                 EnglishDictionary  = 'engDict',    FindFiles    = 'findFile',      ImageViewer = 'imageViewer', NodeGraph = 'nodeGraph',
-                 Screenshot         = 'screenShot', )
+FIX_KEYS = dict( TextEditor         = 'TextEditor', NoteReminder = 'NoteReminder',  Calculator  = 'Calculator',  Calendar  = 'Calendar',
+                 EnglishDictionary  = 'EnglishDictionary',    FindFiles    = 'FindFiles',      ImageViewer = 'ImageViewer', NodeGraph = 'NodeGraph',
+                 Screenshot         = 'Screenshot', )
 
 
 # -------------------------------------------------------------------------------------------------------------

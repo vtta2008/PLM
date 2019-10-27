@@ -20,10 +20,7 @@ from PyQt5.QtWidgets import QApplication, QScrollArea
 
 # Plm
 from appData import CONTRIBUTING
-from ui.uikits.Widget import Widget
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Button import Button
-from ui.uikits.UiPreset import Label, IconPth
+from ui import Widget, GridLayout, Button, Label, AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Contributing Layout """
@@ -36,7 +33,7 @@ class Contributing(Widget):
     def __init__(self, parent=None):
 
         super(Contributing, self).__init__(parent)
-        self.setWindowIcon(IconPth(32, 'Contributing'))
+        self.setWindowIcon(AppIcon(32, 'Contributing'))
         self.setWindowTitle('CONTRIBUTING')
 
         self.buildUI()

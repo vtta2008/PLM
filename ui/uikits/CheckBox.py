@@ -1,78 +1,48 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Widget.py
+Script Name: CheckBox.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
+from __future__ import absolute_import, unicode_literals
 
-# Python
+from PyQt5.QtWidgets import QCheckBox
 
-# PyQt5
-from PyQt5.QtGui            import QTextTableFormat, QTextCharFormat
-from PyQt5.QtWidgets        import QTextEdit, QDockWidget
+from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
 
-# PLM
-from appData                import right, datetTimeStamp, SETTING_FILEPTH, ST_FORMAT, __copyright__
 from ui.SignalManager           import SignalManager
-from cores.Loggers          import Loggers
-from cores.Settings         import Settings
+from ui.uikits.UiPreset         import check_preset
+from cores.Loggers              import Loggers
+from cores.Settings             import Settings
 
-# -------------------------------------------------------------------------------------------------------------
-""" Dock widget """
-
-class NoteStamp(QTextTableFormat):
-    def __init__(self):
-        super(NoteStamp, self).__init__()
-        self.setBorder(1)
-        self.setCellPadding(4)
-        self.setAlignment(right)
-
-class DockStamp(QTextEdit):
-
-    def __init__(self, parent=None):
-        super(DockStamp, self).__init__(parent)
-
-        self.buildStamp()
-
-    def buildStamp(self):
-
-        cursor              = self.textCursor()
-        frame               = cursor.currentFrame()
-        frameFormat         = frame.frameFormat()
-        frameFormat.setPadding(1)
-        frame.setFrameFormat(frameFormat)
-
-        cursor.insertTable(1, 1, NoteStamp())
-        cursor.insertText(datetTimeStamp, QTextCharFormat())
-        self.resize(250, 100)
-
-
-class DockWidget(QDockWidget):
-
-    # self.content = DockStamp(self)
-    # self.setWidget(self.content)
-    # cursor = self.content.textCursor()
-    # cursor.insertBlock()
-    # cursor.insertText("Note info")
+class CheckBox(QCheckBox):
 
     Type                                    = 'DAMGUI'
-    key                                     = 'DockWidget'
-    _name                                   = 'DAMG Dock Widget'
+    key                                     = 'CheckBox'
+    _name                                   = 'DAMG Check Box'
     _copyright                              = __copyright__
     _data                                   = dict()
 
-    def __init__(self, parent=None):
-        QDockWidget.__init__(self)
-        self.parent = parent
-        self._name = self.__class__.__name__
+    def __init__(self, preset={}, parent=None):
+        super(CheckBox, self).__init__(parent)
+
         self.signals = SignalManager(self)
         self.logger = Loggers(self.__class__.__name__)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.parent = parent
+
+        self.preset = preset
+        if check_preset(self.preset):
+            self.buildUI()
+
+    def buildUI(self):
+        for key, value in self.preset.items():
+            if key == 'txt':
+                self.setText(value)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
@@ -102,25 +72,25 @@ class DockWidget(QDockWidget):
         self.setValue('height', self.frameGeometry().height())
 
     def sizeHint(self):
-        size = super(DockWidget, self).sizeHint()
+        size = super(CheckBox, self).sizeHint()
         size.setHeight(size.height())
         size.setWidth(max(size.width(), size.height()))
         return size
 
     def closeEvent(self, event):
-        if __name__ == '__main__':
+        if __name__=='__main__':
             self.close()
         else:
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
 
     def hideEvent(self, event):
-        if __name__ == '__main__':
+        if __name__=='__main__':
             self.hide()
         else:
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 18/07/2018 - 10:07 AM
+# Created by panda on 27/10/2019 - 6:53 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

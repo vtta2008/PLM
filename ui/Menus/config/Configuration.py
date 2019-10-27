@@ -22,10 +22,7 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QDateTimeEdit, QGridLayout
 
 # PLM
 from appData            import __globalServer__, __localServer__
-from ui.uikits.Widget   import Widget
-from ui.uikits.UiPreset import Label, ComboBox, HBoxLayout, VBoxLayout, LineEdit
-from ui.uikits.Button   import Button
-from ui.uikits.GroupBox import GroupBox
+from ui                 import Widget, Label, ComboBox, HBoxLayout, VBoxLayout, LineEdit, Button, GroupBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """

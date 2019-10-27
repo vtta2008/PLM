@@ -17,20 +17,13 @@ import sys
 
 # PyQt5
 from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtWidgets import (QApplication, QGridLayout, QMessageBox, QFileDialog, QWidget)
+from PyQt5.QtWidgets import (QApplication, QMessageBox, QFileDialog)
 
 # Plm
 from appData import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_REQUIRED, QUESTIONS
-from cores.Loggers import Loggers
-
-from ui.MessageBox import MessageBox
-from ui.uikits.Button import Button
-from ui.uikits.GroupBox import GroupGrid
-from ui.uikits.UiPreset import IconPth, Label, LineEdit, ComboBox, CheckBox
-from ui.uikits.Widget import Widget
-from ui.uikits.GridLayout import GridLayout
-from utils.utils import check_blank, check_match, get_avatar_icon, getToken, getUnix, getTime, getDate, \
-    get_local_pc_info, get_user_location
+from ui import AppIcon, Label, LineEdit, ComboBox, CheckBox, GroupGrid, Button, MessageBox, Widget, GridLayout
+from utils.utils import (check_blank, check_match, get_avatar_icon, getToken, getUnix, getTime, getDate,
+                         get_local_pc_info, get_user_location)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign up ui """
@@ -42,8 +35,7 @@ class SignUp(Widget):
     def __init__(self, parent=None):
         super(SignUp, self).__init__(parent)
 
-        self.setWindowIcon(IconPth(32, "SignUp"))
-        self.logger = Loggers(__file__)
+        self.setWindowIcon(AppIcon(32, "SignUp"))
 
         self.layout = GridLayout()
         self.buildUI()

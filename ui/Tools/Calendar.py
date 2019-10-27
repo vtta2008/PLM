@@ -15,27 +15,25 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import QDate, QLocale, Qt, pyqtSignal
+from PyQt5.QtCore import QDate, QLocale, Qt
 from PyQt5.QtGui import QFont, QTextCharFormat
 from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
                              QComboBox, QDateEdit, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
-                             QLayout, QWidget)
+                             QLayout)
 
 # Plt
 from appData import SiPoMin
-from ui.uikits.Widget import Widget
-from ui.uikits.UiPreset import IconPth
-
+from ui import Widget, AppIcon
 # -------------------------------------------------------------------------------------------------------------
 """ Clendar """
 
 class Calendar(Widget):
 
-    key = 'calendar'
+    key = 'Calendar'
 
     def __init__(self, parent=None):
         super(Calendar, self).__init__(parent)
-        self.setWindowIcon(IconPth(32, 'Calendar'))
+        self.setWindowIcon(AppIcon(32, 'Calendar'))
 
         self.buildUI()
 

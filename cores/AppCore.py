@@ -18,19 +18,15 @@ from cores.base             import DAMG
 from cores.Loggers          import Loggers
 from cores.Errors           import BuildingUIError
 
-from ui.Settings.SettingUI  import SettingUI
+from ui.PipelineManager     import PipelineManager
 
-from ui                     import PipelineManager, SysTrayIcon
-from ui.SignalManager           import SignalManager
-from ui.Funcs               import SignUp, SignIn, ForgotPassword
-from ui.Settings            import UserSetting
-from ui.Projects            import NewProject
-from ui.Info                import Credit, About, CodeConduct, Contributing, Reference, Version, LicenceMIT
-from ui.Tools               import Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary, Calendar, Calculator
-from ui.Menus.config        import Preferences, Configuration
-from ui.Tools.TextEditor    import TextEditor
-from ui.NodeGraph           import NodeGraph
+from ui                     import (SignalManager, SignUp, SignIn, ForgotPassword, UserSetting, NewProject, Credit,
+                                    About, CodeConduct, Contributing, Reference, Version, LicenceMIT, Screenshot,
+                                    NoteReminder, ImageViewer, FindFiles, EnglishDictionary, Calendar, Calculator,
+                                    TextEditor, NodeGraph, SettingUI, SysTray)
 
+from ui.Menus.config.Configuration import Configuration
+from ui.Menus.config.Preferences import Preferences
 
 class AppCore(DAMG):                                                    # Core metadata
 
@@ -64,32 +60,32 @@ class AppCore(DAMG):                                                    # Core m
 
     def buildUI(self):
 
-        self.login          = SignIn.SignIn()
-        self.forgotPW       = ForgotPassword.ForgotPassword()
-        self.signup         = SignUp.SignUp()
-        self.mainUI         = PipelineManager.PipelineManager(self.settings)
-        self.sysTray        = SysTrayIcon.SysTrayIcon()
+        self.login          = SignIn()
+        self.forgotPW       = ForgotPassword()
+        self.signup         = SignUp()
+        self.mainUI         = PipelineManager(self.settings)
+        self.sysTray        = SysTray()
 
-        self.about          = About.About()
-        self.calculator     = Calculator.Calculator()
-        self.calendar       = Calendar.Calendar()
-        self.codeConduct    = CodeConduct.CodeConduct()
-        self.configuration  = Configuration.Configuration()
-        self.contributing   = Contributing.Contributing()
-        self.credit         = Credit.Credit()
-        self.engDict        = EnglishDictionary.EnglishDictionary()
-        self.findFile       = FindFiles.FindFiles()
-        self.imageViewer    = ImageViewer.ImageViewer()
-        self.licence        = LicenceMIT.LicenceMIT()
-        self.newProject     = NewProject.NewProject()
-        self.nodeGraph      = NodeGraph.NodeGraph()
-        self.noteReminder   = NoteReminder.NoteReminder()
-        self.preferences    = Preferences.Preferences()
-        self.reference      = Reference.Reference()
-        self.screenShot     = Screenshot.Screenshot()
-        self.textEditor     = TextEditor.TextEditor()
-        self.userSetting    = UserSetting.UserSetting()
-        self.version        = Version.Version()
+        self.about          = About()
+        self.calculator     = Calculator()
+        self.calendar       = Calendar()
+        self.codeConduct    = CodeConduct()
+        self.configuration  = Configuration()
+        self.contributing   = Contributing()
+        self.credit         = Credit()
+        self.engDict        = EnglishDictionary()
+        self.findFile       = FindFiles()
+        self.imageViewer    = ImageViewer()
+        self.licence        = LicenceMIT()
+        self.newProject     = NewProject()
+        self.nodeGraph      = NodeGraph()
+        self.noteReminder   = NoteReminder()
+        self.preferences    = Preferences()
+        self.reference      = Reference()
+        self.screenShot     = Screenshot()
+        self.textEditor     = TextEditor()
+        self.userSetting    = UserSetting()
+        self.version        = Version()
 
         self._buildUI       = True
 

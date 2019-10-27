@@ -19,17 +19,12 @@ from functools import partial
 
 # PyQt5
 from PyQt5.QtGui            import QIcon, QIntValidator
-from PyQt5.QtWidgets        import (QGroupBox, QHBoxLayout, QVBoxLayout, QLineEdit, QInputDialog,
+from PyQt5.QtWidgets        import (QGroupBox, QHBoxLayout, QInputDialog,
                                     QComboBox, QFileDialog, QListWidget, QListWidgetItem, QApplication)
 
 
 # PLM
-from appData                import SiPoMin
-from cores.Loggers          import Loggers
-from ui.uikits.Widget       import Widget
-from ui.uikits.GridLayout   import GridLayout
-from ui.uikits.Button       import Button
-from ui.uikits.UiPreset     import Label, HBoxLayout, VBoxLayout, LineEdit
+from ui                     import Widget, GridLayout, Button, Label, HBoxLayout, VBoxLayout, LineEdit
 from utils.utils            import get_app_icon
 
 # -------------------------------------------------------------------------------------------------------------

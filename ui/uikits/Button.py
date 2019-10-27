@@ -17,19 +17,23 @@ from functools                  import partial
 from PyQt5.QtWidgets            import QPushButton, QToolButton
 
 # PLM
-from appData                    import SiPoExp, SiPoPre, SETTING_FILEPTH, ST_FORMAT
-from ui.SignalManager               import SignalManager
+from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
+from ui.SignalManager           import SignalManager
 from cores.Loggers              import Loggers
 from cores.Settings             import Settings
-from ui.uikits.UiPreset         import check_preset, IconPth
-from utils.utils                import get_layout_size
+from ui.uikits.UiPreset         import check_preset
+from ui.uikits.Icon             import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Button presets """
 
 class Button(QPushButton):
 
-    key = "Button"
+    Type                                    = 'DAMGUI'
+    key                                     = 'Button'
+    _name                                   = 'DAMG Button'
+    _copyright                              = __copyright__
+    _data                                   = dict()
 
     def __init__(self, preset={}, parent=None):
         super(Button, self).__init__(parent)
@@ -55,9 +59,9 @@ class Button(QPushButton):
             elif key == 'emit2':
                 self.clicked.connect(partial(value[0], value[1][0], value[1][1]))
             elif key == 'icon':
-                self.setIcon(IconPth(32, value))
+                self.setIcon(AppIcon(32, value))
             elif key == 'icon24':
-                self.setIcon(IconPth(24, value))
+                self.setIcon(AppIcon(24, value))
             elif key == 'fix':
                 self.setFixedSize(value)
             elif key == 'ics':
@@ -112,9 +116,13 @@ class Button(QPushButton):
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
 
-class ToolBtn(QToolButton):
+class ToolButton(QToolButton):
 
-    key = "ToolBtn"
+    Type                                    = 'DAMGUI'
+    key                                     = 'ToolButton'
+    _name                                   = 'DAMG Tool Button'
+    _copyright                              = __copyright__
+    _data                                   = dict()
 
     def __init__(self, text, parent=None):
         QToolButton.__init__(self)
@@ -157,7 +165,7 @@ class ToolBtn(QToolButton):
         self.setValue('height', self.frameGeometry().height())
 
     def sizeHint(self):
-        size = super(ToolBtn, self).sizeHint()
+        size = super(ToolButton, self).sizeHint()
         size.setHeight(size.height())
         size.setWidth(max(size.width(), size.height()))
         return size

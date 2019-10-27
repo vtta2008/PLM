@@ -18,11 +18,12 @@ from functools import partial
 from PyQt5.QtCore import pyqtSlot
 # PyQt5
 from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtWidgets import (QApplication, QWidget, QGridLayout, QGroupBox, QLabel)
+from PyQt5.QtWidgets import (QApplication, QGridLayout, QGroupBox, QLabel, QGraphicsScene)
 
 # Plt
-from ui.SignalManager import SignalManager
+from ui.uikits.Widget import Widget
 from ui.uikits.Button import Button
+from ui.uikits.GridLayout import GridLayout
 from ui.uikits.GroupBox import GroupBox
 from utils import localSQL as usql
 from utils.utils import get_avatar_icon
@@ -30,20 +31,17 @@ from utils.utils import get_avatar_icon
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab3 """
 
-class TopTab3(QWidget):
+class TopTab3(Widget):
 
-    key = 'topTab3'
+    key = 'TopTab3'
 
     def __init__(self, parent=None):
         super(TopTab3, self).__init__(parent)
         
-        self.signals = SignalManager(self)
-        
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
-        self.applySetting()
         self.signals.regisLayout.emit(self)
 
     def buildUI(self):
@@ -77,16 +75,12 @@ class TopTab3(QWidget):
     @pyqtSlot(bool)
     def update_avatar(self, param):
         print("receive signal emit to update avatar: {0}".format(param))
-        # if param:
-        #     self.username, token, cookie, remember = self.query.query_table('curUser')
-        #     self.avatar = QPixmap(func.getAvatar(self.username))
-        #     self.avatarScene = QGraphicsScene()
-        #     self.avatarScene.addPixmap(self.avatar)
-        #     self.avatarScene.update()
-
-    def applySetting(self):
-        pass
-
+        if param:
+            self.username, token, cookie, remember = self.query.query_table('curUser')
+            self.avatar = QPixmap(get_avatar_icon(self.username))
+            self.avatarScene = QGraphicsScene()
+            self.avatarScene.addPixmap(self.avatar)
+            self.avatarScene.update()
 
 def main():
     app = QApplication(sys.argv)

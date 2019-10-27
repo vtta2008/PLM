@@ -1,43 +1,74 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Widget.py
+Script Name: Label.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __future__ import absolute_import, unicode_literals
 
-import sys
+from PyQt5.QtWidgets            import QLabel
+from PyQt5.QtGui                import QFont, QPixmap, QImage
 
-from PyQt5.QtWidgets            import QWidget, QVBoxLayout, QLabel, QApplication
-
-from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
+from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__, PRS, center
 
 from ui.SignalManager           import SignalManager
+from ui.uikits.UiPreset         import check_preset
 from cores.Loggers              import Loggers
 from cores.Settings             import Settings
-from ui.uikits.Icon             import AppIcon
+from utils.utils                import get_avatar_icon
 
-class Widget(QWidget):
+class Label(QLabel):
 
     Type                                    = 'DAMGUI'
-    key                                     = 'Widget'
-    _name                                   = 'DAMG Widget'
+    key                                     = 'Label'
+    _name                                   = 'DAMG Label'
     _copyright                              = __copyright__
     _data                                   = dict()
 
-    def __init__(self, parent=None):
-        QWidget.__init__(self)
+    def __init__(self, preset={}, parent=None):
+        super(Label, self).__init__(parent)
 
         self.parent         = parent
-
         self.signals        = SignalManager(self)
         self.logger         = Loggers(self.__class__.__name__)
         self.settings       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
-        self.setWindowTitle(self._name)
+        self.preset         = preset
+        if check_preset(self.preset):
+            self.buildUI()
+
+    def buildUI(self):
+        for key, value in self.preset.items():
+            if key == 'txt':
+                self.setText(value)
+            elif key == 'fnt':
+                self.setFont(QFont(value))
+            elif key == 'alg':
+                self.setAlignment(PRS[value])
+            elif key == 'wmin':
+                self.setMinimumWidth(value)
+            elif key == 'hmin':
+                self.setMinimumHeight(value)
+            elif key == 'smin':
+                self.setMinimumSize(value[0], value[1])
+            elif key == 'sizePolicy':
+                self.setSizePolicy(PRS[value])
+            elif key == 'pxm':
+                self.setPixmap(QPixmap.fromImage(QImage(get_avatar_icon(value))))
+            elif key == 'scc':
+                self.setScaledContents(value)
+            elif key == 'sfs':
+                self.setFixedSize(value[0], value[1])
+            elif key == 'setBuddy':
+                self.setBuddy(value)
+            elif key == 'link':
+                self.setOpenExternalLinks(value)
+            else:
+                self.setAlignment(center)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
@@ -67,7 +98,7 @@ class Widget(QWidget):
         self.setValue('height', self.frameGeometry().height())
 
     def sizeHint(self):
-        size = super(Widget, self).sizeHint()
+        size = super(Label, self).sizeHint()
         size.setHeight(size.height())
         size.setWidth(max(size.width(), size.height()))
         return size
@@ -86,38 +117,6 @@ class Widget(QWidget):
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
 
-    @property
-    def copyright(self):
-        return self._copyright
-
-    @property
-    def data(self):
-        return self._data
-
-    @property
-    def name(self):
-        return self._name
-
-    @data.setter
-    def data(self, newData):
-        self._data                      = newData
-
-    @name.setter
-    def name(self, newName):
-        self._name                      = newName
-
-if __name__ == '__main__':
-
-    app = QApplication(sys.argv)
-    widget = Widget()
-    widget.setWindowTitle("Widget test layout")
-    widget.setWindowIcon(AppIcon(32, 'About'))
-    widget.layout = QVBoxLayout()
-    widget.layout.addWidget(QLabel("this is a test layout of Widget class"))
-    widget.setLayout(widget.layout)
-    widget.show()
-    app.exec_()
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 1/08/2018 - 4:12 AM
+# Created by panda on 27/10/2019 - 6:40 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

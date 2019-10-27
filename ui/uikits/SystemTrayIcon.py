@@ -1,68 +1,39 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Action.py
+Script Name: SystemTrayIcon.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
+from __future__ import absolute_import, unicode_literals
 
-# Python
-
-# PyQt5
-from PyQt5.QtWidgets import QAction
-
-# PLM
-from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
+from PyQt5.QtWidgets import QSystemTrayIcon
 
 from ui.SignalManager           import SignalManager
 from cores.Loggers              import Loggers
 from cores.Settings             import Settings
-from ui.uikits.UiPreset         import check_preset
-from ui.uikits.Icon             import AppIcon
 
-# -------------------------------------------------------------------------------------------------------------
-""" Action presets """
+from appData import __copyright__, ST_FORMAT, SETTING_FILEPTH
 
-class Action(QAction):
+class SystemTrayIcon(QSystemTrayIcon):
 
     Type                                    = 'DAMGUI'
-    key                                     = 'Action'
-    _name                                   = 'DAMG Action'
+    key                                     = 'SystemTrayIcon'
+    _name                                   = 'DAMG System Tray Icon'
     _copyright                              = __copyright__
     _data                                   = dict()
 
-    def __init__(self, preset={}, parent=None):
-        super(Action, self).__init__(parent)
+    def __init__(self, parent=None):
+        QSystemTrayIcon.__init__(self)
 
         self.parent = parent
-        self.preset = preset
+
         self.signals = SignalManager(self)
         self.logger = Loggers(self.__class__.__name__)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-
-        if check_preset(self.preset):
-            self.buildUI()
-
-    def buildUI(self):
-        for key, value in self.preset.items():
-            if key == 'icon':
-                self.setIcon(AppIcon(32, value))
-            elif key == 'txt':
-                self.setText(value)
-            elif key == 'trg':
-                self.triggered.connect(value)
-            elif key == 'shortcut':
-                self.setShortcut(value)
-            elif key == 'checkable':
-                self.setChecked(value)
-            elif key == 'enabled':
-                self.setDisabled(value)
-            elif key == 'stt':
-                self.setStatusTip(value)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
@@ -91,5 +62,5 @@ class Action(QAction):
         self._name                      = newName
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 18/07/2018 - 8:42 AM
+# Created by panda on 27/10/2019 - 7:51 PM
 # © 2017 - 2018 DAMGteam. All rights reserved
