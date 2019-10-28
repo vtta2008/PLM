@@ -58,6 +58,12 @@ class Widget(QWidget):
         if not posX is None and not posX is None:
             self.move(posX, posY)
 
+        if __name__=='__main__':
+            self.show()
+        else:
+            self.signals.showLayout.emit(self.key, 'show')
+            event.ignore()
+
     def moveEvent(self, event):
         self.setValue('posX', self.x())
         self.setValue('posY', self.y())

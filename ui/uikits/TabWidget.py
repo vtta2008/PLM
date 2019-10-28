@@ -58,6 +58,12 @@ class TabWidget(QTabWidget):
         if not posX is None and not posX is None:
             self.move(posX, posY)
 
+        if __name__ == '__main__':
+            self.show()
+        else:
+            self.signals.showLayout.emit(self.key, 'show')
+            event.ignore()
+
     def sizeHint(self):
         size = super(TabWidget, self).sizeHint()
         size.setHeight(size.height())

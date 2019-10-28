@@ -12,8 +12,7 @@ from __future__ import absolute_import
 """ Import """
 
 # Python
-import os, sys, requests, platform, subprocess, winshell, yaml, json, linecache, re, datetime, time, uuid, win32api
-import pprint
+import os, sys, requests, platform, subprocess, winshell, yaml, json, re, datetime, time, uuid, win32api
 
 __all__ = ['attr_type', 'auto_convert', 'camel_case_to_lower_case_underscore', 'camel_case_to_title', 'clean_name',
             'is_bool', 'is_dict', 'is_list', 'is_none', 'is_number', 'is_string', 'list_attr_types',

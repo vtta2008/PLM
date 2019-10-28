@@ -31,7 +31,7 @@ from utils.utils            import str2bool
 
 class SignIn(Widget):
 
-    key = 'login'
+    key = 'SignIn'
 
     def __init__(self, parent=None):
 
@@ -39,6 +39,7 @@ class SignIn(Widget):
 
         self.setWindowIcon(AppIcon(32, "SignIn"))
         self.setFixedSize(400, 300)
+        self.setWindowTitle('Sign In')
 
         self.layout = GridLayout()
         self.buildUI()
@@ -75,9 +76,12 @@ class SignIn(Widget):
         self.layout.addWidget(signupGrp, 1, 0, 1, 1)
 
     def forgetPwClicked(self):
-        from ui.Funcs import ForgotPassword
-        forgetPW = ForgotPassword.ForgotPassword()
-        forgetPW.show()
+        if __name__ == '__main__':
+            from ui.Funcs.ForgotPassword import ForgotPassword
+            self.forgotPW = ForgotPassword()
+            self.forgotPW.show()
+        else:
+            self.signals.showLayout('ForgotPassword', 'show')
 
     def signInClicked(self):
         username = str(self.userTF.text())
@@ -108,19 +112,18 @@ class SignIn(Widget):
 
             usql.RemoveDB("curUser")
             usql.UpdateDB("curUser", [username, token, cookie, str2bool(check)])
-
-            self.signals.showLayout.emit('mainUI', 'show')
+            self.signals.setLoginValue.emit(True)
+            self.signals.showLayout.emit('PipelineManager', 'show')
         else:
             usql.RemoveDB("curUser")
             MessageBox(self, 'Login Failed', 'critical', PW_WRONG)
             return
 
-    def closeEvent(self, event):
-        if __name__ == '__main__':
-            self.close()
-        else:
-            self.hide()
-
+    def showEvent(self, event):
+        self.signals.showLayout.emit('SignIn', 'show')
+        self.signals.showLayout.emit('SignUp', 'hide')
+        self.signals.showLayout.emit('ForgotPassword', 'hide')
+        self.signals.showLayout.emit('PipelineManager', 'hide')
 
 if __name__ == '__main__':
     login = QApplication(sys.argv)

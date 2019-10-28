@@ -39,8 +39,10 @@ class LineEdit(QLineEdit):
         if check_preset(self.preset):
             self.buildUI()
 
-
     def buildUI(self):
+        if self.preset is None or self.preset == {}:
+            self.preset = {'txt': ' '}
+
         for key, value in self.preset.items():
             if key == 'fn':
                 self.setEchoMode(PRS[value])
@@ -67,6 +69,12 @@ class LineEdit(QLineEdit):
 
         if not posX is None and not posX is None:
             self.move(posX, posY)
+
+        if __name__ == '__main__':
+            self.show()
+        else:
+            self.signals.showLayout.emit(self.key, 'show')
+            event.ignore()
 
     def moveEvent(self, event):
         self.setValue('posX', self.x())

@@ -17,7 +17,7 @@ from appData                    import __copyright__, appIconCfg
 
 from ui.SignalManager           import SignalManager
 from cores.Loggers              import Loggers
-from utils.utils                import data_handler, get_logo_icon, get_app_icon
+from utils.utils                import data_handler, get_logo_icon, get_app_icon, get_tag_icon
 
 class Icon(QIcon):
 
@@ -99,7 +99,25 @@ class LogoIcon(Icon):
             self.addFile(get_logo_icon(s, self.name), QSize(s, s))
         return True
 
+class TagIcon(Icon):
 
+    key = 'TagIcon'
+    tags = ['licence', 'python', 'version']
+    w = 87
+    h = 20
+
+    def __init__(self, name='Tag', parent=None):
+        super(TagIcon, self).__init__(parent)
+
+        self.parent = parent
+        self.tag = name
+
+        self.find_tag()
+
+    def find_tag(self):
+        if self.tag in self.tags:
+            self.addFile(get_tag_icon(self.tag), QSize(self.w, self.h))
+        return True
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 6:31 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

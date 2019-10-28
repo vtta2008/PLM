@@ -23,10 +23,9 @@ from PyQt5.QtWidgets        import QApplication
 
 from cores.Loggers          import Loggers
 # PLM
-from appData                import __plmWiki__, __envKey__
-from appData                import CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR, SiPoMin
-from ui.uikits.MainWindow   import MainWindow
-from ui.uikits.Action       import Action
+from appData                import (__plmWiki__, __envKey__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR, SiPoMin,
+                                    CONFIG_OFFICE, CONFIG_DEV, CONFIG_TOOLS)
+from ui                     import MainWindow, Action
 from utils.localSQL         import TimeLog
 
 # -------------------------------------------------------------------------------------------------------------
@@ -50,18 +49,26 @@ class SubMenuBar(MainWindow):
 
     def buildMenu(self):
 
-        self.fileMenu = self.menuBar().addMenu("&File")
-        self.fileMenu.addAction(Action({'icon': 'NewOrganisation', 'txt': 'Register new Organisation', 'trg': partial(self.signals.showLayout.emit, 'newOrganisation', 'show')}, self))
-        self.fileMenu.addAction(Action({'icon': 'YourOrganisation', 'txt': 'Your Organisation', 'trg': partial(self.signals.showLayout.emit, 'YourOrganisation', 'show')}, self))
-        self.fileMenu.addSeparator()
-        self.fileMenu.addAction(Action({'icon': 'NewTeam', 'txt': 'Create new Team', 'trg': partial(self.signals.showLayout.emit, 'newTeam', 'show')}, self))
-        self.fileMenu.addAction(Action({'icon': 'EditTeam', 'txt': 'Edit your Team', 'trg': partial(self.signals.showLayout.emit, 'EditTeam', 'show')}, self))
+        self.mainMenu = self.menuBar()
 
-        self.fileMenu.addSeparator()
-        self.fileMenu.addAction(Action({'icon': 'NewProject', 'txt': 'Create new project', 'trg': partial(self.signals.showLayout.emit, 'newProject', 'show')}, self))
-        self.fileMenu.addAction(Action({'icon': 'RecentProject', 'txt': 'Open recent project', 'trg': partial(self.signals.showLayout.emit, 'RecentProject', 'show')}, self))
-        self.fileMenu.addAction(Action({'icon': 'ProjectManager', 'txt': 'Project Manager', 'trg': partial(self.signals.showLayout.emit, 'ProjectManager', 'show')}, self))
-        self.fileMenu.addSeparator()
+        self.organisationMenu = self.mainMenu.addMenu("&Organisation")
+        self.organisationMenu.addAction(Action({'icon': 'NewOrganisation', 'txt': 'New', 'trg': partial(self.signals.showLayout.emit, 'NewOrganisation', 'show')}, self))
+        self.organisationMenu.addAction(Action({'icon': 'EditOrganisation', 'txt': 'Edit', 'trg': partial(self.signals.showLayout.emit, 'EditOrganisation', 'show')}, self))
+        self.organisationMenu.addAction(Action({'icon': 'SetTeam', 'txt': 'Set', 'trg': partial(self.signals.showLayout.emit, 'SetTeam', 'show')}, self))
+        self.organisationMenu.addAction(Action({'icon': 'OrganisationManager', 'txt': 'Organisation Manager', 'trg': partial(self.signals.showLayout, 'OrganisationManager', 'show')}, self))
+
+        self.teamMenu = self.mainMenu.addMenu('&Team')
+        self.teamMenu.addAction(Action({'icon': 'NewTeam', 'txt': 'New', 'trg': partial(self.signals.showLayout.emit, 'NewTeam', 'show')}, self))
+        self.teamMenu.addAction(Action({'icon': 'EditTeam', 'txt': 'Edit', 'trg': partial(self.signals.showLayout.emit, 'EditTeam', 'show')}, self))
+        self.teamMenu.addAction(Action({'icon': 'SetTeam', 'txt': 'Set', 'trg': partial(self.signals.showLayout.emit, 'SetTeam', 'show')}, self))
+        self.teamMenu.addAction(Action({'icon': 'TeamManager', 'txt': 'Team Manager', 'trg': partial(self.signals.showLayout, 'TeamManager', 'show')}, self))
+
+        self.projectMenu = self.mainMenu.addMenu('&Project')
+        self.projectMenu.addAction(Action({'icon': 'NewProject', 'txt': 'New', 'trg': partial(self.signals.showLayout.emit, 'NewProject', 'show')}, self))
+        self.projectMenu.addAction(Action({'icon': 'EditProject', 'txt': 'Edit', 'trg': partial(self.signals.showLayout.emit, 'EditProject', 'show')}, self))
+        self.projectMenu.addAction(Action({'icon': 'SetProject', 'txt': 'Set', 'trg': partial(self.signals.showLayout.emit, 'SetProject', 'show')}, self))
+        self.projectMenu.addAction(Action({'icon': 'ProjectManager', 'txt': 'Project Manager', 'trg': partial(self.signals.showLayout.emit, 'ProjectManager', 'show')}, self))
+
 
         self.gotoMenu = self.menuBar().addMenu('Go to')
         self.gotoMenu.addAction(Action({'icon': 'ConfigFolder', 'txt': 'Config folder', 'trg':partial(self.signals.executing.emit, CONFIG_DIR)}, self))
@@ -69,32 +76,44 @@ class SubMenuBar(MainWindow):
         self.gotoMenu.addAction(Action({'icon': 'SettingFolder', 'txt': 'Setting folder', 'trg': partial(self.signals.executing.emit, SETTING_DIR)}, self))
         self.gotoMenu.addAction(Action({'icon': 'AppFolder', 'txt': 'Application folder', 'trg': partial(self.signals.executing.emit, ROOT_DIR)}, self))
 
-        self.editMenu = self.menuBar().addMenu("&Edit")
-        self.editMenu.addMenu('Copy')
-        self.editMenu.addMenu('Copy')
-        self.editMenu.addMenu('Cut')
-        self.editMenu.addMenu('Paste')
+        self.officeMenu = self.menuBar().addMenu("&Office")
 
-        self.viewMenu = self.menuBar().addMenu("&View")
+        officeKeys = ['TextEditor', 'NoteReminder']
+
+        for key in officeKeys:
+            if key in self.appInfo:
+                self.officeMenu.addAction(Action({'icon': key,
+                                                  'txt': key,
+                                                  'trg': partial(self.signals.showLayout.emit, key, 'show')}, self))
+        for key in CONFIG_OFFICE:
+            if key in self.appInfo:
+                self.officeMenu.addAction(Action({'icon': key,
+                                                  'txt': key,
+                                                  'trg': partial(self.signals.executing.emit, key)}, self))
 
         self.toolMenu = self.menuBar().addMenu("&Tools")
 
-        self.toolMenu.addAction(Action({'icon': "Calculator", 'txt': 'Calculator', 'trg': partial(self.signals.showLayout.emit, 'Calculator', 'show')}, self))
-        self.toolMenu.addAction(Action({'icon': "Calendar", 'txt': 'Calendar', 'trg': partial(self.signals.showLayout.emit, 'Calendar', 'show')},self))
-        self.toolMenu.addAction(Action({'icon': "EnglishDictionary", 'txt': 'EnglishDictionary', 'trg': partial(self.signals.showLayout.emit, 'EnglishDictionary', 'show')},self))
-        self.toolMenu.addAction(Action({'icon': "FindFiles", 'txt': 'FindFiles', 'trg': partial(self.signals.showLayout.emit, 'FindFiles', 'show')}, self))
-        self.toolMenu.addAction(Action({'icon': "ImageViewer", 'txt': 'ImageViewer', 'trg': partial(self.signals.showLayout.emit, 'ImageViewer', 'show')}, self))
-        self.toolMenu.addAction(Action({'icon': "NodeReminder", 'txt': 'NodeReminder', 'trg': partial(self.signals.showLayout.emit, 'NodeReminder', 'show')}, self))
-        self.toolMenu.addAction(Action({'icon': "Screenshot", 'txt': 'Screenshot', 'trg': partial(self.signals.showLayout.emit, 'Screenshot', 'show')}, self))
-        self.toolMenu.addAction(Action({'icon': "TextEditor", 'txt': 'Text Editor', 'trg': partial(self.signals.showLayout.emit, 'TextEditor', 'show')}, self))
+        for key in CONFIG_TOOLS:
+            if key in self.appInfo:
+                self.toolMenu.addAction(Action({'icon': key,
+                                                'txt': key,
+                                                'trg': partial(self.signals.showLayout.emit, key, 'show')}, self))
 
         self.toolMenu.addSeparator()
 
-        self.toolMenu.addAction(Action({'icon': "CleanPyc", 'txt': 'Remove .pyc files', 'trg':partial(self.signals.executing.emit, 'Remove pyc')}, self))
-        self.toolMenu.addAction(Action({'icon': "Reconfig", 'txt': 'Re-configure', 'trg':partial(self.signals.executing.emit, 'Re-config local')}, self))
-        self.toolMenu.addAction(Action({'icon': "Debug", 'txt': 'Run PLM Debugger', 'trg': self.run_debugger}, self))
+        self.toolMenu.addAction(Action({'icon': "CleanPyc", 'txt': 'Remove .pyc files', 'trg':partial(self.signals.executing.emit, 'CleanPyc')}, self))
+        self.toolMenu.addAction(Action({'icon': "ReConfig", 'txt': 'Re-configure', 'trg':partial(self.signals.executing.emit, 'ReConfig')}, self))
+        self.toolMenu.addAction(Action({'icon': "Debug", 'txt': 'Run PLM Debugger', 'trg': partial(self.signals.executing.emit, 'Debug')}, self))
 
-        self.windowMenu = self.menuBar().addMenu("&Window")
+        self.devMenu = self.menuBar().addMenu("&Dev")
+
+        for key in CONFIG_DEV:
+            if key in self.appInfo:
+                if key in self.appInfo:
+                    print(self.appInfo[key])
+                    self.devMenu.addAction(Action({'icon': key,
+                                                   'txt': key,
+                                                   'trg': partial(self.signals.executing.emit, self.appInfo[key][2])}, self))
 
     def on_exit_action_triggered(self):
         TimeLog("Log out")
@@ -108,12 +127,6 @@ class SubMenuBar(MainWindow):
         self.setMaximumHeight(20)
         self.setSizePolicy(SiPoMin, SiPoMin)
         self.setContentsMargins(5, 5, 5, 5)
-
-    def run_debugger(self):
-        from ui.Debugger import Debugger
-        debugger = Debugger()
-        debugger.show()
-        return debugger
 
 def main():
     app = QApplication(sys.argv)

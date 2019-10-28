@@ -19,13 +19,13 @@ from PyQt5.QtWidgets    import QApplication, QWidget, QGridLayout, QLineEdit, QT
 # Plt
 from cores.Loggers      import Loggers
 from appData            import SiPoMin, SiPoExp
-from ui.SignalManager       import SignalManager
-from ui.uikits.Button   import Button
+from ui.SignalManager   import SignalManager
+from ui                 import Button, LineEdit, Widget, GridLayout, Label
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """
 
-class CommandPrompt(QLineEdit):
+class CommandPrompt(LineEdit):
 
     def __init__(self, parent=None):
         super(CommandPrompt, self).__init__(parent)
@@ -49,17 +49,14 @@ class Terminal(QTextBrowser):
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab5 """
 
-class TopTab5(QWidget):
+class TopTab5(Widget):
 
-    key = 'topTab5'
+    key = 'TopTab5'
 
     def __init__(self, parent=None):
         super(TopTab5, self).__init__(parent)
 
-        self.logger = Loggers(__file__)
-        self.signals = SignalManager(self)
-
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
         self.signals.regisLayout.emit(self)
@@ -87,7 +84,7 @@ class TopTab5(QWidget):
         btn6 = Button({'txt': "Create SQL", 'stt': "Create database"})
         btn7 = Button({'txt': "Create Admin", 'stt': "Create Admin Account"})
 
-        self.layout.addWidget(QLabel())
+        self.layout.addWidget(Label())
 
         self.layout.addWidget(btn1, 6, 0, 1, 2)
         self.layout.addWidget(btn2, 6, 2, 1, 2)
@@ -96,8 +93,6 @@ class TopTab5(QWidget):
         self.layout.addWidget(btn5, 7, 0, 1, 2)
         self.layout.addWidget(btn6, 7, 2, 1, 2)
         self.layout.addWidget(btn7, 7, 4, 1, 2)
-
-        self.applySetting()
 
     @pyqtSlot()
     def on_btn_clicked(self):
@@ -111,9 +106,10 @@ class TopTab5(QWidget):
     def update_terminal(self, cmd):
         self.terminal.insertPlainText(subprocess.getoutput(cmd=cmd) + "\n")
 
-    def applySetting(self):
-        self.layout.setSpacing(2)
-        self.setSizePolicy(SiPoMin, SiPoMin)
+    def showEvent(self, event):
+        self.signals.showLayout.emit(self.key, 'show')
+        self.signals.showLayout.emit('TopTab3', 'hide')
+        self.signals.showLayout.emit('TopTab2', 'hide')
 
 def main():
     app = QApplication(sys.argv)

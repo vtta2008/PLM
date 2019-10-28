@@ -19,7 +19,7 @@ from ui.uikits.DockWidget               import DockWidget
 from ui.uikits.GridLayout               import GridLayout
 from ui.uikits.GroupBox                 import GroupBox, GroupGrid
 from ui.uikits.HBoxLayout               import HBoxLayout
-from ui.uikits.Icon                     import AppIcon, LogoIcon, Icon
+from ui.uikits.Icon                     import AppIcon, LogoIcon, TagIcon, Icon
 from ui.uikits.Label                    import Label
 from ui.uikits.LineEdit                 import LineEdit
 from ui.uikits.MainWindow               import MainWindow

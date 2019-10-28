@@ -16,9 +16,13 @@ from __future__ import absolute_import
 __envKey__ = "DAMGTEAM"
 
 import os, sys
-from cores.EnvVariableManager import EnvVariableManager
 
 ROOT = os.path.abspath(os.getcwd())
+
+from appData import Configurations
+configurations = Configurations(__envKey__, os.path.join(ROOT))
+
+from cores.EnvVariableManager import EnvVariableManager
 
 try:
     os.getenv(__envKey__)
@@ -31,8 +35,14 @@ else:
     cfgable                     = True
 
 if not cfgable:
-    print("CONFIGERROR: environment variable not set !!!")
+    print("CONFIGERROR: environment variable not set.")
     sys.exit()
+else:
+    if not configurations.cfgs:
+        print("CONFIGERROR: configurations have not done yet.")
+        sys.exit()
+    else:
+        print('Configurations has been completed.')
 
 # -------------------------------------------------------------------------------------------------------------
 """ import """
@@ -54,7 +64,7 @@ from appData                        import (__localServer__, __localPort__, PLMA
                                             __appname__, __version__, __website__, __globalServer__, SETTING_FILEPTH,
                                             ST_FORMAT, SYSTRAY_UNAVAI)
 
-from cores                          import Configurations, DAMG, DAMGDICT, StyleSheets, AppCore, ThreadManager, Settings, Loggers
+from cores                          import DAMG, DAMGDICT, StyleSheets, AppCore, ThreadManager, Settings, Loggers
 from utils.localSQL                 import QuerryDB
 from utils.utils                    import str2bool, clean_file_ext
 from ui                             import Application
@@ -70,7 +80,7 @@ class PLM(Application):
         super(PLM, self).__init__(sys.argv)
 
         # Run all neccessary configuration to start PLM
-        self.configs                = Configurations(__envKey__, os.path.join(ROOT))
+        self.configs                = configurations
 
         self.signals                = SignalManager(self)
         self.logger                 = Loggers(self.__class__.__name__)
@@ -78,6 +88,7 @@ class PLM(Application):
         self.report                 = self.logger.report
         self.info                   = self.logger.info
         self.debug                  = self.logger.debug
+        self._login                 = False
 
         self.appCore                = AppCore(__organization__, __appname__, __version__, __website__, self)
         self.appInfo                = self.configs.appInfo  # Configuration data
@@ -91,13 +102,7 @@ class PLM(Application):
         # Multithreading.
         self.thread_manager         = ThreadManager()
 
-        if not self.configs.cfgs:
-            self.report("Configurations has not completed yet!")
-        else:
-            self.report("Configurations has completed", **self.configs.cfgInfo)
-
         self.settingUI              = SettingUI(self.settings)
-
         self.database               = QuerryDB()                                    # Database tool
         self.webBrowser             = PLMBrowser()                                  # Webbrowser
 
@@ -111,26 +116,35 @@ class PLM(Application):
         self.mainUI                 = self.appCore.mainUI
         self.sysTray                = self.appCore.sysTray
 
-        for layout in [self.login, self.forgotPW, self.signup, self. mainUI, self.sysTray, self.settingUI]:
+        for layout in [self.login, self.forgotPW, self.signup, self.mainUI, self.sysTray, self.settingUI, self.webBrowser]:
             self.regisLayout(layout)
+
+        for layout in self.mainUI.mainUI_layouts:
+            self.regisLayout(layout)
+
+        for layout in self.mainUI.topTabUI.tabLst:
+            key = layout.key
+            if not key in self.layout_manager.keys():
+                self.layout_manager[key] = layout
+
         try:
             self.username, token, cookie, remember = self.database.query_table('curUser')
         except (ValueError, IndexError):
             self.info("Error occur, can not query data")
-            self.signals.showLayout('login', "show")
+            self.showLayout('SignIn', "show")
         else:
             if not str2bool(remember):
-                self.signals.showLayout('login', "show")
+                self.showLayout('SignIn', "show")
             else:
                 r = requests.get(__localServer__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
-
                 if r.status_code == 200:
                     if not self.appCore.sysTray.isSystemTrayAvailable():
                         self.report(SYSTRAY_UNAVAI)
                         sys.exit(1)
-                    self.showLayout('MainUI', "show")
+                    self._login = True
+                    self.showLayout('PipelineManager', "show")
                 else:
-                    self.showLayout('login', "show")
+                    self.showLayout('SignIn', "show")
 
         self.about                  = self.appCore.about
         self.calculator             = self.appCore.calculator
@@ -156,11 +170,9 @@ class PLM(Application):
         for layout in [self.about, self.calculator, self.calendar, self.codeConduct, self.configuration,
                        self.contributing, self.credit, self.engDict, self.findFile, self.imageViewer, self.licence,
                        self.newProject, self.nodeGraph, self.noteReminder, self.preferences, self.reference,
-                       self.screenShot, self.textEditor, self.userSetting, self.version, self.sysTray]:
-            self.regisLayout(layout)
+                       self.screenShot, self.textEditor, self.userSetting, self.version]:
 
-        import pprint
-        pprint.pprint(self.layout_manager)
+            self.regisLayout(layout)
 
         self.setQuitOnLastWindowClosed(False)
         sys.exit(self.exec_())
@@ -169,33 +181,52 @@ class PLM(Application):
     def registerUI(self):
         return self.layout_manager
 
+    @property
+    def loginState(self):
+        return self._login
+
+    @loginState.setter
+    def loginState(self, newVal):
+        self._login = newVal
+
+    @pyqtSlot(bool)
+    def loginChanged(self, newVal):
+        self._login = newVal
+
     @pyqtSlot(str, str)
     def showLayout(self, name, mode):
         if name == 'app':
             layout = self
+        elif name in  self.layout_manager.keys():
+            layout = self.layout_manager[name]
         else:
-            try:
-                layout = self.layout_manager[name]
-            except KeyError:
-                self.report('Layout "{0}" is not registered'.format(name))
-                return
+            self.info("Layout: '{0}' is not registerred yet.".format(name))
+            layout = None
 
         if mode == "hide":
             # print('hide: {}'.format(layout))
             layout.hide()
+            layout.setValue('showLayout', 'hide')
         elif mode == "show":
             # print('show: {}'.format(layout))
-            layout.show()
+            try:
+                layout.show()
+            except AttributeError:
+                pass
+            else:
+                layout.setValue('showLayout', 'show')
+
         elif mode == 'showNor':
             layout.showNormal()
+            layout.setValue('state', 'showNormal')
         elif mode == 'showMin':
             layout.showMinimized()
+            layout.setValue('state', 'showMinimized')
         elif mode == 'showMax':
             layout.showMaximized()
+            layout.setValue('state', 'showMaximized')
         elif mode == 'quit' or mode == 'exit':
             layout.quit()
-
-        self.setSetting(layout.key, mode)
 
     @pyqtSlot(str)
     def openBrowser(self, url):
@@ -211,15 +242,20 @@ class PLM(Application):
     @pyqtSlot(str)
     def executing(self, cmd):
         if cmd in self.layout_manager.keys():
-            self.signals.showLayout(cmd, 'show')
+            self.signals.showLayout.emit(cmd, 'show')
         elif os.path.isdir(cmd):
             os.startfile(cmd)
+        elif cmd in self.configs.appInfo.keys():
+            os.system(self.appInfo[cmd])
+        elif cmd == 'Debug':
+            from ui.Debugger import Debugger
+            debugger = Debugger()
+            return debugger
         elif cmd == 'open_cmd':
             os.system('start /wait cmd')
-        elif cmd == 'Remove pyc':
-            self.report("clean .pyc files")
+        elif cmd == 'CleanPyc':
             clean_file_ext('.pyc')
-        elif cmd == 'Re-config local':
+        elif cmd == 'ReConfig':
             self.configs.cfg_mainPkgs()
         elif cmd == 'appExit':
             self.exit()
@@ -236,6 +272,7 @@ class PLM(Application):
             layout.signals.showLayout.connect(self.showLayout)
             layout.signals.executing.connect(self.executing)
             layout.signals.setSetting.connect(self.setSetting)
+            layout.signals.regisLayout.connect(self.regisLayout)
         else:
             self.report("Already registered: {0}".format(key))
 

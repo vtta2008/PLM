@@ -24,7 +24,10 @@ class SignalManager(DAMG):
     regisLayout                     = pyqtSignal(DAMG)
     openBrowser                     = pyqtSignal(str)
     setSetting                      = pyqtSignal(str, str, str)
+
     sysNotify                       = pyqtSignal(str, str, str, int)
+
+    setLoginValue                   = pyqtSignal(bool)
 
     updateAvatar                    = pyqtSignal(bool)
     cfgReport                       = pyqtSignal(str)
@@ -64,7 +67,7 @@ class SignalManager(DAMG):
                 except AttributeError:
                     pass
 
-        if self.parent.key == 'MainUI':
+        if self.parent.key == 'PipelineManager':
             self.parent.setMaximumWidth(459)
 
 

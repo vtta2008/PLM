@@ -37,14 +37,20 @@ class TopTab(Widget):
 
         self.tabs = TabWidget()
 
-        self.tab1 = TopTab1()
+        # self.tab1 = TopTab1()
         self.tab2 = TopTab2()
         self.tab3 = TopTab3()
-        self.tab4 = TopTab4()
+        # self.tab4 = TopTab4()
         self.tab5 = TopTab5()
 
-        self.tabLst = [self.tab1, self.tab2, self.tab3, self.tab4, self.tab5]
-        self.tabNames = ['Tool', 'Prj', 'User', 'Testlayout', 'Cmd']
+        self.tabLst = [
+                        # self.tab1, self.tab4,
+                        self.tab2, self.tab3, self.tab5
+                        ]
+        self.tabNames = [
+                         # 'Tool', 'Testlayout',
+                         'Prject', 'User', 'Cmd'
+                        ]
 
         for layout in self.tabLst:
             layout.signals.showLayout.connect(self.signals.showLayout)
@@ -52,7 +58,7 @@ class TopTab(Widget):
             layout.signals.regisLayout.connect(self.signals.regisLayout)
             layout.signals.setSetting.connect(self.signals.setSetting)
             layout.signals.openBrowser.connect(self.signals.openBrowser)
-            layout.signals.regisLayout.emit(self)
+
             self.tabs.addTab(layout, self.tabNames[self.tabLst.index(layout)])
 
         self.signals.updateAvatar.connect(self.tab3.update_avatar)
@@ -62,6 +68,18 @@ class TopTab(Widget):
         self.tabs.setUsesScrollButtons(True)
 
         self.layout.addWidget(self.tabs)
+
+    def showEvent(self, event):
+        self.signals.showLayout.emit(self.key, 'show')
+        key = self.getValue('currentTab')
+        if key is None:
+            key = self.tabs.currentWidget().key
+        else:
+            self.signals.showLayout(key, 'show')
+
+    def closeEvent(self, event):
+        self.setValue('currentTab', self.tabs.currentWidget().key)
+        self.signals.showLayout.emit(self.key, 'hide')
 
 def main():
     app = QApplication(sys.argv)

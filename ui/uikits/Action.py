@@ -63,6 +63,8 @@ class Action(QAction):
                 self.setDisabled(value)
             elif key == 'stt':
                 self.setStatusTip(value)
+            elif key == 'tt':
+                self.setToolTip(value)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

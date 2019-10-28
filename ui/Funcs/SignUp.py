@@ -30,7 +30,7 @@ from utils.utils import (check_blank, check_match, get_avatar_icon, getToken, ge
 
 class SignUp(Widget):
 
-    key = 'signup'
+    key = 'SignUp'
 
     def __init__(self, parent=None):
         super(SignUp, self).__init__(parent)

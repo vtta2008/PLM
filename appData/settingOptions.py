@@ -223,6 +223,8 @@ HMIN                        = 20                                                
 HFIX                        = 80
 ICONSIZE                    = 32
 ICONBUFFER                  = -1
+BTNTAGSIZE                  = QSize(87, 20)
+TAGBTNSIZE                  = QSize(87-1, 20-1)
 BTNICONSIZE                 = QSize(ICONSIZE, ICONSIZE)
 ICONBTNSIZE                 = QSize(ICONSIZE+ICONBUFFER, ICONSIZE+ICONBUFFER)
 

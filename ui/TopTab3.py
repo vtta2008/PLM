@@ -56,10 +56,11 @@ class TopTab3(Widget):
         self.avatar.setScaledContents(True)
         self.avatar.setFixedSize(100, 100)
 
-        btn1 = Button({'txt':'Account Setting', 'cl': partial(self.signals.showLayout.emit, 'UserSetting', 'show')})
-        btn2 = Button({'txt':'Log Out', 'cl': partial(self.signals.showLayout.emit, 'login', 'show')})
+        btn1 = Button({'txt': 'Account Setting', 'cl': partial(self.signals.showLayout.emit, 'UserSetting', 'show')})
+        btn2 = Button({'txt': 'Messages', 'cl': partial(self.signals.showLayout.emit, 'Messages', 'show')})
+        btn3 = Button({'txt': 'Log Out', 'cl': partial(self.signals.showLayout.emit, 'SignIn', 'show')})
 
-        btns = [btn1, btn2]
+        btns = [btn1, btn2, btn3]
 
         sec1Grp = GroupBox(self.username, [self.avatar], "ImageView")
         sec2Grp = GroupBox("Setting", btns, "BtnGrid")
@@ -81,6 +82,11 @@ class TopTab3(Widget):
             self.avatarScene = QGraphicsScene()
             self.avatarScene.addPixmap(self.avatar)
             self.avatarScene.update()
+
+    def showEvent(self, event):
+        self.signals.showLayout.emit(self.key, 'show')
+        self.signals.showLayout.emit('TopTab2', 'hide')
+        self.signals.showLayout.emit('TopTab5', 'hide')
 
 def main():
     app = QApplication(sys.argv)

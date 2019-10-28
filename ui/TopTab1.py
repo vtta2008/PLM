@@ -70,7 +70,7 @@ class TopTab1(Widget):
         extraBtns = []
         for key in CONFIG_EXTRA:
             if key in self.appInfo:
-                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit2': [self.signals.showLayout.emit, [FIX_KEYS[key], 'show']]})
+                btn = Button({'icon': key, 'tt': self.appInfo[key][2], 'fix': BTNICONSIZE, 'ics': ICONBTNSIZE, 'emit2': [self.signals.executing.emit, key]})
                 extraBtns.append(btn)
 
         sec1Grp = GroupBox("Office", officeBtns, "IconGrid")

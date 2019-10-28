@@ -12,7 +12,6 @@ from cores.AppCore import AppCore
 from cores.Attributes import Attribute
 from cores.base import DAMG, DAMGLIST, DAMGDICT, DAMGTHREAD, DAMGWORKER, DAMGERROR, ThreadPoolBase
 from cores.Commands import SceneNodesCommand
-from cores.Configurations import Configurations
 from cores.EnvVariableManager import EnvVariableManager
 from cores.Errors import *
 from cores.EventHandler import EventHandler

@@ -12,14 +12,18 @@ Description:
 """ Import """
 
 # Python
-import sys
+import sys, webbrowser
 
 # PyQt5
 from PyQt5.QtWidgets            import QApplication
 
 # Plt
-from appData                    import __copyright__, __version__
-from ui                         import Widget, GridLayout, Label
+from appData                    import BTNTAGSIZE, TAGBTNSIZE
+from ui                         import Widget, GridLayout, Button, Label
+
+pythonPth = "https://docs.anaconda.com/anaconda/reference/release-notes/"
+licencePth = "https://github.com/vtta2008/damgteam/blob/master/LICENCE"
+versionPth = "https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst"
 
 # -------------------------------------------------------------------------------------------------------------
 """ Footer """
@@ -38,13 +42,23 @@ class Footer(Widget):
     def buildUI(self):
         layout          = GridLayout()
 
-        version         = Label({'txt': __version__, 'alg': 'right'})
-        copyR           = Label({'txt': __copyright__, 'alg': 'right'})
+        btn1 = Button({'tag': 'python', 'fix': BTNTAGSIZE, 'ics': BTNTAGSIZE, 'emit2': [webbrowser.open, pythonPth]})
+        btn2 = Button({'tag': 'licence', 'fix': BTNTAGSIZE, 'ics': BTNTAGSIZE, 'emit2': [webbrowser.open, licencePth]})
+        btn3 = Button({'tag': 'version', 'fix': BTNTAGSIZE, 'ics': BTNTAGSIZE, 'emit2': [webbrowser.open, versionPth]})
 
-        layout.addWidget(version, 0, 0, 1, 9)
-        layout.addWidget(copyR, 1, 0, 1, 9)
+        layout.addWidget(Label({'txt': " "}), 0, 0, 1, 1)
+        layout.addWidget(Label({'txt': " "}), 0, 1, 1, 1)
+        layout.addWidget(Label({'txt': " "}), 0, 2, 1, 1)
+        layout.addWidget(Label({'txt': " "}), 0, 3, 1, 1)
+        layout.addWidget(Label({'txt': " "}), 0, 4, 1, 1)
+        layout.addWidget(Label({'txt': " "}), 0, 5, 1, 1)
+        layout.addWidget(Label({'txt': " "}), 0, 6, 1, 1)
+
+        layout.addWidget(btn1, 0, 7, 1, 1)
+        layout.addWidget(btn2, 0, 8, 1, 1)
+        layout.addWidget(btn3, 0, 9, 1, 1)
+
         self.setLayout(layout)
-
 
 def main():
     app = QApplication(sys.argv)

@@ -16,7 +16,7 @@ import sys
 from functools              import partial
 
 # PyQt5
-from PyQt5.QtWidgets        import QApplication, QWidget, QGridLayout, QGroupBox
+from PyQt5.QtWidgets        import QApplication
 
 # Plt
 from ui.uikits.Widget           import Widget
@@ -32,7 +32,7 @@ from ui.uikits.GridLayout       import GridLayout
 
 class TopTab2(Widget):
 
-    key = 'topTab2'
+    key = 'TopTab2'
 
     def __init__(self, parent=None):
         super(TopTab2, self).__init__(parent)
@@ -44,15 +44,16 @@ class TopTab2(Widget):
 
     def buildUI(self):
 
-        btn1 = Button({'txt':'New Project', 'tt':'Create New Project', 'cl':partial(self.signals.showLayout.emit, 'NewProject', 'show')})
-        btn2 = Button({'txt':'New Group', 'tt':'Create New Group', 'cl':partial(self.signals.showLayout.emit, 'NewGrp', 'show')})
-        btn3 = Button({'txt':'Your Projects', 'tt':'Your Projects', 'cl':partial(self.signals.showLayout.emit, 'YourPrj', 'show')})
-        btn4 = Button({'txt':'Find crew', 'tt':'Find crew', 'cl':partial(self.signals.showLayout.emit, 'FindCrew', 'show')})
-        btn5 = Button({'txt':'Get crew', 'tt':'Check applicant', 'cl':partial(self.signals.showLayout.emit, 'GetCrew', 'show')})
-        btn6 = Button({'txt':'Your crew', 'tt':'Your crew', 'cl':partial(self.signals.showLayout.emit, 'YourCrew', 'show')})
+        btn1 = Button({'txt':'New Project', 'tt':'New Project', 'cl':partial(self.signals.showLayout.emit, 'NewProject', 'show')})
+        btn2 = Button({'txt':'Project List', 'tt':'Project List', 'cl':partial(self.signals.showLayout.emit, 'ProjectList', 'show')})
+        btn3 = Button({'txt':'Config Project', 'tt':'Config Projects', 'cl':partial(self.signals.showLayout.emit, 'ConfigProject', 'show')})
+
+        btn4 = Button({'txt':'New Task', 'tt':'New Task', 'cl':partial(self.signals.showLayout.emit, 'NewTask', 'show')})
+        btn5 = Button({'txt':'Task List', 'tt':'Task List', 'cl':partial(self.signals.showLayout.emit, 'TaskList', 'show')})
+        btn6 = Button({'txt':'Config Task', 'tt':'Config Task', 'cl':partial(self.signals.showLayout.emit, 'ConfigTask', 'show')})
 
         sec1Grp     = GroupBox("Project", [btn1, btn2, btn3], "BtnGrid")
-        sec2Grp     = GroupBox("Crew", [btn4, btn5, btn6], "BtnGrid")
+        sec2Grp     = GroupBox("Task", [btn4, btn5, btn6], "BtnGrid")
 
         sec3Grp     = GroupBox('Info')
         sec3Grid    = GridLayout()
@@ -63,6 +64,10 @@ class TopTab2(Widget):
         self.layout.addWidget(sec2Grp, 3, 0, 3, 3)
         self.layout.addWidget(sec3Grp, 0, 3, 6, 6)
 
+    def showEvent(self, event):
+        self.signals.showLayout.emit(self.key, 'show')
+        self.signals.showLayout.emit('TopTab3', 'hide')
+        self.signals.showLayout.emit('TopTab5', 'hide')
 
 def main():
     app = QApplication(sys.argv)

@@ -54,9 +54,9 @@ class SysTrayIconMenu(QMenu):
 
         self.addSeparator()
 
-        self.addAction(Action({'icon':'Maximize','txt':'Maximize','trg':partial(self.signals.showLayout.emit, 'mainUI', 'showMax')}, self))
-        self.addAction(Action({'icon':'Minimize','txt':"Minimize",'trg':partial(self.signals.showLayout.emit, 'mainUI', 'showMin')}, self))
-        self.addAction(Action({'icon':'Restore','txt':"Restore", 'trg':partial(self.signals.showLayout.emit, 'mainUI', 'showNor')}, self))
+        self.addAction(Action({'icon':'Maximize','txt':'Maximize','trg':partial(self.signals.showLayout.emit, 'PipelineManager', 'showMax')}, self))
+        self.addAction(Action({'icon':'Minimize','txt':"Minimize",'trg':partial(self.signals.showLayout.emit, 'PipelineManager', 'showMin')}, self))
+        self.addAction(Action({'icon':'Restore','txt':"Restore", 'trg':partial(self.signals.showLayout.emit, 'PipelineManager', 'showNor')}, self))
 
         self.addSeparator()
         self.addAction(Action({'icon':'Close','txt':"Quit", 'trg':partial(self.signals.showLayout.emit, 'app', 'quit')}, self))
@@ -102,7 +102,7 @@ class SysTray(SystemTrayIcon):
 
     def sys_tray_icon_activated(self, reason):
         if reason == QSystemTrayIcon.DoubleClick:
-            self.signals.showLayout.emit('mainUI', 'showNor')
+            self.signals.showLayout.emit('PipelineManager', 'showNor')
 
     def log_in(self):
         self.showMessage('Welcome', "Log in as {0}".format(self.username), QSystemTrayIcon.Information, 500)

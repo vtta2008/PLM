@@ -16,55 +16,51 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QApplication, QWidget, QCheckBox, QPushButton, QGridLayout, QGroupBox
+from PyQt5.QtWidgets import QApplication, QCheckBox, QPushButton, QGridLayout, QGroupBox
 
-from cores.Loggers import Loggers
 # Plt
-from utils.utils import str2bool, bool2str, get_app_icon
-from ui.uikits.Widget import Widget
+from utils.utils import str2bool, bool2str
+from ui import Widget, AppIcon, GridLayout, GroupBox, CheckBox, Button
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """
 
 class Preferences(Widget):
 
-    key = 'preferences'
+    key = 'Preferences'
 
     _msg_user_not_set = "Not configured yet, will be set with the first message received"
 
     def __init__(self, parent=None):
         super(Preferences, self).__init__(parent)
-        self.logger = Loggers(self)
-        self.resize(200, 100)
-        self.setWindowIcon(QIcon(get_app_icon(32, 'Configuration')))
 
-        self.layout = QGridLayout()
+        self.resize(200, 100)
+        self.setWindowIcon(AppIcon(32, self.key))
+        self.setWindowTitle(self.key)
+
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
 
         tbGrpBox = QGroupBox("Tool Bar")
-        tbGrid = QGridLayout()
+        tbGrid = GridLayout()
         tbGrpBox.setLayout(tbGrid)
 
-        self.toolBarTD_checkBox = QCheckBox("Show/hide TD toolbar")
+        self.toolBarTD_checkBox = CheckBox({'txt': "Show/hide TD toolbar"})
         self.toolBarTD_checkBox.stateChanged.connect(self.checkBoxTDStateChanged)
 
-        self.toolBarComp_checkBox = QCheckBox("Show/hide Comp toolbar")
+        self.toolBarComp_checkBox = CheckBox({'txt': "Show/hide Comp toolbar"})
         self.toolBarComp_checkBox.stateChanged.connect(self.checkBoxCompStateChanged)
 
-        self.toolBarArt_checkBox = QCheckBox("Show/hide Art toolbar")
+        self.toolBarArt_checkBox = CheckBox({'txt': "Show/hide Art toolbar"})
         self.toolBarArt_checkBox.stateChanged.connect(self.checkBoxArtStateChanged)
 
-        self.allToolBar_checkBox = QCheckBox("Show/hide all toolbar")
+        self.allToolBar_checkBox = CheckBox({'txt': "Show/hide all toolbar"})
         self.allToolBar_checkBox.stateChanged.connect(self.checkBoxMasterStateChanged)
 
-
-        closeBtn = QPushButton('Close')
-        closeBtn.clicked.connect(self.close)
+        closeBtn = Button({'txt': 'Close', 'cl': self.close})
 
         tbGrid.addWidget(self.toolBarTD_checkBox, 0, 0, 1, 1)
         tbGrid.addWidget(self.toolBarComp_checkBox, 1, 0, 1, 1)

@@ -13,8 +13,6 @@ Description:
 # Python
 import os
 
-from appData.paths import CONFIG_DIR
-
 # --------------------------------------------------------------------------------------------------------------
 """ Autodesk config """
 
@@ -58,7 +56,7 @@ sizefxApp           = [ 'Houdini FX', ]
 """ Microsoft Office config """
 
 officeVer           = [ '2013', '2015', '2016', '2017', "2018", "2019", "2020"]
-officeApp           = [ 'Word', 'Excel', 'PowerPoint', 'Wordpad', 'TextEditor', 'NoteReminder' ]
+officeApp           = [ 'Word', 'Excel', 'PowerPoint', 'Wordpad']
 
 # --------------------------------------------------------------------------------------------------------------
 """ JetBrains config """
@@ -89,10 +87,10 @@ TRACK_VFX           = [ 'NukeX', 'After Effects', ]
 TRACK_ART           = [ 'Photoshop', 'Illustrator', 'Storyboarder', 'Krita (x64)']
 TRACK_TEX           = [ 'Mari', 'Painter', ]
 TRACK_POST          = [ 'Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro']
-TRACK_OFFICE        = [ 'Word', 'Excel', 'PowerPoint', 'Wordpad']
+TRACK_OFFICE        = [ 'Word', 'Excel', 'PowerPoint', 'Wordpad', 'TextEditor', 'NoteReminder']
 TRACK_DEV           = [ 'PyCharm', 'Sublime Text', 'QtDesigner', 'Git Bash', 'Command Prompt', 'Spyder']
 TRACK_TOOLS         = [ 'Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'Screenshot', 'NodeGraph']
-TRACK_EXTRA         = [  ]
+TRACK_EXTRA         = [ 'ReConfig', 'CleanPyc', 'Debug' ]
 TRACK_SYSTRAY       = [ 'Snipping Tool', 'Screenshot', 'Maximize', 'Minimize', 'Restore', 'Quit', ]
 KEYDETECT           = [ "Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url"]
 FIX_KEY             = { 'Screenshot': 'screenShot', 'Snipping Tool': 'SnippingTool'}
@@ -130,7 +128,7 @@ def generate_key_packages(*args):
                             key = name + " " + ver
                     keyPackage.append(key)
 
-    return keyPackage + otherApp + anacondaApp + CONFIG_APPUI + ['Word', 'Excel', 'PowerPoint']
+    return keyPackage + otherApp + anacondaApp + CONFIG_APPUI + ['Word', 'Excel', 'PowerPoint', 'ReConfig', 'CleanPyc', 'Debug']
 
 def generate_config(key, *args):
     keyPackages = generate_key_packages()
@@ -156,8 +154,6 @@ CONFIG_DEV      = generate_config('Dev') + ['Command Prompt']       # Rnd - Rese
 CONFIG_TOOLS    = generate_config('Tools')                          # useful/custom tool supporting for the whole pipeline
 CONFIG_EXTRA    = generate_config('Extra')                          # Extra tool may be considering to use
 CONFIG_SYSTRAY  = generate_config('sysTray')
-
-CONFIG_MASTER   = os.path.join(CONFIG_DIR, "PLM.configuration")
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/08/2018 - 2:30 AM

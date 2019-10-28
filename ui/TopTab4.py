@@ -18,46 +18,39 @@ import sys
 # PyQt5
 from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt, QPointF, QTimer, QSize, QRectF, QSizeF
 from PyQt5.QtGui import QRadialGradient, QColor, QPainter, QBrush, QPen
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QGroupBox
+from PyQt5.QtWidgets import QApplication
 
 # PLM
 from cores.base import DAMG
-from ui.SignalManager import SignalManager
+from ui import Widget, GroupBox, GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab4 """
 
-class TopTab4(QWidget):
+class TopTab4(Widget):
 
-    key = 'topTab4'
+    key = 'TopTab4'
 
     def __init__(self, parent=None):
         super(TopTab4, self).__init__(parent)
 
-        self.signals = SignalManager(self)
-
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
         self.signals.regisLayout.emit(self)
 
     def buildUI(self):
 
-        sec1Grp = QGroupBox('Test Layout')
-        sec1Grid = QGridLayout()
+        sec1Grp = GroupBox('Test Layout')
+        sec1Grid = GridLayout()
         sec1Grp.setLayout(sec1Grid)
 
         # sec1Grid.addWidget(rc.Label("Update later"), 0, 0, 6, 9)
         sec1Grid.addWidget(BubblesWidget(), 0, 0, 6, 9)
-
         self.layout.addWidget(sec1Grp, 0, 0, 6, 9)
 
-        self.applySetting()
 
-    def applySetting(self):
-        pass
-
-class BaseClass(QWidget):
+class BaseClass(Widget):
     def __init__(self, parent=None):
         super(BaseClass, self).__init__(parent)
         self.resetAuthor()
@@ -73,7 +66,7 @@ class BaseClass(QWidget):
 
     author = pyqtProperty(str, getAuthor, setAuthor, resetAuthor)
 
-class Bubble:
+class Bubble(DAMG):
     def __init__(self, position, radius, speed, innerColor, outerColor):
         self.position = position
         self.radius = radius

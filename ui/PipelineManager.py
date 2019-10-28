@@ -28,7 +28,7 @@ from utils.utils            import str2bool, bool2str
 
 class PipelineManager(MainWindow):
 
-    key = 'MainUI'
+    key = 'PipelineManager'
     _name = __appname__
 
     def __init__(self, settings, parent=None):
@@ -51,15 +51,15 @@ class PipelineManager(MainWindow):
     def buildUI(self):
 
         self.mainMenuBar    = MainMenuBar()
-        self.subMenuBar     = SubMenuBar()                                                  # Sub menu
+        # self.subMenuBar     = SubMenuBar()                                                  # Sub menu
         self.toolBar        = MainToolBar()                                                 # Toolbar
         self.serverStatus   = ServerStatus()                                                # Server Status
-        self.subMenuSec     = GroupBox("Sub Menu", self.subMenuBar, "qmainLayout")
-        self.subMenuSec.key = "SubMenuSection"
+        # self.subMenuSec     = GroupBox("Sub Menu", self.subMenuBar, "qmainLayout")
+        # self.subMenuSec.key = "SubMenuSection"
         self.mainMenuSec    = GroupBox("Main Menu", self.mainMenuBar, "qmainLayout")
         self.mainMenuSec.key = "MainMenuSection"
         self.networkStatus  = GroupBox("Server Status", self.serverStatus, "autoGrid")
-        self.networkStatus.setMaximumHeight(self.subMenuBar.maximumHeight()*3)
+        # self.networkStatus.setMaximumHeight(self.subMenuBar.maximumHeight()*3)
         self.networkStatus.key = "NetworkStatus"
         self.subToolBarSec  = GroupBox("Tool Bar", self.toolBar, "qmainLayout")
         self.subToolBarSec.key = "SubtoolBarSec"
@@ -74,27 +74,34 @@ class PipelineManager(MainWindow):
 
         self.setStatusBar(self.statusBar)
 
-        for layout in [self.subMenuBar, self.mainMenuBar, self.toolBar, self.serverStatus,
-                       self.subMenuSec, self.mainMenuSec, self.networkStatus, self.subToolBarSec, self.topTabUI,
-                       self.botTabUI, self.notifiSec, self.statusBar, self.footer, ]:
+        self.mainUI_layouts =  [
+                                # self.subMenuBar, self.subMenuSec,
+                                self.mainMenuBar, self.toolBar, self.serverStatus, self.mainMenuSec,
+                                self.networkStatus, self.subToolBarSec, self.topTabUI, self.botTabUI, self.notifiSec,
+                                self.statusBar, self.footer,
+                                ]
 
+        for layout in self.mainUI_layouts:
             layout.signals.showLayout.connect(self.signals.showLayout)
             layout.signals.executing.connect(self.signals.executing)
             layout.signals.regisLayout.connect(self.signals.regisLayout)
             layout.signals.openBrowser.connect(self.signals.openBrowser)
             layout.signals.setSetting.connect(self.signals.setSetting)
-            layout.signals.regisLayout.emit(self)
 
-        cbs = [self.botTabUI.generalSetting.tbTDCB, self.botTabUI.generalSetting.tbCompCB,
+        cbs = [
+               self.botTabUI.generalSetting.tbTDCB, self.botTabUI.generalSetting.tbCompCB,
                self.botTabUI.generalSetting.tbArtCB, self.botTabUI.generalSetting.tbTexCB,
                self.botTabUI.generalSetting.tbPostCB, self.botTabUI.generalSetting.subToolBarCB,
                self.botTabUI.generalSetting.mainToolBarCB, self.botTabUI.generalSetting.statusBarCB,
-               self.botTabUI.generalSetting.subMenuCB, self.botTabUI.generalSetting.serStatusCB,
-               self.botTabUI.generalSetting.notifiCB]
+               self.botTabUI.generalSetting.serStatusCB, self.botTabUI.generalSetting.notifiCB,
+               # self.botTabUI.generalSetting.subMenuCB,
+               ]
 
-        sections = [self.toolBar.tdToolBar, self.toolBar.compToolBar, self.toolBar.artToolBar, self.toolBar.textureToolBar,
-                    self.toolBar.postToolBar, self.subToolBarSec, self.mainMenuSec, self.statusBar, self.subMenuSec,
-                    self.networkStatus, self.notifiSec]
+        sections = [
+                    # self.subToolBarSec, self.subMenuSec,
+                    self.toolBar.tdToolBar, self.toolBar.compToolBar, self.toolBar.artToolBar, self.toolBar.textureToolBar,
+                    self.toolBar.postToolBar, self.mainMenuSec, self.statusBar, self.networkStatus, self.notifiSec
+                    ]
 
         for i in range(len(sections)):
             key = self.botTabUI.generalSetting.keys[i]
@@ -116,16 +123,16 @@ class PipelineManager(MainWindow):
             cbs[i].stateChanged.connect(partial(self.signals.setSetting.emit, key, bool2str(val), grp))
 
         # Signal
-        self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 9)
-        self.layout.addWidget(self.subMenuSec, 1, 0, 1, 6)
-        self.layout.addWidget(self.networkStatus, 1, 6, 1, 3)
-        self.layout.addWidget(self.subToolBarSec, 2, 0, 2, 9)
+        self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 6)
+        # self.layout.addWidget(self.subMenuSec, 1, 0, 1, 6)
+        self.layout.addWidget(self.networkStatus, 0, 6, 1, 3)
+        self.layout.addWidget(self.subToolBarSec, 1, 0, 1, 9)
 
-        self.layout.addWidget(self.topTabUI, 4, 0, 4, 9)
-        self.layout.addWidget(self.botTabUI, 8, 0, 3, 6)
-        self.layout.addWidget(self.notifiSec, 8, 6, 3, 3)
+        self.layout.addWidget(self.topTabUI, 2, 0, 4, 9)
+        self.layout.addWidget(self.botTabUI, 6, 0, 3, 6)
+        self.layout.addWidget(self.notifiSec, 6, 6, 3, 3)
 
-        self.layout.addWidget(self.footer, 11, 0, 1, 9)
+        self.layout.addWidget(self.footer, 9, 0, 1, 9)
 
         # self.tdDock         = DockToolBar.DockToolBar('TD')
         # self.vfxDock        = DockToolBar.DockToolBar('VFX')
@@ -150,6 +157,20 @@ class PipelineManager(MainWindow):
 
         self.addDockWidget(pos, self.dock)
 
+    def showEvent(self, event):
+        self.signals.showLayout.emit('PipelineManager', 'show')
+
+        for layout in self.mainUI_layouts:
+            layout.signals.showLayout.emit(layout.key, 'show')
+
+        self.signals.showLayout.emit('SysTray', 'show')
+        self.signals.showLayout.emit('SignIn', 'hide')
+        self.signals.showLayout.emit('SignUp', 'hide')
+        self.signals.showLayout.emit('ForgotPassword', 'hide')
+
+    def hideEvent(self, event):
+        self.signals.showLayout.emit('PipelineManager', 'hide')
+        self.setValue('showLayout', 'hide')
 
 # -------------------------------------------------------------------------------------------------------------
 def main():

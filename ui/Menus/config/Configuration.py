@@ -38,14 +38,21 @@ class ServerConfig(Widget):
         serverConfigLayout      = VBoxLayout({'addLayout': [serverLayout]})
         serverConfigGroup       = GroupBox("Server configuration", [serverConfigLayout], 'setLayout')
 
-        projectLabel            = Label({'txt': "Project:"})
+        projectLabel            = Label({'txt': "Set Project:"})
         projectPath             = LineEdit()
         projectBtn              = Button({'txt': 'Set Path'})
         projectLayout           = HBoxLayout({'addWidget': [projectLabel, projectPath, projectBtn]})
-        projectCOnfigLayout     = VBoxLayout({'addLayout': [projectLayout]})
-        projectConfigGroup      = GroupBox("Project configuration", [projectCOnfigLayout], 'setLayout')
+        projectConfigLayout     = VBoxLayout({'addLayout': [projectLayout]})
+        projectConfigGroup      = GroupBox("Project configuration", [projectConfigLayout], 'setLayout')
 
-        mainLayout              = VBoxLayout({'addWidget': [serverConfigGroup, projectConfigGroup], 'addStretch': 1})
+        teamtLabel = Label({'txt': "Set Team:"})
+        teamPath = LineEdit()
+        teamBtn = Button({'txt': 'Set Team'})
+        teamLayout = HBoxLayout({'addWidget': [teamtLabel, teamPath, teamBtn]})
+        teamConfigLayout = VBoxLayout({'addLayout': [teamLayout]})
+        TeamConfigGroup = GroupBox("Project configuration", [teamConfigLayout], 'setLayout')
+
+        mainLayout              = VBoxLayout({'addWidget': [serverConfigGroup, projectConfigGroup, TeamConfigGroup], 'addStretch': 1})
 
         self.setLayout(mainLayout)
 
@@ -147,13 +154,13 @@ class QueryPage(Widget):
 
 class Configuration(Widget):
 
-    key = 'config'
+    key = 'Configuration'
     cfgReport = pyqtSignal(str)
 
     def __init__(self, parent=None):
         super(Configuration, self).__init__(parent)
 
-        self.setWindowTitle("Configuration Dialog")
+        self.setWindowTitle("Configuration")
 
         self.contentsWidget = QListWidget()
         self.contentsWidget.setViewMode(QListView.IconMode)
@@ -216,14 +223,6 @@ class Configuration(Widget):
         queryButton.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
 
         self.contentsWidget.currentItemChanged.connect(self.changePage)
-
-    def hideEvent(self, event):
-        # self.specs.showState.emit(False)
-        pass
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 if __name__ == '__main__':
     import sys
