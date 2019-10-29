@@ -22,7 +22,6 @@ from appData                                import SETTING_FILEPTH, ST_FORMAT, _
 from ui.uikits.Action                       import Action
 from cores.base                             import DAMGLIST
 from cores.SignalManager                    import SignalManager
-from cores.Loggers                          import Loggers
 from cores.Settings                         import Settings
 
 # -------------------------------------------------------------------------------------------------------------
@@ -45,7 +44,6 @@ class ToolBar(QToolBar):
 
         self.parent             = parent
         self.signals            = SignalManager(self)
-        self.logger             = Loggers(self.__class__.__name__)
         self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.configKey          = configKey
         self.actions            = actions

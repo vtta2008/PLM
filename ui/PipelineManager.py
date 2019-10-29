@@ -10,10 +10,10 @@ Description:
 
 # Python
 import sys
-from functools                  import partial
+from functools                          import partial
 
 # PyQt5
-from PyQt5.QtWidgets            import QApplication
+from PyQt5.QtWidgets                    import QApplication
 
 # PLM
 from appData                            import __homepage__, dockB, __appname__

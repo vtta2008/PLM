@@ -17,7 +17,6 @@ from PyQt5.QtGui                            import QFont, QPixmap, QImage
 
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__, PRS
-from cores.Loggers                          import Loggers
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
 from ui.uikits.uiUtils                      import check_preset
@@ -37,7 +36,6 @@ class Label(QLabel):
 
         self.parent                         = parent
         self.signals                        = SignalManager(self)
-        self.logger                         = Loggers(self.__class__.__name__)
         self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.preset                         = preset
 

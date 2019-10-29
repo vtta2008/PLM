@@ -19,7 +19,6 @@ from PyQt5.QtWidgets                    import QGridLayout
 # PLM
 from appData                            import SETTING_FILEPTH, ST_FORMAT, __copyright__
 from cores.SignalManager                import SignalManager
-from cores.Loggers                      import Loggers
 from cores.Settings                     import Settings
 
 # -------------------------------------------------------------------------------------------------------------
@@ -39,7 +38,6 @@ class GridLayout(QGridLayout):
         self.parent = parent
         self._name = self.__class__.__name__
         self.signals = SignalManager(self)
-        self.logger = Loggers(self.__class__.__name__)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
     def setValue(self, key, value):

@@ -15,7 +15,6 @@ from PyQt5.QtWidgets                        import QTabBar
 
 from appData                                import __copyright__, SETTING_FILEPTH, ST_FORMAT
 from cores.SignalManager                    import SignalManager
-from cores.Loggers                          import Loggers
 from cores.Settings                         import Settings
 
 class TabBar(QTabBar):
@@ -32,7 +31,6 @@ class TabBar(QTabBar):
         self.parent = parent
 
         self.signals = SignalManager(self)
-        self.logger = Loggers(self.__class__.__name__)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
     def setValue(self, key, value):

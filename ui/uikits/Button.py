@@ -19,7 +19,6 @@ from PyQt5.QtWidgets                        import QPushButton, QToolButton
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
 from cores.SignalManager                    import SignalManager
-from cores.Loggers                          import Loggers
 from cores.Settings                         import Settings
 from ui.uikits.uiUtils                      import check_preset
 from ui.uikits.Icon                         import AppIcon, TagIcon
@@ -39,7 +38,6 @@ class Button(QPushButton):
         super(Button, self).__init__(parent)
 
         self.signals        = SignalManager(self)
-        self.logger         = Loggers(self.__class__.__name__)
         self.settings       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         self.preset = preset

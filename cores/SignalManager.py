@@ -41,7 +41,7 @@ class SignalManager(DAMG):
 
         self.notContenMargin = ['Configurations', 'ServerConfig', 'ComboBox', 'Button', 'HBoxLayout',
                                 'VBoxLayout', 'ServerConfigPage1', 'ServerConfigPage2', 'ServerConfig', 'Label',
-                                'Widget', 'SettingUI', 'SettingInput', 'GridLayout', 'login', 'GroupBox', 'LineEdit',
+                                'Widget', 'SettingUI', 'SettingInput', 'GridLayout', 'signin', 'GroupBox', 'LineEdit',
                                 'forgotPW', 'signup', 'CheckBox', 'mainUI', 'MainMenuBar', 'Action', 'SubMenuBar',
                                 'mainToolBar', 'TopTab', 'topTab1', 'topTab2', 'topTab3', 'topTab4', 'topTab5', 'TabBar',
                                 'TabWidget', 'tabs', 'botTab', 'GeneralSetting', 'Footer', 'statusBar']

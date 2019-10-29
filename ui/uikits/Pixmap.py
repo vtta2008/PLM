@@ -16,7 +16,6 @@ from PyQt5.QtGui                import QPixmap, QImage
 
 from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
 from cores.SignalManager        import SignalManager
-from cores.Loggers              import Loggers
 from cores.Settings             import Settings
 from utils import get_avatar_image
 
@@ -34,7 +33,6 @@ class Pixmap(QPixmap):
         self.image              = image
         self.parent             = parent
         self.signals            = SignalManager(self)
-        self.logger             = Loggers(self.__class__.__name__)
         self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         if self.image is None:

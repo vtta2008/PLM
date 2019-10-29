@@ -14,7 +14,6 @@ from PyQt5.QtWidgets                import QMessageBox
 
 # PLM
 from appData                        import __copyright__
-from cores.Loggers                  import Loggers
 from ui.uikits.Icon                 import AppIcon
 
 
@@ -34,11 +33,6 @@ class MessageBox(QMessageBox):
         self._level                 = level
         self._message               = message
         self._btn                   = btn
-
-        if self._parent is None:
-            self.logger = Loggers(__name__)
-        else:
-            self.logger = Loggers(self)
 
         if self._title == 'auto' or self._title is None:
             self.popupTitle             = self._level

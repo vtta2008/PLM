@@ -14,7 +14,6 @@ from PyQt5.QtWidgets                        import QCheckBox
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
 from cores.SignalManager                    import SignalManager
-from cores.Loggers                          import Loggers
 from cores.Settings                         import Settings
 from ui.uikits.uiUtils                      import check_preset
 
@@ -30,7 +29,6 @@ class CheckBox(QCheckBox):
         super(CheckBox, self).__init__(parent)
 
         self.signals = SignalManager(self)
-        self.logger = Loggers(self.__class__.__name__)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.parent = parent
         self.txt = txt

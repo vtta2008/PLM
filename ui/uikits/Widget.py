@@ -17,7 +17,6 @@ from appData                                import SETTING_FILEPTH, ST_FORMAT, _
 
 from cores.SignalManager                    import SignalManager
 from cores.Settings                         import Settings
-from cores.Loggers                          import Loggers
 from ui.uikits.Icon                         import AppIcon
 
 class Widget(QWidget):
@@ -33,7 +32,6 @@ class Widget(QWidget):
         self.parent         = parent
 
         self.signals        = SignalManager(self)
-        self.logger         = Loggers(self.__class__.__name__)
         self.settings       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         self.setWindowIcon(AppIcon(32, self.key))

@@ -262,7 +262,7 @@ class SignUp(Widget):
         return True
 
     def showEvent(self, event):
-        self.showLayout.emit('login', 'hide')
+        self.showLayout.emit('signin', 'hide')
 
     def hideEvent(self, event):
         # self.specs.showState.emit(False)

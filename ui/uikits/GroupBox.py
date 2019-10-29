@@ -20,11 +20,10 @@ from PyQt5.QtWidgets                        import QGroupBox
 # PLM
 from appData                                import WAIT_LAYOUT_COMPLETE, SETTING_FILEPTH, ST_FORMAT, __copyright__
 from cores.SignalManager                    import SignalManager
-from cores.Loggers                          import Loggers
 from cores.Settings                         import Settings
 from ui.uikits.GridLayout                   import AutoPreset1, AutoPreset2, AutoPreset3, GridLayout
 from ui.uikits.Label                        import Label
-from ui.uikits.HBoxLayout                   import HBoxLayout
+from ui.uikits.BoxLayout                    import HBoxLayout
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -45,7 +44,6 @@ class GroupBox(QGroupBox):
         self.parent = parent
 
         self.signals = SignalManager(self)
-        self.logger = Loggers(self.__class__.__name__)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         self.layouts = layouts

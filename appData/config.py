@@ -406,7 +406,7 @@ class Configurations:
         self.mainInfo['Reference'] = ['Reference', self.iconInfo['Reference'], 'Reference']
         self.mainInfo['Command Prompt'] = ['Open command prompt', self.iconInfo['Command Prompt'], 'open_cmd']
         self.mainInfo['PLM wiki'] = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=__plmWiki__)]
-        self.mainInfo['PLMBrowser'] = ['PlmBrowser', self.iconInfo['PLMBrowser'], "PLMBrowser"]
+        self.mainInfo['Browser'] = ['Browser', self.iconInfo['Browser'], "Browser"]
         self.mainInfo['OpenConfig'] = ['Open config folder', self.iconInfo['OpenConfig'], '']
         self.mainInfo['Version'] = ['Version Info', 'VersionInfo.icon.png', 'Version Info']
         self.mainInfo['Licence'] = ['Licence Info', 'LicenceInfo.icon.png', 'Licence Info']

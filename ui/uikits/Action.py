@@ -17,8 +17,6 @@ from PyQt5.QtWidgets                        import QAction
 
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import SignalManager
-from cores.Loggers                          import Loggers
 from cores.Settings                         import Settings
 from ui.uikits.Icon                         import AppIcon
 from ui.uikits.uiUtils                      import check_preset
@@ -39,8 +37,6 @@ class Action(QAction):
 
         self.parent         = parent
         self.preset         = preset
-        self.signals        = SignalManager(self)
-        self.logger         = Loggers(self.__class__.__name__)
         self.settings       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         if check_preset(self.preset):
