@@ -84,7 +84,7 @@ def geticon(icon):
 
 
 def clearOptionMenu(name, *args):
-    # Option menus are tiresome because you have to use its full name as parent name
+    # Option menus are tiresome because you have to use its full name as _parent name
     optionMenuFullName = None
     try:
         menuItems = cmds.optionMenu(name, q=True, ill=True)

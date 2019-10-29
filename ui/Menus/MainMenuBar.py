@@ -13,37 +13,41 @@ Description:
 # Python
 import json
 import os
-import sys
+import sys, pprint
 from functools                      import partial
 
 # PyQt5
 from PyQt5.QtCore                   import pyqtSlot
-from PyQt5.QtWidgets                import QApplication
+from PyQt5.QtWidgets                import QApplication, QMenuBar, QMainWindow
 
 # Plm
-from appData                        import (__plmWiki__, __envKey__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR,
-                                            SiPoMin, CONFIG_OFFICE, CONFIG_DEV, CONFIG_TOOLS)
-
+from appData                        import (__plmWiki__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR,
+                                            mainConfig, CONFIG_OFFICE, CONFIG_DEV, CONFIG_TOOLS)
+print(71)
+from cores.SignalManager            import SignalManager
+print(72)
 from ui.uikits.Action               import Action
-from ui.uikits.MainWindow           import MainWindow
+print(73)
+from utils                          import data_handler
+print(74)
 
-
-class MainMenuBar(MainWindow):
+class MainMenuBar(QMainWindow):
 
     key                     = 'MainMenuBar'
 
-    with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
-        appInfo = json.load(f)
-
+    appInfo = data_handler(filePath=mainConfig)
+    print(75)
     def __init__(self, parent=None):
+        print(76)
         super(MainMenuBar, self).__init__(parent)
-
-        self.parent = parent
+        print(77)
+        self._parent = parent
+        self.signals = SignalManager(self)
         self.url = __plmWiki__
-
         self.buildMenu()
 
     def buildMenu(self):
+
         self.mainMenu = self.menuBar()
 
         self.appMenu = self.mainMenu.addMenu("&App")
@@ -53,26 +57,26 @@ class MainMenuBar(MainWindow):
 
         self.appMenu.addSeparator()
 
-        self.organisationMenu = self.appMenu.addMenu("&Organisation")
+        self.organisationMenu = self.mainMenu.addMenu("&Organisation")
         self.organisationMenu.addAction(Action({'icon': 'NewOrganisation', 'txt': 'New', 'trg': partial(self.signals.showLayout.emit, 'NewOrganisation', 'show')}, self))
         self.organisationMenu.addAction(Action({'icon': 'EditOrganisation', 'txt': 'Edit', 'trg': partial(self.signals.showLayout.emit, 'EditOrganisation', 'show')}, self))
         self.organisationMenu.addAction(Action({'icon': 'ConfigOrganisation', 'txt': 'Config', 'trg': partial(self.signals.showLayout.emit, 'ConfigOrganisation', 'show')}, self))
         self.organisationMenu.addAction(Action({'icon': 'OrganisationManager', 'txt': 'Organisation Manager', 'trg': partial(self.signals.showLayout, 'OrganisationManager', 'show')}, self))
 
-        self.teamMenu = self.appMenu.addMenu('&Team')
+        self.teamMenu = self.mainMenu.addMenu('&Team')
         self.teamMenu.addAction(Action({'icon': 'NewTeam', 'txt': 'New', 'trg': partial(self.signals.showLayout.emit, 'NewTeam', 'show')}, self))
         self.teamMenu.addAction(Action({'icon': 'EditTeam', 'txt': 'Edit', 'trg': partial(self.signals.showLayout.emit, 'EditTeam', 'show')}, self))
         self.teamMenu.addAction(Action({'icon': 'ConfigTeam', 'txt': 'Config', 'trg': partial(self.signals.showLayout.emit, 'ConfigTeam', 'show')}, self))
         self.teamMenu.addAction(Action({'icon': 'TeamManager', 'txt': 'Team Manager', 'trg': partial(self.signals.showLayout, 'TeamManager', 'show')}, self))
 
-        self.projectMenu = self.appMenu.addMenu('&Project')
+        self.projectMenu = self.mainMenu.addMenu('&Project')
         self.projectMenu.addAction(Action({'icon': 'NewProject', 'txt': 'New', 'trg': partial(self.signals.showLayout.emit, 'NewProject', 'show')}, self))
         self.projectMenu.addAction(Action({'icon': 'EditProject', 'txt': 'Edit', 'trg': partial(self.signals.showLayout.emit, 'EditProject', 'show')}, self))
         self.projectMenu.addAction(Action({'icon': 'ConfigProject', 'txt': 'Config', 'trg': partial(self.signals.showLayout.emit, 'ConfigProject', 'show')}, self))
         self.projectMenu.addAction(Action({'icon': 'ProjectManager', 'txt': 'Project Manager', 'trg': partial(self.signals.showLayout.emit, 'ProjectManager', 'show')}, self))
 
         self.appMenu.addSeparator()
-        self.appMenu.addAction(Action({'icon': 'Exit', 'txt': self.appInfo['Exit'][0], 'trg': partial(self.signals.executing.emit, 'appExit')}, self))
+        self.appMenu.addAction(Action({'icon': 'Exit', 'txt': 'Exit app', 'trg': partial(self.signals.executing.emit, 'Exit')}, self))
 
         self.gotoMenu = self.mainMenu.addMenu('Go to')
         self.gotoMenu.addAction(Action({'icon': 'ConfigFolder', 'txt': 'Config folder', 'trg': partial(self.signals.executing.emit, CONFIG_DIR)}, self))
@@ -131,14 +135,14 @@ class MainMenuBar(MainWindow):
         self.libMenu.addAction(Action({'icon': 'TEXTURE', 'txt': 'Texture Library', 'trg': partial(self.signals.showLayout.emit, 'TextureLibrary', 'show')}, self))
 
         self.helpMenu = self.mainMenu.addMenu("&Help")
-        self.helpMenu.addAction(Action({'icon': 'PLM wiki', 'txt': self.appInfo['PLM wiki'][0], 'trg': partial(self.signals.openBrowser.emit, 'vnexpress.net')}, self))
-        self.helpMenu.addAction(Action({'icon': 'About', 'txt': self.appInfo['About'][0], 'trg': partial(self.signals.showLayout.emit, 'about', 'show')}, self))
-        self.helpMenu.addAction(Action({'icon': 'Credit', 'txt': self.appInfo['Credit'][0], 'trg': partial(self.signals.showLayout.emit, 'credit', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon': 'PLM wiki', 'txt': 'PLM wiki', 'trg': partial(self.signals.openBrowser.emit, self.url)}, self))
+        self.helpMenu.addAction(Action({'icon': 'About', 'txt': 'About', 'trg': partial(self.signals.showLayout.emit, 'About', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon': 'Credit', 'txt': 'Credit', 'trg': partial(self.signals.showLayout.emit, 'Credit', 'show')}, self))
 
         self.helpMenu.addSeparator()
-        self.helpMenu.addAction(Action({'icon': 'CodeConduct', 'txt': self.appInfo['CodeConduct'][0], 'trg': partial(self.signals.showLayout.emit, 'codeConduct', 'show')}, self))
-        self.helpMenu.addAction(Action({'icon': 'Contributing', 'txt': self.appInfo['Contributing'][0], 'trg': partial(self.signals.showLayout.emit, 'contributing', 'show')}, self))
-        self.helpMenu.addAction(Action({'icon': 'Reference', 'txt': self.appInfo['Reference'][0], 'trg': partial(self.signals.showLayout.emit, 'reference', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon': 'CodeConduct', 'txt':  'Code Of Conduct' , 'trg': partial(self.signals.showLayout.emit, 'codeConduct', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon': 'Contributing', 'txt': 'Contributing', 'trg': partial(self.signals.showLayout.emit, 'contributing', 'show')}, self))
+        self.helpMenu.addAction(Action({'icon': 'Reference', 'txt': 'Reference', 'trg': partial(self.signals.showLayout.emit, 'reference', 'show')}, self))
 
         self.helpMenu.addSeparator()
         self.helpMenu.addAction(Action({'icon': 'Licence', 'txt': 'Licence', 'trg': partial(self.signals.showLayout.emit, 'licenceMIT', 'show')}, self))
@@ -153,14 +157,13 @@ class MainMenuBar(MainWindow):
         self.specs.showState.emit(True)
         self.setVisible(param)
 
-def main():
-    app = QApplication(sys.argv)
-    subMenu = MainMenuBar()
-    subMenu.show()
-    app.exec_()
-
 if __name__ == '__main__':
-    main()
+    app = QApplication(sys.argv)
+    from ui.uikits.GroupBox import GroupBox
+    subMenu = MainMenuBar()
+    layout = GroupBox("Main Menu", subMenu, "qmainLayout")
+    layout.show()
+    app.exec_()
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 11/07/2018 - 12:59 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

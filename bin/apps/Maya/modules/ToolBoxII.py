@@ -90,7 +90,7 @@ def deleteDock(name=NAMES['id'][9], version=VERSION):
 
 def getMayaMainWindow():
     """
-    Since maya is Qt, we can parent our UIs to it.
+    Since maya is Qt, we can _parent our UIs to it.
     This means that we don't have to manage our UI and can leave it to maya.
     Returns:
         QtWidgets.QMainWindow: The maya MainWindow
@@ -342,8 +342,8 @@ class ChanelBox(QtWidgets.QWidget):
     channelBoxID = CHANNELBOX_ID
 
     def __init__(self):
-        # parent = QtWidgets.QWidget(parent=getMayaMainWindow())
-        # super(ChanelBox, self).__init__(parent)
+        # _parent = QtWidgets.QWidget(_parent=getMayaMainWindow())
+        # super(ChanelBox, self).__init__(_parent)
 
         super(ChanelBox, self).__init__()
         self.buildUI()

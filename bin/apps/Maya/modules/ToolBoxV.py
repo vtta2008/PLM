@@ -51,7 +51,7 @@ else:
 
 def getMayaMainWindow():
     """
-    Since maya is Qt, we can parent our UIs to it.
+    Since maya is Qt, we can _parent our UIs to it.
     This means that we don't have to manage our UI and can leave it to maya.
     Returns:
         QtWidgets.QMainWindow: The maya MainWindow

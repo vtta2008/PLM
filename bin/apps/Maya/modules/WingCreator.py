@@ -692,7 +692,7 @@ def createWingControls():
         m.circle(n="Wing_Flex_1", c=(-0.1, 0, 1.1), nr=(0, 1, 0), r=0.05)
         m.makeIdentity(apply=True, t=1, r=1, s=1, n=0)
         m.xform(cp=1)
-        # parent the wing flex conrtols to the curve control
+        # _parent the wing flex conrtols to the curve control
         m.parent
         m.parent
 
@@ -1218,7 +1218,7 @@ def mainControls():
     # Parent Main groups properly
     if ((m.objExists('R_Wing_1_JNT') == 0) and (m.objExists('L_Wing_1_JNT') == 1)) or (
                 (m.objExists('R_Wing_1_JNT') == 1) and (m.objExists('L_Wing_1_JNT') == 0)):
-        # if only one exists, then parent the joints properly
+        # if only one exists, then _parent the joints properly
         m.parent
         m.parent
         m.parent

@@ -197,6 +197,8 @@ class LayoutManager(DAMGDICT):
             # self.logger.report("Registing layout: {0} \n {1}".format(configKey, layout))
             self[key] = layout
             layout.signals.showLayout.connect(self.showLayout)
+            layout.signals.executing.connect(self.parent.executing)
+            layout.signals.openBrowser.connect(self.parent.openBrowser)
         else:
             print("Already registered: {0}".format(key))
 

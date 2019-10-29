@@ -13,25 +13,31 @@ import sys
 from functools                          import partial
 
 # PyQt5
-from PyQt5.QtWidgets                    import QApplication
+from PyQt5.QtWidgets                    import QApplication, QMainWindow
 
 # PLM
+print(1)
 from appData                            import __homepage__, dockB, __appname__
+print(2)
 from ui.uikits.MainWindow               import MainWindow
+print(3)
 from ui.uikits.GroupBox                 import GroupBox
+print(4)
 from ui.uikits.Widget                   import Widget
+print(5)
 from ui.uikits.GridLayout               import GridLayout
+print(6)
 from ui.uikits.Icon                     import LogoIcon
-
-from ui.Menus.MainMenuBar               import MainMenuBar                      # Header
+print(7)
+from ui.Menus                           import MainMenuBar                      # Header
 from ui.Network.ConnectStatus           import ConnectStatus
 from ui.AppToolbar.MainToolBar          import MainToolBar
-
+print(8)
 from ui.TopTab                          import TopTab                           # Body
 from ui.BotTab                          import BotTab
 from ui.Footer                          import Footer                           # Footer
 from ui.StatusBar                       import StatusBar
-
+print(9)
 from utils                              import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
@@ -61,7 +67,7 @@ class PipelineManager(MainWindow):
 
     def buildUI(self):
 
-        self.mainMenuBar    = MainMenuBar()
+        self.mainMenuBar    = MainMenuBar.MainMenuBar()
         self.toolBar        = MainToolBar()                                                 # Toolbar
         self.serverStatus   = ConnectStatus()                                                # Server Status
 

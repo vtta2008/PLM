@@ -77,7 +77,7 @@ class ServerConfig(Widget):
         self.parent             = parent
 
         self.comboBox           = ComboBox({'setObjName': self.key}, self)
-        # self.comboBox           = ComboBox(parent=self)
+        # self.comboBox           = ComboBox(_parent=self)
         self.stackWidget        = QStackedWidget()
 
 

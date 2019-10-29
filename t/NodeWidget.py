@@ -3294,7 +3294,7 @@ class ResizeHandle(QGraphicsObject):
 
     def getShape(self):
         """
-        Returns a shape based on the parent's boundingRect
+        Returns a shape based on the _parent's boundingRect
         returns:
             (QPolygonF) - qquare polygon
         """

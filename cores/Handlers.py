@@ -16,7 +16,7 @@ class EventHandler(DAMG):
     def __init__(self, parent=None):
         DAMG.__init__(self, parent)
 
-        self.ui = None  # reference to the parent MainWindow
+        self.ui = None  # reference to the _parent MainWindow
         self.graph = None  # reference to the Graph instance
         self._initialized = False  # indicates the current scene has been read & built
         self.logger = Loggers(__file__.__name__)

@@ -15,15 +15,22 @@ Description:
 
 # PyQt5
 from PyQt5.QtCore                           import pyqtSlot
-from PyQt5.QtWidgets                        import QGroupBox
+from PyQt5.QtWidgets                        import QGroupBox, QLabel
 
 # PLM
+print(31)
 from appData                                import WAIT_LAYOUT_COMPLETE, SETTING_FILEPTH, ST_FORMAT, __copyright__
+print(32)
 from cores.SignalManager                    import SignalManager
+print(33)
 from cores.Settings                         import Settings
+print(34)
 from ui.uikits.GridLayout                   import AutoPreset1, AutoPreset2, AutoPreset3, GridLayout
-from ui.uikits.Label                        import Label
+print(35)
+
+print(36)
 from ui.uikits.BoxLayout                    import HBoxLayout
+print(37)
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -37,9 +44,11 @@ class GroupBox(QGroupBox):
     _copyright                              = __copyright__
     _data                                   = dict()
 
+    print(38)
     def __init__(self, title="Section Title", layouts=None, mode="IconGrid", parent=None):
+        print(39)
         QGroupBox.__init__(self)
-
+        print(40)
         self.setTitle(title)
         self.parent = parent
 
@@ -70,7 +79,7 @@ class GroupBox(QGroupBox):
             self.subLayout = self.layouts
             if self.subLayout is None:
                 self.layout = GridLayout()
-                self.layout.addWidget(Label({'txt': WAIT_LAYOUT_COMPLETE}), 0, 0, 1, 1)
+                self.layout.addWidget(QLabel(WAIT_LAYOUT_COMPLETE), 0, 0, 1, 1)
             else:
                 self.layout = self.subLayout
             self.setLayout(self.layout)

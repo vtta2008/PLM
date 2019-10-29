@@ -73,7 +73,7 @@ else:
 
 def getMayaMainWindow():
     """
-    Since maya is Qt, we can parent our UIs to it.
+    Since maya is Qt, we can _parent our UIs to it.
     This means that we don't have to manage our UI and can leave it to maya.
     Returns:
         QtWidgets.QMainWindow: The maya MainWindow
@@ -616,7 +616,7 @@ class MayaMainUI(QtWidgets.QWidget):
         ann4 = ["Join selected into one Shape node", "Create joints base on selection",
                 "Create locators base on selection", "Create cluster base on selection"]
         label4 = ["Join Shape", "Joint", "Locator", "Cluster"]
-        command4 = ['cmds.parent(r=True, s=True)', self.bts.createJointFromSelections,
+        command4 = ['cmds._parent(r=True, s=True)', self.bts.createJointFromSelections,
                     self.bts.createLocatorFromSelection, self.bts.createClusterFromSelection]
 
         cmds.setParent('masterLayout')

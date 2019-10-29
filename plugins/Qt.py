@@ -1229,14 +1229,14 @@ def _reassign_misplaced_members(binding):
             src_object = getattr(Qt, dst_module)
         except AttributeError:
             if dst_module not in _common_members:
-                # Only create the Qt parent module if its listed in
+                # Only create the Qt _parent module if its listed in
                 # _common_members. Without this check, if you remove QtCore
                 # from _common_members, the default _misplaced_members will add
                 # Qt.QtCore so it can add Signal, Slot, etc.
                 msg = 'Not creating missing member module "{m}" for "{c}"'
                 _log(msg.format(m=dst_module, c=dst_member))
                 continue
-            # If the dst is valid but the Qt parent module does not exist
+            # If the dst is valid but the Qt _parent module does not exist
             # then go ahead and create a new module to contain the member.
             setattr(Qt, dst_module, _new_module(dst_module))
             src_object = getattr(Qt, dst_module)

@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtWidgets                        import QVBoxLayout
+from PyQt5.QtWidgets                        import QVBoxLayout, QHBoxLayout
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
 from ui.uikits.uiUtils                      import check_preset

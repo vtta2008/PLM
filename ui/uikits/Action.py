@@ -16,8 +16,7 @@ Description:
 from PyQt5.QtWidgets                        import QAction
 
 # PLM
-from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.Settings                         import Settings
+from appData                                import __copyright__
 from ui.uikits.Icon                         import AppIcon
 from ui.uikits.uiUtils                      import check_preset
 
@@ -30,14 +29,12 @@ class Action(QAction):
     key                                     = 'Action'
     _name                                   = 'DAMG Action'
     _copyright                              = __copyright__
-    _data                                   = dict()
 
     def __init__(self, preset={}, parent=None):
         super(Action, self).__init__(parent)
 
         self.parent         = parent
         self.preset         = preset
-        self.settings       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         if check_preset(self.preset):
             self.buildUI()
@@ -61,27 +58,13 @@ class Action(QAction):
             elif key == 'tt':
                 self.setToolTip(value)
 
-    def setValue(self, key, value):
-        return self.settings.initSetValue(key, value, self.key)
-
-    def getValue(self, key):
-        return self.settings.initValue(key, self.key)
-
     @property
     def copyright(self):
         return self._copyright
 
     @property
-    def data(self):
-        return self._data
-
-    @property
     def name(self):
         return self._name
-
-    @data.setter
-    def data(self, newData):
-        self._data                      = newData
 
     @name.setter
     def name(self, newName):
