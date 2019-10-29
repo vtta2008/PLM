@@ -10,14 +10,14 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QSize
+from PyQt5.QtGui                            import QIcon
+from PyQt5.QtCore                           import QSize
 
-from appData                    import __copyright__, appIconCfg
-
-from ui.SignalManager           import SignalManager
-from cores.Loggers              import Loggers
-from utils.utils                import data_handler, get_logo_icon, get_app_icon, get_tag_icon
+from appData                                import __copyright__, appIconCfg, SETTING_FILEPTH, ST_FORMAT
+from cores.SignalManager                    import SignalManager
+from cores.Loggers                          import Loggers
+from cores.Settings                         import Settings
+from utils.utils                            import data_handler, get_logo_icon, get_app_icon, get_tag_icon
 
 class Icon(QIcon):
 
@@ -26,16 +26,21 @@ class Icon(QIcon):
     _name                                   = 'DAMG Icon'
     _copyright                              = __copyright__
     _data                                   = dict()
-
     iconInfo                                = data_handler(filePath=appIconCfg)
 
     def __init__(self, parent=None):
         QIcon.__init__(self)
 
-        self.parent = parent
+        self.parent                         = parent
+        self.signals                        = SignalManager(self)
+        self.logger                         = Loggers(self.__class__.__name__)
+        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
-        self.signals = SignalManager(self)
-        self.logger = Loggers(self.__class__.__name__)
+    def setValue(self, key, value):
+        return self.settings.initSetValue(key, value, self.key)
+
+    def getValue(self, key):
+        return self.settings.initValue(key, self.key)
 
     @property
     def copyright(self):
@@ -51,11 +56,11 @@ class Icon(QIcon):
 
     @data.setter
     def data(self, newData):
-        self._data                      = newData
+        self._data                          = newData
 
     @name.setter
     def name(self, newName):
-        self._name                      = newName
+        self._name                          = newName
 
 class AppIcon(Icon):
 

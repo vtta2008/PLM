@@ -12,12 +12,16 @@ from __future__ import absolute_import, unicode_literals
 
 """ Import """
 
+# Python
+import sys
+
 # PyQt5
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets            import QMainWindow, QApplication
 
 # PLM
 from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from ui.SignalManager           import SignalManager
+from ui.uikits.Icon             import AppIcon
+from cores.SignalManager        import SignalManager
 from cores.Loggers              import Loggers
 from cores.Settings             import Settings
 
@@ -40,7 +44,8 @@ class MainWindow(QMainWindow):
         self.logger             = Loggers(self.__class__.__name__)
         self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
-        self.setWindowTitle(self._name)
+        self.setWindowTitle(self.key)
+        self.setWindowIcon(AppIcon(32, self.key))
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
@@ -94,6 +99,15 @@ class MainWindow(QMainWindow):
         else:
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
+
+def main():
+    app = QApplication(sys.argv)
+    layout = MainWindow()
+    layout.show()
+    app.exec_()
+
+if __name__ == '__main__':
+    main()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 25/10/2019 - 12:38 PM

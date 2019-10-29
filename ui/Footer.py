@@ -19,7 +19,10 @@ from PyQt5.QtWidgets            import QApplication
 
 # Plt
 from appData                    import BTNTAGSIZE, TAGBTNSIZE
-from ui                         import Widget, GridLayout, Button, Label
+from ui.uikits.Widget                     import Widget
+from ui.uikits.GridLayout import GridLayout
+from ui.uikits.Button import Button
+from ui.uikits.Label import Label
 
 pythonPth = "https://docs.anaconda.com/anaconda/reference/release-notes/"
 licencePth = "https://github.com/vtta2008/damgteam/blob/master/LICENCE"

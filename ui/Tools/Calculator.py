@@ -12,12 +12,14 @@ Description:
 import math
 import sys
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication, QGridLayout, QLayout, QLineEdit
+from PyQt5.QtCore               import Qt
+from PyQt5.QtWidgets            import QApplication, QGridLayout, QLayout, QLineEdit
 
-from appData                import SiPoMin
-from cores.base             import DAMGLIST
-from ui                     import Widget, ToolButton, AppIcon
+from appData                    import SiPoMin
+from cores.base                 import DAMGLIST
+from ui.uikits.Widget                     import Widget
+from ui.uikits.Button import ToolButton
+from ui.uikits.Icon import AppIcon
 
 class Calculator(Widget):
 
@@ -29,6 +31,7 @@ class Calculator(Widget):
         super(Calculator, self).__init__(parent)
 
         self.setWindowIcon(AppIcon(32, 'Calculator'))
+        self.setWindowTitle(self.key)
 
 
         self.buildUI()
@@ -99,9 +102,9 @@ class Calculator(Widget):
         font.setPointSize(font.pointSize() + 8)
         self.display.setFont(font)
 
-        self.layout.setSpacing(2)
-        self.layout.setSizeConstraint(QLayout.SetFixedSize)
-        self.setSizePolicy(SiPoMin, SiPoMin)
+        # self.layout.setSpacing(2)
+        # self.layout.setSizeConstraint(QLayout.SetFixedSize)
+        # self.setSizePolicy(SiPoMin, SiPoMin)
 
         self.setLayout(self.layout)
 
@@ -295,14 +298,6 @@ class Calculator(Widget):
             self.factorSoFar /= rightOperand
 
         return True
-
-    def hideEvent(self, event):
-        # self.specs.showState.emit(False)
-        pass
-
-    def closeEvent(self, event):
-        self.signals.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def main():
     appCal = QApplication(sys.argv)

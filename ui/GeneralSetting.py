@@ -14,7 +14,8 @@ Description:
 """ Import """
 
 # Plt
-from ui import GridLayout, CheckBox
+from ui.uikits.GridLayout import GridLayout
+from ui.uikits.CheckBox import CheckBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ Quick Setting """

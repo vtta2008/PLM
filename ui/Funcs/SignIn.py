@@ -18,13 +18,20 @@ import sys, requests
 from functools              import partial
 
 # PyQt5
-from PyQt5.QtWidgets        import (QApplication, QCheckBox)
+from PyQt5.QtWidgets        import (QApplication)
 
 # PLM
 from appData                import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
-from ui                     import MessageBox, Button, GridLayout, AppIcon, Label, LineEdit, Widget, GroupGrid
-from utils                  import localSQL as usql
-from utils.utils            import str2bool
+from ui.uikits.Widget       import Widget
+from ui.uikits.Icon         import AppIcon
+from ui.uikits.CheckBox     import CheckBox
+from ui.uikits.Button       import Button
+from ui.uikits.MessageBox   import MessageBox
+from ui.uikits.Label        import Label, usernameLabel, passwordLabel
+from ui.uikits.GridLayout   import GridLayout
+from ui.uikits.LineEdit     import LineEdit
+from ui.uikits.GroupBox     import GroupGrid
+from utils                  import str2bool, RemoveDB, UpdateDB
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """
@@ -41,33 +48,33 @@ class SignIn(Widget):
         self.setFixedSize(400, 300)
         self.setWindowTitle('Sign In')
 
-        self.layout = GridLayout()
+        self.layout             = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
 
-        loginGrp, loginGrid = GroupGrid('Sign in')
+        loginGrp, loginGrid     = GroupGrid('Sign in')
 
-        self.userTF = LineEdit()
-        self.pwTF = LineEdit({'fn': 'password'})
-        self.userCB = QCheckBox('Remember me?')
+        self.userTF             = LineEdit()
+        self.pwTF               = LineEdit({'fn': 'password'})
+        self.userCB             = CheckBox('Remember me?')
 
-        forgot_pw_btn = Button({'txt': 'Forgot your password?', 'cl': partial(self.signals.showLayout.emit, 'forgotpw', 'show')})
-        login_btn = Button({'txt': 'Log in', 'cl': self.signInClicked})
-        cancel_btn = Button({'txt': 'Cancel', 'cl': QApplication.quit})
+        forgot_pw_btn           = Button({'txt': 'Forgot your password?', 'cl': partial(self.signals.showLayout.emit, 'forgotpw', 'show')})
+        login_btn               = Button({'txt': 'Log in', 'cl': self.signInClicked})
+        cancel_btn              = Button({'txt': 'Cancel', 'cl': QApplication.quit})
 
-        loginGrid.addWidget(Label({'txt': 'Username'}), 0, 0, 1, 2)
-        loginGrid.addWidget(Label({'txt': 'Password'}), 1, 0, 1, 2)
+        signupGrp, signupGrid   = GroupGrid('Sign up')
+        signupBtn               = Button({'txt':'Sign up', 'emit2': [self.signals.showLayout.emit, ['signup', 'show']]})
+
+        loginGrid.addWidget(usernameLabel, 0, 0, 1, 2)
+        loginGrid.addWidget(passwordLabel, 1, 0, 1, 2)
         loginGrid.addWidget(self.userTF, 0, 2, 1, 4)
         loginGrid.addWidget(self.pwTF, 1, 2, 1, 4)
         loginGrid.addWidget(self.userCB, 2, 1, 1, 2)
         loginGrid.addWidget(login_btn, 2, 3, 1, 3)
         loginGrid.addWidget(forgot_pw_btn, 3, 0, 1, 3)
         loginGrid.addWidget(cancel_btn, 3, 3, 1, 3)
-
-        signupGrp, signupGrid = GroupGrid('Sign up')
-        signupBtn = Button({'txt':'Sign up', 'emit2': [self.signals.showLayout.emit, ['signup', 'show']]})
 
         signupGrid.addWidget(Label({'txt': SIGNUP}), 0, 0, 1, 6)
         signupGrid.addWidget(signupBtn, 1, 0, 1, 6)
@@ -110,12 +117,12 @@ class SignIn(Widget):
             token = r.json()['token']
             check = self.userCB.checkState()
 
-            usql.RemoveDB("curUser")
-            usql.UpdateDB("curUser", [username, token, cookie, str2bool(check)])
+            RemoveDB("curUser")
+            UpdateDB("curUser", [username, token, cookie, str2bool(check)])
             self.signals.setLoginValue.emit(True)
             self.signals.showLayout.emit('PipelineManager', 'show')
         else:
-            usql.RemoveDB("curUser")
+            RemoveDB("curUser")
             MessageBox(self, 'Login Failed', 'critical', PW_WRONG)
             return
 

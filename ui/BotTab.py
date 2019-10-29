@@ -20,7 +20,10 @@ from PyQt5.QtWidgets        import QApplication
 # PLM
 from ui.Debugger            import Debugger
 from ui.GeneralSetting      import GeneralSetting
-from ui                     import Widget, TabWidget, TabContent, VBoxLayout, AppIcon
+from ui.uikits.Widget                 import Widget
+from ui.uikits.TabWidget import TabWidget, TabContent
+from ui.uikits.VBoxLayout import VBoxLayout
+from ui.uikits.Icon import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """

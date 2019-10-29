@@ -10,17 +10,19 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtWidgets            import QTabWidget
-from PyQt5.QtCore               import Qt
+from PyQt5.QtWidgets                        import QTabWidget
+from PyQt5.QtCore                           import Qt
 
-from appData                    import __copyright__, SETTING_FILEPTH, ST_FORMAT
-from ui.uikits.Widget           import Widget
-from ui.uikits.GridLayout       import GridLayout
-from ui.uikits.Label            import Label
-from ui.uikits.TabBar           import TabBar
-from ui.SignalManager           import SignalManager
-from cores.Loggers              import Loggers
-from cores.Settings             import Settings
+# PLM
+from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
+from cores.SignalManager                    import SignalManager
+from cores.Loggers                          import Loggers
+from cores.Settings                         import Settings
+from ui.uikits.Widget                       import Widget
+from ui.uikits.GridLayout                   import GridLayout
+from ui.uikits.Label                        import Label
+from ui.uikits.TabBar                       import TabBar
+
 
 class TabWidget(QTabWidget):
 

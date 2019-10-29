@@ -11,28 +11,20 @@ Description:
 
 import os
 
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, QSettings
-
-from cores.Errors import KeySettingError
-from cores.Loggers import Loggers
-from cores.base import DAMG
-
+from PyQt5.QtCore                   import pyqtSignal, pyqtSlot, QSettings
 
 class Settings(QSettings):
 
-    key = 'settings'
+    key = 'Settings'
     setFormat = pyqtSignal(str)
     setScope = pyqtSignal(str)
 
     def __init__(self, filename, fm=QSettings.IniFormat, parent=None):
         super(Settings, self).__init__(filename, fm, parent)
-        self.logger = Loggers(self)
-        self.setObjectName("Settings")
 
         self._parent = parent
         self._filename = filename
         self.grpLst = self.childGroups()
-        self.reg = DAMG(self)
 
     @property
     def groups(self):
@@ -51,7 +43,7 @@ class Settings(QSettings):
         self.beginGroup(grpChecked)
 
         if key is None or key == "":
-            KeySettingError(key)
+            KeyError(key)
         else:
             self.setValue(key, value)
         while self.group():
@@ -65,7 +57,7 @@ class Settings(QSettings):
 
         self.beginGroup(grpChecked)
         if key is None or key == "":
-            KeySettingError(key)
+            KeyError(key)
         else:
             return self.value(key)
         while self.group():

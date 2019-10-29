@@ -9,17 +9,21 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+""" Import """
 
-from PyQt5.QtWidgets            import QLabel
-from PyQt5.QtGui                import QFont, QPixmap, QImage
+# PyQt5
+from PyQt5.QtWidgets                        import QLabel
+from PyQt5.QtGui                            import QFont, QPixmap, QImage
 
-from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__, PRS, center
+# PLM
+from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__, PRS
+from cores.Loggers                          import Loggers
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
+from ui.uikits.Pixmap                       import Pixmap
+from ui.uikits.Image                        import Image
+from ui.uikits.uiUtils                      import check_preset
 
-from ui.SignalManager           import SignalManager
-from ui.uikits.UiPreset         import check_preset
-from cores.Loggers              import Loggers
-from cores.Settings             import Settings
-from utils.utils                import get_avatar_icon
 
 class Label(QLabel):
 
@@ -32,12 +36,12 @@ class Label(QLabel):
     def __init__(self, preset={}, parent=None):
         super(Label, self).__init__(parent)
 
-        self.parent         = parent
-        self.signals        = SignalManager(self)
-        self.logger         = Loggers(self.__class__.__name__)
-        self.settings       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.parent                         = parent
+        self.signals                        = SignalManager(self)
+        self.logger                         = Loggers(self.__class__.__name__)
+        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.preset                         = preset
 
-        self.preset         = preset
         if check_preset(self.preset):
             self.buildUI()
 
@@ -56,9 +60,9 @@ class Label(QLabel):
             elif key == 'smin':
                 self.setMinimumSize(value[0], value[1])
             elif key == 'sizePolicy':
-                self.setSizePolicy(PRS[value])
+                self.setSizePolicy(PRS[value[0]], PRS[value[1]])
             elif key == 'pxm':
-                self.setPixmap(QPixmap.fromImage(QImage(get_avatar_icon(value))))
+                self.setPixmap(Pixmap.fromImage(Image(value)))
             elif key == 'scc':
                 self.setScaledContents(value)
             elif key == 'sfs':
@@ -67,8 +71,10 @@ class Label(QLabel):
                 self.setBuddy(value)
             elif key == 'link':
                 self.setOpenExternalLinks(value)
+            elif key == 'minimumSize':
+                self.setMinimumSize(value[0], value[1])
             else:
-                self.setAlignment(center)
+                print("PRESETKEYERROR: No such key registed in preset: {0}: {1}".format(key, value))
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
@@ -122,6 +128,9 @@ class Label(QLabel):
         else:
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
+
+usernameLabel = Label({'txt': 'Username'})
+passwordLabel = Label({'txt': 'Password'})
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 6:40 PM

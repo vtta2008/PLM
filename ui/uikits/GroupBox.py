@@ -14,18 +14,18 @@ Description:
 
 
 # PyQt5
-from PyQt5.QtCore                   import pyqtSlot
-from PyQt5.QtWidgets                import QGroupBox
-
+from PyQt5.QtCore                           import pyqtSlot
+from PyQt5.QtWidgets                        import QGroupBox
 
 # PLM
-from appData                        import WAIT_LAYOUT_COMPLETE, SETTING_FILEPTH, ST_FORMAT, __copyright__
-from ui.uikits.GridLayout           import AutoPreset1, AutoPreset2, AutoPreset3, GridLayout
-from ui.uikits.Label                import Label
-from ui.uikits.HBoxLayout           import HBoxLayout
-from ui.SignalManager               import SignalManager
-from cores.Loggers                  import Loggers
-from cores.Settings                 import Settings
+from appData                                import WAIT_LAYOUT_COMPLETE, SETTING_FILEPTH, ST_FORMAT, __copyright__
+from cores.SignalManager                    import SignalManager
+from cores.Loggers                          import Loggers
+from cores.Settings                         import Settings
+from ui.uikits.GridLayout                   import AutoPreset1, AutoPreset2, AutoPreset3, GridLayout
+from ui.uikits.Label                        import Label
+from ui.uikits.HBoxLayout                   import HBoxLayout
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Groupbox presets """

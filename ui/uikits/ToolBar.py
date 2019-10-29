@@ -12,30 +12,18 @@ Description:
 
 # Python
 import json
-import os
-from functools import partial
+from functools                              import partial
 
 # PyQt5
-from PyQt5.QtWidgets import QToolBar
+from PyQt5.QtWidgets                        import QToolBar, QAction
 
 # PLM
-from appData                    import (__envKey__, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_TOOLS,
-                                        CONFIG_POST, SETTING_FILEPTH, ST_FORMAT, __copyright__)
-from cores.base                 import DAMGLIST, DAMGDICT
-from ui.uikits.Action           import Action
-from ui.SignalManager               import SignalManager
-from cores.Loggers              import Loggers
-from cores.Settings             import Settings
-
-# -------------------------------------------------------------------------------------------------------------
-""" Tool bar data preset """
-
-TOOLBAR_DATA = dict(TD = CONFIG_TDS,
-                    VFX = CONFIG_VFX,
-                    ART = CONFIG_ART,
-                    TEXTURE = CONFIG_TEX,
-                    TOOLS = CONFIG_TOOLS,
-                    POST = CONFIG_POST)
+from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__, mainConfig, ACTIONS_DATA
+from ui.uikits.Action                       import Action
+from cores.base                             import DAMGLIST
+from cores.SignalManager                    import SignalManager
+from cores.Loggers                          import Loggers
+from cores.Settings                         import Settings
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar class """
@@ -46,33 +34,66 @@ class ToolBar(QToolBar):
     key                                     = 'ToolBar'
     _name                                   = 'DAMG Tool Bar'
     _copyright                              = __copyright__
-    _data                                   = dict()
+    _data                                   = ACTIONS_DATA
+    regisActions                            = DAMGLIST()
 
-    def __init__(self, configKey=None, parent=None):
+    with open(mainConfig, 'r') as f:
+        appInfo = json.load(f)
+
+    def __init__(self, configKey=None, actions=[], parent=None):
         QToolBar.__init__(self)
 
         self.parent             = parent
         self.signals            = SignalManager(self)
         self.logger             = Loggers(self.__class__.__name__)
         self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.configKey = configKey
+        self.configKey          = configKey
+        self.actions            = actions
 
-        self.buildUI()
+        if self.configKey is None or self.configKey == '':
+            if self.actions is None or self.actions == []:
+                print('CREATEACTIONERROR: Empty key: {0}, {1}'.format(self.configKey, self.actions))
+            else:
+                self.add_multiple_actions(self.actions)
+        else:
+            self.add_actions_by_key(self.configKey)
 
-        self.applySetting()
+        self.setAccessibleName(self.configKey)
+        self.setMinimumWidth((len(self.acts) + 1) * 32)
 
     def add_multiple_actions(self, actions=[]):
-        for action in actions:
-            self.addAction(action)
+        for key in actions:
+            if type(key) == 'str':
+                self.addAction(self.create_action(key))
+            elif type(key) == type(QAction) or type(key) == type(Action):
+                self.regisActions.append(key)
+                self.addAction(key)
+            else:
+                print("DATATYPEERROR: Could not add action: {0}".format(key))
+
+    def create_action(self, key):
+        if key in self.appInfo.keys():
+            action = Action({
+
+                                'icon': key,
+                                'stt': self.appInfo[key][0],
+                                'txt': key,
+                                'trg': (partial(self.executing.emit, self.appInfo[key][2]))
+
+                            }, self)
+
+            self.regisActions.append(action)
+            return action
+        else:
+            print("KEYACTIONERROR: Could not find key in main config: {0}".format(key))
 
     def add_actions_by_key(self, key):
-
-        apps = self.tbData[self.configKey]
-        for app in apps:
-            if app in self.appInfo:
-                action = Action({'icon': app, 'stt': self.appInfo[app][0], 'txt': app, 'trg': (partial(self.executing.emit, self.appInfo[app][2]))}, self)
-                self.acts.append(action)
-                self.addAction(action)
+        if key in self._data.keys():
+            apps = self._data[key]
+            for app in apps:
+                self.create_action(app)
+        else:
+            print("CONFIGKEYERROR: This key is not configed yet: {0}".format(key))
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.configKey)
@@ -154,41 +175,6 @@ class ToolBar(QToolBar):
     @name.setter
     def name(self, newName):
         self._name                      = newName
-
-class ToolBarPreset(ToolBar):
-
-    key = "ToolBarPreset"
-    toolbarPreset = DAMGDICT()
-    toolbarPreset.input(TOOLBAR_DATA)
-
-    def __init__(self, configKey, parent=None):
-        super(ToolBarPreset, self).__init__(parent)
-
-        with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
-            self.appInfo = json.load(f)
-
-        self._parent = parent
-        self.key = configKey
-        self.signals = SignalManager(self)
-
-        self.acts = DAMGLIST()
-
-        self.applySetting()
-
-    def buildUI(self):
-        self.add_actions()
-
-    def applySetting(self):
-        self.setAccessibleName(self.key)
-        self.setMinimumWidth((len(self.acts) + 1)*32)
-
-    def add_actions(self):
-        apps = self.tbData[self.key]
-        for app in apps:
-            if app in self.appInfo:
-                action = Action({'icon': app, 'stt': self.appInfo[app][0], 'txt': app, 'trg': (partial(self.executing.emit, self.appInfo[app][2]))}, self)
-                self.acts.append(action)
-                self.addAction(action)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 31/07/2018 - 12:50 AM

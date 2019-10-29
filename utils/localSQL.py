@@ -13,12 +13,22 @@ from __future__ import absolute_import
 """ Import """
 
 # Python
+import datetime, time
 import sqlite3 as lite
 from appData                 import DB_PTH
 from cores.base              import DAMG, DAMGLIST
 
-# Plt
-from utils import utils as func
+def get_datetime():
+    datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
+    return datetime_stamp
+
+def getDate():
+    datetimeLog = get_datetime()
+    return datetimeLog.split('||')[0]
+
+def getTime():
+    datetimeLog = get_datetime()
+    return datetimeLog.split('||')[1]
 
 class QuerryDB(DAMGLIST):
 
@@ -30,7 +40,6 @@ class QuerryDB(DAMGLIST):
         self.cur.execute("SELECT * FROM {0}".format(tn))
         data = self.cur.fetchall()
         return list(data[0])
-
 
 class UpdateDB(DAMG):
 
@@ -86,8 +95,8 @@ class TimeLog(DAMG):
         super(TimeLog, self).__init__()
 
         self.username, token, cookie, remember = QuerryDB().query_table("curUser")
-        self.time = func.getTime()
-        self.date = func.getDate()
+        self.time = getTime()
+        self.date = getDate()
         self.details = details
         self.cur.execute("INSERT INTO timelog (username, time, date, details) VALUES (?,?,?,?)", (self.username, self.time, self.date, self.details))
         self.conn.commit()

@@ -21,8 +21,17 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QDateTimeEdit, QGridLayout
                              QSpinBox, QStackedWidget, QVBoxLayout)
 
 # PLM
-from appData            import __globalServer__, __localServer__
-from ui                 import Widget, Label, ComboBox, HBoxLayout, VBoxLayout, LineEdit, Button, GroupBox
+from appData                    import __globalServer__, __localServer__
+from uikits.Widget                         import Widget
+from uikits.ComboBox import ComboBox
+from uikits.CheckBox import CheckBox
+from uikits.Button import Button
+from uikits.HBoxLayout import HBoxLayout
+from uikits.Label import Label
+from uikits.VBoxLayout import VBoxLayout
+from uikits.LineEdit import LineEdit
+from uikits.GroupBox import GroupBox
+from ui.Menus.config            import config_rc
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """
@@ -45,12 +54,12 @@ class ServerConfig(Widget):
         projectConfigLayout     = VBoxLayout({'addLayout': [projectLayout]})
         projectConfigGroup      = GroupBox("Project configuration", [projectConfigLayout], 'setLayout')
 
-        teamtLabel = Label({'txt': "Set Team:"})
-        teamPath = LineEdit()
-        teamBtn = Button({'txt': 'Set Team'})
-        teamLayout = HBoxLayout({'addWidget': [teamtLabel, teamPath, teamBtn]})
-        teamConfigLayout = VBoxLayout({'addLayout': [teamLayout]})
-        TeamConfigGroup = GroupBox("Project configuration", [teamConfigLayout], 'setLayout')
+        teamtLabel              = Label({'txt': "Set Team:"})
+        teamPath                = LineEdit()
+        teamBtn                 = Button({'txt': 'Set Team'})
+        teamLayout              = HBoxLayout({'addWidget': [teamtLabel, teamPath, teamBtn]})
+        teamConfigLayout        = VBoxLayout({'addLayout': [teamLayout]})
+        TeamConfigGroup         = GroupBox("Project configuration", [teamConfigLayout], 'setLayout')
 
         mainLayout              = VBoxLayout({'addWidget': [serverConfigGroup, projectConfigGroup, TeamConfigGroup], 'addStretch': 1})
 
@@ -64,12 +73,12 @@ class UpdatePage(Widget):
     def __init__(self, parent=None):
         super(UpdatePage, self).__init__(parent)
 
-        updateGroup         = QGroupBox("Package selection")
-        systemCheckBox      = QCheckBox("Update system")
-        appsCheckBox        = QCheckBox("Update applications")
-        docsCheckBox        = QCheckBox("Update documentation")
+        updateGroup         = GroupBox("Package selection")
+        systemCheckBox      = CheckBox("Update system")
+        appsCheckBox        = CheckBox("Update applications")
+        docsCheckBox        = CheckBox("Update documentation")
 
-        packageGroup        = QGroupBox("Existing packages")
+        packageGroup        = GroupBox("Existing packages")
 
         packageList         = QListWidget()
         qtItem              = QListWidgetItem(packageList)
@@ -81,12 +90,12 @@ class UpdatePage(Widget):
         teamBuilderItem     = QListWidgetItem(packageList)
         teamBuilderItem.setText("Teambuilder")
 
-        startUpdateButton   = QPushButton("Start update")
+        startUpdateButton   = Button({'txt':"Start update"})
 
-        updateLayout        = QVBoxLayout()
-        updateLayout.addWidget(systemCheckBox)
-        updateLayout.addWidget(appsCheckBox)
-        updateLayout.addWidget(docsCheckBox)
+        updateLayout        = VBoxLayout({'addWidget': [systemCheckBox, appsCheckBox, docsCheckBox]})
+        # updateLayout.addWidget(systemCheckBox)
+        # updateLayout.addWidget(appsCheckBox)
+        # updateLayout.addWidget(docsCheckBox)
         updateGroup.setLayout(updateLayout)
 
         packageLayout       = QVBoxLayout()

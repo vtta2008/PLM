@@ -12,21 +12,19 @@ Description:
 """ Import """
 
 # Python
-import json
-import os
-import sys
+import json, os, sys
 from functools import partial
 
 # PyQt5
 from PyQt5.QtCore           import pyqtSlot
 from PyQt5.QtWidgets        import QApplication
 
-from cores.Loggers          import Loggers
 # PLM
 from appData                import (__plmWiki__, __envKey__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR, SiPoMin,
                                     CONFIG_OFFICE, CONFIG_DEV, CONFIG_TOOLS)
-from ui                     import MainWindow, Action
-from utils.localSQL         import TimeLog
+from ui.uikits.Action       import Action
+from ui.uikits.MainWindow   import MainWindow
+from utils                  import TimeLog
 
 # -------------------------------------------------------------------------------------------------------------
 """ Menu bar Layout """

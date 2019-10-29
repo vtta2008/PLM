@@ -155,6 +155,17 @@ CONFIG_TOOLS    = generate_config('Tools')                          # useful/cus
 CONFIG_EXTRA    = generate_config('Extra')                          # Extra tool may be considering to use
 CONFIG_SYSTRAY  = generate_config('sysTray')
 
+ACTIONS_DATA = dict(TD                  = CONFIG_TDS,
+                    VFX                 = CONFIG_VFX,
+                    ART                 = CONFIG_ART,
+                    TEXTURE             = CONFIG_TEX,
+                    POST                = CONFIG_POST,
+                    OFFICE              = CONFIG_OFFICE,
+                    DEV                 = CONFIG_DEV,
+                    TOOLS               = CONFIG_TOOLS,
+                    EXTRA               = CONFIG_EXTRA,
+                    SYSTRAY             = CONFIG_SYSTRAY, )
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/08/2018 - 2:30 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

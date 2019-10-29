@@ -12,7 +12,9 @@ from __future__ import absolute_import
 """ Import """
 
 # Python
-import os, sys, requests, platform, subprocess, winshell, yaml, json, re, datetime, time, uuid, win32api
+import os, sys, requests, platform, subprocess, winshell, yaml, json, re, datetime, time, uuid, win32api, linecache
+from PIL import Image
+from resizeimage import resizeimage
 
 __all__ = ['attr_type', 'auto_convert', 'camel_case_to_lower_case_underscore', 'camel_case_to_title', 'clean_name',
             'is_bool', 'is_dict', 'is_list', 'is_none', 'is_number', 'is_string', 'list_attr_types',
@@ -25,10 +27,6 @@ from PyQt5.QtGui        import QColor, QFont, QFontMetrics
 # PLM
 from appData            import (__envKey__, __pkgsReq__, KEYPACKAGE, LOGO_DIR, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR,
                                 APP_ICON_DIR)
-from cores.Errors       import IsADirectoryError, FileNotFoundError
-from cores.Loggers      import Loggers
-
-logger = Loggers(__file__)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Destop tool """
@@ -88,41 +86,26 @@ def batch_obj_properties_setting(listObj, mode):
 def handle_path_error(directory=None):
     if not os.path.exists(directory) or directory is None:
         try:
-            raise IsADirectoryError("Path is not exists: {directory}".format(directory=directory))
+            raise ("IsADirectoryError: Path is not exists: {directory}".format(directory=directory))
         except IsADirectoryError as error:
             raise('Caught error: ' + repr(error))
 
-# def raise_exception():
-#
-#     exc_type, exc_obj, tb = sys.exc_info()
-#     f = tb.tb_frame
-#     lineno = tb.tb_lineno
-#     filename = f.f_code.co_filename
-#     linecache.checkcache(filename)
-#     line = linecache.getline(filename, lineno, f.f_globals)
-#
-#     print("--------------------------------------------------------------------------------- \n"
-#             "Tracking from:   {0} \n"
-#             "At line number:  {1} \n"
-#             "Details code:    {2} \n"
-#             "{3} \n"
-#             "---------------------------------------------------------------------------------".format(os.path.basename(filename), lineno, line.strip(), exc_obj))
-#     return
-#
-# def print_variable(varName, varData):
-#     print('###-------------------------------------------------------------------------------###')
-#     print('-------- CHECK VARIABLE: {0}'.format(varName))
-#     print('------------ File location: {0}'.format(__file__))
-#     print('------------ Variable type: {0}'.format(type(varName)))
-#     print(' ')
-#     print('-------- VARIABLE CONTENT')
-#     print(' ')
-#
-#     pprint.pprint(varData)
-#
-#     print(' ')
-#     print('-------- END CHECK')
-#     print('###-------------------------------------------------------------------------------###')
+def raise_exception():
+
+    exc_type, exc_obj, tb = sys.exc_info()
+    f = tb.tb_frame
+    lineno = tb.tb_lineno
+    filename = f.f_code.co_filename
+    linecache.checkcache(filename)
+    line = linecache.getline(filename, lineno, f.f_globals)
+
+    print("--------------------------------------------------------------------------------- \n"
+            "Tracking from:   {0} \n"
+            "At line number:  {1} \n"
+            "Details code:    {2} \n"
+            "{3} \n"
+            "---------------------------------------------------------------------------------".format(os.path.basename(filename), lineno, line.strip(), exc_obj))
+    return
 
 # -------------------------------------------------------------------------------------------------------------
 """ Python """
@@ -245,7 +228,7 @@ def get_app_icon(size=32, iconName="About"):
 
     # Check icon file path
     if not os.path.exists(iconFilePth):
-        logger.report('could not find: {0}, please try a gain'.format(iconFilePth))
+        print('could not find: {0}, please try a gain'.format(iconFilePth))
 
     return iconFilePth
 
@@ -272,7 +255,7 @@ def get_web_icon(name):
             # print(i, os.path.exists(i))
             return i
 
-def get_avatar_icon(name):
+def get_avatar_image(name):
     avatars = [a for a in get_file_path(AVATAR_DIR) if '.avatar' in a]
     for a in avatars:
         if name in a:
@@ -534,6 +517,12 @@ def get_all_odd(numLst):
 
 def get_all_even(numLst):
     return [i for i in numLst if not check_odd(i)]
+
+def resize_image(filename, desPth, w, h):
+    with open(filename, 'r+b') as f:
+        with Image.open(f) as image:
+            cover = resizeimage.resize_cover(image, [w, h])
+            cover.save(desPth, image.format)
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Clean up """

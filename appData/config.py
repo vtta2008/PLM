@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # Python
-import os, platform, subprocess, json, pkg_resources, shutil, sys, winshell
+import platform, subprocess, json, pkg_resources, shutil, sys, winshell
 from platform import system
 
 try:

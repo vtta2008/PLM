@@ -12,7 +12,7 @@ Description:
 
 import weakref
 
-from utils import utils as util
+from utils import attr_type
 from cores.base import DAMG
 
 
@@ -80,7 +80,7 @@ class Attribute(DAMG):
     def attr_type(self):
         if self._type is not None:
             return self._type
-        return util.attr_type(self.value)
+        return attr_type(self.value)
 
     @attr_type.setter
     def attr_type(self, val):

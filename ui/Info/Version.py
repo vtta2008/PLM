@@ -19,8 +19,11 @@ from PyQt5.QtWidgets import QApplication, QScrollArea
 
 # Plm
 from appData import VERSION
-from ui import Widget, GridLayout, Button, Label, AppIcon
-
+from ui.uikits.Widget                         import Widget
+from ui.uikits.Icon import AppIcon
+from ui.uikits.Button import Button
+from ui.uikits.Label import Label
+from ui.uikits.GridLayout import GridLayout
 # -------------------------------------------------------------------------------------------------------------
 """ Contributing Layout """
 

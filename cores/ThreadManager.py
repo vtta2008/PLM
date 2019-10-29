@@ -10,10 +10,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtCore   import QTimer
+from PyQt5.QtCore               import QTimer
 
-from cores.base     import DAMGLIST
-from cores          import ThreadPoolBase, DAMGTHREAD, DAMGWORKER
+from cores.base                 import DAMGLIST, ThreadPoolBase, DAMGTHREAD, DAMGWORKER
 
 class ThreadManager(ThreadPoolBase):
 

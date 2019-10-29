@@ -15,12 +15,16 @@ Description:
 import json, os, sys
 
 # PyQt5
-from PyQt5.QtWidgets            import QApplication
+from PyQt5.QtWidgets                import QApplication
 
 # Plt
-from appData                    import (__envKey__, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE, BTNICONSIZE,
-                                        ICONBTNSIZE, FIX_KEYS)
-from ui                         import Widget, GridLayout, Button, GroupBox, LineEdit
+from appData                        import (__envKey__, CONFIG_TOOLS, CONFIG_DEV, CONFIG_EXTRA, CONFIG_OFFICE, BTNICONSIZE,
+                                            ICONBTNSIZE, FIX_KEYS)
+from ui.uikits.Widget                         import Widget
+from ui.uikits.GridLayout import GridLayout
+from ui.uikits.Button import Button
+from ui.uikits.GroupBox import GroupBox
+from ui.uikits.LineEdit import LineEdit
 
 # -------------------------------------------------------------------------------------------------------------
 """ topTab1 """

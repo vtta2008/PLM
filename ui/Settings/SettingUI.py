@@ -15,18 +15,25 @@ import os
 import sys
 
 # PyQt5
-from PyQt5.QtCore import (QByteArray, QDate, QDateTime, QEvent, QPoint, QRect, QRegExp, QSettings, QSize, Qt, QTime,
-                          QTimer)
-from PyQt5.QtGui import QColor, QIcon, QRegExpValidator, QValidator
-from PyQt5.QtWidgets import (QAbstractItemView, QAction, QApplication, QMenuBar, QFileDialog, QGridLayout,
-                             QGroupBox, QHeaderView, QInputDialog, QItemDelegate, QLineEdit, QStyle,
-                             QStyleOptionViewItem,
-                             QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
-
+from PyQt5.QtCore       import (QByteArray, QDate, QDateTime, QEvent, QPoint, QRect, QRegExp, QSettings, QSize, Qt, 
+                                QTime, QTimer)
+from PyQt5.QtGui        import QColor, QIcon, QRegExpValidator, QValidator
+from PyQt5.QtWidgets    import (QAbstractItemView, QAction, QApplication, QMenuBar, QFileDialog, QGridLayout,
+                                QGroupBox, QHeaderView, QInputDialog, QItemDelegate, QLineEdit, QStyle, QComboBox,
+                                QStyleOptionViewItem, QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
+print(1)
 # PLM
-from cores.Settings import Settings
-from appData import __organization__, __appname__, SETTING_FILEPTH, SiPoMin
-from ui import ComboBox, Label, Widget, GridLayout
+from appData                           import __organization__, __appname__, SETTING_FILEPTH, SiPoMin, INI
+print(2)
+from ui.uikits.Action                  import Action
+print(3)
+from ui.uikits.Label                   import Label
+print(4)
+from ui.uikits.Widget                  import Widget
+print(5)
+from ui.uikits.GridLayout              import GridLayout
+print(6)
+from ui.uikits.GroupBox                import GroupGrid
 
 # -------------------------------------------------------------------------------------------------------------
 """ Setting Manager """
@@ -34,13 +41,12 @@ from ui import ComboBox, Label, Widget, GridLayout
 class SettingUI(Widget):
 
     key = 'SettingUI'
-
-    def __init__(self, settings=None, parent=None):
+    print(7)
+    def __init__(self, parent=None):
         super(SettingUI, self).__init__(parent)
 
         self.parent = parent
         self.menubar = QMenuBar(self)
-        self.settings = settings
 
         if self.settings is None:
             self.settings = self.setting_mode(self.filename(), self.fmt(), self._parent)
@@ -66,7 +72,7 @@ class SettingUI(Widget):
     def filename(self, pth=SETTING_FILEPTH['app']):
         return pth
 
-    def fmt(self, fmt=QSettings.IniFormat):
+    def fmt(self, fmt=INI):
         return fmt
 
     def organization(self):
@@ -86,9 +92,9 @@ class SettingUI(Widget):
             fileName, _ = QFileDialog.getOpenFileName(self, "Open INI File", '', "INI Files (*.ini *.conf)")
 
             if fileName:
-                settings = QSettings(fileName, QSettings.IniFormat)
+                settings = QSettings(fileName, INI)
         else:
-            settings = QSettings(SETTING_FILEPTH['app'], QSettings.IniFormat)
+            settings = QSettings(SETTING_FILEPTH['app'], INI)
             self.setSettingsObject(settings)
             self.fallbacksAct.setEnabled(False)
 
@@ -112,6 +118,8 @@ class SettingUI(Widget):
 
     def createActions(self):
         self.openSettingsAct = QAction("&Open Application Settings...", self, shortcut="Ctrl+O", triggered=self.openSettings)
+        # self.openSettingsAct = Action({'shortcut': "Ctrl+O", 'tt': "&Open Application Settings...", 'trg': self.openSettings}, self )
+
         self.openIniFileAct = QAction("Open I&NI File...", self, shortcut="Ctrl+N", triggered=self.openIniFile)
         self.openPropertyListAct = QAction("Open Mac &Property List...", self, shortcut="Ctrl+P",
                                            triggered=self.openPropertyList)
@@ -182,10 +190,23 @@ class SettingInput(Widget):
 
         self.settings = settings
 
-        self.formatComboBox = ComboBox({'items': ["INI", "Native"]})
-        self.scopeComboBox = ComboBox({'items': ["User", "System"]})
-        self.organizationComboBox = ComboBox({'items': ['DAMGteam'], 'editable': True})
-        self.applicationComboBox = ComboBox({'items': ['PLM'], 'editable': True, 'curIndex': 0})
+        self.formatComboBox = QComboBox(self)
+        self.formatComboBox.addItem('INI')
+        self.formatComboBox.addItem('Native')
+
+        self.scopeComboBox = QComboBox(self)
+        self.scopeComboBox.addItem('User')
+        self.scopeComboBox.addItem('System')
+
+        self.organizationComboBox = QComboBox(self)
+        self.organizationComboBox.addItem('DAMGteam')
+        self.organizationComboBox.setEditable(True)
+
+        self.applicationComboBox = QComboBox(self)
+        self.applicationComboBox.addItem('PLM')
+        self.applicationComboBox.setEditable(True)
+        self.applicationComboBox.setCurrentIndex(0)
+
 
         for cb in [self.formatComboBox, self.scopeComboBox, self.organizationComboBox, self.applicationComboBox]:
             cb.currentIndexChanged.connect(self.updateLocationsTable)
@@ -195,9 +216,7 @@ class SettingInput(Widget):
         organizationLabel = Label({'txt': "&Organization:", 'setBuddy': self.organizationComboBox})
         applicationLabel = Label({'txt': "&Application:", 'setBuddy': self.applicationComboBox})
 
-        grpBox = QGroupBox("Setting Locations")
-        grid = QGridLayout()
-        grpBox.setLayout(grid)
+        grpBox, grid = GroupGrid("Setting Locations")
 
         self.locationsTable = QTableWidget()
         self.locationsTable.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -235,7 +254,7 @@ class SettingInput(Widget):
         if self.formatComboBox.currentIndex() == 0:
             return QSettings.NativeFormat
         else:
-            return QSettings.IniFormat
+            return INI
 
     def scope(self):
         if self.scopeComboBox.currentIndex() == 0:

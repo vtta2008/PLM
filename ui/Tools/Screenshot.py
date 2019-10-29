@@ -17,14 +17,19 @@ import sys
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import Qt, QDir, QTimer
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import (QGridLayout, QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox,
-                             QHBoxLayout, QLabel, QSizePolicy, )
+from PyQt5.QtCore               import Qt, QDir, QTimer
+from PyQt5.QtGui                import QPixmap
+from PyQt5.QtWidgets            import (QGridLayout, QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox, QLabel,
+                                        QSizePolicy, )
 
 # PLM
-from appData                import keepARM
-from ui                     import Button, AppIcon, HBoxLayout, Widget
+from appData                    import keepARM
+from ui.uikits.Button                     import Button
+from ui.uikits.Icon import AppIcon
+from ui.uikits.HBoxLayout import HBoxLayout
+from ui.uikits.Widget import Widget
+from ui.uikits.GridLayout import GridLayout
+from ui.uikits.Label import Label
 
 class Screenshot(Widget):
 
@@ -35,7 +40,7 @@ class Screenshot(Widget):
         self.setWindowIcon(AppIcon(32, "Screenshot"))
         self.resize(960, 540)
 
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
@@ -43,10 +48,10 @@ class Screenshot(Widget):
         self.delaySpinBox.setValue(5)
 
     def buildUI(self):
-        self.screenshotLabel = QLabel()
-        self.screenshotLabel.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-        self.screenshotLabel.setAlignment(Qt.AlignCenter)
-        self.screenshotLabel.setMinimumSize(240, 160)
+        self.screenshotLabel = Label({'alg': 'center',
+                                      'sizePolicy': ['expanding', 'expanding'],
+                                      'minimumSize': [240, 160]})
+
         self.createOptionsGroupBox()
         self.createButtonsLayout()
 

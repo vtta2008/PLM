@@ -29,7 +29,7 @@ from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 
 # Plt
 from cores.Loggers import Loggers
-from ui import AppIcon, Widget
+from uikits                     import AppIcon, Widget
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Web browser """

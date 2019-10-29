@@ -25,8 +25,9 @@ from PyQt5.QtCore import Qt, QDir, pyqtSignal
 from PyQt5.QtGui import QPixmap, QTransform, QIcon
 from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout)
 
-from ui import AppIcon, Widget
-from utils import utils as func
+from ui.uikits.Icon import AppIcon
+from ui.uikits.Widget import Widget
+from utils import get_screen_resolution
 
 # Plt
 
@@ -441,8 +442,7 @@ class ImageInitUI(ViewerWindow):
 
             self.path, self.title = os.path.split(self.key)
             self.setWindowTitle(str("Image Viewer: " + self.title))
-            self.setWindowIcon(QIcon(func.getIcon32("ImageViewer")))
-            
+            self.setWindowIcon(QIcon(AppIcon(32, "ImageViewer")))
 
             self.inshuft = 0
             self.dbSearch(self.dbkey)
@@ -475,7 +475,7 @@ class ImageInitUI(ViewerWindow):
         self.view.horizontalScrollBar().setValue(0)
 
     def getScreenRes(self):
-        self.screenw, self.screenh = func.get_screen_resolution()
+        self.screenw, self.screenh = get_screen_resolution()
 
     def closeLayout(self, param):
         if param:

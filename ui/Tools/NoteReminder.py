@@ -15,12 +15,19 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import QFile, QRegExp, QTextCodec, QTextStream
-from PyQt5.QtWidgets import (QAction, QApplication, QComboBox, QDialog, QDialogButtonBox, QFileDialog,
-                             QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
+from PyQt5.QtCore                   import QFile, QRegExp, QTextCodec, QTextStream
+from PyQt5.QtWidgets                import (QAction, QApplication, QComboBox, QDialog, QDialogButtonBox, QFileDialog,
+                                            QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
 
 # Plm
-from ui                     import Label, AppIcon, GridLayout, Widget
+from ui.uikits.Label                         import Label
+from ui.uikits.Icon import AppIcon
+from ui.uikits.GridLayout import GridLayout
+from ui.uikits.Widget import Widget
+from ui.uikits.MainWindow import MainWindow
+from ui.uikits.MessageBox import MessageBox
+from ui.uikits.ComboBox import ComboBox
+from ui.uikits.Action import Action
 
 def codec_name(codec):
     try:

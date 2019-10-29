@@ -41,8 +41,6 @@ prefs                       = 'prefs'
 # -------------------------------------------------------------------------------------------------------------
 """ Name variables """
 
-print(os.getenv(__envKey__))
-
 ROOT_DIR                    = os.path.join(os.getenv(__envKey__))
 
 CFG_DIR                     = os.path.join(ROOT_DIR, 'appData', '.config')

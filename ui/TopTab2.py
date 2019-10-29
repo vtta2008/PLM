@@ -19,11 +19,10 @@ from functools              import partial
 from PyQt5.QtWidgets        import QApplication
 
 # Plt
-from ui.uikits.Widget           import Widget
-from ui.uikits.Button           import Button
-from ui.uikits.GroupBox         import GroupBox
-from ui.uikits.GridLayout       import GridLayout
-
+from ui.uikits.Widget                         import Widget
+from ui.uikits.GridLayout import GridLayout
+from ui.uikits.Button import Button
+from ui.uikits.GroupBox import GroupBox
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
 

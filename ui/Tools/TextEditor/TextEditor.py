@@ -15,17 +15,22 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import QFile, QFileInfo, Qt, QTextCodec
-from PyQt5.QtGui import (QFont, QFontDatabase, QFontInfo, QIcon, QKeySequence, QPixmap, QTextBlockFormat,
-                         QTextCharFormat,
-                         QTextCursor, QTextDocumentWriter, QTextListFormat)
-from PyQt5.QtPrintSupport import QPrintDialog, QPrinter, QPrintPreviewDialog
-from PyQt5.QtWidgets import (QAction, QActionGroup, QApplication, QColorDialog, QComboBox, QFileDialog, QFontComboBox,
-                             QMenu, QMessageBox, QTextEdit, QToolBar, QHBoxLayout)
+from PyQt5.QtCore               import QFile, QFileInfo, Qt, QTextCodec
+from PyQt5.QtGui                import (QFont, QFontDatabase, QFontInfo, QIcon, QKeySequence, QPixmap, QTextBlockFormat,
+                                        QTextCharFormat,
+                                        QTextCursor, QTextDocumentWriter, QTextListFormat)
+from PyQt5.QtPrintSupport       import QPrintDialog, QPrinter, QPrintPreviewDialog
+from PyQt5.QtWidgets            import (QAction, QActionGroup, QApplication, QColorDialog, QComboBox, QFileDialog, QFontComboBox,
+                                        QMenu, QMessageBox, QTextEdit, QToolBar, QHBoxLayout)
 
 # PLM
-from cores.Loggers import Loggers
-from ui import AppIcon, Widget, MainWindow
+from cores.Loggers              import Loggers
+from ui.uikits.Icon                     import AppIcon
+from ui.uikits.Widget import Widget
+from ui.uikits.MainWindow import MainWindow
+
+
+from ui.Tools.TextEditor import TextEditor_rc
 
 if sys.platform.startswith('darwin'):
     rsrcPath = ":/images/mac"

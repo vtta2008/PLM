@@ -16,11 +16,19 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtWidgets import QApplication, QCheckBox, QPushButton, QGridLayout, QGroupBox
+from PyQt5.QtWidgets        import QApplication
 
 # Plt
-from utils.utils import str2bool, bool2str
-from ui import Widget, AppIcon, GridLayout, GroupBox, CheckBox, Button
+from utils.utils            import str2bool, bool2str
+from uikits.Widget                         import Widget
+from uikits.Icon import AppIcon
+from uikits.CheckBox import CheckBox
+from uikits.Button import Button
+from uikits.MessageBox import MessageBox
+from uikits.Label import Label, usernameLabel, passwordLabel
+from uikits.GridLayout import GridLayout
+from uikits.LineEdit import LineEdit
+from uikits.GroupBox import GroupGrid
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """
@@ -44,9 +52,7 @@ class Preferences(Widget):
 
     def buildUI(self):
 
-        tbGrpBox = QGroupBox("Tool Bar")
-        tbGrid = GridLayout()
-        tbGrpBox.setLayout(tbGrid)
+        tbGrpBox, tbGrid = GroupGrid("Tool Bar")
 
         self.toolBarTD_checkBox = CheckBox({'txt': "Show/hide TD toolbar"})
         self.toolBarTD_checkBox.stateChanged.connect(self.checkBoxTDStateChanged)

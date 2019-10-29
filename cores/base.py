@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # Python
-import sys, json, inspect, time, datetime, uuid, traceback
+import sys, json, inspect, time, datetime, traceback
 
 # PyQt5
 from PyQt5.QtCore import QObject, pyqtSlot, pyqtProperty, pyqtSignal, QThread, QRunnable, QThreadPool
@@ -418,7 +418,7 @@ class WorkerSignals(BaseObject):
         self._name = "{0} {1}".format(self._name, objRegistry.count + 1)
 
         self._data['ObjectName'] = self._name
-        self._data['ObjectID'] = str(uuid.uuid4())
+        self._data['ObjectID'] = str(id(self))
         self._data['datetime'] = str(datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S|%d.%m.%Y'))
         objRegistry.register(self)
 
@@ -644,7 +644,7 @@ class DAMG(BaseObject):
         self.setObjectName(self._name)
 
         self._data['ObjectName']            = self._name
-        self._data['ObjectID']              = str(uuid.uuid4())
+        self._data['ObjectID']              = str(id(self))
         self._data['datetime']              = str(datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S|%d.%m.%Y'))
 
         objRegistry.register(self)
@@ -663,7 +663,7 @@ class DAMGERROR(BaseError):
         self._name = "{0} {1}".format(self._name, objRegistry.count + 1)
 
         self._data['ObjectName']            = self._name
-        self._data['ObjectID']              = str(uuid.uuid4())
+        self._data['ObjectID']              = str(id(self))
         self._data['datetime']              = str(datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S|%d.%m.%Y'))
 
         objRegistry.register(self)
@@ -682,7 +682,7 @@ class DAMGLIST(BaseList):
         self._name = "{0} {1}".format(self._name, objRegistry.count + 1)
 
         self._data['ObjectName']            = self._name
-        self._data['ObjectID']              = str(uuid.uuid4())
+        self._data['ObjectID']              = str(id(self))
         self._data['datetime']              = str(datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S|%d.%m.%Y'))
 
         objRegistry.register(self)
@@ -701,7 +701,7 @@ class DAMGDICT(BaseDict):
         self._name = "{0} {1}".format(self._name, objRegistry.count + 1)
 
         self._data['ObjectName'] = self._name
-        self._data['ObjectID'] = str(uuid.uuid4())
+        self._data['ObjectID'] = str(id(self))
         self._data['datetime'] = str(datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S|%d.%m.%Y'))
 
         objRegistry.register(self)
@@ -722,7 +722,7 @@ class DAMGWORKER(WorkerBase):
         self._name = "{0} {1}".format(self._name, objRegistry.count + 1)
 
         self._data['ObjectName'] = self._name
-        self._data['ObjectID'] = str(uuid.uuid4())
+        self._data['ObjectID'] = str(id(self))
         self._data['datetime'] = str(datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S|%d.%m.%Y'))
 
         objRegistry.register(self)
@@ -744,6 +744,10 @@ if __name__ == '__main__':
     d = DAMGDICT()
     e = DAMGWORKER()
     f = DAMGTHREAD(None)
+
+    from pprint import pprint
+    print(a, b, c, d, e, f)
+    pprint(objRegistry)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 19/10/2019 - 12:22 PM

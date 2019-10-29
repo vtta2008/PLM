@@ -18,14 +18,18 @@ import sys
 from functools import partial
 
 # PyQt5
-from PyQt5.QtGui            import QIcon, QIntValidator
-from PyQt5.QtWidgets        import (QGroupBox, QHBoxLayout, QInputDialog,
-                                    QComboBox, QFileDialog, QListWidget, QListWidgetItem, QApplication)
+from PyQt5.QtWidgets            import (QGroupBox, QInputDialog,
+                                        QComboBox, QFileDialog, QListWidget, QListWidgetItem, QApplication)
 
 
 # PLM
-from ui                     import Widget, GridLayout, Button, Label, HBoxLayout, VBoxLayout, LineEdit
-from utils.utils            import get_app_icon
+from ui.uikits.Widget                     import Widget
+from ui.uikits.GridLayout import GridLayout
+from ui.uikits.Button import Button
+from ui.uikits.Label import Label
+from ui.uikits.HBoxLayout import HBoxLayout
+from ui.uikits.VBoxLayout import VBoxLayout
+from ui.uikits.LineEdit import LineEdit
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """
@@ -37,14 +41,15 @@ class ItemWidget(Widget):
     def __init__(self, section, name="", parent=None):
         super(ItemWidget, self).__init__(parent)
 
-        self.section = section
-
-        self.item = Label({'txt': name})
-        button = Button({'txt':"Edit", 'stt':"Edit character name", 'cl': self.setText})
-        layout = HBoxLayout()
-        layout.addWidget(self.item)
-        layout.addWidget(button)
-        self.setLayout(layout)
+        self.section    = section
+        self.item       = Label({'txt': name})
+        self.setLayout(
+                        HBoxLayout({'setLayout': [self.item, 
+                                                  Button({'txt' :"Edit", 
+                                                          'stt' :"Edit character name", 
+                                                          'cl'  : self.setText})]
+                                   })
+                        )
 
     def setText(self):
         text, ok = QInputDialog.getText(self, "Change To", "{0} name:".format(self.section), LineEdit.Normal, self.item.text())
@@ -61,7 +66,7 @@ class NewProject(Widget):
 
     def __init__(self, parent=None):
         super(NewProject, self).__init__(parent)
-        self.setWindowIcon(QIcon(get_app_icon(32, "NewProject")))
+        # self.setWindowIcon(AppIcon(32, "NewProject"))
 
         self.layout = GridLayout(self)
         self.buildUI()
@@ -79,11 +84,10 @@ class NewProject(Widget):
         headGrid.addWidget(Label({'txt': TITLE}))
 
         # Project Info
-        prjInfGrp, prjInfGrid = self.styleGB("Project Info")
-
-        self.prjLong = LineEdit({'txt': "DAMG team project"})
-        self.prjShort = LineEdit({'txt': "damg"})
-        self.prjPth = LineEdit({'txt': "E:/"})
+        prjInfGrp, prjInfGrid   = self.styleGB("Project Info")
+        self.prjLong            = LineEdit({'txt': "DAMG team project"})
+        self.prjShort           = LineEdit({'txt': "damg"})
+        self.prjPth             = LineEdit({'txt': "E:/"})
 
         setPthBtn = Button({'txt': "Set Path", 'stt': "Set project path", 'cl': self.onSetPthBtnClicked})
 
@@ -105,20 +109,16 @@ class NewProject(Widget):
         self.prjMode.addItem("Studio Mode")
         self.prjMode.addItem("Group Mode")
 
-        self.numOfChar = LineEdit({'txt': "1"})
-        self.numOfChar.setValidator(QIntValidator())
+        self.numOfChar = LineEdit({'txt': "1", 'validator': 'int'})
         self.numOfChar.textChanged.connect(partial(self.populate_lst, "char"))
 
-        self.numOfEnv = LineEdit({'txt': "1"})
-        self.numOfEnv.setValidator(QIntValidator())
+        self.numOfEnv = LineEdit({'txt': "1", 'validator': 'int'})
         self.numOfEnv.textChanged.connect(partial(self.populate_lst, "env"))
 
-        self.numOfProp = LineEdit({'txt': "1"})
-        self.numOfProp.setValidator(QIntValidator())
+        self.numOfProp = LineEdit({'txt': "1", 'validator': 'int'})
         self.numOfProp.textChanged.connect(partial(self.populate_lst, "prop"))
 
-        self.numOfSeq = LineEdit({'txt': "1"})
-        self.numOfSeq.setValidator(QIntValidator())
+        self.numOfSeq = LineEdit({'txt': "1", 'validator': 'int'})
         self.numOfSeq.textChanged.connect(partial(self.populate_lst, "seq"))
 
         prjDetailGrid.addWidget(Label({'txt':"Project Mode"}), 0,0,1,1)
@@ -187,7 +187,7 @@ class NewProject(Widget):
         if tl.lower() == "grid":
             layout = GridLayout()
         elif tl.lower() == "hbox":
-            layout = QHBoxLayout()
+            layout = HBoxLayout()
         elif tl.lower() == "vbox":
             layout = VBoxLayout()
 

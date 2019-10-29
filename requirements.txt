@@ -11,3 +11,4 @@ pandas
 wheel
 argparse
 green
+python-resize-image

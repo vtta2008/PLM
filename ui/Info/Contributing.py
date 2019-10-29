@@ -15,12 +15,14 @@ import sys
 from functools import partial
 
 # PtQt5
-from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtWidgets import QApplication, QScrollArea
 
 # Plm
-from appData import CONTRIBUTING
-from ui import Widget, GridLayout, Button, Label, AppIcon
+from appData                    import CONTRIBUTING
+from ui.uikits.Widget                         import Widget
+from ui.uikits.Button import Button
+from ui.uikits.Label import Label
+from ui.uikits.GridLayout import GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Contributing Layout """
@@ -28,30 +30,24 @@ from ui import Widget, GridLayout, Button, Label, AppIcon
 class Contributing(Widget):
 
     key = 'contributing'
-    showLayout = pyqtSignal(str, str)
 
     def __init__(self, parent=None):
 
         super(Contributing, self).__init__(parent)
-        self.setWindowIcon(AppIcon(32, 'Contributing'))
-        self.setWindowTitle('CONTRIBUTING')
 
         self.buildUI()
-
         self.resize(350, 400)
 
     def buildUI(self):
-        self.layout = GridLayout()
-
-        self.scrollArea = QScrollArea()
-        self.scrollArea.setWidgetResizable(True)
-        self.content = Label({'txt':CONTRIBUTING, 'alg':'left', 'link': True})
+        self.layout             = GridLayout()
+        self.scrollArea         = QScrollArea()
+        self.content            = Label({'txt':CONTRIBUTING, 'alg':'left', 'link': True})
+        closeBtn                = Button({'txt': 'Close', 'tt': 'Close window', 'cl': partial(self.close)})
 
         self.content.setGeometry(0, 0, 350, 400)
         self.scrollArea.setWidget(self.content)
 
-        closeBtn = Button({'txt': 'Close', 'tt': 'Close window', 'cl': partial(self.close)})
-
+        self.scrollArea.setWidgetResizable(True)
         self.layout.addWidget(self.scrollArea, 0, 0, 8, 4)
         self.layout.addWidget(closeBtn, 8, 3, 1, 1)
 

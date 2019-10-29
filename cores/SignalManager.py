@@ -10,10 +10,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtCore import pyqtSignal
+from PyQt5.QtCore                   import pyqtSignal
 
-from cores.base import DAMG
-from appData import SiPoMin, SiPoMax, SiPoExp, SiPoIgn, SiPoPre
+from cores.base                     import DAMG
+from appData                        import SiPoMin, SiPoMax, SiPoExp, SiPoIgn, SiPoPre
 
 class SignalManager(DAMG):
 
@@ -50,6 +50,8 @@ class SignalManager(DAMG):
 
         self.notSpacing = []
 
+
+    def global_ui_setting(self):
         if self.parent.key not in self.objects:
             if self.parent.key not in self.notContenMargin:
                 try:

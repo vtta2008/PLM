@@ -16,14 +16,23 @@ import os
 import sys
 
 # PyQt5
-from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtWidgets import (QApplication, QMessageBox, QFileDialog)
+from PyQt5.QtGui            import QPixmap, QImage
+from PyQt5.QtWidgets        import (QApplication, QMessageBox, QFileDialog)
 
 # Plm
-from appData import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_REQUIRED, QUESTIONS
-from ui import AppIcon, Label, LineEdit, ComboBox, CheckBox, GroupGrid, Button, MessageBox, Widget, GridLayout
-from utils.utils import (check_blank, check_match, get_avatar_icon, getToken, getUnix, getTime, getDate,
-                         get_local_pc_info, get_user_location)
+from appData                import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_REQUIRED, QUESTIONS
+from ui.uikits.Widget       import Widget
+from ui.uikits.ComboBox     import ComboBox
+from ui.uikits.Icon         import AppIcon
+from ui.uikits.CheckBox     import CheckBox
+from ui.uikits.Button       import Button
+from ui.uikits.MessageBox   import MessageBox
+from ui.uikits.Label        import Label
+from ui.uikits.GridLayout   import GridLayout
+from ui.uikits.LineEdit     import LineEdit
+from ui.uikits.GroupBox     import GroupGrid
+from utils                  import (check_blank, check_match, get_avatar_image, getToken, getUnix, getTime, getDate,
+                                    get_local_pc_info, get_user_location)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign up ui """
@@ -234,7 +243,7 @@ class SignUp(Widget):
         pcPython = sysInfo['python']
 
         if not os.path.exists(self.rawAvatarPth):
-            avatar = get_avatar_icon('default')
+            avatar = get_avatar_image('default')
         else:
             avatar = self.rawAvatarPth
 

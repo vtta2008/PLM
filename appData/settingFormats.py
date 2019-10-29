@@ -12,6 +12,10 @@ from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore import QSettings, QDateTime
 
+INI = QSettings.IniFormat
+Native = QSettings.NativeFormat
+Invalid = QSettings.InvalidFormat
+
 # -------------------------------------------------------------------------------------------------------------
 """ Format """
 
@@ -34,9 +38,9 @@ DT_FORMAT = dict(
 
 ST_FORMAT = dict(
 
-    ini                     = QSettings.IniFormat,
-    native                  = QSettings.NativeFormat,
-    invalid                 = QSettings.InvalidFormat,
+    ini                     = INI,
+    native                  = Native,
+    invalid                 = Invalid,
 )
 
 datetTimeStamp = QDateTime.currentDateTime().toString("hh:mm - dd MMMM yy")             # datestamp

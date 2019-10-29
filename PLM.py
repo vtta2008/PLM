@@ -53,22 +53,29 @@ import sys, requests, ctypes
 # PyQt5
 from PyQt5.QtCore                   import pyqtSlot
 
+print(1)
 # Plm
-from ui.Network.ServerConfig        import ServerConfig
-from ui.Settings.SettingUI          import SettingUI
-from ui.Web.PLMBrowser              import PLMBrowser
-
-from ui                             import LogoIcon, SignalManager
-
-from appData                        import (__localServer__, __localPort__, PLMAPPID, __organization__,
-                                            __appname__, __version__, __website__, __globalServer__, SETTING_FILEPTH,
+from appData                        import (__localServer__, PLMAPPID, __organization__,
+                                            __appname__, __version__, __website__, SETTING_FILEPTH,
                                             ST_FORMAT, SYSTRAY_UNAVAI)
 
-from cores                          import DAMG, DAMGDICT, StyleSheets, AppCore, ThreadManager, Settings, Loggers
-from utils.localSQL                 import QuerryDB
-from utils.utils                    import str2bool, clean_file_ext
-from ui                             import Application
-
+print(2)
+from cores.base                     import DAMG, DAMGDICT
+from cores.StyleSheets              import StyleSheets
+from cores.ThreadManager            import ThreadManager
+from utils                          import str2bool, clean_file_ext, QuerryDB
+from cores.Loggers                  import Loggers
+from cores.Settings                 import Settings
+print(3)
+from ui.uikits.Application          import Application
+from ui.uikits.Icon                 import LogoIcon
+print(4)
+from ui.Settings.SettingUI          import SettingUI
+print(5)
+from ui.Web.PLMBrowser              import PLMBrowser
+print(6)
+from ui.AppCore                     import AppCore
+print(7)
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
@@ -80,9 +87,9 @@ class PLM(Application):
         super(PLM, self).__init__(sys.argv)
 
         # Run all neccessary configuration to start PLM
+
         self.configs                = configurations
 
-        self.signals                = SignalManager(self)
         self.logger                 = Loggers(self.__class__.__name__)
         self.settings               = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.report                 = self.logger.report
@@ -95,9 +102,6 @@ class PLM(Application):
 
         # Setup layout manager
         self.layout_manager         = DAMGDICT()
-
-        self.serverConfig           = ServerConfig(self)
-        self.regisLayout(self.serverConfig)
 
         # Multithreading.
         self.thread_manager         = ThreadManager()

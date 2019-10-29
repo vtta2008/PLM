@@ -15,10 +15,14 @@ Description:
 import sys
 
 # PtQt5
-from PyQt5.QtWidgets        import (QApplication, QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit, QVBoxLayout)
+from PyQt5.QtWidgets        import (QApplication, QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit)
 
 # PLM
-from ui                     import Widget, Label, VBoxLayout
+from ui.uikits.Widget       import Widget
+from ui.uikits.VBoxLayout   import VBoxLayout
+from ui.uikits.Label        import Label
+from ui.uikits.GroupBox     import GroupBox
+from ui.uikits.LineEdit     import LineEdit
 
 
 class ForgotPassword(Widget):
@@ -62,15 +66,15 @@ class ForgotPassword(Widget):
 
     def step2_layout(self):
 
-        step2_groupBox      = QGroupBox("Step 2")
-        step2_layout        = QVBoxLayout()
+        step2_groupBox      = GroupBox("Step 2")
+        step2_layout        = VBoxLayout()
         step2_groupBox.setLayout(step2_layout)
 
         self.question1      = Label({'txt': "Question 1"})
         self.question2      = Label({'txt': "Question 2"})
 
-        self.answer1        = QLineEdit()
-        self.answer2        = QLineEdit()
+        self.answer1        = LineEdit()
+        self.answer2        = LineEdit()
 
         step2_btn_box       = QDialogButtonBox(QDialogButtonBox.Ok | QDialogButtonBox.Cancel)
         step2_btn_box.accepted.connect(self.on_step2_btn_clicked)

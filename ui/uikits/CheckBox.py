@@ -10,14 +10,13 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtWidgets import QCheckBox
+from PyQt5.QtWidgets                        import QCheckBox
 
-from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
-
-from ui.SignalManager           import SignalManager
-from ui.uikits.UiPreset         import check_preset
-from cores.Loggers              import Loggers
-from cores.Settings             import Settings
+from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
+from cores.SignalManager                    import SignalManager
+from cores.Loggers                          import Loggers
+from cores.Settings                         import Settings
+from ui.uikits.uiUtils                      import check_preset
 
 class CheckBox(QCheckBox):
 
@@ -27,13 +26,16 @@ class CheckBox(QCheckBox):
     _copyright                              = __copyright__
     _data                                   = dict()
 
-    def __init__(self, preset={}, parent=None):
+    def __init__(self, txt=None, preset={}, parent=None):
         super(CheckBox, self).__init__(parent)
 
         self.signals = SignalManager(self)
         self.logger = Loggers(self.__class__.__name__)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.parent = parent
+        self.txt = txt
+        if self.txt is not None:
+            self.setText(self.txt)
 
         self.preset = preset
         if check_preset(self.preset):
@@ -41,8 +43,8 @@ class CheckBox(QCheckBox):
 
     def buildUI(self):
         for key, value in self.preset.items():
-            if key == 'txt':
-                self.setText(value)
+            if key == 'tt':
+                self.setToolTip(value)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

@@ -12,11 +12,11 @@ from __future__ import absolute_import, unicode_literals
 
 import json
 
-from PyQt5.QtWidgets import QApplication
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets                    import QApplication
+from PyQt5.QtCore                       import pyqtSlot
 
-from cores.base import ObjectEncoder
-from appData import __copyright__
+from cores.base                         import ObjectEncoder
+from appData                            import __copyright__
 
 class Application(QApplication):
 

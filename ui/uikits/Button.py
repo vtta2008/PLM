@@ -11,18 +11,18 @@ Description:
 """ Import """
 
 # Python
-from functools                  import partial
+from functools                              import partial
 
 # PyQt5
-from PyQt5.QtWidgets            import QPushButton, QToolButton
+from PyQt5.QtWidgets                        import QPushButton, QToolButton
 
 # PLM
-from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from ui.SignalManager           import SignalManager
-from cores.Loggers              import Loggers
-from cores.Settings             import Settings
-from ui.uikits.UiPreset         import check_preset
-from ui.uikits.Icon             import AppIcon, TagIcon
+from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
+from cores.SignalManager                    import SignalManager
+from cores.Loggers                          import Loggers
+from cores.Settings                         import Settings
+from ui.uikits.uiUtils                      import check_preset
+from ui.uikits.Icon                         import AppIcon, TagIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Button presets """
@@ -140,6 +140,7 @@ class ToolButton(QToolButton):
         self.signals = SignalManager(self)
         self.logger = Loggers(self.__class__.__name__)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.resize(40, 40)
 
         self.setText(text)
 

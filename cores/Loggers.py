@@ -15,8 +15,7 @@ from __future__ import unicode_literals
 import sys, os, logging, json, enum, traceback, linecache
 
 # PLM
-from appData            import LOG_PTH
-from appData.config     import LOG_FORMAT, DT_FORMAT
+from appData            import LOG_PTH, LOG_FORMAT, DT_FORMAT
 
 # -------------------------------------------------------------------------------------------------------------
 

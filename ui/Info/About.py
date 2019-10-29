@@ -15,33 +15,38 @@ import sys
 from functools import partial
 
 # PtQt5
-from PyQt5.QtWidgets import QApplication, QScrollArea
+from PyQt5.QtWidgets                import QApplication, QScrollArea
 
 # Plm
-from appData import ABOUT
-from ui import Widget, GridLayout, Button, Label, AppIcon
+from appData                        import ABOUT
+from ui.uikits.Widget               import Widget
+from ui.uikits.Button               import Button
+from ui.uikits.Label                import Label
+from ui.uikits.GridLayout           import GridLayout
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ About Layout """
 
 class About(Widget):
 
-    key = 'about'
+    key = 'About'
 
     def __init__(self, parent=None):
         super(About, self).__init__(parent)
 
-        self.setWindowIcon(AppIcon(32, 'About'))
+        # self.setWindowTitle(self.key)
+        # self.setWindowIcon(AppIcon(32, self.key))
 
-        self.layout = GridLayout()
+        self.layout                 = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
-        self.resize(800, 600)
+        # self.resize(800, 600)
 
     def buildUI(self):
-        self.scrollArea = QScrollArea()
+        self.scrollArea             = QScrollArea()
         self.scrollArea.setWidgetResizable(True)
-        self.content = Label({'txt':ABOUT, 'alg':'left', 'link': True})
+        self.content                = Label({'txt':ABOUT, 'alg':'left', 'link': True})
 
         self.content.setGeometry(0, 0, 800, 600)
         self.scrollArea.setWidget(self.content)

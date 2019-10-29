@@ -10,13 +10,12 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtWidgets import QSystemTrayIcon
+from PyQt5.QtWidgets                        import QSystemTrayIcon
 
-from ui.SignalManager           import SignalManager
-from cores.Loggers              import Loggers
-from cores.Settings             import Settings
-
-from appData import __copyright__, ST_FORMAT, SETTING_FILEPTH
+from cores.SignalManager                    import SignalManager
+from cores.Loggers                          import Loggers
+from cores.Settings                         import Settings
+from appData                                import __copyright__, ST_FORMAT, SETTING_FILEPTH
 
 class SystemTrayIcon(QSystemTrayIcon):
 

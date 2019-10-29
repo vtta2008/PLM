@@ -14,18 +14,18 @@ Description:
 import json
 import os
 import sys
-from functools              import partial
+from functools                      import partial
 
 # PyQt5
-from PyQt5.QtCore           import pyqtSlot
-from PyQt5.QtWidgets        import QApplication
+from PyQt5.QtCore                   import pyqtSlot
+from PyQt5.QtWidgets                import QApplication
 
 # Plm
-from appData                import (__plmWiki__, __envKey__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR, SiPoMin,
-                                    CONFIG_OFFICE, CONFIG_DEV, CONFIG_TOOLS)
+from appData                        import (__plmWiki__, __envKey__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR,
+                                            SiPoMin, CONFIG_OFFICE, CONFIG_DEV, CONFIG_TOOLS)
 
-from ui.uikits.Action       import Action
-from ui.uikits.MainWindow   import MainWindow
+from ui.uikits.Action               import Action
+from ui.uikits.MainWindow           import MainWindow
 
 
 class MainMenuBar(MainWindow):
@@ -120,7 +120,6 @@ class MainMenuBar(MainWindow):
         for key in CONFIG_DEV:
             if key in self.appInfo:
                 if key in self.appInfo:
-                    print(self.appInfo[key])
                     self.devMenu.addAction(Action({'icon': key,
                                                    'txt': key,
                                                    'trg': partial(self.signals.executing.emit, self.appInfo[key][2])},

@@ -16,13 +16,17 @@ import random
 import sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal, pyqtSlot, pyqtProperty, Qt, QPointF, QTimer, QSize, QRectF, QSizeF
-from PyQt5.QtGui import QRadialGradient, QColor, QPainter, QBrush, QPen
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore           import pyqtSignal, pyqtSlot, pyqtProperty, Qt, QPointF, QTimer, QSize, QRectF, QSizeF
+from PyQt5.QtGui            import QRadialGradient, QColor, QPainter, QBrush, QPen
+from PyQt5.QtWidgets        import QApplication
 
 # PLM
-from cores.base import DAMG
-from ui import Widget, GroupBox, GridLayout
+from cores.base                  import DAMG
+from ui.uikits.Widget                         import Widget
+from ui.uikits.GridLayout import GridLayout
+from ui.uikits.Button import Button
+from ui.uikits.GroupBox import GroupGrid
+from ui.uikits.LineEdit import LineEdit
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab4 """
@@ -41,9 +45,7 @@ class TopTab4(Widget):
 
     def buildUI(self):
 
-        sec1Grp = GroupBox('Test Layout')
-        sec1Grid = GridLayout()
-        sec1Grp.setLayout(sec1Grid)
+        sec1Grp, sec1Grid = GroupGrid('Test Layout')
 
         # sec1Grid.addWidget(rc.Label("Update later"), 0, 0, 6, 9)
         sec1Grid.addWidget(BubblesWidget(), 0, 0, 6, 9)

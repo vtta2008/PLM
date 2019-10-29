@@ -10,14 +10,15 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtWidgets            import QComboBox
+# PyQt5
+from PyQt5.QtWidgets                        import QComboBox
 
-from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
-
-from ui.SignalManager           import SignalManager
-from ui.uikits.UiPreset         import check_preset
-from cores.Loggers              import Loggers
-from cores.Settings             import Settings
+# PLM
+from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
+from cores.SignalManager                    import SignalManager
+from cores.Loggers                          import Loggers
+from cores.Settings                         import Settings
+from ui.uikits.uiUtils                      import check_preset
 
 class ComboBox(QComboBox):
 
@@ -27,19 +28,20 @@ class ComboBox(QComboBox):
     _copyright                              = __copyright__
     _data                                   = dict()
 
+
     def __init__(self, preset={}, parent=None):
-        super(ComboBox, self).__init__(parent)
+        super().__init__()
 
-        self.signals = SignalManager(self)
-        self.logger = Loggers(self.__class__.__name__)
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.parent = parent
-
-        self.preset = preset
+        self.signals                        = SignalManager(self)
+        self.logger                         = Loggers(self.__class__.__name__)
+        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.parent                         = parent
+        self.preset                         = preset
         if check_preset(self.preset):
             self.buildUI()
 
     def buildUI(self):
+        print(2)
         for key, value in self.preset.items():
             if key == 'items':
                 for item in value:
@@ -50,12 +52,20 @@ class ComboBox(QComboBox):
                 self.setCurrentIndex(value)
             elif key == 'setObjName':
                 self.setObjectName(value)
+            else:
+                print("PRESETKEYERROR: There is no key in preset: {}".format(key))
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
 
     def getValue(self, key):
         return self.settings.initValue(key, self.key)
+
+    def sizeHint(self):
+        size = super(ComboBox, self).sizeHint()
+        size.setHeight(size.height())
+        size.setWidth(max(size.width(), size.height()))
+        return size
 
     def showEvent(self, event):
         sizeX = self.getValue('width')
@@ -83,12 +93,6 @@ class ComboBox(QComboBox):
     def resizeEvent(self, event):
         self.setValue('width', self.frameGeometry().width())
         self.setValue('height', self.frameGeometry().height())
-
-    def sizeHint(self):
-        size = super(ComboBox, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
 
     def closeEvent(self, event):
         if __name__=='__main__':

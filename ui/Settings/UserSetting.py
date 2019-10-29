@@ -12,19 +12,22 @@ Description:
 """ Import """
 
 # Python
-import os
-import shutil
-import sys
+import os, shutil, sys
 
 # PtQt5
 from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import (QGridLayout, QLineEdit, QGroupBox, QPushButton, QFileDialog, QMessageBox,
-                             QApplication, QLabel)
+from PyQt5.QtWidgets import (QFileDialog, QApplication)
 
 # Plt
-from appData import PW_BLANK, PW_UNMATCH, __envKey__
-from ui import GroupGrid, GroupBox, AppIcon, Label, Widget, Button, GridLayout
-from utils import utils as func, localSQL as usql
+from appData        import PW_BLANK, PW_UNMATCH, __envKey__
+from ui.uikits.GroupBox         import GroupGrid
+from ui.uikits.Label import Label
+from ui.uikits.Widget import Widget
+from ui.uikits.Button import Button
+from ui.uikits.GridLayout import GridLayout
+from ui.uikits.LineEdit import LineEdit
+from ui.uikits.MessageBox import MessageBox
+from utils          import get_avatar_image, QuerryDB, text_to_hex, resize_image
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """
@@ -32,13 +35,13 @@ from utils import utils as func, localSQL as usql
 class UserSetting(Widget):
 
     key = 'UserSetting'
-    query = usql.QuerryDB()
+    query = QuerryDB()
 
     def __init__(self, parent=None):
 
         super(UserSetting, self).__init__(parent)
 
-        self.setWindowIcon(AppIcon(32, "UserSetting"))
+        # self.setWindowIcon(AppIcon(32, "UserSetting"))
         self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
@@ -65,7 +68,7 @@ class UserSetting(Widget):
         avatar_groupBox, avatar_layout = GroupGrid('Change Avatar')
 
         self.avatar = Label()
-        self.avatar.setPixmap(QPixmap.fromImage(QImage(func.get_avatar_icon(self.username))))
+        self.avatar.setPixmap(QPixmap.fromImage(QImage(get_avatar_image(self.username))))
         self.avatar.setScaledContents(True)
         self.avatar.setFixedSize(100, 100)
 
@@ -77,24 +80,16 @@ class UserSetting(Widget):
 
     def change_pass_section(self):
 
-        password_groupBox = GroupBox('Change Password')
-        password_layout = GridLayout()
-        password_groupBox.setLayout(password_layout)
+        password_groupBox, password_layout = GroupGrid('Change Password')
 
-        self.old_pass = QLineEdit()
-        self.old_pass.setEchoMode(QLineEdit.Password)
-        self.new_pass = QLineEdit()
-        self.new_pass.setEchoMode(QLineEdit.Password)
-        self.confirm_pass = QLineEdit()
-        self.confirm_pass.setEchoMode(QLineEdit.Password)
+        self.old_pass           = LineEdit({'echo': 'password'})
+        self.new_pass           = LineEdit({'echo': 'password'})
+        self.confirm_pass       = LineEdit({'echo': 'password'})
+        change_pass_btn         = Button({'txt': 'Change Password', 'cl': self.update_password})
 
-        change_pass_btn = QPushButton('Change Password')
-        change_pass_btn.clicked.connect(self.update_password)
-
-        password_layout.addWidget(QLabel('Old Password'), 0, 0, 1, 2)
-        password_layout.addWidget(QLabel('New Password'), 1, 0, 1, 2)
-        password_layout.addWidget(QLabel('Confirm Password'), 2, 0, 1, 2)
-
+        password_layout.addWidget(Label({'txt': 'Old Password'}), 0, 0, 1, 2)
+        password_layout.addWidget(Label({'txt': 'New Password'}), 1, 0, 1, 2)
+        password_layout.addWidget(Label({'txt': 'Confirm Password'}), 2, 0, 1, 2)
         password_layout.addWidget(self.old_pass, 0, 2, 1, 4)
         password_layout.addWidget(self.new_pass, 1, 2, 1, 4)
         password_layout.addWidget(self.confirm_pass, 2, 2, 1, 4)
@@ -104,24 +99,21 @@ class UserSetting(Widget):
 
     def change_profile_section(self):
 
-        profile_groupBox = QGroupBox("Change Profile")
-        profile_layout = QGridLayout()
-        profile_groupBox.setLayout(profile_layout)
+        profile_groupBox, profile_layout = GroupGrid("Change Profile")
 
-        profile_layout.addWidget(QLabel('First Name'), 0, 0, 1, 2)
-        profile_layout.addWidget(QLabel('Last Name'), 1, 0, 1, 2)
-        profile_layout.addWidget(QLabel('Your Title'), 2, 0, 1, 2)
-        profile_layout.addWidget(QLabel('Email'), 3, 0, 1, 2)
-        profile_layout.addWidget(QLabel('Phone Number'), 4, 0, 1, 2)
+        profile_layout.addWidget(Label({'txt': 'First Name'}), 0, 0, 1, 2)
+        profile_layout.addWidget(Label({'txt': 'Last Name'}), 1, 0, 1, 2)
+        profile_layout.addWidget(Label({'txt': 'Your Title'}), 2, 0, 1, 2)
+        profile_layout.addWidget(Label({'txt': 'Email'}), 3, 0, 1, 2)
+        profile_layout.addWidget(Label({'txt': 'Phone Number'}), 4, 0, 1, 2)
 
-        self.firstnameField = QLineEdit()
-        self.lastnameField = QLineEdit()
-        self.titleField = QLineEdit()
-        self.emailField = QLineEdit()
-        self.phoneField = QLineEdit()
+        self.firstnameField             = LineEdit()
+        self.lastnameField              = LineEdit()
+        self.titleField                 = LineEdit()
+        self.emailField                 = LineEdit()
+        self.phoneField                 = LineEdit()
 
-        change_profile_btn = QPushButton("Update Profile")
-        change_profile_btn.clicked.connect(self.update_profile)
+        change_profile_btn = Button({'txt': "Update Profile", 'cl': self.update_profile})
 
         profile_layout.addWidget(self.firstnameField, 0, 2, 1, 4)
         profile_layout.addWidget(self.lastnameField, 1, 2, 1, 4)
@@ -134,24 +126,21 @@ class UserSetting(Widget):
 
     def change_location_section(self):
 
-        location_groupBox = QGroupBox("Change Location")
-        location_layout = QGridLayout()
-        location_groupBox.setLayout(location_layout)
+        location_groupBox, location_layout = GroupGrid("Change Location")
 
-        location_layout.addWidget(QLabel('Address Line 1'), 0, 0, 1, 2)
-        location_layout.addWidget(QLabel('Address Line 2'), 1, 0, 1, 2)
-        location_layout.addWidget(QLabel('Postal'), 2, 0, 1, 2)
-        location_layout.addWidget(QLabel('City'), 3, 0, 1, 2)
-        location_layout.addWidget(QLabel('Country'), 4, 0, 1, 2)
+        location_layout.addWidget(Label({'txt': 'Address Line 1'}), 0, 0, 1, 2)
+        location_layout.addWidget(Label({'txt': 'Address Line 2'}), 1, 0, 1, 2)
+        location_layout.addWidget(Label({'txt': 'Postal'}), 2, 0, 1, 2)
+        location_layout.addWidget(Label({'txt': 'City'}), 3, 0, 1, 2)
+        location_layout.addWidget(Label({'txt': 'Country'}), 4, 0, 1, 2)
 
-        self.address1Field = QLineEdit()
-        self.address2Field = QLineEdit()
-        self.postalField = QLineEdit()
-        self.cityField = QLineEdit()
-        self.countryField = QLineEdit()
+        self.address1Field              = LineEdit()
+        self.address2Field              = LineEdit()
+        self.postalField                = LineEdit()
+        self.cityField                  = LineEdit()
+        self.countryField               = LineEdit()
 
-        change_location_btn = QPushButton("Update Location")
-        change_location_btn.clicked.connect(self.update_location)
+        change_location_btn = Button({'txt': "Update Location", 'cl': self.update_location})
 
         location_layout.addWidget(self.address1Field, 0, 2, 1, 4)
         location_layout.addWidget(self.address2Field, 1, 2, 1, 4)
@@ -164,15 +153,15 @@ class UserSetting(Widget):
 
     def update_password(self):
 
-        old_pass = func.text_to_hex(self.old_pass.text())
-        new_pass = func.text_to_hex(self.new_pass.text())
-        confirm_pass = func.text_to_hex(self.confirm_pass.text())
+        old_pass = text_to_hex(self.old_pass.text())
+        new_pass = text_to_hex(self.new_pass.text())
+        confirm_pass = text_to_hex(self.confirm_pass.text())
 
         if len(old_pass) == 0 or len(new_pass) == 0 or len(confirm_pass) == 0:
-            QMessageBox.critical(self, 'Failed', PW_BLANK)
+            MessageBox(self, title='Failed', level='critical', message=PW_BLANK, btn='ok')
             return
         elif new_pass is not confirm_pass:
-            QMessageBox.critical(self, 'Failed', PW_UNMATCH)
+            MessageBox(self, title='Failed', level='critical', message=PW_UNMATCH, btn='ok')
             return
         else:
             # checkPass = func.check_pw_match(self.username, old_pass)
@@ -203,7 +192,7 @@ class UserSetting(Widget):
                     os.remove(desPth + '.old')
 
                 os.rename(desPth, desPth + '.old')
-                func.resize_image(fileName, desPth)
+                resize_image(fileName, desPth)
                 shutil.copy2(fileName, desPth)
                 image = QPixmap.fromImage(QImage(desPth))
                 self.avatar.setPixmap(image)

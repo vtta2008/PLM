@@ -18,17 +18,18 @@ import sys
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore import pyqtSlot
-from PyQt5.QtGui import QWheelEvent
-from PyQt5.QtWidgets import QMenu, QSystemTrayIcon, QApplication
+from PyQt5.QtCore               import pyqtSlot
+from PyQt5.QtGui                import QWheelEvent
+from PyQt5.QtWidgets            import QMenu, QSystemTrayIcon, QApplication
 
-from cores.Loggers import Loggers
 # PLM
-from appData import __plmSlogan__, __appname__, __envKey__, CONFIG_SYSTRAY
-from ui.SignalManager import SignalManager
-from ui import Action, LogoIcon, SystemTrayIcon
-from cores.base import DAMG
-from utils.localSQL import QuerryDB
+from appData                    import __plmSlogan__, __appname__, __envKey__, CONFIG_SYSTRAY
+from cores.SignalManager        import SignalManager
+from ui.uikits.Action                     import Action
+from ui.uikits.Icon import LogoIcon
+from ui.uikits.SystemTrayIcon import SystemTrayIcon
+from cores.base                      import DAMG
+from utils                      import QuerryDB
 
 
 # -------------------------------------------------------------------------------------------------------------

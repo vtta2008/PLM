@@ -18,7 +18,11 @@ from PyQt5.QtWidgets import QApplication, QScrollArea
 
 # Plm
 from appData import LICENCE_MIT
-from ui import Widget, GridLayout, Button, Label, AppIcon
+from ui.uikits.Widget                         import Widget
+from ui.uikits.Icon import AppIcon
+from ui.uikits.Button import Button
+from ui.uikits.Label import Label
+from ui.uikits.GridLayout import GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Contributing Layout """
@@ -54,7 +58,7 @@ class LicenceMIT(Widget):
 
 def main():
     app = QApplication(sys.argv)
-    about_layout = LicenceMIT()
+    about_layout = InfoWidget(LicenceMIT)
     about_layout.show()
     app.exec_()
 

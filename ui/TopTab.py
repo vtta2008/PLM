@@ -12,12 +12,15 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QApplication
+from PyQt5.QtCore               import Qt
+from PyQt5.QtWidgets            import QApplication
 
 # PLM
-from ui import Widget, VBoxLayout, TabWidget
-from ui import TopTab1, TopTab2, TopTab3, TopTab4, TopTab5
+from ui.uikits.Widget                     import Widget
+from ui.uikits.VBoxLayout import VBoxLayout
+from ui.uikits.TabWidget import TabWidget
+from ui                         import (TopTab2, TopTab3, TopTab5,
+                                        TopTab1, TopTab4, )
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """

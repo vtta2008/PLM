@@ -10,14 +10,15 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtWidgets            import QLineEdit
+from PyQt5.QtWidgets                        import QLineEdit
+from PyQt5.QtGui                            import QIntValidator
 
-from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__, PRS
-
-from ui.SignalManager           import SignalManager
-from ui.uikits.UiPreset         import check_preset
-from cores.Loggers              import Loggers
-from cores.Settings             import Settings
+# PLM
+from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__, PRS
+from cores.Loggers                          import Loggers
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
+from ui.uikits.uiUtils                      import check_preset
 
 class LineEdit(QLineEdit):
 
@@ -48,6 +49,12 @@ class LineEdit(QLineEdit):
                 self.setEchoMode(PRS[value])
             elif key == 'txt':
                 self.setText(value)
+            elif key == 'validator':
+                if value == 'int':
+                    self.setValidator(QIntValidator())
+            elif key == 'echo':
+                if value == 'password':
+                    self.setEchoMode(QLineEdit.Password)
             else:
                 print("{0}: Unrecognise configKey: {1}".format(__file__, key))
 

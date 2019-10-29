@@ -11,9 +11,9 @@ Description:
 """ Import """
 
 # PLM
-from ui.uikits.ToolBar      import ToolBarPreset
-from ui.uikits.DockWidget   import DockWidget
-from ui.uikits.GridLayout   import GridLayout
+from ui.uikits.ToolBar             import ToolBar
+from ui.uikits.DockWidget          import DockWidget
+from ui.uikits.GridLayout          import GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar docking class """
@@ -25,19 +25,19 @@ class DockToolBar(DockWidget):
     def __init__(self, name="TEXTURE", parent=None):
         super(DockToolBar, self).__init__(parent)
 
-        self.name = name
-        self.key = 'dockToolBar' + " {0}".format(self.name)
+        self.name               = name
+        self.key                = 'dockToolBar' + " {0}".format(self.name)
         self.setWindowTitle(self.name)
 
         self.buildUI()
 
     def buildUI(self):
-        self.layout = GridLayout()
-        self.toolbar = ToolBarPreset(self.name, self)
-        self.toolbar.signals.executing.connect(self.signals.executing)
-
+        self.layout             = GridLayout()
+        self.toolbar            = ToolBar(self.name, self)
         self.layout.addWidget(self.toolbar, 0, 0, 1, 1)
         self.setLayout(self.layout)
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 21/07/2018 - 6:43 AM

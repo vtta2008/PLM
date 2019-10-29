@@ -12,45 +12,42 @@ Description:
 """ Import """
 
 # Python
-import json
-import os
-import sys
+import json, os, sys
 from functools              import partial
 
 # PyQt5
 from PyQt5.QtCore           import pyqtSlot
-from PyQt5.QtWidgets        import QMainWindow, QApplication
+from PyQt5.QtWidgets        import QApplication
 
 # PLM
-from cores.Loggers          import Loggers
-from appData                import __envKey__, CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_POST, SiPoMin
-from ui.SignalManager           import SignalManager
+from appData                import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_POST, mainConfig
 from ui.uikits.Action       import Action
 from ui.uikits.MainWindow   import MainWindow
-from utils.utils            import str2bool, bool2str
+from utils                  import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
 
 class MainToolBar(MainWindow):
 
-    key = 'mainToolBar'
+    key = 'MainToolBar'
+
+    with open(mainConfig, 'r') as f:
+        appInfo = json.load(f)
 
     def __init__(self, parent=None):
         super(MainToolBar, self).__init__(parent)
-        
-        with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
-            self.appInfo = json.load(f)
 
-        self.tdToolBar = self.create_toolBar("TD", CONFIG_TDS)
-        self.compToolBar = self.create_toolBar("VFX", CONFIG_VFX)
-        self.artToolBar = self.create_toolBar("ART", CONFIG_ART)
+        self.tdToolBar      = self.create_toolBar("TD", CONFIG_TDS)
+        self.compToolBar    = self.create_toolBar("VFX", CONFIG_VFX)
+        self.artToolBar     = self.create_toolBar("ART", CONFIG_ART)
         self.textureToolBar = self.create_toolBar('TEX', CONFIG_TEX)
-        self.postToolBar = self.create_toolBar('POST', CONFIG_POST)
+        self.postToolBar    = self.create_toolBar('POST', CONFIG_POST)
 
-        self.toolBars = [self.tdToolBar, self.compToolBar, self.artToolBar, self.textureToolBar, self.postToolBar]
+        self.toolBars       = [self.tdToolBar, self.compToolBar, self.artToolBar, self.textureToolBar, self.postToolBar]
 
     def create_toolBar(self, name="", apps=[]):
+
         toolBar = self.addToolBar(name)
         
         for key in apps:
@@ -83,13 +80,6 @@ class MainToolBar(MainWindow):
             for tb in self.toolBars:
                 tb.setVisible(str2bool(mode))
                 self.signals.setSetting.emit(tb, bool2str(mode), self.objectName())
-
-    def hideEvent(self, event):
-        self.signals.setSetting.emit(self.key, 'hide', self.objectName())
-
-    def closeEvent(self, event):
-        self.signals.regisLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def main():
     app = QApplication(sys.argv)

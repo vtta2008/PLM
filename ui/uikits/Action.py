@@ -13,16 +13,15 @@ Description:
 # Python
 
 # PyQt5
-from PyQt5.QtWidgets import QAction
+from PyQt5.QtWidgets                        import QAction
 
 # PLM
-from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
-
-from ui.SignalManager           import SignalManager
-from cores.Loggers              import Loggers
-from cores.Settings             import Settings
-from ui.uikits.UiPreset         import check_preset
-from ui.uikits.Icon             import AppIcon
+from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
+from cores.SignalManager                    import SignalManager
+from cores.Loggers                          import Loggers
+from cores.Settings                         import Settings
+from ui.uikits.Icon                         import AppIcon
+from ui.uikits.uiUtils                      import check_preset
 
 # -------------------------------------------------------------------------------------------------------------
 """ Action presets """
@@ -38,11 +37,11 @@ class Action(QAction):
     def __init__(self, preset={}, parent=None):
         super(Action, self).__init__(parent)
 
-        self.parent = parent
-        self.preset = preset
-        self.signals = SignalManager(self)
-        self.logger = Loggers(self.__class__.__name__)
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.parent         = parent
+        self.preset         = preset
+        self.signals        = SignalManager(self)
+        self.logger         = Loggers(self.__class__.__name__)
+        self.settings       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         if check_preset(self.preset):
             self.buildUI()

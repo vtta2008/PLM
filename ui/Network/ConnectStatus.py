@@ -15,26 +15,28 @@ Description:
 import requests, sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QLabel
+from PyQt5.QtCore               import pyqtSignal
+from PyQt5.QtGui                import QPixmap
+
 
 # Plt
-from appData import __localServer__, SERVER_CONNECT_FAIL
-from ui import MessageBox,GridLayout, Label
-from utils.utils import get_app_icon
+from appData                    import __localServer__, SERVER_CONNECT_FAIL
+from ui.uikits.MessageBox       import MessageBox
+from ui.uikits.GridLayout       import GridLayout
+from ui.uikits.Label            import Label
+from utils                      import get_app_icon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """
 
-class ServerStatus(GridLayout):
+class ConnectStatus(GridLayout):
 
-    key = 'ServerStatus'
+    key = 'ConnectStatus'
 
     onlineStage = pyqtSignal(bool)
 
     def __init__(self, parent=None):
-        super(ServerStatus, self).__init__(parent)
+        super(ConnectStatus, self).__init__(parent)
 
         self.serverConnectable = False
 
@@ -52,7 +54,7 @@ class ServerStatus(GridLayout):
         self.connected = get_app_icon(16, 'Connected')
         self.disconnected = get_app_icon(16, 'Disconnected')
 
-        self.networkStatus = QLabel()
+        self.networkStatus = Label({'txt': ''})
         self.networkStatus.setMaximumWidth(20)
 
         if self.serverConnectable:
@@ -69,6 +71,7 @@ class ServerStatus(GridLayout):
         self.addWidget(self.txt, 0, 1, 1, 1)
 
     def connection_status(self, param):
+
         if param:
             self.networkStatus.setPixmap(QPixmap(self.connected))
         else:

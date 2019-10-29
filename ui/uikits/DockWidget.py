@@ -11,16 +11,17 @@ Description:
 """ Import """
 
 # Python
+import sys
 
 # PyQt5
-from PyQt5.QtGui            import QTextTableFormat, QTextCharFormat
-from PyQt5.QtWidgets        import QTextEdit, QDockWidget
+from PyQt5.QtGui                        import QTextTableFormat, QTextCharFormat
+from PyQt5.QtWidgets                    import QTextEdit, QDockWidget, QApplication
 
 # PLM
-from appData                import right, datetTimeStamp, SETTING_FILEPTH, ST_FORMAT, __copyright__
-from ui.SignalManager           import SignalManager
-from cores.Loggers          import Loggers
-from cores.Settings         import Settings
+from appData                            import right, datetTimeStamp, SETTING_FILEPTH, ST_FORMAT, __copyright__
+from cores.SignalManager                import SignalManager
+from cores.Loggers                      import Loggers
+from cores.Settings                     import Settings
 
 # -------------------------------------------------------------------------------------------------------------
 """ Dock widget """
@@ -127,6 +128,15 @@ class DockWidget(QDockWidget):
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
 
+
+def main():
+    app = QApplication(sys.argv)
+    layout = DockWidget()
+    layout.show()
+    app.exec_()
+
+if __name__ == '__main__':
+    main()
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 18/07/2018 - 10:07 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

@@ -18,7 +18,7 @@ from PyQt5.QtWidgets        import QApplication, QStatusBar
 
 # Plm
 from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from ui.SignalManager           import SignalManager
+from cores.SignalManager        import SignalManager
 from cores.Loggers              import Loggers
 from cores.Settings             import Settings
 

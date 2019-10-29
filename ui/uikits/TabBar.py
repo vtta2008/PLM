@@ -10,14 +10,13 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtCore               import QSize
-from PyQt5.QtWidgets            import QTabBar
+from PyQt5.QtCore                           import QSize
+from PyQt5.QtWidgets                        import QTabBar
 
-from appData                    import __copyright__, SETTING_FILEPTH, ST_FORMAT
-
-from ui.SignalManager           import SignalManager
-from cores.Loggers              import Loggers
-from cores.Settings             import Settings
+from appData                                import __copyright__, SETTING_FILEPTH, ST_FORMAT
+from cores.SignalManager                    import SignalManager
+from cores.Loggers                          import Loggers
+from cores.Settings                         import Settings
 
 class TabBar(QTabBar):
 

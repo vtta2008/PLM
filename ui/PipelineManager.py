@@ -10,18 +10,30 @@ Description:
 
 # Python
 import sys
-from functools              import partial
+from functools                  import partial
 
 # PyQt5
-from PyQt5.QtWidgets        import QApplication
+from PyQt5.QtWidgets            import QApplication
 
 # PLM
-from appData                import __homepage__, dockB, __appname__
-from ui                     import (Footer, StatusBar, Widget, GridLayout, MainWindow, GroupBox, LogoIcon, ServerStatus,
-                                    MainMenuBar, SubMenuBar, MainToolBar, DockToolBar)
-from ui.BotTab              import BotTab
-from ui.TopTab              import TopTab
-from utils.utils            import str2bool, bool2str
+from appData                            import __homepage__, dockB, __appname__
+from ui.uikits.MainWindow                  import MainWindow
+from ui.uikits.GroupBox                    import GroupBox, GroupGrid
+from ui.uikits.Widget                      import Widget
+from ui.uikits.GridLayout                  import GridLayout
+from ui.uikits.Icon                        import LogoIcon
+
+from ui.Menus.MainMenuBar               import MainMenuBar                      # Header
+from ui.Menus.SubMenuBar                import SubMenuBar
+from ui.Network.ConnectStatus           import ConnectStatus
+from ui.AppToolbar.MainToolBar          import MainToolBar
+from ui.AppToolbar.DockToolBar          import DockToolBar
+from ui.TopTab                          import TopTab                           # Body
+from ui.BotTab                          import BotTab
+from ui.Footer                          import Footer                           # Footer
+from ui.StatusBar                       import StatusBar
+
+from utils                              import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
@@ -53,7 +65,7 @@ class PipelineManager(MainWindow):
         self.mainMenuBar    = MainMenuBar()
         # self.subMenuBar     = SubMenuBar()                                                  # Sub menu
         self.toolBar        = MainToolBar()                                                 # Toolbar
-        self.serverStatus   = ServerStatus()                                                # Server Status
+        self.serverStatus   = ConnectStatus()                                                # Server Status
         # self.subMenuSec     = GroupBox("Sub Menu", self.subMenuBar, "qmainLayout")
         # self.subMenuSec.key = "SubMenuSection"
         self.mainMenuSec    = GroupBox("Main Menu", self.mainMenuBar, "qmainLayout")

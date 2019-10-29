@@ -14,19 +14,17 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import pyqtSignal
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout
+from PyQt5.QtWidgets import QApplication, QGridLayout
 
 # Plt
-from cores.Loggers import Loggers
-from appData import ANTIALIAS, UPDATE_FULLVIEW, KEY_DEL
-from ui.uikits.Widget import Widget
-from ui.NodeGraph.MenuBar import MenuBar
-from ui.NodeGraph.Node import Node, Edge
-from ui.NodeGraph.Scene import Scene
-from ui.NodeGraph.View import View
-from ui import AppIcon
-from utils.utils import getUnix
+from appData                            import ANTIALIAS, UPDATE_FULLVIEW, KEY_DEL
+from ui.uikits.Widget                   import Widget
+from ui.NodeGraph.MenuBar               import MenuBar
+from ui.NodeGraph.Node                  import Node, Edge
+from ui.NodeGraph.Scene                 import Scene
+from ui.NodeGraph.View                  import View
+
+from utils import getUnix
 
 # -------------------------------------------------------------------------------------------------------------
 """ NoderViewer """
@@ -37,14 +35,13 @@ class NodeGraph(Widget):
 
     def __init__(self, parent=None):
         super(NodeGraph, self).__init__(parent)
-        self.logger = Loggers(self)
-        self.mtd = {}
-        self.Nodes = []
-        self.setWindowIcon(AppIcon(32, 'NodeGraph'))
-        self.menuBar = MenuBar(self)
+        self.mtd                    = {}
+        self.Nodes                  = []
+        # self.setWindowIcon(AppIcon(32, 'NodeGraph'))
+        self.menuBar                = MenuBar(self)
 
-        self.view = View()
-        self.sceneView = Scene(self)                                         # Setup scene.
+        self.view                   = View()
+        self.sceneView              = Scene(self)                                         # Setup scene.
         self.view.setScene(self.sceneView)
         self.view.setRenderHint(ANTIALIAS)
         self.view.setViewportUpdateMode(UPDATE_FULLVIEW)

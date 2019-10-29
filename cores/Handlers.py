@@ -7,13 +7,10 @@ Author: Do Trinh/Jimmy - 3D artist.
 Description:
 
 """
-from cores import Commands
-from cores.Loggers import Loggers
-# -------------------------------------------------------------------------------------------------------------
+from cores.Commands import SceneNodesCommand
 from cores.base import DAMG
+from cores.Loggers import Loggers
 
-logger = Loggers()
-log = logger.report
 
 class EventHandler(DAMG):
     def __init__(self, parent=None):
@@ -22,6 +19,7 @@ class EventHandler(DAMG):
         self.ui = None  # reference to the parent MainWindow
         self.graph = None  # reference to the Graph instance
         self._initialized = False  # indicates the current scene has been read & built
+        self.logger = Loggers(__file__.__name__)
 
         if parent is not None:
             self.ui = parent.ui
@@ -29,7 +27,7 @@ class EventHandler(DAMG):
             self.ui.action_update_graph.triggered.connect(self.graphUpdated)
 
             if not self.connectGraph(parent):
-                log('cannot connect SceneEventHandler to Graph.')
+                self.logger.info('cannot connect SceneEventHandler to Graph.')
 
     def updateStatus(self, msg, level='info'):
         self.ui.updateStatus(msg, level=level)
@@ -63,7 +61,7 @@ class EventHandler(DAMG):
                 self.graph.graphRead += self.graphReadEvent
 
                 self.graph.mode = 'ui'
-                log.info('SceneHandler: connecting Graph...')
+                self.logger.info('SceneHandler: connecting Graph...')
 
                 # start the autosave timer for 2min (120s x 1000)
                 self.ui.autosave_timer.start(30000)
@@ -103,20 +101,20 @@ class EventHandler(DAMG):
         self.scene.addNodes(ids)
 
         new_snapshot = self.graph.snapshot()
-        self.undo_stack.push(Commands.SceneNodesCommand(old_snapshot, new_snapshot, self.scene, msg='nodes added'))
+        self.undo_stack.push(SceneNodesCommand(old_snapshot, new_snapshot, self.scene, msg='nodes added'))
 
     def edgesAddedEvent(self, graph, edges):
         old_snapshot = self.graph.snapshot()
         self.scene.addEdges(edges)
 
         new_snapshot = self.graph.snapshot()
-        self.undo_stack.push(Commands.SceneNodesCommand(old_snapshot, new_snapshot, self.scene, msg='edges added'))
+        self.undo_stack.push(SceneNodesCommand(old_snapshot, new_snapshot, self.scene, msg='edges added'))
 
     def removeSceneNodes(self, nodes):
 
         old_snapshot = self.graph.snapshot()
         if not nodes:
-            log('no nodes specified.')
+            self.logger.info('no nodes specified.')
             return False
 
         for node in nodes:
@@ -125,17 +123,17 @@ class EventHandler(DAMG):
                     dag = node.dagnode
                     nid = dag.id
                     if self.graph.remove_node(nid):
-                        log.debug('removing dag node: %s' % nid)
+                        self.logger.debug('removing dag node: %s' % nid)
                     node.close()
 
             if self.scene.is_edge(node):
                 if node.ids in self.graph.network.edges():
-                    log.debug('removing edge: %s' % str(node.ids))
+                    self.logger.debug('removing edge: %s' % str(node.ids))
                     self.graph.remove_edge(*node.ids)
                 node.close()
 
         new_snapshot = self.graph.snapshot()
-        self.undo_stack.push(Commands.SceneNodesCommand(old_snapshot, new_snapshot, self.scene, msg='nodes deleted'))
+        self.undo_stack.push(SceneNodesCommand(old_snapshot, new_snapshot, self.scene, msg='nodes deleted'))
 
     def getInterfacePreferences(self):
         result = dict()
@@ -167,12 +165,12 @@ class EventHandler(DAMG):
                 src_conn = node.source_item
                 dest_conn = node.dest_item
 
-                log('# DEBUG: removing edge: {}'.format(node))
+                self.logger.info('# DEBUG: removing edge: {}'.format(node))
                 node.close()
 
             if self.scene.is_node(node):
                 print
-                log('# DEBUG: removing node: {}'.format(node))
+                self.logger.info('# DEBUG: removing node: {}'.format(node))
                 node.close()
 
     def dagNodesUpdatedEvent(self, dagnodes):

@@ -24,13 +24,13 @@ import types
 from io import StringIO
 
 # PyQt5
-from PyQt5.QtCore           import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
-from PyQt5.QtGui            import QTextCursor
-from PyQt5.QtWidgets        import QTextEdit, QApplication
+from PyQt5.QtCore               import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
+from PyQt5.QtGui                import QTextCursor
+from PyQt5.QtWidgets            import QTextEdit, QApplication
 
 # PLM
-from appData                import SiPoMin
-from ui                     import GridLayout
+from appData                    import SiPoMin
+from ui.uikits.GridLayout                     import GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Processing User Input """

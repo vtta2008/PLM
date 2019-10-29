@@ -11,15 +11,8 @@ Description:
 from __future__ import absolute_import, unicode_literals
 """ Import """
 
-# Python
-import os
 
-# Plm
-from cores.Loggers import Loggers
-logger = Loggers(__file__)
-
-
-from cores.base import DAMGERROR
+from cores import DAMGERROR
 
 # -------------------------------------------------------------------------------------------------------------
 

@@ -258,8 +258,9 @@ dockAll                     = Qt.AllDockWidgetAreas
 # -------------------------------------------------------------------------------------------------------------
 """ setting """
 
-PRS = dict( password = QLineEdit.Password,  center = center , left  = left   , right  = right, spmin = SiPoMin,
-            spmax    = SiPoMax           ,  sppre  = SiPoPre, spexp = SiPoExp, spign  = SiPoIgn,  )
+PRS = dict( password    = QLineEdit.Password,       center = center ,   left  = left   ,    right  = right,
+            spmax       = SiPoMax           ,       sppre  = SiPoPre,   spexp = SiPoExp,    spign  = SiPoIgn,
+            expanding   = QSizePolicy.Expanding,    spmin = SiPoMin,)
 
 # node connection property types
 PROPERTY = dict( simple = ['FLOAT', 'STRING', 'BOOL', 'INT'] , arrays  = ['FLOAT2', 'FLOAT3', 'INT2', 'INT3', 'COLOR'],

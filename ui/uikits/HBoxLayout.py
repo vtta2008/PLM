@@ -10,14 +10,16 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtWidgets            import QHBoxLayout
+from PyQt5.QtWidgets                        import QHBoxLayout
 
-from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
+# PLM
+from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
+from cores.SignalManager                    import SignalManager
+from cores.Loggers                          import Loggers
+from cores.Settings                         import Settings
+from ui.uikits.uiUtils                      import check_preset
 
-from ui.SignalManager           import SignalManager
-from ui.uikits.UiPreset         import check_preset
-from cores.Loggers              import Loggers
-from cores.Settings             import Settings
+
 
 class HBoxLayout(QHBoxLayout):
 

@@ -18,15 +18,15 @@ from functools import partial
 from PyQt5.QtCore import pyqtSlot
 # PyQt5
 from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtWidgets import (QApplication, QGridLayout, QGroupBox, QLabel, QGraphicsScene)
+from PyQt5.QtWidgets import (QApplication, QLabel, QGraphicsScene)
 
 # Plt
-from ui.uikits.Widget import Widget
-from ui.uikits.Button import Button
+from ui.uikits.Widget                         import Widget
 from ui.uikits.GridLayout import GridLayout
-from ui.uikits.GroupBox import GroupBox
+from ui.uikits.Button import Button
+from ui.uikits.GroupBox import GroupBox, GroupGrid
 from utils import localSQL as usql
-from utils.utils import get_avatar_icon
+from utils import get_avatar_image
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab3 """
@@ -52,7 +52,7 @@ class TopTab3(Widget):
             self.username = 'DemoUser'
 
         self.avatar = QLabel()
-        self.avatar.setPixmap(QPixmap.fromImage(QImage(get_avatar_icon(self.username))))
+        self.avatar.setPixmap(QPixmap.fromImage(QImage(get_avatar_image(self.username))))
         self.avatar.setScaledContents(True)
         self.avatar.setFixedSize(100, 100)
 
@@ -65,9 +65,7 @@ class TopTab3(Widget):
         sec1Grp = GroupBox(self.username, [self.avatar], "ImageView")
         sec2Grp = GroupBox("Setting", btns, "BtnGrid")
 
-        sec3Grp = QGroupBox("Messenger")
-        sec3Grid = QGridLayout()
-        sec3Grp.setLayout(sec3Grid)
+        sec3Grp, sec3Grid = GroupGrid("Messenger")
 
         self.layout.addWidget(sec1Grp, 0, 0, 1, 1)
         self.layout.addWidget(sec2Grp, 1, 0, 1, 1)
@@ -78,7 +76,7 @@ class TopTab3(Widget):
         print("receive signal emit to update avatar: {0}".format(param))
         if param:
             self.username, token, cookie, remember = self.query.query_table('curUser')
-            self.avatar = QPixmap(get_avatar_icon(self.username))
+            self.avatar = QPixmap(get_avatar_image(self.username))
             self.avatarScene = QGraphicsScene()
             self.avatarScene.addPixmap(self.avatar)
             self.avatarScene.update()

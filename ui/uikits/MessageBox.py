@@ -11,9 +11,12 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtWidgets                import QMessageBox
+
+# PLM
+from appData                        import __copyright__
 from cores.Loggers                  import Loggers
 from ui.uikits.Icon                 import AppIcon
-from appData                        import __copyright__
+
 
 class MessageBox(QMessageBox):
 
