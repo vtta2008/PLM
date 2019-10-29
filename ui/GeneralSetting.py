@@ -42,7 +42,7 @@ class GeneralSetting(GridLayout):
         self.statusBarCB    = CheckBox(txt="Status Bar")
 
         self.subMenuCB      = CheckBox(txt="Sub Menu")
-        self.serStatusCB    = CheckBox(txt="Server Status")
+        self.connectStatuCB = CheckBox(txt="Connect Status")
         self.notifiCB       = CheckBox(txt="Notification")
 
         self.addWidget(self.tbTDCB, 0, 0, 1, 2)
@@ -56,11 +56,11 @@ class GeneralSetting(GridLayout):
         self.addWidget(self.statusBarCB, 3, 2, 1, 2)
 
         self.addWidget(self.subMenuCB, 0, 4, 1, 2)
-        self.addWidget(self.serStatusCB, 1, 4, 1, 2)
+        self.addWidget(self.connectStatuCB, 1, 4, 1, 2)
         self.addWidget(self.notifiCB, 2, 4, 1, 2)
 
         self.checkBoxes = [self.tbTDCB, self.tbCompCB, self.tbArtCB, self.tbTexCB, self.tbPostCB, self.subToolBarCB,
-                           self.mainToolBarCB, self.statusBarCB, self.subMenuCB, self.serStatusCB, self.notifiCB]
+                           self.mainToolBarCB, self.statusBarCB, self.subMenuCB, self.connectStatuCB, self.notifiCB]
 
         self.keys = ['toolbarTD', 'toolbarComp', 'toolbarArt', 'toolbarTex', 'toolbarPost', 'subToolbar',
                      'toolbarMain', 'toolbarStatus', 'toolbarSubMenu', 'toolbarServer', 'toolbarNotifi']

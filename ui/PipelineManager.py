@@ -17,17 +17,16 @@ from PyQt5.QtWidgets            import QApplication
 
 # PLM
 from appData                            import __homepage__, dockB, __appname__
-from ui.uikits.MainWindow                  import MainWindow
-from ui.uikits.GroupBox                    import GroupBox, GroupGrid
-from ui.uikits.Widget                      import Widget
-from ui.uikits.GridLayout                  import GridLayout
-from ui.uikits.Icon                        import LogoIcon
+from ui.uikits.MainWindow               import MainWindow
+from ui.uikits.GroupBox                 import GroupBox
+from ui.uikits.Widget                   import Widget
+from ui.uikits.GridLayout               import GridLayout
+from ui.uikits.Icon                     import LogoIcon
 
 from ui.Menus.MainMenuBar               import MainMenuBar                      # Header
-from ui.Menus.SubMenuBar                import SubMenuBar
 from ui.Network.ConnectStatus           import ConnectStatus
 from ui.AppToolbar.MainToolBar          import MainToolBar
-from ui.AppToolbar.DockToolBar          import DockToolBar
+
 from ui.TopTab                          import TopTab                           # Body
 from ui.BotTab                          import BotTab
 from ui.Footer                          import Footer                           # Footer
@@ -63,15 +62,13 @@ class PipelineManager(MainWindow):
     def buildUI(self):
 
         self.mainMenuBar    = MainMenuBar()
-        # self.subMenuBar     = SubMenuBar()                                                  # Sub menu
         self.toolBar        = MainToolBar()                                                 # Toolbar
         self.serverStatus   = ConnectStatus()                                                # Server Status
-        # self.subMenuSec     = GroupBox("Sub Menu", self.subMenuBar, "qmainLayout")
-        # self.subMenuSec.key = "SubMenuSection"
+
         self.mainMenuSec    = GroupBox("Main Menu", self.mainMenuBar, "qmainLayout")
         self.mainMenuSec.key = "MainMenuSection"
         self.networkStatus  = GroupBox("Server Status", self.serverStatus, "autoGrid")
-        # self.networkStatus.setMaximumHeight(self.subMenuBar.maximumHeight()*3)
+
         self.networkStatus.key = "NetworkStatus"
         self.subToolBarSec  = GroupBox("Tool Bar", self.toolBar, "qmainLayout")
         self.subToolBarSec.key = "SubtoolBarSec"
@@ -87,7 +84,6 @@ class PipelineManager(MainWindow):
         self.setStatusBar(self.statusBar)
 
         self.mainUI_layouts =  [
-                                # self.subMenuBar, self.subMenuSec,
                                 self.mainMenuBar, self.toolBar, self.serverStatus, self.mainMenuSec,
                                 self.networkStatus, self.subToolBarSec, self.topTabUI, self.botTabUI, self.notifiSec,
                                 self.statusBar, self.footer,
@@ -103,14 +99,12 @@ class PipelineManager(MainWindow):
         cbs = [
                self.botTabUI.generalSetting.tbTDCB, self.botTabUI.generalSetting.tbCompCB,
                self.botTabUI.generalSetting.tbArtCB, self.botTabUI.generalSetting.tbTexCB,
-               self.botTabUI.generalSetting.tbPostCB, self.botTabUI.generalSetting.subToolBarCB,
-               self.botTabUI.generalSetting.mainToolBarCB, self.botTabUI.generalSetting.statusBarCB,
-               self.botTabUI.generalSetting.serStatusCB, self.botTabUI.generalSetting.notifiCB,
-               # self.botTabUI.generalSetting.subMenuCB,
-               ]
+               self.botTabUI.generalSetting.tbPostCB, self.botTabUI.generalSetting.mainToolBarCB,
+               self.botTabUI.generalSetting.statusBarCB, self.botTabUI.generalSetting.serStatusCB,
+               self.botTabUI.generalSetting.notifiCB,
+                ]
 
         sections = [
-                    # self.subToolBarSec, self.subMenuSec,
                     self.toolBar.tdToolBar, self.toolBar.compToolBar, self.toolBar.artToolBar, self.toolBar.textureToolBar,
                     self.toolBar.postToolBar, self.mainMenuSec, self.statusBar, self.networkStatus, self.notifiSec
                     ]
@@ -136,7 +130,6 @@ class PipelineManager(MainWindow):
 
         # Signal
         self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 6)
-        # self.layout.addWidget(self.subMenuSec, 1, 0, 1, 6)
         self.layout.addWidget(self.networkStatus, 0, 6, 1, 3)
         self.layout.addWidget(self.subToolBarSec, 1, 0, 1, 9)
 
@@ -146,28 +139,15 @@ class PipelineManager(MainWindow):
 
         self.layout.addWidget(self.footer, 9, 0, 1, 9)
 
-        # self.tdDock         = DockToolBar.DockToolBar('TD')
-        # self.vfxDock        = DockToolBar.DockToolBar('VFX')
-        # self.artDock        = DockToolBar.DockToolBar('ART')
-        # self.texDock        = DockToolBar.DockToolBar('TEXTURE')
-        # self.postDock       = DockToolBar.DockToolBar('POST')
-        #
-        # self.docks = [self.tdDock, self.vfxDock, self.artDock, self.texDock, self.postDock]
-        # for dock in self.docks:
-        #     self.signals.regisLayout.emit(dock)
-        #     self.add_dockWidget(dock)
-
     def add_dockWidget(self, dock, pos=dockB):
 
-        self.dock = dock
+        dock.signals.showLayout.connect(self.signals.showLayout)
+        dock.signals.setSetting.connect(self.signals.setSetting)
+        dock.signals.executing.connect(self.signals.executing)
+        dock.signals.regisLayout.connect(self.signals.regisLayout)
+        dock.signals.openBrowser.connect(self.signals.openBrowser)
 
-        self.dock.signals.showLayout.connect(self.signals.showLayout)
-        self.dock.signals.setSetting.connect(self.signals.setSetting)
-        self.dock.signals.executing.connect(self.signals.executing)
-        self.dock.signals.regisLayout.connect(self.signals.regisLayout)
-        self.dock.signals.openBrowser.connect(self.signals.openBrowser)
-
-        self.addDockWidget(pos, self.dock)
+        self.addDockWidget(pos, dock)
 
     def showEvent(self, event):
         self.signals.showLayout.emit('PipelineManager', 'show')

@@ -70,6 +70,14 @@ class AppCore(DAMG):                                                    # Core m
         QCoreApplication.setOrganizationDomain(self._orgWeb)
         QCoreApplication.setApplicationVersion(self._version)
 
+        self.about          = InfoWidget('About')
+        self.codeConduct    = InfoWidget('CodeOfConduct')
+        self.contributing   = InfoWidget('Contributing')
+        self.credit         = InfoWidget("Credit")
+        self.licence        = InfoWidget('Licence')
+        self.reference      = InfoWidget('Reference')
+        self.version        = InfoWidget('Verion')
+
         self.settingUI      = SettingUI(self)
         self.userSetting    = UserSetting()
         self.newProject     = NewProject()
@@ -77,7 +85,7 @@ class AppCore(DAMG):                                                    # Core m
         self.forgotPW       = ForgotPassword()
         self.signup         = SignUp()
 
-        self.mainUI         = PipelineManager(self.settings)
+        self.mainUI         = PipelineManager()
         self.sysTray        = SysTray()
 
         self.calculator     = Calculator()

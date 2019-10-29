@@ -97,7 +97,6 @@ class PLM(Application):
 
         # Multithreading.
         self.thread_manager         = ThreadManager()
-        self.settingUI              = self.appCore.settingUI
         self.database               = QuerryDB()                                    # Database tool
 
         self.set_styleSheet('darkstyle')                                            # Layout style
@@ -111,7 +110,7 @@ class PLM(Application):
         self.sysTray                = self.appCore.sysTray
         self.browser                = self.appCore.browser
 
-        for layout in [self.login, self.forgotPW, self.signup, self.mainUI, self.sysTray, self.settingUI, self.webBrowser]:
+        for layout in [self.login, self.forgotPW, self.signup, self.mainUI, self.sysTray, self.browser]:
             self.regisLayout(layout)
 
         for layout in self.mainUI.mainUI_layouts:
@@ -141,26 +140,31 @@ class PLM(Application):
                 else:
                     self.showLayout('SignIn', "show")
 
+        self.settingUI              = self.appCore.settingUI
+        self.userSetting            = self.appCore.userSetting
+
         self.about                  = self.appCore.about
-        self.calculator             = self.appCore.calculator
-        self.calendar               = self.appCore.calendar
         self.codeConduct            = self.appCore.codeConduct
-        self.configuration          = self.appCore.configuration
         self.contributing           = self.appCore.contributing
         self.credit                 = self.appCore.credit
+        self.licence                = self.appCore.licence
+        self.reference              = self.appCore.reference
+        self.version                = self.appCore.version
+
+
+        self.calculator             = self.appCore.calculator
+        self.calendar               = self.appCore.calendar
+        self.configuration          = self.appCore.configuration
         self.engDict                = self.appCore.engDict
         self.findFile               = self.appCore.findFile
         self.imageViewer            = self.appCore.imageViewer
-        self.licence                = self.appCore.licence
         self.newProject             = self.appCore.newProject
         self.nodeGraph              = self.appCore.nodeGraph
         self.noteReminder           = self.appCore.noteReminder
         self.preferences            = self.appCore.preferences
-        self.reference              = self.appCore.reference
         self.screenShot             = self.appCore.screenShot
         self.textEditor             = self.appCore.textEditor
-        self.userSetting            = self.appCore.userSetting
-        self.version                = self.appCore.version
+
 
         for layout in [self.about, self.calculator, self.calendar, self.codeConduct, self.configuration,
                        self.contributing, self.credit, self.engDict, self.findFile, self.imageViewer, self.licence,
