@@ -53,29 +53,24 @@ import sys, requests, ctypes
 # PyQt5
 from PyQt5.QtCore                   import pyqtSlot
 
-print(1)
 # Plm
 from appData                        import (__localServer__, PLMAPPID, __organization__,
                                             __appname__, __version__, __website__, SETTING_FILEPTH,
                                             ST_FORMAT, SYSTRAY_UNAVAI)
 
-print(2)
 from cores.base                     import DAMG, DAMGDICT
 from cores.StyleSheets              import StyleSheets
 from cores.ThreadManager            import ThreadManager
 from utils                          import str2bool, clean_file_ext, QuerryDB
 from cores.Loggers                  import Loggers
 from cores.Settings                 import Settings
-print(3)
-from ui.uikits.Application          import Application
-from ui.uikits.Icon                 import LogoIcon
-print(4)
+
+from cores.Application              import Application
+from uikits.Icon                    import LogoIcon
 from ui.Settings.SettingUI          import SettingUI
-print(5)
 from ui.Web.PLMBrowser              import PLMBrowser
-print(6)
 from ui.AppCore                     import AppCore
-print(7)
+
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
