@@ -64,13 +64,10 @@ from cores.ThreadManager            import ThreadManager
 from utils                          import str2bool, clean_file_ext, QuerryDB
 from cores.Loggers                  import Loggers
 from cores.Settings                 import Settings
-
-from cores.Application              import Application
-from uikits.Icon                    import LogoIcon
-from ui.Settings.SettingUI          import SettingUI
+from ui.uikits.Application          import Application
+from ui.uikits.Icon                 import LogoIcon
+print(1)
 from ui.Web.PLMBrowser              import PLMBrowser
-from ui.AppCore                     import AppCore
-
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
@@ -92,6 +89,9 @@ class PLM(Application):
         self.debug                  = self.logger.debug
         self._login                 = False
 
+        from ui.Settings.SettingUI import SettingUI
+        from ui.AppCore import AppCore
+
         self.appCore                = AppCore(__organization__, __appname__, __version__, __website__, self)
         self.appInfo                = self.configs.appInfo  # Configuration data
 
@@ -100,6 +100,8 @@ class PLM(Application):
 
         # Multithreading.
         self.thread_manager         = ThreadManager()
+
+
 
         self.settingUI              = SettingUI(self.settings)
         self.database               = QuerryDB()                                    # Database tool

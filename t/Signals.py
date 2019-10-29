@@ -15,8 +15,6 @@ __all__ = ["Signal", "Signals", "NotRregisteredSignal", "InvalidSlot"]
 import weakref
 from cores.base import DAMG, DAMGDICT, DAMGLIST, DAMGERROR
 
-print(DAMGLIST())
-
 class InvalidSlot(DAMGERROR):
     """Slot is not longer valid"""
 
