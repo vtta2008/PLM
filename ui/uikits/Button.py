@@ -136,7 +136,6 @@ class ToolButton(QToolButton):
         self.parent = parent
 
         self.signals = SignalManager(self)
-        self.logger = Loggers(self.__class__.__name__)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.resize(40, 40)
 

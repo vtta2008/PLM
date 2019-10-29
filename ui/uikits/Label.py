@@ -16,9 +16,11 @@ from PyQt5.QtWidgets                        import QLabel
 from PyQt5.QtGui                            import QFont, QPixmap, QImage
 
 # PLM
-from appData                                import __copyright__, PRS
+from appData                                import __copyright__, PRS, ST_FORMAT, SETTING_FILEPTH
 from ui.uikits.uiUtils                      import check_preset
 from utils                                  import get_avatar_image
+from cores.SignalManager import SignalManager
+from cores.Settings import Settings
 
 
 class Label(QLabel):
@@ -34,6 +36,8 @@ class Label(QLabel):
 
         self.parent                         = parent
         self.preset                         = preset
+        self.signals = SignalManager(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'],self)
 
         if check_preset(self.preset):
             self.buildUI()
@@ -68,6 +72,13 @@ class Label(QLabel):
                 self.setMinimumSize(value[0], value[1])
             else:
                 print("PRESETKEYERROR: No such key registed in preset: {0}: {1}".format(key, value))
+
+
+    def setValue(self, key, value):
+        return self.settings.initSetValue(key, value, self.key)
+
+    def getValue(self, key):
+        return self.settings.initValue(key, self.key)
 
     def showEvent(self, event):
         sizeX = self.getValue('width')

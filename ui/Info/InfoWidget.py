@@ -36,6 +36,8 @@ class InfoWidget(QWidget):
 
         self.key = key
         self.parent = parent
+        self.signals = SignalManager(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         if self.key is None or self.key not in self.content.keys():
             print("KeyError: Key is None, or not in content data: {0}".format(self.key))
@@ -46,11 +48,10 @@ class InfoWidget(QWidget):
         self.setWindowTitle(self.key)
         self.setWindowIcon(AppIcon(32, self.key))
 
-        self.signal             = SignalManager(self)
-        self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+
 
         self.layout             = QGridLayout(self)
-        label                   = QLabel(self.content)
+        label                   = QLabel(self.content[self.key])
         btn                     = QPushButton("Ok")
         btn.clicked.connect(self.close)
         self.layout.addWidget(label, 0,0,6,6)

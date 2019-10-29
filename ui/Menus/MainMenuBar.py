@@ -23,26 +23,21 @@ from PyQt5.QtWidgets                import QApplication, QMenuBar, QMainWindow
 # Plm
 from appData                        import (__plmWiki__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR,
                                             mainConfig, CONFIG_OFFICE, CONFIG_DEV, CONFIG_TOOLS)
-print(71)
-from cores.SignalManager            import SignalManager
-print(72)
-from ui.uikits.Action               import Action
-print(73)
-from utils                          import data_handler
-print(74)
 
-class MainMenuBar(QMainWindow):
+from ui.uikits.Action               import Action
+from ui.uikits.MainWindow import MainWindow
+from utils                          import data_handler
+
+class MainMenuBar(MainWindow):
 
     key                     = 'MainMenuBar'
 
     appInfo = data_handler(filePath=mainConfig)
-    print(75)
+
     def __init__(self, parent=None):
-        print(76)
-        super(MainMenuBar, self).__init__(parent)
-        print(77)
+        MainWindow.__init__(self)
+
         self._parent = parent
-        self.signals = SignalManager(self)
         self.url = __plmWiki__
         self.buildMenu()
 

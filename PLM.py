@@ -59,7 +59,6 @@ from appData                        import (__localServer__, PLMAPPID, __organiz
                                             __appname__, __version__, __website__, SETTING_FILEPTH,
                                             ST_FORMAT, SYSTRAY_UNAVAI)
 
-from cores.base                     import DAMGDICT
 from cores.StyleSheets              import StyleSheets
 from cores.ThreadManager            import ThreadManager
 from utils                          import str2bool, clean_file_ext, QuerryDB
@@ -67,176 +66,10 @@ from cores.Loggers                  import Loggers
 from cores.Settings                 import Settings
 from ui.uikits.Icon                 import LogoIcon
 from ui.Web.Browser                 import Browser
-# from ui.LayoutManager               import LayoutManager
+from ui.LayoutManager               import LayoutManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
-
-print(1)
-from ui                                 import PipelineManager, SysTray
-print(11)
-from ui.Funcs                           import SignIn, SignUp, ForgotPassword
-print(12)
-from ui.Settings                        import UserSetting, SettingUI
-print(13)
-from ui.Projects                        import NewProject
-print(2)
-from ui.Tools                           import (Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary,
-                                                Calendar, Calculator)
-from ui.Tools.NodeGraph                 import NodeGraph
-from ui.Tools.TextEditor                import TextEditor
-print(3)
-from ui.Menus.config                    import Configuration, Preferences
-print(4)
-from ui.Info.InfoWidget                 import InfoWidget
-
-class LayoutManager(DAMGDICT):
-
-    key = 'LayoutManager'
-
-    def __init__(self, parent=None):
-        super(LayoutManager, self).__init__(parent)
-
-        self.parent = parent
-
-        self.mains      = self.mainLayouts()
-        self.funcs      = self.functionLayouts()
-
-        self.infos      = self.infoLayouts()
-        self.setts      = self.settingLayouts()
-        self.tools      = self.toolLayouts()
-        self.prjs       = self.projectLayouts()
-
-    def functionLayouts(self):
-        self.signin     = SignIn.SignIn()
-        self.forgotPW   = ForgotPassword.ForgotPassword()
-        self.signup     = SignUp.SignUp()
-
-        for layout in [self.signin, self.signup, self.forgotPW]:
-            self.regisLayout(layout)
-
-    def mainLayouts(self):
-        self.mainUI     = PipelineManager.PipelineManager()
-        self.sysTray    = SysTray.SysTray()
-
-        layouts = [self.mainUI, self.sysTray]
-
-        for layout in layouts:
-            self.regisLayout(layout)
-
-        for layout in self.mainUI.mainUI_layouts:
-            self.regisLayout(layout)
-
-        for layout in self.mainUI.topTabUI.tabLst:
-            key = layout.key
-            if not key in self.keys():
-                self[key] = layout
-
-        return layouts
-
-    def infoLayouts(self):
-        self.about          = InfoWidget('About')
-        self.codeConduct    = InfoWidget('CodeOfConduct')
-        self.contributing   = InfoWidget('Contributing')
-        self.credit         = InfoWidget("Credit")
-        self.licence        = InfoWidget('Licence')
-        self.reference      = InfoWidget('Reference')
-        self.version        = InfoWidget('Verion')
-
-        layouts = [self.about, self.codeConduct, self.contributing, self.credit, self.licence,
-                       self. reference, self.version]
-
-        for layout in layouts:
-            self.regisLayout(layout)
-
-        return layouts
-
-    def settingLayouts(self):
-        self.settingUI      = SettingUI.SettingUI(self)
-        self.userSetting    = UserSetting.UserSetting()
-
-        layouts = [self.settingUI, self.userSetting]
-
-        for layout in layouts:
-            self.regisLayout(layout)
-
-        return layouts
-
-    def toolLayouts(self):
-        self.calculator     = Calculator.Calculator()
-        self.calendar       = Calendar.Calendar()
-        self.configuration  = Configuration.Configuration()
-        self.engDict        = EnglishDictionary.EnglishDictionary()
-        self.findFile       = FindFiles.FindFiles()
-        self.imageViewer    = ImageViewer.ImageViewer()
-        self.nodeGraph      = NodeGraph.NodeGraph()
-        self.noteReminder   = NoteReminder.NoteReminder()
-        self.preferences    = Preferences.Preferences()
-        self.screenShot     = Screenshot.Screenshot()
-        self.textEditor     = TextEditor.TextEditor()
-
-        layouts     = [self.calculator, self.calendar, self.configuration, self.engDict, self.findFile,
-                       self.imageViewer, self.nodeGraph, self.noteReminder, self.preferences, self.screenShot,
-                       self.textEditor]
-
-        for layout in layouts:
-            self.regisLayout(layout)
-
-        return layouts
-
-    def projectLayouts(self):
-        self.newProject     = NewProject.NewProject()
-
-        for layout in [self.newProject, ]:
-            self.regisLayout(layout)
-
-    @pyqtSlot(object)
-    def regisLayout(self, layout):
-        key = layout.key
-        if not key in self.keys():
-            # self.logger.report("Registing layout: {0} \n {1}".format(configKey, layout))
-            self[key] = layout
-            layout.signals.showLayout.connect(self.showLayout)
-            layout.signals.executing.connect(self.parent.executing)
-            layout.signals.openBrowser.connect(self.parent.openBrowser)
-        else:
-            print("Already registered: {0}".format(key))
-
-    @pyqtSlot(str, str)
-    def showLayout(self, name, mode):
-        if name == 'app':
-            layout = self.parent
-        elif name in self.keys():
-            layout = self[name]
-        else:
-            print("Layout: '{0}' is not registerred yet.".format(name))
-            layout = None
-        if mode == "hide":
-            # print('hide: {}'.format(layout))
-            layout.hide()
-            layout.setValue('showLayout', 'hide')
-        elif mode == "show":
-            # print('show: {}'.format(layout))
-            try:
-                layout.show()
-            except AttributeError:
-                pass
-            else:
-                layout.setValue('showLayout', 'show')
-
-        elif mode == 'showNor':
-            layout.showNormal()
-            layout.setValue('state', 'showNormal')
-        elif mode == 'showMin':
-            layout.showMinimized()
-            layout.setValue('state', 'showMinimized')
-        elif mode == 'showMax':
-            layout.showMaximized()
-            layout.setValue('state', 'showMaximized')
-        elif mode == 'quit' or mode == 'exit':
-            layout.quit()
-
-
 
 class PLM(QApplication):
 
@@ -270,12 +103,12 @@ class PLM(QApplication):
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)     # Change taskbar icon
 
         self.layoutManager          = LayoutManager(self)
+        self.layoutManager.buildLayouts()
 
-        self.signin                 = self.layoutManager.signin
-        self.forgotPW               = self.layoutManager.forgotPW
-        self.signup                 = self.layoutManager.signup
-        self.mainUI                 = self.layoutManager.mainUI
-        self.sysTray                = self.layoutManager.sysTray
+        for layout in self.layoutManager.values():
+            layout.signals.showLayout.connect(self.showLayout)
+            layout.signals.executing.connect(self.executing)
+            layout.signals.openBrowser.connect(self.openBrowser)
 
         try:
             self.username, token, cookie, remember = self.database.query_table('curUser')
@@ -288,7 +121,7 @@ class PLM(QApplication):
             else:
                 r = requests.get(__localServer__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
                 if r.status_code == 200:
-                    if not self.appCore.sysTray.isSystemTrayAvailable():
+                    if not self.layoutManager.sysTray.isSystemTrayAvailable():
                         self.logger.report(SYSTRAY_UNAVAI)
                         sys.exit(1)
                     self._login = True
@@ -349,6 +182,40 @@ class PLM(QApplication):
         else:
             print("This command is not regiested yet: {0}".format(cmd))
 
+    @pyqtSlot(str, str)
+    def showLayout(self, name, mode):
+        if name == 'app':
+            layout = self.parent
+        elif name in self.layoutManager.keys():
+            layout = self.layoutManager[name]
+        else:
+            print("Layout: '{0}' is not registerred yet.".format(name))
+            layout = None
+        if mode == "hide":
+            # print('hide: {}'.format(layout))
+            layout.hide()
+            layout.setValue('showLayout', 'hide')
+        elif mode == "show":
+            # print('show: {}'.format(layout))
+            try:
+                layout.show()
+            except AttributeError:
+                pass
+            else:
+                layout.setValue('showLayout', 'show')
+
+        elif mode == 'showNor':
+            layout.showNormal()
+            layout.setValue('state', 'showNormal')
+        elif mode == 'showMin':
+            layout.showMinimized()
+            layout.setValue('state', 'showMinimized')
+        elif mode == 'showMax':
+            layout.showMaximized()
+            layout.setValue('state', 'showMaximized')
+        elif mode == 'quit' or mode == 'exit':
+            layout.quit()
+
     @pyqtSlot(str)
     def get_report(self, param):
         self.logger.report(param)
@@ -358,10 +225,6 @@ class PLM(QApplication):
         self.setStyleSheet(stylesheet[style])
         self.settings.initSetValue('styleSheet', 'dark')
 
-    pyqtSlot()
-    def closeEvent(self, event):
-        self._closing = True
-        self.thread_manager.waitForDone()
 
 
 if __name__ == '__main__':

@@ -24,7 +24,7 @@ from appData.config import (ASPEC_RATIO, CACHE_BG, SCROLLBAROFF, RUBBER_DRAG, UP
                            NON_COSMETIC_PEN, ALT_MODIFIER, MOUSE_LEFT, MOUSE_MIDDLE, MOUSE_RIGHT, KEY_SHIFT, KEY_CTRL,
                            SHIFT_MODIFIER, NO_MODIFIER, CTRL_MODIFIER, CLOSE_HAND_CUSOR, NOANCHOR, CURSOR_ARROW, KEY_DEL,
                            KEY_BACKSPACE, KEY_F, KEY_S, GRID_SIZE, RUBBER_REC)
-from ui.NodeGraph.Node import Edge, Node
+from ui.Tools.NodeGraph.Node import Edge, Node
 
 # -------------------------------------------------------------------------------------------------------------
 """ Viewer """

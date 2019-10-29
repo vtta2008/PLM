@@ -13,7 +13,7 @@ import sys
 from functools                          import partial
 
 # PyQt5
-from PyQt5.QtWidgets                    import QApplication, QMainWindow
+from PyQt5.QtWidgets                    import QApplication
 
 # PLM
 print(1)
@@ -106,7 +106,7 @@ class PipelineManager(MainWindow):
                self.botTabUI.generalSetting.tbTDCB, self.botTabUI.generalSetting.tbCompCB,
                self.botTabUI.generalSetting.tbArtCB, self.botTabUI.generalSetting.tbTexCB,
                self.botTabUI.generalSetting.tbPostCB, self.botTabUI.generalSetting.mainToolBarCB,
-               self.botTabUI.generalSetting.statusBarCB, self.botTabUI.generalSetting.serStatusCB,
+               self.botTabUI.generalSetting.statusBarCB, self.botTabUI.generalSetting.connectStatuCB,
                self.botTabUI.generalSetting.notifiCB,
                 ]
 
