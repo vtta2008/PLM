@@ -1,90 +1,117 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-
-Script Name: TopTab3.py
+Script Name: TopTab5.py
 Author: Do Trinh/Jimmy - 3D artist.
-
 Description:
-
+    Tab 5 layout
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
 # Python
-import sys
-from functools import partial
+import os, subprocess, sys
 
-from PyQt5.QtCore import pyqtSlot
 # PyQt5
-from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtWidgets import (QApplication, QLabel, QGraphicsScene)
+from PyQt5.QtCore           import pyqtSlot
+from PyQt5.QtWidgets        import QApplication, QTextEdit, QTextBrowser
 
 # Plt
+from appData                import SiPoMin, SiPoExp
 from ui.uikits.Widget                         import Widget
 from ui.uikits.GridLayout import GridLayout
 from ui.uikits.Button import Button
-from ui.uikits.GroupBox import GroupBox, GroupGrid
-from utils import localSQL as usql
-from utils import get_avatar_image
+from ui.uikits.LineEdit import LineEdit
+from ui.uikits.Label import Label
 
 # -------------------------------------------------------------------------------------------------------------
-""" TopTab3 """
+""" Sub class """
+
+class CommandPrompt(LineEdit):
+
+    def __init__(self, parent=None):
+        super(CommandPrompt, self).__init__(parent)
+
+        self.applySetting()
+
+    def applySetting(self):
+        self.setSizePolicy(SiPoMin, SiPoMin)
+
+class Terminal(QTextBrowser):
+
+    def __init__(self, parent=None):
+        super(Terminal, self).__init__(parent)
+
+        self.applySetting()
+
+    def applySetting(self):
+        self.setFrameStyle(QTextEdit.DrawWindowBackground)
+        self.setSizePolicy(SiPoExp, SiPoExp)
+
+# -------------------------------------------------------------------------------------------------------------
+""" TopTab5 """
 
 class TopTab3(Widget):
 
-    key = 'TopTab3'
+    key = 'TopTab5'
 
     def __init__(self, parent=None):
         super(TopTab3, self).__init__(parent)
-        
+
         self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
-
         self.signals.regisLayout.emit(self)
 
     def buildUI(self):
-        self.query = usql.QuerryDB()
-        try:
-            self.username, token, cookie, remember = self.query.query_table('curUser')
-        except (ValueError, IndexError):
-            self.username = 'DemoUser'
+        self.basePth = os.getcwd() + ">"
 
-        self.avatar = QLabel()
-        self.avatar.setPixmap(QPixmap.fromImage(QImage(get_avatar_image(self.username))))
-        self.avatar.setScaledContents(True)
-        self.avatar.setFixedSize(100, 100)
+        self.cmdBtn = Button({'txt': 'Run', 'stt': 'Execute command', 'cl': self.on_btn_clicked})
+        # self.cmdBtn.clicked.connect(self.on_btn_clicked)
+        # self.cmdBtn.setAutoDefault(True)
 
-        btn1 = Button({'txt': 'Account Setting', 'cl': partial(self.signals.showLayout.emit, 'UserSetting', 'show')})
-        btn2 = Button({'txt': 'Messages', 'cl': partial(self.signals.showLayout.emit, 'Messages', 'show')})
-        btn3 = Button({'txt': 'Log Out', 'cl': partial(self.signals.showLayout.emit, 'SignIn', 'show')})
+        self.terminal = Terminal()
+        self.cmdConsole = CommandPrompt()
+        self.cmdConsole.returnPressed.connect(self.cmdBtn.click)
 
-        btns = [btn1, btn2, btn3]
+        self.layout.addWidget(self.terminal, 0, 0, 4, 8)
+        self.layout.addWidget(self.cmdConsole, 4, 0, 1, 6)
+        self.layout.addWidget(self.cmdBtn, 4, 6, 1, 2)
 
-        sec1Grp = GroupBox(self.username, [self.avatar], "ImageView")
-        sec2Grp = GroupBox("Setting", btns, "BtnGrid")
+        btn1 = Button({'txt': "Create New", 'stt': "Create django project"})
+        btn2 = Button({'txt': "Create app", 'stt': "Create django app"})
+        btn3 = Button({'txt': "Start Server", 'stt': "Operate running server"})
+        btn4 = Button({'txt': "Save preset", 'stt': "Save app preset"})
+        btn5 = Button({'txt': "Run Preset", 'stt': "Create data tables"})
+        btn6 = Button({'txt': "Create SQL", 'stt': "Create database"})
+        btn7 = Button({'txt': "Create Admin", 'stt': "Create Admin Account"})
 
-        sec3Grp, sec3Grid = GroupGrid("Messenger")
+        self.layout.addWidget(Label())
 
-        self.layout.addWidget(sec1Grp, 0, 0, 1, 1)
-        self.layout.addWidget(sec2Grp, 1, 0, 1, 1)
-        self.layout.addWidget(sec3Grp, 0, 1, 2, 2)
+        self.layout.addWidget(btn1, 6, 0, 1, 2)
+        self.layout.addWidget(btn2, 6, 2, 1, 2)
+        self.layout.addWidget(btn3, 6, 4, 1, 2)
+        self.layout.addWidget(btn4, 6, 6, 1, 2)
+        self.layout.addWidget(btn5, 7, 0, 1, 2)
+        self.layout.addWidget(btn6, 7, 2, 1, 2)
+        self.layout.addWidget(btn7, 7, 4, 1, 2)
 
-    @pyqtSlot(bool)
-    def update_avatar(self, param):
-        print("receive signal emit to update avatar: {0}".format(param))
-        if param:
-            self.username, token, cookie, remember = self.query.query_table('curUser')
-            self.avatar = QPixmap(get_avatar_image(self.username))
-            self.avatarScene = QGraphicsScene()
-            self.avatarScene.addPixmap(self.avatar)
-            self.avatarScene.update()
+    @pyqtSlot()
+    def on_btn_clicked(self):
+        self.release_command(self.cmdConsole.text())
+
+    def release_command(self, cmd):
+        text = os.getcwd() + ">" + cmd + "\n"
+        self.terminal.insertPlainText(text)
+        self.update_terminal(cmd)
+
+    def update_terminal(self, cmd):
+        self.terminal.insertPlainText(subprocess.getoutput(cmd=cmd) + "\n")
 
     def showEvent(self, event):
         self.signals.showLayout.emit(self.key, 'show')
+        self.signals.showLayout.emit('TopTab3', 'hide')
         self.signals.showLayout.emit('TopTab2', 'hide')
-        self.signals.showLayout.emit('TopTab5', 'hide')
 
 def main():
     app = QApplication(sys.argv)
@@ -96,4 +123,4 @@ if __name__ == '__main__':
     main()
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 25/05/2018
+# Created by panda on 26/05/2018 - 1:41 AM
