@@ -72,19 +72,22 @@ from ui.Web.Browser                 import Browser
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
-
+print(1)
 from ui                                 import PipelineManager, SysTray
+print(11)
 from ui.Funcs                           import SignIn, SignUp, ForgotPassword
+print(12)
 from ui.Settings                        import UserSetting, SettingUI
+print(13)
 from ui.Projects                        import NewProject
-
+print(2)
 from ui.Tools                           import (Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary,
                                                 Calendar, Calculator)
 from ui.Tools.NodeGraph                 import NodeGraph
 from ui.Tools.TextEditor                import TextEditor
-
+print(3)
 from ui.Menus.config                    import Configuration, Preferences
-
+print(4)
 from ui.Info.InfoWidget                 import InfoWidget
 
 class LayoutManager(DAMGDICT):
@@ -230,6 +233,8 @@ class LayoutManager(DAMGDICT):
             layout.setValue('state', 'showMaximized')
         elif mode == 'quit' or mode == 'exit':
             layout.quit()
+
+
 
 class PLM(QApplication):
 
