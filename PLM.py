@@ -66,7 +66,7 @@ from cores.Loggers                  import Loggers
 from cores.Settings                 import Settings
 from ui.uikits.Application          import Application
 from ui.uikits.Icon                 import LogoIcon
-from ui.Web.PLMBrowser              import PLMBrower
+from ui.AppCore                     import AppCore
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -89,9 +89,6 @@ class PLM(Application):
         self.debug                  = self.logger.debug
         self._login                 = False
 
-        from ui.Settings.SettingUI import SettingUI
-        from ui.AppCore import AppCore
-
         self.appCore                = AppCore(__organization__, __appname__, __version__, __website__, self)
         self.appInfo                = self.configs.appInfo  # Configuration data
 
@@ -100,10 +97,8 @@ class PLM(Application):
 
         # Multithreading.
         self.thread_manager         = ThreadManager()
-
-        self.settingUI              = SettingUI(self)
+        self.settingUI              = self.appCore.settingUI
         self.database               = QuerryDB()                                    # Database tool
-        self.webBrowser             = PLMBrowser()                                  # Webbrowser
 
         self.set_styleSheet('darkstyle')                                            # Layout style
         self.setWindowIcon(LogoIcon("Logo"))                                         # Set up task bar icon
@@ -114,6 +109,7 @@ class PLM(Application):
         self.signup                 = self.appCore.signup
         self.mainUI                 = self.appCore.mainUI
         self.sysTray                = self.appCore.sysTray
+        self.browser                = self.appCore.browser
 
         for layout in [self.login, self.forgotPW, self.signup, self.mainUI, self.sysTray, self.settingUI, self.webBrowser]:
             self.regisLayout(layout)

@@ -22,7 +22,7 @@ from ui.Debugger            import Debugger
 from ui.GeneralSetting      import GeneralSetting
 from ui.uikits.Widget                 import Widget
 from ui.uikits.TabWidget import TabWidget, TabContent
-from ui.uikits.VBoxLayout import VBoxLayout
+from ui.uikits.BoxLayout import VBoxLayout
 from ui.uikits.Icon import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------

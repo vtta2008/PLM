@@ -28,7 +28,7 @@ from ui.uikits.CheckBox import CheckBox
 from ui.uikits.Button import Button
 from ui.uikits.HBoxLayout import HBoxLayout
 from ui.uikits.Label import Label
-from ui.uikits.VBoxLayout import VBoxLayout
+from ui.uikits.BoxLayout import VBoxLayout
 from ui.uikits.LineEdit import LineEdit
 from ui.uikits.GroupBox import GroupBox
 from ui.Menus.config            import config_rc

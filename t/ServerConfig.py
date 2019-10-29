@@ -23,7 +23,7 @@ from PyQt5.QtCore                       import pyqtProperty, pyqtSlot, pyqtSigna
 from appData                            import __globalServer__, __localPort__, __localHost__, __localServer__
 from ui.uikits.Label                    import Label
 from ui.uikits.ComboBox                 import ComboBox
-from ui.uikits.VBoxLayout               import VBoxLayout
+from ui.uikits.BoxLayout               import VBoxLayout
 from ui.uikits.HBoxLayout               import HBoxLayout
 from ui.uikits.Button                   import Button
 from ui.uikits.Widget                   import Widget

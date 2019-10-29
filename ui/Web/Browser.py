@@ -33,6 +33,7 @@ from cores.Loggers import Loggers
 from cores.SignalManager import SignalManager
 from cores.Settings import Settings
 from ui.uikits.Icon import AppIcon
+from ui.Web import PLMBrowser_rc
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Web browser """
@@ -185,16 +186,17 @@ class WebBrowser(QMainWindow):
 # -------------------------------------------------------------------------------------------------------------
 """ layout class """
 
-class PLMBrowser(QWidget):
+class Browser(QWidget):
 
-    key = 'browser'
+    key = 'Browser'
 
     def __init__(self, url='vnexpress.net', parent=None):
-        super(PLMBrowser, self).__init__(parent)
+        super(Browser, self).__init__(parent)
         self.logger = Loggers(self)
         self.setting = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.signals = SignalManager(self)
-        self.setWindowIcon(AppIcon(32, 'PLMBrowser'))
+        self.setWindowIcon(AppIcon(32, self.key))
+        self.setWindowTitle(self.key)
         self.url = url
 
         self.layout = QVBoxLayout()
@@ -215,22 +217,9 @@ class PLMBrowser(QWidget):
         else:
             self.setWindowTitle("PLM Browser")
 
-    def setUrl(self, url):
-        self.viewer = WebBrowser(url)
-        self.viewer.update()
-
-    def showEvent(self, event):
-        # self.specs.showState.emit(True)
-        pass
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        # self.specs.showState.emit(False)
-        event.ignore()
-
 def main():
     app = QApplication(sys.argv)
-    browser = PLMBrowser(r'https://www.google.com.vn')
+    browser = Browser(r'https://www.google.com.vn')
     browser.show()
     app.exec_()
 

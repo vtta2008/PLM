@@ -14,7 +14,10 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLabel, QPushButton
 
 from ui.uikits.Icon import AppIcon
-from appData import SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE_MIT, REFERENCE, VERSION
+from appData import (SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE_MIT, REFERENCE, VERSION,
+                     ST_FORMAT, SETTING_FILEPTH)
+from cores.SignalManager import SignalManager
+from cores.Settings import Settings
 
 class InfoWidget(QWidget):
 
@@ -42,6 +45,9 @@ class InfoWidget(QWidget):
 
         self.setWindowTitle(self.key)
         self.setWindowIcon(AppIcon(32, self.key))
+
+        self.signal             = SignalManager(self)
+        self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         self.layout             = QGridLayout(self)
         label                   = QLabel(self.content)

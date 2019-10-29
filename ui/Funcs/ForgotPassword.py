@@ -19,7 +19,7 @@ from PyQt5.QtWidgets        import (QApplication, QDialogButtonBox, QFormLayout,
 
 # PLM
 from ui.uikits.Widget       import Widget
-from ui.uikits.VBoxLayout   import VBoxLayout
+from ui.uikits.BoxLayout   import VBoxLayout
 from ui.uikits.Label        import Label
 from ui.uikits.GroupBox     import GroupBox
 from ui.uikits.LineEdit     import LineEdit
