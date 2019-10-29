@@ -29,7 +29,7 @@ from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 
 # Plt
 from cores.Loggers import Loggers
-from ui.uikits                     import Widget
+from ui.uikits      import Widget
 from ui.uikits.Icon import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------

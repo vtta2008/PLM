@@ -22,15 +22,15 @@ from PyQt5.QtWidgets import (QApplication, QCheckBox, QDateTimeEdit, QGridLayout
 
 # PLM
 from appData                    import __globalServer__, __localServer__
-from uikits.Widget                         import Widget
-from uikits.ComboBox import ComboBox
-from uikits.CheckBox import CheckBox
-from uikits.Button import Button
-from uikits.HBoxLayout import HBoxLayout
-from uikits.Label import Label
-from uikits.VBoxLayout import VBoxLayout
-from uikits.LineEdit import LineEdit
-from uikits.GroupBox import GroupBox
+from ui.uikits.Widget                         import Widget
+from ui.uikits.ComboBox import ComboBox
+from ui.uikits.CheckBox import CheckBox
+from ui.uikits.Button import Button
+from ui.uikits.HBoxLayout import HBoxLayout
+from ui.uikits.Label import Label
+from ui.uikits.VBoxLayout import VBoxLayout
+from ui.uikits.LineEdit import LineEdit
+from ui.uikits.GroupBox import GroupBox
 from ui.Menus.config            import config_rc
 
 # -------------------------------------------------------------------------------------------------------------

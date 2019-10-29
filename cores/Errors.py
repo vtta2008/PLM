@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 
-from cores import DAMGERROR
+from cores.base import DAMGERROR
 
 # -------------------------------------------------------------------------------------------------------------
 

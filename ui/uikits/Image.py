@@ -14,10 +14,7 @@ import os
 
 from PyQt5.QtGui                import QImage
 
-from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager        import SignalManager
-from cores.Loggers              import Loggers
-from cores.Settings             import Settings
+from appData                    import __copyright__
 from utils                      import get_avatar_image
 
 
@@ -33,9 +30,6 @@ class Image(QImage):
 
         self.image              = image
         self.parent             = parent
-        self.signals            = SignalManager(self)
-        self.logger             = Loggers(self.__class__.__name__)
-        self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         if self.image is None:
             print("IMAGEISNONEERROR: Image should be a name or a path, not None")
@@ -50,12 +44,6 @@ class Image(QImage):
 
     def avata(self, image):
         return Image(get_avatar_image(image))
-
-    def setValue(self, key, value):
-        return self.settings.initSetValue(key, value, self.key)
-
-    def getValue(self, key):
-        return self.settings.initValue(key, self.key)
 
     @property
     def copyright(self):

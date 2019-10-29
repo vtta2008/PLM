@@ -12,14 +12,13 @@ from __future__ import absolute_import, unicode_literals
 
 import os
 
-from PyQt5.QtGui                import QPixmap
+from PyQt5.QtGui                import QPixmap, QImage
 
 from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
 from cores.SignalManager        import SignalManager
 from cores.Loggers              import Loggers
 from cores.Settings             import Settings
-from ui.uikits.Image            import Image
-
+from utils import get_avatar_image
 
 class Pixmap(QPixmap):
 
@@ -38,7 +37,16 @@ class Pixmap(QPixmap):
         self.logger             = Loggers(self.__class__.__name__)
         self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
-        self.fromImage(Image(self.image))
+        if self.image is None:
+            print("IMAGEISNONEERROR: Image should be a name or a path, not None")
+        else:
+            if not os.path.exists(self.image):
+                if os.path.exists(get_avatar_image(self.image)):
+                    self.fromImage(QImage(get_avatar_image(self.image)))
+                else:
+                    print("IMAGENOTFOUND: Could not find image: {0}".format(self.image))
+            else:
+                self.fromImage(QImage(self.image))
 
 
     def setValue(self, key, value):

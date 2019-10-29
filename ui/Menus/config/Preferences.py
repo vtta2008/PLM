@@ -20,15 +20,15 @@ from PyQt5.QtWidgets        import QApplication
 
 # Plt
 from utils.utils            import str2bool, bool2str
-from uikits.Widget                         import Widget
-from uikits.Icon import AppIcon
-from uikits.CheckBox import CheckBox
-from uikits.Button import Button
-from uikits.MessageBox import MessageBox
-from uikits.Label import Label, usernameLabel, passwordLabel
-from uikits.GridLayout import GridLayout
-from uikits.LineEdit import LineEdit
-from uikits.GroupBox import GroupGrid
+from ui.uikits.Widget                         import Widget
+from ui.uikits.Icon import AppIcon
+from ui.uikits.CheckBox import CheckBox
+from ui.uikits.Button import Button
+from ui.uikits.MessageBox import MessageBox
+from ui.uikits.Label import Label, usernameLabel, passwordLabel
+from ui.uikits.GridLayout import GridLayout
+from ui.uikits.LineEdit import LineEdit
+from ui.uikits.GroupBox import GroupGrid
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """

@@ -19,7 +19,7 @@ from PyQt5.QtWidgets            import QApplication
 from ui.uikits.Widget                     import Widget
 from ui.uikits.VBoxLayout import VBoxLayout
 from ui.uikits.TabWidget import TabWidget
-from ui                         import (TopTab2, TopTab3, TopTab5,
+from ui                         import (TopTab1, TopTab3, TopTab5,
                                         TopTab1, TopTab4, )
 
 # -------------------------------------------------------------------------------------------------------------
@@ -41,10 +41,10 @@ class TopTab(Widget):
         self.tabs = TabWidget()
 
         # self.tab1 = TopTab1()
-        self.tab2 = TopTab2()
-        self.tab3 = TopTab3()
+        self.tab2 = TopTab1.TopTab1()
+        self.tab3 = TopTab3.TopTab3()
         # self.tab4 = TopTab4()
-        self.tab5 = TopTab5()
+        self.tab5 = TopTab5.TopTab5()
 
         self.tabLst = [
                         # self.tab1, self.tab4,

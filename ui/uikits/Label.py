@@ -20,9 +20,8 @@ from appData                                import SETTING_FILEPTH, ST_FORMAT, _
 from cores.Loggers                          import Loggers
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
-from ui.uikits.Pixmap                       import Pixmap
-from ui.uikits.Image                        import Image
 from ui.uikits.uiUtils                      import check_preset
+from utils import get_avatar_image
 
 
 class Label(QLabel):
@@ -62,7 +61,7 @@ class Label(QLabel):
             elif key == 'sizePolicy':
                 self.setSizePolicy(PRS[value[0]], PRS[value[1]])
             elif key == 'pxm':
-                self.setPixmap(Pixmap.fromImage(Image(value)))
+                self.setPixmap(QPixmap.fromImage(QImage(get_avatar_image(value))))
             elif key == 'scc':
                 self.setScaledContents(value)
             elif key == 'sfs':

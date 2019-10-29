@@ -13,10 +13,9 @@ from __future__ import absolute_import, unicode_literals
 from PyQt5.QtGui                            import QIcon
 from PyQt5.QtCore                           import QSize
 
-from appData                                import __copyright__, appIconCfg, SETTING_FILEPTH, ST_FORMAT
+from appData                                import __copyright__, appIconCfg
 from cores.SignalManager                    import SignalManager
 from cores.Loggers                          import Loggers
-from cores.Settings                         import Settings
 from utils.utils                            import data_handler, get_logo_icon, get_app_icon, get_tag_icon
 
 class Icon(QIcon):
@@ -34,7 +33,6 @@ class Icon(QIcon):
         self.parent                         = parent
         self.signals                        = SignalManager(self)
         self.logger                         = Loggers(self.__class__.__name__)
-        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

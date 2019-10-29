@@ -157,7 +157,7 @@ class SignUp(Widget):
     def buttons_section(self):
         self.btnSection, btn_grid = GroupGrid()
 
-        self.user_agree_checkBox = CheckBox({'txt': USER_CHECK_REQUIRED})
+        self.user_agree_checkBox = CheckBox(txt=USER_CHECK_REQUIRED)
         okBtn = Button({'txt':'Create Account', 'tt':'Confirm to create an account', 'cl': self.createBtnClicked})
         cancelBtn = Button({'txt':'Cancel', 'tt':'Go back to Login stage', 'cl': self.close})
         quitBtn = Button({'txt': 'Quit', 'tt': 'Quit the application', 'cl': QApplication.quit})
