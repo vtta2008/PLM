@@ -10,9 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 import sys
-from functools                              import partial
 
-from PyQt5.QtWidgets                        import QWidget, QVBoxLayout, QLabel, QApplication, QScrollArea
+from PyQt5.QtWidgets                        import QWidget, QVBoxLayout, QLabel, QApplication
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
 
@@ -20,9 +19,6 @@ from cores.SignalManager                    import SignalManager
 from cores.Settings                         import Settings
 from cores.Loggers                          import Loggers
 from ui.uikits.Icon                         import AppIcon
-from ui.uikits.Button                       import Button
-from ui.uikits.GridLayout                   import GridLayout
-from ui.uikits.Label                        import Label
 
 class Widget(QWidget):
 
@@ -116,38 +112,6 @@ class Widget(QWidget):
     @name.setter
     def name(self, newName):
         self._name                      = newName
-
-
-class InfoWidget(Widget):
-
-    key = 'InfoWidget'
-
-    def __init__(self, content=None, parent=None):
-        super(InfoWidget, self).__init__(parent)
-
-        self.parent             = parent
-        self.content            = content
-
-        if self.content is None:
-            self.logger.info('CONTENTERROR: Content must not be None')
-            sys.exit()
-
-        self.buildUI(content)
-        self.resize(350, 400)
-        self.setLayout(self.layout)
-
-    def buildUI(self, content):
-        self.layout             = GridLayout()
-        self.scrollArea         = QScrollArea()
-        self.content            = Label({'txt': content, 'alg': 'left', 'link': True})
-        closeBtn                = Button({'txt': 'Close', 'tt': 'Close window', 'cl': partial(self.close)})
-
-        self.content.setGeometry(0, 0, 350, 400)
-        self.scrollArea.setWidget(self.content)
-        self.scrollArea.setWidgetResizable(True)
-
-        self.layout.addWidget(self.scrollArea, 0, 0, 8, 4)
-        self.layout.addWidget(closeBtn, 8, 3, 1, 1)
 
 
 if __name__ == '__main__':

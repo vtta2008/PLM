@@ -54,19 +54,19 @@ class Preferences(Widget):
 
         tbGrpBox, tbGrid = GroupGrid("Tool Bar")
 
-        self.toolBarTD_checkBox = CheckBox({'txt': "Show/hide TD toolbar"})
+        self.toolBarTD_checkBox = CheckBox(txt= "Show/hide TD toolbar")
         self.toolBarTD_checkBox.stateChanged.connect(self.checkBoxTDStateChanged)
 
-        self.toolBarComp_checkBox = CheckBox({'txt': "Show/hide Comp toolbar"})
+        self.toolBarComp_checkBox = CheckBox(txt= "Show/hide Comp toolbar")
         self.toolBarComp_checkBox.stateChanged.connect(self.checkBoxCompStateChanged)
 
-        self.toolBarArt_checkBox = CheckBox({'txt': "Show/hide Art toolbar"})
+        self.toolBarArt_checkBox = CheckBox(txt= "Show/hide Art toolbar")
         self.toolBarArt_checkBox.stateChanged.connect(self.checkBoxArtStateChanged)
 
-        self.allToolBar_checkBox = CheckBox({'txt': "Show/hide all toolbar"})
+        self.allToolBar_checkBox = CheckBox(txt= "Show/hide all toolbar")
         self.allToolBar_checkBox.stateChanged.connect(self.checkBoxMasterStateChanged)
 
-        closeBtn = Button({'txt': 'Close', 'cl': self.close})
+        closeBtn = Button({'txt':'Close', 'cl': self.close})
 
         tbGrid.addWidget(self.toolBarTD_checkBox, 0, 0, 1, 1)
         tbGrid.addWidget(self.toolBarComp_checkBox, 1, 0, 1, 1)

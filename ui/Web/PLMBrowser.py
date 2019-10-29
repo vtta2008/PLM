@@ -23,13 +23,15 @@ except ImportError:
 
 from PyQt5.QtCore import QFile, QIODevice, Qt, QTextStream, QUrl, pyqtSignal
 from PyQt5.QtWidgets import (QAction, QApplication, QLineEdit, QMainWindow, QSizePolicy, QStyle, QTextEdit,
-                             QStatusBar, QVBoxLayout)
+                             QStatusBar, QVBoxLayout, QWidget)
 
 from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 
-# Plt
+# PLM
+from appData import __copyright__, SETTING_FILEPTH, ST_FORMAT
 from cores.Loggers import Loggers
-from ui.uikits      import Widget
+from cores.SignalManager import SignalManager
+from cores.Settings import Settings
 from ui.uikits.Icon import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
@@ -183,14 +185,15 @@ class WebBrowser(QMainWindow):
 # -------------------------------------------------------------------------------------------------------------
 """ layout class """
 
-class PLMBrowser(Widget):
+class PLMBrowser(QWidget):
 
     key = 'browser'
 
     def __init__(self, url='vnexpress.net', parent=None):
         super(PLMBrowser, self).__init__(parent)
         self.logger = Loggers(self)
-
+        self.setting = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
         self.setWindowIcon(AppIcon(32, 'PLMBrowser'))
         self.url = url
 

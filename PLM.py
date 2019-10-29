@@ -66,7 +66,7 @@ from cores.Loggers                  import Loggers
 from cores.Settings                 import Settings
 from ui.uikits.Application          import Application
 from ui.uikits.Icon                 import LogoIcon
-# from ui.Web.PLMBrowser              import PLMBrowser
+from ui.Web.PLMBrowser              import PLMBrower
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -103,7 +103,7 @@ class PLM(Application):
 
         self.settingUI              = SettingUI(self)
         self.database               = QuerryDB()                                    # Database tool
-        # self.webBrowser             = PLMBrowser()                                  # Webbrowser
+        self.webBrowser             = PLMBrowser()                                  # Webbrowser
 
         self.set_styleSheet('darkstyle')                                            # Layout style
         self.setWindowIcon(LogoIcon("Logo"))                                         # Set up task bar icon
