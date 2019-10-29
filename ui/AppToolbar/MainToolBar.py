@@ -52,6 +52,7 @@ class MainToolBar(MainWindow):
         
         for key in apps:
             if key in self.appInfo:
+                print(key)
                 toolBar.addAction(Action({'icon':key,
                                           'stt':self.appInfo[key][0],
                                           'txt':key,
@@ -61,19 +62,19 @@ class MainToolBar(MainWindow):
 
     @pyqtSlot(str, bool)
     def showToolBar(self, toolbar, mode):
-        if toolbar == 'td':
+        if toolbar == 'TD':
             self.tdToolBar.setVisible(str2bool(mode))
             self.signals.setSetting.emit(toolbar, bool2str(mode), self.objectName())
-        elif toolbar == 'vfx':
+        elif toolbar == 'VFX':
             self.compToolBar.setVisible(str2bool(mode))
             self.signals.setSetting.emit(toolbar, bool2str(mode), self.objectName())
-        elif toolbar == 'art':
+        elif toolbar == 'ART':
             self.artToolBar.setVisible(str2bool(mode))
             self.signals.setSetting.emit(toolbar, bool2str(mode), self.objectName())
-        elif toolbar == 'tex':
+        elif toolbar == 'TEX':
             self.textureToolBar.setVisible(str2bool(mode))
             self.signals.setSetting.emit(toolbar, bool2str(mode), self.objectName())
-        elif toolbar == 'post':
+        elif toolbar == 'POS':
             self.postToolBar.setVisible(str2bool(mode))
             self.signals.setSetting.emit(toolbar, bool2str(mode), self.objectName())
         else:
