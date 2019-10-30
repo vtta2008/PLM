@@ -16,28 +16,20 @@ from functools                          import partial
 from PyQt5.QtWidgets                    import QApplication
 
 # PLM
-print(1)
+
 from appData                            import __homepage__, dockB, __appname__
-print(2)
 from ui.uikits.MainWindow               import MainWindow
-print(3)
 from ui.uikits.GroupBox                 import GroupBox
-print(4)
 from ui.uikits.Widget                   import Widget
-print(5)
 from ui.uikits.GridLayout               import GridLayout
-print(6)
 from ui.uikits.Icon                     import LogoIcon
-print(7)
-from ui.Menus                           import MainMenuBar                      # Header
+from ui.Menus.MainMenuBar               import MainMenuBar                      # Header
 from ui.Network.ConnectStatus           import ConnectStatus
 from ui.AppToolbar.MainToolBar          import MainToolBar
-print(8)
 from ui.TopTab                          import TopTab                           # Body
 from ui.BotTab                          import BotTab
 from ui.Footer                          import Footer                           # Footer
 from ui.StatusBar                       import StatusBar
-print(9)
 from utils                              import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
@@ -67,36 +59,33 @@ class PipelineManager(MainWindow):
 
     def buildUI(self):
 
-        self.mainMenuBar    = MainMenuBar.MainMenuBar()
-        self.toolBar        = MainToolBar()                                                 # Toolbar
-        self.serverStatus   = ConnectStatus()                                                # Server Status
+        self.mainMenuBar            = MainMenuBar()
+        self.mainToolBar            = MainToolBar()
+        self.connectStatus          = ConnectStatus()
+        self.notification           = GridLayout()
 
-        self.mainMenuSec    = GroupBox("Main Menu", self.mainMenuBar, "qmainLayout")
-        self.mainMenuSec.key = "MainMenuSection"
-        self.networkStatus  = GroupBox("Server Status", self.serverStatus, "autoGrid")
+        self.mainMenuSec            = GroupBox("Main Menu"      , self.mainMenuBar      , "qmainLayout")
+        self.connectStatusSec       = GroupBox("Connect Status" , self.connectStatus    , "autoGrid")
+        self.mainToolBarSec         = GroupBox("Tool Bar"       , self.mainToolBar      , "qmainLayout")
+        self.notifiSec              = GroupBox("Notification"   , self.notification     , "autoGrid")
 
-        self.networkStatus.key = "NetworkStatus"
-        self.subToolBarSec  = GroupBox("Tool Bar", self.toolBar, "qmainLayout")
-        self.subToolBarSec.key = "SubtoolBarSec"
+        self.mainMenuSec.key        = "MainMenuSection"
+        self.mainToolBarSec.key     = "MainToolBarSection"
+        self.connectStatusSec.key   = "ConnectStatus"
+        self.notifiSec.key          = "Notification"
 
-        self.topTabUI       = TopTab()                                                           # Tab layout
-        self.botTabUI       = BotTab()                                                           # Bot build 1
-        self.notifiSec      = GroupBox("Notification", None, "autoGrid")                                # Bot build 2
-        self.notifiSec.key = "Notification"
-
-        self.footer         = Footer()
-        self.statusBar      = StatusBar()                                                     # Status bar viewing message
+        self.topTabUI               = TopTab()
+        self.botTabUI               = BotTab()
+        self.footer                 = Footer()
+        self.statusBar              = StatusBar()
 
         self.setStatusBar(self.statusBar)
 
-        self.mainUI_layouts =  [
-                                self.mainMenuBar, self.toolBar, self.serverStatus, self.mainMenuSec,
-                                self.networkStatus, self.subToolBarSec, self.topTabUI, self.botTabUI, self.notifiSec,
-                                self.statusBar, self.footer,
-                                ]
+        self.mainUI_layouts =  [self.mainMenuBar, self.mainToolBar, self.connectStatus, self.notification,
+                                self.mainMenuSec, self.mainToolBarSec, self.connectStatusSec, self.notifiSec,
+                                self.topTabUI, self.botTabUI, self.footer, self.statusBar, ]
 
         for layout in self.mainUI_layouts:
-            layout.signals.showLayout.connect(self.signals.showLayout)
             layout.signals.executing.connect(self.signals.executing)
             layout.signals.regisLayout.connect(self.signals.regisLayout)
             layout.signals.openBrowser.connect(self.signals.openBrowser)
@@ -111,8 +100,8 @@ class PipelineManager(MainWindow):
                 ]
 
         sections = [
-                    self.toolBar.tdToolBar, self.toolBar.compToolBar, self.toolBar.artToolBar, self.toolBar.textureToolBar,
-                    self.toolBar.postToolBar, self.mainMenuSec, self.statusBar, self.networkStatus, self.notifiSec
+                    self.mainToolBar.tdToolBar, self.mainToolBar.compToolBar, self.mainToolBar.artToolBar, self.mainToolBar.textureToolBar,
+                    self.mainToolBar.postToolBar, self.mainMenuSec, self.statusBar, self.connectStatusSec, self.notifiSec
                     ]
 
         for i in range(len(sections)):
@@ -136,8 +125,8 @@ class PipelineManager(MainWindow):
 
         # Signal
         self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 6)
-        self.layout.addWidget(self.networkStatus, 0, 6, 1, 3)
-        self.layout.addWidget(self.subToolBarSec, 1, 0, 1, 9)
+        self.layout.addWidget(self.connectStatusSec, 0, 6, 1, 3)
+        self.layout.addWidget(self.mainToolBarSec, 1, 0, 1, 9)
 
         self.layout.addWidget(self.topTabUI, 2, 0, 4, 9)
         self.layout.addWidget(self.botTabUI, 6, 0, 3, 6)

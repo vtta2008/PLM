@@ -18,6 +18,7 @@ from PyQt5.QtWidgets            import QApplication, QGridLayout, QLayout, QLine
 from appData                    import SiPoMin
 from cores.base                 import DAMGLIST
 from ui.uikits.Widget                     import Widget
+from ui.uikits.LineEdit import LineEdit
 from ui.uikits.Button import ToolButton
 from ui.uikits.Icon import AppIcon
 
@@ -32,8 +33,6 @@ class Calculator(Widget):
 
         self.setWindowIcon(AppIcon(32, 'Calculator'))
         self.setWindowTitle(self.key)
-
-
         self.buildUI()
 
     def buildUI(self):
@@ -46,7 +45,7 @@ class Calculator(Widget):
         self.factorSoFar                        = 0.0
         self.waitingForOperand                  = True
 
-        self.display = QLineEdit('0')
+        self.display = LineEdit({'txt': '0'})
         self.display.setReadOnly(True)
         self.display.setAlignment(Qt.AlignRight)
 

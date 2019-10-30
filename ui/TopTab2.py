@@ -17,16 +17,17 @@ from functools import partial
 
 from PyQt5.QtCore import pyqtSlot
 # PyQt5
-from PyQt5.QtGui import QPixmap, QImage
-from PyQt5.QtWidgets import (QApplication, QLabel, QGraphicsScene)
+from PyQt5.QtGui                import QPixmap, QImage
+from PyQt5.QtWidgets            import (QApplication, QLabel, QGraphicsScene)
 
 # Plt
-from ui.uikits.Widget                         import Widget
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Button import Button
-from ui.uikits.GroupBox import GroupBox, GroupGrid
-from utils import localSQL as usql
-from utils import get_avatar_image
+from appData                    import center, SiPoMin
+from ui.uikits.Widget           import Widget
+from ui.uikits.GridLayout       import GridLayout
+from ui.uikits.Button           import Button
+from ui.uikits.GroupBox         import GroupBox, GroupGrid
+from utils                      import localSQL as usql
+from utils                      import get_avatar_image
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab3 """
@@ -52,7 +53,7 @@ class TopTab2(Widget):
             self.username = 'DemoUser'
 
         self.avatar = QLabel()
-        self.avatar.setPixmap(QPixmap.fromImage(QImage(get_avatar_image(self.username))))
+        self.avatar.setPixmap(QPixmap(get_avatar_image(self.username)))
         self.avatar.setScaledContents(True)
         self.avatar.setFixedSize(100, 100)
 
@@ -64,12 +65,14 @@ class TopTab2(Widget):
 
         sec1Grp = GroupBox(self.username, [self.avatar], "ImageView")
         sec2Grp = GroupBox("Setting", btns, "BtnGrid")
+        sec1Grp.setMaximumWidth(120)
+        sec2Grp.setMaximumWidth(120)
 
         sec3Grp, sec3Grid = GroupGrid("Messenger")
 
-        self.layout.addWidget(sec1Grp, 0, 0, 1, 1)
-        self.layout.addWidget(sec2Grp, 1, 0, 1, 1)
-        self.layout.addWidget(sec3Grp, 0, 1, 2, 2)
+        self.layout.addWidget(sec1Grp, 0, 0, 3, 3)
+        self.layout.addWidget(sec2Grp, 3, 0, 3, 3)
+        self.layout.addWidget(sec3Grp, 0, 3, 6, 6)
 
     @pyqtSlot(bool)
     def update_avatar(self, param):

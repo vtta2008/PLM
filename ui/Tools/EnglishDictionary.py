@@ -10,29 +10,26 @@ Description:
 """ Import """
 
 # Python
-import json
-import os
-import sys
-from difflib import get_close_matches
+import json, os, sys
+from difflib                    import get_close_matches
 
 # PyQt5
-from PyQt5.QtWidgets import QTextEdit, QApplication
+from PyQt5.QtWidgets            import QTextEdit, QApplication
 
 # PLM
-from appData import JSON_DIR
-from ui.uikits.Widget import Widget
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Button import Button
-from ui.uikits.Label import Label
-from ui.uikits.Icon import AppIcon
-from ui.uikits.LineEdit import LineEdit
+from appData                    import JSON_DIR
+from ui.uikits.Widget           import Widget
+from ui.uikits.GridLayout       import GridLayout
+from ui.uikits.Button           import Button
+from ui.uikits.Label            import Label
+from ui.uikits.Icon             import AppIcon
+from ui.uikits.LineEdit         import LineEdit
 
 class EnglishDictionary(Widget):
 
     key = 'EnglishDictionary'
-    dataPth = os.path.join(JSON_DIR, 'ED.json')
 
-    with open(dataPth, 'r') as f:
+    with open(os.path.join(JSON_DIR, 'ED.json'), 'r') as f:
         data = json.load(f)
 
     def __init__(self, parent=None):
@@ -40,25 +37,22 @@ class EnglishDictionary(Widget):
 
         self.setWindowIcon(AppIcon(32, "EnglishDictionary"))
         self.inputText = ""
-
         self.buildUI()
-
 
     def buildUI(self):
 
-        self.layout = GridLayout(self)
-
-        self.lineInput = LineEdit()
+        self.layout         = GridLayout(self)
+        self.lineInput      = LineEdit()
         self.lineInput.textChanged.connect(self.getText)
 
-        self.suggessLabel = Label()
+        self.suggessLabel   = Label()
 
-        searchBtn   = Button({'txt': 'Translate', 'cl':self.btn_clicked})
-        yesBtn      = Button({'txt': 'Yes', 'cl':self.btn_clicked})
-        noBtn       = Button({'txt': 'No', 'cl':self.btn_clicked})
+        searchBtn           = Button({'txt': 'Translate', 'cl':self.btn_clicked})
+        yesBtn              = Button({'txt': 'Yes'      , 'cl':self.btn_clicked})
+        noBtn               = Button({'txt': 'No'       , 'cl':self.btn_clicked})
 
-        self.answer = QTextEdit()
-        self.answer.setPlainText('Test')
+        self.answer         = QTextEdit()
+        self.answer.setPlainText(" ")
 
         self.layout.addWidget(self.lineInput, 0, 0, 1, 3)
         self.layout.addWidget(self.suggessLabel, 1, 0, 1, 3)
@@ -102,19 +96,12 @@ class EnglishDictionary(Widget):
 
         return answer
 
-
     def listToString(self, stringToList, *args):
         listToString = ""
         for i in stringToList:
             listToString += i
         return listToString
 
-    def hideEvent(self, event):
-        pass
-
-    def closeEvent(self, event):
-        self.signals.showLayout.emit(self.key, 'hide')
-        event.ignore()
 
 def initialize():
     app = QApplication(sys.argv)

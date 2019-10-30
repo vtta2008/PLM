@@ -23,7 +23,6 @@ class Icon(QIcon):
     key                                     = 'Icon'
     _name                                   = 'DAMG Icon'
     _copyright                              = __copyright__
-    _data                                   = dict()
     iconInfo                                = data_handler(filePath=appIconCfg)
 
     def __init__(self, parent=None):
@@ -32,27 +31,13 @@ class Icon(QIcon):
         self.parent                         = parent
         self.signals                        = SignalManager(self)
 
-    def setValue(self, key, value):
-        return self.settings.initSetValue(key, value, self.key)
-
-    def getValue(self, key):
-        return self.settings.initValue(key, self.key)
-
     @property
     def copyright(self):
         return self._copyright
 
     @property
-    def data(self):
-        return self._data
-
-    @property
     def name(self):
         return self._name
-
-    @data.setter
-    def data(self, newData):
-        self._data                          = newData
 
     @name.setter
     def name(self, newName):
@@ -74,11 +59,9 @@ class AppIcon(Icon):
                 self._found = True
 
         if self._found:
-            # print('Found icon: {}'.format(self.iconName))
             self.iconPth = get_app_icon(self.iconSize, self.iconName)
             self.addFile(self.iconPth, QSize(self.iconSize, self.iconSize))
         else:
-            # raise FileNotFoundError("Could not find icon name: {0}".format(self.iconName))
             print("FILENOTFOUNDERROR: {0}: Could not find icon name: {1}".format(__name__, self.iconName))
 
 class LogoIcon(Icon):

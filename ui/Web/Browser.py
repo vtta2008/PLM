@@ -28,11 +28,8 @@ from PyQt5.QtWidgets import (QAction, QApplication, QLineEdit, QMainWindow, QSiz
 from PyQt5.QtNetwork import QNetworkProxyFactory, QNetworkRequest
 
 # PLM
-from appData import __copyright__, SETTING_FILEPTH, ST_FORMAT
-from cores.Loggers import Loggers
-from cores.SignalManager import SignalManager
-from cores.Settings import Settings
-from ui.uikits.Icon import AppIcon
+from ui.uikits.BoxLayout import VBoxLayout
+from ui.uikits.Widget import Widget
 from ui.Web import PLMBrowser_rc
 
 # -------------------------------------------------------------------------------------------------------------
@@ -186,20 +183,16 @@ class WebBrowser(QMainWindow):
 # -------------------------------------------------------------------------------------------------------------
 """ layout class """
 
-class Browser(QWidget):
+class Browser(Widget):
 
     key = 'Browser'
 
     def __init__(self, url='vnexpress.net', parent=None):
         super(Browser, self).__init__(parent)
-        self.logger = Loggers(self)
-        self.setting = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.signals = SignalManager(self)
-        self.setWindowIcon(AppIcon(32, self.key))
-        self.setWindowTitle(self.key)
+
         self.url = url
 
-        self.layout = QVBoxLayout()
+        self.layout = VBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
@@ -211,11 +204,14 @@ class Browser(QWidget):
         self.statusBar = QStatusBar(self)
         self.layout.addWidget(self.statusBar)
 
+    def setUrl(self, url):
+        return self.viewer.view.load(QUrl(url))
+
     def adjustTitle(self, param):
         if 0 < param < 100:
-            self.setWindowTitle("PLM Browser ({0}%)".format(param))
+            self.setWindowTitle("Browser ({0}%)".format(param))
         else:
-            self.setWindowTitle("PLM Browser")
+            self.setWindowTitle("Browser")
 
 def main():
     app = QApplication(sys.argv)

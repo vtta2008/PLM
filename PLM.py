@@ -19,9 +19,6 @@ import os, sys
 
 ROOT = os.path.abspath(os.getcwd())
 
-from appData import Configurations
-configurations = Configurations(__envKey__, os.path.join(ROOT))
-
 from cores.EnvVariableManager import EnvVariableManager
 
 try:
@@ -32,17 +29,18 @@ except KeyError:
 else:
     if os.getenv(__envKey__)   != ROOT:
         EnvVariableManager(__envKey__, ROOT)
-    cfgable                     = True
+        cfgable                 = True
+    else:
+        cfgable                 = True
 
-if not cfgable:
-    print("CONFIGERROR: environment variable not set.")
+from cores.ConfigManager import ConfigManager
+configManager = ConfigManager(__envKey__, ROOT)
+
+if not configManager.cfgs:
+    print("CONFIGERROR: configurations have not done yet.")
     sys.exit()
 else:
-    if not configurations.cfgs:
-        print("CONFIGERROR: configurations have not done yet.")
-        sys.exit()
-    else:
-        print('Configurations has been completed.')
+    print('Configurations has been completed.')
 
 # -------------------------------------------------------------------------------------------------------------
 """ import """
@@ -80,13 +78,13 @@ class PLM(QApplication):
 
         # Run all neccessary configuration to start PLM
 
-        self.configs                = configurations
+        self.configManager          = configManager
 
         self.logger                 = Loggers(self.__class__.__name__)
         self.settings               = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self._login                 = False
 
-        self.appInfo                = self.configs.appInfo  # Configuration data
+        self.appInfo                = self.configManager.appInfo  # Configuration data
 
         # Multithreading.
         self.thread_manager         = ThreadManager()
@@ -103,6 +101,7 @@ class PLM(QApplication):
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)     # Change taskbar icon
 
         self.layoutManager          = LayoutManager(self)
+        self.layoutManager.regisLayout(self.browser)
         self.layoutManager.buildLayouts()
 
         for layout in self.layoutManager.values():
@@ -133,10 +132,6 @@ class PLM(QApplication):
         sys.exit(self.exec_())
 
     @property
-    def registerUI(self):
-        return self.layout_manager
-
-    @property
     def loginState(self):
         return self._login
 
@@ -150,9 +145,9 @@ class PLM(QApplication):
 
     @pyqtSlot(str)
     def openBrowser(self, url):
-        self.webBrowser.setUrl(url)
-        self.webBrowser.update()
-        self.webBrowser.show()
+        self.browser.setUrl(url)
+        self.browser.update()
+        self.browser.show()
 
     @pyqtSlot(str, str, str)
     def setSetting(self, key=None, value=None, grp=None):
@@ -161,11 +156,11 @@ class PLM(QApplication):
 
     @pyqtSlot(str)
     def executing(self, cmd):
-        if cmd in self.layout_manager.keys():
+        if cmd in self.layoutManager.keys():
             self.signals.showLayout.emit(cmd, 'show')
         elif os.path.isdir(cmd):
             os.startfile(cmd)
-        elif cmd in self.configs.appInfo.keys():
+        elif cmd in self.configManager.appInfo.keys():
             os.system(self.appInfo[cmd])
         elif cmd == 'Debug':
             from ui.Debugger import Debugger
@@ -176,8 +171,8 @@ class PLM(QApplication):
         elif cmd == 'CleanPyc':
             clean_file_ext('.pyc')
         elif cmd == 'ReConfig':
-            self.configs.cfg_mainPkgs()
-        elif cmd == 'appExit':
+            self.configManager.cfg_mainPkgs()
+        elif cmd == 'Exit':
             self.exit()
         else:
             print("This command is not regiested yet: {0}".format(cmd))
@@ -185,7 +180,7 @@ class PLM(QApplication):
     @pyqtSlot(str, str)
     def showLayout(self, name, mode):
         if name == 'app':
-            layout = self.parent
+            layout = self
         elif name in self.layoutManager.keys():
             layout = self.layoutManager[name]
         else:
@@ -203,7 +198,6 @@ class PLM(QApplication):
                 pass
             else:
                 layout.setValue('showLayout', 'show')
-
         elif mode == 'showNor':
             layout.showNormal()
             layout.setValue('state', 'showNormal')
@@ -215,10 +209,6 @@ class PLM(QApplication):
             layout.setValue('state', 'showMaximized')
         elif mode == 'quit' or mode == 'exit':
             layout.quit()
-
-    @pyqtSlot(str)
-    def get_report(self, param):
-        self.logger.report(param)
 
     def set_styleSheet(self, style):
         stylesheet = dict(darkstyle=StyleSheets('dark').changeStylesheet, stylesheet=StyleSheets('bright').changeStylesheet, )

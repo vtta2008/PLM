@@ -32,9 +32,6 @@ class CommandPrompt(LineEdit):
     def __init__(self, parent=None):
         super(CommandPrompt, self).__init__(parent)
 
-        self.applySetting()
-
-    def applySetting(self):
         self.setSizePolicy(SiPoMin, SiPoMin)
 
 class Terminal(QTextBrowser):
@@ -42,9 +39,6 @@ class Terminal(QTextBrowser):
     def __init__(self, parent=None):
         super(Terminal, self).__init__(parent)
 
-        self.applySetting()
-
-    def applySetting(self):
         self.setFrameStyle(QTextEdit.DrawWindowBackground)
         self.setSizePolicy(SiPoExp, SiPoExp)
 

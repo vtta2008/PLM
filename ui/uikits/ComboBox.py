@@ -29,7 +29,7 @@ class ComboBox(QComboBox):
 
 
     def __init__(self, preset={}, parent=None):
-        super().__init__()
+        super(ComboBox, self).__init__(parent)
 
         self.signals                        = SignalManager(self)
         self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
@@ -39,7 +39,6 @@ class ComboBox(QComboBox):
             self.buildUI()
 
     def buildUI(self):
-        print(2)
         for key, value in self.preset.items():
             if key == 'items':
                 for item in value:

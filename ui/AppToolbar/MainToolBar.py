@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # Python
-import json, os, sys
+import json, sys, os
 from functools              import partial
 
 # PyQt5
@@ -20,13 +20,15 @@ from PyQt5.QtCore           import pyqtSlot
 from PyQt5.QtWidgets        import QApplication
 
 # PLM
-from appData                import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_POST, mainConfig
+from appData                import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_POST, mainConfig, SiPoMin
 from ui.uikits.Action       import Action
 from ui.uikits.MainWindow   import MainWindow
 from utils                  import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
+
+print(CONFIG_POST, CONFIG_TDS, CONFIG_ART, CONFIG_TEX, CONFIG_VFX)
 
 class MainToolBar(MainWindow):
 
@@ -49,15 +51,20 @@ class MainToolBar(MainWindow):
     def create_toolBar(self, name="", apps=[]):
 
         toolBar = self.addToolBar(name)
-        
+
+        k = 0
         for key in apps:
             if key in self.appInfo:
-                print(key)
+                print(key, k)
                 toolBar.addAction(Action({'icon':key,
                                           'stt':self.appInfo[key][0],
                                           'txt':key,
-                                          'trg':(partial(self.signals.executing.emit, self.appInfo[key][2]))}, self))
-        
+                                          'trg':(partial(os.startfile, self.appInfo[key][2]))}, self))
+                k += 1
+
+        # mainToolBar.setMinimumWidth(k*32 + 1)
+        # mainToolBar.setMinimumHeight(32 + 1)
+        toolBar.setSizePolicy(SiPoMin, SiPoMin)
         return toolBar
 
     @pyqtSlot(str, bool)

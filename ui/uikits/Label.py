@@ -13,12 +13,12 @@ from __future__ import absolute_import, unicode_literals
 
 # PyQt5
 from PyQt5.QtWidgets                        import QLabel
-from PyQt5.QtGui                            import QFont, QPixmap, QImage
+from PyQt5.QtGui                            import QFont
 
 # PLM
 from appData                                import __copyright__, PRS, ST_FORMAT, SETTING_FILEPTH
 from ui.uikits.uiUtils                      import check_preset
-from utils                                  import get_avatar_image
+from ui.uikits.Pixmap                       import Pixmap
 from cores.SignalManager import SignalManager
 from cores.Settings import Settings
 
@@ -59,7 +59,7 @@ class Label(QLabel):
             elif key == 'sizePolicy':
                 self.setSizePolicy(PRS[value[0]], PRS[value[1]])
             elif key == 'pxm':
-                self.setPixmap(QPixmap.fromImage(QImage(get_avatar_image(value))))
+                self.setPixmap(Pixmap(value))
             elif key == 'scc':
                 self.setScaledContents(value)
             elif key == 'sfs':

@@ -15,6 +15,7 @@ from functools                              import partial
 
 # PyQt5
 from PyQt5.QtWidgets                        import QPushButton, QToolButton
+from PyQt5.QtCore                           import QSize
 
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__

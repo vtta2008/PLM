@@ -45,13 +45,13 @@ ROOT_DIR                    = os.path.join(os.getenv(__envKey__))
 
 CFG_DIR                     = os.path.join(ROOT_DIR, 'appData', '.config')
 
-CONFIG_LOCAL_DAMG_DIR       = os.path.join(CFG_DIR, __groupname__)                      # DAMG team directory
-CONFIG_LOCAL_PLM_DIR        = os.path.join(CFG_DIR, __appname__)                        # Plm directory
+CONFIG_LOCAL_DAMG_DIR       = CFG_DIR                                                   # DAMG team directory
+CONFIG_LOCAL_PLM_DIR        = CFG_DIR                                                   # Plm directory
 CONFIG_DIR                  = CFG_DIR                                                   # Config dir to store config info
 
-SETTING_DIR                 = os.path.join(CONFIG_LOCAL_PLM_DIR, settings)              # Setting dir
-LOG_DIR                     = os.path.join(CONFIG_LOCAL_PLM_DIR, logs)                  # Log dir
-CACHE_DIR                   = os.path.join(CONFIG_LOCAL_PLM_DIR, cache)                 # Cache dir
+SETTING_DIR                 = CFG_DIR                                                   # Setting dir
+LOG_DIR                     = CFG_DIR                                                   # Log dir
+CACHE_DIR                   = os.path.join(CFG_DIR, cache)                              # Cache dir
 
 NODEGRAPH_DIR               = os.path.join(CONFIG_DIR, nodegraph)                       # Nodegraph dir
 PREF_DIR                    = os.path.join(CONFIG_DIR, prefs)                           # Preferences dir
@@ -104,11 +104,11 @@ WEB_ICON_48                 = os.path.join(WEB_ICON_DIR, 'x48')
 WEB_ICON_64                 = os.path.join(WEB_ICON_DIR, 'x64')
 WEB_ICON_128                = os.path.join(WEB_ICON_DIR, 'x128')
 
-DAMG_LOGO_DIR               = os.path.join(LOGO_DIR, 'DAMGteam', 'icons')
-PLM_LOGO_DIR                = os.path.join(LOGO_DIR, 'Plm', 'icons')
+DAMG_LOGO_DIR               = os.path.join(LOGO_DIR, 'DAMGTEAM')
+PLM_LOGO_DIR                = os.path.join(LOGO_DIR, 'PLM')
 
-DAMG_LOGO_32                = os.path.join(DAMG_LOGO_DIR, 'logo32')
-PLM_LOGO_32                 = os.path.join(PLM_LOGO_DIR, 'logo32')
+DAMG_LOGO_32                = os.path.join(DAMG_LOGO_DIR, '32x32.png')
+PLM_LOGO_32                 = os.path.join(PLM_LOGO_DIR, '32x32.png')
 
 # -------------------------------------------------------------------------------------------------------------
 """ Documentations """
@@ -119,15 +119,13 @@ DOCUMENTATION_DIR           = os.path.join(APP_DATA_DIR, 'documentations')
 # -------------------------------------------------------------------------------------------------------------
 """ File path configurations """
 
-cfgFile                     = os.path.join(CFG_DIR, 'PLM.cfg')
-
 appIconCfg                  = os.path.join(CONFIG_DIR, 'appIcon.cfg')                   # Config app icon path
 webIconCfg                  = os.path.join(CONFIG_DIR, 'webIcon.cfg')                   # Config Web icon path
 logoIconCfg                 = os.path.join(CONFIG_DIR, 'logoIcon.cfg')                  # Config logo icon path
 
 pyEnvCfg                    = os.path.join(CONFIG_DIR, 'envKey.cfg')                    # Config python env variables
-appConfig                   = os.path.join(CONFIG_DIR, 'main.cfg')                      # Config pipeline soft package
-mainConfig                  = os.path.join(CONFIG_DIR, 'PLM.cfg')                       # Master config
+mainConfig                  = os.path.join(CONFIG_DIR, 'main.cfg')                      # Config pipeline soft package
+PLMconfig                   = os.path.join(CONFIG_DIR, 'PLM.cfg')                       # Master config
 
 # -------------------------------------------------------------------------------------------------------------
 """ Settings """

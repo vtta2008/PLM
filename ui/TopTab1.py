@@ -53,10 +53,11 @@ class TopTab1(Widget):
 
         sec1Grp     = GroupBox("Project", [btn1, btn2, btn3], "BtnGrid")
         sec2Grp     = GroupBox("Task", [btn4, btn5, btn6], "BtnGrid")
+        sec1Grp.setMaximumWidth(120)
+        sec2Grp.setMaximumWidth(120)
 
         sec3Grp     = GroupBox('Info')
         sec3Grid    = GridLayout()
-
         sec3Grp.setLayout(sec3Grid)
 
         self.layout.addWidget(sec1Grp, 0, 0, 3, 3)

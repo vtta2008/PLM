@@ -11,15 +11,17 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 import sys
-from PyQt5.QtWidgets import QApplication, QWidget, QGridLayout, QLabel, QPushButton
+from PyQt5.QtWidgets import QApplication
 
 from ui.uikits.Icon import AppIcon
-from appData import (SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE_MIT, REFERENCE, VERSION,
-                     ST_FORMAT, SETTING_FILEPTH)
-from cores.SignalManager import SignalManager
-from cores.Settings import Settings
+from appData import (SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE_MIT, REFERENCE, VERSION)
 
-class InfoWidget(QWidget):
+from ui.uikits.Widget import Widget
+from ui.uikits.GridLayout import GridLayout
+from ui.uikits.Label import Label
+from ui.uikits.Button import Button
+
+class InfoWidget(Widget):
 
     content = dict(
         About               = PLM_ABOUT,
@@ -36,8 +38,6 @@ class InfoWidget(QWidget):
 
         self.key = key
         self.parent = parent
-        self.signals = SignalManager(self)
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         if self.key is None or self.key not in self.content.keys():
             print("KeyError: Key is None, or not in content data: {0}".format(self.key))
@@ -48,14 +48,12 @@ class InfoWidget(QWidget):
         self.setWindowTitle(self.key)
         self.setWindowIcon(AppIcon(32, self.key))
 
+        self.layout             = GridLayout(self)
+        label                   = Label({'txt': self.content[self.key]})
+        btn                     = Button({'txt': 'Ok', 'cl': self.close})
 
-
-        self.layout             = QGridLayout(self)
-        label                   = QLabel(self.content[self.key])
-        btn                     = QPushButton("Ok")
-        btn.clicked.connect(self.close)
-        self.layout.addWidget(label, 0,0,6,6)
-        self.layout.addWidget(btn, 6,6,1,1)
+        self.layout.addWidget(label,    0, 0, 6, 6)
+        self.layout.addWidget(btn,      6, 6, 1, 1)
 
         self.setLayout(self.layout)
         self.setSizePolicy(SiPoMin, SiPoMin)

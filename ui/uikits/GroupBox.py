@@ -18,19 +18,12 @@ from PyQt5.QtCore                           import pyqtSlot
 from PyQt5.QtWidgets                        import QGroupBox, QLabel
 
 # PLM
-print(31)
-from appData                                import WAIT_LAYOUT_COMPLETE, SETTING_FILEPTH, ST_FORMAT, __copyright__
-print(32)
-from cores.SignalManager                    import SignalManager
-print(33)
-from cores.Settings                         import Settings
-print(34)
-from ui.uikits.GridLayout                   import AutoPreset1, AutoPreset2, AutoPreset3, GridLayout
-print(35)
 
-print(36)
+from appData                                import WAIT_LAYOUT_COMPLETE, SETTING_FILEPTH, ST_FORMAT, __copyright__
+from cores.SignalManager                    import SignalManager
+from cores.Settings                         import Settings
+from ui.uikits.GridLayout                   import AutoPreset1, AutoPreset2, AutoPreset3, GridLayout
 from ui.uikits.BoxLayout                    import HBoxLayout
-print(37)
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -44,11 +37,9 @@ class GroupBox(QGroupBox):
     _copyright                              = __copyright__
     _data                                   = dict()
 
-    print(38)
     def __init__(self, title="Section Title", layouts=None, mode="IconGrid", parent=None):
-        print(39)
         QGroupBox.__init__(self)
-        print(40)
+
         self.setTitle(title)
         self.parent = parent
 
@@ -71,9 +62,9 @@ class GroupBox(QGroupBox):
             for layout in self.layouts:
                 self.setLayout(layout)
         elif self.mode == "qmainLayout":
-            self.subLayout = self.layouts
-            self.layout = HBoxLayout()
-            self.layout.addWidget(self.subLayout)
+            # self.subLayout = self.layouts
+            self.layout = HBoxLayout({'addWidget': [self.layouts]})
+            # self.layout.addWidget(self.subLayout)
             self.setLayout(self.layout)
         elif self.mode == "autoGrid":
             self.subLayout = self.layouts
@@ -118,6 +109,11 @@ class GroupBox(QGroupBox):
             self.show()
         else:
             self.signals.showLayout.emit(self.key, 'show')
+            for layout in self.children():
+                try:
+                    layout.show()
+                except AttributeError:
+                    continue
             event.ignore()
 
     def moveEvent(self, event):

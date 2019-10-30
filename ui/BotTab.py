@@ -45,14 +45,10 @@ class BotTab(Widget):
         self.debugger       = Debugger()
 
         self.tabs.addTab(TabContent(self.generalSetting), "General")
-        # self.tabs.addTab(TabContent(), "Unit")
         self.tabs.addTab(TabContent(self.debugger), "Debug")
-        # self.tabs.addTab(TabContent(), "Quick")
-
         self.tabs.setTabIcon(0, AppIcon(32, 'General Setting'))
-        # self.tabs.setTabIcon(1, IconPth(32, 'Unit Setting'))
         self.tabs.setTabIcon(2, AppIcon(32, 'Debug'))
-        # self.tabs.setTabIcon(3, IconPth(32, 'Quick Setting'))
+
 
         self.tabs.setTabPosition(TabWidget.South)
         self.tabs.setMovable(True)

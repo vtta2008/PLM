@@ -234,14 +234,13 @@ def get_app_icon(size=32, iconName="About"):
 
 def get_logo_icon(size=32, name="DAMG"):
     if name == "Logo":
-        logoPth = os.path.join(LOGO_DIR, 'Plm', 'icons')
-        print(os.path.exists(logoPth))
+        logoPth = os.path.join(LOGO_DIR, 'PLM')
     elif name == 'DAMG':
-        logoPth = os.path.join(LOGO_DIR, 'DAMGteam', 'icons')
+        logoPth = os.path.join(LOGO_DIR, 'DAMGTEAM')
     else:
-        logoPth = os.path.join(LOGO_DIR, 'Plt', 'icons')
+        logoPth = os.path.join(LOGO_DIR, 'PLM')
 
-    logoFilePth = os.path.join(logoPth, str(size) + "x" + str(size) + ".png")
+    logoFilePth = os.path.join(logoPth, "{0}x{0}.png".format(str(size)))
 
     if not os.path.exists(logoFilePth):
         raise FileNotFoundError('{} not exists'.format(logoFilePth))

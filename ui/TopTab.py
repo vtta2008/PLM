@@ -17,8 +17,8 @@ from PyQt5.QtWidgets            import QApplication
 
 # PLM
 from ui.uikits.Widget                     import Widget
-from ui.uikits.BoxLayout import VBoxLayout
-from ui.uikits.TabWidget import TabWidget
+from ui.uikits.BoxLayout        import VBoxLayout
+from ui.uikits.TabWidget        import TabWidget
 from ui                         import (TopTab1, TopTab2, TopTab3)
 
 # -------------------------------------------------------------------------------------------------------------
@@ -38,6 +38,7 @@ class TopTab(Widget):
     def buildUI(self):
 
         self.tabs = TabWidget()
+        self.tabs.setContentsMargins(2,2,2,2)
 
         self.tab2 = TopTab1.TopTab1()
         self.tab3 = TopTab2.TopTab2()

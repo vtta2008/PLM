@@ -118,7 +118,7 @@ __pkgsReq__             = c.__pkgsReq__
 # logoIconCfg             = c.logoIconCfg
 #
 # pyEnvCfg                = c.pyEnvCfg
-# appConfig               = c.appConfig
+# mainConfig               = c.mainConfig
 # mainConfig              = c.mainConfig
 #
 # DB_PTH                  = c.DB_PTH

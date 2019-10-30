@@ -50,17 +50,18 @@ class SignalManager(DAMG):
 
         self.notSpacing = []
 
+        self.globalSetting()
 
-    def global_ui_setting(self):
+    def globalSetting(self):
         if self.parent.key not in self.objects:
             if self.parent.key not in self.notContenMargin:
                 try:
-                    self.parent.setContentMargin(0,0,0,0)
+                    self.parent.setContentMargin(1,1,1,1)
                 except AttributeError:
                     pass
             elif self.parent.key not in self.notSizePolicy:
                 try:
-                    self.parent.setSizePolicy(SiPoPre, SiPoPre)
+                    self.parent.setSizePolicy(SiPoExp, SiPoExp)
                 except AttributeError:
                     pass
             elif self.parent.key not in self.notSpacing:

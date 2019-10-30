@@ -67,16 +67,16 @@ class LayoutManager(DAMGDICT):
     def infoLayouts(self):
         from ui.Info.InfoWidget import InfoWidget
 
-        self.about          = InfoWidget('About')
-        self.codeConduct    = InfoWidget('CodeOfConduct')
-        self.contributing   = InfoWidget('Contributing')
-        self.credit         = InfoWidget("Credit")
-        self.licence        = InfoWidget('Licence')
-        self.reference      = InfoWidget('Reference')
-        self.version        = InfoWidget('Verion')
+        self.about          = InfoWidget(key='About')
+        self.codeConduct    = InfoWidget(key='CodeOfConduct')
+        self.contributing   = InfoWidget(key='Contributing')
+        self.credit         = InfoWidget(key="Credit")
+        self.licence        = InfoWidget(key='Licence')
+        self.reference      = InfoWidget(key='Reference')
+        self.version        = InfoWidget(key='Version')
 
         layouts = [self.about, self.codeConduct, self.contributing, self.credit, self.licence,
-                       self. reference, self.version]
+                    self. reference, self.version]
 
         for layout in layouts:
             self.regisLayout(layout)
@@ -136,7 +136,7 @@ class LayoutManager(DAMGDICT):
     def regisLayout(self, layout):
         key = layout.key
         if not key in self.keys():
-            # self.logger.report("Registing layout: {0} \n {1}".format(configKey, layout))
+            print("Registing layout: {0} : {1}".format(layout.key, layout))
             self[key] = layout
         else:
             print("Already registered: {0}".format(key))

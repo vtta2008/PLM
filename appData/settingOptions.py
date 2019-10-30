@@ -147,7 +147,17 @@ COLOR_LIBS = dict(
 # -------------------------------------------------------------------------------------------------------------
 """ Keyboard and cursor """
 
-KEYBOARD                    = Qt.Key                                                    # Keyboard
+sunday                      = Qt.Sunday
+monday                      = Qt.Monday
+tuesady                     = Qt.Tuesday
+wednesday                   = Qt.Wednesday
+thursday                    = Qt.Thursday
+friday                      = Qt.Friday
+saturday                    = Qt.Saturday
+
+# -------------------------------------------------------------------------------------------------------------
+""" Keyboard and cursor """
+
 KEY_ALT                     = Qt.Key_Alt
 KEY_DEL                     = Qt.Key_Delete
 KEY_TAB                     = Qt.Key_Tab
@@ -165,7 +175,6 @@ CLOSE_HAND_CUSOR            = Qt.ClosedHandCursor
 windows                     = os.name = 'nt'
 DMK                         = Qt.AltModifier if windows else CTRL_MODIFIER
 
-MOUSEBTN                    = Qt.MouseButton                                            # Mouse button
 MOUSE_LEFT                  = Qt.LeftButton
 MOUSE_RIGHT                 = Qt.RightButton
 MOUSE_MIDDLE                = Qt.MiddleButton

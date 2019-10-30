@@ -21,18 +21,13 @@ from PyQt5.QtGui        import QColor, QIcon, QRegExpValidator, QValidator
 from PyQt5.QtWidgets    import (QAbstractItemView, QAction, QApplication, QMenuBar, QFileDialog, QGridLayout,
                                 QGroupBox, QHeaderView, QInputDialog, QItemDelegate, QLineEdit, QStyle, QComboBox,
                                 QStyleOptionViewItem, QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
-print(1)
+
 # PLM
 from appData                           import __organization__, __appname__, SETTING_FILEPTH, SiPoMin, INI
-print(2)
 from ui.uikits.Action                  import Action
-print(3)
 from ui.uikits.Label                   import Label
-print(4)
 from ui.uikits.Widget                  import Widget
-print(5)
 from ui.uikits.GridLayout              import GridLayout
-print(6)
 from ui.uikits.GroupBox                import GroupGrid
 
 # -------------------------------------------------------------------------------------------------------------
@@ -41,7 +36,6 @@ from ui.uikits.GroupBox                import GroupGrid
 class SettingUI(Widget):
 
     key = 'SettingUI'
-    print(7)
     def __init__(self, parent=None):
         super(SettingUI, self).__init__(parent)
 

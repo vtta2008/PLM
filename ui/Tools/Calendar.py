@@ -22,9 +22,10 @@ from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
                              QLayout)
 
 # Plt
-from appData import SiPoMin
-from ui.uikits.Widget import Widget
-from ui.uikits.Icon import AppIcon
+from appData                    import SiPoMin
+from ui.uikits.Widget           import Widget
+from ui.uikits.GridLayout       import GridLayout
+from ui.uikits.Icon             import AppIcon
 # -------------------------------------------------------------------------------------------------------------
 """ Clendar """
 
@@ -34,13 +35,13 @@ class Calendar(Widget):
 
     def __init__(self, parent=None):
         super(Calendar, self).__init__(parent)
-        self.setWindowIcon(AppIcon(32, 'Calendar'))
 
+        self.setWindowIcon(AppIcon(32, self.key))
+        self.setWindowTitle(self.key)
         self.buildUI()
 
-
     def buildUI(self):
-        self.layout = QGridLayout()
+        self.layout = GridLayout()
 
         self.createPreviewGroupBox()
         self.createGeneralOptionsGroupBox()

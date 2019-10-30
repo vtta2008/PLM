@@ -14,10 +14,9 @@ import os
 
 from PyQt5.QtGui                import QPixmap, QImage
 
-from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
+from appData                    import __copyright__
 from cores.SignalManager        import SignalManager
-from cores.Settings             import Settings
-from utils import get_avatar_image
+from utils                      import get_avatar_image
 
 class Pixmap(QPixmap):
 
@@ -27,31 +26,20 @@ class Pixmap(QPixmap):
     _copyright                  = __copyright__
     _data                       = dict()
 
-    def __init__(self, image=None, parent=None):
+    def __init__(self, image=None, mode='avatar', parent=None):
         QPixmap.__init__(self)
 
+        self.mode               = mode
         self.image              = image
         self.parent             = parent
         self.signals            = SignalManager(self)
-        self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
-        if self.image is None:
-            print("IMAGEISNONEERROR: Image should be a name or a path, not None")
+        if self.mode == 'avatar':
+            print('set avatar: {0}'.format(get_avatar_image(self.image)))
+            self.fromImage(QImage(get_avatar_image(self.image)))
         else:
-            if not os.path.exists(self.image):
-                if os.path.exists(get_avatar_image(self.image)):
-                    self.fromImage(QImage(get_avatar_image(self.image)))
-                else:
-                    print("IMAGENOTFOUND: Could not find image: {0}".format(self.image))
-            else:
-                self.fromImage(QImage(self.image))
-
-
-    def setValue(self, key, value):
-        return self.settings.initSetValue(key, value, self.key)
-
-    def getValue(self, key):
-        return self.settings.initValue(key, self.key)
+            print('set image: {}'.format(self.image))
+            self.fromImage(QImage(self.image))
 
     @property
     def copyright(self):
