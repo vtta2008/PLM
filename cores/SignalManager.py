@@ -9,28 +9,36 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+""" Import """
 
+# Python
+from damg                           import DAMG
+
+# PyQt5
 from PyQt5.QtCore                   import pyqtSignal
+from PyQt5.QtCore                   import Qt
 
-from cores.base                     import DAMG
+# PLM
 from appData                        import SiPoMin, SiPoMax, SiPoExp, SiPoIgn, SiPoPre
+
 
 class SignalManager(DAMG):
 
     key                             = "SignalManager"
 
-    showLayout                      = pyqtSignal(str, str)
-    executing                       = pyqtSignal(str)
-    regisLayout                     = pyqtSignal(DAMG)
-    openBrowser                     = pyqtSignal(str)
-    setSetting                      = pyqtSignal(str, str, str)
+    showLayout                      = pyqtSignal(str, str, name="showLayout")
+    executing                       = pyqtSignal(str, name="executing")
+    regisLayout                     = pyqtSignal(DAMG, name="regisLaout")
+    openBrowser                     = pyqtSignal(str, name="openBrowser")
+    setSetting                      = pyqtSignal(str, str, str, name="setSetting")
 
-    sysNotify                       = pyqtSignal(str, str, str, int)
+    sysNotify                       = pyqtSignal(str, str, str, int, name="sysNotify")
 
-    setLoginValue                   = pyqtSignal(bool)
+    setLoginValue                   = pyqtSignal(bool, name="setLoginValue")
 
-    updateAvatar                    = pyqtSignal(bool)
-    cfgReport                       = pyqtSignal(str)
+    updateAvatar                    = pyqtSignal(bool, name="updateAvatar")
+
+    cfgReport                       = pyqtSignal(str, name="cfgReport")
 
     def __init__(self, parent=None):
         super(SignalManager, self).__init__(parent)
@@ -73,13 +81,10 @@ class SignalManager(DAMG):
         if self.parent.key == 'PipelineManager':
             self.parent.setMaximumWidth(459)
 
-
-
-
-
-        # self.setSpacing(1)
-        # self.setContentMargin(5,5,5,5)
-
+        if self.parent.key == 'TobTab' and self.parent.key == 'BotTab':
+            self.parent.setMovable(True)
+            self.parent.setElideMode(Qt.ElideRight)
+            self.parent.setUsesScrollButtons(True)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 25/10/2019 - 6:59 AM

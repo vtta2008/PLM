@@ -154,8 +154,9 @@ class PLM(QApplication):
         # print("receive setting: configKey: {0}, to value: {1}, in group {2}".format(configKey, value, grp))
         self.settings.initSetValue(key, value, grp)
 
-    @pyqtSlot(str)
+    @pyqtSlot(str, name="executing")
     def executing(self, cmd):
+        print("Recieve signal: '{0}'".format(cmd))
         if cmd in self.layoutManager.keys():
             self.signals.showLayout.emit(cmd, 'show')
         elif os.path.isdir(cmd):
@@ -177,36 +178,70 @@ class PLM(QApplication):
         else:
             print("This command is not regiested yet: {0}".format(cmd))
 
-    @pyqtSlot(str, str)
-    def showLayout(self, name, mode):
-        if name == 'app':
+    @pyqtSlot(str, str, name="showLayout")
+    def showLayout(self, layoutID, mode):
+        print("Recieve signal: '{0}: {1}'".format(layoutID, mode))
+
+        if layoutID == 'app':
             layout = self
-        elif name in self.layoutManager.keys():
-            layout = self.layoutManager[name]
+        elif layoutID in self.layoutManager.keys():
+            layout = self.layoutManager[layoutID]
         else:
-            print("Layout: '{0}' is not registerred yet.".format(name))
+            print("Layout: '{0}' is not registerred yet.".format(layoutID))
             layout = None
+
         if mode == "hide":
-            # print('hide: {}'.format(layout))
-            layout.hide()
-            layout.setValue('showLayout', 'hide')
-        elif mode == "show":
-            # print('show: {}'.format(layout))
             try:
-                layout.show()
+                state = layout.isHidden()
+            except AttributeError:
+                state = None
+
+            if not state or state is None:
+                try:
+                    layout.hide()
+                except AttributeError:
+                    pass
+                else:
+                    layout.setValue('showLayout', 'hide')
+
+        elif mode == "show":
+            try:
+                state = layout.isHidden()
+            except AttributeError:
+                state = None
+
+            if state:
+                try:
+                    layout.show()
+                except AttributeError:
+                    pass
+                else:
+                    layout.setValue('showLayout', 'show')
+
+        elif mode == 'showNor':
+            try:
+                layout.showNormal()
             except AttributeError:
                 pass
             else:
-                layout.setValue('showLayout', 'show')
-        elif mode == 'showNor':
-            layout.showNormal()
-            layout.setValue('state', 'showNormal')
+                layout.setValue('state', 'showNormal')
+
         elif mode == 'showMin':
-            layout.showMinimized()
-            layout.setValue('state', 'showMinimized')
+            try:
+                layout.showMinimized()
+            except AttributeError:
+                pass
+            else:
+                layout.setValue('state', 'showMinimized')
+
         elif mode == 'showMax':
-            layout.showMaximized()
-            layout.setValue('state', 'showMaximized')
+            try:
+                layout.showMaximized()
+            except AttributeError:
+                pass
+            else:
+                layout.setValue('state', 'showMaximized')
+
         elif mode == 'quit' or mode == 'exit':
             layout.quit()
 

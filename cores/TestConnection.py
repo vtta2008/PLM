@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 import socket, time
 
 from appData                    import __google__, __localPort__, __localHost__, __localServer__
-from cores.base                 import DAMG
+from damg                       import DAMG
 
 class TestConnection(DAMG):
 

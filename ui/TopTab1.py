@@ -31,7 +31,7 @@ from ui.uikits.GroupBox import GroupBox
 
 class TopTab1(Widget):
 
-    key = 'TopTab2'
+    key = 'TopTab1'
 
     def __init__(self, parent=None):
         super(TopTab1, self).__init__(parent)
@@ -66,8 +66,8 @@ class TopTab1(Widget):
 
     def showEvent(self, event):
         self.signals.showLayout.emit(self.key, 'show')
+        self.signals.showLayout.emit('TopTab2', 'hide')
         self.signals.showLayout.emit('TopTab3', 'hide')
-        self.signals.showLayout.emit('TopTab5', 'hide')
 
 def main():
     app = QApplication(sys.argv)

@@ -52,10 +52,22 @@ class Button(QPushButton):
             elif key == 'tt':
                 self.setToolTip(value)
             elif key == 'cl':
+                try:
+                    self.clicked.disconect()
+                except:
+                    pass
                 self.clicked.connect(value)
             elif key == 'emit1':
+                try:
+                    self.clicked.disconect()
+                except:
+                    pass
                 self.clicked.connect(partial(value[0], value[1]))
             elif key == 'emit2':
+                try:
+                    self.clicked.disconect()
+                except:
+                    pass
                 self.clicked.connect(partial(value[0], value[1][0], value[1][1]))
             elif key == 'icon':
                 self.setIcon(AppIcon(32, value))

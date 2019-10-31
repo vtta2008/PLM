@@ -13,16 +13,16 @@ Description:
 import os, subprocess, sys
 
 # PyQt5
-from PyQt5.QtCore           import pyqtSlot
-from PyQt5.QtWidgets        import QApplication, QTextEdit, QTextBrowser
+from PyQt5.QtCore                               import pyqtSlot
+from PyQt5.QtWidgets                            import QApplication, QTextEdit, QTextBrowser
 
 # Plt
-from appData                import SiPoMin, SiPoExp
-from ui.uikits.Widget                         import Widget
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Button import Button
-from ui.uikits.LineEdit import LineEdit
-from ui.uikits.Label import Label
+from appData                                    import SiPoMin, SiPoExp
+from ui.uikits.Widget                           import Widget
+from ui.uikits.GridLayout                       import GridLayout
+from ui.uikits.Button                           import Button
+from ui.uikits.LineEdit                         import LineEdit
+from ui.uikits.Label                            import Label
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """
@@ -47,7 +47,7 @@ class Terminal(QTextBrowser):
 
 class TopTab3(Widget):
 
-    key = 'TopTab5'
+    key = 'TopTab3'
 
     def __init__(self, parent=None):
         super(TopTab3, self).__init__(parent)
@@ -104,7 +104,7 @@ class TopTab3(Widget):
 
     def showEvent(self, event):
         self.signals.showLayout.emit(self.key, 'show')
-        self.signals.showLayout.emit('TopTab3', 'hide')
+        self.signals.showLayout.emit('TopTab1', 'hide')
         self.signals.showLayout.emit('TopTab2', 'hide')
 
 def main():

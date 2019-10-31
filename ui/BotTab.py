@@ -15,15 +15,15 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtWidgets        import QApplication
+from PyQt5.QtWidgets                    import QApplication
 
 # PLM
-from ui.Debugger            import Debugger
-from ui.GeneralSetting      import GeneralSetting
-from ui.uikits.Widget                 import Widget
-from ui.uikits.TabWidget import TabWidget, TabContent
-from ui.uikits.BoxLayout import VBoxLayout
-from ui.uikits.Icon import AppIcon
+from ui.Debugger                        import Debugger
+from ui.GeneralSetting                  import GeneralSetting
+from ui.uikits.Widget                   import Widget
+from ui.uikits.TabWidget                import TabWidget, TabContent
+from ui.uikits.BoxLayout                import VBoxLayout
+from ui.uikits.Icon                     import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """
@@ -41,18 +41,16 @@ class BotTab(Widget):
     def buildUI(self):
         self.tabs           = TabWidget()
 
-        self.generalSetting = GeneralSetting()
-        self.debugger       = Debugger()
+        self.botTab1 = GeneralSetting()
+        self.botTab2       = Debugger()
 
-        self.tabs.addTab(TabContent(self.generalSetting), "General")
-        self.tabs.addTab(TabContent(self.debugger), "Debug")
+        self.tabs.addTab(TabContent(self.botTab1), "General")
+        self.tabs.addTab(TabContent(self.botTab2), "Debug")
         self.tabs.setTabIcon(0, AppIcon(32, 'General Setting'))
         self.tabs.setTabIcon(2, AppIcon(32, 'Debug'))
 
-
         self.tabs.setTabPosition(TabWidget.South)
         self.tabs.setMovable(True)
-
         self.layout.addWidget(self.tabs)
 
 def main():

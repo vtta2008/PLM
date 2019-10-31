@@ -9,45 +9,58 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+""" Import """
 
+# Python
 import os, sys, subprocess, shutil, winshell, pkg_resources, json
-from platform import system
-from damg import DAMG, DAMGDICT, DAMGLIST
+from platform                           import system
+from damg                               import DAMG, DAMGDICT, DAMGLIST
 
+# PyQt5
 from PyQt5 import __file__ as pyqt_path
 
-__groupname__           = "DAMGTEAM"
-__appName__             = "Pipeline Manager (PLM)"
 
-__pkgsReq__ = ['PyQt5', 'pip', 'urllib3', 'chardet', 'appdirs', 'deprecate', 'msgpack', 'winshell',
-               'pyqtwebengine', 'pandas', 'wheel', 'argparse', 'green', 'damg']
+__groupname__                           = "DAMGTEAM"
+__appName__                             = "Pipeline Manager (PLM)"
 
-KEYPACKAGE = ['Adobe Photoshop CC 2017', 'Adobe Photoshop CC 2018', 'Adobe Photoshop CC 2019', 'Adobe Illustrator CC 2017',
-              'Adobe Illustrator CC 2018', 'Adobe Illustrator CC 2019', 'Adobe Audition CC 2017', 'Adobe Audition CC 2018',
-              'Adobe Audition CC 2019', 'Adobe After Effects CC 2017', 'Adobe After Effects CC 2018',
-              'Adobe After Effects CC 2019', 'Adobe Premiere Pro CC 2017', 'Adobe Premiere Pro CC 2018',
-              'Adobe Premiere Pro CC 2019', 'Adobe Media Encoder CC 2017', 'Adobe Media Encoder CC 2018',
-              'Adobe Media Encoder CC 2019', 'Autodesk Maya 2017', 'Autodesk Maya 2018', 'Autodesk Maya 2019',
-              'Autodesk Maya 2020', 'Autodesk MudBox 2017', 'Autodesk MudBox 2018', 'Autodesk MudBox 2019',
-              'Autodesk MudBox 2020', 'Autodesk 3ds Max 2017', 'Autodesk 3ds Max 2018', 'Autodesk 3ds Max 2019',
-              'Autodesk 3ds Max 2020', 'Autodesk AutoCAD 2017', 'Autodesk AutoCAD 2018', 'Autodesk AutoCAD 2019',
-              'Autodesk AutoCAD 2020', 'Substance Painter', 'Substance Designer', 'Hiero11.1v1', 'Hiero11.2v1',
-              'Hiero4.0v1', 'Hiero4.1v1', 'Hiero2.6v3', 'HieroPlayer11.1v1', 'HieroPlayer11.2v1', 'HieroPlayer4.0v1',
-              'HieroPlayer4.1v1', 'HieroPlayer2.6v3', 'Mari 11.1v1', 'Mari 11.2v1', 'Mari 4.0v1', 'Mari 4.1v1',
-              'Mari 2.6v3', 'NukeX11.1v1', 'NukeX11.2v1', 'NukeX4.0v1', 'NukeX4.1v1', 'NukeX2.6v3', 'Katana 11.1v1',
-              'Katana 11.2v1', 'Katana 4.0v1', 'Katana 4.1v1', 'Katana 2.6v3', 'ZBrush 4R6', 'ZBrush 4R7', 'ZBrush 4R8',
-              'Houdini FX 16.5.439', 'Houdini FX 16.5.496', 'Word 2013', 'Word 2015', 'Word 2016', 'Word 2017',
-              'Word 2018', 'Word 2019', 'Word 2020', 'Excel 2013', 'Excel 2015', 'Excel 2016', 'Excel 2017',
-              'Excel 2018', 'Excel 2019', 'Excel 2020', 'PowerPoint 2013', 'PowerPoint 2015', 'PowerPoint 2016',
-              'PowerPoint 2017', 'PowerPoint 2018', 'PowerPoint 2019', 'PowerPoint 2020', 'Wordpad 2013',
-              'Wordpad 2015', 'Wordpad 2016', 'Wordpad 2017', 'Wordpad 2018', 'Wordpad 2019', 'Wordpad 2020',
-              'JetBrains PyCharm 2017.3.3', 'JetBrains PyCharm 2018.1', 'Storyboarder', 'Krita (x64)',
-              'Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', 'Spyder',
-              'QtDesigner', 'Git Bash', 'About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary',
-              'FindFiles', 'ForgotPassword', 'ImageViewer', 'NewProject', 'Preferences', 'Screenshot', 'UserSetting',
-              'PLMBrowser', 'NoteReminder', 'TextEditor', 'NodeGraph', 'Word', 'Excel', 'PowerPoint', 'ReConfig',
-              'CleanPyc', 'Debug']
+__pkgsReq__                             = ['PyQt5', 'pip', 'urllib3', 'chardet', 'appdirs', 'deprecate', 'msgpack',
+                                           'winshell', 'pyqtwebengine', 'pandas', 'wheel', 'argparse', 'green', 'damg']
 
+KEYPACKAGE                              = ['Adobe Photoshop CC 2017', 'Adobe Photoshop CC 2018',
+                                           'Adobe Photoshop CC 2019', 'Adobe Illustrator CC 2017',
+                                           'Adobe Illustrator CC 2018', 'Adobe Illustrator CC 2019',
+                                           'Adobe Audition CC 2017', 'Adobe Audition CC 2018', 'Adobe Audition CC 2019',
+                                           'Adobe After Effects CC 2017', 'Adobe After Effects CC 2018',
+                                           'Adobe After Effects CC 2019', 'Adobe Premiere Pro CC 2017',
+                                           'Adobe Premiere Pro CC 2018', 'Adobe Premiere Pro CC 2019',
+                                           'Adobe Media Encoder CC 2017', 'Adobe Media Encoder CC 2018',
+                                           'Adobe Media Encoder CC 2019', 'Autodesk Maya 2017', 'Autodesk Maya 2018',
+                                           'Autodesk Maya 2019', 'Autodesk Maya 2020', 'Autodesk MudBox 2017',
+                                           'Autodesk MudBox 2018', 'Autodesk MudBox 2019', 'Autodesk MudBox 2020',
+                                           'Autodesk 3ds Max 2017', 'Autodesk 3ds Max 2018', 'Autodesk 3ds Max 2019',
+                                           'Autodesk 3ds Max 2020', 'Autodesk AutoCAD 2017', 'Autodesk AutoCAD 2018',
+                                           'Autodesk AutoCAD 2019', 'Autodesk AutoCAD 2020', 'Substance Painter',
+                                           'Substance Designer', 'Hiero11.1v1', 'Hiero11.2v1', 'Hiero4.0v1',
+                                           'Hiero4.1v1', 'Hiero2.6v3', 'HieroPlayer11.1v1', 'HieroPlayer11.2v1',
+                                           'HieroPlayer4.0v1', 'HieroPlayer4.1v1', 'HieroPlayer2.6v3', 'Mari 11.1v1',
+                                           'Mari 11.2v1', 'Mari 4.0v1', 'Mari 4.1v1', 'Mari 2.6v3', 'NukeX11.1v1',
+                                           'NukeX11.2v1', 'NukeX4.0v1', 'NukeX4.1v1', 'NukeX2.6v3', 'Katana 11.1v1',
+                                           'Katana 11.2v1', 'Katana 4.0v1', 'Katana 4.1v1', 'Katana 2.6v3',
+                                           'ZBrush 4R6', 'ZBrush 4R7', 'ZBrush 4R8', 'Houdini FX 16.5.439',
+                                           'Houdini FX 16.5.496', 'Word 2013', 'Word 2015', 'Word 2016', 'Word 2017',
+                                           'Word 2018', 'Word 2019', 'Word 2020', 'Excel 2013', 'Excel 2015',
+                                           'Excel 2016', 'Excel 2017', 'Excel 2018', 'Excel 2019', 'Excel 2020',
+                                           'PowerPoint 2013', 'PowerPoint 2015', 'PowerPoint 2016', 'PowerPoint 2017',
+                                           'PowerPoint 2018', 'PowerPoint 2019', 'PowerPoint 2020', 'Wordpad 2013',
+                                           'Wordpad 2015', 'Wordpad 2016', 'Wordpad 2017', 'Wordpad 2018',
+                                           'Wordpad 2019', 'Wordpad 2020', 'JetBrains PyCharm 2017.3.3',
+                                           'JetBrains PyCharm 2018.1', 'Storyboarder', 'Krita (x64)', 'Sublime Text 2',
+                                           'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', 'Spyder',
+                                           'QtDesigner', 'Git Bash', 'About', 'Calculator', 'Calendar', 'Credit',
+                                           'EnglishDictionary', 'FindFiles', 'ForgotPassword', 'ImageViewer',
+                                           'NewProject', 'Preferences', 'Screenshot', 'UserSetting', 'PLMBrowser',
+                                           'NoteReminder', 'TextEditor', 'NodeGraph', 'Word', 'Excel', 'PowerPoint',
+                                           'ReConfig', 'CleanPyc', 'Debug']
 
 PROGRAM86                               = os.getenv('PROGRAMFILES(X86)')
 PROGRAM64                               = os.getenv('PROGRAMW6432')
@@ -63,13 +76,15 @@ KEYDETECT                               = [ "Non-commercial", "Uninstall", "Verb
 
 __plmWiki__                             = "https://github.com/vtta2008/PipelineTool/wiki"
 
-CONFIG_APPUI        = [ 'About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary', 'FindFiles', 'ForgotPassword',
-                        'ImageViewer', 'NewProject', 'Preferences', 'Screenshot', 'UserSetting', 'PLMBrowser', 'NoteReminder',
-                        'TextEditor', 'NodeGraph']
+CONFIG_APPUI                            = [ 'About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary',
+                                            'FindFiles', 'ForgotPassword', 'ImageViewer', 'NewProject', 'Preferences',
+                                            'Screenshot', 'UserSetting', 'PLMBrowser', 'NoteReminder', 'TextEditor',
+                                            'NodeGraph']
 
-CONFIG_SYSTRAY      = ['Screenshot', 'Snipping Tool']
+CONFIG_SYSTRAY                          = ['Screenshot', 'Snipping Tool']
 
-FIX_KEY             = { 'Screenshot': 'screenShot', 'Snipping Tool': 'SnippingTool'}
+FIX_KEY                                 = { 'Screenshot': 'screenShot', 'Snipping Tool': 'SnippingTool'}
+
 
 class ConfigManager(DAMG):
 

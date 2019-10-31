@@ -17,11 +17,10 @@ from functools import partial
 
 from PyQt5.QtCore import pyqtSlot
 # PyQt5
-from PyQt5.QtGui                import QPixmap, QImage
+from PyQt5.QtGui                import QPixmap
 from PyQt5.QtWidgets            import (QApplication, QLabel, QGraphicsScene)
 
 # Plt
-from appData                    import center, SiPoMin
 from ui.uikits.Widget           import Widget
 from ui.uikits.GridLayout       import GridLayout
 from ui.uikits.Button           import Button
@@ -34,7 +33,7 @@ from utils                      import get_avatar_image
 
 class TopTab2(Widget):
 
-    key = 'TopTab3'
+    key = 'TopTab2'
 
     def __init__(self, parent=None):
         super(TopTab2, self).__init__(parent)
@@ -86,8 +85,8 @@ class TopTab2(Widget):
 
     def showEvent(self, event):
         self.signals.showLayout.emit(self.key, 'show')
-        self.signals.showLayout.emit('TopTab2', 'hide')
-        self.signals.showLayout.emit('TopTab5', 'hide')
+        self.signals.showLayout.emit('TopTab1', 'hide')
+        self.signals.showLayout.emit('TopTab3', 'hide')
 
 def main():
     app = QApplication(sys.argv)

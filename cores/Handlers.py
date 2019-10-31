@@ -7,9 +7,10 @@ Author: Do Trinh/Jimmy - 3D artist.
 Description:
 
 """
-from cores.Commands import SceneNodesCommand
-from cores.base import DAMG
-from cores.Loggers import Loggers
+
+from damg                       import DAMG
+from cores.Commands             import SceneNodesCommand
+from cores.Loggers              import Loggers
 
 
 class EventHandler(DAMG):

@@ -46,6 +46,10 @@ class Action(QAction):
             elif key == 'txt':
                 self.setText(value)
             elif key == 'trg':
+                try:
+                    self.triggered.disconnect()
+                except:
+                    pass
                 self.triggered.connect(value)
             elif key == 'shortcut':
                 self.setShortcut(value)

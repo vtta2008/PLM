@@ -9,18 +9,20 @@ Description:
 
 """
 """ Import """
-import math
-import sys
 
+# Python
+import sys, math
+from damg                       import DAMGLIST
+
+# PyQt5
 from PyQt5.QtCore               import Qt
-from PyQt5.QtWidgets            import QApplication, QGridLayout, QLayout, QLineEdit
+from PyQt5.QtWidgets            import QApplication, QGridLayout
 
-from appData                    import SiPoMin
-from cores.base                 import DAMGLIST
-from ui.uikits.Widget                     import Widget
-from ui.uikits.LineEdit import LineEdit
-from ui.uikits.Button import ToolButton
-from ui.uikits.Icon import AppIcon
+# PLM
+from ui.uikits.Widget           import Widget
+from ui.uikits.LineEdit         import LineEdit
+from ui.uikits.Button           import ToolButton
+from ui.uikits.Icon             import AppIcon
 
 class Calculator(Widget):
 
@@ -100,10 +102,6 @@ class Calculator(Widget):
         font = self.display.font()
         font.setPointSize(font.pointSize() + 8)
         self.display.setFont(font)
-
-        # self.layout.setSpacing(2)
-        # self.layout.setSizeConstraint(QLayout.SetFixedSize)
-        # self.setSizePolicy(SiPoMin, SiPoMin)
 
         self.setLayout(self.layout)
 

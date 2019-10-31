@@ -10,13 +10,13 @@ Description:
 
 # Python
 import sys
+from damg                       import DAMGLIST
 
 # PyQt5
-from PyQt5.QtCore               import Qt
 from PyQt5.QtWidgets            import QApplication
 
 # PLM
-from ui.uikits.Widget                     import Widget
+from ui.uikits.Widget           import Widget
 from ui.uikits.BoxLayout        import VBoxLayout
 from ui.uikits.TabWidget        import TabWidget
 from ui                         import (TopTab1, TopTab2, TopTab3)
@@ -26,26 +26,25 @@ from ui                         import (TopTab1, TopTab2, TopTab3)
 
 class TopTab(Widget):
 
-    key                 = 'TopTab'
+    key                         = 'TopTab'
 
     def __init__(self, parent=None):
         super(TopTab, self).__init__(parent)
 
-        self.layout = VBoxLayout()
+        self.layout             = VBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
 
-        self.tabs = TabWidget()
-        self.tabs.setContentsMargins(2,2,2,2)
+        self.tabs               = TabWidget()
 
-        self.tab2 = TopTab1.TopTab1()
-        self.tab3 = TopTab2.TopTab2()
-        self.tab5 = TopTab3.TopTab3()
+        self.tab1               = TopTab1.TopTab1()
+        self.tab2               = TopTab2.TopTab2()
+        self.tab3               = TopTab3.TopTab3()
 
-        self.tabLst = [self.tab2, self.tab3, self.tab5]
-        self.tabNames = ['Project', 'User', 'Cmd']
+        self.tabLst             = DAMGLIST(listData=[self.tab1, self.tab2, self.tab3])
+        self.tabNames           = DAMGLIST(listData=['Project', 'User', 'Cmd'])
 
         for layout in self.tabLst:
             layout.signals.showLayout.connect(self.signals.showLayout)
@@ -56,21 +55,29 @@ class TopTab(Widget):
 
             self.tabs.addTab(layout, self.tabNames[self.tabLst.index(layout)])
 
-        self.signals.updateAvatar.connect(self.tab3.update_avatar)
-
-        self.tabs.setMovable(True)
-        self.tabs.setElideMode(Qt.ElideRight)
-        self.tabs.setUsesScrollButtons(True)
+        self.signals.updateAvatar.connect(self.tab2.update_avatar)
 
         self.layout.addWidget(self.tabs)
 
+    def getCurrentTab(self):
+        return self.tabLst[self.tabs.currentIndex()]
+
+    def getCurrentKey(self):
+        return self.getCurrentTab().key
+
     def showEvent(self, event):
-        self.signals.showLayout.emit(self.key, 'show')
-        key = self.getValue('currentTab')
-        if key is None:
-            key = self.tabs.currentWidget().key
+
+        try:
+            key                 = self.getValue('currentTab')
+        except None:
+            key                 = self.tab1.key
         else:
-            self.signals.showLayout(key, 'show')
+            self.signals.showLayout.emit(key, 'show')
+        finally:
+            self.signals.showLayout.emit(self.key, 'show')
+
+    def hideEvent(self, event):
+        self.setValue('currentTab', self.getCurrentKey())
 
     def closeEvent(self, event):
         self.setValue('currentTab', self.tabs.currentWidget().key)

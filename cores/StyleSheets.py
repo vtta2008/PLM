@@ -18,7 +18,7 @@ import platform
 from PyQt5.QtCore                    import QFile, QTextStream
 
 # Plm
-from cores.base                     import DAMG
+from damg                           import DAMG
 from cores.Loggers                  import Loggers
 from appData                        import QSS_DIR
 from bin.resources.qss import darkstyle_rc, tooltips_rc

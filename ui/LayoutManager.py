@@ -10,10 +10,12 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
+# Python
+from damg                               import DAMGDICT
+
+# PyQt5
 from PyQt5.QtCore                       import pyqtSlot
 
-# PLM
-from cores.base                         import DAMGDICT
 
 class LayoutManager(DAMGDICT):
 
@@ -48,6 +50,7 @@ class LayoutManager(DAMGDICT):
 
         self.mainUI     = PipelineManager.PipelineManager(self.parent.settings)
         self.sysTray    = SysTray.SysTray()
+        self.sysTray.show()
 
         layouts = [self.mainUI, self.sysTray]
 

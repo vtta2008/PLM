@@ -12,9 +12,9 @@ from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore               import QTimer
 
-from cores.base                 import DAMGLIST, ThreadPoolBase, DAMGTHREAD, DAMGWORKER
+from damg                       import DAMGLIST, DAMGTHREADPOOL, DAMGTHREAD, DAMGWORKER
 
-class ThreadManager(ThreadPoolBase):
+class ThreadManager(DAMGTHREADPOOL):
 
     def __init__(self):
         super(ThreadManager, self).__init__()

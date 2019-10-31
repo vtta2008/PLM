@@ -14,35 +14,46 @@ Description:
 import sqlite3 as lite
 
 # PLM
-from cores.base                         import DAMG
+from damg                         import DAMG
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """
 
-TN  = ['curUser'   , 'userTokenLogin', 'timelog' , 'tmpConfig', ]                               # Table name
+TABLENAME                   = ['curUser'   , 'userTokenLogin'       , 'timelog'             , 'tmpConfig', ]
 
-IDN = ['id'        , 'userid'        , 'tokenid' , 'pcid'     , ]                               # ID name
-CTN = ['username'  , 'token'         , 'cookie'  , 'remember' , 'details', ]                    # Common name
-TCN = ['date'      , 'time'          , 'datetime', ]                                            # Time column name
-CCN = ['lastConfig', 'curSettingPth' , ]                                                        # Config column name
+IDNAME                      = ['id'        , 'userid'               , 'tokenid'             , 'pcid'     , ]
+COMMONNAME                  = ['username'  , 'token'                , 'cookie'              , 'remember' , 'details', ]
+TIMECOLUMNNAME              = ['date'      , 'time'                 , 'datetime'            , ]
+CONFIGCOLUMNNAME            = ['lastConfig', 'curSettingPth'        , ]
 
-IDA = ['INTEGER PRIMARY KEY AUTOINCREMENT, ', 'INT PRIMARY KEY, ', ]                            # ID attribute
-CTA = ['TEXT NOT NULL, '                    , 'TEXT, '           , 'BOOL, ', ]                  # Common attribute
-STA = ['VACHAR(20,) '                       , 'VARCHAR, '        , ]                            # String attribute
+IDATTRIBUTE                 = ['INTEGER PRIMARY KEY AUTOINCREMENT, ', 'INT PRIMARY KEY, '   , ]
+COMMONATTRIBUTE             = ['TEXT NOT NULL, '                    , 'TEXT, '              , 'BOOL, ', ]
+STRINGATTRIBUTE             = ['VACHAR(20,) '                       , 'VARCHAR, '           , ]
 
-CC = "CREATE TABLE IF NOT EXISTS "                                                              # Create table
+CREATETABLECOMMAND          = "CREATE TABLE IF NOT EXISTS "
 
 # Attribute preset
-ATD = dict( id            = IDA[0], userid = IDA[1], tokenid  = IDA[0], pcid     = IDA[0], username   = CTA[0],
-            token         = CTA[1], cookie = CTA[1], remember = CTA[2], details  = CTA[1], lastConfig = STA[1],
-            curSettingPth = CTA[1], date   = CTA[1], time     = CTA[1], datetime = CTA[1], )
+ATD = dict(id               = IDATTRIBUTE[0],
+           userid           = IDATTRIBUTE[1],
+           tokenid          = IDATTRIBUTE[0],
+           pcid             = IDATTRIBUTE[0],
+           username         = COMMONATTRIBUTE[0],
+           token            = COMMONATTRIBUTE[1],
+           cookie           = COMMONATTRIBUTE[1],
+           remember         = COMMONATTRIBUTE[2],
+           details          = COMMONATTRIBUTE[1],
+           lastConfig       = STRINGATTRIBUTE[1],
+           curSettingPth    = COMMONATTRIBUTE[1],
+           date             = COMMONATTRIBUTE[1],
+           time             = COMMONATTRIBUTE[1],
+           datetime         = COMMONATTRIBUTE[1], )
 
 # Local table details
 LTD = dict(
-            curUser         = [CTN[0], CTN[1], CTN[2], CTN[3], ],
-            userTokenLogin  = [IDN[2], CTN[0], CTN[1], TCN[2], ],
-            timelog         = [CTN[0], TCN[1], TCN[0], CTN[4], ],
-            tmpConfig       = [CCN[0], CCN[1], ],
+            curUser         = [COMMONNAME[0], COMMONNAME[1], COMMONNAME[2], COMMONNAME[3], ],
+            userTokenLogin  = [IDNAME[2], COMMONNAME[0], COMMONNAME[1], TIMECOLUMNNAME[2], ],
+            timelog         = [COMMONNAME[0], TIMECOLUMNNAME[1], TIMECOLUMNNAME[0], COMMONNAME[4], ],
+            tmpConfig       = [CONFIGCOLUMNNAME[0], CONFIGCOLUMNNAME[1], ],
 )
 
 # -------------------------------------------------------------------------------------------------------------
@@ -59,20 +70,20 @@ class SQLS(DAMG):
         self.conn = lite.connect(self.fn)
         self.cur = self.conn.cursor()
 
-        for tn in TN:
+        for tn in TABLENAME:
             self.create_table(tn)
 
-    def generate_command(self, tn = TN[0]):
-        cl = LTD[tn]
+    def generate_command(self, tableName = TABLENAME[0]):
+        cl = LTD[tableName]
         cmd = ""
         for i in range(len(cl)):
             cmd += cl[i] + " " + ATD[cl[i]]
         cmd = cmd[:-2]
         return cmd
 
-    def create_table(self, tn = TN[0]):
-        cmd = self.generate_command(tn)
-        self.cur.execute("CREATE TABLE IF NOT EXISTS `{0}` ({1})".format(tn, cmd))
+    def create_table(self, tableName = TABLENAME[0]):
+        command = self.generate_command(tableName)
+        self.cur.execute("CREATE TABLE IF NOT EXISTS `{0}` ({1})".format(tableName, command))
         self.conn.commit()
 
 if __name__ == '__main__':
