@@ -37,10 +37,17 @@ __email2__              = "up@damgteam.com"
 __project__             = "PLM"
 __appname__             = "Pipeline Manager (PLM)"
 __appShortcut__         = "Plm.ink"
+
 __version__             = "13.0.1"
+
+__majorVersion__        = "13"
+__minorVersion__        = "0"
+__microVersion__        = "1"
+
 __cfgVersion__          = "0.8.6"
 __verType__             = "Dev"
 __reverType__           = "2"
+
 __about__               = "About Pipeline Manager"
 __homepage__            = "https://pipeline.damgteam.com"
 __plmSlogan__           = "Creative your own pipeline"

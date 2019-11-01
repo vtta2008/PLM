@@ -33,7 +33,6 @@ class Button(QPushButton):
     key                                     = 'Button'
     _name                                   = 'DAMG Button'
     _copyright                              = __copyright__
-    _data                                   = dict()
 
     def __init__(self, preset={}, parent=None):
         super(Button, self).__init__(parent)
@@ -135,13 +134,24 @@ class Button(QPushButton):
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
 
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
+
 class ToolButton(QToolButton):
 
     Type                                    = 'DAMGUI'
     key                                     = 'ToolButton'
     _name                                   = 'DAMG Tool Button'
     _copyright                              = __copyright__
-    _data                                   = dict()
 
     def __init__(self, text, parent=None):
         QToolButton.__init__(self)
@@ -203,6 +213,17 @@ class ToolButton(QToolButton):
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
 
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 18/07/2018 - 8:37 AM

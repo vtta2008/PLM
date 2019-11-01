@@ -25,7 +25,6 @@ class LineEdit(QLineEdit):
     key                                     = 'LineEdit'
     _name                                   = 'DAMG Line Edit'
     _copyright                              = __copyright__
-    _data                                   = dict()
 
     def __init__(self, preset={}, parent=None):
         super(LineEdit, self).__init__(parent)
@@ -108,6 +107,18 @@ class LineEdit(QLineEdit):
         else:
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 6:40 PM

@@ -23,7 +23,6 @@ class CheckBox(QCheckBox):
     key                                     = 'CheckBox'
     _name                                   = 'DAMG Check Box'
     _copyright                              = __copyright__
-    _data                                   = dict()
 
     def __init__(self, txt=None, preset={}, parent=None):
         super(CheckBox, self).__init__(parent)
@@ -96,6 +95,18 @@ class CheckBox(QCheckBox):
         else:
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 6:53 PM

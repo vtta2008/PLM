@@ -28,8 +28,6 @@ from utils                  import str2bool, bool2str
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
 
-print(CONFIG_POST, CONFIG_TDS, CONFIG_ART, CONFIG_TEX, CONFIG_VFX)
-
 class MainToolBar(MainWindow):
 
     key = 'MainToolBar'
@@ -55,7 +53,6 @@ class MainToolBar(MainWindow):
         k = 0
         for key in apps:
             if key in self.appInfo:
-                print(key, k)
                 toolBar.addAction(Action({'icon':key,
                                           'stt':self.appInfo[key][0],
                                           'txt':key,

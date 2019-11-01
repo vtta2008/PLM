@@ -24,7 +24,6 @@ class Image(QImage):
     key                         = 'Image'
     _name                       = 'DAMG Image'
     _copyright                  = __copyright__
-    _data                       = dict()
 
     def __init__(self, image=None, parent=None):
 
@@ -50,16 +49,8 @@ class Image(QImage):
         return self._copyright
 
     @property
-    def data(self):
-        return self._data
-
-    @property
     def name(self):
         return self._name
-
-    @data.setter
-    def data(self, newData):
-        self._data              = newData
 
     @name.setter
     def name(self, newName):

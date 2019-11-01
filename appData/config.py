@@ -37,6 +37,7 @@ from appData.settingOptions         import *
 __envKey__              = m.__envKey__
 PLMAPPID                = m.PLMAPPID
 VERSION                 = m.VERSION
+COPYRIGHT               = m.COPYRIGHT
 
 # -------------------------------------------------------------------------------------------------------------
 """ DAMG team """

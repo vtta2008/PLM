@@ -23,7 +23,6 @@ class HBoxLayout(QHBoxLayout):
     key                                     = 'HBoxLayout'
     _name                                   = 'DAMG H Box Layout'
     _copyright                              = __copyright__
-    _data                                   = dict()
 
     def __init__(self, preset={}, parent=None):
         QHBoxLayout.__init__(self)
@@ -60,6 +59,19 @@ class HBoxLayout(QHBoxLayout):
         size.setHeight(size.height())
         size.setWidth(max(size.width(), size.height()))
         return size
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
+
 
 class VBoxLayout(QVBoxLayout):
 
@@ -103,6 +115,17 @@ class VBoxLayout(QVBoxLayout):
         size.setWidth(max(size.width(), size.height()))
         return size
 
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 6:57 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

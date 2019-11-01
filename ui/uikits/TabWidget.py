@@ -29,7 +29,6 @@ class TabWidget(QTabWidget):
     key                                     = 'TabWidget'
     _name                                   = 'DAMG Tab Widget'
     _copyright                              = __copyright__
-    _data                                   = dict()
 
     def __init__(self, parent=None):
         QTabWidget.__init__(self)
@@ -97,16 +96,8 @@ class TabWidget(QTabWidget):
         return self._copyright
 
     @property
-    def data(self):
-        return self._data
-
-    @property
     def name(self):
         return self._name
-
-    @data.setter
-    def data(self, newData):
-        self._data                      = newData
 
     @name.setter
     def name(self, newName):

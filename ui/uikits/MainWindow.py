@@ -100,6 +100,18 @@ class MainWindow(QMainWindow):
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
 
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
+
 def main():
     app = QApplication(sys.argv)
     layout = MainWindow()

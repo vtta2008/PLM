@@ -12,9 +12,10 @@ from __future__ import absolute_import
 
 """ Setup envronment configKey to be able to work """
 
-import os
-import setuptools
-from cores.Metadata import __envKey__
+import os, re
+from setuptools import find_packages
+
+from appData import __envKey__
 ROOT = os.path.join(os.path.dirname(os.path.realpath(__file__)))
 
 try:
@@ -25,8 +26,8 @@ else:
     if os.getenv(__envKey__)   != ROOT:
         os.environ[__envKey__]  = ROOT
 
-from cores.Configurations import Configurations
-cfg                             = Configurations(__envKey__, ROOT)
+from cores.ConfigManager import ConfigManager
+configManager = ConfigManager(__envKey__, ROOT)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
@@ -37,9 +38,11 @@ import sys
 from cx_Freeze import setup, Executable
 
 # PLM
-from appData import (LICENCE_MIT, DESKTOP_DIR, __envKey__, __project__, __version__, __plmSlogan__, __website__,
+from appData import (LICENCE_MIT, APP_DATA_DIR, __envKey__, __project__, __plmSlogan__, __website__,
                      __download__, __author1__, __author2__, __email__, __pkgsReq__, __classifiers__, __appname__,
                      __packages_dir__, COPYRIGHT)
+
+from cores.Version import version
 
 os.environ['TCL_LIBRARY']   = "C:/ProgramData/Anaconda3/tcl/tcl8.6"
 os.environ['TK_LIBRARY']    = "C:/ProgramData/Anaconda3/tcl/tk8.6"
@@ -47,7 +50,7 @@ os.environ['TK_LIBRARY']    = "C:/ProgramData/Anaconda3/tcl/tk8.6"
 application_title = __project__
 main_python_file = "PLM.py"
 
-if not cfg.cfgs:
+if not configManager.cfgs:
     print("Configurations has not completed yet!")
 else:
     print("Configurations has completed")
@@ -68,6 +71,12 @@ for dir in os.listdir(os.getenv(__envKey__)):
             sys.path.append(pltPth)
             print(pltPth)
 
+with open(os.path.join(APP_DATA_DIR, 'metadatas.py'), "rb") as f:
+    metadata = f.read().decode('utf-8')
+
+def parse(pattern):
+    return re.search(metadata).group(1).replace('"', '').strip()
+
 with open('README.rst', 'r') as f:
     readme = f.read()
 
@@ -77,7 +86,7 @@ build_exe_options = {'packages':packages}      #'include_files': includefiles,}
 
 setup(  name = __appname__,
 
-        version          = __version__     , packages          = setuptools.find_packages(),
+        version          = version     , packages          = find_packages(),
         url              = __website__     , download_url      = __download__    , license          = LICENCE_MIT      ,
         author           = __author1__ + " & " + __author2__                     , author_email     = __email__        ,
         maintainer       = __author1__     , maintainer_email  = __author1__     , description      = application_title,

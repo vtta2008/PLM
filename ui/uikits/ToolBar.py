@@ -13,6 +13,7 @@ Description:
 # Python
 import json
 from functools                              import partial
+from damg                                   import DAMGLIST
 
 # PyQt5
 from PyQt5.QtWidgets                        import QToolBar, QAction
@@ -20,7 +21,6 @@ from PyQt5.QtWidgets                        import QToolBar, QAction
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__, mainConfig, ACTIONS_DATA
 from ui.uikits.Action                       import Action
-from cores.base                             import DAMGLIST
 from cores.SignalManager                    import SignalManager
 from cores.Settings                         import Settings
 
@@ -33,7 +33,7 @@ class ToolBar(QToolBar):
     key                                     = 'ToolBar'
     _name                                   = 'DAMG Tool Bar'
     _copyright                              = __copyright__
-    _data                                   = ACTIONS_DATA
+    actionData                              = ACTIONS_DATA
     regisActions                            = DAMGLIST()
 
     with open(mainConfig, 'r') as f:
@@ -86,8 +86,8 @@ class ToolBar(QToolBar):
             print("KEYACTIONERROR: Could not find key in main config: {0}".format(key))
 
     def add_actions_by_key(self, key):
-        if key in self._data.keys():
-            apps = self._data[key]
+        if key in self.actionData.keys():
+            apps = self.actionData[key]
             for app in apps:
                 self.create_action(app)
         else:
@@ -151,24 +151,8 @@ class ToolBar(QToolBar):
         return self._copyright
 
     @property
-    def data(self):
-        return self._data
-
-    @property
     def name(self):
         return self._name
-
-    @property
-    def count(self):
-        return self._count
-
-    @count.setter
-    def count(self, newVal):
-        self._count                     = newVal
-
-    @data.setter
-    def data(self, newData):
-        self._data                      = newData
 
     @name.setter
     def name(self, newName):

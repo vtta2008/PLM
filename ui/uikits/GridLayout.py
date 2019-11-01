@@ -26,11 +26,10 @@ from cores.Settings                     import Settings
 
 class GridLayout(QGridLayout):
 
-    Type = 'DAMGUI'
-    key = 'GridLayout'
-    _name = 'DAMG Grid Layout'
-    _copyright = __copyright__
-    _data = dict()
+    Type                                = 'DAMGUI'
+    key                                 = 'GridLayout'
+    _name                               = 'DAMG Grid Layout'
+    _copyright                          = __copyright__
 
     def __init__(self, parent=None):
         QGridLayout.__init__(self)
@@ -51,6 +50,18 @@ class GridLayout(QGridLayout):
         size.setHeight(size.height())
         size.setWidth(max(size.width(), size.height()))
         return size
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
 
 class AutoPreset1(GridLayout):
 

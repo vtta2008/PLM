@@ -45,16 +45,8 @@ class SystemTrayIcon(QSystemTrayIcon):
         return self._copyright
 
     @property
-    def data(self):
-        return self._data
-
-    @property
     def name(self):
         return self._name
-
-    @data.setter
-    def data(self, newData):
-        self._data                      = newData
 
     @name.setter
     def name(self, newName):

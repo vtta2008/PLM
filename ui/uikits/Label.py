@@ -29,7 +29,6 @@ class Label(QLabel):
     key                                     = 'Label'
     _name                                   = 'DAMG Label'
     _copyright                              = __copyright__
-    _data                                   = dict()
 
     def __init__(self, preset={}, parent=None):
         QLabel.__init__(self)
@@ -126,6 +125,18 @@ class Label(QLabel):
         else:
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
 
 usernameLabel = Label({'txt': 'Username'})
 passwordLabel = Label({'txt': 'Password'})

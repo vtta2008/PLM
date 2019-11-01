@@ -35,7 +35,6 @@ class GroupBox(QGroupBox):
     key                                     = 'GroupBox'
     _name                                   = 'DAMG Group Box'
     _copyright                              = __copyright__
-    _data                                   = dict()
 
     def __init__(self, title="Section Title", layouts=None, mode="IconGrid", parent=None):
         QGroupBox.__init__(self)
@@ -143,6 +142,18 @@ class GroupBox(QGroupBox):
         else:
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
 
 def GroupGrid(txt=None):
 

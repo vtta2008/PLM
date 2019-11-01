@@ -18,6 +18,7 @@ __envKey__              = c.__envKey__
 
 PLMAPPID                = c.PLMAPPID
 VERSION                 = c.VERSION
+COPYRIGHT               = c.COPYRIGHT
 margin = 5
 
 # -------------------------------------------------------------------------------------------------------------

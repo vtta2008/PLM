@@ -84,11 +84,11 @@ class PLM(QApplication):
         self.settings               = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self._login                 = False
 
-        self.appInfo                = self.configManager.appInfo  # Configuration data
+        self.appInfo                = self.configManager.appInfo                                    # Configuration data
 
         # Multithreading.
         self.thread_manager         = ThreadManager()
-        self.database               = QuerryDB()                                    # Database tool
+        self.database               = QuerryDB()                                                    # Database tool
         self.browser                = Browser()
 
         QCoreApplication.setOrganizationName(__organization__)
@@ -96,9 +96,9 @@ class PLM(QApplication):
         QCoreApplication.setOrganizationDomain(__website__)
         QCoreApplication.setApplicationVersion(__version__)
 
-        self.set_styleSheet('darkstyle')                                            # Layout style
-        self.setWindowIcon(LogoIcon("Logo"))                                         # Set up task bar icon
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)     # Change taskbar icon
+        self.set_styleSheet('dark')                                                                  # Layout style
+        self.setWindowIcon(LogoIcon("Logo"))                                                         # Set up task bar icon
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)                      # Change taskbar icon
 
         self.layoutManager          = LayoutManager(self)
         self.layoutManager.regisLayout(self.browser)
@@ -132,16 +132,16 @@ class PLM(QApplication):
         sys.exit(self.exec_())
 
     @property
-    def loginState(self):
+    def login(self):
         return self._login
 
-    @loginState.setter
-    def loginState(self, newVal):
+    @login.setter
+    def login(self, newVal):
         self._login = newVal
 
-    @pyqtSlot(bool)
-    def loginChanged(self, newVal):
-        self._login = newVal
+    def synconiseData(self, login):
+        self._login = login
+
 
     @pyqtSlot(str)
     def openBrowser(self, url):
@@ -156,7 +156,7 @@ class PLM(QApplication):
 
     @pyqtSlot(str, name="executing")
     def executing(self, cmd):
-        print("Recieve signal: '{0}'".format(cmd))
+        # print("Recieve signal: '{0}'".format(cmd))
         if cmd in self.layoutManager.keys():
             self.signals.showLayout.emit(cmd, 'show')
         elif os.path.isdir(cmd):
@@ -180,7 +180,7 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str, name="showLayout")
     def showLayout(self, layoutID, mode):
-        print("Recieve signal: '{0}: {1}'".format(layoutID, mode))
+        # print("Recieve signal: '{0}: {1}'".format(layoutID, mode))
 
         if layoutID == 'app':
             layout = self
@@ -203,7 +203,6 @@ class PLM(QApplication):
                     pass
                 else:
                     layout.setValue('showLayout', 'hide')
-
         elif mode == "show":
             try:
                 state = layout.isHidden()
@@ -217,7 +216,6 @@ class PLM(QApplication):
                     pass
                 else:
                     layout.setValue('showLayout', 'show')
-
         elif mode == 'showNor':
             try:
                 layout.showNormal()
@@ -225,7 +223,6 @@ class PLM(QApplication):
                 pass
             else:
                 layout.setValue('state', 'showNormal')
-
         elif mode == 'showMin':
             try:
                 layout.showMinimized()
@@ -233,7 +230,6 @@ class PLM(QApplication):
                 pass
             else:
                 layout.setValue('state', 'showMinimized')
-
         elif mode == 'showMax':
             try:
                 layout.showMaximized()
@@ -241,12 +237,14 @@ class PLM(QApplication):
                 pass
             else:
                 layout.setValue('state', 'showMaximized')
-
         elif mode == 'quit' or mode == 'exit':
             layout.quit()
 
     def set_styleSheet(self, style):
-        stylesheet = dict(darkstyle=StyleSheets('dark').changeStylesheet, stylesheet=StyleSheets('bright').changeStylesheet, )
+
+        stylesheet = dict(dark      =StyleSheets('dark').changeStylesheet,
+                          bright    =StyleSheets('bright').changeStylesheet, )
+
         self.setStyleSheet(stylesheet[style])
         self.settings.initSetValue('styleSheet', 'dark')
 

@@ -65,7 +65,6 @@ class DockWidget(QDockWidget):
     key                                     = 'DockWidget'
     _name                                   = 'DAMG Dock Widget'
     _copyright                              = __copyright__
-    _data                                   = dict()
 
     def __init__(self, parent=None):
         QDockWidget.__init__(self)
@@ -127,6 +126,18 @@ class DockWidget(QDockWidget):
         else:
             self.signals.showLayout.emit(self.key, 'hide')
             event.ignore()
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
 
 
 def main():

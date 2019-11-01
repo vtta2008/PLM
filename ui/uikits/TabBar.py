@@ -23,7 +23,6 @@ class TabBar(QTabBar):
     key                                     = 'TabBar'
     _name                                   = 'DAMG Tab Bar'
     _copyright                              = __copyright__
-    _data                                   = dict()
 
     def __init__(self, parent=None):
         QTabBar.__init__(self)
@@ -90,16 +89,8 @@ class TabBar(QTabBar):
         return self._copyright
 
     @property
-    def data(self):
-        return self._data
-
-    @property
     def name(self):
         return self._name
-
-    @data.setter
-    def data(self, newData):
-        self._data                      = newData
 
     @name.setter
     def name(self, newName):

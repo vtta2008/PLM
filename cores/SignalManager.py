@@ -32,6 +32,8 @@ class SignalManager(DAMG):
     openBrowser                     = pyqtSignal(str, name="openBrowser")
     setSetting                      = pyqtSignal(str, str, str, name="setSetting")
 
+    loginChange                     = pyqtSignal(bool, name="loginChange")
+
     sysNotify                       = pyqtSignal(str, str, str, int, name="sysNotify")
 
     setLoginValue                   = pyqtSignal(bool, name="setLoginValue")

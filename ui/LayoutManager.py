@@ -11,20 +11,76 @@ Description:
 """ Import """
 
 # Python
-from damg                               import DAMGDICT
+import time, datetime
+from damg                               import DAMGDICT, DAMG, DAMGLIST
 
 # PyQt5
 from PyQt5.QtCore                       import pyqtSlot
 
 
+class InspectLayout(DAMG):
+
+    key                     = 'InspectLayout'
+    layoutTypes             = DAMGLIST()
+    layoutKeys              = DAMGLIST()
+
+    def __init__(self):
+        super(InspectLayout, self).__init__(self)
+
+    def doInspection(self, layout):
+        self.layoutTypes.append(layout.Type)
+        self.layoutKeys.append(layout.key)
+        return layout
+
+    def checkType(self, layout):
+        if not self.haveType(layout):
+            try:
+                layout.show()
+            except AttributeError:
+                layoutType  = 'Object'
+            else:
+                layoutType  = 'UI'
+            layout.__setattr__('Type', layoutType)
+
+        return self.checkKey(layout)
+
+    def checkKey(self, layout):
+        if not self.haveKey(layout):
+            key = layout.__class__.__name__
+            layout.__setattr__('key', key)
+
+        return layout
+
+
+    def haveType(self, layout):
+        try:
+            layout.Type
+        except AttributeError:
+            return False
+        else:
+            return True
+
+    def haveKey(self, layout):
+        try:
+            layout.key
+        except KeyError:
+            return False
+        else:
+            return True
+
 class LayoutManager(DAMGDICT):
 
     key = 'LayoutManager'
+    awaitingSlots          = DAMGLIST()
+    layout_names           = DAMGLIST()
+    layout_ids             = DAMGLIST()
+    layout_datetimes       = DAMGLIST()
 
     def __init__(self, parent=None):
         super(LayoutManager, self).__init__(self)
 
         self.parent = parent
+        self.inspect = InspectLayout()
 
     def buildLayouts(self):
         self.mains      = self.mainLayouts()
@@ -137,13 +193,62 @@ class LayoutManager(DAMGDICT):
 
     @pyqtSlot(object)
     def regisLayout(self, layout):
-        key = layout.key
-        if not key in self.keys():
-            print("Registing layout: {0} : {1}".format(layout.key, layout))
-            self[key] = layout
-        else:
-            print("Already registered: {0}".format(key))
 
+        ui = self.inspect.doInspection(layout)
+        key = ui.key
+        if self.isLayout(ui):
+            if self.isAwaitingSlot(ui):
+                self.awaitingSlots.remove(key)
+                self.doRegister(ui)
+            else:
+                if not self.isRegistered(ui):
+                    self.doRegister(ui)
+                else:
+                    # print("Already registered: {0}".format(key))
+                    return False
+
+    def isAwaitingSlot(self, layout):
+        key = layout.key
+        if key in self.awaitingSlots:
+            return True
+        else:
+            return False
+
+    def doRegister(self, layout):
+        key = layout.key
+
+        self.layout_names.append(layout.name)
+        self.layout_ids.append(id(layout))
+        self.layout_datetimes.append(str(datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S|%d.%m.%Y')))
+
+        # print("Registing layout: {0} : {1}".format(layout.key, layout))
+        self[key] = layout
+        return True
+
+    def deRegister(self, layout):
+        key = layout.key
+        if self.isRegistered(layout):
+            self.awaitingSlots.append(key)
+            try:
+                del self[key]
+            except KeyError:
+                self.pop(key, None)
+            return True
+        else:
+            return False
+
+    def isRegistered(self, layout):
+        key = layout.key
+        if key in self.keys():
+            return True
+        else:
+            return False
+
+    def isLayout(self, layout):
+        if 'UI' in layout.Type:
+            return True
+        else:
+            return False
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/07/2018 - 11:31 AM

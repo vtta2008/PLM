@@ -23,7 +23,6 @@ class MessageBox(QMessageBox):
     key                             = 'Widget'
     _name                           = 'DAMG Widget'
     _copyright                      = __copyright__
-    _data = dict()
 
     def __init__(self, parent=None, title="auto", level="auto", message="test message", btn='ok', **kwargs):
         super(MessageBox, self).__init__(parent)
@@ -105,16 +104,8 @@ class MessageBox(QMessageBox):
         return self._copyright
 
     @property
-    def data(self):
-        return self._data
-
-    @property
     def name(self):
         return self._name
-
-    @data.setter
-    def data(self, newData):
-        self._data                      = newData
 
     @name.setter
     def name(self, newName):
