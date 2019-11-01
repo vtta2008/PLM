@@ -22,7 +22,7 @@ class LayoutManager(DAMGDICT):
     key = 'LayoutManager'
 
     def __init__(self, parent=None):
-        super(LayoutManager, self).__init__(parent)
+        super(LayoutManager, self).__init__(self)
 
         self.parent = parent
 
