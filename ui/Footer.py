@@ -83,13 +83,13 @@ class Footer(Widget):
 
         i = 4
         for tag in ['python', 'licence', 'version']:
-            layout.addWidget(self.createButton(tag), 0, i, 1, 1)
-            i += 1
+            layout.addWidget(self.createButton(tag), 0, i, 1, 2)
+            i = i + 2
 
         self.usage_cpu = Label({'txt': 'CPU: 0%'})
         self.usage_ram = Label({'txt': 'RAM: 0%'})
-        layout.addWidget(self.usage_cpu, 1, 0, 1, 1)
-        layout.addWidget(self.usage_ram, 1, 1, 1, 1)
+        layout.addWidget(self.usage_cpu, 1, 6, 1, 2)
+        layout.addWidget(self.usage_ram, 1, 8, 1, 2)
 
         return layout
 

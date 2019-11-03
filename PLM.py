@@ -72,14 +72,13 @@ from ui.LayoutManager               import LayoutManager
 
 class PLM(QApplication):
 
-    key = 'PLM'
+    key                             = 'PLM'
+    configManager                   = configManager
 
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
 
         # Run all neccessary configuration to start PLM
-
-        self.configManager          = configManager
 
         self.logger                 = Loggers(self.__class__.__name__)
         self.settings               = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
@@ -92,14 +91,15 @@ class PLM(QApplication):
         self.database               = QuerryDB()                                                    # Database tool
         self.browser                = Browser()
 
+        self.set_styleSheet('dark')                                                                  # Layout style
+        self.setWindowIcon(LogoIcon("Logo"))                                                         # Set up task bar icon
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)                      # Change taskbar icon
+
         QCoreApplication.setOrganizationName(__organization__)
         QCoreApplication.setApplicationName(__appname__)
         QCoreApplication.setOrganizationDomain(__website__)
         QCoreApplication.setApplicationVersion(__version__)
 
-        self.set_styleSheet('dark')                                                                  # Layout style
-        self.setWindowIcon(LogoIcon("Logo"))                                                         # Set up task bar icon
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)                      # Change taskbar icon
         self.actionManager          = ActionManager()
         self.layoutManager          = LayoutManager(self.actionManager, self)
         self.layoutManager.regisLayout(self.browser)
@@ -110,6 +110,7 @@ class PLM(QApplication):
             layout.signals.executing.connect(self.executing)
             layout.signals.openBrowser.connect(self.openBrowser)
             layout.signals.setSetting.connect(self.setSetting)
+
 
         try:
             self.username, token, cookie, remember = self.database.query_table('curUser')
@@ -141,10 +142,6 @@ class PLM(QApplication):
     def login(self, newVal):
         self._login = newVal
 
-    def synconiseData(self, login):
-        self._login = login
-
-
     @pyqtSlot(str)
     def openBrowser(self, url):
         self.browser.setUrl(url)
@@ -158,7 +155,7 @@ class PLM(QApplication):
 
     @pyqtSlot(str, name="executing")
     def executing(self, cmd):
-        # print("Recieve signal_cpu: '{0}'".format(cmd))
+        print("Recieve signal_cpu: '{0}'".format(cmd))
         if cmd in self.layoutManager.keys():
             self.signals.showLayout.emit(cmd, 'show')
         elif os.path.isdir(cmd):
@@ -182,7 +179,7 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str, name="showLayout")
     def showLayout(self, layoutID, mode):
-        # print("Recieve signal_cpu: '{0}: {1}'".format(layoutID, mode))
+        print("Recieve signal_cpu: '{0}: {1}'".format(layoutID, mode))
 
         if layoutID == 'app':
             layout = self

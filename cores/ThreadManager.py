@@ -10,11 +10,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtCore               import QTimer
+from damg                       import DAMGLIST, DAMGTHREADPOOL, DAMGTIMER, DAMGWORKER, DAMGTHREAD
 
-from damg                       import DAMGLIST, DAMGTHREADPOOL
+class Counting(DAMGTIMER):
 
-class Counting(QTimer):
+    key = 'Counting'
 
     def __init__(self, interval=10000):
         super(Counting, self).__init__()
@@ -25,7 +25,7 @@ class Counting(QTimer):
 
     def begin(self):
         print("Start counting")
-        self.timeout.connect(self.start_thread)
+        # self.timeout.connect(self.start_thread)
         self.start()
 
     def counting(self):
@@ -51,7 +51,24 @@ class ThreadManager(DAMGTHREADPOOL):
     def stopCounting(self):
         self.counter.finish()
 
+    def assign_worker(self, task):
+        worker = DAMGWORKER(task)
+        worker.signals.result.connect(self.process_output)
+        worker.signals.progress.connect(self.process_task)
+        worker.signals.finished.connect(self.task_completed)
+        self.workers.append(worker)
 
+        return self.start(worker)
+
+    def process_output(self, val):
+        print(val)
+
+    def process_task(self, val):
+        print('{0}% done'.format(val))
+
+    def task_completed(self, worker):
+        self.workers.remove(worker)
+        print('worker commpleted')
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -137,9 +137,6 @@ class Debugger(GridLayout):
     def buildUI(self):
         self.textEdit = pDeBug(QtFatalMsg, self.console, None)
         self.addWidget(self.textEdit)
-        self.applySetting()
-
-    def applySetting(self):
         self.textEdit.setSizePolicy(SiPoMin, SiPoMin)
         self.textEdit.setMaximumHeight(100)
 
