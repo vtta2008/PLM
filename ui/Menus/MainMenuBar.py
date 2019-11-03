@@ -58,13 +58,13 @@ class MainMenuBar(MenuBar):
     def build_helpMenu(self):
         helpMenu = self.addMenu("&Help")
         helpActions = self.actionManger.helpMenuActions(self)
-        self.add_actions(helpMenu, helpActions[0:3])
+        self.add_actions(helpMenu, helpActions[0:2])
         helpMenu.addSeparator()
-        self.add_actions(helpMenu, helpActions[3:6])
+        self.add_actions(helpMenu, helpActions[2:5])
         helpMenu.addSeparator()
-        self.add_actions(helpMenu, helpActions[6:8])
+        self.add_actions(helpMenu, helpActions[5:7])
         helpMenu.addSeparator()
-        self.add_actions(helpMenu, helpActions[8:])
+        self.add_actions(helpMenu, helpActions[7:])
         return helpMenu
 
     def build_livMenu(self):

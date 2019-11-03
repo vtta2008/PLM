@@ -76,7 +76,7 @@ wonderUniApp        = [ 'Storyboarder', 'Krita (x64)' ]
 anacondaApp         = [ 'Spyder', 'QtDesigner', 'Git Bash']
 otherApp            = [ 'Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', ]
 CONFIG_APPUI        = [ 'About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary', 'FindFiles', 'ForgotPassword',
-                        'ImageViewer', 'NewProject', 'Preferences', 'Screenshot', 'UserSetting', 'PLMBrowser', 'NoteReminder',
+                        'ImageViewer', 'NewProject', 'Preferences', 'ScreenShot', 'UserSetting', 'PLMBrowser', 'NoteReminder',
                         'TextEditor', 'NodeGraph']
 
 # --------------------------------------------------------------------------------------------------------------
@@ -89,11 +89,11 @@ TRACK_TEX           = [ 'Mari', 'Painter', ]
 TRACK_POST          = [ 'Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro']
 TRACK_OFFICE        = [ 'Word', 'Excel', 'PowerPoint', 'Wordpad']
 TRACK_DEV           = [ 'PyCharm', 'Sublime Text', 'QtDesigner', 'Git Bash', 'Command Prompt', 'Spyder']
-TRACK_TOOLS         = [ 'Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'Screenshot', 'NodeGraph']
+TRACK_TOOLS         = [ 'Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'ScreenShot', 'NodeGraph']
 TRACK_EXTRA         = [ 'ReConfig', 'CleanPyc', 'Debug' ]
-TRACK_SYSTRAY       = [ 'Snipping Tool', 'Screenshot', 'Maximize', 'Minimize', 'Restore', 'Quit', ]
+TRACK_SYSTRAY       = [ 'Snipping Tool', 'ScreenShot', 'Maximize', 'Minimize', 'Restore', 'Quit', ]
 KEYDETECT           = [ "Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url"]
-FIX_KEY             = { 'Screenshot': 'screenShot', 'Snipping Tool': 'SnippingTool'}
+FIX_KEY             = { 'ScreenShot': 'ScreenShot', 'Snipping Tool': 'SnippingTool'}
 
 # --------------------------------------------------------------------------------------------------------------
 """ Combine config data """
@@ -172,7 +172,7 @@ LAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 'Cal
                        'FindFiles', 'Footer', 'ForgotPassword', 'GridLayout', 'HDRI', 'ImageViewer', 'Licence', 'MainMenuSection',
                        'MainToolBar', 'MainToolBarSection', 'NewOrganisation', 'NewProject', 'NewTeam', 'NodeGraph',
                        'NoteReminder', 'Notification', 'OrganisationManager', 'PipelineManager', 'Preferences',
-                       'ProjectManager', 'Reference', 'Screenshot', 'SettingUI', 'SignIn', 'SignUp', 'StatusBar',
+                       'ProjectManager', 'Reference', 'ScreenShot', 'SettingUI', 'SignIn', 'SignUp', 'StatusBar',
                        'SysTray', 'TeamManager', 'TextEditor', 'Texture', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting',
                        'Version']
 

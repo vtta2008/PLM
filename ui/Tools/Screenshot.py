@@ -33,7 +33,7 @@ from ui.uikits.Label import Label
 
 class Screenshot(Widget):
 
-    key = 'Screenshot'
+    key = 'ScreenShot'
 
     def __init__(self, parent=None):
         super(Screenshot, self).__init__(parent)

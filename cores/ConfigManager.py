@@ -58,7 +58,7 @@ KEYPACKAGE                              = ['Adobe Photoshop CC 2017', 'Adobe Pho
                                            'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', 'Spyder',
                                            'QtDesigner', 'Git Bash', 'About', 'Calculator', 'Calendar', 'Credit',
                                            'EnglishDictionary', 'FindFiles', 'ForgotPassword', 'ImageViewer',
-                                           'NewProject', 'Preferences', 'Screenshot', 'UserSetting', 'PLMBrowser',
+                                           'NewProject', 'Preferences', 'ScreenShot', 'UserSetting', 'PLMBrowser',
                                            'NoteReminder', 'TextEditor', 'NodeGraph', 'Word', 'Excel', 'PowerPoint',
                                            'ReConfig', 'CleanPyc', 'Debug']
 
@@ -78,12 +78,12 @@ __plmWiki__                             = "https://github.com/vtta2008/PipelineT
 
 CONFIG_APPUI                            = [ 'About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary',
                                             'FindFiles', 'ForgotPassword', 'ImageViewer', 'NewProject', 'Preferences',
-                                            'Screenshot', 'UserSetting', 'PLMBrowser', 'NoteReminder', 'TextEditor',
+                                            'ScreenShot', 'UserSetting', 'PLMBrowser', 'NoteReminder', 'TextEditor',
                                             'NodeGraph']
 
-CONFIG_SYSTRAY                          = ['Screenshot', 'Snipping Tool']
+CONFIG_SYSTRAY                          = ['ScreenShot', 'Snipping Tool']
 
-FIX_KEY                                 = { 'Screenshot': 'screenShot', 'Snipping Tool': 'SnippingTool'}
+FIX_KEY                                 = { 'ScreenShot': 'ScreenShot', 'Snipping Tool': 'SnippingTool'}
 
 
 class ConfigManager(DAMG):
@@ -342,7 +342,7 @@ class ConfigManager(DAMG):
         self.mainInfo['About'] = ['About PLM', self.iconInfo['About'], 'About']
         self.mainInfo['Exit'] = ['Exit PLM', self.iconInfo['Exit'], 'Exit']
         self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'CleanPyc']
-        self.mainInfo['CodeOfConduct'] = ['Code of Conduct', self.iconInfo['CodeOfConduct'], 'Code of Conduct']
+        self.mainInfo['CodeOfConduct'] = ['Code of Conduct', self.iconInfo['CodeOfConduct'], 'CodeOfConduct']
         self.mainInfo['Contributing'] = ['Contributing', self.iconInfo['Contributing'], 'Contributing']
         self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['ReConfig'], 'ReConfig']
         self.mainInfo['Reference'] = ['Reference', self.iconInfo['Reference'], 'Reference']
@@ -350,7 +350,7 @@ class ConfigManager(DAMG):
         self.mainInfo['PLM wiki'] = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=__plmWiki__)]
         self.mainInfo['Browser'] = ['Browser', self.iconInfo['Browser'], "Browser"]
         self.mainInfo['OpenConfig'] = ['Open config folder', self.iconInfo['OpenConfig'], '']
-        self.mainInfo['Version'] = ['Version Info', 'Version', 'Version Info']
+        self.mainInfo['Version'] = ['Version Info', 'Version', 'Version']
         self.mainInfo['Licence'] = ['Licence Info', 'Licence', 'Licence Info']
         self.mainInfo['Debug'] = ['Run PLM Debugger', self.iconInfo['Debug'], 'Debug']
 
