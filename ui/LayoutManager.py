@@ -13,10 +13,14 @@ Description:
 # Python
 import time, datetime
 from damg                               import DAMGDICT, DAMG, DAMGLIST
+from functools                          import partial
 
 # PyQt5
 from PyQt5.QtCore                       import pyqtSlot
 
+# PLM
+from utils                              import str2bool, bool2str
+from appData                            import layoutTypes
 
 class InspectLayout(DAMG):
 
@@ -26,6 +30,8 @@ class InspectLayout(DAMG):
 
     def __init__(self):
         super(InspectLayout, self).__init__(self)
+
+        self.layoutTypes.appendList(layoutTypes)
 
     def doInspection(self, layout):
         self.layoutTypes.append(layout.Type)
@@ -51,7 +57,6 @@ class InspectLayout(DAMG):
 
         return layout
 
-
     def haveType(self, layout):
         try:
             layout.Type
@@ -76,11 +81,13 @@ class LayoutManager(DAMGDICT):
     layout_ids             = DAMGLIST()
     layout_datetimes       = DAMGLIST()
 
-    def __init__(self, parent=None):
-        super(LayoutManager, self).__init__(self)
+    def __init__(self, actionManager, parent=None):
+        DAMGDICT.__init__(self)
 
         self.parent = parent
+        self.settings = self.parent.settings
         self.inspect = InspectLayout()
+        self.actionManager = actionManager
 
     def buildLayouts(self):
         self.mains      = self.mainLayouts()
@@ -90,6 +97,55 @@ class LayoutManager(DAMGDICT):
         self.setts      = self.settingLayouts()
         self.tools      = self.toolLayouts()
         self.prjs       = self.projectLayouts()
+
+        cbs = [
+            self.preferences.layout.tbTDCB,
+            self.preferences.layout.tbCompCB,
+            self.preferences.layout.tbArtCB,
+            self.preferences.layout.tbTexCB,
+            self.preferences.layout.tbPostCB,
+
+            self.preferences.layout.mainToolBarCB,
+
+            self.preferences.layout.statusBarCB,
+
+            self.preferences.layout.connectStatuCB,
+
+            self.preferences.layout.notifiCB,
+        ]
+    
+        sections = [
+            self.mainUI.mainToolBar.tdToolBar,
+            self.mainUI.mainToolBar.compToolBar,
+            self.mainUI.mainToolBar.artToolBar,
+            self.mainUI.mainToolBar.textureToolBar,
+            self.mainUI.mainToolBar.postToolBar,
+
+            self.mainUI.mainToolBarSec,
+
+            self.mainUI.statusBar,
+
+            self.mainUI.connectStatusSec,
+
+            self.mainUI.notifiSec,
+        ]
+    
+        for i in range(len(sections)):
+            key = self.preferences.layout.keys[i]
+            grp = self.mainUI.key
+
+            if self.settings.initValue(grp, key) is None:
+                if i == 3 or i == 4:
+                    val = False
+                else:
+                    val = True
+            else:
+                val = str2bool(self.settings.initValue(key))
+    
+            cbs[i].setChecked(val)
+            sections[i].setVisible(val)
+            cbs[i].stateChanged.connect(sections[i].setVisible)
+            cbs[i].stateChanged.connect(partial(self.mainUI.signals.setSetting.emit, key, bool2str(val), grp))
 
     def functionLayouts(self):
         from ui.Funcs import SignIn, SignUp, ForgotPassword
@@ -104,7 +160,7 @@ class LayoutManager(DAMGDICT):
     def mainLayouts(self):
         from ui import PipelineManager, SysTray
 
-        self.mainUI     = PipelineManager.PipelineManager(self.parent.settings)
+        self.mainUI     = PipelineManager.PipelineManager(self.settings, self.actionManager, self.parent.settings)
         self.sysTray    = SysTray.SysTray()
         self.sysTray.show()
 
@@ -245,7 +301,7 @@ class LayoutManager(DAMGDICT):
             return False
 
     def isLayout(self, layout):
-        if 'UI' in layout.Type:
+        if layout.Type in self.inspect.layoutTypes:
             return True
         else:
             return False

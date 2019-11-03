@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtWidgets                        import QSystemTrayIcon
 
-from cores.SignalManager                    import SignalManager
+from cores.SignalManager                    import LayoutSignals
 from cores.Loggers                          import Loggers
 from cores.Settings                         import Settings
 from appData                                import __copyright__, ST_FORMAT, SETTING_FILEPTH
@@ -30,7 +30,7 @@ class SystemTrayIcon(QSystemTrayIcon):
 
         self.parent = parent
 
-        self.signals = SignalManager(self)
+        self.signals = LayoutSignals(self)
         self.logger = Loggers(self.__class__.__name__)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 

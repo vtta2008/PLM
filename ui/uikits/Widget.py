@@ -15,13 +15,13 @@ from PyQt5.QtWidgets                        import QWidget, QVBoxLayout, QLabel,
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
 
-from cores.SignalManager                    import SignalManager
+from cores.SignalManager                    import LayoutSignals
 from cores.Settings                         import Settings
 from ui.uikits.Icon                         import AppIcon
 
 class Widget(QWidget):
 
-    Type                                    = 'DAMGUI'
+    Type                                    = 'DAMGWIDGET'
     key                                     = 'Widget'
     _name                                   = 'DAMG Widget'
     _copyright                              = __copyright__
@@ -31,7 +31,7 @@ class Widget(QWidget):
 
         self.parent         = parent
 
-        self.signals        = SignalManager(self)
+        self.signals        = LayoutSignals(self)
         self.settings       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         self.setWindowIcon(AppIcon(32, self.key))
@@ -104,6 +104,8 @@ class Widget(QWidget):
 
 
 if __name__ == '__main__':
+
+    from ui.uikits.MenuBar import MenuBar
 
     app = QApplication(sys.argv)
     widget = Widget()

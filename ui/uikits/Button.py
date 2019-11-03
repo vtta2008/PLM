@@ -19,7 +19,7 @@ from PyQt5.QtCore                           import QSize
 
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import SignalManager
+from cores.SignalManager                    import LayoutSignals
 from cores.Settings                         import Settings
 from ui.uikits.uiUtils                      import check_preset
 from ui.uikits.Icon                         import AppIcon, TagIcon
@@ -37,7 +37,7 @@ class Button(QPushButton):
     def __init__(self, preset={}, parent=None):
         super(Button, self).__init__(parent)
 
-        self.signals        = SignalManager(self)
+        self.signals        = LayoutSignals(self)
         self.settings       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         self.preset = preset
@@ -158,7 +158,7 @@ class ToolButton(QToolButton):
 
         self.parent = parent
 
-        self.signals = SignalManager(self)
+        self.signals = LayoutSignals(self)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.resize(40, 40)
 

@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # Python
-import platform, subprocess
+import platform, subprocess, json
 
 try:
     from importlib import reload
@@ -141,7 +141,16 @@ CONTRIBUTING = read_file('CONTRIBUTING')
 REFERENCE = read_file('REFERENCE')
 LICENCE_MIT = read_file('LICENCE_MIT')
 
+actionTypes = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction', 'DAMGExecutingAction', 'DAMGOpenBrowserAction', ]
 
+layoutTypes = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
+
+with open(mainConfig, 'r') as f:
+    mainData = json.load(f)
+
+
+
+CONFIG_OFFICE = [k for k in mainData.keys() if k in CONFIG_OFFICE]
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:56 PM

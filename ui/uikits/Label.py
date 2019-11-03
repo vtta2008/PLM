@@ -19,7 +19,7 @@ from PyQt5.QtGui                            import QFont
 from appData                                import __copyright__, PRS, ST_FORMAT, SETTING_FILEPTH
 from ui.uikits.uiUtils                      import check_preset
 from ui.uikits.Pixmap                       import Pixmap
-from cores.SignalManager import SignalManager
+from cores.SignalManager import LayoutSignals
 from cores.Settings import Settings
 
 
@@ -35,8 +35,8 @@ class Label(QLabel):
 
         self.parent                         = parent
         self.preset                         = preset
-        self.signals = SignalManager(self)
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'],self)
+        self.signals                        = LayoutSignals(self)
+        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'],self)
 
         if check_preset(self.preset):
             self.buildUI()
@@ -55,6 +55,8 @@ class Label(QLabel):
                 self.setMinimumHeight(value)
             elif key == 'smin':
                 self.setMinimumSize(value[0], value[1])
+            elif key == 'smax':
+                self.setMaximumSize(value[0], value[1])
             elif key == 'sizePolicy':
                 self.setSizePolicy(PRS[value[0]], PRS[value[1]])
             elif key == 'pxm':
@@ -67,8 +69,6 @@ class Label(QLabel):
                 self.setBuddy(value)
             elif key == 'link':
                 self.setOpenExternalLinks(value)
-            elif key == 'minimumSize':
-                self.setMinimumSize(value[0], value[1])
             else:
                 print("PRESETKEYERROR: No such key registed in preset: {0}: {1}".format(key, value))
 

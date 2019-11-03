@@ -233,7 +233,7 @@ class Knob(QGraphicsItem):
         self.connected_slots = []
         self.maxEdges = -1
         self.newEdge = None
-        self.slotType = 'slot'
+        self.slotType = 'slot_cpu'
 
     def setSlotType(self, slotType):
         self.slotType = slotType
@@ -262,7 +262,7 @@ class Knob(QGraphicsItem):
         if self.maxEdges > 0 and len(self.connected_slots) >= self.maxEdges:
             self.Edges[self.maxEdges - 1]._remove()
 
-        if self.slotType == 'slot':
+        if self.slotType == 'slot_cpu':
             if not self.isSelected():
                 self.slotType = 'plug'
                 edge.socketItem = knob
@@ -566,7 +566,7 @@ class NodeAttr(QGraphicsItem):
         painter.setFont(self._attrTextFont)
 
         if self.node.drawingConnection:
-            if self.knobL.slotType == 'slot' and self.knobR.slotType == 'slot':
+            if self.knobL.slotType == 'slot_cpu' and self.knobR.slotType == 'slot_cpu':
                 painter.setPen(QColor(100, 100, 100, 255))
 
         textRect = QRect(rect.left() + self.radius, rect.top(), rect.width() - 2*self.radius, rect.height())

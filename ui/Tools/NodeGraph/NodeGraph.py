@@ -49,7 +49,7 @@ class NodeGraph(Widget):
         sceneWidth = 1000
         sceneHeight = 500
 
-        self.sceneView.nodeMoved.connect(self.view.nodeMoved)                # Connect scene node moved signal
+        self.sceneView.nodeMoved.connect(self.view.nodeMoved)                # Connect scene node moved signal_cpu
         self.sceneView.selectionChanged.connect(self.view._returnSelection)  # Connect signals.
         self.sceneView.setSceneRect(0, 0, sceneWidth, sceneHeight)
 

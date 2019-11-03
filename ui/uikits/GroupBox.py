@@ -20,7 +20,7 @@ from PyQt5.QtWidgets                        import QGroupBox, QLabel
 # PLM
 
 from appData                                import WAIT_LAYOUT_COMPLETE, SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import SignalManager
+from cores.SignalManager                    import LayoutSignals
 from cores.Settings                         import Settings
 from ui.uikits.GridLayout                   import AutoPreset1, AutoPreset2, AutoPreset3, GridLayout
 from ui.uikits.BoxLayout                    import HBoxLayout
@@ -42,7 +42,7 @@ class GroupBox(QGroupBox):
         self.setTitle(title)
         self.parent = parent
 
-        self.signals = SignalManager(self)
+        self.signals = LayoutSignals(self)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         self.layouts = layouts

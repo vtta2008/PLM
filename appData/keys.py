@@ -166,6 +166,26 @@ ACTIONS_DATA = dict(TD                  = CONFIG_TDS,
                     EXTRA               = CONFIG_EXTRA,
                     SYSTRAY             = CONFIG_SYSTRAY, )
 
+LAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 'Calendar', 'CodeOfConduct', 'ConfigOrganisation',
+                       'ConfigProject', 'ConfigTeam', 'Config', 'Configurations', 'ConnectStatus', 'ContactUs', 'Contributing',
+                       'Credit', 'EditOrganisation', 'EditProject', 'EditTeam', 'EnglishDictionary', 'Feedback',
+                       'FindFiles', 'Footer', 'ForgotPassword', 'GridLayout', 'HDRI', 'ImageViewer', 'Licence', 'MainMenuSection',
+                       'MainToolBar', 'MainToolBarSection', 'NewOrganisation', 'NewProject', 'NewTeam', 'NodeGraph',
+                       'NoteReminder', 'Notification', 'OrganisationManager', 'PipelineManager', 'Preferences',
+                       'ProjectManager', 'Reference', 'Screenshot', 'SettingUI', 'SignIn', 'SignUp', 'StatusBar',
+                       'SysTray', 'TeamManager', 'TextEditor', 'Texture', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting',
+                       'Version']
+
+OPEN_BROWSER_KEY = ['PLM wiki']
+
+START_FILE_KEY = CONFIG_DEV + CONFIG_OFFICE + CONFIG_TDS + CONFIG_VFX + CONFIG_ART + CONFIG_TEX + CONFIG_POST + ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder']
+
+EXECUTING_KEY = ['Exit', 'CleanPyc', 'ReConfig', 'Debug']
+
+import pprint
+# pprint.pprint(START_FILE_KEY)
+# pprint.pprint(sorted(LAYOUT_KEY))
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/08/2018 - 2:30 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

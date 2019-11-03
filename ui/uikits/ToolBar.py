@@ -21,7 +21,7 @@ from PyQt5.QtWidgets                        import QToolBar, QAction
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__, mainConfig, ACTIONS_DATA
 from ui.uikits.Action                       import Action
-from cores.SignalManager                    import SignalManager
+from cores.SignalManager                    import LayoutSignals
 from cores.Settings                         import Settings
 
 # -------------------------------------------------------------------------------------------------------------
@@ -33,65 +33,14 @@ class ToolBar(QToolBar):
     key                                     = 'ToolBar'
     _name                                   = 'DAMG Tool Bar'
     _copyright                              = __copyright__
-    actionData                              = ACTIONS_DATA
-    regisActions                            = DAMGLIST()
 
-    with open(mainConfig, 'r') as f:
-        appInfo = json.load(f)
-
-    def __init__(self, configKey=None, actions=[], parent=None):
+    def __init__(self, parent=None):
         QToolBar.__init__(self)
 
         self.parent             = parent
-        self.signals            = SignalManager(self)
+        self.signals            = LayoutSignals(self)
         self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.configKey          = configKey
-        self.actions            = actions
-
-        if self.configKey is None or self.configKey == '':
-            if self.actions is None or self.actions == []:
-                print('CREATEACTIONERROR: Empty key: {0}, {1}'.format(self.configKey, self.actions))
-            else:
-                self.add_multiple_actions(self.actions)
-        else:
-            self.add_actions_by_key(self.configKey)
-
-        self.setAccessibleName(self.configKey)
-        self.setMinimumWidth((len(self.acts) + 1) * 32)
-
-    def add_multiple_actions(self, actions=[]):
-        for key in actions:
-            if type(key) == 'str':
-                self.addAction(self.create_action(key))
-            elif type(key) == type(QAction) or type(key) == type(Action):
-                self.regisActions.append(key)
-                self.addAction(key)
-            else:
-                print("DATATYPEERROR: Could not add action: {0}".format(key))
-
-    def create_action(self, key):
-        if key in self.appInfo.keys():
-            action = Action({
-
-                                'icon': key,
-                                'stt': self.appInfo[key][0],
-                                'txt': key,
-                                'trg': (partial(self.executing.emit, self.appInfo[key][2]))
-
-                            }, self)
-
-            self.regisActions.append(action)
-            return action
-        else:
-            print("KEYACTIONERROR: Could not find key in main config: {0}".format(key))
-
-    def add_actions_by_key(self, key):
-        if key in self.actionData.keys():
-            apps = self.actionData[key]
-            for app in apps:
-                self.create_action(app)
-        else:
-            print("CONFIGKEYERROR: This key is not configed yet: {0}".format(key))
+        self.setWindowTitle(self._name)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.configKey)

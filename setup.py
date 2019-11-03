@@ -75,7 +75,7 @@ with open(os.path.join(APP_DATA_DIR, 'metadatas.py'), "rb") as f:
     metadata = f.read().decode('utf-8')
 
 def parse(pattern):
-    return re.search(metadata).group(1).replace('"', '').strip()
+    return re.search(pattern, metadata).group(1).replace('"', '').strip()
 
 with open('README.rst', 'r') as f:
     readme = f.read()
@@ -84,21 +84,25 @@ packages = __packages_dir__
 
 build_exe_options = {'packages':packages}      #'include_files': includefiles,}
 
-setup(  name = __appname__,
-
-        version          = version     , packages          = find_packages(),
-        url              = __website__     , download_url      = __download__    , license          = LICENCE_MIT      ,
-        author           = __author1__ + " & " + __author2__                     , author_email     = __email__        ,
-        maintainer       = __author1__     , maintainer_email  = __author1__     , description      = application_title,
-        long_description = readme          , install_requires = __pkgsReq__,
+setup(  name             = __appname__,
+        version          = version,
+        packages         = find_packages(),
+        url              = __website__,
+        download_url     = __download__,
+        license          = LICENCE_MIT,
+        author           = __author1__ + " & " + __author2__,
+        author_email     = __email__,
+        maintainer       = __author1__,
+        maintainer_email = __author1__,
+        description      = application_title,
+        long_description = readme,
+        install_requires = __pkgsReq__,
         classifiers      = __classifiers__ ,
-
         package_data     = {'imgs': [ '{}/*'.format(item) for item in os.listdir('imgs') if os.path.isdir(os.path.join('imgs', item))]},
-
-        keywords                = __plmSlogan__                                                                        ,
-        options                 = {"build_exe" : build_exe_options, 'bdist_msi': {}}                                   ,
-        zip_safe=True,
-        executables = [Executable(main_python_file, base=base, copyright=COPYRIGHT,icon = 'logo.ico',), ]
+        keywords         = __plmSlogan__,
+        options          = {"build_exe" : build_exe_options, 'bdist_msi': {}},
+        zip_safe         = True,
+        executables      = [Executable(main_python_file, base=base, copyright=COPYRIGHT,icon = 'logo.ico',), ]
 )
 
 # -------------------------------------------------------------------------------------------------------------

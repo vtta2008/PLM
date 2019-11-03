@@ -10,11 +10,13 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
+import os
+
 from PyQt5.QtGui                            import QIcon
 from PyQt5.QtCore                           import QSize
 
 from appData                                import __copyright__, appIconCfg
-from cores.SignalManager                    import SignalManager
+from cores.SignalManager                    import LayoutSignals
 from utils.utils                            import data_handler, get_logo_icon, get_app_icon, get_tag_icon
 
 class Icon(QIcon):
@@ -29,7 +31,7 @@ class Icon(QIcon):
         QIcon.__init__(self)
 
         self.parent                         = parent
-        self.signals                        = SignalManager(self)
+        self.signals                        = LayoutSignals(self)
 
     @property
     def copyright(self):
@@ -56,13 +58,19 @@ class AppIcon(Icon):
 
         for icon in self.iconInfo.keys():
             if self.iconName == icon:
+                self.iconPth = get_app_icon(self.iconSize, self.iconName)
                 self._found = True
+                break
+            elif os.path.exists(self.iconName):
+                self.iconPth = self.iconName
+                self._found = True
+                break
 
-        if self._found:
-            self.iconPth = get_app_icon(self.iconSize, self.iconName)
-            self.addFile(self.iconPth, QSize(self.iconSize, self.iconSize))
-        else:
+        if not self._found:
             print("FILENOTFOUNDERROR: {0}: Could not find icon name: {1}".format(__name__, self.iconName))
+        else:
+            self.addFile(self.iconPth, QSize(self.iconSize, self.iconSize))
+
 
 class LogoIcon(Icon):
 

@@ -25,7 +25,7 @@ from ui.uikits.uiUtils                      import check_preset
 
 class Action(QAction):
 
-    Type                                    = 'DAMGUI'
+    Type                                    = 'DAMGACTION'
     key                                     = 'Action'
     _name                                   = 'DAMG Action'
     _copyright                              = __copyright__

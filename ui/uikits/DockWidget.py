@@ -19,7 +19,7 @@ from PyQt5.QtWidgets                    import QTextEdit, QDockWidget, QApplicat
 
 # PLM
 from appData                            import right, datetTimeStamp, SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                import SignalManager
+from cores.SignalManager                import LayoutSignals
 from cores.Loggers                      import Loggers
 from cores.Settings                     import Settings
 
@@ -70,7 +70,7 @@ class DockWidget(QDockWidget):
         QDockWidget.__init__(self)
         self.parent = parent
         self._name = self.__class__.__name__
-        self.signals = SignalManager(self)
+        self.signals = LayoutSignals(self)
         self.logger = Loggers(self.__class__.__name__)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 

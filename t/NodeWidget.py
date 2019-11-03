@@ -207,7 +207,7 @@ class NodeWidget(QGraphicsObject):
 
     def itemChange(self, change, value):
         """
-        Default node 'changed' signal.
+        Default node 'changed' signal_cpu.
         ItemMatrixChange
         change == "GraphicsItemChange"
         """
@@ -1670,7 +1670,7 @@ class DotWidget(QGraphicsObject):
 
     def itemChange(self, change, value):
         """
-        Default node 'changed' signal.
+        Default node 'changed' signal_cpu.
         ItemMatrixChange
         change == "GraphicsItemChange"
         """
@@ -2147,7 +2147,7 @@ class NoteWidget(QGraphicsObject):
 
     def itemChange(self, change, value):
         """
-        Default node 'changed' signal.
+        Default node 'changed' signal_cpu.
         ItemMatrixChange
         change == "GraphicsItemChange"
         """
@@ -2974,7 +2974,7 @@ class DotConnection(QGraphicsObject):
 
     def itemChange(self, change, value):
         """
-        Default node 'changed' signal.
+        Default node 'changed' signal_cpu.
         ItemMatrixChange
         change == "GraphicsItemChange"
         """

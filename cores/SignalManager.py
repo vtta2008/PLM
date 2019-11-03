@@ -22,7 +22,7 @@ from PyQt5.QtCore                   import Qt
 from appData                        import SiPoMin, SiPoMax, SiPoExp, SiPoIgn, SiPoPre
 
 
-class SignalManager(DAMG):
+class LayoutSignals(DAMG):
 
     key                             = "SignalManager"
 
@@ -43,11 +43,11 @@ class SignalManager(DAMG):
     cfgReport                       = pyqtSignal(str, name="cfgReport")
 
     def __init__(self, parent=None):
-        super(SignalManager, self).__init__(parent)
+        super(LayoutSignals, self).__init__(parent)
 
         self.parent = parent
 
-        self.objects        = ['PLMCORE', 'PLM', 'IconPth', ]
+        self.objects        = ['PLMCORE', 'PLM', 'IconPth', 'ActionManager']
 
         self.notContenMargin = ['Configurations', 'ServerConfig', 'ComboBox', 'Button', 'HBoxLayout',
                                 'VBoxLayout', 'ServerConfigPage1', 'ServerConfigPage2', 'ServerConfig', 'Label',
@@ -81,7 +81,7 @@ class SignalManager(DAMG):
                     pass
 
         if self.parent.key == 'PipelineManager':
-            self.parent.setMaximumWidth(459)
+            self.parent.setMaximumWidth(500)
 
         if self.parent.key == 'TobTab' and self.parent.key == 'BotTab':
             self.parent.setMovable(True)

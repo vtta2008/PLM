@@ -13,137 +13,117 @@ Description:
 # Python
 import sys, os
 from functools                      import partial
+from damg import DAMGLIST
 
 # PyQt5
 from PyQt5.QtCore                   import pyqtSlot
 from PyQt5.QtWidgets                import QApplication
 
 # Plm
-from appData                        import (__plmWiki__, CONFIG_DIR, APP_ICON_DIR, SETTING_DIR, ROOT_DIR,
-                                            mainConfig, CONFIG_OFFICE, CONFIG_DEV, CONFIG_TOOLS)
+from appData                        import (__plmWiki__, mainConfig)
 
-from ui.uikits.Action               import Action
-from ui.uikits.MainWindow import MainWindow
+from ui.uikits.MenuBar              import MenuBar
 from utils                          import data_handler
 
-class MainMenuBar(MainWindow):
+class MainMenuBar(MenuBar):
 
-    key                     = 'MainMenuBar'
+    key                     = 'TestMainMenuBar'
+    mainMenus               = ['&App', '&Go', '&Office', '&Tools', '&Dev', '&Lib', '&Help']
+    appMenus                = ['&Organisation', '&Team', '&Project']
+    menus                   = DAMGLIST()
 
     appInfo = data_handler(filePath=mainConfig)
 
-    def __init__(self, parent=None):
-        MainWindow.__init__(self)
+    def __init__(self, actionManager, parent=None):
+        super(MainMenuBar, self).__init__(parent)
 
         self._parent = parent
+        self.actionManger = actionManager
         self.url = __plmWiki__
         self.buildMenu()
 
     def buildMenu(self):
 
-        self.mainMenu = self.menuBar()
+        self.appMenu = self.build_appMenu()
+        self.goMenu = self.build_goMenu()
+        self.officeMenu = self.build_officceMenu()
+        self.toolMenu = self.build_toolMenu()
+        self.devMenu = self.build_devMenu()
+        self.libMenu = self.build_livMenu()
+        self.helpMenu = self.build_helpMenu()
 
-        self.appMenu = self.mainMenu.addMenu("&App")
-        self.appMenu.addAction(Action({'icon': 'Settings', 'txt': "&Settings", 'trg': partial(self.signals.showLayout.emit, 'SettingUI', 'show')}, self))
-        self.appMenu.addAction(Action({'icon': 'Configurations', 'txt': '&Config', 'trg': partial(self.signals.showLayout.emit, 'Configuration', 'show')}, self))
-        self.appMenu.addAction(Action({'icon': 'Preferences', 'txt': '&Preferences', 'trg': partial(self.signals.showLayout.emit, 'Preferences', 'show')}, self))
+        for menu in [self.appMenu, self.goMenu, self.officeMenu, self.toolMenu, self.devMenu, self.libMenu, self.helpMenu]:
+            self.menus.append(menu)
 
-        self.appMenu.addSeparator()
+    def build_helpMenu(self):
+        helpMenu = self.addMenu("&Help")
+        helpActions = self.actionManger.helpMenuActions(self)
+        self.add_actions(helpMenu, helpActions[0:3])
+        helpMenu.addSeparator()
+        self.add_actions(helpMenu, helpActions[3:6])
+        helpMenu.addSeparator()
+        self.add_actions(helpMenu, helpActions[6:8])
+        helpMenu.addSeparator()
+        self.add_actions(helpMenu, helpActions[8:])
+        return helpMenu
 
-        self.organisationMenu = self.appMenu.addMenu("&Organisation")
-        self.organisationMenu.addAction(Action({'icon': 'NewOrganisation', 'txt': 'New', 'trg': partial(self.signals.showLayout.emit, 'NewOrganisation', 'show')}, self))
-        self.organisationMenu.addAction(Action({'icon': 'EditOrganisation', 'txt': 'Edit', 'trg': partial(self.signals.showLayout.emit, 'EditOrganisation', 'show')}, self))
-        self.organisationMenu.addAction(Action({'icon': 'ConfigOrganisation', 'txt': 'Config', 'trg': partial(self.signals.showLayout.emit, 'ConfigOrganisation', 'show')}, self))
-        self.organisationMenu.addAction(Action({'icon': 'OrganisationManager', 'txt': 'Organisation Manager', 'trg': partial(self.signals.showLayout, 'OrganisationManager', 'show')}, self))
+    def build_livMenu(self):
+        libMenu = self.addMenu("&Lib")
+        libActions = self.actionManger.libMenuActions(self)
+        self.add_actions(libMenu, libActions)
+        return libMenu
 
-        self.teamMenu = self.appMenu.addMenu('&Team')
-        self.teamMenu.addAction(Action({'icon': 'NewTeam', 'txt': 'New', 'trg': partial(self.signals.showLayout.emit, 'NewTeam', 'show')}, self))
-        self.teamMenu.addAction(Action({'icon': 'EditTeam', 'txt': 'Edit', 'trg': partial(self.signals.showLayout.emit, 'EditTeam', 'show')}, self))
-        self.teamMenu.addAction(Action({'icon': 'ConfigTeam', 'txt': 'Config', 'trg': partial(self.signals.showLayout.emit, 'ConfigTeam', 'show')}, self))
-        self.teamMenu.addAction(Action({'icon': 'TeamManager', 'txt': 'Team Manager', 'trg': partial(self.signals.showLayout, 'TeamManager', 'show')}, self))
+    def build_devMenu(self):
+        devMenu = self.addMenu("&Dev")
+        devActions = self.actionManger.devMenuActions(self)
+        self.add_actions(devMenu, devActions)
+        return devMenu
 
-        self.projectMenu = self.appMenu.addMenu('&Project')
-        self.projectMenu.addAction(Action({'icon': 'NewProject', 'txt': 'New', 'trg': partial(self.signals.showLayout.emit, 'NewProject', 'show')}, self))
-        self.projectMenu.addAction(Action({'icon': 'EditProject', 'txt': 'Edit', 'trg': partial(self.signals.showLayout.emit, 'EditProject', 'show')}, self))
-        self.projectMenu.addAction(Action({'icon': 'ConfigProject', 'txt': 'Config', 'trg': partial(self.signals.showLayout.emit, 'ConfigProject', 'show')}, self))
-        self.projectMenu.addAction(Action({'icon': 'ProjectManager', 'txt': 'Project Manager', 'trg': partial(self.signals.showLayout.emit, 'ProjectManager', 'show')}, self))
+    def build_toolMenu(self):
+        toolMenu = self.addMenu("&Tools")
+        toolActions = self.actionManger.toolsMenuActions(self)
+        self.add_actions(toolMenu, toolActions[0:-3])
+        toolMenu.addSeparator()
+        self.add_actions(toolMenu, toolActions[-3:0])
+        return toolMenu
 
-        self.appMenu.addSeparator()
-        self.appMenu.addAction(Action({'icon': 'Exit', 'txt': 'Exit app', 'trg': partial(self.signals.executing.emit, 'Exit')}, self))
+    def build_officceMenu(self):
+        officeMenu = self.addMenu("&Office")
+        officeActions = self.actionManger.officeMenuActions(self)
+        self.add_actions(officeMenu, officeActions)
+        return officeMenu
 
-        self.gotoMenu = self.mainMenu.addMenu('Go to')
-        self.gotoMenu.addAction(Action({'icon': 'ConfigFolder', 'txt': 'Config folder', 'trg': partial(os.startfile, CONFIG_DIR)}, self))
-        self.gotoMenu.addAction(Action({'icon': 'IconFolder', 'txt': 'Icon folder', 'trg': partial(os.startfile, APP_ICON_DIR)}, self))
-        self.gotoMenu.addAction(Action({'icon': 'SettingFolder', 'txt': 'Setting folder', 'trg': partial(os.startfile, SETTING_DIR)}, self))
-        self.gotoMenu.addAction(Action({'icon': 'AppFolder', 'txt': 'Application folder', 'trg': partial(os.startfile, ROOT_DIR)}, self))
+    def build_goMenu(self):
+        gotoMenu = self.addMenu('&Go')
+        goActions = self.actionManger.goMenuActions(self)
+        self.add_actions(gotoMenu, goActions)
+        return gotoMenu
 
-        self.officeMenu = self.mainMenu.addMenu("&Office")
+    def build_appMenu(self):
+        appMenu = self.addMenu("&App")
+        appActions = self.actionManger.appMenuActions(self)
+        self.add_actions(appMenu, appActions[0:3])
 
-        officeKeys = ['TextEditor', 'NoteReminder']
+        appMenu.addSeparator()
+        self.organisationMenu = appMenu.addMenu("&Organisation")
+        orgActions = self.actionManger.orgMenuActions(self)
+        self.add_actions(self.organisationMenu, orgActions)
 
-        for key in officeKeys:
-            if key in self.appInfo:
-                self.officeMenu.addAction(Action({'icon': key,
-                                                  'txt': key,
-                                                  'trg': partial(self.signals.showLayout.emit, key, 'show')}, self))
-        for key in CONFIG_OFFICE:
-            if key in self.appInfo:
-                self.officeMenu.addAction(Action({'icon': key,
-                                                  'txt': key,
-                                                  'trg': partial(os.startfile, key)}, self))
+        self.teamMenu = appMenu.addMenu('&Team')
+        teamActions = self.actionManger.teamMenuActions(self)
+        self.add_actions(self.teamMenu, teamActions)
 
-        self.toolMenu = self.mainMenu.addMenu("&Tools")
+        self.projectMenu = appMenu.addMenu('&Project')
+        prjActions = self.actionManger.projectMenuActions(self)
+        self.add_actions(self.projectMenu, prjActions)
 
-        for key in CONFIG_TOOLS:
-            if key in self.appInfo:
-                self.toolMenu.addAction(Action({'icon': key,
-                                                'txt': key,
-                                                'trg': partial(self.signals.showLayout.emit, key, 'show')}, self))
+        appMenu.addSeparator()
+        self.add_actions(appMenu, appActions[3:])
+        return appMenu
 
-        self.toolMenu.addSeparator()
-
-        self.toolMenu.addAction(Action(
-            {'icon': "CleanPyc", 'txt': 'Remove .pyc files', 'trg': partial(self.signals.executing.emit, 'CleanPyc')},
-            self))
-        self.toolMenu.addAction(
-            Action({'icon': "ReConfig", 'txt': 'Re-configure', 'trg': partial(self.signals.executing.emit, 'ReConfig')},
-                   self))
-        self.toolMenu.addAction(
-            Action({'icon': "Debug", 'txt': 'Run PLM Debugger', 'trg': partial(self.signals.executing.emit, 'Debug')},
-                   self))
-
-        self.devMenu = self.mainMenu.addMenu("&Dev")
-
-        for key in CONFIG_DEV:
-            if key in self.appInfo:
-                if key in self.appInfo:
-                    self.devMenu.addAction(Action({'icon': key,
-                                                   'txt': key,
-                                                   'trg': partial(os.startfile, self.appInfo[key][2])},
-                                                  self))
-
-        self.libMenu = self.mainMenu.addMenu("&Lib")
-        self.libMenu.addAction(Action({'icon': 'ALPHA', 'txt': 'Alpha Library', 'trg': partial(self.signals.showLayout.emit, 'AlphaLibrary', 'show')}, self))
-        self.libMenu.addAction(Action({'icon': 'HDRI', 'txt': 'HDRI Library', 'trg': partial(self.signals.showLayout.emit, 'HdriLibrary', 'show')}, self))
-        self.libMenu.addAction(Action({'icon': 'TEXTURE', 'txt': 'Texture Library', 'trg': partial(self.signals.showLayout.emit, 'TextureLibrary', 'show')}, self))
-
-        self.helpMenu = self.mainMenu.addMenu("&Help")
-        self.helpMenu.addAction(Action({'icon': 'PLM wiki', 'txt': 'PLM wiki', 'trg': partial(self.signals.openBrowser.emit, self.url)}, self))
-        self.helpMenu.addAction(Action({'icon': 'About', 'txt': 'About', 'trg': partial(self.signals.showLayout.emit, 'About', 'show')}, self))
-        self.helpMenu.addAction(Action({'icon': 'Credit', 'txt': 'Credit', 'trg': partial(self.signals.showLayout.emit, 'Credit', 'show')}, self))
-
-        self.helpMenu.addSeparator()
-        self.helpMenu.addAction(Action({'icon': 'CodeConduct', 'txt':  'Code Of Conduct' , 'trg': partial(self.signals.showLayout.emit, 'CodeOfConduct', 'show')}, self))
-        self.helpMenu.addAction(Action({'icon': 'Contributing', 'txt': 'Contributing', 'trg': partial(self.signals.showLayout.emit, 'Contributing', 'show')}, self))
-        self.helpMenu.addAction(Action({'icon': 'Reference', 'txt': 'Reference', 'trg': partial(self.signals.showLayout.emit, 'Reference', 'show')}, self))
-
-        self.helpMenu.addSeparator()
-        self.helpMenu.addAction(Action({'icon': 'Licence', 'txt': 'Licence', 'trg': partial(self.signals.showLayout.emit, 'Licence', 'show')}, self))
-        self.helpMenu.addAction(Action({'icon': 'Version', 'txt': 'Version', 'trg': partial(self.signals.showLayout.emit, 'Version', 'show')}, self))
-
-        self.helpMenu.addSeparator()
-        self.helpMenu.addAction(Action({'icon': 'FeedBack', 'txt': 'Feedback to us', 'trg': partial(self.signals.showLayout, 'FeedBackForm', 'show')}, self))
-        self.helpMenu.addAction(Action({'icon': 'ContactUs', 'txt': 'Contact Us', 'trg': partial(self.signals.showLayout, 'ContactUs', 'show')}, self))
+    def add_actions(self, menu, actions):
+        for action in actions:
+            menu.addAction(action)
 
     @pyqtSlot(bool)
     def show_layout(self, param):

@@ -15,7 +15,7 @@ import os
 from PyQt5.QtGui                import QPixmap, QImage
 
 from appData                    import __copyright__
-from cores.SignalManager        import SignalManager
+from cores.SignalManager        import LayoutSignals
 from utils                      import get_avatar_image
 
 class Pixmap(QPixmap):
@@ -31,7 +31,7 @@ class Pixmap(QPixmap):
         self.mode               = mode
         self.image              = image
         self.parent             = parent
-        self.signals            = SignalManager(self)
+        self.signals            = LayoutSignals(self)
 
         if self.mode == 'avatar':
             print('set avatar: {0}'.format(get_avatar_image(self.image)))

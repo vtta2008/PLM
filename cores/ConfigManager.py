@@ -340,7 +340,7 @@ class ConfigManager(DAMG):
 
         # Custom functions
         self.mainInfo['About'] = ['About PLM', self.iconInfo['About'], 'About']
-        self.mainInfo['Exit'] = ['Exit Pipeline Manager', self.iconInfo['Exit'], 'Exit']
+        self.mainInfo['Exit'] = ['Exit PLM', self.iconInfo['Exit'], 'Exit']
         self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'CleanPyc']
         self.mainInfo['CodeOfConduct'] = ['Code of Conduct', self.iconInfo['CodeOfConduct'], 'Code of Conduct']
         self.mainInfo['Contributing'] = ['Contributing', self.iconInfo['Contributing'], 'Contributing']
@@ -350,9 +350,39 @@ class ConfigManager(DAMG):
         self.mainInfo['PLM wiki'] = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=__plmWiki__)]
         self.mainInfo['Browser'] = ['Browser', self.iconInfo['Browser'], "Browser"]
         self.mainInfo['OpenConfig'] = ['Open config folder', self.iconInfo['OpenConfig'], '']
-        self.mainInfo['Version'] = ['Version Info', 'VersionInfo.icon.png', 'Version Info']
-        self.mainInfo['Licence'] = ['Licence Info', 'LicenceInfo.icon.png', 'Licence Info']
-        self.mainInfo['Debug'] = ['Debug app', self.iconInfo['Debug'], 'Debug']
+        self.mainInfo['Version'] = ['Version Info', 'Version', 'Version Info']
+        self.mainInfo['Licence'] = ['Licence Info', 'Licence', 'Licence Info']
+        self.mainInfo['Debug'] = ['Run PLM Debugger', self.iconInfo['Debug'], 'Debug']
+
+        self.mainInfo['NewOrganisation'] = ['New', 'NewOrganisation', 'New']
+        self.mainInfo['EditOrganisation'] = ['Edit', 'EditOrganisation', 'Edit']
+        self.mainInfo['ConfigOrganisation'] = ['Config', 'ConfigOrganisation', 'Edit']
+        self.mainInfo['OrganisationManager'] = ['OrganisationManager', 'OrganisationManager', 'OrganisationManager']
+
+        self.mainInfo['NewTeam'] = ['New', 'NewOrganisation', 'New']
+        self.mainInfo['EditTeam'] = ['Edit', 'EditOrganisation', 'Edit']
+        self.mainInfo['ConfigTeam'] = ['Config', 'ConfigOrganisation', 'Edit']
+        self.mainInfo['TeamManager'] = ['TeamManager', 'TeamManager', 'TeamManager']
+
+        self.mainInfo['NewProject'] = ['New', 'NewOrganisation', 'New']
+        self.mainInfo['EditProject'] = ['Edit', 'EditOrganisation', 'Edit']
+        self.mainInfo['ConfigProject'] = ['Config', 'ConfigOrganisation', 'Edit']
+        self.mainInfo['ProjectManager'] =['ProjectManager', 'ProjectManager', 'ProjectManager']
+
+        self.mainInfo['SettingUI'] = ['PLM Settings', 'Settings', 'SettingUI']
+        self.mainInfo['Config'] = ['PLM Configurations', 'Configurations', 'Configuration']
+
+        self.mainInfo['Alpha'] = ['Open Alpha Map Library', 'AlphaLibrary', 'AlphaLibrary']
+        self.mainInfo['HDRI'] = ['Open HDRI Map Library', 'HDRILibrary', 'HDRILibrary']
+        self.mainInfo['Texture'] = ['Open Texture Map Library', 'TextureLibrary', 'TextureLibrary']
+
+        self.mainInfo['Feedback'] = ['Feedback', 'Feedback', 'Feedback']
+        self.mainInfo['ContactUs'] = ['Contact Us', 'ContactUs', 'ContactUs']
+
+        self.mainInfo['ConfigFolder'] = ['Go To Config Folder', 'ConfigFolder', self.pthInfo['config']]
+        self.mainInfo['IconFolder'] = ['Go To Icon Folder', 'IconFolder', self.pthInfo['icon']]
+        self.mainInfo['SettingFolder'] = ['Go To Setting Folder', 'SettingFolder', self.pthInfo['setting']]
+        self.mainInfo['AppFolder'] = ['Go To PLM Folder', 'AppFolder', self.pthInfo['root']]
 
         for key in self.appInfo:
             if 'NukeX' in key:

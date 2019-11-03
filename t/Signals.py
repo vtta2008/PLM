@@ -100,11 +100,11 @@ class Signal(DAMG):
         return self.on(callback, max_calls=1, weakref=weakref)
 
     def disconnect(self, slot):
-        """Disconnects the slot from the signal"""
+        """Disconnects the slot_cpu from the signal_cpu"""
 
         """
-        if not isinstance(slot, Slot):
-            raise ValueError("Arguments is not slot")
+        if not isinstance(slot_cpu, Slot):
+            raise ValueError("Arguments is not slot_cpu")
         """
         if slot.signal != self: return
 
@@ -116,17 +116,17 @@ class Signal(DAMG):
                 break
 
         if not found:
-            raise Exception("Not valid slot.")
+            raise Exception("Not valid slot_cpu.")
 
         del self._slots[index]
 
     def clear(self):
-        """Clears the signal of all connected slots"""
+        """Clears the signal_cpu of all connected slots"""
 
         self._slots = []
 
     def block(self, isBlocked):
-        """Sets blocking of the signal"""
+        """Sets blocking of the signal_cpu"""
 
         self._blocked = bool(isBlocked)
 
@@ -167,7 +167,7 @@ class Signals(DAMG):
 
     def unregister_signal(self, signal):
         if signal not in self._signal_registry:
-            raise ValueError("Not posisble to unregistered not registered signal: %s" % signal)
+            raise ValueError("Not posisble to unregistered not registered signal_cpu: %s" % signal)
 
         self._signal_registry[signal].clear()
         del self._signal_registry[signal]
@@ -176,7 +176,7 @@ class Signals(DAMG):
         return self._signal_registry.keys()
 
     def emit(self, signal, *args, **kwargs):
-        """Emits a signal by name. Any additional args or kwargs are passed to the signal"""
+        """Emits a signal_cpu by name. Any additional args or kwargs are passed to the signal_cpu"""
 
         self._check_signal_is_registered(signal)
         self._signal_registry[signal].emit(*args, **kwargs)
@@ -184,7 +184,7 @@ class Signals(DAMG):
     def on(self, signal, callback=None, max_calls=None):
         """
         Registers a single callback for receiving an event. Optionally, can specify a maximum number
-        of times the callback should receive a signal. This method works as both a function and a decorator.
+        of times the callback should receive a signal_cpu. This method works as both a function and a decorator.
         """
 
         self._check_signal_is_registered(signal)
@@ -236,14 +236,14 @@ class Signals(DAMG):
         return self._signal_registry[signal].is_blocked()
 
     def disconnect_from(self, signal, slot):
-        """Remove slot from receiver list if it responds to the signal"""
+        """Remove slot_cpu from receiver list if it responds to the signal_cpu"""
 
         self._check_signal_is_registered(signal)
         self._signal_registry[signal].disconnect(slot)
 
     def disconnect(self, slot):
         if not isinstance(slot, Slot):
-            raise ValueError("Argument not a slot")
+            raise ValueError("Argument not a slot_cpu")
 
         self._signal_registry[slot.signal.name].disconnect(slot)
 
@@ -255,7 +255,7 @@ class Signals(DAMG):
             signal_object.clear()
 
     def clear(self, *signals):
-        """Clears all callbacks for a particular signal or signals"""
+        """Clears all callbacks for a particular signal_cpu or signals"""
 
         if signals:
             for signal in signals:
@@ -271,7 +271,7 @@ class Signals(DAMG):
         """
         Context manager for emitting signals either on enter or on exit of a context.
         By default, if this context manager is created using a single arg-style argument,
-        it will emit a signal on exit. Otherwise, keyword arguments indicate signal points
+        it will emit a signal_cpu on exit. Otherwise, keyword arguments indicate signal_cpu points
         """
 
         self._check_signal_is_registered(exit)
@@ -321,7 +321,7 @@ if __name__ == "__main__":
     connection.clear('Greet')
     print("Greet has %d slots" % connection.signal("Greet").number_of_slots)
     slot = connection.on('Greet', greet2)
-    # It's possible to disconnect directly without indicating the name of signal.
+    # It's possible to disconnect directly without indicating the name of signal_cpu.
     connection.disconnect(slot)
     print("No output because there is no handler..")
     connection.emit('Greet', "Albert")

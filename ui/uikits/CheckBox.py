@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 from PyQt5.QtWidgets                        import QCheckBox
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import SignalManager
+from cores.SignalManager                    import LayoutSignals
 from cores.Settings                         import Settings
 from ui.uikits.uiUtils                      import check_preset
 
@@ -27,7 +27,7 @@ class CheckBox(QCheckBox):
     def __init__(self, txt=None, preset={}, parent=None):
         super(CheckBox, self).__init__(parent)
 
-        self.signals = SignalManager(self)
+        self.signals = LayoutSignals(self)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.parent = parent
         self.txt = txt

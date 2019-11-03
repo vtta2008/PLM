@@ -21,7 +21,7 @@ from PyQt5.QtWidgets            import QMainWindow, QApplication
 # PLM
 from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
 from ui.uikits.Icon             import AppIcon
-from cores.SignalManager        import SignalManager
+from cores.SignalManager        import LayoutSignals
 from cores.Loggers              import Loggers
 from cores.Settings             import Settings
 
@@ -40,7 +40,7 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
 
         self.parent             = parent
-        self.signals            = SignalManager(self)
+        self.signals            = LayoutSignals(self)
         self.logger             = Loggers(self.__class__.__name__)
         self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 

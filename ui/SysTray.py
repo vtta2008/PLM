@@ -23,7 +23,7 @@ from PyQt5.QtWidgets            import QMenu, QSystemTrayIcon, QApplication
 
 # PLM
 from appData                    import __plmSlogan__, __appname__, __envKey__, CONFIG_SYSTRAY
-from cores.SignalManager        import SignalManager
+from cores.SignalManager        import LayoutSignals
 from ui.uikits.Action           import Action
 from ui.uikits.Icon             import LogoIcon
 from ui.uikits.SystemTrayIcon   import SystemTrayIcon
@@ -39,7 +39,7 @@ class SysTrayIconMenu(QMenu):
     def __init__(self, parent=None):
         super(SysTrayIconMenu, self).__init__(parent)
 
-        self.signals = SignalManager(self)
+        self.signals = LayoutSignals(self)
 
         with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
             self.appInfo = json.load(f)

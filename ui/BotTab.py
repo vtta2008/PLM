@@ -19,7 +19,7 @@ from PyQt5.QtWidgets                    import QApplication
 
 # PLM
 from ui.Debugger                        import Debugger
-from ui.GeneralSetting                  import GeneralSetting
+from ui.uikits.GridLayout               import GridLayout
 from ui.uikits.Widget                   import Widget
 from ui.uikits.TabWidget                import TabWidget, TabContent
 from ui.uikits.BoxLayout                import VBoxLayout
@@ -41,8 +41,8 @@ class BotTab(Widget):
     def buildUI(self):
         self.tabs           = TabWidget()
 
-        self.botTab1 = GeneralSetting()
-        self.botTab2       = Debugger()
+        self.botTab1        = GridLayout()
+        self.botTab2        = Debugger()
 
         self.tabs.addTab(TabContent(self.botTab1), "General")
         self.tabs.addTab(TabContent(self.botTab2), "Debug")

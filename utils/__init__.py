@@ -16,4 +16,5 @@ from utils.localSQL             import QuerryDB, UpdateDB, RemoveDB, TimeLog
 from utils.utils                import (str2bool, clean_file_ext, get_app_icon, get_avatar_image, check_blank,
                                         check_match, get_avatar_image, getToken, getUnix, getTime, getDate,
                                         get_local_pc_info, get_user_location, text_to_hex, resize_image, bool2str,
-                                        attr_type, get_screen_resolution, data_handler)
+                                        attr_type, get_screen_resolution, data_handler, get_cpu_useage,
+                                        create_signal_slot, get_ram_useage, byte2gigabyte, is_string, is_action)

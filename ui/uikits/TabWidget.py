@@ -15,7 +15,7 @@ from PyQt5.QtCore                           import Qt
 
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import SignalManager
+from cores.SignalManager                    import LayoutSignals
 from cores.Settings                         import Settings
 from ui.uikits.Widget                       import Widget
 from ui.uikits.GridLayout                   import GridLayout
@@ -35,7 +35,7 @@ class TabWidget(QTabWidget):
 
         self.parent = parent
 
-        self.signals = SignalManager(self)
+        self.signals = LayoutSignals(self)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
     def setValue(self, key, value):

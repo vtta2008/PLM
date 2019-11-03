@@ -13,20 +13,22 @@ from __future__ import absolute_import
 
 # Python
 import os, sys, requests, platform, subprocess, winshell, yaml, json, re, datetime, time, uuid, win32api, linecache
-from PIL import Image
-from resizeimage import resizeimage
+
+from PIL                import Image
+from resizeimage        import resizeimage
+from psutil             import cpu_percent, virtual_memory
 
 __all__ = ['attr_type', 'auto_convert', 'camel_case_to_lower_case_underscore', 'camel_case_to_title', 'clean_name',
             'is_bool', 'is_dict', 'is_list', 'is_none', 'is_number', 'is_string', 'list_attr_types',
             'lower_case_underscore_to_camel_case', 'is_newer', 'test_func']
 
 # PyQt5
-from PyQt5.QtCore       import Qt, QRectF, QRect, QSize
+from PyQt5.QtCore       import Qt, QRectF, QRect, QSize, pyqtSignal, pyqtSlot
 from PyQt5.QtGui        import QColor, QFont, QFontMetrics
 
 # PLM
 from appData            import (__envKey__, __pkgsReq__, KEYPACKAGE, LOGO_DIR, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR,
-                                APP_ICON_DIR)
+                                APP_ICON_DIR, actionTypes)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Destop tool """
@@ -54,6 +56,38 @@ def create_folder(pth, mode=0o770):
         os.umask(original_umask)
     res += [pth]
     return res
+
+def create_signal(argType=None, name=None):
+
+    if not name or name is None:
+        if argType is None:
+            return pyqtSignal()
+        else:
+            return pyqtSignal(argType)
+    else:
+        if argType is None:
+            return pyqtSignal(name=name)
+        else:
+            return pyqtSignal(argType, name=name)
+
+def create_slot(argType=None, name=None):
+
+    if not name or name is None:
+        if argType is None:
+            return pyqtSlot()
+        else:
+            return pyqtSlot(argType)
+    else:
+        if argType is None:
+            return pyqtSlot(name=name)
+        else:
+            return pyqtSlot(argType, name=name)
+
+def create_signal_slot(argType, name):
+    signal = create_signal(argType, name)
+    slot   = create_slot(argType, name)
+    return signal, slot
+
 
 def obj_properties_setting(directory, mode):
     if platform.system() == "Windows" or platform.system() == "Darwin":
@@ -161,28 +195,29 @@ def get_py_env_var(key, path):
 # -------------------------------------------------------------------------------------------------------------
 """ Command Prompt """
 
-def cmd_execute_py(name, path):
+def cmd_execute_py(name, directory):
     """
     Executing a python file
     :param name: python file name
-    :param path: path to python file
+    :param directory: path to python file
     :return: executing in command prompt
     """
-    print("Executing {name} from {path}".format(name=name, path=path))
-    pth = os.path.join(path, name)
+    print("Executing {name} from {path}".format(name=name, path=directory))
+    pth = os.path.join(directory, name)
     if os.path.exists(pth):
-        subprocess.call([sys.executable, pth])
+        return subprocess.call([sys.executable, pth])
+    else:
+        print("Path: {} does not exist".format(directory))
 
 def system_call(args, cwd="."):
     print("Running '{}' in '{}'".format(str(args), cwd))
-    subprocess.call(args, cwd=cwd)
-    pass
+    return subprocess.call(args, cwd=cwd)
 
 def run_cmd(pth):
-    subprocess.Popen(pth)
+    return subprocess.Popen(pth)
 
 def open_cmd():
-    os.system("start /wait cmd")
+    return os.system("start /wait cmd")
 
 # -------------------------------------------------------------------------------------------------------------
 """ Find Path """
@@ -218,6 +253,16 @@ def get_base_folder(path):
 
 def get_base_name(path):
     return os.path.basename(path)
+
+def get_cpu_useage(interval=1, percpu=False):
+    return cpu_percent(interval, percpu)
+
+def get_ram_total():
+    return byte2gigabyte(virtual_memory()[0])
+
+def get_ram_useage():
+    return virtual_memory()[2]
+
 
 def get_app_icon(size=32, iconName="About"):
     # Get the right directory base on icon size
@@ -462,6 +507,9 @@ def bool2str(arg):
     else:
         return "False"
 
+def byte2gigabyte(byte):
+    return round(byte/1073741824)
+
 def get_datetime():
     datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
     return datetime_stamp
@@ -689,8 +737,15 @@ def is_none(s):
 
 
 def is_string(s):
-    return type(s) in [str, unicode]
+    return type(s) in [str]
 
+def is_action(s):
+    if type(s) in [QAction]:
+        return True
+    elif s.Type in actionTypes:
+        return True
+    else:
+        return False
 
 def is_number(s):
     """

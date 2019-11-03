@@ -15,7 +15,7 @@ from PyQt5.QtWidgets                        import QComboBox
 
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import SignalManager
+from cores.SignalManager                    import LayoutSignals
 from cores.Settings                         import Settings
 from ui.uikits.uiUtils                      import check_preset
 
@@ -29,7 +29,7 @@ class ComboBox(QComboBox):
     def __init__(self, preset={}, parent=None):
         super(ComboBox, self).__init__(parent)
 
-        self.signals                        = SignalManager(self)
+        self.signals                        = LayoutSignals(self)
         self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.parent                         = parent
         self.preset                         = preset

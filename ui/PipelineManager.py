@@ -23,14 +23,13 @@ from ui.uikits.GroupBox                 import GroupBox
 from ui.uikits.Widget                   import Widget
 from ui.uikits.GridLayout               import GridLayout
 from ui.uikits.Icon                     import LogoIcon
-from ui.Menus.MainMenuBar               import MainMenuBar                      # Header
+from ui.Menus.MainMenuBar               import MainMenuBar
 from ui.Network.ConnectStatus           import ConnectStatus
 from ui.AppToolbar.MainToolBar          import MainToolBar
 from ui.TopTab                          import TopTab                           # Body
 from ui.BotTab                          import BotTab
 from ui.Footer                          import Footer                           # Footer
 from ui.StatusBar                       import StatusBar
-from utils                              import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
@@ -40,13 +39,15 @@ class PipelineManager(MainWindow):
     key = 'PipelineManager'
     _name = __appname__
 
-    def __init__(self, settings, parent=None):
+    def __init__(self, settings, actionManager, parent=None):
         super(PipelineManager, self).__init__(parent)
 
         self.url = __homepage__
         self.setObjectName(self._name)
+        self.setWindowTitle(__appname__)
         self.setWindowIcon(LogoIcon("Logo"))
         self.settings       = settings
+        self.actionManager  = actionManager
 
         self.mainWidget     = Widget()
         self.layout         = GridLayout()
@@ -57,8 +58,8 @@ class PipelineManager(MainWindow):
 
     def buildUI(self):
 
-        self.mainMenuBar            = MainMenuBar()
-        self.mainToolBar            = MainToolBar()
+        self.mainMenuBar            = MainMenuBar(self.actionManager, self)
+        self.mainToolBar            = MainToolBar(self.actionManager, self)
         self.connectStatus          = ConnectStatus()
         self.notification           = GridLayout()
 
@@ -89,48 +90,26 @@ class PipelineManager(MainWindow):
             layout.signals.openBrowser.connect(self.signals.openBrowser)
             layout.signals.setSetting.connect(self.signals.setSetting)
 
-        cbs = [
-               self.botTabUI.botTab1.tbTDCB, self.botTabUI.botTab1.tbCompCB,
-               self.botTabUI.botTab1.tbArtCB, self.botTabUI.botTab1.tbTexCB,
-               self.botTabUI.botTab1.tbPostCB, self.botTabUI.botTab1.mainToolBarCB,
-               self.botTabUI.botTab1.statusBarCB, self.botTabUI.botTab1.connectStatuCB,
-               self.botTabUI.botTab1.notifiCB,
-                ]
+        # Header
 
-        sections = [
-                    self.mainToolBar.tdToolBar, self.mainToolBar.compToolBar, self.mainToolBar.artToolBar, self.mainToolBar.textureToolBar,
-                    self.mainToolBar.postToolBar, self.mainMenuSec, self.statusBar, self.connectStatusSec, self.notifiSec
-                    ]
+        # Header Menu
+        self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 6)
+        self.layout.addWidget(self.connectStatusSec, 0, 6, 1, 3)
 
-        for i in range(len(sections)):
-            key = self.botTabUI.botTab1.keys[i]
-            grp = self.key
-
-            self.settings.beginGroup(grp)
-            if self.settings.value(key) is None:
-                if i == 3 or i == 4:
-                    val = False
-                else:
-                    val = True
-            else:
-                val = str2bool(self.settings.value(key))
-            self.settings.endGroup()
-
-            cbs[i].setChecked(val)
-            sections[i].setVisible(val)
-            cbs[i].stateChanged.connect(sections[i].setVisible)
-            cbs[i].stateChanged.connect(partial(self.signals.setSetting.emit, key, bool2str(val), grp))
-
-        # Signal
-        self.layout.addWidget(self.mainToolBarSec, 0, 0, 1, 9)
-        self.layout.addWidget(self.mainMenuSec, 1, 0, 1, 6)
-        self.layout.addWidget(self.connectStatusSec, 1, 6, 1, 3)
+        # Header ToolBar
+        self.layout.addWidget(self.mainToolBarSec, 1, 0, 1, 9)
 
 
+        # Body
+        # Body top
         self.layout.addWidget(self.topTabUI, 2, 0, 4, 9)
+
+        # Body bot
         self.layout.addWidget(self.botTabUI, 6, 0, 3, 6)
         self.layout.addWidget(self.notifiSec, 6, 6, 3, 3)
 
+
+        # Footer
         self.layout.addWidget(self.footer, 9, 0, 1, 9)
 
     def add_dockWidget(self, dock, pos=dockB):

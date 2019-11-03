@@ -62,6 +62,7 @@ from cores.ThreadManager            import ThreadManager
 from utils                          import str2bool, clean_file_ext, QuerryDB
 from cores.Loggers                  import Loggers
 from cores.Settings                 import Settings
+from ui.ActionManager               import ActionManager
 from ui.uikits.Icon                 import LogoIcon
 from ui.Web.Browser                 import Browser
 from ui.LayoutManager               import LayoutManager
@@ -99,8 +100,8 @@ class PLM(QApplication):
         self.set_styleSheet('dark')                                                                  # Layout style
         self.setWindowIcon(LogoIcon("Logo"))                                                         # Set up task bar icon
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)                      # Change taskbar icon
-
-        self.layoutManager          = LayoutManager(self)
+        self.actionManager          = ActionManager()
+        self.layoutManager          = LayoutManager(self.actionManager, self)
         self.layoutManager.regisLayout(self.browser)
         self.layoutManager.buildLayouts()
 
@@ -108,6 +109,7 @@ class PLM(QApplication):
             layout.signals.showLayout.connect(self.showLayout)
             layout.signals.executing.connect(self.executing)
             layout.signals.openBrowser.connect(self.openBrowser)
+            layout.signals.setSetting.connect(self.setSetting)
 
         try:
             self.username, token, cookie, remember = self.database.query_table('curUser')
@@ -149,14 +151,14 @@ class PLM(QApplication):
         self.browser.update()
         self.browser.show()
 
-    @pyqtSlot(str, str, str)
+    @pyqtSlot(str, str, str, name='setSetting')
     def setSetting(self, key=None, value=None, grp=None):
-        # print("receive setting: configKey: {0}, to value: {1}, in group {2}".format(configKey, value, grp))
+        print("receive setting: configKey: {0}, to value: {1}, in group {2}".format(key, value, grp))
         self.settings.initSetValue(key, value, grp)
 
     @pyqtSlot(str, name="executing")
     def executing(self, cmd):
-        # print("Recieve signal: '{0}'".format(cmd))
+        # print("Recieve signal_cpu: '{0}'".format(cmd))
         if cmd in self.layoutManager.keys():
             self.signals.showLayout.emit(cmd, 'show')
         elif os.path.isdir(cmd):
@@ -180,7 +182,7 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str, name="showLayout")
     def showLayout(self, layoutID, mode):
-        # print("Recieve signal: '{0}: {1}'".format(layoutID, mode))
+        # print("Recieve signal_cpu: '{0}: {1}'".format(layoutID, mode))
 
         if layoutID == 'app':
             layout = self

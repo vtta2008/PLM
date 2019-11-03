@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Menu.py
+Script Name: testnewcode.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -10,20 +10,13 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtWidgets import QMenuBar, QMenu
+from PyQt5.QtWidgets import QToolBar
 
+from utils import is_string
 
-class MenuBar(QMenuBar):
-
-    def __init__(self, key=None, parent=None):
-        super(MenuBar, self).__init__(parent)
-
-        self.parent = parent
-
-
-
-
+a = is_string('aaaaa')
+print(a, type(a))
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 30/10/2019 - 2:23 PM
+# Created by panda on 3/11/2019 - 12:18 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

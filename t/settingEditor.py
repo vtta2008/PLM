@@ -377,7 +377,7 @@ class SettingsTree(QTreeWidget):
         if self.settings is None:
             return
 
-        # The signal might not be connected.
+        # The signal_cpu might not be connected.
         try:
             self.itemChanged.disconnect(self.updateSetting)
         except:
