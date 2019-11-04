@@ -18,7 +18,6 @@ from appData                                import SETTING_FILEPTH, ST_FORMAT, _
 from cores.SignalManager                    import LayoutSignals
 from cores.Settings                         import Settings
 
-from ui.uikits.Widget import Widget
 from ui.uikits.MainWindow import MainWindow
 
 class MenuBar(QMenuBar):

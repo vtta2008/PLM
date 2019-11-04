@@ -15,30 +15,41 @@ from damg import DAMGDICT, DAMGLIST
 from functools import partial
 
 from ui.uikits.Action import Action
-from appData import mainConfig, LAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY, CONFIG_DEV, CONFIG_TOOLS, CONFIG_OFFICE
 from utils import data_handler, is_action, is_string
-
+from appData import (mainConfig, LAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY, CONFIG_DEV, CONFIG_TOOLS,
+                     CONFIG_OFFICE, CONFIG_TDS, CONFIG_ART, CONFIG_TEX, CONFIG_POST, CONFIG_VFX, CONFIG_EXTRA)
 
 class ActionManager(DAMGDICT):
 
-    key = 'ActionManager'
-    appInfo = data_handler(filePath=mainConfig)
-    actionKeys = DAMGLIST()
-    showLayoutKeys = DAMGLIST()
-    startFileKeys = DAMGLIST()
-    openBrowserKeys = DAMGLIST()
-    executingKeys = DAMGLIST()
+    key             = 'ActionManager'
+    _name           = 'ActionManager'
 
-    orgActions = ['NewOrganisation', 'EditOrganisation', 'ConfigOrganisation', 'OrganisationManager']
-    teamActions = ['NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager']
-    prjActions = ['NewProject', 'EditProject', 'ConfigProject', 'ProjectManager']
-    appActions = ['SettingUI', 'Config', 'Preferences', 'Exit']
-    goActions = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder']
-    officeActions = ['TextEditor', 'NoteReminder'] + CONFIG_OFFICE
-    toolsActions = CONFIG_TOOLS + ['CleanPyc', 'ReConfig', 'Debug']
-    devActions = CONFIG_DEV
-    libActions = ['Alpha', 'HDRI', 'Texture']
-    helpActions = ['PLM wiki', 'About', 'CodeOfConduct', 'Contributing', 'Credit', 'Reference', 'Version', 'Feedback', 'ContactUs', ]
+    appInfo         = data_handler(filePath=mainConfig)
+
+    actionKeys      = DAMGLIST()
+    showLayoutKeys  = DAMGLIST()
+    startFileKeys   = DAMGLIST()
+    openBrowserKeys = DAMGLIST()
+    executingKeys   = DAMGLIST()
+
+    orgActions      = ['NewOrganisation', 'EditOrganisation', 'ConfigOrganisation', 'OrganisationManager']
+    teamActions     = ['NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager']
+    prjActions      = ['NewProject', 'EditProject', 'ConfigProject', 'ProjectManager']
+    appActions      = ['SettingUI', 'Config', 'Preferences', 'Exit']
+    goActions       = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder']
+    officeActions   = ['TextEditor', 'NoteReminder'] + CONFIG_OFFICE
+    toolsActions    = CONFIG_TOOLS + ['CleanPyc', 'ReConfig', 'Debug']
+    devActions      = CONFIG_DEV
+    libActions      = ['Alpha', 'HDRI', 'Texture']
+    helpActions     = ['PLM wiki', 'About', 'CodeOfConduct', 'Contributing', 'Credit', 'Reference', 'Version', 'Feedback', 'ContactUs', ]
+
+    tdActions       = CONFIG_TDS
+    artActions      = CONFIG_ART
+    texActions      = CONFIG_TEX
+    postActions     = CONFIG_POST
+    vfxActions      = CONFIG_VFX
+    extraActions    = CONFIG_EXTRA
+
 
     def __init__(self, parent=None):
         super(ActionManager, self).__init__(self)
@@ -60,37 +71,55 @@ class ActionManager(DAMGDICT):
     def actionRegisterError(self, key):
         return print('ActionRegisterError: This action is already registered: {0}'.format(key))
 
+    def extraToolActions(self, parent):
+        return self.createActions(self.extraActions, parent)
+
+    def tdToolBarActions(self, parent):
+        return self.createActions(self.tdActions, parent)
+
+    def artToolBarActions(self, parent):
+        return self.createActions(self.artActions, parent)
+
+    def texToolBarActions(self, parent):
+        return self.createActions(self.texActions, parent)
+
+    def postToolBarActions(self, parent):
+        return self.createActions(self.postActions, parent)
+
+    def vfxToolBarActions(self, parent):
+        return self.createActions(self.vfxActions, parent)
+
     def appMenuActions(self, parent):
-        return self.creatActions(self.appActions, parent)
+        return self.createActions(self.appActions, parent)
 
     def orgMenuActions(self, parent):
-        return self.creatActions(self.orgActions, parent)
+        return self.createActions(self.orgActions, parent)
 
     def teamMenuActions(self, parent):
-        return self.creatActions(self.teamActions, parent)
+        return self.createActions(self.teamActions, parent)
 
     def projectMenuActions(self, parent):
-        return self.creatActions(self.prjActions, parent)
+        return self.createActions(self.prjActions, parent)
 
     def goMenuActions(self, parent):
-        return self.creatActions(self.goActions, parent)
+        return self.createActions(self.goActions, parent)
 
     def officeMenuActions(self, parent):
-        return self.creatActions(self.officeActions, parent)
+        return self.createActions(self.officeActions, parent)
 
     def toolsMenuActions(self, parent):
-        return self.creatActions(self.toolsActions, parent)
+        return self.createActions(self.toolsActions, parent)
 
     def devMenuActions(self, parent):
-        return self.creatActions(self.devActions, parent)
+        return self.createActions(self.devActions, parent)
 
     def libMenuActions(self, parent):
-        return self.creatActions(self.libActions, parent)
+        return self.createActions(self.libActions, parent)
 
     def helpMenuActions(self, parent):
-        return self.creatActions(self.helpActions, parent)
+        return self.createActions(self.helpActions, parent)
 
-    def creatActions(self, keys, parent):
+    def createActions(self, keys, parent):
         actions = []
         for key in keys:
             if is_string(key):

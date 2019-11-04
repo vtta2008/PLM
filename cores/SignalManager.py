@@ -81,7 +81,7 @@ class LayoutSignals(DAMG):
                     pass
 
         if self.parent.key == 'PipelineManager':
-            self.parent.setMaximumWidth(500)
+            self.parent.setFixedWidth(500)
 
         if self.parent.key == 'TobTab' and self.parent.key == 'BotTab':
             self.parent.setMovable(True)

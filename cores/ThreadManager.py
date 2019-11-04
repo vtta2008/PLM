@@ -10,6 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
+from PyQt5.QtCore               import pyqtSlot
+
 from damg                       import DAMGLIST, DAMGTHREADPOOL, DAMGTIMER, DAMGWORKER, DAMGTHREAD
 
 class Counting(DAMGTIMER):
@@ -50,26 +52,6 @@ class ThreadManager(DAMGTHREADPOOL):
 
     def stopCounting(self):
         self.counter.finish()
-
-    def assign_worker(self, task):
-        worker = DAMGWORKER(task)
-        worker.signals.result.connect(self.process_output)
-        worker.signals.progress.connect(self.process_task)
-        worker.signals.finished.connect(self.task_completed)
-        self.workers.append(worker)
-
-        return self.start(worker)
-
-    def process_output(self, val):
-        print(val)
-
-    def process_task(self, val):
-        print('{0}% done'.format(val))
-
-    def task_completed(self, worker):
-        self.workers.remove(worker)
-        print('worker commpleted')
-
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 20/10/2019 - 6:23 PM

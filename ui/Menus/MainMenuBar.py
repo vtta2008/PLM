@@ -125,11 +125,6 @@ class MainMenuBar(MenuBar):
         for action in actions:
             menu.addAction(action)
 
-    @pyqtSlot(bool)
-    def show_layout(self, param):
-        self.specs.showState.emit(True)
-        self.setVisible(param)
-
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     from ui.uikits.GroupBox import GroupBox

@@ -77,9 +77,9 @@ class Footer(Widget):
     def buildUI(self):
         layout          = GridLayout()
 
-        # for i in range(7):
-        #     layout.addWidget(Label({'txt': " "}), 0, i, 1, 1)
-        #     i += 1
+        for i in range(3):
+            layout.addWidget(Label({'txt': " "}), 0, i, 1, 1)
+            i += 1
 
         i = 4
         for tag in ['python', 'licence', 'version']:

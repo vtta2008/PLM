@@ -179,7 +179,7 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str, name="showLayout")
     def showLayout(self, layoutID, mode):
-        print("Recieve signal_cpu: '{0}: {1}'".format(layoutID, mode))
+        # print("Recieve signal_cpu: '{0}: {1}'".format(layoutID, mode))
 
         if layoutID == 'app':
             layout = self

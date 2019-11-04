@@ -14,9 +14,8 @@ from __future__ import absolute_import, unicode_literals
 
 # Python
 import os, subprocess
-from damg import DAMG, DAMGDICT
 
-class EnvVariableManager(DAMG):
+class EnvVariableManager:
 
     """
     This class is all about system environment variable, you can set new, edit or delete or put path into PATH variable.
@@ -26,9 +25,10 @@ class EnvVariableManager(DAMG):
     _envKeys                                            = [k for k in os.environ.keys()]        # Environtment keys
     _envVals                                            = [v for v in os.environ.values()]      # Environtment variables
     _paths                                              = os.getenv('PATH').split(';')          # Paths in PATH
-    _data                                               = DAMGDICT()
+    _data                                               = dict()
 
     def __init__(self, envKey=None, envVal=None, mode='add'):
+        # super(EnvVariableManager, self).__init__(self)
         """
         Do something with environment variable.
         :param envKey: environment configKey.

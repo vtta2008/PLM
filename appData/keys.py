@@ -90,7 +90,7 @@ TRACK_POST          = [ 'Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro
 TRACK_OFFICE        = [ 'Word', 'Excel', 'PowerPoint', 'Wordpad']
 TRACK_DEV           = [ 'PyCharm', 'Sublime Text', 'QtDesigner', 'Git Bash', 'Command Prompt', 'Spyder']
 TRACK_TOOLS         = [ 'Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'ScreenShot', 'NodeGraph']
-TRACK_EXTRA         = [ 'ReConfig', 'CleanPyc', 'Debug' ]
+TRACK_EXTRA         = [ 'ReConfig', 'CleanPyc', 'Debug', 'Snipping Tool']
 TRACK_SYSTRAY       = [ 'Snipping Tool', 'ScreenShot', 'Maximize', 'Minimize', 'Restore', 'Quit', ]
 KEYDETECT           = [ "Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url"]
 FIX_KEY             = { 'ScreenShot': 'ScreenShot', 'Snipping Tool': 'SnippingTool'}
@@ -178,7 +178,8 @@ LAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 'Cal
 
 OPEN_BROWSER_KEY = ['PLM wiki']
 
-START_FILE_KEY = CONFIG_DEV + CONFIG_OFFICE + CONFIG_TDS + CONFIG_VFX + CONFIG_ART + CONFIG_TEX + CONFIG_POST + ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder']
+START_FILE_KEY = CONFIG_DEV + CONFIG_OFFICE + CONFIG_TDS + CONFIG_VFX + CONFIG_ART + CONFIG_TEX + CONFIG_POST + \
+                 ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder', 'Snipping Tool']
 
 EXECUTING_KEY = ['Exit', 'CleanPyc', 'ReConfig', 'Debug']
 
