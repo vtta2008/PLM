@@ -157,11 +157,13 @@ class LayoutManager(DAMGDICT):
         for layout in [self.signin, self.signup, self.forgotPW]:
             self.regisLayout(layout)
 
+        return self.signin, self.signup, self.forgotPW
+
     def mainLayouts(self):
         from ui import PipelineManager, SysTray
 
-        self.mainUI     = PipelineManager.PipelineManager(self.settings, self.actionManager, self.parent.settings)
-        self.sysTray    = SysTray.SysTray()
+        self.mainUI     = PipelineManager.PipelineManager(self.settings, self.actionManager)
+        self.sysTray    = SysTray.SysTray(self.settings, self.actionManager)
         self.sysTray.show()
 
         layouts = [self.mainUI, self.sysTray]
@@ -246,6 +248,9 @@ class LayoutManager(DAMGDICT):
 
         for layout in [self.newProject, ]:
             self.regisLayout(layout)
+
+        layouts = [self.newProject]
+        return layouts
 
     @pyqtSlot(object)
     def regisLayout(self, layout):

@@ -384,6 +384,10 @@ class ConfigManager(DAMG):
         self.mainInfo['SettingFolder'] = ['Go To Setting Folder', 'SettingFolder', self.pthInfo['setting']]
         self.mainInfo['AppFolder'] = ['Go To PLM Folder', 'AppFolder', self.pthInfo['root']]
 
+        self.mainInfo['Restore'] = ['Restore', 'Restore', 'PipelineManager']
+        self.mainInfo['Maximize'] = ['Maximize', 'Maximize', 'PipelineManager']
+        self.mainInfo['Minimize'] = ['Minimize', 'Minimize', 'PipelineManager']
+
         for key in self.appInfo:
             if 'NukeX' in key:
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --nukex"
@@ -415,7 +419,7 @@ class ConfigManager(DAMG):
                 self.mainInfo[key] = [key, self.getAppIcon(32, key), FIX_KEY[key]]
 
         pth = os.path.join(self.pthInfo['config'], fileName)
-        self.compare_data(pth, self.mainInfo)
+        self.save_data(pth, self.mainInfo)
         return True
 
     def getAppIcon(self, size=32, iconName="AboutPlm"):

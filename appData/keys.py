@@ -91,7 +91,7 @@ TRACK_OFFICE        = [ 'Word', 'Excel', 'PowerPoint', 'Wordpad']
 TRACK_DEV           = [ 'PyCharm', 'Sublime Text', 'QtDesigner', 'Git Bash', 'Command Prompt', 'Spyder']
 TRACK_TOOLS         = [ 'Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'ScreenShot', 'NodeGraph']
 TRACK_EXTRA         = [ 'ReConfig', 'CleanPyc', 'Debug', 'Snipping Tool']
-TRACK_SYSTRAY       = [ 'Snipping Tool', 'ScreenShot', 'Maximize', 'Minimize', 'Restore', 'Quit', ]
+TRACK_SYSTRAY       = [ 'Snipping Tool', 'ScreenShot', 'Maximize', 'Minimize', 'Restore', 'Exit', ]
 KEYDETECT           = [ "Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url"]
 FIX_KEY             = { 'ScreenShot': 'ScreenShot', 'Snipping Tool': 'SnippingTool'}
 
@@ -128,7 +128,7 @@ def generate_key_packages(*args):
                             key = name + " " + ver
                     keyPackage.append(key)
 
-    return keyPackage + otherApp + anacondaApp + CONFIG_APPUI + ['Word', 'Excel', 'PowerPoint', 'ReConfig', 'CleanPyc', 'Debug']
+    return keyPackage + otherApp + anacondaApp + CONFIG_APPUI + ['Word', 'Excel', 'PowerPoint', 'ReConfig', 'CleanPyc', 'Debug', 'Restore', 'Maximize', 'Minimize', 'Quit']
 
 def generate_config(key, *args):
     keyPackages = generate_key_packages()
@@ -153,7 +153,7 @@ CONFIG_OFFICE   = generate_config('Office')                         # Paper work
 CONFIG_DEV      = generate_config('Dev') + ['Command Prompt']       # Rnd - Research and development
 CONFIG_TOOLS    = generate_config('Tools')                          # useful/custom tool supporting for the whole pipeline
 CONFIG_EXTRA    = generate_config('Extra')                          # Extra tool may be considering to use
-CONFIG_SYSTRAY  = generate_config('sysTray')
+CONFIG_SYSTRAY  = generate_config('sysTray') + ['Exit']
 
 ACTIONS_DATA = dict(TD                  = CONFIG_TDS,
                     VFX                 = CONFIG_VFX,
@@ -166,15 +166,20 @@ ACTIONS_DATA = dict(TD                  = CONFIG_TDS,
                     EXTRA               = CONFIG_EXTRA,
                     SYSTRAY             = CONFIG_SYSTRAY, )
 
-LAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 'Calendar', 'CodeOfConduct', 'ConfigOrganisation',
+SHOWLAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 'Calendar', 'CodeOfConduct', 'ConfigOrganisation',
                        'ConfigProject', 'ConfigTeam', 'Config', 'Configurations', 'ConnectStatus', 'ContactUs', 'Contributing',
                        'Credit', 'EditOrganisation', 'EditProject', 'EditTeam', 'EnglishDictionary', 'Feedback',
                        'FindFiles', 'Footer', 'ForgotPassword', 'GridLayout', 'HDRI', 'ImageViewer', 'Licence', 'MainMenuSection',
-                       'MainToolBar', 'MainToolBarSection', 'NewOrganisation', 'NewProject', 'NewTeam', 'NodeGraph',
-                       'NoteReminder', 'Notification', 'OrganisationManager', 'PipelineManager', 'Preferences',
-                       'ProjectManager', 'Reference', 'ScreenShot', 'SettingUI', 'SignIn', 'SignUp', 'StatusBar',
-                       'SysTray', 'TeamManager', 'TextEditor', 'Texture', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting',
-                       'Version']
+                           'MainToolBar', 'MainToolBarSection', 'NewOrganisation', 'NewProject', 'NewTeam', 'NodeGraph',
+                           'NoteReminder', 'Notification', 'OrganisationManager', 'PipelineManager', 'Preferences',
+                           'ProjectManager', 'Reference', 'ScreenShot', 'SettingUI', 'SignIn', 'SignUp', 'StatusBar',
+                           'SysTray', 'TeamManager', 'TextEditor', 'Texture', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting',
+                           'Version']
+
+RESTORE_KEY             = ['PipelineManager', 'Restore']
+SHOWMAX_KEY             = ['PipelineManager', 'Maximize']
+SHOWMIN_KEY             = ['PipelineManager', 'Minimize']
+
 
 OPEN_BROWSER_KEY = ['PLM wiki']
 
@@ -183,9 +188,7 @@ START_FILE_KEY = CONFIG_DEV + CONFIG_OFFICE + CONFIG_TDS + CONFIG_VFX + CONFIG_A
 
 EXECUTING_KEY = ['Exit', 'CleanPyc', 'ReConfig', 'Debug']
 
-import pprint
-# pprint.pprint(START_FILE_KEY)
-# pprint.pprint(sorted(LAYOUT_KEY))
+IGNORE_ICON_NAME = ['Widget', 'TopTab1', 'TopTab2', 'TopTab3', 'ItemWidget']
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/08/2018 - 2:30 AM

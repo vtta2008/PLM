@@ -15,7 +15,7 @@ import os
 from PyQt5.QtGui                            import QIcon
 from PyQt5.QtCore                           import QSize
 
-from appData                                import __copyright__, appIconCfg
+from appData                                import __copyright__, appIconCfg, IGNORE_ICON_NAME
 from cores.SignalManager                    import LayoutSignals
 from utils.utils                            import data_handler, get_logo_icon, get_app_icon, get_tag_icon
 
@@ -67,7 +67,8 @@ class AppIcon(Icon):
                 break
 
         if not self._found:
-            print("FILENOTFOUNDERROR: {0}: Could not find icon name: {1}".format(__name__, self.iconName))
+            if not self.iconName in IGNORE_ICON_NAME:
+                print("IconNotFound: {0}: Could not find icon name: {1}".format(__name__, self.iconName))
         else:
             self.addFile(self.iconPth, QSize(self.iconSize, self.iconSize))
 

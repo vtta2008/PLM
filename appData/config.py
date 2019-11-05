@@ -149,7 +149,6 @@ with open(mainConfig, 'r') as f:
     mainData = json.load(f)
 
 
-
 CONFIG_OFFICE = [k for k in mainData.keys() if k in CONFIG_OFFICE]
 
 # -------------------------------------------------------------------------------------------------------------

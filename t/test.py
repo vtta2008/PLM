@@ -10,14 +10,26 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from cores.base import DAMGDICT
+class my_decorator(object):
 
-b = dict(gau = 'afdasf')
+    def __init__(self, f):
+        # print("inside my_decorator.__init__()")
+        f() # Prove that function definition has completed
 
-a = DAMGDICT()
-a.input(b)
+    def __call__(self):
+        if isinstance(self, (object)):
+            return True
+        else:
+            return False
 
-print(a)
+@my_decorator
+def aFunction(txt='aaaa'):
+    print(txt)
+
+# print("Finished decorating aFunction()")
+
+aFunction()
+
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 25/10/2019 - 2:17 PM
+# Created by panda on 6/11/2019 - 1:38 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

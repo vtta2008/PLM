@@ -36,29 +36,41 @@ class SysTrayIconMenu(QMenu):
 
     key = 'SysTrayIconMenu'
 
-    def __init__(self, parent=None):
+    def __init__(self, settings, actionManager, parent=None):
         super(SysTrayIconMenu, self).__init__(parent)
 
         self.signals = LayoutSignals(self)
+        self.settings = settings
+        self.actionManager = actionManager
 
         with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
             self.appInfo = json.load(f)
 
-        self.addSeparator()
-        for k in CONFIG_SYSTRAY:
-            if k == 'Screenshot':
-                self.addAction(Action({'icon':k, 'txt': k, 'trg': partial(self.signals.showLayout.emit, self.appInfo[k][2], 'show')}, self))
-            elif k == 'Snipping Tool':
-                self.addAction(Action({'icon': k, 'txt': k, 'trg': partial(self.signals.executing.emit, self.appInfo[k][2])}, self))
+        actions = self.actionManager.sysTrayMenuActions(self)
+        # for action in actions:
+        #     self.addAction(action)
 
+        self.addActions(actions[3:5])
         self.addSeparator()
-
-        self.addAction(Action({'icon':'Maximize','txt':'Maximize','trg':partial(self.signals.showLayout.emit, 'PipelineManager', 'showMax')}, self))
-        self.addAction(Action({'icon':'Minimize','txt':"Minimize",'trg':partial(self.signals.showLayout.emit, 'PipelineManager', 'showMin')}, self))
-        self.addAction(Action({'icon':'Restore','txt':"Restore", 'trg':partial(self.signals.showLayout.emit, 'PipelineManager', 'showNor')}, self))
-
+        self.addActions(actions[0:3])
         self.addSeparator()
-        self.addAction(Action({'icon':'Close','txt':"Quit", 'trg':partial(self.signals.showLayout.emit, 'app', 'quit')}, self))
+        self.addAction(actions[-1])
+
+        # self.addSeparator()
+        # for k in CONFIG_SYSTRAY:
+        #     if k == 'ScreenShot':
+        #         self.addAction(Action({'icon':k, 'txt': k, 'trg': partial(self.signals.showLayout.emit, self.appInfo[k][2], 'show')}, self))
+        #     elif k == 'Snipping Tool':
+        #         self.addAction(Action({'icon': k, 'txt': k, 'trg': partial(self.signals.executing.emit, self.appInfo[k][2])}, self))
+        #
+        # self.addSeparator()
+        #
+        # self.addAction(Action({'icon':'Maximize','txt':'Maximize','trg':partial(self.signals.showLayout.emit, 'PipelineManager', 'showMax')}, self))
+        # self.addAction(Action({'icon':'Minimize','txt':"Minimize",'trg':partial(self.signals.showLayout.emit, 'PipelineManager', 'showMin')}, self))
+        # self.addAction(Action({'icon':'Restore','txt':"Restore", 'trg':partial(self.signals.showLayout.emit, 'PipelineManager', 'showNor')}, self))
+        #
+        # self.addSeparator()
+        # self.addAction(Action({'icon':'Close','txt':"Quit", 'trg':partial(self.signals.showLayout.emit, 'app', 'quit')}, self))
 
 class SystrayWheelEventObject(DAMG):
 
@@ -76,18 +88,20 @@ class SysTray(SystemTrayIcon):
 
     key = 'SysTray'
 
-    def __init__(self, parent=None):
+    def __init__(self, settings, actionManager, parent=None):
 
         super(SysTray, self).__init__(parent)
 
         self.db = QuerryDB()
+        self.settings = settings
+        self.actionManager = actionManager
 
         try:
             self.username, token, cookie, remember = self.db.query_table('curUser')
         except (ValueError, IndexError):
             self.username = 'DemoUser'
 
-        self.rightClickMenu = SysTrayIconMenu()
+        self.rightClickMenu = SysTrayIconMenu(self.settings, self.actionManager)
         self.rightClickMenu.signals.executing.connect(self.signals.executing.emit)
         self.rightClickMenu.signals.showLayout.connect(self.signals.showLayout.emit)
 

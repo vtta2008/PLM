@@ -30,7 +30,8 @@ from PyQt5.QtWidgets            import QTextEdit, QApplication
 
 # PLM
 from appData                    import SiPoMin
-from ui.uikits.GridLayout                     import GridLayout
+from ui.uikits.GridLayout       import GridLayout
+from ui.uikits.Widget           import Widget
 
 # -------------------------------------------------------------------------------------------------------------
 """ Processing User Input """
@@ -125,18 +126,19 @@ class pDeBug(pDetector):
 
         print(self.mode, self.message)
 
-class Debugger(GridLayout):
+class Debugger(Widget):
 
     def __init__(self, parent=None):
         super(Debugger, self).__init__(parent)
 
         doctest.testmod(verbose=True)
-        self.console = Console
+        self.console = Console()
         self.buildUI()
+        self.setLayout(self.console)
 
     def buildUI(self):
         self.textEdit = pDeBug(QtFatalMsg, self.console, None)
-        self.addWidget(self.textEdit)
+        self.console.addWidget(self.textEdit)
         self.textEdit.setSizePolicy(SiPoMin, SiPoMin)
         self.textEdit.setMaximumHeight(100)
 

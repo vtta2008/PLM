@@ -171,7 +171,7 @@ class PLM(QApplication):
         elif cmd == 'CleanPyc':
             clean_file_ext('.pyc')
         elif cmd == 'ReConfig':
-            self.configManager.cfg_mainPkgs()
+            self.configManager = ConfigManager(__envKey__, ROOT)
         elif cmd == 'Exit':
             self.exit()
         else:
@@ -215,7 +215,7 @@ class PLM(QApplication):
                     pass
                 else:
                     layout.setValue('showLayout', 'show')
-        elif mode == 'showNor':
+        elif mode == 'showRestore':
             try:
                 layout.showNormal()
             except AttributeError:

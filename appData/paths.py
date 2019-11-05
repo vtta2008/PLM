@@ -140,6 +140,7 @@ SETTING_FILEPTH = dict( app = APP_SETTING, user = USER_SETTING, unix = UNIX_SETT
 # -------------------------------------------------------------------------------------------------------------
 """ File path """
 
+PLM_DB_PTH                  = os.path.join(BIN_DIR)
 DB_PTH                      = os.path.join(DB_DIR, 'local.db')                          # Local database
 LOG_PTH                     = os.path.join(LOG_DIR, 'PLM.logs')                         # Log file
 

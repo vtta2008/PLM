@@ -16,7 +16,7 @@ from damg                       import DAMGLIST
 from PyQt5.QtWidgets            import QApplication
 
 # PLM
-from ui.uikits.Widget           import Widget
+from ui.uikits.Icon             import AppIcon
 from ui.uikits.BoxLayout        import VBoxLayout
 from ui.uikits.TabWidget        import TabWidget
 from ui                         import (TopTab1, TopTab2, TopTab3)
@@ -24,7 +24,7 @@ from ui                         import (TopTab1, TopTab2, TopTab3)
 # -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
 
-class TopTab(Widget):
+class TopTab(TabWidget):
 
     key                         = 'TopTab'
 
@@ -36,8 +36,6 @@ class TopTab(Widget):
         self.setLayout(self.layout)
 
     def buildUI(self):
-
-        self.tabs               = TabWidget()
 
         self.tab1               = TopTab1.TopTab1()
         self.tab2               = TopTab2.TopTab2()
@@ -53,28 +51,10 @@ class TopTab(Widget):
             layout.signals.setSetting.connect(self.signals.setSetting)
             layout.signals.openBrowser.connect(self.signals.openBrowser)
 
-            self.tabs.addTab(layout, self.tabNames[self.tabLst.index(layout)])
+            self.addTab(layout, self.tabNames[self.tabLst.index(layout)])
+            self.setTabIcon(self.tabLst.index(layout), AppIcon(32, self.tabNames[self.tabLst.index(layout)]))
 
         self.signals.updateAvatar.connect(self.tab2.update_avatar)
-
-        self.layout.addWidget(self.tabs)
-
-    def getCurrentTab(self):
-        return self.tabLst[self.tabs.currentIndex()]
-
-    def getCurrentKey(self):
-        return self.getCurrentTab().key
-
-    def showEvent(self, event):
-
-        try:
-            key                 = self.getValue('currentTab')
-        except None:
-            key                 = self.tab1.key
-        else:
-            self.signals.showLayout.emit(key, 'show')
-        finally:
-            self.signals.showLayout.emit(self.key, 'show')
 
     def hideEvent(self, event):
         self.setValue('currentTab', self.getCurrentKey())

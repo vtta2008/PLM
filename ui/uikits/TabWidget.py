@@ -38,11 +38,20 @@ class TabWidget(QTabWidget):
         self.signals = LayoutSignals(self)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
+        self.setTabPosition(self.North)
+        self.setMovable(True)
+
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
 
     def getValue(self, key):
         return self.settings.initValue(key, self.key)
+
+    def getCurrentTab(self):
+        return self.tabLst[self.currentIndex()]
+
+    def getCurrentKey(self):
+        return self.getCurrentTab().key
 
     def showEvent(self, event):
         sizeX = self.getValue('width')
@@ -60,8 +69,11 @@ class TabWidget(QTabWidget):
         if __name__ == '__main__':
             self.show()
         else:
-            self.signals.showLayout.emit(self.key, 'show')
-            event.ignore()
+            try:
+                key = self.getValue('currentTab')
+            except None:
+                key = self.key
+            self.signals.showLayout.emit(key, 'show')
 
     def sizeHint(self):
         size = super(TabWidget, self).sizeHint()
