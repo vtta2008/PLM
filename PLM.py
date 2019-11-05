@@ -11,42 +11,13 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
 
-""" Set up environment variable """
-
-__envKey__ = "DAMGTEAM"
-
-import os, sys
-
-ROOT = os.path.abspath(os.getcwd())
-
-from cores.EnvVariableManager import EnvVariableManager
-
-try:
-    os.getenv(__envKey__)
-except KeyError:
-    cfgable                     = False
-    EnvVariableManager(__envKey__, ROOT)
-else:
-    if os.getenv(__envKey__)   != ROOT:
-        EnvVariableManager(__envKey__, ROOT)
-        cfgable                 = True
-    else:
-        cfgable                 = True
-
-from cores.ConfigManager import ConfigManager
-configManager = ConfigManager(__envKey__, ROOT)
-
-if not configManager.cfgs:
-    print("CONFIGERROR: configurations have not done yet.")
-    sys.exit()
-else:
-    print('Configurations has been completed.')
-
+from __buildtins__ import *
+from __buildtins__ import __envKey__
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
 # Python
-import sys, requests, ctypes
+import os, sys, requests, ctypes
 
 # PyQt5
 from PyQt5.QtCore                   import pyqtSlot, QCoreApplication

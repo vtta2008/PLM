@@ -25,10 +25,10 @@ def setup_read(fname):
     with open(os.path.join(os.path.dirname(__file__), fname), 'r') as f:
         return f.read()
 
-appname = parse(__appname__)
+appname = parse(r'__appname__\s+=\s+(.*)')
 
-__name__ = __appname__
-__file__ = __appname__
+__name__ = appname
+__file__ = appname
 
 class __version_info__(DAMGTUPLE):
 
@@ -87,18 +87,67 @@ version_construct_class = dict(
                                 )
 
 
-class version(type):
+class _version(type):
+
+    key                             = 'DAMGVERSION'
+    Type                            = 'DamgVersion'
+
+    _step                           = 1
+    _majo_step                      = 1
+    _mino_step                      = 1
+    _micro_step                     = 1
 
     def __new__(cls, *args, **kwargs):
-        newType = type.__new__(version, 'version', (version, ), version_construct_class)
+        newType = type.__new__(_version, 'version', (_version,), version_construct_class)
         return newType
 
     def __init__(self):
-        type.__new__(version, 'version', (version, ), version_construct_class)
-        super(version, self).__init__(self, version)
+        self.__new__()
+        super(_version, self).__init__(self, _version)
+
+    def increase_majo_step(self):
+        return self._majo_step + self._step
+
+    def increase_mino_step(self):
+        return self._mino_step + self._step
+
+    def increase_micro_step(self):
+        return self._micro_step + self._step
+
+    @property
+    def step(self):
+        return self._step
+
+    @step.setter
+    def step(self, newVal):
+        self._step = newVal
+
+    @property
+    def majo_step(self):
+        return self._majo_step
+
+    @property
+    def mino_step(self):
+        return self._mino_step
+
+    @property
+    def micro_step(self):
+        return self._micro_step
+
+    @majo_step.setter
+    def majo_step(self, newVal):
+        self._majo_step = newVal
+
+    @mino_step.setter
+    def mino_step(self, newVal):
+        self._mino_step = newVal
+
+    @micro_step.setter
+    def micro_step(self, newVal):
+        self._micro_step = newVal
 
     def __bases__(cls):
-        return type.__new__(version, 'version', (version, ), version_construct_class)
+        return type.__new__(_version, 'version', (_version,), version_construct_class)
 
     def __str__(self):
         return self.__str__
@@ -112,6 +161,18 @@ class version(type):
     __version__ = '.'.join(str(i) for i in version_info)
 
     __qualname__ = 'version'
+
+
+class version(_version):
+
+    def __init__(self):
+        super(version, self).__init__()
+        print(self)
+
+    def release_note(self):
+        pass
+
+ver = version()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 1/11/2019 - 4:48 PM

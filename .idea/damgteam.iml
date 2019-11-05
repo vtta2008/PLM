@@ -18,6 +18,7 @@
     <orderEntry type="module" module-name="damgserver" />
     <orderEntry type="module" module-name="vanilla-server-side-rendering-flow" />
     <orderEntry type="module" module-name="damg" />
+    <orderEntry type="module" module-name="test_app_compile" />
   </component>
   <component name="TestRunnerService">
     <option name="PROJECT_TEST_RUNNER" value="Unittests" />

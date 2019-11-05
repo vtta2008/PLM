@@ -1,4 +1,5 @@
-PyQt5<5.13
+PyQt5>=5.13
+damg
 pip
 urllib3
 chardet
@@ -12,3 +13,4 @@ wheel
 argparse
 green
 python-resize-image
+pywin32
