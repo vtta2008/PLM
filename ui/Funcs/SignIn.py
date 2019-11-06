@@ -126,12 +126,6 @@ class SignIn(Widget):
             MessageBox(self, 'Login Failed', 'critical', PW_WRONG)
             return
 
-    def showEvent(self, event):
-        self.signals.showLayout.emit('SignIn', 'show')
-        self.signals.showLayout.emit('SignUp', 'hide')
-        self.signals.showLayout.emit('ForgotPassword', 'hide')
-        self.signals.showLayout.emit('PipelineManager', 'hide')
-
 if __name__ == '__main__':
     login = QApplication(sys.argv)
     layout = SignIn()

@@ -35,9 +35,11 @@ class TopTab2(Widget):
 
     key = 'TopTab2'
 
-    def __init__(self, parent=None):
+    def __init__(self, buttonManager, parent=None):
         super(TopTab2, self).__init__(parent)
-        
+
+        self.buttonManager = buttonManager
+        self.parent = parent
         self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
@@ -56,14 +58,15 @@ class TopTab2(Widget):
         self.avatar.setScaledContents(True)
         self.avatar.setFixedSize(100, 100)
 
-        btn1 = Button({'txt': 'Account Setting', 'cl': partial(self.signals.showLayout.emit, 'UserSetting', 'show')})
-        btn2 = Button({'txt': 'Messages', 'cl': partial(self.signals.showLayout.emit, 'Messages', 'show')})
-        btn3 = Button({'txt': 'Log Out', 'cl': partial(self.signals.showLayout.emit, 'SignIn', 'show')})
+        buttons = self.buttonManager.userButtonGroupBox(self.parent)
 
-        btns = [btn1, btn2, btn3]
+        # btn1 = Button({'txt': 'Account Setting', 'cl': partial(self.signals.showLayout.emit, 'UserSetting', 'show')})
+        # btn2 = Button({'txt': 'Messages', 'cl': partial(self.signals.showLayout.emit, 'Messages', 'show')})
+        # btn3 = Button({'txt': 'Log Out', 'cl': partial(self.signals.showLayout.emit, 'SignIn', 'show')})
+        # btns = [btn1, btn2, btn3]
 
         sec1Grp = GroupBox(self.username, [self.avatar], "ImageView")
-        sec2Grp = GroupBox("Setting", btns, "BtnGrid")
+        sec2Grp = GroupBox("Setting", buttons, "BtnGrid")
         sec1Grp.setMaximumWidth(120)
         sec2Grp.setMaximumWidth(120)
 

@@ -34,7 +34,7 @@ from utils                  import str2bool, bool2str, is_string, is_action
 #     registerActions = DAMGLIST()
 #
 #     with open(mainConfig, 'r') as f:
-#         appInfo = json.load(f)
+#         mainInfo = json.load(f)
 #
 #     def __init__(self, configKey=None, actions=[], parent=None):
 #         ToolBar.__init__(self)
@@ -69,13 +69,13 @@ from utils                  import str2bool, bool2str, is_string, is_action
 #         return self.addAction(action)
 #
 #     def create_action(self, key):
-#         if key in self.appInfo.keys():
+#         if key in self.mainInfo.keys():
 #             action = Action({
 #
 #                 'icon': key,
-#                 'stt': self.appInfo[key][0],
+#                 'stt': self.mainInfo[key][0],
 #                 'txt': key,
-#                 'trg': (partial(self.parent.signals.executing.emit, self.appInfo[key][2]))
+#                 'trg': (partial(self.parent.signals.executing.emit, self.mainInfo[key][2]))
 #
 #             }, self.parent)
 #             return action
@@ -95,7 +95,7 @@ from utils                  import str2bool, bool2str, is_string, is_action
 #     key = 'MainToolBar'
 #
 #     with open(mainConfig, 'r') as f:
-#         appInfo = json.load(f)
+#         mainInfo = json.load(f)
 #
 #     def __init__(self, actionManager, parent=None):
 #         super(MainToolBar, self).__init__(parent)
@@ -116,11 +116,11 @@ from utils                  import str2bool, bool2str, is_string, is_action
 #
 #         k = 0
 #         for key in apps:
-#             if key in self.appInfo:
+#             if key in self.mainInfo:
 #                 toolBar.addAction(Action({'icon':key,
-#                                           'stt':self.appInfo[key][0],
+#                                           'stt':self.mainInfo[key][0],
 #                                           'txt':key,
-#                                           'trg':(partial(os.startfile, self.appInfo[key][2]))}, self))
+#                                           'trg':(partial(os.startfile, self.mainInfo[key][2]))}, self))
 #                 k += 1
 #
 #         # mainToolBar.setMinimumWidth(k*32 + 1)

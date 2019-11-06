@@ -28,18 +28,19 @@ class TopTab(TabWidget):
 
     key                         = 'TopTab'
 
-    def __init__(self, parent=None):
+    def __init__(self, buttonManager, parent=None):
         super(TopTab, self).__init__(parent)
 
         self.layout             = VBoxLayout()
+        self.buttonManager      = buttonManager
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
 
-        self.tab1               = TopTab1.TopTab1()
-        self.tab2               = TopTab2.TopTab2()
-        self.tab3               = TopTab3.TopTab3()
+        self.tab1               = TopTab1.TopTab1(self.buttonManager, self.parent)
+        self.tab2               = TopTab2.TopTab2(self.buttonManager, self.parent)
+        self.tab3               = TopTab3.TopTab3(self.buttonManager, self.parent)
 
         self.tabLst             = DAMGLIST(listData=[self.tab1, self.tab2, self.tab3])
         self.tabNames           = DAMGLIST(listData=['Project', 'User', 'Cmd'])

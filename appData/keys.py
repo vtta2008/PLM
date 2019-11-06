@@ -76,8 +76,9 @@ wonderUniApp        = [ 'Storyboarder', 'Krita (x64)' ]
 anacondaApp         = [ 'Spyder', 'QtDesigner', 'Git Bash']
 otherApp            = [ 'Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', ]
 CONFIG_APPUI        = [ 'About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary', 'FindFiles', 'ForgotPassword',
-                        'ImageViewer', 'NewProject', 'Preferences', 'ScreenShot', 'UserSetting', 'PLMBrowser', 'NoteReminder',
-                        'TextEditor', 'NodeGraph']
+                        'ImageViewer', 'NewProject', 'Preferences', 'ScreenShot', 'UserSetting', 'PLMBrowser',
+                        'NoteReminder', 'TextEditor', 'NodeGraph', 'Messenger', 'InviteFriend', 'SignIn', 'SignUp',
+                        'SignOut', 'SwitchAccount']
 
 # --------------------------------------------------------------------------------------------------------------
 """ Tracking configKey """
@@ -167,18 +168,18 @@ ACTIONS_DATA = dict(TD                  = CONFIG_TDS,
                     SYSTRAY             = CONFIG_SYSTRAY, )
 
 SHOWLAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 'Calendar', 'CodeOfConduct', 'ConfigOrganisation',
-                       'ConfigProject', 'ConfigTeam', 'Config', 'Configurations', 'ConnectStatus', 'ContactUs', 'Contributing',
-                       'Credit', 'EditOrganisation', 'EditProject', 'EditTeam', 'EnglishDictionary', 'Feedback',
-                       'FindFiles', 'Footer', 'ForgotPassword', 'GridLayout', 'HDRI', 'ImageViewer', 'Licence', 'MainMenuSection',
+                           'ConfigProject', 'ConfigTeam', 'Config', 'Configurations', 'ConnectStatus', 'ContactUs', 'Contributing',
+                           'Credit', 'EditOrganisation', 'EditProject', 'EditTeam', 'EnglishDictionary', 'Feedback',
+                           'FindFiles', 'Footer', 'ForgotPassword', 'GridLayout', 'HDRI', 'ImageViewer', 'Licence', 'MainMenuSection',
                            'MainToolBar', 'MainToolBarSection', 'NewOrganisation', 'NewProject', 'NewTeam', 'NodeGraph',
                            'NoteReminder', 'Notification', 'OrganisationManager', 'PipelineManager', 'Preferences',
-                           'ProjectManager', 'Reference', 'ScreenShot', 'SettingUI', 'SignIn', 'SignUp', 'StatusBar',
+                           'ProjectManager', 'Reference', 'ScreenShot', 'SettingUI', 'SignIn', 'SignOut', 'SignUp', 'SwitchAccount', 'StatusBar',
                            'SysTray', 'TeamManager', 'TextEditor', 'Texture', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting',
                            'Version']
 
-RESTORE_KEY             = ['PipelineManager', 'Restore']
-SHOWMAX_KEY             = ['PipelineManager', 'Maximize']
-SHOWMIN_KEY             = ['PipelineManager', 'Minimize']
+RESTORE_KEY             = ['Restore']
+SHOWMAX_KEY             = ['Maximize']
+SHOWMIN_KEY             = ['Minimize']
 
 
 OPEN_BROWSER_KEY = ['PLM wiki']

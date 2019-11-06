@@ -34,6 +34,7 @@ from utils                          import str2bool, clean_file_ext, QuerryDB
 from cores.Loggers                  import Loggers
 from cores.Settings                 import Settings
 from ui.ActionManager               import ActionManager
+from ui.ButtonManager               import ButtonManager
 from ui.uikits.Icon                 import LogoIcon
 from ui.Web.Browser                 import Browser
 from ui.LayoutManager               import LayoutManager
@@ -71,8 +72,9 @@ class PLM(QApplication):
         QCoreApplication.setOrganizationDomain(__website__)
         QCoreApplication.setApplicationVersion(__version__)
 
+        self.buttonManager          = ButtonManager()
         self.actionManager          = ActionManager()
-        self.layoutManager          = LayoutManager(self.actionManager, self)
+        self.layoutManager          = LayoutManager(self.actionManager, self.buttonManager, self)
         self.layoutManager.regisLayout(self.browser)
         self.layoutManager.buildLayouts()
 
@@ -81,7 +83,6 @@ class PLM(QApplication):
             layout.signals.executing.connect(self.executing)
             layout.signals.openBrowser.connect(self.openBrowser)
             layout.signals.setSetting.connect(self.setSetting)
-
 
         try:
             self.username, token, cookie, remember = self.database.query_table('curUser')
@@ -97,7 +98,7 @@ class PLM(QApplication):
                     if not self.layoutManager.sysTray.isSystemTrayAvailable():
                         self.logger.report(SYSTRAY_UNAVAI)
                         sys.exit(1)
-                    self._login = True
+                    self.loginChanged(True)
                     self.showLayout('PipelineManager', "show")
                 else:
                     self.showLayout('SignIn', "show")
@@ -152,63 +153,40 @@ class PLM(QApplication):
     def showLayout(self, layoutID, mode):
         # print("Recieve signal_cpu: '{0}: {1}'".format(layoutID, mode))
 
+        ignoreIDs = ['MainMenuSection', 'TestMainMenuBar', 'MainMenuSection', 'MainToolBarSection', 'MainToolBar',
+                     'MainToolBarSection', 'Notification', 'TopTab', 'BotTab', 'Footer', 'TopTab2', 'TopTab1',
+                     'TopTab3']
+
         if layoutID == 'app':
             layout = self
+        elif layoutID == 'SignOut' and mode == 'show':
+            self.signOutEvent()
+        elif layoutID == 'SwitchAccount' and mode == 'show':
+            self.switchAccountEvent()
+        elif layoutID == 'SignUp' and mode == 'show':
+            self.newAccountEvent()
         elif layoutID in self.layoutManager.keys():
-            layout = self.layoutManager[layoutID]
+            if not layoutID in ignoreIDs:
+                layout = self.layoutManager[layoutID]
+            else:
+                # print("Ignore Layout: {0}".format(layoutID))
+                return
         else:
             print("Layout: '{0}' is not registerred yet.".format(layoutID))
-            layout = None
+            return
 
         if mode == "hide":
-            try:
-                state = layout.isHidden()
-            except AttributeError:
-                state = None
-
-            if not state or state is None:
-                try:
-                    layout.hide()
-                except AttributeError:
-                    pass
-                else:
-                    layout.setValue('showLayout', 'hide')
+            self.layoutManager.hide(layout)
         elif mode == "show":
-            try:
-                state = layout.isHidden()
-            except AttributeError:
-                state = None
-
-            if state:
-                try:
-                    layout.show()
-                except AttributeError:
-                    pass
-                else:
-                    layout.setValue('showLayout', 'show')
+            self.layoutManager.show(layout)
         elif mode == 'showRestore':
-            try:
-                layout.showNormal()
-            except AttributeError:
-                pass
-            else:
-                layout.setValue('state', 'showNormal')
+            self.layoutManager.showNormal(layout)
         elif mode == 'showMin':
-            try:
-                layout.showMinimized()
-            except AttributeError:
-                pass
-            else:
-                layout.setValue('state', 'showMinimized')
+            self.layoutManager.showMinnimize(layout)
         elif mode == 'showMax':
-            try:
-                layout.showMaximized()
-            except AttributeError:
-                pass
-            else:
-                layout.setValue('state', 'showMaximized')
+            self.layoutManager.showMaximized(layout)
         elif mode == 'quit' or mode == 'exit':
-            layout.quit()
+            self.exit()
 
     def set_styleSheet(self, style):
 
@@ -218,7 +196,21 @@ class PLM(QApplication):
         self.setStyleSheet(stylesheet[style])
         self.settings.initSetValue('styleSheet', 'dark')
 
+    def loginChanged(self, val):
+        self._login = val
+        self.layoutManager.sysTray._login = val
 
+    def signOutEvent(self):
+        self.layoutManager.signOutEvent()
+        self.loginChanged(False)
+
+    def newAccountEvent(self):
+        self.layoutManager.newAcountEvent()
+        self.loginChanged(False)
+
+    def switchAccountEvent(self):
+        self.layoutManager.switchAccountEvent()
+        self.loginChanged(False)
 
 if __name__ == '__main__':
     PLM()

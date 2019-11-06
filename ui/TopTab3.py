@@ -49,9 +49,11 @@ class TopTab3(Widget):
 
     key = 'TopTab3'
 
-    def __init__(self, parent=None):
+    def __init__(self, buttonManager, parent=None):
         super(TopTab3, self).__init__(parent)
 
+        self.buttonManager = buttonManager
+        self.parent = parent
         self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)

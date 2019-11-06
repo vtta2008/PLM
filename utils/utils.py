@@ -25,6 +25,7 @@ __all__ = ['attr_type', 'auto_convert', 'camel_case_to_lower_case_underscore', '
 # PyQt5
 from PyQt5.QtCore       import Qt, QRectF, QRect, QSize, pyqtSignal, pyqtSlot
 from PyQt5.QtGui        import QColor, QFont, QFontMetrics
+from PyQt5.QtWidgets    import QAction, QPushButton
 
 # PLM
 from appData            import (__envKey__, __pkgsReq__, KEYPACKAGE, LOGO_DIR, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR,
@@ -738,6 +739,14 @@ def is_none(s):
 
 def is_string(s):
     return type(s) in [str]
+
+def is_button(s):
+    if type(s) in [QPushButton]:
+        return True
+    elif s.Type in actionTypes:
+        return True
+    else:
+        return False
 
 def is_action(s):
     if type(s) in [QAction]:

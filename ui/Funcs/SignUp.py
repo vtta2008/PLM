@@ -261,17 +261,6 @@ class SignUp(Widget):
             return False
         return True
 
-    def showEvent(self, event):
-        self.showLayout.emit('signin', 'hide')
-
-    def hideEvent(self, event):
-        # self.specs.showState.emit(False)
-        pass
-
-    def closeEvent(self, event):
-        self.showLayout.emit(self.key, 'hide')
-        event.ignore()
-
 def main():
     app = QApplication(sys.argv)
     layout = SignUp()

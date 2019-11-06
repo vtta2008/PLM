@@ -15,19 +15,19 @@ Description:
 import os, shutil, sys
 
 # PtQt5
-from PyQt5.QtGui import QImage, QPixmap
-from PyQt5.QtWidgets import (QFileDialog, QApplication)
+from PyQt5.QtGui                    import QImage, QPixmap
+from PyQt5.QtWidgets                import (QFileDialog, QApplication)
 
 # Plt
-from appData        import PW_BLANK, PW_UNMATCH, __envKey__
-from ui.uikits.GroupBox         import GroupGrid
-from ui.uikits.Label import Label
-from ui.uikits.Widget import Widget
-from ui.uikits.Button import Button
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.LineEdit import LineEdit
-from ui.uikits.MessageBox import MessageBox
-from utils          import get_avatar_image, QuerryDB, text_to_hex, resize_image
+from appData                        import PW_BLANK, PW_UNMATCH, __envKey__
+from ui.uikits.GroupBox             import GroupGrid
+from ui.uikits.Label                import Label
+from ui.uikits.Widget               import Widget
+from ui.uikits.Button               import Button
+from ui.uikits.GridLayout           import GridLayout
+from ui.uikits.LineEdit             import LineEdit
+from ui.uikits.MessageBox           import MessageBox
+from utils                          import get_avatar_image, QuerryDB, text_to_hex, resize_image
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """
@@ -82,10 +82,10 @@ class UserSetting(Widget):
 
         password_groupBox, password_layout = GroupGrid('Change Password')
 
-        self.old_pass           = LineEdit({'echo': 'password'})
-        self.new_pass           = LineEdit({'echo': 'password'})
-        self.confirm_pass       = LineEdit({'echo': 'password'})
-        change_pass_btn         = Button({'txt': 'Change Password', 'cl': self.update_password})
+        self.old_pass                   = LineEdit({'echo': 'password'})
+        self.new_pass                   = LineEdit({'echo': 'password'})
+        self.confirm_pass               = LineEdit({'echo': 'password'})
+        change_pass_btn                 = Button({'txt': 'Change Password', 'cl': self.update_password})
 
         password_layout.addWidget(Label({'txt': 'Old Password'}), 0, 0, 1, 2)
         password_layout.addWidget(Label({'txt': 'New Password'}), 1, 0, 1, 2)

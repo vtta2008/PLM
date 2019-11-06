@@ -68,7 +68,8 @@ class AppIcon(Icon):
 
         if not self._found:
             if not self.iconName in IGNORE_ICON_NAME:
-                print("IconNotFound: {0}: Could not find icon name: {1}".format(__name__, self.iconName))
+                # print("IconNotFound: {0}: Could not find icon name: {1}".format(__name__, self.iconName))
+                pass
         else:
             self.addFile(self.iconPth, QSize(self.iconSize, self.iconSize))
 

@@ -1,5 +1,4 @@
 PyQt5>=5.13
-damg
 pip
 urllib3
 chardet

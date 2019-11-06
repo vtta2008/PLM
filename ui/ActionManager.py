@@ -22,38 +22,38 @@ from appData import (mainConfig, SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, 
 
 class ActionManager(DAMGDICT):
 
-    key             = 'ActionManager'
-    _name           = 'ActionManager'
+    key                     = 'ActionManager'
+    _name                   = 'ActionManager'
 
-    appInfo         = data_handler(filePath=mainConfig)
+    appInfo                 = data_handler(filePath=mainConfig)
 
-    actionKeys      = DAMGLIST()
-    showLayoutKeys  = DAMGLIST()
-    showRestoreKeys = DAMGLIST()
-    showMaximizeKeys = DAMGLIST()
-    showMinimizeKeys = DAMGLIST()
-    startFileKeys   = DAMGLIST()
-    openBrowserKeys = DAMGLIST()
-    executingKeys   = DAMGLIST()
+    actionKeys              = DAMGLIST()
+    showLayoutKeys          = DAMGLIST()
+    showRestoreKeys         = DAMGLIST()
+    showMaximizeKeys        = DAMGLIST()
+    showMinimizeKeys        = DAMGLIST()
+    startFileKeys           = DAMGLIST()
+    openBrowserKeys         = DAMGLIST()
+    executingKeys           = DAMGLIST()
 
-    orgActions      = ['NewOrganisation', 'EditOrganisation', 'ConfigOrganisation', 'OrganisationManager']
-    teamActions     = ['NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager']
-    prjActions      = ['NewProject', 'EditProject', 'ConfigProject', 'ProjectManager']
-    appActions      = ['SettingUI', 'Config', 'Preferences', 'Exit']
-    goActions       = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder']
-    officeActions   = ['TextEditor', 'NoteReminder'] + CONFIG_OFFICE
-    toolsActions    = CONFIG_TOOLS + ['CleanPyc', 'ReConfig', 'Debug']
-    devActions      = CONFIG_DEV
-    libActions      = ['Alpha', 'HDRI', 'Texture']
-    helpActions     = ['PLM wiki', 'About', 'CodeOfConduct', 'Contributing', 'Credit', 'Reference', 'Version', 'Feedback', 'ContactUs', ]
+    orgActions              = ['NewOrganisation', 'EditOrganisation', 'ConfigOrganisation', 'OrganisationManager']
+    teamActions             = ['NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager']
+    prjActions              = ['NewProject', 'EditProject', 'ConfigProject', 'ProjectManager']
+    appActions              = ['SettingUI', 'Config', 'Preferences', 'Exit']
+    goActions               = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder']
+    officeActions           = ['TextEditor', 'NoteReminder'] + CONFIG_OFFICE
+    toolsActions            = CONFIG_TOOLS + ['CleanPyc', 'ReConfig', 'Debug']
+    devActions              = CONFIG_DEV
+    libActions              = ['Alpha', 'HDRI', 'Texture']
+    helpActions             = ['PLM wiki', 'About', 'CodeOfConduct', 'Contributing', 'Credit', 'Reference', 'Version', 'Feedback', 'ContactUs', ]
 
-    tdActions       = CONFIG_TDS
-    artActions      = CONFIG_ART
-    texActions      = CONFIG_TEX
-    postActions     = CONFIG_POST
-    vfxActions      = CONFIG_VFX
-    extraActions    = CONFIG_EXTRA
-    sysTrayActions  = CONFIG_SYSTRAY
+    tdActions               = CONFIG_TDS
+    artActions              = CONFIG_ART
+    texActions              = CONFIG_TEX
+    postActions             = CONFIG_POST
+    vfxActions              = CONFIG_VFX
+    extraActions            = CONFIG_EXTRA
+    sysTrayActions          = CONFIG_SYSTRAY
 
     def __init__(self, parent=None):
         super(ActionManager, self).__init__(self)

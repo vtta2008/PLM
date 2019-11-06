@@ -21,7 +21,6 @@ from PyQt5.QtWidgets        import QApplication
 # Plt
 from ui.uikits.Widget                         import Widget
 from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Button import Button
 from ui.uikits.GroupBox import GroupBox
 # -------------------------------------------------------------------------------------------------------------
 """ Variables """
@@ -33,8 +32,11 @@ class TopTab1(Widget):
 
     key = 'TopTab1'
 
-    def __init__(self, parent=None):
+    def __init__(self, buttonManager, parent=None):
         super(TopTab1, self).__init__(parent)
+
+        self.buttonManager = buttonManager
+        self.parent = parent
 
         self.layout = GridLayout()
         self.buildUI()
@@ -43,16 +45,11 @@ class TopTab1(Widget):
 
     def buildUI(self):
 
-        btn1 = Button({'txt':'New Project', 'tt':'New Project', 'cl':partial(self.signals.showLayout.emit, 'NewProject', 'show')})
-        btn2 = Button({'txt':'Project List', 'tt':'Project List', 'cl':partial(self.signals.showLayout.emit, 'ProjectList', 'show')})
-        btn3 = Button({'txt':'Config Project', 'tt':'Config Projects', 'cl':partial(self.signals.showLayout.emit, 'ConfigProject', 'show')})
+        prjButtons = self.buttonManager.projectButtonsGroupBox(self.parent)
+        teamButtons = self.buttonManager.teamButtonsGroupBox(self.parent)
 
-        btn4 = Button({'txt':'New Task', 'tt':'New Task', 'cl':partial(self.signals.showLayout.emit, 'NewTask', 'show')})
-        btn5 = Button({'txt':'Task List', 'tt':'Task List', 'cl':partial(self.signals.showLayout.emit, 'TaskList', 'show')})
-        btn6 = Button({'txt':'Config Task', 'tt':'Config Task', 'cl':partial(self.signals.showLayout.emit, 'ConfigTask', 'show')})
-
-        sec1Grp     = GroupBox("Project", [btn1, btn2, btn3], "BtnGrid")
-        sec2Grp     = GroupBox("Task", [btn4, btn5, btn6], "BtnGrid")
+        sec1Grp     = GroupBox("Project", prjButtons, "BtnGrid")
+        sec2Grp     = GroupBox("Task", teamButtons, "BtnGrid")
         sec1Grp.setMaximumWidth(120)
         sec2Grp.setMaximumWidth(120)
 
@@ -60,9 +57,9 @@ class TopTab1(Widget):
         sec3Grid    = GridLayout()
         sec3Grp.setLayout(sec3Grid)
 
-        self.layout.addWidget(sec1Grp, 0, 0, 3, 3)
-        self.layout.addWidget(sec2Grp, 3, 0, 3, 3)
-        self.layout.addWidget(sec3Grp, 0, 3, 6, 6)
+        self.layout.addWidget(sec1Grp, 0, 0, 4, 3)
+        self.layout.addWidget(sec2Grp, 4, 0, 4, 3)
+        self.layout.addWidget(sec3Grp, 0, 3, 8, 6)
 
     def showEvent(self, event):
         self.signals.showLayout.emit(self.key, 'show')

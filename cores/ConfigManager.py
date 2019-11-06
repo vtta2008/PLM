@@ -14,7 +14,7 @@ from __future__ import absolute_import, unicode_literals
 # Python
 import os, sys, subprocess, shutil, winshell, pkg_resources, json
 from platform                           import system
-from damg                               import DAMG, DAMGDICT, DAMGLIST
+from bin.data.damg                      import DAMG, DAMGDICT, DAMGLIST
 
 # PyQt5
 from PyQt5 import __file__ as pyqt_path
@@ -24,7 +24,7 @@ __groupname__                           = "DAMGTEAM"
 __appName__                             = "Pipeline Manager (PLM)"
 
 __pkgsReq__                             = ['PyQt5', 'pip', 'urllib3', 'chardet', 'appdirs', 'deprecate', 'msgpack',
-                                           'winshell', 'pyqtwebengine', 'pandas', 'wheel', 'argparse', 'green', 'damg']
+                                           'winshell', 'pyqtwebengine', 'pandas', 'wheel', 'argparse', 'green']
 
 KEYPACKAGE                              = ['Adobe Photoshop CC 2017', 'Adobe Photoshop CC 2018',
                                            'Adobe Photoshop CC 2019', 'Adobe Illustrator CC 2017',
@@ -79,7 +79,8 @@ __plmWiki__                             = "https://github.com/vtta2008/PipelineT
 CONFIG_APPUI                            = [ 'About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary',
                                             'FindFiles', 'ForgotPassword', 'ImageViewer', 'NewProject', 'Preferences',
                                             'ScreenShot', 'UserSetting', 'PLMBrowser', 'NoteReminder', 'TextEditor',
-                                            'NodeGraph']
+                                            'NodeGraph', 'Messenger', 'InviteFriend', 'SignIn', 'SignUp', 'SignOut',
+                                            'SwitchAccount']
 
 CONFIG_SYSTRAY                          = ['ScreenShot', 'Snipping Tool']
 
@@ -410,7 +411,18 @@ class ConfigManager(DAMG):
             self.mainInfo[key] = [key, self.getAppIcon(32, key), "{0}".format(self.appInfo[key])]
 
         for key in CONFIG_APPUI:
-            self.mainInfo[key] = [key, self.getAppIcon(32, key), "{0}".format(key)]
+            if key == 'UserSetting':
+                self.mainInfo[key] = ['Profile', self.getAppIcon(32, key), 'User Profile']
+            elif key == 'SignIn':
+                self.mainInfo[key] = ['Sign In', self.getAppIcon(32, key), 'SignIn']
+            elif key == 'SignUp':
+                self.mainInfo[key] = ['New Account', self.getAppIcon(32, key), 'Create new account']
+            elif key == 'SwtichAccount':
+                self.mainInfo[key] = ['Change Account', self.getAppIcon(32, key), 'Change other account']
+            elif key == 'SignOut':
+                self.mainInfo[key] = ['Sign Out', self.getAppIcon(32, key), 'Log Out']
+            else:
+                self.mainInfo[key] = [key, self.getAppIcon(32, key), "{0}".format(key)]
 
         for key in CONFIG_SYSTRAY:
             if key in self.appInfo:
@@ -426,7 +438,7 @@ class ConfigManager(DAMG):
         iconPth = os.path.join(os.getenv(self.appKey), 'imgs', 'icons', "x" + str(size))
         return os.path.join(iconPth, iconName + ".icon.png")
 
-    def get_app_installed(self, fileName='appInfo.cfg', **appInfo):
+    def get_app_installed(self, fileName='main.cfg', **appInfo):
         shortcuts = {}
         appName = []
         appPth = []

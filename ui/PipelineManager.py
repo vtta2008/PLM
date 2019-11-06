@@ -39,7 +39,7 @@ class PipelineManager(MainWindow):
     key = 'PipelineManager'
     _name = __appname__
 
-    def __init__(self, settings, actionManager, parent=None):
+    def __init__(self, settings, actionManager, buttonManager, parent=None):
         super(PipelineManager, self).__init__(parent)
 
         self.url = __homepage__
@@ -48,6 +48,7 @@ class PipelineManager(MainWindow):
         self.setWindowIcon(LogoIcon("Logo"))
         self.settings       = settings
         self.actionManager  = actionManager
+        self.buttonManager  = buttonManager
 
         self.mainWidget     = Widget()
         self.layout         = GridLayout()
@@ -73,9 +74,9 @@ class PipelineManager(MainWindow):
         self.connectStatusSec.key   = "ConnectStatus"
         self.notifiSec.key          = "Notification"
 
-        self.topTabUI               = TopTab()
+        self.topTabUI               = TopTab(self.buttonManager, self)
         self.botTabUI               = BotTab()
-        self.footer                 = Footer()
+        self.footer                 = Footer(self.buttonManager, self)
         self.statusBar              = StatusBar()
 
         self.setStatusBar(self.statusBar)

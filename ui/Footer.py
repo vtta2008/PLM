@@ -55,17 +55,19 @@ class CPUuseage(DAMGTHREAD):
 
 class Footer(Widget):
 
-    key                 = 'Footer'
-    _name               = 'DAMG Footer'
+    key                         = 'Footer'
+    _name                       = 'DAMG Footer'
 
-    tags = dict(python  = "https://docs.anaconda.com/anaconda/reference/release-notes/",
-                licence = "https://github.com/vtta2008/damgteam/blob/master/LICENCE",
-                version = "https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst")
+    tags = dict(python          = "https://docs.anaconda.com/anaconda/reference/release-notes/",
+                licence         = "https://github.com/vtta2008/damgteam/blob/master/LICENCE",
+                version         = "https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst")
 
-    def __init__(self, parent=None):
+    def __init__(self, buttonManager, parent=None):
         super(Footer, self).__init__(parent)
 
-        self.parent     = parent
+        self.parent             = parent
+        self.buttonManager      = buttonManager
+
         layout = self.buildUI()
         self.setLayout(layout)
 
@@ -103,7 +105,7 @@ class Footer(Widget):
 
     def createButton(self, tagName):
         if not tagName in self.tags.keys():
-            print('KeyError: tag name is not existed: {0}'.format(tagName))
+            # print('KeyError: tag name is not existed: {0}'.format(tagName))
             button = Button()
         else:
             button = Button({'tag': tagName,

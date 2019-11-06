@@ -1,0 +1,31 @@
+INFO: (06/11/2019 14:35:25) ui.LayoutManager, line 396: layout does not have show attribute: <ui.SysTray.SysTray object at 0x000001D9802BF948>
+INFO: (06/11/2019 14:35:25) ui.LayoutManager, line 396: layout does not have show attribute: None
+INFO: (06/11/2019 14:35:25) ui.LayoutManager, line 396: layout does not have show attribute: None
+INFO: (06/11/2019 14:35:25) ui.LayoutManager, line 396: layout does not have show attribute: None
+INFO: (06/11/2019 14:35:25) ui.LayoutManager, line 396: layout does not have show attribute: <ui.Network.ConnectStatus.ConnectStatus object at 0x000001D98046D048>
+INFO: (06/11/2019 14:35:25) ui.LayoutManager, line 396: layout does not have show attribute: <ui.uikits.GridLayout.GridLayout object at 0x000001D98046D318>
+INFO: (06/11/2019 14:35:25) ui.LayoutManager, line 396: layout does not have show attribute: <ui.SysTray.SysTray object at 0x000001D9802BF948>
+INFO: (06/11/2019 14:37:51) ui.LayoutManager, line 386: layout does not have hide attribute: None
+INFO: (06/11/2019 14:40:00) ui.LayoutManager, line 396: layout does not have show attribute: None
+INFO: (06/11/2019 14:40:00) ui.LayoutManager, line 396: layout does not have show attribute: None
+INFO: (06/11/2019 14:40:00) ui.LayoutManager, line 396: layout does not have show attribute: None
+INFO: (06/11/2019 14:40:00) ui.LayoutManager, line 396: layout does not have show attribute: <ui.Network.ConnectStatus.ConnectStatus object at 0x000001D98046D048>
+INFO: (06/11/2019 14:40:00) ui.LayoutManager, line 396: layout does not have show attribute: <ui.uikits.GridLayout.GridLayout object at 0x000001D98046D318>
+INFO: (06/11/2019 14:40:00) ui.LayoutManager, line 396: layout does not have show attribute: <ui.SysTray.SysTray object at 0x000001D9802BF948>
+INFO: (06/11/2019 14:46:25) ui.LayoutManager, line 396: layout does not have show attribute: <ui.SysTray.SysTray object at 0x000001902C6BF948>
+INFO: (06/11/2019 14:46:26) ui.LayoutManager, line 396: layout does not have show attribute: <ui.Network.ConnectStatus.ConnectStatus object at 0x000001902CA8E048>
+INFO: (06/11/2019 14:46:26) ui.LayoutManager, line 396: layout does not have show attribute: <ui.uikits.GridLayout.GridLayout object at 0x000001902CA8E318>
+INFO: (06/11/2019 14:46:26) ui.LayoutManager, line 396: layout does not have show attribute: <ui.SysTray.SysTray object at 0x000001902C6BF948>
+INFO: (06/11/2019 14:48:45) ui.LayoutManager, line 396: layout does not have show attribute: <ui.SysTray.SysTray object at 0x0000022FC40CF948>
+INFO: (06/11/2019 14:48:45) ui.LayoutManager, line 396: layout does not have show attribute: <ui.Network.ConnectStatus.ConnectStatus object at 0x0000022FC449E048>
+INFO: (06/11/2019 14:48:45) ui.LayoutManager, line 396: layout does not have show attribute: <ui.uikits.GridLayout.GridLayout object at 0x0000022FC449E318>
+INFO: (06/11/2019 14:48:45) ui.LayoutManager, line 396: layout does not have show attribute: <ui.SysTray.SysTray object at 0x0000022FC40CF948>
+INFO: (06/11/2019 14:52:33) ui.LayoutManager, line 396: layout does not have show attribute: <ui.SysTray.SysTray object at 0x00000279C5F8F9D8>
+INFO: (06/11/2019 14:52:33) ui.LayoutManager, line 396: layout does not have show attribute: <ui.Network.ConnectStatus.ConnectStatus object at 0x00000279C635E0D8>
+INFO: (06/11/2019 14:52:33) ui.LayoutManager, line 396: layout does not have show attribute: <ui.uikits.GridLayout.GridLayout object at 0x00000279C635E3A8>
+INFO: (06/11/2019 14:52:33) ui.LayoutManager, line 396: layout does not have show attribute: <ui.SysTray.SysTray object at 0x00000279C5F8F9D8>
+INFO: (06/11/2019 14:57:52) ui.LayoutManager, line 401: layout does not have show attribute: <ui.SysTray.SysTray object at 0x000001F81A66FA68>
+INFO: (06/11/2019 14:59:11) ui.LayoutManager, line 401: layout does not have show attribute: <ui.SysTray.SysTray object at 0x00000170D295FA68>
+INFO: (06/11/2019 14:59:11) ui.LayoutManager, line 401: layout does not have show attribute: <ui.Network.ConnectStatus.ConnectStatus object at 0x00000170D28CF168>
+INFO: (06/11/2019 14:59:11) ui.LayoutManager, line 401: layout does not have show attribute: <ui.uikits.GridLayout.GridLayout object at 0x00000170D28CF438>
+INFO: (06/11/2019 14:59:11) ui.LayoutManager, line 401: layout does not have show attribute: <ui.SysTray.SysTray object at 0x00000170D295FA68>

@@ -13,7 +13,6 @@ Description:
 
 # Python
 import os, sys, json
-from functools                  import partial
 from damg                       import DAMG
 
 # PyQt5
@@ -22,9 +21,8 @@ from PyQt5.QtGui                import QWheelEvent
 from PyQt5.QtWidgets            import QMenu, QSystemTrayIcon, QApplication
 
 # PLM
-from appData                    import __plmSlogan__, __appname__, __envKey__, CONFIG_SYSTRAY
+from appData                    import __plmSlogan__, __appname__, __envKey__
 from cores.SignalManager        import LayoutSignals
-from ui.uikits.Action           import Action
 from ui.uikits.Icon             import LogoIcon
 from ui.uikits.SystemTrayIcon   import SystemTrayIcon
 from utils                      import QuerryDB
@@ -39,38 +37,20 @@ class SysTrayIconMenu(QMenu):
     def __init__(self, settings, actionManager, parent=None):
         super(SysTrayIconMenu, self).__init__(parent)
 
-        self.signals = LayoutSignals(self)
-        self.settings = settings
-        self.actionManager = actionManager
+        self.signals            = LayoutSignals(self)
+        self.settings           = settings
+        self.actionManager      = actionManager
 
         with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
             self.appInfo = json.load(f)
 
-        actions = self.actionManager.sysTrayMenuActions(self)
-        # for action in actions:
-        #     self.addAction(action)
+        actions                 = self.actionManager.sysTrayMenuActions(self)
 
         self.addActions(actions[3:5])
         self.addSeparator()
         self.addActions(actions[0:3])
         self.addSeparator()
         self.addAction(actions[-1])
-
-        # self.addSeparator()
-        # for k in CONFIG_SYSTRAY:
-        #     if k == 'ScreenShot':
-        #         self.addAction(Action({'icon':k, 'txt': k, 'trg': partial(self.signals.showLayout.emit, self.appInfo[k][2], 'show')}, self))
-        #     elif k == 'Snipping Tool':
-        #         self.addAction(Action({'icon': k, 'txt': k, 'trg': partial(self.signals.executing.emit, self.appInfo[k][2])}, self))
-        #
-        # self.addSeparator()
-        #
-        # self.addAction(Action({'icon':'Maximize','txt':'Maximize','trg':partial(self.signals.showLayout.emit, 'PipelineManager', 'showMax')}, self))
-        # self.addAction(Action({'icon':'Minimize','txt':"Minimize",'trg':partial(self.signals.showLayout.emit, 'PipelineManager', 'showMin')}, self))
-        # self.addAction(Action({'icon':'Restore','txt':"Restore", 'trg':partial(self.signals.showLayout.emit, 'PipelineManager', 'showNor')}, self))
-        #
-        # self.addSeparator()
-        # self.addAction(Action({'icon':'Close','txt':"Quit", 'trg':partial(self.signals.showLayout.emit, 'app', 'quit')}, self))
 
 class SystrayWheelEventObject(DAMG):
 
@@ -87,14 +67,15 @@ class SystrayWheelEventObject(DAMG):
 class SysTray(SystemTrayIcon):
 
     key = 'SysTray'
+    _loggin = False
 
     def __init__(self, settings, actionManager, parent=None):
 
         super(SysTray, self).__init__(parent)
 
-        self.db = QuerryDB()
-        self.settings = settings
-        self.actionManager = actionManager
+        self.db                 = QuerryDB()
+        self.settings           = settings
+        self.actionManager      = actionManager
 
         try:
             self.username, token, cookie, remember = self.db.query_table('curUser')
@@ -110,12 +91,12 @@ class SysTray(SystemTrayIcon):
         self.activated.connect(self.sys_tray_icon_activated)
         self.setContextMenu(self.rightClickMenu)
 
-        self.eventObj=SystrayWheelEventObject()
+        self.eventObj = SystrayWheelEventObject()
         self.installEventFilter(self.eventObj)
 
     def sys_tray_icon_activated(self, reason):
         if reason == QSystemTrayIcon.DoubleClick:
-            self.signals.showLayout.emit('PipelineManager', 'showNor')
+            self.signals.showLayout.emit('PipelineManager', 'showRestore')
 
     def log_in(self):
         self.showMessage('Welcome', "Log in as {0}".format(self.username), QSystemTrayIcon.Information, 500)
@@ -136,6 +117,14 @@ class SysTray(SystemTrayIcon):
             icon = self.Context
 
         self.showMessage(title, mess, icon, timeDelay)
+
+    @property
+    def login(self):
+        return self._loggin
+
+    @login.setter
+    def login(self, newVal):
+        self._loggin = newVal
 
 def main():
     sysApp = QApplication(sys.argv)

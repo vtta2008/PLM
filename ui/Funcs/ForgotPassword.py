@@ -118,10 +118,6 @@ class ForgotPassword(Widget):
     def on_step2_btn_clicked(self):
         pass
 
-    def showEvent(self, event):
-        self.signals.showLayout.emit('SignIn', 'hide')
-        self.signals.showLayout.emit('SignUp', 'hide')
-
 def main():
     app = QApplication(sys.argv)
     reset_pw_layout = ForgotPassword()

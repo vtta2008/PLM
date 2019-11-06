@@ -15,9 +15,6 @@ import time, datetime
 from damg                               import DAMGDICT, DAMG, DAMGLIST
 from functools                          import partial
 
-# PyQt5
-from PyQt5.QtCore                       import pyqtSlot
-
 # PLM
 from utils                              import str2bool, bool2str
 from appData                            import layoutTypes
@@ -76,18 +73,22 @@ class InspectLayout(DAMG):
 class LayoutManager(DAMGDICT):
 
     key = 'LayoutManager'
+    noShowHideAttrs        = DAMGLIST()
+    unHidableLayouts       = DAMGLIST()
+    unShowableLayouts      = DAMGLIST()
     awaitingSlots          = DAMGLIST()
     layout_names           = DAMGLIST()
     layout_ids             = DAMGLIST()
     layout_datetimes       = DAMGLIST()
 
-    def __init__(self, actionManager, parent=None):
+    def __init__(self, actionManager, buttonManager, parent=None):
         DAMGDICT.__init__(self)
 
         self.parent = parent
         self.settings = self.parent.settings
         self.inspect = InspectLayout()
         self.actionManager = actionManager
+        self.buttonManager = buttonManager
 
     def buildLayouts(self):
         self.mains      = self.mainLayouts()
@@ -147,6 +148,12 @@ class LayoutManager(DAMGDICT):
             cbs[i].stateChanged.connect(sections[i].setVisible)
             cbs[i].stateChanged.connect(partial(self.mainUI.signals.setSetting.emit, key, bool2str(val), grp))
 
+        for layout in self.layouts():
+            try:
+                layout.isHidden()
+            except AttributeError:
+                self.noShowHideAttrs.append(layout)
+
     def functionLayouts(self):
         from ui.Funcs import SignIn, SignUp, ForgotPassword
 
@@ -162,7 +169,7 @@ class LayoutManager(DAMGDICT):
     def mainLayouts(self):
         from ui import PipelineManager, SysTray
 
-        self.mainUI     = PipelineManager.PipelineManager(self.settings, self.actionManager)
+        self.mainUI     = PipelineManager.PipelineManager(self.settings, self.actionManager, self.buttonManager)
         self.sysTray    = SysTray.SysTray(self.settings, self.actionManager)
         self.sysTray.show()
 
@@ -252,7 +259,6 @@ class LayoutManager(DAMGDICT):
         layouts = [self.newProject]
         return layouts
 
-    @pyqtSlot(object)
     def regisLayout(self, layout):
 
         ui = self.inspect.doInspection(layout)
@@ -288,12 +294,18 @@ class LayoutManager(DAMGDICT):
 
     def deRegister(self, layout):
         key = layout.key
+        index = self.layout_names.index(layout.name)
+
+
         if self.isRegistered(layout):
             self.awaitingSlots.append(key)
             try:
                 del self[key]
             except KeyError:
                 self.pop(key, None)
+            self.layout_names.remove(self.layout_names[index])
+            self.layout_ids.remove(self.layout_ids[index])
+            self.layout_datetimes.remove(self.layout_datetimes[index])
             return True
         else:
             return False
@@ -310,6 +322,107 @@ class LayoutManager(DAMGDICT):
             return True
         else:
             return False
+
+    def layouts(self):
+        return self.values()
+
+    def signOutEvent(self):
+        self.showOnlyLayout(self.signin)
+
+    def newAcountEvent(self):
+        self.showOnlyLayout(self.signup)
+
+    def switchAccountEvent(self):
+        self.showOnlyLayout(self.signin)
+
+    def signUpEvent(self):
+        self.showOnlyLayout(self.signup)
+
+    def showOnlyLayout(self, layout):
+        layouts = [l for l in self.layouts() if not l is layout and not l in self.unHidableLayouts]
+        if self.isHidable(layout):
+            layout.show()
+
+        for l in layouts:
+            self.hide(l)
+
+    def hideOnlyLayout(self, layout):
+        layouts = [l for l in self.layouts() if not l is layout and not l in self.unHidableLayouts]
+        if self.isHidable(layout):
+            layout.hide()
+
+        for l in layouts:
+            self.show(l)
+
+    def setLayoutUnHidable(self, layout):
+        if not layout in self.unHidableLayouts:
+            self.show(layout)
+            return self.unHidableLayouts.append(layout)
+
+    def setLayoutUnShowable(self, layout):
+        if not layout in self.unShowableLayouts:
+            self.hide(layout)
+            return self.unShowableLayouts.append(layout)
+
+    def setLayoutHidable(self, layout):
+        if layout in self.unHidableLayouts:
+            self.show(layout)
+            return self.unHidableLayouts.remove(layout)
+
+    def isHidable(self, layout):
+        if not layout in self.noShowHideAttrs:
+            if not layout in self.unHidableLayouts:
+                try:
+                    layout.isHidden()
+                except AttributeError:
+                    return False
+                else:
+                    return True
+            elif layout in self.unShowableLayouts:
+                return False
+            else:
+                return False
+        else:
+            return False
+
+    def hide(self, layout):
+        if not layout in self.noShowHideAttrs:
+            state = layout.isHidden()
+            if not state and not layout in self.unHidableLayouts:
+                layout.hide()
+                layout.setValue('state', 'hide')
+
+    def show(self, layout):
+        if not layout in self.noShowHideAttrs:
+            state = layout.isHidden()
+            if state and not layout in self.unShowableLayouts:
+                layout.show()
+                layout.setValue('state', 'show')
+
+    def showNormal(self, layout):
+        if not layout in self.noShowHideAttrs:
+            state = layout.isHidden()
+            if state and not layout in self.unShowableLayouts:
+                layout.showNormal()
+                layout.setValue('state', 'showNormal')
+
+    def showMinnimize(self, layout):
+        if not layout in self.noShowHideAttrs:
+            state = layout.isHidden()
+            if state and not layout in self.unShowableLayouts:
+                layout.showMinimize()
+                layout.setValue('state', 'showMinimize')
+
+    def showMaximized(self, layout):
+        if not layout in self.noShowHideAttrs:
+            state = layout.isHidden()
+            if state and not layout in self.unShowableLayouts:
+                layout.showMaximized()
+                layout.setValue('state', 'showMaximized')
+
+    def showAllLayout(self):
+        for layout in self.layouts():
+            self.show(layout)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/07/2018 - 11:31 AM
