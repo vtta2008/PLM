@@ -52,9 +52,6 @@ class SystemTrayIcon(QSystemTrayIcon):
     def name(self, newName):
         self._name                      = newName
 
-    def hide(self):
-        pass
-
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 7:51 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

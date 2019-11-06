@@ -60,7 +60,7 @@ class PipelineManager(MainWindow):
     def buildUI(self):
 
         self.mainMenuBar            = MainMenuBar(self.actionManager, self)
-        self.mainToolBar            = MainToolBar(self.actionManager)
+        self.mainToolBar            = MainToolBar(self.actionManager, self)
         self.connectStatus          = ConnectStatus()
         self.notification           = GridLayout()
 

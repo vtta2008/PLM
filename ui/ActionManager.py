@@ -167,7 +167,7 @@ class ActionManager(DAMGDICT):
             action = Action({'icon': self.appInfo[key][1],
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.emit, 'showLayout', key, 'show'), }, parent)
+                             'trg': partial(parent.signals.emit, 'showLayout', self.appInfo[key][2], 'show'), }, parent)
             action.key = '{0}Action'.format(key)
             if action.key in self.actionKeys:
                 return self[action.key]
@@ -184,7 +184,7 @@ class ActionManager(DAMGDICT):
             action = Action({'icon': self.appInfo[key][1],
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.emit, 'showLayout', key, 'showRestore'), }, parent)
+                             'trg': partial(parent.signals.emit, 'showLayout', self.appInfo[key][2], 'showRestore'), }, parent)
             action.key = '{0}Action'.format(key)
             if action.key in self.actionKeys:
                 return self[action.key]
@@ -201,7 +201,7 @@ class ActionManager(DAMGDICT):
             action = Action({'icon': self.appInfo[key][1],
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.emit, 'showLayout', key, 'showMax'), }, parent)
+                             'trg': partial(parent.signals.emit, 'showLayout', self.appInfo[key][2], 'showMax'), }, parent)
             action.key = '{0}Action'.format(key)
             if action.key in self.actionKeys:
                 return self[action.key]
@@ -218,7 +218,7 @@ class ActionManager(DAMGDICT):
             action = Action({'icon': self.appInfo[key][1],
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.emit, 'showLayout', key, 'showMin'), }, parent)
+                             'trg': partial(parent.signals.emit, 'showLayout', self.appInfo[key][2], 'showMin'), }, parent)
             action.key = '{0}Action'.format(key)
             if action.key in self.actionKeys:
                 return self[action.key]

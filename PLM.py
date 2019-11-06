@@ -38,6 +38,7 @@ from ui.ButtonManager               import ButtonManager
 from ui.uikits.Icon                 import LogoIcon
 from ui.Web.Browser                 import Browser
 from ui.LayoutManager               import LayoutManager
+from ui.EventManager                import EventManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -82,13 +83,16 @@ class PLM(QApplication):
         QCoreApplication.setOrganizationDomain(__website__)
         QCoreApplication.setApplicationVersion(__version__)
 
+        self.eventManager           = EventManager()
         self.buttonManager          = ButtonManager()
         self.actionManager          = ActionManager()
         self.layoutManager          = LayoutManager(self.actionManager, self.buttonManager, self)
         self.layoutManager.regisLayout(self.browser)
         self.layoutManager.buildLayouts()
+        self.layoutManager.sysTray.show()
+        self.layoutManager.sysTray.installEventFilter(self.eventManager.wheelEvent)
 
-        for layout in self.layoutManager.values():
+        for layout in self.layoutManager.layouts():
             if not layout.key in self.ignoreIDs:
                 layout.signals.showLayout.connect(self.showLayout)
                 layout.signals.executing.connect(self.executing)
@@ -171,33 +175,37 @@ class PLM(QApplication):
         if layoutID == 'app':
             layout = self
         elif layoutID == 'SignOut' and mode == 'show':
-            return self.signOutEvent()
+            self.signOutEvent()
         elif layoutID == 'SwitchAccount' and mode == 'show':
-            return self.switchAccountEvent()
+            self.switchAccountEvent()
         elif layoutID == 'SignUp' and mode == 'show':
-            return self.newAccountEvent()
+            self.newAccountEvent()
+        elif layoutID == 'SysTrayIconMenu':
+            layout = self.layoutManager.sysTray.trayMenu
         elif layoutID in self.layoutManager.keys():
             if not layoutID in self.ignoreIDs:
                 layout = self.layoutManager[layoutID]
-            else:
-                # print("Ignore Layout: {0}".format(layoutID))
-                return
         else:
             if not layoutID in self.toBuildLayouts:
                 self.logger.report("Layout: '{0}' is not registerred yet.".format(layoutID))
                 self.toBuildLayouts.append(layoutID)
-            return
+                return
 
         if mode == "hide":
-            self.layoutManager.hide(layout)
+            layout.hide()
+            return layout.setValue('state', 'hide')
         elif mode == "show":
-            self.layoutManager.show(layout)
+            layout.show()
+            return layout.setValue('state', 'show')
         elif mode == 'showRestore':
-            self.layoutManager.showNormal(layout)
+            layout.showNormal()
+            return layout.setValue('state', 'showNormal')
         elif mode == 'showMin':
-            self.layoutManager.showMinnimize(layout)
+            layout.showMinimize()
+            return layout.setValue('state', 'showMinimize')
         elif mode == 'showMax':
-            self.layoutManager.showMaximized(layout)
+            layout.showMaximized()
+            return layout.setValue('state', 'showMaximized')
         elif mode == 'quit' or mode == 'exit':
             self.exitEvent()
 
@@ -215,6 +223,7 @@ class PLM(QApplication):
         self.settings.initSetValue('styleSheet', 'dark')
 
     def loginChanged(self, val):
+        print('Loggin change: {0}'.format(val))
         self._login = val
         self.layoutManager.sysTray._login = val
 
@@ -231,7 +240,7 @@ class PLM(QApplication):
         self.loginChanged(False)
 
     def exitEvent(self):
-        print(self.toBuildLayouts)
+        print(self.toBuildLayouts, self.toBuildCommand)
         self.exit()
 
 if __name__ == '__main__':

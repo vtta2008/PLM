@@ -171,7 +171,6 @@ class LayoutManager(DAMGDICT):
 
         self.mainUI     = PipelineManager.PipelineManager(self.settings, self.actionManager, self.buttonManager)
         self.sysTray    = SysTray.SysTray(self.actionManager)
-        self.sysTray.show()
 
         layouts = [self.mainUI, self.sysTray]
 
@@ -386,39 +385,24 @@ class LayoutManager(DAMGDICT):
             return False
 
     def hide(self, layout):
-        if not layout in self.noShowHideAttrs:
-            state = layout.isHidden()
-            if not state and not layout in self.unHidableLayouts:
-                layout.hide()
-                layout.setValue('state', 'hide')
+        layout.hide()
+        return layout.setValue('state', 'hide')
 
     def show(self, layout):
-        if not layout in self.noShowHideAttrs:
-            state = layout.isHidden()
-            if state and not layout in self.unShowableLayouts:
-                layout.show()
-                layout.setValue('state', 'show')
+        layout.show()
+        return layout.setValue('state', 'show')
 
     def showNormal(self, layout):
-        if not layout in self.noShowHideAttrs:
-            state = layout.isHidden()
-            if state and not layout in self.unShowableLayouts:
-                layout.showNormal()
-                layout.setValue('state', 'showNormal')
+        layout.showNormal()
+        return layout.setValue('state', 'showNormal')
 
     def showMinnimize(self, layout):
-        if not layout in self.noShowHideAttrs:
-            state = layout.isHidden()
-            if state and not layout in self.unShowableLayouts:
-                layout.showMinimize()
-                layout.setValue('state', 'showMinimize')
+        layout.showMinimize()
+        return layout.setValue('state', 'showMinimize')
 
     def showMaximized(self, layout):
-        if not layout in self.noShowHideAttrs:
-            state = layout.isHidden()
-            if state and not layout in self.unShowableLayouts:
-                layout.showMaximized()
-                layout.setValue('state', 'showMaximized')
+        layout.showMaximized()
+        return layout.setValue('state', 'showMaximized')
 
     def showAllLayout(self):
         for layout in self.layouts():

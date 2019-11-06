@@ -385,7 +385,7 @@ class ConfigManager(DAMG):
         self.mainInfo['SettingFolder'] = ['Go To Setting Folder', 'SettingFolder', self.pthInfo['setting']]
         self.mainInfo['AppFolder'] = ['Go To PLM Folder', 'AppFolder', self.pthInfo['root']]
 
-        self.mainInfo['Restore'] = ['Restore', 'Restore', 'PipelineManager']
+        self.mainInfo['Restore']  = ['Restore', 'Restore', 'PipelineManager']
         self.mainInfo['Maximize'] = ['Maximize', 'Maximize', 'PipelineManager']
         self.mainInfo['Minimize'] = ['Minimize', 'Minimize', 'PipelineManager']
 

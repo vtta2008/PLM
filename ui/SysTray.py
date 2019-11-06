@@ -17,7 +17,7 @@ from damg                       import DAMG
 
 # PyQt5
 from PyQt5.QtCore               import pyqtSlot
-from PyQt5.QtGui                import QWheelEvent
+from PyQt5.QtGui                import QCursor
 from PyQt5.QtWidgets            import QApplication
 
 # PLM
@@ -25,6 +25,7 @@ from appData                    import __plmSlogan__, __appname__, __envKey__, S
 from cores.SignalManager        import LayoutSignals
 from ui.uikits.Icon             import LogoIcon
 from ui.uikits.Menu             import Menu
+from ui.Menus.SysTrayIconMenu   import SysTrayIconMenu
 from ui.uikits.Button           import Button
 from ui.uikits.Widget           import Widget
 from ui.uikits.BoxLayout        import VBoxLayout
@@ -34,41 +35,6 @@ from utils                      import QuerryDB
 
 
 # -------------------------------------------------------------------------------------------------------------
-
-class SysTrayIconMenu(Menu):
-
-    key = 'SysTrayIconMenu'
-
-    def __init__(self, actionManager, parent=None):
-        super(SysTrayIconMenu, self).__init__(parent)
-
-        self.signals            = LayoutSignals(self)
-        self.actionManager      = actionManager
-
-        with open(os.path.join(os.getenv(__envKey__), 'appData/.config', 'main.cfg'), 'r') as f:
-            self.appInfo = json.load(f)
-
-        actions                 = self.actionManager.sysTrayMenuActions(self)
-
-        self.addActions(actions[3:5])
-        self.addSeparator()
-        self.addActions(actions[0:3])
-        self.addSeparator()
-        self.addAction(actions[-1])
-
-class SystrayWheelEventObject(DAMG):
-
-    key = 'SystrayWheelEventObject'
-
-    def eventFilter(self, object, event):
-        if type(event) == QWheelEvent:
-            if event.delta() > 0:
-                print("wheel up")
-            else:
-                print("wheel down")
-            event.accept()
-            return True
-        return False
 
 class TrayMenu(Widget):
 
@@ -87,15 +53,25 @@ class TrayMenu(Widget):
         grid.addWidget(self.button, 0, 0)
         self.layout.addWidget(group)
 
+        self.setMouseTracking(True)
+
         self.setLayout(self.layout)
 
     def button_clicked(self):
         print('button clicked')
 
+    def mouseMoveEvent(self, Event):
+        self.settings.initSetValue('posX', Event.x(), 'MouseCusor')
+        self.settings.initSetValue('posY', Event.y(), 'MouseCusor')
+        print(Event.x(), Event.y())
+
     def focusInEvent(self, Event):
         self.isActiveWindow()
 
     def focusOutEvent(self, Event):
+        self.hide()
+
+    def hideEvent(self, event):
         self.hide()
 
 class SysTray(SystemTrayIcon):
@@ -109,14 +85,15 @@ class SysTray(SystemTrayIcon):
 
         self.db                 = QuerryDB()
         self.actionManager      = actionManager
-        self.trayMenu           = TrayMenu()
+        self.trayMenu           = TrayMenu(self)
+        self.signals.emit('regisLayout', self.trayMenu)
 
         try:
             self.username, token, cookie, remember = self.db.query_table('curUser')
         except (ValueError, IndexError):
             self.username = 'DemoUser'
 
-        self.rightClickMenu = SysTrayIconMenu(self.actionManager)
+        self.rightClickMenu = SysTrayIconMenu(self.actionManager, self)
         self.rightClickMenu.signals.executing.connect(self.signals.executing.emit)
         self.rightClickMenu.signals.showLayout.connect(self.signals.showLayout.emit)
 
@@ -125,8 +102,8 @@ class SysTray(SystemTrayIcon):
         self.activated.connect(self.sys_tray_icon_activated)
         self.setContextMenu(self.rightClickMenu)
 
-        self.eventObj = SystrayWheelEventObject()
-        self.installEventFilter(self.eventObj)
+        # self.eventObj = SystrayWheelEventObject()
+        # self.installEventFilter(self.eventObj)
 
     def sys_tray_icon_activated(self, reason):
         if reason == self.DoubleClick:
@@ -141,7 +118,6 @@ class SysTray(SystemTrayIcon):
         self.trayMenu.move(x, y)
         self.trayMenu.show()
         self.trayMenu.setFocus()
-
 
     def log_in(self):
         self.showMessage('Welcome', "Log in as {0}".format(self.username), self.Information, 500)

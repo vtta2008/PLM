@@ -80,15 +80,13 @@ class Widget(QWidget):
         if __name__=='__main__':
             self.close()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
-            event.ignore()
+            self.hide()
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
-            event.ignore()
+            self.hide()
 
     @property
     def copyright(self):
