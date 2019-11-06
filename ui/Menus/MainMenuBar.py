@@ -11,12 +11,10 @@ Description:
 """ Import """
 
 # Python
-import sys, os
-from functools                      import partial
+import sys
 from damg import DAMGLIST
 
 # PyQt5
-from PyQt5.QtCore                   import pyqtSlot
 from PyQt5.QtWidgets                import QApplication
 
 # Plm
@@ -27,7 +25,7 @@ from utils                          import data_handler
 
 class MainMenuBar(MenuBar):
 
-    key                     = 'TestMainMenuBar'
+    key                     = 'MainMenuBar'
     mainMenus               = ['&App', '&Go', '&Office', '&Tools', '&Dev', '&Lib', '&Help']
     appMenus                = ['&Organisation', '&Team', '&Project']
     menus                   = DAMGLIST()
@@ -57,7 +55,7 @@ class MainMenuBar(MenuBar):
 
     def build_helpMenu(self):
         helpMenu = self.addMenu("&Help")
-        helpActions = self.actionManger.helpMenuActions(self)
+        helpActions = self.actionManger.helpMenuActions(self.parent)
         self.add_actions(helpMenu, helpActions[0:2])
         helpMenu.addSeparator()
         self.add_actions(helpMenu, helpActions[2:5])
@@ -69,19 +67,19 @@ class MainMenuBar(MenuBar):
 
     def build_livMenu(self):
         libMenu = self.addMenu("&Lib")
-        libActions = self.actionManger.libMenuActions(self)
+        libActions = self.actionManger.libMenuActions(self.parent)
         self.add_actions(libMenu, libActions)
         return libMenu
 
     def build_devMenu(self):
         devMenu = self.addMenu("&Dev")
-        devActions = self.actionManger.devMenuActions(self)
+        devActions = self.actionManger.devMenuActions(self.parent)
         self.add_actions(devMenu, devActions)
         return devMenu
 
     def build_toolMenu(self):
         toolMenu = self.addMenu("&Tools")
-        toolActions = self.actionManger.toolsMenuActions(self)
+        toolActions = self.actionManger.toolsMenuActions(self.parent)
         self.add_actions(toolMenu, toolActions[0:-3])
         toolMenu.addSeparator()
         self.add_actions(toolMenu, toolActions[-3:0])
@@ -89,32 +87,32 @@ class MainMenuBar(MenuBar):
 
     def build_officceMenu(self):
         officeMenu = self.addMenu("&Office")
-        officeActions = self.actionManger.officeMenuActions(self)
+        officeActions = self.actionManger.officeMenuActions(self.parent)
         self.add_actions(officeMenu, officeActions)
         return officeMenu
 
     def build_goMenu(self):
         gotoMenu = self.addMenu('&Go')
-        goActions = self.actionManger.goMenuActions(self)
+        goActions = self.actionManger.goMenuActions(self.parent)
         self.add_actions(gotoMenu, goActions)
         return gotoMenu
 
     def build_appMenu(self):
         appMenu = self.addMenu("&App")
-        appActions = self.actionManger.appMenuActions(self)
+        appActions = self.actionManger.appMenuActions(self.parent)
         self.add_actions(appMenu, appActions[0:3])
 
         appMenu.addSeparator()
         self.organisationMenu = appMenu.addMenu("&Organisation")
-        orgActions = self.actionManger.orgMenuActions(self)
+        orgActions = self.actionManger.orgMenuActions(self.parent)
         self.add_actions(self.organisationMenu, orgActions)
 
         self.teamMenu = appMenu.addMenu('&Team')
-        teamActions = self.actionManger.teamMenuActions(self)
+        teamActions = self.actionManger.teamMenuActions(self.parent)
         self.add_actions(self.teamMenu, teamActions)
 
         self.projectMenu = appMenu.addMenu('&Project')
-        prjActions = self.actionManger.projectMenuActions(self)
+        prjActions = self.actionManger.projectMenuActions(self.parent)
         self.add_actions(self.projectMenu, prjActions)
 
         appMenu.addSeparator()

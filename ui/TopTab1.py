@@ -61,11 +61,6 @@ class TopTab1(Widget):
         self.layout.addWidget(sec2Grp, 4, 0, 4, 3)
         self.layout.addWidget(sec3Grp, 0, 3, 8, 6)
 
-    def showEvent(self, event):
-        self.signals.showLayout.emit(self.key, 'show')
-        self.signals.showLayout.emit('TopTab2', 'hide')
-        self.signals.showLayout.emit('TopTab3', 'hide')
-
 def main():
     app = QApplication(sys.argv)
     layout = TopTab1()

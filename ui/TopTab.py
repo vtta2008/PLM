@@ -57,13 +57,6 @@ class TopTab(TabWidget):
 
         self.signals.updateAvatar.connect(self.tab2.update_avatar)
 
-    def hideEvent(self, event):
-        self.setValue('currentTab', self.getCurrentKey())
-
-    def closeEvent(self, event):
-        self.setValue('currentTab', self.tabs.currentWidget().key)
-        self.signals.showLayout.emit(self.key, 'hide')
-
 def main():
     app = QApplication(sys.argv)
     layout = TopTab()

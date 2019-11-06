@@ -19,7 +19,8 @@ from PyQt5.QtCore                   import pyqtSignal
 from PyQt5.QtCore                   import Qt
 
 # PLM
-from appData                        import SiPoMin, SiPoMax, SiPoExp, SiPoIgn, SiPoPre
+from appData                        import SiPoMin, SiPoMax, SiPoExp, SiPoIgn, SiPoPre, STAY_ON_TOP
+from cores.Loggers                  import Loggers
 
 
 class LayoutSignals(DAMG):
@@ -32,20 +33,16 @@ class LayoutSignals(DAMG):
     openBrowser                     = pyqtSignal(str, name="openBrowser")
     setSetting                      = pyqtSignal(str, str, str, name="setSetting")
 
-    loginChange                     = pyqtSignal(bool, name="loginChange")
-
     sysNotify                       = pyqtSignal(str, str, str, int, name="sysNotify")
-
-    setLoginValue                   = pyqtSignal(bool, name="setLoginValue")
 
     updateAvatar                    = pyqtSignal(bool, name="updateAvatar")
 
-    cfgReport                       = pyqtSignal(str, name="cfgReport")
 
     def __init__(self, parent=None):
         super(LayoutSignals, self).__init__(parent)
 
         self.parent = parent
+        self.logger = Loggers(self.parent.key)
 
         self.objects        = ['PLMCORE', 'PLM', 'IconPth', 'ActionManager']
 
@@ -82,11 +79,33 @@ class LayoutSignals(DAMG):
 
         if self.parent.key == 'PipelineManager':
             self.parent.setFixedWidth(500)
+            # self.parent.setWindowFlags(STAY_ON_TOP)
 
         if self.parent.key == 'TobTab' and self.parent.key == 'BotTab':
             self.parent.setMovable(True)
             self.parent.setElideMode(Qt.ElideRight)
             self.parent.setUsesScrollButtons(True)
+
+    def emit(self, signal, op1=str, op2=str, op3=str, op4=int):
+        self.logger.report('Signal emitted from {0}'.format(self.parent.key))
+
+        if signal == 'showLayout':
+            return self.showLayout.emit(op1, op2)
+        elif signal == 'executing':
+            return self.executing.emit(op1)
+        elif signal == 'regisLayout':
+            return self.regisLayout.emit(op1)
+        elif signal == 'openBrowser':
+            return self.openBrowser.emit(op1)
+        elif signal == 'setSetting':
+            return self.setSetting.emit(op1, op2, op3)
+        elif signal == 'sysNotify':
+            return self.sysNotify.emit(op1, op2, op3, op4)
+        elif signal == 'updateAvatar':
+            return self.updateAvatar.emit(op1)
+        else:
+            return
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 25/10/2019 - 6:59 AM

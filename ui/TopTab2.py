@@ -60,11 +60,6 @@ class TopTab2(Widget):
 
         buttons = self.buttonManager.userButtonGroupBox(self.parent)
 
-        # btn1 = Button({'txt': 'Account Setting', 'cl': partial(self.signals.showLayout.emit, 'UserSetting', 'show')})
-        # btn2 = Button({'txt': 'Messages', 'cl': partial(self.signals.showLayout.emit, 'Messages', 'show')})
-        # btn3 = Button({'txt': 'Log Out', 'cl': partial(self.signals.showLayout.emit, 'SignIn', 'show')})
-        # btns = [btn1, btn2, btn3]
-
         sec1Grp = GroupBox(self.username, [self.avatar], "ImageView")
         sec2Grp = GroupBox("Setting", buttons, "BtnGrid")
         sec1Grp.setMaximumWidth(120)
@@ -85,11 +80,6 @@ class TopTab2(Widget):
             self.avatarScene = QGraphicsScene()
             self.avatarScene.addPixmap(self.avatar)
             self.avatarScene.update()
-
-    def showEvent(self, event):
-        self.signals.showLayout.emit(self.key, 'show')
-        self.signals.showLayout.emit('TopTab1', 'hide')
-        self.signals.showLayout.emit('TopTab3', 'hide')
 
 def main():
     app = QApplication(sys.argv)

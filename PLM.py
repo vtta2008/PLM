@@ -47,6 +47,16 @@ class PLM(QApplication):
     key                             = 'PLM'
     configManager                   = configManager
 
+    ignoreIDs = ['MainMenuSection', 'TestMainMenuBar', 'MainMenuSection', 'MainToolBarSection', 'MainToolBar',
+                 'MainToolBarSection', 'Notification', 'TopTab', 'BotTab', 'Footer', 'TopTab2', 'TopTab1',
+                 'TopTab3']
+
+    toBuildLayouts = ['ProjectManager', 'ConfigProject', 'EditProject', 'NewOrganisation', 'EditOrganisation',
+                      'ConfigOrganisation', 'OrganisationManager', 'NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager',
+                      'Alpha', 'HDRI', 'Texture', 'Feedback', 'ContactUs']
+
+    toBuildCommand = []
+
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
 
@@ -79,10 +89,12 @@ class PLM(QApplication):
         self.layoutManager.buildLayouts()
 
         for layout in self.layoutManager.values():
-            layout.signals.showLayout.connect(self.showLayout)
-            layout.signals.executing.connect(self.executing)
-            layout.signals.openBrowser.connect(self.openBrowser)
-            layout.signals.setSetting.connect(self.setSetting)
+            if not layout.key in self.ignoreIDs:
+                layout.signals.showLayout.connect(self.showLayout)
+                layout.signals.executing.connect(self.executing)
+                layout.signals.openBrowser.connect(self.openBrowser)
+                layout.signals.setSetting.connect(self.setSetting)
+                layout.signals.sysNotify.connect(self.sysNotify)
 
         try:
             self.username, token, cookie, remember = self.database.query_table('curUser')
@@ -97,7 +109,7 @@ class PLM(QApplication):
                 if r.status_code == 200:
                     if not self.layoutManager.sysTray.isSystemTrayAvailable():
                         self.logger.report(SYSTRAY_UNAVAI)
-                        sys.exit(1)
+                        self.exitEvent()
                     self.loginChanged(True)
                     self.showLayout('PipelineManager', "show")
                 else:
@@ -116,18 +128,19 @@ class PLM(QApplication):
 
     @pyqtSlot(str)
     def openBrowser(self, url):
+        self.logger.report("receive signal open browser: {0}".format(url))
         self.browser.setUrl(url)
         self.browser.update()
         self.browser.show()
 
     @pyqtSlot(str, str, str, name='setSetting')
     def setSetting(self, key=None, value=None, grp=None):
-        print("receive setting: configKey: {0}, to value: {1}, in group {2}".format(key, value, grp))
+        self.logger.report("receive setting: configKey: {0}, to value: {1}, in group {2}".format(key, value, grp))
         self.settings.initSetValue(key, value, grp)
 
     @pyqtSlot(str, name="executing")
     def executing(self, cmd):
-        print("Recieve signal_cpu: '{0}'".format(cmd))
+        print("Recieve signal executing: '{0}'".format(cmd))
         if cmd in self.layoutManager.keys():
             self.signals.showLayout.emit(cmd, 'show')
         elif os.path.isdir(cmd):
@@ -145,34 +158,34 @@ class PLM(QApplication):
         elif cmd == 'ReConfig':
             self.configManager = ConfigManager(__envKey__, ROOT)
         elif cmd == 'Exit':
-            self.exit()
+            self.exitEvent()
         else:
-            print("This command is not regiested yet: {0}".format(cmd))
+            if not cmd in self.toBuildCommand:
+                self.logger.report("This command is not regiested yet: {0}".format(cmd))
+                self.toBuildCommand.append(cmd)
 
     @pyqtSlot(str, str, name="showLayout")
     def showLayout(self, layoutID, mode):
-        # print("Recieve signal_cpu: '{0}: {1}'".format(layoutID, mode))
-
-        ignoreIDs = ['MainMenuSection', 'TestMainMenuBar', 'MainMenuSection', 'MainToolBarSection', 'MainToolBar',
-                     'MainToolBarSection', 'Notification', 'TopTab', 'BotTab', 'Footer', 'TopTab2', 'TopTab1',
-                     'TopTab3']
+        self.logger.report("Recieve signal show layout: '{0}: {1}'".format(layoutID, mode))
 
         if layoutID == 'app':
             layout = self
         elif layoutID == 'SignOut' and mode == 'show':
-            self.signOutEvent()
+            return self.signOutEvent()
         elif layoutID == 'SwitchAccount' and mode == 'show':
-            self.switchAccountEvent()
+            return self.switchAccountEvent()
         elif layoutID == 'SignUp' and mode == 'show':
-            self.newAccountEvent()
+            return self.newAccountEvent()
         elif layoutID in self.layoutManager.keys():
-            if not layoutID in ignoreIDs:
+            if not layoutID in self.ignoreIDs:
                 layout = self.layoutManager[layoutID]
             else:
                 # print("Ignore Layout: {0}".format(layoutID))
                 return
         else:
-            print("Layout: '{0}' is not registerred yet.".format(layoutID))
+            if not layoutID in self.toBuildLayouts:
+                self.logger.report("Layout: '{0}' is not registerred yet.".format(layoutID))
+                self.toBuildLayouts.append(layoutID)
             return
 
         if mode == "hide":
@@ -186,7 +199,12 @@ class PLM(QApplication):
         elif mode == 'showMax':
             self.layoutManager.showMaximized(layout)
         elif mode == 'quit' or mode == 'exit':
-            self.exit()
+            self.exitEvent()
+
+    @pyqtSlot(str, str, str, int, name='sysNotify')
+    def sysNotify(self, title, mess, iconType, timeDelay):
+        self.logger.report('Receive signal sysNotify: {0} {1} {2} {3}'.format(title, mess, iconType, timeDelay))
+        return self.layoutManager.sysTray.sysNotify(title, mess, iconType, timeDelay)
 
     def set_styleSheet(self, style):
 
@@ -211,6 +229,10 @@ class PLM(QApplication):
     def switchAccountEvent(self):
         self.layoutManager.switchAccountEvent()
         self.loginChanged(False)
+
+    def exitEvent(self):
+        print(self.toBuildLayouts)
+        self.exit()
 
 if __name__ == '__main__':
     PLM()

@@ -119,7 +119,7 @@ class ButtonManager(DAMGDICT):
         if key in self.mainInfo.keys():
             button = Button({'txt': self.mainInfo[key][0],
                              'stt': self.mainInfo[key][2],
-                             'cl': partial(parent.signals.showLayout.emit, key, 'show'), })
+                             'cl': partial(parent.signals.emit, 'showLayout',  key, 'show'), })
             button.key = '{0}Button'.format(key)
             if button.key in self.buttonKeys:
                 return self[button.key]
@@ -135,7 +135,7 @@ class ButtonManager(DAMGDICT):
         if key in self.mainInfo.keys():
             button = Button({'txt': self.mainInfo[key][0],
                              'stt': self.mainInfo[key][2],
-                             'cl': partial(parent.signals.showLayout.emit, key, 'showRestore'), })
+                             'cl': partial(parent.signals.emit, 'showLayout',  key, 'showRestore'), })
             button.key = '{0}Button'.format(key)
             if button.key in self.buttonKeys:
                 return self[button.key]
@@ -151,7 +151,7 @@ class ButtonManager(DAMGDICT):
         if key in self.mainInfo.keys():
             button = Button({'txt': self.mainInfo[key][0],
                              'stt': self.mainInfo[key][2],
-                             'cl': partial(parent.signals.showLayout.emit, key, 'showMax'), })
+                             'cl': partial(parent.signals.emit, 'showLayout',  key, 'showMax'), })
             button.key = '{0}Button'.format(key)
             if button.key in self.buttonKeys:
                 return self[button.key]
@@ -167,7 +167,7 @@ class ButtonManager(DAMGDICT):
         if key in self.mainInfo.keys():
             button = Button({'txt': self.mainInfo[key][0],
                              'stt': self.mainInfo[key][2],
-                             'cl': partial(parent.signals.showLayout.emit, key, 'showMin'), })
+                             'cl': partial(parent.signals.emit, 'showLayout',  key, 'showMin'), })
             button.key = '{0}Button'.format(key)
             if button.key in self.buttonKeys:
                 return self[button.key]
@@ -199,7 +199,7 @@ class ButtonManager(DAMGDICT):
         if key in self.mainInfo.keys():
             button = Button({'txt': self.mainInfo[key][0],
                              'stt': self.mainInfo[key][2],
-                             'cl': partial(parent.signals.executing.emit, key), })
+                             'cl': partial(parent.signals.emit, 'executing', key), })
             button.key = '{0}Button'.format(key)
             button._name = '{0} Button'.format(key)
             if button.key in self.buttonKeys:
@@ -215,7 +215,7 @@ class ButtonManager(DAMGDICT):
         if key in self.mainInfo.keys():
             button = Button({'txt': self.mainInfo[key][0],
                              'stt': self.mainInfo[key][2],
-                             'cl': partial(parent.signals.openBrowser.emit, key), })
+                             'cl': partial(parent.signals.emit, 'openBrowser', key), })
             button.key = '{0}{1}Button'.format(parent.key, key)
             if button.key in self.buttonKeys:
                 return self[button.key]

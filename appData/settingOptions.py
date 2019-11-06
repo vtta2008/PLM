@@ -63,6 +63,10 @@ UPDATE_SMARTVIEW            = QGraphicsView.SmartViewportUpdate
 UPDATE_BOUNDINGVIEW         = QGraphicsView.BoundingRectViewportUpdate
 UPDATE_MINIMALVIEW          = QGraphicsView.MinimalViewportUpdate
 
+STAY_ON_TOP                 = Qt.WindowStaysOnTopHint
+STRONG_FOCUS                = Qt.StrongFocus
+FRAMELESSWINDOW             = Qt.FramelessWindowHint
+
 # -------------------------------------------------------------------------------------------------------------
 """ Drawing """
 

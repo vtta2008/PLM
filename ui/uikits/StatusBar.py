@@ -8,18 +8,19 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __future__ import absolute_import, unicode_literals
+
 """ Import """
 
 # Python
 import sys
 
 # PyQt5
-from PyQt5.QtWidgets        import QApplication, QStatusBar
+from PyQt5.QtWidgets            import QStatusBar
 
 # Plm
 from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
 from cores.SignalManager        import LayoutSignals
-from cores.Loggers              import Loggers
 from cores.Settings             import Settings
 
 
@@ -36,11 +37,11 @@ class StatusBar(QStatusBar):
     _data                                   = dict()
 
     def __init__(self, parent=None):
-        super(StatusBar, self).__init__(parent)
+        QStatusBar.__init__(self)
 
         self.signals = LayoutSignals(self)
-        self.logger = Loggers(self.__class__.__name__)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.parent = parent
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
@@ -79,14 +80,14 @@ class StatusBar(QStatusBar):
         if __name__=='__main__':
             self.close()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.hide()
             event.ignore()
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     @property
@@ -109,17 +110,6 @@ class StatusBar(QStatusBar):
     def name(self, newName):
         self._name                      = newName
 
-
-def main():
-    app = QApplication(sys.argv)
-    layout = StatusBar()
-    layout.show()
-    app.exec_()
-
-
-if __name__ == '__main__':
-    main()
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 3/06/2018 - 10:39 PM
+# Created by panda on 6/11/2019 - 4:00 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

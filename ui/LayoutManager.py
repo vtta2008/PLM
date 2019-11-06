@@ -170,7 +170,7 @@ class LayoutManager(DAMGDICT):
         from ui import PipelineManager, SysTray
 
         self.mainUI     = PipelineManager.PipelineManager(self.settings, self.actionManager, self.buttonManager)
-        self.sysTray    = SysTray.SysTray(self.settings, self.actionManager)
+        self.sysTray    = SysTray.SysTray(self.actionManager)
         self.sysTray.show()
 
         layouts = [self.mainUI, self.sysTray]

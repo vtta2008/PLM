@@ -167,7 +167,7 @@ class ActionManager(DAMGDICT):
             action = Action({'icon': self.appInfo[key][1],
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.showLayout.emit, self.appInfo[key][2], 'show'), }, parent)
+                             'trg': partial(parent.signals.emit, 'showLayout', key, 'show'), }, parent)
             action.key = '{0}Action'.format(key)
             if action.key in self.actionKeys:
                 return self[action.key]
@@ -184,7 +184,7 @@ class ActionManager(DAMGDICT):
             action = Action({'icon': self.appInfo[key][1],
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.showLayout.emit, self.appInfo[key][2], 'showRestore'), }, parent)
+                             'trg': partial(parent.signals.emit, 'showLayout', key, 'showRestore'), }, parent)
             action.key = '{0}Action'.format(key)
             if action.key in self.actionKeys:
                 return self[action.key]
@@ -201,7 +201,7 @@ class ActionManager(DAMGDICT):
             action = Action({'icon': self.appInfo[key][1],
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.showLayout.emit, self.appInfo[key][2], 'showMax'), }, parent)
+                             'trg': partial(parent.signals.emit, 'showLayout', key, 'showMax'), }, parent)
             action.key = '{0}Action'.format(key)
             if action.key in self.actionKeys:
                 return self[action.key]
@@ -218,7 +218,7 @@ class ActionManager(DAMGDICT):
             action = Action({'icon': self.appInfo[key][1],
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.showLayout.emit, self.appInfo[key][2], 'showMin'), }, parent)
+                             'trg': partial(parent.signals.emit, 'showLayout', key, 'showMin'), }, parent)
             action.key = '{0}Action'.format(key)
             if action.key in self.actionKeys:
                 return self[action.key]
@@ -252,7 +252,7 @@ class ActionManager(DAMGDICT):
             action = Action({'icon': self.appInfo[key][1],
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.executing.emit, self.appInfo[key][2]), }, parent)
+                             'trg': partial(parent.signals.emit, 'executing', self.appInfo[key][2]), }, parent)
             action.key = '{0}Action'.format(key)
             action._name = '{0} Action'.format(key)
             if action.key in self.actionKeys:
@@ -269,7 +269,7 @@ class ActionManager(DAMGDICT):
             action = Action({'icon': self.appInfo[key][1],
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.openBrowser.emit, self.appInfo[key][2]), }, parent)
+                             'trg': partial(parent.signals.emit, 'openBrowser', self.appInfo[key][2]), }, parent)
             action.key = '{0}{1}Action'.format(parent.key, key)
             if action.key in self.actionKeys:
                 return self[action.key]

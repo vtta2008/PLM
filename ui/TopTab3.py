@@ -104,11 +104,6 @@ class TopTab3(Widget):
     def update_terminal(self, cmd):
         self.terminal.insertPlainText(subprocess.getoutput(cmd=cmd) + "\n")
 
-    def showEvent(self, event):
-        self.signals.showLayout.emit(self.key, 'show')
-        self.signals.showLayout.emit('TopTab1', 'hide')
-        self.signals.showLayout.emit('TopTab2', 'hide')
-
 def main():
     app = QApplication(sys.argv)
     layout = TopTab3()

@@ -29,7 +29,7 @@ from ui.AppToolbar.MainToolBar          import MainToolBar
 from ui.TopTab                          import TopTab                           # Body
 from ui.BotTab                          import BotTab
 from ui.Footer                          import Footer                           # Footer
-from ui.StatusBar                       import StatusBar
+from ui.MainStatusBar                   import MainStatusBar
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
@@ -77,7 +77,7 @@ class PipelineManager(MainWindow):
         self.topTabUI               = TopTab(self.buttonManager, self)
         self.botTabUI               = BotTab()
         self.footer                 = Footer(self.buttonManager, self)
-        self.statusBar              = StatusBar()
+        self.statusBar              = MainStatusBar()
 
         self.setStatusBar(self.statusBar)
 
@@ -122,21 +122,6 @@ class PipelineManager(MainWindow):
         dock.signals.openBrowser.connect(self.signals.openBrowser)
 
         self.addDockWidget(pos, dock)
-
-    def showEvent(self, event):
-        self.signals.showLayout.emit('PipelineManager', 'show')
-
-        for layout in self.mainUI_layouts:
-            layout.signals.showLayout.emit(layout.key, 'show')
-
-        self.signals.showLayout.emit('SysTray', 'show')
-        self.signals.showLayout.emit('SignIn', 'hide')
-        self.signals.showLayout.emit('SignUp', 'hide')
-        self.signals.showLayout.emit('ForgotPassword', 'hide')
-
-    def hideEvent(self, event):
-        self.signals.showLayout.emit('PipelineManager', 'hide')
-        self.setValue('showLayout', 'hide')
 
 # -------------------------------------------------------------------------------------------------------------
 def main():
