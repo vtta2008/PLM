@@ -8,7 +8,7 @@ Description:
 
 """
 
-from damg                       import DAMG
+from bin.data.damg              import DAMG
 from cores.Commands             import SceneNodesCommand
 from cores.Loggers              import Loggers
 

@@ -15,11 +15,10 @@ from functools                              import partial
 
 # PyQt5
 from PyQt5.QtWidgets                        import QPushButton, QToolButton
-from PyQt5.QtCore                           import QSize
 
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import LayoutSignals
+from cores.SignalManager                    import SignalManager
 from cores.Settings                         import Settings
 from ui.uikits.uiUtils                      import check_preset
 from ui.uikits.Icon                         import AppIcon, TagIcon
@@ -37,7 +36,7 @@ class Button(QPushButton):
     def __init__(self, preset={}, parent=None):
         super(Button, self).__init__(parent)
 
-        self.signals        = LayoutSignals(self)
+        self.signals        = SignalManager(self)
         self.settings       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         self.preset = preset
@@ -51,23 +50,7 @@ class Button(QPushButton):
             elif key == 'tt':
                 self.setToolTip(value)
             elif key == 'cl':
-                try:
-                    self.clicked.disconect()
-                except:
-                    pass
                 self.clicked.connect(value)
-            elif key == 'emit1':
-                try:
-                    self.clicked.disconect()
-                except:
-                    pass
-                self.clicked.connect(partial(value[0], value[1]))
-            elif key == 'emit2':
-                try:
-                    self.clicked.disconect()
-                except:
-                    pass
-                self.clicked.connect(partial(value[0], value[1][0], value[1][1]))
             elif key == 'icon':
                 self.setIcon(AppIcon(32, value))
             elif key == 'tag':
@@ -80,6 +63,8 @@ class Button(QPushButton):
                 self.setIconSize(value)
             elif key == 'stt':
                 self.setToolTip(value)
+            else:
+                print("PresetKeyError at {0}: No such key registed in preset: {1}: {2}".format(__name__, key, value))
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
@@ -103,7 +88,7 @@ class Button(QPushButton):
         if __name__ == '__main__':
             self.show()
         else:
-            self.signals.showLayout.emit(self.key, 'show')
+            self.signals.emit('showLayout', self.key, 'show')
             event.ignore()
 
     def moveEvent(self, event):
@@ -124,14 +109,14 @@ class Button(QPushButton):
         if __name__=='__main__':
             self.close()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     @property
@@ -158,7 +143,7 @@ class ToolButton(QToolButton):
 
         self.parent = parent
 
-        self.signals = LayoutSignals(self)
+        self.signals = SignalManager(self)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.resize(40, 40)
 
@@ -203,14 +188,14 @@ class ToolButton(QToolButton):
         if __name__=='__main__':
             self.close()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', 'hide')
             event.ignore()
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', 'hide')
             event.ignore()
 
     @property

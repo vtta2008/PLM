@@ -50,7 +50,7 @@ class Screenshot(Widget):
     def buildUI(self):
         self.screenshotLabel = Label({'alg': 'center',
                                       'sizePolicy': ['expanding', 'expanding'],
-                                      'minimumSize': [240, 160]})
+                                      'smin': [240, 160]})
 
         self.createOptionsGroupBox()
         self.createButtonsLayout()

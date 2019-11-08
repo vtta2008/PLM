@@ -10,18 +10,12 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-import json
-from functools                              import partial
-from damg                                   import DAMGLIST
-
 # PyQt5
-from PyQt5.QtWidgets                        import QToolBar, QAction
+from PyQt5.QtWidgets                        import QToolBar
 
 # PLM
-from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__, mainConfig, ACTIONS_DATA
-from ui.uikits.Action                       import Action
-from cores.SignalManager                    import LayoutSignals
+from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
+from cores.SignalManager                    import SignalManager
 from cores.Settings                         import Settings
 
 # -------------------------------------------------------------------------------------------------------------
@@ -38,15 +32,15 @@ class ToolBar(QToolBar):
         QToolBar.__init__(self)
 
         self.parent             = parent
-        self.signals            = LayoutSignals(self)
+        self.signals            = SignalManager(self)
         self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.setWindowTitle(self._name)
 
     def setValue(self, key, value):
-        return self.settings.initSetValue(key, value, self.configKey)
+        return self.settings.initSetValue(key, value, self.key)
 
     def getValue(self, key):
-        return self.settings.initValue(key, self.configKey)
+        return self.settings.initValue(key, self.key)
 
     def showEvent(self, event):
         sizeX = self.getValue('width')
@@ -64,8 +58,7 @@ class ToolBar(QToolBar):
         if __name__ == '__main__':
             self.show()
         else:
-            self.signals.showLayout.emit(self.key, 'show')
-            event.ignore()
+            self.signals.emit('showLayout', self.key, 'show')
 
     def moveEvent(self, event):
         self.setValue('posX', self.x())
@@ -85,15 +78,14 @@ class ToolBar(QToolBar):
         if __name__=='__main__':
             self.close()
         else:
-            self.signals.showLayout.emit(self.configKey, 'hide')
-            event.ignore()
+            self.signals.emit('showLayout', self.key, 'hide')
+
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
-            self.signals.showLayout.emit(self.configKey, 'hide')
-            event.ignore()
+            self.signals.emit('showLayout', self.key, 'hide')
 
     @property
     def copyright(self):

@@ -12,14 +12,13 @@ Description:
 
 # Python
 import sys
-from damg import DAMGLIST
+from bin.data.damg                  import DAMGLIST
 
 # PyQt5
 from PyQt5.QtWidgets                import QApplication
 
 # Plm
 from appData                        import (__plmWiki__, mainConfig)
-
 from ui.uikits.MenuBar              import MenuBar
 from utils                          import data_handler
 

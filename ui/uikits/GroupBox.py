@@ -20,7 +20,7 @@ from PyQt5.QtWidgets                        import QGroupBox, QLabel
 # PLM
 
 from appData                                import WAIT_LAYOUT_COMPLETE, SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import LayoutSignals
+from cores.SignalManager                    import SignalManager
 from cores.Settings                         import Settings
 from ui.uikits.GridLayout                   import AutoPreset1, AutoPreset2, AutoPreset3, GridLayout
 from ui.uikits.BoxLayout                    import HBoxLayout
@@ -42,7 +42,7 @@ class GroupBox(QGroupBox):
         self.setTitle(title)
         self.parent = parent
 
-        self.signals = LayoutSignals(self)
+        self.signals = SignalManager(self)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         self.layouts = layouts
@@ -107,12 +107,7 @@ class GroupBox(QGroupBox):
         if __name__ == '__main__':
             self.show()
         else:
-            self.signals.showLayout.emit(self.key, 'show')
-            for layout in self.children():
-                try:
-                    layout.show()
-                except AttributeError:
-                    continue
+            self.signals.emit('showLayout', self.key, 'show')
             event.ignore()
 
     def moveEvent(self, event):
@@ -133,14 +128,14 @@ class GroupBox(QGroupBox):
         if __name__=='__main__':
             self.close()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     @property

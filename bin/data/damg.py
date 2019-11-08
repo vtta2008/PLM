@@ -185,7 +185,6 @@ class BaseDict(dict):
             for k, v in data.items():
                 self.add(k, v)
 
-
     @property
     def copyright(self):
         return self._copyright

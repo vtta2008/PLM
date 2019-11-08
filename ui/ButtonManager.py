@@ -234,6 +234,9 @@ class ButtonManager(DAMGDICT):
         else:
             return self.buttonRegisterError(button.key)
 
+    def buttons(self):
+        return self.values()
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 10:22 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

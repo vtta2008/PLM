@@ -12,19 +12,15 @@ Description:
 """ Import """
 
 # Python
-import os, sys, json
-from damg                       import DAMG
+import sys
 
 # PyQt5
 from PyQt5.QtCore               import pyqtSlot
-from PyQt5.QtGui                import QCursor
 from PyQt5.QtWidgets            import QApplication
 
 # PLM
-from appData                    import __plmSlogan__, __appname__, __envKey__, STRONG_FOCUS, STAY_ON_TOP, FRAMELESSWINDOW
-from cores.SignalManager        import LayoutSignals
+from appData                    import __plmSlogan__, __appname__, STRONG_FOCUS, STAY_ON_TOP, FRAMELESSWINDOW
 from ui.uikits.Icon             import LogoIcon
-from ui.uikits.Menu             import Menu
 from ui.Menus.SysTrayIconMenu   import SysTrayIconMenu
 from ui.uikits.Button           import Button
 from ui.uikits.Widget           import Widget
@@ -46,16 +42,23 @@ class TrayMenu(Widget):
         self.setFocusPolicy(STRONG_FOCUS)
         self.setWindowFlags(STAY_ON_TOP|FRAMELESSWINDOW)
 
-        self.button = Button({'txt': 'CustomMenu', 'cl': self.button_clicked})
-
         self.layout = VBoxLayout()
-        group, grid = GroupGrid('Custom Menu')
-        grid.addWidget(self.button, 0, 0)
-        self.layout.addWidget(group)
+
+        pos = self.geometry().topRight()
+        x, y = pos.x() - self.width() / 2, pos.y() - self.height()
+        self.move(x, y)
 
         self.setMouseTracking(True)
 
+        self.buildUI()
+
         self.setLayout(self.layout)
+
+    def buildUI(self):
+        self.button = Button({'txt': 'CustomMenu', 'cl': self.button_clicked})
+        group, grid = GroupGrid('Custom Menu')
+        grid.addWidget(self.button, 0, 0)
+        self.layout.addWidget(group)
 
     def button_clicked(self):
         print('button clicked')
@@ -71,13 +74,10 @@ class TrayMenu(Widget):
     def focusOutEvent(self, Event):
         self.hide()
 
-    def hideEvent(self, event):
-        self.hide()
-
 class SysTray(SystemTrayIcon):
 
     key = 'SysTray'
-    _loggin = False
+    _login = False
 
     def __init__(self, actionManager, parent=None):
 
@@ -102,20 +102,15 @@ class SysTray(SystemTrayIcon):
         self.activated.connect(self.sys_tray_icon_activated)
         self.setContextMenu(self.rightClickMenu)
 
-        # self.eventObj = SystrayWheelEventObject()
-        # self.installEventFilter(self.eventObj)
-
     def sys_tray_icon_activated(self, reason):
         if reason == self.DoubleClick:
-            if self._loggin:
+            print('login: {}'.format(self._login))
+            if self._login:
                 self.signals.emit('showLayout', 'PipelineManager', 'showRestore')
         elif reason == self.MiddleClick:
             self.customMenu()
 
     def customMenu(self):
-        pos = self.geometry().topRight()
-        x, y = pos.x() - self.trayMenu.width()/2, pos.y() - self.trayMenu.height()
-        self.trayMenu.move(x, y)
         self.trayMenu.show()
         self.trayMenu.setFocus()
 
@@ -139,13 +134,17 @@ class SysTray(SystemTrayIcon):
 
         self.showMessage(title, mess, icon, timeDelay)
 
+    def loginChanged(self, login):
+        self._login = login
+        return self._login
+
     @property
     def login(self):
-        return self._loggin
+        return self._login
 
     @login.setter
     def login(self, newVal):
-        self._loggin = newVal
+        self._login = newVal
 
 def main():
     sysApp = QApplication(sys.argv)

@@ -15,7 +15,7 @@ import sys
 from PyQt5.QtWidgets import QMenuBar, QApplication
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import LayoutSignals
+from cores.SignalManager                    import SignalManager
 from cores.Settings                         import Settings
 
 from ui.uikits.MainWindow import MainWindow
@@ -30,9 +30,9 @@ class MenuBar(QMenuBar):
     def __init__(self, parent=None):
         super(MenuBar, self).__init__(parent)
 
-        self.parent = parent
-        self.signals        = LayoutSignals(self)
-        self.settings       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.parent                         = parent
+        self.signals                        = SignalManager(self)
+        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
@@ -56,7 +56,7 @@ class MenuBar(QMenuBar):
         if __name__=='__main__':
             self.show()
         else:
-            self.signals.showLayout.emit(self.key, 'show')
+            self.signals.emit('showLayout', self.key, 'show')
             event.ignore()
 
     def moveEvent(self, event):
@@ -77,14 +77,14 @@ class MenuBar(QMenuBar):
         if __name__=='__main__':
             self.close()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     @property

@@ -19,11 +19,11 @@ from PyQt5.QtCore       import (QByteArray, QDate, QDateTime, QEvent, QPoint, QR
                                 QTime, QTimer)
 from PyQt5.QtGui        import QColor, QIcon, QRegExpValidator, QValidator
 from PyQt5.QtWidgets    import (QAbstractItemView, QAction, QApplication, QMenuBar, QFileDialog, QGridLayout,
-                                QGroupBox, QHeaderView, QInputDialog, QItemDelegate, QLineEdit, QStyle, QComboBox,
+                                QHeaderView, QInputDialog, QItemDelegate, QLineEdit, QStyle, QComboBox,
                                 QStyleOptionViewItem, QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
 
 # PLM
-from appData                           import __organization__, __appname__, SETTING_FILEPTH, SiPoMin, INI
+from appData                           import __organization__, __appname__, SETTING_FILEPTH, INI
 from ui.uikits.Action                  import Action
 from ui.uikits.Label                   import Label
 from ui.uikits.Widget                  import Widget
@@ -36,10 +36,13 @@ from ui.uikits.GroupBox                import GroupGrid
 class SettingUI(Widget):
 
     key = 'SettingUI'
-    def __init__(self, parent=None):
+
+
+    def __init__(self, setting, parent=None):
         super(SettingUI, self).__init__(parent)
 
         self.parent = parent
+        self.settings = setting
         self.menubar = QMenuBar(self)
 
         if self.settings is None:
@@ -61,19 +64,6 @@ class SettingUI(Widget):
         self.fallbacksAct.setChecked(True)
 
         self.setWindowTitle("PLM settings")
-        self.applySetting()
-
-    def filename(self, pth=SETTING_FILEPTH['app']):
-        return pth
-
-    def fmt(self, fmt=INI):
-        return fmt
-
-    def organization(self):
-        return self.regInfo.organization()
-
-    def application(self):
-        return self.regInfo.application()
 
     def openSettings(self):
         if not self.settings:
@@ -82,7 +72,7 @@ class SettingUI(Widget):
         self.fallbacksAct.setEnabled(True)
 
     def openIniFile(self):
-        if not os.path.exists(self.filename()):
+        if not os.path.exists(self.settings.filename()):
             fileName, _ = QFileDialog.getOpenFileName(self, "Open INI File", '', "INI Files (*.ini *.conf)")
 
             if fileName:
@@ -167,12 +157,7 @@ class SettingUI(Widget):
         self.setWindowTitle("%s - Settings Editor" % niceName)
 
     def setting_mode(self, filename, fm, parent):
-        return Settings(filename, fm, parent)
-
-    def applySetting(self):
-        self.setSizePolicy(SiPoMin, SiPoMin)
-        if os.path.exists(self.filename()):
-            self.openIniFile()
+        pass
 
 
 class SettingInput(Widget):

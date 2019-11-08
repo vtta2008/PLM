@@ -15,7 +15,7 @@ from PyQt5.QtWidgets                        import QWidget, QVBoxLayout, QLabel,
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
 
-from cores.SignalManager                    import LayoutSignals
+from cores.SignalManager                    import SignalManager
 from cores.Settings                         import Settings
 from ui.uikits.Icon                         import AppIcon
 
@@ -31,7 +31,7 @@ class Widget(QWidget):
 
         self.parent         = parent
 
-        self.signals        = LayoutSignals(self)
+        self.signals        = SignalManager(self)
         self.settings       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         self.setWindowIcon(AppIcon(32, self.key))
@@ -59,8 +59,7 @@ class Widget(QWidget):
         if __name__=='__main__':
             self.show()
         else:
-            self.signals.showLayout.emit(self.key, 'show')
-            event.ignore()
+            self.signals.emit('showLayout', self.key, 'show')
 
     def moveEvent(self, event):
         self.setValue('posX', self.x())
@@ -80,13 +79,13 @@ class Widget(QWidget):
         if __name__=='__main__':
             self.close()
         else:
-            self.hide()
+            self.signals.emit('showLayout', self.key, 'hide')
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
-            self.hide()
+            self.signals.emit('showLayout', self.key, 'hide')
 
     @property
     def copyright(self):

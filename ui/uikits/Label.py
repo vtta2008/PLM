@@ -19,7 +19,7 @@ from PyQt5.QtGui                            import QFont
 from appData                                import __copyright__, PRS, ST_FORMAT, SETTING_FILEPTH
 from ui.uikits.uiUtils                      import check_preset
 from ui.uikits.Pixmap                       import Pixmap
-from cores.SignalManager import LayoutSignals
+from cores.SignalManager import SignalManager
 from cores.Settings import Settings
 
 
@@ -35,7 +35,7 @@ class Label(QLabel):
 
         self.parent                         = parent
         self.preset                         = preset
-        self.signals                        = LayoutSignals(self)
+        self.signals                        = SignalManager(self)
         self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'],self)
 
         if check_preset(self.preset):
@@ -70,7 +70,7 @@ class Label(QLabel):
             elif key == 'link':
                 self.setOpenExternalLinks(value)
             else:
-                print("PRESETKEYERROR: No such key registed in preset: {0}: {1}".format(key, value))
+                print("PresetKeyError at {0}: No such key registed in preset: {1}: {2}".format(__name__, key, value))
 
 
     def setValue(self, key, value):
@@ -95,7 +95,7 @@ class Label(QLabel):
         if __name__ == '__main__':
             self.show()
         else:
-            self.signals.showLayout.emit(self.key, 'show')
+            self.signals.emit('showLayout', self.key, 'show')
             event.ignore()
 
     def moveEvent(self, event):
@@ -116,14 +116,14 @@ class Label(QLabel):
         if __name__=='__main__':
             self.close()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     @property

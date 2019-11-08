@@ -21,7 +21,7 @@ from PyQt5.QtWidgets            import QMainWindow, QApplication
 # PLM
 from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
 from ui.uikits.Icon             import AppIcon
-from cores.SignalManager        import LayoutSignals
+from cores.SignalManager        import SignalManager
 from cores.Loggers              import Loggers
 from cores.Settings             import Settings
 
@@ -40,7 +40,7 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
 
         self.parent             = parent
-        self.signals            = LayoutSignals(self)
+        self.signals            = SignalManager(self)
         self.logger             = Loggers(self.__class__.__name__)
         self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
@@ -69,7 +69,7 @@ class MainWindow(QMainWindow):
         if __name__ == '__main__':
             self.show()
         else:
-            self.signals.showLayout.emit(self.key, 'show')
+            self.signals.emit('showLayout', self.key, 'show')
             event.ignore()
 
     def moveEvent(self, event):
@@ -90,14 +90,14 @@ class MainWindow(QMainWindow):
         if __name__ == '__main__':
             self.close()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     def hideEvent(self, event):
         if __name__ == '__main__':
             self.hide()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     @property

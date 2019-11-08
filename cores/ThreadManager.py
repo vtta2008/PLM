@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore               import pyqtSlot
 
-from damg                       import DAMGLIST, DAMGTHREADPOOL, DAMGTIMER, DAMGWORKER, DAMGTHREAD
+from bin.data.damg                       import DAMGLIST, DAMGTHREADPOOL, DAMGTIMER
 
 class Counting(DAMGTIMER):
 

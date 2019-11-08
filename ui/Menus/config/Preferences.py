@@ -19,16 +19,11 @@ import sys
 from PyQt5.QtWidgets        import QApplication
 
 # Plt
-from utils.utils            import str2bool, bool2str
 from ui.uikits.Widget                         import Widget
 from ui.uikits.Icon import AppIcon
 from ui.uikits.CheckBox import CheckBox
 from ui.uikits.Button import Button
-from ui.uikits.MessageBox import MessageBox
-from ui.uikits.Label import Label, usernameLabel, passwordLabel
 from ui.uikits.GridLayout import GridLayout
-from ui.uikits.LineEdit import LineEdit
-from ui.uikits.GroupBox import GroupGrid
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """

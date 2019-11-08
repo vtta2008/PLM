@@ -15,7 +15,7 @@ from PyQt5.QtCore                           import Qt
 
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import LayoutSignals
+from cores.SignalManager                    import SignalManager
 from cores.Settings                         import Settings
 from ui.uikits.Widget                       import Widget
 from ui.uikits.GridLayout                   import GridLayout
@@ -35,7 +35,7 @@ class TabWidget(QTabWidget):
 
         self.parent = parent
 
-        self.signals = LayoutSignals(self)
+        self.signals = SignalManager(self)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
         self.setTabPosition(self.North)
@@ -69,11 +69,7 @@ class TabWidget(QTabWidget):
         if __name__ == '__main__':
             self.show()
         else:
-            try:
-                key = self.getValue('currentTab')
-            except None:
-                key = self.key
-            self.signals.showLayout.emit(key, 'show')
+            self.signals.emit('showLayout', self.key, 'show')
 
     def sizeHint(self):
         size = super(TabWidget, self).sizeHint()
@@ -93,15 +89,13 @@ class TabWidget(QTabWidget):
         if __name__ == '__main__':
             self.close()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
-            event.ignore()
+            self.signals.emit('showLayout', self.key, 'hide')
 
     def hideEvent(self, event):
         if __name__ == '__main__':
             self.hide()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
-            event.ignore()
+            self.signals.emit('showLayout', self.key, 'hide')
 
     @property
     def copyright(self):

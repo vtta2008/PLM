@@ -73,7 +73,7 @@ class TopTab2(Widget):
 
     @pyqtSlot(bool)
     def update_avatar(self, param):
-        print("receive signal_cpu emit to update avatar: {0}".format(param))
+        print("receive signal to update avatar: {0}".format(param))
         if param:
             self.username, token, cookie, remember = self.query.query_table('curUser')
             self.avatar = QPixmap(get_avatar_image(self.username))

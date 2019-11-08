@@ -18,6 +18,7 @@ from functools                          import partial
 # PLM
 from utils                              import str2bool, bool2str
 from appData                            import layoutTypes
+from cores.GlobalSetting import GlobalSetting
 
 class InspectLayout(DAMG):
 
@@ -72,32 +73,43 @@ class InspectLayout(DAMG):
 
 class LayoutManager(DAMGDICT):
 
-    key = 'LayoutManager'
-    noShowHideAttrs        = DAMGLIST()
-    unHidableLayouts       = DAMGLIST()
-    unShowableLayouts      = DAMGLIST()
-    awaitingSlots          = DAMGLIST()
-    layout_names           = DAMGLIST()
-    layout_ids             = DAMGLIST()
-    layout_datetimes       = DAMGLIST()
+    key                                 = 'LayoutManager'
 
-    def __init__(self, actionManager, buttonManager, parent=None):
-        DAMGDICT.__init__(self)
+    _buildAll                           = False
+
+    noShowHideAttrs                     = DAMGLIST()
+    unHidableLayouts                    = DAMGLIST()
+    unShowableLayouts                   = DAMGLIST()
+    awaitingSlots                       = DAMGLIST()
+    layout_names                        = DAMGLIST()
+    layout_ids                          = DAMGLIST()
+    layout_datetimes                    = DAMGLIST()
+
+    ignoreIDs = ['MainMenuSection', 'MainMenuBar', 'MainToolBarSection', 'MainToolBar',
+                 'Notification', 'TopTab', 'BotTab', 'Footer', 'TopTab2', 'TopTab1',
+                 'TopTab3', 'MainStatusBar', 'ConnectStatus', 'GridLayout']
+
+    def __init__(self, setting, actionManager, buttonManager, parent=None):
+        super(LayoutManager, self).__init__()
 
         self.parent = parent
-        self.settings = self.parent.settings
+        self.settings = setting
         self.inspect = InspectLayout()
         self.actionManager = actionManager
         self.buttonManager = buttonManager
+        self.globalSetting = None
+
+    def layouts(self):
+        return self.values()
 
     def buildLayouts(self):
-        self.mains      = self.mainLayouts()
-        self.funcs      = self.functionLayouts()
+        self.mains                      = self.mainLayouts()
+        self.funcs                      = self.functionLayouts()
 
-        self.infos      = self.infoLayouts()
-        self.setts      = self.settingLayouts()
-        self.tools      = self.toolLayouts()
-        self.prjs       = self.projectLayouts()
+        self.infos                      = self.infoLayouts()
+        self.setts                      = self.settingLayouts()
+        self.tools                      = self.toolLayouts()
+        self.prjs                       = self.projectLayouts()
 
         cbs = [
             self.preferences.layout.tbTDCB,
@@ -154,12 +166,23 @@ class LayoutManager(DAMGDICT):
             except AttributeError:
                 self.noShowHideAttrs.append(layout)
 
-    def functionLayouts(self):
-        from ui.Funcs import SignIn, SignUp, ForgotPassword
+        layouts = []
+        for listLayout in [self.mains, self.funcs, self.infos, self.setts, self.tools, self.prjs]:
+            layouts = layouts + list(listLayout)
+        self._buildAll = True
 
-        self.signin     = SignIn.SignIn()
-        self.forgotPW   = ForgotPassword.ForgotPassword()
-        self.signup     = SignUp.SignUp()
+        self.globalSetting = GlobalSetting(layouts)
+
+        return layouts
+
+    def functionLayouts(self):
+        from ui.Funcs.SignIn import SignIn
+        from ui.Funcs.SignUp import SignUp
+        from ui.Funcs.ForgotPassword import ForgotPassword
+
+        self.signin     = SignIn()
+        self.forgotPW   = ForgotPassword()
+        self.signup     = SignUp()
 
         for layout in [self.signin, self.signup, self.forgotPW]:
             self.regisLayout(layout)
@@ -167,10 +190,12 @@ class LayoutManager(DAMGDICT):
         return self.signin, self.signup, self.forgotPW
 
     def mainLayouts(self):
-        from ui import PipelineManager, SysTray
+        from ui.PipelineManager import PipelineManager
+        from ui.SysTray import SysTray
 
-        self.mainUI     = PipelineManager.PipelineManager(self.settings, self.actionManager, self.buttonManager)
-        self.sysTray    = SysTray.SysTray(self.actionManager)
+        self.mainUI     = PipelineManager(self.settings, self.actionManager, self.buttonManager)
+        self.sysTray    = SysTray(self.actionManager)
+        self.setLayoutUnHidable(self.sysTray)
 
         layouts = [self.mainUI, self.sysTray]
 
@@ -190,13 +215,13 @@ class LayoutManager(DAMGDICT):
     def infoLayouts(self):
         from ui.Info.InfoWidget import InfoWidget
 
-        self.about          = InfoWidget(key='About')
-        self.codeConduct    = InfoWidget(key='CodeOfConduct')
-        self.contributing   = InfoWidget(key='Contributing')
-        self.credit         = InfoWidget(key="Credit")
-        self.licence        = InfoWidget(key='Licence')
-        self.reference      = InfoWidget(key='Reference')
-        self.version        = InfoWidget(key='Version')
+        self.about                          = InfoWidget(key='About')
+        self.codeConduct                    = InfoWidget(key='CodeOfConduct')
+        self.contributing                   = InfoWidget(key='Contributing')
+        self.credit                         = InfoWidget(key="Credit")
+        self.licence                        = InfoWidget(key='Licence')
+        self.reference                      = InfoWidget(key='Reference')
+        self.version                        = InfoWidget(key='Version')
 
         layouts = [self.about, self.codeConduct, self.contributing, self.credit, self.licence,
                     self. reference, self.version]
@@ -207,10 +232,11 @@ class LayoutManager(DAMGDICT):
         return layouts
 
     def settingLayouts(self):
-        from ui.Settings import UserSetting, SettingUI
+        from ui.Settings.SettingUI import SettingUI
+        from ui.Settings.UserSetting import UserSetting
 
-        self.settingUI      = SettingUI.SettingUI(self)
-        self.userSetting    = UserSetting.UserSetting()
+        self.settingUI                      = SettingUI(self.settings, self)
+        self.userSetting                    = UserSetting()
 
         layouts = [self.settingUI, self.userSetting]
 
@@ -248,9 +274,9 @@ class LayoutManager(DAMGDICT):
         return layouts
 
     def projectLayouts(self):
-        from ui.Projects import NewProject
+        from ui.Projects.NewProject import NewProject
 
-        self.newProject     = NewProject.NewProject()
+        self.newProject     = NewProject()
 
         for layout in [self.newProject, ]:
             self.regisLayout(layout)
@@ -295,7 +321,6 @@ class LayoutManager(DAMGDICT):
         key = layout.key
         index = self.layout_names.index(layout.name)
 
-
         if self.isRegistered(layout):
             self.awaitingSlots.append(key)
             try:
@@ -322,9 +347,6 @@ class LayoutManager(DAMGDICT):
         else:
             return False
 
-    def layouts(self):
-        return self.values()
-
     def signOutEvent(self):
         self.showOnlyLayout(self.signin)
 
@@ -340,7 +362,7 @@ class LayoutManager(DAMGDICT):
     def showOnlyLayout(self, layout):
         layouts = [l for l in self.layouts() if not l is layout and not l in self.unHidableLayouts]
         if self.isHidable(layout):
-            layout.show()
+            self.show(layout)
 
         for l in layouts:
             self.hide(l)
@@ -348,14 +370,15 @@ class LayoutManager(DAMGDICT):
     def hideOnlyLayout(self, layout):
         layouts = [l for l in self.layouts() if not l is layout and not l in self.unHidableLayouts]
         if self.isHidable(layout):
-            layout.hide()
+            self.hide(layout)
 
         for l in layouts:
             self.show(l)
 
     def setLayoutUnHidable(self, layout):
         if not layout in self.unHidableLayouts:
-            self.show(layout)
+            layout.show()
+            layout.setVisible(True)
             return self.unHidableLayouts.append(layout)
 
     def setLayoutUnShowable(self, layout):
@@ -385,28 +408,41 @@ class LayoutManager(DAMGDICT):
             return False
 
     def hide(self, layout):
-        layout.hide()
-        return layout.setValue('state', 'hide')
+        if not layout.key in self.ignoreIDs:
+            layout.hide()
+            return layout.setValue('state', 'hide')
 
     def show(self, layout):
-        layout.show()
-        return layout.setValue('state', 'show')
+        if not layout.key in self.ignoreIDs:
+            layout.show()
+            return layout.setValue('state', 'show')
 
     def showNormal(self, layout):
-        layout.showNormal()
-        return layout.setValue('state', 'showNormal')
+        if not layout.key in self.ignoreIDs:
+            layout.showNormal()
+            return layout.setValue('state', 'showNormal')
 
     def showMinnimize(self, layout):
-        layout.showMinimize()
-        return layout.setValue('state', 'showMinimize')
+        if not layout.key in self.ignoreIDs:
+            layout.showMinimize()
+            return layout.setValue('state', 'showMinimize')
 
     def showMaximized(self, layout):
-        layout.showMaximized()
-        return layout.setValue('state', 'showMaximized')
+        if not layout.key in self.ignoreIDs:
+            layout.showMaximized()
+            return layout.setValue('state', 'showMaximized')
 
     def showAllLayout(self):
         for layout in self.layouts():
             self.show(layout)
+
+    @property
+    def buildAll(self):
+        return self._buildAll
+
+    @buildAll.setter
+    def buildAll(self, val):
+        self._buildAll = val
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/07/2018 - 11:31 AM

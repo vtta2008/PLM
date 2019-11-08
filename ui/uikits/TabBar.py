@@ -14,7 +14,7 @@ from PyQt5.QtCore                           import QSize
 from PyQt5.QtWidgets                        import QTabBar
 
 from appData                                import __copyright__, SETTING_FILEPTH, ST_FORMAT
-from cores.SignalManager                    import LayoutSignals
+from cores.SignalManager                    import SignalManager
 from cores.Settings                         import Settings
 
 class TabBar(QTabBar):
@@ -29,7 +29,7 @@ class TabBar(QTabBar):
 
         self.parent = parent
 
-        self.signals = LayoutSignals(self)
+        self.signals = SignalManager(self)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
     def setValue(self, key, value):
@@ -54,7 +54,7 @@ class TabBar(QTabBar):
         if __name__ == '__main__':
             self.show()
         else:
-            self.signals.showLayout.emit(self.key, 'show')
+            self.signals.emit('showLayout', self.key, 'show')
             event.ignore()
 
     def moveEvent(self, event):
@@ -69,14 +69,14 @@ class TabBar(QTabBar):
         if __name__ == '__main__':
             self.close()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     def hideEvent(self, event):
         if __name__ == '__main__':
             self.hide()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     def tabSizeHint(self, index):

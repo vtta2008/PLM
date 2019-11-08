@@ -16,7 +16,7 @@ from PyQt5.QtGui                            import QIntValidator
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__, PRS
 from cores.Settings                         import Settings
-from cores.SignalManager                    import LayoutSignals
+from cores.SignalManager                    import SignalManager
 from ui.uikits.uiUtils                      import check_preset
 
 class LineEdit(QLineEdit):
@@ -29,7 +29,7 @@ class LineEdit(QLineEdit):
     def __init__(self, preset={}, parent=None):
         super(LineEdit, self).__init__(parent)
 
-        self.signals = LayoutSignals(self)
+        self.signals = SignalManager(self)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.parent = parent
         self.preset = preset
@@ -53,7 +53,7 @@ class LineEdit(QLineEdit):
                 if value == 'password':
                     self.setEchoMode(QLineEdit.Password)
             else:
-                print("{0}: Unrecognise configKey: {1}".format(__file__, key))
+                print("PresetKeyError at {0}: No such key registed in preset: {1}: {2}".format(__name__, key, value))
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
@@ -77,7 +77,7 @@ class LineEdit(QLineEdit):
         if __name__ == '__main__':
             self.show()
         else:
-            self.signals.showLayout.emit(self.key, 'show')
+            self.signals.emit('showLayout', self.key, 'show')
             event.ignore()
 
     def moveEvent(self, event):
@@ -98,14 +98,14 @@ class LineEdit(QLineEdit):
         if __name__=='__main__':
             self.close()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     @property

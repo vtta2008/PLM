@@ -22,6 +22,7 @@ import os, sys, requests, ctypes
 # PyQt5
 from PyQt5.QtCore                   import pyqtSlot, QCoreApplication
 from PyQt5.QtWidgets                import QApplication
+from PyQt5.QtGui                    import QCursor, QGuiApplication
 
 # Plm
 from appData                        import (__localServer__, PLMAPPID, __organization__,
@@ -48,9 +49,7 @@ class PLM(QApplication):
     key                             = 'PLM'
     configManager                   = configManager
 
-    ignoreIDs = ['MainMenuSection', 'TestMainMenuBar', 'MainMenuSection', 'MainToolBarSection', 'MainToolBar',
-                 'MainToolBarSection', 'Notification', 'TopTab', 'BotTab', 'Footer', 'TopTab2', 'TopTab1',
-                 'TopTab3']
+    ignoreIDs                       = []
 
     toBuildLayouts = ['ProjectManager', 'ConfigProject', 'EditProject', 'NewOrganisation', 'EditOrganisation',
                       'ConfigOrganisation', 'OrganisationManager', 'NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager',
@@ -86,19 +85,26 @@ class PLM(QApplication):
         self.eventManager           = EventManager()
         self.buttonManager          = ButtonManager()
         self.actionManager          = ActionManager()
-        self.layoutManager          = LayoutManager(self.actionManager, self.buttonManager, self)
+        self.layoutManager          = LayoutManager(self.settings, self.actionManager, self.buttonManager, self)
         self.layoutManager.regisLayout(self.browser)
         self.layoutManager.buildLayouts()
-        self.layoutManager.sysTray.show()
-        self.layoutManager.sysTray.installEventFilter(self.eventManager.wheelEvent)
+
+        self.ignoreIDs              = self.layoutManager.ignoreIDs
+
+        self.sysTray = self.layoutManager.sysTray
+        self.sysTray.installEventFilter(self.eventManager.wheelEvent)
+        self.mainUI = self.layoutManager.mainUI
 
         for layout in self.layoutManager.layouts():
             if not layout.key in self.ignoreIDs:
-                layout.signals.showLayout.connect(self.showLayout)
-                layout.signals.executing.connect(self.executing)
-                layout.signals.openBrowser.connect(self.openBrowser)
-                layout.signals.setSetting.connect(self.setSetting)
-                layout.signals.sysNotify.connect(self.sysNotify)
+                layout.signals.connect('showLayout', self.showLayout)
+                layout.signals.connect('executing', self.executing)
+                layout.signals.connect('openBrowser', self.openBrowser)
+                layout.signals.connect('setSetting', self.setSetting)
+                layout.signals.connect('sysNotify', self.sysNotify)
+
+                if layout.key == 'SignIn':
+                    layout.signals.connect('loginChanged', self.loginChanged)
 
         try:
             self.username, token, cookie, remember = self.database.query_table('curUser')
@@ -114,8 +120,10 @@ class PLM(QApplication):
                     if not self.layoutManager.sysTray.isSystemTrayAvailable():
                         self.logger.report(SYSTRAY_UNAVAI)
                         self.exitEvent()
-                    self.loginChanged(True)
-                    self.showLayout('PipelineManager', "show")
+                    else:
+                        self.loginChanged(True)
+                        self.sysTray.log_in()
+                        self.showLayout(self.mainUI.key, "show")
                 else:
                     self.showLayout('SignIn', "show")
 
@@ -130,21 +138,20 @@ class PLM(QApplication):
     def login(self, newVal):
         self._login = newVal
 
-    @pyqtSlot(str)
+    @pyqtSlot(str, name='openBrowser')
     def openBrowser(self, url):
-        self.logger.report("receive signal open browser: {0}".format(url))
+        # self.logger.report("receive signal open browser: {0}".format(url))
         self.browser.setUrl(url)
         self.browser.update()
         self.browser.show()
 
     @pyqtSlot(str, str, str, name='setSetting')
     def setSetting(self, key=None, value=None, grp=None):
-        self.logger.report("receive setting: configKey: {0}, to value: {1}, in group {2}".format(key, value, grp))
+        # self.logger.report("receive setting: configKey: {0}, to value: {1}, in group {2}".format(key, value, grp))
         self.settings.initSetValue(key, value, grp)
 
     @pyqtSlot(str, name="executing")
     def executing(self, cmd):
-        print("Recieve signal executing: '{0}'".format(cmd))
         if cmd in self.layoutManager.keys():
             self.signals.showLayout.emit(cmd, 'show')
         elif os.path.isdir(cmd):
@@ -167,51 +174,49 @@ class PLM(QApplication):
             if not cmd in self.toBuildCommand:
                 self.logger.report("This command is not regiested yet: {0}".format(cmd))
                 self.toBuildCommand.append(cmd)
+            else:
+                self.logger.info("This command will be built later.".format(cmd))
 
     @pyqtSlot(str, str, name="showLayout")
     def showLayout(self, layoutID, mode):
-        self.logger.report("Recieve signal show layout: '{0}: {1}'".format(layoutID, mode))
+        print('get signal: {0} {1}'.format(layoutID, mode))
 
-        if layoutID == 'app':
-            layout = self
-        elif layoutID == 'SignOut' and mode == 'show':
+        if layoutID == 'SignOut' and mode == 'show':
             self.signOutEvent()
         elif layoutID == 'SwitchAccount' and mode == 'show':
             self.switchAccountEvent()
         elif layoutID == 'SignUp' and mode == 'show':
             self.newAccountEvent()
-        elif layoutID == 'SysTrayIconMenu':
-            layout = self.layoutManager.sysTray.trayMenu
         elif layoutID in self.layoutManager.keys():
             if not layoutID in self.ignoreIDs:
-                layout = self.layoutManager[layoutID]
+                if mode == "hide":
+                    self.layoutManager[layoutID].hide()
+                    self.layoutManager[layoutID].setValue('state', 'hide')
+                elif mode == "show":
+                    self.layoutManager[layoutID].show()
+                    self.layoutManager[layoutID].setValue('state', 'show')
+                elif mode == 'showRestore':
+                    self.layoutManager[layoutID].showNormal()
+                    self.layoutManager[layoutID].setValue('state', 'showNormal')
+                elif mode == 'showMin':
+                    self.layoutManager[layoutID].showMinimize()
+                    self.layoutManager[layoutID].setValue('state', 'showMinimize')
+                elif mode == 'showMax':
+                    self.layoutManager[layoutID].showMaximized()
+                    self.layoutManager[layoutID].setValue('state', 'showMaximized')
+                elif mode == 'quit' or mode == 'exit':
+                    self.exitEvent()
+                else:
+                    self.logger.report("LayouKeyError: {0}".format(layoutID) )
         else:
             if not layoutID in self.toBuildLayouts:
                 self.logger.report("Layout: '{0}' is not registerred yet.".format(layoutID))
                 self.toBuildLayouts.append(layoutID)
                 return
 
-        if mode == "hide":
-            layout.hide()
-            return layout.setValue('state', 'hide')
-        elif mode == "show":
-            layout.show()
-            return layout.setValue('state', 'show')
-        elif mode == 'showRestore':
-            layout.showNormal()
-            return layout.setValue('state', 'showNormal')
-        elif mode == 'showMin':
-            layout.showMinimize()
-            return layout.setValue('state', 'showMinimize')
-        elif mode == 'showMax':
-            layout.showMaximized()
-            return layout.setValue('state', 'showMaximized')
-        elif mode == 'quit' or mode == 'exit':
-            self.exitEvent()
-
     @pyqtSlot(str, str, str, int, name='sysNotify')
     def sysNotify(self, title, mess, iconType, timeDelay):
-        self.logger.report('Receive signal sysNotify: {0} {1} {2} {3}'.format(title, mess, iconType, timeDelay))
+        # self.logger.report('Receive signal sysNotify: {0} {1} {2} {3}'.format(title, mess, iconType, timeDelay))
         return self.layoutManager.sysTray.sysNotify(title, mess, iconType, timeDelay)
 
     def set_styleSheet(self, style):
@@ -222,14 +227,17 @@ class PLM(QApplication):
         self.setStyleSheet(stylesheet[style])
         self.settings.initSetValue('styleSheet', 'dark')
 
+    @pyqtSlot(bool, name='loginChanged')
     def loginChanged(self, val):
-        print('Loggin change: {0}'.format(val))
         self._login = val
-        self.layoutManager.sysTray._login = val
+        self.sysTray.loginChanged(self._login)
+        self.sysTray.rightClickMenu.loginChanged(self._login)
+        self.layoutManager.signin.loginChanged(self._login)
+        return self._login
 
     def signOutEvent(self):
-        self.layoutManager.signOutEvent()
         self.loginChanged(False)
+        self.layoutManager.signOutEvent()
 
     def newAccountEvent(self):
         self.layoutManager.newAcountEvent()
@@ -240,7 +248,7 @@ class PLM(QApplication):
         self.loginChanged(False)
 
     def exitEvent(self):
-        print(self.toBuildLayouts, self.toBuildCommand)
+        # print(self.toBuildLayouts, self.toBuildCommand)
         self.exit()
 
 if __name__ == '__main__':

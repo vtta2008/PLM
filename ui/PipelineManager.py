@@ -100,7 +100,6 @@ class PipelineManager(MainWindow):
         # Header ToolBar
         self.layout.addWidget(self.mainToolBarSec, 1, 0, 1, 9)
 
-
         # Body
         # Body top
         self.layout.addWidget(self.topTabUI, 2, 0, 4, 9)

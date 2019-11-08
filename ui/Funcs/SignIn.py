@@ -39,6 +39,7 @@ from utils                  import str2bool, RemoveDB, UpdateDB
 class SignIn(Widget):
 
     key = 'SignIn'
+    _login = False
 
     def __init__(self, parent=None):
 
@@ -60,12 +61,12 @@ class SignIn(Widget):
         self.pwTF               = LineEdit({'fn': 'password'})
         self.userCB             = CheckBox('Remember me?')
 
-        forgot_pw_btn           = Button({'txt': 'Forgot your password?', 'cl': partial(self.signals.showLayout.emit, 'forgotpw', 'show')})
+        forgot_pw_btn           = Button({'txt': 'Forgot your password?', 'cl': partial(self.signals.emit, 'showLayout', 'ForgotPassword', 'show')})
         login_btn               = Button({'txt': 'Log in', 'cl': self.signInClicked})
         cancel_btn              = Button({'txt': 'Cancel', 'cl': QApplication.quit})
 
         signupGrp, signupGrid   = GroupGrid('Sign up')
-        signupBtn               = Button({'txt':'Sign up', 'emit2': [self.signals.showLayout.emit, ['signup', 'show']]})
+        signupBtn               = Button({'txt':'Sign up', 'cl': partial(self.signals.emit, 'showLayout', 'SignUp', 'show')})
 
         loginGrid.addWidget(usernameLabel, 0, 0, 1, 2)
         loginGrid.addWidget(passwordLabel, 1, 0, 1, 2)
@@ -119,12 +120,29 @@ class SignIn(Widget):
 
             RemoveDB("curUser")
             UpdateDB("curUser", [username, token, cookie, str2bool(check)])
-            self.signals.setLoginValue.emit(True)
-            self.signals.showLayout.emit('PipelineManager', 'show')
+            self.signals.emit('loginChanged', True)
         else:
             RemoveDB("curUser")
             MessageBox(self, 'Login Failed', 'critical', PW_WRONG)
             return
+
+    def loginChanged(self, login):
+        self._login = login
+        if self._login:
+            self.signals.emit('showLayout', 'PipelineManager', 'show')
+            self.signals.emit('showLayout', self.key, 'hide')
+        else:
+            self.signals.emit('showLayout', 'PipelineManager', 'hide')
+            self.signals.emit('showLayout', self.key, 'show')
+        return self._login
+
+    @property
+    def login(self):
+        return self._login
+
+    @login.setter
+    def login(self, newVal):
+        self._login = newVal
 
 if __name__ == '__main__':
     login = QApplication(sys.argv)

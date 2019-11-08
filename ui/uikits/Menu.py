@@ -16,7 +16,7 @@ from PyQt5.QtWidgets                        import QMenu
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
 
-from cores.SignalManager                    import LayoutSignals
+from cores.SignalManager                    import SignalManager
 from cores.Settings                         import Settings
 
 class Menu(QMenu):
@@ -29,10 +29,9 @@ class Menu(QMenu):
     def __init__(self, parent=None):
         QMenu.__init__(self)
 
-        self.parent         = parent
-
-        self.signals        = LayoutSignals(self)
-        self.settings       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.parent                         = parent
+        self.signals                        = SignalManager(self)
+        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
@@ -77,14 +76,13 @@ class Menu(QMenu):
         if __name__=='__main__':
             self.close()
         else:
-
-            self.hide()
+            self.signals.emit('showLayout', self.key, 'hide')
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
-            self.hide()
+            self.signals.emit('showLayout', self.key, 'hide')
 
     @property
     def copyright(self):

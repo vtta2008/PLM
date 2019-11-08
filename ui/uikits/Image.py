@@ -31,13 +31,13 @@ class Image(QImage):
         self.parent             = parent
 
         if self.image is None:
-            print("IMAGEISNONEERROR: Image should be a name or a path, not None")
+            print("ImageIsNoneError: {0}: Image should be a name or a path, not None".format(__name__))
         else:
             if not os.path.exists(self.image):
                 if os.path.exists(get_avatar_image(self.image)):
                     self.avata(self.image)
                 else:
-                    print("IMAGENOTFOUND: Could not find image: {0}".format(self.image))
+                    print("ImageNotFound: {0}: Could not find image: {1}".format(__name__, self.image))
             else:
                 Image(self.image)
 

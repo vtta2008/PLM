@@ -15,7 +15,7 @@ from PyQt5.QtWidgets                        import QComboBox
 
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import LayoutSignals
+from cores.SignalManager                    import SignalManager
 from cores.Settings                         import Settings
 from ui.uikits.uiUtils                      import check_preset
 
@@ -29,7 +29,7 @@ class ComboBox(QComboBox):
     def __init__(self, preset={}, parent=None):
         super(ComboBox, self).__init__(parent)
 
-        self.signals                        = LayoutSignals(self)
+        self.signals                        = SignalManager(self)
         self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.parent                         = parent
         self.preset                         = preset
@@ -78,7 +78,7 @@ class ComboBox(QComboBox):
         if __name__ == '__main__':
             self.show()
         else:
-            self.signals.showLayout.emit(self.key, 'show')
+            self.signals.emit('showLayout', self.key, 'show')
             event.ignore()
 
     def moveEvent(self, event):
@@ -93,14 +93,14 @@ class ComboBox(QComboBox):
         if __name__=='__main__':
             self.close()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
-            self.signals.showLayout.emit(self.key, 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     @property

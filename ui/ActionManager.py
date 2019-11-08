@@ -288,6 +288,9 @@ class ActionManager(DAMGDICT):
         else:
             return self.actionRegisterError(action.key)
 
+    def actions(self):
+        return self.values()
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/11/2019 - 5:26 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

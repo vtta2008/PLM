@@ -20,7 +20,7 @@ from PyQt5.QtWidgets            import QStatusBar
 
 # Plm
 from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager        import LayoutSignals
+from cores.SignalManager        import SignalManager
 from cores.Settings             import Settings
 
 
@@ -39,7 +39,7 @@ class StatusBar(QStatusBar):
     def __init__(self, parent=None):
         QStatusBar.__init__(self)
 
-        self.signals = LayoutSignals(self)
+        self.signals = SignalManager(self)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.parent = parent
 
@@ -62,6 +62,11 @@ class StatusBar(QStatusBar):
         if not posX is None and not posX is None:
             self.move(posX, posY)
 
+        if __name__=='__main__':
+            self.show()
+        else:
+            self.signals.emit('showLayout', self.key, 'show')
+
     def moveEvent(self, event):
         self.setValue('posX', self.x())
         self.setValue('posY', self.y())
@@ -80,7 +85,7 @@ class StatusBar(QStatusBar):
         if __name__=='__main__':
             self.close()
         else:
-            self.hide()
+            self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
 
     def hideEvent(self, event):
