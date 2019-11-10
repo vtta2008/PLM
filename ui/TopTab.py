@@ -10,7 +10,7 @@ Description:
 
 # Python
 import sys
-from damg                       import DAMGLIST
+from bin.data.damg                       import DAMGLIST
 
 # PyQt5
 from PyQt5.QtWidgets            import QApplication
@@ -19,7 +19,7 @@ from PyQt5.QtWidgets            import QApplication
 from ui.uikits.Icon             import AppIcon
 from ui.uikits.BoxLayout        import VBoxLayout
 from ui.uikits.TabWidget        import TabWidget
-from ui                         import (TopTab1, TopTab2, TopTab3)
+from ui.Tabs                    import TopTab1, TopTab2, TopTap3
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
@@ -40,7 +40,7 @@ class TopTab(TabWidget):
 
         self.tab1               = TopTab1.TopTab1(self.buttonManager, self.parent)
         self.tab2               = TopTab2.TopTab2(self.buttonManager, self.parent)
-        self.tab3               = TopTab3.TopTab3(self.buttonManager, self.parent)
+        self.tab3               = TopTap3.TopTap3(self.buttonManager, self.parent)
 
         self.tabLst             = DAMGLIST(listData=[self.tab1, self.tab2, self.tab3])
         self.tabNames           = DAMGLIST(listData=['Project', 'User', 'Cmd'])

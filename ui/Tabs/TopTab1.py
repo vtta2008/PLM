@@ -45,7 +45,7 @@ class TopTab1(Widget):
 
     def buildUI(self):
 
-        prjButtons = self.buttonManager.projectButtonsGroupBox(self.parent)
+        prjButtons  = self.buttonManager.projectButtonsGroupBox(self.parent)
         teamButtons = self.buttonManager.teamButtonsGroupBox(self.parent)
 
         sec1Grp     = GroupBox("Project", prjButtons, "BtnGrid")

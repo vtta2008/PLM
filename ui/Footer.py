@@ -13,18 +13,15 @@ Description:
 
 # Python
 import sys
-from functools                              import partial
-from damg                                   import DAMGTHREAD
+from bin.data.damg                                   import DAMGTHREAD
 
 # PyQt5
 from PyQt5.QtWidgets                        import QApplication
 
 # Plt
-from appData                                import BTNTAGSIZE
 from utils                                  import get_cpu_useage, get_ram_useage, create_signal_slot
 from ui.uikits.Widget                       import Widget
 from ui.uikits.GridLayout                   import GridLayout
-from ui.uikits.Button                       import Button
 from ui.uikits.Label                        import Label
 
 signal_cpu, slot_cpu = create_signal_slot(argType=str, name='CPU')
@@ -84,8 +81,8 @@ class Footer(Widget):
             i += 1
 
         i = 4
-        for tag in ['python', 'licence', 'version']:
-            layout.addWidget(self.createButton(tag), 0, i, 1, 2)
+        for button in self.buttonManager.tagButtonsFooterWidget(self.parent):
+            layout.addWidget(button, 0, i, 1, 2)
             i = i + 2
 
         self.usage_cpu = Label({'txt': 'CPU: 0%'})
@@ -103,16 +100,16 @@ class Footer(Widget):
     def update_ram_useage(self, val):
         return self.usage_ram.setText('RAM: {0}%'.format(val))
 
-    def createButton(self, tagName):
-        if not tagName in self.tags.keys():
-            # print('KeyError: tag name is not existed: {0}'.format(tagName))
-            button = Button()
-        else:
-            button = Button({'tag': tagName,
-                             'fix': BTNTAGSIZE,
-                             'ics': BTNTAGSIZE,
-                             'cl' : partial(self.signals.openBrowser.emit, self.tags[tagName])})
-        return button
+    # def createButton(self, tagName):
+    #     if not tagName in self.tags.keys():
+    #         # print('KeyError: tag name is not existed: {0}'.format(tagName))
+    #         button = Button()
+    #     else:
+    #         button = Button({'tag': tagName,
+    #                          'fix': BTNTAGSIZE,
+    #                          'ics': BTNTAGSIZE,
+    #                          'cl' : partial(self.signals.openBrowser.emit, self.tags[tagName])})
+    #     return button
 
 def main():
     app = QApplication(sys.argv)

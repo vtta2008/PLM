@@ -710,6 +710,7 @@ class DAMGREGISTER(BaseDict):
     object_names                            = list()
     object_ids                              = list()
     object_datetimes                        = list()
+    object_keys                             = list()
     awaitingSlots                           = list()
 
     def __init__(self):
@@ -765,6 +766,7 @@ class DAMGREGISTER(BaseDict):
         self.object_names.append(obj.data['ObjectName'])
         self.object_ids.append(obj.data['ObjectID'])
         self.object_datetimes.append(obj.data['Datetime'])
+        self.object_keys.append(obj.data['key'])
 
         self[obj._name] = [obj.data, obj]
 
@@ -797,6 +799,7 @@ class DAMGREGISTER(BaseDict):
         obj._data['ObjectName'] = obj._name
         obj._data['ObjectID'] = id(obj)
         obj._data['Datetime'] = str(datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S|%d.%m.%Y'))
+        obj._data['key'] = obj.key
         return obj
 
     def stepUp(self, obj):

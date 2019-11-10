@@ -87,9 +87,6 @@ class Button(QPushButton):
 
         if __name__ == '__main__':
             self.show()
-        else:
-            self.signals.emit('showLayout', self.key, 'show')
-            event.ignore()
 
     def moveEvent(self, event):
         self.setValue('posX', self.x())

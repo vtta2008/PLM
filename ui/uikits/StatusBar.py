@@ -86,14 +86,13 @@ class StatusBar(QStatusBar):
             self.close()
         else:
             self.signals.emit('showLayout', self.key, 'hide')
-            event.ignore()
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
             self.signals.emit('showLayout', self.key, 'hide')
-            event.ignore()
+
 
     @property
     def copyright(self):

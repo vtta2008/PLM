@@ -11,67 +11,13 @@ Description:
 """ Import """
 
 # Python
-import time, datetime
-from damg                               import DAMGDICT, DAMG, DAMGLIST
+from bin.data.damg                               import DAMG, DAMGLIST
 from functools                          import partial
 
 # PLM
 from utils                              import str2bool, bool2str
-from appData                            import layoutTypes
-from cores.GlobalSetting import GlobalSetting
 
-class InspectLayout(DAMG):
-
-    key                     = 'InspectLayout'
-    layoutTypes             = DAMGLIST()
-    layoutKeys              = DAMGLIST()
-
-    def __init__(self):
-        super(InspectLayout, self).__init__(self)
-
-        self.layoutTypes.appendList(layoutTypes)
-
-    def doInspection(self, layout):
-        self.layoutTypes.append(layout.Type)
-        self.layoutKeys.append(layout.key)
-        return layout
-
-    def checkType(self, layout):
-        if not self.haveType(layout):
-            try:
-                layout.show()
-            except AttributeError:
-                layoutType  = 'Object'
-            else:
-                layoutType  = 'UI'
-            layout.__setattr__('Type', layoutType)
-
-        return self.checkKey(layout)
-
-    def checkKey(self, layout):
-        if not self.haveKey(layout):
-            key = layout.__class__.__name__
-            layout.__setattr__('key', key)
-
-        return layout
-
-    def haveType(self, layout):
-        try:
-            layout.Type
-        except AttributeError:
-            return False
-        else:
-            return True
-
-    def haveKey(self, layout):
-        try:
-            layout.key
-        except KeyError:
-            return False
-        else:
-            return True
-
-class LayoutManager(DAMGDICT):
+class LayoutManager(DAMG):
 
     key                                 = 'LayoutManager'
 
@@ -80,27 +26,26 @@ class LayoutManager(DAMGDICT):
     noShowHideAttrs                     = DAMGLIST()
     unHidableLayouts                    = DAMGLIST()
     unShowableLayouts                   = DAMGLIST()
-    awaitingSlots                       = DAMGLIST()
-    layout_names                        = DAMGLIST()
-    layout_ids                          = DAMGLIST()
-    layout_datetimes                    = DAMGLIST()
 
     ignoreIDs = ['MainMenuSection', 'MainMenuBar', 'MainToolBarSection', 'MainToolBar',
                  'Notification', 'TopTab', 'BotTab', 'Footer', 'TopTab2', 'TopTab1',
                  'TopTab3', 'MainStatusBar', 'ConnectStatus', 'GridLayout']
 
-    def __init__(self, setting, actionManager, buttonManager, parent=None):
-        super(LayoutManager, self).__init__()
+    def __init__(self, setting, registryLayout, actionManager, buttonManager, eventManager, parent=None):
+        super(LayoutManager, self).__init__(parent)
 
-        self.parent = parent
-        self.settings = setting
-        self.inspect = InspectLayout()
-        self.actionManager = actionManager
-        self.buttonManager = buttonManager
-        self.globalSetting = None
+        self.parent                     = parent
+        self.settings                   = setting
+        self.actionManager              = actionManager
+        self.buttonManager              = buttonManager
+        self._register                  = registryLayout
+        self.eventManager               = eventManager
 
     def layouts(self):
-        return self.values()
+        return self._register.values()
+
+    def keys(self):
+        return self._register.keys()
 
     def buildLayouts(self):
         self.mains                      = self.mainLayouts()
@@ -158,7 +103,7 @@ class LayoutManager(DAMGDICT):
             cbs[i].setChecked(val)
             sections[i].setVisible(val)
             cbs[i].stateChanged.connect(sections[i].setVisible)
-            cbs[i].stateChanged.connect(partial(self.mainUI.signals.setSetting.emit, key, bool2str(val), grp))
+            cbs[i].stateChanged.connect(partial(self.mainUI.signals.emit,'setSeting', key, bool2str(val), grp))
 
         for layout in self.layouts():
             try:
@@ -170,8 +115,6 @@ class LayoutManager(DAMGDICT):
         for listLayout in [self.mains, self.funcs, self.infos, self.setts, self.tools, self.prjs]:
             layouts = layouts + list(listLayout)
         self._buildAll = True
-
-        self.globalSetting = GlobalSetting(layouts)
 
         return layouts
 
@@ -185,7 +128,7 @@ class LayoutManager(DAMGDICT):
         self.signup     = SignUp()
 
         for layout in [self.signin, self.signup, self.forgotPW]:
-            self.regisLayout(layout)
+            self.registLayout(layout)
 
         return self.signin, self.signup, self.forgotPW
 
@@ -194,21 +137,21 @@ class LayoutManager(DAMGDICT):
         from ui.SysTray import SysTray
 
         self.mainUI     = PipelineManager(self.settings, self.actionManager, self.buttonManager)
-        self.sysTray    = SysTray(self.actionManager)
+        self.sysTray    = SysTray(self.actionManager, self.eventManager)
         self.setLayoutUnHidable(self.sysTray)
 
         layouts = [self.mainUI, self.sysTray]
 
         for layout in layouts:
-            self.regisLayout(layout)
+            self.registLayout(layout)
 
         for layout in self.mainUI.mainUI_layouts:
-            self.regisLayout(layout)
+            self.registLayout(layout)
 
         for layout in self.mainUI.topTabUI.tabLst:
             key = layout.key
-            if not key in self.keys():
-                self[key] = layout
+            if not key in self._register.keys():
+                self._register[key] = layout
 
         return layouts
 
@@ -227,7 +170,7 @@ class LayoutManager(DAMGDICT):
                     self. reference, self.version]
 
         for layout in layouts:
-            self.regisLayout(layout)
+            self.registLayout(layout)
 
         return layouts
 
@@ -241,7 +184,7 @@ class LayoutManager(DAMGDICT):
         layouts = [self.settingUI, self.userSetting]
 
         for layout in layouts:
-            self.regisLayout(layout)
+            self.registLayout(layout)
 
         return layouts
 
@@ -269,7 +212,7 @@ class LayoutManager(DAMGDICT):
                        self.textEditor]
 
         for layout in layouts:
-            self.regisLayout(layout)
+            self.registLayout(layout)
 
         return layouts
 
@@ -279,73 +222,10 @@ class LayoutManager(DAMGDICT):
         self.newProject     = NewProject()
 
         for layout in [self.newProject, ]:
-            self.regisLayout(layout)
+            self.registLayout(layout)
 
         layouts = [self.newProject]
         return layouts
-
-    def regisLayout(self, layout):
-
-        ui = self.inspect.doInspection(layout)
-        key = ui.key
-        if self.isLayout(ui):
-            if self.isAwaitingSlot(ui):
-                self.awaitingSlots.remove(key)
-                self.doRegister(ui)
-            else:
-                if not self.isRegistered(ui):
-                    self.doRegister(ui)
-                else:
-                    # print("Already registered: {0}".format(key))
-                    return False
-
-    def isAwaitingSlot(self, layout):
-        key = layout.key
-        if key in self.awaitingSlots:
-            return True
-        else:
-            return False
-
-    def doRegister(self, layout):
-        key = layout.key
-
-        self.layout_names.append(layout.name)
-        self.layout_ids.append(id(layout))
-        self.layout_datetimes.append(str(datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S|%d.%m.%Y')))
-
-        # print("Registing layout: {0} : {1}".format(layout.key, layout))
-        self[key] = layout
-        return True
-
-    def deRegister(self, layout):
-        key = layout.key
-        index = self.layout_names.index(layout.name)
-
-        if self.isRegistered(layout):
-            self.awaitingSlots.append(key)
-            try:
-                del self[key]
-            except KeyError:
-                self.pop(key, None)
-            self.layout_names.remove(self.layout_names[index])
-            self.layout_ids.remove(self.layout_ids[index])
-            self.layout_datetimes.remove(self.layout_datetimes[index])
-            return True
-        else:
-            return False
-
-    def isRegistered(self, layout):
-        key = layout.key
-        if key in self.keys():
-            return True
-        else:
-            return False
-
-    def isLayout(self, layout):
-        if layout.Type in self.inspect.layoutTypes:
-            return True
-        else:
-            return False
 
     def signOutEvent(self):
         self.showOnlyLayout(self.signin)
@@ -436,13 +316,24 @@ class LayoutManager(DAMGDICT):
         for layout in self.layouts():
             self.show(layout)
 
+    def registLayout(self, layout):
+        return self._register.regisLayout(layout)
+
     @property
     def buildAll(self):
         return self._buildAll
 
+    @property
+    def register(self):
+        return self._register
+
     @buildAll.setter
     def buildAll(self, val):
         self._buildAll = val
+
+    @register.setter
+    def register(self, val):
+        self._register = val
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/07/2018 - 11:31 AM

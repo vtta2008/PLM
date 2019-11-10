@@ -61,23 +61,28 @@ class PipelineManager(MainWindow):
 
         self.mainMenuBar            = MainMenuBar(self.actionManager, self)
         self.mainToolBar            = MainToolBar(self.actionManager, self)
-        self.connectStatus          = ConnectStatus()
-        self.notification           = GridLayout()
+        self.connectStatus          = ConnectStatus(self)
+        self.notification           = GridLayout(self)
 
         self.mainMenuSec            = GroupBox("Main Menu"      , self.mainMenuBar      , "qmainLayout")
         self.connectStatusSec       = GroupBox("Connect Status" , self.connectStatus    , "autoGrid")
         self.mainToolBarSec         = GroupBox("Tool Bar"       , self.mainToolBar      , "qmainLayout")
         self.notifiSec              = GroupBox("Notification"   , self.notification     , "autoGrid")
 
-        self.mainMenuSec.key        = "MainMenuSection"
-        self.mainToolBarSec.key     = "MainToolBarSection"
-        self.connectStatusSec.key   = "ConnectStatus"
-        self.notifiSec.key          = "Notification"
+        self.mainMenuSec.key        = "MainMenuSectionSection"
+        self.mainToolBarSec.key     = "MainToolBarSectionSection"
+        self.connectStatusSec.key   = "ConnectStatusSection"
+        self.notifiSec.key          = "NotificationSection"
+
+        self.mainMenuSec.setParent(self)
+        self.mainToolBarSec.setParent(self)
+        self.connectStatusSec.setParent(self)
+        self.notifiSec.setParent(self)
 
         self.topTabUI               = TopTab(self.buttonManager, self)
         self.botTabUI               = BotTab()
         self.footer                 = Footer(self.buttonManager, self)
-        self.statusBar              = MainStatusBar()
+        self.statusBar              = MainStatusBar(self)
 
         self.setStatusBar(self.statusBar)
 
@@ -85,11 +90,11 @@ class PipelineManager(MainWindow):
                                 self.mainMenuSec, self.mainToolBarSec   , self.connectStatusSec , self.notifiSec,
                                 self.topTabUI   , self.botTabUI         , self.footer           , self.statusBar, ]
 
-        for layout in self.mainUI_layouts:
-            layout.signals.executing.connect(self.signals.executing)
-            layout.signals.regisLayout.connect(self.signals.regisLayout)
-            layout.signals.openBrowser.connect(self.signals.openBrowser)
-            layout.signals.setSetting.connect(self.signals.setSetting)
+        # for layout in self.mainUI_layouts:
+        #     layout.signals.executing.connect(self.signals.executing)
+        #     layout.signals.regisLayout.connect(self.signals.regisLayout)
+        #     layout.signals.openBrowser.connect(self.signals.openBrowser)
+        #     layout.signals.setSetting.connect(self.signals.setSetting)
 
         # Header
 
@@ -108,7 +113,6 @@ class PipelineManager(MainWindow):
         self.layout.addWidget(self.botTabUI, 6, 0, 3, 6)
         self.layout.addWidget(self.notifiSec, 6, 6, 3, 3)
 
-
         # Footer
         self.layout.addWidget(self.footer, 9, 0, 1, 9)
 
@@ -121,6 +125,12 @@ class PipelineManager(MainWindow):
         dock.signals.openBrowser.connect(self.signals.openBrowser)
 
         self.addDockWidget(pos, dock)
+
+    def showEvent(self, event):
+        self.notifiSec.show()
+        self.connectStatusSec.show()
+        self.mainToolBarSec.show()
+        self.mainMenuSec.show()
 
 # -------------------------------------------------------------------------------------------------------------
 def main():

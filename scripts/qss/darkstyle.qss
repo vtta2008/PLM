@@ -336,6 +336,15 @@ QAbstractScrollArea
     background-color: transparent;
 }
 
+QScrollBar
+{
+    border: 1px solid #2e3436;
+    background: #292929;
+    width:8px;
+    height: 8px;
+    margin: 0px 0px 0px 0px;
+}
+
 QScrollBar:horizontal
 {
     height: 15px;
@@ -478,10 +487,18 @@ QTextEdit
 
 QPlainTextEdit
 {
-    background-color: #1e1e1e;;
-    color: #eff0f1;
+    font-family: Noto Sans Mono;
+    font-size: 8pt;
+    background-color: #212121;
+    color: #f3f3f3;
+    padding: 2;
+    border: none;
     border-radius: 2px;
     border: 1px solid #76797C;
+}
+QPlainTextEdit:focus
+{
+    border: none;
 }
 
 QHeaderView::section
@@ -508,16 +525,20 @@ QMainWindow::separator
     border: 1px dashed #76797C;
 }
 
+QMainWindow:title
+{
+    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #ca0619);
+    color: #3465a4;
+}
+
 QMainWindow::separator:hover
 {
-
     background-color: #787876;
     color: white;
     padding-left: 4px;
     border: 1px solid #76797C;
     spacing: 2px;
 }
-
 
 QMenu::separator
 {
@@ -1190,6 +1211,13 @@ QToolBox::tab:selected { /* italicize selected tabs */
     background-color: #323232;
     border-color: #D1DBCB;
  }
+
+QStatusBar
+{
+    font-family: Noto Sans Mono;
+    font-size: 7pt;
+    color: #729fcf;
+}
 
 QStatusBar::item {
     border: 0px transparent dark;

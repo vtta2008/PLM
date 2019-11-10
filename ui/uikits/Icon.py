@@ -96,7 +96,7 @@ class LogoIcon(Icon):
 class TagIcon(Icon):
 
     key = 'TagIcon'
-    tags = ['licence', 'python', 'version']
+    tags = ['licenceTag', 'pythonTag', 'versionTag']
     w = 87
     h = 20
 

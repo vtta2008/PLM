@@ -88,9 +88,6 @@ class Preferences(Widget):
         self.layout = GeneralSetting(self)
         self.setLayout(self.layout)
 
-
-
-
 def main():
     app = QApplication(sys.argv)
     pref_layout = Preferences()

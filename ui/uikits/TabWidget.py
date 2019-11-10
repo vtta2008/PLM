@@ -69,6 +69,7 @@ class TabWidget(QTabWidget):
         if __name__ == '__main__':
             self.show()
         else:
+            self.currentWidget().show()
             self.signals.emit('showLayout', self.key, 'show')
 
     def sizeHint(self):

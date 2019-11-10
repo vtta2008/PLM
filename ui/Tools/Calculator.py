@@ -12,7 +12,7 @@ Description:
 
 # Python
 import sys, math
-from damg                       import DAMGLIST
+from bin.data.damg                       import DAMGLIST
 
 # PyQt5
 from PyQt5.QtCore               import Qt

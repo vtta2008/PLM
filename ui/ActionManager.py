@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 import os
-from damg import DAMGDICT, DAMGLIST
+from bin.data.damg import DAMGDICT, DAMGLIST
 from functools import partial
 
 from ui.uikits.Action import Action
@@ -146,18 +146,25 @@ class ActionManager(DAMGDICT):
 
     def createAction(self, key, parent):
         if key in self.showLayoutKeys:
+            # print('{0} is set to {1} action'.format(key, 'showlayout'))
             return self.showLayoutAction(key, parent)
         elif key in self.startFileKeys:
-            return self.showLayoutAction(key, parent)
+            # print('{0} is set to {1} action'.format(key, 'startfile'))
+            return self.startFileAction(key, parent)
         elif key in self.executingKeys:
+            # print('{0} is set to {1} action'.format(key, 'executing'))
             return self.executingAction(key, parent)
         elif key in self.openBrowserKeys:
+            # print('{0} is set to {1} action'.format(key, 'openBrowser'))
             return self.openBrowserAction(key, parent)
         elif key in self.showMinimizeKeys:
+            # print('{0} is set to {1} action'.format(key, 'showminimized'))
             return self.showMinAction(key, parent)
         elif key in self.showMaximizeKeys:
+            # print('{0} is set to {1} action'.format(key, 'showmaximized'))
             return self.showMaxAction(key, parent)
         elif key in self.showRestoreKeys:
+            # print('{0} is set to {1} action'.format(key, 'showrestore'))
             return self.showRestoreAction(key, parent)
         else:
             return self.actionConfigError(key)
@@ -168,7 +175,8 @@ class ActionManager(DAMGDICT):
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
                              'trg': partial(parent.signals.emit, 'showLayout', self.appInfo[key][2], 'show'), }, parent)
-            action.key = '{0}Action'.format(key)
+            action.key = '{0}_{1}_Action'.format(parent.key, key)
+            action._name = action.key
             if action.key in self.actionKeys:
                 return self[action.key]
             else:
@@ -185,7 +193,8 @@ class ActionManager(DAMGDICT):
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
                              'trg': partial(parent.signals.emit, 'showLayout', self.appInfo[key][2], 'showRestore'), }, parent)
-            action.key = '{0}Action'.format(key)
+            action.key = '{0}_{1}_Action'.format(parent.key, key)
+            action._name = action.key
             if action.key in self.actionKeys:
                 return self[action.key]
             else:
@@ -202,7 +211,8 @@ class ActionManager(DAMGDICT):
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
                              'trg': partial(parent.signals.emit, 'showLayout', self.appInfo[key][2], 'showMax'), }, parent)
-            action.key = '{0}Action'.format(key)
+            action.key = '{0}_{1}_Action'.format(parent.key, key)
+            action._name = action.key
             if action.key in self.actionKeys:
                 return self[action.key]
             else:
@@ -219,7 +229,8 @@ class ActionManager(DAMGDICT):
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
                              'trg': partial(parent.signals.emit, 'showLayout', self.appInfo[key][2], 'showMin'), }, parent)
-            action.key = '{0}Action'.format(key)
+            action.key = '{0}_{1}_Action'.format(parent.key, key)
+            action._name = action.key
             if action.key in self.actionKeys:
                 return self[action.key]
             else:
@@ -232,11 +243,13 @@ class ActionManager(DAMGDICT):
 
     def startFileAction(self, key, parent):
         if key in self.appInfo.keys():
+            # print('create start file action: {} {}'.format(key, self.appInfo[key][2]))
             action = Action({'icon': self.appInfo[key][1],
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
-                             'trg': partial(os.startfile, key)}, parent)
-            action.key = '{0}Action'.format(key)
+                             'trg': partial(os.startfile, self.appInfo[key][2])}, parent)
+            action.key = '{0}_{1}_Action'.format(parent.key, key)
+            action._name = action.key
             if action.key in self.actionKeys:
                 return self[action.key]
             else:
@@ -253,7 +266,7 @@ class ActionManager(DAMGDICT):
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
                              'trg': partial(parent.signals.emit, 'executing', self.appInfo[key][2]), }, parent)
-            action.key = '{0}Action'.format(key)
+            action.key = '{0}_{1}_Action'.format(parent.key, key)
             action._name = '{0} Action'.format(key)
             if action.key in self.actionKeys:
                 return self[action.key]
@@ -270,7 +283,8 @@ class ActionManager(DAMGDICT):
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
                              'trg': partial(parent.signals.emit, 'openBrowser', self.appInfo[key][2]), }, parent)
-            action.key = '{0}{1}Action'.format(parent.key, key)
+            action.key = '{0}_{1}_Action'.format(parent.key, key)
+            action._name = action.key
             if action.key in self.actionKeys:
                 return self[action.key]
             else:
@@ -282,6 +296,7 @@ class ActionManager(DAMGDICT):
             return self.actionConfigError(key)
 
     def register(self, action):
+        # print('register action: {}'.format(action))
         if not action.key in self.actionKeys:
             self.actionKeys.append(action.key)
             self[action.key] = action

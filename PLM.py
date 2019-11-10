@@ -34,6 +34,7 @@ from cores.ThreadManager            import ThreadManager
 from utils                          import str2bool, clean_file_ext, QuerryDB
 from cores.Loggers                  import Loggers
 from cores.Settings                 import Settings
+from cores.RegisterLayout                 import RegistryLayout
 from ui.ActionManager               import ActionManager
 from ui.ButtonManager               import ButtonManager
 from ui.uikits.Icon                 import LogoIcon
@@ -49,13 +50,18 @@ class PLM(QApplication):
     key                             = 'PLM'
     configManager                   = configManager
 
-    ignoreIDs                       = []
+    ignoreIDs     = ['MainMenuSection', 'MainMenuBar', 'MainToolBarSection', 'MainToolBar',
+                     'Notification', 'TopTab', 'BotTab', 'Footer', 'TopTab2', 'TopTab1',
+                     'TopTab3', 'MainStatusBar', 'ConnectStatus', 'GridLayout']
 
     toBuildLayouts = ['ProjectManager', 'ConfigProject', 'EditProject', 'NewOrganisation', 'EditOrganisation',
                       'ConfigOrganisation', 'OrganisationManager', 'NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager',
                       'Alpha', 'HDRI', 'Texture', 'Feedback', 'ContactUs']
 
     toBuildCommand = []
+
+    old = []
+    new = []
 
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
@@ -77,23 +83,22 @@ class PLM(QApplication):
         self.setWindowIcon(LogoIcon("Logo"))                                                         # Set up task bar icon
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)                      # Change taskbar icon
 
-        QCoreApplication.setOrganizationName(__organization__)
-        QCoreApplication.setApplicationName(__appname__)
-        QCoreApplication.setOrganizationDomain(__website__)
-        QCoreApplication.setApplicationVersion(__version__)
+        self.setOrganizationName(__organization__)
+        self.setApplicationName(__appname__)
+        self.setOrganizationDomain(__website__)
+        self.setApplicationVersion(__version__)
+        self.setCursorFlashTime(1000)
 
         self.eventManager           = EventManager()
         self.buttonManager          = ButtonManager()
         self.actionManager          = ActionManager()
-        self.layoutManager          = LayoutManager(self.settings, self.actionManager, self.buttonManager, self)
-        self.layoutManager.regisLayout(self.browser)
+        self.registryLayout         = RegistryLayout()
+        self.layoutManager          = LayoutManager(self.settings, self.registryLayout, self.actionManager, self.buttonManager, self.eventManager, self)
+        self.layoutManager.registLayout(self.browser)
         self.layoutManager.buildLayouts()
 
-        self.ignoreIDs              = self.layoutManager.ignoreIDs
-
-        self.sysTray = self.layoutManager.sysTray
-        self.sysTray.installEventFilter(self.eventManager.wheelEvent)
-        self.mainUI = self.layoutManager.mainUI
+        self.sysTray                = self.layoutManager.sysTray
+        self.mainUI                 = self.layoutManager.mainUI
 
         for layout in self.layoutManager.layouts():
             if not layout.key in self.ignoreIDs:
@@ -141,18 +146,21 @@ class PLM(QApplication):
     @pyqtSlot(str, name='openBrowser')
     def openBrowser(self, url):
         # self.logger.report("receive signal open browser: {0}".format(url))
+
         self.browser.setUrl(url)
         self.browser.update()
         self.browser.show()
 
     @pyqtSlot(str, str, str, name='setSetting')
     def setSetting(self, key=None, value=None, grp=None):
-        # self.logger.report("receive setting: configKey: {0}, to value: {1}, in group {2}".format(key, value, grp))
+        self.logger.report("receive setting: configKey: {0}, to value: {1}, in group {2}".format(key, value, grp))
         self.settings.initSetValue(key, value, grp)
 
     @pyqtSlot(str, name="executing")
     def executing(self, cmd):
-        if cmd in self.layoutManager.keys():
+        # self.logger.report("receive signal executing: {0}".format(cmd))
+
+        if cmd in self.registryLayout.keys():
             self.signals.showLayout.emit(cmd, 'show')
         elif os.path.isdir(cmd):
             os.startfile(cmd)
@@ -179,7 +187,80 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str, name="showLayout")
     def showLayout(self, layoutID, mode):
-        print('get signal: {0} {1}'.format(layoutID, mode))
+        # print('get signal: {0} {1}'.format(layoutID, mode))
+
+        self.new.append(layoutID)
+        self.new.append(mode)
+
+        # print(self.sender())
+
+        if self.old == []:
+            repeat = True
+        else:
+            if len(self.new) == len(self.old):
+                for i in range(len(self.new)):
+                    if self.new[i] == self.old[i]:
+                       repeat = True
+                       continue
+                    else:
+                        repeat = False
+                        break
+            else:
+                repeat = False
+                self.old = self.new
+
+        self.new = []
+
+        if layoutID in self.registryLayout.keys():
+            layout = self.registryLayout[layoutID]
+            state = self.settings.initValue('state', layout.key)
+            # print(layout.key, state, mode)
+
+            if state is None:
+                state = 'hide'
+
+            if repeat and state is None and 'show' in mode:
+                repeat = False
+                pass
+            elif repeat and state is 'show' and mode is 'show':
+                return
+            elif repeat and state is 'show' and mode is 'showNormal':
+                repeat = True
+                return
+            elif repeat and state is 'show' and mode is 'showMinimized':
+                repeat = False
+                pass
+            elif repeat and state is 'show' and mode is 'showMaximized':
+                repeat = False
+                pass
+            elif repeat and state is 'hide' and 'show' in mode:
+                repeat = False
+                pass
+            elif repeat and state is 'hide' and mode is 'hide':
+                return
+            elif repeat and state is 'show' and mode is 'hide':
+                repeat = False
+                pass
+            elif not repeat and state is 'show' and mode is 'show':
+                repeat = True
+                return
+            elif not repeat and state is 'show' and mode is 'showNormal':
+                repeat = True
+                return
+            elif not repeat and state is 'show' and mode is 'showMinimized':
+                pass
+            elif not repeat and state is 'show' and mode is 'showMaximized':
+                pass
+            elif not repeat and state is 'hide' and mode is 'hide':
+                repeat = True
+                return
+            elif not repeat and state is 'hide' and 'show' in mode:
+                pass
+        else:
+            if repeat:
+                return  # print('block.')
+            else:
+                pass
 
         if layoutID == 'SignOut' and mode == 'show':
             self.signOutEvent()
@@ -187,23 +268,23 @@ class PLM(QApplication):
             self.switchAccountEvent()
         elif layoutID == 'SignUp' and mode == 'show':
             self.newAccountEvent()
-        elif layoutID in self.layoutManager.keys():
+        elif layoutID in self.registryLayout.keys():
             if not layoutID in self.ignoreIDs:
                 if mode == "hide":
-                    self.layoutManager[layoutID].hide()
-                    self.layoutManager[layoutID].setValue('state', 'hide')
+                    self.registryLayout[layoutID].hide()
+                    self.registryLayout[layoutID].setValue('state', 'hide')
                 elif mode == "show":
-                    self.layoutManager[layoutID].show()
-                    self.layoutManager[layoutID].setValue('state', 'show')
+                    self.registryLayout[layoutID].show()
+                    self.registryLayout[layoutID].setValue('state', 'show')
                 elif mode == 'showRestore':
-                    self.layoutManager[layoutID].showNormal()
-                    self.layoutManager[layoutID].setValue('state', 'showNormal')
+                    self.registryLayout[layoutID].showNormal()
+                    self.registryLayout[layoutID].setValue('state', 'showNormal')
                 elif mode == 'showMin':
-                    self.layoutManager[layoutID].showMinimize()
-                    self.layoutManager[layoutID].setValue('state', 'showMinimize')
+                    self.registryLayout[layoutID].showMinimized()
+                    self.registryLayout[layoutID].setValue('state', 'showMinimized')
                 elif mode == 'showMax':
-                    self.layoutManager[layoutID].showMaximized()
-                    self.layoutManager[layoutID].setValue('state', 'showMaximized')
+                    self.registryLayout[layoutID].showMaximized()
+                    self.registryLayout[layoutID].setValue('state', 'showMaximized')
                 elif mode == 'quit' or mode == 'exit':
                     self.exitEvent()
                 else:
@@ -248,7 +329,7 @@ class PLM(QApplication):
         self.loginChanged(False)
 
     def exitEvent(self):
-        # print(self.toBuildLayouts, self.toBuildCommand)
+        print(self.toBuildLayouts, self.toBuildCommand)
         self.exit()
 
 if __name__ == '__main__':

@@ -79,12 +79,13 @@ class SysTray(SystemTrayIcon):
     key = 'SysTray'
     _login = False
 
-    def __init__(self, actionManager, parent=None):
+    def __init__(self, actionManager, eventManager, parent=None):
 
         super(SysTray, self).__init__(parent)
 
         self.db                 = QuerryDB()
         self.actionManager      = actionManager
+        self.eventManager       = eventManager
         self.trayMenu           = TrayMenu(self)
         self.signals.emit('regisLayout', self.trayMenu)
 
@@ -101,10 +102,11 @@ class SysTray(SystemTrayIcon):
         self.setToolTip(__plmSlogan__)
         self.activated.connect(self.sys_tray_icon_activated)
         self.setContextMenu(self.rightClickMenu)
+        self.installEventFilter(self.eventManager.wheelEvent)
 
     def sys_tray_icon_activated(self, reason):
         if reason == self.DoubleClick:
-            print('login: {}'.format(self._login))
+            # print('login: {}'.format(self._login))
             if self._login:
                 self.signals.emit('showLayout', 'PipelineManager', 'showRestore')
         elif reason == self.MiddleClick:

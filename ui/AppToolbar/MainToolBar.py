@@ -12,20 +12,16 @@ Description:
 """ Import """
 
 # Python
-import json, sys, os
-from functools              import partial
-from damg                   import DAMGLIST
+import sys
 
 # PyQt5
 from PyQt5.QtCore           import pyqtSlot
-from PyQt5.QtWidgets        import QApplication, QAction, QToolBar
+from PyQt5.QtWidgets        import QApplication
 
 # PLM
-from appData                import CONFIG_TDS, CONFIG_VFX, CONFIG_ART, CONFIG_TEX, CONFIG_POST, mainConfig, SiPoMin, actionTypes
-from ui.uikits.Action       import Action
+from appData                import SiPoMin
 from ui.uikits.MainWindow   import MainWindow
-from ui.uikits.ToolBar      import ToolBar
-from utils                  import str2bool, bool2str, is_string, is_action
+from utils                  import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """

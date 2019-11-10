@@ -389,6 +389,10 @@ class ConfigManager(DAMG):
         self.mainInfo['Maximize'] = ['Maximize', 'Maximize', 'PipelineManager']
         self.mainInfo['Minimize'] = ['Minimize', 'Minimize', 'PipelineManager']
 
+        self.mainInfo['pythonTag'] = ['pythonLink', 'pythonTagIcon', 'https://docs.anaconda.com/anaconda/reference/release-notes/']
+        self.mainInfo['licenceTag'] = ['licenceLink', 'licenceTagIcon', 'https://github.com/vtta2008/damgteam/blob/master/LICENCE']
+        self.mainInfo['versionTag'] = ['versionLink', 'versionTagIcon', 'https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst']
+
         for key in self.appInfo:
             if 'NukeX' in key:
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --nukex"

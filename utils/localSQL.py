@@ -15,7 +15,7 @@ from __future__ import absolute_import
 # Python
 import datetime, time
 import sqlite3 as lite
-from damg                   import DAMG, DAMGLIST
+from bin.data.damg                   import DAMG, DAMGLIST
 
 # PLM
 from appData                 import DB_PTH

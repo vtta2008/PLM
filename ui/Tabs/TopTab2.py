@@ -13,17 +13,15 @@ Description:
 
 # Python
 import sys
-from functools import partial
 
-from PyQt5.QtCore import pyqtSlot
 # PyQt5
+from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui                import QPixmap
 from PyQt5.QtWidgets            import (QApplication, QLabel, QGraphicsScene)
 
 # Plt
 from ui.uikits.Widget           import Widget
 from ui.uikits.GridLayout       import GridLayout
-from ui.uikits.Button           import Button
 from ui.uikits.GroupBox         import GroupBox, GroupGrid
 from utils                      import localSQL as usql
 from utils                      import get_avatar_image
