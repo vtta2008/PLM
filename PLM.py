@@ -20,9 +20,8 @@ from __buildtins__ import __envKey__
 import os, sys, requests, ctypes
 
 # PyQt5
-from PyQt5.QtCore                   import pyqtSlot, QCoreApplication
+from PyQt5.QtCore                   import pyqtSlot
 from PyQt5.QtWidgets                import QApplication
-from PyQt5.QtGui                    import QCursor, QGuiApplication
 
 # Plm
 from appData                        import (__localServer__, PLMAPPID, __organization__,
@@ -34,7 +33,7 @@ from cores.ThreadManager            import ThreadManager
 from utils                          import str2bool, clean_file_ext, QuerryDB
 from cores.Loggers                  import Loggers
 from cores.Settings                 import Settings
-from cores.RegisterLayout                 import RegistryLayout
+from cores.Registry                 import RegistryLayout
 from ui.ActionManager               import ActionManager
 from ui.ButtonManager               import ButtonManager
 from ui.uikits.Icon                 import LogoIcon

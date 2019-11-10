@@ -10,7 +10,6 @@ Description:
 
 # Python
 import sys
-from functools                          import partial
 
 # PyQt5
 from PyQt5.QtWidgets                    import QApplication
@@ -26,10 +25,10 @@ from ui.uikits.Icon                     import LogoIcon
 from ui.Menus.MainMenuBar               import MainMenuBar
 from ui.Network.ConnectStatus           import ConnectStatus
 from ui.AppToolbar.MainToolBar          import MainToolBar
-from ui.TopTab                          import TopTab                           # Body
-from ui.BotTab                          import BotTab
+from ui.Tabs.TopTab import TopTab                           # Body
+from ui.Tabs.BotTab import BotTab
 from ui.Footer                          import Footer                           # Footer
-from ui.MainStatusBar                   import MainStatusBar
+from ui.Footer.MainStatusBar import MainStatusBar
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """

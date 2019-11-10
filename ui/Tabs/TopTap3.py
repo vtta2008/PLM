@@ -38,7 +38,7 @@ class TopTap3(Widget):
     commands = DAMGLIST()
     shotcuts = DAMGLIST()
     tracker = 0
-    _cwd = os.getcwd()
+    _cwd = os.getcwd().replace('\\', '/')
     _user = getpass.getuser()
     _host = socket.gethostname()
 
@@ -50,38 +50,32 @@ class TopTap3(Widget):
 
         self.layout = VBoxLayout()
 
+        self.buildUI()
+        # QApplication.setCursorFlashTime(1000)
+        self.setLayout(self.layout)
+        self.setStyleSheet(mystylesheet(self))
+
+    def buildUI(self):
         self.process = Process(self.dataReady, self.onError, self.onOutput, self.isFinished, self)
         self.cmdField = PlainTextEdit({'lwm': QPlainTextEdit.NoWrap, 'sfh': 25, 'vsbp': SCROLLBAROFF, 'adr': True})
         self.textWindow = PlainTextEdit({'rol': True}, self)
         self.cursor = self.cmdField.textCursor()
-
         self.copySelectedTextAction = ShortCut('Copy', 'Copy', 'Shift+Ctrl+c', self.copyText, self)
         self.cancelAction = ShortCut('Cancel', 'Cancel', 'Ctrl+c', self.killProcess, self)
         self.pasteTextAction = ShortCut('Paste', 'Paste', 'Shift+Ctrl+v', self.pasteText, self)
-
         self.textWindow.addActions([self.cancelAction, self.copySelectedTextAction])
         self.cmdField.addAction(self.pasteTextAction)
-
         self.cmdField.installEventFilter(self)
         self.cursorEnd()
-
         sysinfo = QSysInfo()
-        myMachine = "CPU Architecture: {0}***{1}***{2}***{3}".format(sysinfo.currentCpuArchitecture(), sysinfo.prettyProductName(), sysinfo.kernelType(), sysinfo.kernelVersion())
+        myMachine = "CPU Architecture: {0}***{1}***{2}***{3}".format(sysinfo.currentCpuArchitecture(),
+                                                                     sysinfo.prettyProductName(), sysinfo.kernelType(),
+                                                                     sysinfo.kernelVersion())
         self.statusBar = StatusBar(self)
         self.statusBar.showMessage(myMachine, 0)
-
         self.layout.addWidget(self.textWindow)
         self.layout.addWidget(self.cmdField)
         self.layout.addWidget(self.statusBar)
-        QApplication.setCursorFlashTime(1000)
-        self.setLayout(self.layout)
-        self.setStyleSheet(mystylesheet(self))
-
-        # self.setCentralWidget(self.wid)
-        # self.setGeometry(0, 0, 600, 500)
-        # self.textWindow.installEventFilter(self)
-        # print(self.process.workingDirectory())
-        # self.readSettings()
 
     def getUsername(self):
         return "{0}@{1}:{2}$".format(self._user, self._host, self._cwd)
@@ -207,37 +201,66 @@ class TopTap3(Widget):
         if cmd == "exit":
             quit()
         elif 'cd' in cmd:
-            command_argument = cmd.split('cd')[1]
-            print(command_argument, len(command_argument))
-
-            if cmd == 'cd' or cmd == 'cd ':
-                self.updateWorkingDirectory(self._cwd)
+            if len(cli) == 1:
+                command_argument = cmd.split('cd')[1]
             else:
-                if len(command_argument) == 1:
-                    if command_argument == '/' or command_argument == '"\"':
-                        self._cwd = os.path.splitdrive(self._cwd)[0]
+                command_argument = cli[1]
 
-                elif command_argument[0] == '.':
-                    if len(command_argument) == 1:
-                        self._cwd = os.getcwd()
+            if cmd == 'cd' or cmd == 'cd.':
+                if len(cli) == 1:
+                    pass
+                else:
+                    if os.path.isdir(command_argument):
+                        print('{0} is dir'.format(command_argument))
+                        check = True
+                        for char in command_argument:
+                            if not char == '.':
+                                check = False
+                                break
+                        if not check:
+                            pth = os.path.join(self._cwd, command_argument)
+                            if os.path.exists(pth):
+                                self._cwd = pth
+                            else:
+                                self.command_not_found(cmd)
+                        else:
+                            print('{0} is not dir'.format(command_argument))
+                            pass
                     else:
+                        if os.path.exists(command_argument):
+                            print('{0} is path'.format(command_argument))
+                            self._cwd = command_argument
+                        else:
+                            print('{0} is path but not exists'.format(command_argument))
+                            pth = os.path.join(self._cwd, command_argument)
+                            print(pth, self._cwd)
+                            if os.path.exists(pth):
+                                self._cwd = pth
+                            else:
+                                self.command_not_found(cmd)
+            else:
+                if len(command_argument) <= 1:
+                    if command_argument == '/' or command_argument == '\\':
+                        self._cwd = os.path.splitdrive(self._cwd)[0] + '/'
+                    else:
+                        self.command_not_found()
+                elif len(command_argument) >= 2:
+                    if command_argument[0:2] == '..':
                         check = True
                         for char in command_argument:
                             if not char == '.':
                                 check = False
                         if check:
-                            for i in range(len(command_argument)):
+                            for i in range(len(command_argument)-1):
                                 self._cwd = os.path.dirname(self._cwd)
                         else:
-                            self.command_not_found()
-                else:
-                    print('over here')
-                    foldName = command_argument[1:]
-                    pth = os.path.join(self._cwd, foldName)
-                    if os.path.exists(pth):
-                        self._cwd = pth
+                            self.command_not_found(cmd)
                     else:
-                        self.command_not_found()
+                        self.command_not_found(cmd)
+                else:
+                    self.command_not_found(cmd)
+
+            self.updateWorkingDirectory(self._cwd)
         else:
             if (QStandardPaths.findExecutable(cmd)):
                 self.commands.append(self.cmdField.toPlainText().replace(self.getUsername(), ""))
@@ -254,14 +277,13 @@ class TopTap3(Widget):
                         self.process.start(cmd + " " + t)
                         print("running", (cmd + " " + t))
             else:
-                self.command_not_found()
+                self.command_not_found(cmd)
 
-    def command_not_found(self):
-        self.textWindow.appendPlainText("command not found ...")
+    def command_not_found(self, cmd):
+        self.textWindow.appendPlainText("command not found: {0}".format(cmd))
         self.cursorEnd()
 
     def dataReady(self):
-        out = ""
         try:
             out = str(self.process.readAll(), encoding='utf8').rstrip()
         except TypeError:
@@ -287,11 +309,11 @@ class TopTap3(Widget):
         self.cursorEnd()
 
     def updateWorkingDirectory(self, pth=os.getcwd()):
-        print('Working Dir: {0}'.format(self._cwd))
-        if os.path.exists(pth):
-            self.process.setWorkingDirectory(self._cwd)
-        else:
-            self.command_not_found()
+        print('Working Dir: {0}'.format(pth))
+        fixName = os.path.basename(pth)
+        fixPath = os.path.dirname(pth)
+        self._cwd = os.path.join(fixPath, fixName).replace('\\', '/')
+        self.process.setWorkingDirectory(self._cwd)
         self.cursorEnd()
             
 

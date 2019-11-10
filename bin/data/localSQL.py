@@ -15,7 +15,7 @@ from __future__ import absolute_import
 # Python
 import sqlite3 as lite
 
-from cores.base import DAMG, DAMGLIST
+from bin.data.damg import DAMG, DAMGLIST
 
 # Plt
 from utils import utils as func

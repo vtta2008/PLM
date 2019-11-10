@@ -21,12 +21,10 @@ from PyQt5.QtGui            import QRadialGradient, QColor, QPainter, QBrush, QP
 from PyQt5.QtWidgets        import QApplication
 
 # PLM
-from cores.base                  import DAMG
+from bin.data.damg                  import DAMG
 from ui.uikits.Widget                         import Widget
 from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Button import Button
 from ui.uikits.GroupBox import GroupGrid
-from ui.uikits.LineEdit import LineEdit
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab4 """
@@ -78,9 +76,7 @@ class Bubble(DAMG):
         self.updateBrush()
 
     def updateBrush(self):
-        gradient = QRadialGradient(
-            QPointF(self.radius, self.radius), self.radius,
-            QPointF(self.radius * 0.5, self.radius * 0.5))
+        gradient = QRadialGradient(QPointF(self.radius, self.radius), self.radius, QPointF(self.radius * 0.5, self.radius * 0.5))
 
         gradient.setColorAt(0, QColor(255, 255, 255, 255))
         gradient.setColorAt(0.25, self.innerColor)

@@ -12,21 +12,19 @@ from __future__ import absolute_import
 
 """ Setup envronment configKey to be able to work """
 
-import os, re
+import re
 from setuptools import find_packages
 
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
 # Python
-
-import os, sys
 from cx_Freeze import setup, Executable
 
 # PLM
 from __buildtins__ import *
 
-from appData import (LICENCE_MIT, APP_DATA_DIR, COPYRIGHT)
+from appData import LICENCE_MIT, APP_DATA_DIR, COPYRIGHT, __pkgsReq__
 
 from cores.Version import version
 
@@ -66,9 +64,11 @@ author              = parse(r'__author__\s+=\s+(.*)')
 maintainer          = parse(r'__author1__\s+=\s+(.*)')
 maintainer_email    = parse(r'__email__\s+=\s+(.*)')
 email               = parse(r'__email__\s+=\s+(.*)')
-install_requires    = parse(r'__pkgsReq__\s+=\s+(.*)')
+install_requires    = __pkgsReq__
 classifiers         = parse(r'__classifiers__\s+=\s+(.*)')
 keywords            = parse(r'__plmSlogan__\s+=\s+(.*)')
+
+print(install_requires, type(install_requires))
 
 main_python_file    = "PLM.py"
 

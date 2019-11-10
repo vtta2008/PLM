@@ -13,16 +13,13 @@ Description:
 import os, subprocess, sys
 
 # PyQt5
-from PyQt5.QtCore                               import pyqtSlot, QProcess, QStandardPaths
 from PyQt5.QtWidgets                            import QApplication, QTextEdit, QTextBrowser
 
 # Plt
 from appData                                    import SiPoMin, SiPoExp
 from ui.uikits.Widget                           import Widget
 from ui.uikits.GridLayout                       import GridLayout
-from ui.uikits.Button                           import Button
 from ui.uikits.LineEdit                         import LineEdit
-from ui.uikits.Label                            import Label
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """
