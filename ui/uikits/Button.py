@@ -11,14 +11,13 @@ Description:
 """ Import """
 
 # Python
-from functools                              import partial
 
 # PyQt5
 from PyQt5.QtWidgets                        import QPushButton, QToolButton
 
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import SignalManager
+from ui.SignalManager import SignalManager
 from cores.Settings                         import Settings
 from ui.uikits.uiUtils                      import check_preset
 from ui.uikits.Icon                         import AppIcon, TagIcon

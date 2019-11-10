@@ -16,7 +16,7 @@ from PyQt5.QtGui                            import QIntValidator
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__, PRS
 from cores.Settings                         import Settings
-from cores.SignalManager                    import SignalManager
+from ui.SignalManager import SignalManager
 from ui.uikits.uiUtils                      import check_preset
 
 
@@ -43,6 +43,8 @@ class PlainTextEdit(QPlainTextEdit):
         if self.preset is None or self.preset == {}:
             self.preset = {'txt': ' '}
 
+
+
         for key, value in self.preset.items():
             if key == 'lwm': # setLineWrapMode
                 self.setLineWrapMode(value)
@@ -54,7 +56,6 @@ class PlainTextEdit(QPlainTextEdit):
                 self.setAcceptDrops(value)
             elif key == 'rol': # setReadOnly
                 self.setReadOnly(value)
-
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

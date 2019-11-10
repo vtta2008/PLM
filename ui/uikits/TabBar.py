@@ -14,7 +14,7 @@ from PyQt5.QtCore                           import QSize
 from PyQt5.QtWidgets                        import QTabBar
 
 from appData                                import __copyright__, SETTING_FILEPTH, ST_FORMAT
-from cores.SignalManager                    import SignalManager
+from ui.SignalManager import SignalManager
 from cores.Settings                         import Settings
 
 class TabBar(QTabBar):

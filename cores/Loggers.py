@@ -12,7 +12,7 @@ from __future__ import unicode_literals
 """ Import """
 
 # Python
-import sys, os, logging, json, enum, traceback, linecache
+import sys, os, logging, json, enum, traceback, linecache, pdb
 
 # PLM
 from appData            import LOG_PTH, LOG_FORMAT, DT_FORMAT
@@ -100,15 +100,15 @@ class Stream_Handler(logging.StreamHandler):
 
     def exception_handler(self, exc_type, exc_value, tb):
 
-        # if tb is None:
-        #     pass
-        # else:
-        #     pdb.post_mortem(tb)
-
         if hasattr(sys, 'ps1') or not sys.stderr.isatty():
             exception = sys.__excepthook__(exc_type, exc_value, tb)
         else:
             exception = traceback.format_exception(exc_type, exc_value, tb)
+
+        if tb is None:
+            pass
+        else:
+            pdb.post_mortem(tb)
 
         return exception
 

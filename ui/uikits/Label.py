@@ -19,7 +19,7 @@ from PyQt5.QtGui                            import QFont
 from appData                                import __copyright__, PRS, ST_FORMAT, SETTING_FILEPTH
 from ui.uikits.uiUtils                      import check_preset
 from ui.uikits.Pixmap                       import Pixmap
-from cores.SignalManager import SignalManager
+from ui.SignalManager import SignalManager
 from cores.Settings import Settings
 
 

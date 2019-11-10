@@ -15,7 +15,7 @@ from PyQt5.QtCore                           import Qt
 
 # PLM
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import SignalManager
+from ui.SignalManager import SignalManager
 from cores.Settings                         import Settings
 from ui.uikits.Widget                       import Widget
 from ui.uikits.GridLayout                   import GridLayout

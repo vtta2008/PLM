@@ -19,7 +19,7 @@ from PyQt5.QtWidgets                    import QTextEdit, QDockWidget, QApplicat
 
 # PLM
 from appData                            import right, datetTimeStamp, SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                import SignalManager
+from ui.SignalManager import SignalManager
 from cores.Loggers                      import Loggers
 from cores.Settings                     import Settings
 

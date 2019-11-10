@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 from PyQt5.QtWidgets                        import QCheckBox
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager                    import SignalManager
+from ui.SignalManager import SignalManager
 from cores.Settings                         import Settings
 from ui.uikits.uiUtils                      import check_preset
 

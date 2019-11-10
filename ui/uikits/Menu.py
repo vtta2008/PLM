@@ -10,13 +10,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-import sys
-
 from PyQt5.QtWidgets                        import QMenu
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
 
-from cores.SignalManager                    import SignalManager
+from ui.SignalManager import SignalManager
 from cores.Settings                         import Settings
 
 class Menu(QMenu):

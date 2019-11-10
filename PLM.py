@@ -29,7 +29,7 @@ from appData                        import (__localServer__, PLMAPPID, __organiz
                                             ST_FORMAT, SYSTRAY_UNAVAI)
 
 from cores.StyleSheets              import StyleSheets
-from cores.ThreadManager            import ThreadManager
+from ui.ThreadManager import ThreadManager
 from utils                          import str2bool, clean_file_ext, QuerryDB
 from cores.Loggers                  import Loggers
 from cores.Settings                 import Settings

@@ -21,7 +21,7 @@ from PyQt5.QtWidgets            import QMainWindow, QApplication
 # PLM
 from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
 from ui.uikits.Icon             import AppIcon
-from cores.SignalManager        import SignalManager
+from ui.SignalManager import SignalManager
 from cores.Loggers              import Loggers
 from cores.Settings             import Settings
 

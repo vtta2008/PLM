@@ -25,10 +25,10 @@ from ui.uikits.Icon                     import LogoIcon
 from ui.Menus.MainMenuBar               import MainMenuBar
 from ui.Network.ConnectStatus           import ConnectStatus
 from ui.AppToolbar.MainToolBar          import MainToolBar
-from ui.Tabs.TopTab import TopTab                           # Body
-from ui.Tabs.BotTab import BotTab
-from ui.Footer                          import Footer                           # Footer
-from ui.Footer.MainStatusBar import MainStatusBar
+from ui.Tabs.TopTab                     import TopTab                           # Body
+from ui.Tabs.BotTab                     import BotTab
+from ui.Footer.Footer                   import Footer                           # Footer
+from ui.Footer.MainStatusBar            import MainStatusBar
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
@@ -79,10 +79,9 @@ class PipelineManager(MainWindow):
         self.notifiSec.setParent(self)
 
         self.topTabUI               = TopTab(self.buttonManager, self)
-        self.botTabUI               = BotTab()
+        self.botTabUI               = BotTab(self)
         self.footer                 = Footer(self.buttonManager, self)
         self.statusBar              = MainStatusBar(self)
-
         self.setStatusBar(self.statusBar)
 
         self.mainUI_layouts =  [self.mainMenuBar, self.mainToolBar      , self.connectStatus    , self.notification,

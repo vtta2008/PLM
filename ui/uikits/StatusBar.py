@@ -13,14 +13,13 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # Python
-import sys
 
 # PyQt5
 from PyQt5.QtWidgets            import QStatusBar
 
 # Plm
 from appData                    import SETTING_FILEPTH, ST_FORMAT, __copyright__
-from cores.SignalManager        import SignalManager
+from ui.SignalManager import SignalManager
 from cores.Settings             import Settings
 
 
