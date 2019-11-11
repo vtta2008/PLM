@@ -223,14 +223,14 @@ class PLM(QApplication):
             print(state)
             if repeat:
                 if mode == state:
-                    return print('block signal repeat')
+                    return # print('block signal repeat')
                 else:
                     if mode == 'show':
                         if state in ['show', 'showNormal', 'showRestore']:
-                            return print('block signal repeat')
+                            return # print('block signal repeat')
                     elif mode == 'hide':
                         if state in ['hide', 'showMinimized']:
-                            return print('block signal repeat')
+                            return # print('block signal repeat')
 
         if mode in ['SignIn', 'SignOut', 'SignUp', 'SwitchAccount']:
             if layoutID == mode:
@@ -242,7 +242,6 @@ class PLM(QApplication):
                     return self.signUpEvent()
                 else:
                     return self.switchAccountEvent()
-
 
         if not layoutID in self.ignoreIDs:
             if mode == "hide":
@@ -260,13 +259,11 @@ class PLM(QApplication):
             else:
                 self.logger.report("LayouKeyError: {0}".format(layoutID) )
 
-            self.setSetting('state', mode, layoutID)
-            return
+            return self.setSetting('state', mode, layoutID)
         else:
             if not layoutID in self.toBuildLayouts:
                 self.logger.report("Layout: '{0}' is not registerred yet.".format(layoutID))
-                self.toBuildLayouts.append(layoutID)
-            return
+                return self.toBuildLayouts.append(layoutID)
 
     @pyqtSlot(str, str, str, int, name='sysNotify')
     def sysNotify(self, title, mess, iconType, timeDelay):
@@ -317,7 +314,7 @@ class PLM(QApplication):
         self.signOutEvent()
 
     def exitEvent(self):
-        print(self.toBuildLayouts, self.toBuildCommand)
+        # print(self.toBuildLayouts, self.toBuildCommand)
         self.exit()
 
 if __name__ == '__main__':

@@ -154,7 +154,7 @@ CONFIG_OFFICE   = generate_config('Office')                         # Paper work
 CONFIG_DEV      = generate_config('Dev') + ['Command Prompt']       # Rnd - Research and development
 CONFIG_TOOLS    = generate_config('Tools')                          # useful/custom tool supporting for the whole pipeline
 CONFIG_EXTRA    = generate_config('Extra')                          # Extra tool may be considering to use
-CONFIG_SYSTRAY  = generate_config('sysTray') + ['Exit']
+CONFIG_SYSTRAY  = generate_config('sysTray') + ['Exit', 'SignIn']
 
 ACTIONS_DATA = dict(TD                  = CONFIG_TDS,
                     VFX                 = CONFIG_VFX,
