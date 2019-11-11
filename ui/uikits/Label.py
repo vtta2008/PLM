@@ -12,8 +12,9 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # PyQt5
-from PyQt5.QtWidgets                        import QLabel
+from PyQt5.QtWidgets                        import QLabel, QLCDNumber
 from PyQt5.QtGui                            import QFont
+from PyQt5.QtCore                           import QTimeZone, QTime
 
 # PLM
 from appData                                import __copyright__, PRS, ST_FORMAT, SETTING_FILEPTH
@@ -122,6 +123,90 @@ class Label(QLabel):
         else:
             self.signals.emit('showLayout', self.key, 'hide')
             event.ignore()
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
+
+class LCDNumber(QLCDNumber):
+
+    Type                                    = 'DAMGUI'
+    key                                     = 'LCDNumber'
+    _name                                   = 'DAMG LCD Number'
+    _copyright                              = __copyright__
+
+    def __init__(self, parent=None):
+        QLCDNumber.__init__(self)
+
+        self.parent                         = parent
+        self.signals                        = SignalManager(self)
+        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'],self)
+        self.time = QTime()
+        self.zone = QTimeZone()
+
+    def currentTime(self):
+        return self.time.currentTime()
+
+    def currentTimeZone(self):
+        return self.zone.utc()
+
+    def setValue(self, key, value):
+        return self.settings.initSetValue(key, value, self.key)
+
+    def getValue(self, key):
+        return self.settings.initValue(key, self.key)
+
+    def showEvent(self, event):
+        sizeX = self.getValue('width')
+        sizeY = self.getValue('height')
+
+        if not sizeX is None and not sizeY is None:
+            self.resize(int(sizeX), int(sizeY))
+
+        posX = self.getValue('posX')
+        posY = self.getValue('posY')
+
+        if not posX is None and not posX is None:
+            self.move(posX, posY)
+
+        if __name__ == '__main__':
+            self.show()
+        else:
+            self.signals.emit('showLayout', self.key, 'show')
+
+    def moveEvent(self, event):
+        self.setValue('posX', self.x())
+        self.setValue('posY', self.y())
+
+    def resizeEvent(self, event):
+        self.setValue('width', self.frameGeometry().width())
+        self.setValue('height', self.frameGeometry().height())
+
+    def sizeHint(self):
+        size = super(LCDNumber, self).sizeHint()
+        size.setHeight(size.height())
+        size.setWidth(max(size.width(), size.height()))
+        return size
+
+    def closeEvent(self, event):
+        if __name__=='__main__':
+            self.close()
+        else:
+            self.signals.emit('showLayout', self.key, 'hide')
+
+    def hideEvent(self, event):
+        if __name__=='__main__':
+            self.hide()
+        else:
+            self.signals.emit('showLayout', self.key, 'hide')
 
     @property
     def copyright(self):

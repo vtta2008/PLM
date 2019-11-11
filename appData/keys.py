@@ -89,7 +89,7 @@ TRACK_ART           = [ 'Photoshop', 'Illustrator', 'Storyboarder', 'Krita (x64)
 TRACK_TEX           = [ 'Mari', 'Painter', ]
 TRACK_POST          = [ 'Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro']
 TRACK_OFFICE        = [ 'Word', 'Excel', 'PowerPoint', 'Wordpad']
-TRACK_DEV           = [ 'PyCharm', 'Sublime Text', 'QtDesigner', 'Git Bash', 'Command Prompt', 'Spyder']
+TRACK_DEV           = [ 'PyCharm', 'Sublime Text', 'QtDesigner', 'Git Bash', 'Spyder', 'Command Prompt']
 TRACK_TOOLS         = [ 'Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'ScreenShot', 'NodeGraph']
 TRACK_EXTRA         = [ 'ReConfig', 'CleanPyc', 'Debug', 'Snipping Tool']
 TRACK_SYSTRAY       = [ 'Snipping Tool', 'ScreenShot', 'Maximize', 'Minimize', 'Restore', 'Exit', ]
@@ -184,10 +184,12 @@ SHOWMIN_KEY             = ['Minimize']
 
 OPEN_BROWSER_KEY = ['PLM wiki']
 
-START_FILE_KEY = CONFIG_DEV + CONFIG_OFFICE + CONFIG_TDS + CONFIG_VFX + CONFIG_ART + CONFIG_TEX + CONFIG_POST + \
+START_FILE      = CONFIG_DEV + CONFIG_OFFICE + CONFIG_TDS + CONFIG_VFX + CONFIG_ART + CONFIG_TEX + CONFIG_POST + \
                  ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder', 'Snipping Tool']
 
-EXECUTING_KEY = ['Exit', 'CleanPyc', 'ReConfig', 'Debug']
+START_FILE_KEY = sorted([i for i in START_FILE if not i == 'Command Prompt'])
+
+EXECUTING_KEY = ['Exit', 'CleanPyc', 'ReConfig', 'Debug', 'Command Prompt']
 
 IGNORE_ICON_NAME = ['Widget', 'TopTab1', 'TopTab2', 'TopTab3', 'ItemWidget']
 

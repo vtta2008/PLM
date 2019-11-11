@@ -22,11 +22,11 @@ from ui.uikits.GroupBox                 import GroupBox
 from ui.uikits.Widget                   import Widget
 from ui.uikits.GridLayout               import GridLayout
 from ui.uikits.Icon                     import LogoIcon
-from ui.Menus.MainMenuBar               import MainMenuBar
-from ui.Network.ConnectStatus           import ConnectStatus
-from ui.AppToolbar.MainToolBar          import MainToolBar
-from ui.Tabs.TopTab                     import TopTab                           # Body
-from ui.Tabs.BotTab                     import BotTab
+from ui.Header.Menus.MainMenuBar        import MainMenuBar
+from ui.Header.Network.ConnectStatus    import ConnectStatus
+from ui.Header.AppToolbar.MainToolBar   import MainToolBar
+from ui.Body.Tabs.TopTab                import TopTab                           # Body
+from ui.Body.Tabs.BotTab                import BotTab
 from ui.Footer.Footer                   import Footer                           # Footer
 from ui.Footer.MainStatusBar            import MainStatusBar
 
@@ -38,7 +38,7 @@ class PipelineManager(MainWindow):
     key = 'PipelineManager'
     _name = __appname__
 
-    def __init__(self, settings, actionManager, buttonManager, parent=None):
+    def __init__(self, settings, actionManager, buttonManager, threadManager, parent=None):
         super(PipelineManager, self).__init__(parent)
 
         self.url = __homepage__
@@ -48,6 +48,7 @@ class PipelineManager(MainWindow):
         self.settings       = settings
         self.actionManager  = actionManager
         self.buttonManager  = buttonManager
+        self.threadManager  = threadManager
 
         self.mainWidget     = Widget()
         self.layout         = GridLayout()
@@ -80,7 +81,7 @@ class PipelineManager(MainWindow):
 
         self.topTabUI               = TopTab(self.buttonManager, self)
         self.botTabUI               = BotTab(self)
-        self.footer                 = Footer(self.buttonManager, self)
+        self.footer                 = Footer(self.buttonManager, self.threadManager, self)
         self.statusBar              = MainStatusBar(self)
         self.setStatusBar(self.statusBar)
 

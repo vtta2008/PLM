@@ -15,7 +15,8 @@ import sys, json, inspect, time, datetime, traceback, re
 from functools import partial
 
 # PyQt5
-from PyQt5.QtCore   import pyqtSignal, pyqtSlot, QObject, pyqtProperty, QThreadPool, QThread, QRunnable, QTimer
+from PyQt5.QtCore   import (pyqtSignal, pyqtSlot, QObject, pyqtProperty, QThreadPool, QThread, QRunnable, QTimer,
+                            QTime, QTimeZone)
 
 __copyright__   = "Copyright (c) 2017 - 2019 Trinh Do & Duong Minh Duc"
 

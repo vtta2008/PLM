@@ -58,6 +58,8 @@ class Widget(QWidget):
 
         if __name__=='__main__':
             self.show()
+        else:
+            self.signals.emit('showLayout', self.key, 'show')
 
     def moveEvent(self, event):
         self.setValue('posX', self.x())

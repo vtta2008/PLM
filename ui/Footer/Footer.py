@@ -13,39 +13,42 @@ Description:
 
 # Python
 import sys
-from bin.data.damg                                   import DAMGTHREAD
 
 # PyQt5
 from PyQt5.QtWidgets                        import QApplication
 
 # Plt
-from utils                                  import get_cpu_useage, get_ram_useage, create_signal_slot
 from ui.uikits.Widget                       import Widget
 from ui.uikits.GridLayout                   import GridLayout
-from ui.uikits.Label                        import Label
+from ui.uikits.Label                        import Label, LCDNumber
+from bin.data.damg                          import DAMGTIMER
 
-signal_cpu, slot_cpu = create_signal_slot(argType=str, name='CPU')
-signal_ram, slot_ram = create_signal_slot(argType=str, name='RAM')
+# -------------------------------------------------------------------------------------------------------------
+class DigitalClock(LCDNumber):
 
-class CPUuseage(DAMGTHREAD):
+    key = 'DigitalClock'
 
-    key = 'FooterWorker'
-    cpu = signal_cpu
-    ram = signal_ram
+    def __init__(self, parent=None):
+        super(DigitalClock, self).__init__(parent)
 
-    def __init__(self, name='CPU useage', *args, **kwargs):
-        super(CPUuseage, self).__init__(self)
+        self.parent = parent
+        self.setSegmentStyle(LCDNumber.Flat)
+        self.setDigitCount(8)
+        timer = DAMGTIMER()
+        timer.setParent(self)
+        timer.timeout.connect(self.showTime)
+        timer.start(1000)
+        self.showTime()
+        self.resize(60, 20)
 
-        self.args = args
-        self.kwargs = kwargs
-        self._name = name
 
-    def run(self):
-        while True:
-            cpu = str(get_cpu_useage())
-            ram = str(get_ram_useage())
-            self.cpu.emit(cpu)
-            self.ram.emit(ram)
+    def showTime(self):
+        time = self.currentTime()
+        text = time.toString('hh:mm:ss')
+        if (time.second() % 2) == 0:
+            text = text[:2] + ' ' + text[3:5] + ' ' + text[6:]
+        self.display(text)
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Footer """
@@ -59,16 +62,17 @@ class Footer(Widget):
                 licence         = "https://github.com/vtta2008/damgteam/blob/master/LICENCE",
                 version         = "https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst")
 
-    def __init__(self, buttonManager, parent=None):
+    def __init__(self, buttonManager, threadManager, parent=None):
         super(Footer, self).__init__(parent)
 
         self.parent             = parent
         self.buttonManager      = buttonManager
+        self.threaManager       = threadManager
 
         layout = self.buildUI()
         self.setLayout(layout)
 
-        worker = CPUuseage()
+        worker = self.threaManager.serviceThread()
         worker.cpu.connect(self.update_cpu_useage)
         worker.ram.connect(self.update_ram_useage)
         worker.start()
@@ -76,40 +80,29 @@ class Footer(Widget):
     def buildUI(self):
         layout          = GridLayout()
 
-        for i in range(3):
+        for i in range(6):
             layout.addWidget(Label({'txt': " "}), 0, i, 1, 1)
             i += 1
 
-        i = 4
-        for button in self.buttonManager.tagButtonsFooterWidget(self.parent):
-            layout.addWidget(button, 0, i, 1, 2)
-            i = i + 2
+        # i = 4
+        # for button in self.buttonManager.tagButtonsFooterWidget(self.parent):
+        #     layout.addWidget(button, 0, i, 1, 2)
+        #     i = i + 2
 
         self.usage_cpu = Label({'txt': 'CPU: 0%'})
         self.usage_ram = Label({'txt': 'RAM: 0%'})
-        layout.addWidget(self.usage_cpu, 1, 6, 1, 2)
-        layout.addWidget(self.usage_ram, 1, 8, 1, 2)
+        self.clock = DigitalClock(self)
+        layout.addWidget(self.usage_cpu, 0, 6, 1, 2)
+        layout.addWidget(self.usage_ram, 0, 8, 1, 2)
+        layout.addWidget(self.clock, 1, 7, 1, 3)
 
         return layout
 
-    @slot_cpu
     def update_cpu_useage(self, val):
         return self.usage_cpu.setText('CPU: {0}%'.format(val))
 
-    @slot_ram
     def update_ram_useage(self, val):
         return self.usage_ram.setText('RAM: {0}%'.format(val))
-
-    # def createButton(self, tagName):
-    #     if not tagName in self.tags.keys():
-    #         # print('KeyError: tag name is not existed: {0}'.format(tagName))
-    #         button = Button()
-    #     else:
-    #         button = Button({'tag': tagName,
-    #                          'fix': BTNTAGSIZE,
-    #                          'ics': BTNTAGSIZE,
-    #                          'cl' : partial(self.signals.openBrowser.emit, self.tags[tagName])})
-    #     return button
 
 def main():
     app = QApplication(sys.argv)

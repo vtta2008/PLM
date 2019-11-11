@@ -15,19 +15,19 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore               import pyqtSlot
-from PyQt5.QtWidgets            import QApplication
+from PyQt5.QtCore                       import pyqtSlot
+from PyQt5.QtWidgets                    import QApplication
 
 # PLM
-from appData                    import __plmSlogan__, __appname__, STRONG_FOCUS, STAY_ON_TOP, FRAMELESSWINDOW
-from ui.uikits.Icon             import LogoIcon
-from ui.Menus.SysTrayIconMenu   import SysTrayIconMenu
-from ui.uikits.Button           import Button
-from ui.uikits.Widget           import Widget
-from ui.uikits.BoxLayout        import VBoxLayout
-from ui.uikits.GroupBox         import GroupGrid
-from ui.uikits.SystemTrayIcon   import SystemTrayIcon
-from utils                      import QuerryDB
+from appData                            import __plmSlogan__, __appname__, STRONG_FOCUS, STAY_ON_TOP, FRAMELESSWINDOW
+from ui.uikits.Icon                     import LogoIcon
+from ui.Header.Menus.SysTrayIconMenu    import SysTrayIconMenu
+from ui.uikits.Button                   import Button
+from ui.uikits.Widget                   import Widget
+from ui.uikits.BoxLayout                import VBoxLayout
+from ui.uikits.GroupBox                 import GroupGrid
+from ui.uikits.SystemTrayIcon           import SystemTrayIcon
+from utils                              import QuerryDB
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -138,7 +138,7 @@ class SysTray(SystemTrayIcon):
 
     def loginChanged(self, login):
         self._login = login
-        return self._login
+        self.rightClickMenu.loginChanged(self._login)
 
     @property
     def login(self):

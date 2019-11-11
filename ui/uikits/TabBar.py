@@ -53,6 +53,8 @@ class TabBar(QTabBar):
 
         if __name__ == '__main__':
             self.show()
+        else:
+            self.signals.emit('showLayout', self.key, 'show')
 
     def moveEvent(self, event):
         self.setValue('posX', self.x())
@@ -67,14 +69,12 @@ class TabBar(QTabBar):
             self.close()
         else:
             self.signals.emit('showLayout', self.key, 'hide')
-            event.ignore()
 
     def hideEvent(self, event):
         if __name__ == '__main__':
             self.hide()
         else:
             self.signals.emit('showLayout', self.key, 'hide')
-            event.ignore()
 
     def tabSizeHint(self, index):
         size = QTabBar.tabSizeHint(self, index)

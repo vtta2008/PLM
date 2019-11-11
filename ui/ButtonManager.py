@@ -131,9 +131,14 @@ class ButtonManager(DAMGDICT):
 
     def showLayoutButton(self, key, parent):
         if key in self.mainInfo.keys():
+            if key in ['SignIn', 'SignOut', 'SignUp', 'SwitchAccount']:
+                show = key
+            else:
+                show = 'show'
+
             button = Button({'txt': self.mainInfo[key][0],
                              'stt': self.mainInfo[key][2],
-                             'cl': partial(parent.signals.emit, 'showLayout',  key, 'show'), })
+                             'cl': partial(parent.signals.emit, 'showLayout',  key, show), })
             button.key = '{0}_{1}_Button'.format(parent.key, key)
             button._name = button.key
             if button.key in self.buttonKeys:

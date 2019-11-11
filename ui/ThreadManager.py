@@ -10,9 +10,34 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtCore               import pyqtSlot
+from bin.data.damg                       import DAMGLIST, DAMGTHREADPOOL, DAMGTIMER, DAMGTHREAD
+from utils                               import get_ram_useage, get_cpu_useage, create_signal_slot
 
-from bin.data.damg                       import DAMGLIST, DAMGTHREADPOOL, DAMGTIMER
+signal_cpu, slot_cpu = create_signal_slot(argType=str, name='CPU')
+signal_ram, slot_ram = create_signal_slot(argType=str, name='RAM')
+
+class BackgroundService(DAMGTHREAD):
+
+    key = 'FooterWorker'
+    cpu = signal_cpu
+    ram = signal_ram
+
+    slotCpu = slot_cpu
+    slotRam = slot_ram
+
+    def __init__(self, name='CPU useage', *args, **kwargs):
+        super(BackgroundService, self).__init__(self)
+
+        self.args = args
+        self.kwargs = kwargs
+        self._name = name
+
+    def run(self):
+        while True:
+            cpu = str(get_cpu_useage())
+            ram = str(get_ram_useage())
+            self.cpu.emit(cpu)
+            self.ram.emit(ram)
 
 class Counting(DAMGTIMER):
 
@@ -52,6 +77,11 @@ class ThreadManager(DAMGTHREADPOOL):
 
     def stopCounting(self):
         self.counter.finish()
+
+    def serviceThread(self):
+        thread = BackgroundService()
+        self.threads.append(thread)
+        return thread
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 20/10/2019 - 6:23 PM

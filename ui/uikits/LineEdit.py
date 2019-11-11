@@ -120,6 +120,69 @@ class PlainTextEdit(QPlainTextEdit):
         self._name                      = newName
 
 
+class Detector(QPlainTextEdit):
+
+    Type = 'DAMGDETECTOR'
+    key = 'Detector'
+    _name = 'DAMG Detector'
+    _copyright                              = __copyright__
+
+    def showEvent(self, event):
+        sizeX = self.getValue('width')
+        sizeY = self.getValue('height')
+
+        if not sizeX is None and not sizeY is None:
+            self.resize(int(sizeX), int(sizeY))
+
+        posX = self.getValue('posX')
+        posY = self.getValue('posY')
+
+        if not posX is None and not posX is None:
+            self.move(posX, posY)
+
+        if __name__ == '__main__':
+            self.show()
+        else:
+            self.signals.emit('showLayout', self.key, 'show')
+
+    def moveEvent(self, event):
+        self.setValue('posX', self.x())
+        self.setValue('posY', self.y())
+
+    def resizeEvent(self, event):
+        self.setValue('width', self.frameGeometry().width())
+        self.setValue('height', self.frameGeometry().height())
+
+    def sizeHint(self):
+        size = super(Detector, self).sizeHint()
+        size.setHeight(size.height())
+        size.setWidth(max(size.width(), size.height()))
+        return size
+
+    def closeEvent(self, event):
+        if __name__=='__main__':
+            self.close()
+        else:
+            self.signals.emit('showLayout', self.key, 'hide')
+
+    def hideEvent(self, event):
+        if __name__=='__main__':
+            self.hide()
+        else:
+            self.signals.emit('showLayout', self.key, 'hide')
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
+
 class LineEdit(QLineEdit):
 
     Type                                    = 'DAMGUI'
@@ -177,6 +240,8 @@ class LineEdit(QLineEdit):
 
         if __name__ == '__main__':
             self.show()
+        else:
+            self.signals.emit('showLayout', self.key, 'show')
 
     def moveEvent(self, event):
         self.setValue('posX', self.x())
@@ -197,14 +262,12 @@ class LineEdit(QLineEdit):
             self.close()
         else:
             self.signals.emit('showLayout', self.key, 'hide')
-            event.ignore()
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
             self.signals.emit('showLayout', self.key, 'hide')
-            event.ignore()
 
     @property
     def copyright(self):

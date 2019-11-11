@@ -64,6 +64,8 @@ class CheckBox(QCheckBox):
 
         if __name__ == '__main__':
             self.show()
+        else:
+            self.signals.emit('showLayout', self.key, 'show')
 
     def moveEvent(self, event):
         self.setValue('posX', self.x())
@@ -84,14 +86,12 @@ class CheckBox(QCheckBox):
             self.close()
         else:
             self.signals.emit('showLayout', self.key, 'hide')
-            event.ignore()
 
     def hideEvent(self, event):
         if __name__=='__main__':
             self.hide()
         else:
             self.signals.emit('showLayout', self.key, 'hide')
-            event.ignore()
 
     @property
     def copyright(self):

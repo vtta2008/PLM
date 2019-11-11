@@ -51,7 +51,8 @@ class PLM(QApplication):
 
     ignoreIDs     = ['MainMenuSection', 'MainMenuBar', 'MainToolBarSection', 'MainToolBar',
                      'Notification', 'TopTab', 'BotTab', 'Footer', 'TopTab2', 'TopTab1',
-                     'TopTab3', 'MainStatusBar', 'ConnectStatus', 'GridLayout']
+                     'TopTab3', 'MainStatusBar', 'ConnectStatus', 'GridLayout', 'MainMenuSectionSection',
+                     'MainToolBarSectionSection', 'ConnectStatusSection', 'NotificationSection', 'TerminalLayout']
 
     toBuildLayouts = ['ProjectManager', 'ConfigProject', 'EditProject', 'NewOrganisation', 'EditOrganisation',
                       'ConfigOrganisation', 'OrganisationManager', 'NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager',
@@ -74,7 +75,7 @@ class PLM(QApplication):
         self.appInfo                = self.configManager.appInfo                                    # Configuration data
 
         # Multithreading.
-        self.thread_manager         = ThreadManager()
+        self.threadManager          = ThreadManager()
         self.database               = QuerryDB()                                                    # Database tool
         self.browser                = Browser()
 
@@ -92,12 +93,18 @@ class PLM(QApplication):
         self.buttonManager          = ButtonManager()
         self.actionManager          = ActionManager()
         self.registryLayout         = RegistryLayout()
-        self.layoutManager          = LayoutManager(self.settings, self.registryLayout, self.actionManager, self.buttonManager, self.eventManager, self)
+        self.layoutManager          = LayoutManager(self.settings, self.registryLayout, self.actionManager, self.buttonManager, self.eventManager, self.threadManager, self)
         self.layoutManager.registLayout(self.browser)
         self.layoutManager.buildLayouts()
 
+        self.signIn                 = self.layoutManager.signin
+        self.signUp                 = self.layoutManager.signup
+        self.forgotPassword         = self.layoutManager.forgotPW
         self.sysTray                = self.layoutManager.sysTray
         self.mainUI                 = self.layoutManager.mainUI
+
+        for layout in [self.signIn, self.signUp, self.forgotPassword, self.sysTray, self.mainUI]:
+            layout.signals.connect('loginChanged', self.loginChanged)
 
         for layout in self.layoutManager.layouts():
             if not layout.key in self.ignoreIDs:
@@ -261,12 +268,14 @@ class PLM(QApplication):
             else:
                 pass
 
-        if layoutID == 'SignOut' and mode == 'show':
-            self.signOutEvent()
-        elif layoutID == 'SwitchAccount' and mode == 'show':
-            self.switchAccountEvent()
-        elif layoutID == 'SignUp' and mode == 'show':
-            self.newAccountEvent()
+        if layoutID == 'SignOut' and mode == 'SignOut':
+            return self.signOutEvent()
+        elif layoutID == 'SwitchAccount' and mode == 'SwitchAccount':
+            return self.switchAccountEvent()
+        elif layoutID == 'SignUp' and mode == 'SignUp':
+            return self.newAccountEvent()
+        elif layoutID == 'SignIn' and mode == 'SignIn':
+            return self.signInEvent()
         elif layoutID in self.registryLayout.keys():
             if not layoutID in self.ignoreIDs:
                 if mode == "hide":
@@ -288,11 +297,12 @@ class PLM(QApplication):
                     self.exitEvent()
                 else:
                     self.logger.report("LayouKeyError: {0}".format(layoutID) )
+            return
         else:
             if not layoutID in self.toBuildLayouts:
                 self.logger.report("Layout: '{0}' is not registerred yet.".format(layoutID))
                 self.toBuildLayouts.append(layoutID)
-                return
+            return
 
     @pyqtSlot(str, str, str, int, name='sysNotify')
     def sysNotify(self, title, mess, iconType, timeDelay):
@@ -311,21 +321,36 @@ class PLM(QApplication):
     def loginChanged(self, val):
         self._login = val
         self.sysTray.loginChanged(self._login)
-        self.sysTray.rightClickMenu.loginChanged(self._login)
-        self.layoutManager.signin.loginChanged(self._login)
+        self.signIn.loginChanged(self._login)
+        self.signUp.loginChanged(self._login)
+
+        if not self._login:
+            self.mainUI.hide()
+        else:
+            self.mainUI.show()
+            for layout in [self.signIn, self.signUp, self.forgotPassword]:
+                if not layout.isHidden():
+                    layout.hide()
+
         return self._login
+
+    def signInEvent(self):
+        self.switchAccountEvent()
 
     def signOutEvent(self):
         self.loginChanged(False)
-        self.layoutManager.signOutEvent()
+        self.signIn.show()
+        self.signUp.hide()
+        self.forgotPassword.hide()
 
     def newAccountEvent(self):
-        self.layoutManager.newAcountEvent()
         self.loginChanged(False)
+        self.signIn.hide()
+        self.signUp.show()
+        self.forgotPassword.hide()
 
     def switchAccountEvent(self):
-        self.layoutManager.switchAccountEvent()
-        self.loginChanged(False)
+        self.signOutEvent()
 
     def exitEvent(self):
         print(self.toBuildLayouts, self.toBuildCommand)
