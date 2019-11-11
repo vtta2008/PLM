@@ -104,7 +104,7 @@ class LayoutManager(DAMG):
             cbs[i].setChecked(val)
             sections[i].setVisible(val)
             cbs[i].stateChanged.connect(sections[i].setVisible)
-            cbs[i].stateChanged.connect(partial(self.mainUI.signals.emit,'setSeting', key, bool2str(val), grp))
+            cbs[i].stateChanged.connect(partial(self.mainUI.signals.emit,'setSetting', key, bool2str(val), grp))
 
         for layout in self.layouts():
             try:
@@ -138,7 +138,7 @@ class LayoutManager(DAMG):
         from ui.SysTray                     import SysTray
 
         self.mainUI     = PipelineManager(self.settings, self.actionManager, self.buttonManager, self.threadManager)
-        self.sysTray    = SysTray(self.actionManager, self.eventManager)
+        self.sysTray    = SysTray(self.settings, self.actionManager, self.eventManager)
         self.setLayoutUnHidable(self.sysTray)
 
         layouts = [self.mainUI, self.sysTray]

@@ -79,11 +79,12 @@ class SysTray(SystemTrayIcon):
     key = 'SysTray'
     _login = False
 
-    def __init__(self, actionManager, eventManager, parent=None):
+    def __init__(self, settings, actionManager, eventManager, parent=None):
 
         super(SysTray, self).__init__(parent)
 
         self.db                 = QuerryDB()
+        self.settings           = settings
         self.actionManager      = actionManager
         self.eventManager       = eventManager
         self.trayMenu           = TrayMenu(self)
