@@ -61,7 +61,7 @@ class DataHandle(object):
     def setStartPointUI(self):
         mes1 = 'It seems to be like you have not done anything yet, please choose your start'
 
-        mes2 = 'Or, you can create a new project'
+        mes2 = 'Or, you can create a showLayout_new project'
 
         winID = 'Choose Start Point'
         winTitle = winID

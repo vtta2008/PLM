@@ -81,7 +81,7 @@ class MyDialog(QtWidgets.QDialog, QtWidgets.QPlainTextEdit):
         self._button.setText('Test Me')
 
         layout = QtWidgets.QVBoxLayout()
-        # Add the new logging box widget to the layout
+        # Add the showLayout_new logging box widget to the layout
         layout.addWidget(logTextBox.widget)
         layout.addWidget(self._button)
         self.setLayout(layout)

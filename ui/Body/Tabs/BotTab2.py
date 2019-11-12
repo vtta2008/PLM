@@ -81,7 +81,7 @@ class pDetector(Detector):              # A simple QTextEdit, with a few pre-set
     def getValue(self, key):
         return self.settings.initValue(key, self.key)
 
-    def write(self, msg):                   # Add msg to the console's output, on a new line.
+    def write(self, msg):                   # Add msg to the console's output, on a showLayout_new line.
         self._buffer.write(msg)
         self.insertPlainText(msg)
         self.moveCursor(QTextCursor.End)    # Autoscroll
@@ -136,8 +136,8 @@ class BotTab2(Widget):
 
         message = 'message_handler: line: {0}, func: {1}(), file: {2}'.format(line, funct, file)
         self.textEdit.appendPlainText(message)
-        mess = self.seeking()
-        print(mess)
+        # mess = self.seeking()
+        # print(mess)
         qDebug(message)
 
     def seeking(self):

@@ -24,9 +24,9 @@ from PyQt5.QtCore                   import pyqtSlot
 from PyQt5.QtWidgets                import QApplication
 
 # Plm
-from appData                        import (__localServer__, PLMAPPID, __organization__,
-                                            __appname__, __version__, __website__, SETTING_FILEPTH,
-                                            ST_FORMAT, SYSTRAY_UNAVAI)
+from appData                        import (__localServer__, PLMAPPID, __organization__, StateNormal, StateMax,
+                                            StateMin, __appname__, __version__, __website__, SETTING_FILEPTH,
+                                            ST_FORMAT, SYSTRAY_UNAVAI, KEY_TAB, KEY_PRESS)
 
 from cores.StyleSheets              import StyleSheets
 from ui.ThreadManager               import ThreadManager
@@ -48,6 +48,7 @@ class PLM(QApplication):
 
     key                             = 'PLM'
     configManager                   = configManager
+    count                           = 0
 
     ignoreIDs     = ['MainMenuSection', 'MainMenuBar', 'MainToolBarSection', 'MainToolBar',
                      'Notification', 'TopTab', 'BotTab', 'Footer', 'TopTab2', 'TopTab1',
@@ -58,10 +59,11 @@ class PLM(QApplication):
                       'ConfigOrganisation', 'OrganisationManager', 'NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager',
                       'Alpha', 'HDRI', 'Texture', 'Feedback', 'ContactUs']
 
-    toBuildCommand = []
+    toBuildCommand  = []
 
-    old = []
-    new = []
+    showLayout_old  = []
+    executing_old   = []
+    setSetting_old  = []
 
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
@@ -101,6 +103,7 @@ class PLM(QApplication):
 
         self.signIn                     = self.layoutManager.signin
         self.signUp                     = self.layoutManager.signup
+        self.commandLayout              = self.layoutManager.hiddenLayout
         self.forgotPassword             = self.layoutManager.forgotPW
         self.sysTray                    = self.layoutManager.sysTray
         self.mainUI                     = self.layoutManager.mainUI
@@ -144,6 +147,12 @@ class PLM(QApplication):
         self.setQuitOnLastWindowClosed(False)
         sys.exit(self.exec_())
 
+    def eventFilter(self, QObject, QEvent):
+        print('event key press: {0}'.format(QEvent.key()))
+        if QEvent.type() == KEY_PRESS and QEvent.key() == KEY_TAB:
+            print(QEvent)
+        return True
+
     @property
     def login(self):
         return self._login
@@ -162,75 +171,105 @@ class PLM(QApplication):
 
     @pyqtSlot(str, str, str, name='setSetting')
     def setSetting(self, key=None, value=None, grp=None):
-        # self.logger.report("receive setting: configKey: {0}, to value: {1}, in group {2}".format(key, value, grp))
-        self.settings.initSetValue(key, value, grp)
+        self.setSetting_old, repeat = self.checkSignalRepeat(self.setSetting_old, [key, value, grp])
+        if not repeat:
+            self.settings.initSetValue(key, value, grp)
+        else:
+            # print('{3}: block signal setSetting: {0}, {1}, {2}'.format(key, value, grp, self.key))
+            return
 
     @pyqtSlot(str, name="executing")
     def executing(self, cmd):
         # self.logger.report("receive signal executing: {0}".format(cmd))
+        # print(self.executing_old)
+        self.executing_old, repeat = self.checkSignalRepeat(self.executing_old, [cmd])
+        # print(self.executing_old, repeat)
 
-        if cmd in self.registryLayout.keys():
-            self.signals.showLayout.emit(cmd, 'show')
-        elif os.path.isdir(cmd):
-            os.startfile(cmd)
-        elif cmd in self.configManager.appInfo.keys():
-            os.system(self.appInfo[cmd])
-        elif cmd == 'Debug':
-            from ui.Debugger import Debugger
-            debugger = Debugger()
-            return debugger
-        elif cmd == 'open_cmd':
-            os.system('start /wait cmd')
-        elif cmd == 'CleanPyc':
-            clean_file_ext('.pyc')
-        elif cmd == 'ReConfig':
-            self.configManager = ConfigManager(__envKey__, ROOT)
-        elif cmd == 'Exit':
-            self.exitEvent()
+        if repeat:
+            limit = 10
+            if not self.threadManager.counter.printCounter:
+                self.threadManager.setPrintCounter(True)
+
+            if self.threadManager.counter._countLimited != limit:
+                self.threadManager.setCountLimited(limit)
+
+            if not self.threadManager.isCounting():
+                self.threadManager.startCounting()
+
+            # print('block signal executing.')
+            return self.countDownReset(self.executing_old, limit)
         else:
-            if not cmd in self.toBuildCommand:
-                self.logger.report("This command is not regiested yet: {0}".format(cmd))
-                self.toBuildCommand.append(cmd)
+            if cmd in self.registryLayout.keys():
+                return self.signals.emit('showLayout', cmd, 'show')
+            elif os.path.isdir(cmd):
+                return os.startfile(cmd)
+            elif cmd in self.configManager.appInfo.keys():
+                return os.system(self.appInfo[cmd])
+            elif cmd == 'Debug':
+                return self.mainUI.botTabUI.botTab2.test()
+            elif cmd == 'open_cmd':
+                return os.system('start /wait cmd')
+            elif cmd == 'CleanPyc':
+                return clean_file_ext('.pyc')
+            elif cmd == 'ReConfig':
+                self.configManager = ConfigManager(__envKey__, ROOT)
+                return self.configManager
+            elif cmd == 'Exit':
+                return self.exitEvent()
             else:
-                self.logger.info("This command will be built later.".format(cmd))
+                if not cmd in self.toBuildCommand:
+                    self.logger.report("This command is not regiested yet: {0}".format(cmd))
+                    return self.toBuildCommand.append(cmd)
+                else:
+                    return self.logger.info("This command will be built later.".format(cmd))
+
+    def countDownReset(self, lst_old, limit):
+        self.count += 1
+        if self.count == limit:
+            lst_old = []
+
+        return lst_old
 
     @pyqtSlot(str, str, name="showLayout")
     def showLayout(self, layoutID, mode):
 
-        self.new.append(layoutID)
-        self.new.append(mode)
-
-        if self.old == []:
-            repeat = True
-        else:
-            if len(self.new) == len(self.old):
-                for i in range(len(self.new)):
-                    if self.new[i] == self.old[i]:
-                       repeat = True
-                       continue
-                    else:
-                        repeat = False
-                        break
-            else:
-                repeat = False
-                self.old = self.new
-
-        self.new = []
+        self.showLayout_old, repeat = self.checkSignalRepeat(self.showLayout_old, [layoutID, mode])
 
         if layoutID in self.registryLayout.keys():
             layout = self.registryLayout[layoutID]
-            state = self.settings.initValue('state', layout.key)
-            print(state)
-            if repeat:
+            if layout.windowState() & StateNormal:
+                state = 'showNormal'
+            elif layout.windowState() & StateMax:
+                state = 'showMaximized'
+            elif layout.windowState() & StateMin:
+                state = 'showMinimized'
+            else:
+                state = layout.getValue('showLayout')
+
+
+            if not repeat:
                 if mode == state:
-                    return # print('block signal repeat')
+                    # print('block signal repeat')
+                    repeat = True
                 else:
                     if mode == 'show':
                         if state in ['show', 'showNormal', 'showRestore']:
-                            return # print('block signal repeat')
+                            # print('block signal repeat')
+                            repeat = True
                     elif mode == 'hide':
                         if state in ['hide', 'showMinimized']:
-                            return # print('block signal repeat')
+                            # print('block signal repeat')
+                            repeat = True
+            else:
+                repeat = True
+
+        if not repeat:
+            print('recieve signal showLayout from {0}: {1}'.format(layoutID, mode))
+            print(self.showLayout_old)
+            pass
+        else:
+            # print('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
+            return
 
         if mode in ['SignIn', 'SignOut', 'SignUp', 'SwitchAccount']:
             if layoutID == mode:
@@ -243,40 +282,59 @@ class PLM(QApplication):
                 else:
                     return self.switchAccountEvent()
 
-        if not layoutID in self.ignoreIDs:
-            if mode == "hide":
-                self.registryLayout[layoutID].hide()
-            elif mode == "show":
-                self.registryLayout[layoutID].show()
-            elif mode == 'showRestore':
-                self.registryLayout[layoutID].showNormal()
-            elif mode == 'showMin':
-                self.registryLayout[layoutID].showMinimized()
-            elif mode == 'showMax':
-                self.registryLayout[layoutID].showMaximized()
-            elif mode == 'quit' or mode == 'exit':
-                self.exitEvent()
+        if layoutID in self.registryLayout.keys():
+            if layoutID in self.ignoreIDs:
+                if not layoutID in self.toBuildLayouts:
+                    self.logger.report("Layout: '{0}' is not registerred yet.".format(layoutID))
+                    return self.toBuildLayouts.append(layoutID)
             else:
-                self.logger.report("LayouKeyError: {0}".format(layoutID) )
+                layout = self.registryLayout[layoutID]
 
-            return self.setSetting('state', mode, layoutID)
+                if mode == "hide":
+                    if not layout.isHidden():
+                        layout.hide()
+                        self.setSetting('showLayout', 'hide', layout.key)
+                        self.mainUI.signals.states[layout.key] = mode
+                elif mode == "show":
+                    if layout.isHidden():
+                        layout.show()
+                        self.setSetting('showLayout', 'show', layout.key)
+                        self.mainUI.signals.states[layout.key] = mode
+                elif mode == 'showRestore' or mode == 'showNormal':
+                    if not layout.windowState() & StateNormal:
+                        layout.showNormal()
+                        self.setSetting('showLayout', 'show', layout.key)
+                        self.mainUI.signals.states[layout.key] = mode
+                elif mode == 'showMinimized' or mode == 'showMin':
+                    if not layout.isMinimized():
+                        layout.showMinimized()
+                        self.setSetting('showLayout', 'showMinimized', layout.key)
+                        self.mainUI.signals.states[layout.key] = mode
+                elif mode == 'showMaximized' or mode == 'showMax':
+                    if not layout.isMaximized():
+                        layout.showMaximized()
+                        self.setSetting('showLayout', 'showMaximized', layout.key)
+                        self.mainUI.signals.states[layout.key] = mode
+                elif mode == 'switch':
+                    if layout.isHidden():
+                        layout.show()
+                        self.setSetting('showLayout', 'show', layout.key)
+                        self.mainUI.signals.states[layout.key] = mode
+                    else:
+                        layout.hide()
+                        self.setSetting('showLayout', 'hide', layout.key)
+                        self.mainUI.signals.states[layout.key] = mode
+                elif mode == 'quit' or mode == 'exit':
+                    self.exitEvent()
+                else:
+                    self.logger.report('LayoutModeError: {0} does not have mode: {1}'.format(layoutID, mode))
         else:
-            if not layoutID in self.toBuildLayouts:
-                self.logger.report("Layout: '{0}' is not registerred yet.".format(layoutID))
-                return self.toBuildLayouts.append(layoutID)
+            self.logger.report("LayouKeyError: {0}".format(layoutID))
 
     @pyqtSlot(str, str, str, int, name='sysNotify')
     def sysNotify(self, title, mess, iconType, timeDelay):
         # self.logger.report('Receive signal sysNotify: {0} {1} {2} {3}'.format(title, mess, iconType, timeDelay))
         return self.layoutManager.sysTray.sysNotify(title, mess, iconType, timeDelay)
-
-    def set_styleSheet(self, style):
-
-        stylesheet = dict(dark      =StyleSheets('dark').changeStylesheet,
-                          bright    =StyleSheets('bright').changeStylesheet, )
-
-        self.setStyleSheet(stylesheet[style])
-        self.settings.initSetValue('styleSheet', 'dark')
 
     @pyqtSlot(bool, name='loginChanged')
     def loginChanged(self, val):
@@ -287,13 +345,28 @@ class PLM(QApplication):
 
         if not self._login:
             self.mainUI.hide()
+            self.setSetting('showLayout', 'hide', self.mainUI.key)
+            self.mainUI.signals.states[self.mainUI.key] = 'hide'
         else:
             self.mainUI.show()
+            self.setSetting('showLayout', 'show', self.mainUI.key)
+            self.mainUI.signals.states[self.mainUI.key] = 'show'
             for layout in [self.signIn, self.signUp, self.forgotPassword]:
                 if not layout.isHidden():
                     layout.hide()
+                    self.setSetting('showLayout', 'hide', layout.key)
+                    self.mainUI.signals.states[layout.key] = 'hide'
 
         return self._login
+
+    @pyqtSlot(str, name='setStylesheet')
+    def set_styleSheet(self, style):
+
+        stylesheet = dict(dark      = StyleSheets('dark').changeStylesheet,
+                          bright    = StyleSheets('bright').changeStylesheet, )
+
+        self.setStyleSheet(stylesheet[style])
+        self.settings.initSetValue('styleSheet', 'dark', self.key)
 
     def signInEvent(self):
         self.switchAccountEvent()
@@ -313,8 +386,24 @@ class PLM(QApplication):
     def switchAccountEvent(self):
         self.signOutEvent()
 
+    def checkSignalRepeat(self, old, data):
+        new = [i for i in data]
+        if len(new) == 0:
+            repeat = False
+        elif len(new) == len(old):
+            repeat = True
+            for i in range(len(new)):
+                if not new[i] == old[i]:
+                    repeat = False
+                    break
+        else:
+            repeat = False
+
+        old = new
+        return old, repeat
+
     def exitEvent(self):
-        # print(self.toBuildLayouts, self.toBuildCommand)
+        print(self.toBuildLayouts, self.toBuildCommand)
         self.exit()
 
 if __name__ == '__main__':

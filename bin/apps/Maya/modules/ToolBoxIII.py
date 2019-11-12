@@ -522,7 +522,7 @@ class toolBoxIII(QtWidgets.QWidget):
         for lightType in self.mayaLights:
             icon = QIcon(typeMgr.getIcon(lightType))
             cmd = partial(self.createNewLight, lightType)
-            toolTip = 'Create a new ' + lightType
+            toolTip = 'Create a showLayout_new ' + lightType
             # mayaLightAction = self.createAction( lightType, icon, cmd, toolTip)
             # self.mayaLightTB.addAction(mayaLightAction)
             button = self.iconButton(cmd, icon, toolTip)
@@ -537,7 +537,7 @@ class toolBoxIII(QtWidgets.QWidget):
             for lightType in self.vrayLights:
                 icon = QIcon(typeMgr.getIcon(lightType))
                 cmd = partial(self.createNewLight, lightType)
-                toolTip = 'Create a new ' + lightType
+                toolTip = 'Create a showLayout_new ' + lightType
                 # vrayLightAction = self.createAction( lightType,  icon, cmd, toolTip )
                 # self.vrayLightTB.addAction( vrayLightAction )
                 button = self.iconButton(cmd, icon, toolTip)
@@ -552,7 +552,7 @@ class toolBoxIII(QtWidgets.QWidget):
             for lightType in self.renderManLights:
                 icon = QIcon(typeMgr.getIcon(lightType))
                 cmd = partial(self.createNewLight, lightType)
-                toolTip = 'Create a new ' + lightType
+                toolTip = 'Create a showLayout_new ' + lightType
                 # renderManLightAction = self.createAction( lightType,  icon, cmd, toolTip )
                 # mayaLightTB.addAction( renderManLightAction )
                 button = self.iconButton(cmd, icon, toolTip)
@@ -567,7 +567,7 @@ class toolBoxIII(QtWidgets.QWidget):
             for lightType in self.arnoldLights:
                 icon = QIcon(typeMgr.getIcon(lightType))
                 cmd = partial(self.createNewLight, lightType)
-                toolTip = 'Create a new ' + lightType
+                toolTip = 'Create a showLayout_new ' + lightType
                 # arnoldLightAction = self.createAction( lightType, icon, cmd, toolTip )
                 # mayaLightTB.addAction( arnoldLightAction )
                 button = self.iconButton(cmd, icon, toolTip)

@@ -841,7 +841,7 @@ def _loadUi(uifile, baseinstance=None):
             """Create the user interface in a base instance.
 
             Unlike `Qt._QtUiTools.QUiLoader` itself this class does not
-            create a new instance of the top-level widget, but creates the user
+            create a showLayout_new instance of the top-level widget, but creates the user
             interface in an existing instance of the top-level class if needed.
 
             This mimics the behaviour of `PyQt5.uic.loadUi`.
@@ -884,7 +884,7 @@ def _loadUi(uifile, baseinstance=None):
                 # For some reason, Line is not in the list of available
                 # widgets, but works fine, so we have to special case it here.
                 if class_name in self.availableWidgets() + ["Line"]:
-                    # Create a new widget for child widgets
+                    # Create a showLayout_new widget for child widgets
                     widget = Qt._QtUiTools.QUiLoader.createWidget(self,
                                                                   class_name,
                                                                   parent,
@@ -895,7 +895,7 @@ def _loadUi(uifile, baseinstance=None):
                                     % class_name)
 
                 if self.baseinstance:
-                    # Set an attribute for the new child widget on the base
+                    # Set an attribute for the showLayout_new child widget on the base
                     # instance, just like PyQt5.uic.loadUi does.
                     setattr(self.baseinstance, name, widget)
 
@@ -1237,10 +1237,10 @@ def _reassign_misplaced_members(binding):
                 _log(msg.format(m=dst_module, c=dst_member))
                 continue
             # If the dst is valid but the Qt _parent module does not exist
-            # then go ahead and create a new module to contain the member.
+            # then go ahead and create a showLayout_new module to contain the member.
             setattr(Qt, dst_module, _new_module(dst_module))
             src_object = getattr(Qt, dst_module)
-            # Enable direct import of the new module
+            # Enable direct import of the showLayout_new module
             sys.modules[__name__ + "." + dst_module] = src_object
 
         if not dst_value:

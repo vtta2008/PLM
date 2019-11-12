@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from ui.uikits.Menu import Menu
+from ui.uikits.Menu                 import Menu
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -23,8 +23,8 @@ class SysTrayIconMenu(Menu):
         super(SysTrayIconMenu, self).__init__(parent)
 
         self.actionManager          = actionManager
-        self.actions                 = self.actionManager.sysTrayMenuActions(self.parent)
-        print(self.actions)
+        self.actions                = self.actionManager.sysTrayMenuActions(self.parent)
+        # print(self.actions)
 
     def loginChanged(self, val):
         self._login = val

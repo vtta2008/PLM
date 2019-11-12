@@ -16,14 +16,14 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtWidgets        import QApplication
+from PyQt5.QtWidgets                        import QApplication
 
 # Plt
-from ui.uikits.Widget                         import Widget
-from ui.uikits.Icon import AppIcon
-from ui.uikits.CheckBox import CheckBox
-from ui.uikits.Button import Button
-from ui.uikits.GridLayout import GridLayout
+from ui.uikits.Widget                       import Widget
+from ui.uikits.Icon                         import AppIcon
+from ui.uikits.CheckBox                     import CheckBox
+from ui.uikits.Button                       import Button
+from ui.uikits.GridLayout                   import GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """

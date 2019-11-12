@@ -19,61 +19,14 @@ from PyQt5.QtCore                       import pyqtSlot
 from PyQt5.QtWidgets                    import QApplication
 
 # PLM
-from appData                            import __plmSlogan__, __appname__, STRONG_FOCUS, STAY_ON_TOP, FRAMELESSWINDOW
+from appData                            import __plmSlogan__, __appname__
 from ui.uikits.Icon                     import LogoIcon
 from ui.Header.Menus.SysTrayIconMenu    import SysTrayIconMenu
-from ui.uikits.Button                   import Button
-from ui.uikits.Widget                   import Widget
-from ui.uikits.BoxLayout                import VBoxLayout
-from ui.uikits.GroupBox                 import GroupGrid
 from ui.uikits.SystemTrayIcon           import SystemTrayIcon
 from utils                              import QuerryDB
 
 
 # -------------------------------------------------------------------------------------------------------------
-
-class TrayMenu(Widget):
-
-    key = 'CustomMenu'
-
-    def __init__(self, parent=None):
-        super(TrayMenu, self).__init__(parent)
-
-        self.setFocusPolicy(STRONG_FOCUS)
-        self.setWindowFlags(STAY_ON_TOP|FRAMELESSWINDOW)
-
-        self.layout = VBoxLayout()
-
-        pos = self.geometry().topRight()
-        x, y = pos.x() - self.width() / 2, pos.y() - self.height()
-        self.move(x, y)
-
-        self.setMouseTracking(True)
-
-        self.buildUI()
-
-        self.setLayout(self.layout)
-
-    def buildUI(self):
-        self.button = Button({'txt': 'CustomMenu', 'cl': self.button_clicked})
-        group, grid = GroupGrid('Custom Menu')
-        grid.addWidget(self.button, 0, 0)
-        self.layout.addWidget(group)
-
-    def button_clicked(self):
-        print('button clicked')
-
-    def mouseMoveEvent(self, Event):
-        self.settings.initSetValue('posX', Event.x(), 'MouseCusor')
-        self.settings.initSetValue('posY', Event.y(), 'MouseCusor')
-        print(Event.x(), Event.y())
-
-    def focusInEvent(self, Event):
-        self.isActiveWindow()
-
-    def focusOutEvent(self, Event):
-        self.hide()
-
 class SysTray(SystemTrayIcon):
 
     key = 'SysTray'
@@ -87,8 +40,6 @@ class SysTray(SystemTrayIcon):
         self.settings           = settings
         self.actionManager      = actionManager
         self.eventManager       = eventManager
-        self.trayMenu           = TrayMenu(self)
-        self.signals.emit('regisLayout', self.trayMenu)
 
         try:
             self.username, token, cookie, remember = self.db.query_table('curUser')
@@ -107,15 +58,8 @@ class SysTray(SystemTrayIcon):
 
     def sys_tray_icon_activated(self, reason):
         if reason == self.DoubleClick:
-            # print('login: {}'.format(self._login))
             if self._login:
                 self.signals.emit('showLayout', 'PipelineManager', 'showRestore')
-        elif reason == self.MiddleClick:
-            self.customMenu()
-
-    def customMenu(self):
-        self.trayMenu.show()
-        self.trayMenu.setFocus()
 
     def log_in(self):
         self.showMessage('Welcome', "Log in as {0}".format(self.username), self.Information, 500)

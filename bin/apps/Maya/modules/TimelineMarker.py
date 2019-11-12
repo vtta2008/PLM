@@ -78,7 +78,7 @@ class TimelineMarkers(QWidget):
             layout.setContentsMargins(0, 0, 0, 0)
             timeline.setLayout(layout)
 
-        # Find / Remove old Marker Widget
+        # Find / Remove showLayout_old Marker Widget
         for child in timeline.children():
             if child.objectName() == "timelineMarkers":
                 # Remove Menu
@@ -248,7 +248,7 @@ class TimelineMarkers(QWidget):
 
     def addCallbacks(self):
         """
-        Add Callbacks that will clear all marker information on the timeline every time a new file is created
+        Add Callbacks that will clear all marker information on the timeline every time a showLayout_new file is created
         or a file is opened.
         """
         self.newID = OpenMaya.MSceneMessage.addCallback(OpenMaya.MSceneMessage.kAfterNew, self.initialize)

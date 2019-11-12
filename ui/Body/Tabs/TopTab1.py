@@ -13,7 +13,6 @@ Description:
 
 # Python
 import sys
-from functools              import partial
 
 # PyQt5
 from PyQt5.QtWidgets        import QApplication

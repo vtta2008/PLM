@@ -92,7 +92,7 @@ class TopTap3(Widget):
                 event.accept()
                 return True
             elif (event.type() == QEvent.Drop):
-                print('Drop')
+                # print('Drop')
                 self.setDropEvent(event)
                 return True
             elif (event.type() == QEvent.KeyPress):
@@ -166,7 +166,7 @@ class TopTap3(Widget):
         self.cmdField.paste()
 
     def killProcess(self):
-        print("cancelled")
+        # print("cancelled")
         self.process.kill()
         self.textWindow.appendPlainText("cancelled")
         self.cursorEnd()
@@ -175,7 +175,7 @@ class TopTap3(Widget):
         self.cmdField.setFocus()
         if event.mimeData().hasUrls():
             f = str(event.mimeData().urls()[0].toLocalFile())
-            print("is file:", f)
+            # print("is file:", f)
             if " " in f:
                 self.cmdField.insertPlainText("'{}'".format(f))
             else:
@@ -183,7 +183,7 @@ class TopTap3(Widget):
             event.accept()
         elif event.mimeData().hasText():
             ft = event.mimeData().text()
-            print("is text:", ft)
+            # print("is text:", ft)
             if " " in ft:
                 self.cmdField.insertPlainText("'{}'".format(ft))
             else:
@@ -211,7 +211,7 @@ class TopTap3(Widget):
                     pass
                 else:
                     if os.path.isdir(command_argument):
-                        print('{0} is dir'.format(command_argument))
+                        # print('{0} is dir'.format(command_argument))
                         check = True
                         for char in command_argument:
                             if not char == '.':
@@ -224,16 +224,16 @@ class TopTap3(Widget):
                             else:
                                 self.command_not_found(cmd)
                         else:
-                            print('{0} is not dir'.format(command_argument))
+                            # print('{0} is not dir'.format(command_argument))
                             pass
                     else:
                         if os.path.exists(command_argument):
-                            print('{0} is path'.format(command_argument))
+                            # print('{0} is path'.format(command_argument))
                             self._cwd = command_argument
                         else:
-                            print('{0} is path but not exists'.format(command_argument))
+                            # print('{0} is path but not exists'.format(command_argument))
                             pth = os.path.join(self._cwd, command_argument)
-                            print(pth, self._cwd)
+                            # print(pth, self._cwd)
                             if os.path.exists(pth):
                                 self._cwd = pth
                             else:
@@ -264,18 +264,18 @@ class TopTap3(Widget):
         else:
             if (QStandardPaths.findExecutable(cmd)):
                 self.commands.append(self.cmdField.toPlainText().replace(self.getUsername(), ""))
-                print("command", cmd, "found")
+                # print("command", cmd, "found")
                 t = " ".join(cli)
                 if self.process.state() != 2:
                     self.process.waitForStarted()
                     self.process.waitForFinished()
                     if "|" in t or ">" in t or "<" in t:
-                        print("special characters")
+                        # print("special characters")
                         self.process.start('sh -c "' + cmd + ' ' + t + '"')
-                        print("running", ('sh -c "' + cmd + ' ' + t + '"'))
+                        # print("running", ('sh -c "' + cmd + ' ' + t + '"'))
                     else:
                         self.process.start(cmd + " " + t)
-                        print("running", (cmd + " " + t))
+                        # print("running", (cmd + " " + t))
             else:
                 self.command_not_found(cmd)
 
@@ -301,15 +301,15 @@ class TopTap3(Widget):
         self.textWindow.appendPlainText(self.result.strip('\n'))
         self.cursorEnd()
         self.state = self.process.state()
-        print(self.state)
+        # print(self.state)
 
     def isFinished(self):
-        print("finished")
+        # print("finished")
         self.cmdField.setPlainText(self.getUsername())
         self.cursorEnd()
 
     def updateWorkingDirectory(self, pth=os.getcwd()):
-        print('Working Dir: {0}'.format(pth))
+        # print('Working Dir: {0}'.format(pth))
         fixName = os.path.basename(pth)
         fixPath = os.path.dirname(pth)
         self._cwd = os.path.join(fixPath, fixName).replace('\\', '/')

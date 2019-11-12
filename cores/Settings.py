@@ -15,32 +15,33 @@ from PyQt5.QtCore                   import pyqtSignal, pyqtSlot, QSettings
 
 class Settings(QSettings):
 
-    key = 'Settings'
-    setFormat = pyqtSignal(str)
-    setScope = pyqtSignal(str)
-    _settingEnable = False
+    key                     = 'Settings'
+    setFormat               = pyqtSignal(str)
+    setScope                = pyqtSignal(str)
+    _settingEnable          = False
+    _data                   = dict()
 
     def __init__(self, filename, fm=QSettings.IniFormat, parent=None):
         super(Settings, self).__init__(filename, fm, parent)
 
-        self._parent = parent
-        self._filename = filename
-        self.grpLst = self.childGroups()
+        self.parent = parent
 
-    @property
-    def groups(self):
-        return self.grpLst
-
-    def checkGrp(self, grp):
-        if grp is None:
-            return 'General'
+        try:
+            self.parent.children()
+        except AttributeError:
+            pass
         else:
-            if not grp in self.grpLst:
-                self.addGrp(grp)
-            return grp
+            self.setParent(self.parent)
+        finally:
+            self.key = '{0}_{1}'.format(self.parent.key, self.key)
+
+        self._filename = filename
+        self._groups = self.childGroups()
+        self.clean_long_keys()
 
     def initSetValue(self, key=None, value=None, grp=None):
         if self._settingEnable:
+
             grpChecked = self.checkGrp(grp)
             self.beginGroup(grpChecked)
 
@@ -49,37 +50,54 @@ class Settings(QSettings):
             else:
                 oldValue = self.value(key)
                 if not value == oldValue:
-                    # print('set setting: {0} {1} {2}'.format(grp, key, value))
+                    # print('{0}: set {1} - {2} - {3}.'.format(self.key, key, value, grp))
                     self.setValue(key, value)
+                    self.clean_long_keys()
             while self.group():
                 self.endGroup()
-            # self.logger.info("setting configKey: {0}, value: {1}, group: {2}".format(configKey, value, grp))
 
     def initValue(self, key=None, grp=None):
         if self._settingEnable:
+
             grpChecked = self.checkGrp(grp)
-
-            # self.logger.info("Loading setting: {0}".format(configKey))
-
             self.beginGroup(grpChecked)
+
             if key is None or key == "":
                 KeyError(key)
             else:
-                return self.value(key)
+                # print('{0}: get value from key: {1}, value: {2}, at group: {3}.'.format(self.key, key, value, grp))
+                value = self.value(key)
+                self.clean_long_keys()
+                return value
+
             while self.group():
                 self.endGroup()
 
     def addGrp(self, grpName):
-        self.grpLst.append(grpName)
+        self._groups.append(grpName)
         return True
+
+    def checkGrp(self, grp):
+        if grp is None:
+            return 'General'
+        else:
+            if not grp in self._groups:
+                self.addGrp(grp)
+            return grp
+
+    def clean_long_keys(self):
+        for key in self.allKeys():
+            lst = key.split('/')
+            if len(lst) >= 2:
+                self.remove(key)
 
     def delete_file(self):
         return os.remove(self.fileName())
 
     @pyqtSlot(str)
     def removeGrp(self, grpName):
-        if grpName in self.grpLst:
-            self.grpLst.remove(grpName)
+        if grpName in self._groups:
+            self._groups.remove(grpName)
             return True
         else:
             return False
@@ -109,6 +127,14 @@ class Settings(QSettings):
     @settingEnable.setter
     def settingEnable(self, val):
         self._settingEnable = val
+
+    @property
+    def groups(self):
+        return self._groups
+
+    @groups.setter
+    def groups(self, lst):
+        self._groups = lst
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 12/07/2018 - 10:45 AM

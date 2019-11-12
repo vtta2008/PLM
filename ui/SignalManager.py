@@ -47,22 +47,37 @@ class SignalManager(DAMG):
     loginChangedOld                 = DAMGLIST()
 
     signals                         = DAMGDICT()
+    states                          = DAMGDICT()
+
+    print_emittable                 = False
+    print_emit                      = False
+    print_block                     = False
+    print_checkRepeat               = False
 
     def __init__(self, parent=None):
         super(SignalManager, self).__init__(parent)
 
         self.parent                 = parent
-        self.logger                 = Loggers(self.parent.key)
-        self.key                    = '{0}_{1}'.format(self.parent.key, self.key)
 
-        self.signals.add('showLayout'   , [self.showLayout, self.showLayoutOld])
-        self.signals.add('executing'    , [self.executing, self.executingOld])
-        self.signals.add('regisLayout'  , [self.regisLayout,self.regisLayoutOld])
-        self.signals.add('openBrowser'  , [self.openBrowser, self.openBrowserOld])
-        self.signals.add('setSetting'   , [self.setSetting, self.setSettingOld])
-        self.signals.add('sysNotify'    , [self.sysNotify, self.sysNotifyOld])
-        self.signals.add('updateAvatar' , [self.updateAvatar, self.updateAvatarOld])
-        self.signals.add('loginChanged' , [self.loginChanged, self.loginChangedOld])
+        try:
+            self.parent.children()
+        except AttributeError:
+            pass
+        else:
+            self.setParent(self.parent)
+        finally:
+            self.key = '{0}_{1}'.format(self.parent.key, self.key)
+
+        self.logger                 = Loggers(self.parent.key)
+
+
+        keys    = ['showLayout'      , 'executing'      , 'regisLayout'     , 'openBrowser'       , 'setSetting'      , 'sysNotify'      , 'updateAvatar'      , 'loginChanged'         ]
+        signals = [self.showLayout   , self.executing   , self.regisLayout  , self.openBrowser    , self.setSetting   , self.sysNotify   , self.updateAvatar   , self.loginChanged      ]
+        olds    = [self.showLayoutOld, self.executingOld, self.regisLayoutOld, self.openBrowserOld, self.setSettingOld, self.sysNotifyOld, self.updateAvatarOld, self.loginChangedOld   ]
+
+        for i in range(len(keys)):
+            key, signal, old = [keys[i], signals[i], olds[i]]
+            self.signals.add(key, [signal, old])
 
         self.objects        = ['PLMCORE', 'PLM', 'IconPth', 'ActionManager']
 
@@ -81,21 +96,21 @@ class SignalManager(DAMG):
 
     def globalSetting(self):
         # if self.parent.key not in self.objects:
-        if self.parent.key not in self.notContenMargin:
-            try:
-                self.parent.setContentMargin(1,1,1,1)
-            except AttributeError:
-                pass
-        elif self.parent.key not in self.notSizePolicy:
-            try:
-                self.parent.setSizePolicy(SiPoExp, SiPoExp)
-            except AttributeError:
-                pass
-        elif self.parent.key not in self.notSpacing:
-            try:
-                self.parent.setSpacing(2)
-            except AttributeError:
-                pass
+        # if self.parent.key not in self.notContenMargin:
+        try:
+            self.parent.setContentMargin(1,1,1,1)
+        except AttributeError:
+            pass
+        # elif self.parent.key not in self.notSizePolicy:
+        try:
+            self.parent.setSizePolicy(SiPoExp, SiPoExp)
+        except AttributeError:
+            pass
+        # elif self.parent.key not in self.notSpacing:
+        try:
+            self.parent.setSpacing(2)
+        except AttributeError:
+            pass
 
         if self.parent.key == 'PipelineManager':
             self.parent.setFixedWidth(500)
@@ -108,30 +123,89 @@ class SignalManager(DAMG):
 
     def emit(self, signal, op1=None, op2=None, op3=None, op4=None):
 
+        # data = [op1, op2, op3, op4]
+
         if self._emittable:
             sig = self.getSignal(signal)
-            # print('Signal {0} emitted: {1}: {2} {3} {4} from {5}'.format(self.parent.key, op1, op2, op3, op4, __name__))
 
             if signal == 'showLayout':
-                return sig.emit(op1, op2)
+                self.showLayoutOld, repeat      = self.checkSignalRepeat(self.showLayoutOld, [op1, op2])
+                if repeat:
+                    print(self.key, self.states)
+                    if self.states[op1] == op2:
+                        if self.print_block:
+                            print('{2}: block signal {0}: {1}'.format(signal, self.showLayoutOld, self.key))
+                        return
+                    else:
+                        self.states.add(op1, op2)
+                        sig.emit(op1, op2)
+                else:
+                    print(self.key, self.states)
+                    self.states.add(op1, op2)
+                    sig.emit(op1, op2)
             elif signal == 'executing':
-                return sig.emit(op1)
+                self.executingOld, repeat       = self.checkSignalRepeat(self.executingOld, [op1])
+                if repeat:
+                    if self.print_block:
+                        print('{2}: block signal {0}: {1}'.format(signal, self.executingOld, self.key))
+                    return
+                else:
+                    sig.emit(op1)
             elif signal == 'regisLayout':
-                return sig.emit(op1)
+                self.regisLayoutOld, repeat     = self.checkSignalRepeat(self.regisLayoutOld, [op1])
+                if repeat:
+                    if self.print_block:
+                        print('{2}: block signal {0}: {1}'.format(signal, self.regisLayoutOld, self.key))
+                    return
+                else:
+                    sig.emit(op1)
             elif signal == 'openBrowser':
-                return sig.emit(op1)
+                self.openBrowserOld, repeat     = self.checkSignalRepeat(self.openBrowserOld, [op1])
+                if repeat:
+                    if self.print_block:
+                        print('{2}: block signal {0}: {1}'.format(signal, self.openBrowserOld, self.key))
+                    return
+                else:
+                    sig.emit(op1)
             elif signal == 'setSetting':
-                return sig.emit(op1, op2, op3)
+                self.setSettingOld, repeat      = self.checkSignalRepeat(self.setSettingOld, [op1, op2, op3])
+                if repeat:
+                    if self.print_block:
+                        print('{2}: block signal {0}: {1}'.format(signal, self.setSettingOld, self.key))
+                    return
+                else:
+                    sig.emit(op1, op2, op3)
             elif signal == 'sysNotify':
-                return sig.emit(op1, op2, op3, op4)
+                self.sysNotifyOld, repeat       = self.checkSignalRepeat(self.sysNotifyOld, [op1, op2, op3, op4])
+                if repeat:
+                    if self.print_block:
+                        print('{2}: block signal {0}: {1}'.format(signal, self.sysNotifyOld, self.key))
+                    return
+                else:
+                    sig.emit(op1, op2, op3, op4)
             elif signal == 'updateAvatar':
-                return sig.emit(op1)
+                self.updateAvatarOld, repeat    = self.checkSignalRepeat(self.updateAvatarOld, [op1])
+                if repeat:
+                    if self.print_block:
+                        print('{2}: block signal {0}: {1}'.format(signal, self.updateAvatarOld, self.key))
+                    return
+                else:
+                    sig.emit(op1)
             elif signal == 'loginChanged':
-                return sig.emit(op1)
-
-            print('{0} emmited'.format(self.parent))
+                self.loginChangedOld, repeat    = self.checkSignalRepeat(self.loginChangedOld, [op1])
+                if repeat:
+                    if self.print_block:
+                        print('{2}: block signal {0}: {1}'.format(signal, self.loginChangedOld, self.key))
+                    return
+                else:
+                    sig.emit(op1)
+            if self.print_emit:
+                print('{0} signal {1} emmited'.format(self.parent.key, signal))
+            return
         else:
-            return # print('UnEmittableError: {0} is connected to nowhere.'.format(self.key))
+            if self.print_emittable:
+                print('UnEmittableError: {0} is connected to nowhere.'.format(self.key))
+            return
 
     def getSignal(self, signal):
         # print('{0} : {1}'.format(self.parent.key, signal))
@@ -142,46 +216,26 @@ class SignalManager(DAMG):
         self._emittable = True
         return sig.connect(target)
 
-    def check_repeat_signal(self, signal, op1, op2, op3, op4):
+    def checkSignalRepeat(self, old, data):
+        new = [i for i in data]
 
-        new = DAMGLIST()
-        old = self.signals[signal][1]
+        if self.print_checkRepeat:
+            print(new, old)
 
-        if signal == 'showLayout':
-            new.appendList([op1, op2])
-        elif signal == 'executing':
-            new.append(op1)
-        elif signal == 'regisLayout':
-            new.append(op1)
-        elif signal == 'openBrowser':
-            new.append(op1)
-        elif signal == 'setSetting':
-            new.appendList([op1, op2, op3])
-        elif signal == 'sysNotify':
-            new.appendList([op1, op2, op3, op4])
-        elif signal == 'updateAvatar':
-            new.append(op1)
-        elif signal == 'loginChanged':
-            new.append(op1)
-
-        repeat = True
-        if len(new) == len(old):
+        if len(new) == 0:
+            repeat = False
+        elif len(new) == len(old):
+            repeat = True
             for i in range(len(new)):
-                if new[i] == old[i]:
-                    continue
-                else:
+                if not new[i] == old[i]:
                     repeat = False
                     break
         else:
             repeat = False
 
-        if not repeat:
-            self.signals[signal][1] = new
-        else:
-            return ('signal repeat')
-
-        self.signals.update()
-        return repeat
+        old = DAMGLIST()
+        old.appendList(new)
+        return old, repeat
 
     @property
     def emitable(self):

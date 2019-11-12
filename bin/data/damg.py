@@ -178,6 +178,7 @@ class BaseDict(dict):
 
     def add(self, key, value):
         self[key] = value
+        self.update()
 
     def input(self, data={}):
         if data == {}:
@@ -185,6 +186,7 @@ class BaseDict(dict):
         else:
             for k, v in data.items():
                 self.add(k, v)
+        self.update()
 
     @property
     def copyright(self):

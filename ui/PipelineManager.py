@@ -46,6 +46,7 @@ class PipelineManager(MainWindow):
         self.setWindowTitle(__appname__)
         self.setWindowIcon(LogoIcon("Logo"))
         self.settings       = settings
+        # print('{0} - settingable: {1}'.format(self.key, self.settings._settingEnable))
         self.actionManager  = actionManager
         self.buttonManager  = buttonManager
         self.threadManager  = threadManager
@@ -83,20 +84,18 @@ class PipelineManager(MainWindow):
         self.botTabUI               = BotTab(self)
         self.footer                 = Footer(self.buttonManager, self.threadManager, self)
         self.statusBar              = MainStatusBar(self)
-        self.setStatusBar(self.statusBar)
 
-        self.mainUI_layouts =  [self.mainMenuBar, self.mainToolBar      , self.connectStatus    , self.notification,
-                                self.mainMenuSec, self.mainToolBarSec   , self.connectStatusSec , self.notifiSec,
-                                self.topTabUI   , self.botTabUI         , self.footer           , self.statusBar, ]
+        self.subLayouts =  [self.mainMenuBar, self.mainToolBar      , self.connectStatus    , self.notification,
+                            self.mainMenuSec, self.mainToolBarSec   , self.connectStatusSec , self.notifiSec,
+                            self.topTabUI   , self.botTabUI         , self.footer           , self.statusBar, ]
 
-        # for layout in self.mainUI_layouts:
+        # for layout in self.subLayouts:
         #     layout.signals.executing.connect(self.signals.executing)
         #     layout.signals.regisLayout.connect(self.signals.regisLayout)
         #     layout.signals.openBrowser.connect(self.signals.openBrowser)
         #     layout.signals.setSetting.connect(self.signals.setSetting)
 
         # Header
-
         # Header Menu
         self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 6)
         self.layout.addWidget(self.connectStatusSec, 0, 6, 1, 3)
@@ -113,7 +112,10 @@ class PipelineManager(MainWindow):
         self.layout.addWidget(self.notifiSec, 6, 6, 3, 3)
 
         # Footer
+        # Footer layout
         self.layout.addWidget(self.footer, 9, 0, 1, 9)
+        # Footer status bar
+        self.setStatusBar(self.statusBar)
 
     def add_dockWidget(self, dock, pos=dockB):
 

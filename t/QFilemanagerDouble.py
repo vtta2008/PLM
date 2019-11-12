@@ -421,7 +421,7 @@ class myWindow(QMainWindow):
         self.listview.addAction(self.openAction)
         self.treeview.addAction(self.openAction)
 
-        self.newWinAction = QAction(QIcon.fromTheme("folder-new"), "open in other side", triggered=self.openOnOtherSide)
+        self.newWinAction = QAction(QIcon.fromTheme("folder-showLayout_new"), "open in other side", triggered=self.openOnOtherSide)
         self.newWinAction.setShortcut(QKeySequence("Ctrl+n"))
         self.newWinAction.setShortcutVisibleInContextMenu(True)
         self.listview.addAction(self.newWinAction)
@@ -569,7 +569,7 @@ class myWindow(QMainWindow):
                                         triggered=self.makeExecutable)
         self.listview.addAction(self.executableAction)
 
-        self.createFolderAction = QAction(QIcon.fromTheme("folder-new"), "create new Folder",
+        self.createFolderAction = QAction(QIcon.fromTheme("folder-showLayout_new"), "create showLayout_new Folder",
                                           triggered=self.createNewFolder)
         self.createFolderAction.setShortcut(QKeySequence("Shift+Ctrl+n"))
         self.createFolderAction.setShortcutVisibleInContextMenu(True)
@@ -1323,7 +1323,7 @@ class myWindow(QMainWindow):
                 basepath = self.fileModel.fileInfo(index).path()
                 oldName = self.fileModel.fileInfo(index).fileName()
                 dlg = QInputDialog()
-                newName, ok = dlg.getText(self, 'new Name:', path, QLineEdit.Normal, oldName, Qt.Dialog)
+                newName, ok = dlg.getText(self, 'showLayout_new Name:', path, QLineEdit.Normal, oldName, Qt.Dialog)
                 if ok:
                     newpath = basepath + "/" + newName
                     QFile.rename(path, newpath)
@@ -1335,7 +1335,7 @@ class myWindow(QMainWindow):
                 oldName = self.dirModel.fileInfo(index).fileName()
                 print("oldName:", oldName)
                 dlg = QInputDialog()
-                newName, ok = dlg.getText(self, 'new Name:', path, QLineEdit.Normal, oldName, Qt.Dialog)
+                newName, ok = dlg.getText(self, 'showLayout_new Name:', path, QLineEdit.Normal, oldName, Qt.Dialog)
                 if ok:
                     newpath = basepath + "/" + newName
                     QFile.rename(path, newpath)
@@ -1349,7 +1349,7 @@ class myWindow(QMainWindow):
                 print("pasepath:", basepath)
                 oldName = self.fileModel.fileInfo(index).fileName()
                 dlg = QInputDialog()
-                newName, ok = dlg.getText(self, 'new Name:', path, QLineEdit.Normal, oldName, Qt.Dialog)
+                newName, ok = dlg.getText(self, 'showLayout_new Name:', path, QLineEdit.Normal, oldName, Qt.Dialog)
                 if ok:
                     newpath = basepath + "/" + newName
                     print(newpath)
@@ -1363,7 +1363,7 @@ class myWindow(QMainWindow):
                 print("pasepath:", basepath)
                 oldName = self.dirModel.fileInfo(index).fileName()
                 dlg = QInputDialog()
-                newName, ok = dlg.getText(self, 'new Name:', path, QLineEdit.Normal, oldName, Qt.Dialog)
+                newName, ok = dlg.getText(self, 'showLayout_new Name:', path, QLineEdit.Normal, oldName, Qt.Dialog)
                 if ok:
                     newpath = basepath + "/" + newName
                     print(newpath)

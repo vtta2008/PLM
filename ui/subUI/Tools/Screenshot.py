@@ -6,7 +6,7 @@ Script Name: Screenshot.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
-    This script will create a new layout with image is desktop screenshot.
+    This script will create a showLayout_new layout with image is desktop screenshot.
 
 """
 # -------------------------------------------------------------------------------------------------------------

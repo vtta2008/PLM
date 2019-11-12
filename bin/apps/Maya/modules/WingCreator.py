@@ -133,9 +133,9 @@ class WingGroup():
             placementZ = LocatorA[2]
 
         newStep = (numBaseFeathers / numFeathersInGroup)  # New step size based on the original number of feathers,
-        # Divide the base number of feathers by the new amount to
+        # Divide the base number of feathers by the showLayout_new amount to
         # get the number to scale by for the function
-        input = 1  # start function input at one then incriment it by the new step on each iteration
+        input = 1  # start function input at one then incriment it by the showLayout_new step on each iteration
 
         # Duplicate feathers and move them into position
         while (i < (numFeathersInGroup + 1)):

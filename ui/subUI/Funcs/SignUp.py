@@ -74,7 +74,7 @@ class SignUp(Widget):
 
         self.userAvatar = Label({'pxm':'default', 'scc': True, 'sfs':[100, 100]})
 
-        set_avatarBtn = Button({'txt':'Set Avatar', 'tt':'Choose a new avatar', 'cl': self.setAvaClicked})
+        set_avatarBtn = Button({'txt':'Set Avatar', 'tt':'Choose a showLayout_new avatar', 'cl': self.setAvaClicked})
 
         avatar_grid.addWidget(self.userAvatar, 0, 0, 2, 2)
         avatar_grid.addWidget(set_avatarBtn, 2, 0, 1, 2)

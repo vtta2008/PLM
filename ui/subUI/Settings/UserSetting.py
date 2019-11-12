@@ -188,10 +188,10 @@ class UserSetting(Widget):
             if desPth == fileName:
                 pass
             elif os.path.exists(desPth):
-                if os.path.exists(desPth + '.old'):
-                    os.remove(desPth + '.old')
+                if os.path.exists(desPth + '.showLayout_old'):
+                    os.remove(desPth + '.showLayout_old')
 
-                os.rename(desPth, desPth + '.old')
+                os.rename(desPth, desPth + '.showLayout_old')
                 resize_image(fileName, desPth)
                 shutil.copy2(fileName, desPth)
                 image = QPixmap.fromImage(QImage(desPth))

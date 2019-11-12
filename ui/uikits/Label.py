@@ -42,6 +42,88 @@ class Label(QLabel):
         if check_preset(self.preset):
             self.buildUI()
 
+        self.values = dict(w = self.width(), h = self.height(), x = self.x(), y = self.y())
+
+    def sizeHint(self):
+        size = super(Label, self).sizeHint()
+        size.setHeight(size.height())
+        size.setWidth(max(size.width(), size.height()))
+        return size
+
+    def setValue(self, key, value):
+        return self.settings.initSetValue(key, value, self.key)
+
+    def getValue(self, key):
+        return self.settings.initValue(key, self.key)
+
+    def moveEvent(self, event):
+        if self.settings._settingEnable:
+            self.setValue('x', self.x())
+            self.setValue('y', self.y())
+
+    def resizeEvent(self, event):
+        if self.settings._settingEnable:
+            self.setValue('w', self.width())
+            self.setValue('h', self.height())
+
+    def closeEvent(self, event):
+        if __name__=='__main__':
+            self.close()
+        else:
+            self.signals.emit('showLayout', self.key, 'hide')
+
+    def hideEvent(self, event):
+        if __name__=='__main__':
+            self.hide()
+        else:
+            if self.settings._settingEnable:
+                for key, value in self.values.items():
+                    self.setValue(key, value)
+            self.signals.emit('showLayout', self.key, 'hide')
+
+    def showEvent(self, event):
+
+        if self.settings._settingEnable:
+            w = self.getValue('w')
+            h = self.getValue('h')
+            x = self.getValue('x')
+            y = self.getValue('x')
+
+            vals = [w, h, x, y]
+
+            for i in range(len(vals)):
+                if vals[i] is None:
+                    key = [k for k in self.values.keys()]
+                    value = self.values[key[i]]
+                    for index, element in enumerate(vals):
+                        if element == vals[i]:
+                            vals[index] = value
+                    self.setValue(key[i], self.values[key[i]])
+
+            for v in vals:
+                if not type(v) in [int]:
+                    v = int(v)
+
+            self.resize(vals[0], vals[1])
+            self.move(vals[2], vals[3])
+
+        if __name__=='__main__':
+            self.show()
+        else:
+            self.signals.emit('showLayout', self.key, 'show')
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
+
     def buildUI(self):
         for key, value in self.preset.items():
             if key == 'txt':
@@ -74,68 +156,6 @@ class Label(QLabel):
                 print("PresetKeyError at {0}: No such key registed in preset: {1}: {2}".format(__name__, key, value))
 
 
-    def setValue(self, key, value):
-        return self.settings.initSetValue(key, value, self.key)
-
-    def getValue(self, key):
-        return self.settings.initValue(key, self.key)
-
-    def showEvent(self, event):
-        sizeX = self.getValue('width')
-        sizeY = self.getValue('height')
-
-        if not sizeX is None and not sizeY is None:
-            self.resize(int(sizeX), int(sizeY))
-
-        posX = self.getValue('posX')
-        posY = self.getValue('posY')
-
-        if not posX is None and not posX is None:
-            self.move(posX, posY)
-
-        if __name__ == '__main__':
-            self.show()
-
-    def moveEvent(self, event):
-        self.setValue('posX', self.x())
-        self.setValue('posY', self.y())
-
-    def resizeEvent(self, event):
-        self.setValue('width', self.frameGeometry().width())
-        self.setValue('height', self.frameGeometry().height())
-
-    def sizeHint(self):
-        size = super(Label, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
-
-    def closeEvent(self, event):
-        if __name__=='__main__':
-            self.close()
-        else:
-            self.signals.emit('showLayout', self.key, 'hide')
-            event.ignore()
-
-    def hideEvent(self, event):
-        if __name__=='__main__':
-            self.hide()
-        else:
-            self.signals.emit('showLayout', self.key, 'hide')
-            event.ignore()
-
-    @property
-    def copyright(self):
-        return self._copyright
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, newName):
-        self._name                      = newName
-
 class LCDNumber(QLCDNumber):
 
     Type                                    = 'DAMGUI'
@@ -152,11 +172,13 @@ class LCDNumber(QLCDNumber):
         self.time = QTime()
         self.zone = QTimeZone()
 
-    def currentTime(self):
-        return self.time.currentTime()
+        self.values = dict(w = self.width(), h = self.height(), x = self.x(), y = self.y())
 
-    def currentTimeZone(self):
-        return self.zone.utc()
+    def sizeHint(self):
+        size = super(LCDNumber, self).sizeHint()
+        size.setHeight(size.height())
+        size.setWidth(max(size.width(), size.height()))
+        return size
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
@@ -164,37 +186,15 @@ class LCDNumber(QLCDNumber):
     def getValue(self, key):
         return self.settings.initValue(key, self.key)
 
-    def showEvent(self, event):
-        sizeX = self.getValue('width')
-        sizeY = self.getValue('height')
-
-        if not sizeX is None and not sizeY is None:
-            self.resize(int(sizeX), int(sizeY))
-
-        posX = self.getValue('posX')
-        posY = self.getValue('posY')
-
-        if not posX is None and not posX is None:
-            self.move(posX, posY)
-
-        if __name__ == '__main__':
-            self.show()
-        else:
-            self.signals.emit('showLayout', self.key, 'show')
-
     def moveEvent(self, event):
-        self.setValue('posX', self.x())
-        self.setValue('posY', self.y())
+        if self.settings._settingEnable:
+            self.setValue('x', self.x())
+            self.setValue('y', self.y())
 
     def resizeEvent(self, event):
-        self.setValue('width', self.frameGeometry().width())
-        self.setValue('height', self.frameGeometry().height())
-
-    def sizeHint(self):
-        size = super(LCDNumber, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
+        if self.settings._settingEnable:
+            self.setValue('w', self.width())
+            self.setValue('h', self.height())
 
     def closeEvent(self, event):
         if __name__=='__main__':
@@ -206,7 +206,41 @@ class LCDNumber(QLCDNumber):
         if __name__=='__main__':
             self.hide()
         else:
+            if self.settings._settingEnable:
+                for key, value in self.values.items():
+                    self.setValue(key, value)
             self.signals.emit('showLayout', self.key, 'hide')
+
+    def showEvent(self, event):
+
+        if self.settings._settingEnable:
+            w = self.getValue('w')
+            h = self.getValue('h')
+            x = self.getValue('x')
+            y = self.getValue('x')
+
+            vals = [w, h, x, y]
+
+            for i in range(len(vals)):
+                if vals[i] is None:
+                    key = [k for k in self.values.keys()]
+                    value = self.values[key[i]]
+                    for index, element in enumerate(vals):
+                        if element == vals[i]:
+                            vals[index] = value
+                    self.setValue(key[i], self.values[key[i]])
+
+            for v in vals:
+                if not type(v) in [int]:
+                    v = int(v)
+
+            self.resize(vals[0], vals[1])
+            self.move(vals[2], vals[3])
+
+        if __name__=='__main__':
+            self.show()
+        else:
+            self.signals.emit('showLayout', self.key, 'show')
 
     @property
     def copyright(self):
@@ -219,6 +253,12 @@ class LCDNumber(QLCDNumber):
     @name.setter
     def name(self, newName):
         self._name                      = newName
+
+    def currentTime(self):
+        return self.time.currentTime()
+
+    def currentTimeZone(self):
+        return self.zone.utc()
 
 usernameLabel = Label({'txt': 'Username'})
 passwordLabel = Label({'txt': 'Password'})

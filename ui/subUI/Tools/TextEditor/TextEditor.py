@@ -103,7 +103,7 @@ class TextEdit(MainWindow):
         menu = QMenu("&File", self)
         self.menuBar().addMenu(menu)
   
-        self.actionNew = QAction(QIcon.fromTheme('document-new', QIcon(rsrcPath + '/filenew.png')),  "&New", self,
+        self.actionNew = QAction(QIcon.fromTheme('document-showLayout_new', QIcon(rsrcPath + '/filenew.png')),  "&New", self,
                                   priority=QAction.LowPriority, shortcut=QKeySequence.New, triggered=self.fileNew)
         tb.addAction(self.actionNew)
         menu.addAction(self.actionNew)

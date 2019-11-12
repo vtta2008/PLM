@@ -580,7 +580,7 @@ def setDisplay(type=None, *args):
         i += 1
 
 def pipelineLayout(*args):
-    cmds.confirmDialog(t="doing it now", m="I am old Code with it", b="OK")
+    cmds.confirmDialog(t="doing it now", m="I am showLayout_old Code with it", b="OK")
 
 def aboutThisTool(*args):
     if cmds.window('mainUIAbout', exists=True):

@@ -136,17 +136,19 @@ class LayoutManager(DAMG):
     def mainLayouts(self):
         from ui.PipelineManager             import PipelineManager
         from ui.SysTray                     import SysTray
+        from ui.subUI.HiddenLayout          import HiddenLayout
 
         self.mainUI     = PipelineManager(self.settings, self.actionManager, self.buttonManager, self.threadManager)
         self.sysTray    = SysTray(self.settings, self.actionManager, self.eventManager)
+        self.hiddenLayout = HiddenLayout()
         self.setLayoutUnHidable(self.sysTray)
 
-        layouts = [self.mainUI, self.sysTray]
+        layouts = [self.mainUI, self.sysTray, self.hiddenLayout]
 
         for layout in layouts:
             self.registLayout(layout)
 
-        for layout in self.mainUI.mainUI_layouts:
+        for layout in self.mainUI.subLayouts:
             self.registLayout(layout)
 
         for layout in self.mainUI.topTabUI.tabLst:

@@ -18,7 +18,7 @@ import os, subprocess
 class EnvVariableManager:
 
     """
-    This class is all about system environment variable, you can set new, edit or delete or put path into PATH variable.
+    This class is all about system environment variable, you can set showLayout_new, edit or delete or put path into PATH variable.
     This class works only at user level.
     """
 
@@ -64,11 +64,11 @@ class EnvVariableManager:
         try:
             os.getenv(envKey)
         except KeyError:
-            print('{0} is not existed, create new environment configKey.'.format(envKey))
+            print('{0} is not existed, create showLayout_new environment configKey.'.format(envKey))
             subprocess.Popen('SetX {0} {1}'.format(envKey, envVal), shell=True).wait()
         else:
             if os.getenv(envKey) is None:
-                print('{0} has value as None, assign new value {1}'.format(envKey, envVal))
+                print('{0} has value as None, assign showLayout_new value {1}'.format(envKey, envVal))
                 subprocess.Popen('SetX {0} {1}'.format(envKey, envVal), shell=True).wait()
             else:
                 if os.getenv(envKey) != envVal:

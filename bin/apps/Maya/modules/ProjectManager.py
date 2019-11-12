@@ -63,7 +63,7 @@ class projectManager(object):
         cmds.text(l="", h=2)
         cmds.separator(style='in', w=400)
         cmds.rowColumnLayout(nc=4, cw=[(1, 100), (2, 100), (3, 100), (4, 100)])
-        cmds.button(l="New", ann="Create a new project", command=self.newProject)
+        cmds.button(l="New", ann="Create a showLayout_new project", command=self.newProject)
         cmds.button(l="Load", ann="Load Project", command=self.loadProjectContent)
         cmds.button(l="Remove")
         cmds.button(l="Close", command=self.closeUI)

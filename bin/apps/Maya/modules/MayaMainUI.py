@@ -379,7 +379,7 @@ class MayaMainUI(QtWidgets.QWidget):
         adj = 10
         cmds.rowColumnLayout(nc=4, cw=self.bts.cwE(nc, w2, adj))
         # anns, commands, labels,
-        anns = ['Set Project directory', 'Open Project manager UI', 'Create A new production', 'Refresh info']
+        anns = ['Set Project directory', 'Open Project manager UI', 'Create A showLayout_new production', 'Refresh info']
         commands = [self.setProject, self.bts.projManagerUI, self.bts.newProd, self.refreshInfo]
         labels = ['Set Project', 'Project Manager', 'New Production', 'Refresh Info']
         self.bts.setCoolButton(anns=anns, commands=commands, labels=labels)
@@ -461,7 +461,7 @@ class MayaMainUI(QtWidgets.QWidget):
     def menuSection(self, parent, *args):
         # file
         cmds.menu(p=parent, label='File', tearOff=True)
-        cmds.menuItem(label='New', c='cmds.file(f=True,new=True)')
+        cmds.menuItem(label='New', c='cmds.file(f=True,showLayout_new=True)')
         cmds.menuItem(label='Open/Load', c=partial(self.bts.loaderUI, self.curMode))
         cmds.menuItem(label='SnapShot', c=partial(self.bts.snapshotUI, self.curMode))
         cmds.menuItem(label='Publish', c=partial(self.bts.publishUI, self.curMode))

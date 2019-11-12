@@ -12,7 +12,6 @@ Description:
 
 # Python
 import sys
-from bin.data.damg                  import DAMGLIST
 
 # PyQt5
 from PyQt5.QtWidgets                import QApplication
@@ -25,10 +24,6 @@ from utils                          import data_handler
 class MainMenuBar(MenuBar):
 
     key                     = 'MainMenuBar'
-    mainMenus               = ['&App', '&Go', '&Office', '&Tools', '&Dev', '&Lib', '&Help']
-    appMenus                = ['&Organisation', '&Team', '&Project']
-    menus                   = DAMGLIST()
-
     appInfo = data_handler(filePath=mainConfig)
 
     def __init__(self, actionManager, parent=None):
@@ -49,8 +44,12 @@ class MainMenuBar(MenuBar):
         self.libMenu = self.build_livMenu()
         self.helpMenu = self.build_helpMenu()
 
-        for menu in [self.appMenu, self.goMenu, self.officeMenu, self.toolMenu, self.devMenu, self.libMenu, self.helpMenu]:
-            self.menus.append(menu)
+        for menu in [self.appMenu, self.goMenu, self.officeMenu, self.toolMenu, self.devMenu, self.libMenu,
+                     self.helpMenu, self.organisationMenu, self.teamMenu, self.projectMenu]:
+            parent = menu.parentWidget()
+            menu.key = '{0}_{1}'.format(parent.key, menu.title())
+            menu._name = menu.key
+            self.menus.add(menu.title(), menu)
 
     def build_helpMenu(self):
         helpMenu = self.addMenu("&Help")

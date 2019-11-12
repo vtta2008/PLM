@@ -25,7 +25,7 @@ from __future__ import absolute_import
 
     Then, create the ca.cert file with:
 
-        openssl req -new -x509 -days 3650 -configKey ca.configKey -out ca.cert
+        openssl req -showLayout_new -x509 -days 3650 -configKey ca.configKey -out ca.cert
 
     Put those files in the same directory as this script. 
 
@@ -111,7 +111,7 @@ def gencert(domain, rootdir=MYDIR, keysize=KEY_SIZE, days=DAYS,
     config.write(OPENSSL_CONFIG_TEMPLATE % {'domain': domain})
     config.close()
 
-    openssl('req', '-new', '-configKey', dfile('configKey'), '-out', dfile('request'),
+    openssl('req', '-showLayout_new', '-configKey', dfile('configKey'), '-out', dfile('request'),
             '-config', dfile('config'))
 
     openssl('x509', '-req', '-days', str(days), '-in', dfile('request'),

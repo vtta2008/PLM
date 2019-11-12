@@ -39,7 +39,7 @@ WAIT_LAYOUT_COMPLETE = "Udating..."
 
 PASSWORD_FORGOTTON = """
 
-How the hell you forgot your password? Make a new one now!!!
+How the hell you forgot your password? Make a showLayout_new one now!!!
 (This function will be update soon.)
 
 """
@@ -85,4 +85,4 @@ tooltips_missing = [
     None,
 ]
 
-N_MESSAGES_TEXT = "{quantity} new messages"
+N_MESSAGES_TEXT = "{quantity} showLayout_new messages"

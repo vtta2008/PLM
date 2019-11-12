@@ -16,9 +16,21 @@ from __future__ import absolute_import, unicode_literals
 import re, os
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSize
+from PyQt5.QtCore import Qt, QSize, QEvent
 from PyQt5.QtGui import QPainter, QColor
 from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy, QLineEdit
+
+# -------------------------------------------------------------------------------------------------------------
+""" Event """
+
+KEY_PRESS                   = QEvent.KeyPress
+
+# -------------------------------------------------------------------------------------------------------------
+""" Window state """
+
+StateNormal                 = Qt.WindowNoState
+StateMax                    = Qt.WindowMaximized
+StateMin                    = Qt.WindowMinimized
 
 # -------------------------------------------------------------------------------------------------------------
 """ Nodegraph setting variables """

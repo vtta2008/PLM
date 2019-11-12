@@ -6,7 +6,7 @@ Script Name: ChannelBox.py
 Author: Do Trinh/Jimmy - TD artist
 
 Description:
-    This script makes a new Channel box UI with new menu. It easier for me to use channel box in this way.
+    This script makes a showLayout_new Channel box UI with showLayout_new menu. It easier for me to use channel box in this way.
 
 """
 # -------------------------------------------------------------------------------------------------------------

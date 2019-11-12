@@ -420,7 +420,7 @@ class ConfigManager(DAMG):
             elif key == 'SignIn':
                 self.mainInfo[key] = ['Sign In', self.getAppIcon(32, key), 'SignIn']
             elif key == 'SignUp':
-                self.mainInfo[key] = ['New Account', self.getAppIcon(32, key), 'Create new account']
+                self.mainInfo[key] = ['New Account', self.getAppIcon(32, key), 'Create showLayout_new account']
             elif key == 'SwtichAccount':
                 self.mainInfo[key] = ['Change Account', self.getAppIcon(32, key), 'Change other account']
             elif key == 'SignOut':

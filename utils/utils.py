@@ -185,10 +185,10 @@ def get_py_env_var(key, path):
     try:
         pth = os.getenv(key)
         if pth == None or pth == '':
-            print('install new environment variable')
+            print('install showLayout_new environment variable')
             os.environ[key] = path
     except KeyError:
-        print('install new environment variable')
+        print('install showLayout_new environment variable')
         os.environ[key] = path
     else:
         pass

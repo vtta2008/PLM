@@ -725,7 +725,7 @@ class ToolBoxII(QtWidgets.QWidget):
         # the library variable points to an instance of our controller library
         self.library = ControllerLibrary()
 
-        # every time we create a new instance, we will automatically build our UI and populate it
+        # every time we create a showLayout_new instance, we will automatically build our UI and populate it
         self.buildUI()
         self.populateLibrarySection()
         self.populateManagerSection()
@@ -1103,7 +1103,7 @@ class ToolBoxII(QtWidgets.QWidget):
                     # print iconPth
                     # print os.path.exists(iconPth)
                     icon = QtGui.QIcon(iconPth)
-                    toolTip = "Create a new " + nurbsType
+                    toolTip = "Create a showLayout_new " + nurbsType
                     button = marv.RenderSetupButton(self, icon, mid1['size'][2])
                     button.setMinimumSize(mid1['size'][2], mid1['size'][2])
                     button.setMaximumSize(mid1['size'][2], mid1['size'][2])
@@ -1140,7 +1140,7 @@ class ToolBoxII(QtWidgets.QWidget):
                     # print iconPth
                     # print os.path.exists(iconPth)
                     icon = QtGui.QIcon(iconPth)
-                    toolTip = "Create a new " + nurbsType
+                    toolTip = "Create a showLayout_new " + nurbsType
                     button = marv.RenderSetupButton(self, icon, mid1['size'][2])
                     button.setMinimumSize(mid1['size'][2], mid1['size'][2])
                     button.setMaximumSize(mid1['size'][2], mid1['size'][2])

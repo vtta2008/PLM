@@ -155,8 +155,8 @@ class MainWindow(QMainWindow):
         self.setWindowModified(self.myeditor.document().isModified())
 
     def createActions(self):
-        self.newAct = QAction(QIcon.fromTheme('document-new'), "&Neu", self,
-                              shortcut=QKeySequence.New, statusTip="new Document",
+        self.newAct = QAction(QIcon.fromTheme('document-showLayout_new'), "&Neu", self,
+                              shortcut=QKeySequence.New, statusTip="showLayout_new Document",
                               triggered=self.newFile)
 
         self.openAct = QAction(QIcon.fromTheme('document-open'), "open File",
@@ -169,7 +169,7 @@ class MainWindow(QMainWindow):
 
         self.saveAsAct = QAction(QIcon.fromTheme('document-save-as'), "Save as...", self,
                                  shortcut=QKeySequence.SaveAs,
-                                 statusTip="save Document to new filename",
+                                 statusTip="save Document to showLayout_new filename",
                                  triggered=self.saveAs)
 
         self.exitAct = QAction(QIcon.fromTheme('application-exit'), "Exit", self, shortcut="Ctrl+Q",
