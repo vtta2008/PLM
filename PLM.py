@@ -264,8 +264,8 @@ class PLM(QApplication):
                 repeat = True
 
         if not repeat:
-            print('recieve signal showLayout from {0}: {1}'.format(layoutID, mode))
-            print(self.showLayout_old)
+            # print('recieve signal showLayout from {0}: {1}'.format(layoutID, mode))
+            # print(self.showLayout_old)
             pass
         else:
             # print('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))

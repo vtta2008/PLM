@@ -131,7 +131,7 @@ class SignalManager(DAMG):
             if signal == 'showLayout':
                 self.showLayoutOld, repeat      = self.checkSignalRepeat(self.showLayoutOld, [op1, op2])
                 if repeat:
-                    print(self.key, self.states)
+                    # print(self.key, self.states)
                     if self.states[op1] == op2:
                         if self.print_block:
                             print('{2}: block signal {0}: {1}'.format(signal, self.showLayoutOld, self.key))
@@ -140,7 +140,7 @@ class SignalManager(DAMG):
                         self.states.add(op1, op2)
                         sig.emit(op1, op2)
                 else:
-                    print(self.key, self.states)
+                    # print(self.key, self.states)
                     self.states.add(op1, op2)
                     sig.emit(op1, op2)
             elif signal == 'executing':
