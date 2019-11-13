@@ -21,7 +21,7 @@ from PyQt5.QtCore                    import QFile, QTextStream
 from bin.data.damg                  import DAMG
 from cores.Loggers                  import Loggers
 from appData                        import QSS_DIR
-from bin.resources.qss import darkstyle_rc, tooltips_rc
+from bin.resources.qss              import darkstyle_rc, tooltips_rc
 
 class StyleSheets(DAMG):
 

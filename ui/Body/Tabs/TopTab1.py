@@ -16,6 +16,7 @@ import sys
 
 # PyQt5
 from PyQt5.QtWidgets        import QApplication
+from PyQt5.QtGui import QResizeEvent
 
 # Plt
 from ui.uikits.Widget                         import Widget
@@ -45,20 +46,32 @@ class TopTab1(Widget):
     def buildUI(self):
 
         prjButtons  = self.buttonManager.projectButtonsGroupBox(self.parent)
+        taskButtons = self.buttonManager.taskButtonsGroupBox(self.parent)
         teamButtons = self.buttonManager.teamButtonsGroupBox(self.parent)
 
-        sec1Grp     = GroupBox("Project", prjButtons, "BtnGrid")
-        sec2Grp     = GroupBox("Task", teamButtons, "BtnGrid")
-        sec1Grp.setMaximumWidth(120)
-        sec2Grp.setMaximumWidth(120)
+        self.infoGrp = GroupBox('Info')
+        self.infoGrid = GridLayout()
+        self.infoGrp.setLayout(self.infoGrid)
+        self.infoGrp.setMinimumHeight(150)
 
-        sec3Grp     = GroupBox('Info')
-        sec3Grid    = GridLayout()
-        sec3Grp.setLayout(sec3Grid)
+        self.prjGrp      = GroupBox("Project", prjButtons, "BtnGrid")
+        self.taskGrp     = GroupBox("Task", taskButtons, "BtnGrid")
+        self.teamGrp     = GroupBox('Team', teamButtons, 'BtnGrid')
 
-        self.layout.addWidget(sec1Grp, 0, 0, 4, 3)
-        self.layout.addWidget(sec2Grp, 4, 0, 4, 3)
-        self.layout.addWidget(sec3Grp, 0, 3, 8, 6)
+        self.layout.addWidget(self.infoGrp, 0, 0, 4, 6)
+        self.layout.addWidget(self.prjGrp, 4, 0, 3, 2)
+        self.layout.addWidget(self.taskGrp, 4, 2, 3, 2)
+        self.layout.addWidget(self.teamGrp, 4, 4, 3, 2)
+
+    # def resizeEvent(self, event):
+    #     w = self.width()
+    #     h = self.height()
+    #
+    #     self.infoGrp.resize(w-4, h/2-4)
+    #
+    #     for grp in [self.prjGrp, self.taskGrp, self.teamGrp]:
+    #         grp.resize(w/3-4, h/2-4)
+
 
 def main():
     app = QApplication(sys.argv)

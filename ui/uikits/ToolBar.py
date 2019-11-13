@@ -27,6 +27,7 @@ class ToolBar(QToolBar):
     key                                     = 'ToolBar'
     _name                                   = 'DAMG Tool Bar'
     _copyright                              = __copyright__
+    actions                                 = []
 
     def __init__(self, parent=None):
         QToolBar.__init__(self)
@@ -47,6 +48,10 @@ class ToolBar(QToolBar):
         self.setWindowTitle(self._name)
 
         self.values = dict(w = self.width(), h = self.height(), x = self.x(), y = self.y())
+
+    def add_action(self, action):
+        self.actions.append(action)
+        return self.addAction(action)
 
     def sizeHint(self):
         size = super(ToolBar, self).sizeHint()

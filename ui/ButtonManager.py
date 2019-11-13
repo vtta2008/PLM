@@ -46,12 +46,12 @@ class ButtonManager(DAMGDICT):
     tagButtons = ['pythonTag', 'licenceTag', 'versionTag']
 
     orgButtons      = ['NewOrganisation', 'EditOrganisation', 'ConfigOrganisation', 'OrganisationManager']
-
+    taskButtons     = ['NewTask', 'EditTask', 'ConfigTask', 'TaskManager']
     teamButtons     = ['NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager']
     prjButtons      = ['NewProject', 'EditProject', 'ConfigProject', 'ProjectManager']
     userButtons     = ['UserSetting', 'SignUp', 'SwitchAccount', 'SignOut']
 
-    checkedKeys = teamButtons + prjButtons + userButtons + tagButtons
+    checkedKeys = teamButtons + prjButtons + userButtons + tagButtons + taskButtons
 
     def __init__(self, parent=None):
         super(ButtonManager, self).__init__(self)
@@ -74,6 +74,9 @@ class ButtonManager(DAMGDICT):
 
     def buttonRegisterError(self, key):
         return print('ButtonRegisterError: This action is already registered: {0}'.format(key))
+
+    def taskButtonsGroupBox(self, parent):
+        return self.createButtons(self.taskButtons, parent)
 
     def projectButtonsGroupBox(self, parent):
         return self.createButtons(self.prjButtons, parent)
@@ -172,7 +175,7 @@ class ButtonManager(DAMGDICT):
         if key in self.mainInfo.keys():
             button = Button({'txt': self.mainInfo[key][0],
                              'stt': self.mainInfo[key][2],
-                             'cl': partial(parent.signals.emit, 'showLayout',  key, 'showMax'), })
+                             'cl': partial(parent.signals.emit, 'showLayout',  key, 'showMaximized'), })
             button.key = '{0}_{1}_Button'.format(parent.key, key)
             button._name = button.key
             if button.key in self.buttonKeys:
@@ -189,7 +192,7 @@ class ButtonManager(DAMGDICT):
         if key in self.mainInfo.keys():
             button = Button({'txt': self.mainInfo[key][0],
                              'stt': self.mainInfo[key][2],
-                             'cl': partial(parent.signals.emit, 'showLayout',  key, 'showMin'), })
+                             'cl': partial(parent.signals.emit, 'showLayout',  key, 'showMinimized'), })
             button.key = '{0}_{1}_Button'.format(parent.key, key)
             button._name = button.key
             if button.key in self.buttonKeys:

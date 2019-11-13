@@ -168,13 +168,13 @@ ACTIONS_DATA = dict(TD                  = CONFIG_TDS,
                     SYSTRAY             = CONFIG_SYSTRAY, )
 
 SHOWLAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 'Calendar', 'CodeOfConduct', 'ConfigOrganisation',
-                           'ConfigProject', 'ConfigTeam', 'Config', 'Configurations', 'ConnectStatus', 'ContactUs', 'Contributing',
-                           'Credit', 'EditOrganisation', 'EditProject', 'EditTeam', 'EnglishDictionary', 'Feedback',
+                           'ConfigProject', 'ConfigTask', 'ConfigTeam', 'Config', 'Configurations', 'ConnectStatus', 'ContactUs', 'Contributing',
+                           'Credit', 'EditOrganisation', 'EditProject', 'EditTask', 'EditTeam', 'EnglishDictionary', 'Feedback',
                            'FindFiles', 'Footer', 'ForgotPassword', 'GridLayout', 'HDRI', 'ImageViewer', 'Licence', 'MainMenuSection',
-                           'MainToolBar', 'MainToolBarSection', 'NewOrganisation', 'NewProject', 'NewTeam', 'NodeGraph',
+                           'MainToolBar', 'MainToolBarSection', 'NewOrganisation', 'NewProject', 'NewTask', 'NewTeam', 'NodeGraph',
                            'NoteReminder', 'Notification', 'OrganisationManager', 'PipelineManager', 'Preferences',
                            'ProjectManager', 'Reference', 'ScreenShot', 'SettingUI', 'SignIn', 'SignOut', 'SignUp', 'SwitchAccount', 'StatusBar',
-                           'SysTray', 'TeamManager', 'TextEditor', 'Texture', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting',
+                           'SysTray', 'TaskManager', 'TeamManager', 'TextEditor', 'Texture', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting',
                            'Version']
 
 RESTORE_KEY             = ['Restore']

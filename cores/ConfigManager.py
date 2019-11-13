@@ -58,7 +58,7 @@ KEYPACKAGE                              = ['Adobe Photoshop CC 2017', 'Adobe Pho
                                            'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', 'Spyder',
                                            'QtDesigner', 'Git Bash', 'About', 'Calculator', 'Calendar', 'Credit',
                                            'EnglishDictionary', 'FindFiles', 'ForgotPassword', 'ImageViewer',
-                                           'NewProject', 'Preferences', 'ScreenShot', 'UserSetting', 'PLMBrowser',
+                                           'Preferences', 'ScreenShot', 'UserSetting', 'PLMBrowser',
                                            'NoteReminder', 'TextEditor', 'NodeGraph', 'Word', 'Excel', 'PowerPoint',
                                            'ReConfig', 'CleanPyc', 'Debug']
 
@@ -357,18 +357,23 @@ class ConfigManager(DAMG):
 
         self.mainInfo['NewOrganisation'] = ['New', 'NewOrganisation', 'New']
         self.mainInfo['EditOrganisation'] = ['Edit', 'EditOrganisation', 'Edit']
-        self.mainInfo['ConfigOrganisation'] = ['Config', 'ConfigOrganisation', 'Edit']
-        self.mainInfo['OrganisationManager'] = ['OrganisationManager', 'OrganisationManager', 'OrganisationManager']
+        self.mainInfo['ConfigOrganisation'] = ['Config', 'ConfigOrganisation', 'Config']
+        self.mainInfo['OrganisationManager'] = ['OrganisationManager', 'OrganisationManager', 'Manager']
 
         self.mainInfo['NewTeam'] = ['New', 'NewOrganisation', 'New']
         self.mainInfo['EditTeam'] = ['Edit', 'EditOrganisation', 'Edit']
-        self.mainInfo['ConfigTeam'] = ['Config', 'ConfigOrganisation', 'Edit']
-        self.mainInfo['TeamManager'] = ['TeamManager', 'TeamManager', 'TeamManager']
+        self.mainInfo['ConfigTeam'] = ['Config', 'ConfigOrganisation', 'Config']
+        self.mainInfo['TeamManager'] = ['Manager', 'TeamManager', 'Manager']
 
-        self.mainInfo['NewProject'] = ['New', 'NewOrganisation', 'New']
-        self.mainInfo['EditProject'] = ['Edit', 'EditOrganisation', 'Edit']
-        self.mainInfo['ConfigProject'] = ['Config', 'ConfigOrganisation', 'Edit']
-        self.mainInfo['ProjectManager'] =['ProjectManager', 'ProjectManager', 'ProjectManager']
+        self.mainInfo['NewProject'] = ['New', 'NewProject', 'New']
+        self.mainInfo['EditProject'] = ['Edit', 'EditProject', 'Edit']
+        self.mainInfo['ConfigProject'] = ['Config', 'ConfigProject', 'Config']
+        self.mainInfo['ProjectManager'] =['Manager', 'ProjectManager', 'Manager']
+
+        self.mainInfo['NewTask'] = ['New', 'NewTask', 'New']
+        self.mainInfo['EditTask'] = ['Edit', 'EditTask', 'Edit']
+        self.mainInfo['ConfigTask'] = ['Config', 'ConfigTask', 'Config']
+        self.mainInfo['TaskManager'] =['Manager', 'TaskManager', 'Manager']
 
         self.mainInfo['SettingUI'] = ['PLM Settings', 'Settings', 'SettingUI']
         self.mainInfo['Config'] = ['PLM Configurations', 'Configurations', 'Configuration']

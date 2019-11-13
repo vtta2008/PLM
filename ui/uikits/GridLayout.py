@@ -39,6 +39,9 @@ class GridLayout(QGridLayout):
         self.signals = SignalManager(self)
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
+    def setVisible(self, bool):
+        pass
+
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
 

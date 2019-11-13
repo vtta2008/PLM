@@ -70,6 +70,7 @@ class GroupBox(QGroupBox):
             self.setValue('y', self.y())
 
     def resizeEvent(self, event):
+        # print(event, event.type())
         if self.settings._settingEnable:
             self.setValue('w', self.width())
             self.setValue('h', self.height())

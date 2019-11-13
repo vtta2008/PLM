@@ -31,6 +31,7 @@ class MainToolBar(MainWindow):
 
     key = 'MainToolBar'
     toolBars = dict()
+    _count = 0
 
     def __init__(self, actionManager, parent=None):
         super(MainToolBar, self).__init__(parent)
@@ -56,10 +57,29 @@ class MainToolBar(MainWindow):
         self.textureToolBar = self.build_toolBar('TEX')
         self.postToolBar    = self.build_toolBar('POST')
 
-        keys    = ['TD', 'VFX', 'ART', 'TEX', 'POST']
-        tbs     = [self.tdToolBar, self.compToolBar, self.artToolBar, self.textureToolBar, self.postToolBar]
-        for k in keys:
-            self.toolBars[k] = tbs[keys.index(k)]
+        self.updateWidth(True)
+
+    def updateWidth(self, bool):
+        i = 13
+        if not self.tdToolBar.isVisible():
+            i = i - 4
+
+        if not self.compToolBar.isVisible():
+            i = i - 2
+
+        if not self.artToolBar.isVisible():
+            i = i - 4
+
+        if not self.textureToolBar.isVisible():
+            i = i - 2
+
+        if not self.postToolBar.isVisible():
+            i = i - 1
+
+        w = i*32 + i*2
+        # print(w)
+        self.setFixedWidth(w)
+        # self.parent.setFixedWidth(w + 20)
 
     def build_toolBar(self, name=''):
         toolBar = ToolBar(self)
@@ -68,10 +88,13 @@ class MainToolBar(MainWindow):
         toolBar.setWindowTitle(name)
 
         actions = self.getActions(name)
+
         for action in actions:
-            toolBar.addAction(action)
+            toolBar.add_action(action)
 
         toolBar.setSizePolicy(SiPoMin, SiPoMin)
+        toolBar.visibilityChanged.connect(self.updateWidth)
+        self.toolBars[name] = toolBar
         self.addToolBar(toolBar)
         return toolBar
 
@@ -91,6 +114,14 @@ class MainToolBar(MainWindow):
             actions = self.actionManager.extraToolActions(self)
         return actions
 
+    @property
+    def count(self):
+        return self._count
+
+    @count.setter
+    def count(self, val):
+        self._count = val
+
     @pyqtSlot(str, bool)
     def showToolBar(self, toolbar, mode):
         if toolbar in self.toolBars.keys():
@@ -101,26 +132,6 @@ class MainToolBar(MainWindow):
             for tb in self.toolBars.values():
                 tb.setVisible(str2bool(mode))
                 self.settings.iniSetValue('visible', bool2str(mode), tb.key)
-
-        # if toolbar == 'TD':
-        #     self.tdToolBar.setVisible(str2bool(mode))
-        #     self.settings.iniSetValue('visible', bool2str(mode), self.objectName())
-        # elif toolbar == 'VFX':
-        #     self.compToolBar.setVisible(str2bool(mode))
-        #     self.settings.iniSetValue('visible', bool2str(mode), self.objectName())
-        # elif toolbar == 'ART':
-        #     self.artToolBar.setVisible(str2bool(mode))
-        #     self.settings.iniSetValue('visible', bool2str(mode), self.objectName())
-        # elif toolbar == 'TEX':
-        #     self.textureToolBar.setVisible(str2bool(mode))
-        #     self.settings.iniSetValue('visible', bool2str(mode), self.objectName())
-        # elif toolbar == 'POS':
-        #     self.postToolBar.setVisible(str2bool(mode))
-        #     self.settings.initSetValue('visible', bool2str(mode), self.objectName())
-        # else:
-        #     for tb in self.toolBars.values():
-        #         tb.setVisible(str2bool(mode))
-        #         self.settings.iniSetValue('visible', bool2str(mode), self.objectName())
 
 def main():
     app = QApplication(sys.argv)

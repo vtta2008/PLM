@@ -52,70 +52,70 @@ class MainMenuBar(MenuBar):
             self.menus.add(menu.title(), menu)
 
     def build_helpMenu(self):
-        helpMenu = self.addMenu("&Help")
-        helpActions = self.actionManger.helpMenuActions(self.parent)
-        self.add_actions(helpMenu, helpActions[0:2])
-        helpMenu.addSeparator()
-        self.add_actions(helpMenu, helpActions[2:5])
-        helpMenu.addSeparator()
-        self.add_actions(helpMenu, helpActions[5:7])
-        helpMenu.addSeparator()
-        self.add_actions(helpMenu, helpActions[7:])
-        return helpMenu
+        menu = self.addMenu("&Help")
+        actions = self.actionManger.helpMenuActions(self.parent)
+        self.add_actions(menu, actions[0:2])
+        menu.addSeparator()
+        self.add_actions(menu, actions[2:5])
+        menu.addSeparator()
+        self.add_actions(menu, actions[5:7])
+        menu.addSeparator()
+        self.add_actions(menu, actions[7:])
+        return menu
 
     def build_livMenu(self):
-        libMenu = self.addMenu("&Lib")
-        libActions = self.actionManger.libMenuActions(self.parent)
-        self.add_actions(libMenu, libActions)
-        return libMenu
+        menu = self.addMenu("&Lib")
+        actions = self.actionManger.libMenuActions(self.parent)
+        self.add_actions(menu, actions)
+        return menu
 
     def build_devMenu(self):
-        devMenu = self.addMenu("&Dev")
-        devActions = self.actionManger.devMenuActions(self.parent)
-        self.add_actions(devMenu, devActions)
-        return devMenu
+        menu = self.addMenu("&Dev")
+        actions = self.actionManger.devMenuActions(self.parent)
+        self.add_actions(menu, actions)
+        return menu
 
     def build_toolMenu(self):
-        toolMenu = self.addMenu("&Tools")
-        toolActions = self.actionManger.toolsMenuActions(self.parent)
-        self.add_actions(toolMenu, toolActions[0:-3])
-        toolMenu.addSeparator()
-        self.add_actions(toolMenu, toolActions[-3:0])
-        return toolMenu
+        menu = self.addMenu("&Tools")
+        actions = self.actionManger.toolsMenuActions(self.parent)
+        self.add_actions(menu, actions[0:7])
+        menu.addSeparator()
+        self.add_actions(menu, actions[7:])
+        return menu
 
     def build_officceMenu(self):
-        officeMenu = self.addMenu("&Office")
-        officeActions = self.actionManger.officeMenuActions(self.parent)
-        self.add_actions(officeMenu, officeActions)
-        return officeMenu
+        menu = self.addMenu("&Office")
+        action = self.actionManger.officeMenuActions(self.parent)
+        self.add_actions(menu, action)
+        return menu
 
     def build_goMenu(self):
-        gotoMenu = self.addMenu('&Go')
-        goActions = self.actionManger.goMenuActions(self.parent)
-        self.add_actions(gotoMenu, goActions)
-        return gotoMenu
+        menu = self.addMenu('&Go')
+        actions = self.actionManger.goMenuActions(self.parent)
+        self.add_actions(menu, actions)
+        return menu
 
     def build_appMenu(self):
-        appMenu = self.addMenu("&App")
-        appActions = self.actionManger.appMenuActions(self.parent)
-        self.add_actions(appMenu, appActions[0:3])
+        menu = self.addMenu("&App")
+        actions = self.actionManger.appMenuActions(self.parent)
+        self.add_actions(menu, actions[0:3])
 
-        appMenu.addSeparator()
-        self.organisationMenu = appMenu.addMenu("&Organisation")
+        menu.addSeparator()
+        self.organisationMenu = menu.addMenu("&Organisation")
         orgActions = self.actionManger.orgMenuActions(self.parent)
         self.add_actions(self.organisationMenu, orgActions)
 
-        self.teamMenu = appMenu.addMenu('&Team')
+        self.teamMenu = menu.addMenu('&Team')
         teamActions = self.actionManger.teamMenuActions(self.parent)
         self.add_actions(self.teamMenu, teamActions)
 
-        self.projectMenu = appMenu.addMenu('&Project')
+        self.projectMenu = menu.addMenu('&Project')
         prjActions = self.actionManger.projectMenuActions(self.parent)
         self.add_actions(self.projectMenu, prjActions)
 
-        appMenu.addSeparator()
-        self.add_actions(appMenu, appActions[3:])
-        return appMenu
+        menu.addSeparator()
+        self.add_actions(menu, actions[3:])
+        return menu
 
     def add_actions(self, menu, actions):
         for action in actions:

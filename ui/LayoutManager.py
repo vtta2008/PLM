@@ -14,8 +14,11 @@ Description:
 from bin.data.damg                      import DAMG, DAMGLIST
 from functools                          import partial
 
+from PyQt5.QtCore                       import Qt
+
 # PLM
 from utils                              import str2bool, bool2str
+from appData                            import SiPoMin, SiPoExp, SiPoPre, SiPoIgn, SiPoMax
 
 class LayoutManager(DAMG):
 
@@ -42,6 +45,8 @@ class LayoutManager(DAMG):
         self.eventManager               = eventManager
         self.threadManager              = threadManager
 
+        self.globalSetting()
+
     def layouts(self):
         return self._register.values()
 
@@ -63,35 +68,29 @@ class LayoutManager(DAMG):
             self.preferences.layout.tbArtCB,
             self.preferences.layout.tbTexCB,
             self.preferences.layout.tbPostCB,
-
             self.preferences.layout.mainToolBarCB,
 
             self.preferences.layout.statusBarCB,
-
             self.preferences.layout.connectStatuCB,
-
             self.preferences.layout.notifiCB,
         ]
     
-        sections = [
+        tbs = [
             self.mainUI.mainToolBar.tdToolBar,
             self.mainUI.mainToolBar.compToolBar,
             self.mainUI.mainToolBar.artToolBar,
             self.mainUI.mainToolBar.textureToolBar,
             self.mainUI.mainToolBar.postToolBar,
-
-            self.mainUI.mainToolBarSec,
+            self.mainUI.mainToolBar,
 
             self.mainUI.statusBar,
-
-            self.mainUI.connectStatusSec,
-
-            self.mainUI.notifiSec,
+            self.mainUI.connectStatus,
+            self.mainUI.notification,
         ]
     
-        for i in range(len(sections)):
-            key = self.preferences.layout.keys[i]
-            grp = self.mainUI.key
+        for i in range(len(tbs)):
+            key = tbs[i].key
+            grp = self.mainUI.mainToolBar.key
 
             if self.settings.initValue(grp, key) is None:
                 if i == 3 or i == 4:
@@ -99,11 +98,11 @@ class LayoutManager(DAMG):
                 else:
                     val = True
             else:
-                val = str2bool(self.settings.initValue(key))
+                val = str2bool(self.settings.initValue(grp, key))
     
             cbs[i].setChecked(val)
-            sections[i].setVisible(val)
-            cbs[i].stateChanged.connect(sections[i].setVisible)
+            tbs[i].setVisible(val)
+            cbs[i].stateChanged.connect(tbs[i].setVisible)
             cbs[i].stateChanged.connect(partial(self.mainUI.signals.emit,'setSetting', key, bool2str(val), grp))
 
         for layout in self.layouts():
@@ -138,9 +137,9 @@ class LayoutManager(DAMG):
         from ui.SysTray                     import SysTray
         from ui.subUI.HiddenLayout          import HiddenLayout
 
-        self.mainUI     = PipelineManager(self.settings, self.actionManager, self.buttonManager, self.threadManager)
-        self.sysTray    = SysTray(self.settings, self.actionManager, self.eventManager)
-        self.hiddenLayout = HiddenLayout()
+        self.mainUI                         = PipelineManager(self.settings, self.actionManager, self.buttonManager, self.threadManager)
+        self.sysTray                        = SysTray(self.settings, self.actionManager, self.eventManager)
+        self.hiddenLayout                   = HiddenLayout()
         self.setLayoutUnHidable(self.sysTray)
 
         layouts = [self.mainUI, self.sysTray, self.hiddenLayout]
@@ -151,7 +150,7 @@ class LayoutManager(DAMG):
         for layout in self.mainUI.subLayouts:
             self.registLayout(layout)
 
-        for layout in self.mainUI.topTabUI.tabLst:
+        for layout in self.mainUI.topTabUI.tabs:
             key = layout.key
             if not key in self._register.keys():
                 self._register[key] = layout
@@ -230,18 +229,6 @@ class LayoutManager(DAMG):
 
         layouts = [self.newProject]
         return layouts
-
-    def signOutEvent(self):
-        self.showOnlyLayout(self.signin)
-
-    def newAcountEvent(self):
-        self.showOnlyLayout(self.signup)
-
-    def switchAccountEvent(self):
-        self.showOnlyLayout(self.signin)
-
-    def signUpEvent(self):
-        self.showOnlyLayout(self.signup)
 
     def showOnlyLayout(self, layout):
         layouts = [l for l in self.layouts() if not l is layout and not l in self.unHidableLayouts]
@@ -322,6 +309,36 @@ class LayoutManager(DAMG):
 
     def registLayout(self, layout):
         return self._register.regisLayout(layout)
+
+    def globalSetting(self):
+        for layout in self.layouts():
+            # print(layout.key)
+            try:
+                layout.setContentMargin(1,1,1,1)
+            except AttributeError:
+                pass
+
+            try:
+                layout.setSizePolicy(SiPoMin, SiPoMin)
+            except AttributeError:
+                pass
+
+            try:
+                layout.setSpacing(2)
+            except AttributeError:
+                pass
+
+            if layout.key == 'PipelineManager':
+                layout.setFixedWidth(500)
+                # layout.setFixedHeight(850)
+                # self.parent.setWindowFlags(STAY_ON_TOP)
+                pass
+
+            if layout.key in ['TobTab', 'BotTab']:
+                layout.setMovable(True)
+                layout.setElideMode(Qt.ElideRight)
+                layout.setUsesScrollButtons(True)
+                pass
 
     @property
     def buildAll(self):

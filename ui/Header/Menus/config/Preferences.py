@@ -48,6 +48,8 @@ class GeneralSetting(GridLayout):
         self.tbPostCB       = CheckBox(txt='Post toolbar')
         self.mainToolBarCB  = CheckBox(txt="Main Toolbar")
 
+        self.mainToolBarCB.stateChanged.connect(self.allCheckBoxStateChanged)
+
         self.statusBarCB    = CheckBox(txt="Status Bar")
         self.connectStatuCB = CheckBox(txt="Connect Status")
         self.notifiCB       = CheckBox(txt="Notification")
@@ -72,6 +74,9 @@ class GeneralSetting(GridLayout):
         self.keys = ['toolbarTD', 'toolbarComp', 'toolbarArt', 'toolbarTex', 'toolbarPost', 'subToolbar',
                      'toolbarMain', 'toolbarStatus', 'toolbarSubMenu', 'toolbarConnect', 'toolbarNotifi']
 
+    def allCheckBoxStateChanged(self, bool):
+        for cb in self.checkBoxes[0:5]:
+            cb.setChecked(bool)
 
 class Preferences(Widget):
 

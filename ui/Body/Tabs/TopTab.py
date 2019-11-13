@@ -10,16 +10,17 @@ Description:
 
 # Python
 import sys
-from bin.data.damg                       import DAMGLIST
+from bin.data.damg              import DAMGLIST
 
 # PyQt5
 from PyQt5.QtWidgets            import QApplication
+from PyQt5.QtGui                import QResizeEvent
 
 # PLM
 from ui.uikits.Icon             import AppIcon
 from ui.uikits.BoxLayout        import VBoxLayout
 from ui.uikits.TabWidget        import TabWidget
-from ui.Body.Tabs import TopTab1, TopTap3, TopTab2
+from ui.Body.Tabs               import TopTab1, TopTap3, TopTab2
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
@@ -42,20 +43,28 @@ class TopTab(TabWidget):
         self.tab2               = TopTab2.TopTab2(self.buttonManager, self.parent)
         self.tab3               = TopTap3.TopTap3(self.buttonManager, self.parent)
 
-        self.tabLst             = DAMGLIST(listData=[self.tab1, self.tab2, self.tab3])
+        self.tabs               = DAMGLIST(listData=[self.tab1, self.tab2, self.tab3])
         self.tabNames           = DAMGLIST(listData=['Project', 'User', 'Cmd'])
 
-        for layout in self.tabLst:
-            layout.signals.showLayout.connect(self.signals.showLayout)
-            layout.signals.executing.connect(self.signals.executing)
-            layout.signals.regisLayout.connect(self.signals.regisLayout)
-            layout.signals.setSetting.connect(self.signals.setSetting)
-            layout.signals.openBrowser.connect(self.signals.openBrowser)
+        for layout in self.tabs:
+            # layout.signals.connect('executing', self.signals.executing)
+            # layout.signals.connect('regisLayout', self.signals.regisLayout)
+            # layout.signals.connect('openBrowser', self.signals.openBrowser)
+            # layout.signals.connect('setSetting', self.signals.setSetting)
+            # layout.signals.connect('showLayout', self.signals.showLayout)
+            # layout.settings._settingEnable = True
 
-            self.addTab(layout, self.tabNames[self.tabLst.index(layout)])
-            self.setTabIcon(self.tabLst.index(layout), AppIcon(32, self.tabNames[self.tabLst.index(layout)]))
+            self.addTab(layout, self.tabNames[self.tabs.index(layout)])
+            self.setTabIcon(self.tabs.index(layout), AppIcon(32, self.tabNames[self.tabs.index(layout)]))
 
         self.signals.updateAvatar.connect(self.tab2.update_avatar)
+
+    def resizeEvent(self, event):
+        w = self.width()
+        h = self.height()
+        for tab in self.tabs:
+            tab.resize(w-4, h-4)
+
 
 def main():
     app = QApplication(sys.argv)

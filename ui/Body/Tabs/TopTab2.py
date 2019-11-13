@@ -55,19 +55,17 @@ class TopTab2(Widget):
         self.avatar.setPixmap(QPixmap(get_avatar_image(self.username)))
         self.avatar.setScaledContents(True)
         self.avatar.setFixedSize(100, 100)
+        self.avatarGrp = GroupBox(self.username, [self.avatar], "ImageView")
 
-        buttons = self.buttonManager.userButtonGroupBox(self.parent)
+        self.avatarBtn = self.buttonManager.userButtonGroupBox(self.parent)
+        self.settingGrp = GroupBox("Setting", self.avatarBtn, "BtnGrid")
 
-        sec1Grp = GroupBox(self.username, [self.avatar], "ImageView")
-        sec2Grp = GroupBox("Setting", buttons, "BtnGrid")
-        sec1Grp.setMaximumWidth(120)
-        sec2Grp.setMaximumWidth(120)
 
-        sec3Grp, sec3Grid = GroupGrid("Messenger")
+        self.messGrp, sec3Grid = GroupGrid("Messenger")
 
-        self.layout.addWidget(sec1Grp, 0, 0, 3, 3)
-        self.layout.addWidget(sec2Grp, 3, 0, 3, 3)
-        self.layout.addWidget(sec3Grp, 0, 3, 6, 6)
+        self.layout.addWidget(self.avatarGrp, 0, 0, 3, 3)
+        self.layout.addWidget(self.settingGrp, 3, 0, 3, 3)
+        self.layout.addWidget(self.messGrp, 0, 3, 6, 6)
 
     @pyqtSlot(bool)
     def update_avatar(self, param):
@@ -78,6 +76,12 @@ class TopTab2(Widget):
             self.avatarScene = QGraphicsScene()
             self.avatarScene.addPixmap(self.avatar)
             self.avatarScene.update()
+
+    # def resizeEvent(self, event):
+    #     self.avatarGrp.setFixedSize(100, 100)
+    #     self.settingGrp.resize(100, self.height()-104)
+    #     # self.avatar.resize(self.avatarGrp.width() - 2, self.avatarGrp.height() - 2)
+    #     self.messGrp.resize(self.width()-104, self.height()-4)
 
 def main():
     app = QApplication(sys.argv)

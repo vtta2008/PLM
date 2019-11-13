@@ -79,48 +79,6 @@ class SignalManager(DAMG):
             key, signal, old = [keys[i], signals[i], olds[i]]
             self.signals.add(key, [signal, old])
 
-        self.objects        = ['PLMCORE', 'PLM', 'IconPth', 'ActionManager']
-
-        self.notContenMargin = ['Configurations', 'ServerConfig', 'ComboBox', 'Button', 'HBoxLayout',
-                                'VBoxLayout', 'ServerConfigPage1', 'ServerConfigPage2', 'ServerConfig', 'Label',
-                                'Widget', 'SettingUI', 'SettingInput', 'GridLayout', 'signin', 'GroupBox', 'LineEdit',
-                                'forgotPW', 'signup', 'CheckBox', 'mainUI', 'MainMenuBar', 'Action', 'SubMenuBar',
-                                'mainToolBar', 'TopTab', 'topTab1', 'topTab2', 'topTab3', 'topTab4', 'topTab5', 'TabBar',
-                                'TabWidget', 'tabs', 'botTab', 'GeneralSetting', 'Footer', 'statusBar']
-
-        self.notSizePolicy = []
-
-        self.notSpacing = []
-
-        self.globalSetting()
-
-    def globalSetting(self):
-        # if self.parent.key not in self.objects:
-        # if self.parent.key not in self.notContenMargin:
-        try:
-            self.parent.setContentMargin(1,1,1,1)
-        except AttributeError:
-            pass
-        # elif self.parent.key not in self.notSizePolicy:
-        try:
-            self.parent.setSizePolicy(SiPoExp, SiPoExp)
-        except AttributeError:
-            pass
-        # elif self.parent.key not in self.notSpacing:
-        try:
-            self.parent.setSpacing(2)
-        except AttributeError:
-            pass
-
-        if self.parent.key == 'PipelineManager':
-            self.parent.setFixedWidth(500)
-            # self.parent.setWindowFlags(STAY_ON_TOP)
-
-        if self.parent.key == 'TobTab' and self.parent.key == 'BotTab':
-            self.parent.setMovable(True)
-            self.parent.setElideMode(Qt.ElideRight)
-            self.parent.setUsesScrollButtons(True)
-
     def emit(self, signal, op1=None, op2=None, op3=None, op4=None):
 
         # data = [op1, op2, op3, op4]

@@ -57,7 +57,7 @@ class PLM(QApplication):
 
     toBuildLayouts = ['ProjectManager', 'ConfigProject', 'EditProject', 'NewOrganisation', 'EditOrganisation',
                       'ConfigOrganisation', 'OrganisationManager', 'NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager',
-                      'Alpha', 'HDRI', 'Texture', 'Feedback', 'ContactUs']
+                      'Alpha', 'HDRI', 'Texture', 'Feedback', 'ContactUs', 'NewTask', 'EditTask', 'ConfigTask', 'TaskManager']
 
     toBuildCommand  = []
 
@@ -100,6 +100,7 @@ class PLM(QApplication):
                                                         self.buttonManager, self.eventManager, self.threadManager, self)
         self.layoutManager.registLayout(self.browser)
         self.layoutManager.buildLayouts()
+        self.layoutManager.globalSetting()
 
         self.signIn                     = self.layoutManager.signin
         self.signUp                     = self.layoutManager.signup
@@ -147,10 +148,11 @@ class PLM(QApplication):
         self.setQuitOnLastWindowClosed(False)
         sys.exit(self.exec_())
 
-    def eventFilter(self, QObject, QEvent):
-        print('event key press: {0}'.format(QEvent.key()))
-        if QEvent.type() == KEY_PRESS and QEvent.key() == KEY_TAB:
-            print(QEvent)
+    def eventFilter(self, source, event):
+        print(source, event)
+        print('event key press: {0}'.format(event.key()))
+        if event.type() == KEY_PRESS and event.key() == KEY_TAB:
+            print(event)
         return True
 
     @property
@@ -187,8 +189,8 @@ class PLM(QApplication):
 
         if repeat:
             limit = 10
-            if not self.threadManager.counter.printCounter:
-                self.threadManager.setPrintCounter(True)
+            if self.threadManager.counter.printCounter:
+                self.threadManager.setPrintCounter(False)
 
             if self.threadManager.counter._countLimited != limit:
                 self.threadManager.setCountLimited(limit)
@@ -197,7 +199,7 @@ class PLM(QApplication):
                 self.threadManager.startCounting()
 
             # print('block signal executing.')
-            return self.countDownReset(self.executing_old, limit)
+            return self.countDownReset(limit)
         else:
             if cmd in self.registryLayout.keys():
                 return self.signals.emit('showLayout', cmd, 'show')
@@ -223,12 +225,12 @@ class PLM(QApplication):
                 else:
                     return self.logger.info("This command will be built later.".format(cmd))
 
-    def countDownReset(self, lst_old, limit):
+    def countDownReset(self, limit):
         self.count += 1
         if self.count == limit:
-            lst_old = []
+            self.executing_old = []
 
-        return lst_old
+        return self.executing_old
 
     @pyqtSlot(str, str, name="showLayout")
     def showLayout(self, layoutID, mode):
@@ -265,7 +267,6 @@ class PLM(QApplication):
 
         if not repeat:
             # print('recieve signal showLayout from {0}: {1}'.format(layoutID, mode))
-            # print(self.showLayout_old)
             pass
         else:
             # print('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
@@ -329,7 +330,9 @@ class PLM(QApplication):
                 else:
                     self.logger.report('LayoutModeError: {0} does not have mode: {1}'.format(layoutID, mode))
         else:
-            self.logger.report("LayouKeyError: {0}".format(layoutID))
+            if not layoutID in self.toBuildLayouts:
+                self.toBuildLayouts.append(layoutID)
+                self.logger.report("LayouKeyError: {0}".format(layoutID))
 
     @pyqtSlot(str, str, str, int, name='sysNotify')
     def sysNotify(self, title, mess, iconType, timeDelay):
@@ -364,9 +367,9 @@ class PLM(QApplication):
 
         stylesheet = dict(dark      = StyleSheets('dark').changeStylesheet,
                           bright    = StyleSheets('bright').changeStylesheet, )
-
-        self.setStyleSheet(stylesheet[style])
-        self.settings.initSetValue('styleSheet', 'dark', self.key)
+        setStyle = stylesheet[style]
+        self.setStyleSheet(setStyle)
+        self.setSetting('styleSheet', 'dark', self.key)
 
     def signInEvent(self):
         self.switchAccountEvent()
@@ -403,7 +406,7 @@ class PLM(QApplication):
         return old, repeat
 
     def exitEvent(self):
-        print(self.toBuildLayouts, self.toBuildCommand)
+        print(self.toBuildLayouts.sort(), self.toBuildCommand.sort())
         self.exit()
 
 if __name__ == '__main__':

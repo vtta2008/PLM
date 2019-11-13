@@ -13,6 +13,7 @@ import sys
 
 # PyQt5
 from PyQt5.QtWidgets                    import QApplication
+from PyQt5.QtGui                        import QResizeEvent
 
 # PLM
 
@@ -90,10 +91,13 @@ class PipelineManager(MainWindow):
                             self.topTabUI   , self.botTabUI         , self.footer           , self.statusBar, ]
 
         # for layout in self.subLayouts:
-        #     layout.signals.executing.connect(self.signals.executing)
-        #     layout.signals.regisLayout.connect(self.signals.regisLayout)
-        #     layout.signals.openBrowser.connect(self.signals.openBrowser)
-        #     layout.signals.setSetting.connect(self.signals.setSetting)
+        #     print(layout.key)
+        #     layout.signals.connect('executing', self.signals.executing)
+        #     layout.signals.connect('regisLayout', self.signals.regisLayout)
+        #     layout.signals.connect('openBrowser', self.signals.openBrowser)
+        #     layout.signals.connect('setSetting', self.signals.setSetting)
+        #     layout.signals.connect('showLayout', self.signals.showLayout)
+        #     layout.settings._settingEnable = True
 
         # Header
         # Header Menu
@@ -127,11 +131,32 @@ class PipelineManager(MainWindow):
 
         self.addDockWidget(pos, dock)
 
+    # def resizeEvent(self, event):
+    #
+    #     w = self.width()
+    #     h = self.height()
+    #     p = 15
+    #
+    #     hd = 2
+    #     tt = 6
+    #     bt = 3
+    #     ft = 2
+    #
+    #     self.mainMenuSec.resize(w*3/5, h/p)
+    #     self.connectStatusSec.resize(w*2/5, h/p)
+    #     self.mainToolBarSec.resize(w-2, h/p)
+    #
+    #     self.topTabUI.resize(w-2, h*tt/p)
+    #     self.botTabUI.resize(w*2/3, h*bt/p)
+    #     self.notifiSec.resize(w/3, h*bt/p)
+    #
+    #     self.footer.resize(w-2, h/p)
+    #     self.statusBar.resize(w-2, h/p)
+
     def showEvent(self, event):
-        self.notifiSec.show()
-        self.connectStatusSec.show()
-        self.mainToolBarSec.show()
-        self.mainMenuSec.show()
+        for layout in [self.mainMenuSec, self.mainMenuSec, self.connectStatusSec, self.notifiSec]:
+            if layout.isHidden():
+                self.signals.emit('showLayout', layout.key, 'show')
 
 # -------------------------------------------------------------------------------------------------------------
 def main():
