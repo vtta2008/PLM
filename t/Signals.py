@@ -270,7 +270,7 @@ class Signals(DAMG):
     def emitting(self, exit, enter=None):
         """
         Context manager for emitting signals either on enter or on exit of a context.
-        By default, if this context manager is created using a single arg-style argument,
+        By default, if this context manager is created using a single arg-name argument,
         it will emit a signal_cpu on exit. Otherwise, keyword arguments indicate signal_cpu points
         """
 

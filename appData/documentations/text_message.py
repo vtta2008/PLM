@@ -7,6 +7,7 @@ Description:
     This script is master file of Pipeline Tool
 
 """
+TRADE_MARK = '™'
 
 PLM_ABOUT = """
 

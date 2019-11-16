@@ -64,7 +64,7 @@ class EnvVariableManager:
         try:
             os.getenv(envKey)
         except KeyError:
-            print('{0} is not existed, create showLayout_new environment configKey.'.format(envKey))
+            print('{0} is not existed, create new environment configKey.'.format(envKey))
             subprocess.Popen('SetX {0} {1}'.format(envKey, envVal), shell=True).wait()
         else:
             if os.getenv(envKey) is None:

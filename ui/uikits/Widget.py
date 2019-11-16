@@ -15,7 +15,7 @@ from PyQt5.QtWidgets                        import QWidget, QVBoxLayout, QLabel,
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
 
-from ui.SignalManager import SignalManager
+from ui.SignalManager                       import SignalManager
 from cores.Settings                         import Settings
 from ui.uikits.Icon                         import AppIcon
 

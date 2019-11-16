@@ -35,7 +35,7 @@ class Pixmap(QPixmap):
             print('set avatar: {0}'.format(get_avatar_image(self.image)))
             self.fromImage(QImage(get_avatar_image(self.image)))
         else:
-            print('set image: {}'.format(self.image))
+            print('set image: {0}'.format(self.image))
             self.fromImage(QImage(self.image))
 
     @property

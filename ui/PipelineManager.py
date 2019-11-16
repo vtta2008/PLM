@@ -66,10 +66,10 @@ class PipelineManager(MainWindow):
         self.connectStatus          = ConnectStatus(self)
         self.notification           = GridLayout(self)
 
-        self.mainMenuSec            = GroupBox("Main Menu"      , self.mainMenuBar      , "qmainLayout")
-        self.connectStatusSec       = GroupBox("Connect Status" , self.connectStatus    , "autoGrid")
-        self.mainToolBarSec         = GroupBox("Tool Bar"       , self.mainToolBar      , "qmainLayout")
-        self.notifiSec              = GroupBox("Notification"   , self.notification     , "autoGrid")
+        self.mainMenuSec            = GroupBox("Main Menu"      , self.mainMenuBar      , "qmainLayout" , self)
+        self.connectStatusSec       = GroupBox("Connect Status" , self.connectStatus    , "autoGrid"    , self)
+        self.mainToolBarSec         = GroupBox("Tool Bar"       , self.mainToolBar      , "qmainLayout" , self)
+        self.notifiSec              = GroupBox("Notification"   , self.notification     , "autoGrid"    , self)
 
         self.mainMenuSec.key        = "MainMenuSectionSection"
         self.mainToolBarSec.key     = "MainToolBarSectionSection"

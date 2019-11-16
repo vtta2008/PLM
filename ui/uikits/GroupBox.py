@@ -162,7 +162,6 @@ class GroupBox(QGroupBox):
         else:
             print("Unrecognise mode: {}".format(self.mode))
 
-
     @pyqtSlot(str)
     def changeTitle(self, title):
         if not title is None or not title:

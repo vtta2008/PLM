@@ -773,7 +773,7 @@ class ToolBoxII(QtWidgets.QWidget):
         mid1Y = [0, 0, 0, 0, 0]
         mid1H = [0, 1, 1, 1, 1]
         mid1W = [0, m1W, m1W / 2, m1W, m1W]
-        mid1L = ['', 'Preset 2D style Controller', 'Preset 3D style Controller']
+        mid1L = ['', 'Preset 2D name Controller', 'Preset 3D name Controller']
         mid1B = ['', 'Group', 'Center Pivot', 'Freezee Transform']
 
         m2Y = mid1W[4]

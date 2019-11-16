@@ -145,7 +145,7 @@ class MainWindow(QMainWindow):
         link = "<p><a title='Axel Schneider' href='http://goodoldsongs.jimdo.com' target='_blank'>Axel Schneider</a></p>"
         title = "über QTextEdit"
         message = (
-                    "<span style='text-shadow: #2e3436 2px 2px 2px; color: #6169e1; font-size: 24pt;font-weight: bold;'><strong>QTextEdit 1.2</strong></span></p><br><br>created by<h2 >" + link + "</h2> with PyQt5"
+                    "<span name='text-shadow: #2e3436 2px 2px 2px; color: #6169e1; font-size: 24pt;font-weight: bold;'><strong>QTextEdit 1.2</strong></span></p><br><br>created by<h2 >" + link + "</h2> with PyQt5"
                                                                                                                                                                                                    "<br><br>Copyright © 2018 The Qt Company Ltd and other contributors."
                                                                                                                                                                                                    "<br>Qt and the Qt logo are trademarks of The Qt Company Ltd.")
         msg = QMessageBox(QMessageBox.Information, title, message, QMessageBox.NoButton, self,

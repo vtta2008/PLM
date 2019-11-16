@@ -20,7 +20,7 @@ from PyQt5.QtGui                import QPixmap
 
 
 # Plt
-from appData                    import __localServer__, SERVER_CONNECT_FAIL
+from appData                    import __localServer__, __google__, SERVER_CONNECT_FAIL
 from ui.uikits.MessageBox       import MessageBox
 from ui.uikits.GridLayout       import GridLayout
 from ui.uikits.Label            import Label
@@ -33,12 +33,16 @@ class ConnectStatus(GridLayout):
 
     key = 'ConnectStatus'
 
-    onlineStage = pyqtSignal(bool)
-
     def __init__(self, parent=None):
         super(ConnectStatus, self).__init__(parent)
 
-        self.serverConnectable = False
+        self.serverStatus = Label({'wmax': 20, 'stt': 'Server Connection Status', })
+        self.internetStatus = Label({'wmax': 20, 'stt': 'Internet Connection Status', })
+
+        self.server_status()
+        self.addWidget(self.serverStatus, 0, 0, 1, 1)
+
+    def server_status(self):
 
         try:
             r = requests.get(__localServer__)
@@ -47,38 +51,18 @@ class ConnectStatus(GridLayout):
             sys.exit()
         else:
             if r.status_code == 200:
-                self.serverConnectable = True
+                self.serverIcon = get_app_icon(16, 'Connected')
             else:
-                self.serverConnectable = False
+                self.serverIcon = get_app_icon(16, 'Disconnected')
 
-        self.connected = get_app_icon(16, 'Connected')
-        self.disconnected = get_app_icon(16, 'Disconnected')
+        self.serverStatus.setPixmap(QPixmap(self.serverIcon))
+        self.serverStatus.update()
 
-        self.networkStatus = Label({'txt': ''})
-        self.networkStatus.setMaximumWidth(20)
-
-        if self.serverConnectable:
-            self.networkStatus.setPixmap(QPixmap(self.connected))
-        else:
-            self.networkStatus.setPixmap(QPixmap(self.disconnected))
-
-        self.addWidget(self.networkStatus, 0, 0, 1, 1)
-
-        self.onlineStage.connect(self.connection_status)
-        self.onlineStage.emit(self.serverConnectable)
-        self.txt = Label({'txt': "Connecting"})
-
-        self.addWidget(self.txt, 0, 1, 1, 1)
-
-    def connection_status(self, param):
-
-        if param:
-            self.networkStatus.setPixmap(QPixmap(self.connected))
-        else:
-            self.networkStatus.setPixmap(QPixmap(self.disconnected))
-
-        self.networkStatus.update()
-
+    def internet_status(self):
+        try:
+            r = requests.get(__google__)
+        except Exception:
+            self.parent.signals.emit('sysNotify', )
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 25/05/2018

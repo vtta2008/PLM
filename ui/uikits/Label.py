@@ -132,6 +132,8 @@ class Label(QLabel):
                 self.setFont(QFont(value))
             elif key == 'alg':
                 self.setAlignment(PRS[value])
+            elif key == 'wmax':
+                self.setMaximumWidth(value)
             elif key == 'wmin':
                 self.setMinimumWidth(value)
             elif key == 'hmin':
@@ -152,6 +154,8 @@ class Label(QLabel):
                 self.setBuddy(value)
             elif key == 'link':
                 self.setOpenExternalLinks(value)
+            elif key == 'stt':
+                self.setToolTip(value)
             else:
                 print("PresetKeyError at {0}: No such key registed in preset: {1}: {2}".format(__name__, key, value))
 
