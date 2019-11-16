@@ -109,6 +109,7 @@ class PLM(Application):
                 layout.signals.connect('openBrowser', self.openBrowser)
                 layout.signals.connect('setSetting', self.setSetting)
                 layout.signals.connect('sysNotify', self.sysNotify)
+                # print(layout.key)
                 layout.settings._settingEnable = True
 
                 if layout.key == 'SignIn':
@@ -278,9 +279,9 @@ class PLM(Application):
 
         if layoutID in self.registryLayout.keys():
             if layoutID in self.ignoreIDs:
-                if not layoutID in self.toBuildLayouts:
+                if not layoutID in self.toBuildUis:
                     self.logger.report("Layout: '{0}' is not registerred yet.".format(layoutID))
-                    self.toBuildLayouts.append(layoutID)
+                    self.toBuildUis.append(layoutID)
                     self.todoList.update()
             else:
                 layout = self.registryLayout[layoutID]
@@ -324,9 +325,9 @@ class PLM(Application):
                 else:
                     self.logger.report('LayoutModeError: {0} does not have mode: {1}'.format(layoutID, mode))
         else:
-            if not layoutID in self.toBuildLayouts:
+            if not layoutID in self.toBuildUis:
                 self.logger.report("Layout key does not exists: {0}".format(layoutID))
-                self.toBuildLayouts.append(layoutID)
+                self.toBuildUis.append(layoutID)
                 self.todoList.update()
 
     @pyqtSlot(str, str, str, int, name='sysNotify')

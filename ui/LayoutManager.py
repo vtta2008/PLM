@@ -137,17 +137,18 @@ class LayoutManager(DAMG):
         from ui.SysTray                     import SysTray
         from ui.subUI.HiddenLayout          import HiddenLayout
 
-        self.mainUI                         = PipelineManager(self.settings, self.actionManager, self.buttonManager, self.threadManager)
-        self.sysTray                        = SysTray(self.settings, self.actionManager, self.eventManager)
+        self.mainUI                         = PipelineManager(self.actionManager, self.buttonManager, self.threadManager)
+        self.sysTray                        = SysTray(self.actionManager, self.eventManager)
         self.hiddenLayout                   = HiddenLayout()
         self.setLayoutUnHidable(self.sysTray)
 
         layouts = [self.mainUI, self.sysTray, self.hiddenLayout]
 
         for layout in layouts:
+            layout.settings._settingEnable = True
             self.registLayout(layout)
 
-        for layout in self.mainUI.subLayouts:
+        for layout in self.mainUI.layouts:
             self.registLayout(layout)
 
         for layout in self.mainUI.topTabUI.tabs:
@@ -172,6 +173,7 @@ class LayoutManager(DAMG):
                     self. reference, self.version]
 
         for layout in layouts:
+            layout.settings._settingEnable = True
             self.registLayout(layout)
 
         return layouts
@@ -180,7 +182,7 @@ class LayoutManager(DAMG):
         from ui.subUI.Settings.SettingUI    import SettingUI
         from ui.subUI.Settings.UserSetting  import UserSetting
 
-        self.settingUI                      = SettingUI(self.settings, self)
+        self.settingUI                      = SettingUI()
         self.userSetting                    = UserSetting()
 
         layouts = [self.settingUI, self.userSetting]
@@ -215,6 +217,7 @@ class LayoutManager(DAMG):
                        self.textEditor]
 
         for layout in layouts:
+            layout.settings._settingEnable = True
             self.registLayout(layout)
 
         return layouts
@@ -225,6 +228,7 @@ class LayoutManager(DAMG):
         self.newProject                     = NewProject()
 
         for layout in [self.newProject, ]:
+            layout.settings._settingEnable = True
             self.registLayout(layout)
 
         layouts = [self.newProject]

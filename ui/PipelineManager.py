@@ -39,15 +39,14 @@ class PipelineManager(MainWindow):
     key = 'PipelineManager'
     _name = __appname__
 
-    def __init__(self, settings, actionManager, buttonManager, threadManager, parent=None):
+    def __init__(self, actionManager, buttonManager, threadManager, parent=None):
         super(PipelineManager, self).__init__(parent)
 
         self.url = __homepage__
         self.setObjectName(self._name)
         self.setWindowTitle(__appname__)
         self.setWindowIcon(LogoIcon("Logo"))
-        self.settings       = settings
-        # print('{0} - settingable: {1}'.format(self.key, self.settings._settingEnable))
+
         self.actionManager  = actionManager
         self.buttonManager  = buttonManager
         self.threadManager  = threadManager
@@ -86,11 +85,17 @@ class PipelineManager(MainWindow):
         self.footer                 = Footer(self.buttonManager, self.threadManager, self)
         self.statusBar              = MainStatusBar(self)
 
-        self.subLayouts =  [self.mainMenuBar, self.mainToolBar      , self.connectStatus    , self.notification,
-                            self.mainMenuSec, self.mainToolBarSec   , self.connectStatusSec , self.notifiSec,
-                            self.topTabUI   , self.botTabUI         , self.footer           , self.statusBar, ]
+        self.layouts =  [self.mainMenuBar, self.mainToolBar      , self.connectStatus    , self.notification,
+                         self.mainMenuSec, self.mainToolBarSec   , self.connectStatusSec , self.notifiSec,
+                         self.topTabUI   , self.botTabUI         , self.footer           , self.statusBar, ]
 
-        # for layout in self.subLayouts:
+        self.allowSettingLayouts = [self.mainMenuBar, self.mainToolBar, self.connectStatus, self.notification,
+                                    self.topTabUI, self.botTabUI, self.footer, self.statusBar, ]
+
+        for layout in self.allowSettingLayouts:
+            layout.settings._settingEnable = True
+
+        # for layout in self.layouts:
         #     print(layout.key)
         #     layout.signals.connect('executing', self.signals.executing)
         #     layout.signals.connect('regisLayout', self.signals.regisLayout)

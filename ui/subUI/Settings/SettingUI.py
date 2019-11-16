@@ -39,11 +39,10 @@ class SettingUI(Widget):
     key = 'SettingUI'
 
 
-    def __init__(self, setting, parent=None):
+    def __init__(self, parent=None):
         super(SettingUI, self).__init__(parent)
 
         self.parent = parent
-        self.settings = setting
         self.menubar = QMenuBar(self)
         self.regValue = SettingOutput(self.settings)
         self.regInfo = SettingInput(self.settings)
