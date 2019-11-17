@@ -259,7 +259,6 @@ class Application(QApplication):
     def trackEvents(self, val):
         self._trackEvents           = val
 
-
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 6:55 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

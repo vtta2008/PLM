@@ -14,7 +14,7 @@ from __future__ import absolute_import, unicode_literals
 # PyQt5
 from PyQt5.QtWidgets                        import QLabel, QLCDNumber
 from PyQt5.QtGui                            import QFont
-from PyQt5.QtCore                           import QTimeZone, QTime
+from PyQt5.QtCore                           import QTimeZone, QTime, QDate
 
 # PLM
 from appData                                import __copyright__, PRS, ST_FORMAT, SETTING_FILEPTH
@@ -175,6 +175,7 @@ class LCDNumber(QLCDNumber):
         self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'],self)
         self.time = QTime()
         self.zone = QTimeZone()
+        self.date = QDate()
 
         self.values = dict(w = self.width(), h = self.height(), x = self.x(), y = self.y())
 
@@ -263,6 +264,9 @@ class LCDNumber(QLCDNumber):
 
     def currentTimeZone(self):
         return self.zone.utc()
+
+    def currentDate(self):
+        return self.date.currentDate()
 
 usernameLabel = Label({'txt': 'Username'})
 passwordLabel = Label({'txt': 'Password'})

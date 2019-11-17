@@ -75,7 +75,7 @@ MAINVAR = dict(
 
     mayaIcon = ['After Effects CC.icon.png', 'Hiero.icon.png', 'Houdini FX.icon.png', 'Illustrator CC.icon.png',
                       'Mari.icon.png', 'Mudbox 2017.icon.png', 'NukeX.icon.png', 'Photoshop CC.icon.png',
-                      'Premiere Pro CC.icon.png', 'ZBrush 4R7.icon.png', 'cam.icon.png', 'clock.icon.png',
+                      'Premiere Pro CC.icon.png', 'ZBrush 4R7.icon.png', 'cam.icon.png', 'timeClock.icon.png',
                       'createMayaFolder.icon.png', 'toolboxIV.icon.png', 'graphEditor.icon.png', 'hypershader.icon.png',
                       'nodeEditor.icon.png', 'obj.icon.png','openLoad.icon.png', 'openProjectFolder.icon.png',
                       'openPublishFolder.icon.png', 'openSceneFolder.icon.png', 'openSnapShotFolder.icon.png',

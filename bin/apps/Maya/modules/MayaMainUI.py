@@ -589,7 +589,7 @@ class MayaMainUI(QtWidgets.QWidget):
         adj = 3
 
         ann3 = ['Tool Box I', 'Tool Box II', 'Tool Box III', 'Tool Box IV', 'Clock and Reminder']
-        ic3 = ['toolboxI.icon.png', 'toolboxII.icon.png', 'toolboxIII.icon.png', 'toolboxIV.icon.png', 'clock.icon.png']
+        ic3 = ['toolboxI.icon.png', 'toolboxII.icon.png', 'toolboxIII.icon.png', 'toolboxIV.icon.png', 'timeClock.icon.png']
         cm3 = [self.bts.toolBoxI, self.bts.toolBoxII, self.bts.toolBoxIII, self.bts.toolBoxIV, self.bts.userLib]
 
         ids = ['gcb', 'ccb', 'jcb', 'ncb', 'lcb']

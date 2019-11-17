@@ -13,7 +13,6 @@ import sys
 
 # PyQt5
 from PyQt5.QtWidgets                    import QApplication
-from PyQt5.QtGui                        import QResizeEvent
 
 # PLM
 
@@ -28,6 +27,7 @@ from ui.Header.Network.ConnectStatus    import ConnectStatus
 from ui.Header.AppToolbar.MainToolBar   import MainToolBar
 from ui.Body.Tabs.TopTab                import TopTab                           # Body
 from ui.Body.Tabs.BotTab                import BotTab
+from ui.Body.Notification               import Notification
 from ui.Footer.Footer                   import Footer                           # Footer
 from ui.Footer.MainStatusBar            import MainStatusBar
 
@@ -63,7 +63,7 @@ class PipelineManager(MainWindow):
         self.mainMenuBar            = MainMenuBar(self.actionManager, self)
         self.mainToolBar            = MainToolBar(self.actionManager, self)
         self.connectStatus          = ConnectStatus(self)
-        self.notification           = GridLayout(self)
+        self.notification           = Notification(self.threadManager, self)
 
         self.mainMenuSec            = GroupBox("Main Menu"      , self.mainMenuBar      , "qmainLayout" , self)
         self.connectStatusSec       = GroupBox("Connect Status" , self.connectStatus    , "autoGrid"    , self)
@@ -106,8 +106,8 @@ class PipelineManager(MainWindow):
 
         # Header
         # Header Menu
-        self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 6)
-        self.layout.addWidget(self.connectStatusSec, 0, 6, 1, 3)
+        self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 7)
+        self.layout.addWidget(self.connectStatusSec, 0, 7, 1, 2)
 
         # Header ToolBar
         self.layout.addWidget(self.mainToolBarSec, 1, 0, 1, 9)

@@ -28,7 +28,7 @@ from appData                            import (__localServer__, PLMAPPID, __org
                                                 ST_FORMAT, SYSTRAY_UNAVAI, KEY_TAB, KEY_PRESS)
 
 from ui.ThreadManager                   import ThreadManager
-from utils                              import str2bool, clean_file_ext, QuerryDB
+from utils                              import str2bool, clean_file_ext, LocalDatabase
 from cores.Loggers                      import Loggers
 from cores.Settings                     import Settings
 from cores.Registry                     import RegistryLayout
@@ -66,8 +66,10 @@ class PLM(Application):
 
         # Multithreading.
         self.threadManager              = ThreadManager()
-        self.database                   = QuerryDB()                                                    # Database tool
+        self.database                   = LocalDatabase()                                            # Database tool
         self.browser                    = Browser()
+
+        self.database.create_table('test_table', {'test_column': 'varchar'})
 
         self.set_styleSheet('dark')                                                                  # Layout name
         self.setWindowIcon(LogoIcon("Logo"))                                                         # Set up task bar icon

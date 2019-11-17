@@ -16,7 +16,7 @@ from functools import partial
 
 # PyQt5
 from PyQt5.QtCore   import (pyqtSignal, pyqtSlot, QObject, pyqtProperty, QThreadPool, QThread, QRunnable, QTimer,
-                            QTime, QTimeZone)
+                            QDateTime, QDate)
 
 __copyright__   = "Copyright (c) 2017 - 2019 Trinh Do & Duong Minh Duc"
 
@@ -694,6 +694,104 @@ class BaseTimer(QTimer):
         self._name                          = newName
 
 # -------------------------------------------------------------------------------------------------------------
+class BaseDate(QDate):
+
+    Type                                    = 'DAMGDATE'
+    key                                     = 'BaseDate'
+    _name                                   = 'DAMG Date'
+    _count                                  = 0
+    _copyright                              = __copyright__
+    _data                                   = dict()
+
+    def __init__(self):
+        QDate.__init__(self)
+
+    def __str__(self):
+        """ Print object will return data string """
+        return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
+
+    def __repr__(self):
+        """ Print object ill return json data type """
+        return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def count(self):
+        return self._count
+
+    @count.setter
+    def count(self, newVal):
+        self._count                         = newVal
+
+    @data.setter
+    def data(self, newData):
+        self._data                          = newData
+
+    @name.setter
+    def name(self, newName):
+        self._name                          = newName
+
+# -------------------------------------------------------------------------------------------------------------
+class BaseDateTime(QDateTime):
+
+    Type                                    = 'DAMGDATETIME'
+    key                                     = 'BaseDateTime'
+    _name                                   = 'DAMG Date & Time'
+    _count                                  = 0
+    _copyright                              = __copyright__
+    _data                                   = dict()
+
+    def __init__(self):
+        QDateTime.__init__(self)
+
+    def __str__(self):
+        """ Print object will return data string """
+        return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
+
+    def __repr__(self):
+        """ Print object ill return json data type """
+        return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def data(self):
+        return self._data
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def count(self):
+        return self._count
+
+    @count.setter
+    def count(self, newVal):
+        self._count                         = newVal
+
+    @data.setter
+    def data(self, newData):
+        self._data                          = newData
+
+    @name.setter
+    def name(self, newName):
+        self._name                          = newName
+
+# -------------------------------------------------------------------------------------------------------------
 class DAMGREGISTER(BaseDict):
     """
     This is the class to manage all of DAMG object type.
@@ -708,7 +806,7 @@ class DAMGREGISTER(BaseDict):
 
     object_types                             = ['DAMGOBJECT', 'DAMGDICT', 'DAMGLIST', 'DAMGWORKER',
                                                 'DAMGWORKERSIGNAL', 'DAMGTHREAD', 'DAMGPOOL', 'DAMGERROR',
-                                                'DAMGTIMER', ]
+                                                'DAMGTIMER', 'DAMGDATE', 'DAMGDATETIME']
 
     object_names                            = list()
     object_ids                              = list()
@@ -730,6 +828,8 @@ class DAMGREGISTER(BaseDict):
         self._POOLcount                     = 0
         self._TUPLEcount                    = 0
         self._TIMERcount                    = 0
+        self._DATEcount                     = 0
+        self._DATETIMEcount                 = 0
 
     def register(self, obj):
         """ Conduct register for object """
@@ -840,9 +940,18 @@ class DAMGREGISTER(BaseDict):
         elif obj.Type == 'DAMGTUPLE':
             self._TUPLEcount += self._step
             obj.__count = self._TUPLEcount
+        # for DAMGTIMER class
         elif obj.Type == 'DAMGTIMER':
             self._TIMERcount += self._step
             obj._count = self._TIMERcount
+        # for DAMGDATE class
+        elif obj.Type == 'DAMGDATE':
+            self._DATEcount += self._step
+            obj._count = self._DATEcount
+        # for DAMGDATETIME class:
+        elif obj.Type == 'DAMGDATETIME':
+            self._DATETIMEcount += self._step
+            obj._count = self._DATETIMEcount
         else:
             # for DAMGERROR class
             self._ERRORcount += self._step
@@ -956,6 +1065,14 @@ class DAMGREGISTER(BaseDict):
         return self._TIMERcount
 
     @property
+    def DATEcount(self):
+        return self._DATEcount
+
+    @property
+    def DATETIMEcount(self):
+        return self._DATETIMEcount
+
+    @property
     def step(self):
         return self._step
 
@@ -1002,6 +1119,14 @@ class DAMGREGISTER(BaseDict):
     @TIMMERcount.setter
     def TIMMERcount(self, newVal):
         self._TIMERcount                    = newVal
+
+    @DATEcount.setter
+    def DATEcount(self, newVal):
+        self._DATEcount                     = newVal
+
+    @DATETIMEcount.setter
+    def DATETIMEcount(self, newVal):
+        self._DATETIMEcount                 = newVal
 
 objRegistry = DAMGREGISTER()
 
@@ -1158,6 +1283,24 @@ class DAMGTIMER(BaseTimer):
 
         objRegistry.register(self)
 
+class DAMGDATE(BaseDate):
+
+    key                                     = 'DAMGDATE'
+
+    def __index__(self):
+        BaseDate.__init__(self)
+
+        objRegistry.register(self)
+
+class DAMGDATETIME(BaseDateTime):
+
+    key                                     = 'DAMGDATETIME'
+
+    def __index__(self):
+        BaseDateTime.__init__(self)
+
+        objRegistry.register(self)
+
 if __name__ == '__main__':
 
     a = DAMG()
@@ -1170,6 +1313,7 @@ if __name__ == '__main__':
     h = DamgWorkerSignals()
     i = DAMGTUPLE(['a', 'b', 'c'])
     j = DAMGTIMER()
+    k = DAMGDATE()
 #
 #     print(a, b, c, d, e, f, g, h, i, j)
 
