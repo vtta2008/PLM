@@ -37,8 +37,6 @@ class Widget(QWidget):
         self.setWindowIcon(AppIcon(32, self.key))
         self.setWindowTitle(self.key)
 
-        self.values = dict(w = self.width(), h = self.height(), x = self.x(), y = self.y())
-
     def sizeHint(self):
         size = super(Widget, self).sizeHint()
         size.setHeight(size.height())
@@ -63,17 +61,18 @@ class Widget(QWidget):
 
     def closeEvent(self, event):
         if __name__=='__main__':
+            self.setValue('showLayout', 'close')
             self.close()
         else:
+            self.setValue('showLayout', 'hide')
             self.signals.emit('showLayout', self.key, 'hide')
 
     def hideEvent(self, event):
         if __name__=='__main__':
+            self.setValue('showLayout', 'hide')
             self.hide()
         else:
-            if self.settings._settingEnable:
-                for key, value in self.values.items():
-                    self.setValue(key, value)
+            self.setValue('showLayout', 'hide')
             self.signals.emit('showLayout', self.key, 'hide')
 
     def showEvent(self, event):
@@ -84,27 +83,22 @@ class Widget(QWidget):
             x = self.getValue('x')
             y = self.getValue('x')
 
-            vals = [w, h, x, y]
-
-            for i in range(len(vals)):
-                if vals[i] is None:
-                    key = [k for k in self.values.keys()]
-                    value = self.values[key[i]]
-                    for index, element in enumerate(vals):
-                        if element == vals[i]:
-                            vals[index] = value
-                    self.setValue(key[i], self.values[key[i]])
-
-            for v in vals:
-                if not type(v) in [int]:
-                    v = int(v)
-
-            self.resize(vals[0], vals[1])
-            self.move(vals[2], vals[3])
+            if w is None:
+                w = self.width()
+            if h is None:
+                h = self.height()
+            if x is None:
+                x = 0
+            if y is None:
+                y = 0
+            self.resize(int(w), int(h))
+            self.move(int(x), int(h))
 
         if __name__=='__main__':
+            self.setValue('showLayout', 'show')
             self.show()
         else:
+            self.setValue('showLayout', 'show')
             self.signals.emit('showLayout', self.key, 'show')
 
     @property

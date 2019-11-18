@@ -89,11 +89,11 @@ class PipelineManager(MainWindow):
                          self.mainMenuSec, self.mainToolBarSec   , self.connectStatusSec , self.notifiSec,
                          self.topTabUI   , self.botTabUI         , self.footer           , self.statusBar, ]
 
-        self.allowSettingLayouts = [self.mainMenuBar, self.mainToolBar, self.connectStatus, self.notification, ]
+        # self.allowSettingLayouts = [self.mainMenuBar, self.mainToolBar, self.connectStatus, self.notification, ]
                                     # self.topTabUI, self.botTabUI, self.footer, self.statusBar, ]
 
-        for layout in self.allowSettingLayouts:
-            layout.settings._settingEnable = True
+        # for layout in self.allowSettingLayouts:
+        #     layout.settings._settingEnable = True
 
         # for layout in self.layouts:
         #     print(layout.key)

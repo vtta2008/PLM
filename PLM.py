@@ -70,8 +70,6 @@ class PLM(Application):
         self.database                   = LocalDatabase()                                            # Database tool
         self.browser                    = Browser()
 
-        self.database.create_table('test_table', {'test_column': 'varchar'})
-
         self.set_styleSheet('dark')                                                                  # Layout name
         self.setWindowIcon(LogoIcon("Logo"))                                                         # Set up task bar icon
         self.appID = self.applicationPid()
@@ -234,6 +232,9 @@ class PLM(Application):
         self.showLayout_old, repeat = self.checkSignalRepeat(self.showLayout_old, [layoutID, mode])
 
         if layoutID in self.registryLayout.keys():
+            if layoutID in ['SysTray', 'ConnectStatus', 'Notification']:
+                return
+
             layout = self.registryLayout[layoutID]
             if layout.windowState() & StateNormal:
                 state = 'showNormal'
@@ -354,15 +355,14 @@ class PLM(Application):
         self._login = val
 
         if not self._login:
-            self.mainUI.hide()
-            self.mainUI.setValue('showLayout', 'hide')
+            self.showLayout(self.mainUI.key, 'hide')
+            self.mainUI.signals.states.add(self.mainUI.key, 'hide')
         else:
-            self.mainUI.show()
-            self.mainUI.setValue('showLayout', 'show')
+            self.showLayout(self.mainUI.key, 'show')
+            self.mainUI.signals.states.add(self.mainUI.key, 'show')
             for layout in [self.signIn, self.signUp, self.forgotPassword]:
-                if not layout.isHidden():
-                    layout.hide()
-                    layout.setValue('showLayout', 'hide')
+                self.showLayout(layout.key, 'hide')
+                layout.signals.states.add(layout.key, 'hide')
 
         self.sysTray.loginChanged(self._login)
         self.signIn.loginChanged(self._login)
@@ -383,17 +383,49 @@ class PLM(Application):
     def signOutEvent(self):
         self.loginChanged(False)
         self.signIn.show()
-        self.signUp.hide()
-        self.forgotPassword.hide()
+        for layout in [self.mainUI, self.signUp, self.forgotPassword] + self.layoutManager.infos + \
+                      self.layoutManager.setts + self.layoutManager.tools + self.layoutManager.prjs:
+            self.showLayout(layout.key, 'hide')
+            layout.signals.states.add(layout.key, 'hide')
 
     def signUpEvent(self):
         self.loginChanged(False)
-        self.signIn.hide()
-        self.signUp.show()
-        self.forgotPassword.hide()
+        self.showLayout(self.signUp, 'show')
+        self.signUp.signals.states.add(self.signUp.key, 'show')
+        for layout in [self.mainUI, self.signUp, self.forgotPassword] + self.layoutManager.infos + \
+                      self.layoutManager.setts + self.layoutManager.tools + self.layoutManager.prjs:
+            self.showLayout(layout.key, 'hide')
+            layout.signals.states.add(layout.key, 'hide')
 
     def switchAccountEvent(self):
         self.signOutEvent()
+
+    def exitEvent(self):
+        if self._trackJobsTodo:
+            from pprint import pprint
+            pprint(self.todoList)
+
+        states = {}
+
+        for layout in self.layoutManager.layouts():
+            if layout.key not in self.ignoreIDs + ['SysTray']:
+                self.showLayout(layout.key, 'hide')
+                value = layout.getValue('showLayout')
+                if value is None:
+                    value = 'hide'
+                elif value == 'show':
+                    value = 'hide'
+                layout.setValue('showLayout', value)
+                states[layout.key] = value
+                layout.setValue('x', layout.x())
+                layout.setValue('y', layout.y())
+                layout.setValue('w', layout.width())
+                layout.setValue('h', layout.height())
+
+        self.mainUI.signals.states.appendDict(states)
+        self.mainUI.signals.updateState()
+
+        self.exit()
 
 if __name__ == '__main__':
     PLM()

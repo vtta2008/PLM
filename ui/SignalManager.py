@@ -53,7 +53,7 @@ class Signal(DAMG):
     print_block                     = False
     print_checkRepeat               = False
     print_getSignal                 = False
-    print_checkState                = True
+    print_checkState                = False
     auto_changeEmmittable           = True
 
     _signals                        = DAMGDICT()
@@ -78,6 +78,9 @@ class Signal(DAMG):
 
     def loadState(self):
         filePth = os.path.join(TMP_DIR, '.states')
+        if not os.path.exists(filePth):
+            self.updateState()
+
         with open(filePth, 'r') as f:
             data = json.load(f)
         self.states.appendDict(data)
@@ -213,12 +216,11 @@ class SignalManager(Signal):
 
         if self._emittable:
             sig = self.getSignal(signal)
-
+            self.loadState()
             if signal == 'showLayout':
                 self.showLayoutOld, repeat      = self.checkSignalRepeat(self.showLayoutOld, [op1, op2])
                 old = self.showLayoutOld
                 if repeat:
-                    self.loadState()
                     if self.print_checkState:
                         print(self.key, self.states)
                     if not self.states[op1] == op2:

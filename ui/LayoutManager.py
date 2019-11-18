@@ -141,13 +141,13 @@ class LayoutManager(DAMG):
             layout.settings._settingEnable = True
             self.registLayout(layout)
 
-        for layout in self.mainUI.layouts:
-            self.registLayout(layout)
-
-        for layout in self.mainUI.topTabUI.tabs:
-            key = layout.key
-            if not key in self._register.keys():
-                self._register[key] = layout
+        # for layout in self.mainUI.layouts:
+        #     self.registLayout(layout)
+        #
+        # for layout in self.mainUI.topTabUI.tabs:
+        #     key = layout.key
+        #     if not key in self._register.keys():
+        #         self._register[key] = layout
 
         return layouts
 

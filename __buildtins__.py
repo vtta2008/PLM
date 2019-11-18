@@ -185,12 +185,6 @@ class Application(QApplication):
     def runEvent(self):
         return sys.exit(self.exec_())
 
-    def exitEvent(self):
-        if self._trackJobsTodo:
-            from pprint import pprint
-            pprint(self.todoList)
-        self.exit()
-
     @property
     def login(self):
         return self._login
