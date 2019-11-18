@@ -18,12 +18,11 @@ from utils                               import get_ram_useage, get_cpu_useage, 
 class BackgroundService(DAMGTHREAD):
 
     key                                   = 'Notification_rWorker'
+
     cpu                                   = pyqtSignal(str, name='CPU')
     ram                                   = pyqtSignal(str, name='RAM')
     gpu                                   = pyqtSignal(str, name='GPU')
     disk                                  = pyqtSignal(str, name='DISK')
-    time                                  = pyqtSignal(bool, name='Time')
-    date                                  = pyqtSignal(bool, name='Date')
 
     _monitoring                           = True
 
@@ -44,16 +43,12 @@ class BackgroundService(DAMGTHREAD):
             self.ram.emit(ram)
             self.gpu.emit(gpu)
             self.disk.emit(disk)
-            self.time.emit(True)
-            self.date.emit(True)
 
     def stop_monitoring(self):
         self._monitoring                  = False
-        return self._monitoring
 
     def start_monitoring(self):
         self._monitoring                  = True
-        self.start()
 
     @property
     def monitor(self):

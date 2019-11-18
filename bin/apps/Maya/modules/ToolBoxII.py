@@ -1636,7 +1636,7 @@ class ToolBoxII(QtWidgets.QWidget):
 
     def groupCenter(self, *args):
         a = cmds.ls(sl=True)
-        cmds.group(n=a[0] + "_group")
+        cmds.group(n=a[0] + "_groups")
         self.populateAll()
 
     def centerPivot(self, *args):

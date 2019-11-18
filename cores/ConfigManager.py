@@ -376,7 +376,7 @@ class ConfigManager(DAMG):
         self.mainInfo['TaskManager'] =['Manager', 'TaskManager', 'Manager']
 
         self.mainInfo['SettingUI'] = ['PLM Settings', 'Settings', 'SettingUI']
-        self.mainInfo['Config'] = ['PLM Configurations', 'Configurations', 'Configuration']
+        self.mainInfo['Configuration'] = ['PLM Configuration', 'Configuration', 'Configuration']
 
         self.mainInfo['Alpha'] = ['Open Alpha Map Library', 'AlphaLibrary', 'AlphaLibrary']
         self.mainInfo['HDRI'] = ['Open HDRI Map Library', 'HDRILibrary', 'HDRILibrary']

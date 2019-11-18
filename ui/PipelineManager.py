@@ -89,8 +89,8 @@ class PipelineManager(MainWindow):
                          self.mainMenuSec, self.mainToolBarSec   , self.connectStatusSec , self.notifiSec,
                          self.topTabUI   , self.botTabUI         , self.footer           , self.statusBar, ]
 
-        self.allowSettingLayouts = [self.mainMenuBar, self.mainToolBar, self.connectStatus, self.notification,
-                                    self.topTabUI, self.botTabUI, self.footer, self.statusBar, ]
+        self.allowSettingLayouts = [self.mainMenuBar, self.mainToolBar, self.connectStatus, self.notification, ]
+                                    # self.topTabUI, self.botTabUI, self.footer, self.statusBar, ]
 
         for layout in self.allowSettingLayouts:
             layout.settings._settingEnable = True
@@ -162,6 +162,10 @@ class PipelineManager(MainWindow):
         for layout in [self.mainMenuSec, self.mainMenuSec, self.connectStatusSec, self.notifiSec]:
             if layout.isHidden():
                 self.signals.emit('showLayout', layout.key, 'show')
+
+    @property
+    def mode(self):
+        return self.connectStatus.mode
 
 # -------------------------------------------------------------------------------------------------------------
 def main():

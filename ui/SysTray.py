@@ -70,7 +70,7 @@ class SysTray(SystemTrayIcon):
         self.showMessage('Notice', "{0} will keep running in the system tray.".format(__appname__), self.Information, 500)
 
     @pyqtSlot(str, str, str, int)
-    def sysNotify(self, title, mess, iconType, timeDelay):
+    def sysNotify(self, title, mess, iconType='info', timeDelay=500):
         if iconType == 'info':
             icon = self.Information
         elif iconType == 'crit':

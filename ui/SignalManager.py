@@ -12,13 +12,15 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # Python
-from bin.data.damg                  import DAMG, DAMGLIST, DAMGDICT
+import os, json
 
 # PyQt5
 from PyQt5.QtCore                   import pyqtSignal
 
 # PLM
 from cores.Loggers                  import Loggers
+from appData                        import TMP_DIR
+from bin.data.damg                  import DAMG, DAMGLIST, DAMGDICT
 
 # -------------------------------------------------------------------------------------------------------------
 """ Signal class: setup all the signal which will be using. """
@@ -51,11 +53,13 @@ class Signal(DAMG):
     print_block                     = False
     print_checkRepeat               = False
     print_getSignal                 = False
-    print_checkState                = False
+    print_checkState                = True
     auto_changeEmmittable           = True
 
     _signals                        = DAMGDICT()
     _settings                       = DAMGDICT()
+
+    states                          = DAMGDICT()
 
     def __init__(self, parent):
         super(Signal, self).__init__(parent)
@@ -66,6 +70,17 @@ class Signal(DAMG):
 
     def update(self):
         return self.updateSignals(), self.updateSettings()
+
+    def updateState(self):
+        filePth = os.path.join(TMP_DIR, '.states')
+        with open(filePth, 'w') as f:
+            json.dump(self.states, f, indent=4)
+
+    def loadState(self):
+        filePth = os.path.join(TMP_DIR, '.states')
+        with open(filePth, 'r') as f:
+            data = json.load(f)
+        self.states.appendDict(data)
 
     def updateSignals(self):
         keys = ['showLayout', 'executing', 'regisLayout', 'openBrowser', 'setSetting', 'sysNotify', 'updateAvatar',
@@ -180,8 +195,6 @@ class SignalManager(Signal):
     updateAvatarOld                 = DAMGLIST()
     loginChangedOld                 = DAMGLIST()
 
-    states                          = DAMGDICT()
-
     def __init__(self, parent=None):
         super(SignalManager, self).__init__(parent)
 
@@ -205,17 +218,18 @@ class SignalManager(Signal):
                 self.showLayoutOld, repeat      = self.checkSignalRepeat(self.showLayoutOld, [op1, op2])
                 old = self.showLayoutOld
                 if repeat:
+                    self.loadState()
                     if self.print_checkState:
                         print(self.key, self.states)
                     if not self.states[op1] == op2:
                         self.states.add(op1, op2)
-                        self.states.update()
+                        self.updateState()
                         sig.emit(op1, op2)
                 else:
                     if self.print_checkState:
                         print(self.key, self.states)
                     self.states.add(op1, op2)
-                    self.states.update()
+                    self.updateState()
                     sig.emit(op1, op2)
             elif signal == 'executing':
                 self.executingOld, repeat       = self.checkSignalRepeat(self.executingOld, [op1])

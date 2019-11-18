@@ -52,6 +52,7 @@ class PLM(Application):
     executing_old   = []
     setSetting_old  = []
     openBrowser_old = []
+    sysNotify_old = []
 
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
@@ -114,29 +115,32 @@ class PLM(Application):
                 # print(layout.key)
                 layout.settings._settingEnable = True
 
-                if layout.key == 'SignIn':
+                if layout.key in ['SignIn', 'SignUp', 'SysTray', 'ForgotPassword']:
                     layout.signals.connect('loginChanged', self.loginChanged)
 
-        try:
-            self.username, token, cookie, remember = self.database.query_table('curUser')
-        except (ValueError, IndexError):
-            self.logger.info("Error occur, can not query data")
-            self.showLayout('SignIn', "show")
+        if self.mainUI.mode == 'Offline':
+            self.showLayout(self.mainUI.key, "show")
         else:
-            if not str2bool(remember):
-                self.showLayout('SignIn', "show")
+            try:
+                self.username, token, cookie, remember = self.database.query_table('curUser')
+            except (ValueError, IndexError):
+                self.logger.info("Error occur, can not query data")
+                self.signInEvent()
             else:
-                r = requests.get(__localServer__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
-                if r.status_code == 200:
-                    if not self.sysTray.isSystemTrayAvailable():
-                        self.logger.report(SYSTRAY_UNAVAI)
-                        self.exitEvent()
-                    else:
-                        self.loginChanged(True)
-                        self.sysTray.log_in()
-                        self.showLayout(self.mainUI.key, "show")
+                if not str2bool(remember):
+                    self.signInEvent()
                 else:
-                    self.showLayout('SignIn', "show")
+                    r = requests.get(__localServer__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
+                    if r.status_code == 200:
+                        if not self.sysTray.isSystemTrayAvailable():
+                            self.logger.report(SYSTRAY_UNAVAI)
+                            self.exitEvent()
+                        else:
+                            self.loginChanged(True)
+                            self.sysTray.log_in()
+                            self.showLayout(self.mainUI.key, "show")
+                    else:
+                        self.showLayout('SignIn', "show")
 
         sys.exit(self.exec_())
 
@@ -336,7 +340,14 @@ class PLM(Application):
     def sysNotify(self, title, mess, iconType, timeDelay):
         if self._trackRecieveSignal:
             self.logger.report('Receive signal sysNotify: {0} {1} {2} {3}'.format(title, mess, iconType, timeDelay))
-        return self.layoutManager.sysTray.sysNotify(title, mess, iconType, timeDelay)
+
+        self.sysNotify_old, repeat = self.checkSignalRepeat(self.sysNotify_old, [title, mess, iconType, timeDelay])
+        if not repeat:
+            return self.layoutManager.sysTray.sysNotify(title, mess, iconType, timeDelay)
+        else:
+            if self._trackBlockSignal:
+                self.logger.report('{4}: block signal setSetting: {0}, {1}, {2}, {3}'.format(title, mess, iconType, timeDelay, self.key))
+            return
 
     @pyqtSlot(bool, name='loginChanged')
     def loginChanged(self, val):
@@ -344,17 +355,14 @@ class PLM(Application):
 
         if not self._login:
             self.mainUI.hide()
-            self.setSetting('showLayout', 'hide', self.mainUI.key)
-            self.mainUI.signals.states[self.mainUI.key] = 'hide'
+            self.mainUI.setValue('showLayout', 'hide')
         else:
             self.mainUI.show()
-            self.setSetting('showLayout', 'show', self.mainUI.key)
-            self.mainUI.signals.states[self.mainUI.key] = 'show'
+            self.mainUI.setValue('showLayout', 'show')
             for layout in [self.signIn, self.signUp, self.forgotPassword]:
                 if not layout.isHidden():
                     layout.hide()
-                    self.setSetting('showLayout', 'hide', layout.key)
-                    self.mainUI.signals.states[layout.key] = 'hide'
+                    layout.setValue('showLayout', 'hide')
 
         self.sysTray.loginChanged(self._login)
         self.signIn.loginChanged(self._login)

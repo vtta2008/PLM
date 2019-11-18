@@ -373,7 +373,7 @@ def projManagerUI(*args):
 
 def groupCenter(*args):
     a = cmds.ls(sl=True)
-    cmds.group(n=a[0] + "_group")
+    cmds.group(n=a[0] + "_groups")
 
 def deleteHis(*args):
     a = cmds.ls(sl=True)

@@ -33,6 +33,9 @@ class CheckBox(QCheckBox):
         self.txt = txt
         if self.txt is not None:
             self.setText(self.txt)
+        self.stateChanged.connect(self.saveState)
+
+        self.values = dict(w=self.width(), h=self.height(), x=self.x(), y=self.y())
 
         self.preset = preset
         if check_preset(self.preset):
@@ -43,7 +46,12 @@ class CheckBox(QCheckBox):
             if key == 'tt':
                 self.setToolTip(value)
 
-        self.values = dict(w = self.width(), h = self.height(), x = self.x(), y = self.y())
+    def saveState(self, val):
+        if val >= 1:
+            state = True
+        else:
+            state = False
+        self.setValue('checkState', state)
 
     def sizeHint(self):
         size = super(CheckBox, self).sizeHint()

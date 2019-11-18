@@ -167,7 +167,7 @@ ACTIONS_DATA = dict(TD                  = CONFIG_TDS,
                     EXTRA               = CONFIG_EXTRA,
                     SYSTRAY             = CONFIG_SYSTRAY, )
 
-SHOWLAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 'Calendar', 'CodeOfConduct', 'Config',
+SHOWLAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 'Calendar', 'CodeOfConduct', 'Configuration',
                            'ConfigOrganisation', 'ConfigProject', 'ConfigTask', 'ConfigTeam', 'Configurations',
                            'ConnectStatus', 'ContactUs', 'Contributing', 'Credit', 'EditOrganisation', 'EditProject',
                            'EditTask', 'EditTeam', 'EnglishDictionary', 'Feedback', 'FindFiles', 'Footer',

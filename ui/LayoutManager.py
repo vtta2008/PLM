@@ -62,48 +62,41 @@ class LayoutManager(DAMG):
         self.tools                      = self.toolLayouts()
         self.prjs                       = self.projectLayouts()
 
-        cbs = [
-            self.preferences.layout.tbTDCB,
-            self.preferences.layout.tbCompCB,
-            self.preferences.layout.tbArtCB,
-            self.preferences.layout.tbTexCB,
-            self.preferences.layout.tbPostCB,
-            self.preferences.layout.mainToolBarCB,
+        tbcbs = self.preferences.headerGrid.toolBarCBs
+        tbs = self.mainUI.mainToolBar.tbs
 
-            self.preferences.layout.statusBarCB,
-            self.preferences.layout.connectStatuCB,
-            self.preferences.layout.notifiCB,
-        ]
-    
-        tbs = [
-            self.mainUI.mainToolBar.tdToolBar,
-            self.mainUI.mainToolBar.compToolBar,
-            self.mainUI.mainToolBar.artToolBar,
-            self.mainUI.mainToolBar.textureToolBar,
-            self.mainUI.mainToolBar.postToolBar,
-            self.mainUI.mainToolBar,
+        cncbs = self.preferences.headerGrid.connectCBs
+        cns = self.mainUI.connectStatus.labels
 
-            self.mainUI.statusBar,
-            self.mainUI.connectStatus,
-            self.mainUI.notification,
-        ]
-    
+        mncbs = self.preferences.headerGrid.menuCBs
+        mns = self.mainUI.mainMenuBar.mns
+
         for i in range(len(tbs)):
-            key = tbs[i].key
-            grp = self.mainUI.mainToolBar.key
+            cb = tbcbs[i]
+            tb = tbs[i]
+            cb.stateChanged.connect(tb.setVisible)
+        tbcbs[-1].stateChanged.connect(self.mainUI.mainToolBarSec.setVisible)
 
-            if self.settings.initValue(grp, key) is None:
-                if i == 3 or i == 4:
-                    val = False
-                else:
-                    val = True
-            else:
-                val = str2bool(self.settings.initValue(grp, key))
-    
-            cbs[i].setChecked(val)
-            tbs[i].setVisible(val)
-            cbs[i].stateChanged.connect(tbs[i].setVisible)
-            cbs[i].stateChanged.connect(partial(self.mainUI.signals.emit,'setSetting', key, bool2str(val), grp))
+        for i in range(len(mncbs)):
+            cb = mncbs[i]
+            mn = mns[i]
+            cb.stateChanged.connect(self.mainUI.mainMenuBar.showMenu)
+        mncbs[-1].stateChanged.connect(self.mainUI.mainMenuSec.setVisible)
+
+        for i in range(len(cns)):
+            cb = cncbs[i]
+            lb = cns[i]
+            cb.stateChanged.connect(lb.setVisible)
+        cncbs[-1].stateChanged.connect(self.mainUI.connectStatusSec.setVisible)
+
+        ntcbs = self.preferences.bodyGrid.notificationCBs
+        nts = self.mainUI.notification.labels
+
+        for i in range(len(nts)):
+            cb = ntcbs[i]
+            lb = nts[i]
+            cb.stateChanged.connect(lb.setVisible)
+        ntcbs[-1].stateChanged.connect(self.mainUI.notifiSec.setVisible)
 
         for layout in self.layouts():
             try:

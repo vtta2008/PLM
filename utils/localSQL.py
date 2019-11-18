@@ -188,7 +188,10 @@ class LocalDatabase(DAMG):
 
     def tableList(self):
         result = self.cur.execute("SELECT name FROM sqlite_master WHERE type='table';").fetchall()
-        table_names = sorted(list(zip(*result))[0])
+        if result == []:
+            table_names = result
+        else:
+            table_names = sorted(list(zip(*result))[0])
         return table_names
 
     def query_table(self, tableName="curUser"):

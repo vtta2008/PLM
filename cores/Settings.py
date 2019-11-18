@@ -28,7 +28,7 @@ class Setting(QSettings):
     _trackFixKey                    = False
     _trackDeleteKey                 = False
 
-    _group                          = None
+    _groups                         = None
     _settingFile                    = None
     _data                           = dict()
 
@@ -73,6 +73,14 @@ class Setting(QSettings):
     @property
     def trackDeleteKey(self):
         return self._trackDeleteKey
+
+    @property
+    def grp(self):
+        return self._grp
+
+    @grp.setter
+    def grp(self, val):
+        self._grp = val
 
     @settingEnable.setter
     def settingEnable(self, val):
@@ -145,7 +153,7 @@ class Settings(Setting):
                 oldValue = self.value(key)
                 if not value == oldValue:
                     if self._trackSetting:
-                        print('{0}: set {1} - {2} - {3}.'.format(self.key, key, value, grp))
+                        print('{0}: set {1} - {2} - {3}.'.format(self.key, key, value, grpChecked))
                     self.setValue(key, value)
                     self.clean_long_keys()
             while self.group():
@@ -162,7 +170,7 @@ class Settings(Setting):
             else:
                 value = self.value(key)
                 if self._trackSetting:
-                    print('{0}: get value from key: {1}, value: {2}, at group: {3}.'.format(self.key, key, value, grp))
+                    print('{0}: get value from key: {1}, value: {2}, at group: {3}.'.format(self.key, key, value, grpChecked))
                 self.clean_long_keys()
                 return value
 
@@ -182,33 +190,33 @@ class Settings(Setting):
             return grp
 
     def clean_long_keys(self):
-        for key in self.allKeys():
-            lst = key.split('/')
-            # if len(lst) == 2:
-            #     if self.checkGrp(lst[-2]):
-            #         repeat = True
-            #         for i in range(len(key)):
-            #             if not key[i] == self.keyFixedOld[i]:
-            #                 repeat = False
-            #                 break
-            #
-            #         if not repeat:
-            #             if self._trackFixKey:
-            #                 print('{0}: key fixed: {1}'.format(self.key, key))
-            #             value = self.value(key)
-            #             self.initSetValue(lst[-1], value, lst[-2])
-            #         else:
-            #             if self._trackDeleteKey:
-            #                 print('{0}: key: {1} has been removed.'.format(self.key, key))
-            #             self.remove(key)
-            #     else:
-            #         if self._trackDeleteKey:
-            #             print('{0}: key: {1} has been removed.'.format(self.key, key))
-            #         self.remove(key)
-            if len(lst) >= 2:
-                if self._trackDeleteKey:
-                    print('{0}: key: {1} has been removed.'.format(self.key, key))
-                self.remove(key)
+        # for key in self.allKeys():
+        #     lst = key.split('/')
+        #     if len(lst) == 2:
+        #         if self.checkGrp(lst[-2]):
+        #             repeat = True
+        #             for i in range(len(key)):
+        #                 if not key[i] == self.keyFixedOld[i]:
+        #                     repeat = False
+        #                     break
+        #
+        #             if not repeat:
+        #                 if self._trackFixKey:
+        #                     print('{0}: key fixed: {1}'.format(self.key, key))
+        #                 value = self.value(key)
+        #                 self.initSetValue(lst[-1], value, lst[-2])
+        #             else:
+        #                 if self._trackDeleteKey:
+        #                     print('{0}: key: {1} has been removed.'.format(self.key, key))
+        #                 self.remove(key)
+        #         else:
+        #             if self._trackDeleteKey:
+        #                 print('{0}: key: {1} has been removed.'.format(self.key, key))
+        #             self.remove(key)
+        #     if len(lst) >= 2:
+        #         if self._trackDeleteKey:
+        #             print('{0}: key: {1} has been removed.'.format(self.key, key))
+        #         self.remove(key)
 
         self.update()
 
@@ -217,12 +225,12 @@ class Settings(Setting):
         self._data['key'] = self.key
 
         for g in self.childGroups():
-            print(g)
+            # print(g)
             grp = {}
             self.beginGroup(g)
             for k in self.childKeys():
                 v = self.value(k)
-                print(g, k, v)
+                # print(g, k, v)
                 if not v is None:
                     grp[k] = v
             grp.update()

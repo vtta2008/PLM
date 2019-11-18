@@ -46,10 +46,11 @@ class MainMenuBar(MenuBar):
 
         for menu in [self.appMenu, self.goMenu, self.officeMenu, self.toolMenu, self.devMenu, self.libMenu,
                      self.helpMenu, self.organisationMenu, self.teamMenu, self.projectMenu]:
-            parent = menu.parentWidget()
-            menu.key = '{0}_{1}'.format(parent.key, menu.title())
-            menu._name = menu.key
-            self.menus.add(menu.title(), menu)
+            menu.key = '{0}_Menu_{1}'.format(self.key, menu.title())
+            menu._name = '{0} Menu {1}'.format(self.key, menu.title())
+            self.menus.add(menu.key, menu)
+
+        self.mns = [mn for mn in self.menus.values()]
 
     def build_helpMenu(self):
         menu = self.addMenu("&Help")
@@ -120,6 +121,13 @@ class MainMenuBar(MenuBar):
     def add_actions(self, menu, actions):
         for action in actions:
             menu.addAction(action)
+
+    def showMenu(self, bool):
+        cb = self.sender()
+        key = cb.key.replace('CheckBox_', '').replace('Preferences', self.key)
+        for k, menu in self.menus.items():
+            if key == k:
+                menu.setEnabled(bool)
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
