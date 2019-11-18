@@ -52,14 +52,11 @@ def __run_command_with_output( app, cmd, args ):
 
     return output
 
-import psutil
-
-obj_Disk = psutil.disk_usage('/')
-
-print (obj_Disk.total / (1024.0 ** 3))
-print (obj_Disk.used / (1024.0 ** 3))
-print (obj_Disk.free / (1024.0 ** 3))
-print (obj_Disk.percent)
+from PyQt5.QtWidgets import QApplication
+import sys
+app = QApplication(sys.argv)
+a = app.desktop()
+print(a)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 1:38 AM

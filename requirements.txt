@@ -14,3 +14,4 @@ green
 python-resize-image
 pywin32
 gputil
+playsound

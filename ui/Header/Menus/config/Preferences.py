@@ -210,12 +210,8 @@ class BodyCheckBoxes(GridLayout):
         self.addWidget(self.ramCB, ntl, 3, 1, 1)
         self.addWidget(self.gpuCB, ntl, 4, 1, 1)
         self.addWidget(self.diskCB, ntl, 5, 1, 1)
-        self.addWidget(self.prjNameCB, ntl, 6, 1, 1)
-        self.addWidget(self.dueDateCB, ntl, 7, 1, 1)
-        self.addWidget(self.dueTimeCB, ntl, 8, 1, 1)
-        self.addWidget(self.countdownCB, ntl, 9, 1, 1)
-        self.addWidget(self.timeCB, ntl, 10, 1, 1)
-        self.addWidget(self.dateCB, ntl, 11, 1, 1)
+        self.addWidget(self.timeCB, ntl, 6, 1, 1)
+        self.addWidget(self.dateCB, ntl, 7, 1, 1)
 
         self.addWidget(Label({'txt': 'Body'}), bdl, 0, 1, 1)
         self.addWidget(self.bodyCB, bdl, 1, 1, 1)
@@ -229,16 +225,11 @@ class BodyCheckBoxes(GridLayout):
         self.ramCB = CheckBox('ram')
         self.gpuCB = CheckBox('gpu')
         self.diskCB = CheckBox('disk')
-        self.prjNameCB = CheckBox('Project Name')
-        self.dueDateCB = CheckBox('Due Date')
-        self.dueTimeCB = CheckBox('Due Time')
-        self.countdownCB = CheckBox('Time Counting')
         self.timeCB = CheckBox('clock')
         self.dateCB = CheckBox('date')
         self.allNotifiCB = CheckBox("All: ")
         self.allNotifiCB.stateChanged.connect(self.allNotifiStateChanged)
-        for cb in [self.cpuCB, self.ramCB, self.gpuCB, self.diskCB, self.prjNameCB, self.dueDateCB, self.dueTimeCB,
-                   self.countdownCB, self.timeCB, self.dateCB, self.allNotifiCB]:
+        for cb in [self.cpuCB, self.ramCB, self.gpuCB, self.diskCB, self.timeCB, self.dateCB, self.allNotifiCB]:
             self.notificationCBs.append(cb)
 
     def allNotifiStateChanged(self, bool):

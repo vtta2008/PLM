@@ -127,14 +127,14 @@ class LightWidget(QtWidgets.QWidget):
         self.name.toggled.connect(lambda val: self.light.getTransform().visibility.set(val))
         layout.addWidget(self.name, 0, 0)
 
-        # Create a solo button, it will turn on only the light selected, and disable all others
+        # Create a solo okButton, it will turn on only the light selected, and disable all others
         soloBtn = QtWidgets.QPushButton('Solo')
         soloBtn.setMaximumWidth(40)
         soloBtn.setCheckable(True)
         soloBtn.toggled.connect(lambda val: self.onSolo.emit(val))
         layout.addWidget(soloBtn, 0, 1)
 
-        # Create delete button, delete the light selected
+        # Create delete okButton, delete the light selected
         deleteBtn = QtWidgets.QPushButton('Delete')
         deleteBtn.setMaximumWidth(40)
         deleteBtn.clicked.connect(self.deleteLight)
@@ -265,7 +265,7 @@ class ToolBoxV(QtWidgets.QDialog):
 
         layout.addWidget(self.mayaLightTypeCB, 1, 0, 1, 4)
 
-        # Create a button to create the light base on the selection of the combo box
+        # Create a okButton to create the light base on the selection of the combo box
         createMayaLightBtn = QtWidgets.QPushButton('Create')
         createMayaLightBtn.clicked.connect(partial(self.createLight, 'Maya Light'))
         layout.addWidget(createMayaLightBtn, 1, 4, 1, 2)
@@ -278,7 +278,7 @@ class ToolBoxV(QtWidgets.QDialog):
 
         layout.addWidget(self.vrayLightTypeCB, 1, 6, 1, 6)
 
-        # Create a button to create the light base on the selection of the combo box
+        # Create a okButton to create the light base on the selection of the combo box
         createVrayLightBtn = QtWidgets.QPushButton('Create')
         createVrayLightBtn.clicked.connect(partial(self.createLight, 'Vray Light'))
         layout.addWidget(createVrayLightBtn, 1, 12, 1, 2)
@@ -295,7 +295,7 @@ class ToolBoxV(QtWidgets.QDialog):
 
     def createLight(self, lightTypePlugin):
 
-        # base on create button to get the combo box light type
+        # base on create okButton to get the combo box light type
         if lightTypePlugin == 'Maya Light':
             lightType = self.mayaLightTypeCB.currentText()
             func = self.mayaLightTypes[lightType]

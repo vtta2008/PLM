@@ -285,7 +285,7 @@ class SettingInput(Widget):
                         disable = False
                     else:
                         item1.setText("Read-only")
-                    # self.buttonBox.button(QDialogButtonBox.Ok).setDisabled(disable)
+                    # self.buttonBox.okButton(QDialogButtonBox.Ok).setDisabled(disable)
                 else:
                     item1.setText("Read-only fallback")
 

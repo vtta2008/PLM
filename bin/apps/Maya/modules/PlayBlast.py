@@ -68,8 +68,8 @@ def gui():
     cmds.text("*****ONLY PANEL VISIBLE******", bgc=[0, 0.5, 1], font="boldLabelFont")  # important text
     cmds.separator(style='in', w=200)  # separator
     cmds.textField("FileNameGoesHere", text="FileName")  # field for file name/directory
-    cmds.button(label="Name and Location", command=NameTheFileForLater)  # button find directory and file name
-    cmds.button(label="Playblast", command=TimeToPlayBlast)  # button to playblast
+    cmds.button(label="Name and Location", command=NameTheFileForLater)  # okButton find directory and file name
+    cmds.button(label="Playblast", command=TimeToPlayBlast)  # okButton to playblast
 
     cmds.showWindow("Playblast")  # show the window
 

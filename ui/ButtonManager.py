@@ -45,10 +45,10 @@ class ButtonManager(DAMGDICT):
 
     tagButtons = ['pythonTag', 'licenceTag', 'versionTag']
 
-    orgButtons      = ['NewOrganisation', 'EditOrganisation', 'ConfigOrganisation', 'OrganisationManager']
-    taskButtons     = ['NewTask', 'EditTask', 'ConfigTask', 'TaskManager']
-    teamButtons     = ['NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager']
-    prjButtons      = ['NewProject', 'EditProject', 'ConfigProject', 'ProjectManager']
+    orgButtons      = ['NewOrganisation', 'EditOrganisation']
+    taskButtons     = ['NewTask', 'EditTask']
+    teamButtons     = ['NewTeam', 'EditTeam']
+    prjButtons      = ['NewProject', 'EditProject']
     userButtons     = ['UserSetting', 'SignUp', 'SwitchAccount', 'SignOut']
 
     checkedKeys = teamButtons + prjButtons + userButtons + tagButtons + taskButtons

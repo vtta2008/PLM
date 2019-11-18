@@ -36,9 +36,9 @@ class ActionManager(DAMGDICT):
     openBrowserKeys         = DAMGLIST()
     executingKeys           = DAMGLIST()
 
-    orgActions              = ['NewOrganisation', 'EditOrganisation', 'ConfigOrganisation', 'OrganisationManager']
-    teamActions             = ['NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager']
-    prjActions              = ['NewProject', 'EditProject', 'ConfigProject', 'ProjectManager']
+    orgActions              = ['NewOrganisation', 'EditOrganisation']
+    teamActions             = ['NewTeam', 'EditTeam']
+    prjActions              = ['NewProject', 'EditProject']
     appActions              = ['SettingUI', 'Configuration', 'Preferences', 'Exit']
     goActions               = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder']
     officeActions           = ['TextEditor', 'NoteReminder'] + CONFIG_OFFICE

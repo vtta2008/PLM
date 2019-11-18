@@ -20,7 +20,7 @@ from __buildtins__                      import __envKey__
 import os, sys, requests, ctypes
 
 # PyQt5
-from PyQt5.QtCore                       import pyqtSlot
+from PyQt5.QtCore                       import pyqtSlot, Qt
 
 # Plm
 from appData                            import (__localServer__, PLMAPPID, __organization__, StateNormal, StateMax,
@@ -52,7 +52,7 @@ class PLM(Application):
     executing_old   = []
     setSetting_old  = []
     openBrowser_old = []
-    sysNotify_old = []
+    sysNotify_old   = []
 
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
@@ -95,10 +95,10 @@ class PLM(Application):
 
         self.signIn                     = self.layoutManager.signin
         self.signUp                     = self.layoutManager.signup
-        self.commandLayout              = self.layoutManager.hiddenLayout
         self.forgotPassword             = self.layoutManager.forgotPW
         self.sysTray                    = self.layoutManager.sysTray
         self.mainUI                     = self.layoutManager.mainUI
+        self.shortcutLayout             = self.layoutManager.shortcutLayout
 
         for layout in [self.signIn, self.signUp, self.forgotPassword, self.sysTray, self.mainUI]:
             layout.signals.connect('loginChanged', self.loginChanged)
@@ -147,14 +147,9 @@ class PLM(Application):
         if self._trackRecieveSignal:
             self.logger.report("receive signal open browser: {0}".format(url))
 
-        self.openBrowser_old, repeat = self.checkSignalRepeat(self.openBrowser_old, [url])
-        if not repeat:
-            self.browser.setUrl(url)
-            self.browser.update()
-            self.browser.show()
-        else:
-            if self._trackBlockSignal:
-                self.logger.report('{1}: block signal openBrowser: {0}'.format(url, self.key))
+        self.browser.setUrl(url)
+        self.browser.update()
+        self.browser.show()
 
     @pyqtSlot(str, str, str, name='setSetting')
     def setSetting(self, key=None, value=None, grp=None):
@@ -224,9 +219,11 @@ class PLM(Application):
 
         self.showLayout_old, repeat = self.checkSignalRepeat(self.showLayout_old, [layoutID, mode])
 
+        if layoutID in ['NewTask', 'EditTask']:
+            layoutID = 'TaskManager'
+            self.mainUI.topTabUI.tab1.update_tasks()
+
         if layoutID in self.registryLayout.keys():
-            if layoutID in ['SysTray', 'ConnectStatus', 'Notification']:
-                return
 
             layout = self.registryLayout[layoutID]
             if layout.windowState() & StateNormal:
@@ -245,7 +242,7 @@ class PLM(Application):
                     repeat = True
                 else:
                     if mode == 'show':
-                        if state in ['show', 'showNormal', 'showRestore']:
+                        if state in ['showNormal', 'showRestore']:
                             if self._trackBlockSignal:
                                 self.logger.report('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
                             repeat = True
@@ -415,6 +412,7 @@ class PLM(Application):
                     value = 'hide'
                 elif value == 'show':
                     value = 'hide'
+
                 layout.setValue('showLayout', value)
                 states[layout.key] = value
                 layout.setValue('x', layout.x())
@@ -427,8 +425,7 @@ class PLM(Application):
 
         self.exit()
 
-if __name__ == '__main__':
-    PLM()
+PLM()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 19/06/2018 - 2:26 AM

@@ -300,21 +300,21 @@ class Menu(object):
 
         menu.addAction(self.separatorA2)
 
-        # Add button
+        # Add okButton
         self.addA = QAction(menu)
         self.addA.setText("Add Marker")
         self.addA.triggered.connect(parent.add)
 
         menu.addAction(self.addA)
 
-        # Remove button
+        # Remove okButton
         self.removeA = QAction(menu)
         self.removeA.setText("Remove Marker")
         self.removeA.triggered.connect(parent.remove)
 
         menu.addAction(self.removeA)
 
-        # Clear button
+        # Clear okButton
         self.clearA = QAction(menu)
         self.clearA.setText("Clear All Markers")
         self.clearA.triggered.connect(parent.clear)
@@ -325,7 +325,7 @@ class Menu(object):
 
     def picker(self):
         """
-        The picker will change the color of the button and will store the rgb values in a property,
+        The picker will change the color of the okButton and will store the rgb values in a property,
         this property will be read when a marker is added via the menu.
         """
         rgbL = self.colorA.property("rgb")

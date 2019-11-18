@@ -13,6 +13,7 @@ import sys
 
 # PyQt5
 from PyQt5.QtWidgets                    import QApplication
+from PyQt5.QtCore                       import Qt
 
 # PLM
 
@@ -162,6 +163,12 @@ class PipelineManager(MainWindow):
         for layout in [self.mainMenuSec, self.mainMenuSec, self.connectStatusSec, self.notifiSec]:
             if layout.isHidden():
                 self.signals.emit('showLayout', layout.key, 'show')
+
+    def keyPressEvent(self, event):
+        print('aa: {0}'.format(event.key()))
+
+        if event.key() == Qt.CTRL + Qt.Key_Backspace:
+            print(event.key())
 
     @property
     def mode(self):

@@ -123,7 +123,7 @@ def deleteDock(name='Pipeline Tool', version=VERSION):
             cmds.deleteUI(name)
 
 
-# get button functions data
+# get okButton functions data
 def importBTS():
     from appPackages.maya.plt_modules import MayaFuncs
     reload(MayaFuncs)
@@ -687,8 +687,8 @@ class MayaMainUI(QtWidgets.QWidget):
         self.bts.makeAcoolButton('Refresh Camera List', 'Refresh', partial(self.bts.refreshCamList, 'camListPanel'))
         self.bts.makeAcoolButton('Create Viewer', 'Create Viewer', self.bts.customViewer)
         self.bts.makeAcoolButton('Change Name and Location', "Edit",
-                                 self.bts.NameTheFileForLater)  # button find directory and file name
-        self.bts.makeAcoolButton('Playblast', 'Playblast', self.bts.TimeToPlayBlast)  # button to playblast
+                                 self.bts.NameTheFileForLater)  # okButton find directory and file name
+        self.bts.makeAcoolButton('Playblast', 'Playblast', self.bts.TimeToPlayBlast)  # okButton to playblast
 
         cmds.setParent(commonLeftTabLayout)
 

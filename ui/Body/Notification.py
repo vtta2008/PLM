@@ -10,14 +10,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from cores.Task import Task, duetime, duedate
 from ui.uikits.GridLayout import GridLayout
 from ui.uikits.Label import LCDNumber, Label
 from bin.data.damg import DAMGTIMER
-
-time = duetime(18, 00, 00)
-date = duedate(1, 1, 2020)
-testask = Task(taskName='TestTask', duetime=time, duedate=date)
 
 class DigitalClock(LCDNumber):
 
@@ -84,20 +79,7 @@ class Notification(GridLayout):
         self.usage_gpu      = Label({'txt': 'gpu: 0%'})
         self.usage_disk     = Label({'txt': 'dsk: 0%'})
 
-        task = None
 
-        if task is None:
-            self._currentTask = testask
-        else:
-            self._currentTask = task
-
-        self._countdown     = '{0}:{1}:{2}'.format(self._currentTask.hours, self._currentTask.minutes, self._currentTask.seconds)
-        self._currentTask.countdown.connect(self.update_countdown)
-
-        self.task_name      = Label({'txt': '{0}'.format(self._currentTask.taskName)})
-        self.task_duedate   = Label({'txt': '{0}'.format(self._currentTask._enddate)})
-        self.task_duetime   = Label({'txt': '{0}'.format(self._currentTask._endtime)})
-        self.task_countdown = Label({'txt': '{0}'.format(self._countdown)})
 
         self.timeClock      = DigitalClock(self)
         self.dateClock      = DigitalDate(self)
@@ -109,20 +91,17 @@ class Notification(GridLayout):
         worker.disk.connect(self.update_disk_useage)
         worker.start()
 
-        self.labels = [self.usage_cpu, self.usage_ram, self.usage_gpu, self.usage_disk, self.task_name,
-                       self.task_duedate, self.task_duetime, self.task_countdown, self.timeClock, self.dateClock]
+        self.labels = [self.usage_cpu, self.usage_ram, self.usage_gpu, self.usage_disk, self.timeClock, self.dateClock]
 
         self.addWidget(self.usage_cpu, 0, 0, 1, 1)
-        self.addWidget(self.usage_ram, 1, 0, 1, 1)
-        self.addWidget(self.usage_gpu, 2, 0, 1, 1)
-        self.addWidget(self.usage_disk, 3, 0, 1, 1)
-        self.addWidget(self.timeClock, 4, 0, 1, 1)
+        self.addWidget(self.usage_ram, 0, 1, 1, 1)
+        self.addWidget(self.usage_gpu, 1, 0, 1, 1)
+        self.addWidget(self.usage_disk, 1, 1, 1, 1)
+        self.addWidget(self.timeClock, 2, 0, 1, 1)
+        self.addWidget(self.dateClock, 2, 1, 1, 1)
 
-        self.addWidget(self.task_name, 0, 1, 1, 1)
-        self.addWidget(self.task_duedate, 1, 1, 1, 1)
-        self.addWidget(self.task_duetime, 2, 1, 1, 1)
-        self.addWidget(self.task_countdown, 3, 1, 1, 1)
-        self.addWidget(self.dateClock, 4, 1, 1, 1)
+    def setcurrentTask(self, task):
+        self._currentTask = task
 
     def update_cpu_useage(self, val):
         return self.usage_cpu.setText('cpu: {0}%'.format(val))

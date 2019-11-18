@@ -168,6 +168,7 @@ class Application(QApplication):
 
     def checkSignalRepeat(self, old, data):
         new = [i for i in data]
+
         if len(new) == 0:
             repeat = False
         elif len(new) == len(old):

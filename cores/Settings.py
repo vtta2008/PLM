@@ -190,33 +190,12 @@ class Settings(Setting):
             return grp
 
     def clean_long_keys(self):
-        # for key in self.allKeys():
-        #     lst = key.split('/')
-        #     if len(lst) == 2:
-        #         if self.checkGrp(lst[-2]):
-        #             repeat = True
-        #             for i in range(len(key)):
-        #                 if not key[i] == self.keyFixedOld[i]:
-        #                     repeat = False
-        #                     break
-        #
-        #             if not repeat:
-        #                 if self._trackFixKey:
-        #                     print('{0}: key fixed: {1}'.format(self.key, key))
-        #                 value = self.value(key)
-        #                 self.initSetValue(lst[-1], value, lst[-2])
-        #             else:
-        #                 if self._trackDeleteKey:
-        #                     print('{0}: key: {1} has been removed.'.format(self.key, key))
-        #                 self.remove(key)
-        #         else:
-        #             if self._trackDeleteKey:
-        #                 print('{0}: key: {1} has been removed.'.format(self.key, key))
-        #             self.remove(key)
-        #     if len(lst) >= 2:
-        #         if self._trackDeleteKey:
-        #             print('{0}: key: {1} has been removed.'.format(self.key, key))
-        #         self.remove(key)
+        for key in self.allKeys():
+            lst = key.split('/')
+            if len(lst) >= 2:
+                if self._trackDeleteKey:
+                    print('{0}: key: {1} has been removed.'.format(self.key, key))
+                self.remove(key)
 
         self.update()
 

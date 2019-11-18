@@ -1,30 +1,15 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: okButton.py
+Script Name: __init__.py.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
-
-# Python
-
-
-# PyQt5
-
-
-# PLM
-
-def check_preset(data):
-    if data == {}:
-        pass
-    else:
-        return True
-
+from __future__ import absolute_import, unicode_literals
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 19/06/2018 - 6:05 AM
+# Created by panda on 18/11/2019 - 10:44 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

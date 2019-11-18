@@ -237,9 +237,9 @@ def get_all_path_from_dir(directory):
     # Walk the tree.
     for root, directories, files in os.walk(directory, topdown=False):
         for filename in files:
-            filePths.append(os.path.join(root, filename))  # Add to file list.
+            filePths.append(os.path.join(root, filename).replace('\\', '/'))  # Add to file list.
         for folder in directories:
-            dirPths.append(os.path.join(root, folder)) # Add to folder list.
+            dirPths.append(os.path.join(root, folder).replace('\\', '/')) # Add to folder list.
     return [filePths, dirPths]
 
 def get_file_path(directory):

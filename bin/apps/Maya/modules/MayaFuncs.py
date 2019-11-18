@@ -172,12 +172,12 @@ def demoButton(*args):
 
 def setSymbolCheckable(ids, anns, ccs, types, icons, w=ICONWIDTH, *args):
     """
-    Make a checkable symbol button
-    :param ids: set id for button (list)
-    :param anns: annotation of button (list)
-    :param ccs: command for button when click (list)
-    :param w: width of button, also is the high
-    :return: a symbol check box button
+    Make a checkable symbol okButton
+    :param ids: set id for okButton (list)
+    :param anns: annotation of okButton (list)
+    :param ccs: command for okButton when click (list)
+    :param w: width of okButton, also is the high
+    :return: a symbol check box okButton
     """
     for i in range(len(ids)):
         # get icon path from default path
@@ -205,11 +205,11 @@ def makeSeparator(h, w, hr=True, style='in', *args):
 
 def iconButton(ann, icon, command, wh=ICONWIDTH, *args):
     """
-    Make a single icon button
+    Make a single icon okButton
     :param ann: annotation
     :param icon: icon name
     :param wh: width and high
-    :return: an icon button
+    :return: an icon okButton
     """
     image = geticon(icon)
     cmds.symbolButton(ann=ann, i=image, c=command, h=wh, w=wh)
@@ -231,11 +231,11 @@ def setIconButton(anns, commands, icons, width=ICONWIDTH, *args):
 
 def makeAcoolButton(ann, label, cmd, *args):
     """
-    Make a styled button
-    :param label: button name
-    :param cmd: command for button
+    Make a styled okButton
+    :param label: okButton name
+    :param cmd: command for okButton
     :return:
-        button with a border
+        okButton with a border
     """
     cmds.frameLayout(bv=True, lv=False)
     cmds.button(ann=ann, l=label, c=cmd)

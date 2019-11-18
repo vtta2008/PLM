@@ -43,7 +43,7 @@ class GlobalSetting(DAMG):
                 layout.setMovable(True)
                 layout.setElideMode(Qt.ElideRight)
                 layout.setUsesScrollButtons(True)
-                # print('{0} has been set movable: True, ElideMode: right, use scroll button: True'.format(layout.key))
+                # print('{0} has been set movable: True, ElideMode: right, use scroll okButton: True'.format(layout.key))
                 pass
             try:
                 # print('Try applying globalsetting content margin to: {0}'.format(layout))

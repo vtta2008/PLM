@@ -172,7 +172,7 @@ class DAMGtoolBoxI(object):
         cmds.setParent('..')
         cmds.separator(style="in", w=360, h=5)
         cmds.text(l="", h=5)
-        # add attribute button
+        # add attribute okButton
         cmds.rowColumnLayout(nc=3, cw=[(1, 100), (2, 160), (3, 100)])
         cmds.text(l="")
         cmds.button(l="Add Attribute", c=self.addAttribute)

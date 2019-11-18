@@ -10,8 +10,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from bin.data.damg import DAMG, DAMGDICT, DAMGTIMER
+import os, json
+from playsound import playsound
 
+from bin.data.damg import DAMG, DAMGDICT, DAMGTIMER
+from appData import SOUND_DIR, TASK_DIR
 from PyQt5.QtCore import QDateTime, QDate, QTime, pyqtSignal
 
 class duetime(DAMGDICT):
@@ -49,7 +52,11 @@ class duedate(DAMGDICT):
     def __init__(self, day, month, year):
         super(duedate, self).__init__(self)
 
-        self.year = int(year)
+        if year < 99:
+            self.year = int("20{0}".format(year))
+        else:
+            self.year = int(year)
+
         self.month = int(month)
         self.day = int(day)
 
@@ -74,6 +81,7 @@ class TaskBase(DAMG):
     minutes = 0
     seconds = 0
     countdown = pyqtSignal(str, name='CountDown')
+    play_alarm = False
 
     def __init__(self):
         super(TaskBase, self).__init__(self)
@@ -104,13 +112,19 @@ class TaskBase(DAMG):
 
 class Task(TaskBase):
 
-    def __init__(self, taskID=None, taskName=None, project=None, duetime={}, duedate={}, details={}):
+    taskData = DAMGDICT()
+
+    def __init__(self, taskID=None, taskName=None, taskMode=None, taskType=None, project=None, organisation=None,
+                 duetime={}, duedate={}, details={}):
         super(Task, self).__init__()
 
-        self.id         = taskID
+        self.taskID     = taskID
         self.taskName   = taskName
+        self.taskMode = taskMode
+        self.taskType = taskType
         self.project    = project
         self.details    = details
+        self.organisation = organisation
 
         self.duetime    = QTime(duetime['hour'], duetime['minute'], duetime['second'])
         self.duedate    = QDate(duedate['year'], duedate['month'], duedate['day'])
@@ -146,6 +160,14 @@ class Task(TaskBase):
 
         self._status = self.get_status()
 
+        if self.days == 0:
+            if self.hours == 0:
+                if self.minutes == 0:
+                    if self.seconds <= 30:
+                        pth = os.path.join(SOUND_DIR, 'bell.wav')
+                        if not self.play_alarm:
+                            playsound(pth)
+                            self.play_alarm = True
         if self.days != 0:
             hrs = self.hours + self.days*24
         else:
@@ -157,6 +179,25 @@ class Task(TaskBase):
         self._dateline = self.endDate.toString('dd/MM/yy - hh:mm:ss')
         self._enddate = self.endDate.date().toString('dd/MM/yy')
         self._endtime = self.endDate.time().toString('hh:mm:ss')
+
+        self.updateData()
+
+    def updateData(self):
+        self.taskData.add('name', self.taskName)
+        self.taskData.add('id', self.taskID)
+        self.taskData.add('mode', self.taskMode)
+        self.taskData.add('type', self.taskType)
+        self.taskData.add('project', self.project)
+        self.taskData.add('organisation', self.organisation)
+        self.taskData.add('dateline', self._dateline)
+        self.taskData.add('enddate', self._enddate)
+        self.taskData.add('endtime', self._endtime)
+        self.taskData.add('details', self.details)
+
+        with open(os.path.join(TASK_DIR, '{0}.task'.format(self.taskName)), 'w') as f:
+            json.dump(self.taskData, f, indent=4)
+
+        return self.taskData
 
     def get_status(self):
         if self.days < 0:

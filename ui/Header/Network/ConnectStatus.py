@@ -62,7 +62,7 @@ class ConnectStatus(GridLayout):
         if not self._updatting:
             self.updateTimer.stop()
         else:
-            self.updateTimer.start(60000)
+            self.updateTimer.start(1000)
 
     def server_status(self):
 
@@ -88,18 +88,15 @@ class ConnectStatus(GridLayout):
 
         try:
             r = requests.get(__google__)
-        except Exception:
+        except requests.ConnectionError:
             self.parent.signals.emit('sysNotify', 'Offline', 'Can not connect to Internet', 'crit', 500)
             self.internetIcon = get_app_icon(16, 'Disconnected')
             self.internetStatus.setToolTip('Disconnected')
         else:
-            if r.status_code == 200:
-                self.parent.signals.emit('sysNotify', 'Online', 'Internet connected', 'info', 500)
-                self.internetIcon = get_app_icon(16, 'Connected')
-                self.internetStatus.setStatusTip('Connected')
-            else:
-                self.internetIcon = get_app_icon(16, 'Disconnected')
-                self.internetStatus.setToolTip('Disconnected')
+            self.parent.signals.emit('sysNotify', 'Online', 'Internet connected', 'info', 500)
+            self.internetIcon = get_app_icon(16, 'Connected')
+            self.internetStatus.setStatusTip('Connected')
+
 
         self.internetStatus.setPixmap(QPixmap(self.internetIcon))
         self.internetStatus.update()

@@ -128,14 +128,14 @@ class LayoutManager(DAMG):
     def mainLayouts(self):
         from ui.PipelineManager             import PipelineManager
         from ui.SysTray                     import SysTray
-        from ui.subUI.HiddenLayout          import HiddenLayout
+        from ui.subUI.ShortcutCommand       import ShortcutCommand
 
         self.mainUI                         = PipelineManager(self.actionManager, self.buttonManager, self.threadManager)
         self.sysTray                        = SysTray(self.actionManager, self.eventManager)
-        self.hiddenLayout                   = HiddenLayout()
+        self.shortcutLayout                 = ShortcutCommand()
         self.setLayoutUnHidable(self.sysTray)
 
-        layouts = [self.mainUI, self.sysTray, self.hiddenLayout]
+        layouts = [self.mainUI, self.sysTray, self.shortcutLayout]
 
         for layout in layouts:
             layout.settings._settingEnable = True
@@ -192,6 +192,7 @@ class LayoutManager(DAMG):
         from ui.subUI.Tools.TextEditor      import TextEditor
         from ui.Header.Menus.config         import Preferences
         from ui.Header.Menus.config         import Configuration
+        from ui.subUI.TaskManager           import TaskManager
 
         self.calculator                     = Calculator.Calculator()
         self.calendar                       = Calendar.Calendar()
@@ -204,10 +205,11 @@ class LayoutManager(DAMG):
         self.preferences                    = Preferences.Preferences()
         self.screenShot                     = Screenshot.Screenshot()
         self.textEditor                     = TextEditor.TextEditor()
+        self.taskManager                    = TaskManager()
 
         layouts     = [self.calculator, self.calendar, self.configuration, self.engDict, self.findFile,
                        self.imageViewer, self.nodeGraph, self.noteReminder, self.preferences, self.screenShot,
-                       self.textEditor]
+                       self.textEditor, self.taskManager]
 
         for layout in layouts:
             layout.settings._settingEnable = True
