@@ -1,7 +1,4 @@
 <application>
-  <component name="GeneralSettings">
-    <option name="confirmExit" value="false" />
-  </component>
   <component name="Registry">
     <entry key="editor.distraction.free.mode" value="true" />
   </component>
