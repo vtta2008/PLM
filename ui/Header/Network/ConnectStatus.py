@@ -15,12 +15,12 @@ Description:
 import requests, sys
 
 # PyQt5
-from PyQt5.QtCore               import pyqtSignal
 from PyQt5.QtGui                import QPixmap
 
 
 # Plt
-from appData                    import __localServer__, SERVER_CONNECT_FAIL
+from appData                    import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
+from bin.data.damg              import DAMGTIMER, DAMGLIST
 from ui.uikits.MessageBox       import MessageBox
 from ui.uikits.GridLayout       import GridLayout
 from ui.uikits.Label            import Label
@@ -32,52 +32,149 @@ from utils                      import get_app_icon
 class ConnectStatus(GridLayout):
 
     key = 'ConnectStatus'
-
-    onlineStage = pyqtSignal(bool)
+    _allowLocalMode = True
+    _updatting = False
+    _mode = None
+    _server = None
+    labels = DAMGLIST()
 
     def __init__(self, parent=None):
         super(ConnectStatus, self).__init__(parent)
 
-        self.serverConnectable = False
+        self.parent = parent
+        self._server = self.getServer()
+        self.serverStatus = Label({'wmax': 20, 'sst': 'Server Connection Status', })
+        self.internetStatus = Label({'wmax': 20, 'sst': 'Internet Connection Status', })
+        self.modeStatus = Label({'txt': self._mode, 'sst': 'Operating Mode Status'})
+        self.updateTimer = DAMGTIMER()
+        self.updateTimer.setParent(self)
+        self.updateTimer.timeout.connect(self.update_icon)
+
+        self.server_status()
+        self.internet_status()
+        self.mode_status()
+        self.addWidget(self.serverStatus, 0, 0, 1, 1)
+        self.addWidget(self.internetStatus, 0, 1, 1, 1)
+        self.addWidget(self.modeStatus, 0, 2, 1, 1)
+
+        self.labels.appendList([self.serverStatus, self.internetStatus, self.modeStatus])
+
+        if not self._updatting:
+            self.updateTimer.stop()
+        else:
+            self.updateTimer.start(1000)
+
+    def server_status(self):
 
         try:
             r = requests.get(__localServer__)
         except Exception:
-            MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
-            sys.exit()
+            if not self._allowLocalMode:
+                MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                sys.exit()
+            else:
+                self.parent.signals.emit('sysNotify', 'Offline', 'Can not connect to Server', 'crit', 500)
+                self.serverIcon = get_app_icon(16, 'Disconnected')
         else:
             if r.status_code == 200:
-                self.serverConnectable = True
+                self.serverIcon = get_app_icon(16, 'Connected')
             else:
-                self.serverConnectable = False
+                self.serverIcon = get_app_icon(16, 'Disconnected')
 
-        self.connected = get_app_icon(16, 'Connected')
-        self.disconnected = get_app_icon(16, 'Disconnected')
+        self.serverStatus.setPixmap(QPixmap(self.serverIcon))
+        self.serverStatus.update()
 
-        self.networkStatus = Label({'txt': ''})
-        self.networkStatus.setMaximumWidth(20)
+    def internet_status(self):
 
-        if self.serverConnectable:
-            self.networkStatus.setPixmap(QPixmap(self.connected))
+        try:
+            r = requests.get(__google__)
+        except requests.ConnectionError:
+            self.parent.signals.emit('sysNotify', 'Offline', 'Can not connect to Internet', 'crit', 500)
+            self.internetIcon = get_app_icon(16, 'Disconnected')
+            self.internetStatus.setToolTip('Disconnected')
         else:
-            self.networkStatus.setPixmap(QPixmap(self.disconnected))
+            self.parent.signals.emit('sysNotify', 'Online', 'Internet connected', 'info', 500)
+            self.internetIcon = get_app_icon(16, 'Connected')
+            self.internetStatus.setStatusTip('Connected')
 
-        self.addWidget(self.networkStatus, 0, 0, 1, 1)
 
-        self.onlineStage.connect(self.connection_status)
-        self.onlineStage.emit(self.serverConnectable)
-        self.txt = Label({'txt': "Connecting"})
+        self.internetStatus.setPixmap(QPixmap(self.internetIcon))
+        self.internetStatus.update()
 
-        self.addWidget(self.txt, 0, 1, 1, 1)
+    def mode_status(self):
+        self.getServer()
+        self.modeStatus.setText(self._mode)
+        self.modeStatus.setToolTip(self._mode)
+        self.modeStatus.update()
 
-    def connection_status(self, param):
+    def update_icon(self):
+        # print('update Icon')
+        self.internet_status()
+        self.server_status()
+        self.mode_status()
 
-        if param:
-            self.networkStatus.setPixmap(QPixmap(self.connected))
+    def setMode(self, mode):
+        self._mode = mode
+
+    def getServer(self):
+        try:
+            r = requests.get(__globalServer__)
+        except Exception:
+            try:
+                r = requests.get(__localServer__)
+            except Exception:
+                if not self._allowLocalMode:
+                    MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                    sys.exit()
+                else:
+                    self.setMode('Offline')
+            else:
+                if r.status_code == 200:
+                    self._server = __localServer__
+                    self.setMode('Local')
+                else:
+                    self.setMode('Offline')
         else:
-            self.networkStatus.setPixmap(QPixmap(self.disconnected))
+            if r.status_code == 200:
+                self._server = __globalServer__
+                self.setMode('GLobal')
+            else:
+                self.setMode('Offline')
 
-        self.networkStatus.update()
+        return self._server
+
+    @property
+    def updatting(self):
+        return self._updatting
+
+    @property
+    def allowOfflineMode(self):
+        return self._allowLocalMode
+
+    @property
+    def mode(self):
+        return self._mode
+
+    @property
+    def server(self):
+        return self._server
+
+    @server.setter
+    def server(self, val):
+        self._server = val
+
+    @mode.setter
+    def mode(self, val):
+        self._mode = val
+
+    @updatting.setter
+    def updatting(self, val):
+        self._updatting = val
+
+    @allowOfflineMode.setter
+    def allowOfflineMode(self, val):
+        self._allowLocalMode = val
+
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -32,8 +32,10 @@ class TopTab(TabWidget):
     def __init__(self, buttonManager, parent=None):
         super(TopTab, self).__init__(parent)
 
+        self.parent             = parent
         self.layout             = VBoxLayout()
         self.buttonManager      = buttonManager
+        self.mode               = self.parent.mode
         self.buildUI()
         self.setLayout(self.layout)
 
@@ -44,18 +46,24 @@ class TopTab(TabWidget):
         self.tab3               = TopTap3.TopTap3(self.buttonManager, self.parent)
 
         self.tabs               = DAMGLIST(listData=[self.tab1, self.tab2, self.tab3])
-        self.tabNames           = DAMGLIST(listData=['Project', 'User', 'Cmd'])
+        self.tabNames           = DAMGLIST(listData=['Common', 'User', 'Cmd'])
 
-        for layout in self.tabs:
-            # layout.signals.connect('executing', self.signals.executing)
-            # layout.signals.connect('regisLayout', self.signals.regisLayout)
-            # layout.signals.connect('openBrowser', self.signals.openBrowser)
-            # layout.signals.connect('setSetting', self.signals.setSetting)
-            # layout.signals.connect('showLayout', self.signals.showLayout)
-            # layout.settings._settingEnable = True
-
-            self.addTab(layout, self.tabNames[self.tabs.index(layout)])
-            self.setTabIcon(self.tabs.index(layout), AppIcon(32, self.tabNames[self.tabs.index(layout)]))
+        for tab in self.tabs:
+            # tab.signals.connect('executing', self.signals.executing)
+            # tab.signals.connect('regisLayout', self.signals.regisLayout)
+            # tab.signals.connect('openBrowser', self.signals.openBrowser)
+            # tab.signals.connect('setSetting', self.signals.setSetting)
+            # tab.signals.connect('showLayout', self.signals.showLayout)
+            # tab.settings._settingEnable = True
+            if self.mode == 'Offline':
+                if tab.key == 'TopTab2':
+                    pass
+                else:
+                    self.addTab(tab, self.tabNames[self.tabs.index(tab)])
+                    self.setTabIcon(self.tabs.index(tab), AppIcon(32, self.tabNames[self.tabs.index(tab)]))
+            else:
+                self.addTab(tab, self.tabNames[self.tabs.index(tab)])
+                self.setTabIcon(self.tabs.index(tab), AppIcon(32, self.tabNames[self.tabs.index(tab)]))
 
         self.signals.updateAvatar.connect(self.tab2.update_avatar)
 

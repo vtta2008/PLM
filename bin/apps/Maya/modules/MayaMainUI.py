@@ -123,7 +123,7 @@ def deleteDock(name='Pipeline Tool', version=VERSION):
             cmds.deleteUI(name)
 
 
-# get button functions data
+# get okButton functions data
 def importBTS():
     from appPackages.maya.plt_modules import MayaFuncs
     reload(MayaFuncs)
@@ -589,7 +589,7 @@ class MayaMainUI(QtWidgets.QWidget):
         adj = 3
 
         ann3 = ['Tool Box I', 'Tool Box II', 'Tool Box III', 'Tool Box IV', 'Clock and Reminder']
-        ic3 = ['toolboxI.icon.png', 'toolboxII.icon.png', 'toolboxIII.icon.png', 'toolboxIV.icon.png', 'clock.icon.png']
+        ic3 = ['toolboxI.icon.png', 'toolboxII.icon.png', 'toolboxIII.icon.png', 'toolboxIV.icon.png', 'timeClock.icon.png']
         cm3 = [self.bts.toolBoxI, self.bts.toolBoxII, self.bts.toolBoxIII, self.bts.toolBoxIV, self.bts.userLib]
 
         ids = ['gcb', 'ccb', 'jcb', 'ncb', 'lcb']
@@ -687,8 +687,8 @@ class MayaMainUI(QtWidgets.QWidget):
         self.bts.makeAcoolButton('Refresh Camera List', 'Refresh', partial(self.bts.refreshCamList, 'camListPanel'))
         self.bts.makeAcoolButton('Create Viewer', 'Create Viewer', self.bts.customViewer)
         self.bts.makeAcoolButton('Change Name and Location', "Edit",
-                                 self.bts.NameTheFileForLater)  # button find directory and file name
-        self.bts.makeAcoolButton('Playblast', 'Playblast', self.bts.TimeToPlayBlast)  # button to playblast
+                                 self.bts.NameTheFileForLater)  # okButton find directory and file name
+        self.bts.makeAcoolButton('Playblast', 'Playblast', self.bts.TimeToPlayBlast)  # okButton to playblast
 
         cmds.setParent(commonLeftTabLayout)
 

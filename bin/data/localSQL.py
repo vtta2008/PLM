@@ -14,32 +14,32 @@ from __future__ import absolute_import
 
 # Python
 import sqlite3 as lite
+import time, datetime, os, re
 
-from bin.data.damg import DAMG, DAMGLIST
-
-# Plt
-from utils import utils as func
+from bin.data.damg import DAMG
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """
 
-TN  = ['curUser'   , 'userTokenLogin', 'timelog' , 'tmpConfig', ]                               # Table name
+TN  = ['curUser'     , 'userTokenLogin', 'timelog' , 'tmpConfig', 'metadata', ]                   # Table name
 
-IDN = ['id'        , 'userid'        , 'tokenid' , 'pcid'     , ]                               # ID name
-CTN = ['username'  , 'token'         , 'cookie'  , 'remember' , 'details', ]                    # Common name
-TCN = ['date'      , 'time'          , 'datetime', ]                                            # Time column name
-CCN = ['lastConfig', 'curSettingPth' , ]                                                        # Config column name
+MTN = ['organisation', 'application'   , 'domain'  , 'version'  , 'display' , 'author', ]         # Metadata name
+IDN = ['id'          , 'userid'        , 'tokenid' , 'pcid'     , ]                               # ID name
+CTN = ['username'    , 'token'         , 'cookie'  , 'remember' , 'details' , ]                   # Common name
+TCN = ['date'        , 'time'          , 'datetime', ]                                            # Time column name
+CCN = ['lastConfig'  , 'curSettingPth' , ]                                                        # Config column name
 
-IDA = ['INTEGER PRIMARY KEY AUTOINCREMENT, ', 'INT PRIMARY KEY, ', ]                            # ID attribute
-CTA = ['TEXT NOT NULL, '                    , 'TEXT, '           , 'BOOL, ', ]                  # Common attribute
-STA = ['VACHAR(20,) '                       , 'VARCHAR, '        , ]                            # String attribute
+IDA = ['INTEGER PRIMARY KEY AUTOINCREMENT, ', 'INT PRIMARY KEY, ', ]                              # ID attribute
+CTA = ['TEXT NOT NULL, '                    , 'TEXT, '           , 'BOOL, '  , ]                  # Common attribute
+STA = ['VACHAR(20,) '                       , 'VARCHAR, '        , ]                              # String attribute
 
-CC = "CREATE TABLE IF NOT EXISTS "                                                              # Create table
+CC = "CREATE TABLE IF NOT EXISTS "                                                                # Create table
 
 # Attribute preset
-ATD = dict( id            = IDA[0], userid = IDA[1], tokenid  = IDA[0], pcid     = IDA[0], username   = CTA[0],
-            token         = CTA[1], cookie = CTA[1], remember = CTA[2], details  = CTA[1], lastConfig = STA[1],
-            curSettingPth = CTA[1], date   = CTA[1], time     = CTA[1], datetime = CTA[1], )
+ATD = dict( id            = IDA[0], userid = IDA[1], tokenid  = IDA[0], pcid     = IDA[0], username     = CTA[0],
+            token         = CTA[1], cookie = CTA[1], remember = CTA[2], details  = CTA[1], lastConfig   = STA[1],
+            curSettingPth = CTA[1], date   = CTA[1], time     = CTA[1], datetime = CTA[1], organisation = CTA[0],
+            application   = CTA[0], domain = CTA[0], version  = CTA[0], display  = CTA[0], author       = CTA[0], )
 
 # Local table details
 LTD = dict(
@@ -47,16 +47,39 @@ LTD = dict(
             userTokenLogin  = [IDN[2], CTN[0], CTN[1], TCN[2], ],
             timelog         = [CTN[0], TCN[1], TCN[0], CTN[4], ],
             tmpConfig       = [CCN[0], CCN[1], ],
+            metadata        = MTN
 )
 
 # -------------------------------------------------------------------------------------------------------------
 """ Create database """
 
+def get_datetime():
+    datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
+    return datetime_stamp
+
+def getDate():
+    datetimeLog = get_datetime()
+    return datetimeLog.split('||')[0]
+
+def getTime():
+    datetimeLog = get_datetime()
+    return datetimeLog.split('||')[1]
+
+if __name__ == '__main__':
+    with open(os.path.join(os.getcwd(), 'metadatas.py'), "rb") as f:
+        metadata = f.read().decode('utf-8')
+else:
+    with open(os.path.join(os.getenv('DAMGTEAM'), 'bin', 'data', 'metadatas.py').replace('\\', '/'), 'rb') as f:
+        metadata = f.read().decode('utf-8')
+
+def parse(pattern):
+    return re.search(pattern, metadata).group(1).replace('"', '').strip()
+
 class SQLS(DAMG):
 
     key = "Resource DB"
 
-    def __init__(self, filename, parent=None):
+    def __init__(self, filename='local.db', parent=None):
         super(SQLS, self).__init__(parent)
 
         self.fn = filename
@@ -65,6 +88,18 @@ class SQLS(DAMG):
 
         for tn in TN:
             self.create_table(tn)
+
+        orgname = parse(r'__organization__\s+=\s+(.*)')
+        appname = parse(r'__softwareName__\s+=\s+(.*)')
+        domain = parse(r'__website__\s+=\s+(.*)')
+        version = parse((r'__version__\s+=\s+(.*)'))
+        author = parse(r'__author__\s+=\s+(.*)')
+        display = parse(r'__appname__\s+=\s+(.*)')
+
+        self.cur.execute("INSERT INTO metadata ('organisation', 'application', 'domain', 'version', 'display', 'author') VALUES (?,?,?,?,?,?)",
+                         (orgname, appname, domain, version, display, author))
+        self.conn.commit()
+
 
     def generate_command(self, tn = TN[0]):
         cl = LTD[tn]
@@ -77,82 +112,6 @@ class SQLS(DAMG):
     def create_table(self, tn = TN[0]):
         cmd = self.generate_command(tn)
         self.cur.execute("CREATE TABLE IF NOT EXISTS `{0}` ({1})".format(tn, cmd))
-        self.conn.commit()
-
-
-class QuerryDB(DAMGLIST):
-
-    key = 'query db'
-
-    # def __init__(self):
-        # self.reg = PObj(self)
-
-    def query_table(self, tn="curUser"):
-        conn = lite.connect('local.db')
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM {0}".format(tn))
-
-        if len(cur.fetchall()) == 0:
-            return []
-        else:
-            return list(cur.fetchall()[0])
-
-class UpdateDB(DAMG):
-
-    key = 'update db'
-    conn = lite.connect('local.db')
-    cur = conn.cursor()
-
-    def __init__(self, tn="curUser", data=[]):
-        super(UpdateDB, self).__init__()
-        if tn == "curUser":
-            self.update_curUser(data)
-        elif tn == 'tmpConfig':
-            self.update_tmpCfg(data[0])
-
-    def update_curUser(self, data):
-        self.cur.execute("INSERT INTO curUser (username, token, cookie, remember) VALUES (?,?,?,?)", (data[0], data[1], data[2], data[3]))
-        self.conn.commit()
-        return True
-
-    def update_tmpCfg(self, data):
-        self.cur.execute("INSERT INTO curUser (username, token, cookie, remember) VALUES (?,?)", (data[0], data[1]))
-        self.conn.commit()
-        return True
-
-class RemoveDB(DAMG):
-
-    key = 'delete db'
-
-    conn = lite.connect('local.db')
-    cur = conn.cursor()
-
-    def __init__(self, tn="curUser"):
-        super(RemoveDB, self).__init__()
-
-        self.remove_data(tn)
-
-    def remove_data(self, tn):
-        self.cur.execute("SELECT * FROM {0}".format(tn))
-        self.cur.fetchall()
-        self.cur.execute("DELETE FROM {0}".format(tn))
-        self.conn.commit()
-
-class TimeLog(DAMG):
-
-    key = 'timelog object'
-
-    conn = lite.connect('local.db')
-    cur = conn.cursor()
-
-    def __init__(self, details=None):
-        super(TimeLog, self).__init__()
-
-        self.username, token, cookie, remember = QuerryDB().query_table("curUser")
-        self.time = func.getTime()
-        self.date = func.getDate()
-        self.details = details
-        self.cur.execute("INSERT INTO timelog (username, time, date, details) VALUES (?,?,?,?)", (self.username, self.time, self.date, self.details))
         self.conn.commit()
 
 # -------------------------------------------------------------------------------------------------------------

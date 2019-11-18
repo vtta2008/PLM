@@ -94,9 +94,7 @@ class TabWidget(QTabWidget):
                             vals[index] = value
                     self.setValue(key[i], self.values[key[i]])
 
-            for v in vals:
-                if not type(v) in [int]:
-                    v = int(v)
+            vals = [int(v) for v in vals]
 
             self.resize(vals[0], vals[1])
             self.move(vals[2], vals[3])

@@ -13,7 +13,7 @@ import sys
 
 # PyQt5
 from PyQt5.QtWidgets                    import QApplication
-from PyQt5.QtGui                        import QResizeEvent
+from PyQt5.QtCore                       import Qt
 
 # PLM
 
@@ -28,6 +28,7 @@ from ui.Header.Network.ConnectStatus    import ConnectStatus
 from ui.Header.AppToolbar.MainToolBar   import MainToolBar
 from ui.Body.Tabs.TopTab                import TopTab                           # Body
 from ui.Body.Tabs.BotTab                import BotTab
+from ui.Body.Notification               import Notification
 from ui.Footer.Footer                   import Footer                           # Footer
 from ui.Footer.MainStatusBar            import MainStatusBar
 
@@ -39,15 +40,14 @@ class PipelineManager(MainWindow):
     key = 'PipelineManager'
     _name = __appname__
 
-    def __init__(self, settings, actionManager, buttonManager, threadManager, parent=None):
+    def __init__(self, actionManager, buttonManager, threadManager, parent=None):
         super(PipelineManager, self).__init__(parent)
 
         self.url = __homepage__
         self.setObjectName(self._name)
         self.setWindowTitle(__appname__)
         self.setWindowIcon(LogoIcon("Logo"))
-        self.settings       = settings
-        # print('{0} - settingable: {1}'.format(self.key, self.settings._settingEnable))
+
         self.actionManager  = actionManager
         self.buttonManager  = buttonManager
         self.threadManager  = threadManager
@@ -64,12 +64,12 @@ class PipelineManager(MainWindow):
         self.mainMenuBar            = MainMenuBar(self.actionManager, self)
         self.mainToolBar            = MainToolBar(self.actionManager, self)
         self.connectStatus          = ConnectStatus(self)
-        self.notification           = GridLayout(self)
+        self.notification           = Notification(self.threadManager, self)
 
-        self.mainMenuSec            = GroupBox("Main Menu"      , self.mainMenuBar      , "qmainLayout")
-        self.connectStatusSec       = GroupBox("Connect Status" , self.connectStatus    , "autoGrid")
-        self.mainToolBarSec         = GroupBox("Tool Bar"       , self.mainToolBar      , "qmainLayout")
-        self.notifiSec              = GroupBox("Notification"   , self.notification     , "autoGrid")
+        self.mainMenuSec            = GroupBox("Main Menu"      , self.mainMenuBar      , "qmainLayout" , self)
+        self.connectStatusSec       = GroupBox("Connect Status" , self.connectStatus    , "autoGrid"    , self)
+        self.mainToolBarSec         = GroupBox("Tool Bar"       , self.mainToolBar      , "qmainLayout" , self)
+        self.notifiSec              = GroupBox("Notification"   , self.notification     , "autoGrid"    , self)
 
         self.mainMenuSec.key        = "MainMenuSectionSection"
         self.mainToolBarSec.key     = "MainToolBarSectionSection"
@@ -86,11 +86,17 @@ class PipelineManager(MainWindow):
         self.footer                 = Footer(self.buttonManager, self.threadManager, self)
         self.statusBar              = MainStatusBar(self)
 
-        self.subLayouts =  [self.mainMenuBar, self.mainToolBar      , self.connectStatus    , self.notification,
-                            self.mainMenuSec, self.mainToolBarSec   , self.connectStatusSec , self.notifiSec,
-                            self.topTabUI   , self.botTabUI         , self.footer           , self.statusBar, ]
+        self.layouts =  [self.mainMenuBar, self.mainToolBar      , self.connectStatus    , self.notification,
+                         self.mainMenuSec, self.mainToolBarSec   , self.connectStatusSec , self.notifiSec,
+                         self.topTabUI   , self.botTabUI         , self.footer           , self.statusBar, ]
 
-        # for layout in self.subLayouts:
+        # self.allowSettingLayouts = [self.mainMenuBar, self.mainToolBar, self.connectStatus, self.notification, ]
+                                    # self.topTabUI, self.botTabUI, self.footer, self.statusBar, ]
+
+        # for layout in self.allowSettingLayouts:
+        #     layout.settings._settingEnable = True
+
+        # for layout in self.layouts:
         #     print(layout.key)
         #     layout.signals.connect('executing', self.signals.executing)
         #     layout.signals.connect('regisLayout', self.signals.regisLayout)
@@ -101,8 +107,8 @@ class PipelineManager(MainWindow):
 
         # Header
         # Header Menu
-        self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 6)
-        self.layout.addWidget(self.connectStatusSec, 0, 6, 1, 3)
+        self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 7)
+        self.layout.addWidget(self.connectStatusSec, 0, 7, 1, 2)
 
         # Header ToolBar
         self.layout.addWidget(self.mainToolBarSec, 1, 0, 1, 9)
@@ -157,6 +163,16 @@ class PipelineManager(MainWindow):
         for layout in [self.mainMenuSec, self.mainMenuSec, self.connectStatusSec, self.notifiSec]:
             if layout.isHidden():
                 self.signals.emit('showLayout', layout.key, 'show')
+
+    def keyPressEvent(self, event):
+        print('aa: {0}'.format(event.key()))
+
+        if event.key() == Qt.CTRL + Qt.Key_Backspace:
+            print(event.key())
+
+    @property
+    def mode(self):
+        return self.connectStatus.mode
 
 # -------------------------------------------------------------------------------------------------------------
 def main():

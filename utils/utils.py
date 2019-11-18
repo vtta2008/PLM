@@ -12,11 +12,13 @@ from __future__ import absolute_import
 """ Import """
 
 # Python
-import os, sys, requests, platform, subprocess, winshell, yaml, json, re, datetime, time, uuid, win32api, linecache
+import os, sys, requests, platform, subprocess, winshell, yaml, json, re, datetime, time, uuid, win32api, linecache, \
+    shutil
 
 from PIL                import Image
 from resizeimage        import resizeimage
-from psutil             import cpu_percent, virtual_memory
+from psutil             import cpu_percent, virtual_memory, disk_usage
+from GPUtil             import getGPUs
 
 __all__ = ['attr_type', 'auto_convert', 'camel_case_to_lower_case_underscore', 'camel_case_to_title', 'clean_name',
             'is_bool', 'is_dict', 'is_list', 'is_none', 'is_number', 'is_string', 'list_attr_types',
@@ -88,7 +90,6 @@ def create_signal_slot(argType, name):
     signal = create_signal(argType, name)
     slot   = create_slot(argType, name)
     return signal, slot
-
 
 def obj_properties_setting(directory, mode):
     if platform.system() == "Windows" or platform.system() == "Darwin":
@@ -236,9 +237,9 @@ def get_all_path_from_dir(directory):
     # Walk the tree.
     for root, directories, files in os.walk(directory, topdown=False):
         for filename in files:
-            filePths.append(os.path.join(root, filename))  # Add to file list.
+            filePths.append(os.path.join(root, filename).replace('\\', '/'))  # Add to file list.
         for folder in directories:
-            dirPths.append(os.path.join(root, folder)) # Add to folder list.
+            dirPths.append(os.path.join(root, folder).replace('\\', '/')) # Add to folder list.
     return [filePths, dirPths]
 
 def get_file_path(directory):
@@ -264,6 +265,36 @@ def get_ram_total():
 def get_ram_useage():
     return virtual_memory()[2]
 
+def get_gpu_total():
+    gpus = getGPUs()
+    total = 0.0
+    for gpu in gpus:
+        total += float(gpu.memoryTotal)
+    return megabyte2gigabyte(total)
+
+def get_gpu_useage():
+    gpus = getGPUs()
+    used = 0.0
+    for gpu in gpus:
+        used += float(gpu.memoryUsed/gpu.memoryTotal*100)
+    rate = used/len(gpus)
+    return round(rate, 2)
+
+def get_disk_total():
+    disk = disk_usage('/')
+    return round(disk.total/(1024**3))
+
+def get_disk_used():
+    disk = disk_usage('/')
+    return round(disk.used/(1024**3))
+
+def get_disk_free():
+    disk = disk_usage('/')
+    return round(disk.free/(1024**3))
+
+def get_disk_useage():
+    disk = disk_usage('/')
+    return disk.percent
 
 def get_app_icon(size=32, iconName="About"):
     # Get the right directory base on icon size
@@ -511,6 +542,9 @@ def bool2str(arg):
 def byte2gigabyte(byte):
     return round(byte/1073741824)
 
+def megabyte2gigabyte(megabyte):
+    return round(megabyte/1024)
+
 def get_datetime():
     datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
     return datetime_stamp
@@ -588,7 +622,6 @@ def clean_file_ext(ext):
     if not fileNames == []:
         for filePth in fileNames:
             os.remove(filePth)
-
 
 # - Naming ----
 def clean_name(text):
@@ -736,7 +769,6 @@ def list_attr_types(s):
 def is_none(s):
     return type(s).__name__ == 'NoneType'
 
-
 def is_string(s):
     return type(s) in [str]
 
@@ -764,7 +796,6 @@ def is_number(s):
         return False
     return isinstance(s, int) or isinstance(s, float)
 
-
 def is_bool(s):
     """
     Returns true if the object is a boolean value.
@@ -772,13 +803,11 @@ def is_bool(s):
     """
     return isinstance(s, bool) or str(s).lower() in ['true', 'false']
 
-
 def is_list(s):
     """
     Returns true if the object is a list type.
     """
     return type(s) in [list, tuple]
-
 
 def is_dict(s):
     """
@@ -786,7 +815,6 @@ def is_dict(s):
     """
     from collections import OrderedDict
     return type(s) in [dict, OrderedDict]
-
 
 def is_newer(file1, file2):
     """

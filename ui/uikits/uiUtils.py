@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: button.py
+Script Name: okButton.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:

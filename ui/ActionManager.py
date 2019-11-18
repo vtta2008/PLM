@@ -36,10 +36,10 @@ class ActionManager(DAMGDICT):
     openBrowserKeys         = DAMGLIST()
     executingKeys           = DAMGLIST()
 
-    orgActions              = ['NewOrganisation', 'EditOrganisation', 'ConfigOrganisation', 'OrganisationManager']
-    teamActions             = ['NewTeam', 'EditTeam', 'ConfigTeam', 'TeamManager']
-    prjActions              = ['NewProject', 'EditProject', 'ConfigProject', 'ProjectManager']
-    appActions              = ['SettingUI', 'Config', 'Preferences', 'Exit']
+    orgActions              = ['NewOrganisation', 'EditOrganisation']
+    teamActions             = ['NewTeam', 'EditTeam']
+    prjActions              = ['NewProject', 'EditProject']
+    appActions              = ['SettingUI', 'Configuration', 'Preferences', 'Exit']
     goActions               = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder']
     officeActions           = ['TextEditor', 'NoteReminder'] + CONFIG_OFFICE
     toolsActions            = CONFIG_TOOLS + ['CleanPyc', 'ReConfig', 'Debug']
@@ -174,7 +174,7 @@ class ActionManager(DAMGDICT):
             action = Action({'icon': self.appInfo[key][1],
                              'txt': '&{0}'.format(key),
                              'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.emit, 'showLayout', self.appInfo[key][2], 'show'), }, parent)
+                             'trg': partial(parent.signals.emit, 'showLayout', key, 'show'), }, parent)
             action.key = '{0}_{1}_Action'.format(parent.key, key)
             action._name = action.key
             if action.key in self.actionKeys:

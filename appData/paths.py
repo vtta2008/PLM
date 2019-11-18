@@ -44,6 +44,8 @@ prefs                       = 'prefs'
 ROOT_DIR                    = os.path.join(os.getenv(__envKey__))
 
 CFG_DIR                     = os.path.join(ROOT_DIR, 'appData', '.config')
+TMP_DIR                     = os.path.join(ROOT_DIR, 'appData', '.tmp')
+TASK_DIR                    = os.path.join(ROOT_DIR, 'appData', '.task')
 
 CONFIG_LOCAL_DAMG_DIR       = CFG_DIR                                                   # DAMG team directory
 CONFIG_LOCAL_PLM_DIR        = CFG_DIR                                                   # Plm directory
@@ -75,6 +77,7 @@ APPS_DIR                    = os.path.join(BIN_DIR, 'apps')
 DATA_DIR                    = os.path.join(BIN_DIR, 'data')
 DEPENDANCIES_DIR            = os.path.join(BIN_DIR, 'dependencies')
 RESOURCES_DIR               = os.path.join(BIN_DIR, 'resources')
+SOUND_DIR                   = os.path.join(BIN_DIR, 'sound')
 
 SCRIPTS_DIR                 = os.path.join(ROOT_DIR, 'scripts')
 QSS_DIR                     = os.path.join(SCRIPTS_DIR, 'qss')

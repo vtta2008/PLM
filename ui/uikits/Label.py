@@ -14,7 +14,7 @@ from __future__ import absolute_import, unicode_literals
 # PyQt5
 from PyQt5.QtWidgets                        import QLabel, QLCDNumber
 from PyQt5.QtGui                            import QFont
-from PyQt5.QtCore                           import QTimeZone, QTime
+from PyQt5.QtCore                           import QTimeZone, QTime, QDate
 
 # PLM
 from appData                                import __copyright__, PRS, ST_FORMAT, SETTING_FILEPTH
@@ -132,6 +132,8 @@ class Label(QLabel):
                 self.setFont(QFont(value))
             elif key == 'alg':
                 self.setAlignment(PRS[value])
+            elif key == 'wmax':
+                self.setMaximumWidth(value)
             elif key == 'wmin':
                 self.setMinimumWidth(value)
             elif key == 'hmin':
@@ -152,6 +154,10 @@ class Label(QLabel):
                 self.setBuddy(value)
             elif key == 'link':
                 self.setOpenExternalLinks(value)
+            elif key == 'stt':
+                self.setToolTip(value)
+            elif key == 'sst':
+                self.setStatusTip(value)
             else:
                 print("PresetKeyError at {0}: No such key registed in preset: {1}: {2}".format(__name__, key, value))
 
@@ -171,6 +177,7 @@ class LCDNumber(QLCDNumber):
         self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'],self)
         self.time = QTime()
         self.zone = QTimeZone()
+        self.date = QDate()
 
         self.values = dict(w = self.width(), h = self.height(), x = self.x(), y = self.y())
 
@@ -259,6 +266,9 @@ class LCDNumber(QLCDNumber):
 
     def currentTimeZone(self):
         return self.zone.utc()
+
+    def currentDate(self):
+        return self.date.currentDate()
 
 usernameLabel = Label({'txt': 'Username'})
 passwordLabel = Label({'txt': 'Password'})

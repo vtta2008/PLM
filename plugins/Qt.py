@@ -21,8 +21,8 @@ RAWS_DATA_DIR
         >> import sys
         >> from Qt import QtWidgets
         >> app = QtWidgets.QApplication(sys.argv)
-        >> button = QtWidgets.QPushButton("Hello World")
-        >> button.show()
+        >> okButton = QtWidgets.QPushButton("Hello World")
+        >> okButton.show()
         >> app.exec_()
 
     All members of PySide2 are mapped from other bindings, should they exist.

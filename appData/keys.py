@@ -167,16 +167,16 @@ ACTIONS_DATA = dict(TD                  = CONFIG_TDS,
                     EXTRA               = CONFIG_EXTRA,
                     SYSTRAY             = CONFIG_SYSTRAY, )
 
-SHOWLAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 'Calendar', 'CodeOfConduct', 'ConfigOrganisation',
-                           'ConfigProject', 'ConfigTask', 'ConfigTeam', 'Config', 'Configurations', 'ConnectStatus', 'ContactUs', 'Contributing',
-                           'Credit', 'EditOrganisation', 'EditProject', 'EditTask', 'EditTeam', 'EnglishDictionary', 'Feedback',
-                           'FindFiles', 'Footer', 'ForgotPassword', 'GridLayout', 'HDRI', 'ImageViewer', 'Licence', 'MainMenuSection',
-                           'MainToolBar', 'MainToolBarSection', 'NewOrganisation', 'NewProject', 'NewTask', 'NewTeam', 'NodeGraph',
-                           'NoteReminder', 'Notification', 'OrganisationManager', 'PipelineManager', 'Preferences',
-                           'ProjectManager', 'Reference', 'ScreenShot', 'SettingUI', 'SignIn', 'SignOut', 'SignUp', 'SwitchAccount', 'StatusBar',
-                           'SysTray', 'TaskManager', 'TeamManager', 'TextEditor', 'Texture', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting',
-                           'Version']
-
+SHOWLAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 'Calendar', 'CodeOfConduct', 'Configuration',
+                           'ConfigOrganisation', 'ConfigProject', 'ConfigTask', 'ConfigTeam', 'Configurations',
+                           'ConnectStatus', 'ContactUs', 'Contributing', 'Credit', 'EditOrganisation', 'EditProject',
+                           'EditTask', 'EditTeam', 'EnglishDictionary', 'Feedback', 'FindFiles', 'Footer',
+                           'ForgotPassword', 'GridLayout', 'HDRI', 'ImageViewer', 'Licence', 'MainMenuSection',
+                           'MainToolBar', 'MainToolBarSection', 'NewOrganisation', 'NewProject', 'NewTask', 'NewTeam',
+                           'NodeGraph', 'NoteReminder', 'Notification', 'OrganisationManager', 'PipelineManager',
+                           'Preferences', 'ProjectManager', 'Reference', 'ScreenShot', 'SettingUI', 'SignIn', 'SignOut',
+                           'SignUp', 'StatusBar', 'SwitchAccount', 'SysTray', 'TaskManager', 'TeamManager', 'TextEditor',
+                           'Texture', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting', 'Version']
 RESTORE_KEY             = ['Restore']
 SHOWMAX_KEY             = ['Maximize']
 SHOWMIN_KEY             = ['Minimize']

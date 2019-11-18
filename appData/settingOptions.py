@@ -302,14 +302,14 @@ REGEX   = dict( section        = re.compile(r"^\[[^\]\r\n]+]"),
 PREFERENCES = dict(
     ignore_scene_prefs  = {"default": False,     "desc": "Use user prefences instead of scene preferences.", "label": "Ignore scene preferences",    "class": "global"},
     use_gl              = {"default": False,     "desc": "Render graph with OpenGL.",                        "label": "Use OpenGL",                  "class": "scene" },
-    edge_type           = {"default": "bezier",  "desc": "Draw edges with bezier paths.",                    "label": "Edge style",                  "class": "scene" },
+    edge_type           = {"default": "bezier",  "desc": "Draw edges with bezier paths.",                    "label": "Edge name",                  "class": "scene" },
     render_fx           = {"default": False,     "desc": "Render node drop shadows and effects.",            "label": "render FX",                   "class": "scene" },
     antialiasing        = {"default": 2,         "desc": "Antialiasing level.",                              "label": "Antialiasing",                "class": "scene" },
     logging_level       = {"default": 30,        "desc": "Verbosity level.",                                 "label": "Logging level",               "class": "global"},
     autosave_inc        = {"default": 90000,     "desc": "Autosave delay (seconds x 1000).",                 "label": "Autosave time",               "class": "global"},
     stylesheet_name     = {"default": "default", "desc": "Stylesheet to use.",                               "label": "Stylesheet",                  "class": "global"},
     palette_style       = {"default": "default", "desc": "Color palette to use.",                            "label": "Palette",                     "class": "global"},
-    font_style          = {"default": "default", "desc": "font style to use.",                               "label": "Font style",                  "class": "global"},
+    font_style          = {"default": "default", "desc": "font name to use.",                               "label": "Font name",                  "class": "global"},
     viewport_mode       = {"default": "smart",   "desc": "viewport update fn.",                              "label": "Viewport Mode",               "class": "global"}, )
 
 VALID_FONTS = dict( ui   = [ 'Arial', 'Cantarell', 'Corbel', 'DejaVu Sans', 'DejaVu Serif', 'FreeSans', 'Liberation Sans',

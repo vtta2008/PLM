@@ -57,6 +57,8 @@ class MainToolBar(MainWindow):
         self.textureToolBar = self.build_toolBar('TEX')
         self.postToolBar    = self.build_toolBar('POST')
 
+        self.tbs = [tb for tb in self.toolBars.values()]
+
         self.updateWidth(True)
 
     def updateWidth(self, bool):
@@ -78,7 +80,7 @@ class MainToolBar(MainWindow):
 
         w = i*32 + i*2
         # print(w)
-        self.setFixedWidth(w)
+        self.setMinimumWidth(w)
         # self.parent.setFixedWidth(w + 20)
 
     def build_toolBar(self, name=''):

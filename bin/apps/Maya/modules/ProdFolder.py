@@ -74,7 +74,7 @@ logger.setLevel(logging.DEBUG)
 #     from shiboken2 import wrapInstance
 #     from Maya_tk.plugins.Qt.QtCore import Signal
 
-# get button functions data
+# get okButton functions data
 def importBTS():
     from appPackages.maya.plt_modules import MayaFuncs
     reload(MayaFuncs)

@@ -47,6 +47,18 @@ datetTimeStamp = QDateTime.currentDateTime().toString("hh:mm - dd MMMM yy")     
 
 IMGEXT = "All Files (*);;Img Files (*.jpg);;Img Files (*.png)"
 
+DB_ATTRIBUTE_TYPE = dict(
+
+    int_auto_increment = 'INTERGER PRIMARY KEY AUTOINCREMENT, ',
+    int_primary_key = 'INT PRIMARY KEY, ',
+    text_not_null = 'TEXT NOT NULL, ',
+    text = 'TEXT, ',
+    bool = 'BOOL, ',
+    varchar = 'VARCHAR, ',
+    varchar_20 = 'VACHAR(20,)  ',
+
+)
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 23/10/2019 - 2:50 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

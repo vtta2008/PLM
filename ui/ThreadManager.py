@@ -10,22 +10,23 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from bin.data.damg                       import DAMGLIST, DAMGTHREADPOOL, DAMGTIMER, DAMGTHREAD
-from utils                               import get_ram_useage, get_cpu_useage, create_signal_slot
+from PyQt5.QtCore                        import pyqtSignal
 
-signal_cpu, slot_cpu = create_signal_slot(argType=str, name='CPU')
-signal_ram, slot_ram = create_signal_slot(argType=str, name='RAM')
+from bin.data.damg                       import DAMGLIST, DAMGTHREADPOOL, DAMGTIMER, DAMGTHREAD
+from utils                               import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
 
 class BackgroundService(DAMGTHREAD):
 
-    key = 'FooterWorker'
-    cpu = signal_cpu
-    ram = signal_ram
+    key                                   = 'Notification_rWorker'
 
-    slotCpu = slot_cpu
-    slotRam = slot_ram
+    cpu                                   = pyqtSignal(str, name='CPU')
+    ram                                   = pyqtSignal(str, name='RAM')
+    gpu                                   = pyqtSignal(str, name='GPU')
+    disk                                  = pyqtSignal(str, name='DISK')
 
-    def __init__(self, name='CPU useage', *args, **kwargs):
+    _monitoring                           = True
+
+    def __init__(self, name='PC Monitor', *args, **kwargs):
         super(BackgroundService, self).__init__(self)
 
         self.args = args
@@ -33,11 +34,29 @@ class BackgroundService(DAMGTHREAD):
         self._name = name
 
     def run(self):
-        while True:
+        while self._monitoring:
             cpu = str(get_cpu_useage())
             ram = str(get_ram_useage())
+            gpu = str(get_gpu_useage())
+            disk = str(get_disk_useage())
             self.cpu.emit(cpu)
             self.ram.emit(ram)
+            self.gpu.emit(gpu)
+            self.disk.emit(disk)
+
+    def stop_monitoring(self):
+        self._monitoring                  = False
+
+    def start_monitoring(self):
+        self._monitoring                  = True
+
+    @property
+    def monitor(self):
+        return self._monitoring
+
+    @monitor.setter
+    def monitor(self, val):
+        self._monitoring                  = val
 
 class Counting(DAMGTIMER):
 

@@ -16,7 +16,7 @@ from PyQt5.QtGui                            import QIcon
 from PyQt5.QtCore                           import QSize
 
 from appData                                import __copyright__, appIconCfg, IGNORE_ICON_NAME
-from ui.SignalManager import SignalManager
+from ui.SignalManager                       import SignalManager
 from utils.utils                            import data_handler, get_logo_icon, get_app_icon, get_tag_icon
 
 class Icon(QIcon):

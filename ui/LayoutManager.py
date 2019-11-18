@@ -62,48 +62,41 @@ class LayoutManager(DAMG):
         self.tools                      = self.toolLayouts()
         self.prjs                       = self.projectLayouts()
 
-        cbs = [
-            self.preferences.layout.tbTDCB,
-            self.preferences.layout.tbCompCB,
-            self.preferences.layout.tbArtCB,
-            self.preferences.layout.tbTexCB,
-            self.preferences.layout.tbPostCB,
-            self.preferences.layout.mainToolBarCB,
+        tbcbs = self.preferences.headerGrid.toolBarCBs
+        tbs = self.mainUI.mainToolBar.tbs
 
-            self.preferences.layout.statusBarCB,
-            self.preferences.layout.connectStatuCB,
-            self.preferences.layout.notifiCB,
-        ]
-    
-        tbs = [
-            self.mainUI.mainToolBar.tdToolBar,
-            self.mainUI.mainToolBar.compToolBar,
-            self.mainUI.mainToolBar.artToolBar,
-            self.mainUI.mainToolBar.textureToolBar,
-            self.mainUI.mainToolBar.postToolBar,
-            self.mainUI.mainToolBar,
+        cncbs = self.preferences.headerGrid.connectCBs
+        cns = self.mainUI.connectStatus.labels
 
-            self.mainUI.statusBar,
-            self.mainUI.connectStatus,
-            self.mainUI.notification,
-        ]
-    
+        mncbs = self.preferences.headerGrid.menuCBs
+        mns = self.mainUI.mainMenuBar.mns
+
         for i in range(len(tbs)):
-            key = tbs[i].key
-            grp = self.mainUI.mainToolBar.key
+            cb = tbcbs[i]
+            tb = tbs[i]
+            cb.stateChanged.connect(tb.setVisible)
+        tbcbs[-1].stateChanged.connect(self.mainUI.mainToolBarSec.setVisible)
 
-            if self.settings.initValue(grp, key) is None:
-                if i == 3 or i == 4:
-                    val = False
-                else:
-                    val = True
-            else:
-                val = str2bool(self.settings.initValue(grp, key))
-    
-            cbs[i].setChecked(val)
-            tbs[i].setVisible(val)
-            cbs[i].stateChanged.connect(tbs[i].setVisible)
-            cbs[i].stateChanged.connect(partial(self.mainUI.signals.emit,'setSetting', key, bool2str(val), grp))
+        for i in range(len(mncbs)):
+            cb = mncbs[i]
+            mn = mns[i]
+            cb.stateChanged.connect(self.mainUI.mainMenuBar.showMenu)
+        mncbs[-1].stateChanged.connect(self.mainUI.mainMenuSec.setVisible)
+
+        for i in range(len(cns)):
+            cb = cncbs[i]
+            lb = cns[i]
+            cb.stateChanged.connect(lb.setVisible)
+        cncbs[-1].stateChanged.connect(self.mainUI.connectStatusSec.setVisible)
+
+        ntcbs = self.preferences.bodyGrid.notificationCBs
+        nts = self.mainUI.notification.labels
+
+        for i in range(len(nts)):
+            cb = ntcbs[i]
+            lb = nts[i]
+            cb.stateChanged.connect(lb.setVisible)
+        ntcbs[-1].stateChanged.connect(self.mainUI.notifiSec.setVisible)
 
         for layout in self.layouts():
             try:
@@ -135,25 +128,26 @@ class LayoutManager(DAMG):
     def mainLayouts(self):
         from ui.PipelineManager             import PipelineManager
         from ui.SysTray                     import SysTray
-        from ui.subUI.HiddenLayout          import HiddenLayout
+        from ui.subUI.ShortcutCommand       import ShortcutCommand
 
-        self.mainUI                         = PipelineManager(self.settings, self.actionManager, self.buttonManager, self.threadManager)
-        self.sysTray                        = SysTray(self.settings, self.actionManager, self.eventManager)
-        self.hiddenLayout                   = HiddenLayout()
+        self.mainUI                         = PipelineManager(self.actionManager, self.buttonManager, self.threadManager)
+        self.sysTray                        = SysTray(self.actionManager, self.eventManager)
+        self.shortcutLayout                 = ShortcutCommand()
         self.setLayoutUnHidable(self.sysTray)
 
-        layouts = [self.mainUI, self.sysTray, self.hiddenLayout]
+        layouts = [self.mainUI, self.sysTray, self.shortcutLayout]
 
         for layout in layouts:
+            layout.settings._settingEnable = True
             self.registLayout(layout)
 
-        for layout in self.mainUI.subLayouts:
-            self.registLayout(layout)
-
-        for layout in self.mainUI.topTabUI.tabs:
-            key = layout.key
-            if not key in self._register.keys():
-                self._register[key] = layout
+        # for layout in self.mainUI.layouts:
+        #     self.registLayout(layout)
+        #
+        # for layout in self.mainUI.topTabUI.tabs:
+        #     key = layout.key
+        #     if not key in self._register.keys():
+        #         self._register[key] = layout
 
         return layouts
 
@@ -172,6 +166,7 @@ class LayoutManager(DAMG):
                     self. reference, self.version]
 
         for layout in layouts:
+            layout.settings._settingEnable = True
             self.registLayout(layout)
 
         return layouts
@@ -180,7 +175,7 @@ class LayoutManager(DAMG):
         from ui.subUI.Settings.SettingUI    import SettingUI
         from ui.subUI.Settings.UserSetting  import UserSetting
 
-        self.settingUI                      = SettingUI(self.settings, self)
+        self.settingUI                      = SettingUI()
         self.userSetting                    = UserSetting()
 
         layouts = [self.settingUI, self.userSetting]
@@ -197,6 +192,7 @@ class LayoutManager(DAMG):
         from ui.subUI.Tools.TextEditor      import TextEditor
         from ui.Header.Menus.config         import Preferences
         from ui.Header.Menus.config         import Configuration
+        from ui.subUI.TaskManager           import TaskManager
 
         self.calculator                     = Calculator.Calculator()
         self.calendar                       = Calendar.Calendar()
@@ -209,12 +205,14 @@ class LayoutManager(DAMG):
         self.preferences                    = Preferences.Preferences()
         self.screenShot                     = Screenshot.Screenshot()
         self.textEditor                     = TextEditor.TextEditor()
+        self.taskManager                    = TaskManager(self.mainUI)
 
         layouts     = [self.calculator, self.calendar, self.configuration, self.engDict, self.findFile,
                        self.imageViewer, self.nodeGraph, self.noteReminder, self.preferences, self.screenShot,
-                       self.textEditor]
+                       self.textEditor, self.taskManager]
 
         for layout in layouts:
+            layout.settings._settingEnable = True
             self.registLayout(layout)
 
         return layouts
@@ -225,6 +223,7 @@ class LayoutManager(DAMG):
         self.newProject                     = NewProject()
 
         for layout in [self.newProject, ]:
+            layout.settings._settingEnable = True
             self.registLayout(layout)
 
         layouts = [self.newProject]

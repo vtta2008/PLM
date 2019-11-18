@@ -124,7 +124,7 @@ def deleteDock(name='Channel Box', version=VERSION):
             cmds.deleteUI(name)
 
 
-# get button functions data
+# get okButton functions data
 def importBTS():
     from tankers.pMaya.modules import MayaFuncs
     reload(MayaFuncs)

@@ -21,7 +21,7 @@ import logging
 from functools import partial  # partial module can store variables to method
 
 import maya.OpenMayaUI as omui  # the extent of the internal Maya_tk API
-import maya.app.renderSetup.views.renderSetupButton as marv  # very nice symbol button
+import maya.app.renderSetup.views.renderSetupButton as marv  # very nice symbol okButton
 import pymel.core as pm  # Pymel command for maya
 # -------------------------------------------------------------------------------------------------------------
 # IMPORT MAYA PYTHON MODULES
@@ -773,7 +773,7 @@ class ToolBoxII(QtWidgets.QWidget):
         mid1Y = [0, 0, 0, 0, 0]
         mid1H = [0, 1, 1, 1, 1]
         mid1W = [0, m1W, m1W / 2, m1W, m1W]
-        mid1L = ['', 'Preset 2D style Controller', 'Preset 3D style Controller']
+        mid1L = ['', 'Preset 2D name Controller', 'Preset 3D name Controller']
         mid1B = ['', 'Group', 'Center Pivot', 'Freezee Transform']
 
         m2Y = mid1W[4]
@@ -1087,7 +1087,7 @@ class ToolBoxII(QtWidgets.QWidget):
         scrollNurbs2DArea.setWidget(scrollNurbs2DWidget)
         self.layout.addWidget(scrollNurbs2DArea, mid1['X'][2], mid1['Y'][2], mid1['H'][2], mid1['W'][2])
 
-        # Create icon button
+        # Create icon okButton
         nurbs2Dnames = [key for key in self.nurbsType2D]
         count2D = []
         z = mid1['W'][2] + 2
@@ -1125,7 +1125,7 @@ class ToolBoxII(QtWidgets.QWidget):
         scrollNurbs3DArea.setWidget(scrollNurbs3DWidget)
         self.layout.addWidget(scrollNurbs3DArea, mid1['X'][2], mid1['Y'][2] + mid1['W'][2], mid1['H'][2], mid1['W'][2])
 
-        # Create icon button
+        # Create icon okButton
         nurbs3Dnames = [key for key in self.nurbsType3D]
         count3D = []
         for x in range((len(nurbs3Dnames) / z) + 1):
@@ -1203,7 +1203,7 @@ class ToolBoxII(QtWidgets.QWidget):
         # ---------------------------------------------------------------------------------------------------------
         # Create QWidget
 
-        # color index to RGB for button color
+        # color index to RGB for okButton color
         rgb = {0: (.4, .4, .4), 16: (1, 1, 1), 3: (.75, .75, .75), 2: (.5, .5, .5), 1: (0, 0, 0), 18: (0, .7, 1),
                28: (0, .5, .5),
                29: (0, .2, .5), 15: (0, .2, .7), 6: (0, 0, 1), 5: (0, 0, 0.4), 19: (0, 1, .4), 14: (0, 1, 0),
@@ -1224,7 +1224,7 @@ class ToolBoxII(QtWidgets.QWidget):
         scrollColorArea.setWidget(scrollColorWidget)
         self.layout.addWidget(scrollColorArea, mid2['X'][2], mid2['Y'][2], mid2['H'][2], mid2['W'][2])
 
-        # Create icon button
+        # Create icon okButton
         rgbKeys = [key for key in rgb]
         rgbKeys = sorted(rgbKeys)
         countColor = []
@@ -1454,7 +1454,7 @@ class ToolBoxII(QtWidgets.QWidget):
         cmds.text(l='You can make text nurbs with what ever fonts installed in your computer')
         cmds.text(l='You can add attributes in CREATE NEW ATTRIBUTE or delete attribut in CHANNEL BOX')
         cmds.text(l='You can join all the shapes of nurbs into one in ADJUSTMENT')
-        cmds.text(l='The group button is to do group but center pivot object itself, not center of grid')
+        cmds.text(l='The group okButton is to do group but center pivot object itself, not center of grid')
         cmds.text(l="")
         cmds.text('Have fun.')
         cmds.text(l="")
@@ -1636,7 +1636,7 @@ class ToolBoxII(QtWidgets.QWidget):
 
     def groupCenter(self, *args):
         a = cmds.ls(sl=True)
-        cmds.group(n=a[0] + "_group")
+        cmds.group(n=a[0] + "_groups")
         self.populateAll()
 
     def centerPivot(self, *args):

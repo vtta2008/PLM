@@ -25,6 +25,7 @@ from PyQt5.QtWidgets    import (QAbstractItemView, QAction, QApplication, QMenuB
 # PLM
 from appData                           import __organization__, __appname__, SETTING_FILEPTH, INI
 from ui.uikits.Action                  import Action
+from ui.uikits.MenuBar                 import MenuBar
 from ui.uikits.Label                   import Label
 from ui.uikits.Widget                  import Widget
 from ui.uikits.GridLayout              import GridLayout
@@ -38,16 +39,11 @@ class SettingUI(Widget):
     key = 'SettingUI'
 
 
-    def __init__(self, setting, parent=None):
+    def __init__(self, parent=None):
         super(SettingUI, self).__init__(parent)
 
         self.parent = parent
-        self.settings = setting
         self.menubar = QMenuBar(self)
-
-        if self.settings is None:
-            self.settings = self.setting_mode(self.filename(), self.fmt(), self._parent)
-
         self.regValue = SettingOutput(self.settings)
         self.regInfo = SettingInput(self.settings)
 
@@ -72,22 +68,22 @@ class SettingUI(Widget):
         self.fallbacksAct.setEnabled(True)
 
     def openIniFile(self):
-        if not os.path.exists(self.settings.filename()):
+        if not os.path.exists(self.settings.settingFile):
             fileName, _ = QFileDialog.getOpenFileName(self, "Open INI File", '', "INI Files (*.ini *.conf)")
 
             if fileName:
-                settings = QSettings(fileName, INI)
+                self.settings._settingFile = fileName
         else:
-            settings = QSettings(SETTING_FILEPTH['app'], INI)
-            self.setSettingsObject(settings)
+            self.settings._settingFile = SETTING_FILEPTH['app']
+            self.setSettingsObject(self.settings)
             self.fallbacksAct.setEnabled(False)
 
     def openPropertyList(self):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open Property List", '', "Property List Files (*.plist)")
 
         if fileName:
-            settings = QSettings(fileName, QSettings.NativeFormat)
-            self.setSettingsObject(settings)
+            self.settings.set_format(QSettings.NativeFormat)
+            self.setSettingsObject(self.settings)
             self.fallbacksAct.setEnabled(False)
 
     def openRegistryPath(self):
@@ -112,8 +108,7 @@ class SettingUI(Widget):
         self.refreshAct = QAction("&Refresh", self, shortcut="Ctrl+R", enabled=False, triggered=self.regValue.refresh)
         self.exitAct = QAction("E&xit", self, shortcut="Ctrl+Q", triggered=self.close)
         self.autoRefreshAct = QAction("&Auto-Refresh", self, shortcut="Ctrl+A", checkable=True, enabled=False)
-        self.fallbacksAct = QAction("&Fallbacks", self, shortcut="Ctrl+F", checkable=True, enabled=False,
-                                    triggered=self.regValue.setFallbacksEnabled)
+        self.fallbacksAct = QAction("&Fallbacks", self, shortcut="Ctrl+F", checkable=True, enabled=False,  triggered=self.regValue.setFallbacksEnabled)
 
         if sys.platform != 'darwin':
             self.openPropertyListAct.setEnabled(False)
@@ -290,7 +285,7 @@ class SettingInput(Widget):
                         disable = False
                     else:
                         item1.setText("Read-only")
-                    # self.buttonBox.button(QDialogButtonBox.Ok).setDisabled(disable)
+                    # self.buttonBox.okButton(QDialogButtonBox.Ok).setDisabled(disable)
                 else:
                     item1.setText("Read-only fallback")
 

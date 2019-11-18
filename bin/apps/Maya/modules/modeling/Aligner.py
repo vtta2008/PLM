@@ -79,7 +79,7 @@ class Aligner(object):
 
         cmds.setParent(mlo)
 
-        # Add apply button
+        # Add apply okButton
         cmds.button(l='Align', c=self.onApplyClick, w=150, bgc=(.2,.5,.9))
 
         cmds.showWindow(winID)

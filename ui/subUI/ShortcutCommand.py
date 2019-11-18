@@ -10,26 +10,36 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
+from PyQt5.QtCore import Qt
 from ui.uikits.Widget import Widget
 from ui.uikits.LineEdit import PlainTextEdit
 from ui.uikits.BoxLayout import VBoxLayout
 
-class HiddenLayout(Widget):
+class ShortcutCommand(Widget):
 
-    key = 'HiddenLayout'
+    key = 'ShortcutCommand'
 
     def __init__(self, parent=None):
-        super(HiddenLayout, self).__init__(parent)
+        super(ShortcutCommand, self).__init__(parent)
 
         self.parent = parent
+        self.setWindowTitle('Shortcut Command')
+
         self.layout = VBoxLayout()
         self.commandLine = PlainTextEdit()
-        self.commandLine.resize(120, 40)
         self.layout.addWidget(self.commandLine)
         self.setLayout(self.layout)
+        self.commandLine.setFixedSize(250, 25)
 
+    def eventFilter(self, source, event):
+        if source == self.commandLine:
+            if event.key() == Qt.Key_Return:
+                self.run()
+                return True
 
-
+    def run(self):
+        print('run')
+        pass
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 11/11/2019 - 5:30 PM

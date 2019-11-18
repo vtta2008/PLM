@@ -36,7 +36,7 @@ class GroupBox(QGroupBox):
     _name                                   = 'DAMG Group Box'
     _copyright                              = __copyright__
 
-    def __init__(self, title="Section Title", layouts=None, mode="IconGrid", parent=None):
+    def __init__(self, title="Section Title", layouts=None, mode=None, parent=None):
         QGroupBox.__init__(self)
 
         self.setTitle(title)
@@ -48,7 +48,8 @@ class GroupBox(QGroupBox):
         self.layouts = layouts
         self.mode = mode
 
-        self.buildUI()
+        if not self.mode is None:
+            self.buildUI()
 
         self.values = dict(w = self.width(), h = self.height(), x = self.x(), y = self.y())
 
@@ -161,7 +162,6 @@ class GroupBox(QGroupBox):
             self.setLayout(self.layout)
         else:
             print("Unrecognise mode: {}".format(self.mode))
-
 
     @pyqtSlot(str)
     def changeTitle(self, title):

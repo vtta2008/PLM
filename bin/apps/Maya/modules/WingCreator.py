@@ -1877,11 +1877,11 @@ class ui():
 
         m.separator(h=15, style='none')
 
-        # Radio button for the right and left side option
+        # Radio okButton for the right and left side option
         m.radioButtonGrp("radioSide", label='Chose Side', labelArray2=['Right', 'Left'], numberOfRadioButtons=2,
                          vr=True, select=1)
         m.separator(h=5, style='none')
-        # Radio button for the direction the character is facing
+        # Radio okButton for the direction the character is facing
         m.radioButtonGrp("radioFacingDirection", label='Character faces down:',
                          labelArray2=['Positive Z', 'Negative Z'], numberOfRadioButtons=2, vr=True, select=1)
 
@@ -1901,7 +1901,7 @@ class ui():
         tab2 = m.columnLayout(adjustableColumn=False)
         m.separator(h=15, style='none')
 
-        # Radio button for the right and left side option
+        # Radio okButton for the right and left side option
         m.radioButtonGrp("radioWingType", label='Chose wing shape:  ', labelArray2=['Hawk', 'Falcon'],
                          numberOfRadioButtons=2, vr=True, select=1)
 
@@ -2018,8 +2018,8 @@ class ui():
             return 1
 
 
-# GUI button function 1
-# Call the generation functions when the button to generate feathers is pressed
+# GUI okButton function 1
+# Call the generation functions when the okButton to generate feathers is pressed
 def generateFeathers():
     # Check to make sure function hasn't been run yet by checking to see if the first feather exists
     if (m.objExists(side + '_Primaries_1') == 0):
@@ -2054,8 +2054,8 @@ def generateFeathers():
         print "Feathers have already been generated for this side."
 
 
-# GUI button function 2
-# Call the generation functions when the button to generate the motion system is pressed
+# GUI okButton function 2
+# Call the generation functions when the okButton to generate the motion system is pressed
 def generateMotionSys():
     if (m.objExists(side + '_Primaries_1') == 1):  # make sure feathers have been made
         # Check to make sure function hasn't been run yet by checking to see if the Wrist Control exists

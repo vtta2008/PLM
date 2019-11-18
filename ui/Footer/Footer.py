@@ -67,42 +67,24 @@ class Footer(Widget):
 
         self.parent             = parent
         self.buttonManager      = buttonManager
-        self.threaManager       = threadManager
+        self.threadManager       = threadManager
 
         layout = self.buildUI()
         self.setLayout(layout)
 
-        worker = self.threaManager.serviceThread()
-        worker.cpu.connect(self.update_cpu_useage)
-        worker.ram.connect(self.update_ram_useage)
-        worker.start()
-
     def buildUI(self):
         layout          = GridLayout()
 
-        for i in range(6):
+        for i in range(3):
             layout.addWidget(Label({'txt': " "}), 0, i, 1, 1)
             i += 1
 
-        # i = 4
-        # for button in self.buttonManager.tagButtonsFooterWidget(self.parent):
-        #     layout.addWidget(button, 0, i, 1, 2)
-        #     i = i + 2
-
-        self.usage_cpu = Label({'txt': 'CPU: 0%'})
-        self.usage_ram = Label({'txt': 'RAM: 0%'})
-        self.clock = DigitalClock(self)
-        layout.addWidget(self.usage_cpu, 0, 6, 1, 2)
-        layout.addWidget(self.usage_ram, 0, 8, 1, 2)
-        layout.addWidget(self.clock, 1, 7, 1, 3)
+        i = 4
+        for button in self.buttonManager.tagButtonsFooterWidget(self.parent):
+            layout.addWidget(button, 0, i, 1, 2)
+            i = i + 2
 
         return layout
-
-    def update_cpu_useage(self, val):
-        return self.usage_cpu.setText('CPU: {0}%'.format(val))
-
-    def update_ram_useage(self, val):
-        return self.usage_ram.setText('RAM: {0}%'.format(val))
 
 def main():
     app = QApplication(sys.argv)
