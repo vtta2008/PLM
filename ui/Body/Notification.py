@@ -13,6 +13,7 @@ from __future__ import absolute_import, unicode_literals
 from ui.uikits.GridLayout import GridLayout
 from ui.uikits.Label import LCDNumber, Label
 from bin.data.damg import DAMGTIMER
+import datetime
 
 class DigitalClock(LCDNumber):
 
@@ -80,9 +81,16 @@ class Notification(GridLayout):
         self.usage_disk     = Label({'txt': 'dsk: 0%'})
 
 
-
         self.timeClock      = DigitalClock(self)
         self.dateClock      = DigitalDate(self)
+
+        d = self.dateClock.currentDate().day()
+        m = self.dateClock.currentDate().month()
+        y = self.dateClock.currentDate().year()
+        dt = datetime.date(y, m, d)
+        wk = dt.isocalendar()[1]
+
+        self.weekNumber = Label({'txt': 'Weeknumber: {0}'.format(wk)})
 
         worker = self.threadManager.serviceThread()
         worker.cpu.connect(self.update_cpu_useage)
@@ -97,8 +105,9 @@ class Notification(GridLayout):
         self.addWidget(self.usage_ram, 0, 1, 1, 1)
         self.addWidget(self.usage_gpu, 1, 0, 1, 1)
         self.addWidget(self.usage_disk, 1, 1, 1, 1)
-        self.addWidget(self.timeClock, 2, 0, 1, 1)
-        self.addWidget(self.dateClock, 2, 1, 1, 1)
+        self.addWidget(self.weekNumber, 2, 0, 1, 2)
+        self.addWidget(self.timeClock, 3, 0, 1, 1)
+        self.addWidget(self.dateClock, 3, 1, 1, 1)
 
     def setcurrentTask(self, task):
         self._currentTask = task

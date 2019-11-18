@@ -1,0 +1,21 @@
+[
+    "BotTab",
+    "ConnectStatus",
+    "ConnectStatusSection",
+    "Footer",
+    "GridLayout",
+    "MainMenuBar",
+    "MainMenuSection",
+    "MainMenuSectionSection",
+    "MainStatusBar",
+    "MainToolBar",
+    "MainToolBarSection",
+    "MainToolBarSectionSection",
+    "Notification",
+    "NotificationSection",
+    "TerminalLayout",
+    "TopTab",
+    "TopTab1",
+    "TopTab2",
+    "TopTab3"
+]

@@ -179,6 +179,7 @@ class TaskManager(Widget):
     def __init__(self, parent=True):
         super(TaskManager, self).__init__(parent)
 
+        self.parent = parent
         self.setWindowTitle('Task Manager')
         self.layout = VBoxLayout()
         line1 = HBoxLayout()
@@ -198,7 +199,7 @@ class TaskManager(Widget):
         self.layout.addLayout(line2)
 
         self.okButton = Button({'txt': 'Ok', 'cl': self.executeTask})
-        self.cancelButton = Button({'txt': 'Cancel', 'cl': partial(self.signals.emit, 'showLayout', self.key, 'hide')})
+        self.cancelButton = Button({'txt': 'Cancel', 'cl': self.hideEvent})
         line2.addWidget(self.okButton)
         line2.addWidget(self.cancelButton)
 
@@ -226,7 +227,7 @@ class TaskManager(Widget):
         details = self.taskDetails.taskDetails.toPlainText()
 
         Task(id, name, mode, type, project, organisation, self.duetime, self.duedate, details)
-        self.signals.emit('showLayout', self.key, 'hide')
+        self.parent.topTabUI.tab1.update_tasks()
 
     def resizeEvent(self, event):
         w = int(self.width())

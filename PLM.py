@@ -221,7 +221,6 @@ class PLM(Application):
 
         if layoutID in ['NewTask', 'EditTask']:
             layoutID = 'TaskManager'
-            self.mainUI.topTabUI.tab1.update_tasks()
 
         if layoutID in self.registryLayout.keys():
 
