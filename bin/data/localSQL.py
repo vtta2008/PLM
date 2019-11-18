@@ -96,9 +96,6 @@ class SQLS(DAMG):
         author = parse(r'__author__\s+=\s+(.*)')
         display = parse(r'__appname__\s+=\s+(.*)')
 
-        data = [orgname, appname, domain, version, author, display]
-        print(data)
-
         self.cur.execute("INSERT INTO metadata ('organisation', 'application', 'domain', 'version', 'display', 'author') VALUES (?,?,?,?,?,?)",
                          (orgname, appname, domain, version, display, author))
         self.conn.commit()
