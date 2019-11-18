@@ -219,13 +219,6 @@ class PLM(Application):
                         self.logger.info("This command will be built later.".format(cmd))
                     return
 
-    def countDownReset(self, limit):
-        self.count += 1
-        if self.count == limit:
-            self.executing_old = []
-
-        return self.executing_old
-
     @pyqtSlot(str, str, name="showLayout")
     def showLayout(self, layoutID, mode):
 
@@ -376,6 +369,13 @@ class PLM(Application):
         self._styleSheet = StyleSheet(style).stylesheet
         self.setStyleSheet(self._styleSheet)
         self.setSetting('styleSheet', style, self.key)
+
+    def countDownReset(self, limit):
+        self.count += 1
+        if self.count == limit:
+            self.executing_old = []
+
+        return self.executing_old
 
     def signInEvent(self):
         self.switchAccountEvent()
