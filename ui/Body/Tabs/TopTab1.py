@@ -191,12 +191,6 @@ class TopTap1Filter(GroupBox):
         self.layout = GridLayout(self)
         self.setLayout(self.layout)
 
-        # self.tasks = Label({'txt': 'Tasks: '})
-        # self.currentTask = Label({'txt': 'Current Task: '})
-        #
-        # self.layout.addWidget(self.tasks, 0, 0, 1, 3)
-        # self.layout.addWidget(self.currentTask, 1, 0, 1, 3)
-
         self.overduedCB = CheckBox()
         self.urgentCB = CheckBox()
         self.safetyCB = CheckBox()
