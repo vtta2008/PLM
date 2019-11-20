@@ -200,18 +200,24 @@ class Task(TaskBase):
         return self.taskData
 
     def get_status(self):
-        if self.days < 0:
-            self._status = 'Overdued'
-        elif self.days == 0:
-            self._status = 'Urgent'
+        if self.days <= 0:
+            if self.hours < 0:
+                self._status = 'Overdued'
+            elif self.hours == 0:
+                if self.minutes <= 0:
+                    self._status = 'Overdued'
+                else:
+                    self._status = 'Urgent'
+            else:
+                self._status = 'Urgent'
         elif self.days <= 2:
-            self._status = 'Due Tomorrow'
+            self._status = 'Tomorrow'
         elif self.days > 2 and self.days < 7:
-            self._status = 'Due Soon'
+            self._status = '{0} days'.format(self.days)
         elif self.days == 7:
             self._status = '1 Week'
         else:
-            self._status = 'Counting'
+            self._status = '{0} days'.format(self.days)
 
         return self._status
 

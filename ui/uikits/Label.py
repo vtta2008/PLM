@@ -158,6 +158,8 @@ class Label(QLabel):
                 self.setToolTip(value)
             elif key == 'sst':
                 self.setStatusTip(value)
+            elif key == 'sss':
+                self.setStyleSheet(value)
             else:
                 print("PresetKeyError at {0}: No such key registed in preset: {1}: {2}".format(__name__, key, value))
 
