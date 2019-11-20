@@ -194,13 +194,15 @@ class Task(TaskBase):
         self.taskData.add('endtime', self._endtime)
         self.taskData.add('details', self.details)
 
-        with open(os.path.join(TASK_DIR, '{0}.task'.format(self.taskName)), 'w') as f:
+        with open(os.path.join(TASK_DIR, '{0}.task'.format(self.taskID)), 'w') as f:
             json.dump(self.taskData, f, indent=4)
 
         return self.taskData
 
     def get_status(self):
-        if self.days <= 0:
+        if self.days < 0:
+            self._status = 'Overdued'
+        elif self.days == 0:
             if self.hours < 0:
                 self._status = 'Overdued'
             elif self.hours == 0:

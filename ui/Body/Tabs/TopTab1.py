@@ -262,8 +262,17 @@ class TopTab1(Widget):
         self.layout.addWidget(self.tabFilter, 5, 6, 2, 3)
 
     def update_tasks(self):
+        try:
+            self.layout.removeItem(self.taskLayout)
+        except AttributeError:
+            self.taskLayout = HBoxLayout()
+        else:
+            for w in self.taskLayout.children():
+                self.taskLayout.removeWidget(w)
+            self.taskLayout = HBoxLayout()
+
         tasks = get_file_path(TASK_DIR)
-        self.taskLayout = HBoxLayout()
+
         for t in tasks:
             task = TaskInfo(t)
             self.taskLayout.addWidget(task)
