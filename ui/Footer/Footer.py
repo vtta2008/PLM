@@ -75,11 +75,10 @@ class Footer(Widget):
     def buildUI(self):
         layout          = GridLayout()
 
-        for i in range(3):
+        for i in range(5):
             layout.addWidget(Label({'txt': " "}), 0, i, 1, 1)
             i += 1
 
-        i = 4
         for button in self.buttonManager.tagButtonsFooterWidget(self.parent):
             layout.addWidget(button, 0, i, 1, 2)
             i = i + 2

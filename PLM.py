@@ -48,11 +48,11 @@ class PLM(Application):
     dataConfig                          = configManager
     count                               = 0
 
-    showLayout_old  = []
-    executing_old   = []
-    setSetting_old  = []
-    openBrowser_old = []
-    sysNotify_old   = []
+    showLayout_old                      = []
+    executing_old                       = []
+    setSetting_old                      = []
+    openBrowser_old                     = []
+    sysNotify_old                       = []
 
     def __init__(self):
         super(PLM, self).__init__(sys.argv)

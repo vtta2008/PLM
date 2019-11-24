@@ -33,5 +33,5 @@
     "EditTeam": "show",
     "EditProject": "show",
     "ShortcutCommand": "hide",
-    "TaskManager": "show"
+    "TaskManager": "hide"
 }
