@@ -426,12 +426,6 @@ class PLM(Application):
 
         self.exit()
 
-from setuptools import find_packages
-
-a = find_packages()
-for p in a:
-    print(p)
-
 PLM()
 
 # -------------------------------------------------------------------------------------------------------------
