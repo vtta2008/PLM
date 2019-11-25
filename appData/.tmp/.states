@@ -33,5 +33,6 @@
     "EditTeam": "show",
     "EditProject": "show",
     "ShortcutCommand": "hide",
-    "TaskManager": "hide"
+    "TaskManager": "hide",
+    "Feedback": "show"
 }

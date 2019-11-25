@@ -328,7 +328,7 @@ class LayoutManager(DAMG):
                 pass
 
             if layout.key == 'PipelineManager':
-                layout.setFixedWidth(500)
+                layout.setFixedWidth(475)
                 # layout.setFixedHeight(850)
                 # self.parent.setWindowFlags(STAY_ON_TOP)
                 pass

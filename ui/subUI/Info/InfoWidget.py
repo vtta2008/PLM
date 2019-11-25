@@ -51,6 +51,7 @@ class InfoWidget(Widget):
         self.layout             = GridLayout(self)
         label                   = Label({'txt': self.content[self.key]})
         btn                     = Button({'txt': 'Ok', 'cl': self.close})
+        btn.setFixedSize(100, 25)
 
         self.layout.addWidget(label,    0, 0, 6, 6)
         self.layout.addWidget(btn,      6, 6, 1, 1)

@@ -23,9 +23,9 @@ import os, sys, requests, ctypes
 from PyQt5.QtCore                       import pyqtSlot, Qt
 
 # Plm
-from appData                            import (__localServer__, PLMAPPID, __organization__, StateNormal, StateMax,
-                                                StateMin, __appname__, __version__, __website__, SETTING_FILEPTH,
-                                                ST_FORMAT, SYSTRAY_UNAVAI, KEY_TAB, KEY_PRESS)
+from appData                            import (__localServer__, __organization__, StateNormal, StateMax, StateMin,
+                                                __appname__, __version__, __website__, SETTING_FILEPTH, ST_FORMAT,
+                                                SYSTRAY_UNAVAI, KEY_TAB, KEY_PRESS)
 
 from ui.ThreadManager                   import ThreadManager
 from utils                              import str2bool, clean_file_ext, LocalDatabase
@@ -59,22 +59,7 @@ class PLM(Application):
 
         # Run all neccessary configuration to start PLM
 
-        self.logger                     = Loggers(self.__class__.__name__)
-        self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.settings._settingEnable    = True
-
-        self.appInfo                    = self.dataConfig.appInfo                                    # Configuration data
-
-        # Multithreading.
-        self.threadManager              = ThreadManager()
-        self.database                   = LocalDatabase()                                            # Database tool
-        self.browser                    = Browser()
-
-        self.set_styleSheet('dark')                                                                  # Layout name
-        self.setWindowIcon(LogoIcon("Logo"))                                                         # Set up task bar icon
-        self.appID = self.applicationPid()
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(PLMAPPID)                      # Change taskbar icon
-
+        self.setWindowIcon(LogoIcon("Logo"))  # Setup icon
         self.setOrganizationName(__organization__)
         self.setApplicationName(__appname__)
         self.setOrganizationDomain(__website__)
@@ -82,6 +67,23 @@ class PLM(Application):
         self.setApplicationDisplayName(__appname__)
         self.setCursorFlashTime(1000)
         self.setQuitOnLastWindowClosed(False)
+
+        self.appID                      = self.sessionId()
+        self.appKey                     = self.sessionKey()
+        self.appPid                     = self.applicationPid()
+        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(self.appID)                     # Setup app ID
+
+        self.logger                     = Loggers(self.__class__.__name__)
+        self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.settings._settingEnable    = True
+
+        self.appInfo                    = self.dataConfig.appInfo                                    # Configuration data
+        self.set_styleSheet('dark')
+
+        # Multithreading.
+        self.threadManager              = ThreadManager()
+        self.database                   = LocalDatabase()                                            # Database tool
+        self.browser                    = Browser()
 
         self.eventManager               = EventManager()
         self.buttonManager              = ButtonManager()
@@ -140,7 +142,7 @@ class PLM(Application):
                     else:
                         self.showLayout('SignIn', "show")
 
-        sys.exit(self.exec_())
+        self.runEvent()
 
     @pyqtSlot(str, name='openBrowser')
     def openBrowser(self, url):
@@ -423,6 +425,12 @@ class PLM(Application):
         self.mainUI.signals.updateState()
 
         self.exit()
+
+from setuptools import find_packages
+
+a = find_packages()
+for p in a:
+    print(p)
 
 PLM()
 
