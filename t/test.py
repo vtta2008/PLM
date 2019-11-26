@@ -52,11 +52,24 @@ def __run_command_with_output( app, cmd, args ):
 
     return output
 
-from PyQt5.QtWidgets import QApplication
-import sys
-app = QApplication(sys.argv)
-a = app.desktop()
-print(a)
+# from PyQt5.QtWidgets import QApplication
+# import sys
+# app = QApplication(sys.argv)
+# a = app.desktop()
+# print(a)
+
+# I tried methods above, however, a console stills appears and disappears quickly due to a Timer in my script. Finally, I found following code:
+
+import ctypes
+import os
+import win32process
+
+hwnd = ctypes.windll.kernel32.GetConsoleWindow()
+if hwnd != 0:
+    ctypes.windll.user32.ShowWindow(hwnd, 0)
+    ctypes.windll.kernel32.CloseHandle(hwnd)
+    _, pid = win32process.GetWindowThreadProcessId(hwnd)
+    os.system('taskkill /PID ' + str(pid) + ' /f')
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 1:38 AM
