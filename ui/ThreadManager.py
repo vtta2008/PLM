@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore                        import pyqtSignal
 
-from bin.data.damg                       import DAMGLIST, DAMGTHREADPOOL, DAMGTIMER, DAMGTHREAD
+from bin.dependencies.damg.damg          import DAMGLIST, DAMGTHREADPOOL, DAMGTIMER, DAMGTHREAD
 from utils                               import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
 
 class BackgroundService(DAMGTHREAD):

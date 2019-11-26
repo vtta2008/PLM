@@ -46,6 +46,9 @@ ROOT_DIR                    = os.path.join(os.getenv(__envKey__))
 CFG_DIR                     = os.path.join(ROOT_DIR, 'appData', '.config')
 TMP_DIR                     = os.path.join(ROOT_DIR, 'appData', '.tmp')
 TASK_DIR                    = os.path.join(ROOT_DIR, 'appData', '.task')
+TEAM_DIR                    = os.path.join(ROOT_DIR, 'appData', '.team')
+ORG_DIR                     = os.path.join(ROOT_DIR, 'appData', '.organisation')
+PRJ_DIR                     = os.path.join(ROOT_DIR, 'appData', '.project')
 
 CONFIG_LOCAL_DAMG_DIR       = CFG_DIR                                                   # DAMG team directory
 CONFIG_LOCAL_PLM_DIR        = CFG_DIR                                                   # Plm directory

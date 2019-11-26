@@ -16,7 +16,6 @@ import sys
 
 # PyQt5
 from PyQt5.QtCore           import pyqtSlot
-from PyQt5.QtWidgets        import QApplication
 
 # PLM
 from appData                import SiPoMin
@@ -135,11 +134,4 @@ class MainToolBar(MainWindow):
                 tb.setVisible(str2bool(mode))
                 self.settings.iniSetValue('visible', bool2str(mode), tb.key)
 
-def main():
-    app = QApplication(sys.argv)
-    toolBar = MainToolBar()
-    toolBar.show()
-    app.exec_()
 
-if __name__=='__main__':
-    main()

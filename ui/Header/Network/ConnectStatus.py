@@ -20,7 +20,7 @@ from PyQt5.QtGui                import QPixmap
 
 # Plt
 from appData                    import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
-from bin.data.damg              import DAMGTIMER, DAMGLIST
+from bin.dependencies.damg.damg import DAMGTIMER, DAMGLIST
 from ui.uikits.MessageBox       import MessageBox
 from ui.uikits.GridLayout       import GridLayout
 from ui.uikits.Label            import Label
@@ -97,7 +97,6 @@ class ConnectStatus(GridLayout):
             self.internetIcon = get_app_icon(16, 'Connected')
             self.internetStatus.setStatusTip('Connected')
 
-
         self.internetStatus.setPixmap(QPixmap(self.internetIcon))
         self.internetStatus.update()
 
@@ -137,9 +136,9 @@ class ConnectStatus(GridLayout):
         else:
             if r.status_code == 200:
                 self._server = __globalServer__
-                self.setMode('GLobal')
+                self.setMode('G')
             else:
-                self.setMode('Offline')
+                self.setMode('O')
 
         return self._server
 

@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 
 from ui.uikits.GridLayout import GridLayout
 from ui.uikits.Label import LCDNumber, Label
-from bin.data.damg import DAMGTIMER
+from bin.dependencies.damg.damg import DAMGTIMER
 import datetime
 
 class DigitalClock(LCDNumber):

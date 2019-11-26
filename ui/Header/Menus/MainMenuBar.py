@@ -13,9 +13,6 @@ Description:
 # Python
 import sys
 
-# PyQt5
-from PyQt5.QtWidgets                import QApplication
-
 # Plm
 from appData                        import (__plmWiki__, mainConfig)
 from ui.uikits.MenuBar              import MenuBar
@@ -129,13 +126,8 @@ class MainMenuBar(MenuBar):
             if key == k:
                 menu.setEnabled(bool)
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    from ui.uikits.GroupBox import GroupBox
-    subMenu = MainMenuBar()
-    layout = GroupBox("Main Menu", subMenu, "qmainLayout")
-    layout.show()
-    app.exec_()
+
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 11/07/2018 - 12:59 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

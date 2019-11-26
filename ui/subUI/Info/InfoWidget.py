@@ -10,9 +10,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-import sys
-from PyQt5.QtWidgets import QApplication
-
 from ui.uikits.Icon import AppIcon
 from appData import (SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE_MIT, REFERENCE, VERSION)
 
@@ -59,13 +56,6 @@ class InfoWidget(Widget):
         self.setLayout(self.layout)
         self.setSizePolicy(SiPoMin, SiPoMin)
         self.setContentsMargins(1,1,1,1)
-
-if __name__=='__main__':
-    from appData import PLM_ABOUT
-    app = QApplication(sys.argv)
-    window = InfoWidget('About', PLM_ABOUT)
-    window.show()
-    app.exec_()
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -106,21 +106,22 @@ allPths = [ROOT_DIR, CFG_DIR, CONFIG_DIR, CONFIG_LOCAL_DAMG_DIR, CONFIG_LOCAL_PL
            BIN_DIR, APPS_DIR, DATA_DIR, DEPENDANCIES_DIR, SCRIPTS_DIR, QSS_DIR, DB_DIR, APPS_DIR, APP_ICON_DIR, SOUND_DIR,
            WEB_ICON_DIR, AVATAR_DIR, LOGO_DIR, PIC_DIR, TAG_DIR, ICON_DIR_16, ICON_DIR_24, ICON_DIR_32, ICON_DIR_48,
            ICON_DIR_64, WEB_ICON_16, WEB_ICON_24, WEB_ICON_32, WEB_ICON_48, WEB_ICON_64, WEB_ICON_128, DAMG_LOGO_DIR,
-           PLM_LOGO_DIR, RAWS_DATA_DIR, DOCUMENTATION_DIR, TASK_DIR]
+           PLM_LOGO_DIR, RAWS_DATA_DIR, DOCUMENTATION_DIR, TASK_DIR, TEAM_DIR, PRJ_DIR, ORG_DIR, ]
 
 if not os.path.exists(DB_PTH):
     SQLS(DB_PTH)
 
 for p in allPths:
     if not os.path.exists(p):
-        print('directory: "{0}" is not exists'.format(p))
+        # print('directory: "{0}" is not exists'.format(p))
         os.makedirs(p, exist_ok=True)
 
 # Set config folder to invisible (hide)
-if platform.system() == "Windows":
-    subprocess.call(["attrib", "+H", CFG_DIR])
-elif platform.system() == "Darwin":
-    subprocess.call(["chflags", "hidden", CFG_DIR])
+for d in [CFG_DIR, TASK_DIR, ORG_DIR, PRJ_DIR, TEAM_DIR]:
+    if platform.system() == "Windows":
+        subprocess.call(["attrib", "+H", d])
+    elif platform.system() == "Darwin":
+        subprocess.call(["chflags", "hidden", CFG_DIR])
 
 # -------------------------------------------------------------------------------------------------------------
 """ Config data from text file """

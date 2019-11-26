@@ -17,8 +17,7 @@ from PyQt5.QtWidgets import QMenuBar, QApplication
 from appData                                import SETTING_FILEPTH, ST_FORMAT, __copyright__
 from ui.SignalManager                       import SignalManager
 from cores.Settings                         import Settings
-from bin.data.damg                          import DAMGDICT
-from ui.uikits.Menu                         import Menu
+from bin.dependencies.damg.damg import DAMGDICT
 from ui.uikits.MainWindow                   import MainWindow
 
 class MenuBar(QMenuBar):

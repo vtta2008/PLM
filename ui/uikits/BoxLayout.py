@@ -46,7 +46,7 @@ class HBoxLayout(QHBoxLayout):
             elif key == 'addStretch':
                 self.setStretch(value, 0)
             else:
-                print("Unrecognise configKey: {}".format(key))
+                print("{0}: Unrecognise configKey: {1}".format(__name__, key))
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

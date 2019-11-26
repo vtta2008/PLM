@@ -14,7 +14,7 @@ from __future__ import absolute_import, unicode_literals
 # Python
 import os, sys, subprocess, shutil, winshell, pkg_resources, json
 from platform                           import system
-from bin.data.damg                      import DAMG, DAMGDICT, DAMGLIST
+from bin.dependencies.damg.damg import DAMG, DAMGDICT, DAMGLIST
 
 # PyQt5
 from PyQt5 import __file__ as pyqt_path
@@ -91,6 +91,8 @@ class ConfigManager(DAMG):
 
     key                                 = 'Configurations'
 
+    allowOutput                         = False
+
     checkList                           = DAMGDICT()
     cfgInfo                             = DAMGDICT()
     cfgError                            = DAMGDICT()
@@ -133,6 +135,7 @@ class ConfigManager(DAMG):
                 continue
             else:
                 self.cfgs = False
+                break
 
         self.folder_settings(self.pthInfo['config'], 'h')
         pths, fns = self.get_all_paths(self.pthInfo['config'])
@@ -172,6 +175,10 @@ class ConfigManager(DAMG):
         pthInfo['cache']                = self.set_dir('appData/.config')
         pthInfo['preferences']          = self.set_dir('appData/.config')
         pthInfo['tmp']                  = self.set_dir('appData/.tmp')
+        pthInfo['task']                 = self.set_dir('appData/.task')
+        pthInfo['project']              = self.set_dir('appData/.project')
+        pthInfo['organisation']         = self.set_dir('appData/.organisation')
+        pthInfo['team']                 = self.set_dir('appData/.team')
 
         pthInfo['appData']              = self.set_dir('appData')
         pthInfo['documents']            = self.set_dir('appData/documentations')
@@ -254,17 +261,46 @@ class ConfigManager(DAMG):
     def cfg_pip(self):
         pipVer = self.get_pkg_version('pip')
         if pipVer is None:
-            subprocess.Popen('python -m pip install --user --upgrade pip', shell=True).wait()
+            proc = subprocess.Popen('python -m pip install --user --upgrade pip',
+                                    shell=True,
+                                    stdin=subprocess.PIPE,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT)
         else:
             if pipVer < 18.0:
-                subprocess.Popen('python -m pip install --user --upgrade pip', shell=True).wait()
+                proc = subprocess.Popen('python -m pip install --user --upgrade pip',
+                                         shell=True,
+                                         stdin=subprocess.PIPE,
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.STDOUT)
+            else:
+                proc = subprocess.Popen('python -m pip install --user --upgrade pip',
+                                         shell=True,
+                                         stdin=subprocess.PIPE,
+                                         stdout=subprocess.PIPE,
+                                         stderr=subprocess.STDOUT)
+
+        output = proc.stdout.read()
+        proc.wait()
+        if self.allowOutput:
+            print(output)
+
         return True
 
     def cfg_cx_Freeze(self):
         try:
             import cx_Freeze
         except ImportError:
-            subprocess.Popen('python -m pip install --user --upgrade cx_Freeze', shell=True).wait()
+            proc = subprocess.Popen('python -m pip install --user --upgrade cx_Freeze',
+                                    shell=True,
+                                    stdin=subprocess.PIPE,
+                                    stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT)
+            output = proc.stdout.read()
+            proc.wait()
+            if self.allowOutput:
+                print(output)
+
         finally:
             return True
 
@@ -272,7 +308,16 @@ class ConfigManager(DAMG):
         for pkg in __pkgsReq__:
             check = self.check_pyPkg(pkg)
             if not check:
-                subprocess.Popen('python -m pip install --user --upgrade {0}'.format(pkg), shell=True).wait()
+                proc = subprocess.Popen('python -m pip install --user --upgrade {0}'.format(pkg),
+                                        shell=True,
+                                        stdin=subprocess.PIPE,
+                                        stdout=subprocess.PIPE,
+                                        stderr=subprocess.STDOUT)
+                output = proc.stdout.read()
+                proc.wait()
+                if self.allowOutput:
+                    print(output)
+
         return True
 
     def cfg_maya(self):
@@ -293,7 +338,7 @@ class ConfigManager(DAMG):
                 for usDes in mayaVers:
                     shutil.copy(usScr, usDes)
 
-        # print('Maya is implemented')
+        print('Maya is implemented')
         return True
 
     def cfg_envVars(self, fileName='envKey.cfg', **envKeys):

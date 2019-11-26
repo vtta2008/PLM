@@ -10,11 +10,7 @@ Description:
 
 # Python
 import sys
-from bin.data.damg              import DAMGLIST
-
-# PyQt5
-from PyQt5.QtWidgets            import QApplication
-from PyQt5.QtGui                import QResizeEvent
+from bin.dependencies.damg.damg import DAMGLIST
 
 # PLM
 from ui.uikits.Icon             import AppIcon
@@ -67,22 +63,11 @@ class TopTab(TabWidget):
 
         self.signals.updateAvatar.connect(self.tab2.update_avatar)
 
-    def resizeEvent(self, event):
-        w = self.width()
-        h = self.height()
-        for tab in self.tabs:
-            tab.resize(w-4, h-4)
-
-
-def main():
-    app = QApplication(sys.argv)
-    layout = TopTab()
-    layout.show()
-    app.exec_()
-
-
-if __name__ == '__main__':
-    main()
+    # def resizeEvent(self, event):
+    #     w = self.width()
+    #     h = self.height()
+    #     for tab in self.tabs:
+    #         tab.resize(w-4, h-4)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 25/05/2018

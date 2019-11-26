@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from bin.data.damg import DAMGDICT, DAMG
+from bin.dependencies.damg.damg import DAMGDICT, DAMG
 
 from PyQt5.QtGui import QWheelEvent
 
@@ -35,7 +35,7 @@ class EventManager(DAMGDICT):
 
     def __init__(self, parent=None):
         super(EventManager, self).__init__()
-
+        self.parent = parent
         self.wheelEvent = WheelEvent()
 
 # -------------------------------------------------------------------------------------------------------------

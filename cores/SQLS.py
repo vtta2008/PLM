@@ -14,7 +14,7 @@ Description:
 import sqlite3 as lite
 
 # PLM
-from bin.data.damg                         import DAMG
+from bin.dependencies.damg.damg import DAMG
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """

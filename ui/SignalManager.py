@@ -20,7 +20,7 @@ from PyQt5.QtCore                   import pyqtSignal
 # PLM
 from cores.Loggers                  import Loggers
 from appData                        import TMP_DIR
-from bin.data.damg                  import DAMG, DAMGLIST, DAMGDICT
+from bin.dependencies.damg.damg import DAMG, DAMGLIST, DAMGDICT
 
 # -------------------------------------------------------------------------------------------------------------
 """ Signal class: setup all the signal which will be using. """

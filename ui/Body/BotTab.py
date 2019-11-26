@@ -12,12 +12,7 @@ Description:
 """ Import """
 
 # Python
-import sys
-from bin.data.damg                      import DAMGLIST
-
-# PyQt5
-from PyQt5.QtWidgets                    import QApplication
-from PyQt5.QtGui                        import QResizeEvent
+from bin.dependencies.damg.damg import DAMGLIST
 
 # PLM
 from ui.Body.Tabs.BotTab2               import BotTab2
@@ -46,7 +41,7 @@ class BotTab(TabWidget):
         self.botTab2                    = BotTab2(self.parent)
 
         self.tabs                       = DAMGLIST(listData=[self.botTab1, self.botTab2])
-        self.tabNames                   = DAMGLIST(listData=['General', 'Debug'])
+        self.tabNames                   = DAMGLIST(listData=['Tracking', 'Debug'])
 
         for layout in self.tabs:
             # layout.signals.connect('executing', self.signals.executing)
@@ -63,16 +58,8 @@ class BotTab(TabWidget):
     #     w = self.width()
     #     h = self.height()
     #     for tab in self.tabs:
-    #         tab.resize(w-2, h-2)
+    #         tab.resize(w - 4, h - 4)
 
-def main():
-    bottab = QApplication(sys.argv)
-    layout = BotTab()
-    layout.show()
-    bottab.exec_()
-
-if __name__ == '__main__':
-    main()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 25/05/2018

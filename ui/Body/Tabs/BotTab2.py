@@ -26,7 +26,6 @@ from io import StringIO
 # PyQt5
 from PyQt5.QtCore               import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
 from PyQt5.QtGui                import QTextCursor
-from PyQt5.QtWidgets            import QApplication
 
 # PLM
 from appData                    import SiPoMin, SETTING_FILEPTH, ST_FORMAT
@@ -150,16 +149,6 @@ class BotTab2(Widget):
 
     def test(self):
         return doctest.testmod(verbose=True)
-
-def main():
-
-    debug = QApplication(sys.argv)
-    layout = BotTab2()
-    layout.show()
-    debug.exec_()
-
-if __name__ == '__main__':
-    main()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 20/07/2018 - 9:19 PM

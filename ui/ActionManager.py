@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 import os
-from bin.data.damg import DAMGDICT, DAMGLIST
+from bin.dependencies.damg.damg import DAMGDICT, DAMGLIST
 from functools import partial
 
 from ui.uikits.Action import Action

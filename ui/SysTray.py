@@ -11,12 +11,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-import sys
-
 # PyQt5
 from PyQt5.QtCore                       import pyqtSlot
-from PyQt5.QtWidgets                    import QApplication
 
 # PLM
 from appData                            import __plmSlogan__, __appname__
@@ -92,11 +88,3 @@ class SysTray(SystemTrayIcon):
     def login(self, newVal):
         self._login = newVal
 
-def main():
-    sysApp = QApplication(sys.argv)
-    sysTray = SysTray()
-    sysTray.show()
-    sysApp.exec_()
-
-if __name__ == '__main__':
-    main()

@@ -18,11 +18,11 @@ import platform
 from PyQt5.QtCore                    import QFile
 
 # Plm
-from bin.data.damg                  import DAMG
+from bin.dependencies.damg.damg     import DAMG
 from cores.Loggers                  import Loggers
 from appData                        import QSS_DIR
-from bin.resources.qss              import darkstyle_rc, tooltips_rc
 from ui.uikits.TextSteam            import TextStream
+from scripts.rcs                    import darkstyle_rc, tooltips_rc
 
 
 class StyleSheet(DAMG):

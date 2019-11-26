@@ -11,16 +11,15 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore import QSysInfo, QStandardPaths, Qt, QEvent
-from PyQt5.QtWidgets import QApplication, QPlainTextEdit
+from PyQt5.QtWidgets import QPlainTextEdit
 from PyQt5.QtGui import QTextCursor
-import sys
+
 import shlex
 import getpass
 import socket
 import os
-import re
 
-from bin.data.damg import DAMGLIST
+from bin.dependencies.damg.damg import DAMGLIST
 from ui.uikits.Widget import Widget
 from ui.uikits.Action import ShortCut
 from ui.uikits.BoxLayout import VBoxLayout
@@ -365,18 +364,6 @@ font-family: Noto Sans Mono;
 font-size: 7pt; 
 color: #729fcf;}
 """
-
-
-def main():
-    app = QApplication(sys.argv)
-    ex = TopTap3()
-    ex.show()
-    ex.raise_()
-    sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 1:31 AM

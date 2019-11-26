@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 
-from bin.data.damg import DAMGERROR
+from bin.dependencies.damg.damg import DAMGERROR
 
 # -------------------------------------------------------------------------------------------------------------
 

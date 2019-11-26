@@ -11,9 +11,9 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 import os, re
-from bin.data.damg import DAMGTUPLE
+from bin.dependencies.damg.damg import DAMGTUPLE
 
-from appData import APP_DATA_DIR, __appname__
+from appData import APP_DATA_DIR
 
 with open(os.path.join(APP_DATA_DIR, 'metadatas.py'), 'rb') as f:
     metadata = f.read().decode('utf-8')

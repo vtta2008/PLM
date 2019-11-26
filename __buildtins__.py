@@ -20,10 +20,12 @@ ROOT                            = os.path.abspath(os.getcwd())
 
 cfgable                         = False
 allowReport                     = False
+allowOutput                     = False
 checkCopyright                  = False
 checkToBuildUis                 = False
 checkToBuildCmds                = False
 checkIgnoreIDs                  = False
+
 
 try:
     os.getenv(__envKey__)
@@ -37,6 +39,19 @@ else:
     else:
         cfgable                 = True
 finally:
+    try:
+        import damg
+    except ImportError:
+        proc = subprocess.Popen('python -m pip install --user --upgrade damg',
+                                 shell=True,
+                                 stdin=subprocess.PIPE,
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.STDOUT)
+        output = proc.stdout.read()
+        proc.wait()
+        if allowOutput:
+            print(output)
+
     if cfgable:
         from cores.ConfigManager import ConfigManager
         configManager = ConfigManager(__envKey__, ROOT)
@@ -157,14 +172,13 @@ class Application(QApplication):
     _trackShowLayoutError           = False
     _trackEvents                    = False
 
+    timeReset                       = 5
+
     ignoreIDs                       = __ignoreIDs__()
     toBuildUis                      = __tobuildUis__()
     toBuildCmds                     = __tobuildCmds__()
 
-    todoList = dict(toBuildUis = toBuildUis, toBuildCmds = toBuildCmds)
-
-    def __call__(self, *args, **kwargs):
-        print('Application has been called from: {0}'.format(__name__))
+    todoList                        = dict(toBuildUis = toBuildUis, toBuildCmds = toBuildCmds)
 
     def checkSignalRepeat(self, old, data):
         new = [i for i in data]
@@ -185,6 +199,27 @@ class Application(QApplication):
 
     def runEvent(self):
         return sys.exit(self.exec_())
+
+    def changeRecieveSignal(self, bool):
+        self._trackRecieveSignal    = bool
+
+    def changeBlockSignal(self, bool):
+        self._trackBlockSignal      = bool
+
+    def changeTrackCommand(self, bool):
+        self._trackCommand          = bool
+
+    def changeRegistLayout(self, bool):
+        self._trackRegistLayout     = bool
+
+    def changeJobsTodo(self, bool):
+        self._trackJobsTodo         = bool
+
+    def changeShowLayout(self, bool):
+        self._trackShowLayoutError  = bool
+
+    def changeTrackEvent(self, bool):
+        self._trackEvents           = bool
 
     @property
     def login(self):

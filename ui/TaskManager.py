@@ -199,7 +199,7 @@ class TaskManager(Widget):
         self.layout.addLayout(line2)
 
         self.okButton = Button({'txt': 'Ok', 'cl': self.executeTask})
-        self.cancelButton = Button({'txt': 'Cancel', 'cl': self.hideEvent})
+        self.cancelButton = Button({'txt': 'Cancel', 'cl': partial(self.signals.emit, 'showLayout', self.key, 'hide')})
         line2.addWidget(self.okButton)
         line2.addWidget(self.cancelButton)
 

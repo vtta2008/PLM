@@ -11,17 +11,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-import sys
-
-# PyQt5
-from PyQt5.QtWidgets                        import QApplication
-
 # Plt
 from ui.uikits.Widget                       import Widget
 from ui.uikits.GridLayout                   import GridLayout
 from ui.uikits.Label                        import Label, LCDNumber
-from bin.data.damg                          import DAMGTIMER
+from bin.dependencies.damg.damg             import DAMGTIMER
 
 # -------------------------------------------------------------------------------------------------------------
 class DigitalClock(LCDNumber):
@@ -84,16 +78,6 @@ class Footer(Widget):
             i = i + 2
 
         return layout
-
-def main():
-    app = QApplication(sys.argv)
-    layout = Footer()
-    layout.show()
-    app.exec_()
-
-
-if __name__ == '__main__':
-    main()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 1/06/2018 - 4:24 AM

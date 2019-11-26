@@ -21,7 +21,7 @@ from PyQt5.QtGui            import QRadialGradient, QColor, QPainter, QBrush, QP
 from PyQt5.QtWidgets        import QApplication
 
 # PLM
-from bin.data.damg                  import DAMG
+from bin.dependencies.damg.damg import DAMG
 from ui.uikits.Widget                         import Widget
 from ui.uikits.GridLayout import GridLayout
 from ui.uikits.GroupBox import GroupGrid

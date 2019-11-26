@@ -3,6 +3,7 @@
     "id": "PGRP8.100_DLR",
     "mode": "individual",
     "type": "research",
+    "status": "Overdued",
     "project": [
         "EIT_PGRP8.100",
         "Research Proposal"

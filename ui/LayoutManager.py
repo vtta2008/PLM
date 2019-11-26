@@ -11,14 +11,13 @@ Description:
 """ Import """
 
 # Python
-from bin.data.damg                      import DAMG, DAMGLIST
-from functools                          import partial
+from bin.dependencies.damg.damg         import DAMG, DAMGLIST
 
 from PyQt5.QtCore                       import Qt
 
 # PLM
-from utils                              import str2bool, bool2str
-from appData                            import SiPoMin, SiPoExp, SiPoPre, SiPoIgn, SiPoMax
+from appData                            import SiPoMin
+
 
 class LayoutManager(DAMG):
 
@@ -30,14 +29,13 @@ class LayoutManager(DAMG):
     unHidableLayouts                    = DAMGLIST()
     unShowableLayouts                   = DAMGLIST()
 
-    ignoreIDs = ['MainMenuSection', 'MainMenuBar', 'MainToolBarSection', 'MainToolBar',
-                 'Notification', 'TopTab', 'BotTab', 'Footer', 'TopTab2', 'TopTab1',
-                 'TopTab3', 'MainStatusBar', 'ConnectStatus', 'GridLayout']
-
     def __init__(self, setting, registryLayout, actionManager, buttonManager, eventManager, threadManager, parent=None):
         super(LayoutManager, self).__init__(parent)
 
         self.parent                     = parent
+
+        self.ignoreIDs                  = self.parent.ignoreIDs
+
         self.settings                   = setting
         self.actionManager              = actionManager
         self.buttonManager              = buttonManager
@@ -79,7 +77,6 @@ class LayoutManager(DAMG):
 
         for i in range(len(mncbs)):
             cb = mncbs[i]
-            mn = mns[i]
             cb.stateChanged.connect(self.mainUI.mainMenuBar.showMenu)
         mncbs[-1].stateChanged.connect(self.mainUI.mainMenuSec.setVisible)
 
@@ -104,6 +101,14 @@ class LayoutManager(DAMG):
             except AttributeError:
                 self.noShowHideAttrs.append(layout)
 
+        self.mainUI.botTabUI.botTab1.recieveSignalCB.stateChanged.connect(self.parent.changeRecieveSignal)
+        self.mainUI.botTabUI.botTab1.blockSignalCB.stateChanged.connect(self.parent.changeBlockSignal)
+        self.mainUI.botTabUI.botTab1.commandCB.stateChanged.connect(self.parent.changeTrackCommand)
+        self.mainUI.botTabUI.botTab1.registLayoutCB.stateChanged.connect(self.parent.changeRegistLayout)
+        self.mainUI.botTabUI.botTab1.jobsTodoCB.stateChanged.connect(self.parent.changeJobsTodo)
+        self.mainUI.botTabUI.botTab1.showLayoutErrorCB.stateChanged.connect(self.parent.changeShowLayout)
+        self.mainUI.botTabUI.botTab1.trackEventCB.stateChanged.connect(self.parent.changeTrackEvent)
+
         layouts = []
         for listLayout in [self.mains, self.funcs, self.infos, self.setts, self.tools, self.prjs]:
             layouts = layouts + list(listLayout)
@@ -116,9 +121,9 @@ class LayoutManager(DAMG):
         from ui.subUI.Funcs.SignUp          import SignUp
         from ui.subUI.Funcs.ForgotPassword  import ForgotPassword
 
-        self.signin     = SignIn()
-        self.forgotPW   = ForgotPassword()
-        self.signup     = SignUp()
+        self.signin                         = SignIn()
+        self.forgotPW                       = ForgotPassword()
+        self.signup                         = SignUp()
 
         for layout in [self.signin, self.signup, self.forgotPW]:
             self.registLayout(layout)
@@ -192,7 +197,7 @@ class LayoutManager(DAMG):
         from ui.subUI.Tools.TextEditor      import TextEditor
         from ui.Header.Menus.config         import Preferences
         from ui.Header.Menus.config         import Configuration
-        from ui.subUI.TaskManager           import TaskManager
+        from ui.TaskManager import TaskManager
 
         self.calculator                     = Calculator.Calculator()
         self.calendar                       = Calendar.Calendar()
@@ -328,7 +333,7 @@ class LayoutManager(DAMG):
                 pass
 
             if layout.key == 'PipelineManager':
-                layout.setFixedWidth(475)
+                layout.setFixedWidth(500)
                 # layout.setFixedHeight(850)
                 # self.parent.setWindowFlags(STAY_ON_TOP)
                 pass

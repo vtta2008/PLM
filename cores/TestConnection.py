@@ -12,8 +12,8 @@ from __future__ import absolute_import, unicode_literals
 
 import socket, time
 
-from appData                    import __google__, __localPort__, __localHost__, __localServer__
-from bin.data.damg              import DAMG
+from appData                    import __google__
+from bin.dependencies.damg.damg import DAMG
 
 class TestConnection(DAMG):
 

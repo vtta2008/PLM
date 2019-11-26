@@ -8,6 +8,17 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+
+__author__      = "Trinh Do & Duong Minh Duc"
+__copyright__   = "Copyright (c) 2017 - 2019 Trinh Do & Duong Minh Duc"
+__credits__     = ["Trinh Do", "Duong Minh Duc"]
+__license__     = "MIT"
+__version__     = "4.2.0"
+__maintainer__  = "Trinh Do"
+__email__       = "damgteam@gmail.com"
+__status__      = "Beta"
+
+# -------------------------------------------------------------------------------------------------------------
 """ Import """
 
 # Python

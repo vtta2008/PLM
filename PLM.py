@@ -38,6 +38,7 @@ from ui.uikits.Icon                     import LogoIcon
 from ui.Web.Browser                     import Browser
 from ui.LayoutManager                   import LayoutManager
 from ui.EventManager                    import EventManager
+from ui.uikits.MessageBox               import MessageBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -55,7 +56,10 @@ class PLM(Application):
     sysNotify_old                       = []
 
     def __init__(self):
-        super(PLM, self).__init__(sys.argv)
+        if self.instance() is None:
+            super(PLM, self).__init__(sys.argv)
+        else:
+            MessageBox(None, 'PLM is running', 'critical', 'PLM application already running', 'close')
 
         # Run all neccessary configuration to start PLM
 
@@ -162,9 +166,20 @@ class PLM(Application):
         if not repeat:
             self.settings.initSetValue(key, value, grp)
         else:
+            limit = self.timeReset
+            if self.threadManager.counter.printCounter:
+                self.threadManager.setPrintCounter(False)
+
+            if self.threadManager.counter._countLimited != limit:
+                self.threadManager.setCountLimited(limit)
+
+            if not self.threadManager.isCounting():
+                self.threadManager.startCounting()
+
             if self._trackBlockSignal:
                 self.logger.report('{3}: block signal setSetting: {0}, {1}, {2}'.format(key, value, grp, self.key))
-            return
+
+            return self.countDownReset(limit)
 
     @pyqtSlot(str, name="executing")
     def executing(self, cmd):
@@ -174,7 +189,7 @@ class PLM(Application):
         self.executing_old, repeat = self.checkSignalRepeat(self.executing_old, [cmd])
 
         if repeat:
-            limit = 10
+            limit = self.timeReset
             if self.threadManager.counter.printCounter:
                 self.threadManager.setPrintCounter(False)
 
@@ -260,9 +275,20 @@ class PLM(Application):
                 self.logger.report('recieve signal showLayout from {0}: {1}'.format(layoutID, mode))
             pass
         else:
+            limit = self.timeReset
+            if self.threadManager.counter.printCounter:
+                self.threadManager.setPrintCounter(False)
+
+            if self.threadManager.counter._countLimited != limit:
+                self.threadManager.setCountLimited(limit)
+
+            if not self.threadManager.isCounting():
+                self.threadManager.startCounting()
+
             if self._trackBlockSignal:
                 self.logger.report('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
-            return
+
+            return self.countDownReset(limit)
 
         if mode in ['SignIn', 'SignOut', 'SignUp', 'SwitchAccount']:
             if layoutID == mode:
@@ -330,8 +356,24 @@ class PLM(Application):
 
     @pyqtSlot(str, str, str, int, name='sysNotify')
     def sysNotify(self, title, mess, iconType, timeDelay):
-        if self._trackRecieveSignal:
-            self.logger.report('Receive signal sysNotify: {0} {1} {2} {3}'.format(title, mess, iconType, timeDelay))
+
+        self.sysNotify_old, repeat = self.checkSignalRepeat(self.sysNotify_old, [title, mess, iconType, timeDelay])
+
+        if repeat:
+            limit = self.timeReset
+            if self.threadManager.counter.printCounter:
+                self.threadManager.setPrintCounter(False)
+
+            if self.threadManager.counter._countLimited != limit:
+                self.threadManager.setCountLimited(limit)
+
+            if not self.threadManager.isCounting():
+                self.threadManager.startCounting()
+
+            if self._trackRecieveSignal:
+                self.logger.report('Receive signal sysNotify: {0} {1} {2} {3}'.format(title, mess, iconType, timeDelay))
+
+            return self.countDownReset(limit)
 
         self.sysNotify_old, repeat = self.checkSignalRepeat(self.sysNotify_old, [title, mess, iconType, timeDelay])
         if not repeat:
@@ -371,9 +413,11 @@ class PLM(Application):
     def countDownReset(self, limit):
         self.count += 1
         if self.count == limit:
+            self.showLayout_old = []
             self.executing_old = []
-
-        return self.executing_old
+            self.setSetting_old = []
+            self.openBrowser_old = []
+            self.sysNotify_old = []
 
     def signInEvent(self):
         self.switchAccountEvent()

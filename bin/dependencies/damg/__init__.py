@@ -8,9 +8,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __future__ import absolute_import, unicode_literals
 
-from bin.dependencies.damg.damg import DAMG, DAMGLIST, DAMGDICT, DAMGERROR, DAMGTUPLE, DAMGWORKER, DAMGTHREAD, DAMGTIMER, DAMGTHREADPOOL
+name = "damg"
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 16/08/2018 - 4:56 PM
+# Created by panda on 21/10/2019 - 3:05 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

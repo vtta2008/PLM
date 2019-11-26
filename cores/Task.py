@@ -11,17 +11,17 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 import os, json
-from playsound import playsound
+from playsound                          import playsound
 
-from bin.data.damg import DAMG, DAMGDICT, DAMGTIMER
-from appData import SOUND_DIR, TASK_DIR
-from PyQt5.QtCore import QDateTime, QDate, QTime, pyqtSignal
+from bin.dependencies.damg.damg         import DAMG, DAMGDICT, DAMGLIST, DAMGTIMER
+from appData                            import SOUND_DIR, TASK_DIR
+from PyQt5.QtCore                       import QDateTime, QDate, QTime, pyqtSignal
 
 class duetime(DAMGDICT):
 
-    Type = 'DAMGDUETIME'
-    key = 'Duetime'
-    _name = 'Duetime'
+    Type                                = 'DAMGDUETIME'
+    key                                 = 'Duetime'
+    _name                               = 'Duetime'
 
     def __init__(self, hour=0, minute=0, second=0):
         super(duetime, self).__init__(self)
@@ -45,14 +45,16 @@ class duetime(DAMGDICT):
 
 class duedate(DAMGDICT):
 
-    Type = 'DAMGDUEDATE'
-    key = 'Duedate'
-    _name = 'Duedate'
+    Type                                = 'DAMGDUEDATE'
+    key                                 = 'Duedate'
+    _name                               = 'Duedate'
 
     def __init__(self, day, month, year):
         super(duedate, self).__init__(self)
 
-        if year < 99:
+        if not year:
+            self.year = int(QDate().currentDate().year())
+        elif year < 99:
             self.year = int("20{0}".format(year))
         else:
             self.year = int(year)
@@ -64,7 +66,14 @@ class duedate(DAMGDICT):
             raise IndexError('Expect month smaller than 12: {0}'.format(self.month))
 
         if self.day > 31:
-            raise IndexError('Expect day smaller than 31: {0}'.format(self.day))
+            if self.month in [1, 3, 5, 7, 8, 10, 12]:
+                days = 31
+            elif self.month in [2]:
+                days = 28
+            else:
+                days = 30
+
+            raise IndexError('Expect day smaller than (0): {1}'.format(days, self.day))
 
         self.add('year', self.year)
         self.add('month', self.month)
@@ -72,16 +81,16 @@ class duedate(DAMGDICT):
 
 class TaskBase(DAMG):
 
-    key = 'Task'
-    Type = 'DAMGTASK'
-    _name = 'Task Name'
-    _status = 'status'
-    days = 0
-    hours = 0
-    minutes = 0
-    seconds = 0
-    countdown = pyqtSignal(str, name='CountDown')
-    play_alarm = False
+    key                         = 'Task'
+    Type                        = 'DAMGTASK'
+    _name                       = 'Task Name'
+    _status                     = 'status'
+    days                        = 0
+    hours                       = 0
+    minutes                     = 0
+    seconds                     = 0
+    countdown                   = pyqtSignal(str, name='CountDown')
+    play_alarm                  = False
 
     def __init__(self):
         super(TaskBase, self).__init__(self)
@@ -102,6 +111,9 @@ class TaskBase(DAMG):
         else:
             return 1000
 
+    def confirm_task_complete(self):
+        self._status                = 'Completed'
+
     @property
     def status(self):
         return self._status
@@ -112,23 +124,32 @@ class TaskBase(DAMG):
 
 class Task(TaskBase):
 
-    taskData = DAMGDICT()
+    taskData                = DAMGDICT()
 
-    def __init__(self, taskID=None, taskName=None, taskMode=None, taskType=None, project=None, organisation=None,
-                 duetime={}, duedate={}, details={}):
+    def __init__(self, taskID=None, taskName=None, taskMode=None, taskType=None, assigned = None,
+                       project=None, organisation=None,
+                       duetime={}, duedate={},
+                       details={}):
+
         super(Task, self).__init__()
 
-        self.taskID     = taskID
-        self.taskName   = taskName
-        self.taskMode = taskMode
-        self.taskType = taskType
-        self.project    = project
-        self.details    = details
-        self.organisation = organisation
+        self.taskID         = taskID
+        self.taskName       = taskName
+        self.taskMode       = taskMode
+        self.taskType       = taskType
 
-        self.duetime    = QTime(duetime['hour'], duetime['minute'], duetime['second'])
-        self.duedate    = QDate(duedate['year'], duedate['month'], duedate['day'])
-        self.endDate    = QDateTime(self.duedate, self.duetime)
+        self.assigned       = assigned
+        if not self.assigned:
+            self.assigned   = DAMGLIST()
+
+
+        self.project        = project
+        self.details        = details
+        self.organisation   = organisation
+
+        self.duetime        = QTime(duetime['hour'], duetime['minute'], duetime['second'])
+        self.duedate        = QDate(duedate['year'], duedate['month'], duedate['day'])
+        self.endDate        = QDateTime(self.duedate, self.duetime)
 
         self.update()
 
@@ -187,6 +208,7 @@ class Task(TaskBase):
         self.taskData.add('id', self.taskID)
         self.taskData.add('mode', self.taskMode)
         self.taskData.add('type', self.taskType)
+        self.taskData.add('status', self.get_status())
         self.taskData.add('project', self.project)
         self.taskData.add('organisation', self.organisation)
         self.taskData.add('dateline', self._dateline)

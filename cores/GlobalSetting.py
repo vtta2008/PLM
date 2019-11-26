@@ -12,8 +12,9 @@ from __future__ import absolute_import, unicode_literals
 
 
 from PyQt5.QtCore                   import Qt
-from bin.data.damg import DAMG
-from appData                        import SiPoMin, SiPoMax, SiPoExp, SiPoIgn, SiPoPre, STAY_ON_TOP
+from bin.dependencies.damg.damg import DAMG
+from appData                        import SiPoExp
+
 
 class GlobalSetting(DAMG):
 

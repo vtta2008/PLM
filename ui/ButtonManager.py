@@ -10,17 +10,13 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from __future__ import absolute_import, unicode_literals
-
 import os
-from bin.data.damg import DAMGDICT, DAMGLIST
+from bin.dependencies.damg.damg import DAMGDICT, DAMGLIST
 from functools import partial
 
 from ui.uikits.Button import Button
 from utils import data_handler, is_button, is_string
-from appData import (mainConfig, SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY, CONFIG_DEV, CONFIG_TOOLS,
-                     CONFIG_OFFICE, CONFIG_TDS, CONFIG_ART, CONFIG_TEX, CONFIG_POST, CONFIG_VFX, CONFIG_EXTRA,
-                     CONFIG_SYSTRAY, RESTORE_KEY, SHOWMIN_KEY, SHOWMAX_KEY, BTNTAGSIZE, TAGBTNSIZE, BTNICONSIZE, ICONBTNSIZE)
+from appData import (mainConfig, SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY, RESTORE_KEY, SHOWMIN_KEY, SHOWMAX_KEY, BTNTAGSIZE, TAGBTNSIZE, BTNICONSIZE, ICONBTNSIZE)
 
 class ButtonManager(DAMGDICT):
 

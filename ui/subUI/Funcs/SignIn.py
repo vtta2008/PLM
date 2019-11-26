@@ -17,9 +17,6 @@ Description:
 import sys, requests
 from functools              import partial
 
-# PyQt5
-from PyQt5.QtWidgets        import (QApplication)
-
 # PLM
 from appData                import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
 from ui.uikits.Widget       import Widget
@@ -63,7 +60,7 @@ class SignIn(Widget):
 
         forgot_pw_btn           = Button({'txt': 'Forgot your password?', 'cl': partial(self.signals.emit, 'showLayout', 'ForgotPassword', 'show')})
         login_btn               = Button({'txt': 'Log in', 'cl': self.signInClicked})
-        cancel_btn              = Button({'txt': 'Cancel', 'cl': QApplication.quit})
+        cancel_btn              = Button({'txt': 'Cancel', 'cl': sys.exit})
 
         signupGrp, signupGrid   = GroupGrid('Sign up')
         signupBtn               = Button({'txt':'Sign up', 'cl': partial(self.signals.emit, 'showLayout', 'SignUp', 'show')})
@@ -136,9 +133,3 @@ class SignIn(Widget):
     @login.setter
     def login(self, newVal):
         self._login = newVal
-
-if __name__ == '__main__':
-    login = QApplication(sys.argv)
-    layout = SignIn()
-    layout.show()
-    login.exec_()

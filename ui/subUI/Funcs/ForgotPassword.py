@@ -11,11 +11,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-import sys
-
 # PtQt5
-from PyQt5.QtWidgets        import (QApplication, QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit)
+from PyQt5.QtWidgets        import (QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit)
 
 # PLM
 from ui.uikits.Widget       import Widget
@@ -129,12 +126,3 @@ class ForgotPassword(Widget):
     def login(self, newVal):
         self._login = newVal
 
-def main():
-    app = QApplication(sys.argv)
-    reset_pw_layout = ForgotPassword()
-    reset_pw_layout.show()
-    app.exec_()
-
-
-if __name__ == '__main__':
-    main()

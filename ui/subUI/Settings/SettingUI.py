@@ -18,7 +18,7 @@ import sys
 from PyQt5.QtCore       import (QByteArray, QDate, QDateTime, QEvent, QPoint, QRect, QRegExp, QSettings, QSize, Qt, 
                                 QTime, QTimer)
 from PyQt5.QtGui        import QColor, QIcon, QRegExpValidator, QValidator
-from PyQt5.QtWidgets    import (QAbstractItemView, QAction, QApplication, QMenuBar, QFileDialog, QGridLayout,
+from PyQt5.QtWidgets    import (QAbstractItemView, QAction, QMenuBar, QFileDialog, QGridLayout,
                                 QHeaderView, QInputDialog, QItemDelegate, QLineEdit, QStyle, QComboBox,
                                 QStyleOptionViewItem, QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
 
@@ -672,13 +672,6 @@ class VariantDelegate(QItemDelegate):
             return '<Invalid>'
 
         return '<%s>' % value
-
-
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    mainWin = SettingUI()
-    mainWin.show()
-    sys.exit(app.exec_())
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 11/07/2018 - 1:59 AM

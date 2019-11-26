@@ -16,7 +16,7 @@ import os, shutil, sys
 
 # PtQt5
 from PyQt5.QtGui                    import QImage, QPixmap
-from PyQt5.QtWidgets                import (QFileDialog, QApplication)
+from PyQt5.QtWidgets                import (QFileDialog)
 
 # Plt
 from appData                        import PW_BLANK, PW_UNMATCH, __envKey__
@@ -205,12 +205,3 @@ class UserSetting(Widget):
 
     def update_location(self):
         pass
-
-def main():
-    app = QApplication(sys.argv)
-    acc_setting = UserSetting()
-    acc_setting.show()
-    app.exec_()
-
-if __name__=='__main__':
-    main()

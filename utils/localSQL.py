@@ -18,7 +18,7 @@ import sqlite3 as lite
 
 # PLM
 from appData                        import DB_PTH, DB_ATTRIBUTE_TYPE
-from bin.data.damg                  import DAMG, DAMGTIMER, DAMGDATE, DAMGLIST, DAMGDICT
+from bin.dependencies.damg.damg import DAMG, DAMGTIMER, DAMGDATE, DAMGLIST, DAMGDICT
 
 def get_datetime():
     datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))

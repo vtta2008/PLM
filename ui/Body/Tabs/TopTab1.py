@@ -12,10 +12,7 @@ Description:
 """ Import """
 
 # Python
-import sys, os, json
-
-# PyQt5
-from PyQt5.QtWidgets        import QApplication
+import json
 
 # Plt
 from ui.uikits.Widget                           import Widget
@@ -25,8 +22,9 @@ from ui.uikits.BoxLayout                        import HBoxLayout, VBoxLayout
 from ui.uikits.Label                            import Label
 from ui.uikits.CheckBox                         import CheckBox
 from cores.Task                                 import duedate, duetime, Task
-from utils                                      import get_file_path
+from utils                                      import get_file_path, str2bool, LocalDatabase
 from appData                                    import TASK_DIR
+from bin.dependencies.damg.damg                 import DAMGDICT, DAMGLIST
 
 # -------------------------------------------------------------------------------------------------------------
 class TaskInfo(GroupBox):
@@ -35,6 +33,8 @@ class TaskInfo(GroupBox):
 
     def __init__(self, task):
         super(TaskInfo, self).__init__()
+
+        self.database = LocalDatabase()
 
         with open(task, 'r') as f:
             self._data = json.load(f)
@@ -63,7 +63,12 @@ class TaskInfo(GroupBox):
         self.duetime = duetime(self._hour, self._minute, self._second)
         self.duedate = duedate(self._day, self._month, self._year)
 
-        self.task = Task(self._id, self._name, self._mode, self._type, self._project, self._organisation,
+        try:
+            self.username = [self.database.query_table('curUser')[0]]
+        except (ValueError, IndexError):
+            self.username = []
+
+        self.task = Task(self._id, self._name, self._mode, self._type, self.username, self._project, self._organisation,
                          self.duetime, self.duedate, self._details)
 
         self._countdown = '{0}:{1}:{2}'.format(self.task.hours, self.task.minutes, self.task.seconds)
@@ -182,7 +187,9 @@ class TaskInfo(GroupBox):
 
 class TopTap1Filter(GroupBox):
 
-    key = 'TopTab1Info'
+    key                                         = 'TopTab1Info'
+    cbs                                         = DAMGLIST()
+    checkboxes                                  = DAMGDICT()
 
     def __init__(self):
         super(TopTap1Filter, self).__init__()
@@ -196,6 +203,21 @@ class TopTap1Filter(GroupBox):
         self.safetyCB = CheckBox()
         self.allTabCheckBox = CheckBox()
         self.allTabCheckBox.stateChanged.connect(self.allTabCheckBoxStateChanged)
+
+        texts = ['Overdued', 'Urgent', 'Others', 'All']
+        cbs = [self.overduedCB, self.urgentCB, self.safetyCB, self.allTabCheckBox]
+
+        for cb in cbs:
+            cb.key = 'task_{0}_CheckBox_{1}'.format(self.key, texts[cbs.index(cb)])
+            cb._name = cb.key.replace('_', ' ')
+            cb.settings._settingEnable = True
+            state = cb.getValue('checkState')
+            if state is None:
+                state = True
+            cb.setValue('checkState', state)
+            cb.setChecked(str2bool(state))
+            self.checkboxes.add(cb.key, cb)
+            self.cbs.append(cb)
 
         odl = 0
         ugl = odl + 1
@@ -222,7 +244,7 @@ class TopTap1Filter(GroupBox):
 class TopTab1(Widget):
 
     key = 'TopTab1'
-    tasks = []
+    tasks = DAMGLIST()
 
     def __init__(self, buttonManager, parent=None):
         super(TopTab1, self).__init__(parent)
@@ -287,16 +309,6 @@ class TopTab1(Widget):
         for task in self.tasks:
             if task.task.status not in ['Overdued, Urgent']:
                 task.setVisible(bool)
-
-def main():
-    app = QApplication(sys.argv)
-    layout = TopTab1()
-    layout.show()
-    app.exec_()
-
-
-if __name__ == '__main__':
-    main()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 24/05/2018

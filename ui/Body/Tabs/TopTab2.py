@@ -11,13 +11,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-import sys
-
 # PyQt5
 from PyQt5.QtCore import pyqtSlot
 from PyQt5.QtGui                import QPixmap
-from PyQt5.QtWidgets            import (QApplication, QLabel, QGraphicsScene)
+from PyQt5.QtWidgets            import ( QLabel, QGraphicsScene)
 
 # Plt
 from ui.uikits.Widget           import Widget
@@ -69,7 +66,7 @@ class TopTab2(Widget):
 
     @pyqtSlot(bool)
     def update_avatar(self, param):
-        print("receive signal to update avatar: {0}".format(param))
+        # print("receive signal to update avatar: {0}".format(param))
         if param:
             self.username, token, cookie, remember = self.query.query_table('curUser')
             self.avatar = QPixmap(get_avatar_image(self.username))
@@ -77,20 +74,6 @@ class TopTab2(Widget):
             self.avatarScene.addPixmap(self.avatar)
             self.avatarScene.update()
 
-    # def resizeEvent(self, event):
-    #     self.avatarGrp.setFixedSize(100, 100)
-    #     self.settingGrp.resize(100, self.height()-104)
-    #     # self.avatar.resize(self.avatarGrp.width() - 2, self.avatarGrp.height() - 2)
-    #     self.messGrp.resize(self.width()-104, self.height()-4)
-
-def main():
-    app = QApplication(sys.argv)
-    layout = TopTab2()
-    layout.show()
-    app.exec_()
-
-if __name__ == '__main__':
-    main()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 25/05/2018

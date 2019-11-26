@@ -13,7 +13,7 @@ Description:
 import weakref
 
 from utils                      import attr_type
-from bin.data.damg              import DAMG
+from bin.dependencies.damg.damg import DAMG
 
 
 class Attribute(DAMG):

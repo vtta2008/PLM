@@ -1,0 +1,46 @@
+root = true
+
+[*]
+# charset = utf-8
+# end_of_line = crlf
+# indent_size = 4
+# indent_style = space
+# insert_final_newline = false
+# max_line_length = 120
+# tab_width = 4
+
+[]
+# indent_size = 2
+# tab_width = 2
+
+[*.feature]
+# indent_size = 2
+
+[*.haml]
+# indent_size = 2
+
+[*.less]
+# indent_size = 2
+
+[*.pp]
+# indent_size = 2
+# tab_width = 2
+
+[*.sass]
+# indent_size = 2
+
+[*.scss]
+# indent_size = 2
+
+[*.styl]
+# indent_size = 2
+
+[{*.coffee,*.cjsx}]
+# indent_size = 2
+# tab_width = 2
+
+[{*.yml,*.yaml}]
+# indent_size = 2
+
+[{.babelrc,.stylelintrc,.eslintrc,jest.config,*.json,*.jsb3,*.jsb2,*.bowerrc}]
+# indent_size = 2

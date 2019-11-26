@@ -18,7 +18,7 @@ from functools import partial
 
 # PyQt5
 from PyQt5.QtGui            import QPixmap, QImage
-from PyQt5.QtWidgets        import (QApplication, QMessageBox, QFileDialog)
+from PyQt5.QtWidgets        import (QMessageBox, QFileDialog)
 
 # Plm
 from appData                import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_REQUIRED, QUESTIONS
@@ -161,7 +161,7 @@ class SignUp(Widget):
         self.user_agree_checkBox = CheckBox(txt=USER_CHECK_REQUIRED)
         okBtn = Button({'txt':'Create Account', 'tt':'Confirm to create an account', 'cl': self.createBtnClicked})
         cancelBtn = Button({'txt':'Cancel', 'tt':'Go back to Login stage', 'cl': partial(self.signals.emit, 'showLayout', 'SignIn', 'SignIn')})
-        quitBtn = Button({'txt': 'Quit', 'tt': 'Quit the application', 'cl': QApplication.quit})
+        quitBtn = Button({'txt': 'Quit', 'tt': 'Quit the application', 'cl': sys.exit})
 
         btn_grid.addWidget(self.user_agree_checkBox, 0, 0, 1, 6)
         btn_grid.addWidget(okBtn, 1, 0, 1, 2)
@@ -273,11 +273,3 @@ class SignUp(Widget):
     def login(self, newVal):
         self._login = newVal
 
-def main():
-    app = QApplication(sys.argv)
-    layout = SignUp()
-    layout.show()
-    app.exec_()
-
-if __name__ == '__main__':
-    main()

@@ -12,7 +12,6 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtWidgets                    import QApplication
 from PyQt5.QtCore                       import Qt
 
 # PLM
@@ -26,8 +25,8 @@ from ui.uikits.Icon                     import LogoIcon
 from ui.Header.Menus.MainMenuBar        import MainMenuBar
 from ui.Header.Network.ConnectStatus    import ConnectStatus
 from ui.Header.AppToolbar.MainToolBar   import MainToolBar
-from ui.Body.Tabs.TopTab                import TopTab                           # Body
-from ui.Body.Tabs.BotTab                import BotTab
+from ui.Body.TopTab                     import TopTab                           # Body
+from ui.Body.BotTab                     import BotTab
 from ui.Body.Notification               import Notification
 from ui.Footer.Footer                   import Footer                           # Footer
 from ui.Footer.MainStatusBar            import MainStatusBar
@@ -175,11 +174,3 @@ class PipelineManager(MainWindow):
         return self.connectStatus.mode
 
 # -------------------------------------------------------------------------------------------------------------
-def main():
-    app = QApplication(sys.argv)
-    layout = PipelineManager()
-    layout.show()
-    app.exec_()
-
-if __name__ == '__main__':
-    main()

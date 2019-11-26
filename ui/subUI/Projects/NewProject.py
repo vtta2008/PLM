@@ -19,17 +19,16 @@ from functools import partial
 
 # PyQt5
 from PyQt5.QtWidgets            import (QGroupBox, QInputDialog,
-                                        QComboBox, QFileDialog, QListWidget, QListWidgetItem, QApplication)
+                                        QComboBox, QFileDialog, QListWidget, QListWidgetItem)
 
 
 # PLM
-from ui.uikits.Widget                     import Widget
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Button import Button
-from ui.uikits.Label import Label
-from ui.uikits.BoxLayout import HBoxLayout
-from ui.uikits.BoxLayout import VBoxLayout
-from ui.uikits.LineEdit import LineEdit
+from ui.uikits.Widget                       import Widget
+from ui.uikits.GridLayout                   import GridLayout
+from ui.uikits.Button                       import Button
+from ui.uikits.Label                        import Label
+from ui.uikits.BoxLayout                    import HBoxLayout, VBoxLayout
+from ui.uikits.LineEdit                     import LineEdit
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """
@@ -44,7 +43,7 @@ class ItemWidget(Widget):
         self.section    = section
         self.item       = Label({'txt': name})
         self.setLayout(
-                        HBoxLayout({'setLayout': [self.item, 
+                        HBoxLayout({'addWidget': [self.item,
                                                   Button({'txt' :"Edit", 
                                                           'stt' :"Edit character name", 
                                                           'cl'  : self.setText})]
@@ -436,11 +435,3 @@ class NewProject(Widget):
     #         return dirpath
 
 
-def main():
-    app = QApplication(sys.argv)
-    window = NewProject()
-    window.show()
-    app.exec_()
-
-if __name__=="__main__":
-    main()

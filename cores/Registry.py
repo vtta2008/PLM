@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 import datetime, time
-from bin.data.damg import DAMGDICT, DAMGLIST, DAMG
+from bin.dependencies.damg.damg import DAMGDICT, DAMGLIST, DAMG
 from appData import layoutTypes
 
 

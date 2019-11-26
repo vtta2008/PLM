@@ -24,11 +24,10 @@ from ui.uikits.BoxLayout                    import VBoxLayout
 from ui.uikits.Widget                       import Widget
 from ui.uikits.Icon                         import AppIcon
 from ui.uikits.CheckBox                     import CheckBox
-from ui.uikits.Button                       import Button
 from ui.uikits.GridLayout                   import GridLayout
 from ui.uikits.Label                        import Label
 from utils                                  import str2bool
-from bin.data.damg                          import DAMGDICT, DAMGLIST
+from bin.dependencies.damg.damg             import DAMGDICT, DAMGLIST
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """
@@ -239,106 +238,6 @@ class BodyCheckBoxes(GridLayout):
     def bodyStateChanged(self, bool):
         self.allNotifiStateChanged(bool)
 
-class GeneralSetting(GridLayout):
-
-    key                                     = 'GeneralSetting'
-    statusCBs                               = DAMGLIST()
-    notificationCBs                         = DAMGLIST()
-    checkboxes                              = DAMGDICT()
-
-    def __init__(self, parent=None):
-        super(GeneralSetting, self).__init__(parent)
-        self.parent = parent
-        self.la = 0
-        self.buildUI()
-
-    def buildUI(self):
-
-        # self.buildHeaderCheckBoxes()
-
-        self.buildBodyCheckBoxes()
-
-        self.footerCB       = CheckBox('Footer')
-
-        self.statusBarCB    = CheckBox("Status Bar")
-
-        for cb in [self.statusBarCB, ]:
-            self.statusCBs.append(cb)
-
-        cbs = [self.toolBarCBs, self.menuCBs, self.connectCBs, self.notificationCBs, self.statusCBs, ]
-
-        for i in range(len(cbs)):
-            if i == 0:
-                prefix = 'ToolBar'
-            elif i == 1:
-                prefix = 'Menu'
-            elif i == 2:
-                prefix = 'Network'
-            elif i == 3:
-                prefix = 'Notification'
-            elif i == 4:
-                prefix = 'StatusBar'
-            else:
-                prefix = 'NoDefine'
-
-            for cb in cbs[i]:
-                cb.key = '{0}_{1}_CheckBox_{2}'.format(self.parent.key, prefix, cb.text())
-                cb._name = '{0} {1} Check Box: {2}'.format(self.parent.key, prefix, cb.text())
-
-                cb.settings._settingEnable = True
-                state = cb.getValue('checkState')
-                if state is None:
-                    state = True
-                cb.setValue('checkState', state)
-                cb.setChecked(str2bool(state))
-                self.checkboxes.add(cb.key, cb)
-
-    def buildBodyCheckBoxes(self):
-        self.buildNotificationCheckBoxes()
-        self.bodyCB = CheckBox('Body')
-        self.bodyCB.stateChanged.connect(self.bodyStateChanged)
-        ntl = self.la
-        bdl = ntl + 1
-        self.addWidget(Label({'txt': 'Notification'}), ntl, 0, 1, 1)
-        self.addWidget(self.allNotifiCB, ntl, 1, 1, 1)
-        self.addWidget(self.cpuCB, ntl, 2, 1, 1)
-        self.addWidget(self.ramCB, ntl, 3, 1, 1)
-        self.addWidget(self.gpuCB, ntl, 4, 1, 1)
-        self.addWidget(self.prjNameCB, ntl, 5, 1, 1)
-        self.addWidget(self.dueDateCB, ntl, 6, 1, 1)
-        self.addWidget(self.dueTimeCB, ntl, 7, 1, 1)
-        self.addWidget(self.countdownCB, ntl, 8, 1, 1)
-        self.addWidget(self.timeCB, ntl, 9, 1, 1)
-        self.addWidget(self.dateCB, ntl, 10, 1, 1)
-        self.addWidget(self.bodyCB, bdl, 0, 1, 1)
-
-        self.la = bdl + 1
-        return self.la
-
-    def buildNotificationCheckBoxes(self):
-        self.cpuCB = CheckBox('cpu')
-        self.ramCB = CheckBox('ram')
-        self.gpuCB = CheckBox('gpu')
-        self.diskCB = CheckBox('disk')
-        self.prjNameCB = CheckBox('Project Name')
-        self.dueDateCB = CheckBox('Due Date')
-        self.dueTimeCB = CheckBox('Due Time')
-        self.countdownCB = CheckBox('Time Counting')
-        self.timeCB = CheckBox('clock')
-        self.dateCB = CheckBox('date')
-        self.allNotifiCB = CheckBox("All: ")
-        self.allNotifiCB.stateChanged.connect(self.allNotifiStateChanged)
-        for cb in [self.cpuCB, self.ramCB, self.gpuCB, self.diskCB, self.prjNameCB, self.dueDateCB, self.dueTimeCB,
-                   self.countdownCB, self.timeCB, self.dateCB, self.allNotifiCB]:
-            self.notificationCBs.append(cb)
-
-    def allNotifiStateChanged(self, bool):
-        for cb in self.notificationCBs:
-            cb.setChecked(bool)
-
-    def bodyStateChanged(self, bool):
-        self.allNotifiStateChanged(bool)
-
 class Preferences(Widget):
 
     key = 'Preferences'
@@ -361,10 +260,19 @@ class Preferences(Widget):
         self.body = GroupBox('Body', parent=self)
         self.body.setLayout(self.bodyGrid)
 
+        self.footerGrid = FooterCheckBoxes(self)
+        self.footer = GroupBox('Footer', parent=self)
+        self.footer.setLayout(self.footerGrid)
+
         self.layout.addWidget(self.header)
         self.layout.addWidget(self.body)
+        self.layout.addWidget(self.footer)
 
         self.setLayout(self.layout)
+
+    def showEvent(self, event):
+        self.resize(574, 252)
+        self.resize(575, 252)
 
 def main():
     app = QApplication(sys.argv)
