@@ -43,7 +43,7 @@ from ui.uikits.MessageBox               import MessageBox
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
-class PLM(Application):
+class DAMGTEAM(Application):
 
     key                                 = 'PLM'
     dataConfig                          = configManager
@@ -59,11 +59,11 @@ class PLM(Application):
     def __init__(self):
         if self.onlyExists:
             if self.instance() is None:
-                super(PLM, self).__init__(sys.argv)
+                super(DAMGTEAM, self).__init__(sys.argv)
             else:
                 MessageBox(None, 'PLM is running', 'critical', 'PLM application already running', 'close')
         else:
-            super(PLM, self).__init__(sys.argv)
+            super(DAMGTEAM, self).__init__(sys.argv)
 
         # Run all neccessary configuration to start PLM
 
@@ -474,7 +474,7 @@ class PLM(Application):
 
         self.exit()
 
-PLM()
+DAMGTEAM()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 19/06/2018 - 2:26 AM

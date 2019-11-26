@@ -81,7 +81,7 @@ Run directly:
 
 .. code:: bash
 
-    start python PLM.py
+    start python main.py
 
 Complie executable file:
 
