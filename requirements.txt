@@ -1,7 +1,5 @@
 PyQt5>=5.13
 pip
-urllib3
-chardet
 appdirs
 deprecate
 msgpack

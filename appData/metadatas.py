@@ -93,8 +93,8 @@ __packages_dir__ = ["", 'appData', 'bin', 'core', 'imgs', 'plugins', 'scripts', 
 __download__ = "https://github.com/vtta2008/PipelineTool/releases"
 __description__ = "This applications can be used to build, manage, and optimise film making pipelines."
 __readme__ = "README.rst"
-__pkgsReq__ = ['PyQt5', 'pip', 'urllib3', 'chardet', 'appdirs', 'deprecate', 'msgpack', 'winshell',
-               'pyqtwebengine', 'pandas', 'wheel', 'argparse', 'green']
+__pkgsReq__ = ['PyQt5', 'pip', 'appdirs', 'deprecate', 'msgpack', 'winshell', 'pyqtwebengine',
+               'pandas', 'wheel', 'argparse', 'green', 'python-resize-image', 'pywin32', 'gputil', 'playsound', ]
 __modules__ = []
 __classifiers__ = [
 

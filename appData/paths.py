@@ -76,7 +76,6 @@ DB_DIR                      = APP_DATA_DIR
 """ App (Non python) """
 
 BIN_DIR                     = os.path.join(ROOT_DIR, 'bin')
-APPS_DIR                    = os.path.join(BIN_DIR, 'apps')
 DATA_DIR                    = os.path.join(BIN_DIR, 'data')
 DEPENDANCIES_DIR            = os.path.join(BIN_DIR, 'dependencies')
 RESOURCES_DIR               = os.path.join(BIN_DIR, 'resources')
@@ -85,7 +84,13 @@ SOUND_DIR                   = os.path.join(BIN_DIR, 'sound')
 SCRIPTS_DIR                 = os.path.join(ROOT_DIR, 'scripts')
 QSS_DIR                     = os.path.join(SCRIPTS_DIR, 'qss')
 JSON_DIR                    = os.path.join(SCRIPTS_DIR, 'json')
+APPS_DIR                    = os.path.join(SCRIPTS_DIR, 'apps')
 
+MAYA_DIR                    = os.path.join(APPS_DIR, 'Maya')
+MARI_DIR                    = os.path.join(APPS_DIR, 'Mari')
+NUKE_DIR                    = os.path.join(APPS_DIR, 'Nuke')
+ZBRUSH_DIR                  = os.path.join(APPS_DIR, 'ZBrush')
+HOUDINI_DIR                 = os.path.join(APPS_DIR, 'Houdini')
 
 # -------------------------------------------------------------------------------------------------------------
 """ Image """

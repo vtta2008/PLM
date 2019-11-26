@@ -196,12 +196,12 @@ class ConfigManager(DAMG):
 
         pthInfo['plugin']               = self.set_dir('plugins')
 
-        pthInfo['apps']                 = self.set_dir('bin/apps')
-        pthInfo['houdini']              = self.set_dir('bin/apps/Houdini')
-        pthInfo['mari']                 = self.set_dir('bin/apps/Mari')
-        pthInfo['maya']                 = self.set_dir('bin/apps/Maya')
-        pthInfo['nuke']                 = self.set_dir('bin/apps/Nuke')
-        pthInfo['zbrush']               = self.set_dir('bin/apps/ZBrush')
+        pthInfo['apps']                 = self.set_dir('scripts/apps')
+        pthInfo['houdini']              = self.set_dir('scripts/apps/Houdini')
+        pthInfo['mari']                 = self.set_dir('scripts/apps/Mari')
+        pthInfo['maya']                 = self.set_dir('scripts/apps/Maya')
+        pthInfo['nuke']                 = self.set_dir('scripts/apps/Nuke')
+        pthInfo['zbrush']               = self.set_dir('scripts/apps/ZBrush')
 
         pthInfo['ui']                   = self.set_dir('ui')
 

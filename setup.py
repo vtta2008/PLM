@@ -70,10 +70,10 @@ keywords            = parse(r'__plmSlogan__\s+=\s+(.*)')
 
 print(install_requires, type(install_requires))
 
-main_python_file    = "PLM.py"
+main_python_file    = "main.py"
 
 build_exe_options = {'packages': ['os', 'sys', ], "excludes": ["tkinter"]}      #'include_files': includefiles,}
-options = {}
+options = {"build_exe" : build_exe_options, 'bdist_msi': {}}
 
 
 setup(name             = appname,
@@ -92,7 +92,7 @@ setup(name             = appname,
       classifiers      = classifiers,
       package_data     = {'imgs': [ '{}/*'.format(item) for item in os.listdir('imgs') if os.path.isdir(os.path.join('imgs', item))]},
       keywords         = keywords,
-      options          = {"build_exe" : build_exe_options, 'bdist_msi': {}},
+      options          = options,
       zip_safe         = True,
       executables      = [Executable(main_python_file, base=base, copyright=COPYRIGHT,icon = 'logo.ico',), ]
       )

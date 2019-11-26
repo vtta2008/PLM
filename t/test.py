@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from PyQt5.QtCore import QProcess, QObject
 from PyQt5 import QtWidgets
-import subprocess, pathlib, os, sys, logging
+import subprocess, pathlib2, os, sys, logging
 
 def __run_command( app, cmd, all_args, working_dir ):
     all_args = [str(arg) for arg in all_args]
@@ -22,7 +22,7 @@ def __run_command( app, cmd, all_args, working_dir ):
     proc.startDetached( cmd, all_args, str( working_dir ) )
 
 def asUtf8( s ):
-    if isinstance( s, pathlib.Path ):
+    if isinstance( s, pathlib2.Path ):
         s = str( s )
 
     if type( s ) == str:
