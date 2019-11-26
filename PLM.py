@@ -48,6 +48,7 @@ class PLM(Application):
     key                                 = 'PLM'
     dataConfig                          = configManager
     count                               = 0
+    onlyExists                          = True
 
     showLayout_old                      = []
     executing_old                       = []
@@ -56,10 +57,13 @@ class PLM(Application):
     sysNotify_old                       = []
 
     def __init__(self):
-        if self.instance() is None:
-            super(PLM, self).__init__(sys.argv)
+        if self.onlyExists:
+            if self.instance() is None:
+                super(PLM, self).__init__(sys.argv)
+            else:
+                MessageBox(None, 'PLM is running', 'critical', 'PLM application already running', 'close')
         else:
-            MessageBox(None, 'PLM is running', 'critical', 'PLM application already running', 'close')
+            super(PLM, self).__init__(sys.argv)
 
         # Run all neccessary configuration to start PLM
 
