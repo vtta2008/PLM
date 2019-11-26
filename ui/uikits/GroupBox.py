@@ -20,7 +20,7 @@ from PyQt5.QtWidgets                        import QGroupBox, QLabel
 # PLM
 
 from appData                                import WAIT_LAYOUT_COMPLETE, SETTING_FILEPTH, ST_FORMAT, __copyright__
-from ui.SignalManager import SignalManager
+from ui.SignalManager                       import SignalManager
 from cores.Settings                         import Settings
 from ui.uikits.GridLayout                   import AutoPreset1, AutoPreset2, AutoPreset3, GridLayout
 from ui.uikits.BoxLayout                    import HBoxLayout
@@ -114,6 +114,7 @@ class GroupBox(QGroupBox):
                 if not type(v) in [int]:
                     v = int(v)
 
+            self.resize(vals[0]-1, vals[1]-1)
             self.resize(vals[0], vals[1])
             self.move(vals[2], vals[3])
 

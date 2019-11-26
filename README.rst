@@ -19,6 +19,7 @@ Details are `here <http://www.vfxplatform.com>`_
 NOTE:
 
     - It is still under developing, some function will not be working yet.
+    - Really struggling at compling to executable file as well as build the installation.
 
 REQUIREMENTS
 ============

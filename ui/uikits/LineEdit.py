@@ -86,29 +86,23 @@ class PlainTextEdit(QPlainTextEdit):
             x = self.getValue('x')
             y = self.getValue('x')
 
-            vals = [w, h, x, y]
+            if w is None:
+                w = self.width()
+            if h is None:
+                h = self.height()
+            if x is None:
+                x = 0
+            if y is None:
+                y = 0
+            self.resize(int(w), int(h))
+            self.move(int(x), int(h))
 
-            for i in range(len(vals)):
-                if vals[i] is None:
-                    key = [k for k in self.values.keys()]
-                    value = self.values[key[i]]
-                    for index, element in enumerate(vals):
-                        if element == vals[i]:
-                            vals[index] = value
-                    self.setValue(key[i], self.values[key[i]])
-
-            for v in vals:
-                if not type(v) in [int]:
-                    v = int(v)
-
-            self.resize(vals[0], vals[1])
-            self.move(vals[2], vals[3])
-
-        if __name__=='__main__':
+        if __name__ == '__main__':
+            self.setValue('showLayout', 'show')
             self.show()
         else:
-            self.signals.emit('setSetting', self.key, 'showLayout', 'show')
-            event.ignore()
+            self.setValue('showLayout', 'show')
+            self.signals.emit('showLayout', self.key, 'show')
 
     @property
     def copyright(self):
@@ -185,37 +179,29 @@ class Detector(QPlainTextEdit):
 
     def showEvent(self, event):
 
-        self.values = dict(w = self.width(), h = self.height(), x = self.x(), y = self.y())
-
         if self.settings._settingEnable:
             w = self.getValue('w')
             h = self.getValue('h')
             x = self.getValue('x')
             y = self.getValue('x')
 
-            vals = [w, h, x, y]
+            if w is None:
+                w = self.width()
+            if h is None:
+                h = self.height()
+            if x is None:
+                x = 0
+            if y is None:
+                y = 0
+            self.resize(int(w), int(h))
+            self.move(int(x), int(h))
 
-            for i in range(len(vals)):
-                if vals[i] is None:
-                    key = [k for k in self.values.keys()]
-                    value = self.values[key[i]]
-                    for index, element in enumerate(vals):
-                        if element == vals[i]:
-                            vals[index] = value
-                    self.setValue(key[i], self.values[key[i]])
-
-            for v in vals:
-                if not type(v) in [int]:
-                    v = int(v)
-
-            self.resize(vals[0], vals[1])
-            self.move(vals[2], vals[3])
-
-        if __name__=='__main__':
+        if __name__ == '__main__':
+            self.setValue('showLayout', 'show')
             self.show()
         else:
-            self.signals.emit('setSetting', self.key, 'showLayout', 'show')
-            event.ignore()
+            self.setValue('showLayout', 'show')
+            self.signals.emit('showLayout', self.key, 'show')
 
     @property
     def copyright(self):
@@ -294,27 +280,22 @@ class LineEdit(QLineEdit):
             x = self.getValue('x')
             y = self.getValue('x')
 
-            vals = [w, h, x, y]
+            if w is None:
+                w = self.width()
+            if h is None:
+                h = self.height()
+            if x is None:
+                x = 0
+            if y is None:
+                y = 0
+            self.resize(int(w), int(h))
+            self.move(int(x), int(h))
 
-            for i in range(len(vals)):
-                if vals[i] is None:
-                    key = [k for k in self.values.keys()]
-                    value = self.values[key[i]]
-                    for index, element in enumerate(vals):
-                        if element == vals[i]:
-                            vals[index] = value
-                    self.setValue(key[i], self.values[key[i]])
-
-            for v in vals:
-                if not type(v) in [int]:
-                    v = int(v)
-
-            self.resize(vals[0], vals[1])
-            self.move(vals[2], vals[3])
-
-        if __name__=='__main__':
+        if __name__ == '__main__':
+            self.setValue('showLayout', 'show')
             self.show()
         else:
+            self.setValue('showLayout', 'show')
             self.signals.emit('showLayout', self.key, 'show')
 
     @property
