@@ -10,11 +10,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtCore import QSettings, QDateTime
+from PyQt5.QtCore           import QSettings, QDateTime
 
-INI = QSettings.IniFormat
-Native = QSettings.NativeFormat
-Invalid = QSettings.InvalidFormat
+INI                         = QSettings.IniFormat
+Native                      = QSettings.NativeFormat
+Invalid                     = QSettings.InvalidFormat
 
 # -------------------------------------------------------------------------------------------------------------
 """ Format """

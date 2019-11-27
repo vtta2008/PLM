@@ -14,7 +14,7 @@ import os
 from functools import partial
 
 from bin                        import DAMGDICT, DAMGLIST
-from toolkits.Widgets.Action import Action
+from toolkits.Widgets           import Action
 from utils                      import data_handler, is_action, is_string
 from appData                    import (mainConfig, SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY,
                                         CONFIG_DEV, CONFIG_TOOLS, CONFIG_OFFICE, CONFIG_TDS, CONFIG_ART, CONFIG_TEX,

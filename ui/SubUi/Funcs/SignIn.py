@@ -78,7 +78,7 @@ class SignIn(Widget):
 
     def forgetPwClicked(self):
         if __name__ == '__main__':
-            from ui.subUI.Funcs.ForgotPassword import ForgotPassword
+            from ui.SubUi.Funcs.ForgotPassword import ForgotPassword
             self.forgotPW = ForgotPassword()
             self.forgotPW.show()
         else:

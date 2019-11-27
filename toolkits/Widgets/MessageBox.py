@@ -9,12 +9,12 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__
 
 from PyQt5.QtWidgets                import QMessageBox
 
 # PLM
-from toolkits                       import getCopyright
-from toolkits.Widgets               import AppIcon
+from .Icon                          import AppIcon
 
 
 class MessageBox(QMessageBox):
@@ -22,10 +22,10 @@ class MessageBox(QMessageBox):
     Type                            = 'DAMGUI'
     key                             = 'Widget'
     _name                           = 'DAMG Widget'
-    _copyright                      = getCopyright()
+    _copyright                      = __copyright__()
 
-    def __init__(self, parent=None, title="auto", level="auto", message="test message", btn='ok', **kwargs):
-        super(MessageBox, self).__init__(parent)
+    def __init__(self, parent=None, title="auto", level="auto", message="test message", btn='ok'):
+        QMessageBox.__init__(self)
 
         self._parent                = parent
         self._title                 = title
@@ -49,11 +49,11 @@ class MessageBox(QMessageBox):
 
         levels = dict(
 
-            about                   = QMessageBox.about,
-            information             = QMessageBox.information,
-            question                = QMessageBox.question,
-            warning                 = QMessageBox.warning,
-            critical                = QMessageBox.critical,
+            about                   = self.about,
+            information             = self.information,
+            question                = self.question,
+            warning                 = self.warning,
+            critical                = self.critical,
 
         )
 
@@ -63,11 +63,11 @@ class MessageBox(QMessageBox):
 
         icons = dict(
 
-            about                   = QMessageBox.NoIcon,
-            information             = QMessageBox.Information,
-            question                = QMessageBox.Question,
-            warning                 = QMessageBox.Warning,
-            critical                = QMessageBox.Critical,
+            about                   = self.NoIcon,
+            information             = self.Information,
+            question                = self.Question,
+            warning                 = self.Warning,
+            critical                = self.Critical,
 
         )
 
@@ -80,19 +80,19 @@ class MessageBox(QMessageBox):
         
         buttons = dict(
 
-            ok                      = QMessageBox.Ok,
-            open                    = QMessageBox.Open,
-            save                    = QMessageBox.Save,
-            cancel                  = QMessageBox.Cancel,
-            close                   = QMessageBox.Close,
-            yes                     = QMessageBox.Yes,
-            no                      = QMessageBox.No,
-            abort                   = QMessageBox.Abort,
-            retry                   = QMessageBox.Retry,
-            ignore                  = QMessageBox.Ignore,
-            discard                 = QMessageBox.Discard,
-            yes_no                  = QMessageBox.Yes|QMessageBox.No,
-            retry_close             = QMessageBox.Retry|QMessageBox.Close,
+            ok                      = self.Ok,
+            open                    = self.Open,
+            save                    = self.Save,
+            cancel                  = self.Cancel,
+            close                   = self.Close,
+            yes                     = self.Yes,
+            no                      = self.No,
+            abort                   = self.Abort,
+            retry                   = self.Retry,
+            ignore                  = self.Ignore,
+            discard                 = self.Discard,
+            yes_no                  = self.Yes|QMessageBox.No,
+            retry_close             = self.Retry|QMessageBox.Close,
             
         )
 

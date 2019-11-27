@@ -18,26 +18,29 @@ import os, sys, subprocess
 __envKey__                      = "DAMGTEAM"
 ROOT                            = os.path.abspath(os.getcwd())
 
-cfgable                         = False
-allowReport                     = False
-allowOutput                     = False
-checkCopyright                  = False
-checkToBuildUis                 = False
-checkToBuildCmds                = False
-checkIgnoreIDs                  = False
+class _PreSetting:
 
+    cfgable                         = False
+    allowReport                     = False
+    allowOutput                     = False
+    checkCopyright                  = False
+    checkToBuildUis                 = False
+    checkToBuildCmds                = False
+    checkIgnoreIDs                  = False
+
+settings = _PreSetting()
 
 try:
     os.getenv(__envKey__)
 except KeyError:
     subprocess.Popen('SetX {0} {1}'.format(__envKey__, ROOT), shell=True).wait()
-    cfgable = True
+    settings.cfgable = True
 else:
     if os.getenv(__envKey__)   != ROOT:
         subprocess.Popen('SetX {0} {1}'.format(__envKey__, ROOT), shell=True).wait()
-        cfgable                 = True
+        settings.cfgable                 = True
     else:
-        cfgable                 = True
+        settings.cfgable                 = True
 finally:
     try:
         import damg
@@ -49,21 +52,21 @@ finally:
                                  stderr=subprocess.STDOUT)
         output = proc.stdout.read()
         proc.wait()
-        if allowOutput:
+        if settings.allowOutput:
             print(output)
 
-    if cfgable:
+    if settings.cfgable:
         from cores.ConfigManager import ConfigManager
         configManager = ConfigManager(__envKey__, ROOT)
         if not configManager.cfgs:
-            if allowReport:
+            if settings.allowReport:
                 print("CONFIGERROR: configurations have not done yet.")
             sys.exit()
         else:
-            if allowReport:
+            if settings.allowReport:
                 print('Configurations has been completed.')
     else:
-        if allowReport:
+        if settings.allowReport:
             print('EnvironmentVariableError: {0} is not set to {1}, please try again.'.format(__envKey__, ROOT))
         sys.exit()
 
@@ -101,7 +104,7 @@ def __ignoreIDs__():
         with open(ignoreIDsFile, 'w') as f:
             ignoreIDs = json.dump(ignoreIDs, f, indent=4)
 
-    if checkIgnoreIDs:
+    if settings.checkIgnoreIDs:
         print(ignoreIDs)
     return ignoreIDs
 
@@ -123,7 +126,7 @@ def __tobuildUis__():
                       ]
         with open(toBuildUIsFile, 'w') as f:
             toBuildUis = json.dump(toBuildUis, f, indent=4)
-    if checkToBuildUis:
+    if settings.checkToBuildUis:
         print(toBuildUis)
     return toBuildUis
 
@@ -142,13 +145,13 @@ def __tobuildCmds__():
         with open(toBuildCmdsFile, 'w') as f:
             toBuildCmds = json.dump(toBuildCmds, f, indent=4)
 
-    if checkToBuildCmds:
+    if settings.checkToBuildCmds:
         print(toBuildCmds)
     return toBuildCmds
 
-def copyright():
+def __copyright__():
     copyright = 'Pipeline Manager (PLM) Copyright (C) 2017 - 2019 by DAMGTEAM, contributed by Trinh Do & Duong Minh Duc.'
-    if checkCopyright:
+    if settings.checkCopyright:
         print(copyright)
     return copyright
 
@@ -162,7 +165,7 @@ class Application(QApplication):
     _envKey                         = __envKey__
     _root                           = ROOT
 
-    _copyright                      = copyright()
+    _copyright                      = __copyright__()
     _login                          = False
     _trackRecieveSignal             = False
     _trackBlockSignal               = False
@@ -179,6 +182,9 @@ class Application(QApplication):
     toBuildCmds                     = __tobuildCmds__()
 
     todoList                        = dict(toBuildUis = toBuildUis, toBuildCmds = toBuildCmds)
+
+    def __init__(self):
+        super(Application, self).__init__(sys.argv)
 
     def checkSignalRepeat(self, old, data):
         new = [i for i in data]
@@ -288,6 +294,21 @@ class Application(QApplication):
     @trackEvents.setter
     def trackEvents(self, val):
         self._trackEvents           = val
+
+def singleton(cls):
+    instances = {}
+    def getinstance():
+        if cls not in instances:
+            instances[cls] = cls()
+        return instances[cls]
+    return getinstance
+
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from cores.Settings                         import Settings
+from ui.Management                          import SignalManager
+
+settings                                    = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], None)
+signals                                     = SignalManager(None)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 6:55 AM

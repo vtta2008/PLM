@@ -17,7 +17,7 @@ from .CheckBox          import CheckBox
 from .ComboBox          import ComboBox
 from .DockWidget        import DockStamp, DockWidget, NoteStamp
 from .GridLayout        import GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
-from .GroupBox          import GroupBoxBase, GroupBox
+from .GroupBox          import GroupBoxBase, GroupBox, GroupGrid, GroupHBox, GroupVBox
 from .Icon              import Icon, AppIcon, LogoIcon, TagIcon
 from .Label             import Label, LCDNumber, passwordLabel, usernameLabel
 from .LineEdit          import LineEdit

@@ -12,7 +12,7 @@ Description:
 from __future__ import absolute_import
 
 from __buildtins__                      import *
-from __buildtins__                      import __envKey__
+from __buildtins__                      import __envKey__, Application
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
@@ -27,19 +27,17 @@ from appData                            import (__localServer__, __organization_
                                                 __appname__, __version__, __website__, SETTING_FILEPTH, ST_FORMAT,
                                                 SYSTRAY_UNAVAI)
 
-from cores.StyleSheet                   import StyleSheet
-from ui.ThreadManager                   import ThreadManager
 from utils                              import str2bool, clean_file_ext, LocalDatabase
+from cores.StyleSheet                   import StyleSheet
 from cores.Loggers                      import Loggers
-from cores.Settings                     import Settings
 from cores.Registry                     import RegistryLayout
-from ui.ActionManager                   import ActionManager
-from ui.ButtonManager                   import ButtonManager
-from toolkits.Widgets.Icon import LogoIcon
-from ui.subUI.Browser                   import Browser
+
+from ui.Management                      import EventManager, ButtonManager, ActionManager, ThreadManager
+from ui.SubUi                           import Browser
 from ui.LayoutManager                   import LayoutManager
-from ui.EventManager                    import EventManager
-from toolkits.Widgets.MessageBox import MessageBox
+
+from toolkits                           import getSetting
+from toolkits.Widgets                   import LogoIcon, MessageBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -58,13 +56,13 @@ class DAMGTEAM(Application):
     sysNotify_old                       = []
 
     def __init__(self):
+        super(DAMGTEAM, self).__init__(sys.argv)
         if self.onlyExists:
-            if self.instance() is None:
-                super(DAMGTEAM, self).__init__(sys.argv)
-            else:
+            if not self.instance() is None:
                 MessageBox(None, 'PLM is running', 'critical', 'PLM application already running', 'close')
-        else:
-            super(DAMGTEAM, self).__init__(sys.argv)
+                self.exit()
+            else:
+                sys.exit(self.exec_())
 
         self.setWindowIcon(LogoIcon("Logo"))  # Setup icon
         self.setOrganizationName(__organization__)
@@ -81,7 +79,7 @@ class DAMGTEAM(Application):
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(self.appID)                     # Setup app ID
 
         self.logger                     = Loggers(self.__class__.__name__)
-        self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.settings                   = getSetting(self)
         self.settings._settingEnable    = True
 
         self.appInfo                    = self.dataConfig.appInfo                                    # Configuration qssPths
@@ -149,7 +147,8 @@ class DAMGTEAM(Application):
                     else:
                         self.showLayout('SignIn', "show")
 
-        self.runEvent()
+        # self.runEvent()
+        sys.exit(self.exec_())
 
     @pyqtSlot(str, name='openBrowser')
     def openBrowser(self, url):

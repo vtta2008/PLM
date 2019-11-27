@@ -9,20 +9,20 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, signals, settings
 
 import os
 
 from PyQt5.QtGui                            import QImage, QPixmap
 
-from toolkits                               import getCopyright, getSetting, getSignals, get_avatar_image
-
+from utils                                  import get_avatar_image, get_app_icon, get_logo_icon, get_tag_icon
 
 class Image(QImage):
 
     Type                                    = 'DAMGIMAGE'
     key                                     = 'Image'
     _name                                   = 'DAMG Image'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, image=None, parent=None):
         super(Image, self).__init__(parent)
@@ -30,8 +30,10 @@ class Image(QImage):
         self.pixmap                         = QPixmap()
         self._image                         = image
         self.parent                         = parent
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
         if self.image is None:
             print("ImageIsNoneError: {0}: Image should be a name or a path, not None".format(__name__))
@@ -61,7 +63,7 @@ class Pixmap(QPixmap):
     Type                                = 'DAMGPIXMAP'
     key                                 = 'Pixmap'
     _name                               = 'DAMG Pixel Map'
-    _copyright                          = getCopyright()
+    _copyright                          = __copyright__()
 
     def __init__(self, image=None, mode='avatar', parent=None):
         QPixmap.__init__(self)
@@ -69,14 +71,18 @@ class Pixmap(QPixmap):
         self.mode                       = mode
         self.image                      = image
         self.parent                     = parent
-        self.signals                    = getSignals(self)
-        self.settings                   = getSetting(self)
+        self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals                    = SignalManager(self)
 
         if self.mode == 'avatar':
-            # print('set avatar: {0}'.format(get_avatar_image(self.image)))
             self.fromImage(QImage(get_avatar_image(self.image)))
+        elif self.mode == 'icon':
+            self.fromImage(QImage(get_app_icon(32, self.image)))
+        elif self.mode == 'logo':
+            self.fromImage(QImage(get_logo_icon(32, self.image)))
+        elif self.mode == 'tag':
+            self.fromImage(QImage(get_tag_icon(self.image)))
         else:
-            # print('set image: {0}'.format(self.image))
             self.fromImage(QImage(self.image))
 
     @property

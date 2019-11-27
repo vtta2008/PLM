@@ -13,7 +13,7 @@ Description:
 
 from appData            import config as c
 from appData.config     import *
-from __buildtins__      import copyright
+from __buildtins__      import __copyright__
 
 __envKey__              = c.__envKey__
 
@@ -25,7 +25,7 @@ margin = 5
 # -------------------------------------------------------------------------------------------------------------
 """ DAMG metadata """
 
-__copyright__           = copyright()
+__copyright__           = __copyright__()
 __organization__        = c.__organization__
 __groupname__           = c.__groupname__
 __damgSlogan__          = c.__damgSlogan__

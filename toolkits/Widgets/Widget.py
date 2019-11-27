@@ -8,17 +8,13 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
-
-# Python
-import sys
+from __buildtins__ import __copyright__, signals, settings
 
 # PyQt5
 from PyQt5.QtWidgets                        import QWidget
 
 # PLM
-from toolkits                               import getCopyright, getSetting, getSignals
-from toolkits.Widgets.Icon                  import AppIcon
+from .Icon                                  import AppIcon
 
 
 class Widget(QWidget):
@@ -26,14 +22,16 @@ class Widget(QWidget):
     Type                                    = 'DAMGWIDGET'
     key                                     = 'Widget'
     _name                                   = 'DAMG Widget'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         super(Widget, self).__init__(parent)
 
         self.parent                         = parent
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
         self.setWindowIcon(AppIcon(32, self.key))
         self.setWindowTitle(self.key)

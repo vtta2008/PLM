@@ -31,7 +31,7 @@ class Footer(Widget):
 
         self.parent             = parent
         self.buttonManager      = buttonManager
-        self.threadManager       = threadManager
+        self.threadManager      = threadManager
 
         layout = self.buildUI()
         self.setLayout(layout)

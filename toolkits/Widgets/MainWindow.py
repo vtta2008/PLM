@@ -9,6 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, settings, signals
 
 """ Import """
 
@@ -16,8 +17,8 @@ from __future__ import absolute_import, unicode_literals
 from PyQt5.QtWidgets                        import QMainWindow
 
 # PLM
-from toolkits                               import getCopyright, getSetting, getSignals, Loggers
 from toolkits.Widgets                       import AppIcon
+from cores.Loggers                          import Loggers
 
 # -------------------------------------------------------------------------------------------------------------
 """ Main window layout preset """
@@ -27,16 +28,18 @@ class MainWindow(QMainWindow):
     Type                        = 'DAMGUI'
     key                         = 'MainWindow'
     _name                       = 'DAMG Main Window'
-    _copyright                  = getCopyright()
+    _copyright                  = __copyright__()
     _data                       = dict()
 
     def __init__(self, parent=None):
         QMainWindow.__init__(self)
 
         self.parent             = parent
-        self.signals            = getSignals(self)
+        self.settings           = settings
+        self.signals            = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
         self.logger             = Loggers(self.__class__.__name__)
-        self.settings           = getSetting(self)
 
         self.setWindowTitle(self.key)
         self.setWindowIcon(AppIcon(32, self.key))

@@ -10,41 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from toolkits                       import ELIDE_RIGHT
-from toolkits.Widgets               import (GroupBoxBase, VBoxLayout, HBoxLayout,
-                                            Widget, GridLayout, Label, TabWidget, TabBar)
-
-class GroupGrid(GroupBoxBase):
-
-    key = 'GroupGrid'
-
-    def __init__(self, title="", parent=None):
-        super(GroupGrid, self).__init__(parent)
-
-        self._title = title
-        self.setTitle(self._title)
-        self.layout = GridLayout(self)
-        self.setLayout(self.layout)
-
-class GroupVBox(GroupBoxBase):
-
-    key = 'GroupVBox'
-
-    def __init__(self, parent=None):
-        super(GroupVBox, self).__init__(parent)
-
-        self.layout = VBoxLayout(self)
-        self.setLayout(self.layout)
-
-class GroupHBox(GroupBoxBase):
-
-    key = 'GroupHBox'
-
-    def __init__(self, parent=None):
-        super(GroupHBox, self).__init__(parent)
-
-        self.layout = HBoxLayout(self)
-        self.setLayout(self.layout)
+from appData                        import ELIDE_RIGHT
+from .Widgets                       import Widget, GridLayout, Label, TabWidget, TabBar
 
 class TabContent(Widget):
     key = 'TabContent'
@@ -69,8 +36,8 @@ class Tabs(Widget):
         self.setLayout(self.layout)
 
     def buildUI(self):
-        self.tabs = TabWidget()
-        tabBar = TabBar()
+        self.tabs               = TabWidget()
+        tabBar                  = TabBar()
         self.tabs.setTabBar(tabBar)
         self.tabs.setMovable(True)
         self.tabs.setDocumentMode(True)
@@ -81,13 +48,6 @@ class Tabs(Widget):
         tabBar.addAction(content)
 
         self.layout.addWidget(self.tabs)
-
-
-def check_preset(data):
-    if data == {}:
-        pass
-    else:
-        return True
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 19/06/2018 - 6:05 AM

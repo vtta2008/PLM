@@ -10,14 +10,14 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from bin.dependencies.damg.damg import DAMGDICT, DAMG
+from bin                import DAMGDICT, DAMG
 
-from PyQt5.QtGui import QWheelEvent
+from PyQt5.QtGui        import QWheelEvent
 
 class WheelEvent(DAMG):
 
-    key = 'WheelEvent'
-    Type = 'DAMGEVENT'
+    key                 = 'WheelEvent'
+    Type                = 'DAMGEVENT'
 
     def eventFilter(self, object, event):
         if type(event) == QWheelEvent:

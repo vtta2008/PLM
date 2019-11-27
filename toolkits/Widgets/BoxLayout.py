@@ -9,13 +9,14 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, signals, settings
 """ Import """
 
 # PyQt5
 from PyQt5.QtWidgets                        import QVBoxLayout, QHBoxLayout
 
 # PLM
-from toolkits                               import getCopyright, getSetting, getSignals, check_preset
+from utils                                  import check_preset
 
 
 class HBoxLayout(QHBoxLayout):
@@ -23,14 +24,15 @@ class HBoxLayout(QHBoxLayout):
     Type                                    = 'DAMGUI'
     key                                     = 'HBoxLayout'
     _name                                   = 'DAMG H Box Layout'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, preset={}, parent=None):
         QHBoxLayout.__init__(self)
-
-        self.settings                       = getSetting(self)
-        self.signals                        = getSignals(self)
         self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
         self.preset = preset
         if check_preset(self.preset):
@@ -82,11 +84,12 @@ class VBoxLayout(QVBoxLayout):
     _copyright                              = copyright()
 
     def __init__(self, preset={}, parent=None):
-        super(VBoxLayout, self).__init__(parent)
-
-        self.settings                       = getSetting(self)
-        self.signals                        = getSignals(self)
+        QVBoxLayout.__init__(self)
         self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
         self.preset                         = preset
         if check_preset(self.preset):
@@ -128,6 +131,7 @@ class VBoxLayout(QVBoxLayout):
     @name.setter
     def name(self, newName):
         self._name                      = newName
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 6:57 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

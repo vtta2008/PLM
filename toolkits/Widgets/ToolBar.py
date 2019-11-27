@@ -8,13 +8,11 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __buildtins__ import __copyright__, settings, signals
 """ Import """
 
 # PyQt5
 from PyQt5.QtWidgets                        import QToolBar
-
-# PLM
-from toolkits                               import getCopyright, getSetting, getSignals
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar class """
@@ -24,25 +22,17 @@ class ToolBar(QToolBar):
     Type                                    = 'DAMGUI'
     key                                     = 'ToolBar'
     _name                                   = 'DAMG Tool Bar'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
     actions                                 = []
 
     def __init__(self, parent=None):
         QToolBar.__init__(self)
 
-        self.parent             = parent
-
-        try:
-            self.parent.children()
-        except AttributeError:
-            pass
-        else:
-            self.setParent(self.parent)
-        finally:
-            self.key = '{0}_{1}'.format(self.parent.key, self.key)
-
-        self.signals            = getSignals(self)
-        self.settings           = getSetting(self)
+        self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
         self.setWindowTitle(self._name)
 
     def add_action(self, action):

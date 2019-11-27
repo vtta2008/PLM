@@ -8,14 +8,16 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __buildtins__ import __copyright__, settings, signals
+
 """ Import """
 
 # PyQt5
 from PyQt5.QtWidgets                        import QGroupBox
 
 # PLM
-from toolkits                               import getCopyright, getSetting, getSignals, WAIT_LAYOUT_COMPLETE
-from toolkits.Widgets                       import AutoPreset3, AutoPreset2, AutoPreset1, GridLayout, HBoxLayout, Label
+from toolkits.Widgets                       import AutoPreset3, AutoPreset2, AutoPreset1, GridLayout, HBoxLayout, Label, VBoxLayout
+from appData                                import WAIT_LAYOUT_COMPLETE
 
 # -------------------------------------------------------------------------------------------------------------
 """ Groupbox presets """
@@ -25,14 +27,16 @@ class GroupBoxBase(QGroupBox):
     Type                                    = 'DAMGGROUPBOX'
     key                                     = 'GroupBoxBase'
     _name                                   = 'DAMG Group Box Base'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
-        super(GroupBoxBase, self).__init__(parent)
+        QGroupBox.__init__(self)
 
-        self.signals = getSignals(self)
-        self.settings = getSetting(self)
-        self.parent = parent
+        self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
     def sizeHint(self):
         size = super(GroupBoxBase, self).sizeHint()
@@ -162,6 +166,38 @@ class GroupBox(GroupBoxBase):
     def changeTitle(self, title):
         if not title is None or not title:
             self.setTitle(title)
+
+class GroupGrid(GroupBoxBase):
+
+    key = 'GroupGrid'
+
+    def __init__(self, title="", parent=None):
+        super(GroupGrid, self).__init__(parent)
+
+        self._title = title
+        self.setTitle(self._title)
+        self.layout = GridLayout(self)
+        self.setLayout(self.layout)
+
+class GroupVBox(GroupBoxBase):
+
+    key = 'GroupVBox'
+
+    def __init__(self, parent=None):
+        super(GroupVBox, self).__init__(parent)
+
+        self.layout = VBoxLayout(self)
+        self.setLayout(self.layout)
+
+class GroupHBox(GroupBoxBase):
+
+    key = 'GroupHBox'
+
+    def __init__(self, parent=None):
+        super(GroupHBox, self).__init__(parent)
+
+        self.layout = HBoxLayout(self)
+        self.setLayout(self.layout)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 18/07/2018 - 8:32 AM

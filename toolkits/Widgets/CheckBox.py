@@ -9,24 +9,26 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, settings, signals
 
 from PyQt5.QtWidgets                        import QCheckBox
-
-from toolkits                               import getCopyright, getSetting, getSignals, check_preset
+from utils                                  import check_preset
 
 class CheckBox(QCheckBox):
 
     Type                                    = 'DAMGUI'
     key                                     = 'CheckBox'
     _name                                   = 'DAMG Check Box'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, txt=None, preset={}, parent=None):
-        super(CheckBox, self).__init__(parent)
+        CheckBox.__init__(self)
 
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
         self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
         self.txt                            = txt
 
         if self.txt is not None:

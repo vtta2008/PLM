@@ -8,17 +8,16 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
+from __buildtins__ import __copyright__, settings, signals
 
-# Python
-import sys
+""" Import """
 
 # PyQt5
 from PyQt5.QtGui                            import QTextTableFormat, QTextCharFormat
 from PyQt5.QtWidgets                        import QTextEdit, QDockWidget
 
 # PLM
-from toolkits                               import getCopyright, getSetting, getSignals, right, datetTimeStamp
+from appData                                import right, datetTimeStamp
 
 # -------------------------------------------------------------------------------------------------------------
 """ Dock widget """
@@ -55,14 +54,16 @@ class DockWidget(QDockWidget):
     Type                                    = 'DAMGUI'
     key                                     = 'DockWidget'
     _name                                   = 'DAMG Dock Widget'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         super(DockWidget, self).__init__(parent)
 
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
         self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
     def sizeHint(self):
         size = super(DockWidget, self).sizeHint()

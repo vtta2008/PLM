@@ -9,12 +9,12 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, settings, signals
 
-import os, sys
+import os
 
-from PyQt5.QtCore           import QFile
+from PyQt5.QtCore                           import QFile
 
-from toolkits                               import getCopyright, getSetting, getSignals
 from appData                                import QSS_DIR
 
 class FileBase(QFile):
@@ -22,14 +22,16 @@ class FileBase(QFile):
     Type                                    = 'DAMGFILE'
     key                                     = 'FileBase'
     _name                                   = 'DAMG File Base'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
     _filePath                               = None
 
     def __init__(self):
         super(FileBase, self).__init__()
 
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
     @property
     def copyright(self):
@@ -64,8 +66,8 @@ class QssFile(FileBase):
     def __init__(self, style):
         super(QssFile, self).__init__()
 
-        self._style = style
-        self._filePath = self.qssPths[self._style]
+        self._style                         = style
+        self._filePath                      = self.qssPths[self._style]
         self.setFileName(self._filePath)
 
     @property
@@ -81,6 +83,7 @@ class File(FileBase):
     key                                     = 'File'
 
     def __init__(self, filePth=None):
+        FileBase.__init__(self)
 
         self._filePath                      = filePth
         self.setFileName(self._filePath)

@@ -9,25 +9,26 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, settings, signals
 
 import os
 
 from PyQt5.QtCore                           import QProcess
-
-from toolkits                               import getCopyright, getSetting, getSignals
 
 class Process(QProcess):
 
     Type                                    = 'DAMGPROCESS'
     key                                     = 'Process'
     _name                                   = 'DAMG Process'
-    __copyright__                           = getCopyright()
+    __copyright__                           = __copyright__()
 
     def __init__(self, readyReadFn=None, StandardErrorFn=None, StandardOutPutFn=None, finishFn=None, parent=None):
         super(Process, self).__init__(parent)
 
-        self.settings                       = getSetting(self)
-        self.signals                        = getSignals(self)
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
         self.setProcessChannelMode(self.MergedChannels)
         self.setWorkingDirectory(os.getcwd())
@@ -54,7 +55,7 @@ class Process(QProcess):
 
     @name.setter
     def name(self, newName):
-        self._name                      = newName
+        self._name                          = newName
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 10/11/2019 - 12:06 AM

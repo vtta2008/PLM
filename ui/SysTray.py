@@ -16,10 +16,10 @@ from PyQt5.QtCore                       import pyqtSlot
 
 # PLM
 from appData                            import __plmSlogan__, __appname__
-from toolkits.Widgets.Icon import LogoIcon
+from toolkits.Widgets                   import LogoIcon
 from ui.Header.Menus.SysTrayIconMenu    import SysTrayIconMenu
-from toolkits.Widgets.SystemTrayIcon import SystemTrayIcon
-from utils                              import QuerryDB
+from toolkits.Widgets.SystemTrayIcon    import SystemTrayIcon
+from utils                              import LocalDatabase
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ class SysTray(SystemTrayIcon):
 
         super(SysTray, self).__init__(parent)
 
-        self.db                         = QuerryDB()
+        self.db                         = LocalDatabase()
         self.actionManager              = actionManager
         self.eventManager               = eventManager
 

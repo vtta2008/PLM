@@ -10,14 +10,12 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-from bin.dependencies.damg.damg         import DAMG, DAMGLIST
-
+# PyQt5
 from PyQt5.QtCore                       import Qt
 
 # PLM
 from appData                            import SiPoMin
-
+from bin                                import DAMG, DAMGLIST
 
 class LayoutManager(DAMG):
 
@@ -29,14 +27,13 @@ class LayoutManager(DAMG):
     unHidableLayouts                    = DAMGLIST()
     unShowableLayouts                   = DAMGLIST()
 
-    def __init__(self, setting, registryLayout, actionManager, buttonManager, eventManager, threadManager, parent=None):
+    ignoreIDs                           = DAMGLIST()
+
+    def __init__(self, registryLayout, actionManager, buttonManager, eventManager, threadManager, parent=None):
         super(LayoutManager, self).__init__(parent)
 
+        self.ignoreIDs.appendList(self.parent.ignoreIDs)
         self.parent                     = parent
-
-        self.ignoreIDs                  = self.parent.ignoreIDs
-
-        self.settings                   = setting
         self.actionManager              = actionManager
         self.buttonManager              = buttonManager
         self._register                  = registryLayout
@@ -54,20 +51,18 @@ class LayoutManager(DAMG):
     def buildLayouts(self):
         self.mains                      = self.mainLayouts()
         self.funcs                      = self.functionLayouts()
-
         self.infos                      = self.infoLayouts()
         self.setts                      = self.settingLayouts()
         self.tools                      = self.toolLayouts()
         self.prjs                       = self.projectLayouts()
 
-        tbcbs = self.preferences.headerGrid.toolBarCBs
-        tbs = self.mainUI.mainToolBar.tbs
-
-        cncbs = self.preferences.headerGrid.connectCBs
-        cns = self.mainUI.connectStatus.labels
-
-        mncbs = self.preferences.headerGrid.menuCBs
-        mns = self.mainUI.mainMenuBar.mns
+        tbcbs                           = self.preferences.headerGrid.toolBarCBs
+        tbs                             = self.mainUI.mainToolBar.tbs
+        cncbs                           = self.preferences.headerGrid.connectCBs
+        cns                             = self.mainUI.connectStatus.labels
+        mncbs                           = self.preferences.headerGrid.menuCBs
+        ntcbs                           = self.preferences.bodyGrid.notificationCBs
+        nts                             = self.mainUI.notification.labels
 
         for i in range(len(tbs)):
             cb = tbcbs[i]
@@ -85,9 +80,6 @@ class LayoutManager(DAMG):
             lb = cns[i]
             cb.stateChanged.connect(lb.setVisible)
         cncbs[-1].stateChanged.connect(self.mainUI.connectStatusSec.setVisible)
-
-        ntcbs = self.preferences.bodyGrid.notificationCBs
-        nts = self.mainUI.notification.labels
 
         for i in range(len(nts)):
             cb = ntcbs[i]
@@ -117,23 +109,21 @@ class LayoutManager(DAMG):
         return layouts
 
     def functionLayouts(self):
-        from ui.subUI.Funcs.SignIn          import SignIn
-        from ui.subUI.Funcs.SignUp          import SignUp
-        from ui.subUI.Funcs.ForgotPassword  import ForgotPassword
+        from ui.SubUi                       import SignIn, SignUp, ForgotPassword
 
         self.signin                         = SignIn()
         self.forgotPW                       = ForgotPassword()
         self.signup                         = SignUp()
 
-        for layout in [self.signin, self.signup, self.forgotPW]:
+        layouts = [self.signin, self.signup, self.forgotPW]
+        for layout in layouts:
             self.registLayout(layout)
 
-        return self.signin, self.signup, self.forgotPW
+        return layouts
 
     def mainLayouts(self):
-        from ui.PipelineManager             import PipelineManager
-        from ui.SysTray                     import SysTray
-        from ui.subUI.ShortcutCommand       import ShortcutCommand
+        from ui                             import PipelineManager, SysTray
+        from .SubUi                         import ShortcutCommand
 
         self.mainUI                         = PipelineManager(self.actionManager, self.buttonManager, self.threadManager)
         self.sysTray                        = SysTray(self.actionManager, self.eventManager)
@@ -148,7 +138,7 @@ class LayoutManager(DAMG):
         return layouts
 
     def infoLayouts(self):
-        from ui.subUI.Info.InfoWidget       import InfoWidget
+        from ui.SubUi.Info.InfoWidget       import InfoWidget
 
         self.about                          = InfoWidget(key='About')
         self.codeConduct                    = InfoWidget(key='CodeOfConduct')
@@ -168,8 +158,8 @@ class LayoutManager(DAMG):
         return layouts
 
     def settingLayouts(self):
-        from ui.subUI.Settings.SettingUI    import SettingUI
-        from ui.subUI.Settings.UserSetting  import UserSetting
+        from ui.SubUi.Settings.SettingUI    import SettingUI
+        from ui.SubUi.Settings.UserSetting  import UserSetting
 
         self.settingUI                      = SettingUI()
         self.userSetting                    = UserSetting()
@@ -182,13 +172,13 @@ class LayoutManager(DAMG):
         return layouts
 
     def toolLayouts(self):
-        from ui.subUI.Tools                 import (Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary,
+        from ui.SubUi.Tools                 import (Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary,
                                                     Calendar, Calculator)
-        from ui.subUI.Tools.NodeGraph       import NodeGraph
-        from ui.subUI.Tools import TextEditor
+        from ui.SubUi.Tools.NodeGraph       import NodeGraph
+        from ui.SubUi.Tools import TextEditor
         from ui.Header.Menus.config         import Preferences
         from ui.Header.Menus.config         import Configuration
-        from ui.TaskManager                 import TaskManager
+        from ui.Management.TaskManager import TaskManager
 
         self.calculator                     = Calculator.Calculator()
         self.calendar                       = Calendar.Calendar()
@@ -214,7 +204,7 @@ class LayoutManager(DAMG):
         return layouts
 
     def projectLayouts(self):
-        from ui.subUI.Projects.VFXProjectSetup   import VFXProjectSetup
+        from ui.SubUi.Projects.VFXProjectSetup   import VFXProjectSetup
 
         self.newProject                     = VFXProjectSetup()
 

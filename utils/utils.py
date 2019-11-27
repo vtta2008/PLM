@@ -623,6 +623,12 @@ def clean_file_ext(ext):
         for filePth in fileNames:
             os.remove(filePth)
 
+def check_preset(data):
+    if data == {}:
+        pass
+    else:
+        return True
+
 # - Naming ----
 def clean_name(text):
     """

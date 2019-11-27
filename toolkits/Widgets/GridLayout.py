@@ -8,16 +8,12 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __buildtins__ import __copyright__, settings, signals
+
 """ Import """
-
-# Python
-
 
 # PyQt5
 from PyQt5.QtWidgets                        import QGridLayout
-
-# PLM
-from toolkits                               import getCopyright, getSetting, getSignals
 
 # -------------------------------------------------------------------------------------------------------------
 """ Gridlayout presets """
@@ -27,14 +23,16 @@ class GridLayout(QGridLayout):
     Type                                    = 'DAMGUI'
     key                                     = 'GridLayout'
     _name                                   = 'DAMG Grid Layout'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
-        super(GridLayout, self).__init__(parent)
+        QGridLayout.__init__(self)
 
-        self.signals = getSignals(self)
-        self.settings = getSetting(self)
-        self.parent = parent
+        self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

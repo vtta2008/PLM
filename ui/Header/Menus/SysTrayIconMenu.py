@@ -10,14 +10,14 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from toolkits.Widgets import Menu
+from toolkits.Widgets               import Menu
 
 # -------------------------------------------------------------------------------------------------------------
 
 class SysTrayIconMenu(Menu):
 
-    key = 'SysTrayIconMenu'
-    _login = False
+    key                             = 'SysTrayIconMenu'
+    _login                          = False
 
     def __init__(self, actionManager, parent=None):
         super(SysTrayIconMenu, self).__init__()

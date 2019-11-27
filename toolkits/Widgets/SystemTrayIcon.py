@@ -9,27 +9,29 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, signals, settings
 
 from PyQt5.QtWidgets                        import QSystemTrayIcon
 
-from toolkits                               import getCopyright, getSetting, getSignals, Loggers
-from toolkits.Widgets                       import AppIcon
+from .Icon                                  import AppIcon
+from cores.Loggers                          import Loggers
 
 class SystemTrayIcon(QSystemTrayIcon):
 
     Type                                    = 'DAMGUI'
     key                                     = 'SystemTrayIcon'
     _name                                   = 'DAMG System Tray Icon'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
     _data                                   = dict()
 
     def __init__(self, parent=None):
-        super(SystemTrayIcon, self).__init__(parent)
-
-        self.parent = parent
-        self.signals = getSignals(self)
-        self.logger = Loggers(self.__class__.__name__)
-        self.settings = getSetting(self)
+        QSystemTrayIcon.__init__(self)
+        self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
+        self.logger                         = Loggers(self.__class__.__name__)
 
         self.setWindowTitle(self.key)
         self.setWindowIcon(AppIcon(32, self.key))

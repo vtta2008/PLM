@@ -14,12 +14,11 @@ Description:
 # PyQt5
 from PyQt5.QtCore               import pyqtSlot
 from PyQt5.QtGui                import QPixmap
-from PyQt5.QtWidgets            import ( QLabel, QGraphicsScene)
+from PyQt5.QtWidgets            import QLabel, QGraphicsScene
 
 # Plt
-from toolkits.Widgets           import Widget, GridLayout
-from utils                      import localSQL as usql
-from utils                      import get_avatar_image
+from toolkits.Widgets           import Widget, GridLayout, GroupBox, GroupGrid, Label
+from utils                      import get_avatar_image, LocalDatabase
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab3 """
@@ -31,32 +30,32 @@ class TopTab2(Widget):
     def __init__(self, buttonManager, parent=None):
         super(TopTab2, self).__init__(parent)
 
-        self.buttonManager = buttonManager
-        self.parent = parent
-        self.layout = GridLayout()
+        self.buttonManager      = buttonManager
+        self.parent             = parent
+        self.layout             = GridLayout()
+        self.query              = LocalDatabase()
+
         self.buildUI()
         self.setLayout(self.layout)
 
-        self.signals.regisLayout.emit(self)
-
     def buildUI(self):
-        self.query = usql.QuerryDB()
+
         try:
             self.username, token, cookie, remember = self.query.query_table('curUser')
         except (ValueError, IndexError):
             self.username = 'DemoUser'
 
-        self.avatar = QLabel()
+        self.avatar             = Label()
         self.avatar.setPixmap(QPixmap(get_avatar_image(self.username)))
         self.avatar.setScaledContents(True)
         self.avatar.setFixedSize(100, 100)
-        self.avatarGrp = GroupBox(self.username, [self.avatar], "ImageView")
+        self.avatarGrp          = GroupBox(self.username, [self.avatar], "ImageView")
 
-        self.avatarBtn = self.buttonManager.userButtonGroupBox(self.parent)
-        self.settingGrp = GroupBox("Setting", self.avatarBtn, "BtnGrid")
+        self.avatarBtn          = self.buttonManager.userButtonGroupBox(self.parent)
+        self.settingGrp         = GroupBox("Setting", self.avatarBtn, "BtnGrid")
 
-
-        self.messGrp, sec3Grid = GroupGrid("Messenger")
+        self.messGrp            = GroupGrid("Messenger")
+        self.messGrid           = self.messGrp.layout
 
         self.layout.addWidget(self.avatarGrp, 0, 0, 3, 3)
         self.layout.addWidget(self.settingGrp, 3, 0, 3, 3)
@@ -64,7 +63,6 @@ class TopTab2(Widget):
 
     @pyqtSlot(bool)
     def update_avatar(self, param):
-        # print("receive signal to update avatar: {0}".format(param))
         if param:
             self.username, token, cookie, remember = self.query.query_table('curUser')
             self.avatar = QPixmap(get_avatar_image(self.username))

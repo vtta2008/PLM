@@ -9,26 +9,30 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, signals, settings
 
 from PyQt5.QtWidgets                        import QLineEdit
 from PyQt5.QtGui                            import QIntValidator
 
 # PLM
-from toolkits                               import getCopyright, getSetting, getSignals, check_preset, PRS
+from appData                                import PRS
+from utils                                  import check_preset
 
 class LineEdit(QLineEdit):
 
     Type                                    = 'DAMGUI'
     key                                     = 'LineEdit'
     _name                                   = 'DAMG Line Edit'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, preset={}, parent=None):
-        super(LineEdit, self).__init__(parent)
+        QLineEdit.__init__(self)
 
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
         self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
         self.preset                         = preset
         if check_preset(self.preset):

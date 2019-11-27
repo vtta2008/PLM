@@ -9,11 +9,9 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, signals, settings
 
 from PyQt5.QtWidgets                        import QTabWidget
-
-# PLM
-from toolkits                               import getCopyright, getSetting, getSignals
 
 
 class TabWidget(QTabWidget):
@@ -21,14 +19,16 @@ class TabWidget(QTabWidget):
     Type                                    = 'DAMGUI'
     key                                     = 'TabWidget'
     _name                                   = 'DAMG Tab Widget'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
-        super(TabWidget, self).__init__(parent)
+        QTabWidget.__init__(self)
 
         self.parent                         = parent
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
         self.setTabPosition(self.North)
         self.setMovable(True)

@@ -26,14 +26,15 @@ class DockToolBar(DockWidget):
         self.name               = name
         self.key                = 'dockToolBar' + " {0}".format(self.name)
         self.setWindowTitle(self.name)
-
+        self.layout = GridLayout()
         self.buildUI()
+        self.setLayout(self.layout)
 
     def buildUI(self):
-        self.layout             = GridLayout()
+
         self.toolbar            = ToolBar(self.name, self)
         self.layout.addWidget(self.toolbar, 0, 0, 1, 1)
-        self.setLayout(self.layout)
+
 
 
 

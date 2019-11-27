@@ -9,26 +9,29 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, settings, signals
 
 # PyQt5
 from PyQt5.QtWidgets                        import QComboBox
 
 # PLM
-from toolkits                               import getCopyright, getSetting, getSignals, check_preset
+from utils                                  import check_preset
 
 class ComboBox(QComboBox):
 
     Type                                    = 'DAMGUI'
     key                                     = 'ComboBox'
     _name                                   = 'DAMG Combo Box'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, preset={}, parent=None):
-        super(ComboBox, self).__init__(parent)
+        QComboBox.__init__(self)
 
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
         self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
         self.preset                         = preset
         if check_preset(self.preset):
             self.buildUI()

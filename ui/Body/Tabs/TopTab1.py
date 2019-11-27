@@ -19,7 +19,7 @@ from toolkits.Widgets                           import GroupBox, VBoxLayout, Lab
 from cores.Task                                 import duedate, duetime, Task
 from utils                                      import get_file_path, str2bool, LocalDatabase
 from appData                                    import TASK_DIR
-from bin.dependencies.damg.damg                 import DAMGDICT, DAMGLIST
+from bin                                        import DAMGDICT, DAMGLIST
 
 # -------------------------------------------------------------------------------------------------------------
 class TaskInfo(GroupBox):

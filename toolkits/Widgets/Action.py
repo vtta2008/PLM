@@ -8,16 +8,17 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __buildtins__                          import __copyright__, settings, signals
 """ Import """
-
-# Python
 
 # PyQt5
 from PyQt5.QtWidgets                        import QAction
 
 # PLM
-from toolkits                               import getCopyright, getSetting, getSignals, check_preset
-from toolkits.Widgets.Icon                  import AppIcon
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from cores.Settings                         import Settings
+from ui.Management                          import SignalManager
+from utils                                  import check_preset
 
 # -------------------------------------------------------------------------------------------------------------
 """ Action presets """
@@ -27,16 +28,18 @@ class Action(QAction):
     Type                                    = 'DAMGACTION'
     key                                     = 'Action'
     _name                                   = 'DAMG Action'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, preset={}, parent=None):
-        super(Action, self).__init__(parent)
+        QAction.__init__(self)
 
-        self.parent         = parent
-        self.settings       = getSetting(self)
-        self.signals        = getSignals(self)
+        self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
-        self.preset         = preset
+        self.preset                         = preset
         if check_preset(self.preset):
             self.buildUI()
 
@@ -48,7 +51,7 @@ class Action(QAction):
         else:
             for key, value in self.preset.items():
                 if key == 'icon':
-                    self.setIcon(AppIcon(32, value))
+                    self.setIcon(value)
                 elif key == 'txt':
                     self.setText(value)
                 elif key == 'trg':
@@ -82,13 +85,15 @@ class ShortCut(Action):
     _name = 'DAMG ShortCut'
 
     def __init__(self, icon=None, text=None, shortcut=None, trigger=None, parent=None):
-        super(ShortCut, self).__init__(parent)
+        Action.__init__(self)
+
+        self.parent                         = parent
 
         if text is not None:
             self.setText(text)
 
         if icon is not None:
-            self.setIcon(AppIcon(32, icon))
+            self.setIcon(icon)
 
         if shortcut is not None:
             self.setShortcut(shortcut)

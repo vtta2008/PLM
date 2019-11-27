@@ -23,6 +23,7 @@ from appData                    import __localServer__, __globalServer__, __goog
 from bin                        import DAMGTIMER, DAMGLIST
 from utils                      import get_app_icon
 from toolkits.Widgets           import GridLayout, Label, MessageBox
+from toolkits.Gui               import Pixmap
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """
@@ -39,18 +40,20 @@ class ConnectStatus(GridLayout):
     def __init__(self, parent=None):
         super(ConnectStatus, self).__init__(parent)
 
-        self.parent = parent
-        self._server = self.getServer()
-        self.serverStatus = Label({'wmax': 20, 'sst': 'Server Connection Status', })
-        self.internetStatus = Label({'wmax': 20, 'sst': 'Internet Connection Status', })
-        self.modeStatus = Label({'txt': self._mode, 'sst': 'Operating Mode Status'})
-        self.updateTimer = DAMGTIMER()
+        self.parent             = parent
+        self._server            = self.getServer()
+        self.serverStatus       = Label({'wmax': 20, 'sst': 'Server Connection Status', })
+        self.internetStatus     = Label({'wmax': 20, 'sst': 'Internet Connection Status', })
+        self.modeStatus         = Label({'txt': self._mode, 'sst': 'Operating Mode Status'})
+        self.updateTimer        = DAMGTIMER()
+
         self.updateTimer.setParent(self)
         self.updateTimer.timeout.connect(self.update_icon)
 
         self.server_status()
         self.internet_status()
         self.mode_status()
+
         self.addWidget(self.serverStatus, 0, 0, 1, 1)
         self.addWidget(self.internetStatus, 0, 1, 1, 1)
         self.addWidget(self.modeStatus, 0, 2, 1, 1)
@@ -79,7 +82,7 @@ class ConnectStatus(GridLayout):
             else:
                 self.serverIcon = get_app_icon(16, 'Disconnected')
 
-        self.serverStatus.setPixmap(QPixmap(self.serverIcon))
+        self.serverStatus.setPixmap(Pixmap(self.serverIcon, None))
         self.serverStatus.update()
 
     def internet_status(self):
@@ -105,7 +108,6 @@ class ConnectStatus(GridLayout):
         self.modeStatus.update()
 
     def update_icon(self):
-        # print('update Icon')
         self.internet_status()
         self.server_status()
         self.mode_status()

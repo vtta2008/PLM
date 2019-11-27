@@ -8,16 +8,15 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from __buildtins__ import __copyright__, settings, signals
 """ Import """
-
-# Python
 
 # PyQt5
 from PyQt5.QtWidgets                        import QPushButton, QToolButton
 
 # PLM
-from toolkits                               import getCopyright, getSetting, getSignals, check_preset
-from toolkits.Widgets.Icon import AppIcon, TagIcon
+from .Icon                                  import AppIcon, TagIcon
+from utils                                  import check_preset
 
 # -------------------------------------------------------------------------------------------------------------
 """ Button presets """
@@ -27,14 +26,15 @@ class Button(QPushButton):
     Type                                    = 'DAMGUI'
     key                                     = 'Button'
     _name                                   = 'DAMG Button'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, preset={}, parent=None):
-        super(Button, self).__init__(parent)
-
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
+        QPushButton.__init__(self)
         self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
         self.preset                         = preset
         if check_preset(self.preset):

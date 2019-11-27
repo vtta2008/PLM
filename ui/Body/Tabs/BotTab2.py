@@ -27,9 +27,7 @@ from PyQt5.QtCore               import (qDebug, qInstallMessageHandler, QtInfoMs
 from PyQt5.QtGui                import QTextCursor
 
 # PLM
-from appData                    import SiPoMin, SETTING_FILEPTH, ST_FORMAT
-from cores.Settings             import Settings
-from ui.SignalManager           import SignalManager
+from appData                    import SiPoMin
 from toolkits.Widgets           import GridLayout, Detector, Widget
 
 # -------------------------------------------------------------------------------------------------------------

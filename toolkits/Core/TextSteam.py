@@ -9,11 +9,10 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, settings, signals
 
 
 from PyQt5.QtCore                           import QTextStream
-
-from toolkits                               import getCopyright, getSetting, getSignals
 
 
 class TextStream(QTextStream):
@@ -21,14 +20,16 @@ class TextStream(QTextStream):
     Type                                    = 'DAMGSTREAM'
     key                                     = 'TextStream'
     _name                                   = 'DAMG Text Stream'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, fileName, parent=None):
         super(TextStream, self).__init__(fileName)
 
         self.parent                         = parent
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
     @property
     def copyright(self):

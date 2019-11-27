@@ -9,10 +9,10 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, signals, settings
 
 from PyQt5.QtWidgets                        import QMenuBar, QMenu
 
-from toolkits                               import getCopyright, getSetting, getSignals
 from bin.dependencies.damg.damg             import DAMGDICT
 
 
@@ -21,30 +21,17 @@ class Menu(QMenu):
     Type                                    = 'DAMGMENU'
     key                                     = 'Menu'
     _name                                   = 'DAMG Menu'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, title="", parent=None):
-        super(Menu, self).__init__(title)
+        QMenu.__init__(self)
 
         self._title                         = title
         self.parent                         = parent
-        self.setTitle(self._title)
-
-        try:
-            self.parent.children()
-        except AttributeError:
-            pass
-        else:
-            try:
-                self.setParent(self.parent)
-            except TypeError:
-                pass
-        finally:
-            if self.parent:
-                self.key = '{0}_{1}'.format(self.parent.key, self.key)
-
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
     def sizeHint(self):
         size = super(Menu, self).sizeHint()
@@ -126,15 +113,17 @@ class MenuBar(QMenuBar):
     Type                                    = 'DAMGUI'
     key                                     = 'MenuBar'
     _name                                   = 'DAMG Menu Bar'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
     menus                                   = DAMGDICT()
 
     def __init__(self, parent=None):
-        super(MenuBar, self).__init__(parent)
+        QMenuBar.__init__(self)
 
         self.parent                         = parent
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
     def sizeHint(self):
         size = super(MenuBar, self).sizeHint()

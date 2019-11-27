@@ -9,16 +9,12 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, signals, settings
 
 """ Import """
 
-# Python
-
 # PyQt5
-from PyQt5.QtWidgets            import QStatusBar
-
-# Plm
-from toolkits                               import getCopyright, getSetting, getSignals
+from PyQt5.QtWidgets                        import QStatusBar
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -30,15 +26,16 @@ class StatusBar(QStatusBar):
     Type                                    = "DAMGUI"
     key                                     = 'StatusBar'
     _name                                   = "DAMG Status Bar"
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
     _data                                   = dict()
 
     def __init__(self, parent=None):
         QStatusBar.__init__(self)
-
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
-        self.parent = parent
+        self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
     def sizeHint(self):
         size = super(StatusBar, self).sizeHint()

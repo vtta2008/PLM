@@ -9,24 +9,27 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, settings, signals
 
 from PyQt5.QtWidgets                        import QPlainTextEdit
 
-from toolkits                               import getCopyright, getSetting, getSignals, check_preset
+from utils                                  import check_preset
 
 class PlainTextEdit(QPlainTextEdit):
 
     Type                                    = 'DAMGPLAINTEXTEDIT'
     key                                     = 'PlainTextEdit'
     _name                                   = 'DAMG Plain Text Edit'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, preset={}, parent=None):
-        super(PlainTextEdit, self).__init__(parent)
+        QPlainTextEdit.__init__(self)
 
-        self.settings                       = getSetting(self)
-        self.signals                        = getSignals(self)
         self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
         self.preset                         = preset
         if check_preset(self.preset):
@@ -128,6 +131,10 @@ class Detector(PlainTextEdit):
 
     key                                     = 'Detector'
     _name                                   = 'DAMG Detector'
+
+    def __init__(self):
+        PlainTextEdit.__init__(self)
+
 
 
 # -------------------------------------------------------------------------------------------------------------

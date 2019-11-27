@@ -9,24 +9,24 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, settings, signals
 
 from PyQt5.QtWidgets                        import QTabBar
-
-from toolkits                               import getCopyright, getSetting, getSignals
 
 class TabBar(QTabBar):
 
     Type                                    = 'DAMGUI'
     key                                     = 'TabBar'
     _name                                   = 'DAMG Tab Bar'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
-        super(TabBar, self).__init__(parent)
-
-        self.settings = getSetting(self)
-        self.signals = getSignals(self)
-        self.parent = parent
+        QTabBar.__init__(self)
+        self.parent                         = parent
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
     def sizeHint(self):
         size = super(TabBar, self).sizeHint()

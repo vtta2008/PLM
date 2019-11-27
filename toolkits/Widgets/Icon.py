@@ -9,29 +9,32 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, signals, settings
 
 import os
 
 from PyQt5.QtGui                            import QIcon
 from PyQt5.QtCore                           import QSize
 
-from toolkits                               import (getCopyright, getSetting, getSignals, data_handler, appIconCfg,
-                                                    IGNORE_ICON_NAME, get_app_icon, get_tag_icon, get_logo_icon, )
+from utils                                  import data_handler, get_app_icon, get_tag_icon, get_logo_icon
+from appData                                import appIconCfg, IGNORE_ICON_NAME
 
 class Icon(QIcon):
 
     Type                                    = 'DAMGUI'
     key                                     = 'Icon'
     _name                                   = 'DAMG Icon'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
     iconInfo                                = data_handler(filePath=appIconCfg)
 
     def __init__(self, parent=None):
-        super(Icon, self).__init__(parent)
+        QIcon.__init__(self)
 
         self.parent                         = parent
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
     @property
     def copyright(self):

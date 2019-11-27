@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 import os
 from functools          import partial
 
-from toolkits.Widgets.Button import Button
+from toolkits.Widgets   import Button
 from utils              import data_handler, is_button, is_string
 from bin                import DAMGDICT, DAMGLIST
 from appData            import (mainConfig, SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY, RESTORE_KEY,

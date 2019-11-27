@@ -9,6 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __copyright__, settings, signals
 """ Import """
 
 # PyQt5
@@ -17,7 +18,8 @@ from PyQt5.QtGui                            import QFont, QPixmap
 from PyQt5.QtCore                           import QTimeZone, QTime, QDate
 
 # PLM
-from toolkits                               import getCopyright, getSetting, getSignals, check_preset, PRS
+from appData                                import PRS
+from utils                                  import check_preset
 
 
 class Label(QLabel):
@@ -25,16 +27,18 @@ class Label(QLabel):
     Type                                    = 'DAMGUI'
     key                                     = 'Label'
     _name                                   = 'DAMG Label'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, preset={}, parent=None):
-        super(Label, self).__init__(parent)
+        QLabel.__init__(self)
 
         self.parent                         = parent
-        self.preset                         = preset
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
 
+        self.preset                         = preset
         if check_preset(self.preset):
             self.buildUI()
 
@@ -157,19 +161,19 @@ class LCDNumber(QLCDNumber):
     Type                                    = 'DAMGUI'
     key                                     = 'LCDNumber'
     _name                                   = 'DAMG LCD Number'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         QLCDNumber.__init__(self)
 
         self.parent                         = parent
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
-        self.time = QTime()
-        self.zone = QTimeZone()
-        self.date = QDate()
-
-        self.values = dict(w = self.width(), h = self.height(), x = self.x(), y = self.y())
+        self.settings                       = settings
+        self.signals                        = signals
+        self.settings.changeParent(self)
+        self.signals.changeParent(self)
+        self.time                           = QTime()
+        self.zone                           = QTimeZone()
+        self.date                           = QDate()
 
     def sizeHint(self):
         size = super(LCDNumber, self).sizeHint()
