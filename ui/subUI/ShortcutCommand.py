@@ -10,10 +10,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtCore import Qt
-from ui.uikits.Widget import Widget
-from ui.uikits.LineEdit import PlainTextEdit
-from ui.uikits.BoxLayout import VBoxLayout
+from PyQt5.QtCore           import Qt
+
+from toolkits.Widgets       import Widget, PlainTextEdit, VBoxLayout
 
 class ShortcutCommand(Widget):
 
@@ -22,11 +21,11 @@ class ShortcutCommand(Widget):
     def __init__(self, parent=None):
         super(ShortcutCommand, self).__init__(parent)
 
-        self.parent = parent
+        self.parent         = parent
         self.setWindowTitle('Shortcut Command')
 
-        self.layout = VBoxLayout()
-        self.commandLine = PlainTextEdit()
+        self.layout         = VBoxLayout()
+        self.commandLine    = PlainTextEdit()
         self.layout.addWidget(self.commandLine)
         self.setLayout(self.layout)
         self.commandLine.setFixedSize(250, 25)

@@ -20,11 +20,9 @@ from PyQt5.QtGui                import QPixmap
 
 # Plt
 from appData                    import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
-from bin.dependencies.damg.damg import DAMGTIMER, DAMGLIST
-from ui.uikits.MessageBox       import MessageBox
-from ui.uikits.GridLayout       import GridLayout
-from ui.uikits.Label            import Label
+from bin                        import DAMGTIMER, DAMGLIST
 from utils                      import get_app_icon
+from toolkits.Widgets           import GridLayout, Label, MessageBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """

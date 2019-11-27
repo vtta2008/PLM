@@ -10,13 +10,13 @@ Warning: This is the most complex code structure I have build, it is using more 
 
 Description:
     It makes an UI that you can quickly create nurbs controller for Maya, you can also save it for your own. All
-    the data you save will be stored in 'userLibrary' folder inside DAMGpipelinetool folder.
+    the qssPths you save will be stored in 'userLibrary' folder inside DAMGpipelinetool folder.
 
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-import json  # to read and write info & data
+import json  # to read and write info & qssPths
 import logging
 from functools import partial  # partial module can store variables to method
 

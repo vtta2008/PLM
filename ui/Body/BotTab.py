@@ -12,14 +12,12 @@ Description:
 """ Import """
 
 # Python
-from bin.dependencies.damg.damg import DAMGLIST
+from bin                                import DAMGLIST
 
 # PLM
 from ui.Body.Tabs.BotTab2               import BotTab2
 from ui.Body.Tabs.BotTab1               import BotTab1
-from ui.uikits.TabWidget                import TabWidget
-from ui.uikits.BoxLayout                import VBoxLayout
-from ui.uikits.Icon                     import AppIcon
+from toolkits.Widgets                   import TabWidget, AppIcon, VBoxLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """

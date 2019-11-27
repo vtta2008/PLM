@@ -9,12 +9,13 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from ui.uikits.StatusBar import StatusBar
+from toolkits.Widgets               import StatusBar
 
 class MainStatusBar(StatusBar):
 
-    key = 'MainStatusBar'
-    Type = 'DAMG Status Bar'
+    key                             = 'MainStatusBar'
+    Type                            = 'DAMGSTATUSBAR'
+    _name                           = 'Main Status Bar'
 
     def __init__(self, parent=None):
         super(MainStatusBar, self).__init__(parent)

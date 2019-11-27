@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # Python
-import os, shutil, sys
+import os, shutil
 
 # PtQt5
 from PyQt5.QtGui                    import QImage, QPixmap
@@ -20,13 +20,8 @@ from PyQt5.QtWidgets                import (QFileDialog)
 
 # Plt
 from appData                        import PW_BLANK, PW_UNMATCH, __envKey__
-from ui.uikits.GroupBox             import GroupGrid
-from ui.uikits.Label                import Label
-from ui.uikits.Widget               import Widget
-from ui.uikits.Button               import Button
-from ui.uikits.GridLayout           import GridLayout
-from ui.uikits.LineEdit             import LineEdit
-from ui.uikits.MessageBox           import MessageBox
+from toolkits.uiUtils               import GroupGrid
+from toolkits.Widgets               import Widget, GridLayout, Label, Button, LineEdit, MessageBox
 from utils                          import get_avatar_image, QuerryDB, text_to_hex, resize_image
 
 # ----------------------------------------------------------------------------------------------------------- #
@@ -65,7 +60,8 @@ class UserSetting(Widget):
         except (ValueError, IndexError):
             self.username = 'DemoUser'
 
-        avatar_groupBox, avatar_layout = GroupGrid('Change Avatar')
+        avatar_groupBox = GroupGrid('Change Avatar')
+        avatar_layout = avatar_groupBox.layout
 
         self.avatar = Label()
         self.avatar.setPixmap(QPixmap.fromImage(QImage(get_avatar_image(self.username))))
@@ -80,7 +76,8 @@ class UserSetting(Widget):
 
     def change_pass_section(self):
 
-        password_groupBox, password_layout = GroupGrid('Change Password')
+        password_groupBox = GroupGrid('Change Password')
+        password_layout = password_groupBox.layout
 
         self.old_pass                   = LineEdit({'echo': 'password'})
         self.new_pass                   = LineEdit({'echo': 'password'})
@@ -99,7 +96,8 @@ class UserSetting(Widget):
 
     def change_profile_section(self):
 
-        profile_groupBox, profile_layout = GroupGrid("Change Profile")
+        profile_groupBox = GroupGrid("Change Profile")
+        profile_layout = profile_groupBox.layout
 
         profile_layout.addWidget(Label({'txt': 'First Name'}), 0, 0, 1, 2)
         profile_layout.addWidget(Label({'txt': 'Last Name'}), 1, 0, 1, 2)
@@ -126,7 +124,8 @@ class UserSetting(Widget):
 
     def change_location_section(self):
 
-        location_groupBox, location_layout = GroupGrid("Change Location")
+        location_groupBox = GroupGrid("Change Location")
+        location_layout = location_groupBox.layout
 
         location_layout.addWidget(Label({'txt': 'Address Line 1'}), 0, 0, 1, 2)
         location_layout.addWidget(Label({'txt': 'Address Line 2'}), 1, 0, 1, 2)

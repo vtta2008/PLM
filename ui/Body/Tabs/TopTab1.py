@@ -15,12 +15,7 @@ Description:
 import json
 
 # Plt
-from ui.uikits.Widget                           import Widget
-from ui.uikits.GridLayout                       import GridLayout
-from ui.uikits.GroupBox                         import GroupBox
-from ui.uikits.BoxLayout                        import HBoxLayout, VBoxLayout
-from ui.uikits.Label                            import Label
-from ui.uikits.CheckBox                         import CheckBox
+from toolkits.Widgets                           import GroupBox, VBoxLayout, Label, CheckBox, GridLayout, Widget, HBoxLayout
 from cores.Task                                 import duedate, duetime, Task
 from utils                                      import get_file_path, str2bool, LocalDatabase
 from appData                                    import TASK_DIR
@@ -34,34 +29,34 @@ class TaskInfo(GroupBox):
     def __init__(self, task):
         super(TaskInfo, self).__init__()
 
-        self.database = LocalDatabase()
+        self.database                           = LocalDatabase()
 
         with open(task, 'r') as f:
-            self._data = json.load(f)
+            self._data                          = json.load(f)
 
         self.setTitle(self._data['id'])
-        self.layout = VBoxLayout()
+        self.layout                             = VBoxLayout()
 
-        self._id = self._data['id']
-        self.key = self._id
-        self._name = self._data['name']
-        self._mode = self._data['mode']
-        self._type = self._data['type']
+        self._id                                = self._data['id']
+        self.key                                = self._id
+        self._name                              = self._data['name']
+        self._mode                              = self._data['mode']
+        self._type                              = self._data['type']
 
-        self._project = self._data['project']
-        self._organisation = self._data['organisation']
-        self._details = self._data['details']
+        self._project                           = self._data['project']
+        self._organisation                      = self._data['organisation']
+        self._details                           = self._data['details']
 
-        self._hour = int(self._data['endtime'].split(':')[0])
-        self._minute = int(self._data['endtime'].split(':')[1])
-        self._second = int(self._data['endtime'].split(':')[2])
+        self._hour                              = int(self._data['endtime'].split(':')[0])
+        self._minute                            = int(self._data['endtime'].split(':')[1])
+        self._second                            = int(self._data['endtime'].split(':')[2])
 
-        self._day = int(self._data['enddate'].split('/')[0])
-        self._month = int(self._data['enddate'].split('/')[1])
-        self._year = int(self._data['enddate'].split('/')[2])
+        self._day                               = int(self._data['enddate'].split('/')[0])
+        self._month                             = int(self._data['enddate'].split('/')[1])
+        self._year                              = int(self._data['enddate'].split('/')[2])
 
-        self.duetime = duetime(self._hour, self._minute, self._second)
-        self.duedate = duedate(self._day, self._month, self._year)
+        self.duetime                            = duetime(self._hour, self._minute, self._second)
+        self.duedate                            = duedate(self._day, self._month, self._year)
 
         try:
             self.username = [self.database.query_table('curUser')[0]]
@@ -71,13 +66,13 @@ class TaskInfo(GroupBox):
         self.task = Task(self._id, self._name, self._mode, self._type, self.username, self._project, self._organisation,
                          self.duetime, self.duedate, self._details)
 
-        self._countdown = '{0}:{1}:{2}'.format(self.task.hours, self.task.minutes, self.task.seconds)
+        self._countdown                         = '{0}:{1}:{2}'.format(self.task.hours, self.task.minutes, self.task.seconds)
         self.task.countdown.connect(self.update_countdown)
 
-        self.task_status = Label({'txt': '{0}'.format(self.task.status)})
-        self.task_duedate = Label({'txt': '{0}'.format(self.task._enddate)})
-        self.task_duetime = Label({'txt': '{0}'.format(self.task._endtime)})
-        self.task_countdown = Label({'txt': '{0}'.format(self._countdown)})
+        self.task_status                        = Label({'txt': '{0}'.format(self.task.status)})
+        self.task_duedate                       = Label({'txt': '{0}'.format(self.task._enddate)})
+        self.task_duetime                       = Label({'txt': '{0}'.format(self.task._endtime)})
+        self.task_countdown                     = Label({'txt': '{0}'.format(self._countdown)})
 
         self.layout.addWidget(self.task_status)
         self.layout.addWidget(self.task_duedate)
@@ -238,6 +233,11 @@ class TopTap1Filter(GroupBox):
         self.urgentCB.setChecked(bool)
         self.safetyCB.setChecked(bool)
 
+    def showEvent(self, event):
+        self.resize(76, 3)
+        self.resize(158, 138)
+
+
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab1 """
 
@@ -258,24 +258,21 @@ class TopTab1(Widget):
 
     def buildUI(self):
 
-        self.prjButtons  = self.buttonManager.projectButtonsGroupBox(self.parent)
-        self.taskButtons = self.buttonManager.taskButtonsGroupBox(self.parent)
-        self.teamButtons = self.buttonManager.teamButtonsGroupBox(self.parent)
+        self.taskButtons = self.buttonManager.managerButtonGroupBox(self.parent)
 
         self.update_tasks()
 
-        self.prjGrp      = GroupBox("Project", self.prjButtons, "BtnGrid")
-        self.taskGrp     = GroupBox("Task", self.taskButtons, "BtnGrid")
-        self.teamGrp     = GroupBox('Team', self.teamButtons, 'BtnGrid')
+        self.taskGrp     = GroupBox("Manager", self.taskButtons, "BtnGrid")
+
         self.tabFilter   = TopTap1Filter()
         self.tabFilter.overduedCB.stateChanged.connect(self.overdue)
         self.tabFilter.urgentCB.stateChanged.connect(self.urgent)
         self.tabFilter.safetyCB.stateChanged.connect(self.safety)
 
-        self.layout.addWidget(self.prjGrp, 5, 0, 2, 2)
-        self.layout.addWidget(self.taskGrp, 5, 2, 2, 2)
-        self.layout.addWidget(self.teamGrp, 5, 4, 2, 2)
-        self.layout.addWidget(self.tabFilter, 5, 6, 2, 3)
+        # self.layout.addWidget(self.prjGrp, 5, 0, 2, 2)
+        self.layout.addWidget(self.taskGrp, 0, 0, 2, 2)
+        # self.layout.addWidget(self.teamGrp, 5, 4, 2, 2)
+        self.layout.addWidget(self.tabFilter, 2, 0, 2, 2)
 
     def update_tasks(self):
         try:
@@ -293,7 +290,7 @@ class TopTab1(Widget):
             task = TaskInfo(t)
             self.taskLayout.addWidget(task)
             self.tasks.append(task)
-        self.layout.addLayout(self.taskLayout, 1, 0, 3, 9)
+        self.layout.addLayout(self.taskLayout, 0, 2, 4, 7)
 
     def overdue(self, bool):
         for task in self.tasks:

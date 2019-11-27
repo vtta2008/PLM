@@ -14,16 +14,13 @@ Description:
 
 import sys
 
-from PyQt5.QtCore import (QDir, QIODevice, QFile, QFileInfo, Qt, QTextStream, QUrl)
-from PyQt5.QtGui import QDesktopServices
-from PyQt5.QtWidgets import (QAbstractItemView, QApplication, QComboBox, QFileDialog, QGridLayout, QHBoxLayout, QWidget,
-                             QHeaderView, QProgressDialog, QTableWidget, QTableWidgetItem, )
+from PyQt5.QtCore           import (QDir, QIODevice, QFile, QFileInfo, Qt, QTextStream, QUrl)
+from PyQt5.QtGui            import QDesktopServices
+from PyQt5.QtWidgets        import (QAbstractItemView, QApplication, QComboBox, QFileDialog, QGridLayout, QHBoxLayout, QWidget,
+                                    QHeaderView, QProgressDialog, QTableWidget, QTableWidgetItem, )
 
-from appData import SiPoExp, SiPoPre
-from ui.uikits.Widget import Widget
-from ui.uikits.Button import Button
-from ui.uikits.Label import Label
-from ui.uikits.Icon import AppIcon
+from appData                import SiPoExp, SiPoPre
+from toolkits.Widgets       import Widget, AppIcon, Button, Label
 
 class FindFiles(Widget):
 

@@ -11,49 +11,55 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 import os
-from bin.dependencies.damg.damg import DAMGDICT, DAMGLIST
 from functools import partial
 
-from ui.uikits.Action import Action
-from utils import data_handler, is_action, is_string
-from appData import (mainConfig, SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY, CONFIG_DEV, CONFIG_TOOLS,
-                     CONFIG_OFFICE, CONFIG_TDS, CONFIG_ART, CONFIG_TEX, CONFIG_POST, CONFIG_VFX, CONFIG_EXTRA,
-                     CONFIG_SYSTRAY, RESTORE_KEY, SHOWMIN_KEY, SHOWMAX_KEY)
+from bin                        import DAMGDICT, DAMGLIST
+from toolkits.Widgets.Action import Action
+from utils                      import data_handler, is_action, is_string
+from appData                    import (mainConfig, SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY,
+                                        CONFIG_DEV, CONFIG_TOOLS, CONFIG_OFFICE, CONFIG_TDS, CONFIG_ART, CONFIG_TEX,
+                                        CONFIG_POST, CONFIG_VFX, CONFIG_EXTRA, CONFIG_SYSTRAY, RESTORE_KEY, SHOWMIN_KEY,
+                                        SHOWMAX_KEY, EDIT_KEY, STYLESHEET_KEY)
 
 class ActionManager(DAMGDICT):
 
-    key                     = 'ActionManager'
-    _name                   = 'ActionManager'
+    key                         = 'ActionManager'
+    _name                       = 'ActionManager'
 
-    appInfo                 = data_handler(filePath=mainConfig)
+    appInfo                     = data_handler(filePath=mainConfig)
 
-    actionKeys              = DAMGLIST()
-    showLayoutKeys          = DAMGLIST()
-    showRestoreKeys         = DAMGLIST()
-    showMaximizeKeys        = DAMGLIST()
-    showMinimizeKeys        = DAMGLIST()
-    startFileKeys           = DAMGLIST()
-    openBrowserKeys         = DAMGLIST()
-    executingKeys           = DAMGLIST()
+    actionKeys                  = DAMGLIST()
+    showLayoutKeys              = DAMGLIST()
+    showRestoreKeys             = DAMGLIST()
+    showMaximizeKeys            = DAMGLIST()
+    showMinimizeKeys            = DAMGLIST()
+    startFileKeys               = DAMGLIST()
+    openBrowserKeys             = DAMGLIST()
+    executingKeys               = DAMGLIST()
 
-    orgActions              = ['NewOrganisation', 'EditOrganisation']
-    teamActions             = ['NewTeam', 'EditTeam']
-    prjActions              = ['NewProject', 'EditProject']
-    appActions              = ['SettingUI', 'Configuration', 'Preferences', 'Exit']
-    goActions               = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder']
-    officeActions           = ['TextEditor', 'NoteReminder'] + CONFIG_OFFICE
-    toolsActions            = CONFIG_TOOLS + ['CleanPyc', 'ReConfig', 'Debug']
-    devActions              = CONFIG_DEV
-    libActions              = ['Alpha', 'HDRI', 'Texture']
-    helpActions             = ['PLM wiki', 'About', 'CodeOfConduct', 'Contributing', 'Credit', 'Reference', 'Version', 'Feedback', 'ContactUs', ]
+    orgActions                  = ['Organisation']
+    teamActions                 = ['Team']
+    prjActions                  = ['Project']
+    taskActions                 = ['Task']
+    stylesheetActions           = STYLESHEET_KEY
 
-    tdActions               = CONFIG_TDS
-    artActions              = CONFIG_ART
-    texActions              = CONFIG_TEX
-    postActions             = CONFIG_POST
-    vfxActions              = CONFIG_VFX
-    extraActions            = CONFIG_EXTRA
-    sysTrayActions          = CONFIG_SYSTRAY
+    appActions                  = ['SettingUI', 'Configuration', 'Preferences', 'Exit']
+    goActions                   = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder']
+    officeActions               = ['TextEditor', 'NoteReminder'] + CONFIG_OFFICE
+    toolsActions                = CONFIG_TOOLS + ['CleanPyc', 'ReConfig', 'Debug']
+    devActions                  = CONFIG_DEV
+    libActions                  = ['Alpha', 'HDRI', 'Texture']
+    helpActions                 = ['PLM wiki', 'About', 'CodeOfConduct', 'Contributing', 'Credit', 'Reference', 'Version', 'Feedback', 'ContactUs', ]
+
+    editActions                 = EDIT_KEY
+
+    tdActions                   = CONFIG_TDS
+    artActions                  = CONFIG_ART
+    texActions                  = CONFIG_TEX
+    postActions                 = CONFIG_POST
+    vfxActions                  = CONFIG_VFX
+    extraActions                = CONFIG_EXTRA
+    sysTrayActions              = CONFIG_SYSTRAY
 
     def __init__(self, parent=None):
         super(ActionManager, self).__init__(self)
@@ -75,6 +81,9 @@ class ActionManager(DAMGDICT):
 
     def actionRegisterError(self, key):
         return print('ActionRegisterError: This action is already registered: {0}'.format(key))
+
+    def editMenuActions(self, parent):
+        return self.createActions(self.editActions, parent)
 
     def extraToolActions(self, parent):
         return self.createActions(self.extraActions, parent)
@@ -106,8 +115,14 @@ class ActionManager(DAMGDICT):
     def teamMenuActions(self, parent):
         return self.createActions(self.teamActions, parent)
 
+    def stylesheetMenuActions(self, parent):
+        return self.createActions(self.stylesheetActions, parent)
+
     def projectMenuActions(self, parent):
         return self.createActions(self.prjActions, parent)
+
+    def taskMenuActions(self, parent):
+        return self.createActions(self.taskActions, parent)
 
     def goMenuActions(self, parent):
         return self.createActions(self.goActions, parent)

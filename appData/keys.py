@@ -97,7 +97,7 @@ KEYDETECT           = [ "Non-commercial", "Uninstall", "Verbose", "License", "Sk
 FIX_KEY             = { 'ScreenShot': 'ScreenShot', 'Snipping Tool': 'SnippingTool'}
 
 # --------------------------------------------------------------------------------------------------------------
-""" Combine config data """
+""" Combine config qssPths """
 
 pVERSION = dict(adobe=adobeVer, autodesk=autodeskVer, allegorithmic = allegorithmicVer, foundry=foundryVer,
                 pixologic=pixologiVer, sizefx=sizefxVer, office=officeVer, jetbrains=jetbrainsVer, wonderUnit=wonderUnitVer, )
@@ -109,7 +109,7 @@ pTRACK = dict(TDS=TRACK_TDS, VFX=TRACK_VFX, ART=TRACK_ART, TEXTURE = TRACK_TEX, 
               Office=TRACK_OFFICE, Dev=TRACK_DEV, Tools=TRACK_TOOLS, Extra=TRACK_EXTRA, sysTray=TRACK_SYSTRAY, )
 
 # --------------------------------------------------------------------------------------------------------------
-""" Store config data """
+""" Store config qssPths """
 
 def generate_key_packages(*args):
     keyPackage = []
@@ -172,26 +172,29 @@ SHOWLAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 
                            'ConnectStatus', 'ContactUs', 'Contributing', 'Credit', 'EditOrganisation', 'EditProject',
                            'EditTask', 'EditTeam', 'EnglishDictionary', 'Feedback', 'FindFiles', 'Footer',
                            'ForgotPassword', 'GridLayout', 'HDRI', 'ImageViewer', 'Licence', 'MainMenuSection',
-                           'MainToolBar', 'MainToolBarSection', 'NewOrganisation', 'NewProject', 'NewTask', 'NewTeam',
-                           'NodeGraph', 'NoteReminder', 'Notification', 'OrganisationManager', 'PipelineManager',
-                           'Preferences', 'ProjectManager', 'Reference', 'ScreenShot', 'SettingUI', 'SignIn', 'SignOut',
-                           'SignUp', 'StatusBar', 'SwitchAccount', 'SysTray', 'TaskManager', 'TeamManager', 'TextEditor',
-                           'Texture', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting', 'Version']
+                           'MainToolBar', 'MainToolBarSection', 'NodeGraph', 'NoteReminder', 'Notification',
+                           'Organisation', 'PipelineManager', 'Preferences', 'Project', 'Reference', 'ScreenShot',
+                           'SettingUI', 'SignIn', 'SignOut', 'SignUp', 'StatusBar', 'SwitchAccount', 'SysTray',
+                           'Task', 'Team', 'TextEditor', 'Texture', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3',
+                           'UserSetting', 'Version']
 RESTORE_KEY             = ['Restore']
 SHOWMAX_KEY             = ['Maximize']
 SHOWMIN_KEY             = ['Minimize']
 
+STYLESHEET_KEY          = ['bright', 'dark', 'chacoal', 'nuker']
 
-OPEN_BROWSER_KEY = ['PLM wiki']
+OPEN_BROWSER_KEY        = ['PLM wiki']
 
-START_FILE      = CONFIG_DEV + CONFIG_OFFICE + CONFIG_TDS + CONFIG_VFX + CONFIG_ART + CONFIG_TEX + CONFIG_POST + \
-                 ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder', 'Snipping Tool']
+START_FILE              = CONFIG_DEV + CONFIG_OFFICE + CONFIG_TDS + CONFIG_VFX + CONFIG_ART + CONFIG_TEX + CONFIG_POST + \
+                            ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder', 'Snipping Tool']
 
-START_FILE_KEY = sorted([i for i in START_FILE if not i == 'Command Prompt'])
+EDIT_KEY                = ['Cut', 'Copy', 'Paste']
 
-EXECUTING_KEY = ['Exit', 'CleanPyc', 'ReConfig', 'Debug', 'Command Prompt']
+START_FILE_KEY          = sorted([i for i in START_FILE if not i == 'Command Prompt'])
 
-IGNORE_ICON_NAME = ['Widget', 'TopTab1', 'TopTab2', 'TopTab3', 'ItemWidget']
+EXECUTING_KEY           = ['Exit', 'CleanPyc', 'ReConfig', 'Debug', 'Command Prompt'] + EDIT_KEY + STYLESHEET_KEY
+
+IGNORE_ICON_NAME        = ['Widget', 'TopTab1', 'TopTab2', 'TopTab3', 'ItemWidget']
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/08/2018 - 2:30 AM

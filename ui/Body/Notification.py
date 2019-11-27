@@ -10,10 +10,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Label import LCDNumber, Label
-from bin.dependencies.damg.damg import DAMGTIMER
 import datetime
+
+from toolkits.Widgets           import LCDNumber, GridLayout, Label
+from bin                        import DAMGTIMER
 
 class DigitalClock(LCDNumber):
 
@@ -84,22 +84,23 @@ class Notification(GridLayout):
         self.timeClock      = DigitalClock(self)
         self.dateClock      = DigitalDate(self)
 
-        d = self.dateClock.currentDate().day()
-        m = self.dateClock.currentDate().month()
-        y = self.dateClock.currentDate().year()
-        dt = datetime.date(y, m, d)
-        wk = dt.isocalendar()[1]
+        d                   = self.dateClock.currentDate().day()
+        m                   = self.dateClock.currentDate().month()
+        y                   = self.dateClock.currentDate().year()
+        dt                  = datetime.date(y, m, d)
+        wk                  = dt.isocalendar()[1]
 
-        self.weekNumber = Label({'txt': 'Weeknumber: {0}'.format(wk)})
+        self.weekNumber     = Label({'txt': 'Weeknumber: {0}'.format(wk)})
 
-        worker = self.threadManager.serviceThread()
+        worker              = self.threadManager.serviceThread()
         worker.cpu.connect(self.update_cpu_useage)
         worker.ram.connect(self.update_ram_useage)
         worker.gpu.connect(self.update_gpu_useage)
         worker.disk.connect(self.update_disk_useage)
         worker.start()
 
-        self.labels = [self.usage_cpu, self.usage_ram, self.usage_gpu, self.usage_disk, self.timeClock, self.dateClock]
+        self.labels         = [self.usage_cpu, self.usage_ram, self.usage_gpu, self.usage_disk, self.timeClock,
+                               self.dateClock]
 
         self.addWidget(self.usage_cpu, 0, 0, 1, 1)
         self.addWidget(self.usage_ram, 0, 1, 1, 1)

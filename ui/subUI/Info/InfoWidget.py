@@ -10,13 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from ui.uikits.Icon import AppIcon
-from appData import (SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE_MIT, REFERENCE, VERSION)
-
-from ui.uikits.Widget import Widget
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Label import Label
-from ui.uikits.Button import Button
+from appData                import (SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE_MIT, REFERENCE, VERSION)
+from toolkits.Widgets       import Widget, AppIcon, GridLayout, Label, Button
 
 class InfoWidget(Widget):
 
@@ -37,7 +32,7 @@ class InfoWidget(Widget):
         self.parent = parent
 
         if self.key is None or self.key not in self.content.keys():
-            print("KeyError: Key is None, or not in content data: {0}".format(self.key))
+            print("KeyError: Key is None, or not in content qssPths: {0}".format(self.key))
             return
         else:
             self.context = self.content[self.key]

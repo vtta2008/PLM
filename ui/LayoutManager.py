@@ -138,21 +138,12 @@ class LayoutManager(DAMG):
         self.mainUI                         = PipelineManager(self.actionManager, self.buttonManager, self.threadManager)
         self.sysTray                        = SysTray(self.actionManager, self.eventManager)
         self.shortcutLayout                 = ShortcutCommand()
-        self.setLayoutUnHidable(self.sysTray)
 
         layouts = [self.mainUI, self.sysTray, self.shortcutLayout]
 
         for layout in layouts:
             layout.settings._settingEnable = True
             self.registLayout(layout)
-
-        # for layout in self.mainUI.layouts:
-        #     self.registLayout(layout)
-        #
-        # for layout in self.mainUI.topTabUI.tabs:
-        #     key = layout.key
-        #     if not key in self._register.keys():
-        #         self._register[key] = layout
 
         return layouts
 
@@ -194,10 +185,10 @@ class LayoutManager(DAMG):
         from ui.subUI.Tools                 import (Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary,
                                                     Calendar, Calculator)
         from ui.subUI.Tools.NodeGraph       import NodeGraph
-        from ui.subUI.Tools.TextEditor      import TextEditor
+        from ui.subUI.Tools import TextEditor
         from ui.Header.Menus.config         import Preferences
         from ui.Header.Menus.config         import Configuration
-        from ui.TaskManager import TaskManager
+        from ui.TaskManager                 import TaskManager
 
         self.calculator                     = Calculator.Calculator()
         self.calendar                       = Calendar.Calendar()
@@ -223,9 +214,9 @@ class LayoutManager(DAMG):
         return layouts
 
     def projectLayouts(self):
-        from ui.subUI.Projects.NewProject   import NewProject
+        from ui.subUI.Projects.VFXProjectSetup   import VFXProjectSetup
 
-        self.newProject                     = NewProject()
+        self.newProject                     = VFXProjectSetup()
 
         for layout in [self.newProject, ]:
             layout.settings._settingEnable = True
@@ -233,83 +224,6 @@ class LayoutManager(DAMG):
 
         layouts = [self.newProject]
         return layouts
-
-    def showOnlyLayout(self, layout):
-        layouts = [l for l in self.layouts() if not l is layout and not l in self.unHidableLayouts]
-        if self.isHidable(layout):
-            self.show(layout)
-
-        for l in layouts:
-            self.hide(l)
-
-    def hideOnlyLayout(self, layout):
-        layouts = [l for l in self.layouts() if not l is layout and not l in self.unHidableLayouts]
-        if self.isHidable(layout):
-            self.hide(layout)
-
-        for l in layouts:
-            self.show(l)
-
-    def setLayoutUnHidable(self, layout):
-        if not layout in self.unHidableLayouts:
-            layout.show()
-            layout.setVisible(True)
-            return self.unHidableLayouts.append(layout)
-
-    def setLayoutUnShowable(self, layout):
-        if not layout in self.unShowableLayouts:
-            self.hide(layout)
-            return self.unShowableLayouts.append(layout)
-
-    def setLayoutHidable(self, layout):
-        if layout in self.unHidableLayouts:
-            self.show(layout)
-            return self.unHidableLayouts.remove(layout)
-
-    def isHidable(self, layout):
-        if not layout in self.noShowHideAttrs:
-            if not layout in self.unHidableLayouts:
-                try:
-                    layout.isHidden()
-                except AttributeError:
-                    return False
-                else:
-                    return True
-            elif layout in self.unShowableLayouts:
-                return False
-            else:
-                return False
-        else:
-            return False
-
-    def hide(self, layout):
-        if not layout.key in self.ignoreIDs:
-            layout.hide()
-            return layout.setValue('state', 'hide')
-
-    def show(self, layout):
-        if not layout.key in self.ignoreIDs:
-            layout.show()
-            return layout.setValue('state', 'show')
-
-    def showNormal(self, layout):
-        if not layout.key in self.ignoreIDs:
-            layout.showNormal()
-            return layout.setValue('state', 'showNormal')
-
-    def showMinnimize(self, layout):
-        if not layout.key in self.ignoreIDs:
-            layout.showMinimize()
-            return layout.setValue('state', 'showMinimize')
-
-    def showMaximized(self, layout):
-        if not layout.key in self.ignoreIDs:
-            layout.showMaximized()
-            return layout.setValue('state', 'showMaximized')
-
-    def showAllLayout(self):
-        for layout in self.layouts():
-            self.show(layout)
 
     def registLayout(self, layout):
         return self._register.regisLayout(layout)
@@ -333,7 +247,7 @@ class LayoutManager(DAMG):
                 pass
 
             if layout.key == 'PipelineManager':
-                layout.setFixedWidth(500)
+                layout.setFixedWidth(525)
                 # layout.setFixedHeight(850)
                 # self.parent.setWindowFlags(STAY_ON_TOP)
                 pass

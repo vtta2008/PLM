@@ -19,15 +19,9 @@ from functools              import partial
 
 # PLM
 from appData                import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
-from ui.uikits.Widget       import Widget
-from ui.uikits.Icon         import AppIcon
-from ui.uikits.CheckBox     import CheckBox
-from ui.uikits.Button       import Button
-from ui.uikits.MessageBox   import MessageBox
-from ui.uikits.Label        import Label, usernameLabel, passwordLabel
-from ui.uikits.GridLayout   import GridLayout
-from ui.uikits.LineEdit     import LineEdit
-from ui.uikits.GroupBox     import GroupGrid
+from toolkits.Widgets       import (Widget, AppIcon, GridLayout, LineEdit, CheckBox, Button, usernameLabel,
+                                    passwordLabel, Label, MessageBox)
+from toolkits.uiUtils       import GroupGrid
 from utils                  import str2bool, RemoveDB, UpdateDB
 
 # -------------------------------------------------------------------------------------------------------------
@@ -52,7 +46,8 @@ class SignIn(Widget):
 
     def buildUI(self):
 
-        loginGrp, loginGrid     = GroupGrid('Sign in')
+        loginGrp                = GroupGrid('Sign in')
+        loginGrid               = loginGrp.layout
 
         self.userTF             = LineEdit()
         self.pwTF               = LineEdit({'fn': 'password'})
@@ -62,7 +57,8 @@ class SignIn(Widget):
         login_btn               = Button({'txt': 'Log in', 'cl': self.signInClicked})
         cancel_btn              = Button({'txt': 'Cancel', 'cl': sys.exit})
 
-        signupGrp, signupGrid   = GroupGrid('Sign up')
+        signupGrp               = GroupGrid('Sign up')
+        signupGrid              = signupGrp.layout
         signupBtn               = Button({'txt':'Sign up', 'cl': partial(self.signals.emit, 'showLayout', 'SignUp', 'show')})
 
         loginGrid.addWidget(usernameLabel, 0, 0, 1, 2)

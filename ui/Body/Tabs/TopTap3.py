@@ -10,36 +10,33 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtCore import QSysInfo, QStandardPaths, Qt, QEvent
-from PyQt5.QtWidgets import QPlainTextEdit
-from PyQt5.QtGui import QTextCursor
+""" Import """
 
-import shlex
-import getpass
-import socket
-import os
+# Python
+import os, shlex, getpass, socket
 
-from bin.dependencies.damg.damg import DAMGLIST
-from ui.uikits.Widget import Widget
-from ui.uikits.Action import ShortCut
-from ui.uikits.BoxLayout import VBoxLayout
-from ui.uikits.LineEdit import PlainTextEdit
-from ui.uikits.StatusBar import StatusBar
-from ui.uikits.Process import Process
+# PyQt5
+from PyQt5.QtCore                       import QSysInfo, QStandardPaths, Qt, QEvent
+from PyQt5.QtGui                        import QTextCursor
 
-from appData import SCROLLBAROFF
+
+# PLM
+from bin                                import DAMGLIST
+from appData                            import SCROLLBAROFF, NO_WRAP
+from toolkits.Widgets                   import Widget, PlainTextEdit, ShortCut, VBoxLayout, StatusBar
+from toolkits.Core                      import Process
 
 class TopTap3(Widget):
 
-    key = 'TerminalLayout'
-    _name = 'TerminalLayout'
+    key                                 = 'TerminalLayout'
+    _name                               = 'TerminalLayout'
 
-    commands = DAMGLIST()
-    shotcuts = DAMGLIST()
-    tracker = 0
-    _cwd = os.getcwd().replace('\\', '/')
-    _user = getpass.getuser()
-    _host = socket.gethostname()
+    commands                            = DAMGLIST()
+    shotcuts                            = DAMGLIST()
+    tracker                             = 0
+    _cwd                                = os.getcwd().replace('\\', '/')
+    _user                               = getpass.getuser()
+    _host                               = socket.gethostname()
 
     def __init__(self, buttonManager, parent=None):
         super(TopTap3, self).__init__(parent)
@@ -48,28 +45,31 @@ class TopTap3(Widget):
         self.parent = parent
 
         self.layout = VBoxLayout()
-
         self.buildUI()
-        # QApplication.setCursorFlashTime(1000)
         self.setLayout(self.layout)
         self.setStyleSheet(mystylesheet(self))
 
     def buildUI(self):
-        self.process = Process(self.dataReady, self.onError, self.onOutput, self.isFinished, self)
-        self.cmdField = PlainTextEdit({'lwm': QPlainTextEdit.NoWrap, 'sfh': 25, 'vsbp': SCROLLBAROFF, 'adr': True})
-        self.textWindow = PlainTextEdit({'rol': True}, self)
-        self.cursor = self.cmdField.textCursor()
-        self.copySelectedTextAction = ShortCut('Copy', 'Copy', 'Shift+Ctrl+c', self.copyText, self)
-        self.cancelAction = ShortCut('Cancel', 'Cancel', 'Ctrl+c', self.killProcess, self)
-        self.pasteTextAction = ShortCut('Paste', 'Paste', 'Shift+Ctrl+v', self.pasteText, self)
+        self.process                    = Process(self.dataReady, self.onError, self.onOutput, self.isFinished, self)
+        self.cmdField                   = PlainTextEdit({'lwm': NO_WRAP, 'sfh': 25, 'vsbp': SCROLLBAROFF, 'adr': True})
+        self.textWindow                 = PlainTextEdit({'rol': True}, self)
+        self.cursor                     = self.cmdField.textCursor()
+        self.copySelectedTextAction     = ShortCut('Copy', 'Copy', 'Shift+Ctrl+c', self.copyText, self)
+        self.cancelAction               = ShortCut('Cancel', 'Cancel', 'Ctrl+c', self.killProcess, self)
+        self.pasteTextAction            = ShortCut('Paste', 'Paste', 'Shift+Ctrl+v', self.pasteText, self)
+
         self.textWindow.addActions([self.cancelAction, self.copySelectedTextAction])
         self.cmdField.addAction(self.pasteTextAction)
         self.cmdField.installEventFilter(self)
         self.cursorEnd()
-        sysinfo = QSysInfo()
-        myMachine = "CPU Architecture: {0}***{1}***{2}***{3}".format(sysinfo.currentCpuArchitecture(),
-                                                                     sysinfo.prettyProductName(), sysinfo.kernelType(),
-                                                                     sysinfo.kernelVersion())
+
+        sysinfo                         = QSysInfo()
+        myMachine                       = "CPU Architecture: {0}***{1}***{2}***{3}".format(
+                                                                                        sysinfo.currentCpuArchitecture(),
+                                                                                        sysinfo.prettyProductName(),
+                                                                                        sysinfo.kernelType(),
+                                                                                        sysinfo.kernelVersion()
+                                                                                            )
         self.statusBar = StatusBar(self)
         self.statusBar.showMessage(myMachine, 0)
         self.layout.addWidget(self.textWindow)

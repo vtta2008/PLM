@@ -40,7 +40,7 @@ START = 0
 
 class ObjectEncoder(json.JSONEncoder):
 
-    """ Make an object readable using json encoder. Return data string """
+    """ Make an object readable using json encoder. Return qssPths string """
 
     def default(self, obj):
         if hasattr(obj, 'to_json'):
@@ -294,13 +294,13 @@ class BaseError(Exception):
 
     def __str__(self):
 
-        """ Print object ill return json data type """
+        """ Print object ill return json qssPths type """
 
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     def __repr__(self):
 
-        """ Print object ill return json data type """
+        """ Print object ill return json qssPths type """
 
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
@@ -355,11 +355,11 @@ class BaseObject(QObject):
         QObject.__init__(self)
 
     def __str__(self):
-        """ Print object will return data string """
+        """ Print object will return qssPths string """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     def __repr__(self):
-        """ Print object ill return json data type """
+        """ Print object ill return json qssPths type """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     def __call__(self):
@@ -443,11 +443,11 @@ class BaseWorker(QRunnable):
         self.signals                        = DamgWorkerSignals()
 
     def __str__(self):
-        """ Print object will return data string """
+        """ Print object will return qssPths string """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     def __repr__(self):
-        """ Print object ill return json data type """
+        """ Print object ill return json qssPths type """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     def __call__(self):
@@ -522,11 +522,11 @@ class BaseThread(QThread):
         pass
 
     def __str__(self):
-        """ Print object will return data string """
+        """ Print object will return qssPths string """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     def __repr__(self):
-        """ Print object ill return json data type """
+        """ Print object ill return json qssPths type """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     def __call__(self):
@@ -585,11 +585,11 @@ class BaseThreadPool(QThreadPool):
         QThreadPool.__init__(self)
 
     def __str__(self):
-        """ Print object will return data string """
+        """ Print object will return qssPths string """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     def __repr__(self):
-        """ Print object ill return json data type """
+        """ Print object ill return json qssPths type """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     @pyqtSlot(object)
@@ -669,11 +669,11 @@ class BaseTimer(QTimer):
         QTimer.__init__(self)
 
     def __str__(self):
-        """ Print object will return data string """
+        """ Print object will return qssPths string """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     def __repr__(self):
-        """ Print object ill return json data type """
+        """ Print object ill return json qssPths type """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     @property
@@ -718,11 +718,11 @@ class BaseDate(QDate):
         QDate.__init__(self)
 
     def __str__(self):
-        """ Print object will return data string """
+        """ Print object will return qssPths string """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     def __repr__(self):
-        """ Print object ill return json data type """
+        """ Print object ill return json qssPths type """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     @property
@@ -767,11 +767,11 @@ class BaseDateTime(QDateTime):
         QDateTime.__init__(self)
 
     def __str__(self):
-        """ Print object will return data string """
+        """ Print object will return qssPths string """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     def __repr__(self):
-        """ Print object ill return json data type """
+        """ Print object ill return json qssPths type """
         return json.dumps(self.data, cls=ObjectEncoder, indent=4, sort_keys=True)
 
     @property
@@ -876,7 +876,7 @@ class DAMGREGISTER(BaseDict):
         # Create object profile
         obj = self.generate_obj_profiles(obj)
 
-        # Register object to data
+        # Register object to qssPths
         self.object_names.append(obj.data['ObjectName'])
         self.object_ids.append(obj.data['ObjectID'])
         self.object_datetimes.append(obj.data['Datetime'])
@@ -889,7 +889,7 @@ class DAMGREGISTER(BaseDict):
         return True
 
     def deRegister(self, obj):
-        """ Remove/unregister obj from data """
+        """ Remove/unregister obj from qssPths """
 
         if self.isTypeRegisted(obj):
             self.object_types.remove(obj.Type)
@@ -899,7 +899,7 @@ class DAMGREGISTER(BaseDict):
             # will be used when other obj has same name, or register again.
             if not self.isAwaitingSlot(obj._name):
                 self.awaitingSlots.append(obj._name)
-            # Remove object from data
+            # Remove object from qssPths
             try:
                 del self[obj._name]
             except KeyError:

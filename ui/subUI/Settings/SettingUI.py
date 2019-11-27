@@ -15,21 +15,17 @@ import os
 import sys
 
 # PyQt5
-from PyQt5.QtCore       import (QByteArray, QDate, QDateTime, QEvent, QPoint, QRect, QRegExp, QSettings, QSize, Qt, 
-                                QTime, QTimer)
-from PyQt5.QtGui        import QColor, QIcon, QRegExpValidator, QValidator
-from PyQt5.QtWidgets    import (QAbstractItemView, QAction, QMenuBar, QFileDialog, QGridLayout,
-                                QHeaderView, QInputDialog, QItemDelegate, QLineEdit, QStyle, QComboBox,
-                                QStyleOptionViewItem, QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
+from PyQt5.QtCore           import (QByteArray, QDate, QDateTime, QEvent, QPoint, QRect, QRegExp, QSettings, QSize, Qt,
+                                    QTime, QTimer)
+from PyQt5.QtGui            import QColor, QIcon, QRegExpValidator, QValidator
+from PyQt5.QtWidgets        import (QAbstractItemView, QAction, QMenuBar, QFileDialog, QGridLayout, QHeaderView,
+                                    QInputDialog, QItemDelegate, QLineEdit, QStyle, QComboBox, QStyleOptionViewItem,
+                                    QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
 
 # PLM
-from appData                           import __organization__, __appname__, SETTING_FILEPTH, INI
-from ui.uikits.Action                  import Action
-from ui.uikits.MenuBar                 import MenuBar
-from ui.uikits.Label                   import Label
-from ui.uikits.Widget                  import Widget
-from ui.uikits.GridLayout              import GridLayout
-from ui.uikits.GroupBox                import GroupGrid
+from toolkits.Widgets       import Widget, GridLayout, Label
+from toolkits.uiUtils       import GroupGrid
+from appData                import SETTING_FILEPTH, INI, __appname__, __organization__
 
 # -------------------------------------------------------------------------------------------------------------
 """ Setting Manager """
@@ -42,14 +38,14 @@ class SettingUI(Widget):
     def __init__(self, parent=None):
         super(SettingUI, self).__init__(parent)
 
-        self.parent = parent
-        self.menubar = QMenuBar(self)
-        self.regValue = SettingOutput(self.settings)
-        self.regInfo = SettingInput(self.settings)
+        self.parent         = parent
+        self.menubar        = QMenuBar(self)
+        self.regValue       = SettingOutput(self.settings)
+        self.regInfo        = SettingInput(self.settings)
 
         self.createMenus()
 
-        self.layout = GridLayout()
+        self.layout         = GridLayout()
         self.layout.addWidget(self.menubar, 0, 0, 1, 1)
         self.layout.addWidget(self.regInfo, 1, 0, 1, 1)
         self.layout.addWidget(self.regValue, 2, 0, 1, 1)
@@ -97,18 +93,14 @@ class SettingUI(Widget):
             self.fallbacksAct.setEnabled(False)
 
     def createActions(self):
-        self.openSettingsAct = QAction("&Open Application Settings...", self, shortcut="Ctrl+O", triggered=self.openSettings)
-        # self.openSettingsAct = Action({'shortcut': "Ctrl+O", 'tt': "&Open Application Settings...", 'trg': self.openSettings}, self )
-
-        self.openIniFileAct = QAction("Open I&NI File...", self, shortcut="Ctrl+N", triggered=self.openIniFile)
-        self.openPropertyListAct = QAction("Open Mac &Property List...", self, shortcut="Ctrl+P",
-                                           triggered=self.openPropertyList)
-        self.openRegistryPathAct = QAction("Open Windows &Registry Path...", self, shortcut="Ctrl+G",
-                                           triggered=self.openRegistryPath)
-        self.refreshAct = QAction("&Refresh", self, shortcut="Ctrl+R", enabled=False, triggered=self.regValue.refresh)
-        self.exitAct = QAction("E&xit", self, shortcut="Ctrl+Q", triggered=self.close)
-        self.autoRefreshAct = QAction("&Auto-Refresh", self, shortcut="Ctrl+A", checkable=True, enabled=False)
-        self.fallbacksAct = QAction("&Fallbacks", self, shortcut="Ctrl+F", checkable=True, enabled=False,  triggered=self.regValue.setFallbacksEnabled)
+        self.openSettingsAct        = QAction("&Open Application Settings...", self, shortcut="Ctrl+O", triggered=self.openSettings)
+        self.openIniFileAct         = QAction("&Open INI File...", self, shortcut="Ctrl+N", triggered=self.openIniFile)
+        self.openPropertyListAct    = QAction("&Open Mac Property List...", self, shortcut="Ctrl+P", triggered=self.openPropertyList)
+        self.openRegistryPathAct    = QAction("&Open Windows &Registry Path...", self, shortcut="Ctrl+G", triggered=self.openRegistryPath)
+        self.refreshAct             = QAction("&Refresh", self, shortcut="Ctrl+R", enabled=False, triggered=self.regValue.refresh)
+        self.exitAct                = QAction("&Exit", self, shortcut="Ctrl+Q", triggered=self.close)
+        self.autoRefreshAct         = QAction("&Auto-Refresh", self, shortcut="Ctrl+A", checkable=True, enabled=False)
+        self.fallbacksAct           = QAction("&Fallbacks", self, shortcut="Ctrl+F", checkable=True, enabled=False,  triggered=self.regValue.setFallbacksEnabled)
 
         if sys.platform != 'darwin':
             self.openPropertyListAct.setEnabled(False)
@@ -121,17 +113,19 @@ class SettingUI(Widget):
 
     def createMenus(self):
         self.createActions()
-        self.fileMenu = self.menubar.addMenu("&File")
+        self.fileMenu               = self.menubar.addMenu("&File")
         self.fileMenu.addAction(self.openSettingsAct)
         self.fileMenu.addAction(self.openIniFileAct)
         self.fileMenu.addAction(self.openPropertyListAct)
         self.fileMenu.addAction(self.openRegistryPathAct)
         self.fileMenu.addSeparator()
+
         self.fileMenu.addAction(self.refreshAct)
         self.fileMenu.addSeparator()
+
         self.fileMenu.addAction(self.exitAct)
 
-        self.optionsMenu = self.menubar.addMenu("&Options")
+        self.optionsMenu            = self.menubar.addMenu("&Options")
         self.optionsMenu.addAction(self.autoRefreshAct)
         self.optionsMenu.addAction(self.fallbacksAct)
 
@@ -157,12 +151,12 @@ class SettingUI(Widget):
 
 class SettingInput(Widget):
 
-    key = "SettingInput"
+    key                     = "SettingInput"
 
     def __init__(self, settings, parent=None):
         super(SettingInput, self).__init__(parent)
 
-        self.settings = settings
+        self.settings       = settings
 
         self.formatComboBox = QComboBox(self)
         self.formatComboBox.addItem('INI')
@@ -190,7 +184,8 @@ class SettingInput(Widget):
         organizationLabel = Label({'txt': "&Organization:", 'setBuddy': self.organizationComboBox})
         applicationLabel = Label({'txt': "&Application:", 'setBuddy': self.applicationComboBox})
 
-        grpBox, grid = GroupGrid("Setting Locations")
+        grpBox = GroupGrid("Setting Locations")
+        grid = grpBox.layout
 
         self.locationsTable = QTableWidget()
         self.locationsTable.setSelectionMode(QAbstractItemView.SingleSelection)

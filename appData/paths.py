@@ -76,7 +76,7 @@ DB_DIR                      = APP_DATA_DIR
 """ App (Non python) """
 
 BIN_DIR                     = os.path.join(ROOT_DIR, 'bin')
-DATA_DIR                    = os.path.join(BIN_DIR, 'data')
+DATA_DIR                    = os.path.join(BIN_DIR, 'qssPths')
 DEPENDANCIES_DIR            = os.path.join(BIN_DIR, 'dependencies')
 RESOURCES_DIR               = os.path.join(BIN_DIR, 'resources')
 SOUND_DIR                   = os.path.join(BIN_DIR, 'sound')

@@ -94,7 +94,7 @@ class EnvVariableManager:
 
     def register(self, envKey, envVal):
         """
-        Add configKey and value into data
+        Add configKey and value into qssPths
         """
         if not envKey in self._envKeys:
             # print('append {0} to environment configKey list'.format(envKey))
@@ -107,10 +107,10 @@ class EnvVariableManager:
         if os.getenv(envKey) == envVal:
             if envKey in self._envKeys and envVal in self._envVals:
                 if not envKey in self._data.keys() or self._data[envKey] != envVal:
-                    # print('append configKey: {0} and value: {1} into data'.format(envKey, envVal))
+                    # print('append configKey: {0} and value: {1} into qssPths'.format(envKey, envVal))
                     self._data[envKey]                   = envVal
         else:
-            print('Key: {0}, value: {1} are already in data.'.format(envKey, envVal))
+            print('Key: {0}, value: {1} are already in qssPths.'.format(envKey, envVal))
 
     def deregister(self, envKey):
         """
@@ -124,7 +124,7 @@ class EnvVariableManager:
             self._envKeys.remove(envKey)
 
         if envKey in self._data.keys():
-            # print('Remove environment variable from data.')
+            # print('Remove environment variable from qssPths.')
             self._data.pop(envKey)
 
     def add_to_PATH(self, val):
@@ -141,7 +141,7 @@ class EnvVariableManager:
 
     def update(self):
         """
-        Update data of system environment variables.
+        Update qssPths of system environment variables.
         """
         self._envKeys                                   = [k for k in os.environ.keys()]
         self._envVals                                   = [v for v in os.environ.values()]

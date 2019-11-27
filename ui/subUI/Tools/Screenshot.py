@@ -23,12 +23,7 @@ from PyQt5.QtWidgets            import (QGridLayout, QFileDialog, QApplication, 
 
 # PLM
 from appData                    import keepARM
-from ui.uikits.Button           import Button
-from ui.uikits.Icon             import AppIcon
-from ui.uikits.BoxLayout        import HBoxLayout
-from ui.uikits.Widget           import Widget
-from ui.uikits.GridLayout       import GridLayout
-from ui.uikits.Label            import Label
+from toolkits.Widgets           import Widget, AppIcon, GridLayout, Button, HBoxLayout, Label
 
 class Screenshot(Widget):
 

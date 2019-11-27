@@ -94,7 +94,7 @@ class InitUserSetup(object):
         with open(filePth, 'w') as f:
             json.dump(info, f, indent=4)
 
-        # logger.info('saving data to %s' % filePth)
+        # logger.info('saving qssPths to %s' % filePth)
 
     def updatePathFromUser(self, scr):
 
@@ -131,9 +131,9 @@ class InitUserSetup(object):
         # Get list current layout
         listLayout = cmds.workspaceLayoutManager(lul=True)
 
-        # Check Layout exists, if not, import pipeline layout from source data
+        # Check Layout exists, if not, import pipeline layout from source qssPths
         if not 'PipelineTool' in listLayout:
-            # Path of layout file from source data by default
+            # Path of layout file from source qssPths by default
             layoutPth = os.path.join(os.getenv(appData.__envKey__), 'packages', 'maya', 'layout', 'plt.json')
 
             # Check if it is not there, it may happen because the file might be moved or deleted

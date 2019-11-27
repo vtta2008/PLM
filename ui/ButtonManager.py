@@ -11,43 +11,40 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 import os
-from bin.dependencies.damg.damg import DAMGDICT, DAMGLIST
-from functools import partial
+from functools          import partial
 
-from ui.uikits.Button import Button
-from utils import data_handler, is_button, is_string
-from appData import (mainConfig, SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY, RESTORE_KEY, SHOWMIN_KEY, SHOWMAX_KEY, BTNTAGSIZE, TAGBTNSIZE, BTNICONSIZE, ICONBTNSIZE)
+from toolkits.Widgets.Button import Button
+from utils              import data_handler, is_button, is_string
+from bin                import DAMGDICT, DAMGLIST
+from appData            import (mainConfig, SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY, RESTORE_KEY,
+                                SHOWMIN_KEY, SHOWMAX_KEY, BTNTAGSIZE, TAGBTNSIZE, BTNICONSIZE, ICONBTNSIZE)
 
 class ButtonManager(DAMGDICT):
 
-    key             = 'ButtonManager'
-    _name           = 'ButtonManager'
+    key                 = 'ButtonManager'
+    _name               = 'ButtonManager'
 
-    mainInfo         = data_handler(filePath=mainConfig)
+    mainInfo            = data_handler(filePath=mainConfig)
 
-    buttonKeys      = DAMGLIST()
-    showLayoutKeys  = DAMGLIST()
-    showRestoreKeys = DAMGLIST()
-    showMaximizeKeys = DAMGLIST()
-    showMinimizeKeys = DAMGLIST()
-    startFileKeys   = DAMGLIST()
-    openBrowserKeys = DAMGLIST()
-    executingKeys   = DAMGLIST()
-    tagKeys = DAMGLIST()
+    buttonKeys          = DAMGLIST()
+    showLayoutKeys      = DAMGLIST()
+    showRestoreKeys     = DAMGLIST()
+    showMaximizeKeys    = DAMGLIST()
+    showMinimizeKeys    = DAMGLIST()
+    startFileKeys       = DAMGLIST()
+    openBrowserKeys     = DAMGLIST()
+    executingKeys       = DAMGLIST()
+    tagKeys             = DAMGLIST()
 
-    tags = dict(pythonTag="https://docs.anaconda.com/anaconda/reference/release-notes/",
-                licenceTag="https://github.com/vtta2008/damgteam/blob/master/LICENCE",
-                versionTag="https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst")
+    tags                = dict( pythonTag="https://docs.anaconda.com/anaconda/reference/release-notes/",
+                                licenceTag="https://github.com/vtta2008/damgteam/blob/master/LICENCE",
+                                versionTag="https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst")
 
-    tagButtons = ['pythonTag', 'licenceTag', 'versionTag']
+    tagButtons          = ['pythonTag', 'licenceTag', 'versionTag']
+    managerButtons      = ['Organisation', 'Project', 'Team', 'Task']
+    userButtons         = ['UserSetting', 'SignUp', 'SwitchAccount', 'SignOut']
 
-    orgButtons      = ['NewOrganisation', 'EditOrganisation']
-    taskButtons     = ['NewTask', 'EditTask']
-    teamButtons     = ['NewTeam', 'EditTeam']
-    prjButtons      = ['NewProject', 'EditProject']
-    userButtons     = ['UserSetting', 'SignUp', 'SwitchAccount', 'SignOut']
-
-    checkedKeys = teamButtons + prjButtons + userButtons + tagButtons + taskButtons
+    checkedKeys         = userButtons + tagButtons + managerButtons
 
     def __init__(self, parent=None):
         super(ButtonManager, self).__init__(self)
@@ -71,17 +68,11 @@ class ButtonManager(DAMGDICT):
     def buttonRegisterError(self, key):
         return print('ButtonRegisterError: This action is already registered: {0}'.format(key))
 
-    def taskButtonsGroupBox(self, parent):
-        return self.createButtons(self.taskButtons, parent)
-
-    def projectButtonsGroupBox(self, parent):
-        return self.createButtons(self.prjButtons, parent)
+    def managerButtonGroupBox(self, parent):
+        return self.createButtons(self.managerButtons, parent)
 
     def tagButtonsFooterWidget(self, parent):
         return self.createButtons(self.tagButtons, parent)
-
-    def teamButtonsGroupBox(self, parent):
-        return self.createButtons(self.teamButtons, parent)
 
     def userButtonGroupBox(self, parent):
         return self.createButtons(self.userButtons, parent)

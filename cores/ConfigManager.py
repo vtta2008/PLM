@@ -161,7 +161,7 @@ class ConfigManager(DAMG):
 
         return True
 
-    def cfg_cfgDir(self, fileName='PLM.cfg', **pthInfo):
+    def cfg_cfgDir(self, fileName='paths.cfg', **pthInfo):
 
         pthInfo['root']                 = self.rootDir
         pthInfo['appData']              = self.set_dir('appData')
@@ -385,63 +385,65 @@ class ConfigManager(DAMG):
         keepKeys = [k for k in KEYPACKAGE if k in self.appInfo and k in self.iconInfo]
 
         # Custom functions
-        self.mainInfo['About'] = ['About PLM', self.iconInfo['About'], 'About']
-        self.mainInfo['Exit'] = ['Exit PLM', self.iconInfo['Exit'], 'Exit']
-        self.mainInfo['CleanPyc'] = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'CleanPyc']
-        self.mainInfo['CodeOfConduct'] = ['Code of Conduct', self.iconInfo['CodeOfConduct'], 'CodeOfConduct']
-        self.mainInfo['Contributing'] = ['Contributing', self.iconInfo['Contributing'], 'Contributing']
-        self.mainInfo['ReConfig'] = ['Re configuring data', self.iconInfo['ReConfig'], 'ReConfig']
-        self.mainInfo['Reference'] = ['Reference', self.iconInfo['Reference'], 'Reference']
-        self.mainInfo['Command Prompt'] = ['Open command prompt', self.iconInfo['Command Prompt'], 'open_cmd']
-        self.mainInfo['PLM wiki'] = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=__plmWiki__)]
-        self.mainInfo['Browser'] = ['Browser', self.iconInfo['Browser'], "Browser"]
-        self.mainInfo['OpenConfig'] = ['Open config folder', self.iconInfo['OpenConfig'], '']
-        self.mainInfo['Version'] = ['Version Info', 'Version', 'Version']
-        self.mainInfo['Licence'] = ['Licence Info', 'Licence', 'Licence Info']
-        self.mainInfo['Debug'] = ['Run PLM Debugger', self.iconInfo['Debug'], 'Debug']
 
-        self.mainInfo['NewOrganisation'] = ['New', 'NewOrganisation', 'New']
-        self.mainInfo['EditOrganisation'] = ['Edit', 'EditOrganisation', 'Edit']
-        self.mainInfo['ConfigOrganisation'] = ['Config', 'ConfigOrganisation', 'Config']
-        self.mainInfo['OrganisationManager'] = ['OrganisationManager', 'OrganisationManager', 'Manager']
+        # show layout
+        self.mainInfo['About']                  = ['About PLM', self.iconInfo['About'], 'About']
+        self.mainInfo['CodeOfConduct']          = ['Code of Conduct', self.iconInfo['CodeOfConduct'], 'CodeOfConduct']
+        self.mainInfo['Contributing']           = ['Contributing', self.iconInfo['Contributing'], 'Contributing']
+        self.mainInfo['ReConfig']               = ['Re configuring qssPths', self.iconInfo['ReConfig'], 'ReConfig']
+        self.mainInfo['Reference']              = ['Reference', self.iconInfo['Reference'], 'Reference']
+        self.mainInfo['PLM wiki']               = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=__plmWiki__)]
+        self.mainInfo['Browser']                = ['Browser', self.iconInfo['Browser'], "Browser"]
+        self.mainInfo['OpenConfig']             = ['Open config folder', self.iconInfo['OpenConfig'], '']
+        self.mainInfo['Version']                = ['Version Info', 'Version', 'Version']
+        self.mainInfo['Licence']                = ['Licence Info', 'Licence', 'Licence Info']
 
-        self.mainInfo['NewTeam'] = ['New', 'NewOrganisation', 'New']
-        self.mainInfo['EditTeam'] = ['Edit', 'EditOrganisation', 'Edit']
-        self.mainInfo['ConfigTeam'] = ['Config', 'ConfigOrganisation', 'Config']
-        self.mainInfo['TeamManager'] = ['Manager', 'TeamManager', 'Manager']
+        self.mainInfo['Organisation']           = ['Organisation', 'OrganisationManager', 'Organisation']
+        self.mainInfo['Team']                   = ['Team', 'TeamManager', 'Team']
+        self.mainInfo['Project']                = ['Project', 'ProjectManager', 'Project']
+        self.mainInfo['Task']                   = ['Task', 'TaskManager', 'Task']
 
-        self.mainInfo['NewProject'] = ['New', 'NewProject', 'New']
-        self.mainInfo['EditProject'] = ['Edit', 'EditProject', 'Edit']
-        self.mainInfo['ConfigProject'] = ['Config', 'ConfigProject', 'Config']
-        self.mainInfo['ProjectManager'] =['Manager', 'ProjectManager', 'Manager']
+        self.mainInfo['SettingUI']              = ['PLM Settings', 'Settings', 'SettingUI']
+        self.mainInfo['Configuration']          = ['PLM Configuration', 'Configuration', 'Configuration']
 
-        self.mainInfo['NewTask'] = ['New', 'NewTask', 'New']
-        self.mainInfo['EditTask'] = ['Edit', 'EditTask', 'Edit']
-        self.mainInfo['ConfigTask'] = ['Config', 'ConfigTask', 'Config']
-        self.mainInfo['TaskManager'] =['Manager', 'TaskManager', 'Manager']
+        self.mainInfo['Alpha']                  = ['Open Alpha Map Library', 'AlphaLibrary', 'AlphaLibrary']
+        self.mainInfo['HDRI']                   = ['Open HDRI Map Library', 'HDRILibrary', 'HDRILibrary']
+        self.mainInfo['Texture']                = ['Open Texture Map Library', 'TextureLibrary', 'TextureLibrary']
 
-        self.mainInfo['SettingUI'] = ['PLM Settings', 'Settings', 'SettingUI']
-        self.mainInfo['Configuration'] = ['PLM Configuration', 'Configuration', 'Configuration']
+        self.mainInfo['Feedback']               = ['Feedback', 'Feedback', 'Feedback']
+        self.mainInfo['ContactUs']              = ['Contact Us', 'ContactUs', 'ContactUs']
 
-        self.mainInfo['Alpha'] = ['Open Alpha Map Library', 'AlphaLibrary', 'AlphaLibrary']
-        self.mainInfo['HDRI'] = ['Open HDRI Map Library', 'HDRILibrary', 'HDRILibrary']
-        self.mainInfo['Texture'] = ['Open Texture Map Library', 'TextureLibrary', 'TextureLibrary']
+        self.mainInfo['Restore']                = ['Restore', 'Restore', 'PipelineManager']
+        self.mainInfo['Maximize']               = ['Maximize', 'Maximize', 'PipelineManager']
+        self.mainInfo['Minimize']               = ['Minimize', 'Minimize', 'PipelineManager']
 
-        self.mainInfo['Feedback'] = ['Feedback', 'Feedback', 'Feedback']
-        self.mainInfo['ContactUs'] = ['Contact Us', 'ContactUs', 'ContactUs']
+        self.mainInfo['Apperance']              = ['Appearance', 'Appearance', 'Appearance']
 
-        self.mainInfo['ConfigFolder'] = ['Go To Config Folder', 'ConfigFolder', self.pthInfo['config']]
-        self.mainInfo['IconFolder'] = ['Go To Icon Folder', 'IconFolder', self.pthInfo['icon']]
-        self.mainInfo['SettingFolder'] = ['Go To Setting Folder', 'SettingFolder', self.pthInfo['setting']]
-        self.mainInfo['AppFolder'] = ['Go To PLM Folder', 'AppFolder', self.pthInfo['root']]
+        # Executing
+        self.mainInfo['CleanPyc']               = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'CleanPyc']
+        self.mainInfo['Debug']                  = ['Run PLM Debugger', self.iconInfo['Debug'], 'Debug']
+        self.mainInfo['Exit']                   = ['Exit PLM', self.iconInfo['Exit'], 'Exit']
+        self.mainInfo['ConfigFolder']           = ['Go To Config Folder', 'ConfigFolder', self.pthInfo['config']]
+        self.mainInfo['IconFolder']             = ['Go To Icon Folder', 'IconFolder', self.pthInfo['icon']]
+        self.mainInfo['SettingFolder']          = ['Go To Setting Folder', 'SettingFolder', self.pthInfo['setting']]
+        self.mainInfo['AppFolder']              = ['Go To PLM Folder', 'AppFolder', self.pthInfo['root']]
+        self.mainInfo['Command Prompt']         = ['Open command prompt', self.iconInfo['Command Prompt'], 'open_cmd']
 
-        self.mainInfo['Restore']  = ['Restore', 'Restore', 'PipelineManager']
-        self.mainInfo['Maximize'] = ['Maximize', 'Maximize', 'PipelineManager']
-        self.mainInfo['Minimize'] = ['Minimize', 'Minimize', 'PipelineManager']
+        self.mainInfo['Cut']                    = ['Cut', 'Cut', 'Cut']
+        self.mainInfo['Copy']                   = ['Copy', 'Copy', 'Copy']
+        self.mainInfo['Paste']                  = ['Paste', 'Paste', 'Paste']
 
-        self.mainInfo['pythonTag'] = ['pythonLink', 'pythonTagIcon', 'https://docs.anaconda.com/anaconda/reference/release-notes/']
-        self.mainInfo['licenceTag'] = ['licenceLink', 'licenceTagIcon', 'https://github.com/vtta2008/damgteam/blob/master/LICENCE']
-        self.mainInfo['versionTag'] = ['versionLink', 'versionTagIcon', 'https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst']
+        self.mainInfo['bright']                 = ['bright', 'bright', 'bright']
+        self.mainInfo['dark']                   = ['dark', 'dark', 'dark']
+        self.mainInfo['chacoal']                = ['chacoal', 'chacoal', 'chacoal']
+        self.mainInfo['nuker']                  = ['nuker', 'nuker', 'nuker']
+
+        # Update link
+        self.mainInfo['pythonTag']              = ['pythonLink', 'pythonTagIcon', 'https://docs.anaconda.com/anaconda/reference/release-notes/']
+        self.mainInfo['licenceTag']             = ['licenceLink', 'licenceTagIcon', 'https://github.com/vtta2008/damgteam/blob/master/LICENCE']
+        self.mainInfo['versionTag']             = ['versionLink', 'versionTagIcon', 'https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst']
+
+
 
         for key in self.appInfo:
             if 'NukeX' in key:

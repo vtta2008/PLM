@@ -10,18 +10,19 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtGui import QIntValidator
-from ui.uikits.Widget import Widget
-from ui.uikits.CheckBox import CheckBox
-from ui.uikits.BoxLayout import HBoxLayout, VBoxLayout
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.GroupBox import GroupBox
-from ui.uikits.LineEdit import LineEdit, PlainTextEdit
-from ui.uikits.Label import Label
-from ui.uikits.Button import Button
-from utils import str2bool
-from cores.Task import duetime, duedate, Task
-from functools import partial
+from PyQt5.QtGui                        import QIntValidator
+
+from toolkits.Widgets.Widget import Widget
+from toolkits.Widgets.CheckBox import CheckBox
+from toolkits.Widgets.BoxLayout import HBoxLayout, VBoxLayout
+from toolkits.Widgets.GridLayout import GridLayout
+from toolkits.Widgets.GroupBoxBase import GroupBox
+from toolkits.Widgets.LineEdit import LineEdit, PlainTextEdit
+from toolkits.Widgets.Label import Label
+from toolkits.Widgets.Button import Button
+from utils                              import str2bool
+from cores.Task                         import duetime, duedate, Task
+from functools                          import partial
 
 class TaskInfo(GridLayout):
 

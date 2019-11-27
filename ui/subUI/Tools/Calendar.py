@@ -15,17 +15,15 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore import QDate, QLocale, Qt
-from PyQt5.QtGui import QFont, QTextCharFormat
-from PyQt5.QtWidgets import (QApplication, QCalendarWidget, QCheckBox,
-                             QComboBox, QDateEdit, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
-                             QLayout)
+from PyQt5.QtCore               import QDate, QLocale, Qt
+from PyQt5.QtGui                import QFont, QTextCharFormat
+from PyQt5.QtWidgets            import (QApplication, QCalendarWidget, QCheckBox,
+                                        QComboBox, QDateEdit, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
+                                        QLayout)
 
 # Plt
 from appData                    import SiPoMin
-from ui.uikits.Widget           import Widget
-from ui.uikits.GridLayout       import GridLayout
-from ui.uikits.Icon             import AppIcon
+from toolkits.Widgets           import Widget, AppIcon, GridLayout
 # -------------------------------------------------------------------------------------------------------------
 """ Clendar """
 

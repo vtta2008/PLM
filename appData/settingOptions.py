@@ -16,9 +16,18 @@ from __future__ import absolute_import, unicode_literals
 import re, os
 
 # PyQt5
-from PyQt5.QtCore import Qt, QSize, QEvent
-from PyQt5.QtGui import QPainter, QColor
-from PyQt5.QtWidgets import QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy, QLineEdit
+from PyQt5.QtCore           import Qt, QSize, QEvent
+from PyQt5.QtGui            import QPainter, QColor
+from PyQt5.QtWidgets        import (QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy,
+                                    QLineEdit, QPlainTextEdit)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Event """
+
+NO_WRAP                     = QPlainTextEdit.NoWrap
+NO_FRAME                    = QPlainTextEdit.NoFrame
+
+ELIDE_RIGHT                 = Qt.ElideRight
 
 # -------------------------------------------------------------------------------------------------------------
 """ Event """

@@ -9,13 +9,10 @@ Description:
 """ Import """
 
 # Python
-import sys
 from bin.dependencies.damg.damg import DAMGLIST
 
 # PLM
-from ui.uikits.Icon             import AppIcon
-from ui.uikits.BoxLayout        import VBoxLayout
-from ui.uikits.TabWidget        import TabWidget
+from toolkits.Widgets           import TabWidget, VBoxLayout, AppIcon
 from ui.Body.Tabs               import TopTab1, TopTap3, TopTab2
 
 # -------------------------------------------------------------------------------------------------------------

@@ -9,7 +9,6 @@ Description:
 """ Import """
 
 # Python
-import sys
 
 # PyQt5
 from PyQt5.QtCore                       import Qt
@@ -17,14 +16,14 @@ from PyQt5.QtCore                       import Qt
 # PLM
 
 from appData                            import __homepage__, dockB, __appname__
-from ui.uikits.MainWindow               import MainWindow
-from ui.uikits.GroupBox                 import GroupBox
-from ui.uikits.Widget                   import Widget
-from ui.uikits.GridLayout               import GridLayout
-from ui.uikits.Icon                     import LogoIcon
+from toolkits.Widgets.MainWindow import MainWindow
+from toolkits.Widgets.GroupBoxBase import GroupBox
+from toolkits.Widgets.Widget import Widget
+from toolkits.Widgets.GridLayout import GridLayout
+from toolkits.Widgets.Icon import LogoIcon
 from ui.Header.Menus.MainMenuBar        import MainMenuBar
 from ui.Header.Network.ConnectStatus    import ConnectStatus
-from ui.Header.AppToolbar.MainToolBar   import MainToolBar
+from ui.Header.Toolbars.MainToolBar   import MainToolBar
 from ui.Body.TopTab                     import TopTab                           # Body
 from ui.Body.BotTab                     import BotTab
 from ui.Body.Notification               import Notification

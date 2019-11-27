@@ -165,7 +165,7 @@ class Version(object):
         - If not enough components, fill minor/patch with zeroes; unless
           partial=True
         - If more than 3 dot-separated components, extra components are "build"
-          data. If some "build" data already appeared, append it to the
+          qssPths. If some "build" qssPths already appeared, append it to the
           extra components
         Examples:
             >>> Version.coerce('0.1')

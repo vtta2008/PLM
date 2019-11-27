@@ -20,13 +20,14 @@ from __buildtins__                      import __envKey__
 import os, sys, requests, ctypes
 
 # PyQt5
-from PyQt5.QtCore                       import pyqtSlot, Qt
+from PyQt5.QtCore                       import pyqtSlot
 
 # Plm
 from appData                            import (__localServer__, __organization__, StateNormal, StateMax, StateMin,
                                                 __appname__, __version__, __website__, SETTING_FILEPTH, ST_FORMAT,
-                                                SYSTRAY_UNAVAI, KEY_TAB, KEY_PRESS)
+                                                SYSTRAY_UNAVAI)
 
+from cores.StyleSheet                   import StyleSheet
 from ui.ThreadManager                   import ThreadManager
 from utils                              import str2bool, clean_file_ext, LocalDatabase
 from cores.Loggers                      import Loggers
@@ -34,11 +35,11 @@ from cores.Settings                     import Settings
 from cores.Registry                     import RegistryLayout
 from ui.ActionManager                   import ActionManager
 from ui.ButtonManager                   import ButtonManager
-from ui.uikits.Icon                     import LogoIcon
-from ui.Web.Browser                     import Browser
+from toolkits.Widgets.Icon import LogoIcon
+from ui.subUI.Browser                   import Browser
 from ui.LayoutManager                   import LayoutManager
 from ui.EventManager                    import EventManager
-from ui.uikits.MessageBox               import MessageBox
+from toolkits.Widgets.MessageBox import MessageBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -65,8 +66,6 @@ class DAMGTEAM(Application):
         else:
             super(DAMGTEAM, self).__init__(sys.argv)
 
-        # Run all neccessary configuration to start PLM
-
         self.setWindowIcon(LogoIcon("Logo"))  # Setup icon
         self.setOrganizationName(__organization__)
         self.setApplicationName(__appname__)
@@ -85,7 +84,7 @@ class DAMGTEAM(Application):
         self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.settings._settingEnable    = True
 
-        self.appInfo                    = self.dataConfig.appInfo                                    # Configuration data
+        self.appInfo                    = self.dataConfig.appInfo                                    # Configuration qssPths
         self.set_styleSheet('dark')
 
         # Multithreading.
@@ -132,7 +131,7 @@ class DAMGTEAM(Application):
             try:
                 self.username, token, cookie, remember = self.database.query_table('curUser')
             except (ValueError, IndexError):
-                self.logger.info("Error occur, can not query data")
+                self.logger.info("Error occur, can not query qssPths")
                 self.signInEvent()
             else:
                 if not str2bool(remember):
@@ -225,11 +224,19 @@ class DAMGTEAM(Application):
                 return self.dataConfig
             elif cmd == 'Exit':
                 return self.exitEvent()
+            elif cmd == 'dark':
+                return self.setStyleSheet(cmd)
+            elif cmd == 'bright':
+                return self.setStyleSheet(cmd)
+            elif cmd == 'chacoal':
+                return self.setStyleSheet(cmd)
+            elif cmd == 'nuker':
+                return self.setStyleSheet(cmd)
             else:
-                if not cmd in self.toBuildCommand:
+                if not cmd in self.toBuildCmds:
                     if self._trackCommand:
                         self.logger.report("This command is not regiested yet: {0}".format(cmd))
-                    return self.toBuildCommand.append(cmd)
+                    return self.toBuildCmds.append(cmd)
                 else:
                     if self._trackCommand:
                         self.logger.info("This command will be built later.".format(cmd))
@@ -240,11 +247,11 @@ class DAMGTEAM(Application):
 
         self.showLayout_old, repeat = self.checkSignalRepeat(self.showLayout_old, [layoutID, mode])
 
-        if layoutID in ['NewTask', 'EditTask']:
-            layoutID = 'TaskManager'
+        if layoutID in ['Organisation', 'Project', 'Team', 'Task']:
+            layoutID = '{0}Manager'.format(layoutID)
+            repeat = False
 
         if layoutID in self.registryLayout.keys():
-
             layout = self.registryLayout[layoutID]
             if layout.windowState() & StateNormal:
                 state = 'showNormal'
@@ -409,7 +416,6 @@ class DAMGTEAM(Application):
 
     @pyqtSlot(str, name='setStylesheet')
     def set_styleSheet(self, style):
-        from cores.StyleSheet import StyleSheet
         self._styleSheet = StyleSheet(style).stylesheet
         self.setStyleSheet(self._styleSheet)
         self.setSetting('styleSheet', style, self.key)
@@ -473,6 +479,12 @@ class DAMGTEAM(Application):
         self.mainUI.signals.updateState()
 
         self.exit()
+
+    def showAllEvent(self):
+        for layout in self.layoutManager.layouts():
+            layout.show()
+            self.setSetting('showLayout', 'show', layout.key)
+            self.mainUI.signals.states[layout.key] = 'show'
 
 DAMGTEAM()
 

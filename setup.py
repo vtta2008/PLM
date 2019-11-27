@@ -42,7 +42,7 @@ def find_data_file(filename):
         datadir = os.path.dirname(sys.executable)
     else:
         # The application is not frozen
-        # Change this bit to match where you store your data files:
+        # Change this bit to match where you store your qssPths files:
         datadir = os.path.dirname(__file__)
     return os.path.join(datadir, filename)
 

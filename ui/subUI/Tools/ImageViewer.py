@@ -14,20 +14,17 @@ Description:
 """ Import """
 
 # Python
-import glob
-import os
-import sys
+import os, sys, glob
 from functools import partial
 
 # PyQt5
-from PyQt5 import QtSql
-from PyQt5.QtCore import Qt, QDir, pyqtSignal
-from PyQt5.QtGui import QPixmap, QTransform, QIcon
-from PyQt5.QtWidgets import (QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout)
+from PyQt5                  import QtSql
+from PyQt5.QtCore           import Qt, QDir, pyqtSignal
+from PyQt5.QtGui            import QPixmap, QTransform, QIcon
+from PyQt5.QtWidgets        import (QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout)
 
-from ui.uikits.Icon import AppIcon
-from ui.uikits.Widget import Widget
-from utils import get_screen_resolution
+from toolkits.Widgets       import AppIcon, Widget
+from utils                  import get_screen_resolution
 
 # Plt
 
@@ -36,18 +33,18 @@ from utils import get_screen_resolution
 
 class ImageViewing(QGraphicsView):
 
-    viewerCloseSig = pyqtSignal(bool)
-    viewRealImageSizeSig = pyqtSignal(bool)
-    toggleFullscreenSig = pyqtSignal(bool)
-    vertMaxSig = pyqtSignal(bool)
-    horizMaxSig = pyqtSignal(bool)
-    zoomInSig = pyqtSignal(bool)
-    zoomOutSig = pyqtSignal(bool)
-    zoomResetSig = pyqtSignal(bool)
-    rotateImgSig = pyqtSignal(int)
-    dirBrowseSig = pyqtSignal(int)
-    fitViewSig = pyqtSignal(bool)
-    goToLocationSig = pyqtSignal(bool)
+    viewerCloseSig          = pyqtSignal(bool)
+    viewRealImageSizeSig    = pyqtSignal(bool)
+    toggleFullscreenSig     = pyqtSignal(bool)
+    vertMaxSig              = pyqtSignal(bool)
+    horizMaxSig             = pyqtSignal(bool)
+    zoomInSig               = pyqtSignal(bool)
+    zoomOutSig              = pyqtSignal(bool)
+    zoomResetSig            = pyqtSignal(bool)
+    rotateImgSig            = pyqtSignal(int)
+    dirBrowseSig            = pyqtSignal(int)
+    fitViewSig              = pyqtSignal(bool)
+    goToLocationSig         = pyqtSignal(bool)
 
     def emit_close(self):
         self.viewerCloseSig.emit(True)

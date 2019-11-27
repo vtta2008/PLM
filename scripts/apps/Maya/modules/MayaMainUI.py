@@ -123,7 +123,7 @@ def deleteDock(name='Pipeline Tool', version=VERSION):
             cmds.deleteUI(name)
 
 
-# get okButton functions data
+# get okButton functions qssPths
 def importBTS():
     from appPackages.maya.plt_modules import MayaFuncs
     reload(MayaFuncs)

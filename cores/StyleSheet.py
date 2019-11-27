@@ -18,26 +18,27 @@ import platform
 from PyQt5.QtCore                    import QFile
 
 # Plm
-from bin.dependencies.damg.damg     import DAMG
+from bin                            import DAMG, DAMGDICT
 from cores.Loggers                  import Loggers
 from appData                        import QSS_DIR
-from ui.uikits.TextSteam            import TextStream
-from scripts.rcs                    import darkstyle_rc, tooltips_rc
+from toolkits.Core.TextSteam import TextStream
 
 
 class StyleSheet(DAMG):
 
-    _filename = None
-    _stylesheet = None
+    _filename                       = None
+    _stylesheet                     = None
+    filenames                       = DAMGDICT()
 
     def __init__(self, style):
         super(StyleSheet, self).__init__()
+
+        self.logger = Loggers(__name__)
 
         self._filename = self.getFileName(style)
         self._filename.open(QFile.ReadOnly | QFile.Text)
 
         ts = TextStream(self._filename)
-        self.logger = Loggers(__name__)
         self._stylesheet = ts.readAll()
 
         super(StyleSheet, self).__init__()
@@ -58,6 +59,10 @@ class StyleSheet(DAMG):
             filename = QFile(os.path.join(QSS_DIR, 'darkstyle.qss'))
         elif name == 'bright':
             filename = QFile(os.path.join(QSS_DIR, 'darkstyle.qss'))
+        elif name == 'chacoal':
+            filename = QFile(os.path.join(QSS_DIR, 'chacoal.qss'))
+        elif name == 'nuker':
+            filename = QFile(os.path.join(QSS_DIR, 'nuker.qss'))
         else:
             if not os.path.exists(name):
                 fn = QFile(os.path.join(QSS_DIR, name))

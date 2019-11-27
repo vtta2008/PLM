@@ -12,17 +12,15 @@ Description:
 
 # Python
 import sys, math
-from bin.dependencies.damg.damg import DAMGLIST
+
 
 # PyQt5
 from PyQt5.QtCore               import Qt
-from PyQt5.QtWidgets            import QApplication, QGridLayout
 
 # PLM
-from ui.uikits.Widget           import Widget
-from ui.uikits.LineEdit         import LineEdit
-from ui.uikits.Button           import ToolButton
-from ui.uikits.Icon             import AppIcon
+from bin                        import DAMGLIST
+from toolkits.Widgets           import Widget, AppIcon, LineEdit, GridLayout, ToolButton
+
 
 class Calculator(Widget):
 
@@ -38,7 +36,7 @@ class Calculator(Widget):
         self.buildUI()
 
     def buildUI(self):
-        self.layout = QGridLayout(self)
+        self.layout = GridLayout(self)
 
         self.pendingAdditiveOperator            = ''
         self.pendingMultiplicativeOperator      = ''
@@ -295,12 +293,3 @@ class Calculator(Widget):
             self.factorSoFar /= rightOperand
 
         return True
-
-def main():
-    appCal = QApplication(sys.argv)
-    calc = Calculator()
-    calc.show()
-    appCal.exec_()
-
-if __name__ == '__main__':
-    main()

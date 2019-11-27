@@ -291,7 +291,7 @@ class DataHandle(object):
             textVisible = False
 
         self.imageDisplay = cmds.image(i=imgPth, vis=imageVisible)
-        self.viewText = cmds.text(l="No data to show", align='center', w=IMAGESIZE[0], h=IMAGESIZE[1], vis=textVisible)
+        self.viewText = cmds.text(l="No qssPths to show", align='center', w=IMAGESIZE[0], h=IMAGESIZE[1], vis=textVisible)
 
         cmds.setParent(self.loaderMainLayout)
         self.bts.makeSeparator(h=5, w=W)

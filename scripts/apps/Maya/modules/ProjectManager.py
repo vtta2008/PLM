@@ -399,7 +399,7 @@ class projectManager(object):
 
     def mayaFolder(self, *args):
         curPth = cmds.workspace(q=True, rd=True)
-        maya_Ls = ['scenes', 'images', 'sourceimages', 'clips', 'renderData', 'scripts', 'data', 'apps', 'cache']
+        maya_Ls = ['scenes', 'images', 'sourceimages', 'clips', 'renderData', 'scripts', 'qssPths', 'apps', 'cache']
         i = 0
         for i in range(len(maya_Ls)):
             cmds.sysFile(curPth + "/" + maya_Ls[i], md=True)

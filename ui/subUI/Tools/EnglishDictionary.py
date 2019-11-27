@@ -18,12 +18,7 @@ from PyQt5.QtWidgets            import QTextEdit, QApplication
 
 # PLM
 from appData                    import JSON_DIR
-from ui.uikits.Widget           import Widget
-from ui.uikits.GridLayout       import GridLayout
-from ui.uikits.Button           import Button
-from ui.uikits.Label            import Label
-from ui.uikits.Icon             import AppIcon
-from ui.uikits.LineEdit         import LineEdit
+from toolkits.Widgets           import Widget, GridLayout, LineEdit, Label, Button
 
 class EnglishDictionary(Widget):
 
@@ -41,17 +36,17 @@ class EnglishDictionary(Widget):
 
     def buildUI(self):
 
-        self.layout         = GridLayout(self)
-        self.lineInput      = LineEdit()
+        self.layout             = GridLayout(self)
+        self.lineInput          = LineEdit()
         self.lineInput.textChanged.connect(self.getText)
 
-        self.suggessLabel   = Label()
+        self.suggessLabel       = Label()
 
-        searchBtn           = Button({'txt': 'Translate', 'cl':self.btn_clicked})
-        yesBtn              = Button({'txt': 'Yes'      , 'cl':self.btn_clicked})
-        noBtn               = Button({'txt': 'No'       , 'cl':self.btn_clicked})
+        searchBtn               = Button({'txt': 'Translate', 'cl':self.btn_clicked})
+        yesBtn                  = Button({'txt': 'Yes'      , 'cl':self.btn_clicked})
+        noBtn                   = Button({'txt': 'No'       , 'cl':self.btn_clicked})
 
-        self.answer         = QTextEdit()
+        self.answer             = QTextEdit()
         self.answer.setPlainText(" ")
 
         self.layout.addWidget(self.lineInput, 0, 0, 1, 3)

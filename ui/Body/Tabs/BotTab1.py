@@ -10,15 +10,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-
-from ui.uikits.Widget                       import Widget
-from ui.uikits.GridLayout                   import GridLayout
-from ui.uikits.CheckBox                     import CheckBox
-from ui.uikits.Label                        import Label
-from bin.dependencies.damg.damg             import DAMGDICT, DAMGLIST
+from toolkits.Widgets                       import Widget, GridLayout, CheckBox
+from bin                                    import DAMGDICT, DAMGLIST
 from utils                                  import str2bool
-from appData                                import SiPoMin
-
 
 class BotTab1(Widget):
 
@@ -29,13 +23,10 @@ class BotTab1(Widget):
     def __init__(self, parent=None):
         super(BotTab1, self).__init__(parent)
 
-        self.parent = parent
-        self.layout = GridLayout()
-        # self.layout.addWidget(Label({'txt': 'test'}), 0, 0, 1, 1)
+        self.parent                         = parent
+        self.layout                         = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
-        # self.setSizePolicy(SiPoMin, SiPoMin)
-        # self.layout.setContentsMargins(1,1,1,1)
 
     def buildUI(self):
 

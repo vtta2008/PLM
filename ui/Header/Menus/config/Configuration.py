@@ -14,23 +14,17 @@ Description:
 
 
 # PyQt5
-from PyQt5.QtCore import QDate, QSize, Qt, pyqtSignal
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import (QApplication, QCheckBox, QDateTimeEdit, QGridLayout, QGroupBox,
-                             QHBoxLayout, QLabel, QLineEdit, QListView, QListWidget, QListWidgetItem, QPushButton,
-                             QSpinBox, QStackedWidget, QVBoxLayout)
+from PyQt5.QtCore               import QDate, QSize, Qt, pyqtSignal
+from PyQt5.QtGui                import QIcon
+from PyQt5.QtWidgets            import (QApplication, QCheckBox, QDateTimeEdit, QGridLayout, QGroupBox,
+                                        QHBoxLayout, QLabel, QLineEdit, QListView, QListWidget, QListWidgetItem, QPushButton,
+                                        QSpinBox, QStackedWidget, QVBoxLayout)
 
 # PLM
 from appData                    import __globalServer__, __localServer__
-from ui.uikits.Widget                         import Widget
-from ui.uikits.ComboBox import ComboBox
-from ui.uikits.CheckBox import CheckBox
-from ui.uikits.Button import Button
-from ui.uikits.BoxLayout import HBoxLayout
-from ui.uikits.Label import Label
-from ui.uikits.BoxLayout import VBoxLayout
-from ui.uikits.LineEdit import LineEdit
-from ui.uikits.GroupBox import GroupBox
+from toolkits.Widgets           import (GroupBox, Label, HBoxLayout, ComboBox, VBoxLayout, LineEdit, Button, Widget,
+                                        CheckBox, )
+from scripts.rcs                import config_rc
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """
@@ -92,9 +86,6 @@ class UpdatePage(Widget):
         startUpdateButton   = Button({'txt':"Start update"})
 
         updateLayout        = VBoxLayout({'addWidget': [systemCheckBox, appsCheckBox, docsCheckBox]})
-        # updateLayout.addWidget(systemCheckBox)
-        # updateLayout.addWidget(appsCheckBox)
-        # updateLayout.addWidget(docsCheckBox)
         updateGroup.setLayout(updateLayout)
 
         packageLayout       = QVBoxLayout()

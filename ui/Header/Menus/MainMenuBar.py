@@ -11,43 +11,61 @@ Description:
 """ Import """
 
 # Python
-import sys
 
 # Plm
 from appData                        import (__plmWiki__, mainConfig)
-from ui.uikits.MenuBar              import MenuBar
+from toolkits.Widgets               import MenuBar
 from utils                          import data_handler
 
 class MainMenuBar(MenuBar):
 
-    key                     = 'MainMenuBar'
+    key                             = 'MainMenuBar'
     appInfo = data_handler(filePath=mainConfig)
 
     def __init__(self, actionManager, parent=None):
         super(MainMenuBar, self).__init__(parent)
 
-        self._parent = parent
-        self.actionManger = actionManager
-        self.url = __plmWiki__
+        self._parent                = parent
+        self.actionManger           = actionManager
+        self.url                    = __plmWiki__
+
         self.buildMenu()
 
     def buildMenu(self):
 
-        self.appMenu = self.build_appMenu()
-        self.goMenu = self.build_goMenu()
-        self.officeMenu = self.build_officceMenu()
-        self.toolMenu = self.build_toolMenu()
-        self.devMenu = self.build_devMenu()
-        self.libMenu = self.build_livMenu()
-        self.helpMenu = self.build_helpMenu()
+        self.appMenu                = self.build_appMenu()
+        self.goMenu                 = self.build_goMenu()
+        self.editMenu               = self.build_editMenu()
+        self.viewMenu               = self.build_viewMenu()
+        self.officeMenu             = self.build_officceMenu()
+        self.toolMenu               = self.build_toolMenu()
+        self.devMenu                = self.build_devMenu()
+        self.libMenu                = self.build_libMenu()
+        self.helpMenu               = self.build_helpMenu()
 
-        for menu in [self.appMenu, self.goMenu, self.officeMenu, self.toolMenu, self.devMenu, self.libMenu,
-                     self.helpMenu, self.organisationMenu, self.teamMenu, self.projectMenu]:
-            menu.key = '{0}_Menu_{1}'.format(self.key, menu.title())
-            menu._name = '{0} Menu {1}'.format(self.key, menu.title())
+        for menu in [self.appMenu, self.goMenu, self.editMenu, self.viewMenu, self.officeMenu, self.toolMenu,
+                     self.devMenu, self.libMenu, self.helpMenu, self.appearanceMenu, self.stylesheetMenu,  ]:
+            menu.key                = '{0}_Menu_{1}'.format(self.key, menu.title())
+            menu._name              = '{0} Menu {1}'.format(self.key, menu.title())
+
             self.menus.add(menu.key, menu)
 
-        self.mns = [mn for mn in self.menus.values()]
+        self.mns                    = [mn for mn in self.menus.values()]
+
+    def build_editMenu(self):
+        menu = self.addMenu('&Edit')
+        editActions = self.actionManger.editMenuActions(self.parent)
+        self.add_actions(menu, editActions)
+        return menu
+
+    def build_viewMenu(self):
+        menu = self.addMenu('&View')
+        self.appearanceMenu = menu.addMenu('&Appearance')
+        self.stylesheetMenu = self.appearanceMenu.addMenu('&Stylesheet')
+        stylesheetActions = self.actionManger.stylesheetMenuActions(self.parent)
+        self.add_actions(self.stylesheetMenu, stylesheetActions)
+
+        return menu
 
     def build_helpMenu(self):
         menu = self.addMenu("&Help")
@@ -61,7 +79,7 @@ class MainMenuBar(MenuBar):
         self.add_actions(menu, actions[7:])
         return menu
 
-    def build_livMenu(self):
+    def build_libMenu(self):
         menu = self.addMenu("&Lib")
         actions = self.actionManger.libMenuActions(self.parent)
         self.add_actions(menu, actions)
@@ -88,7 +106,7 @@ class MainMenuBar(MenuBar):
         return menu
 
     def build_goMenu(self):
-        menu = self.addMenu('&Go')
+        menu = self.addMenu('&Go To')
         actions = self.actionManger.goMenuActions(self.parent)
         self.add_actions(menu, actions)
         return menu
@@ -99,17 +117,20 @@ class MainMenuBar(MenuBar):
         self.add_actions(menu, actions[0:3])
 
         menu.addSeparator()
-        self.organisationMenu = menu.addMenu("&Organisation")
+        # self.organisationMenu = menu.addMenu("&Organisation")
         orgActions = self.actionManger.orgMenuActions(self.parent)
-        self.add_actions(self.organisationMenu, orgActions)
+        self.add_actions(menu, orgActions)
 
-        self.teamMenu = menu.addMenu('&Team')
+        # self.teamMenu = menu.addMenu('&Team')
         teamActions = self.actionManger.teamMenuActions(self.parent)
-        self.add_actions(self.teamMenu, teamActions)
+        self.add_actions(menu, teamActions)
 
-        self.projectMenu = menu.addMenu('&Project')
+        # self.projectMenu = menu.addMenu('&Project')
         prjActions = self.actionManger.projectMenuActions(self.parent)
-        self.add_actions(self.projectMenu, prjActions)
+        self.add_actions(menu, prjActions)
+
+        taskActions = self.actionManger.taskMenuActions(self.parent)
+        self.add_actions(menu, taskActions)
 
         menu.addSeparator()
         self.add_actions(menu, actions[3:])

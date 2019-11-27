@@ -22,7 +22,7 @@ PLATFORM = 'Windows'
 API_MINIMUM = 0.64
 
 # PyQt5
-from PyQt5 import __file__ as pyqt_path
+from PyQt5                          import __file__ as pyqt_path
 
 from appData                        import metadatas as m
 from appData.paths                  import *
@@ -125,7 +125,7 @@ for d in [CFG_DIR, TASK_DIR, ORG_DIR, PRJ_DIR, TEAM_DIR]:
         subprocess.call(["chflags", "hidden", CFG_DIR])
 
 # -------------------------------------------------------------------------------------------------------------
-""" Config data from text file """
+""" Config qssPths from text file """
 
 def read_file(fileName):
 

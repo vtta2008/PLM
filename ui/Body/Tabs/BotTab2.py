@@ -19,7 +19,6 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 import doctest
-import sys, os
 import types
 from io import StringIO
 
@@ -31,14 +30,14 @@ from PyQt5.QtGui                import QTextCursor
 from appData                    import SiPoMin, SETTING_FILEPTH, ST_FORMAT
 from cores.Settings             import Settings
 from ui.SignalManager           import SignalManager
-from ui.uikits.GridLayout       import GridLayout
-from ui.uikits.Widget           import Widget
-from ui.uikits.LineEdit         import Detector
+from toolkits.Widgets           import GridLayout, Detector, Widget
 
 # -------------------------------------------------------------------------------------------------------------
 """ Processing User Input """
 
 class Console(GridLayout):
+
+    key                         = 'Console'
 
     def __init__(self, names=None):
         super(Console, self).__init__(names)
@@ -62,23 +61,14 @@ class Console(GridLayout):
 
 class pDetector(Detector):              # A simple QTextEdit, with a few pre-set attributes and a file-like interface.
 
+    key                         = 'pDetector'
+
     def __init__(self, parent=None):
         super(pDetector, self).__init__(parent)
 
-        self._buffer = StringIO()
-        self.parent = parent
+        self._buffer            = StringIO()
+        self.parent             = parent
         self.setReadOnly(True)
-
-        self.signals = SignalManager(self)
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.parent = parent
-
-    def setValue(self, key, value):
-        return self.settings.initSetValue(key, value, self.key)
-
-
-    def getValue(self, key):
-        return self.settings.initValue(key, self.key)
 
     def write(self, msg):                   # Add msg to the console's output, on a showLayout_new line.
         self._buffer.write(msg)
@@ -90,9 +80,9 @@ class pDetector(Detector):              # A simple QTextEdit, with a few pre-set
 
 class BotTab2(Widget):
 
-    Type = 'DAMGDEBUG'
-    key = 'BotTab2'
-    _name = 'DAMG Debugger'
+    Type                        = 'DAMGDEBUG'
+    key                         = 'BotTab2'
+    _name                       = 'DAMG Debugger'
 
 
     def __init__(self, parent=None):

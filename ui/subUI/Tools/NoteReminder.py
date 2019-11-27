@@ -20,14 +20,8 @@ from PyQt5.QtWidgets                import (QAction, QApplication, QComboBox, QD
                                             QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
 
 # Plm
-from ui.uikits.Label                         import Label
-from ui.uikits.Icon import AppIcon
-from ui.uikits.GridLayout import GridLayout
-from ui.uikits.Widget import Widget
-from ui.uikits.MainWindow import MainWindow
-from ui.uikits.MessageBox import MessageBox
-from ui.uikits.ComboBox import ComboBox
-from ui.uikits.Action import Action
+from toolkits.Widgets               import GridLayout, Widget, AppIcon, Label
+
 
 def codec_name(codec):
     try:
@@ -41,17 +35,17 @@ class Menu_layout(QMainWindow):
     def __init__(self):
         super(Menu_layout, self).__init__()
 
-        self.textEdit = QTextEdit()
+        self.textEdit               = QTextEdit()
         self.textEdit.setLineWrapMode(QTextEdit.NoWrap)
         self.setCentralWidget(self.textEdit)
 
-        self.codecs = []
+        self.codecs                 = []
         self.findCodecs()
 
-        self.previewForm = PreviewForm(self)
+        self.previewForm            = PreviewForm(self)
         self.previewForm.setCodecList(self.codecs)
 
-        self.saveAsActs = []
+        self.saveAsActs             = []
         self.createActions()
         self.createMenus()
 

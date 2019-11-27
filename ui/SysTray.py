@@ -16,9 +16,9 @@ from PyQt5.QtCore                       import pyqtSlot
 
 # PLM
 from appData                            import __plmSlogan__, __appname__
-from ui.uikits.Icon                     import LogoIcon
+from toolkits.Widgets.Icon import LogoIcon
 from ui.Header.Menus.SysTrayIconMenu    import SysTrayIconMenu
-from ui.uikits.SystemTrayIcon           import SystemTrayIcon
+from toolkits.Widgets.SystemTrayIcon import SystemTrayIcon
 from utils                              import QuerryDB
 
 
@@ -32,16 +32,16 @@ class SysTray(SystemTrayIcon):
 
         super(SysTray, self).__init__(parent)
 
-        self.db                 = QuerryDB()
-        self.actionManager      = actionManager
-        self.eventManager       = eventManager
+        self.db                         = QuerryDB()
+        self.actionManager              = actionManager
+        self.eventManager               = eventManager
 
         try:
-            self.username, token, cookie, remember = self.db.query_table('curUser')
+            self.username               = self.db.query_table('curUser')[0]
         except (ValueError, IndexError):
             self.username = 'DemoUser'
 
-        self.rightClickMenu = SysTrayIconMenu(self.actionManager, self)
+        self.rightClickMenu             = SysTrayIconMenu(self.actionManager, self)
         self.rightClickMenu.signals.executing.connect(self.signals.executing.emit)
         self.rightClickMenu.signals.showLayout.connect(self.signals.showLayout.emit)
 
@@ -50,6 +50,8 @@ class SysTray(SystemTrayIcon):
         self.activated.connect(self.sys_tray_icon_activated)
         self.setContextMenu(self.rightClickMenu)
         self.installEventFilter(self.eventManager.wheelEvent)
+
+        self.show()
 
     def sys_tray_icon_activated(self, reason):
         if reason == self.DoubleClick:
@@ -87,4 +89,7 @@ class SysTray(SystemTrayIcon):
     @login.setter
     def login(self, newVal):
         self._login = newVal
+
+    def hide(self):
+        return self.show()
 

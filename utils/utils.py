@@ -867,7 +867,7 @@ def nodeParse(node):
         right = parse(node[u"right"])
         return BinaryExpression(operator, left, right)
     else:
-        raise ValueError("Invalid data structure.")
+        raise ValueError("Invalid qssPths structure.")
 
 
 # ----------------------------------------------------------------------------------------------------------- #

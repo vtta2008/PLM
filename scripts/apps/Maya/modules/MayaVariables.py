@@ -179,7 +179,7 @@ for any question or feedback, email me at: dot@damgteam.com
 
 ICONS = os.path.join(os.getenv(__root__), 'imgs', 'maya.icon')
 
-# Get common data directory for every apps
+# Get common qssPths directory for every apps
 def getScrPth(mainVar):
     localAppDir = os.getenv( mainVar[ 'envKey' ][3])
 

@@ -15,34 +15,26 @@ Description:
 # Python
 import sys
 
-# PyQt5
-from PyQt5.QtWidgets                        import QApplication
-
 # Plt
-from ui.uikits.GroupBox                     import GroupBox
-from ui.uikits.BoxLayout                    import VBoxLayout
-from ui.uikits.Widget                       import Widget
-from ui.uikits.Icon                         import AppIcon
-from ui.uikits.CheckBox                     import CheckBox
-from ui.uikits.GridLayout                   import GridLayout
-from ui.uikits.Label                        import Label
+from toolkits.Widgets                       import (GroupBox, GridLayout, CheckBox, Label, Widget, VBoxLayout, AppIcon)
 from utils                                  import str2bool
-from bin.dependencies.damg.damg             import DAMGDICT, DAMGLIST
+from bin                                    import DAMGDICT, DAMGLIST
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """
 
 class HeaderCheckBoxes(GridLayout):
 
-    key = 'HeaderCheckBoxes'
-    toolBarCBs = DAMGLIST()
-    menuCBs = DAMGLIST()
-    connectCBs = DAMGLIST()
-    checkboxes = DAMGDICT()
+    key                                     = 'HeaderCheckBoxes'
+    la                                      = 0
+    toolBarCBs                              = DAMGLIST()
+    menuCBs                                 = DAMGLIST()
+    connectCBs                              = DAMGLIST()
+    checkboxes                              = DAMGDICT()
     def __init__(self, parent=None):
         super(HeaderCheckBoxes, self).__init__(parent)
-        self.parent = parent
-        self.la = 0
+
+        self.parent                         = parent
         self.buildHeaderCheckBoxes()
 
         cbs = [self.toolBarCBs, self.menuCBs, self.connectCBs, [self.headerCB]]
@@ -82,22 +74,22 @@ class HeaderCheckBoxes(GridLayout):
         hdl = tbl + 1
 
         self.addWidget(Label({'txt': 'Menus'}), mnl, 0, 1, 1)
-        self.addWidget(self.allMenuCB, mnl, 1, 1, 1)
-        self.addWidget(self.mnAppCB, mnl, 2, 1, 1)
-        self.addWidget(self.mnGoCB, mnl, 3, 1, 1)
-        self.addWidget(self.mnOfficeCB, mnl, 4, 1, 1)
-        self.addWidget(self.mnToolsCB, mnl, 5, 1, 1)
-        self.addWidget(self.mnDevCB, mnl, 6, 1, 1)
-        self.addWidget(self.mnLibCB, mnl, 7, 1, 1)
-        self.addWidget(self.mnHelpCB, mnl, 8, 1, 1)
+        i = 1
+        for i in range(len(self.menuCBs)):
+            self.addWidget(self.menuCBs[i], mnl, i-1, 1, 1)
+            i += 1
 
         self.addWidget(Label({'txt': 'Tool Bar: '}), tbl, 0, 1, 1)
-        self.addWidget(self.allToolBarCB, tbl, 1, 1, 1)
-        self.addWidget(self.tbTDCB, tbl, 2, 1, 1)
-        self.addWidget(self.tbVfxCB, tbl, 3, 1, 1)
-        self.addWidget(self.tbArtCB, tbl, 4, 1, 1)
-        self.addWidget(self.tbTexCB, tbl, 5, 1, 1)
-        self.addWidget(self.tbPostCB, tbl, 6, 1, 1)
+        i = 1
+        for i in range(len(self.toolBarCBs)):
+            self.addWidget(self.toolBarCBs[i], tbl, i-1, 1, 1)
+
+        # self.addWidget(self.allToolBarCB, tbl, 1, 1, 1)
+        # self.addWidget(self.tbTDCB, tbl, 2, 1, 1)
+        # self.addWidget(self.tbVfxCB, tbl, 3, 1, 1)
+        # self.addWidget(self.tbArtCB, tbl, 4, 1, 1)
+        # self.addWidget(self.tbTexCB, tbl, 5, 1, 1)
+        # self.addWidget(self.tbPostCB, tbl, 6, 1, 1)
 
         self.addWidget(Label({'txt': 'Connect Status'}), csl, 0, 1, 1)
         self.addWidget(self.allConnectCB, csl, 1, 1, 1)
@@ -119,7 +111,11 @@ class HeaderCheckBoxes(GridLayout):
 
     def buildMenuCheckBoxes(self):
         self.mnAppCB = CheckBox('&App')
-        self.mnGoCB = CheckBox('&Go')
+        self.mnGoCB = CheckBox('&Go to')
+        self.mnEditCB = CheckBox('&Edit')
+        self.mnViewCB = CheckBox('&View')
+        self.mnAppearanceCB = CheckBox('&Appearance')
+        self.mnStylesheetCB = CheckBox('&Stylesheet')
         self.mnOfficeCB = CheckBox('&Office')
         self.mnToolsCB = CheckBox('&Tools')
         self.mnDevCB = CheckBox('&Dev')
@@ -127,8 +123,9 @@ class HeaderCheckBoxes(GridLayout):
         self.mnHelpCB = CheckBox('&Help')
         self.allMenuCB = CheckBox('All: ')
         self.allMenuCB.stateChanged.connect(self.allMenuStateChanged)
-        for cb in [self.mnAppCB, self.mnGoCB, self.mnOfficeCB, self.mnToolsCB, self.mnDevCB, self.mnLibCB,
-                   self.mnHelpCB, self.allMenuCB]:
+
+        for cb in [ self.allMenuCB, self.mnAppCB, self.mnGoCB, self.mnEditCB, self.mnViewCB, self.mnAppearanceCB,
+                    self.mnStylesheetCB, self.mnOfficeCB, self.mnToolsCB, self.mnDevCB, self.mnLibCB, self.mnHelpCB, ]:
             self.menuCBs.append(cb)
 
     def buildToolBarCheckBoxes(self):
@@ -139,7 +136,8 @@ class HeaderCheckBoxes(GridLayout):
         self.tbPostCB = CheckBox('Post')
         self.allToolBarCB = CheckBox("All: ")
         self.allToolBarCB.stateChanged.connect(self.allToolBarStateChanged)
-        for cb in [self.tbTDCB, self.tbVfxCB, self.tbArtCB, self.tbTexCB, self.tbPostCB, self.allToolBarCB]:
+
+        for cb in [self.allToolBarCB, self.tbTDCB, self.tbVfxCB, self.tbArtCB, self.tbTexCB, self.tbPostCB,]:
             self.toolBarCBs.append(cb)
 
     def allToolBarStateChanged(self, bool):
@@ -273,13 +271,4 @@ class Preferences(Widget):
     def showEvent(self, event):
         self.resize(574, 252)
         self.resize(575, 252)
-
-def main():
-    app = QApplication(sys.argv)
-    pref_layout = Preferences()
-    pref_layout.show()
-    app.exec_()
-
-if __name__=='__main__':
-    main()
 
