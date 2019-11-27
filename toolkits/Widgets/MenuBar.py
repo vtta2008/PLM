@@ -9,12 +9,13 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __copyright__, signals, settings
+from __buildtins__ import __copyright__
 
 from PyQt5.QtWidgets                        import QMenuBar, QMenu
 
-from bin.dependencies.damg.damg             import DAMGDICT
-
+from bin             import DAMGDICT
+from appData import SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core import Settings, SignalManager
 
 class Menu(QMenu):
 
@@ -28,10 +29,8 @@ class Menu(QMenu):
 
         self._title                         = title
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
     def sizeHint(self):
         size = super(Menu, self).sizeHint()
@@ -120,10 +119,8 @@ class MenuBar(QMenuBar):
         QMenuBar.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
     def sizeHint(self):
         size = super(MenuBar, self).sizeHint()

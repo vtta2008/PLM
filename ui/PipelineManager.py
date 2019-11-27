@@ -8,18 +8,18 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-
-# PyQt5
-from PyQt5.QtCore                       import Qt
-
 # PLM
 
 from appData                            import __homepage__, dockB, __appname__
+print('done here')
 from toolkits.Widgets                   import MainWindow, GroupBox, Widget, GridLayout, LogoIcon
+print('done here')
 from .Header                            import MainToolBar, MainMenuBar, ConnectStatus
+
 from .Body                              import TopTab, BotTab, Notification
+
 from .Footer                            import Footer, MainStatusBar
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """

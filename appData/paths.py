@@ -32,7 +32,7 @@ DESKTOP_DIR                 = os.path.join(os.environ["HOMEPATH"], "desktop")   
 config                      = 'configuration'
 logs                        = 'logs'
 cache                       = 'cache'
-settings                    = 'settings'
+settings                    = 'pres'
 reg                         = 'reg'
 nodegraph                   = 'nodegraph'
 userPrefs                   = 'userPrefs'
@@ -43,7 +43,7 @@ prefs                       = 'prefs'
 
 ROOT_DIR                    = os.path.join(os.getenv(__envKey__))
 
-CFG_DIR                     = os.path.join(ROOT_DIR, 'appData', '.config')
+CFG_DIR                     = os.path.join(ROOT_DIR, 'appData', '._data')
 TMP_DIR                     = os.path.join(ROOT_DIR, 'appData', '.tmp')
 TASK_DIR                    = os.path.join(ROOT_DIR, 'appData', '.task')
 TEAM_DIR                    = os.path.join(ROOT_DIR, 'appData', '.team')
@@ -52,7 +52,7 @@ PRJ_DIR                     = os.path.join(ROOT_DIR, 'appData', '.project')
 
 CONFIG_LOCAL_DAMG_DIR       = CFG_DIR                                                   # DAMG team directory
 CONFIG_LOCAL_PLM_DIR        = CFG_DIR                                                   # Plm directory
-CONFIG_DIR                  = CFG_DIR                                                   # Config dir to store config info
+CONFIG_DIR                  = CFG_DIR                                                   # Config dir to store _data info
 
 SETTING_DIR                 = CFG_DIR                                                   # Setting dir
 LOG_DIR                     = CFG_DIR                                                   # Log dir
@@ -136,7 +136,7 @@ logoIconCfg                 = os.path.join(CONFIG_DIR, 'logoIcon.cfg')          
 
 pyEnvCfg                    = os.path.join(CONFIG_DIR, 'envKey.cfg')                    # Config python env variables
 mainConfig                  = os.path.join(CONFIG_DIR, 'main.cfg')                      # Config pipeline soft package
-PLMconfig                   = os.path.join(CONFIG_DIR, 'PLM.cfg')                       # Master config
+PLMconfig                   = os.path.join(CONFIG_DIR, 'PLM.cfg')                       # Master _data
 
 # -------------------------------------------------------------------------------------------------------------
 """ Settings """

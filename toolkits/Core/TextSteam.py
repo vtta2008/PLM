@@ -9,11 +9,13 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __copyright__, settings, signals
+from __buildtins__ import __copyright__
 
 
 from PyQt5.QtCore                           import QTextStream
 
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core                          import Settings, SignalManager
 
 class TextStream(QTextStream):
 
@@ -24,12 +26,10 @@ class TextStream(QTextStream):
 
     def __init__(self, fileName, parent=None):
         super(TextStream, self).__init__(fileName)
-
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
     @property
     def copyright(self):

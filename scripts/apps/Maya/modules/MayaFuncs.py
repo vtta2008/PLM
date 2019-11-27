@@ -633,7 +633,7 @@ def TimeToPlayBlast(*args):
     cmds.modelEditor(editor, edit=True, sel=False)
     # make heads up display hidden
     cmds.modelEditor(editor, edit=True, hud=False)
-    # playblast from selected settings
+    # playblast from selected pres
     cmds.playblast(filename=NameOfFile, format="qt", sequenceTime=0, clearCache=1, viewer=True,
                    showOrnaments=OrnamentsCheck, framePadding=4, percent=100, compression="H.264",
                    quality=QualityField, widthHeight=(WidthField, HeightField), forceOverwrite=True)

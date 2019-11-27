@@ -9,7 +9,6 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__                     import absolute_import, unicode_literals
-from __buildtins__                  import __copyright__
 """ Import """
 
 # Python
@@ -24,7 +23,6 @@ class Setting(QSettings):
     Type                            = 'DAMGSETTING'
     key                             = 'Setting'
     _name                           = 'DAMG Setting'
-    _copyright                      = __copyright__()
 
     _settingEnable                  = False
     _checkSettingAble               = False

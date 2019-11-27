@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __buildtins__ import __copyright__, settings, signals
+from __buildtins__ import __copyright__
 
 """ Import """
 
@@ -16,8 +16,11 @@ from __buildtins__ import __copyright__, settings, signals
 from PyQt5.QtWidgets                        import QGroupBox
 
 # PLM
-from toolkits.Widgets                       import AutoPreset3, AutoPreset2, AutoPreset1, GridLayout, HBoxLayout, Label, VBoxLayout
-from appData                                import WAIT_LAYOUT_COMPLETE
+
+from .                                      import VBoxLayout, HBoxLayout, GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
+from .Label                                 import Label
+from appData                                import WAIT_LAYOUT_COMPLETE, SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core                          import Settings, SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Groupbox presets """
@@ -33,10 +36,8 @@ class GroupBoxBase(QGroupBox):
         QGroupBox.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
     def sizeHint(self):
         size = super(GroupBoxBase, self).sizeHint()
@@ -158,7 +159,7 @@ class GroupBox(GroupBoxBase):
                 self.layout = self.subLayout
             self.setLayout(self.layout)
         elif self.mode == "groupGrid":
-            self.layout = GridLayout()
+            self.layout = GridLayout(self)
             self.setLayout(self.layout)
         else:
             print("Unrecognise mode: {}".format(self.mode))

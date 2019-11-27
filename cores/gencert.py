@@ -107,12 +107,12 @@ def gencert(domain, rootdir=MYDIR, keysize=KEY_SIZE, days=DAYS,
     if not os.path.exists(dfile('configKey')):
         openssl('genrsa', '-out', dfile('configKey'), str(keysize))
 
-    config = open(dfile('config'), 'w')
+    config = open(dfile('_data'), 'w')
     config.write(OPENSSL_CONFIG_TEMPLATE % {'domain': domain})
     config.close()
 
     openssl('req', '-showLayout_new', '-configKey', dfile('configKey'), '-out', dfile('request'),
-            '-config', dfile('config'))
+            '-_data', dfile('_data'))
 
     openssl('x509', '-req', '-days', str(days), '-in', dfile('request'),
             '-CA', ca_cert, '-CAkey', ca_key,
@@ -120,7 +120,7 @@ def gencert(domain, rootdir=MYDIR, keysize=KEY_SIZE, days=DAYS,
             '0x%s' % hashlib.md5(domain +
                                  str(datetime.datetime.now())).hexdigest(),
             '-out', dfile('cert'),
-            '-extensions', 'v3_req', '-extfile', dfile('config'),
+            '-extensions', 'v3_req', '-extfile', dfile('_data'),
             *X509_EXTRA_ARGS)
 
     print("Done. The private configKey is at %s, the cert is at %s, and the " \

@@ -44,7 +44,7 @@ MAINVAR = dict(
 
     subKey = 'Local',
 
-    os = ['sys.config', 'os.config', 'path.config', 'timelog.sch', 'webs.pipeline'],
+    os = ['sys._data', 'os._data', 'path._data', 'timelog.sch', 'webs.pipeline'],
 
     job=[ 'TD', 'Comp', 'Design', 'Office', 'UV', 'Sound'],
 

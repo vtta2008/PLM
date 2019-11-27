@@ -19,10 +19,9 @@ from functools              import partial
 
 # PLM
 from appData                import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
-from toolkits.Widgets       import (Widget, AppIcon, GridLayout, LineEdit, CheckBox, Button, usernameLabel,
-                                    passwordLabel, Label, MessageBox)
-from toolkits.uiUtils       import GroupGrid
-from utils                  import str2bool, RemoveDB, UpdateDB
+from toolkits.Widgets       import (Widget, AppIcon, GridLayout, LineEdit, CheckBox, Button, user_pass_label,
+                                    Label, MessageBox, GroupGrid, )
+from utils                  import str2bool, LocalDatabase
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """
@@ -41,6 +40,7 @@ class SignIn(Widget):
         self.setWindowTitle('Sign In')
 
         self.layout             = GridLayout()
+        self.db                 = LocalDatabase()
         self.buildUI()
         self.setLayout(self.layout)
 
@@ -60,6 +60,8 @@ class SignIn(Widget):
         signupGrp               = GroupGrid('Sign up')
         signupGrid              = signupGrp.layout
         signupBtn               = Button({'txt':'Sign up', 'cl': partial(self.signals.emit, 'showLayout', 'SignUp', 'show')})
+
+        usernameLabel, passwordLabel = user_pass_label()
 
         loginGrid.addWidget(usernameLabel, 0, 0, 1, 2)
         loginGrid.addWidget(passwordLabel, 1, 0, 1, 2)
@@ -111,11 +113,11 @@ class SignIn(Widget):
             token = r.json()['token']
             check = self.userCB.checkState()
 
-            RemoveDB("curUser")
-            UpdateDB("curUser", [username, token, cookie, str2bool(check)])
+            self.db.remove_data("curUser")
+            self.db.update_table("curUser", [username, token, cookie, str2bool(check)])
             self.signals.emit('loginChanged', True)
         else:
-            RemoveDB("curUser")
+            self.db.remove_data("curUser")
             MessageBox(self, 'Login Failed', 'critical', PW_WRONG)
             return
 

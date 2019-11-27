@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __copyright__, signals, settings
+from __buildtins__ import __copyright__
 
 import os
 
@@ -17,7 +17,9 @@ from PyQt5.QtGui                            import QIcon
 from PyQt5.QtCore                           import QSize
 
 from utils                                  import data_handler, get_app_icon, get_tag_icon, get_logo_icon
-from appData                                import appIconCfg, IGNORE_ICON_NAME
+from appData                                import appIconCfg, IGNORE_ICON_NAME, SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core                          import Settings, SignalManager
+
 
 class Icon(QIcon):
 
@@ -31,10 +33,8 @@ class Icon(QIcon):
         QIcon.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
     @property
     def copyright(self):

@@ -8,12 +8,15 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __buildtins__ import __copyright__, settings, signals
+from __buildtins__ import __copyright__
 
 """ Import """
 
 # PyQt5
 from PyQt5.QtWidgets                        import QGridLayout
+
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core                          import Settings, SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Gridlayout presets """
@@ -29,16 +32,8 @@ class GridLayout(QGridLayout):
         QGridLayout.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
-
-    def setValue(self, key, value):
-        return self.settings.initSetValue(key, value, self.key)
-
-    def getValue(self, key):
-        return self.settings.initValue(key, self.key)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
     def sizeHint(self):
         size = super(GridLayout, self).sizeHint()

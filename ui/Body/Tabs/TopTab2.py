@@ -14,7 +14,7 @@ Description:
 # PyQt5
 from PyQt5.QtCore               import pyqtSlot
 from PyQt5.QtGui                import QPixmap
-from PyQt5.QtWidgets            import QLabel, QGraphicsScene
+from PyQt5.QtWidgets            import QGraphicsScene
 
 # Plt
 from toolkits.Widgets           import Widget, GridLayout, GroupBox, GroupGrid, Label

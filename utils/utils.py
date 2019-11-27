@@ -383,7 +383,7 @@ def get_pointer_bounding_box(pointerPos, bbSize):
     return bb
 
 # -------------------------------------------------------------------------------------------------------------
-""" Read, Write, Edit json/yaml/config info """
+""" Read, Write, Edit json/yaml/_data info """
 
 def data_handler(type='json', mode='r', filePath=None, data={}):
 

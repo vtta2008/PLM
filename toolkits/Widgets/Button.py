@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __buildtins__ import __copyright__, settings, signals
+from __buildtins__ import __copyright__
 """ Import """
 
 # PyQt5
@@ -17,6 +17,8 @@ from PyQt5.QtWidgets                        import QPushButton, QToolButton
 # PLM
 from .Icon                                  import AppIcon, TagIcon
 from utils                                  import check_preset
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core                          import Settings, SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Button presets """
@@ -31,11 +33,8 @@ class Button(QPushButton):
     def __init__(self, preset={}, parent=None):
         QPushButton.__init__(self)
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
-
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
         self.preset                         = preset
         if check_preset(self.preset):
             self.buildUI()
@@ -143,14 +142,14 @@ class ToolButton(QToolButton):
     Type                                    = 'DAMGUI'
     key                                     = 'ToolButton'
     _name                                   = 'DAMG Tool Button'
-    _copyright                              = getCopyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, text, parent=None):
         QToolButton.__init__(self)
 
-        self.signals                        = getSignals(self)
-        self.settings                       = getSetting(self)
         self.parent                         = parent
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
         self.setText(text)
 
     def sizeHint(self):

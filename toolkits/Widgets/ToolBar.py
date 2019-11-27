@@ -8,11 +8,14 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __buildtins__ import __copyright__, settings, signals
+from __buildtins__ import __copyright__
 """ Import """
 
 # PyQt5
 from PyQt5.QtWidgets                        import QToolBar
+
+from appData import SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core import Settings, SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar class """
@@ -29,10 +32,8 @@ class ToolBar(QToolBar):
         QToolBar.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
         self.setWindowTitle(self._name)
 
     def add_action(self, action):

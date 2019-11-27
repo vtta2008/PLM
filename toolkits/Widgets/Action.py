@@ -8,17 +8,17 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __buildtins__                          import __copyright__, settings, signals
+from __buildtins__                          import __copyright__
 """ Import """
 
 # PyQt5
 from PyQt5.QtWidgets                        import QAction
 
 # PLM
-from appData                                import SETTING_FILEPTH, ST_FORMAT
-from cores.Settings                         import Settings
-from ui.Management                          import SignalManager
 from utils                                  import check_preset
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core                          import Settings, SignalManager
+from .Icon                                  import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Action presets """
@@ -32,12 +32,9 @@ class Action(QAction):
 
     def __init__(self, preset={}, parent=None):
         QAction.__init__(self)
-
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
         self.preset                         = preset
         if check_preset(self.preset):
@@ -51,7 +48,7 @@ class Action(QAction):
         else:
             for key, value in self.preset.items():
                 if key == 'icon':
-                    self.setIcon(value)
+                    self.setIcon(AppIcon(32, value))
                 elif key == 'txt':
                     self.setText(value)
                 elif key == 'trg':
@@ -88,12 +85,14 @@ class ShortCut(Action):
         Action.__init__(self)
 
         self.parent                         = parent
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
         if text is not None:
             self.setText(text)
 
         if icon is not None:
-            self.setIcon(icon)
+            self.setIcon(AppIcon(32, icon))
 
         if shortcut is not None:
             self.setShortcut(shortcut)

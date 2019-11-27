@@ -14,52 +14,52 @@ Description:
 import os
 
 # --------------------------------------------------------------------------------------------------------------
-""" Autodesk config """
+""" Autodesk _data """
 
 autodeskVer         = [ "2017", "2018", "2019", "2020"]
 autodeskApp         = [ "Autodesk Maya", "Autodesk MudBox", "Autodesk 3ds Max", "Autodesk AutoCAD"]
 userMayaDir         = os.path.expanduser(r"~/Documents/maya")
 
 # --------------------------------------------------------------------------------------------------------------
-""" Adobe config """
+""" Adobe _data """
 
 adobeVer            = [ "CC 2017", "CC 2018", "CC 2019", ]
 adobeApp            = [ "Adobe Photoshop", "Adobe Illustrator", "Adobe Audition", "Adobe After Effects", "Adobe Premiere Pro",
                         "Adobe Media Encoder", ]
 
 # --------------------------------------------------------------------------------------------------------------
-""" Foundry config """
+""" Foundry _data """
 
 foundryVer          = [ "11.1v1", "11.2v1", "4.0v1", "4.1v1", "2.6v3"]
 foundryApp          = [ 'Hiero', 'HieroPlayer', 'Mari', 'NukeX', 'Katana',]
 
 # --------------------------------------------------------------------------------------------------------------
-""" Pixologic config """
+""" Pixologic _data """
 
 pixologiVer         = [ "4R6", "4R7", "4R8"]
 pixologiApp         = [ 'ZBrush', ]
 
 # --------------------------------------------------------------------------------------------------------------
-""" Allegorithmic config """
+""" Allegorithmic _data """
 
 allegorithmicVer    = [ ]
 
 allegorithmicApp    = [ 'Substance Painter', 'Substance Designer']
 
 # --------------------------------------------------------------------------------------------------------------
-""" SideFX config """
+""" SideFX _data """
 
 sizefxVer           = [ '16.5.439', '16.5.496']
 sizefxApp           = [ 'Houdini FX', ]
 
 # --------------------------------------------------------------------------------------------------------------
-""" Microsoft Office config """
+""" Microsoft Office _data """
 
 officeVer           = [ '2013', '2015', '2016', '2017', "2018", "2019", "2020"]
 officeApp           = [ 'Word', 'Excel', 'PowerPoint', 'Wordpad']
 
 # --------------------------------------------------------------------------------------------------------------
-""" JetBrains config """
+""" JetBrains _data """
 
 jetbrainsVer        = [ '2017.3.3', '2018.1', ]
 jetbrainsApp        = [ 'JetBrains PyCharm', ]
@@ -71,7 +71,7 @@ wonderUnitVer       = [ ]
 wonderUniApp        = [ 'Storyboarder', 'Krita (x64)' ]
 
 # --------------------------------------------------------------------------------------------------------------
-""" another app config """
+""" another app _data """
 
 anacondaApp         = [ 'Spyder', 'QtDesigner', 'Git Bash']
 otherApp            = [ 'Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', ]
@@ -97,7 +97,7 @@ KEYDETECT           = [ "Non-commercial", "Uninstall", "Verbose", "License", "Sk
 FIX_KEY             = { 'ScreenShot': 'ScreenShot', 'Snipping Tool': 'SnippingTool'}
 
 # --------------------------------------------------------------------------------------------------------------
-""" Combine config qssPths """
+""" Combine _data qssPths """
 
 pVERSION = dict(adobe=adobeVer, autodesk=autodeskVer, allegorithmic = allegorithmicVer, foundry=foundryVer,
                 pixologic=pixologiVer, sizefx=sizefxVer, office=officeVer, jetbrains=jetbrainsVer, wonderUnit=wonderUnitVer, )
@@ -109,7 +109,7 @@ pTRACK = dict(TDS=TRACK_TDS, VFX=TRACK_VFX, ART=TRACK_ART, TEXTURE = TRACK_TEX, 
               Office=TRACK_OFFICE, Dev=TRACK_DEV, Tools=TRACK_TOOLS, Extra=TRACK_EXTRA, sysTray=TRACK_SYSTRAY, )
 
 # --------------------------------------------------------------------------------------------------------------
-""" Store config qssPths """
+""" Store _data qssPths """
 
 def generate_key_packages(*args):
     keyPackage = []
@@ -142,14 +142,14 @@ def generate_config(key, *args):
 
 KEYPACKAGE      = generate_key_packages()
 
-# Toolbar config
+# Toolbar _data
 CONFIG_TDS      = generate_config('TDS')                            # TD artist
 CONFIG_VFX      = generate_config('VFX')                            # VFX artist
 CONFIG_ART      = generate_config('ART')                            # 2D artist
 CONFIG_TEX      = generate_config('TEXTURE')                        # ShadingTD artist
 CONFIG_POST     = generate_config('POST')                           # Post production
 
-# Tab 1 sections config
+# Tab 1 sections _data
 CONFIG_OFFICE   = generate_config('Office')                         # Paper work department
 CONFIG_DEV      = generate_config('Dev') + ['Command Prompt']       # Rnd - Research and development
 CONFIG_TOOLS    = generate_config('Tools')                          # useful/custom tool supporting for the whole pipeline

@@ -43,7 +43,7 @@ class MainToolBar(MainWindow):
         self.actionManager  = actionManager
 
         if not self.settings._settingEnable:
-            # print('setting enable value: {0}'.format(self.settings._settingEnable))
+            # print('setting enable value: {0}'.format(self.pres._settingEnable))
             self.settings       = self.parent.settings
 
         self.tdToolBar      = self.build_toolBar("TD")

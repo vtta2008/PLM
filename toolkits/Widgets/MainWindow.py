@@ -9,17 +9,22 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __copyright__, settings, signals
+from __buildtins__ import __copyright__
 
 """ Import """
 
 # PyQt5
 from PyQt5.QtWidgets                        import QMainWindow
-
+# print('done here')
 # PLM
 from toolkits.Widgets                       import AppIcon
+# print('done here')
 from cores.Loggers                          import Loggers
-
+# print('done here')
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+# print('done here')
+from toolkits.Core                          import Settings, SignalManager
+# print('done here')
 # -------------------------------------------------------------------------------------------------------------
 """ Main window layout preset """
 
@@ -35,10 +40,8 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
 
         self.parent             = parent
-        self.settings           = settings
-        self.signals            = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
         self.logger             = Loggers(self.__class__.__name__)
 
         self.setWindowTitle(self.key)

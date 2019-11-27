@@ -8,13 +8,16 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __buildtins__ import __copyright__, signals, settings
+from __buildtins__ import __copyright__
 
 # PyQt5
 from PyQt5.QtWidgets                        import QWidget
 
 # PLM
 from .Icon                                  import AppIcon
+
+from appData import SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core import Settings, SignalManager
 
 
 class Widget(QWidget):
@@ -28,10 +31,8 @@ class Widget(QWidget):
         super(Widget, self).__init__(parent)
 
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
         self.setWindowIcon(AppIcon(32, self.key))
         self.setWindowTitle(self.key)

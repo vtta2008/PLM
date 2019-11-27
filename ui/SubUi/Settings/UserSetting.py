@@ -20,9 +20,8 @@ from PyQt5.QtWidgets                import (QFileDialog)
 
 # Plt
 from appData                        import PW_BLANK, PW_UNMATCH, __envKey__
-from toolkits.uiUtils               import GroupGrid
-from toolkits.Widgets               import Widget, GridLayout, Label, Button, LineEdit, MessageBox
-from utils                          import get_avatar_image, QuerryDB, text_to_hex, resize_image
+from toolkits.Widgets               import Widget, GridLayout, Label, Button, LineEdit, MessageBox, GroupGrid
+from utils                          import get_avatar_image, LocalDatabase, text_to_hex, resize_image
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """
@@ -30,7 +29,7 @@ from utils                          import get_avatar_image, QuerryDB, text_to_h
 class UserSetting(Widget):
 
     key = 'UserSetting'
-    query = QuerryDB()
+    querry = LocalDatabase()
 
     def __init__(self, parent=None):
 

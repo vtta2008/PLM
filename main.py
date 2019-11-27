@@ -10,9 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
-
-from __buildtins__                      import *
-from __buildtins__                      import __envKey__, Application
+from __buildtins__ import __envKey__, Application, pres, configManager, ConfigManager, ROOT
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
@@ -24,20 +22,17 @@ from PyQt5.QtCore                       import pyqtSlot
 
 # Plm
 from appData                            import (__localServer__, __organization__, StateNormal, StateMax, StateMin,
-                                                __appname__, __version__, __website__, SETTING_FILEPTH, ST_FORMAT,
-                                                SYSTRAY_UNAVAI)
+                                                __appname__, __version__, __website__, SYSTRAY_UNAVAI, SETTING_FILEPTH,
+                                                ST_FORMAT)
 
 from utils                              import str2bool, clean_file_ext, LocalDatabase
 from cores.StyleSheet                   import StyleSheet
 from cores.Loggers                      import Loggers
 from cores.Registry                     import RegistryLayout
 
-from ui.Management                      import EventManager, ButtonManager, ActionManager, ThreadManager
-from ui.SubUi                           import Browser
-from ui.LayoutManager                   import LayoutManager
-
-from toolkits                           import getSetting
-from toolkits.Widgets                   import LogoIcon, MessageBox
+from ui                                 import LayoutManager, Browser
+from toolkits.Widgets                   import LogoIcon, ActionManager, ButtonManager
+from toolkits.Core                      import EventManager, ThreadManager, Settings, SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -57,14 +52,8 @@ class DAMGTEAM(Application):
 
     def __init__(self):
         super(DAMGTEAM, self).__init__(sys.argv)
-        if self.onlyExists:
-            if not self.instance() is None:
-                MessageBox(None, 'PLM is running', 'critical', 'PLM application already running', 'close')
-                self.exit()
-            else:
-                sys.exit(self.exec_())
 
-        self.setWindowIcon(LogoIcon("Logo"))  # Setup icon
+        self.setWindowIcon(LogoIcon("Logo"))                                                            # Setup icon
         self.setOrganizationName(__organization__)
         self.setApplicationName(__appname__)
         self.setOrganizationDomain(__website__)
@@ -79,7 +68,8 @@ class DAMGTEAM(Application):
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(self.appID)                     # Setup app ID
 
         self.logger                     = Loggers(self.__class__.__name__)
-        self.settings                   = getSetting(self)
+        self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals                    = SignalManager(self)
         self.settings._settingEnable    = True
 
         self.appInfo                    = self.dataConfig.appInfo                                    # Configuration qssPths
@@ -94,8 +84,8 @@ class DAMGTEAM(Application):
         self.buttonManager              = ButtonManager()
         self.actionManager              = ActionManager()
         self.registryLayout             = RegistryLayout()
-        self.layoutManager              = LayoutManager(self.settings, self.registryLayout, self.actionManager,
-                                                        self.buttonManager, self.eventManager, self.threadManager, self)
+        self.layoutManager              = LayoutManager(self.registryLayout, self.actionManager, self.buttonManager,
+                                                        self.eventManager, self.threadManager, self)
         self.layoutManager.registLayout(self.browser)
         self.layoutManager.buildLayouts()
         self.layoutManager.globalSetting()
@@ -117,7 +107,7 @@ class DAMGTEAM(Application):
                 layout.signals.connect('openBrowser', self.openBrowser)
                 layout.signals.connect('setSetting', self.setSetting)
                 layout.signals.connect('sysNotify', self.sysNotify)
-                # print(layout.key)
+
                 layout.settings._settingEnable = True
 
                 if layout.key in ['SignIn', 'SignUp', 'SysTray', 'ForgotPassword']:

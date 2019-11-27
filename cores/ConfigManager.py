@@ -12,9 +12,9 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # Python
-import os, sys, subprocess, shutil, winshell, pkg_resources, json
+import os, sys, subprocess, shutil, winshell, pkg_resources, json, pathlib2
 from platform                           import system
-from bin.dependencies.damg.damg import DAMG, DAMGDICT, DAMGLIST
+from bin                                import DAMG, DAMGDICT, DAMGLIST
 
 # PyQt5
 from PyQt5 import __file__ as pyqt_path
@@ -87,11 +87,18 @@ CONFIG_SYSTRAY                          = ['ScreenShot', 'Snipping Tool']
 FIX_KEY                                 = { 'ScreenShot': 'ScreenShot', 'Snipping Tool': 'SnippingTool'}
 
 
+def asUtf8(s):
+    if isinstance(s, pathlib2.Path):
+        s = str(s)
+
+    if type(s) == str:
+        return s.encode('utf-8')
+    else:
+        return s
+
 class ConfigManager(DAMG):
 
     key                                 = 'Configurations'
-
-    allowOutput                         = False
 
     checkList                           = DAMGDICT()
     cfgInfo                             = DAMGDICT()
@@ -137,8 +144,8 @@ class ConfigManager(DAMG):
                 self.cfgs = False
                 break
 
-        self.folder_settings(self.pthInfo['config'], 'h')
-        pths, fns = self.get_all_paths(self.pthInfo['config'])
+        self.folder_settings(self.pthInfo['_data'], 'h')
+        pths, fns = self.get_all_paths(self.pthInfo['_data'])
         listObj = pths + fns
         self.batch_folder_settings(listObj, 'h')
 
@@ -168,12 +175,12 @@ class ConfigManager(DAMG):
         pthInfo['bin']                  = self.set_dir('bin')
         pthInfo['resource']             = self.set_dir('bin/resources')
 
-        pthInfo['config']               = self.set_dir('appData/.config')
-        pthInfo['mtd']                  = self.set_dir('appData/.config')
-        pthInfo['setting']              = self.set_dir('appData/.config')
-        pthInfo['log']                  = self.set_dir('appData/.config')
-        pthInfo['cache']                = self.set_dir('appData/.config')
-        pthInfo['preferences']          = self.set_dir('appData/.config')
+        pthInfo['_data']               = self.set_dir('appData/._data')
+        pthInfo['mtd']                  = self.set_dir('appData/._data')
+        pthInfo['setting']              = self.set_dir('appData/._data')
+        pthInfo['log']                  = self.set_dir('appData/._data')
+        pthInfo['cache']                = self.set_dir('appData/._data')
+        pthInfo['preferences']          = self.set_dir('appData/._data')
         pthInfo['tmp']                  = self.set_dir('appData/.tmp')
         pthInfo['task']                 = self.set_dir('appData/.task')
         pthInfo['project']              = self.set_dir('appData/.project')
@@ -216,7 +223,7 @@ class ConfigManager(DAMG):
         self.pthInfo = pthInfo
         self._pthInfo = True
 
-        pth = os.path.join(pthInfo['config'], fileName)
+        pth = os.path.join(pthInfo['_data'], fileName)
         self.compare_data(pth, pthInfo)
         return True
 
@@ -242,6 +249,7 @@ class ConfigManager(DAMG):
     def cfg_pyVersion(self):
         self.pyVersion = float(sys.version[:3])
         self.cfgInfo['version'] = sys.version
+
         return True
 
     def cfg_pyPath(self, pyPth):
@@ -261,11 +269,8 @@ class ConfigManager(DAMG):
     def cfg_pip(self):
         pipVer = self.get_pkg_version('pip')
         if pipVer is None:
-            proc = subprocess.Popen('python -m pip install --user --upgrade pip',
-                                    shell=True,
-                                    stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE,
-                                    stderr=subprocess.STDOUT)
+            self.run_command('python', ['-m pip install --user --upgrade pip'])
+
         else:
             if pipVer < 18.0:
                 proc = subprocess.Popen('python -m pip install --user --upgrade pip',
@@ -338,13 +343,13 @@ class ConfigManager(DAMG):
                 for usDes in mayaVers:
                     shutil.copy(usScr, usDes)
 
-        print('Maya is implemented')
+        # print('Maya is implemented')
         return True
 
     def cfg_envVars(self, fileName='envKey.cfg', **envKeys):
         for key in os.environ.keys():
             envKeys[key] = os.getenv(key)
-        pth = os.path.join(self.pthInfo['config'], fileName)
+        pth = os.path.join(self.pthInfo['_data'], fileName)
         self.compare_data(pth, envKeys)
         return True
 
@@ -363,7 +368,7 @@ class ConfigManager(DAMG):
         self.iconInfo = iconInfo
         self._iconInfo = True
 
-        pth = os.path.join(self.pthInfo['config'], fileName)
+        pth = os.path.join(self.pthInfo['_data'], fileName)
         self.compare_data(pth, self.iconInfo)
 
         return True
@@ -394,7 +399,7 @@ class ConfigManager(DAMG):
         self.mainInfo['Reference']              = ['Reference', self.iconInfo['Reference'], 'Reference']
         self.mainInfo['PLM wiki']               = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=__plmWiki__)]
         self.mainInfo['Browser']                = ['Browser', self.iconInfo['Browser'], "Browser"]
-        self.mainInfo['OpenConfig']             = ['Open config folder', self.iconInfo['OpenConfig'], '']
+        self.mainInfo['OpenConfig']             = ['Open _data folder', self.iconInfo['OpenConfig'], '']
         self.mainInfo['Version']                = ['Version Info', 'Version', 'Version']
         self.mainInfo['Licence']                = ['Licence Info', 'Licence', 'Licence Info']
 
@@ -423,7 +428,7 @@ class ConfigManager(DAMG):
         self.mainInfo['CleanPyc']               = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'CleanPyc']
         self.mainInfo['Debug']                  = ['Run PLM Debugger', self.iconInfo['Debug'], 'Debug']
         self.mainInfo['Exit']                   = ['Exit PLM', self.iconInfo['Exit'], 'Exit']
-        self.mainInfo['ConfigFolder']           = ['Go To Config Folder', 'ConfigFolder', self.pthInfo['config']]
+        self.mainInfo['ConfigFolder']           = ['Go To Config Folder', 'ConfigFolder', self.pthInfo['_data']]
         self.mainInfo['IconFolder']             = ['Go To Icon Folder', 'IconFolder', self.pthInfo['icon']]
         self.mainInfo['SettingFolder']          = ['Go To Setting Folder', 'SettingFolder', self.pthInfo['setting']]
         self.mainInfo['AppFolder']              = ['Go To PLM Folder', 'AppFolder', self.pthInfo['root']]
@@ -486,7 +491,7 @@ class ConfigManager(DAMG):
             else:
                 self.mainInfo[key] = [key, self.getAppIcon(32, key), FIX_KEY[key]]
 
-        pth = os.path.join(self.pthInfo['config'], fileName)
+        pth = os.path.join(self.pthInfo['_data'], fileName)
         self.save_data(pth, self.mainInfo)
         return True
 
@@ -516,7 +521,7 @@ class ConfigManager(DAMG):
         self.appInfo = appInfo
         self._appInfo = True
 
-        pth = os.path.join(self.pthInfo['config'], fileName)
+        pth = os.path.join(self.pthInfo['_data'], fileName)
         self.compare_data(pth, self.appInfo)
         return True
 
@@ -588,7 +593,7 @@ class ConfigManager(DAMG):
             else:
                 root = self.rootDir
         else:
-            localAppData = self.check_dir(os.path.join(self.rootDir, 'appData/.config'))
+            localAppData = self.check_dir(os.path.join(self.rootDir, 'appData/._data'))
             cfgCompany = self.check_dir(localAppData, __groupname__)
             root = self.check_dir(cfgCompany, __appName__)
 
@@ -682,6 +687,27 @@ class ConfigManager(DAMG):
 
         res += [pth]
         return res
+
+    def run_command(self, cmd, *args, printOutput=False):
+        try:
+            cmd = asUtf8(cmd)
+            args = [asUtf8(arg) for arg in args]
+            if sys.platform == 'Win32':
+                proc = subprocess.Popen([cmd] + args, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                        stderr=subprocess.STDOUT)
+            else:
+                proc = subprocess.Popen([cmd] + args, close_fds=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
+                                        stderr=subprocess.STDOUT)
+
+            output = proc.stdout.read()
+            proc.wait()
+        except EnvironmentError as e:
+            output = 'ErrorRunning {0} {1}: {2}'.format(cmd, ' '.join(args), str(e))
+
+        if printOutput:
+            print(output)
+
+        return output
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 30/10/2019 - 12:22 PM

@@ -72,7 +72,7 @@ class Signal(DAMG):
         super(Signal, self).__init__(parent)
 
         self.parent                 = parent
-        self.logger                 = Loggers(self.parent.key)
+        self.logger                 = Loggers(__name__)
         self.update()
 
     def update(self):

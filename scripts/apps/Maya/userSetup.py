@@ -89,7 +89,7 @@ class InitUserSetup(object):
         for pth in sys.path:
             sysPth += pth
         info['sysPth'] = sysPth
-        filePth = os.path.join(os.getenv(appData.__envKey__), 'appData', 'config', 'maya.json')
+        filePth = os.path.join(os.getenv(appData.__envKey__), 'appData', '_data', 'maya.json')
 
         with open(filePth, 'w') as f:
             json.dump(info, f, indent=4)

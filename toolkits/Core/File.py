@@ -9,13 +9,14 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __copyright__, settings, signals
+from __buildtins__ import __copyright__
 
 import os
 
 from PyQt5.QtCore                           import QFile
 
-from appData                                import QSS_DIR
+from appData                                import SETTING_FILEPTH, ST_FORMAT, QSS_DIR
+from toolkits.Core                          import Settings, SignalManager
 
 class FileBase(QFile):
 
@@ -28,10 +29,8 @@ class FileBase(QFile):
     def __init__(self):
         super(FileBase, self).__init__()
 
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
     @property
     def copyright(self):

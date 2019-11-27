@@ -9,13 +9,15 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __copyright__, signals, settings
+from __buildtins__ import __copyright__
 
 """ Import """
 
 # PyQt5
 from PyQt5.QtWidgets                        import QStatusBar
 
+from appData import SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core import Settings, SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ StatusBar """
@@ -32,10 +34,8 @@ class StatusBar(QStatusBar):
     def __init__(self, parent=None):
         QStatusBar.__init__(self)
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
     def sizeHint(self):
         size = super(StatusBar, self).sizeHint()

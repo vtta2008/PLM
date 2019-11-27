@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __copyright__, signals, settings
+from __buildtins__ import __copyright__
 """ Import """
 
 # PyQt5
@@ -17,8 +17,9 @@ from PyQt5.QtWidgets                        import QVBoxLayout, QHBoxLayout
 
 # PLM
 from utils                                  import check_preset
-
-
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core                          import Settings, SignalManager
+print(22)
 class HBoxLayout(QHBoxLayout):
 
     Type                                    = 'DAMGUI'
@@ -29,10 +30,8 @@ class HBoxLayout(QHBoxLayout):
     def __init__(self, preset={}, parent=None):
         QHBoxLayout.__init__(self)
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
         self.preset = preset
         if check_preset(self.preset):
@@ -50,12 +49,6 @@ class HBoxLayout(QHBoxLayout):
                 self.setStretch(value, 0)
             else:
                 print("{0}: Unrecognise configKey: {1}".format(__name__, key))
-
-    def setValue(self, key, value):
-        return self.settings.initSetValue(key, value, self.key)
-
-    def getValue(self, key):
-        return self.settings.initValue(key, self.key)
 
     def sizeHint(self):
         size = super(HBoxLayout, self).sizeHint()
@@ -86,10 +79,8 @@ class VBoxLayout(QVBoxLayout):
     def __init__(self, preset={}, parent=None):
         QVBoxLayout.__init__(self)
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
         self.preset                         = preset
         if check_preset(self.preset):
@@ -107,12 +98,6 @@ class VBoxLayout(QVBoxLayout):
                 self.setStretch(value, 0)
             else:
                 print("Unrecognise configKey: {}".format(key))
-
-    def setValue(self, key, value):
-        return self.settings.initSetValue(key, value, self.key)
-
-    def getValue(self, key):
-        return self.settings.initValue(key, self.key)
 
     def sizeHint(self):
         size = super(VBoxLayout, self).sizeHint()

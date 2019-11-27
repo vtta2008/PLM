@@ -32,7 +32,7 @@ from appPackages.maya.plt_modules import MayaVariables as var
 # VARIALBES ARE USED BY ALL CLASSES
 # ------------------------------------------------------
 NAMES = var.MAINVAR
-SCRPTH = os.path.join(os.getenv(__root__), 'appData', 'config')
+SCRPTH = os.path.join(os.getenv(__root__), 'appData', '_data')
 
 # -------------------------------------------------------------------------------------------------------------
 # MAKE MAYA UNDERSTAND QT UI AS MAYA WINDOW,  FIX PLM_VERSION CONVENTION

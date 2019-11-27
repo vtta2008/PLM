@@ -106,6 +106,8 @@ class UpdatePage(Widget):
 
 class QueryPage(Widget):
 
+    key                     = 'QueryPage'
+
     def __init__(self, parent=None):
         super(QueryPage, self).__init__(parent)
 
@@ -204,7 +206,7 @@ class Configuration(Widget):
 
     def createIcons(self):
         configButton = QListWidgetItem(self.contentsWidget)
-        configButton.setIcon(QIcon(':/images/config.png'))
+        configButton.setIcon(QIcon(':/images/_data.png'))
         configButton.setText("Configuration")
         configButton.setTextAlignment(Qt.AlignHCenter)
         configButton.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)

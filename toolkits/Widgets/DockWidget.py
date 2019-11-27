@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __buildtins__ import __copyright__, settings, signals
+from __buildtins__ import __copyright__
 
 """ Import """
 
@@ -17,7 +17,8 @@ from PyQt5.QtGui                            import QTextTableFormat, QTextCharFo
 from PyQt5.QtWidgets                        import QTextEdit, QDockWidget
 
 # PLM
-from appData                                import right, datetTimeStamp
+from appData                                import right, datetTimeStamp, SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core                          import Settings, SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Dock widget """
@@ -60,10 +61,8 @@ class DockWidget(QDockWidget):
         super(DockWidget, self).__init__(parent)
 
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
 
     def sizeHint(self):
         size = super(DockWidget, self).sizeHint()

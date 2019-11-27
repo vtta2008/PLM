@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from .Image         import Pixmap, Image
+from toolkits.Gui.Image         import Pixmap, Image
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/11/2019 - 5:38 PM

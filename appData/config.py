@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: config.py
+Script Name: _data.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -117,7 +117,7 @@ for p in allPths:
         # print('directory: "{0}" is not exists'.format(p))
         os.makedirs(p, exist_ok=True)
 
-# Set config folder to invisible (hide)
+# Set _data folder to invisible (hide)
 for d in [CFG_DIR, TASK_DIR, ORG_DIR, PRJ_DIR, TEAM_DIR]:
     if platform.system() == "Windows":
         subprocess.call(["attrib", "+H", d])

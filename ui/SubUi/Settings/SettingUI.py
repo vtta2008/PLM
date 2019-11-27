@@ -23,8 +23,7 @@ from PyQt5.QtWidgets        import (QAbstractItemView, QAction, QMenuBar, QFileD
                                     QTableWidget, QTableWidgetItem, QTreeWidget, QTreeWidgetItem)
 
 # PLM
-from toolkits.Widgets       import Widget, GridLayout, Label
-from toolkits.uiUtils       import GroupGrid
+from toolkits.Widgets       import Widget, GridLayout, Label, GroupGrid
 from appData                import SETTING_FILEPTH, INI, __appname__, __organization__
 
 # -------------------------------------------------------------------------------------------------------------
@@ -55,7 +54,7 @@ class SettingUI(Widget):
         self.autoRefreshAct.setChecked(True)
         self.fallbacksAct.setChecked(True)
 
-        self.setWindowTitle("PLM settings")
+        self.setWindowTitle("PLM pres")
 
     def openSettings(self):
         if not self.settings:

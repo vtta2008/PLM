@@ -9,12 +9,14 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __copyright__, signals, settings
+from __buildtins__ import __copyright__
 
 from PyQt5.QtWidgets                        import QSystemTrayIcon
 
 from .Icon                                  import AppIcon
 from cores.Loggers                          import Loggers
+from appData import SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core import Settings, SignalManager
 
 class SystemTrayIcon(QSystemTrayIcon):
 
@@ -27,10 +29,8 @@ class SystemTrayIcon(QSystemTrayIcon):
     def __init__(self, parent=None):
         QSystemTrayIcon.__init__(self)
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
         self.logger                         = Loggers(self.__class__.__name__)
 
         self.setWindowTitle(self.key)

@@ -9,19 +9,19 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __copyright__, settings, signals
+from __buildtins__ import __copyright__
 """ Import """
 
 # PyQt5
 from PyQt5.QtWidgets                        import QLabel, QLCDNumber
 from PyQt5.QtGui                            import QFont, QPixmap
 from PyQt5.QtCore                           import QTimeZone, QTime, QDate
-
+print(1)
 # PLM
-from appData                                import PRS
 from utils                                  import check_preset
-
-
+from appData                                import PRS, SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core                          import Settings, SignalManager
+print(2)
 class Label(QLabel):
 
     Type                                    = 'DAMGUI'
@@ -31,13 +31,13 @@ class Label(QLabel):
 
     def __init__(self, preset={}, parent=None):
         QLabel.__init__(self)
-
+        print(5)
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
-
+        print(6)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        print(7)
+        self.signals = SignalManager(self)
+        print(8)
         self.preset                         = preset
         if check_preset(self.preset):
             self.buildUI()
@@ -167,10 +167,8 @@ class LCDNumber(QLCDNumber):
         QLCDNumber.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = settings
-        self.signals                        = signals
-        self.settings.changeParent(self)
-        self.signals.changeParent(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
         self.time                           = QTime()
         self.zone                           = QTimeZone()
         self.date                           = QDate()
@@ -259,8 +257,13 @@ class LCDNumber(QLCDNumber):
     def currentDate(self):
         return self.date.currentDate()
 
-usernameLabel = Label({'txt': 'Username'})
-passwordLabel = Label({'txt': 'Password'})
+
+def user_pass_label():
+    usernameLabel = Label({'txt': 'Username'})
+    passwordLabel = Label({'txt': 'Password'})
+    return usernameLabel, passwordLabel
+
+print('solve')
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 6:40 PM

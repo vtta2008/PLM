@@ -10,8 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from appData import INI
-from toolkits.Core import Setting
+from appData                        import INI
+from cores.Setting                  import Setting
 
 class Settings(Setting):
 

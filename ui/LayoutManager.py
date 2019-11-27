@@ -32,7 +32,8 @@ class LayoutManager(DAMG):
     def __init__(self, registryLayout, actionManager, buttonManager, eventManager, threadManager, parent=None):
         super(LayoutManager, self).__init__(parent)
 
-        self.ignoreIDs.appendList(self.parent.ignoreIDs)
+        # self.ignoreIDs.appendList(self.parent.ignoreIDs)
+
         self.parent                     = parent
         self.actionManager              = actionManager
         self.buttonManager              = buttonManager
@@ -109,7 +110,7 @@ class LayoutManager(DAMG):
         return layouts
 
     def functionLayouts(self):
-        from ui.SubUi                       import SignIn, SignUp, ForgotPassword
+        from ui                             import SignIn, SignUp, ForgotPassword
 
         self.signin                         = SignIn()
         self.forgotPW                       = ForgotPassword()
@@ -122,8 +123,7 @@ class LayoutManager(DAMG):
         return layouts
 
     def mainLayouts(self):
-        from ui                             import PipelineManager, SysTray
-        from .SubUi                         import ShortcutCommand
+        from ui                             import PipelineManager, SysTray, ShortcutCommand
 
         self.mainUI                         = PipelineManager(self.actionManager, self.buttonManager, self.threadManager)
         self.sysTray                        = SysTray(self.actionManager, self.eventManager)
@@ -138,7 +138,7 @@ class LayoutManager(DAMG):
         return layouts
 
     def infoLayouts(self):
-        from ui.SubUi.Info.InfoWidget       import InfoWidget
+        from ui                             import InfoWidget
 
         self.about                          = InfoWidget(key='About')
         self.codeConduct                    = InfoWidget(key='CodeOfConduct')
@@ -158,8 +158,7 @@ class LayoutManager(DAMG):
         return layouts
 
     def settingLayouts(self):
-        from ui.SubUi.Settings.SettingUI    import SettingUI
-        from ui.SubUi.Settings.UserSetting  import UserSetting
+        from ui                             import SettingUI, UserSetting
 
         self.settingUI                      = SettingUI()
         self.userSetting                    = UserSetting()
@@ -172,25 +171,22 @@ class LayoutManager(DAMG):
         return layouts
 
     def toolLayouts(self):
-        from ui.SubUi.Tools                 import (Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary,
-                                                    Calendar, Calculator)
-        from ui.SubUi.Tools.NodeGraph       import NodeGraph
-        from ui.SubUi.Tools import TextEditor
-        from ui.Header.Menus.config         import Preferences
-        from ui.Header.Menus.config         import Configuration
-        from ui.Management.TaskManager import TaskManager
+        from ui                             import (Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary,
+                                                    Calendar, Calculator, NodeGraph, TextEditor, Preferences,
+                                                    Configuration)
+        from cores.TaskManager              import TaskManager
 
-        self.calculator                     = Calculator.Calculator()
-        self.calendar                       = Calendar.Calendar()
-        self.configuration                  = Configuration.Configuration()
-        self.engDict                        = EnglishDictionary.EnglishDictionary()
-        self.findFile                       = FindFiles.FindFiles()
-        self.imageViewer                    = ImageViewer.ImageViewer()
-        self.nodeGraph                      = NodeGraph.NodeGraph()
-        self.noteReminder                   = NoteReminder.NoteReminder()
-        self.preferences                    = Preferences.Preferences()
-        self.screenShot                     = Screenshot.Screenshot()
-        self.textEditor                     = TextEditor.TextEditor()
+        self.calculator                     = Calculator()
+        self.calendar                       = Calendar()
+        self.configuration                  = Configuration()
+        self.engDict                        = EnglishDictionary()
+        self.findFile                       = FindFiles()
+        self.imageViewer                    = ImageViewer()
+        self.nodeGraph                      = NodeGraph()
+        self.noteReminder                   = NoteReminder()
+        self.preferences                    = Preferences()
+        self.screenShot                     = Screenshot()
+        self.textEditor                     = TextEditor()
         self.taskManager                    = TaskManager(self.mainUI)
 
         layouts     = [self.calculator, self.calendar, self.configuration, self.engDict, self.findFile,
@@ -206,13 +202,13 @@ class LayoutManager(DAMG):
     def projectLayouts(self):
         from ui.SubUi.Projects.VFXProjectSetup   import VFXProjectSetup
 
-        self.newProject                     = VFXProjectSetup()
+        self.setupVFXprj                     = VFXProjectSetup()
 
-        for layout in [self.newProject, ]:
+        for layout in [self.setupVFXprj, ]:
             layout.settings._settingEnable = True
             self.registLayout(layout)
 
-        layouts = [self.newProject]
+        layouts = [self.setupVFXprj]
         return layouts
 
     def registLayout(self, layout):
