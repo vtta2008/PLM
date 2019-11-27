@@ -11,6 +11,7 @@ Description:
 
 from .SettingUI     import SettingUI
 from .UserSetting   import UserSetting
+from .Avatar        import Avatar
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 11/07/2018 - 1:59 AM

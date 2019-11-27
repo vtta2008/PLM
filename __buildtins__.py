@@ -13,11 +13,20 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # Python
-import os, sys, subprocess, pathlib2
-print(sys.platform)
+import os, sys, subprocess, pathlib2, json
 
+PIPE                                = subprocess.PIPE
+STDOUT                              = subprocess.STDOUT
 __envKey__                          = "DAMGTEAM"
 ROOT                                = os.path.abspath(os.getcwd())
+
+def asUtf8(s):
+    if isinstance(s, pathlib2.Path):
+        s = str(s)
+    if type(s) in [str]:
+        return s.encode(encoding='utf-8')
+    else:
+        return s
 
 class PremiseController(object):
 
@@ -26,13 +35,13 @@ class PremiseController(object):
     _name                           = 'DAMG Pre Setting'
 
     cfgable                         = False
-    allowReport                     = False
+    allowReport                     = True
     checkCopyright                  = False
     checkToBuildUis                 = False
     checkToBuildCmds                = False
     checkIgnoreIDs                  = False
     recordLog                       = False
-    printOutput                     = True
+    printOutput                     = False
 
     trackRecieveSignal              = False
     trackBlockSignal                = False
@@ -55,7 +64,7 @@ class PremiseController(object):
             'trackJobsTodo', 'trackShowLayoutError', 'trackEvents']
 
     def __init__(self):
-        super(PremiseController, self).__init__(self)
+        super(PremiseController, self).__init__()
 
         if len(self.keys) == len(self.values):
             self.update()
@@ -66,9 +75,17 @@ class PremiseController(object):
         for k in self.keys:
             self._data[k] = self.values[self.keys.index(k)]
 
-    @classmethod
+        with open(os.path.join(ROOT, 'appData/.tmp', '.cmds'), 'w+') as f:
+            json.dump(self.cmds, f, indent=4)
+
     def edit(self, k, v):
         self._data[k] = v
+        for key, value in self._data.items():
+            if key == k:
+                i = self.keys.index(key)
+                self.values[i] = v
+                self.update()
+                return self.values[i]
 
     @property
     def name(self):
@@ -92,53 +109,51 @@ class PremiseController(object):
 
 pres = PremiseController()
 
-def asUtf8(s):
-    if isinstance(s, pathlib2.Path):
-        s = str(s)
+def run_command(cmd, printOutput=pres.printOutput):
+    args = [arg for arg in cmd.split(' ')]
+    # print( '%s %s' % (cmd, ' '.join( args )) )
 
-    if type(s) == str:
-        return s.encode('utf-8')
-    else:
-        return s
-
-def run_command(cmd, *args, printOutput=False):
     try:
-        cmd = asUtf8(cmd)
-        args = [asUtf8(arg) for arg in args]
-        pres._cmds[cmd] = args
-        if sys.platform == 'Win32':
-            proc = subprocess.Popen([cmd] + args, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                    stderr=subprocess.STDOUT)
+        if sys.platform == 'win32':
+            proc = subprocess.Popen(args=args, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=False)
         else:
-            proc = subprocess.Popen([cmd] + args, close_fds=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                    stderr=subprocess.STDOUT)
+            proc = subprocess.Popen(args=args, close_fds=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
 
         output = proc.stdout.read()
         proc.wait()
     except EnvironmentError as e:
         output = 'ErrorRunning {0} {1}: {2}'.format(cmd, ' '.join(args), str(e))
 
+    pres._cmds[cmd] = args
+    pres._cmds.update()
+
     if printOutput:
-        print(output)
+        print(output.decode().replace('\\', '/'))
 
     return output
 
 try:
     os.getenv(__envKey__)
 except KeyError:
-    run_command('SetX {0} '.format(__envKey__), [ROOT], pres.printOutput)
+    cmd = 'SetX {0} {1}'.format(__envKey__, ROOT)
+    run_command(cmd, pres.printOutput)
+    pres.edit('cfgable', True)
     pres.cfgable = True
 else:
     if os.getenv(__envKey__)   != ROOT:
-        run_command('SetX {0} '.format(__envKey__), [ROOT], pres.printOutput)
+        cmd = 'SetX {0} {1}'.format(__envKey__, ROOT)
+        run_command(cmd, pres.printOutput)
         pres.edit('cfgable', True)
+        pres.cfgable = True
     else:
         pres.edit('cfgable', True)
+        pres.cfgable = True
 
 try:
     import damg
 except ImportError:
-    run_command('python', ['-m pip install --user --upgrade damg'], pres.printOutput)
+    cmd = 'python -m pip install --user --upgrade damg'
+    run_command(cmd, pres.printOutput)
 
 if pres.cfgable:
     from cores.ConfigManager import ConfigManager
@@ -170,7 +185,6 @@ def __checkTmpPth__():
     return tmpPth
 
 def __ignoreIDs__():
-    import json
     tmpPth = __checkTmpPth__()
     ignoreIDsFile = os.path.join(tmpPth, '.ignoreIDs')
 
@@ -224,7 +238,7 @@ def __tobuildCmds__():
         with open(toBuildCmdsFile, 'r') as f:
             toBuildCmds = json.load(f)
     else:
-        with open(toBuildCmdsFile, 'a+') as f:
+        with open(toBuildCmdsFile, 'wb+') as f:
             toBuildCmds = json.dump(pres.cmds, f, indent=4)
 
     if pres.checkToBuildCmds:

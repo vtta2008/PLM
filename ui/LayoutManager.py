@@ -187,7 +187,7 @@ class LayoutManager(DAMG):
         self.preferences                    = Preferences()
         self.screenShot                     = Screenshot()
         self.textEditor                     = TextEditor()
-        self.taskManager                    = TaskManager(self.mainUI)
+        self.taskManager                    = TaskManager()
 
         layouts     = [self.calculator, self.calendar, self.configuration, self.engDict, self.findFile,
                        self.imageViewer, self.nodeGraph, self.noteReminder, self.preferences, self.screenShot,

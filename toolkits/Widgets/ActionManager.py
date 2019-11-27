@@ -155,7 +155,7 @@ class ActionManager(DAMGDICT):
                     self.register(action)
                     actions.append(action)
                 else:
-                    print("DATATYPEERROR: Could not add action: {0}".format(key))
+                    print("DataTypeError: Could not add action: {0}".format(key))
 
         return actions
 

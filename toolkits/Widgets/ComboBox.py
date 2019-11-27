@@ -123,7 +123,7 @@ class ComboBox(QComboBox):
             elif key == 'setObjName':
                 self.setObjectName(value)
             else:
-                print("PRESETKEYERROR: There is no key in preset: {}".format(key))
+                print("PresetKeyError: There is no key in preset: {}".format(key))
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 6:55 PM

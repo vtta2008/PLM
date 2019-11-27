@@ -11,13 +11,9 @@ Description:
 # PLM
 
 from appData                            import __homepage__, dockB, __appname__
-print('done here')
 from toolkits.Widgets                   import MainWindow, GroupBox, Widget, GridLayout, LogoIcon
-print('done here')
 from .Header                            import MainToolBar, MainMenuBar, ConnectStatus
-
 from .Body                              import TopTab, BotTab, Notification
-
 from .Footer                            import Footer, MainStatusBar
 
 

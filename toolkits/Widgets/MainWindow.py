@@ -15,16 +15,13 @@ from __buildtins__ import __copyright__
 
 # PyQt5
 from PyQt5.QtWidgets                        import QMainWindow
-# print('done here')
+
 # PLM
 from toolkits.Widgets                       import AppIcon
-# print('done here')
 from cores.Loggers                          import Loggers
-# print('done here')
 from appData                                import SETTING_FILEPTH, ST_FORMAT
-# print('done here')
 from toolkits.Core                          import Settings, SignalManager
-# print('done here')
+
 # -------------------------------------------------------------------------------------------------------------
 """ Main window layout preset """
 
@@ -47,17 +44,17 @@ class MainWindow(QMainWindow):
         self.setWindowTitle(self.key)
         self.setWindowIcon(AppIcon(32, self.key))
 
-    def sizeHint(self):
-        size = super(MainWindow, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
-
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
 
     def getValue(self, key):
         return self.settings.initValue(key, self.key)
+
+    def sizeHint(self):
+        size = super(MainWindow, self).sizeHint()
+        size.setHeight(size.height())
+        size.setWidth(max(size.width(), size.height()))
+        return size
 
     def moveEvent(self, event):
         if self.settings._settingEnable:
@@ -71,17 +68,18 @@ class MainWindow(QMainWindow):
 
     def closeEvent(self, event):
         if __name__ == '__main__':
+            self.setValue('showLayout', 'close')
             self.close()
         else:
+            self.setValue('showLayout', 'hide')
             self.signals.emit('showLayout', self.key, 'hide')
 
     def hideEvent(self, event):
         if __name__ == '__main__':
+            self.setValue('showLayout', 'hide')
             self.hide()
         else:
-            if self.settings._settingEnable:
-                for key, value in self.values.items():
-                    self.setValue(key, value)
+            self.setValue('showLayout', 'hide')
             self.signals.emit('showLayout', self.key, 'hide')
 
     def showEvent(self, event):

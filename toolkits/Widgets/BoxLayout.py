@@ -19,7 +19,7 @@ from PyQt5.QtWidgets                        import QVBoxLayout, QHBoxLayout
 from utils                                  import check_preset
 from appData                                import SETTING_FILEPTH, ST_FORMAT
 from toolkits.Core                          import Settings, SignalManager
-print(22)
+
 class HBoxLayout(QHBoxLayout):
 
     Type                                    = 'DAMGUI'

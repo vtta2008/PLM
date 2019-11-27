@@ -113,8 +113,8 @@ class HeaderCheckBoxes(GridLayout):
         self.allMenuCB                  = CheckBox('All: ')
         self.allMenuCB.stateChanged.connect(self.allMenuStateChanged)
 
-        for cb in [ self.allMenuCB, self.mnAppCB, self.mnGoCB, self.mnEditCB, self.mnViewCB, self.mnAppearanceCB,
-                    self.mnStylesheetCB, self.mnOfficeCB, self.mnToolsCB, self.mnDevCB, self.mnLibCB, self.mnHelpCB, ]:
+        for cb in [ self.allMenuCB, self.mnAppCB, self.mnGoCB, self.mnEditCB, self.mnViewCB,  self.mnStylesheetCB,
+                    self.mnOfficeCB, self.mnToolsCB, self.mnDevCB, self.mnLibCB, self.mnHelpCB, ]:
             self.menuCBs.append(cb)
 
     def buildToolBarCheckBoxes(self):

@@ -21,8 +21,7 @@ from PyQt5.QtCore                    import QFile
 from bin                            import DAMG, DAMGDICT
 from cores.Loggers                  import Loggers
 from appData                        import QSS_DIR
-from toolkits.Core.TextSteam import TextStream
-
+from toolkits.Core                  import TextStream
 
 class StyleSheet(DAMG):
 
@@ -56,8 +55,10 @@ class StyleSheet(DAMG):
 
     def getFileName(self, name):
         if name == 'dark':
+            from scripts.rcs import darkstyle_rc
             filename = QFile(os.path.join(QSS_DIR, 'darkstyle.qss'))
         elif name == 'bright':
+            from scripts.rcs import config_rc
             filename = QFile(os.path.join(QSS_DIR, 'darkstyle.qss'))
         elif name == 'chacoal':
             filename = QFile(os.path.join(QSS_DIR, 'chacoal.qss'))

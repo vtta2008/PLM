@@ -20,7 +20,7 @@ import os, sys, requests, ctypes
 # PyQt5
 from PyQt5.QtCore                       import pyqtSlot
 
-# Plm
+# PLM
 from appData                            import (__localServer__, __organization__, StateNormal, StateMax, StateMin,
                                                 __appname__, __version__, __website__, SYSTRAY_UNAVAI, SETTING_FILEPTH,
                                                 ST_FORMAT)

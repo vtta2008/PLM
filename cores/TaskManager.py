@@ -12,19 +12,13 @@ from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtGui                        import QIntValidator
 
-from toolkits.Widgets.Widget import Widget
-from toolkits.Widgets.CheckBox import CheckBox
-from toolkits.Widgets.BoxLayout import HBoxLayout, VBoxLayout
-from toolkits.Widgets.GridLayout import GridLayout
-from toolkits.Widgets.GroupBoxBase import GroupBox
-from toolkits.Widgets.LineEdit import LineEdit, PlainTextEdit
-from toolkits.Widgets.Label import Label
-from toolkits.Widgets.Button import Button
 from utils                              import str2bool
 from cores.Task                         import duetime, duedate, Task
 from functools                          import partial
+from toolkits.Widgets                   import (GridLayout, Label, LineEdit, GroupBox, CheckBox, PlainTextEdit, Widget,
+                                                Button, VBoxLayout, HBoxLayout, AppIcon)
 
-class TaskInfo(GridLayout):
+class TaskInfo(GroupBox):
 
     key = 'TaskInfo'
 
@@ -32,40 +26,32 @@ class TaskInfo(GridLayout):
         super(TaskInfo, self).__init__(parent)
 
         self.parent = parent
+        self.layout = GridLayout()
+        self.setLayout(self.layout)
 
-        self.addWidget(Label({'txt': 'Task Name: '}), 0, 0, 1, 1)
+        self.createLabels()
+        self.createLineEdit()
+
+        self.layout.addWidget(self.taskName, 0, 1, 1, 3)
+        self.layout.addWidget(self.taskID, 1, 1, 1, 3)
+        self.layout.addWidget(self.projectID, 2, 1, 1, 3)
+        self.layout.addWidget(self.projectName, 3, 1, 1, 3)
+        self.layout.addWidget(self.organisationID, 4, 1, 1, 3)
+        self.layout.addWidget(self.organisationName, 5, 1, 1, 3)
+        self.layout.addWidget(self.hour, 7, 1, 1, 1)
+        self.layout.addWidget(self.minute, 7, 2, 1, 1)
+        self.layout.addWidget(self.second, 7, 3, 1, 1)
+        self.layout.addWidget(self.day, 9, 1, 1, 1)
+        self.layout.addWidget(self.month, 9, 2, 1, 1)
+        self.layout.addWidget(self.year, 9, 3, 1, 1)
+
+    def createLineEdit(self):
         self.taskName = LineEdit()
-        self.addWidget(self.taskName, 0, 1, 1, 3)
-
-        self.addWidget(Label({'txt': 'Task ID: '}), 1, 0, 1, 1)
         self.taskID = LineEdit()
-        self.addWidget(self.taskID, 1, 1, 1, 3)
-
-        self.addWidget(Label({'txt': 'Project ID: '}), 2, 0, 1, 1)
         self.projectID = LineEdit()
-        self.addWidget(self.projectID, 2, 1, 1, 3)
-
-        self.addWidget(Label({'txt': 'Project Name: '}), 3, 0, 1, 1)
         self.projectName = LineEdit()
-        self.addWidget(self.projectName, 3, 1, 1, 3)
-
-        self.addWidget(Label({'txt': 'Organisation ID: '}), 4, 0, 1, 1)
         self.organisationID = LineEdit()
-        self.addWidget(self.organisationID, 4, 1, 1, 3)
-
-        self.addWidget(Label({'txt': 'Organisation Name: '}), 5, 0, 1, 1)
         self.organisationName = LineEdit()
-        self.addWidget(self.organisationName, 5, 1, 1, 3)
-
-        self.addWidget(Label({'txt': 'Duetime'}), 7, 0, 1, 1)
-        self.addWidget(Label({'txt': 'Hour'}), 6, 1, 1, 1)
-        self.addWidget(Label({'txt': 'Minute'}), 6, 2, 1, 1)
-        self.addWidget(Label({'txt': 'Second'}), 6, 3, 1, 1)
-        self.addWidget(Label({'txt': 'Duedate'}), 9, 0, 1, 1)
-        self.addWidget(Label({'txt': 'Day'}), 8, 1, 1, 1)
-        self.addWidget(Label({'txt': 'Month'}), 8, 2, 1, 1)
-        self.addWidget(Label({'txt': 'Year'}), 8, 3, 1, 1)
-
         self.year = LineEdit()
         self.month = LineEdit()
         self.day = LineEdit()
@@ -76,14 +62,23 @@ class TaskInfo(GridLayout):
         for le in [self.year, self.month, self.day, self.hour, self.minute, self.second]:
             le.setValidator(QIntValidator())
 
-        self.addWidget(self.hour, 7, 1, 1, 1)
-        self.addWidget(self.minute, 7, 2, 1, 1)
-        self.addWidget(self.second, 7, 3, 1, 1)
-        self.addWidget(self.day, 9, 1, 1, 1)
-        self.addWidget(self.month, 9, 2, 1, 1)
-        self.addWidget(self.year, 9, 3, 1, 1)
+    def createLabels(self):
+        self.layout.addWidget(Label({'txt': 'Task Name: '}), 0, 0, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Task ID: '}), 1, 0, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Project ID: '}), 2, 0, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Project Name: '}), 3, 0, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Organisation ID: '}), 4, 0, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Organisation Name: '}), 5, 0, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Duetime'}), 7, 0, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Hour'}), 6, 1, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Minute'}), 6, 2, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Second'}), 6, 3, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Duedate'}), 9, 0, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Day'}), 8, 1, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Month'}), 8, 2, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Year'}), 8, 3, 1, 1)
 
-class TaskDetails(GridLayout):
+class TaskDetails(GroupBox):
 
     key = 'TaskDetails'
     _taskMode = None
@@ -92,34 +87,40 @@ class TaskDetails(GridLayout):
     def __init__(self, parent=None):
         super(TaskDetails, self).__init__(parent)
 
-        self.parent = parent
-        self.addWidget(Label({'txt': 'Task Mode: '}), 0, 0, 1, 1)
-        self.addWidget(Label({'txt': 'Task Type'}), 1, 0, 1, 1)
+        self.parent                 = parent
+        self.setTitle('Details')
 
-        self.individualMode = CheckBox('Individual')
-        self.groupMode = CheckBox('Group')
-        self.departmentMode = CheckBox('Department')
+        self.layout                 = GridLayout()
+
+        self.layout.addWidget(Label({'txt': 'Task Mode: '}), 0, 0, 1, 1)
+        self.layout.addWidget(Label({'txt': 'Task Type'}), 1, 0, 1, 1)
+
+        self.individualMode         = CheckBox('Individual')
+        self.groupMode              = CheckBox('Group')
+        self.departmentMode         = CheckBox('Department')
+
+        self.researchType           = CheckBox('Research')
+        self.readingType            = CheckBox('Reading')
+        self.vfxType                = CheckBox('VFX')
 
         self.individualMode.stateChanged.connect(self.individual)
         self.groupMode.stateChanged.connect(self.group)
         self.departmentMode.stateChanged.connect(self.department)
-
-        self.researchType = CheckBox('Research')
-        self.readingType = CheckBox('Reading')
-        self.vfxType = CheckBox('VFX')
         self.researchType.stateChanged.connect(self.research)
         self.readingType.stateChanged.connect(self.reading)
         self.vfxType.stateChanged.connect(self.vfx)
 
-        self.addWidget(self.individualMode, 0, 1, 1, 1)
-        self.addWidget(self.groupMode, 0, 2, 1, 1)
-        self.addWidget(self.departmentMode, 0, 3, 1, 1)
-        self.addWidget(self.researchType, 1, 1, 1, 1)
-        self.addWidget(self.readingType, 1, 2, 1, 1)
-        self.addWidget(self.vfxType, 1, 3, 1, 1)
+        self.layout.addWidget(self.individualMode, 0, 1, 1, 1)
+        self.layout.addWidget(self.groupMode, 0, 2, 1, 1)
+        self.layout.addWidget(self.departmentMode, 0, 3, 1, 1)
+        self.layout.addWidget(self.researchType, 1, 1, 1, 1)
+        self.layout.addWidget(self.readingType, 1, 2, 1, 1)
+        self.layout.addWidget(self.vfxType, 1, 3, 1, 1)
 
         self.taskDetails = PlainTextEdit()
-        self.addWidget(self.taskDetails, 2, 0, 8, 8)
+        self.layout.addWidget(self.taskDetails, 2, 0, 8, 8)
+
+        self.setLayout(self.layout)
 
     def individual(self, bool):
         if str2bool(bool):
@@ -177,62 +178,59 @@ class TaskManager(Widget):
 
     key = 'TaskManager'
 
-    def __init__(self, parent=True):
+    def __init__(self, parent=None):
         super(TaskManager, self).__init__(parent)
 
         self.parent = parent
         self.setWindowTitle('Task Manager')
+        self.setWindowIcon(AppIcon(32, 'TaskManager'))
+
         self.layout = VBoxLayout()
-        line1 = HBoxLayout()
-        line2 = HBoxLayout()
-
-        self.infoGrp = GroupBox('Task Info')
-        self.taskInfo = TaskInfo(self)
-        self.infoGrp.setLayout(self.taskInfo)
-        line1.addWidget(self.infoGrp)
-
-        self.detailsGrp = GroupBox('Details')
-        self.taskDetails = TaskDetails(self)
-        self.detailsGrp.setLayout(self.taskDetails)
-        line1.addWidget(self.detailsGrp)
-
-        self.layout.addLayout(line1)
-        self.layout.addLayout(line2)
-
-        self.okButton = Button({'txt': 'Ok', 'cl': self.executeTask})
-        self.cancelButton = Button({'txt': 'Cancel', 'cl': partial(self.signals.emit, 'showLayout', self.key, 'hide')})
-        line2.addWidget(self.okButton)
-        line2.addWidget(self.cancelButton)
-
+        self.layout.addLayout(self.buildLine1())
+        self.layout.addLayout(self.buildLine2())
         self.setLayout(self.layout)
-        self.setMinimumWidth(750)
 
-    def executeTask(self):
+    def buildLine1(self):
+        self.taskInfo       = TaskInfo()
+        self.taskDetails    = TaskDetails()
+        return HBoxLayout({'addWidget': [self.taskInfo, self.taskDetails]})
 
-        h = int(self.taskInfo.hour.text())
-        m = int(self.taskInfo.minute.text())
-        s = int(self.taskInfo.second.text())
-        self.duetime = duetime(h, m, s)
+    def buildLine2(self):
+        self.okButton       = Button({'txt': 'Ok', 'cl': self.createTask})
+        self.editButton     = Button({'txt': 'Edit', 'cl': self.editTask})
+        self.cancelButton   = Button({'txt': 'Cancel', 'cl': partial(self.signals.emit, 'showLayout', self.key, 'hide')})
+        return HBoxLayout({'addWidget': [self.okButton, self.editButton, self.cancelButton]})
 
-        y = int(self.taskInfo.year.text())
-        mo = int(self.taskInfo.month.text())
-        d = int(self.taskInfo.day.text())
-        self.duedate = duedate(d, mo, y)
+    def createTask(self):
 
-        id = self.taskInfo.taskID.text()
-        name = self.taskInfo.taskName.text()
-        type = self.taskDetails.taskType
-        mode = self.taskDetails.taskMode
-        project = [self.taskInfo.projectID.text(), self.taskInfo.projectName.text()]
-        organisation = [self.taskInfo.organisationID.text(), self.taskInfo.organisationName.text()]
-        details = self.taskDetails.taskDetails.toPlainText()
+        h                   = int(self.taskInfo.hour.text())
+        m                   = int(self.taskInfo.minute.text())
+        s                   = int(self.taskInfo.second.text())
+        y                   = int(self.taskInfo.year.text())
+        mo                  = int(self.taskInfo.month.text())
+        d                   = int(self.taskInfo.day.text())
 
-        Task(id, name, mode, type, project, organisation, self.duetime, self.duedate, details)
-        self.parent.topTabUI.tab1.update_tasks()
+        id                  = self.taskInfo.taskID.text()
+        name                = self.taskInfo.taskName.text()
+        taskType            = self.taskDetails.taskType
+        mode                = self.taskDetails.taskMode
+        project             = [self.taskInfo.projectID.text(), self.taskInfo.projectName.text()]
+        organisation        = [self.taskInfo.organisationID.text(), self.taskInfo.organisationName.text()]
+        details             = self.taskDetails.taskDetails.toPlainText()
 
-    def resizeEvent(self, event):
-        w = int(self.width())
-        self.infoGrp.setMaximumWidth(w/3)
+        self.duetime        = duetime(h, m, s)
+        self.duedate        = duedate(d, mo, y)
+
+        newTask = Task(id, name, mode, taskType, project, organisation, self.duetime, self.duedate, details)
+        self.newTaskEvent(newTask)
+        return newTask
+
+    def editTask(self, taskName):
+        pass
+
+    # def resizeEvent(self, event):
+    #     w = int(self.width())
+    #     self.taskInfo.setMaximumWidth(w/3)
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -16,12 +16,13 @@ from __buildtins__ import __copyright__
 from PyQt5.QtWidgets                        import QLabel, QLCDNumber
 from PyQt5.QtGui                            import QFont, QPixmap
 from PyQt5.QtCore                           import QTimeZone, QTime, QDate
-print(1)
+
 # PLM
 from utils                                  import check_preset
 from appData                                import PRS, SETTING_FILEPTH, ST_FORMAT
 from toolkits.Core                          import Settings, SignalManager
-print(2)
+
+# -------------------------------------------------------------------------------------------------------------
 class Label(QLabel):
 
     Type                                    = 'DAMGUI'
@@ -31,13 +32,11 @@ class Label(QLabel):
 
     def __init__(self, preset={}, parent=None):
         QLabel.__init__(self)
-        print(5)
+
         self.parent                         = parent
-        print(6)
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        print(7)
-        self.signals = SignalManager(self)
-        print(8)
+        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals                        = SignalManager(self)
+
         self.preset                         = preset
         if check_preset(self.preset):
             self.buildUI()
@@ -262,8 +261,6 @@ def user_pass_label():
     usernameLabel = Label({'txt': 'Username'})
     passwordLabel = Label({'txt': 'Password'})
     return usernameLabel, passwordLabel
-
-print('solve')
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 6:40 PM

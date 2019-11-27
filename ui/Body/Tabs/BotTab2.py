@@ -62,7 +62,7 @@ class pDetector(Detector):              # A simple QTextEdit, with a few pre-set
     key                         = 'pDetector'
 
     def __init__(self, parent=None):
-        super(pDetector, self).__init__(parent)
+        super(pDetector, self).__init__()
 
         self._buffer            = StringIO()
         self.parent             = parent

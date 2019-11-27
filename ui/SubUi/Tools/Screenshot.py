@@ -22,7 +22,7 @@ from PyQt5.QtGui                import QPixmap
 from PyQt5.QtWidgets            import (QGridLayout, QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox, QLabel)
 
 # PLM
-from appData                    import keepARM
+from appData                    import ASPEC_RATIO
 from toolkits.Widgets           import Widget, AppIcon, GridLayout, Button, HBoxLayout, Label
 
 class Screenshot(Widget):
@@ -55,7 +55,7 @@ class Screenshot(Widget):
 
     def resizeEvent(self, event):
         scaledSize = self.originalPixmap.size()
-        scaledSize.scale(self.screenshotLabel.size(), keepARM)
+        scaledSize.scale(self.screenshotLabel.size(), ASPEC_RATIO)
         if not self.screenshotLabel.pixmap() or scaledSize != self.screenshotLabel.pixmap().size():
             self.updateScreenshotLabel()
 

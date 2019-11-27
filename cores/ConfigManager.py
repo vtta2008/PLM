@@ -86,6 +86,8 @@ CONFIG_SYSTRAY                          = ['ScreenShot', 'Snipping Tool']
 
 FIX_KEY                                 = { 'ScreenShot': 'ScreenShot', 'Snipping Tool': 'SnippingTool'}
 
+PIPE                                    = subprocess.PIPE
+STDOUT                                  = subprocess.STDOUT
 
 def asUtf8(s):
     if isinstance(s, pathlib2.Path):
@@ -106,6 +108,8 @@ class ConfigManager(DAMG):
     install_packages                    = DAMGDICT()
     packages                            = DAMGLIST()
     versions                            = DAMGLIST()
+
+    printOutput                         = False
 
     def __init__(self, appKey, rootDir, mode='alpha'):
         super(ConfigManager, self).__init__(self)
@@ -268,61 +272,30 @@ class ConfigManager(DAMG):
 
     def cfg_pip(self):
         pipVer = self.get_pkg_version('pip')
+        cmd = 'python -m pip install --user --upgrade pip'
         if pipVer is None:
-            self.run_command('python', ['-m pip install --user --upgrade pip'])
-
+            self.run_command(cmd, self.printOutput)
         else:
             if pipVer < 18.0:
-                proc = subprocess.Popen('python -m pip install --user --upgrade pip',
-                                         shell=True,
-                                         stdin=subprocess.PIPE,
-                                         stdout=subprocess.PIPE,
-                                         stderr=subprocess.STDOUT)
+                self.run_command(cmd, self.printOutput)
             else:
-                proc = subprocess.Popen('python -m pip install --user --upgrade pip',
-                                         shell=True,
-                                         stdin=subprocess.PIPE,
-                                         stdout=subprocess.PIPE,
-                                         stderr=subprocess.STDOUT)
-
-        output = proc.stdout.read()
-        proc.wait()
-        if self.allowOutput:
-            print(output)
-
+                self.run_command(cmd, self.printOutput)
         return True
 
     def cfg_cx_Freeze(self):
         try:
             import cx_Freeze
         except ImportError:
-            proc = subprocess.Popen('python -m pip install --user --upgrade cx_Freeze',
-                                    shell=True,
-                                    stdin=subprocess.PIPE,
-                                    stdout=subprocess.PIPE,
-                                    stderr=subprocess.STDOUT)
-            output = proc.stdout.read()
-            proc.wait()
-            if self.allowOutput:
-                print(output)
-
-        finally:
-            return True
+            cmd = 'python -m pip install --user --upgrade cx_Freeze'
+            self.run_command(cmd, self.printOutput)
+        return True
 
     def cfg_requirements(self):
         for pkg in __pkgsReq__:
             check = self.check_pyPkg(pkg)
             if not check:
-                proc = subprocess.Popen('python -m pip install --user --upgrade {0}'.format(pkg),
-                                        shell=True,
-                                        stdin=subprocess.PIPE,
-                                        stdout=subprocess.PIPE,
-                                        stderr=subprocess.STDOUT)
-                output = proc.stdout.read()
-                proc.wait()
-                if self.allowOutput:
-                    print(output)
-
+                cmd = 'python -m pip install --user --upgrade {0}'.format(pkg)
+                self.run_command(cmd, self.printOutput)
         return True
 
     def cfg_maya(self):
@@ -688,16 +661,16 @@ class ConfigManager(DAMG):
         res += [pth]
         return res
 
-    def run_command(self, cmd, *args, printOutput=False):
+    def run_command(self, cmd, printOutput=False):
+
+        args = [arg for arg in cmd.split(' ')]
+        # print( '%s %s' % (cmd, ' '.join( args )) )
+
         try:
-            cmd = asUtf8(cmd)
-            args = [asUtf8(arg) for arg in args]
-            if sys.platform == 'Win32':
-                proc = subprocess.Popen([cmd] + args, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                        stderr=subprocess.STDOUT)
+            if sys.platform == 'win32':
+                proc = subprocess.Popen(args=args, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=False)
             else:
-                proc = subprocess.Popen([cmd] + args, close_fds=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                                        stderr=subprocess.STDOUT)
+                proc = subprocess.Popen(args=args, close_fds=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
 
             output = proc.stdout.read()
             proc.wait()
@@ -705,7 +678,7 @@ class ConfigManager(DAMG):
             output = 'ErrorRunning {0} {1}: {2}'.format(cmd, ' '.join(args), str(e))
 
         if printOutput:
-            print(output)
+            print(output.decode().replace('\\', '/'))
 
         return output
 

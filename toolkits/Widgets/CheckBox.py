@@ -75,18 +75,19 @@ class CheckBox(QCheckBox):
             self.setValue('h', self.height())
 
     def closeEvent(self, event):
-        if __name__=='__main__':
+        if __name__ == '__main__':
+            self.setValue('showLayout', 'close')
             self.close()
         else:
+            self.setValue('showLayout', 'hide')
             self.signals.emit('showLayout', self.key, 'hide')
 
     def hideEvent(self, event):
-        if __name__=='__main__':
+        if __name__ == '__main__':
+            self.setValue('showLayout', 'hide')
             self.hide()
         else:
-            if self.settings._settingEnable:
-                for key, value in self.values.items():
-                    self.setValue(key, value)
+            self.setValue('showLayout', 'hide')
             self.signals.emit('showLayout', self.key, 'hide')
 
     def showEvent(self, event):

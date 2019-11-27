@@ -33,8 +33,7 @@ class SystemTrayIcon(QSystemTrayIcon):
         self.signals = SignalManager(self)
         self.logger                         = Loggers(self.__class__.__name__)
 
-        self.setWindowTitle(self.key)
-        self.setWindowIcon(AppIcon(32, self.key))
+        self.setIcon(AppIcon(32, self.key))
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

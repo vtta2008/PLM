@@ -45,7 +45,7 @@ StateMin                    = Qt.WindowMinimized
 """ Nodegraph setting variables """
 
 ASPEC_RATIO                 = Qt.KeepAspectRatio
-
+SMOOTH_TRANS                = Qt.SmoothTransformation
 SCROLLBAROFF                = Qt.ScrollBarAlwaysOff                                     # Scrollbar
 SCROLLBARON                 = Qt.ScrollBarAlwaysOn
 SCROLLBARNEED               = Qt.ScrollBarAsNeeded
@@ -87,6 +87,8 @@ UPDATE_MINIMALVIEW          = QGraphicsView.MinimalViewportUpdate
 STAY_ON_TOP                 = Qt.WindowStaysOnTopHint
 STRONG_FOCUS                = Qt.StrongFocus
 FRAMELESSWINDOW             = Qt.FramelessWindowHint
+
+AUTO_COLOR                  = Qt.AutoColor
 
 # -------------------------------------------------------------------------------------------------------------
 """ Drawing """
@@ -262,7 +264,6 @@ TAGBTNSIZE                  = QSize(87-1, 20-1)
 BTNICONSIZE                 = QSize(ICONSIZE, ICONSIZE)
 ICONBTNSIZE                 = QSize(ICONSIZE+ICONBUFFER, ICONSIZE+ICONBUFFER)
 
-keepARM                     = Qt.KeepAspectRatio
 ignoreARM                   = Qt.IgnoreAspectRatio
 
 scrollAsNeed                = Qt.ScrollBarAsNeeded
