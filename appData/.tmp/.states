@@ -1,0 +1,11 @@
+{
+    "PipelineManager": "showRestore",
+    "SignIn": "hide",
+    "SignUp": "hide",
+    "ForgotPassword": "hide",
+    "Task": "show",
+    "TaskManager": "hide",
+    "SettingUI": "hide",
+    "Configuration": "hide",
+    "Preferences": "show"
+}
