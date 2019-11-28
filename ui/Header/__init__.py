@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from .Menus         import MainMenuBar, NodeGraphMenuBar, SysTrayIconMenu, Configuration, Preferences
+from .Menus         import MainMenuBar, NodeGraphMenuBar, SysTrayIconMenu
 from .Network       import ConnectStatus
 from .Toolbars      import DockToolBar, MainToolBar
 

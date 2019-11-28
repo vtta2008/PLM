@@ -14,6 +14,8 @@ from __future__ import absolute_import, unicode_literals
 
 # Python
 import os, sys, subprocess, pathlib2, json
+from PyQt5.QtCore import QProcess
+from PyQt5.QtWidgets import QApplication
 
 PIPE                                = subprocess.PIPE
 STDOUT                              = subprocess.STDOUT
@@ -35,7 +37,7 @@ class PremiseController(object):
     _name                           = 'DAMG Pre Setting'
 
     cfgable                         = False
-    allowReport                     = True
+    allowReport                     = False
     checkCopyright                  = False
     checkToBuildUis                 = False
     checkToBuildCmds                = False
@@ -51,17 +53,19 @@ class PremiseController(object):
     trackShowLayoutError            = False
     trackEvents                     = False
 
+    subprocess_mode                 = False
+
     _data                           = dict()
     _log                            = dict()
     _cmds                           = dict()
 
     values = [cfgable, allowReport, checkCopyright, checkToBuildUis, checkToBuildCmds, checkIgnoreIDs,
               recordLog, printOutput, trackRecieveSignal, trackBlockSignal, trackCommand, trackRegistLayout,
-              trackJobsTodo, trackShowLayoutError, trackEvents]
+              trackJobsTodo, trackShowLayoutError, trackEvents, subprocess_mode]
 
     keys = ['cfgable', 'allowReport', 'checkCopyright', 'checkToBuildUis', 'checkToBuildCmds', 'checkIgnoreIDs',
             'recordLog', 'printOutput', 'trackRecieveSignal', 'trackBlockSignal', 'trackCommand', 'trackRegistLayout',
-            'trackJobsTodo', 'trackShowLayoutError', 'trackEvents']
+            'trackJobsTodo', 'trackShowLayoutError', 'trackEvents', 'subprocess_mode']
 
     def __init__(self):
         super(PremiseController, self).__init__()
@@ -75,8 +79,13 @@ class PremiseController(object):
         for k in self.keys:
             self._data[k] = self.values[self.keys.index(k)]
 
-        with open(os.path.join(ROOT, 'appData/.tmp', '.cmds'), 'w+') as f:
-            json.dump(self.cmds, f, indent=4)
+        pth = os.path.join(ROOT, 'appData', '.tmp')
+        if not os.path.exists(pth):
+            from pathlib import Path
+            Path(pth).mkdir(parents=True, exist_ok=True)
+
+        with open(os.path.join(pth, '.cmds'), 'w+') as f:
+            json.dump(self._data, f, indent=4)
 
     def edit(self, k, v):
         self._data[k] = v
@@ -84,7 +93,6 @@ class PremiseController(object):
             if key == k:
                 i = self.keys.index(key)
                 self.values[i] = v
-                self.update()
                 return self.values[i]
 
     @property
@@ -109,26 +117,48 @@ class PremiseController(object):
 
 pres = PremiseController()
 
-def run_command(cmd, printOutput=pres.printOutput):
+def run_command(cmd, printOutput=pres.printOutput, working_dir=ROOT):
+
     args = [arg for arg in cmd.split(' ')]
-    # print( '%s %s' % (cmd, ' '.join( args )) )
+    t = " ".join(cmd)
 
-    try:
-        if sys.platform == 'win32':
-            proc = subprocess.Popen(args=args, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=False)
-        else:
-            proc = subprocess.Popen(args=args, close_fds=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+    if pres.subprocess_mode:
+        try:
+            if sys.platform == 'win32':
+                proc = subprocess.Popen(args=args, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=False)
+            else:
+                proc = subprocess.Popen(args=args, close_fds=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
 
-        output = proc.stdout.read()
-        proc.wait()
-    except EnvironmentError as e:
-        output = 'ErrorRunning {0} {1}: {2}'.format(cmd, ' '.join(args), str(e))
+            output = proc.stdout.read()
+            proc.wait()
+        except EnvironmentError as e:
+            output = 'ErrorRunning {0} {1}: {2}'.format(cmd, ' '.join(args), str(e))
+    else:
+        proc = QProcess()
+        proc.setStandardInputFile(proc.nullDevice())
+        proc.setStandardOutputFile(proc.nullDevice())
+        proc.setStandardErrorFile(proc.nullDevice())
 
-    pres._cmds[cmd] = args
-    pres._cmds.update()
+        if proc.state() != 2:
+            proc.waitForStarted()
+            proc.waitForFinished()
+            if "|" in t or ">" in t or "<" in t:
+                proc.start('sh -c "' + cmd + ' ' + t + '"')
+            else:
+                proc.start(cmd + " " + t)
+
+        try:
+            output = str(proc.readAll(), encoding='utf8').rstrip()
+        except TypeError:
+            output = str(proc.readAll()).rstrip()
 
     if printOutput:
-        print(output.decode().replace('\\', '/'))
+        if type(output) in [str]:
+            print(output.replace('\\', '/'))
+        else:
+            print(output.decode().replace('\\', '/'))
+    pres._cmds[cmd] = args
+    pres._cmds.update()
 
     return output
 
@@ -149,12 +179,6 @@ else:
         pres.edit('cfgable', True)
         pres.cfgable = True
 
-try:
-    import damg
-except ImportError:
-    cmd = 'python -m pip install --user --upgrade damg'
-    run_command(cmd, pres.printOutput)
-
 if pres.cfgable:
     from cores.ConfigManager import ConfigManager
     configManager = ConfigManager(__envKey__, ROOT)
@@ -169,6 +193,12 @@ else:
     if pres.allowReport:
         print('EnvironmentVariableError: {0} is not set to {1}, please try again.'.format(__envKey__, ROOT))
     sys.exit()
+
+try:
+    import damg
+except ImportError:
+    cmd = 'python -m pip install --user --upgrade damg'
+    run_command(cmd, pres.printOutput)
 
 def __checkTmpPth__():
     import platform
@@ -250,8 +280,6 @@ def __copyright__():
     if pres.checkCopyright:
         print(_copyright)
     return _copyright
-
-from PyQt5.QtWidgets import QApplication
 
 class Application(QApplication):
 

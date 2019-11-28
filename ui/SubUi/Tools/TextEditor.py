@@ -79,8 +79,8 @@ class TextEdit(MainWindow):
         self.textEdit.copyAvailable.connect(self.actionCopy.setEnabled)
         QApplication.clipboard().dataChanged.connect(self.clipboardDataChanged)
   
-        # if fileName is None:
-        #     fileName = ':/example.html'
+        # if cfgFileName is None:
+        #     cfgFileName = ':/example.html'
   
         if not self.load(fileName):
             self.fileNew()

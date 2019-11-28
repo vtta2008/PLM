@@ -15,10 +15,8 @@ from PyQt5.QtWidgets                        import QWidget
 
 # PLM
 from .Icon                                  import AppIcon
-
-from appData import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core import Settings, SignalManager
-
+from toolkits.Core                          import Settings, SignalManager
+from appData                                import SETTING_FILEPTH, ST_FORMAT
 
 class Widget(QWidget):
 

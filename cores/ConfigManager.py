@@ -148,8 +148,8 @@ class ConfigManager(DAMG):
                 self.cfgs = False
                 break
 
-        self.folder_settings(self.pthInfo['_data'], 'h')
-        pths, fns = self.get_all_paths(self.pthInfo['_data'])
+        self.folder_settings(self.pthInfo['config'], 'h')
+        pths, fns = self.get_all_paths(self.pthInfo['config'])
         listObj = pths + fns
         self.batch_folder_settings(listObj, 'h')
 
@@ -172,63 +172,108 @@ class ConfigManager(DAMG):
 
         return True
 
-    def cfg_cfgDir(self, fileName='paths.cfg', **pthInfo):
+    def cfg_cfgDir(self, cfgFileName='paths.cfg', **dirPth):
 
-        pthInfo['root']                 = self.rootDir
-        pthInfo['appData']              = self.set_dir('appData')
-        pthInfo['bin']                  = self.set_dir('bin')
-        pthInfo['resource']             = self.set_dir('bin/resources')
+        dirPth['root']                 = self.rootDir
 
-        pthInfo['_data']               = self.set_dir('appData/._data')
-        pthInfo['mtd']                  = self.set_dir('appData/._data')
-        pthInfo['setting']              = self.set_dir('appData/._data')
-        pthInfo['log']                  = self.set_dir('appData/._data')
-        pthInfo['cache']                = self.set_dir('appData/._data')
-        pthInfo['preferences']          = self.set_dir('appData/._data')
-        pthInfo['tmp']                  = self.set_dir('appData/.tmp')
-        pthInfo['task']                 = self.set_dir('appData/.task')
-        pthInfo['project']              = self.set_dir('appData/.project')
-        pthInfo['organisation']         = self.set_dir('appData/.organisation')
-        pthInfo['team']                 = self.set_dir('appData/.team')
+        dirPth['appData']              = self.set_dir('appData')
+        dirPth['config']               = self.set_dir('appData/.config')
+        dirPth['setting']              = self.set_dir('appData/.config')
+        dirPth['log']                  = self.set_dir('appData/.config')
 
-        pthInfo['appData']              = self.set_dir('appData')
-        pthInfo['documents']            = self.set_dir('appData/documentations')
-        pthInfo['source']               = self.set_dir('appData/raws')
+        dirPth['tmp']                  = self.set_dir('appData/.tmp')
+        dirPth['task']                 = self.set_dir('appData/.task')
+        dirPth['project']              = self.set_dir('appData/.project')
+        dirPth['organisation']         = self.set_dir('appData/.organisation')
+        dirPth['team']                 = self.set_dir('appData/.team')
+        dirPth['user']                 = self.set_dir('appData/.user')
+        dirPth['cache']                = self.set_dir('appData/.config/.cache')
+        dirPth['documents']            = self.set_dir('appData/documentations')
+        dirPth['source']               = self.set_dir('appData/raws')
 
-        pthInfo['cores']                = self.set_dir('cores')
+        dirPth['bin']                  = self.set_dir('bin')
+        dirPth['resource']             = self.set_dir('bin/resources')
 
-        pthInfo['img']                  = self.set_dir('imgs')
-        pthInfo['icon']                 = self.set_dir('imgs/icons')
-        pthInfo['avatar']               = self.set_dir('imgs/avatar')
-        pthInfo['logo']                 = self.set_dir('imgs/logo')
-        pthInfo['picture']              = self.set_dir('imgs/pics')
-        pthInfo['tag']                  = self.set_dir('imgs/tags')
-        pthInfo['webIcon']              = self.set_dir('imgs/web')
+        dirPth['cores']                = self.set_dir('cores')
 
-        pthInfo['plugin']               = self.set_dir('plugins')
+        dirPth['devHook']              = self.set_dir('devHook')
+        dirPth['Houdini']              = self.set_dir('devHook/Houdini')
+        dirPth['Mari']                 = self.set_dir('devHook/Mari')
+        dirPth['Maya']                 = self.set_dir('devHook/Maya')
+        dirPth['Nuke']                 = self.set_dir('devHook/Nuke')
+        dirPth['Zbrush']               = self.set_dir('devHook/ZBrush')
+        dirPth['DaVinci']              = self.set_dir('devHook/DaVinci')
+        dirPth['Substances']           = self.set_dir('devHook/Substances')
+        dirPth['Photoshop']            = self.set_dir('devHook/Photoshop')
+        dirPth['Illustration']         = self.set_dir('devHook/Illustration')
 
-        pthInfo['apps']                 = self.set_dir('scripts/apps')
-        pthInfo['houdini']              = self.set_dir('scripts/apps/Houdini')
-        pthInfo['mari']                 = self.set_dir('scripts/apps/Mari')
-        pthInfo['maya']                 = self.set_dir('scripts/apps/Maya')
-        pthInfo['nuke']                 = self.set_dir('scripts/apps/Nuke')
-        pthInfo['zbrush']               = self.set_dir('scripts/apps/ZBrush')
+        dirPth['img']                  = self.set_dir('imgs')
+        dirPth['avatar']               = self.set_dir('imgs/avatar')
+        dirPth['icon']                 = self.set_dir('imgs/icons')
+        dirPth['icon12']               = self.set_dir('imgs/icons/icon12')
+        dirPth['icon16']               = self.set_dir('imgs/icons/icon16')
+        dirPth['icon24']               = self.set_dir('imgs/icons/icon24')
+        dirPth['icon32']               = self.set_dir('imgs/icons/icon32')
+        dirPth['icon48']               = self.set_dir('imgs/icons/icon48')
+        dirPth['icon64']               = self.set_dir('imgs/icons/icon64')
 
-        pthInfo['ui']                   = self.set_dir('ui')
+        dirPth['logo']                 = self.set_dir('imgs/logo')
+        dirPth['DAMGTEAM']             = self.set_dir('imgs/logo/DAMGTEAM')
+        dirPth['PLM']                  = self.set_dir('imgs/logo/PLM')
+        dirPth['Maya']                 = self.set_dir('imgs/maya')
+        dirPth['Picture']              = self.set_dir('imgs/pics')
+        dirPth['Tagicon']              = self.set_dir('imgs/tags')
+        dirPth['WebIcon']              = self.set_dir('imgs/web')
+        dirPth['WebIcon12']            = self.set_dir('imgs/web/icon12')
+        dirPth['WebIcon16']            = self.set_dir('imgs/web/icon16')
+        dirPth['WebIcon24']            = self.set_dir('imgs/web/icon24')
+        dirPth['WebIcon32']            = self.set_dir('imgs/web/icon32')
+        dirPth['WebIcon48']            = self.set_dir('imgs/web/icon48')
+        dirPth['WebIcon64']            = self.set_dir('imgs/web/icon64')
+        dirPth['WebIcon128']           = self.set_dir('imgs/web/icon128')
 
-        pthInfo['utils']                = self.set_dir('utils')
+        dirPth['plugin']               = self.set_dir('plugins')
 
-        for pth in pthInfo.values():
+        dirPth['Scripts']              = self.set_dir('scripts')
+        dirPth['json']                 = self.set_dir('scripts/json')
+        dirPth['qss']                  = self.set_dir('scripts/qss')
+        dirPth['rcs']                  = self.set_dir('scripts/rcs')
+
+        dirPth['test']                 = self.set_dir('test')
+
+        dirPth['toolkits']             = self.set_dir('toolkits')
+        dirPth['Core']                 = self.set_dir('toolkits/Core')
+        dirPth['Gui']                  = self.set_dir('toolkits/Gui')
+        dirPth['Widgets']              = self.set_dir('toolkits/Widgets')
+
+        dirPth['ui']                   = self.set_dir('ui')
+        dirPth['Body']                 = self.set_dir('ui/Body')
+        dirPth['Tabs']                 = self.set_dir('ui/Body/Tabs')
+        dirPth['Footer']               = self.set_dir('ui/Footer')
+        dirPth['Header']               = self.set_dir('ui/Header')
+        dirPth['Menus']                = self.set_dir('ui/Header/Menus')
+        dirPth['Network']              = self.set_dir('ui/Header/Network')
+        dirPth['Toolbars']             = self.set_dir('ui/Header/Toolbars')
+        dirPth['SubUi']                = self.set_dir('ui/SubUi')
+        dirPth['Funcs']                = self.set_dir('ui/SubUi/Funcs')
+        dirPth['Info']                 = self.set_dir('ui/SubUi/Info')
+        dirPth['Projects']             = self.set_dir('ui/SubUi/Projects')
+        dirPth['Settings']             = self.set_dir('ui/SubUi/Settings')
+        dirPth['Tools']                = self.set_dir('ui/SubUi/Tools')
+        dirPth['NodeGraph']            = self.set_dir('ui/SubUi/Tools/NodeGraph')
+
+        dirPth['utils']                = self.set_dir('utils')
+
+        for pth in dirPth.values():
             self.create_folder(pth)
             if not os.path.exists(pth):
-                print("Could not create folder: {0}".format(pth))
                 self.cfgError['paths error'] = pth
 
-        self.pthInfo = pthInfo
+        self.pthInfo = dirPth
         self._pthInfo = True
 
-        pth = os.path.join(pthInfo['_data'], fileName)
-        self.compare_data(pth, pthInfo)
+        pth = os.path.join(dirPth['config'], cfgFileName)
+        self.compare_data(pth, dirPth)
         return True
 
     def cfg_localDB(self):
@@ -316,13 +361,12 @@ class ConfigManager(DAMG):
                 for usDes in mayaVers:
                     shutil.copy(usScr, usDes)
 
-        # print('Maya is implemented')
         return True
 
     def cfg_envVars(self, fileName='envKey.cfg', **envKeys):
         for key in os.environ.keys():
             envKeys[key] = os.getenv(key)
-        pth = os.path.join(self.pthInfo['_data'], fileName)
+        pth = os.path.join(self.pthInfo['config'], fileName)
         self.compare_data(pth, envKeys)
         return True
 
@@ -341,7 +385,7 @@ class ConfigManager(DAMG):
         self.iconInfo = iconInfo
         self._iconInfo = True
 
-        pth = os.path.join(self.pthInfo['_data'], fileName)
+        pth = os.path.join(self.pthInfo['config'], fileName)
         self.compare_data(pth, self.iconInfo)
 
         return True
@@ -372,7 +416,7 @@ class ConfigManager(DAMG):
         self.mainInfo['Reference']              = ['Reference', self.iconInfo['Reference'], 'Reference']
         self.mainInfo['PLM wiki']               = ['PLM wiki', self.iconInfo['PLM wiki'], "{key}".format(key=__plmWiki__)]
         self.mainInfo['Browser']                = ['Browser', self.iconInfo['Browser'], "Browser"]
-        self.mainInfo['OpenConfig']             = ['Open _data folder', self.iconInfo['OpenConfig'], '']
+        self.mainInfo['OpenConfig']             = ['Open config folder', self.iconInfo['OpenConfig'], '']
         self.mainInfo['Version']                = ['Version Info', 'Version', 'Version']
         self.mainInfo['Licence']                = ['Licence Info', 'Licence', 'Licence Info']
 
@@ -401,7 +445,7 @@ class ConfigManager(DAMG):
         self.mainInfo['CleanPyc']               = ['Clean ".pyc" files', self.iconInfo['CleanPyc'], 'CleanPyc']
         self.mainInfo['Debug']                  = ['Run PLM Debugger', self.iconInfo['Debug'], 'Debug']
         self.mainInfo['Exit']                   = ['Exit PLM', self.iconInfo['Exit'], 'Exit']
-        self.mainInfo['ConfigFolder']           = ['Go To Config Folder', 'ConfigFolder', self.pthInfo['_data']]
+        self.mainInfo['ConfigFolder']           = ['Go To Config Folder', 'ConfigFolder', self.pthInfo['config']]
         self.mainInfo['IconFolder']             = ['Go To Icon Folder', 'IconFolder', self.pthInfo['icon']]
         self.mainInfo['SettingFolder']          = ['Go To Setting Folder', 'SettingFolder', self.pthInfo['setting']]
         self.mainInfo['AppFolder']              = ['Go To PLM Folder', 'AppFolder', self.pthInfo['root']]
@@ -450,7 +494,7 @@ class ConfigManager(DAMG):
             elif key == 'SignIn':
                 self.mainInfo[key] = ['Sign In', self.getAppIcon(32, key), 'SignIn']
             elif key == 'SignUp':
-                self.mainInfo[key] = ['New Account', self.getAppIcon(32, key), 'Create showLayout_new account']
+                self.mainInfo[key] = ['New Account', self.getAppIcon(32, key), 'Create new account']
             elif key == 'SwtichAccount':
                 self.mainInfo[key] = ['Change Account', self.getAppIcon(32, key), 'Change other account']
             elif key == 'SignOut':
@@ -464,7 +508,7 @@ class ConfigManager(DAMG):
             else:
                 self.mainInfo[key] = [key, self.getAppIcon(32, key), FIX_KEY[key]]
 
-        pth = os.path.join(self.pthInfo['_data'], fileName)
+        pth = os.path.join(self.pthInfo['config'], fileName)
         self.save_data(pth, self.mainInfo)
         return True
 
@@ -494,7 +538,7 @@ class ConfigManager(DAMG):
         self.appInfo = appInfo
         self._appInfo = True
 
-        pth = os.path.join(self.pthInfo['_data'], fileName)
+        pth = os.path.join(self.pthInfo['config'], fileName)
         self.compare_data(pth, self.appInfo)
         return True
 
@@ -566,7 +610,7 @@ class ConfigManager(DAMG):
             else:
                 root = self.rootDir
         else:
-            localAppData = self.check_dir(os.path.join(self.rootDir, 'appData/._data'))
+            localAppData = self.check_dir(os.path.join(self.rootDir, 'appData/.config'))
             cfgCompany = self.check_dir(localAppData, __groupname__)
             root = self.check_dir(cfgCompany, __appName__)
 
@@ -578,7 +622,7 @@ class ConfigManager(DAMG):
         if folName is None:
             pth = root
         else:
-            pth = os.path.join(root, folName)
+            pth = os.path.join(root, folName).replace('\\', '/')
         return pth
 
     def check_pyPkg(self, pkg):
@@ -633,16 +677,16 @@ class ConfigManager(DAMG):
                     subprocess.call(["chflags", "nohidden", directory])
             else:
                 raise (
-                    "ERROR: (Incorrect Command) Valid commands are 'HIDE' and 'UNHIDE' (both are not case sensitive)")
+                    "CommandIncorrectError: Expected command 'HIDE' and 'UNHIDE' (both are not case sensitive)")
         else:
-            raise ("ERROR: (Unknown Operating System) Only Windows and Darwin(Mac) are Supported")
+            raise ("PlatformCompatibleError: (Unknown Operating System) Only Windows and Darwin(Mac) are Supported")
 
     def batch_folder_settings(self, listObj, mode):
         for obj in listObj:
             if os.path.exists(obj):
                 self.folder_settings(obj, mode)
             else:
-                print('Could not find the specific path: %s' % obj)
+                print('{0}: PathError: Could not find the specific path: {1}'.format(self.__class__.__name__, obj))
 
     def create_folder(self, pth, mode=0o770):
         if os.path.exists(pth):

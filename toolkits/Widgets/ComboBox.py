@@ -33,6 +33,7 @@ class ComboBox(QComboBox):
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.signals = SignalManager(self)
         self.preset                         = preset
+
         if check_preset(self.preset):
             self.buildUI()
 

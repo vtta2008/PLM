@@ -200,9 +200,8 @@ class LayoutManager(DAMG):
         return layouts
 
     def projectLayouts(self):
-        from ui.SubUi.Projects.VFXProjectSetup   import VFXProjectSetup
-
-        self.setupVFXprj                     = VFXProjectSetup()
+        from ui.SubUi                       import VFXProject
+        self.setupVFXprj                     = VFXProject()
 
         for layout in [self.setupVFXprj, ]:
             layout.settings._settingEnable = True

@@ -11,7 +11,6 @@
       <excludeFolder url="file://$MODULE_DIR$/lib_tk/__tex__/1024" />
       <excludeFolder url="file://$MODULE_DIR$/lib_tk/__tex__/partten" />
       <excludeFolder url="file://$MODULE_DIR$/lib_tk/objLib" />
-      <excludeFolder url="file://$MODULE_DIR$/test" />
       <excludeFolder url="file://$MODULE_DIR$/tmp" />
     </content>
     <orderEntry type="jdk" jdkName="Python 3.6" jdkType="Python SDK" />

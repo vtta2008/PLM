@@ -25,7 +25,8 @@ API_MINIMUM = 0.64
 from PyQt5                          import __file__ as pyqt_path
 
 from appData                        import metadatas as m
-from appData.paths                  import *
+from appData.dirs                   import *
+from appData.pths                   import *
 from appData.text                   import *
 from appData.keys                   import *
 from appData.settingFormats         import *
@@ -101,20 +102,26 @@ __pkgsReq__             = m.__pkgsReq__
 # -------------------------------------------------------------------------------------------------------------
 """ Config directories """
 
-allPths = [ROOT_DIR, CFG_DIR, TMP_DIR, TASK_DIR, TEAM_DIR, ORG_DIR, PRJ_DIR, CONFIG_LOCAL_DAMG_DIR, CONFIG_LOCAL_PLM_DIR,
-           CONFIG_DIR, SETTING_DIR, LOG_DIR, CACHE_DIR, NODEGRAPH_DIR, PREF_DIR, USER_PREF_DIR, APP_DATA_DIR, BUILD_DIR,
-           IMG_DIR, PLUGIN_DIR, UI_DIR, TEST_DIR, DB_DIR, BIN_DIR, DATA_DIR, DEPENDANCIES_DIR, RESOURCES_DIR, SOUND_DIR,
-           SCRIPTS_DIR, QSS_DIR, JSON_DIR, APPS_DIR, MAYA_DIR, MARI_DIR, NUKE_DIR, ZBRUSH_DIR, HOUDINI_DIR, APP_ICON_DIR,
-           WEB_ICON_DIR, AVATAR_DIR, LOGO_DIR, PIC_DIR, TAG_DIR, ICON_DIR_16, ICON_DIR_24, ICON_DIR_32, ICON_DIR_48,
-           ICON_DIR_64, WEB_ICON_16, WEB_ICON_24, WEB_ICON_32, WEB_ICON_48, WEB_ICON_64, WEB_ICON_128, DAMG_LOGO_DIR,
-           PLM_LOGO_DIR, DAMG_LOGO_32, PLM_LOGO_32, RAWS_DATA_DIR, DOCUMENTATION_DIR, ]
-
 if not os.path.exists(DB_PTH):
     SQLS(DB_PTH)
 
-for p in allPths:
+allDirs = [APP_DATA_DIR, APP_ICON_DIR, AVATAR_DIR, BASE, BIN_DIR, BODY_DIR, BUILD_DIR, CACHE_DIR,
+           CFG_DIR, CONFIG_DAMG_DIR, CONFIG_PLM_DIR, CORES_DIR, CORE_DIR, DAMG_LOGO_DIR, DATA_DIR,
+           DB_DIR, DEPENDANCIES_DIR, DESKTOP_DIR, DOCUMENTATION_DIR, FOOTER_DIR, FUNCS_DIR, GUI_DIR,
+           HEADER_DIR, HOOK_DIR, HOUDINI_DIR, ICON_DIR_16, ICON_DIR_24, ICON_DIR_32, ICON_DIR_48,
+           ICON_DIR_64, IMG_DIR, INFO_DIR, JSON_DIR, LOCALAPPDATA, LOGO_DIR, LOG_DIR, MARI_DIR,
+           MAYA_DIR, MAYA_ICON_DIR, MENU_DIR, NETWORK_DIR, NODEGRAPH_DIR, NODE_GRAPH_DIR, NUKE_DIR,
+           ORG_DIR, PIC_DIR, PLM_LOGO_DIR, PLUGIN_DIR, PREF_DIR, PRJ_DIR, PROGRAM64, PROGRAM86,
+           PROGRAMDATA, PROJECT_DIR, QSS_DIR, RAWS_DATA_DIR, RCS_DIR, RESOURCES_DIR, ROOT_DIR,
+           SCRIPTS_DIR, SETTINGS_DIR, SETTING_DIR, SOUND_DIR, SUBUI_DIR, TABS_DIR, TAG_DIR,
+           TASK_DIR, TEAM_DIR, TEST_DIR, TMP_DIR, TOOLBAR_DIR, TOOLKIT_DIR, TOOLS_DIR, UI_DIR,
+           USER_PREF_DIR, UTILS_DIR, WEB_ICON_128, WEB_ICON_16, WEB_ICON_24, WEB_ICON_32, WEB_ICON_48,
+           WEB_ICON_64, WEB_ICON_DIR, WIDGETS_DIR, ZBRUSH_DIR]
+
+allDirs = [i.replace('\\', '/') for i in allDirs]
+
+for p in allDirs:
     if not os.path.exists(p):
-        # print('directory: "{0}" is not exists'.format(p))
         os.makedirs(p, exist_ok=True)
 
 # Set _data folder to invisible (hide)

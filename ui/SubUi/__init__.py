@@ -16,8 +16,10 @@ from .Tools                 import (NodeGraph, Calculator, Calendar, EnglishDict
                                     NoteReminder, Screenshot, TextEditor)
 from .Funcs                 import ForgotPassword, SignUp, SignIn
 from .Info                  import InfoWidget
-from .Projects              import VFXProjectSetup
+from .Projects              import VFXProject
 from .Settings              import SettingUI, UserSetting
+from .Configuration         import Configuration
+from .Preferences           import Preferences
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 11/11/2019 - 2:19 PM

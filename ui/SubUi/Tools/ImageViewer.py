@@ -14,17 +14,18 @@ Description:
 """ Import """
 
 # Python
-import os, sys, glob
+import os, glob
 from functools import partial
 
 # PyQt5
 from PyQt5                  import QtSql
 from PyQt5.QtCore           import Qt, QDir, pyqtSignal
 from PyQt5.QtGui            import QPixmap, QTransform, QIcon
-from PyQt5.QtWidgets        import (QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout)
+from PyQt5.QtWidgets        import QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout
 
 from toolkits.Widgets       import AppIcon, Widget
 from utils                  import get_screen_resolution
+from appData                import DB_PTH
 
 # Plt
 
@@ -146,7 +147,7 @@ class ImageInitUI(ViewerWindow):
 
     def __init__(self, key=None, parent=None):
         super(ImageInitUI, self).__init__(parent)
-        from appData.paths import DB_PTH
+
         self.dbfile = DB_PTH
         self.dbdir = os.path.dirname(self.dbfile)
 
@@ -531,12 +532,3 @@ class ImageViewer(Widget):
 
     def resizeUI(self, w, h):
         self.resize(w, h)
-
-def main():
-    appViewer = QApplication(sys.argv)
-    viewer = ImageViewer()
-    viewer.show()
-    appViewer.exec_()
-
-if __name__ == '__main__':
-    main()
