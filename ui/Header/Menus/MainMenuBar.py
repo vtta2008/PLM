@@ -140,10 +140,15 @@ class MainMenuBar(MenuBar):
         cb = self.sender()
         key = cb.key.replace('CheckBox_', '').replace('Preferences', self.key)
         for k, menu in self.menus.items():
-            if key == k:
+            check = True
+            for i in range(len(k)):
+                if not k[i] == key[i]:
+                    check = False
+                    break
+
+            if check:
                 menu.setEnabled(bool)
-
-
+                break
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 11/07/2018 - 12:59 AM

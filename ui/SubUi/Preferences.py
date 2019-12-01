@@ -38,6 +38,7 @@ class Preferences(Widget):
         self.header                     = HeaderCheckBoxes('Header', self)
         self.body                       = BodyCheckBoxes('Body', self)
         self.footer                     = FooterCheckBoxes('Footer', self)
+
         self.layout.addWidget(self.header)
         self.layout.addWidget(self.body)
         self.layout.addWidget(self.footer)
@@ -48,8 +49,8 @@ class Preferences(Widget):
 
     def resizeEvent(self, event):
         for gp in [self.header, self.body, self.footer]:
-            gp.setMaximumWidth(event.width())
-            gp.setMaximumHeight(event.height()/3)
+            gp.setMaximumWidth(self.width())
+            gp.setMaximumHeight(self.height()/3)
 
 
 # from PyQt5.QtWidgets import QApplication

@@ -17,7 +17,6 @@ from utils import str2bool
 class HeaderCheckBoxes(GroupGrid):
 
     key = 'HeaderCheckBoxes'
-    la = 0
     toolBarCBs = DAMGLIST()
     menuCBs = DAMGLIST()
     connectCBs = DAMGLIST()
@@ -60,26 +59,24 @@ class HeaderCheckBoxes(GroupGrid):
         self.headerCB = CheckBox('Header')
         self.headerCB.stateChanged.connect(self.headerStateChanged)
 
-        mnl = self.la
+        mnl = 0
         csl = mnl + 1
         tbl = csl + 1
         hdl = tbl + 1
 
         self.layout.addWidget(Label({'txt': 'Menus'}), mnl, 0, 1, 1)
-        i = 1
+
         for i in range(len(self.menuCBs)):
-            self.layout.addWidget(self.menuCBs[i], mnl, i - 1, 1, 1)
+            self.layout.addWidget(self.menuCBs[i], mnl, i+1, 1, 1)
             i += 1
 
         self.layout.addWidget(Label({'txt': 'Connect Status'}), csl, 0, 1, 1)
-        i = 1
         for i in range(len(self.connectCBs)):
-            self.layout.addWidget(self.connectCBs[i], mnl, i - 1, 1, 1)
+            self.layout.addWidget(self.connectCBs[i], csl, i+1, 1, 1)
 
         self.layout.addWidget(Label({'txt': 'Tool Bar: '}), tbl, 0, 1, 1)
-        i = 1
         for i in range(len(self.toolBarCBs)):
-            self.layout.addWidget(self.toolBarCBs[i], tbl, i - 1, 1, 1)
+            self.layout.addWidget(self.toolBarCBs[i], tbl, i+1, 1, 1)
             i += 1
 
         self.layout.addWidget(Label({'txt': 'Header'}), hdl, 0, 1, 1)
@@ -91,7 +88,7 @@ class HeaderCheckBoxes(GroupGrid):
         self.modeCB = CheckBox('Mode')
         self.allConnectCB = CheckBox("All: ")
         self.allConnectCB.stateChanged.connect(self.allConnectStateChanged)
-        for cb in [self.serverCB, self.onlineCB, self.modeCB, self.allConnectCB]:
+        for cb in [self.allConnectCB, self.serverCB, self.onlineCB, self.modeCB]:
             self.connectCBs.append(cb)
 
     def buildMenuCheckBoxes(self):

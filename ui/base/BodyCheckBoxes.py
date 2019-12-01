@@ -19,13 +19,11 @@ class BodyCheckBoxes(GroupGrid):
     key                                     = 'BodyCheckBoxes'
     notificationCBs                         = DAMGLIST()
     checkboxes                              = DAMGDICT()
-    la                                      = 0
 
     def __init__(self, title, parent=None):
         super(BodyCheckBoxes, self).__init__(title, parent)
         self.parent                         = parent
         self.buildBodyCheckBoxes()
-
 
         cbs                                 = [self.notificationCBs, [self.bodyCB]]
         for i in range(len(cbs)):
@@ -51,32 +49,29 @@ class BodyCheckBoxes(GroupGrid):
         self.bodyCB                         = CheckBox('Body')
         self.bodyCB.stateChanged.connect(self.bodyStateChanged)
 
-        ntl = self.la
+        ntl = 0
         bdl = ntl + 1
 
         self.layout.addWidget(Label({'txt': 'Notification'}), ntl, 0, 1, 1)
-        i = 1
         for i in range(len(self.notificationCBs)):
-            self.layout.addWidget(self.notificationCBs[i], ntl, i-1, 1, 1)
+            self.layout.addWidget(self.notificationCBs[i], ntl, i+1, 1, 1)
             i += 1
 
         self.layout.addWidget(Label({'txt': 'Body'}), bdl, 0, 1, 1)
         self.layout.addWidget(self.bodyCB, bdl, 1, 1, 1)
-
-        self.la = bdl + 1
-        return self.la
 
     def buildNotificationCheckBoxes(self):
         self.cpuCB                          = CheckBox('cpu')
         self.ramCB                          = CheckBox('ram')
         self.gpuCB                          = CheckBox('gpu')
         self.diskCB                         = CheckBox('disk')
+        self.weekCB                         = CheckBox('week')
         self.timeCB                         = CheckBox('clock')
         self.dateCB                         = CheckBox('date')
         self.allNotifiCB                    = CheckBox("All: ")
         self.allNotifiCB.stateChanged.connect(self.allNotifiStateChanged)
 
-        for cb in [self.allNotifiCB, self.cpuCB, self.ramCB, self.gpuCB, self.diskCB, self.timeCB, self.dateCB]:
+        for cb in [self.allNotifiCB, self.cpuCB, self.ramCB, self.gpuCB, self.diskCB, self.weekCB, self.timeCB, self.dateCB]:
             self.notificationCBs.append(cb)
 
     def allNotifiStateChanged(self, bool):

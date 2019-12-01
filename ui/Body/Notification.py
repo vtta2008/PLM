@@ -99,8 +99,8 @@ class Notification(GridLayout):
         worker.disk.connect(self.update_disk_useage)
         worker.start()
 
-        self.labels         = [self.usage_cpu, self.usage_ram, self.usage_gpu, self.usage_disk, self.timeClock,
-                               self.dateClock]
+        self.labels         = [self.usage_cpu, self.usage_ram, self.usage_gpu, self.usage_disk, self.weekNumber,
+                               self.timeClock, self.dateClock]
 
         self.addWidget(self.usage_cpu, 0, 0, 1, 1)
         self.addWidget(self.usage_ram, 0, 1, 1, 1)

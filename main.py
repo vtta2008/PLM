@@ -302,7 +302,6 @@ class DAMGTEAM(Application):
                 if not layoutID in self.toBuildUis:
                     self.logger.report("Layout: '{0}' is not registerred yet.".format(layoutID))
                     self.toBuildUis.append(layoutID)
-                    self.todoList.update()
             else:
                 layout = self.registryLayout[layoutID]
 

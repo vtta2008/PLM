@@ -66,50 +66,52 @@ class LayoutManager(DAMG):
         self.tools                      = self.toolLayouts()
         self.prjs                       = self.projectLayouts()
 
-        # tbcbs                           = self.preferences.header.toolBarCBs
-        # tbs                             = self.mainUI.mainToolBar.tbs
-        # cncbs                           = self.preferences.header.connectCBs
-        # cns                             = self.mainUI.connectStatus.labels
-        # mncbs                           = self.preferences.header.menuCBs
-        # ntcbs                           = self.preferences.body.notificationCBs
-        # nts                             = self.mainUI.notification.labels
-        #
-        # for i in range(len(tbs)):
-        #     cb = tbcbs[i]
-        #     tb = tbs[i]
-        #     cb.stateChanged.connect(tb.setVisible)
-        # tbcbs[-1].stateChanged.connect(self.mainUI.mainToolBarSec.setVisible)
-        #
-        # for i in range(len(mncbs)):
-        #     cb = mncbs[i]
-        #     cb.stateChanged.connect(self.mainUI.mainMenuBar.showMenu)
-        # mncbs[-1].stateChanged.connect(self.mainUI.mainMenuSec.setVisible)
-        #
-        # for i in range(len(cns)):
-        #     cb = cncbs[i]
-        #     lb = cns[i]
-        #     cb.stateChanged.connect(lb.setVisible)
-        # cncbs[-1].stateChanged.connect(self.mainUI.connectStatusSec.setVisible)
-        #
-        # for i in range(len(nts)):
-        #     cb = ntcbs[i]
-        #     lb = nts[i]
-        #     cb.stateChanged.connect(lb.setVisible)
-        # ntcbs[-1].stateChanged.connect(self.mainUI.notifiSec.setVisible)
-        #
-        # for layout in self.layouts():
-        #     try:
-        #         layout.isHidden()
-        #     except AttributeError:
-        #         self.noShowHideAttrs.append(layout)
-        #
-        # self.mainUI.botTabUI.botTab1.recieveSignalCB.stateChanged.connect(self.parent.setRecieveSignal)
-        # self.mainUI.botTabUI.botTab1.blockSignalCB.stateChanged.connect(self.parent.setBlockSignal)
-        # self.mainUI.botTabUI.botTab1.commandCB.stateChanged.connect(self.parent.setTrackCommand)
-        # self.mainUI.botTabUI.botTab1.registLayoutCB.stateChanged.connect(self.parent.setRegistLayout)
-        # self.mainUI.botTabUI.botTab1.jobsTodoCB.stateChanged.connect(self.parent.setJobsTodo)
-        # self.mainUI.botTabUI.botTab1.showLayoutErrorCB.stateChanged.connect(self.parent.setShowLayout)
-        # self.mainUI.botTabUI.botTab1.trackEventCB.stateChanged.connect(self.parent.setTrackEvent)
+        tbcbs                           = self.preferences.header.toolBarCBs
+        tbs                             = self.mainUI.mainToolBar.tbs
+        cncbs                           = self.preferences.header.connectCBs
+        cns                             = self.mainUI.connectStatus.labels
+        mncbs                           = self.preferences.header.menuCBs
+        mns                             = self.mainUI.mainMenuBar.mns
+        ntcbs                           = self.preferences.body.notificationCBs
+        nts                             = self.mainUI.notification.labels
+
+        for i in range(len(tbs)):
+            cb = tbcbs[i+1]
+            tb = tbs[i]
+            cb.stateChanged.connect(tb.setVisible)
+        tbcbs[0].stateChanged.connect(self.mainUI.mainToolBarSec.setVisible)
+
+        for i in range(1, len(mns)):
+            cb = mncbs[i+1]
+            mn = mns[i]
+            cb.stateChanged.connect(mn.setEnabled)
+        mncbs[0].stateChanged.connect(self.mainUI.mainMenuSec.setVisible)
+
+        for i in range(len(cns)):
+            cb = cncbs[i+1]
+            lb = cns[i]
+            cb.stateChanged.connect(lb.setVisible)
+        cncbs[0].stateChanged.connect(self.mainUI.connectStatusSec.setVisible)
+
+        for i in range(len(nts)):
+            cb = ntcbs[i+1]
+            lb = nts[i]
+            cb.stateChanged.connect(lb.setVisible)
+        ntcbs[0].stateChanged.connect(self.mainUI.notifiSec.setVisible)
+
+        for layout in self.layouts():
+            try:
+                layout.isHidden()
+            except AttributeError:
+                self.noShowHideAttrs.append(layout)
+
+        self.mainUI.botTabUI.botTab1.recieveSignalCB.stateChanged.connect(self.parent.setRecieveSignal)
+        self.mainUI.botTabUI.botTab1.blockSignalCB.stateChanged.connect(self.parent.setBlockSignal)
+        self.mainUI.botTabUI.botTab1.commandCB.stateChanged.connect(self.parent.setTrackCommand)
+        self.mainUI.botTabUI.botTab1.registLayoutCB.stateChanged.connect(self.parent.setRegistLayout)
+        self.mainUI.botTabUI.botTab1.jobsTodoCB.stateChanged.connect(self.parent.setJobsTodo)
+        self.mainUI.botTabUI.botTab1.showLayoutErrorCB.stateChanged.connect(self.parent.setShowLayout)
+        self.mainUI.botTabUI.botTab1.trackEventCB.stateChanged.connect(self.parent.setTrackEvent)
 
         layouts = []
         for listLayout in [self.mains, self.funcs, self.infos, self.setts, self.tools, self.prjs]:
