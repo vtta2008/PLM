@@ -38,13 +38,13 @@ class MainMenuBar(MenuBar):
         self.editMenu               = self.build_editMenu()
         self.viewMenu               = self.build_viewMenu()
         self.officeMenu             = self.build_officceMenu()
-        self.toolMenu               = self.build_toolMenu()
+        self.toolsMenu              = self.build_toolMenu()
         self.devMenu                = self.build_devMenu()
         self.libMenu                = self.build_libMenu()
         self.helpMenu               = self.build_helpMenu()
 
-        for menu in [self.appMenu, self.goMenu, self.editMenu, self.viewMenu, self.officeMenu, self.toolMenu,
-                     self.devMenu, self.libMenu, self.helpMenu, self.stylesheetMenu,  ]:
+        for menu in [self.appMenu, self.goMenu, self.editMenu, self.viewMenu, self.officeMenu, self.toolsMenu,
+                     self.devMenu, self.libMenu, self.helpMenu]:
             menu.key                = '{0}_Menu_{1}'.format(self.key, menu.title())
             menu._name              = '{0} Menu {1}'.format(self.key, menu.title())
 

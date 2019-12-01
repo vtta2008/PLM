@@ -16,6 +16,14 @@ from PyQt5.QtCore                       import Qt
 # PLM
 from appData                            import SiPoMin
 from bin                                import DAMG, DAMGLIST
+from ui.PipelineManager                 import PipelineManager
+from ui.SysTray                         import SysTray
+from ui.SubUi                           import (ShortcutCommand, NodeGraph, Calendar, Calculator, EnglishDictionary,
+                                                FindFiles, ImageViewer, NoteReminder, Screenshot, TextEditor, ForgotPassword,
+                                                SignUp, SignIn, InfoWidget, VFXProject, SettingUI, UserSetting, Preferences,
+                                                Configuration)
+
+from cores.TaskManager                  import TaskManager
 
 class LayoutManager(DAMG):
 
@@ -50,6 +58,7 @@ class LayoutManager(DAMG):
         return self._register.keys()
 
     def buildLayouts(self):
+
         self.mains                      = self.mainLayouts()
         self.funcs                      = self.functionLayouts()
         self.infos                      = self.infoLayouts()
@@ -57,50 +66,50 @@ class LayoutManager(DAMG):
         self.tools                      = self.toolLayouts()
         self.prjs                       = self.projectLayouts()
 
-        tbcbs                           = self.preferences.headerGrid.toolBarCBs
-        tbs                             = self.mainUI.mainToolBar.tbs
-        cncbs                           = self.preferences.headerGrid.connectCBs
-        cns                             = self.mainUI.connectStatus.labels
-        mncbs                           = self.preferences.headerGrid.menuCBs
-        ntcbs                           = self.preferences.bodyGrid.notificationCBs
-        nts                             = self.mainUI.notification.labels
-
-        for i in range(len(tbs)):
-            cb = tbcbs[i]
-            tb = tbs[i]
-            cb.stateChanged.connect(tb.setVisible)
-        tbcbs[-1].stateChanged.connect(self.mainUI.mainToolBarSec.setVisible)
-
-        for i in range(len(mncbs)):
-            cb = mncbs[i]
-            cb.stateChanged.connect(self.mainUI.mainMenuBar.showMenu)
-        mncbs[-1].stateChanged.connect(self.mainUI.mainMenuSec.setVisible)
-
-        for i in range(len(cns)):
-            cb = cncbs[i]
-            lb = cns[i]
-            cb.stateChanged.connect(lb.setVisible)
-        cncbs[-1].stateChanged.connect(self.mainUI.connectStatusSec.setVisible)
-
-        for i in range(len(nts)):
-            cb = ntcbs[i]
-            lb = nts[i]
-            cb.stateChanged.connect(lb.setVisible)
-        ntcbs[-1].stateChanged.connect(self.mainUI.notifiSec.setVisible)
-
-        for layout in self.layouts():
-            try:
-                layout.isHidden()
-            except AttributeError:
-                self.noShowHideAttrs.append(layout)
-
-        self.mainUI.botTabUI.botTab1.recieveSignalCB.stateChanged.connect(self.parent.changeRecieveSignal)
-        self.mainUI.botTabUI.botTab1.blockSignalCB.stateChanged.connect(self.parent.changeBlockSignal)
-        self.mainUI.botTabUI.botTab1.commandCB.stateChanged.connect(self.parent.changeTrackCommand)
-        self.mainUI.botTabUI.botTab1.registLayoutCB.stateChanged.connect(self.parent.changeRegistLayout)
-        self.mainUI.botTabUI.botTab1.jobsTodoCB.stateChanged.connect(self.parent.changeJobsTodo)
-        self.mainUI.botTabUI.botTab1.showLayoutErrorCB.stateChanged.connect(self.parent.changeShowLayout)
-        self.mainUI.botTabUI.botTab1.trackEventCB.stateChanged.connect(self.parent.changeTrackEvent)
+        # tbcbs                           = self.preferences.header.toolBarCBs
+        # tbs                             = self.mainUI.mainToolBar.tbs
+        # cncbs                           = self.preferences.header.connectCBs
+        # cns                             = self.mainUI.connectStatus.labels
+        # mncbs                           = self.preferences.header.menuCBs
+        # ntcbs                           = self.preferences.body.notificationCBs
+        # nts                             = self.mainUI.notification.labels
+        #
+        # for i in range(len(tbs)):
+        #     cb = tbcbs[i]
+        #     tb = tbs[i]
+        #     cb.stateChanged.connect(tb.setVisible)
+        # tbcbs[-1].stateChanged.connect(self.mainUI.mainToolBarSec.setVisible)
+        #
+        # for i in range(len(mncbs)):
+        #     cb = mncbs[i]
+        #     cb.stateChanged.connect(self.mainUI.mainMenuBar.showMenu)
+        # mncbs[-1].stateChanged.connect(self.mainUI.mainMenuSec.setVisible)
+        #
+        # for i in range(len(cns)):
+        #     cb = cncbs[i]
+        #     lb = cns[i]
+        #     cb.stateChanged.connect(lb.setVisible)
+        # cncbs[-1].stateChanged.connect(self.mainUI.connectStatusSec.setVisible)
+        #
+        # for i in range(len(nts)):
+        #     cb = ntcbs[i]
+        #     lb = nts[i]
+        #     cb.stateChanged.connect(lb.setVisible)
+        # ntcbs[-1].stateChanged.connect(self.mainUI.notifiSec.setVisible)
+        #
+        # for layout in self.layouts():
+        #     try:
+        #         layout.isHidden()
+        #     except AttributeError:
+        #         self.noShowHideAttrs.append(layout)
+        #
+        # self.mainUI.botTabUI.botTab1.recieveSignalCB.stateChanged.connect(self.parent.setRecieveSignal)
+        # self.mainUI.botTabUI.botTab1.blockSignalCB.stateChanged.connect(self.parent.setBlockSignal)
+        # self.mainUI.botTabUI.botTab1.commandCB.stateChanged.connect(self.parent.setTrackCommand)
+        # self.mainUI.botTabUI.botTab1.registLayoutCB.stateChanged.connect(self.parent.setRegistLayout)
+        # self.mainUI.botTabUI.botTab1.jobsTodoCB.stateChanged.connect(self.parent.setJobsTodo)
+        # self.mainUI.botTabUI.botTab1.showLayoutErrorCB.stateChanged.connect(self.parent.setShowLayout)
+        # self.mainUI.botTabUI.botTab1.trackEventCB.stateChanged.connect(self.parent.setTrackEvent)
 
         layouts = []
         for listLayout in [self.mains, self.funcs, self.infos, self.setts, self.tools, self.prjs]:
@@ -110,7 +119,6 @@ class LayoutManager(DAMG):
         return layouts
 
     def functionLayouts(self):
-        from ui                             import SignIn, SignUp, ForgotPassword
 
         self.signin                         = SignIn()
         self.forgotPW                       = ForgotPassword()
@@ -123,7 +131,6 @@ class LayoutManager(DAMG):
         return layouts
 
     def mainLayouts(self):
-        from ui                             import PipelineManager, SysTray, ShortcutCommand
 
         self.mainUI                         = PipelineManager(self.actionManager, self.buttonManager, self.threadManager)
         self.sysTray                        = SysTray(self.actionManager, self.eventManager)
@@ -138,7 +145,6 @@ class LayoutManager(DAMG):
         return layouts
 
     def infoLayouts(self):
-        from ui                             import InfoWidget
 
         self.about                          = InfoWidget(key='About')
         self.codeConduct                    = InfoWidget(key='CodeOfConduct')
@@ -158,7 +164,6 @@ class LayoutManager(DAMG):
         return layouts
 
     def settingLayouts(self):
-        from ui                             import SettingUI, UserSetting
 
         self.settingUI                      = SettingUI()
         self.userSetting                    = UserSetting()
@@ -171,10 +176,6 @@ class LayoutManager(DAMG):
         return layouts
 
     def toolLayouts(self):
-        from ui                             import (Screenshot, NoteReminder, ImageViewer, FindFiles, EnglishDictionary,
-                                                    Calendar, Calculator, NodeGraph, TextEditor, Preferences,
-                                                    Configuration)
-        from cores.TaskManager              import TaskManager
 
         self.calculator                     = Calculator()
         self.calendar                       = Calendar()
@@ -200,7 +201,7 @@ class LayoutManager(DAMG):
         return layouts
 
     def projectLayouts(self):
-        from ui.SubUi                       import VFXProject
+
         self.setupVFXprj                     = VFXProject()
 
         for layout in [self.setupVFXprj, ]:

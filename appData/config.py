@@ -125,11 +125,12 @@ for p in allDirs:
         os.makedirs(p, exist_ok=True)
 
 # Set _data folder to invisible (hide)
-for d in [CFG_DIR, TASK_DIR, ORG_DIR, PRJ_DIR, TEAM_DIR]:
-    if platform.system() == "Windows":
-        subprocess.call(["attrib", "+H", d])
-    elif platform.system() == "Darwin":
-        subprocess.call(["chflags", "hidden", CFG_DIR])
+for d in allDirs:
+    if '.' in os.path.basename(d):
+        if platform.system() == "Windows":
+            subprocess.call(["attrib", "+H", d])
+        elif platform.system() == "Darwin":
+            subprocess.call(["chflags", "hidden", CFG_DIR])
 
 # -------------------------------------------------------------------------------------------------------------
 """ Config qssPths from text file """
@@ -160,7 +161,6 @@ layoutTypes = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
 
 with open(mainConfig, 'r') as f:
     mainData = json.load(f)
-
 
 CONFIG_OFFICE = [k for k in mainData.keys() if k in CONFIG_OFFICE]
 

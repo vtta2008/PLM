@@ -12,12 +12,17 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # Python
-import os, sys, subprocess, shutil, winshell, pkg_resources, json, pathlib2
+import os, sys, subprocess, shutil, winshell, pkg_resources, json
 from platform                           import system
-from bin                                import DAMG, DAMGDICT, DAMGLIST
 
 # PyQt5
-from PyQt5 import __file__ as pyqt_path
+from PyQt5                              import __file__ as pyqt_path
+from PyQt5.QtCore                       import QProcess
+
+# DAMG
+from bin                                import DAMG, DAMGDICT, DAMGLIST
+
+
 
 
 __groupname__                           = "DAMGTEAM"
@@ -89,15 +94,6 @@ FIX_KEY                                 = { 'ScreenShot': 'ScreenShot', 'Snippin
 PIPE                                    = subprocess.PIPE
 STDOUT                                  = subprocess.STDOUT
 
-def asUtf8(s):
-    if isinstance(s, pathlib2.Path):
-        s = str(s)
-
-    if type(s) == str:
-        return s.encode('utf-8')
-    else:
-        return s
-
 class ConfigManager(DAMG):
 
     key                                 = 'Configurations'
@@ -106,17 +102,23 @@ class ConfigManager(DAMG):
     cfgInfo                             = DAMGDICT()
     cfgError                            = DAMGDICT()
     install_packages                    = DAMGDICT()
+
     packages                            = DAMGLIST()
     versions                            = DAMGLIST()
 
     printOutput                         = False
 
-    def __init__(self, appKey, rootDir, mode='alpha'):
+    def __init__(self, appKey, rootDir, mode):
         super(ConfigManager, self).__init__(self)
 
         self.appKey                     = appKey
         self.rootDir                    = rootDir
         self.mode                       = mode
+
+        if self.mode.subprocess:
+            self.process = subprocess.Popen
+        else:
+            self.process = QProcess
 
         self.cfgs                       = True
         self._pthInfo                   = False
@@ -176,18 +178,21 @@ class ConfigManager(DAMG):
 
         dirPth['root']                 = self.rootDir
 
+        print(dirPth['root'])
+
         dirPth['appData']              = self.set_dir('appData')
         dirPth['config']               = self.set_dir('appData/.config')
         dirPth['setting']              = self.set_dir('appData/.config')
         dirPth['log']                  = self.set_dir('appData/.config')
 
         dirPth['tmp']                  = self.set_dir('appData/.tmp')
-        dirPth['task']                 = self.set_dir('appData/.task')
-        dirPth['project']              = self.set_dir('appData/.project')
-        dirPth['organisation']         = self.set_dir('appData/.organisation')
-        dirPth['team']                 = self.set_dir('appData/.team')
-        dirPth['user']                 = self.set_dir('appData/.user')
+        dirPth['task']                 = self.set_dir('appData/.config/.task')
+        dirPth['project']              = self.set_dir('appData/.config/.project')
+        dirPth['organisation']         = self.set_dir('appData/.config/.organisation')
+        dirPth['team']                 = self.set_dir('appData/.config/.team')
+        dirPth['user']                 = self.set_dir('appData/.config/.user')
         dirPth['cache']                = self.set_dir('appData/.config/.cache')
+
         dirPth['documents']            = self.set_dir('appData/documentations')
         dirPth['source']               = self.set_dir('appData/raws')
 
@@ -265,6 +270,9 @@ class ConfigManager(DAMG):
         dirPth['utils']                = self.set_dir('utils')
 
         for pth in dirPth.values():
+            # for k, v in dirPth.items():
+            #     if v == pth:
+            #         print(k, v)
             self.create_folder(pth)
             if not os.path.exists(pth):
                 self.cfgError['paths error'] = pth
@@ -465,8 +473,6 @@ class ConfigManager(DAMG):
         self.mainInfo['licenceTag']             = ['licenceLink', 'licenceTagIcon', 'https://github.com/vtta2008/damgteam/blob/master/LICENCE']
         self.mainInfo['versionTag']             = ['versionLink', 'versionTagIcon', 'https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst']
 
-
-
         for key in self.appInfo:
             if 'NukeX' in key:
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --nukex"
@@ -604,7 +610,7 @@ class ConfigManager(DAMG):
         return self.get_all_paths(directory)[0]
 
     def set_dir(self, folName, subRoot=None):
-        if self.mode in ['alpha', 'dev', 'test']:
+        if self.mode.config in ['Alpha', 'alpha', 'dev', 'test']:
             if subRoot is not None:
                 root = self.check_dir(self.rootDir, subRoot)
             else:
@@ -706,20 +712,37 @@ class ConfigManager(DAMG):
         return res
 
     def run_command(self, cmd, printOutput=False):
-
         args = [arg for arg in cmd.split(' ')]
         # print( '%s %s' % (cmd, ' '.join( args )) )
+        t = " ".join(args)
+        if self.mode.subprocess:
+            try:
+                if sys.platform == 'win32':
+                    proc = self.process(args=args, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=False)
+                else:
+                    proc = self.process(args=args, close_fds=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+                output = proc.stdout.read()
+                proc.wait()
+            except EnvironmentError as e:
+                output = 'ErrorRunning {0} {1}: {2}'.format(cmd, t, str(e))
+        else:
+            proc = self.process()
+            proc.setStandardInputFile(proc.nullDevice())
+            proc.setStandardOutputFile(proc.nullDevice())
+            proc.setStandardErrorFile(proc.nullDevice())
 
-        try:
-            if sys.platform == 'win32':
-                proc = subprocess.Popen(args=args, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=False)
-            else:
-                proc = subprocess.Popen(args=args, close_fds=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+            if proc.state() != 2:
+                proc.waitForStarted()
+                proc.waitForFinished()
+                if "|" in t or ">" in t or "<" in t:
+                    proc.start('sh -c "' + cmd + ' ' + t + '"')
+                else:
+                    proc.start(cmd + " " + t)
 
-            output = proc.stdout.read()
-            proc.wait()
-        except EnvironmentError as e:
-            output = 'ErrorRunning {0} {1}: {2}'.format(cmd, ' '.join(args), str(e))
+            try:
+                output = str(proc.readAll(), encoding='utf8').rstrip()
+            except TypeError:
+                output = str(proc.readAll()).rstrip()
 
         if printOutput:
             print(output.decode().replace('\\', '/'))

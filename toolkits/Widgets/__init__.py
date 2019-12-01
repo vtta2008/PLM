@@ -10,7 +10,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-
 from .Action            import Action, ShortCut
 from .ActionManager     import ActionManager
 from .BoxLayout         import VBoxLayout, HBoxLayout

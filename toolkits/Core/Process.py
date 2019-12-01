@@ -29,7 +29,7 @@ class Process(QProcess):
         super(Process, self).__init__(parent)
 
         self.parent = parent
-        # self.pres = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self.parent)
+        # self.preSetting = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self.parent)
         # self.signals = SignalManager(self.parent)
 
         self.setProcessChannelMode(self.MergedChannels)

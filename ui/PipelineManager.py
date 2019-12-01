@@ -6,10 +6,10 @@ Description:
     This is main UI of PipelineTool.
 """
 # -------------------------------------------------------------------------------------------------------------
+from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # PLM
-
 from appData                            import __homepage__, dockB, __appname__
 from toolkits.Widgets                   import MainWindow, GroupBox, Widget, GridLayout, LogoIcon
 from .Header                            import MainToolBar, MainMenuBar, ConnectStatus

@@ -615,7 +615,7 @@ class BaseThreadPool(QThreadPool):
 
     def create_thread(self, task):
         thread = DAMGTHREAD(task)
-        thread.quit_thread.connect()
+        thread.quit_thread.connect(partial(self.stop_thread, thread))
         self.threads.append(thread)
         return thread
 

@@ -13,7 +13,7 @@ Description:
 
 # Plt
 from toolkits.Widgets               import Widget, GridLayout, AppIcon
-from .base                          import PassWord, Avatar, ProFile, Location
+from ui.base import ProFile, Location, Avatar, PassWord
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """
@@ -41,5 +41,10 @@ class UserSetting(Widget):
         self.layout.addWidget(self.password, 0, 1, 1, 1)
         self.layout.addWidget(self.profile, 1, 0, 1, 1)
         self.layout.addWidget(self.location, 1, 1, 1, 1)
+
+    def resizeEvent(self, event):
+        for gb in [self.avatar, self.password, self.profile, self.location]:
+            gb.setMaximumHeight(self.height()/2)
+            gb.setMaximumWidth(self.width()/2)
 
 

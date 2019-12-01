@@ -256,7 +256,6 @@ class LCDNumber(QLCDNumber):
     def currentDate(self):
         return self.date.currentDate()
 
-
 def user_pass_label():
     usernameLabel = Label({'txt': 'Username'})
     passwordLabel = Label({'txt': 'Password'})

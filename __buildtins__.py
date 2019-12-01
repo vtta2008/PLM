@@ -13,8 +13,7 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # Python
-import os, sys, subprocess, pathlib2, json
-from PyQt5.QtCore import QProcess
+import os, sys, subprocess, json
 from PyQt5.QtWidgets import QApplication
 
 PIPE                                = subprocess.PIPE
@@ -22,183 +21,237 @@ STDOUT                              = subprocess.STDOUT
 __envKey__                          = "DAMGTEAM"
 ROOT                                = os.path.abspath(os.getcwd())
 
-def asUtf8(s):
-    if isinstance(s, pathlib2.Path):
-        s = str(s)
-    if type(s) in [str]:
-        return s.encode(encoding='utf-8')
-    else:
-        return s
+def singleton(cls):
+    instances = {}
+    def getinstance():
+        if cls not in instances:
+            instances[cls] = cls()
+        return instances[cls]
+    return getinstance
 
-class PremiseController(object):
+class Modes(dict):
+    key = 'Modes'
+
+    _subprocess                     = True
+    _config                         = 'Alpha'
+
+    def __init__(self):
+        dict.__init__(self)
+
+        self['subprocess']          = self.subprocess
+        self['config']              = self.config
+
+    @property
+    def subprocess(self):
+        return self._subprocess
+
+    @property
+    def config(self):
+        return self._config
+
+    @subprocess.setter
+    def subprocess(self, val):
+        self._subprocess            = val
+
+    @config.setter
+    def config(self, val):
+        self._config                = val
+
+class Tracks(dict):
+
+    key = 'Tracks'
+
+    _recieveSignal                  = False
+    _blockSignal                    = False
+    _command                        = False
+    _registLayout                   = False
+    _jobsToDo                       = False
+    _showLayoutError                = False
+    _events                         = False
+
+    def __init__(self):
+        dict.__init__(self)
+
+        self['recieveSignal']       = self.recieveSignal
+        self['blockSignal']         = self.blockSignal
+        self['registLayout']        = self.registLayout
+        self['jobjsTodo']           = self.jobsToDo
+        self['showLayoutError']     = self.showLayoutError
+        self['events']              = self.events
+
+    @property
+    def recieveSignal(self):
+        return self._recieveSignal
+
+    @property
+    def blockSignal(self):
+        return self._blockSignal
+
+    @property
+    def command(self):
+        return self._command
+
+    @property
+    def registLayout(self):
+        return self._registLayout
+
+    @property
+    def jobsToDo(self):
+        return self._jobsToDo
+
+    @property
+    def showLayoutError(self):
+        return self._showLayoutError
+
+    @property
+    def events(self):
+        return self._events
+
+    @recieveSignal.setter
+    def recieveSignal(self, val):
+        self._recieveSignal         = val
+
+    @blockSignal.setter
+    def blockSignal(self, val):
+        self._blockSignal           = val
+
+    @command.setter
+    def command(self, val):
+        self._command               = val
+
+    @registLayout.setter
+    def registLayout(self, val):
+        self._registLayout          = val
+
+    @jobsToDo.setter
+    def jobsToDo(self, val):
+        self._jobsToDo              = val
+
+    @showLayoutError.setter
+    def showLayoutError(self, val):
+        self._showLayoutError       = val
+
+    @events.setter
+    def events(self, val):
+        self._events                = val
+
+class Checks(dict):
+
+    key                             = 'Checks'
+
+    _report                         = False
+    _copyright                      = False
+    _toBuildUis                     = False
+    _toBuildCmds                    = False
+    _ignoreIDs                      = False
+
+    def __init__(self):
+        dict.__init__(self)
+
+        self['report']              = self.report
+        self['copyright']           = self.copyright
+        self['toBuildUis']          = self.toBuildUis
+        self['toBUildCmds']         = self.toBuildCmds
+        self['ignoreIDs']           = self.ignoreIDs
+
+    @property
+    def report(self):
+        return self._report
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def toBuildUis(self):
+        return self._toBuildUis
+
+    @property
+    def toBuildCmds(self):
+        return self._toBuildCmds
+
+    @property
+    def ignoreIDs(self):
+        return self._ignoreIDs
+
+    @report.setter
+    def report(self, val):
+        self._report = val
+
+    @copyright.setter
+    def copyright(self, val):
+        self._copyright = val
+
+    @toBuildUis.setter
+    def toBuildUis(self, val):
+        self._toBuildUis = val
+
+    @toBuildCmds.setter
+    def toBuildCmds(self, val):
+        self._toBuildCmds = val
+
+    @ignoreIDs.setter
+    def ignoreIDs(self, val):
+        self._ignoreIDs = val
+
+class PreSettings(object):
 
     Type                            = 'DAMGPRESETING'
     key                             = 'PreSetting'
     _name                           = 'DAMG Pre Setting'
 
     cfgable                         = False
-    allowReport                     = False
-    checkCopyright                  = False
-    checkToBuildUis                 = False
-    checkToBuildCmds                = False
-    checkIgnoreIDs                  = False
     recordLog                       = False
     printOutput                     = False
-
-    trackRecieveSignal              = False
-    trackBlockSignal                = False
-    trackCommand                    = False
-    trackRegistLayout               = False
-    trackJobsTodo                   = False
-    trackShowLayoutError            = False
-    trackEvents                     = False
-
-    subprocess_mode                 = False
 
     _data                           = dict()
     _log                            = dict()
     _cmds                           = dict()
 
-    values = [cfgable, allowReport, checkCopyright, checkToBuildUis, checkToBuildCmds, checkIgnoreIDs,
-              recordLog, printOutput, trackRecieveSignal, trackBlockSignal, trackCommand, trackRegistLayout,
-              trackJobsTodo, trackShowLayoutError, trackEvents, subprocess_mode]
-
-    keys = ['cfgable', 'allowReport', 'checkCopyright', 'checkToBuildUis', 'checkToBuildCmds', 'checkIgnoreIDs',
-            'recordLog', 'printOutput', 'trackRecieveSignal', 'trackBlockSignal', 'trackCommand', 'trackRegistLayout',
-            'trackJobsTodo', 'trackShowLayoutError', 'trackEvents', 'subprocess_mode']
 
     def __init__(self):
-        super(PremiseController, self).__init__()
+        super(PreSettings, self).__init__()
 
-        if len(self.keys) == len(self.values):
-            self.update()
-        else:
-            print('DataNotEqualError: {0} keys but {1} values'.format(len(self.keys), len(self.values)))
-
-    def update(self):
-        for k in self.keys:
-            self._data[k] = self.values[self.keys.index(k)]
-
-        pth = os.path.join(ROOT, 'appData', '.tmp')
-        if not os.path.exists(pth):
-            from pathlib import Path
-            Path(pth).mkdir(parents=True, exist_ok=True)
-
-        with open(os.path.join(pth, '.cmds'), 'w+') as f:
-            json.dump(self._data, f, indent=4)
-
-    def edit(self, k, v):
-        self._data[k] = v
-        for key, value in self._data.items():
-            if key == k:
-                i = self.keys.index(key)
-                self.values[i] = v
-                return self.values[i]
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def data(self):
-        return self._data
-
-    @data.setter
-    def data(self, val):
-        self._data = val
+        self.tracks                 = Tracks()
+        self.checks                 = Checks()
+        self.modes                  = Modes
 
     @property
     def cmds(self):
         return self._cmds
 
-    @cmds.setter
-    def cmds(self, val):
-        self._cmds = val
+preSetting = PreSettings()
 
-pres = PremiseController()
-
-def run_command(cmd, printOutput=pres.printOutput, working_dir=ROOT):
-
-    args = [arg for arg in cmd.split(' ')]
-    t = " ".join(cmd)
-
-    if pres.subprocess_mode:
-        try:
-            if sys.platform == 'win32':
-                proc = subprocess.Popen(args=args, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT, close_fds=False)
-            else:
-                proc = subprocess.Popen(args=args, close_fds=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
-
-            output = proc.stdout.read()
-            proc.wait()
-        except EnvironmentError as e:
-            output = 'ErrorRunning {0} {1}: {2}'.format(cmd, ' '.join(args), str(e))
-    else:
-        proc = QProcess()
-        proc.setStandardInputFile(proc.nullDevice())
-        proc.setStandardOutputFile(proc.nullDevice())
-        proc.setStandardErrorFile(proc.nullDevice())
-
-        if proc.state() != 2:
-            proc.waitForStarted()
-            proc.waitForFinished()
-            if "|" in t or ">" in t or "<" in t:
-                proc.start('sh -c "' + cmd + ' ' + t + '"')
-            else:
-                proc.start(cmd + " " + t)
-
-        try:
-            output = str(proc.readAll(), encoding='utf8').rstrip()
-        except TypeError:
-            output = str(proc.readAll()).rstrip()
-
-    if printOutput:
-        if type(output) in [str]:
-            print(output.replace('\\', '/'))
-        else:
-            print(output.decode().replace('\\', '/'))
-    pres._cmds[cmd] = args
-    pres._cmds.update()
-
-    return output
-
+# print(1)
 try:
     os.getenv(__envKey__)
 except KeyError:
     cmd = 'SetX {0} {1}'.format(__envKey__, ROOT)
-    run_command(cmd, pres.printOutput)
-    pres.edit('cfgable', True)
-    pres.cfgable = True
+    subprocess.Popen(cmd, shell=True).wait()
+    preSetting.cfgable = True
 else:
     if os.getenv(__envKey__)   != ROOT:
         cmd = 'SetX {0} {1}'.format(__envKey__, ROOT)
-        run_command(cmd, pres.printOutput)
-        pres.edit('cfgable', True)
-        pres.cfgable = True
+        subprocess.Popen(cmd, shell=True).wait()
+        preSetting.cfgable = True
     else:
-        pres.edit('cfgable', True)
-        pres.cfgable = True
+        preSetting.cfgable = True
 
-if pres.cfgable:
+if preSetting.cfgable:
     from cores.ConfigManager import ConfigManager
-    configManager = ConfigManager(__envKey__, ROOT)
+    configManager = ConfigManager(__envKey__, ROOT, Modes())
     if not configManager.cfgs:
-        if pres.allowReport:
+        if preSetting.checks.report:
             print("CONFIGERROR: configurations have not done yet.")
         sys.exit()
     else:
-        if pres.allowReport:
+        if preSetting.checks.report:
             print('Configurations has been completed.')
 else:
-    if pres.allowReport:
+    if preSetting.checks.report:
         print('EnvironmentVariableError: {0} is not set to {1}, please try again.'.format(__envKey__, ROOT))
     sys.exit()
-
-try:
-    import damg
-except ImportError:
-    cmd = 'python -m pip install --user --upgrade damg'
-    run_command(cmd, pres.printOutput)
+# print(2)
 
 def __checkTmpPth__():
     import platform
@@ -206,7 +259,6 @@ def __checkTmpPth__():
 
     if not os.path.exists(tmpPth):
         os.mkdir(tmpPth)
-
         if platform.system() == "Windows":
             subprocess.call(["attrib", "+H", tmpPth])
         elif platform.system() == "Darwin":
@@ -233,7 +285,7 @@ def __ignoreIDs__():
         with open(ignoreIDsFile, 'w') as f:
             ignoreIDs = json.dump(ignoreIDs, f, indent=4)
 
-    if pres.checkIgnoreIDs:
+    if preSetting.checks.ignoreIDs:
         print(ignoreIDs)
     return ignoreIDs
 
@@ -255,7 +307,7 @@ def __tobuildUis__():
                       ]
         with open(toBuildUIsFile, 'w') as f:
             toBuildUis = json.dump(toBuildUis, f, indent=4)
-    if pres.checkToBuildUis:
+    if preSetting.checks.toBuildUis:
         print(toBuildUis)
     return toBuildUis
 
@@ -266,20 +318,25 @@ def __tobuildCmds__():
 
     if os.path.exists(toBuildCmdsFile):
         with open(toBuildCmdsFile, 'r') as f:
-            toBuildCmds = json.load(f)
+            try:
+                toBuildCmds = json.load(f)
+            except json.decoder.JSONDecodeError:
+                toBuildCmds = preSetting.cmds
     else:
         with open(toBuildCmdsFile, 'wb+') as f:
-            toBuildCmds = json.dump(pres.cmds, f, indent=4)
+            toBuildCmds = json.dump(preSetting.cmds, f, indent=4)
 
-    if pres.checkToBuildCmds:
+    if preSetting.checks.toBuildCmds:
         print(toBuildCmds)
     return toBuildCmds
 
 def __copyright__():
     _copyright = 'Pipeline Manager (PLM) Copyright (C) 2017 - 2019 by DAMGTEAM, contributed by Trinh Do & Duong Minh Duc.'
-    if pres.checkCopyright:
+    if preSetting.checks.copyright:
         print(_copyright)
     return _copyright
+
+# print(3)
 
 class Application(QApplication):
 
@@ -293,13 +350,13 @@ class Application(QApplication):
 
     _login                          = False
 
-    _trackRecieveSignal             = False
-    _trackBlockSignal               = False
-    _trackCommand                   = False
-    _trackRegistLayout              = False
-    _trackJobsTodo                  = False
-    _trackShowLayoutError           = False
-    _trackEvents                    = False
+    trackRecieveSignal             = preSetting.tracks.recieveSignal
+    trackBlockSignal               = preSetting.tracks.blockSignal
+    trackCommand                   = preSetting.tracks.command
+    trackRegistLayout              = preSetting.tracks.registLayout
+    trackJobsTodo                  = preSetting.tracks.jobsToDo
+    trackShowLayoutError           = preSetting.tracks.showLayoutError
+    trackEvents                    = preSetting.tracks.events
 
     timeReset                       = 5
 
@@ -307,7 +364,15 @@ class Application(QApplication):
     toBuildUis                      = __tobuildUis__()
     toBuildCmds                     = __tobuildCmds__()
 
-    todoList                        = dict(toBuildUis = toBuildUis, toBuildCmds = toBuildCmds)
+    TODO                            = dict(toBuildUis = toBuildUis, toBuildCmds = toBuildCmds)
+
+    showLayout_old                  = []
+    executing_old                   = []
+    setSetting_old                  = []
+    openBrowser_old                 = []
+    sysNotify_old                   = []
+
+    _styleSheet                     = None
 
     def checkSignalRepeat(self, old, data):
         new = [i for i in data]
@@ -329,26 +394,42 @@ class Application(QApplication):
     def runEvent(self):
         return sys.exit(self.exec_())
 
-    def changeRecieveSignal(self, bool):
-        self._trackRecieveSignal    = bool
+    def setRecieveSignal(self, bool):
+        preSetting.tracks.recieveSignal = bool
+        self.trackRecieveSignal = bool
 
-    def changeBlockSignal(self, bool):
-        self._trackBlockSignal      = bool
+    def setBlockSignal(self, bool):
+        preSetting.tracks.blockSignal = bool
+        self.trackBlockSignal = bool
 
-    def changeTrackCommand(self, bool):
-        self._trackCommand          = bool
+    def setTrackCommand(self, bool):
+        preSetting.tracks.command = bool
+        self.trackCommand = bool
 
-    def changeRegistLayout(self, bool):
-        self._trackRegistLayout     = bool
+    def setRegistLayout(self, bool):
+        preSetting.tracks.registLayout = bool
+        self.trackRegistLayout = bool
 
-    def changeJobsTodo(self, bool):
-        self._trackJobsTodo         = bool
+    def setJobsTodo(self, bool):
+        preSetting.tracks.jobsToDo = bool
+        self.trackJobsTodo = bool
 
-    def changeShowLayout(self, bool):
-        self._trackShowLayoutError  = bool
+    def setShowLayout(self, bool):
+        preSetting.tracks.showLayoutError = bool
+        self.trackShowLayoutError = bool
 
-    def changeTrackEvent(self, bool):
-        self._trackEvents           = bool
+    def setTrackEvent(self, bool):
+        preSetting.tracks.events = bool
+        self.trackEvents = bool
+
+    def countDownReset(self, limit):
+        self.count += 1
+        if self.count == limit:
+            self.showLayout_old     = []
+            self.executing_old      = []
+            self.setSetting_old     = []
+            self.openBrowser_old    = []
+            self.sysNotify_old      = []
 
     @property
     def login(self):
@@ -362,30 +443,6 @@ class Application(QApplication):
     def name(self):
         return self._name
 
-    @property
-    def trackRecieveSignal(self):
-        return self._trackRecieveSignal
-
-    @property
-    def trackBlockSignal(self):
-        return self._trackBlockSignal
-
-    @property
-    def trackCommand(self):
-        return self._trackCommand
-
-    @property
-    def trackRegistLayout(self):
-        return self._trackRegistLayout
-
-    @property
-    def trackShowLayoutError(self):
-        return self._trackShowLayoutError
-
-    @property
-    def trackEvents(self):
-        return self._trackEvents
-
     @name.setter
     def name(self, val):
         self._name                  = val
@@ -394,38 +451,7 @@ class Application(QApplication):
     def login(self, val):
         self._login                 = val
 
-    @trackRecieveSignal.setter
-    def trackRecieveSignal(self, val):
-        self._trackRecieveSignal    = val
-
-    @trackBlockSignal.setter
-    def trackBlockSignal(self, val):
-        self._trackBlockSignal      = val
-
-    @trackCommand.setter
-    def trackCommand(self, val):
-        self._trackCommand          = val
-
-    @trackRegistLayout.setter
-    def trackRegistLayout(self, val):
-        self._trackRegistLayout     = val
-
-    @trackShowLayoutError.setter
-    def trackShowLayoutError(self, val):
-        self._trackShowLayoutError  = val
-
-    @trackEvents.setter
-    def trackEvents(self, val):
-        self._trackEvents           = val
-
-def singleton(cls):
-    instances = {}
-    def getinstance():
-        if cls not in instances:
-            instances[cls] = cls()
-        return instances[cls]
-    return getinstance
-
+# print(4)
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 6:55 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

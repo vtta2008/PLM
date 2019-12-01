@@ -22,7 +22,7 @@ from PyQt5.QtCore           import QSettings
 
 # PLM
 from toolkits.Widgets       import Widget, GridLayout
-from ui.SubUi.Settings.base import SettingInput, SettingOutput
+from ui.base import SettingOutput, SettingInput
 from appData                import SETTING_FILEPTH, __appname__, __organization__
 
 # -------------------------------------------------------------------------------------------------------------
@@ -53,7 +53,7 @@ class SettingUI(Widget):
         self.autoRefreshAct.setChecked(True)
         self.fallbacksAct.setChecked(True)
 
-        self.setWindowTitle("PLM pres")
+        self.setWindowTitle("PLM preSetting")
 
     def openSettings(self):
         if not self.settings:

@@ -9,8 +9,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import
-from __buildtins__ import __envKey__, Application, pres, configManager, ConfigManager, ROOT
+from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __envKey__, Application, configManager, ConfigManager, ROOT, Modes
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
@@ -26,6 +26,7 @@ from appData                            import (__localServer__, __organization_
                                                 ST_FORMAT)
 
 from utils                              import str2bool, clean_file_ext, LocalDatabase
+
 from cores.StyleSheet                   import StyleSheet
 from cores.Loggers                      import Loggers
 from cores.Registry                     import RegistryLayout
@@ -43,12 +44,6 @@ class DAMGTEAM(Application):
     dataConfig                          = configManager
     count                               = 0
     onlyExists                          = True
-
-    showLayout_old                      = []
-    executing_old                       = []
-    setSetting_old                      = []
-    openBrowser_old                     = []
-    sysNotify_old                       = []
 
     def __init__(self):
         super(DAMGTEAM, self).__init__(sys.argv)
@@ -86,6 +81,7 @@ class DAMGTEAM(Application):
         self.registryLayout             = RegistryLayout()
         self.layoutManager              = LayoutManager(self.registryLayout, self.actionManager, self.buttonManager,
                                                         self.eventManager, self.threadManager, self)
+
         self.layoutManager.registLayout(self.browser)
         self.layoutManager.buildLayouts()
         self.layoutManager.globalSetting()
@@ -142,7 +138,7 @@ class DAMGTEAM(Application):
 
     @pyqtSlot(str, name='openBrowser')
     def openBrowser(self, url):
-        if self._trackRecieveSignal:
+        if self.trackRecieveSignal:
             self.logger.report("receive signal open browser: {0}".format(url))
 
         self.browser.setUrl(url)
@@ -151,7 +147,7 @@ class DAMGTEAM(Application):
 
     @pyqtSlot(str, str, str, name='setSetting')
     def setSetting(self, key=None, value=None, grp=None):
-        if self._trackRecieveSignal:
+        if self.trackRecieveSignal:
             self.logger.report("receive signal setSetting: {0}, {1}, {2}".format(key, value, grp))
 
         self.setSetting_old, repeat = self.checkSignalRepeat(self.setSetting_old, [key, value, grp])
@@ -168,14 +164,14 @@ class DAMGTEAM(Application):
             if not self.threadManager.isCounting():
                 self.threadManager.startCounting()
 
-            if self._trackBlockSignal:
+            if self.trackBlockSignal:
                 self.logger.report('{3}: block signal setSetting: {0}, {1}, {2}'.format(key, value, grp, self.key))
 
             return self.countDownReset(limit)
 
     @pyqtSlot(str, name="executing")
     def executing(self, cmd):
-        if self._trackRecieveSignal:
+        if self.trackRecieveSignal:
             self.logger.report("receive signal executing: {0}".format(cmd))
 
         self.executing_old, repeat = self.checkSignalRepeat(self.executing_old, [cmd])
@@ -191,7 +187,7 @@ class DAMGTEAM(Application):
             if not self.threadManager.isCounting():
                 self.threadManager.startCounting()
 
-            if self._trackBlockSignal:
+            if self.trackBlockSignal:
                 print('block signal executing: {0}'.format(cmd))
 
             return self.countDownReset(limit)
@@ -223,11 +219,11 @@ class DAMGTEAM(Application):
                 return self.setStyleSheet(cmd)
             else:
                 if not cmd in self.toBuildCmds:
-                    if self._trackCommand:
+                    if self.trackCommand:
                         self.logger.report("This command is not regiested yet: {0}".format(cmd))
                     return self.toBuildCmds.append(cmd)
                 else:
-                    if self._trackCommand:
+                    if self.trackCommand:
                         self.logger.info("This command will be built later.".format(cmd))
                     return
 
@@ -253,25 +249,25 @@ class DAMGTEAM(Application):
 
             if not repeat:
                 if mode == state:
-                    if self._trackBlockSignal:
+                    if self.trackBlockSignal:
                         self.logger.report('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
                     repeat = True
                 else:
                     if mode == 'show':
                         if state in ['showNormal', 'showRestore']:
-                            if self._trackBlockSignal:
+                            if self.trackBlockSignal:
                                 self.logger.report('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
                             repeat = True
                     elif mode == 'hide':
                         if state in ['hide', 'showMinimized']:
-                            if self._trackBlockSignal:
+                            if self.trackBlockSignal:
                                 self.logger.report('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
                             repeat = True
             else:
                 repeat = True
 
         if not repeat:
-            if self._trackRecieveSignal:
+            if self.trackRecieveSignal:
                 self.logger.report('recieve signal showLayout from {0}: {1}'.format(layoutID, mode))
             pass
         else:
@@ -285,7 +281,7 @@ class DAMGTEAM(Application):
             if not self.threadManager.isCounting():
                 self.threadManager.startCounting()
 
-            if self._trackBlockSignal:
+            if self.trackBlockSignal:
                 self.logger.report('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
 
             return self.countDownReset(limit)
@@ -370,7 +366,7 @@ class DAMGTEAM(Application):
             if not self.threadManager.isCounting():
                 self.threadManager.startCounting()
 
-            if self._trackRecieveSignal:
+            if self.trackRecieveSignal:
                 self.logger.report('Receive signal sysNotify: {0} {1} {2} {3}'.format(title, mess, iconType, timeDelay))
 
             return self.countDownReset(limit)
@@ -379,7 +375,7 @@ class DAMGTEAM(Application):
         if not repeat:
             return self.layoutManager.sysTray.sysNotify(title, mess, iconType, timeDelay)
         else:
-            if self._trackBlockSignal:
+            if self.trackBlockSignal:
                 self.logger.report('{4}: block signal setSetting: {0}, {1}, {2}, {3}'.format(title, mess, iconType, timeDelay, self.key))
             return
 
@@ -403,20 +399,11 @@ class DAMGTEAM(Application):
 
         return self._login
 
-    @pyqtSlot(str, name='setStylesheet')
     def set_styleSheet(self, style):
+        self.setStyleSheet(" ")
         self._styleSheet = StyleSheet(style).stylesheet
         self.setStyleSheet(self._styleSheet)
         self.setSetting('styleSheet', style, self.key)
-
-    def countDownReset(self, limit):
-        self.count += 1
-        if self.count == limit:
-            self.showLayout_old = []
-            self.executing_old = []
-            self.setSetting_old = []
-            self.openBrowser_old = []
-            self.sysNotify_old = []
 
     def signInEvent(self):
         self.switchAccountEvent()
@@ -442,7 +429,7 @@ class DAMGTEAM(Application):
         self.signOutEvent()
 
     def exitEvent(self):
-        if self._trackJobsTodo:
+        if self.trackJobsTodo:
             from pprint import pprint
             pprint(self.todoList)
 

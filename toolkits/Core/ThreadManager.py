@@ -14,8 +14,8 @@ from PyQt5.QtCore                        import pyqtSignal
 
 from bin                                 import DAMGLIST, DAMGTHREADPOOL, DAMGTIMER, DAMGTHREAD
 from utils                               import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
-from appData                                import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core                          import Settings, SignalManager
+from appData                             import SETTING_FILEPTH, ST_FORMAT
+from toolkits.Core                       import Settings, SignalManager
 
 class BackgroundService(DAMGTHREAD):
 
@@ -157,8 +157,8 @@ class ThreadManager(DAMGTHREADPOOL):
         super(ThreadManager, self).__init__()
 
         self.counter                = Counting()
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.signals = SignalManager(self)
+        self.settings               = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals                = SignalManager(self)
 
     def startCounting(self):
         self.counter.begin()

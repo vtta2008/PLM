@@ -74,7 +74,7 @@ class VBoxLayout(QVBoxLayout):
     Type                                    = 'DAMGUI'
     key                                     = 'VBoxLayout'
     _name                                   = 'DAMG V Box Layout'
-    _copyright                              = copyright()
+    _copyright                              = __copyright__()
 
     def __init__(self, preset={}, parent=None):
         QVBoxLayout.__init__(self)

@@ -13,17 +13,19 @@ from __future__ import absolute_import, unicode_literals
 import os, shutil
 
 from PyQt5.QtWidgets            import QFileDialog
+from PyQt5.QtCore               import QSize
 
 from toolkits.Gui               import Image, Pixmap
 from toolkits.Widgets           import Label, GroupBox, VBoxLayout, Button
 from utils                      import LocalDatabase, get_avatar_image, resize_image
-from appData                    import AUTO_COLOR, AVATAR_DIR, SiPoIgn, center, ASPEC_RATIO, SMOOTH_TRANS
+from appData                    import AUTO_COLOR, AVATAR_DIR, center, ASPEC_RATIO
 
 
 class ImageAvatar(Image):
 
-    Type                        = 'DAMGIMAGE'
+    Type                        = 'DAMGAVATARIMAGE'
     key                         = 'ImageAvatar'
+    _name                       = 'DAMG Avatar Image'
 
     def __init__(self, fileName=None, parent=None):
         super(ImageAvatar, self).__init__(fileName, parent)
@@ -33,7 +35,7 @@ class ImageAvatar(Image):
 
     def setImage(self, image):
         self.load(image)
-        self.smoothScaled(100, 100)
+        # self.smoothScaled(100, 100)
 
     @property
     def image(self):
@@ -56,6 +58,7 @@ class PixAvatar(Pixmap):
     def setImage(self, image, flags):
         return self.fromImage(image, flags)
 
+
 class AvatarLabel(Label):
 
     Type = 'DAMGAVATARLABEL'
@@ -77,15 +80,15 @@ class AvatarLabel(Label):
         image = get_avatar_image(self.username)
         pixAvatar = PixAvatar()
         imgAvatar = ImageAvatar(image)
-        imgAvatar.scaled(100, 100, ASPEC_RATIO, SMOOTH_TRANS)
         self.setPixmap(pixAvatar.fromImage(imgAvatar, AUTO_COLOR))
 
         self.setScaledContents(True)
-        self.setSizePolicy(SiPoIgn, SiPoIgn)
-        self.setScaledContents(True)
         self.setAlignment(center)
 
-
+    def resizeEvent(self, event):
+        size = QSize(1, 1)
+        size.scale(event.size(), ASPEC_RATIO)
+        self.resize(size)
 
 class Avatar(GroupBox):
 

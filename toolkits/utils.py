@@ -14,6 +14,7 @@ from appData                        import ELIDE_RIGHT
 from .Widgets                       import Widget, GridLayout, Label, TabWidget, TabBar
 
 class TabContent(Widget):
+
     key = 'TabContent'
 
     def __init__(self, layout=None, parent=None):
@@ -27,6 +28,7 @@ class TabContent(Widget):
         self.setLayout(self.layout)
 
 class Tabs(Widget):
+
     key = 'Tabs'
 
     def __init__(self, parent=None):
