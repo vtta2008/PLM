@@ -10,10 +10,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from appData                        import INI
-from cores.Setting                  import Setting
+from appData                            import INI
+from cores.base.SettingBase import SettingBase
 
-class Settings(Setting):
+class Settings(SettingBase):
 
     key                             = 'Settings'
 

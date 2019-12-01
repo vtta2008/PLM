@@ -35,29 +35,19 @@ class Widget(QWidget):
         self.setWindowIcon(AppIcon(32, self.key))
         self.setWindowTitle(self.key)
 
-    def sizeHint(self):
-        size = super(Widget, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
-
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
 
     def getValue(self, key):
         return self.settings.initValue(key, self.key)
 
-    def moveEvent(self, event):
+    def closeEvent(self, event):
         if self.settings._settingEnable:
             self.setValue('x', self.x())
             self.setValue('y', self.y())
-
-    def resizeEvent(self, event):
-        if self.settings._settingEnable:
             self.setValue('w', self.width())
             self.setValue('h', self.height())
 
-    def closeEvent(self, event):
         if __name__=='__main__':
             self.setValue('showLayout', 'close')
             self.close()
@@ -66,6 +56,12 @@ class Widget(QWidget):
             self.signals.emit('showLayout', self.key, 'hide')
 
     def hideEvent(self, event):
+        if self.settings._settingEnable:
+            self.setValue('x', self.x())
+            self.setValue('y', self.y())
+            self.setValue('w', self.width())
+            self.setValue('h', self.height())
+
         if __name__=='__main__':
             self.setValue('showLayout', 'hide')
             self.hide()
@@ -86,13 +82,12 @@ class Widget(QWidget):
             if h is None:
                 h = self.height()
             if x is None:
-                x = 0
+                x = self.x()
             if y is None:
-                y = 0
+                y = self.y()
 
-            self.resize(int(w)-1, int(h)-1)
-            self.resize(int(w), int(h))
-            self.move(int(x), int(h))
+            self.move(x, y)
+            self.resize(w, h)
 
         if __name__=='__main__':
             self.setValue('showLayout', 'show')

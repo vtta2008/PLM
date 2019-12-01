@@ -106,7 +106,7 @@ GUI_DIR                     = os.path.join(TOOLKIT_DIR, 'Gui')
 WIDGETS_DIR                 = os.path.join(TOOLKIT_DIR, 'Widgets')
 
 UI_DIR                      = os.path.join(ROOT_DIR, 'ui')
-
+UI_BASE_DIR                 = os.path.join(UI_DIR, 'base')
 BODY_DIR                    = os.path.join(UI_DIR, 'Body')
 TABS_DIR                    = os.path.join(BODY_DIR, 'Tabs')
 
@@ -122,7 +122,6 @@ FUNCS_DIR                   = os.path.join(SUBUI_DIR, 'Funcs')
 INFO_DIR                    = os.path.join(SUBUI_DIR, 'Info')
 PROJECT_DIR                 = os.path.join(SUBUI_DIR, 'Projects')
 SETTINGS_DIR                = os.path.join(SUBUI_DIR, 'Settings')
-BASE                        = os.path.join(SETTING_DIR, 'base')
 
 TOOLS_DIR                   = os.path.join(SUBUI_DIR, 'Tools')
 NODE_GRAPH_DIR              = os.path.join(TOOLS_DIR, 'NodeGraph')

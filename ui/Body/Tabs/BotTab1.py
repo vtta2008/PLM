@@ -52,8 +52,10 @@ class BotTab1(Widget):
             cb._name = '{0} {1} Check Box: {2}'.format(self.parent.key, self.key, cb.text())
             cb.settings._settingEnable = True
             state = cb.getValue('checkState')
+
             if state is None:
-                state = True
+                state = False
+
             cb.setValue('checkState', state)
             cb.setChecked(str2bool(state))
             self.checkboxes.add(cb.key, cb)

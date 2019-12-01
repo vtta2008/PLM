@@ -178,8 +178,6 @@ class ConfigManager(DAMG):
 
         dirPth['root']                 = self.rootDir
 
-        print(dirPth['root'])
-
         dirPth['appData']              = self.set_dir('appData')
         dirPth['config']               = self.set_dir('appData/.config')
         dirPth['setting']              = self.set_dir('appData/.config')
@@ -252,6 +250,7 @@ class ConfigManager(DAMG):
         dirPth['Widgets']              = self.set_dir('toolkits/Widgets')
 
         dirPth['ui']                   = self.set_dir('ui')
+        dirPth['base']                 = self.set_dir('ui/base')
         dirPth['Body']                 = self.set_dir('ui/Body')
         dirPth['Tabs']                 = self.set_dir('ui/Body/Tabs')
         dirPth['Footer']               = self.set_dir('ui/Footer')

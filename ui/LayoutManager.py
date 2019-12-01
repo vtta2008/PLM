@@ -23,7 +23,7 @@ from ui.SubUi                           import (ShortcutCommand, NodeGraph, Cale
                                                 SignUp, SignIn, InfoWidget, VFXProject, SettingUI, UserSetting, Preferences,
                                                 Configuration)
 
-from cores.TaskManager                  import TaskManager
+from ui.TaskManager import TaskManager
 
 class LayoutManager(DAMG):
 

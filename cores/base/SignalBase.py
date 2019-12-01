@@ -25,7 +25,7 @@ from cores.Loggers                  import Loggers
 # -------------------------------------------------------------------------------------------------------------
 """ Signal class: setup all the signal which will be using. """
 
-class Signal(DAMG):
+class SignalBase(DAMG):
 
     key                             = 'Signal'
 
@@ -69,7 +69,7 @@ class Signal(DAMG):
     loginChangedOld                 = DAMGLIST()
 
     def __init__(self, parent):
-        super(Signal, self).__init__(parent)
+        super(SignalBase, self).__init__(parent)
 
         self.parent                 = parent
         self.logger                 = Loggers(self.__class__.__name__)

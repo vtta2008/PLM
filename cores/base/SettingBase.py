@@ -18,7 +18,7 @@ import os
 from PyQt5.QtCore                   import pyqtSlot, QSettings
 
 
-class Setting(QSettings):
+class SettingBase(QSettings):
 
     Type                            = 'DAMGSETTING'
     key                             = 'Setting'

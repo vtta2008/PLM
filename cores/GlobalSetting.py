@@ -12,15 +12,15 @@ from __future__ import absolute_import, unicode_literals
 
 
 from PyQt5.QtCore                   import Qt
-from bin.dependencies.damg.damg import DAMG
+from bin                            import DAMG
 from appData                        import SiPoExp
 
 
 class GlobalSetting(DAMG):
 
-    key = 'GlobalSetting'
-    Type = 'DAMG Global Setting'
-    _name = 'Global Setting'
+    key                             = 'GlobalSetting'
+    Type                            = 'DAMG Global Setting'
+    _name                           = 'Global Setting'
 
     def __init__(self, layouts):
         super(GlobalSetting, self).__init__(self)
@@ -39,7 +39,7 @@ class GlobalSetting(DAMG):
                 # layout.setWindowFlags(STAY_ON_TOP)
                 # pass
 
-            if layout.key == 'TobTab' and layout.key == 'BotTab':
+            if layout.key in ['TopTab', 'BotTap']:
                 # print('start applying individual setting to: {0}'.format(layout))
                 layout.setMovable(True)
                 layout.setElideMode(Qt.ElideRight)

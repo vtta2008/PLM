@@ -12,13 +12,13 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # PLM
-from bin                            import DAMGLIST
-from cores.Signal                   import Signal
+from bin                                import DAMGLIST
+from cores.base.SignalBase import SignalBase
 
 # -------------------------------------------------------------------------------------------------------------
 """ Signal class: setup all the signal which will be using. """
 
-class SignalManager(Signal):
+class SignalManager(SignalBase):
 
     key                             = "SignalManager"
 

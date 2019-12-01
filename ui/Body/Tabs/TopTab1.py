@@ -16,7 +16,8 @@ import json
 
 # Plt
 from toolkits.Widgets                           import GroupBox, VBoxLayout, Label, CheckBox, GridLayout, Widget, HBoxLayout
-from cores.Task                                 import duedate, duetime, Task
+from cores.Task                                 import Task
+from cores.base                                 import DateLine
 from utils                                      import get_file_path, str2bool, LocalDatabase
 from appData                                    import TASK_DIR
 from bin                                        import DAMGDICT, DAMGLIST
@@ -55,8 +56,7 @@ class TaskInfo(GroupBox):
         self._month                             = int(self._data['enddate'].split('/')[1])
         self._year                              = int(self._data['enddate'].split('/')[2])
 
-        self.duetime                            = duetime(self._hour, self._minute, self._second)
-        self.duedate                            = duedate(self._day, self._month, self._year)
+        self.dateline                           = DateLine(self._hour, self._minute, self._second, self._day, self._month, self._year)
 
         try:
             self.username = [self.database.query_table('curUser')[0]]
@@ -64,7 +64,7 @@ class TaskInfo(GroupBox):
             self.username = []
 
         self.task = Task(self._id, self._name, self._mode, self._type, self.username, self._project, self._organisation,
-                         self.duetime, self.duedate, self._details)
+                         self.dateline, self._details)
 
         self._countdown                         = '{0}:{1}:{2}'.format(self.task.hours, self.task.minutes, self.task.seconds)
         self.task.countdown.connect(self.update_countdown)

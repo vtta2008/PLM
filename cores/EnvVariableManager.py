@@ -15,12 +15,16 @@ from __future__ import absolute_import, unicode_literals
 # Python
 import os, subprocess
 
-class EnvVariableManager:
+from bin import DAMG
+
+class EnvVariableManager(DAMG):
 
     """
     This class is all about system environment variable, you can set showLayout_new, edit or delete or put path into PATH variable.
     This class works only at user level.
     """
+
+    key = 'EnvVariableManager'
 
     _envKeys                                            = [k for k in os.environ.keys()]        # Environtment keys
     _envVals                                            = [v for v in os.environ.values()]      # Environtment variables
@@ -28,7 +32,6 @@ class EnvVariableManager:
     _data                                               = dict()
 
     def __init__(self, envKey=None, envVal=None, mode='add'):
-        # super(EnvVariableManager, self).__init__(self)
         """
         Do something with environment variable.
         :param envKey: environment configKey.

@@ -133,7 +133,6 @@ class DAMGTEAM(Application):
                     else:
                         self.showLayout('SignIn', "show")
 
-        # self.runEvent()
         sys.exit(self.exec_())
 
     @pyqtSlot(str, name='openBrowser')
