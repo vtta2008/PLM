@@ -275,28 +275,25 @@ class TopTab1(Widget):
         self.tabFilter.urgentCB.stateChanged.connect(self.urgent)
         self.tabFilter.safetyCB.stateChanged.connect(self.safety)
 
-        # self.layout.addWidget(self.prjGrp, 5, 0, 2, 2)
         self.layout.addWidget(self.taskGrp, 0, 0, 2, 2)
-        # self.layout.addWidget(self.teamGrp, 5, 4, 2, 2)
         self.layout.addWidget(self.tabFilter, 2, 0, 2, 2)
 
     def update_tasks(self):
-        try:
-            self.layout.removeItem(self.taskLayout)
-        except AttributeError:
-            self.taskLayout = HBoxLayout()
-        else:
-            for w in self.taskLayout.children():
-                self.taskLayout.removeWidget(w)
-            self.taskLayout = HBoxLayout()
 
         tasks = get_file_path(TASK_DIR)
 
+        i = 2
+        a = 0
         for t in tasks:
+            if i > 10:
+                i = 0
+                a = a + 2
+
             task = TaskInfo(t)
-            self.taskLayout.addWidget(task)
+            self.layout.addWidget(task, a, i, 2 ,2)
             self.tasks.append(task)
-        self.layout.addLayout(self.taskLayout, 0, 2, 4, 7)
+            i += 2
+
 
     def overdue(self, bool):
         for task in self.tasks:

@@ -37,13 +37,13 @@ TMP_DIR                     = os.path.join(APP_DATA_DIR, '.tmp')
 CFG_DIR                     = os.path.join(APP_DATA_DIR, '.config')
 SETTING_DIR                 = CFG_DIR
 LOG_DIR                     = CFG_DIR
-TASK_DIR                    = os.path.join(CFG_DIR, '.task')
-TEAM_DIR                    = os.path.join(CFG_DIR, '.team')
-ORG_DIR                     = os.path.join(CFG_DIR, '.organisation')
-CONFIG_DAMG_DIR             = os.path.join(ORG_DIR, '.damgteam')
+TASK_DIR                    = os.path.join(CFG_DIR, 'task')
+TEAM_DIR                    = os.path.join(CFG_DIR, 'team')
+ORG_DIR                     = os.path.join(CFG_DIR, 'organisation')
+CONFIG_DAMG_DIR             = os.path.join(ORG_DIR, 'damgteam')
 
-PRJ_DIR                     = os.path.join(CFG_DIR, '.project')
-CONFIG_PLM_DIR              = os.path.join(PRJ_DIR, '.plm')
+PRJ_DIR                     = os.path.join(CFG_DIR, 'project')
+CONFIG_PLM_DIR              = os.path.join(PRJ_DIR, 'plm')
 
 CACHE_DIR                   = os.path.join(CFG_DIR, '.cache')
 NODEGRAPH_DIR               = os.path.join(CFG_DIR, '.nodegraph')

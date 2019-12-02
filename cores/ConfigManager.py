@@ -184,10 +184,10 @@ class ConfigManager(DAMG):
         dirPth['log']                  = self.set_dir('appData/.config')
 
         dirPth['tmp']                  = self.set_dir('appData/.tmp')
-        dirPth['task']                 = self.set_dir('appData/.config/.task')
-        dirPth['project']              = self.set_dir('appData/.config/.project')
-        dirPth['organisation']         = self.set_dir('appData/.config/.organisation')
-        dirPth['team']                 = self.set_dir('appData/.config/.team')
+        dirPth['task']                 = self.set_dir('appData/.config/task')
+        dirPth['project']              = self.set_dir('appData/.config/project')
+        dirPth['organisation']         = self.set_dir('appData/.config/organisation')
+        dirPth['team']                 = self.set_dir('appData/.config/team')
         dirPth['user']                 = self.set_dir('appData/.config/.user')
         dirPth['cache']                = self.set_dir('appData/.config/.cache')
 

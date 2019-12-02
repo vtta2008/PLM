@@ -10,8 +10,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtCore                       import QDateTime, QDate, QTime
-
 from cores.Task                         import Task
 from cores.Project                      import Project
 from cores.Team                         import Team
@@ -115,7 +113,7 @@ class BaseManager(Widget):
         pass
 
     def newDataEvent(self, newData):
-        print(newData)
+        self.signals.emit('execute', 'new data: {0}'.format(newData['key']))
         self.hide()
 
     def resizeEvent(self, event):
