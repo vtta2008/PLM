@@ -28,7 +28,7 @@ class PainterPath(QPainterPath):
     _copyright                  = __copyright__()
 
     def __init__(self, parent=None):
-        PainterPath.__init__()
+        QPainterPath.__init__(self)
 
         self.parent = parent
         self.signals = SignalManager(self)

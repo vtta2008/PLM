@@ -41,11 +41,10 @@ class Settings(QSettings):
     keyFixedOld = '  '
 
     def __init__(self, filename=None, fm=INI, parent=None):
-        QSettings.__init__(self, filename, fm, parent)
+        QSettings.__init__(self, filename, fm)
 
         self.parent                 = parent
         self._format                = fm
-
         self._settingFile           = filename
         self._groups                = self.childGroups()
         self.cleanKey()

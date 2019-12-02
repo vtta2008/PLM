@@ -16,7 +16,7 @@ from __buildtins__ import __copyright__
 from PyQt5.QtGui                       import QPen
 
 # PLM
-from appData                           import SETTING_FILEPTH, ST_FORMAT
+from appData                           import SETTING_FILEPTH, ST_FORMAT, KEY_DEL
 from toolkits.Core                     import Settings, SignalManager
 
 class Pen(QPen):
@@ -27,11 +27,12 @@ class Pen(QPen):
     _copyright                          = __copyright__()
 
     def __init__(self, parent=None):
-        QPen.__init__(parent)
+        QPen.__init__(self)
 
         self.parent                     = parent
         self.signals                    = SignalManager(self)
         self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+
 
     @property
     def copyright(self):

@@ -28,7 +28,7 @@ class Transform(QTransform):
     _copyright                  = __copyright__()
 
     def __init__(self, parent=None):
-        Transform.__init__(self)
+        QTransform.__init__(self)
 
         self.parent = parent
         self.signals = SignalManager(self)

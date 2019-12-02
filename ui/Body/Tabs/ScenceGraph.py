@@ -18,13 +18,14 @@ import os
 from PyQt5.QtCore               import pyqtSignal, QPointF, QLineF
 
 # PLM
-from .base                      import ViewBase, SocketItem, PlugItem, ConnectionItem, NodeItem
+from ui.base import ViewBase, SocketItem, PlugItem, ConnectionItem, NodeItem
 from utils                      import _loadConfig, _saveData, _loadData, _swapListIndices, _convert_to_QColor
 from toolkits.Widgets           import GraphicScene, RubberBand
 from toolkits.Gui               import Brush, Pen
 from appData                    import (sceneGraphCfg, ANCHOR_UNDERMICE, ANTIALIAS, ANTIALIAS_HIGH_QUALITY, ANTIALIAS_TEXT,
                                         SMOOTH_PIXMAP_TRANSFORM, NON_COSMETIC_PEN, UPDATE_FULLVIEW, SCROLLBAROFF,
                                         RUBBER_REC, ACTION_MOVE, PATTERN_SOLID)
+from appData.config import sceneGraphCfg
 
 
 class Scene(GraphicScene):
@@ -50,7 +51,8 @@ class Scene(GraphicScene):
         event.accept()
 
     def drawBackground(self, painter, rect):
-        config = self.parent().config
+
+        config = _loadConfig(sceneGraphCfg)
         self._brush = Brush()
         self._brush.setStyle(PATTERN_SOLID)
         self._brush.setColor(_convert_to_QColor(config['bg_color']))
@@ -124,7 +126,7 @@ class View(ViewBase):
             print('A node with the same name already exists : {0}'.format(name))
             return
         else:
-            nodeItem = NodeItem(name=name, alternate=alternate, preset=preset, config=self.config)
+            nodeItem = NodeItem(name=name, alternate=alternate, preset=preset)
             self.scene().nodes[name] = nodeItem
             if not position:
                 # Get the center of the view.

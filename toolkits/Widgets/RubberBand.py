@@ -28,7 +28,7 @@ class RubberBand(QRubberBand):
     _copyright                              = __copyright__()
 
     def __init__(self, shape, parent=None):
-        QRubberBand.__init__(shape, parent)
+        QRubberBand.__init__(self, shape, parent)
 
         self.parent                         = parent
         self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)

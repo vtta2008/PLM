@@ -27,11 +27,11 @@ class Rect(QRect):
     _name                       = 'DAMG Rect'
     _copyright                  = __copyright__()
 
-    def __init__(self, *args, **kwargs):
-        QRect.__init__(*args, **kwargs)
+    def __init__(self, pos, size):
+        super(Rect, self).__init__(pos, size)
 
-        self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.signals            = SignalManager(self)
+        # self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        # self.signals            = SignalManager(self)
 
     @property
     def copyright(self):

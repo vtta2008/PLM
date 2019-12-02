@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtCore import QSize
+from PyQt5.QtCore import QSize, pyqtSignal
 
 from toolkits.Widgets import GraphicView
 from toolkits.Gui import PainterPath, Cursor, Transform
@@ -25,29 +25,29 @@ class ViewBase(GraphicView):
 
     key = 'ViewBase'
 
-    # signal_NodeCreated          = pyqtSignal(object)
-    # signal_NodeDeleted          = pyqtSignal(object)
-    # signal_NodeEdited           = pyqtSignal(object, object)
-    # signal_NodeSelected         = pyqtSignal(object)
-    # signal_NodeMoved            = pyqtSignal(str, object)
-    # signal_NodeDoubleClicked    = pyqtSignal(str)
-    #
-    # signal_AttrCreated          = pyqtSignal(object, object)
-    # signal_AttrDeleted          = pyqtSignal(object, object)
-    # signal_AttrEdited           = pyqtSignal(object, object, object)
-    #
-    # signal_PlugConnected        = pyqtSignal(object, object, object, object)
-    # signal_PlugDisconnected     = pyqtSignal(object, object, object, object)
-    # signal_SocketConnected      = pyqtSignal(object, object, object, object)
-    # signal_SocketDisconnected   = pyqtSignal(object, object, object, object)
-    #
-    # signal_GraphSaved           = pyqtSignal()
-    # signal_GraphLoaded          = pyqtSignal()
-    # signal_GraphCleared         = pyqtSignal()
-    # signal_GraphEvaluated       = pyqtSignal()
-    #
-    # signal_KeyPressed           = pyqtSignal(object)
-    # signal_Dropped              = pyqtSignal()
+    signal_NodeCreated          = pyqtSignal(object)
+    signal_NodeDeleted          = pyqtSignal(object)
+    signal_NodeEdited           = pyqtSignal(object, object)
+    signal_NodeSelected         = pyqtSignal(object)
+    signal_NodeMoved            = pyqtSignal(str, object)
+    signal_NodeDoubleClicked    = pyqtSignal(str)
+
+    signal_AttrCreated          = pyqtSignal(object, object)
+    signal_AttrDeleted          = pyqtSignal(object, object)
+    signal_AttrEdited           = pyqtSignal(object, object, object)
+
+    signal_PlugConnected        = pyqtSignal(object, object, object, object)
+    signal_PlugDisconnected     = pyqtSignal(object, object, object, object)
+    signal_SocketConnected      = pyqtSignal(object, object, object, object)
+    signal_SocketDisconnected   = pyqtSignal(object, object, object, object)
+
+    signal_GraphSaved           = pyqtSignal()
+    signal_GraphLoaded          = pyqtSignal()
+    signal_GraphCleared         = pyqtSignal()
+    signal_GraphEvaluated       = pyqtSignal()
+
+    signal_KeyPressed           = pyqtSignal(object)
+    signal_Dropped              = pyqtSignal()
 
     gridVisToggle               = True
     gridSnapToggle              = False
@@ -142,13 +142,13 @@ class ViewBase(GraphicView):
         self.currentState       = 'ZOOM_VIEW'
         self.setTransformationAnchor(ANCHOR_UNDERMICE)
 
-        inFactor = 1.15
-        outFactor = 1 / inFactor
-
-        if event.delta() > 0:
-            zoomFactor = inFactor
+        moose = event.angleDelta().y() / 120
+        if moose > 0:
+            zoomFactor = 1.1
+        elif moose < 0:
+            zoomFactor = 0.9
         else:
-            zoomFactor = outFactor
+            zoomFactor = 1
 
         self.scale(zoomFactor, zoomFactor)
         self.currentState = 'DEFAULT'
@@ -172,7 +172,6 @@ class ViewBase(GraphicView):
         # Rubber band selection
         elif (event.button() == MOUSE_LEFT and event.modifiers() == NO_MODIFIER and self.scene().itemAt(self.mapToScene(event.pos()), Transform()) is None):
             self.currentState   = 'SELECTION'
-
             self._initRubberband(event.pos())
             self.setInteractive(False)
         # Drag Item

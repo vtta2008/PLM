@@ -27,7 +27,7 @@ class Brush(QBrush):
     _copyright                          = __copyright__()
 
     def __init__(self, parent=None):
-        QBrush.__init__(parent)
+        QBrush.__init__(self)
 
         self.parent                     = parent
         self.signals                    = SignalManager(self)
