@@ -28,31 +28,31 @@ class DateLine(DAMG):
             year = int(year)
 
         if month > 12:
-            raise IndexError('Expect month smaller than 12: {0}'.format(self.month))
+            raise IndexError('Expect month smaller than 12: {0}'.format(month))
 
-        if self.month in [1, 3, 5, 7, 8, 10, 12]:
+        if month in [1, 3, 5, 7, 8, 10, 12]:
             days = 31
-        elif self.month in [2]:
+        elif month in [2]:
             days = 28
         else:
             days = 30
 
         if day > days:
-            raise IndexError('Expect day smaller than (0): {1}'.format(days, self.day))
+            raise IndexError('Expect day smaller than (0): {1}'.format(days, day))
 
         if hour > 24:
-            raise IndexError('Expect hour smaller than 24: {0}'.format(self.hour))
+            raise IndexError('Expect hour smaller than 24: {0}'.format(hour))
 
         if minute > 60:
-            raise IndexError('Expect minute smaller than 60: {0}'.format(self.minute))
+            raise IndexError('Expect minute smaller than 60: {0}'.format(minute))
 
         if second > 60:
-            raise IndexError('Expect second smaller than 60: {0}'.format(self.second))
+            raise IndexError('Expect second smaller than 60: {0}'.format(second))
 
 
-        self.hour = hour
-        self.minute = minute
-        self.second = second
+        self.hour = int(hour)
+        self.minute = int(minute)
+        self.second = int(second)
 
         self.day = int(day)
         self.month = int(month)

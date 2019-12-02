@@ -9,7 +9,7 @@ Description:
 """
 
 from bin.dependencies.damg.damg import DAMG
-from cores.base.Commands import SceneNodesCommand
+from bin.Commands import SceneNodesCommand
 from cores.Loggers              import Loggers
 
 

@@ -10,9 +10,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from toolkits.Widgets import GridLayout, GroupBox, LineEdit, Button, Label
+from toolkits.Widgets import GroupGrid, LineEdit, Button, Label
 
-class ProFile(GroupBox):
+class ProFile(GroupGrid):
 
     key = 'ProFile'
 
@@ -20,8 +20,6 @@ class ProFile(GroupBox):
         super(ProFile, self).__init__(parent=parent)
 
         self.parent = parent
-        self.layout = GridLayout()
-        self.setLayout(self.layout)
 
         self.layout.addWidget(Label({'txt': 'First Name'}), 0, 0, 1, 2)
         self.layout.addWidget(Label({'txt': 'Last Name'}), 1, 0, 1, 2)

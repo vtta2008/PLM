@@ -24,8 +24,11 @@ from .SettingOutput         import SettingOutput
 
 from .ConnectionIcon        import Conection
 
-from .TaskDetails           import TaskDetails
-from .TaskInfo              import TaskInfo
+from .BaseInfo              import BaseInfo
+from .BaseDetails           import BaseDetails
+
+from .ProjectInfo           import ProjectInfo
+from .ProjectDetails        import ProjectDetails
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 2/12/2019 - 7:34 AM

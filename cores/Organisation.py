@@ -10,38 +10,44 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-import json, os
-from cores.base import OrgBase
-from appData import ORG_DIR
 
-class Organisation(OrgBase):
 
-    def __init__(self, name=None, id=None, address=None, website=None, details={}):
-        super(Organisation, self).__init__()
+from cores.base                         import BaseType
+from PyQt5.QtCore                       import QDateTime
 
-        self._name = name
-        self._id = id
-        self._address = address
-        self._website = website
-        self._details = details
 
-        with open(os.path.join(ORG_DIR, '{0}.organisation'.format(self.id)), 'w') as f:
-            json.dump(self.taskData, f, indent=4)
+class Organisation(BaseType):
 
-    def change_name(self, name):
-        self._name = name
+    key                                 = 'Organisation'
 
-    def change_id(self, id):
-        self._id = id
+    def __init__(self, id=None, name=None, mode=None, type=None,
+                       teamID=None, projectID=None, organisationID=None,
+                       startdate=None, enddate=None, details={}):
+        super(Organisation, self).__init__(id, name, mode, type, teamID, projectID, organisationID, startdate, enddate, details)
 
-    def change_address(self, address):
-        self._address = address
+        if self.startdate is None:
+            self.start = QDateTime(self.date.currentDate(), self.time.currentTime())
+        else:
+            self.start = self.startdate.endDate
 
-    def change_website(self, website):
-        self._website = website
+        self.end = self.enddate.endDate
 
-    def change_details(self, details):
-        self._details = details
+        self.update()
+
+        format = self.countter_format()
+        self.timer.timeout.connect(self.update)
+        if self.key in ['Project', 'Task']:
+            self.timer.start(format)
+
+    def dateline(self):
+        return self._dateline
+
+    def enddate(self):
+        return self._enddate
+
+    def endtime(self):
+        return self._endtime
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 2/12/2019 - 12:54 PM

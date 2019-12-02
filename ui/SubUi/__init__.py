@@ -15,7 +15,8 @@ from .ShortcutCommand       import ShortcutCommand
 from .Tools                 import (NodeGraph, Calculator, Calendar, EnglishDictionary, FindFiles, ImageViewer,
                                     NoteReminder, Screenshot, TextEditor)
 from .Funcs                 import ForgotPassword, SignUp, SignIn
-from .Info                  import InfoWidget
+from .InfoWidget            import InfoWidget
+from .BaseManager           import BaseManager
 from .Projects              import VFXProject
 from .Settings              import SettingUI, UserSetting
 from .Configuration         import Configuration
