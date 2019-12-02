@@ -18,6 +18,10 @@ from .ButtonManager     import ButtonManager
 from .CheckBox          import CheckBox
 from .ComboBox          import ComboBox
 from .DockWidget        import DockStamp, DockWidget, NoteStamp
+from .GraphicView       import GraphicView
+from .GraphicScene      import GraphicScene
+from .GraphicItem       import GraphicItem
+from .GraphicPathItem   import GraphicPathItem
 from .GridLayout        import GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
 from .GroupBox          import GroupBoxBase, GroupBox, GroupGrid, GroupHBox, GroupVBox
 from .Icon              import Icon, AppIcon, LogoIcon, TagIcon
@@ -28,6 +32,7 @@ from .MainWindow        import MainWindow
 from .MenuBar           import MenuBar, Menu
 from .MessageBox        import MessageBox
 from .PlainTextEdit     import PlainTextEdit, Detector
+from .RubberBand        import RubberBand
 from .StatusBar         import StatusBar
 from .SystemTrayIcon    import SystemTrayIcon
 from .TabBar            import TabBar

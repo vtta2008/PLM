@@ -350,7 +350,7 @@ def generate_alternative_color(color, av):
     mult = float(lightness)/255
     return mult
 
-def convert_to_QColor(data=None, alternate=False, av=20):
+def _convert_to_QColor(data=None, alternate=False, av=20):
     if len(data) == 3:
         color = QColor(data[0], data[1], data[2])
         if alternate:
@@ -364,15 +364,13 @@ def convert_to_QColor(data=None, alternate=False, av=20):
             color = QColor(max(0, data[0]-(av*mult)), max(0, data[1]-(av*mult)), max(0, data[2]-(av*mult)), data[3])
         return color
     else:
-        print('Color from configuration is not recognized : ', data)
-        print('Can only be [R, G, B] or [R, G, B, A]')
-        print('Using default color !')
+        print('ColorNotRecognize: Can only be [R, G, B] or [R, G, B, A], Using default color !', data)
         color = QColor(120, 120, 120)
         if alternate:
             color = QColor(120-av, 120-av, 120-av)
         return color
 
-def get_pointer_bounding_box(pointerPos, bbSize):
+def _get_pointer_bounding_box(pointerPos, bbSize):
     point = pointerPos
     mbbPos = point
     point.setX(point.x() - bbSize / 2)
@@ -875,5 +873,37 @@ def nodeParse(node):
     else:
         raise ValueError("Invalid qssPths structure.")
 
+
+def _loadConfig(filePath):
+    with open(filePath, 'r') as myfile:
+        fileString = myfile.read()
+        cleanString = re.sub('//.*?\n|/\*.*?\*/', '', fileString, re.S)
+        data = json.loads(cleanString)
+    return data
+
+def _saveData(filePath, data):
+    f = open(filePath, "w")
+    f.write(json.dumps(data,
+                       sort_keys = True,
+                       indent = 4,
+                       ensure_ascii=False))
+    f.close()
+    print("Data successfully saved !")
+
+def _loadData(filePath):
+    with open(filePath) as json_file:
+        j_data = json.load(json_file)
+    json_file.close()
+    print("Data successfully loaded !")
+    return j_data
+
+def _swapListIndices(inputList, oldIndex, newIndex):
+    if oldIndex == -1:
+        oldIndex = len(inputList)-1
+    if newIndex == -1:
+        newIndex = len(inputList)
+    value = inputList[oldIndex]
+    inputList.pop(oldIndex)
+    inputList.insert(newIndex, value)
 
 # ----------------------------------------------------------------------------------------------------------- #

@@ -18,7 +18,7 @@ from __buildtins__ import __envKey__, Application, configManager, ConfigManager,
 import os, sys, requests, ctypes
 
 # PyQt5
-from PyQt5.QtCore                       import pyqtSlot
+from PyQt5.QtCore                       import pyqtSlot, QEvent
 
 # PLM
 from appData                            import (__localServer__, __organization__, StateNormal, StateMax, StateMin,
@@ -401,6 +401,22 @@ class DAMGTEAM(Application):
         self.signUp.loginChanged(self._login)
 
         return self._login
+
+    def notify(self, receiver, event):
+        if event.type() >= QEvent.User:
+            widget = receiver
+
+            while widget:
+                result = widget.event(event)
+
+                if result and event.isAccepted():
+                    return result
+
+                widget = widget.parent()
+
+            return False
+
+        return super(DAMGTEAM, self).notify(receiver, event)
 
     def set_styleSheet(self, style):
         self.setStyleSheet(" ")

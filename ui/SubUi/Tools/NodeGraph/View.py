@@ -19,11 +19,11 @@ from PyQt5.QtWidgets                        import QRubberBand, QGraphicsView
 
 # PLM
 from appData.config                         import (ASPEC_RATIO, CACHE_BG, SCROLLBAROFF, RUBBER_DRAG, UPDATE_VIEWRECT,
-                                                    UPDATE_FULLVIEW, ANCHOR_VIEWCENTER, ANCHOR_UNDERMICE, ANTIALIAS,
+                                                    UPDATE_FULLVIEW, ANCHOR_CENTER, ANCHOR_UNDERMICE, ANTIALIAS,
                                                     ANTIALIAS_TEXT, ANTIALIAS_HIGH_QUALITY, SMOOTH_PIXMAP_TRANSFORM,
                                                     NON_COSMETIC_PEN, ALT_MODIFIER, MOUSE_LEFT, MOUSE_MIDDLE,
                                                     MOUSE_RIGHT, KEY_SHIFT, KEY_CTRL, SHIFT_MODIFIER, NO_MODIFIER,
-                                                    CTRL_MODIFIER, CLOSE_HAND_CUSOR, NOANCHOR, CURSOR_ARROW, KEY_DEL,
+                                                    CTRL_MODIFIER, CLOSE_HAND_CUSOR, ANCHOR_NO, CURSOR_ARROW, KEY_DEL,
                                                     KEY_BACKSPACE, KEY_F, KEY_S, GRID_SIZE, RUBBER_REC)
 from ui.SubUi.Tools.NodeGraph.Node          import Edge, Node
 
@@ -274,14 +274,14 @@ class View(QGraphicsView):
         self.setCacheMode(CACHE_BG)
         self.setViewportUpdateMode(UPDATE_VIEWRECT)
         self.setViewportUpdateMode(UPDATE_FULLVIEW)
-        self.setResizeAnchor(ANCHOR_VIEWCENTER)
+        self.setResizeAnchor(ANCHOR_CENTER)
         self.setRenderHint(ANTIALIAS, True)
         self.setRenderHint(ANTIALIAS_TEXT, True)
         self.setRenderHint(ANTIALIAS_HIGH_QUALITY, True)
         self.setRenderHint(SMOOTH_PIXMAP_TRANSFORM, True)
         self.setRenderHint(NON_COSMETIC_PEN, True)
         self.setTransformationAnchor(ANCHOR_UNDERMICE)
-        self.setTransformationAnchor(ANCHOR_VIEWCENTER)
+        self.setTransformationAnchor(ANCHOR_CENTER)
         self.setHorizontalScrollBarPolicy(SCROLLBAROFF)
         self.setVerticalScrollBarPolicy(SCROLLBAROFF)
 
@@ -357,12 +357,12 @@ class View(QGraphicsView):
                 zoomFactor = 1 / 1.03
 
             pBefore = self.mapToScene(self.initMousePos)                    # Perform zoom and re-center on initial click position.
-            self.setTransformationAnchor(ANCHOR_VIEWCENTER)
+            self.setTransformationAnchor(ANCHOR_CENTER)
             self.scale(zoomFactor, zoomFactor)
             pAfter = self.mapToScene(self.initMousePos)
             diff = pAfter - pBefore
 
-            self.setTransformationAnchor(NOANCHOR)
+            self.setTransformationAnchor(ANCHOR_NO)
             self.translate(diff.x(), diff.y())
         elif self.currentState == 'DRAG_VIEW':                              # Drag canvas.
             offset = self.prevPos - event.pos()

@@ -23,6 +23,7 @@ logoIconCfg                 = os.path.join(CFG_DIR, 'logoIcon.cfg')
 pyEnvCfg                    = os.path.join(CFG_DIR, 'envKey.cfg')
 mainConfig                  = os.path.join(CFG_DIR, 'main.cfg')
 PLMconfig                   = os.path.join(CFG_DIR, 'PLM.cfg')
+sceneGraphCfg               = os.path.join(CFG_DIR, 'sceneGraph.cfg')
 
 APP_SETTING                 = os.path.join(SETTING_DIR, 'PLM.ini')
 USER_SETTING                = os.path.join(SETTING_DIR, 'user.ini')

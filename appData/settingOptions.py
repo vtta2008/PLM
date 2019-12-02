@@ -17,9 +17,15 @@ import re, os
 
 # PyQt5
 from PyQt5.QtCore           import Qt, QSize, QEvent
-from PyQt5.QtGui            import QPainter, QColor
+from PyQt5.QtGui            import QPainter, QColor, QFont
 from PyQt5.QtWidgets        import (QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy,
                                     QLineEdit, QPlainTextEdit)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Font """
+
+BOLD                        = QFont.Bold
+NORMAL                      = QFont.Normal
 
 # -------------------------------------------------------------------------------------------------------------
 """ Event """
@@ -71,10 +77,10 @@ POS_CHANGE                  = QGraphicsItem.ItemPositionChange
 
 NODRAG                      = QGraphicsView.NoDrag
 NOFRAME                     = QGraphicsView.NoFrame
-NOANCHOR                    = QGraphicsView.NoAnchor
+ANCHOR_NO                    = QGraphicsView.NoAnchor
 
 ANCHOR_UNDERMICE            = QGraphicsView.AnchorUnderMouse
-ANCHOR_VIEWCENTER           = QGraphicsView.AnchorViewCenter
+ANCHOR_CENTER           = QGraphicsView.AnchorViewCenter
 
 CACHE_BG                    = QGraphicsView.CacheBackground
 
@@ -335,7 +341,7 @@ POS_EVENTS      = dict(change = POS_CHANGE      , )
 DRAG_MODES      = dict(none   = NODRAG          , rubber = RUBBER_DRAG)
 VIEWPORT_MODES  = dict(full   = UPDATE_FULLVIEW , smart  = UPDATE_SMARTVIEW , minimal = UPDATE_MINIMALVIEW  , bounding = UPDATE_BOUNDINGVIEW, viewrect = UPDATE_VIEWRECT)
 FLAG_MODES      = dict(select = SELECTABLE      , move   = MOVEABLE         , focus   = FOCUSABLE           , panel    = PANEL)
-ANCHOR_MODES    = dict(none   = NOANCHOR        , under  = ANCHOR_UNDERMICE , center  = ANCHOR_VIEWCENTER   , )
+ANCHOR_MODES    = dict(none   = ANCHOR_NO       , under  = ANCHOR_UNDERMICE , center  = ANCHOR_CENTER, )
 
 
 NODE            = dict( width               = NODE_WIDTH            , height       = 25              , radius                 = 10                  , border    = 2 ,

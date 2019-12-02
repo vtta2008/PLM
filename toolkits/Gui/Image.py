@@ -49,7 +49,6 @@ class Image(QImage):
             else:
                 self.loaded = self.load(self._image)
 
-
     @property
     def copyright(self):
         return self._copyright

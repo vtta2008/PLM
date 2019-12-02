@@ -17,9 +17,9 @@ import sys
 from PyQt5.QtWidgets import QApplication, QGridLayout
 
 # Plt
-from appData                            import ANTIALIAS, UPDATE_FULLVIEW, KEY_DEL
-from toolkits.Widgets.Widget import Widget
-from ui.Header.Menus.NodeGraphMenuBar import NodeGraphMenuBar
+from appData                                        import ANTIALIAS, UPDATE_FULLVIEW, KEY_DEL
+from toolkits.Widgets.Widget                        import Widget, AppIcon
+from ui.Header.Menus.NodeGraphMenuBar               import NodeGraphMenuBar
 from ui.SubUi.Tools.NodeGraph.Node                  import Node, Edge
 from ui.SubUi.Tools.NodeGraph.Scene                 import Scene
 from ui.SubUi.Tools.NodeGraph.View                  import View
@@ -37,7 +37,7 @@ class NodeGraph(Widget):
         super(NodeGraph, self).__init__(parent)
         self.mtd                    = {}
         self.Nodes                  = []
-        # self.setWindowIcon(AppIcon(32, 'NodeGraph'))
+        self.setWindowIcon(AppIcon(32, 'NodeGraph'))
         self.menuBar                = NodeGraphMenuBar(self)
 
         self.view                   = View()

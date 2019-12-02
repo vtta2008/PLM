@@ -13,6 +13,7 @@ from __future__ import absolute_import, unicode_literals
 from .EventManager      import EventManager
 from .File              import File, QssFile
 from .Process           import Process
+from .Rect              import Rect, RectF
 from .Settings          import Settings
 from .SignalManager     import SignalManager
 from .TextSteam         import TextStream

@@ -1,0 +1,64 @@
+QWidget {
+  color: white;
+  border: none;
+  background-color: transparent; }
+
+QLabel {
+  font-size: 12pt; }
+
+View {
+  border-top: 1px solid #3f3f3f; }
+
+Controller {
+  background-color: #323232; }
+
+QPushButton:hover {
+  background-color: #656565; }
+QPushButton:checked {
+  background-color: #191919; }
+QPushButton:checked:hover {
+  background-color: #656565; }
+QPushButton:pressed {
+  background-color: #656565; }
+
+Item {
+  min-height: 20px;
+  min-width: 75px;
+  padding-left: 10px;
+  padding-right: 20px;
+  text-align: left;
+  font-weight: bold; }
+
+HeaderItem {
+  border-style: solid;
+  border-width: 1px;
+  border-left-color: #585858;
+  border-right-color: #3e3e3e;
+  border-top-color: #585858;
+  border-bottom-color: #3e3e3e;
+  color: white;
+  min-height: 20px;
+  min-width: 75px;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: #4b4b4b; }
+
+EditorItem {
+  background-color: #4b4b4b; }
+  EditorItem QLineEdit {
+    padding-left: 5px;
+    text-align: left;
+    font-weight: bold; }
+
+NewItem {
+  background-color: transparent;
+  min-height: 35px;
+  border: none;
+  color: transparent;
+  padding-left: 5px;
+  padding-right: 5px; }
+  NewItem:hover {
+    color: hsva(0, 0, 100%, 80%);
+    padding: -2px;
+    background-color: transparent;
+    border: 2px dashed hsva(0, 0, 100%, 10%); }
