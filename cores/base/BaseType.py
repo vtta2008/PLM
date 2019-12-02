@@ -119,13 +119,13 @@ class BaseType(DAMG):
         countdown = '{0}:{1}:{2}'.format(hrs, self.minutes, self.seconds)
         self.countdown.emit(countdown)
 
-        self._start = self.startDate.toString('dd/MM/yy - hh:mm:ss')
-        self._startdate = self.startDate.date().toString('dd/MM/yy')
-        self._starttime = self.startDate.time().toString('hh:mm:ss')
+        self._start = self.start.toString('dd/MM/yy - hh:mm:ss')
+        self._startdate = self.start.date().toString('dd/MM/yy')
+        self._starttime = self.start.time().toString('hh:mm:ss')
 
-        self._end = self.endDate.toString('dd/MM/yy - hh:mm:ss')
-        self._enddate = self.endDate.date().toString('dd/MM/yy')
-        self._endtime = self.endDate.time().toString('hh:mm:ss')
+        self._end = self.end.toString('dd/MM/yy - hh:mm:ss')
+        self._enddate = self.end.date().toString('dd/MM/yy')
+        self._endtime = self.end.time().toString('hh:mm:ss')
 
         self.updateData()
 
@@ -146,21 +146,21 @@ class BaseType(DAMG):
         self.dataForm.add('startTime', self._starttime)
 
         self.dataForm.add('end', self._end)
-        self.dataForm.add('endDate', self._enddate)
+        self.dataForm.add('enddate', self._enddate)
         self.dataForm.add('endtime', self._endtime)
 
         self.dataForm.add('details', self.details)
 
         if self.key == 'Task':
-            filePth = os.path.join(TASK_DIR, '{0}.task'.format(self.id))
+            filePth = os.path.join(TASK_DIR, '{0}.task'.format(self._id))
         elif self.key == 'Project':
-            filePth = os.path.join(PRJ_DIR, '{0}.prj'.format(self.id))
+            filePth = os.path.join(PRJ_DIR, '{0}.prj'.format(self._id))
         elif self.key == 'Organisation':
-            filePth = os.path.join(ORG_DIR, '{0}.org'.format(self.id))
+            filePth = os.path.join(ORG_DIR, '{0}.org'.format(self._id))
         elif self.key == 'Team':
-            filePth = os.path.join(TEAM_DIR, '{0}.team'.format(self.id))
+            filePth = os.path.join(TEAM_DIR, '{0}.team'.format(self._id))
         else:
-            filePth = os.path.join(TMP_DIR, '{0}.tmp'.format(self.id))
+            filePth = os.path.join(TMP_DIR, '{0}.tmp'.format(self._id))
 
         with open(filePth, 'w') as f:
             json.dump(self.dataForm, f, indent=4)

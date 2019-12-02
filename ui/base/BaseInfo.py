@@ -12,6 +12,7 @@ from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtGui import QIntValidator
 from toolkits.Widgets import GroupGrid, LineEdit, Label
+from ui.base import InfoPicture
 
 class BaseInfo(GroupGrid):
 
@@ -26,11 +27,15 @@ class BaseInfo(GroupGrid):
         self.createLabels()
         self.createLineEdit()
 
+        self.logo = InfoPicture()
+
         self.layout.addWidget(self.name, 0, 1, 1, 3)
         self.layout.addWidget(self.id, 1, 1, 1, 3)
         self.layout.addWidget(self.teamID, 2, 1, 1, 3)
         self.layout.addWidget(self.projectID, 3, 1, 1, 3)
         self.layout.addWidget(self.organisationID, 4, 1, 1, 3)
+
+        self.layout.addWidget(self.logo, 0, 4, 5, 3)
 
         self.layout.addWidget(self.hourS, 6, 1, 1, 1)
         self.layout.addWidget(self.minuteS, 6, 2, 1, 1)

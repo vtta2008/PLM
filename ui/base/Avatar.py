@@ -87,7 +87,7 @@ class AvatarLabel(Label):
 
     def resizeEvent(self, event):
         size = QSize(1, 1)
-        size.scale(event.size(), ASPEC_RATIO)
+        size.scale(100, 100, ASPEC_RATIO)
         self.resize(size)
 
 class Avatar(GroupBox):
@@ -137,6 +137,52 @@ class Avatar(GroupBox):
     def resizeEvent(self, event):
         self.changeAvatarBtn.setMaximumWidth(self.avatar.width())
         self.changeAvatarBtn.setMaximumHeight(25)
+
+class InfoPicLabel(Label):
+
+    key = 'InfoPicLabel'
+
+    def __init__(self, parent=None):
+        super(InfoPicLabel, self).__init__()
+
+        self.parent = parent
+
+
+    def updatePicture(self, image):
+        pix = PixAvatar()
+        img = ImageAvatar(image)
+        self.setPixmap(pix.fromImage(img, AUTO_COLOR))
+        self.setScaledContents(True)
+        self.setAlignment(center)
+        self.update()
+
+    def resizeEvent(self, event):
+        size = QSize(1, 1)
+        size.scale(self.size(), ASPEC_RATIO)
+        self.resize(size)
+
+class InfoPicture(GroupBox):
+
+    key = 'InfoPicture'
+
+    def __init__(self, parent=None):
+        super(InfoPicture, self).__init__(parent=parent)
+
+        self.parent = parent
+        self.layout = VBoxLayout()
+        self.infoPic = InfoPicLabel()
+        self.changePictureBtn = Button({'txt': 'Choose an Image', 'cl': self.update_image})
+
+    def update_image(self):
+        options = QFileDialog.Options()
+        options |= QFileDialog.DontUseNativeDialog
+        fileFormat = "All Files (*);;Img Files (*.jpg)"
+
+        fileName, _ = QFileDialog.getOpenFileName(self, "Your Avatar", AVATAR_DIR, fileFormat, options=options)
+
+        if fileName:
+            self.infoPic.updatePicture(fileName)
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 28/11/2019 - 11:09 AM

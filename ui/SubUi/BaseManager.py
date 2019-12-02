@@ -10,6 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
+from PyQt5.QtCore                       import QDateTime, QDate, QTime
+
 from cores.Task                         import Task
 from cores.Project                      import Project
 from cores.Team                         import Team
@@ -17,7 +19,7 @@ from cores.Organisation                 import Organisation
 from cores.Temporary                    import Temporary
 
 from cores.base                         import DateLine
-from ui.base import BaseInfo, BaseDetails
+from ui.base                            import BaseInfo, BaseDetails
 from functools                          import partial
 from toolkits.Widgets                   import (Widget, Button, VBoxLayout, HBoxLayout, AppIcon)
 
@@ -63,14 +65,17 @@ class BaseManager(Widget):
 
     def createNewBaseType(self):
 
-        h                   = int(self.baseInfo.hourS.text())
-        m                   = int(self.baseInfo.minuteS.text())
-        s                   = int(self.baseInfo.secondS.text())
-        y                   = int(self.baseInfo.yearS.text())
-        mo                  = int(self.baseInfo.monthS.text())
-        d                   = int(self.baseInfo.dayS.text())
+        h                   = self.baseInfo.hourS.text()
+        m                   = self.baseInfo.minuteS.text()
+        s                   = self.baseInfo.secondS.text()
+        y                   = self.baseInfo.yearS.text()
+        mo                  = self.baseInfo.monthS.text()
+        d                   = self.baseInfo.dayS.text()
 
-        startdate           = DateLine(h, m, s, d, mo, y)
+        try:
+            startdate       = DateLine(h, m, s, d, mo, y)
+        except TypeError:
+            startdate       = None
 
         h                   = int(self.baseInfo.hourE.text())
         m                   = int(self.baseInfo.minuteE.text())
@@ -115,8 +120,8 @@ class BaseManager(Widget):
 
     def resizeEvent(self, event):
         h = self.height() - 25
-        self.baseInfo.setMaximumHeight(h*2/5)
-        self.baseDetails.setMaximumHeight(h*3/5)
+        self.baseInfo.setMaximumHeight(h/2)
+        self.baseDetails.setMaximumHeight(h/2)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 2/12/2019 - 2:02 PM

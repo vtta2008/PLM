@@ -14,6 +14,8 @@ Description:
 # Python
 import json
 
+from PyQt5.QtCore import QDate, QTime
+
 # Plt
 from toolkits.Widgets                           import GroupBox, VBoxLayout, Label, CheckBox, GridLayout, Widget, HBoxLayout
 from cores.Task                                 import Task
@@ -44,8 +46,10 @@ class TaskInfo(GroupBox):
         self._mode                              = self._data['mode']
         self._type                              = self._data['type']
 
-        self._project                           = self._data['project']
-        self._organisation                      = self._data['organisation']
+        self._teamID                            = self._data['teamID']
+        self._projectID                         = self._data['projectID']
+        self._organisationID                    = self._data['organisationID']
+
         self._details                           = self._data['details']
 
         self._hour                              = int(self._data['endtime'].split(':')[0])
@@ -56,15 +60,17 @@ class TaskInfo(GroupBox):
         self._month                             = int(self._data['enddate'].split('/')[1])
         self._year                              = int(self._data['enddate'].split('/')[2])
 
-        self.dateline                           = DateLine(self._hour, self._minute, self._second, self._day, self._month, self._year)
+        self.start                              = DateLine(QTime.currentTime().hour(), QTime.currentTime().minute(),
+                                                           QTime.currentTime().second(), QDate.currentDate().day(),
+                                                           QDate.currentDate().month(), QDate.currentDate().year())
+        self.end                                = DateLine(self._hour, self._minute, self._second, self._day, self._month, self._year)
 
         try:
             self.username = [self.database.query_table('curUser')[0]]
         except (ValueError, IndexError):
             self.username = []
 
-        self.task = Task(self._id, self._name, self._mode, self._type, self.username, self._project, self._organisation,
-                         self.dateline, self._details)
+        self.task = Task(self._id, self._name, self._mode, self._type, self._teamID, self._projectID, self._organisationID, self.start, self.end, self._details)
 
         self._countdown                         = '{0}:{1}:{2}'.format(self.task.hours, self.task.minutes, self.task.seconds)
         self.task.countdown.connect(self.update_countdown)
@@ -106,11 +112,11 @@ class TaskInfo(GroupBox):
 
     @property
     def project(self):
-        return self._project
+        return self._projectID
 
     @property
     def organisation(self):
-        return self._organisation
+        return self._organisationID
 
     @property
     def hour(self):
@@ -150,11 +156,11 @@ class TaskInfo(GroupBox):
 
     @project.setter
     def project(self, val):
-        self._project = val
+        self._projectID = val
 
     @organisation.setter
     def organisation(self, val):
-        self._organisation = val
+        self._organisationID = val
 
     @hour.setter
     def hour(self, val):

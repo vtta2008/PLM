@@ -15,7 +15,7 @@ from .BodyCheckBoxes        import BodyCheckBoxes
 from .FooterCheckBoxes      import FooterCheckBoxes
 
 from .PassWord              import PassWord
-from .Avatar                import Avatar
+from .Avatar                import Avatar, InfoPicture
 from .ProFile               import ProFile
 from .Location              import Location
 from .ValiantDelegate       import VariantDelegate
@@ -27,8 +27,6 @@ from .ConnectionIcon        import Conection
 from .BaseInfo              import BaseInfo
 from .BaseDetails           import BaseDetails
 
-from .ProjectInfo           import ProjectInfo
-from .ProjectDetails        import ProjectDetails
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 2/12/2019 - 7:34 AM
