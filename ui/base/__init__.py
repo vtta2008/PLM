@@ -27,6 +27,8 @@ from .ConnectionIcon        import Conection
 from .BaseInfo              import BaseInfo
 from .BaseDetails           import BaseDetails
 
+from .TaskInfo              import TaskInfo
+from .TaskFilter            import TaskFilter
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 2/12/2019 - 7:34 AM

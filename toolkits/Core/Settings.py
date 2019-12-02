@@ -9,9 +9,17 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+""" Import """
 
-from PyQt5.QtCore import QSettings, pyqtSlot
+# Python
+import os
+
+# PyQt5
+from PyQt5.QtCore                       import QSettings, pyqtSlot
+
+# PLM
 from appData                            import INI
+
 
 
 class Settings(QSettings):
@@ -40,6 +48,12 @@ class Settings(QSettings):
 
         self._settingFile           = filename
         self._groups                = self.childGroups()
+        self.cleanKey()
+
+    def cleanKey(self):
+        for key in self.allKeys():
+            if len(key.split('/')) > 2:
+                self.remove(key)
 
     def update(self):
 

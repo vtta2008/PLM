@@ -46,9 +46,9 @@ PRJ_DIR                     = os.path.join(CFG_DIR, 'project')
 CONFIG_PLM_DIR              = os.path.join(PRJ_DIR, 'plm')
 
 CACHE_DIR                   = os.path.join(CFG_DIR, '.cache')
-NODEGRAPH_DIR               = os.path.join(CFG_DIR, '.nodegraph')
-PREF_DIR                    = os.path.join(CFG_DIR, '.prefs')
-USER_PREF_DIR               = os.path.join(CFG_DIR, '.userPrefs')
+NODEGRAPH_DIR               = CFG_DIR
+PREF_DIR                    = CFG_DIR
+USER_PREF_DIR               = CFG_DIR
 
 BIN_DIR                     = os.path.join(ROOT_DIR, 'bin')
 DATA_DIR                    = os.path.join(BIN_DIR, 'data')

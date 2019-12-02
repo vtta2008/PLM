@@ -45,7 +45,6 @@ class ImageAvatar(Image):
     def image(self, imagePth):
         self._image = imagePth
 
-
 class PixAvatar(Pixmap):
 
     Type = 'DAMGPIXMAP'
@@ -57,7 +56,6 @@ class PixAvatar(Pixmap):
 
     def setImage(self, image, flags):
         return self.fromImage(image, flags)
-
 
 class AvatarLabel(Label):
 
@@ -169,9 +167,12 @@ class InfoPicture(GroupBox):
         super(InfoPicture, self).__init__(parent=parent)
 
         self.parent = parent
+        self.setTitle('Images')
         self.layout = VBoxLayout()
         self.infoPic = InfoPicLabel()
         self.changePictureBtn = Button({'txt': 'Choose an Image', 'cl': self.update_image})
+        self.layout.addWidget(self.infoPic)
+        self.layout.addWidget(self.changePictureBtn)
 
     def update_image(self):
         options = QFileDialog.Options()

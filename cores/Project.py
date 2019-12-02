@@ -116,9 +116,7 @@ class Project(BaseType):
 
         self.dataForm.add('details', self.details)
 
-        filePth = os.path.join(PRJ_DIR, '{0}.prj'.format(self._id)).replace('\\', '/')
-
-        with open(filePth, 'w') as f:
+        with open(os.path.join(PRJ_DIR, '{0}.prj'.format(self._id)).replace('\\', '/'), 'w') as f:
             self.dataForm = json.dump(self.dataForm, f, indent=4)
 
         return self.dataForm

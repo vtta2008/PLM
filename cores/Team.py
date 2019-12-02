@@ -113,9 +113,7 @@ class Team(BaseType):
 
         self.dataForm.add('details', self.details)
 
-        filePth = os.path.join(TEAM_DIR, '{0}.team'.format(self._id)).replace('\\', '/')
-
-        with open(filePth, 'w') as f:
+        with open(os.path.join(TEAM_DIR, '{0}.team'.format(self._id)).replace('\\', '/'), 'w') as f:
             self.dataForm = json.dump(self.dataForm, f, indent=4)
 
         return self.dataForm

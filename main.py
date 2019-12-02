@@ -218,11 +218,14 @@ class DAMGTEAM(Application):
                 return self.setStyleSheet(cmd)
             elif cmd == 'showall':
                 return self.showAllEvent()
+            elif cmd == 'new task create':
+                self.updateTaskEvent()
             else:
-                if not cmd in self.toBuildCmds:
+                if not cmd in self.toBuildCmds.values():
                     if self.trackCommand:
                         self.logger.report("This command is not regiested yet: {0}".format(cmd))
-                    return self.toBuildCmds.append(cmd)
+                    self.toBuildCmds[cmd] = cmd
+                    return
                 else:
                     if self.trackCommand:
                         self.logger.info("This command will be built later.".format(cmd))
@@ -431,25 +434,16 @@ class DAMGTEAM(Application):
     def exitEvent(self):
         if self.trackJobsTodo:
             from pprint import pprint
-            pprint(self.todoList)
+            pprint(self.TODO)
 
         states = {}
 
         for layout in self.layoutManager.layouts():
             if layout.key not in self.ignoreIDs + ['SysTray']:
                 self.showLayout(layout.key, 'hide')
-                value = layout.getValue('showLayout')
-                if value is None:
-                    value = 'hide'
-                elif value == 'show':
-                    value = 'hide'
-
-                layout.setValue('showLayout', value)
-                states[layout.key] = value
-                layout.setValue('x', layout.x())
-                layout.setValue('y', layout.y())
-                layout.setValue('w', layout.width())
-                layout.setValue('h', layout.height())
+                geometry = layout.saveGeometry()
+                self.setSetting('geometry', geometry, layout.key)
+                states[layout.key] = 'hide'
 
         self.mainUI.signals.states.appendDict(states)
         self.mainUI.signals.updateState()
@@ -461,6 +455,10 @@ class DAMGTEAM(Application):
             layout.show()
             self.setSetting('showLayout', 'show', layout.key)
             self.mainUI.signals.states[layout.key] = 'show'
+
+    def updateTaskEvent(self):
+        print('update task happened')
+        self.mainUI.topTabUI.tab1.update_tasks()
 
 DAMGTEAM()
 

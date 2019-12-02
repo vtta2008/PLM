@@ -113,7 +113,7 @@ class BaseManager(Widget):
         pass
 
     def newDataEvent(self, newData):
-        self.signals.emit('execute', 'new data: {0}'.format(newData['key']))
+        self.signals.emit('executing', 'new {0} created: {0}'.format(newData.key, newData._name))
         self.hide()
 
     def resizeEvent(self, event):

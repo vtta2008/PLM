@@ -48,8 +48,8 @@ class Task(BaseType):
         self.timer.timeout.connect(self.update)
         self.timer.start(format)
 
-
     def update(self):
+        self.start = QDateTime(self.date.currentDate(), self.time.currentTime())
         self.days = self.start.daysTo(self.end)
 
         self.hours = self.end.time().hour() - self.start.time().hour()
@@ -121,10 +121,11 @@ class Task(BaseType):
 
         self.dataForm.add('details', self.details)
 
-        filePth = os.path.join(TASK_DIR, '{0}.task'.format(self._id)).replace('\\', '/')
-
-        with open(filePth, 'w') as f:
-            json.dump(self.dataForm, f, indent=4)
+        try:
+            with open(os.path.join(TASK_DIR, '{0}.task'.format(self._id)).replace('\\', '/'), 'w') as f:
+                json.dump(self.dataForm, f, indent=4)
+        except PermissionError:
+            pass
 
         return self.dataForm
 

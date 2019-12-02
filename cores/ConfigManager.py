@@ -188,7 +188,9 @@ class ConfigManager(DAMG):
         dirPth['project']              = self.set_dir('appData/.config/project')
         dirPth['organisation']         = self.set_dir('appData/.config/organisation')
         dirPth['team']                 = self.set_dir('appData/.config/team')
-        dirPth['user']                 = self.set_dir('appData/.config/.user')
+        dirPth['user']                 = self.set_dir('appData/.config')
+        dirPth['userPref']             = self.set_dir('appData/.config')
+        dirPth['nodegraph']            = self.set_dir('appData/.config')
         dirPth['cache']                = self.set_dir('appData/.config/.cache')
 
         dirPth['documents']            = self.set_dir('appData/documentations')
