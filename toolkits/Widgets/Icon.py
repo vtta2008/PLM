@@ -33,7 +33,7 @@ class Icon(QIcon):
         QIcon.__init__(self)
 
         self.parent                         = parent
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], None)
         self.signals = SignalManager(self)
 
     @property
@@ -83,7 +83,7 @@ class LogoIcon(Icon):
     sizes = [16, 24, 32, 48, 64, 96, 128, 256, 512]
 
     def __init__(self, name="Logo", parent=None):
-        super(LogoIcon, self).__init__(parent)
+        super(LogoIcon, self).__init__()
 
         self.parent = parent
         self.name =name
@@ -103,7 +103,7 @@ class TagIcon(Icon):
     h = 20
 
     def __init__(self, name='Tag', parent=None):
-        super(TagIcon, self).__init__(parent)
+        super(TagIcon, self).__init__()
 
         self.parent = parent
         self.tag = name

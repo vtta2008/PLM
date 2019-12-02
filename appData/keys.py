@@ -192,7 +192,7 @@ EDIT_KEY                = ['Cut', 'Copy', 'Paste']
 
 START_FILE_KEY          = sorted([i for i in START_FILE if not i == 'Command Prompt'])
 
-EXECUTING_KEY           = ['Exit', 'CleanPyc', 'ReConfig', 'Debug', 'Command Prompt'] + EDIT_KEY + STYLESHEET_KEY
+EXECUTING_KEY           = ['Exit', 'CleanPyc', 'ReConfig', 'Debug', 'Command Prompt', 'Showall'] + EDIT_KEY + STYLESHEET_KEY
 
 IGNORE_ICON_NAME        = ['Widget', 'TopTab1', 'TopTab2', 'TopTab3', 'ItemWidget']
 

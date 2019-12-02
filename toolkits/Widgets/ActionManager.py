@@ -42,7 +42,7 @@ class ActionManager(DAMGDICT):
     prjActions                  = ['Project']
     taskActions                 = ['Task']
     stylesheetActions           = STYLESHEET_KEY
-
+    viewActions                 = ['Showall']
     appActions                  = ['SettingUI', 'Configuration', 'Preferences', 'Exit']
     goActions                   = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder']
     officeActions               = ['TextEditor', 'NoteReminder'] + CONFIG_OFFICE
@@ -84,6 +84,9 @@ class ActionManager(DAMGDICT):
 
     def editMenuActions(self, parent):
         return self.createActions(self.editActions, parent)
+
+    def viewMenuActions(self, parent):
+        return self.createActions(self.viewActions, parent)
 
     def extraToolActions(self, parent):
         return self.createActions(self.extraActions, parent)

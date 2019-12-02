@@ -35,61 +35,44 @@ class PlainTextEdit(QPlainTextEdit):
         if check_preset(self.preset):
             self.buildUI()
 
-    def sizeHint(self):
-        size = super(PlainTextEdit, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
-
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
 
-    def getValue(self, key):
-        return self.settings.initValue(key, self.key)
-
-    def moveEvent(self, event):
-        if self.settings._settingEnable:
-            self.setValue('x', self.x())
-            self.setValue('y', self.y())
-
-    def resizeEvent(self, event):
-        if self.settings._settingEnable:
-            self.setValue('w', self.width())
-            self.setValue('h', self.height())
+    def getValue(self, key, decode=None):
+        if decode is None:
+            return self.settings.initValue(key, self.key)
+        else:
+            return self.settings.initValue(key, self.key, decode)
 
     def closeEvent(self, event):
-        if __name__=='__main__':
-            self.close()
-        else:
-            self.signals.emit('setSetting', 'showLayout', 'hide', self.key)
+        if self.settings._settingEnable:
+            geometry = self.saveGeometry()
+            self.setValue('geometry', geometry)
 
-    def hideEvent(self, event):
-        if __name__=='__main__':
+        if __name__ == '__main__':
+            self.setValue('showLayout', 'hide')
             self.hide()
         else:
-            if self.settings._settingEnable:
-                for key, value in self.values.items():
-                    self.setValue(key, value)
-            self.signals.emit('setSetting', 'showLayout', 'hide', self.key)
+            self.setValue('showLayout', 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
+
+    def hideEvent(self, event):
+        if self.settings._settingEnable:
+            geometry = self.saveGeometry()
+            self.setValue('geometry', geometry)
+
+        if __name__ == '__main__':
+            self.setValue('showLayout', 'hide')
+            self.hide()
+        else:
+            self.setValue('showLayout', 'hide')
+            self.signals.emit('showLayout', self.key, 'hide')
 
     def showEvent(self, event):
 
-        if self.settings._settingEnable:
-            w = self.getValue('w')
-            h = self.getValue('h')
-            x = self.getValue('x')
-            y = self.getValue('x')
-
-            if w is None:
-                w = self.width()
-            if h is None:
-                h = self.height()
-            if x is None:
-                x = 0
-            if y is None:
-                y = 0
-            self.resize(int(w), int(h))
-            self.move(int(x), int(h))
+        geometry = self.getValue('geometry', bytes('', 'utf-8'))
+        if geometry is not None:
+            self.restoreGeometry(geometry)
 
         if __name__ == '__main__':
             self.setValue('showLayout', 'show')

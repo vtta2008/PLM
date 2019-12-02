@@ -23,7 +23,8 @@ from ui.SubUi                           import (ShortcutCommand, NodeGraph, Cale
                                                 SignUp, SignIn, InfoWidget, VFXProject, SettingUI, UserSetting, Preferences,
                                                 Configuration)
 
-from ui.TaskManager import TaskManager
+from ui.TaskManager                     import TaskManager
+from ui.OrganisationManager             import OrganisationManager
 
 class LayoutManager(DAMG):
 
@@ -191,10 +192,11 @@ class LayoutManager(DAMG):
         self.screenShot                     = Screenshot()
         self.textEditor                     = TextEditor()
         self.taskManager                    = TaskManager()
+        self.orgManager                     = OrganisationManager()
 
         layouts     = [self.calculator, self.calendar, self.configuration, self.engDict, self.findFile,
                        self.imageViewer, self.nodeGraph, self.noteReminder, self.preferences, self.screenShot,
-                       self.textEditor, self.taskManager]
+                       self.textEditor, self.taskManager, self.orgManager]
 
         for layout in layouts:
             layout.settings._settingEnable = True

@@ -28,7 +28,7 @@ class TextStream(QTextStream):
         super(TextStream, self).__init__(fileName)
         self.parent                         = parent
 
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], None)
         self.signals = SignalManager(self)
 
     @property

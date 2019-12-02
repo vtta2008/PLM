@@ -38,8 +38,11 @@ class SystemTrayIcon(QSystemTrayIcon):
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
 
-    def getValue(self, key):
-        return self.settings.initValue(key, self.key)
+    def getValue(self, key, decode=None):
+        if decode is None:
+            return self.settings.initValue(key, self.key)
+        else:
+            return self.settings.initValue(key, self.key, decode)
 
     @property
     def copyright(self):

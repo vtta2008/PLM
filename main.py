@@ -63,7 +63,7 @@ class DAMGTEAM(Application):
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(self.appID)                     # Setup app ID
 
         self.logger                     = Loggers(self.__class__.__name__)
-        self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.settings                   = Settings(filename=SETTING_FILEPTH['app'], fm=ST_FORMAT['ini'], parent=self)
         self.signals                    = SignalManager(self)
         self.settings._settingEnable    = True
 
@@ -216,6 +216,8 @@ class DAMGTEAM(Application):
                 return self.setStyleSheet(cmd)
             elif cmd == 'nuker':
                 return self.setStyleSheet(cmd)
+            elif cmd == 'showall':
+                return self.showAllEvent()
             else:
                 if not cmd in self.toBuildCmds:
                     if self.trackCommand:

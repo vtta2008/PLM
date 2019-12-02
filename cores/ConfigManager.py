@@ -434,6 +434,7 @@ class ConfigManager(DAMG):
 
         self.mainInfo['SettingUI']              = ['PLM Settings', 'Settings', 'SettingUI']
         self.mainInfo['Configuration']          = ['PLM Configuration', 'Configuration', 'Configuration']
+        self.mainInfo['Showall']                = ['showall', 'ShowAll', 'showall']
 
         self.mainInfo['Alpha']                  = ['Open Alpha Map Library', 'AlphaLibrary', 'AlphaLibrary']
         self.mainInfo['HDRI']                   = ['Open HDRI Map Library', 'HDRILibrary', 'HDRILibrary']

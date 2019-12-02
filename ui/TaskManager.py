@@ -69,13 +69,15 @@ class TaskManager(Widget):
 
         return newTask
 
-    def editTask(self, taskName):
-        pass
-
     def resizeEvent(self, event):
         w = int(self.width())
         self.taskInfo.setMaximumWidth(w/3)
 
+    def editTask(self, taskName):
+        pass
+
+    def newTaskEvent(self, task):
+        pass
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 19/11/2019 - 12:48 AM

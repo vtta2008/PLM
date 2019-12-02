@@ -50,12 +50,6 @@ class HBoxLayout(QHBoxLayout):
             else:
                 print("{0}: Unrecognise configKey: {1}".format(__name__, key))
 
-    def sizeHint(self):
-        size = super(HBoxLayout, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
-
     @property
     def copyright(self):
         return self._copyright
@@ -98,12 +92,6 @@ class VBoxLayout(QVBoxLayout):
                 self.setStretch(value, 0)
             else:
                 print("Unrecognise configKey: {}".format(key))
-
-    def sizeHint(self):
-        size = super(VBoxLayout, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
 
     @property
     def copyright(self):

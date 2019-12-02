@@ -35,12 +35,6 @@ class GridLayout(QGridLayout):
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.signals = SignalManager(self)
 
-    def sizeHint(self):
-        size = super(GridLayout, self).sizeHint()
-        size.setHeight(size.height())
-        size.setWidth(max(size.width(), size.height()))
-        return size
-
     @property
     def copyright(self):
         return self._copyright

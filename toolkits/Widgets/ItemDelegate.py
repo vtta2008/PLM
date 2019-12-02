@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 from __buildtins__ import __copyright__
 
-from PyQt5.QtWidgets import QItemDelegate
+from PyQt5.QtWidgets                        import QItemDelegate
 
 from toolkits.Core                          import Settings, SignalManager
 from appData                                import SETTING_FILEPTH, ST_FORMAT

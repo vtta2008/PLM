@@ -32,7 +32,7 @@ class Image(QImage):
 
         self._image                         = image
         self.parent                         = parent
-        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], None)
         self.signals                        = SignalManager(self)
 
         if self._image is None:
@@ -75,7 +75,7 @@ class Pixmap(QPixmap):
         self.mode                       = mode
         self.image                      = image
         self.parent                     = parent
-        self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], None)
         self.signals                    = SignalManager(self)
 
         if not self.image is None:

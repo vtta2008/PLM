@@ -38,29 +38,29 @@ class Widget(QWidget):
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)
 
-    def getValue(self, key):
-        return self.settings.initValue(key, self.key)
+    def getValue(self, key, decode=None):
+        if decode is None:
+            return self.settings.initValue(key, self.key)
+        else:
+            return self.settings.initValue(key, self.key, decode)
 
     def closeEvent(self, event):
         if self.settings._settingEnable:
-            self.setValue('x', self.x())
-            self.setValue('y', self.y())
-            self.setValue('w', self.width())
-            self.setValue('h', self.height())
+            geometry = self.saveGeometry()
+            self.setValue('geometry', geometry)
 
-        if __name__=='__main__':
-            self.setValue('showLayout', 'close')
-            self.close()
+
+        if __name__ == '__main__':
+            self.setValue('showLayout', 'hide')
+            self.hide()
         else:
             self.setValue('showLayout', 'hide')
             self.signals.emit('showLayout', self.key, 'hide')
 
     def hideEvent(self, event):
         if self.settings._settingEnable:
-            self.setValue('x', self.x())
-            self.setValue('y', self.y())
-            self.setValue('w', self.width())
-            self.setValue('h', self.height())
+            geometry = self.saveGeometry()
+            self.setValue('geometry', geometry)
 
         if __name__=='__main__':
             self.setValue('showLayout', 'hide')
@@ -71,23 +71,9 @@ class Widget(QWidget):
 
     def showEvent(self, event):
 
-        if self.settings._settingEnable:
-            w = self.getValue('w')
-            h = self.getValue('h')
-            x = self.getValue('x')
-            y = self.getValue('x')
-
-            if w is None:
-                w = self.width()
-            if h is None:
-                h = self.height()
-            if x is None:
-                x = self.x()
-            if y is None:
-                y = self.y()
-
-            self.move(x, y)
-            self.resize(w, h)
+        geometry = self.getValue('geometry', bytes('', 'utf-8'))
+        if geometry is not None:
+            self.restoreGeometry(geometry)
 
         if __name__=='__main__':
             self.setValue('showLayout', 'show')

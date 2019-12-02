@@ -60,10 +60,13 @@ class MainMenuBar(MenuBar):
 
     def build_viewMenu(self):
         menu                        = self.addMenu('&View')
+
         self.stylesheetMenu         = menu.addMenu('&Stylesheet')
         stylesheetActions           = self.actionManger.stylesheetMenuActions(self.parent)
         self.add_actions(self.stylesheetMenu, stylesheetActions)
 
+        viewActions                 = self.actionManger.viewMenuActions(self.parent)
+        self.add_actions(menu, viewActions)
         return menu
 
     def build_helpMenu(self):
