@@ -39,5 +39,8 @@
     "TeamManager": "hide",
     "Alpha": "show",
     "HDRI": "show",
-    "Texture": "show"
+    "Texture": "show",
+    "SwitchAccount": "SwitchAccount",
+    "SignOut": "SignOut",
+    "ShortcutCMD": "hide"
 }

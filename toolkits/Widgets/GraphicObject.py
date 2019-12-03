@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: GraphicView.py
+Script Name: GraphicObject.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -13,14 +13,14 @@ from __buildtins__ import __copyright__
 """ Import """
 
 # PyQt5
-from PyQt5.QtWidgets                        import QGraphicsView
+from PyQt5.QtWidgets                        import QGraphicsObject
 
 # PLM
 from toolkits.Core                          import Settings, SignalManager
 from appData                                import SETTING_FILEPTH, ST_FORMAT
 
 
-class GraphicView(QGraphicsView):
+class GraphicObject(QGraphicsObject):
 
     Type                                    = 'DAMGGRAPHICVIEW'
     key                                     = 'GraphicView'
@@ -28,7 +28,7 @@ class GraphicView(QGraphicsView):
     _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
-        super(GraphicView, self).__init__(parent)
+        QGraphicsObject.__init__(self)
 
         self.parent                         = parent
         self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
@@ -43,44 +43,6 @@ class GraphicView(QGraphicsView):
         else:
             return self.settings.initValue(key, self.key, decode)
 
-    def closeEvent(self, event):
-        if self.settings._settingEnable:
-            geometry = self.saveGeometry()
-            self.setValue('geometry', geometry)
-
-
-        if __name__ == '__main__':
-            self.setValue('showLayout', 'hide')
-            self.hide()
-        else:
-            self.setValue('showLayout', 'hide')
-            self.signals.emit('showLayout', self.key, 'hide')
-
-    def hideEvent(self, event):
-        if self.settings._settingEnable:
-            geometry = self.saveGeometry()
-            self.setValue('geometry', geometry)
-
-        if __name__=='__main__':
-            self.setValue('showLayout', 'hide')
-            self.hide()
-        else:
-            self.setValue('showLayout', 'hide')
-            self.signals.emit('showLayout', self.key, 'hide')
-
-    def showEvent(self, event):
-
-        geometry = self.getValue('geometry', bytes('', 'utf-8'))
-        if geometry is not None:
-            self.restoreGeometry(geometry)
-
-        if __name__=='__main__':
-            self.setValue('showLayout', 'show')
-            self.show()
-        else:
-            self.setValue('showLayout', 'show')
-            self.signals.emit('showLayout', self.key, 'show')
-
     @property
     def copyright(self):
         return self._copyright
@@ -93,7 +55,6 @@ class GraphicView(QGraphicsView):
     def name(self, newName):
         self._name                      = newName
 
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 3/12/2019 - 1:11 AM
+# Created by panda on 3/12/2019 - 9:18 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

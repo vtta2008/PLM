@@ -13,7 +13,7 @@ Description:
 
 # Plt
 from toolkits.Widgets               import Widget, GridLayout, AppIcon
-from ui.base import ProFile, Location, Avatar, PassWord
+from ui.base import Profile, Location, Avatar, PassWord
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """
@@ -34,7 +34,7 @@ class UserSetting(Widget):
 
         self.avatar = Avatar(self)
         self.password = PassWord(self)
-        self.profile = ProFile(self)
+        self.profile = Profile(self)
         self.location = Location(self)
 
         self.layout.addWidget(self.avatar, 0, 0, 1, 1)

@@ -61,8 +61,8 @@ class Tracks(dict):
 
     key = 'Tracks'
 
-    _recieveSignal                  = False
-    _blockSignal                    = False
+    _recieveSignal                  = True
+    _blockSignal                    = True
     _command                        = False
     _registLayout                   = False
     _jobsToDo                       = False

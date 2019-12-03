@@ -16,14 +16,15 @@ from __buildtins__ import __envKey__, Application, configManager, ConfigManager,
 
 # Python
 import os, sys, requests, ctypes
+from ctypes                             import wintypes
 
 # PyQt5
-from PyQt5.QtCore                       import pyqtSlot, QEvent
+from PyQt5.QtCore                       import pyqtSlot
 
 # PLM
 from appData                            import (__localServer__, __organization__, StateNormal, StateMax, StateMin,
                                                 __appname__, __version__, __website__, SYSTRAY_UNAVAI, SETTING_FILEPTH,
-                                                ST_FORMAT)
+                                                ST_FORMAT, KEY_RELEASE)
 
 from utils                              import str2bool, clean_file_ext, LocalDatabase
 
@@ -34,6 +35,7 @@ from cores.Registry                     import RegistryLayout
 from ui                                 import LayoutManager, Browser
 from toolkits.Widgets                   import LogoIcon, ActionManager, ButtonManager
 from toolkits.Core                      import EventManager, ThreadManager, Settings, SignalManager
+from toolkits.Gui                       import Cursor
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -57,10 +59,16 @@ class DAMGTEAM(Application):
         self.setCursorFlashTime(1000)
         self.setQuitOnLastWindowClosed(False)
 
-        self.appID                      = self.sessionId()
-        self.appKey                     = self.sessionKey()
-        self.appPid                     = self.applicationPid()
-        ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(self.appID)                     # Setup app ID
+        self.cursor                     = Cursor(self)
+
+        lpBuffer                        = wintypes.LPWSTR()
+        AppUserModelID                  = ctypes.windll.shell32.GetCurrentProcessExplicitAppUserModelID
+        self.appID                      = lpBuffer.value
+        ctypes.windll.kernel32.LocalFree(lpBuffer)
+        AppUserModelID(ctypes.cast(ctypes.byref(lpBuffer), wintypes.LPWSTR))
+
+        if self.appID is not None:
+            print(self.appID)
 
         self.logger                     = Loggers(self.__class__.__name__)
         self.settings                   = Settings(filename=SETTING_FILEPTH['app'], fm=ST_FORMAT['ini'], parent=self)
@@ -91,7 +99,7 @@ class DAMGTEAM(Application):
         self.forgotPassword             = self.layoutManager.forgotPW
         self.sysTray                    = self.layoutManager.sysTray
         self.mainUI                     = self.layoutManager.mainUI
-        self.shortcutLayout             = self.layoutManager.shortcutLayout
+        self.shortcutCMD                = self.layoutManager.shortcutCMD
 
         for layout in [self.signIn, self.signUp, self.forgotPassword, self.sysTray, self.mainUI]:
             layout.signals.connect('loginChanged', self.loginChanged)
@@ -239,7 +247,16 @@ class DAMGTEAM(Application):
         if layoutID in ['Organisation', 'Project', 'Team', 'Task']:
             layoutID = '{0}Manager'.format(layoutID)
             repeat = False
-
+        elif mode in ['SignIn', 'SignOut', 'SignUp', 'SwitchAccount']:
+            if layoutID == mode:
+                if mode == 'SignIn':
+                    return self.signInEvent()
+                elif mode == 'SignOut':
+                    return self.signOutEvent()
+                elif mode == 'SignUp':
+                    return self.signUpEvent()
+                else:
+                    return self.switchAccountEvent()
         if layoutID in self.registryLayout.keys():
             layout = self.registryLayout[layoutID]
             if layout.windowState() & StateNormal:
@@ -250,30 +267,25 @@ class DAMGTEAM(Application):
                 state = 'showMinimized'
             else:
                 state = layout.getValue('showLayout')
-
-            if not repeat:
-                if mode == state:
-                    if self.trackBlockSignal:
-                        self.logger.report('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
-                    repeat = True
-                else:
-                    if mode == 'show':
-                        if state in ['showNormal', 'showRestore']:
-                            if self.trackBlockSignal:
-                                self.logger.report('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
-                            repeat = True
-                    elif mode == 'hide':
-                        if state in ['hide', 'showMinimized']:
-                            if self.trackBlockSignal:
-                                self.logger.report('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
-                            repeat = True
-            else:
-                repeat = True
-
         if not repeat:
-            if self.trackRecieveSignal:
-                self.logger.report('recieve signal showLayout from {0}: {1}'.format(layoutID, mode))
-            pass
+            if mode == state:
+                if self.trackBlockSignal:
+                    self.logger.report('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
+                repeat = True
+            else:
+                if mode == 'show':
+                    if state in ['showNormal', 'showRestore']:
+                        if self.trackBlockSignal:
+                            self.logger.report('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
+                        repeat = True
+                elif mode == 'hide':
+                    if state in ['hide', 'showMinimized']:
+                        if self.trackBlockSignal:
+                            self.logger.report('{2}: block signal showLayout from {0}: {1}'.format(layoutID, mode, self.key))
+                        repeat = True
+                if not repeat:
+                    if self.trackRecieveSignal:
+                        self.logger.report('recieve signal showLayout from {0}: {1}'.format(layoutID, mode))
         else:
             limit = self.timeReset
             if self.threadManager.counter.printCounter:
@@ -290,17 +302,6 @@ class DAMGTEAM(Application):
 
             return self.countDownReset(limit)
 
-        if mode in ['SignIn', 'SignOut', 'SignUp', 'SwitchAccount']:
-            if layoutID == mode:
-                if mode == 'SignIn':
-                    return self.signInEvent()
-                elif mode == 'SignOut':
-                    return self.signOutEvent()
-                elif mode == 'SignUp':
-                    return self.signUpEvent()
-                else:
-                    return self.switchAccountEvent()
-
         if layoutID in self.registryLayout.keys():
             if layoutID in self.ignoreIDs:
                 if not layoutID in self.toBuildUis:
@@ -308,33 +309,19 @@ class DAMGTEAM(Application):
                     self.toBuildUis.append(layoutID)
             else:
                 layout = self.registryLayout[layoutID]
-
                 if mode == "hide":
-                    if not layout.isHidden():
-                        layout.hide()
-                        self.setSetting('showLayout', 'hide', layout.key)
-                        self.mainUI.signals.states[layout.key] = mode
+                    layout.hide()
                 elif mode == "show":
-                    if layout.isHidden():
-                        layout.show()
-                        self.setSetting('showLayout', 'show', layout.key)
-                        self.mainUI.signals.states[layout.key] = mode
+                    layout.show()
                 elif mode == 'showRestore' or mode == 'showNormal':
-                    if not layout.windowState() & StateNormal:
-                        layout.showNormal()
-                        self.setSetting('showLayout', 'show', layout.key)
-                        self.mainUI.signals.states[layout.key] = mode
+                    layout.showNormal()
                 elif mode == 'showMinimized' or mode == 'showMin':
-                    if not layout.isMinimized():
-                        layout.showMinimized()
-                        self.setSetting('showLayout', 'showMinimized', layout.key)
-                        self.mainUI.signals.states[layout.key] = mode
+                    layout.showMinimized()
                 elif mode == 'showMaximized' or mode == 'showMax':
-                    if not layout.isMaximized():
-                        layout.showMaximized()
-                        self.setSetting('showLayout', 'showMaximized', layout.key)
-                        self.mainUI.signals.states[layout.key] = mode
-                elif mode == 'switch':
+                    layout.showMaximized()
+                elif mode == 'quit' or mode == 'exit':
+                    self.exitEvent()
+                else:
                     if layout.isHidden():
                         layout.show()
                         self.setSetting('showLayout', 'show', layout.key)
@@ -343,15 +330,15 @@ class DAMGTEAM(Application):
                         layout.hide()
                         self.setSetting('showLayout', 'hide', layout.key)
                         self.mainUI.signals.states[layout.key] = mode
-                elif mode == 'quit' or mode == 'exit':
-                    self.exitEvent()
-                else:
-                    self.logger.report('LayoutModeError: {0} does not have mode: {1}'.format(layoutID, mode))
+
+                self.setSetting('showLayout', mode, layout.key)
+                self.mainUI.signals.states[layout.key] = mode
+
         else:
             if not layoutID in self.toBuildUis:
                 self.logger.report("Layout key does not exists: {0}".format(layoutID))
                 self.toBuildUis.append(layoutID)
-                self.todoList.update()
+                self.TODO.update()
 
     @pyqtSlot(str, str, str, int, name='sysNotify')
     def sysNotify(self, title, mess, iconType, timeDelay):
@@ -401,22 +388,6 @@ class DAMGTEAM(Application):
         self.signUp.loginChanged(self._login)
 
         return self._login
-
-    def notify(self, receiver, event):
-        if event.type() >= QEvent.User:
-            widget = receiver
-
-            while widget:
-                result = widget.event(event)
-
-                if result and event.isAccepted():
-                    return result
-
-                widget = widget.parent()
-
-            return False
-
-        return super(DAMGTEAM, self).notify(receiver, event)
 
     def set_styleSheet(self, style):
         self.setStyleSheet(" ")
@@ -475,6 +446,15 @@ class DAMGTEAM(Application):
     def updateTaskEvent(self):
         print('update task happened')
         self.mainUI.topTabUI.tab1.update_tasks()
+
+    def notify(self, receiver, event):
+        if event.type() == KEY_RELEASE:
+            if event.key() == 16777249 and 32:
+                pos = self.cursor.pos()
+                self.shortcutCMD.show()
+                self.shortcutCMD.move(pos)
+
+        return super(DAMGTEAM, self).notify(receiver, event)
 
 DAMGTEAM()
 

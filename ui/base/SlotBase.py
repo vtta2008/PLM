@@ -10,18 +10,16 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtCore import QPointF
-from PyQt5.QtGui import QColor
+from PyQt5.QtCore               import QPointF
+from PyQt5.QtGui                import QColor
 
-from toolkits.Core import RectF, Rect
-from toolkits.Gui   import Brush, Pen, Transform, PainterPath
-from toolkits.Widgets import GraphicItem, GraphicPathItem
-from appData import PATTERN_SOLID, LINE_SOLID, MOUSE_LEFT
-from utils import _get_pointer_bounding_box, _convert_to_QColor
+from toolkits.Core              import RectF, Rect
+from toolkits.Gui               import Brush, Pen, Transform, PainterPath
+from toolkits.Widgets           import GraphicObject, GraphicPathItem
+from appData                    import PATTERN_SOLID, LINE_SOLID, MOUSE_LEFT
+from utils                      import _get_pointer_bounding_box, _convert_to_QColor
 
-
-
-class SlotBase(GraphicItem):
+class SlotBase(GraphicObject):
 
     Type                        = 'DAMGSLOTITEM'
     key                         = 'SlotItem'
@@ -59,7 +57,7 @@ class SlotBase(GraphicItem):
         # no self connection
         if self.parentItem() == slot_item.parentItem():
             return False
-        #no more than maxConnections
+        #no more than maxConn
         if self.maxConnections>0 and len(self.connected_slots) >= self.maxConnections:
             return False
         #no connection with different types
@@ -87,10 +85,10 @@ class SlotBase(GraphicItem):
             mbb = _get_pointer_bounding_box(pointerPos=event.scenePos().toPoint(), bbSize=config['mouse_bounding_box'])
             # Get nodes in pointer's bounding box.
             targets = self.scene().items(mbb)
-            if any(isinstance(target, NodeItem) for target in targets):
+            if any(isinstance(target, Node) for target in targets):
                 if self.parentItem() not in targets:
                     for target in targets:
-                        if isinstance(target, NodeItem):
+                        if isinstance(target, NodNodeeBase):
                             nodzInst.currentHoveredNode = target
             else:
                 nodzInst.currentHoveredNode = None
@@ -157,8 +155,8 @@ class SlotBase(GraphicItem):
 
 class SocketItem(SlotBase):
 
-    def __init__(self, parent, attribute, index, preset, dataType, maxConnections):
-        super(SocketItem, self).__init__(parent, attribute, preset, index, dataType, maxConnections)
+    def __init__(self, parent, attribute, index, preset, dataType, maxConn):
+        super(SocketItem, self).__init__(parent, attribute, preset, index, dataType, maxConn)
         # Storage.
         self.attributte = attribute
         self.preset = preset
@@ -216,8 +214,8 @@ class PlugItem(SlotBase):
     key                             = 'PlugItem'
     slotType                        = 'plug'
 
-    def __init__(self, parent, attribute, index, preset, dataType, maxConnections):
-        super(PlugItem, self).__init__(parent, attribute, preset, index, dataType, maxConnections)
+    def __init__(self, parent, attribute, index, preset, dataType, maxConn):
+        super(PlugItem, self).__init__(parent, attribute, preset, index, dataType, maxConn)
 
         # Storage.
         self.attributte             = attribute
@@ -332,10 +330,10 @@ class ConnectionItem(GraphicPathItem):
         mbb = _get_pointer_bounding_box(pointerPos=event.scenePos().toPoint(), bbSize=config['mouse_bounding_box'])
         # Get nodes in pointer's bounding box.
         targets = self.scene().items(mbb)
-        if any(isinstance(target, NodeItem) for target in targets):
+        if any(isinstance(target, Node) for target in targets):
             if nodzInst.sourceSlot.parentItem() not in targets:
                 for target in targets:
-                    if isinstance(target, NodeItem):
+                    if isinstance(target, Node):
                         nodzInst.currentHoveredNode = target
         else:
             nodzInst.currentHoveredNode = None
@@ -398,7 +396,6 @@ class ConnectionItem(GraphicPathItem):
         ctrl2 = QPointF(self.source_point.x() + dx, self.source_point.y() + dy * 1)
         path.cubicTo(ctrl1, ctrl2, self.target_point)
         self.setPath(path)
-
 
 
 # -------------------------------------------------------------------------------------------------------------

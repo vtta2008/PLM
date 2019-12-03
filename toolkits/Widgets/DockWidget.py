@@ -49,7 +49,6 @@ class DockStamp(QTextEdit):
         cursor.insertText(datetTimeStamp, QTextCharFormat())
         self.resize(250, 100)
 
-
 class DockWidget(QDockWidget):
 
     Type                                    = 'DAMGUI'

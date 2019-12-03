@@ -13,9 +13,9 @@ from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore                   import QPointF
 
-from .SlotBase                      import PlugItem, SocketItem, ConnectionItem
+from .SlotBase                      import ConnectionItem
 from toolkits.Gui                   import Brush, Pen, Font, FontMetric, PainterPath
-from toolkits.Widgets               import GraphicItem
+from toolkits.Widgets               import GraphicObject
 from toolkits.Core                  import Rect, RectF
 from appData                        import MOVEABLE, LINE_SOLID, PATTERN_SOLID, BOLD, NORMAL, SELECTABLE, sceneGraphCfg, center
 from utils                          import _convert_to_QColor, _loadConfig
@@ -23,7 +23,7 @@ from bin                            import DAMGLIST, DAMGDICT
 
 
 
-class NodeBase(GraphicItem):
+class NodeBase(GraphicObject):
 
     key                             = 'NodeBase'
 
@@ -37,12 +37,13 @@ class NodeBase(GraphicItem):
     sockets                         = DAMGDICT()
     attrsData                       = DAMGDICT()
 
-    def __init__(self, preset, alternate):
-        GraphicItem.__init__(self)
+    def __init__(self, name, preset, alternate):
+        super(NodeBase, self).__init__(self)
 
         self.config = _loadConfig(sceneGraphCfg)
         self.nodePreset             = preset
         self.alternate              = alternate
+        self.name                   = name
 
         # Dimensions.
         self.baseWidth              = self.config['node_width']
@@ -50,6 +51,10 @@ class NodeBase(GraphicItem):
         self.attrHeight             = self.config['node_attr_height']
         self.border                 = self.config['node_border']
         self.radius                 = self.config['node_radius']
+
+        self.setAcceptHoverEvents(True)
+        self.setFlag(MOVEABLE)
+        self.setFlag(SELECTABLE)
 
         self.nodeCenter = QPointF()
         self.nodeCenter.setX(self.baseWidth / 2.0)
@@ -108,6 +113,23 @@ class NodeBase(GraphicItem):
         self.scene().signal_NodeMoved.emit(self.name, self.pos())
         super(NodeBase, self).mouseReleaseEvent(event)
 
+    def mousePressEvent(self, event):
+        nodes = self.scene().nodes
+        for node in nodes.values():
+            node.setZValue(1)
+        for item in self.scene().items():
+            if isinstance(item, ConnectionItem):
+                item.setZValue(1)
+        self.setZValue(2)
+        super(NodeBase, self).mousePressEvent(event)
+
+    def hoverLeaveEvent(self, event):
+        nodzInst = self.scene().views()[0]
+        for item in nodzInst.scene().items():
+            if isinstance(item, ConnectionItem):
+                item.setZValue(0)
+        super(NodeBase, self).hoverLeaveEvent(event)
+
     def boundingRect(self):
         rect = RectF(0, 0, self.baseWidth, self.height)
         rect = RectF(rect)
@@ -145,8 +167,8 @@ class NodeBase(GraphicItem):
             self._attrBrush.setColor(_convert_to_QColor(config[preset]['bg']))
             if self.alternate:
                 self._attrBrushAlt.setColor(_convert_to_QColor(config[preset]['bg'], True, config['alternate_value']))
-
             self._attrPen.setColor(_convert_to_QColor([0, 0, 0, 0]))
+
             painter.setPen(self._attrPen)
             painter.setBrush(self._attrBrush)
             if (offset / self.attrHeight) % 2:
@@ -172,23 +194,6 @@ class NodeBase(GraphicItem):
 
             offset += self.attrHeight
 
-    def mousePressEvent(self, event):
-        nodes = self.scene().nodes
-        for node in nodes.values():
-            node.setZValue(1)
-        for item in self.scene().items():
-            if isinstance(item, ConnectionItem):
-                item.setZValue(1)
-        self.setZValue(2)
-        super(NodeBase, self).mousePressEvent(event)
-
-    def hoverLeaveEvent(self, event):
-        nodzInst = self.scene().views()[0]
-        for item in nodzInst.scene().items():
-            if isinstance(item, ConnectionItem):
-                item.setZValue(0)
-        super(NodeBase, self).hoverLeaveEvent(event)
-
     @property
     def height(self):
         if self.attrCount > 0:
@@ -202,81 +207,6 @@ class NodeBase(GraphicItem):
             return self._penSel
         else:
             return self._pen
-
-class NodeItem(NodeBase):
-
-    key                             = 'NodeItem'
-
-    def __init__(self, name, preset, alternate):
-        super(NodeItem, self).__init__(preset, alternate)
-
-        self.setZValue(1)
-        self._name                  = name
-
-        self.setAcceptHoverEvents(True)
-        self.setFlag(MOVEABLE)
-        self.setFlag(SELECTABLE)
-
-    def _createAttribute(self, name, index, preset, plug, socket, dataType, plugMaxConnections, socketMaxConnections):
-        if name in self.attrs:
-            print('AttributeNameError: attribute name already exists on this node : {0}'.format(name))
-            return
-        self.attrPreset = preset
-        # Create a plug connection item.
-        if plug:
-            plugInst = PlugItem(parent=self, attribute=name, index=self.attrCount, preset=preset, dataType=dataType, maxConnections=plugMaxConnections)
-            self.plugs[name] = plugInst
-        # Create a socket connection item.
-        if socket:
-            socketInst = SocketItem(parent=self, attribute=name, index=self.attrCount, preset=preset, dataType=dataType, maxConnections=socketMaxConnections)
-            self.sockets[name] = socketInst
-        self.attrCount += 1
-        # Add the attribute based on its index.
-        if index == -1 or index > self.attrCount:
-            self.attrs.append(name)
-        else:
-            self.attrs.insert(index, name)
-        # Store attr data.
-        self.attrsData[name] = {'name': name, 'socket': socket, 'plug': plug, 'preset': preset, 'dataType': dataType, 'plugMaxConnections': plugMaxConnections, 'socketMaxConnections': socketMaxConnections}
-        # Update node height.
-        self.update()
-
-    def _deleteAttribute(self, index):
-        name = self.attrs[index]
-        # Remove socket and its connections.
-        if name in self.sockets.keys():
-            for connection in self.sockets[name].connections:
-                connection._remove()
-            self.scene().removeItem(self.sockets[name])
-            self.sockets.pop(name)
-        # Remove plug and its connections.
-        if name in self.plugs.keys():
-            for connection in self.plugs[name].connections:
-                connection._remove()
-            self.scene().removeItem(self.plugs[name])
-            self.plugs.pop(name)
-        # Reduce node height.
-        if self.attrCount > 0:
-            self.attrCount -= 1
-        # Remove attribute from node.
-        if name in self.attrs:
-            self.attrs.remove(name)
-        self.update()
-
-    def _remove(self):
-        self.scene().nodes.pop(self.name)
-        # Remove all sockets connections.
-        for socket in self.sockets.values():
-            while len(socket.connections)>0:
-                socket.connections[0]._remove()
-        # Remove all plugs connections.
-        for plug in self.plugs.values():
-            while len(plug.connections)>0:
-                plug.connections[0]._remove()
-        # Remove node.
-        scene = self.scene()
-        scene.removeItem(self)
-        scene.update()
 
 
 # -------------------------------------------------------------------------------------------------------------

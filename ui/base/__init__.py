@@ -10,28 +10,27 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from .HeaderCheckBoxes      import HeaderCheckBoxes
-from .BodyCheckBoxes        import BodyCheckBoxes
-from .FooterCheckBoxes      import FooterCheckBoxes
 
-from .PassWord              import PassWord
 from .Avatar                import Avatar, InfoPicture
-from .ProFile               import ProFile
+from .BaseDetails           import BaseDetails
+from .BaseInfo              import BaseInfo
+from .BodyCheckBoxes        import BodyCheckBoxes
+from .ConnectionIcon        import Conection
+from .FooterCheckBoxes      import FooterCheckBoxes
+from .HeaderCheckBoxes      import HeaderCheckBoxes
 from .Location              import Location
-from .NodeBase              import NodeItem
-from .ValiantDelegate       import VariantDelegate
+from .Node                  import Node
+from .NodeBase              import NodeBase
+from .PassWord              import PassWord
+from .Profile               import Profile
+from .Scene                 import Scene
 from .SettingInput          import SettingInput
 from .SettingOutput         import SettingOutput
 from .SlotBase              import SocketItem, PlugItem, ConnectionItem
-
-from .ConnectionIcon        import Conection
-
-from .BaseInfo              import BaseInfo
-from .BaseDetails           import BaseDetails
-
-from .TaskInfo              import TaskInfo
 from .TaskFilter            import TaskFilter
-
+from .TaskInfo              import TaskInfo
+from .ValiantDelegate       import VariantDelegate
+from .View                  import View
 from .ViewBase              import ViewBase
 
 # -------------------------------------------------------------------------------------------------------------

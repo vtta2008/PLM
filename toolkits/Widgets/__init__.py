@@ -21,6 +21,7 @@ from .DockWidget        import DockStamp, DockWidget, NoteStamp
 from .GraphicView       import GraphicView
 from .GraphicScene      import GraphicScene
 from .GraphicItem       import GraphicItem
+from .GraphicObject     import GraphicObject
 from .GraphicPathItem   import GraphicPathItem
 from .GridLayout        import GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
 from .GroupBox          import GroupBoxBase, GroupBox, GroupGrid, GroupHBox, GroupVBox

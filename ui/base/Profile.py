@@ -12,12 +12,12 @@ from __future__ import absolute_import, unicode_literals
 
 from toolkits.Widgets import GroupGrid, LineEdit, Button, Label
 
-class ProFile(GroupGrid):
+class Profile(GroupGrid):
 
     key = 'ProFile'
 
     def __init__(self, parent=None):
-        super(ProFile, self).__init__(parent=parent)
+        super(Profile, self).__init__(parent=parent)
 
         self.parent = parent
 

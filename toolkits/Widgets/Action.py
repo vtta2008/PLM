@@ -78,8 +78,8 @@ class Action(QAction):
 
 class ShortCut(Action):
 
-    key = 'ShortCut'
-    _name = 'DAMG ShortCut'
+    key                                 = 'ShortCut'
+    _name                               = 'DAMG ShortCut'
 
     def __init__(self, icon=None, text=None, shortcut=None, trigger=None, parent=None):
         Action.__init__(self)

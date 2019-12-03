@@ -39,6 +39,7 @@ ELIDE_RIGHT                 = Qt.ElideRight
 """ Event """
 
 KEY_PRESS                   = QEvent.KeyPress
+KEY_RELEASE                 = QEvent.KeyRelease
 
 # -------------------------------------------------------------------------------------------------------------
 """ Window state """
@@ -77,10 +78,10 @@ POS_CHANGE                  = QGraphicsItem.ItemPositionChange
 
 NODRAG                      = QGraphicsView.NoDrag
 NOFRAME                     = QGraphicsView.NoFrame
-ANCHOR_NO                    = QGraphicsView.NoAnchor
+ANCHOR_NO                   = QGraphicsView.NoAnchor
 
 ANCHOR_UNDERMICE            = QGraphicsView.AnchorUnderMouse
-ANCHOR_CENTER           = QGraphicsView.AnchorViewCenter
+ANCHOR_CENTER               = QGraphicsView.AnchorViewCenter
 
 CACHE_BG                    = QGraphicsView.CacheBackground
 
@@ -92,8 +93,7 @@ UPDATE_MINIMALVIEW          = QGraphicsView.MinimalViewportUpdate
 
 STAY_ON_TOP                 = Qt.WindowStaysOnTopHint
 STRONG_FOCUS                = Qt.StrongFocus
-FRAMELESSWINDOW             = Qt.FramelessWindowHint
-
+FRAMELESS             = Qt.FramelessWindowHint
 AUTO_COLOR                  = Qt.AutoColor
 
 # -------------------------------------------------------------------------------------------------------------
@@ -197,6 +197,8 @@ KEY_TAB                     = Qt.Key_Tab
 KEY_SHIFT                   = Qt.Key_Shift
 KEY_CTRL                    = Qt.Key_Control
 KEY_BACKSPACE               = Qt.Key_Backspace
+KEY_ENTER                   = Qt.Key_Enter
+KEY_RETURN                  = Qt.Key_Return
 KEY_F                       = Qt.Key_F
 KEY_S                       = Qt.Key_S
 ALT_MODIFIER                = Qt.AltModifier
@@ -211,6 +213,7 @@ DMK                         = Qt.AltModifier if windows else CTRL_MODIFIER
 MOUSE_LEFT                  = Qt.LeftButton
 MOUSE_RIGHT                 = Qt.RightButton
 MOUSE_MIDDLE                = Qt.MiddleButton
+NO_BUTTON                   = Qt.NoButton
 
 ARROW_NONE                  = Qt.NoArrow                                                # Cursor
 CURSOR_ARROW                = Qt.ArrowCursor

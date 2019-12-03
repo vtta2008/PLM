@@ -13,6 +13,7 @@ from __future__ import absolute_import, unicode_literals
 from .TopTab1           import TopTab1
 from .TopTab2           import TopTab2
 from .TopTap3           import TopTap3
+from .ScenceGraph       import SceneGraph
 
 from .BotTab1           import BotTab1
 from .BotTab2           import BotTab2

@@ -10,7 +10,7 @@ Description:
 
 # PLM
 from toolkits.Widgets           import TabWidget, VBoxLayout, AppIcon
-from .Tabs                      import TopTab1, TopTab2, TopTap3
+from .Tabs                      import TopTab1, TopTab2, TopTap3, SceneGraph
 from bin                        import DAMGLIST
 
 # -------------------------------------------------------------------------------------------------------------
@@ -34,8 +34,10 @@ class TopTab(TabWidget):
     def buildUI(self):
 
         self.tab1               = TopTab1(self.buttonManager, self.parent)
+        # self.tab1               = SceneGraph(self.buttonManager, self.parent)
         self.tab2               = TopTab2(self.buttonManager, self.parent)
         self.tab3               = TopTap3(self.buttonManager, self.parent)
+        # self.tab4               = SceneGraph(self.parent)
 
         self.tabs               = DAMGLIST(listData=[self.tab1, self.tab2, self.tab3])
         self.tabNames           = DAMGLIST(listData=['Common', 'User', 'Cmd'])

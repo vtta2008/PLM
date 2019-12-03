@@ -10,44 +10,25 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtCore import QSize, pyqtSignal
+from PyQt5.QtCore               import QSize
+from utils                      import _loadConfig
+from toolkits.Widgets           import GraphicView, RubberBand
+from toolkits.Gui               import PainterPath, Cursor, Transform
+from toolkits.Core              import Rect, RectF
+from bin                        import DAMGLIST
 
-from toolkits.Widgets import GraphicView
-from toolkits.Gui import PainterPath, Cursor, Transform
-from toolkits.Core import Rect, RectF
 
-from appData import (KEY_S, KEY_F, KEY_BACKSPACE, KEY_DEL, KEY_CTRL, KEY_SHIFT, ASPEC_RATIO, NO_MODIFIER, SHIFT_MODIFIER,
-                     CLOSE_HAND_CUSOR, CTRL_MODIFIER, MOUSE_LEFT, MOUSE_RIGHT, ALT_MODIFIER, MOUSE_MIDDLE,
-                     ANCHOR_UNDERMICE, ANCHOR_CENTER, ANCHOR_NO, CURSOR_ARROW)
+from appData import (sceneGraphCfg, KEY_S, KEY_F, KEY_BACKSPACE, KEY_DEL, KEY_CTRL, KEY_SHIFT, ASPEC_RATIO, NO_MODIFIER,
+                     SHIFT_MODIFIER, CLOSE_HAND_CUSOR, CTRL_MODIFIER, MOUSE_LEFT, MOUSE_RIGHT, ALT_MODIFIER, MOUSE_MIDDLE,
+                     ANCHOR_CENTER, ANCHOR_NO, CURSOR_ARROW, ANCHOR_UNDERMICE, ANTIALIAS,
+                     ANTIALIAS_HIGH_QUALITY, ANTIALIAS_TEXT, SMOOTH_PIXMAP_TRANSFORM, NON_COSMETIC_PEN, UPDATE_FULLVIEW, SCROLLBAROFF,
+                     RUBBER_REC, )
+
 
 
 class ViewBase(GraphicView):
 
     key = 'ViewBase'
-
-    signal_NodeCreated          = pyqtSignal(object)
-    signal_NodeDeleted          = pyqtSignal(object)
-    signal_NodeEdited           = pyqtSignal(object, object)
-    signal_NodeSelected         = pyqtSignal(object)
-    signal_NodeMoved            = pyqtSignal(str, object)
-    signal_NodeDoubleClicked    = pyqtSignal(str)
-
-    signal_AttrCreated          = pyqtSignal(object, object)
-    signal_AttrDeleted          = pyqtSignal(object, object)
-    signal_AttrEdited           = pyqtSignal(object, object, object)
-
-    signal_PlugConnected        = pyqtSignal(object, object, object, object)
-    signal_PlugDisconnected     = pyqtSignal(object, object, object, object)
-    signal_SocketConnected      = pyqtSignal(object, object, object, object)
-    signal_SocketDisconnected   = pyqtSignal(object, object, object, object)
-
-    signal_GraphSaved           = pyqtSignal()
-    signal_GraphLoaded          = pyqtSignal()
-    signal_GraphCleared         = pyqtSignal()
-    signal_GraphEvaluated       = pyqtSignal()
-
-    signal_KeyPressed           = pyqtSignal(object)
-    signal_Dropped              = pyqtSignal()
 
     gridVisToggle               = True
     gridSnapToggle              = False
@@ -60,8 +41,31 @@ class ViewBase(GraphicView):
     currentHoveredNode          = None
     sourceSlot                  = None
 
+    previousMouseOffset         = 0
+    zoomDirection               = 0
+    zoomIncr                    = 0
+
     currentState                = 'DEFAULT'
-    pressedKeys                 = list()
+    pressedKeys                 = DAMGLIST()
+
+    def __init__(self, parent=None):
+        super(ViewBase, self).__init__(parent)
+
+        self.parent             = parent
+        self.config             = _loadConfig(sceneGraphCfg)
+
+        self.setRenderHint(ANTIALIAS, self.config['antialiasing'])
+        self.setRenderHint(ANTIALIAS_TEXT, self.config['antialiasing'])
+        self.setRenderHint(ANTIALIAS_HIGH_QUALITY, self.config['antialiasing_boost'])
+        self.setRenderHint(SMOOTH_PIXMAP_TRANSFORM, self.config['smooth_pixmap'])
+        self.setRenderHint(NON_COSMETIC_PEN, True)
+
+        self.setViewportUpdateMode(UPDATE_FULLVIEW)
+        self.setTransformationAnchor(ANCHOR_UNDERMICE)
+        self.setHorizontalScrollBarPolicy(SCROLLBAROFF)
+        self.setVerticalScrollBarPolicy(SCROLLBAROFF)
+
+        self.rubberband = RubberBand(RUBBER_REC, self)
 
     def _initRubberband(self, position):
         self.rubberBandStart = position
@@ -166,7 +170,6 @@ class ViewBase(GraphicView):
         elif (event.button() == MOUSE_MIDDLE and event.modifiers() == ALT_MODIFIER):
             self.currentState   = 'DRAG_VIEW'
             self.prevPos        = event.pos()
-
             self.setCursor(CLOSE_HAND_CUSOR)
             self.setInteractive(False)
         # Rubber band selection
@@ -298,9 +301,6 @@ class ViewBase(GraphicView):
             self._focus()
         if event.key() == KEY_S:
             self._nodeSnap = True
-
-        # Emit signal.
-        self.signal_KeyPressed.emit(event.key())
 
     def keyReleaseEvent(self, event):
         if event.key() == KEY_S:

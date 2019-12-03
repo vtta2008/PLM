@@ -12,12 +12,10 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 from .LayoutManager     import LayoutManager
-
 from .PipelineManager   import PipelineManager
-
 from .SysTray           import SysTray
-
-from .SubUi             import (Browser, ShortcutCommand, NodeGraph, Calendar, Calculator, EnglishDictionary,
+from .ShortcutCMD       import ShortcutCMD
+from .SubUi             import (Browser, NodeGraph, Calendar, Calculator, EnglishDictionary,
                                 FindFiles, ImageViewer, NoteReminder, Screenshot, TextEditor, ForgotPassword,
                                 SignUp, SignIn, InfoWidget, VFXProject, SettingUI, UserSetting, Preferences,
                                 Configuration)

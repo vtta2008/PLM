@@ -14,10 +14,9 @@ Description:
 
 # PLM
 from toolkits.Widgets                           import GroupBox, GridLayout, Widget
-from ui.base                                    import TaskInfo, TaskFilter, NodeItem
-from .ScenceGraph                               import View
+from ui.base                                    import TaskInfo, TaskFilter
 from utils                                      import get_file_path
-from appData                                    import TASK_DIR, ANTIALIAS, UPDATE_FULLVIEW, KEY_DEL
+from appData                                    import TASK_DIR
 from bin                                        import DAMGLIST
 
 # -------------------------------------------------------------------------------------------------------------
@@ -40,9 +39,10 @@ class TopTab1(Widget):
 
     def buildUI(self):
 
-        self.taskButtons = self.buttonManager.managerButtonGroupBox(self.parent)
+        self.taskButtons    = self.buttonManager.managerButtonGroupBox(self.parent)
+        self.taskGrp        = GroupBox("Manager", self.taskButtons, "BtnGrid")
 
-        # self.update_tasks()
+        self.update_tasks()
 
         self.taskGrp     = GroupBox("Manager", self.taskButtons, "BtnGrid")
         self.tabFilter   = TaskFilter()
@@ -55,14 +55,6 @@ class TopTab1(Widget):
 
         self.layout.addWidget(self.taskGrp, 0, 0, 2, 1)
         self.layout.addWidget(self.tabFilter, 2, 0, 2, 1)
-
-        self.view = View(self)
-        self.scene = self.view.scene()
-        # self.view.setScene(self.scene)
-        self.view.setRenderHint(ANTIALIAS)
-        self.view.setViewportUpdateMode(UPDATE_FULLVIEW)
-        self.scene.setSceneRect(0, 0, self.view.width(), self.view.height())
-        self.layout.addWidget(self.view, 0, 3, 8, 8)
 
     def update_tasks(self):
 
@@ -77,30 +69,30 @@ class TopTab1(Widget):
 
             task = TaskInfo(t)
             self.layout.addWidget(task, a, i, 2 ,1)
-            self.tasks.append(task.task)
+            self.tasks.append(task)
             i += 1
 
     def overdue(self, bool):
         for task in self.tasks:
-            if task.task._status == 'Overdued':
+            if task.task_status == 'Overdued':
                 task.setVisible(bool)
 
     def urgent(self, bool):
         for task in self.tasks:
-            if task.task.status == 'Urgent':
+            if task.task._status == 'Urgent':
                 task.setVisible(bool)
 
     def safety(self, bool):
         for task in self.tasks:
-            if task.task.status not in ['Overdued, Urgent']:
+            if task.task._status not in ['Overdued, Urgent']:
                 task.setVisible(bool)
 
-    def keyPressEvent(self, event):
-        if event.key() == KEY_DEL:
-            selectedNodes = [i for i in self.scene.selectedItems() if isinstance(i, NodeItem)]
-            for node in selectedNodes:
-                node.destroy()
-        super(TopTab1, self).keyPressEvent(event)
+    # def keyPressEvent(self, event):
+    #     if event.key() == KEY_DEL:
+    #         selectedNodes = [i for i in self.scene.selectedItems() if isinstance(i, NodeItem)]
+    #         for node in selectedNodes:
+    #             node.destroy()
+    #     super(TopTab1, self).keyPressEvent(event)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 24/05/2018
