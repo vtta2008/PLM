@@ -29,6 +29,9 @@ class ShortcutCMD(LineEdit):
         if event.key() == KEY_RETURN:
             self.run()
 
+    def eventFilter(self, source, event):
+        pass
+
     def run(self):
         cmd = self.text()
         print('RUN: {0}'.format(cmd))

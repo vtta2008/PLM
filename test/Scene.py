@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore               import QLineF
-from .NodeBase                  import ConnectionItem
+from test.NodeBase import ConnectionItem
 from utils                      import _loadConfig, _convert_to_QColor
 from toolkits.Widgets           import GraphicScene
 from toolkits.Gui               import Brush, Pen

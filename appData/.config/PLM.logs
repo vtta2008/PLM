@@ -382,3 +382,394 @@ TRACE: (03/12/2019 22:46:58) DAMGTEAM, line 226: message: >>> receive signal exe
 TRACE: (03/12/2019 22:46:58) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
 TRACE: (03/12/2019 22:46:58) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
 TRACE: (03/12/2019 22:46:58) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (03/12/2019 23:28:32) DAMGTEAM, line 226: message: >>> receive signal setSetting: styleSheet, dark, PLM >>> {}
+TRACE: (03/12/2019 23:28:37) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: show >>> {}
+TRACE: (03/12/2019 23:28:37) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}
+TRACE: (03/12/2019 23:28:37) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from SignIn: hide >>> {}
+TRACE: (03/12/2019 23:28:37) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, SignIn >>> {}
+TRACE: (03/12/2019 23:28:37) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from SignUp: hide >>> {}
+TRACE: (03/12/2019 23:28:37) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, SignUp >>> {}
+TRACE: (03/12/2019 23:28:37) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ForgotPassword: hide >>> {}
+TRACE: (03/12/2019 23:28:37) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, ForgotPassword >>> {}
+TRACE: (03/12/2019 23:28:37) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: show >>> {}
+TRACE: (03/12/2019 23:28:37) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> recieve signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, show, ShortcutCMD >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> recieve signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, show, ShortcutCMD >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:28:52) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:29) DAMGTEAM, line 226: message: >>> receive signal setSetting: styleSheet, dark, PLM >>> {}
+TRACE: (03/12/2019 23:48:35) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: show >>> {}
+TRACE: (03/12/2019 23:48:35) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}
+TRACE: (03/12/2019 23:48:35) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from SignIn: hide >>> {}
+TRACE: (03/12/2019 23:48:35) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, SignIn >>> {}
+TRACE: (03/12/2019 23:48:35) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from SignUp: hide >>> {}
+TRACE: (03/12/2019 23:48:35) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, SignUp >>> {}
+TRACE: (03/12/2019 23:48:35) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ForgotPassword: hide >>> {}
+TRACE: (03/12/2019 23:48:35) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, ForgotPassword >>> {}
+TRACE: (03/12/2019 23:48:35) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: show >>> {}
+TRACE: (03/12/2019 23:48:35) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> recieve signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, show, ShortcutCMD >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> recieve signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, show, ShortcutCMD >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:44) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: show >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, ShortcutCMD >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (03/12/2019 23:48:50) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (04/12/2019 02:57:45) DAMGTEAM, line 226: message: >>> receive signal setSetting: styleSheet, dark, PLM >>> {}
+TRACE: (04/12/2019 02:57:51) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: show >>> {}
+TRACE: (04/12/2019 02:57:51) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}
+TRACE: (04/12/2019 02:57:51) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from SignIn: hide >>> {}
+TRACE: (04/12/2019 02:57:51) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, SignIn >>> {}
+TRACE: (04/12/2019 02:57:51) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from SignUp: hide >>> {}
+TRACE: (04/12/2019 02:57:51) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, SignUp >>> {}
+TRACE: (04/12/2019 02:57:51) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ForgotPassword: hide >>> {}
+TRACE: (04/12/2019 02:57:51) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, ForgotPassword >>> {}
+TRACE: (04/12/2019 02:57:51) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: show >>> {}
+TRACE: (04/12/2019 02:57:51) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> recieve signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> recieve signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, show, Configuration >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:58) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, show, Configuration >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal setSetting: showLayout, show, Configuration >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:57:59) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: show >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, Configuration >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:00) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Browser: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, Browser >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', Browser >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from PipelineManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, PipelineManager >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x02\xb8\x00\x00\x00\xfe\x00\x00\x04\xc6\x00\x00\x04a\x00\x00\x02\xb9\x00\x00\x01\x1d\x00\x00\x04\xc5\x00\x00\x04`\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x02\xb9\x00\x00\x01\x1d\x00\x00\x04\xc5\x00\x00\x04`', PipelineManager >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ShortcutCMD: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, ShortcutCMD >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xf8\x00\x00\x00\x17\x00\x00\x00\x00\x00\x00\x00\x00\xff\xff\xff\xff\xff\xff\xff\xff\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\xf9\x00\x00\x00\x18', ShortcutCMD >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from SignIn: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, SignIn >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x8f\x00\x00\x01+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x8f\x00\x00\x01+\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\x8f\x00\x00\x01+', SignIn >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from SignUp: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, SignUp >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xc1\x00\x00\x03\x83\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xc1\x00\x00\x03\x83\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01\xc1\x00\x00\x03\x83', SignUp >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from ForgotPassword: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, ForgotPassword >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', ForgotPassword >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from About: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, About >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', About >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from CodeOfConduct: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, CodeOfConduct >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', CodeOfConduct >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from Contributing: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, Contributing >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', Contributing >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from Credit: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, Credit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', Credit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from Licence: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, Licence >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', Licence >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from Reference: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, Reference >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', Reference >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from Version: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, Version >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', Version >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from SettingUI: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, SettingUI >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', SettingUI >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from UserSetting: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, UserSetting >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', UserSetting >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from Calculator: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, Calculator >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', Calculator >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from Calendar: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, Calendar >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', Calendar >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Configuration: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, Configuration >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x02\x80\x00\x00\x01\x1d\x00\x00\x04F\x00\x00\x02\xf8\x00\x00\x02\x80\x00\x00\x01\x1d\x00\x00\x04F\x00\x00\x02\xf8\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x02\x80\x00\x00\x01\x1d\x00\x00\x04F\x00\x00\x02\xf8', Configuration >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from EnglishDictionary: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, EnglishDictionary >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', EnglishDictionary >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from FindFiles: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, FindFiles >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\xbb\x00\x00\x01+\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\xbb\x00\x00\x01+\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\xbb\x00\x00\x01+', FindFiles >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from ImageViewer: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, ImageViewer >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', ImageViewer >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from NodeGraph: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, NodeGraph >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\xe7\x00\x00\x01\xf3\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\xe7\x00\x00\x01\xf3\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\xe7\x00\x00\x01\xf3', NodeGraph >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from NoteReminder: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, NoteReminder >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', NoteReminder >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from Preferences: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, Preferences >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', Preferences >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ScreenShot: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, ScreenShot >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\xbf\x00\x00\x02\x1b\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\xbf\x00\x00\x02\x1b\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x03\xbf\x00\x00\x02\x1b', ScreenShot >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from TextEditor: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, TextEditor >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', TextEditor >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from TaskManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, TaskManager >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', TaskManager >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from OrganisationManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, OrganisationManager >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', OrganisationManager >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from ProjectManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, ProjectManager >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', ProjectManager >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> PLM: block signal showLayout from TeamManager: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, TeamManager >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', TeamManager >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> recieve signal showLayout from VFXProject: hide >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: showLayout, hide, VFXProject >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal setSetting: geometry, b'\x01\xd9\xd0\xcb\x00\x03\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf\x00\x00\x00\x00\x00\x00\x00\x00\x07\x80\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x7f\x00\x00\x01\xdf', VFXProject >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}
+TRACE: (04/12/2019 02:58:05) DAMGTEAM, line 226: message: >>> receive signal executing: Exit >>> {}

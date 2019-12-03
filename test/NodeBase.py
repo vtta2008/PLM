@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore                   import QPointF
 
-from .SlotBase                      import ConnectionItem
+from test.SlotBase import ConnectionItem
 from toolkits.Gui                   import Brush, Pen, Font, FontMetric, PainterPath
 from toolkits.Widgets               import GraphicObject
 from toolkits.Core                  import Rect, RectF

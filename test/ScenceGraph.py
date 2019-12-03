@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 
 # PLM
 from toolkits.Widgets           import GroupBox, TabBar, Widget, HBoxLayout, MenuBar, ToolBar, GridLayout
-from .NodeManager               import NodeManager
+from ui.Body.Tabs.NodeManager import NodeManager
 from ui.base                    import View, Scene
 from bin                        import DAMGLIST
 from appData                    import SELECTABLE, MOVEABLE

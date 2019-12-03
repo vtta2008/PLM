@@ -10,7 +10,7 @@ Description:
 
 # PLM
 from toolkits.Widgets           import TabWidget, VBoxLayout, AppIcon
-from .Tabs                      import TopTab1, TopTab2, TopTap3, SceneGraph
+from ui.Body.Tabs               import TopTab1, TopTab2, TopTap3
 from bin                        import DAMGLIST
 
 # -------------------------------------------------------------------------------------------------------------

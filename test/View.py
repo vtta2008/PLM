@@ -14,8 +14,8 @@ from __future__ import absolute_import, unicode_literals
 import os
 
 from PyQt5.QtCore               import QPointF
-from .SlotBase                  import ConnectionItem
-from .ViewBase                  import ViewBase
+from test.SlotBase import ConnectionItem
+from test.ViewBase import ViewBase
 from utils                      import _saveData, _loadData
 
 

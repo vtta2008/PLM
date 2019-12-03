@@ -10,8 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from .NodeBase import NodeBase
-from .SlotBase import PlugItem, SocketItem
+from test.NodeBase import NodeBase
+from test.SlotBase import PlugItem, SocketItem
 
 
 class Node(NodeBase):
