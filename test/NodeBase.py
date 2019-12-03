@@ -16,7 +16,7 @@ from PyQt5.QtCore                   import QPointF
 from test.SlotBase import ConnectionItem
 from toolkits.Gui                   import Brush, Pen, Font, FontMetric, PainterPath
 from toolkits.Widgets               import GraphicObject
-from toolkits.Core                  import Rect, RectF
+from toolkits.Core                  import Rect, QRectF
 from appData                        import MOVEABLE, LINE_SOLID, PATTERN_SOLID, BOLD, NORMAL, SELECTABLE, sceneGraphCfg, center
 from utils                          import _convert_to_QColor, _loadConfig
 from bin                            import DAMGLIST, DAMGDICT
@@ -131,8 +131,8 @@ class NodeBase(GraphicObject):
         super(NodeBase, self).hoverLeaveEvent(event)
 
     def boundingRect(self):
-        rect = RectF(0, 0, self.baseWidth, self.height)
-        rect = RectF(rect)
+        rect = QRectF(0, 0, self.baseWidth, self.height)
+        rect = QRectF(rect)
         return rect
 
     def shape(self):

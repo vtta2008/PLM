@@ -26,6 +26,7 @@ from .SettingOutput         import SettingOutput
 from .TaskFilter            import TaskFilter
 from .TaskInfo              import TaskInfo
 from .ValiantDelegate       import VariantDelegate
+from .widget_nodes          import TextInputNode, CheckboxNode, DropdownMenuNode
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 2/12/2019 - 7:34 AM

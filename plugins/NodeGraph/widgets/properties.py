@@ -13,20 +13,18 @@ from __future__ import absolute_import, unicode_literals
 
 from collections import defaultdict
 
-from NodeGraphQt import QtWidgets, QtCore, QtGui
-from NodeGraphQt.constants import (NODE_PROP_QLABEL,
-                                   NODE_PROP_QLINEEDIT,
-                                   NODE_PROP_QTEXTEDIT,
-                                   NODE_PROP_QCOMBO,
-                                   NODE_PROP_QCHECKBOX,
-                                   NODE_PROP_QSPINBOX,
-                                   NODE_PROP_COLORPICKER,
-                                   NODE_PROP_SLIDER)
+from appData import (NODE_PROP_QLABEL, NODE_PROP_QLINEEDIT, NODE_PROP_QTEXTEDIT, NODE_PROP_QCOMBO, NODE_PROP_QCHECKBOX,
+                     NODE_PROP_QSPINBOX, NODE_PROP_COLORPICKER, NODE_PROP_SLIDER)
 
+from toolkits.Widgets import Widget, TabWidget
 
-class BaseProperty(QtWidgets.QWidget):
+from PyQt5.QtCore import pyqtSignal, QRect, QRectF, Qt
+from PyQt5.QtGui import QPainter, QColor
+from PyQt5.QtWidgets import QLabel, QPushButton, QVBoxLayout, QHBoxLayout, QColorDialog, QSlider, QSizePolicy, QSpinBox, QLineEdit, QAbstractSpinBox, QTextEdit, QComboBox, QCheckBox, QGridLayout
 
-    value_changed = QtCore.Signal(str, object)
+class BaseProperty(Widget):
+
+    value_changed = pyqtSignal(str, object)
 
     def set_value(self, value):
         raise NotImplementedError
@@ -35,7 +33,7 @@ class BaseProperty(QtWidgets.QWidget):
         raise NotImplementedError
 
 
-class _ColorSolid(QtWidgets.QWidget):
+class _ColorSolid(Widget):
 
     def __init__(self, parent=None, color=None):
         super(_ColorSolid, self).__init__(parent)
@@ -45,10 +43,10 @@ class _ColorSolid(QtWidgets.QWidget):
 
     def paintEvent(self, event):
         size = self.geometry()
-        rect = QtCore.QRect(1, 1, size.width() - 2, size.height() - 2)
-        painter = QtGui.QPainter(self)
-        painter.setPen(QtCore.Qt.NoPen)
-        painter.setBrush(QtGui.QColor(*self._color))
+        rect = QRect(1, 1, size.width() - 2, size.height() - 2)
+        painter = QPainter(self)
+        painter.setPen(Qt.NoPen)
+        painter.setBrush(QColor(*self._color))
         painter.drawRoundedRect(rect, 4, 4)
 
     @property
@@ -69,20 +67,20 @@ class PropColorPicker(BaseProperty):
         super(PropColorPicker, self).__init__(parent)
         self._solid = _ColorSolid(self)
         self._solid.setMaximumHeight(15)
-        self._label = QtWidgets.QLabel()
+        self._label = QLabel()
         self._update_label()
 
-        button = QtWidgets.QPushButton('select color')
+        button = QPushButton('select color')
         button.clicked.connect(self._on_select_color)
-        layout = QtWidgets.QHBoxLayout(self)
+        layout = QHBoxLayout(self)
         layout.setContentsMargins(0, 0, 8, 0)
         layout.setSpacing(4)
-        layout.addWidget(self._solid, 0, QtCore.Qt.AlignCenter)
-        layout.addWidget(self._label, 0, QtCore.Qt.AlignCenter)
-        layout.addWidget(button, 1, QtCore.Qt.AlignLeft)
+        layout.addWidget(self._solid, 0, Qt.AlignCenter)
+        layout.addWidget(self._label, 0, Qt.AlignCenter)
+        layout.addWidget(button, 1, Qt.AlignLeft)
 
     def _on_select_color(self):
-        color = QtWidgets.QColorDialog.getColor(QtGui.QColor(*self.get_value()))
+        color = QColorDialog.getColor(QColor(*self.get_value()))
         if color.isValid():
             self.set_value(color.getRgb())
 
@@ -91,7 +89,7 @@ class PropColorPicker(BaseProperty):
             'QLabel {{color: rgba({}, {}, {}, 255);}}'
             .format(*self._solid.color))
         self._label.setText(self.hex_color())
-        self._label.setAlignment(QtCore.Qt.AlignCenter)
+        self._label.setAlignment(Qt.AlignCenter)
         self._label.setMinimumWidth(60)
 
     def hex_color(self):
@@ -112,17 +110,17 @@ class PropSlider(BaseProperty):
     def __init__(self, parent=None):
         super(PropSlider, self).__init__(parent)
         self._block = False
-        self._slider = QtWidgets.QSlider()
-        self._spnbox = QtWidgets.QSpinBox()
+        self._slider = QSlider()
+        self._spnbox = QSpinBox()
         self._init()
 
     def _init(self):
-        self._slider.setOrientation(QtCore.Qt.Horizontal)
-        self._slider.setTickPosition(QtWidgets.QSlider.TicksBelow)
-        self._slider.setSizePolicy(QtWidgets.QSizePolicy.Expanding,
-                                   QtWidgets.QSizePolicy.Preferred)
-        self._spnbox.setButtonSymbols(QtWidgets.QAbstractSpinBox.NoButtons)
-        layout = QtWidgets.QHBoxLayout(self)
+        self._slider.setOrientation(Qt.Horizontal)
+        self._slider.setTickPosition(QSlider.TicksBelow)
+        self._slider.setSizePolicy(QSizePolicy.Expanding,
+                                   QSizePolicy.Preferred)
+        self._spnbox.setButtonSymbols(QAbstractSpinBox.NoButtons)
+        layout = QHBoxLayout(self)
         layout.addWidget(self._spnbox)
         layout.addWidget(self._slider)
         self._spnbox.valueChanged.connect(self._on_spnbox_changed)
@@ -168,9 +166,9 @@ class PropSlider(BaseProperty):
         self._slider.setMaximum(value)
 
 
-class PropLabel(QtWidgets.QLabel):
+class PropLabel(QLabel):
 
-    value_changed = QtCore.Signal(str, object)
+    value_changed = pyqtSignal(str, object)
 
     def get_value(self):
         return self.text()
@@ -181,9 +179,9 @@ class PropLabel(QtWidgets.QLabel):
             self.value_changed.emit(self.toolTip(), value)
 
 
-class PropLineEdit(QtWidgets.QLineEdit):
+class PropLineEdit(QLineEdit):
 
-    value_changed = QtCore.Signal(str, object)
+    value_changed = pyqtSignal(str, object)
 
     def __init__(self, parent=None):
         super(PropLineEdit, self).__init__(parent)
@@ -213,9 +211,9 @@ class PropLineEdit(QtWidgets.QLineEdit):
             self.value_changed.emit(self.toolTip(), value)
 
 
-class PropTextEdit(QtWidgets.QTextEdit):
+class PropTextEdit(QTextEdit):
 
-    value_changed = QtCore.Signal(str, object)
+    value_changed = pyqtSignal(str, object)
 
     def __init__(self, parent=None):
         super(PropTextEdit, self).__init__(parent)
@@ -243,9 +241,9 @@ class PropTextEdit(QtWidgets.QTextEdit):
             self.value_changed.emit(self.toolTip(), value)
 
 
-class PropComboBox(QtWidgets.QComboBox):
+class PropComboBox(QComboBox):
 
-    value_changed = QtCore.Signal(str, object)
+    value_changed = pyqtSignal(str, object)
 
     def __init__(self, parent=None):
         super(PropComboBox, self).__init__(parent)
@@ -266,15 +264,15 @@ class PropComboBox(QtWidgets.QComboBox):
 
     def set_value(self, value):
         if value != self.get_value():
-            idx = self.findText(value, QtCore.Qt.MatchExactly)
+            idx = self.findText(value, Qt.MatchExactly)
             self.setCurrentIndex(idx)
             if idx >= 0:
                 self.value_changed.emit(self.toolTip(), value)
 
 
-class PropCheckBox(QtWidgets.QCheckBox):
+class PropCheckBox(QCheckBox):
 
-    value_changed = QtCore.Signal(str, object)
+    value_changed = pyqtSignal(str, object)
 
     def __init__(self, parent=None):
         super(PropCheckBox, self).__init__(parent)
@@ -292,9 +290,9 @@ class PropCheckBox(QtWidgets.QCheckBox):
             self.value_changed.emit(self.toolTip(), value)
 
 
-class PropSpinBox(QtWidgets.QSpinBox):
+class PropSpinBox(QSpinBox):
 
-    value_changed = QtCore.Signal(str, object)
+    value_changed = pyqtSignal(str, object)
 
     def __init__(self, parent=None):
         super(PropSpinBox, self).__init__(parent)
@@ -327,16 +325,16 @@ WIDGET_MAP = {
 # main property widgets.
 
 
-class PropWindow(QtWidgets.QWidget):
+class PropWindow(Widget):
 
     def __init__(self, parent=None):
         super(PropWindow, self).__init__(parent)
-        self.__layout = QtWidgets.QGridLayout()
+        self.__layout = QGridLayout()
         self.__layout.setColumnStretch(1, 1)
         self.__layout.setSpacing(6)
 
-        layout = QtWidgets.QVBoxLayout(self)
-        layout.setAlignment(QtCore.Qt.AlignTop)
+        layout = QVBoxLayout(self)
+        layout.setAlignment(Qt.AlignTop)
         layout.addLayout(self.__layout)
 
     def __repr__(self):
@@ -359,11 +357,11 @@ class PropWindow(QtWidgets.QWidget):
         if row > 0:
             row += 1
 
-        label_flags = QtCore.Qt.AlignCenter | QtCore.Qt.AlignRight
+        label_flags = Qt.AlignCenter | Qt.AlignRight
         if widget.__class__.__name__ == 'PropTextEdit':
-            label_flags = label_flags | QtCore.Qt.AlignTop
+            label_flags = label_flags | Qt.AlignTop
 
-        self.__layout.addWidget(QtWidgets.QLabel(label), row, 0, label_flags)
+        self.__layout.addWidget(QLabel(label), row, 0, label_flags)
         self.__layout.addWidget(widget, row, 1)
 
     def get_widget(self, name):
@@ -372,7 +370,7 @@ class PropWindow(QtWidgets.QWidget):
         Args:
             name (str): property name.
         Returns:
-            QtWidgets.QWidget: property widget.
+            Widget: property widget.
         """
         for row in range(self.__layout.rowCount()):
             item = self.__layout.itemAtPosition(row, 1)
@@ -380,25 +378,18 @@ class PropWindow(QtWidgets.QWidget):
                 return item.widget()
 
 
-class NodePropWidget(QtWidgets.QWidget):
-    """
-    Node properties widget for display a Node object.
-    Args:
-        parent (QtWidgets.QWidget): parent object.
-        node (NodeGraphQt.BaseNode): node.
-    """
+class NodePropWidget(Widget):
 
-    #: signal (node_id, prop_name, prop_value)
-    property_changed = QtCore.Signal(str, str, object)
-    property_closed = QtCore.Signal(str)
+    property_changed = pyqtSignal(str, str, object)
+    property_closed = pyqtSignal(str)
 
     def __init__(self, parent=None, node=None):
         super(NodePropWidget, self).__init__(parent)
         self.__node_id = node.id
         self.__tab_windows = {}
-        self.__tab = QtWidgets.QTabWidget()
+        self.__tab = TabWidget()
 
-        close_btn = QtWidgets.QPushButton('X')
+        close_btn = QPushButton('X')
         close_btn.setToolTip('close property')
         close_btn.clicked.connect(self._on_close)
 
@@ -407,19 +398,19 @@ class NodePropWidget(QtWidgets.QWidget):
         self.name_wgt.set_value(node.name())
         self.name_wgt.value_changed.connect(self._on_property_changed)
 
-        self.type_wgt = QtWidgets.QLabel(node.type_)
-        self.type_wgt.setAlignment(QtCore.Qt.AlignRight)
+        self.type_wgt = QLabel(node.type_)
+        self.type_wgt.setAlignment(Qt.AlignRight)
         self.type_wgt.setToolTip('type_')
         font = self.type_wgt.font()
         font.setPointSize(10)
         self.type_wgt.setFont(font)
 
-        name_layout = QtWidgets.QHBoxLayout()
+        name_layout = QHBoxLayout()
         name_layout.setContentsMargins(0, 0, 0, 0)
-        name_layout.addWidget(QtWidgets.QLabel('name'))
+        name_layout.addWidget(QLabel('name'))
         name_layout.addWidget(self.name_wgt)
         name_layout.addWidget(close_btn)
-        layout = QtWidgets.QVBoxLayout(self)
+        layout = QVBoxLayout(self)
         layout.setSpacing(4)
         layout.addLayout(name_layout)
         layout.addWidget(self.__tab)
@@ -548,7 +539,7 @@ class NodePropWidget(QtWidgets.QWidget):
         Args:
             name (str): property name.
         Returns:
-            QtWidgets.QWidget: property widget.
+            Widget: property widget.
         """
         if name == 'name':
             return self.name_wgt
@@ -557,59 +548,6 @@ class NodePropWidget(QtWidgets.QWidget):
             if widget:
                 return widget
 
-
-if __name__ == '__main__':
-    import sys
-    from NodeGraphQt import BaseNode, NodeGraph
-
-
-    class TestNode(BaseNode):
-
-        NODE_NAME = 'test node'
-
-        def __init__(self):
-            super(TestNode, self).__init__()
-            self.create_property('label_test', 'foo bar',
-                                 widget_type=NODE_PROP_QLABEL)
-            self.create_property('line_edit', 'hello',
-                                 widget_type=NODE_PROP_QLINEEDIT)
-            self.create_property('color_picker', (0, 0, 255),
-                                 widget_type=NODE_PROP_COLORPICKER)
-            self.create_property('integer', 10,
-                                 widget_type=NODE_PROP_QSPINBOX)
-            self.create_property('list', 'foo',
-                                 items=['foo', 'bar'],
-                                 widget_type=NODE_PROP_QCOMBO)
-            self.create_property('range', 50,
-                                 range=(45, 55),
-                                 widget_type=NODE_PROP_SLIDER)
-            self.create_property('text_edit', 'test text',
-                                 widget_type=NODE_PROP_QTEXTEDIT,
-                                 tab='text')
-
-
-    def prop_changed(node_id, prop_name, prop_value):
-        print('-'*100)
-        print(node_id, prop_name, prop_value)
-
-    def prop_close(node_id):
-        print('='*100)
-        print(node_id)
-
-
-    app = QtWidgets.QApplication(sys.argv)
-
-    graph = NodeGraph()
-    graph.register_node(TestNode)
-
-    test_node = graph.create_node('nodeGraphQt.nodes.TestNode')
-
-    node_prop = NodePropWidget(node=test_node)
-    node_prop.property_changed.connect(prop_changed)
-    node_prop.property_closed.connect(prop_close)
-    node_prop.show()
-
-    app.exec_()
 
 
 # -------------------------------------------------------------------------------------------------------------

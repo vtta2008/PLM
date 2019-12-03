@@ -20,9 +20,9 @@ from PyQt5.QtWidgets import QApplication, QGridLayout
 from appData                                        import ANTIALIAS, UPDATE_FULLVIEW, KEY_DEL
 from toolkits.Widgets.Widget                        import Widget, AppIcon
 from ui.Header.Menus.NodeGraphMenuBar               import NodeGraphMenuBar
-from ui.SubUi.Tools.NodeGraph.Node                  import Node, Edge
-from ui.SubUi.Tools.NodeGraph.Scene                 import Scene
-from ui.SubUi.Tools.NodeGraph.View                  import View
+from bin.Node import Node, Edge
+from bin.Scene import Scene
+from bin.View import View
 
 from utils import getUnix
 

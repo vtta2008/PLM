@@ -20,7 +20,7 @@
     "EnglishDictionary": "hide",
     "FindFiles": "hide",
     "ImageViewer": "hide",
-    "NodeGraph": "hide",
+    "NodeGraph": "show",
     "NoteReminder": "hide",
     "Preferences": "hide",
     "ScreenShot": "hide",

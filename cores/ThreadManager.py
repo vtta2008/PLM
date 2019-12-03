@@ -15,7 +15,8 @@ from PyQt5.QtCore                        import pyqtSignal
 from bin                                 import DAMGLIST, DAMGTHREADPOOL, DAMGTIMER, DAMGTHREAD
 from utils                               import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
 from appData                             import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core                       import Settings, SignalManager
+from .SignalManager                      import SignalManager
+from .Settings                           import Settings
 
 class BackgroundService(DAMGTHREAD):
 

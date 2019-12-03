@@ -17,7 +17,7 @@ from PyQt5.QtGui                import QPainterPath
 
 # PLM
 from appData                    import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core              import Settings, SignalManager
+# from toolkits.Core              import Settings, SignalManager
 
 
 class PainterPath(QPainterPath):
@@ -31,8 +31,8 @@ class PainterPath(QPainterPath):
         QPainterPath.__init__(self)
 
         self.parent = parent
-        self.signals = SignalManager(self)
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        # self.signals = SignalManager(self)
+        # self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
     @property
     def copyright(self):

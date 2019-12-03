@@ -18,7 +18,8 @@ from PyQt5.QtWidgets                        import QPushButton, QToolButton
 from .Icon                                  import AppIcon, TagIcon
 from utils                                  import check_preset
 from appData                                import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core                          import Settings, SignalManager
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Button presets """

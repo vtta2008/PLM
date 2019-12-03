@@ -10,10 +10,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from distutils.version import LooseVersion
-
-from stylesheet import STYLE_QMENU
-
+from distutils.version      import LooseVersion
+from PyQt5.QtWidgets        import QAction, QMenu
+from PyQt5.QtGui            import QKeySequence
+from PyQt5.QtCore           import qVersion
 
 class Menu(object):
 
@@ -57,15 +57,15 @@ class Menu(object):
 
     def add_menu(self, name):
 
-        menu = QtWidgets.QMenu(name, self.qmenu)
+        menu = QMenu(name, self.qmenu)
         menu.setStyleSheet(STYLE_QMENU)
         self.qmenu.addMenu(menu)
         return Menu(self.__viewer, menu)
 
     def add_command(self, name, func=None, shortcut=None):
 
-        action = QtWidgets.QAction(name, self.__viewer)
-        if LooseVersion(QtCore.qVersion()) >= LooseVersion('5.10'):
+        action = QAction(name, self.__viewer)
+        if LooseVersion(qVersion()) >= LooseVersion('5.10'):
             action.setShortcutVisibleInContextMenu(True)
         if shortcut:
             action.setShortcut(shortcut)
@@ -97,7 +97,7 @@ class MenuCommand(object):
 
     def set_shortcut(self, shortcut=None):
 
-        shortcut = shortcut or QtGui.QKeySequence()
+        shortcut = shortcut or QKeySequence()
         self.qaction.setShortcut(shortcut)
 
     def run_command(self):

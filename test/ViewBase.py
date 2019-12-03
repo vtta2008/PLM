@@ -14,7 +14,7 @@ from PyQt5.QtCore               import QSize
 from utils                      import _loadConfig
 from toolkits.Widgets           import GraphicView, RubberBand
 from toolkits.Gui               import PainterPath, Cursor, Transform
-from toolkits.Core              import Rect, RectF
+from toolkits.Core              import Rect, QRectF
 from bin                        import DAMGLIST
 
 
@@ -124,7 +124,7 @@ class ViewBase(GraphicView):
         # end if
         bbw = bbx_max - bbx_min
         bbh = bby_max - bby_min
-        return RectF(Rect(bbx_min, bby_min, bbw, bbh))
+        return QRectF(Rect(bbx_min, bby_min, bbw, bbh))
 
     def _deleteSelectedNodes(self):
         selected_nodes = list()

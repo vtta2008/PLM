@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 
 # PLM
 from bin                                import DAMGLIST
-from cores.base.SignalBase import SignalBase
+from .base                              import SignalBase
 
 # -------------------------------------------------------------------------------------------------------------
 """ Signal class: setup all the signal which will be using. """

@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 from .Browser               import Browser
-from .Tools                 import (NodeGraph, Calculator, Calendar, EnglishDictionary, FindFiles, ImageViewer,
+from .Tools                 import (Calculator, Calendar, EnglishDictionary, FindFiles, ImageViewer,
                                     NoteReminder, Screenshot, TextEditor)
 from .Funcs                 import ForgotPassword, SignUp, SignIn
 from .InfoWidget            import InfoWidget

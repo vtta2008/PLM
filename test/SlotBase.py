@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 from PyQt5.QtCore               import QPointF
 from PyQt5.QtGui                import QColor
 
-from toolkits.Core              import RectF, Rect
+from toolkits.Core              import QRectF, Rect
 from toolkits.Gui               import Brush, Pen, Transform, PainterPath
 from toolkits.Widgets           import GraphicObject, GraphicPathItem
 from appData                    import PATTERN_SOLID, LINE_SOLID, MOUSE_LEFT
@@ -177,7 +177,7 @@ class SocketItem(SlotBase):
         x = - width / 2.0
         y = (self.parentItem().baseHeight - config['node_radius'] + (self.parentItem().attrHeight/4) +
              self.parentItem().attrs.index(self.attribute) * self.parentItem().attrHeight )
-        rect = RectF(Rect(x, y, width, height))
+        rect = QRectF(Rect(x, y, width, height))
         return rect
 
     def connect(self, plug_item, connection):
@@ -234,7 +234,7 @@ class PlugItem(SlotBase):
         x = self.parentItem().baseWidth - (width / 2.0)
         y = (self.parentItem().baseHeight - config['node_radius'] + self.parentItem().attrHeight / 4 +
              self.parentItem().attrs.index(self.attribute) * self.parentItem().attrHeight)
-        rect = RectF(Rect(x, y, width, height))
+        rect = QRectF(Rect(x, y, width, height))
         return rect
 
     def connect(self, socket_item, connection):

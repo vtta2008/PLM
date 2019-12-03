@@ -32,9 +32,15 @@ from cores.StyleSheet                   import StyleSheet
 from cores.Loggers                      import Loggers
 from cores.Registry                     import RegistryLayout
 
-from ui                                 import LayoutManager, Browser
-from toolkits.Widgets                   import LogoIcon, ActionManager, ButtonManager
-from toolkits.Core                      import EventManager, ThreadManager, Settings, SignalManager
+from toolkits.Widgets                   import LogoIcon
+from cores.Settings                     import Settings
+from cores.SignalManager                import SignalManager
+from cores.EventManager                 import EventManager
+from cores.ThreadManager                import ThreadManager
+from ui.ButtonManager                   import ButtonManager
+from ui.ActionManager                   import ActionManager
+from ui.LayoutManager                   import LayoutManager
+from ui.SubUi.Browser                   import Browser
 from toolkits.Gui                       import Cursor
 
 # -------------------------------------------------------------------------------------------------------------

@@ -17,7 +17,8 @@ from PyQt5.QtGui                            import QImage, QPixmap
 
 from utils                                  import get_avatar_image, get_app_icon, get_logo_icon, get_tag_icon
 from appData                                import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core                          import Settings, SignalManager
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 class Image(QImage):
 
@@ -32,8 +33,8 @@ class Image(QImage):
 
         self._image                         = image
         self.parent                         = parent
-        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], None)
-        self.signals                        = SignalManager(self)
+        # self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], None)
+        # self.signals                        = SignalManager(self)
 
         if self._image is None:
             print("ImageIsNoneError: {0}: Image should be a name or a path, not None".format(__name__))

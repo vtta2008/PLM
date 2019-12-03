@@ -15,8 +15,9 @@ from PyQt5.QtWidgets                        import QSystemTrayIcon
 
 from .Icon                                  import AppIcon
 from cores.Loggers                          import Loggers
-from appData import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core import Settings, SignalManager
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 class SystemTrayIcon(QSystemTrayIcon):
 

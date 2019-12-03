@@ -17,6 +17,7 @@ from PyQt5.QtCore               import qVersion
 from toolkits.Gui               import KeySequence
 
 def setup_context_menu(graph):
+
     root_menu = graph.context_menu()
 
     file_menu = root_menu.add_menu('&File')

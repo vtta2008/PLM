@@ -15,7 +15,8 @@ from __buildtins__ import __copyright__
 from PyQt5.QtCore                           import QTextStream
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core                          import Settings, SignalManager
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 class TextStream(QTextStream):
 

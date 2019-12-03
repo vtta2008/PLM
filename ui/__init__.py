@@ -15,7 +15,7 @@ from .LayoutManager     import LayoutManager
 from .PipelineManager   import PipelineManager
 from .SysTray           import SysTray
 from .ShortcutCMD       import ShortcutCMD
-from .SubUi             import (Browser, NodeGraph, Calendar, Calculator, EnglishDictionary,
+from .SubUi             import (Browser, Calendar, Calculator, EnglishDictionary,
                                 FindFiles, ImageViewer, NoteReminder, Screenshot, TextEditor, ForgotPassword,
                                 SignUp, SignIn, InfoWidget, VFXProject, SettingUI, UserSetting, Preferences,
                                 Configuration)

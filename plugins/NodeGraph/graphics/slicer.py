@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 from appData                import Z_VAL_NODE_WIDGET, PIPE_SLICER_COLOR, LINE_SOLID, LINE_DASH
 from toolkits.Gui           import Pen, PainterPath
 from toolkits.Widgets       import GraphicPathItem
-from toolkits.Core          import RectF
+from PyQt5.QtCore           import QRectF
 from PyQt5.QtGui            import QColor
 from PyQt5.QtCore           import QPointF
 
@@ -52,10 +52,10 @@ class SlicerPipe(GraphicPathItem):
         painter.setPen(Pen(color, 1.5, LINE_SOLID))
         painter.setBrush(color)
 
-        rect = RectF(p1.x() - offset, p1.y() - offset, size, size)
+        rect = QRectF(p1.x() - offset, p1.y() - offset, size, size)
         painter.drawEllipse(rect)
 
-        rect = RectF(p2.x() - offset, p2.y() - offset, size, size)
+        rect = QRectF(p2.x() - offset, p2.y() - offset, size, size)
         painter.drawEllipse(rect)
         painter.restore()
 

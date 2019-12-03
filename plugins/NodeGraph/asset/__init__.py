@@ -8,9 +8,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-
-from .NodeGraph         import NodeGraph
+from __future__ import absolute_import, unicode_literals
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 5/07/2018 - 7:02 AM
+# Created by panda on 4/12/2019 - 9:50 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

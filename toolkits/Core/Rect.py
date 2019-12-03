@@ -16,8 +16,9 @@ from __buildtins__ import __copyright__
 from PyQt5.QtCore               import QRect, QRectF
 
 # PLM
-from appData                    import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core              import Settings, SignalManager
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 
 class Rect(QRect):
@@ -46,7 +47,7 @@ class Rect(QRect):
         self._name = val
 
 
-class RectF(QRectF):
+class QRectF(QRectF):
     Type = 'DAMGRECT'
     key = 'Rect'
     _name = 'DAMG Rect'

@@ -16,7 +16,8 @@ import os
 from PyQt5.QtCore                           import QFile
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT, QSS_DIR
-from toolkits.Core                          import Settings, SignalManager
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 class FileBase(QFile):
 

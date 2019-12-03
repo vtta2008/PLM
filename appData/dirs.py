@@ -92,6 +92,7 @@ WEB_ICON_64                 = os.path.join(WEB_ICON_DIR, 'x64')
 WEB_ICON_128                = os.path.join(WEB_ICON_DIR, 'x128')
 
 PLUGIN_DIR                  = os.path.join(ROOT_DIR, 'plugins')
+NODE_GRAPH_DIR              = os.path.join(PLUGIN_DIR, 'NodeGraph')
 
 SCRIPTS_DIR                 = os.path.join(ROOT_DIR, 'scripts')
 QSS_DIR                     = os.path.join(SCRIPTS_DIR, 'qss')
@@ -124,7 +125,6 @@ PROJECT_DIR                 = os.path.join(SUBUI_DIR, 'Projects')
 SETTINGS_DIR                = os.path.join(SUBUI_DIR, 'Settings')
 
 TOOLS_DIR                   = os.path.join(SUBUI_DIR, 'Tools')
-NODE_GRAPH_DIR              = os.path.join(TOOLS_DIR, 'NodeGraph')
 
 UTILS_DIR                   = os.path.join(ROOT_DIR, 'utils')
 

@@ -18,7 +18,8 @@ from PyQt5.QtWidgets                        import QVBoxLayout, QHBoxLayout
 # PLM
 from utils                                  import check_preset
 from appData                                import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core                          import Settings, SignalManager
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 class HBoxLayout(QHBoxLayout):
 

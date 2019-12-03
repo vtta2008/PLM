@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 
 from appData import DRAG_DROP_ID
 
-from PyQt5.QtWidgets import QTreeView, QTreeWidgetItem, QTreeWidget, QAbstractItemView
+from PyQt5.QtWidgets import QTreeWidgetItem, QTreeWidget, QAbstractItemView
 from PyQt5.QtCore import Qt
 
 TYPE_NODE = QTreeWidgetItem.UserType + 1

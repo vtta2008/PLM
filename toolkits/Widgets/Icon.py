@@ -18,7 +18,9 @@ from PyQt5.QtCore                           import QSize
 
 from utils                                  import data_handler, get_app_icon, get_tag_icon, get_logo_icon
 from appData                                import appIconCfg, IGNORE_ICON_NAME, SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core                          import Settings, SignalManager
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 
 class Icon(QIcon):

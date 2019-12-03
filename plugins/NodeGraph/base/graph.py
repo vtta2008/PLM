@@ -12,33 +12,34 @@ from __future__ import absolute_import, unicode_literals
 
 import os, json, re
 
-from PyQt5.QtCore                   import pyqtSignal, QMimeData
-from PyQt5.QtWidgets                import QUndoStack
+from PyQt5.QtCore                       import pyqtSignal, QMimeData, QObject, QPoint
+from PyQt5.QtWidgets                    import QUndoStack, QAction, QApplication
 
-from .Command                       import (NodeAddedCmd, NodeRemovedCmd, NodeMovedCmd, PortConnectedCmd)
-from .factory import NodeFactory
-from .menu import Menu
-from .model import NodeGraphModel
-from .port import PortItem
-from appData import (DRAG_DROP_ID, PIPE_LAYOUT_CURVED,
-                                   PIPE_LAYOUT_STRAIGHT)
-from viewer import NodeViewer
+from .command                           import (NodeAddedCmd, NodeRemovedCmd, NodeMovedCmd, PortConnectedCmd)
+from .factory                           import NodeFactory
+from .menu                              import Menu
+from .model                             import NodeGraphModel
+from .port                              import PortItem
+from .model                             import NodeModel
+from .node                              import BaseNode
+from plugins.NodeGraph.widgets.viewer   import NodeViewer
 
+from appData                            import DRAG_DROP_ID, PIPE_LAYOUT_CURVED, PIPE_LAYOUT_STRAIGHT
 
-class NodeGraph(QtCore.QObject):
+class NodeGraph(QObject):
 
     #: signal emits the node object when a node is created in the node graph.
-    node_created = pyqtSignal(NodeObject)
+    node_created = pyqtSignal(NodeModel)
     #: signal emits a list of node ids from the deleted nodes.
     nodes_deleted = pyqtSignal(list)
     #: signal emits the node object when selected in the node graph.
-    node_selected = pyqtSignal(NodeObject)
+    node_selected = pyqtSignal(NodeModel)
     #: signal triggered when a node is double clicked and emits the node.
-    node_double_clicked = pyqtSignal(NodeObject)
+    node_double_clicked = pyqtSignal(NodeModel)
     #: signal for when a node has been connected emits (source port, target port).
-    port_connected = pyqtSignal(Port, Port)
+    port_connected = pyqtSignal(PortItem, PortItem)
     #: signal for when a node property has changed emits (node, property name, property value).
-    property_changed = pyqtSignal(NodeObject, str, object)
+    property_changed = pyqtSignal(NodeModel, str, object)
     #: signal for when drop data has been added to the graph.
     data_dropped = pyqtSignal(QMimeData, QPoint)
 
@@ -46,7 +47,7 @@ class NodeGraph(QtCore.QObject):
         super(NodeGraph, self).__init__(parent)
         self.setObjectName('NodeGraphQt')
         self._model = NodeGraphModel()
-        self._viewer = NodeViewer(parent)
+        self._viewer = NodeViewer(self)
         self._node_factory = NodeFactory()
         self._undo_stack = QUndoStack(self)
 
@@ -329,7 +330,7 @@ class NodeGraph(QtCore.QObject):
 
     def add_node(self, node, pos=None):
 
-        assert isinstance(node, NodeObject), 'node must be a Node instance.'
+        assert isinstance(node, BaseNode), 'node must be a Node instance.'
 
         wid_types = node.model.__dict__.pop('_TEMP_property_widget_types')
         prop_attrs = node.model.__dict__.pop('_TEMP_property_attrs')
@@ -351,7 +352,7 @@ class NodeGraph(QtCore.QObject):
 
     def delete_node(self, node):
 
-        assert isinstance(node, NodeObject), \
+        assert isinstance(node, BaseNode), \
             'node must be a instance of a NodeObject.'
         self.nodes_deleted.emit([node.id])
         self._undo_stack.push(NodeRemovedCmd(self, node))
@@ -555,7 +556,7 @@ class NodeGraph(QtCore.QObject):
         nodes = nodes or self.selected_nodes()
         if not nodes:
             return False
-        clipboard = QtWidgets.QApplication.clipboard()
+        clipboard = QApplication.clipboard()
         serial_data = self._serialize(nodes)
         serial_str = json.dumps(serial_data)
         if serial_str:
@@ -565,7 +566,7 @@ class NodeGraph(QtCore.QObject):
 
     def paste_nodes(self):
 
-        clipboard = QtWidgets.QApplication.clipboard()
+        clipboard = QApplication.clipboard()
         cb_text = clipboard.text()
         if not cb_text:
             return

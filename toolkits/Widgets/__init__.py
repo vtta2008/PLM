@@ -11,10 +11,8 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 from .Action            import Action, ShortCut
-from .ActionManager     import ActionManager
 from .BoxLayout         import VBoxLayout, HBoxLayout
 from .Button            import Button, ToolButton
-from .ButtonManager     import ButtonManager
 from .CheckBox          import CheckBox
 from .ComboBox          import ComboBox
 from .DockWidget        import DockStamp, DockWidget, NoteStamp

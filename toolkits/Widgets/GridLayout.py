@@ -14,9 +14,9 @@ from __buildtins__ import __copyright__
 
 # PyQt5
 from PyQt5.QtWidgets                        import QGridLayout
-
 from appData                                import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core                          import Settings, SignalManager
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Gridlayout presets """

@@ -19,7 +19,7 @@ from bin                                import DAMG, DAMGLIST
 from ui.ShortcutCMD                     import ShortcutCMD
 from ui.PipelineManager                 import PipelineManager
 from ui.SysTray                         import SysTray
-from ui.SubUi                           import (NodeGraph, Calendar, Calculator, EnglishDictionary,
+from ui.SubUi                           import (Calendar, Calculator, EnglishDictionary,
                                                 FindFiles, ImageViewer, NoteReminder, Screenshot, TextEditor, ForgotPassword,
                                                 SignUp, SignIn, InfoWidget, VFXProject, SettingUI, UserSetting, Preferences,
                                                 Configuration, BaseManager)
@@ -184,7 +184,6 @@ class LayoutManager(DAMG):
         self.engDict                        = EnglishDictionary()
         self.findFile                       = FindFiles()
         self.imageViewer                    = ImageViewer()
-        self.nodeGraph                      = NodeGraph()
         self.noteReminder                   = NoteReminder()
         self.preferences                    = Preferences()
         self.screenShot                     = Screenshot()
@@ -196,7 +195,7 @@ class LayoutManager(DAMG):
         self.teamManager                    = BaseManager('TeamManager')
 
         layouts     = [self.calculator, self.calendar, self.configuration, self.engDict, self.findFile,
-                       self.imageViewer, self.nodeGraph, self.noteReminder, self.preferences, self.screenShot,
+                       self.imageViewer, self.noteReminder, self.preferences, self.screenShot,
                        self.textEditor, self.taskManager, self.orgManager, self.prjManager, self.teamManager]
 
         for layout in layouts:

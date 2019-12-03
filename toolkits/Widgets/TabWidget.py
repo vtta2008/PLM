@@ -12,8 +12,9 @@ from __future__ import absolute_import, unicode_literals
 from __buildtins__ import __copyright__
 
 from PyQt5.QtWidgets                        import QTabWidget
-from appData import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core import Settings, SignalManager
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 class TabWidget(QTabWidget):
 

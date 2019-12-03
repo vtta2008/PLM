@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 
 import re
 
-from NodeGraphQt.constants import ICON_DOWN_ARROW
+from appData import ICON_DOWN_ARROW
 
 # Reformat the icon path on Windows OS.
 match = re.match('(\\w:)', ICON_DOWN_ARROW)

@@ -19,8 +19,9 @@ from PyQt5.QtCore                           import QTimeZone, QTime, QDate
 
 # PLM
 from utils                                  import check_preset
-from appData                                import PRS, SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core                          import Settings, SignalManager
+from appData                                import SETTING_FILEPTH, ST_FORMAT, PRS
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 class Label(QLabel):

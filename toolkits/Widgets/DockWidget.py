@@ -17,8 +17,10 @@ from PyQt5.QtGui                            import QTextTableFormat, QTextCharFo
 from PyQt5.QtWidgets                        import QTextEdit, QDockWidget
 
 # PLM
-from appData                                import right, datetTimeStamp, SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core                          import Settings, SignalManager
+from appData                                import right, datetTimeStamp
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Dock widget """

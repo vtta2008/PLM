@@ -26,7 +26,7 @@ PIPE_STYLES = {
 }
 
 
-from .port import PortItem
+from plugins.NodeGraph.base.port import PortItem
 
 from toolkits.Widgets import GraphicPathItem
 from toolkits.Gui import Brush, Pen, Transform

@@ -12,22 +12,23 @@ from __future__ import absolute_import, unicode_literals
 
 
 
-from appData import (Z_VAL_PIPE,
-                                   NODE_SEL_COLOR,
-                                   NODE_SEL_BORDER_COLOR)
-from NodeGraphQt.qgraphics.node_abstract import AbstractNodeItem
-from NodeGraphQt.qgraphics.pipe import Pipe
-from NodeGraphQt.qgraphics.port import PortItem
+from appData import (Z_VAL_PIPE,NODE_SEL_COLOR, NODE_SEL_BORDER_COLOR)
+from .node_abstract import AbstractNodeItem
+from .pipe import Pipe
+from plugins.NodeGraph.base.port import PortItem
+from toolkits.Widgets import GraphicObject
+from PyQt5.QtGui import QCursor, QColor, QPen, QPainterPath
+from PyQt5.QtCore import Qt, QPointF, QRectF
 
 
-class BackdropSizer(QtWidgets.QGraphicsItem):
+class BackdropSizer(GraphicObject):
 
     def __init__(self, parent=None, size=6.0):
         super(BackdropSizer, self).__init__(parent)
         self.setFlag(self.ItemIsSelectable, True)
         self.setFlag(self.ItemIsMovable, True)
         self.setFlag(self.ItemSendsScenePositionChanges, True)
-        self.setCursor(QtGui.QCursor(QtCore.Qt.SizeFDiagCursor))
+        self.setCursor(QCursor(Qt.SizeFDiagCursor))
         self.setToolTip('double-click auto resize')
         self._size = size
 
@@ -41,7 +42,7 @@ class BackdropSizer(QtWidgets.QGraphicsItem):
         self.setPos(x, y)
 
     def boundingRect(self):
-        return QtCore.QRectF(0.5, 0.5, self._size, self._size)
+        return QRectF(0.5, 0.5, self._size, self._size)
 
     def itemChange(self, change, value):
         if change == self.ItemPositionChange:
@@ -49,7 +50,7 @@ class BackdropSizer(QtWidgets.QGraphicsItem):
             mx, my = item.minimum_size
             x = mx if value.x() < mx else value.x()
             y = my if value.y() < my else value.y()
-            value = QtCore.QPointF(x, y)
+            value = QPointF(x, y)
             item.on_sizer_pos_changed(value)
             return value
         return super(BackdropSizer, self).itemChange(change, value)
@@ -64,16 +65,16 @@ class BackdropSizer(QtWidgets.QGraphicsItem):
         rect = self.boundingRect()
         item = self.parentItem()
         if item and item.selected:
-            color = QtGui.QColor(*NODE_SEL_BORDER_COLOR)
+            color = QColor(*NODE_SEL_BORDER_COLOR)
         else:
-            color = QtGui.QColor(*item.color)
+            color = QColor(*item.color)
             color = color.darker(110)
-        path = QtGui.QPainterPath()
+        path = QPainterPath()
         path.moveTo(rect.topRight())
         path.lineTo(rect.bottomRight())
         path.lineTo(rect.bottomLeft())
         painter.setBrush(color)
-        painter.setPen(QtCore.Qt.NoPen)
+        painter.setPen(Qt.NoPen)
         painter.fillPath(path, painter.brush())
 
         painter.restore()
@@ -103,9 +104,9 @@ class BackdropNodeItem(AbstractNodeItem):
         super(BackdropNodeItem, self).mouseDoubleClickEvent(event)
 
     def mousePressEvent(self, event):
-        if event.button() == QtCore.Qt.LeftButton:
+        if event.button() == Qt.LeftButton:
             pos = event.scenePos()
-            rect = QtCore.QRectF(pos.x() - 5, pos.y() - 5, 10, 10)
+            rect = QRectF(pos.x() - 5, pos.y() - 5, 10, 10)
             item = self.scene().items(rect)[0]
 
             if isinstance(item, (PortItem, Pipe)):
@@ -138,51 +139,50 @@ class BackdropNodeItem(AbstractNodeItem):
 
         rect = self.boundingRect()
         color = (self.color[0], self.color[1], self.color[2], 50)
-        painter.setBrush(QtGui.QColor(*color))
-        painter.setPen(QtCore.Qt.NoPen)
+        painter.setBrush(QColor(*color))
+        painter.setPen(Qt.NoPen)
         painter.drawRect(rect)
 
-        top_rect = QtCore.QRectF(0.0, 0.0, rect.width(), 20.0)
-        painter.setBrush(QtGui.QColor(*self.color))
-        painter.setPen(QtCore.Qt.NoPen)
+        top_rect = QRectF(0.0, 0.0, rect.width(), 20.0)
+        painter.setBrush(QColor(*self.color))
+        painter.setPen(Qt.NoPen)
         painter.drawRect(top_rect)
 
         if self.backdrop_text:
-            painter.setPen(QtGui.QColor(*self.text_color))
-            txt_rect = QtCore.QRectF(
+            painter.setPen(QColor(*self.text_color))
+            txt_rect = QRectF(
                 top_rect.x() + 5.0, top_rect.height() + 2.0,
                 rect.width() - 5.0, rect.height())
-            painter.setPen(QtGui.QColor(*self.text_color))
+            painter.setPen(QColor(*self.text_color))
             painter.drawText(txt_rect,
-                             QtCore.Qt.AlignLeft | QtCore.Qt.TextWordWrap,
+                             Qt.AlignLeft | Qt.TextWordWrap,
                              self.backdrop_text)
 
         if self.selected and NODE_SEL_COLOR:
             sel_color = [x for x in NODE_SEL_COLOR]
             sel_color[-1] = 10
-            painter.setBrush(QtGui.QColor(*sel_color))
-            painter.setPen(QtCore.Qt.NoPen)
+            painter.setBrush(QColor(*sel_color))
+            painter.setPen(Qt.NoPen)
             painter.drawRect(rect)
 
-        txt_rect = QtCore.QRectF(top_rect.x(), top_rect.y() + 1.2,
-                                 rect.width(), top_rect.height())
-        painter.setPen(QtGui.QColor(*self.text_color))
-        painter.drawText(txt_rect, QtCore.Qt.AlignCenter, self.name)
+        txt_rect = QRectF(top_rect.x(), top_rect.y() + 1.2, rect.width(), top_rect.height())
+        painter.setPen(QColor(*self.text_color))
+        painter.drawText(txt_rect, Qt.AlignCenter, self.name)
 
-        path = QtGui.QPainterPath()
+        path = QPainterPath()
         path.addRect(rect)
         border_color = self.color
         if self.selected and NODE_SEL_BORDER_COLOR:
             border_color = NODE_SEL_BORDER_COLOR
-        painter.setBrush(QtCore.Qt.NoBrush)
-        painter.setPen(QtGui.QPen(QtGui.QColor(*border_color), 1))
+        painter.setBrush(Qt.NoBrush)
+        painter.setPen(QPen(QColor(*border_color), 1))
         painter.drawPath(path)
 
         painter.restore()
 
     def get_nodes(self, inc_intersects=False):
-        mode = {True: QtCore.Qt.IntersectsItemShape,
-                False: QtCore.Qt.ContainsItemShape}
+        mode = {True: Qt.IntersectsItemShape,
+                False: Qt.ContainsItemShape}
         nodes = []
         if self.scene():
             polygon = self.mapToScene(self.boundingRect())

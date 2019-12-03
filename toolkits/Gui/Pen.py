@@ -17,7 +17,7 @@ from PyQt5.QtGui                       import QPen
 
 # PLM
 from appData                           import SETTING_FILEPTH, ST_FORMAT, KEY_DEL
-from toolkits.Core                     import Settings, SignalManager
+# from toolkits.Core                     import Settings, SignalManager
 
 class Pen(QPen):
 
@@ -30,8 +30,8 @@ class Pen(QPen):
         QPen.__init__(self)
 
         self.parent                     = parent
-        self.signals                    = SignalManager(self)
-        self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        # self.signals                    = SignalManager(self)
+        # self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
 
     @property

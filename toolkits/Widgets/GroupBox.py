@@ -16,11 +16,12 @@ from __buildtins__ import __copyright__
 from PyQt5.QtWidgets                        import QGroupBox
 
 # PLM
-
+from appData                                import WAIT_LAYOUT_COMPLETE
 from .                                      import VBoxLayout, HBoxLayout, GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
 from .Label                                 import Label
-from appData                                import WAIT_LAYOUT_COMPLETE, SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core                          import Settings, SignalManager
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Groupbox presets """

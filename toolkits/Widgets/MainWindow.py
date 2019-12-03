@@ -20,7 +20,8 @@ from PyQt5.QtWidgets                        import QMainWindow
 from toolkits.Widgets                       import AppIcon
 from cores.Loggers                          import Loggers
 from appData                                import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core                          import Settings, SignalManager
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Main window layout preset """

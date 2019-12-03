@@ -10,72 +10,60 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from NodeGraphQt import QtWidgets, QtCore, QtGui, QtCompat
+from .properties import NodePropWidget
+from PyQt5.QtGui import QPainter, QPen
+from PyQt5.QtWidgets import QStyledItemDelegate, QStyle, QHeaderView, QTableWidget, QWidget, QSpinBox, QPushButton, QHBoxLayout, QVBoxLayout, QTableWidgetItem
+from PyQt5.QtCore import Qt, QRect, pyqtSignal
 
-from NodeGraphQt.widgets.properties import NodePropWidget
-
-
-class PropertiesDelegate(QtWidgets.QStyledItemDelegate):
+class PropertiesDelegate(QStyledItemDelegate):
 
     def paint(self, painter, option, index):
-        """
-        Args:
-            painter (QtGui.QPainter):
-            option (QtGui.QStyleOptionViewItem):
-            index (QtCore.QModelIndex):
-        """
         painter.save()
-        painter.setRenderHint(QtGui.QPainter.Antialiasing, False)
-        painter.setPen(QtCore.Qt.NoPen)
+        painter.setRenderHint(QPainter.Antialiasing, False)
+        painter.setPen(Qt.NoPen)
         painter.setBrush(option.palette.midlight())
         painter.drawRect(option.rect)
 
-        if option.state & QtWidgets.QStyle.State_Selected:
+        if option.state & QStyle.State_Selected:
             bdr_clr = option.palette.highlight().color()
-            painter.setPen(QtGui.QPen(bdr_clr, 1.5))
+            painter.setPen(QPen(bdr_clr, 1.5))
         else:
             bdr_clr = option.palette.alternateBase().color()
-            painter.setPen(QtGui.QPen(bdr_clr, 1))
+            painter.setPen(QPen(bdr_clr, 1))
 
-        painter.setBrush(QtCore.Qt.NoBrush)
-        painter.drawRect(QtCore.QRect(option.rect.x() + 1,
+        painter.setBrush(Qt.NoBrush)
+        painter.drawRect(QRect(option.rect.x() + 1,
                                       option.rect.y() + 1,
                                       option.rect.width() - 2,
                                       option.rect.height() - 2))
         painter.restore()
 
 
-class PropertiesList(QtWidgets.QTableWidget):
+class PropertiesList(QTableWidget):
 
     def __init__(self, parent=None):
         super(PropertiesList, self).__init__(parent)
         self.setItemDelegate(PropertiesDelegate())
         self.setColumnCount(1)
         self.setShowGrid(False)
-        QtCompat.QHeaderView.setSectionResizeMode(
-            self.verticalHeader(), QtWidgets.QHeaderView.ResizeToContents)
+        QHeaderView.setSectionResizeMode(
+            self.verticalHeader(), QHeaderView.ResizeToContents)
         self.verticalHeader().hide()
-        QtCompat.QHeaderView.setSectionResizeMode(
-            self.horizontalHeader(), 0, QtWidgets.QHeaderView.Stretch)
+        QHeaderView.setSectionResizeMode(
+            self.horizontalHeader(), 0, QHeaderView.Stretch)
         self.horizontalHeader().hide()
 
 
-class PropertiesBinWidget(QtWidgets.QWidget):
-    """
-    Node properties bin for displaying properties.
-    Args:
-        parent (QtWidgets.QWidget): parent of the new widget.
-        node_graph (NodeGraphQt.NodeGraph): node graph.
-    """
+class PropertiesBinWidget(QWidget):
 
     #: Signal emitted (node_id, prop_name, prop_value)
-    property_changed = QtCore.Signal(str, str, object)
+    property_changed = pyqtSignal(str, str, object)
 
     def __init__(self, parent=None, node_graph=None):
         super(PropertiesBinWidget, self).__init__(parent)
         self.setWindowTitle('Properties Bin')
         self._prop_list = PropertiesList()
-        self._limit = QtWidgets.QSpinBox()
+        self._limit = QSpinBox()
         self._limit.setToolTip('Set display nodes limit.')
         self._limit.setMaximum(10)
         self._limit.setMinimum(0)
@@ -85,16 +73,16 @@ class PropertiesBinWidget(QtWidgets.QWidget):
 
         self._block_signal = False
 
-        btn_clr = QtWidgets.QPushButton('clear')
+        btn_clr = QPushButton('clear')
         btn_clr.setToolTip('Clear the properties bin.')
         btn_clr.clicked.connect(self.clear_bin)
 
-        top_layout = QtWidgets.QHBoxLayout()
+        top_layout = QHBoxLayout()
         top_layout.addWidget(self._limit)
         top_layout.addStretch(1)
         top_layout.addWidget(btn_clr)
 
-        layout = QtWidgets.QVBoxLayout(self)
+        layout = QVBoxLayout(self)
         layout.addLayout(top_layout)
         layout.addWidget(self._prop_list, 1)
 
@@ -108,7 +96,7 @@ class PropertiesBinWidget(QtWidgets.QWidget):
         return '<{} object at {}>'.format(self.__class__.__name__, hex(id(self)))
 
     def __on_prop_close(self, node_id):
-        items = self._prop_list.findItems(node_id, QtCore.Qt.MatchExactly)
+        items = self._prop_list.findItems(node_id, Qt.MatchExactly)
         [self._prop_list.removeRow(i.row()) for i in items]
 
     def __on_limit_changed(self, value):
@@ -182,7 +170,7 @@ class PropertiesBinWidget(QtWidgets.QWidget):
         if rows >= self.limit():
             self._prop_list.removeRow(rows - 1)
 
-        itm_find = self._prop_list.findItems(node.id, QtCore.Qt.MatchExactly)
+        itm_find = self._prop_list.findItems(node.id, Qt.MatchExactly)
         if itm_find:
             self._prop_list.removeRow(itm_find[0].row())
 
@@ -192,7 +180,7 @@ class PropertiesBinWidget(QtWidgets.QWidget):
         prop_widget.property_closed.connect(self.__on_prop_close)
         self._prop_list.setCellWidget(0, 0, prop_widget)
 
-        item = QtWidgets.QTableWidgetItem(node.id)
+        item = QTableWidgetItem(node.id)
         self._prop_list.setItem(0, 0, item)
         self._prop_list.selectRow(0)
 
@@ -220,16 +208,15 @@ class PropertiesBinWidget(QtWidgets.QWidget):
             NodePropWidget: node property widget.
         """
         node_id = node if isinstance(node, str) else node.id
-        itm_find = self._prop_list.findItems(node_id, QtCore.Qt.MatchExactly)
+        itm_find = self._prop_list.findItems(node_id, Qt.MatchExactly)
         if itm_find:
             item = itm_find[0]
             return self._prop_list.cellWidget(item.row(), 0)
 
 
 if __name__ == '__main__':
-    import sys
-    from NodeGraphQt import BaseNode, NodeGraph
-    from NodeGraphQt.constants import (NODE_PROP_QLABEL,
+    from cores.base import BaseNode
+    from appData import (NODE_PROP_QLABEL,
                                        NODE_PROP_QLINEEDIT,
                                        NODE_PROP_QCOMBO,
                                        NODE_PROP_QSPINBOX,
@@ -260,22 +247,6 @@ if __name__ == '__main__':
     def prop_changed(node_id, prop_name, prop_value):
         print('-'*100)
         print(node_id, prop_name, prop_value)
-
-
-    app = QtWidgets.QApplication(sys.argv)
-
-    graph = NodeGraph()
-    graph.register_node(TestNode)
-
-    prop_bin = PropertiesBinWidget()
-    prop_bin.property_changed.connect(prop_changed)
-
-    node = graph.create_node('nodeGraphQt.nodes.TestNode')
-
-    prop_bin.add_node(node)
-    prop_bin.show()
-
-    app.exec_()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 4/12/2019 - 2:06 AM

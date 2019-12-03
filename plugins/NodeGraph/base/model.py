@@ -14,7 +14,7 @@ import json
 from collections import defaultdict
 
 from appData import (NODE_PROP, NODE_PROP_QLABEL, NODE_PROP_QLINEEDIT, NODE_PROP_QCHECKBOX, NODE_PROP_COLORPICKER)
-from errors import NodePropertyError
+from cores.errors import NodePropertyError
 
 
 class PortModel(object):
@@ -60,15 +60,10 @@ class NodeModel(object):
         self.outputs = {}
         self._custom_prop = {}
 
-        # node graph model set at node added time.
         self._graph_model = None
 
-        # store the property attributes.
-        # (deleted when node is added to the graph)
         self._TEMP_property_attrs = {}
 
-        # temp store the property widget types.
-        # (deleted when node is added to the graph)
         self._TEMP_property_widget_types = {
             'type_': NODE_PROP_QLABEL,
             'id': NODE_PROP_QLABEL,
@@ -88,16 +83,7 @@ class NodeModel(object):
 
     def add_property(self, name, value, items=None, range=None,
                      widget_type=NODE_PROP, tab='Properties'):
-        """
-        add custom property.
-        Args:
-            name (str): name of the property.
-            value (object): data.
-            items (list[str]): items used by widget type NODE_PROP_QCOMBO.
-            range (tuple)): min, max values used by NODE_PROP_SLIDER.
-            widget_type (int): widget type flag.
-            tab (str): widget tab name.
-        """
+
         tab = tab or 'Properties'
 
         if name in self.properties.keys():
@@ -157,11 +143,7 @@ class NodeModel(object):
 
     @property
     def properties(self):
-        """
-        return all default node properties.
-        Returns:
-            dict: default node properties.
-        """
+
         props = self.__dict__.copy()
         exclude = ['_custom_prop',
                    '_graph_model',
@@ -172,38 +154,12 @@ class NodeModel(object):
 
     @property
     def custom_properties(self):
-        """
-        return all custom properties specified by the user.
-        Returns:
-            dict: user defined properties.
-        """
+
         return self._custom_prop
 
     @property
     def to_dict(self):
-        """
-        serialize model information to a dictionary.
-        Returns:
-            dict: node id as the key and properties as the values eg.
-                {'0x106cf75a8': {
-                    'name': 'foo node',
-                    'color': (48, 58, 69, 255),
-                    'border_color': (85, 100, 100, 255),
-                    'text_color': (255, 255, 255, 180),
-                    'type': 'com.chantasticvfx.FooNode',
-                    'selected': False,
-                    'disabled': False,
-                    'inputs': {
-                        <port_name>: {<node_id>: [<port_name>, <port_name>]}},
-                    'outputs': {
-                        <port_name>: {<node_id>: [<port_name>, <port_name>]}},
-                    'width': 0.0,
-                    'height: 0.0,
-                    'pos': (0.0, 0.0),
-                    'custom': {},
-                    }
-                }
-        """
+
         node_dict = self.__dict__.copy()
         node_id = node_dict.pop('id')
 
@@ -235,11 +191,7 @@ class NodeModel(object):
 
     @property
     def serial(self):
-        """
-        Serialize model information to a string.
-        Returns:
-            str: serialized JSON string.
-        """
+
         model_dict = self.to_dict
         return json.dumps(model_dict)
 
@@ -256,21 +208,7 @@ class NodeGraphModel(object):
         return self.__common_node_props
 
     def set_node_common_properties(self, attrs):
-        """
-        store common node properties.
-        Args:
-            attrs (dict): common node properties.
-                eg.
-                     {'nodeGraphQt.nodes.FooNode': {
-                        'my_property':{
-                            'widget_type': 0,
-                            'tab': 'Properties',
-                            'items': ['foo', 'bar', 'test'],
-                            'range': (0, 100)
-                            }
-                        }
-                    }
-        """
+
         for node_type in attrs.keys():
             node_props = attrs[node_type]
 
@@ -286,12 +224,7 @@ class NodeGraphModel(object):
                 common_props[prop_name].update(prop_attrs)
 
     def get_node_common_properties(self, node_type):
-        """
-        Args:
-            node_type (str): node type.
-        Returns:
-            dict: node common properties.
-        """
+
         return self.__common_node_props.get(node_type)
 
 

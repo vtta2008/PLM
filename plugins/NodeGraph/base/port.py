@@ -10,22 +10,12 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from appData import (
-    IN_PORT, OUT_PORT,
-    PORT_DEFAULT_COLOR,
-    PORT_DEFAULT_BORDER_COLOR,
-    PORT_DEFAULT_SIZE,
-    PORT_FALLOFF,
-    PORT_HOVER_COLOR,
-    PORT_HOVER_BORDER_COLOR,
-    PORT_ACTIVE_COLOR,
-    PORT_ACTIVE_BORDER_COLOR,
-    Z_VAL_PORT, ALT_MODIFIER)
+from appData import ( IN_PORT, OUT_PORT, PORT_DEFAULT_COLOR, PORT_DEFAULT_BORDER_COLOR, PORT_DEFAULT_SIZE, PORT_FALLOFF,
+                      PORT_HOVER_COLOR, PORT_HOVER_BORDER_COLOR, PORT_ACTIVE_COLOR, PORT_ACTIVE_BORDER_COLOR,
+                      Z_VAL_PORT, ALT_MODIFIER)
 
 from PyQt5.QtGui import QColor
-
-
-from toolkits.Core import RectF
+from PyQt5.QtCore import QRectF
 from toolkits.Gui import Pen
 from toolkits.Widgets import GraphicObject
 
@@ -56,7 +46,7 @@ class PortItem(GraphicObject):
         return '{}.PortItem("{}")'.format(self.__module__, self.name)
 
     def boundingRect(self):
-        return RectF(0.0, 0.0, self._width + PORT_FALLOFF, self._height)
+        return QRectF(0.0, 0.0, self._width + PORT_FALLOFF, self._height)
 
     def paint(self, painter, option, widget):
 
@@ -66,7 +56,7 @@ class PortItem(GraphicObject):
         rect_h = self._height / 1.8
         rect_x = self.boundingRect().center().x() - (rect_w / 2)
         rect_y = self.boundingRect().center().y() - (rect_h / 2)
-        port_rect = RectF(rect_x, rect_y, rect_w, rect_h)
+        port_rect = QRectF(rect_x, rect_y, rect_w, rect_h)
 
         if self._hovered:
             color = QColor(*PORT_HOVER_COLOR)
@@ -87,9 +77,9 @@ class PortItem(GraphicObject):
             painter.setBrush(border_color)
             w = port_rect.width() / 2.5
             h = port_rect.height() / 2.5
-            rect = RectF(port_rect.center().x() - w / 2,
-                                 port_rect.center().y() - h / 2,
-                                 w, h)
+            rect = QRectF(port_rect.center().x() - w / 2,
+                          port_rect.center().y() - h / 2,
+                          w, h)
             border_color = QColor(*self.border_color)
             pen = Pen(border_color, 1.6)
             painter.setPen(pen)
@@ -106,9 +96,9 @@ class PortItem(GraphicObject):
                 painter.setBrush(border_color)
                 w = port_rect.width() / 3.5
                 h = port_rect.height() / 3.5
-            rect = RectF(port_rect.center().x() - w / 2,
-                                 port_rect.center().y() - h / 2,
-                                 w, h)
+            rect = QRectF(port_rect.center().x() - w / 2,
+                          port_rect.center().y() - h / 2,
+                          w, h)
             painter.drawEllipse(rect)
         painter.restore()
 
@@ -118,7 +108,7 @@ class PortItem(GraphicObject):
         return super(PortItem, self).itemChange(change, value)
 
     def mousePressEvent(self, event):
-        if event.modifiers() != ALT_MODIFIERr:
+        if event.modifiers() != ALT_MODIFIER:
             self.viewer_start_connection()
         super(PortItem, self).mousePressEvent(event)
 

@@ -10,22 +10,17 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
+from .stylesheet import STYLE_TABSEARCH, STYLE_TABSEARCH_LIST
 
-from NodeGraphQt import QtCore, QtWidgets
+from PyQt5.QtWidgets import QCompleter, QLineEdit
+from PyQt5.QtCore import Qt, QStringListModel, QRegExp, pyqtSignal, QSortFilterProxyModel
 
-from NodeGraphQt.widgets.stylesheet import STYLE_TABSEARCH, STYLE_TABSEARCH_LIST
-
-
-class TabSearchCompleter(QtWidgets.QCompleter):
-    """
-    QCompleter adapted from:
-    https://stackoverflow.com/questions/5129211/qcompleter-custom-completion-rules
-    """
+class TabSearchCompleter(QCompleter):
 
     def __init__(self, nodes=None, parent=None):
         super(TabSearchCompleter, self).__init__(nodes, parent)
         self.setCompletionMode(self.PopupCompletion)
-        self.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+        self.setCaseSensitivity(Qt.CaseInsensitive)
         self._local_completion_prefix = ''
         self._using_orig_model = False
         self._source_model = None
@@ -36,7 +31,7 @@ class TabSearchCompleter(QtWidgets.QCompleter):
         self.updateModel()
         if self._filter_model.rowCount() == 0:
             self._using_orig_model = False
-            self._filter_model.setSourceModel(QtCore.QStringListModel([path]))
+            self._filter_model.setSourceModel(QStringListModel([path]))
             return [path]
         return []
 
@@ -44,26 +39,26 @@ class TabSearchCompleter(QtWidgets.QCompleter):
         if not self._using_orig_model:
             self._filter_model.setSourceModel(self._source_model)
 
-        pattern = QtCore.QRegExp(self._local_completion_prefix,
-                                 QtCore.Qt.CaseInsensitive,
-                                 QtCore.QRegExp.FixedString)
+        pattern = QRegExp(self._local_completion_prefix,
+                                 Qt.CaseInsensitive,
+                                 QRegExp.FixedString)
         self._filter_model.setFilterRegExp(pattern)
 
     def setModel(self, model):
         self._source_model = model
-        self._filter_model = QtCore.QSortFilterProxyModel(self)
+        self._filter_model = QSortFilterProxyModel(self)
         self._filter_model.setSourceModel(self._source_model)
         super(TabSearchCompleter, self).setModel(self._filter_model)
         self._using_orig_model = True
 
 
-class TabSearchWidget(QtWidgets.QLineEdit):
+class TabSearchWidget(QLineEdit):
 
-    search_submitted = QtCore.Signal(str)
+    search_submitted = pyqtSignal(str)
 
     def __init__(self, parent=None, node_dict=None):
         super(TabSearchWidget, self).__init__(parent)
-        self.setAttribute(QtCore.Qt.WA_MacShowFocusRect, 0)
+        self.setAttribute(Qt.WA_MacShowFocusRect, 0)
         self.setStyleSheet(STYLE_TABSEARCH)
         self.setMinimumSize(200, 22)
         self.setTextMargins(2, 0, 2, 0)
@@ -72,7 +67,7 @@ class TabSearchWidget(QtWidgets.QLineEdit):
         self._node_dict = node_dict or {}
 
         node_names = sorted(self._node_dict.keys())
-        self._model = QtCore.QStringListModel(node_names, self)
+        self._model = QStringListModel(node_names, self)
 
         self._completer = TabSearchCompleter()
         self._completer.setModel(self._model)

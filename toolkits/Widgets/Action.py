@@ -17,7 +17,8 @@ from PyQt5.QtWidgets                        import QAction
 # PLM
 from utils                                  import check_preset
 from appData                                import SETTING_FILEPTH, ST_FORMAT
-from toolkits.Core                          import Settings, SignalManager
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 from .Icon                                  import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
@@ -85,8 +86,8 @@ class ShortCut(Action):
         Action.__init__(self)
 
         self.parent                         = parent
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.signals = SignalManager(self)
+        # self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        # self.signals = SignalManager(self)
 
         if text is not None:
             self.setText(text)

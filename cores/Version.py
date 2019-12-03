@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 import os, re
-from bin.dependencies.damg.damg import DAMGTUPLE
+from bin import DAMGTUPLE
 
 from appData import APP_DATA_DIR
 

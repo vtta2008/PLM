@@ -14,7 +14,7 @@ from __future__ import absolute_import, unicode_literals
 from appData import Z_VAL_NODE, NODE_WIDTH, NODE_HEIGHT
 
 from toolkits.Widgets import GraphicObject
-from toolkits.Core import RectF
+from PyQt5.QtCore import QRectF
 
 class AbstractNodeItem(GraphicObject):
 
@@ -40,7 +40,7 @@ class AbstractNodeItem(GraphicObject):
             self.__module__, self.__class__.__name__, self.name)
 
     def boundingRect(self):
-        return RectF(0.0, 0.0, self._width, self._height)
+        return QRectF(0.0, 0.0, self._width, self._height)
 
     def mousePressEvent(self, event):
         self._properties['selected'] = True

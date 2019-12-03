@@ -238,6 +238,7 @@ class ConfigManager(DAMG):
         dirPth['WebIcon128']           = self.set_dir('imgs/web/icon128')
 
         dirPth['plugin']               = self.set_dir('plugins')
+        dirPth['NodeGraph']             = self.set_dir('plugins/NodeGraph')
 
         dirPth['Scripts']              = self.set_dir('scripts')
         dirPth['json']                 = self.set_dir('scripts/json')
@@ -266,7 +267,6 @@ class ConfigManager(DAMG):
         dirPth['Projects']             = self.set_dir('ui/SubUi/Projects')
         dirPth['Settings']             = self.set_dir('ui/SubUi/Settings')
         dirPth['Tools']                = self.set_dir('ui/SubUi/Tools')
-        dirPth['NodeGraph']            = self.set_dir('ui/SubUi/Tools/NodeGraph')
 
         dirPth['utils']                = self.set_dir('utils')
 
