@@ -214,40 +214,6 @@ class PropertiesBinWidget(QWidget):
             return self._prop_list.cellWidget(item.row(), 0)
 
 
-if __name__ == '__main__':
-    from cores.base import BaseNode
-    from appData import (NODE_PROP_QLABEL,
-                                       NODE_PROP_QLINEEDIT,
-                                       NODE_PROP_QCOMBO,
-                                       NODE_PROP_QSPINBOX,
-                                       NODE_PROP_COLORPICKER,
-                                       NODE_PROP_SLIDER)
-
-
-    class TestNode(BaseNode):
-        NODE_NAME = 'test node'
-
-        def __init__(self):
-            super(TestNode, self).__init__()
-            self.create_property('label_test', 'foo bar',
-                                 widget_type=NODE_PROP_QLABEL)
-            self.create_property('text_edit', 'hello',
-                                 widget_type=NODE_PROP_QLINEEDIT)
-            self.create_property('color_picker', (0, 0, 255),
-                                 widget_type=NODE_PROP_COLORPICKER)
-            self.create_property('integer', 10,
-                                 widget_type=NODE_PROP_QSPINBOX)
-            self.create_property('list', 'foo',
-                                 items=['foo', 'bar'],
-                                 widget_type=NODE_PROP_QCOMBO)
-            self.create_property('range', 50,
-                                 range=(45, 55),
-                                 widget_type=NODE_PROP_SLIDER)
-
-    def prop_changed(node_id, prop_name, prop_value):
-        print('-'*100)
-        print(node_id, prop_name, prop_value)
-
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 4/12/2019 - 2:06 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

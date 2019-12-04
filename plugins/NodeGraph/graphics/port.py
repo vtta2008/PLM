@@ -16,7 +16,7 @@ from appData import ( IN_PORT, OUT_PORT, PORT_DEFAULT_COLOR, PORT_DEFAULT_BORDER
 from toolkits.Widgets import GraphicObject
 from toolkits.Gui import Pen
 
-from PyQt5.QtCore import QRectF
+from PyQt5.QtCore import QRectF, Qt
 from PyQt5.QtGui import QColor
 
 class PortItem(GraphicObject):
@@ -121,7 +121,7 @@ class PortItem(GraphicObject):
         return super(PortItem, self).itemChange(change, value)
 
     def mousePressEvent(self, event):
-        if event.modifiers() != QtCore.Qt.AltModifier:
+        if event.modifiers() != Qt.AltModifier:
             self.viewer_start_connection()
         super(PortItem, self).mousePressEvent(event)
 

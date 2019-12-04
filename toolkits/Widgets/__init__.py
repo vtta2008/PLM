@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from .Action            import Action, ShortCut
+from .Action            import Action, ShortCut, WidgetAction
 from .BoxLayout         import VBoxLayout, HBoxLayout
 from .Button            import Button, ToolButton
 from .CheckBox          import CheckBox
@@ -38,6 +38,7 @@ from .TabBar            import TabBar
 from .TabWidget         import TabWidget
 from .ToolBar           import ToolBar
 from .Widget            import Widget
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/11/2019 - 5:22 PM

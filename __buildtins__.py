@@ -208,7 +208,6 @@ class PreSettings(object):
     _log                            = dict()
     _cmds                           = dict()
 
-
     def __init__(self):
         super(PreSettings, self).__init__()
 
@@ -373,6 +372,9 @@ class Application(QApplication):
     sysNotify_old                   = []
 
     _styleSheet                     = None
+
+    _allowLocalMode                 = True
+
 
     def checkSignalRepeat(self, old, data):
         new = [i for i in data]

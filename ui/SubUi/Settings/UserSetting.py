@@ -13,7 +13,7 @@ Description:
 
 # Plt
 from toolkits.Widgets               import Widget, GridLayout, AppIcon
-from ui.base import Profile, Location, Avatar, PassWord
+from ui.base                        import Profile, Location, Avatar, PassWord
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """

@@ -554,5 +554,7 @@ class NodeItem(AbstractNodeItem):
                 self._widgets[name] = value
 
             # -------------------------------------------------------------------------------------------------------------
+
+
 # Created by panda on 4/12/2019 - 1:46 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

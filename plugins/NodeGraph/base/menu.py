@@ -10,10 +10,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from distutils.version      import LooseVersion
-from PyQt5.QtWidgets        import QAction, QMenu
-from PyQt5.QtGui            import QKeySequence
-from PyQt5.QtCore           import qVersion
+from plugins.NodeGraph.widgets  import STYLE_QMENU
+from distutils.version          import LooseVersion
+from PyQt5.QtWidgets            import QAction, QMenu
+from PyQt5.QtGui                import QKeySequence
+from PyQt5.QtCore               import qVersion
 
 class Menu(object):
 

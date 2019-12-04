@@ -10,14 +10,16 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from .command import PropertyChangedCmd
-from .model import NodeModel
-from appData import (NODE_PROP, NODE_PROP_QLINEEDIT, NODE_PROP_QTEXTEDIT, NODE_PROP_QCOMBO, NODE_PROP_QCHECKBOX, IN_PORT, OUT_PORT)
-from cores.errors import PortRegistrationError
-from plugins.NodeGraph.graphics.node_backdrop import BackdropNodeItem
-from plugins.NodeGraph.graphics.node_base import NodeItem
-from plugins.NodeGraph.widgets.node_property import (NodeComboBox, NodeLineEdit, NodeCheckBox)
+from appData                    import (NODE_PROP, NODE_PROP_QLINEEDIT, NODE_PROP_QTEXTEDIT, NODE_PROP_QCOMBO,
+                                        NODE_PROP_QCHECKBOX, IN_PORT, OUT_PORT)
+from cores.errors               import PortRegistrationError
 
+from plugins.NodeGraph.graphics import NodeItem, BackdropNodeItem
+from plugins.NodeGraph.widgets  import NodeComboBox, NodeLineEdit, NodeCheckBox
+
+from .command                   import PropertyChangedCmd
+from .model                     import NodeModel
+from .port                      import PortItem as Port
 
 class classproperty(object):
 

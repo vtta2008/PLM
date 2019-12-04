@@ -10,8 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from toolkits.Widgets       import LineEdit, ShortCut
-from appData                import FRAMELESS, KEY_PRESS, KEY_RETURN
+from toolkits.Widgets           import LineEdit, ShortCut
+from appData                    import FRAMELESS, KEY_RETURN
 
 class ShortcutCMD(LineEdit):
 
@@ -36,6 +36,9 @@ class ShortcutCMD(LineEdit):
         cmd = self.text()
         print('RUN: {0}'.format(cmd))
         self.hide()
+
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 11/11/2019 - 5:30 PM

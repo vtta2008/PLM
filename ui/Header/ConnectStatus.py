@@ -14,11 +14,7 @@ Description:
 # Python
 import requests, sys
 
-# PyQt5
-from PyQt5.QtGui                import QPixmap
-
-
-# Plt
+# PLM
 from appData                    import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
 from bin                        import DAMGTIMER, DAMGLIST
 from ui.base                    import Conection
@@ -29,20 +25,18 @@ from toolkits.Widgets           import GridLayout, Label, MessageBox
 
 class ConnectStatus(GridLayout):
 
-    key = 'ConnectStatus'
-    _allowLocalMode = True
-    _updatting = False
-    _mode = None
-    _server = None
-    labels = DAMGLIST()
+    key                         = 'ConnectStatus'
+    _allowLocalMode             = True
+    _updatting                  = False
+    _mode                       = None
+    _server                     = None
+    labels                      = DAMGLIST()
 
     def __init__(self, parent=None):
         super(ConnectStatus, self).__init__(parent)
 
         self.parent             = parent
         self._server            = self.getServer()
-        # self.serverStatus       = Label({'wmax': 20, 'sst': 'Server Connection Status', })
-        # self.internetStatus     = Label({'wmax': 20, 'sst': 'Internet Connection Status', })
         self.modeStatus         = Label({'txt': self._mode, 'sst': 'Operating Mode Status'})
         self.updateTimer        = DAMGTIMER()
 
@@ -70,7 +64,7 @@ class ConnectStatus(GridLayout):
 
         try:
             r = requests.get(__localServer__)
-        except Exception:
+        except ConnectionError:
             if not self._allowLocalMode:
                 MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                 sys.exit()

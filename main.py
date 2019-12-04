@@ -24,24 +24,26 @@ from PyQt5.QtCore                       import pyqtSlot
 # PLM
 from appData                            import (__localServer__, __organization__, StateNormal, StateMax, StateMin,
                                                 __appname__, __version__, __website__, SYSTRAY_UNAVAI, SETTING_FILEPTH,
-                                                ST_FORMAT, KEY_RELEASE)
+                                                ST_FORMAT, KEY_RELEASE, SERVER_CONNECT_FAIL)
 
 from utils                              import str2bool, clean_file_ext, LocalDatabase
 
 from cores.StyleSheet                   import StyleSheet
 from cores.Loggers                      import Loggers
 from cores.Registry                     import RegistryLayout
-
-from toolkits.Widgets                   import LogoIcon
 from cores.Settings                     import Settings
 from cores.SignalManager                import SignalManager
 from cores.EventManager                 import EventManager
 from cores.ThreadManager                import ThreadManager
+
+from toolkits.Widgets                   import LogoIcon, MessageBox
+from toolkits.Gui                       import Cursor
+
 from ui.ButtonManager                   import ButtonManager
 from ui.ActionManager                   import ActionManager
 from ui.LayoutManager                   import LayoutManager
 from ui.SubUi.Browser                   import Browser
-from toolkits.Gui                       import Cursor
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -135,7 +137,14 @@ class DAMGTEAM(Application):
                 if not str2bool(remember):
                     self.signInEvent()
                 else:
-                    r = requests.get(__localServer__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
+                    try:
+                        r = requests.get(__localServer__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
+                    except ConnectionError:
+                        if not self._allowLocalMode:
+                            MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                            sys.exit()
+                        else:
+                            self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
                     if r.status_code == 200:
                         if not self.sysTray.isSystemTrayAvailable():
                             self.logger.report(SYSTRAY_UNAVAI)
@@ -263,6 +272,7 @@ class DAMGTEAM(Application):
                     return self.signUpEvent()
                 else:
                     return self.switchAccountEvent()
+
         if layoutID in self.registryLayout.keys():
             layout = self.registryLayout[layoutID]
             if layout.windowState() & StateNormal:
@@ -273,6 +283,7 @@ class DAMGTEAM(Application):
                 state = 'showMinimized'
             else:
                 state = layout.getValue('showLayout')
+
         if not repeat:
             if mode == state:
                 if self.trackBlockSignal:

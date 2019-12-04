@@ -12,7 +12,7 @@ from __buildtins__                          import __copyright__
 """ Import """
 
 # PyQt5
-from PyQt5.QtWidgets                        import QAction
+from PyQt5.QtWidgets                        import QAction, QWidgetAction
 
 # PLM
 from utils                                  import check_preset
@@ -23,6 +23,33 @@ from .Icon                                  import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Action presets """
+
+class WidgetAction(QWidgetAction):
+
+    Type                                    = 'DAMGWIDGETACTION'
+    key                                     = 'WidgetAction'
+    _name                                   = 'DAMG Widget Action'
+    _copyright                              = __copyright__()
+
+    def __init__(self, parent=None):
+        QWidgetAction.__init__(self)
+
+        self.parent = parent
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
+
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
 
 class Action(QAction):
 
@@ -64,6 +91,10 @@ class Action(QAction):
                     self.setStatusTip(value)
                 elif key == 'tt':
                     self.setToolTip(value)
+                elif key == 'son':
+                    self.setObjectName(value)
+                elif key == 'vsb':
+                    self.setVisible(value)
 
     @property
     def copyright(self):
@@ -85,9 +116,9 @@ class ShortCut(Action):
     def __init__(self, icon=None, text=None, shortcut=None, trigger=None, parent=None):
         Action.__init__(self)
 
-        self.parent                         = parent
-        # self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        # self.signals = SignalManager(self)
+        self.parent                      = parent
+        self.settings                    = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals                     = SignalManager(self)
 
         if text is not None:
             self.setText(text)

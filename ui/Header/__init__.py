@@ -10,9 +10,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from .Menus         import MainMenuBar, NodeGraphMenuBar, SysTrayIconMenu
-from .Network       import ConnectStatus
-from .Toolbars      import DockToolBar, MainToolBar
+from .MainToolBar       import MainToolBar
+from .ConnectStatus     import ConnectStatus
+from .MainMenuBar       import MainMenuBar
+from .SysTrayIconMenu   import SysTrayIconMenu
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 11/11/2019 - 2:17 PM

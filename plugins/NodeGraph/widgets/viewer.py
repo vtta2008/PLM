@@ -14,11 +14,7 @@ from __future__ import absolute_import, unicode_literals
 import os
 
 from appData import (IN_PORT, OUT_PORT, PIPE_LAYOUT_CURVED, PIPE_STYLE_DASHED, SCENE_AREA, Z_VAL_NODE_WIDGET)
-from plugins.NodeGraph.graphics.node_abstract import AbstractNodeItem
-from plugins.NodeGraph.graphics.node_backdrop import BackdropNodeItem
-from plugins.NodeGraph.graphics.pipe import Pipe
-from plugins.NodeGraph.base.port import PortItem
-from plugins.NodeGraph.graphics.slicer import SlicerPipe
+from plugins.NodeGraph.graphics import AbstractNodeItem, BackdropNodeItem, Pipe, PortItem, SlicerPipe
 from .scene import NodeScene
 from .stylesheet import STYLE_QMENU
 from .tab_search import TabSearchWidget

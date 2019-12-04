@@ -13,7 +13,6 @@ Description:
 # Python
 import sys, math
 
-
 # PyQt5
 from PyQt5.QtCore               import Qt
 
@@ -24,9 +23,9 @@ from toolkits.Widgets           import Widget, AppIcon, LineEdit, GridLayout, To
 
 class Calculator(Widget):
 
-    key = 'Calculator'
-    NumDigitButtons = 10
-    digitButtons = DAMGLIST()
+    key                         = 'Calculator'
+    NumDigitButtons             = 10
+    digitButtons                = DAMGLIST()
 
     def __init__(self, parent=None):
         super(Calculator, self).__init__(parent)
@@ -45,7 +44,7 @@ class Calculator(Widget):
         self.factorSoFar                        = 0.0
         self.waitingForOperand                  = True
 
-        self.display = LineEdit({'txt': '0'})
+        self.display                            = LineEdit({'txt': '0'})
         self.display.setReadOnly(True)
         self.display.setAlignment(Qt.AlignRight)
 
@@ -104,8 +103,8 @@ class Calculator(Widget):
         self.setLayout(self.layout)
 
     def digitClicked(self):
-        clickedButton = self.sender()
-        digitValue = int(clickedButton.text())
+        clickedButton   = self.sender()
+        digitValue      = int(clickedButton.text())
 
         if self.display.text() == '0' and digitValue == 0.0:
             return
@@ -117,9 +116,9 @@ class Calculator(Widget):
         self.display.setText(self.display.text() + str(digitValue))
 
     def unaryOperatorClicked(self):
-        clickedButton = self.sender()
+        clickedButton   = self.sender()
         clickedOperator = clickedButton.text()
-        operand = float(self.display.text())
+        operand         = float(self.display.text())
 
         if clickedOperator == "Sqrt":
             if operand < 0.0:
