@@ -12,11 +12,15 @@ from __future__ import absolute_import, unicode_literals
 import os
 import sys
 
-from . import NodeGraph, BaseNode, BackdropNode, setup_context_menu, PropertiesBinWidget, NodeTreeWidget
+from plugins.NodeGraph import (NodeGraph,
+                               BaseNode,
+                               BackdropNode,
+                               setup_context_menu)
+from plugins.NodeGraph import QtWidgets, QtCore, PropertiesBinWidget, NodeTreeWidget
 
 # import example nodes from the "example_nodes" package
-from plugins.NodeGraph.asset import basic_nodes, widget_nodes
-from PyQt5 import QtWidgets, QtCore
+from plugins.NodeGraph.assets import basic_nodes, widget_nodes
+
 
 class MyNode(BaseNode):
     """
@@ -49,7 +53,7 @@ if __name__ == '__main__':
 
     # viewer widget used for the node graph.
     viewer = graph.viewer()
-    viewer.resize(1100, 800)
+    # viewer.resize(1100, 800)
     viewer.show()
 
 
@@ -59,7 +63,6 @@ if __name__ == '__main__':
     def show_prop_bin(node):
         if not properties_bin.isVisible():
             properties_bin.show()
-
     graph.node_double_clicked.connect(show_prop_bin)
 
 
@@ -112,7 +115,7 @@ if __name__ == '__main__':
 
     # change node icon.
     this_path = os.path.dirname(os.path.abspath(__file__))
-    icon = os.path.join(this_path, 'example_nodes', 'pear.png')
+    icon = os.path.join(this_path, 'assets', 'pear.png')
     bar_node = graph.create_node('com.chantasticvfx.BarNode')
     bar_node.set_icon(icon)
     bar_node.set_name('icon node')
@@ -126,7 +129,6 @@ if __name__ == '__main__':
 
     app.exec_()
 
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 4/12/2019 - 7:14 PM
+# Created by panda on 5/12/2019 - 11:36 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

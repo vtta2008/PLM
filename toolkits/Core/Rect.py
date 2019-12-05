@@ -53,8 +53,8 @@ class RectF(QRectF):
     _name = 'DAMG Rect'
     _copyright = __copyright__()
 
-    def __init__(self, *args, **kwargs):
-        QRectF.__init__(*args, **kwargs)
+    def __init__(self, *args):
+        QRectF.__init__(*args)
 
         self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.signals = SignalManager(self)

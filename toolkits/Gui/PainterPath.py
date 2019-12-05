@@ -28,8 +28,8 @@ class PainterPath(QPainterPath):
     _name                       = 'DAMG Painter Path'
     _copyright                  = __copyright__()
 
-    def __init__(self, *args, **kwargs):
-        QPainterPath.__init__(*args, **kwargs)
+    def __init__(self, *args):
+        QPainterPath.__init__(*args)
 
         self.signals            = SignalManager(self)
         self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)

@@ -28,10 +28,9 @@ class GraphicPathItem(QGraphicsPathItem):
     _name                                   = 'DAMG Graphic View'
     _copyright                              = __copyright__()
 
-    def __init__(self, parent=None):
-        QGraphicsPathItem.__init__()
+    def __init__(self, *args):
+        QGraphicsPathItem.__init__(*args)
 
-        self.parent                         = parent
         self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.signals                        = SignalManager()
 

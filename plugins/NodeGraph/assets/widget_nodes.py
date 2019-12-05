@@ -1,16 +1,5 @@
-# -*- coding: utf-8 -*-
-"""
-
-Script Name: widget_nodes.py
-Author: Do Trinh/Jimmy - 3D artist.
-
-Description:
-
-"""
-# -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-
 from plugins.NodeGraph import BaseNode
+
 
 class DropdownMenuNode(BaseNode):
     """
@@ -79,7 +68,3 @@ class CheckboxNode(BaseNode):
         # create input and output port.
         self.add_input('in', color=(200, 100, 0))
         self.add_output('out', color=(0, 100, 200))
-
-# -------------------------------------------------------------------------------------------------------------
-# Created by panda on 5/12/2019 - 7:17 PM
-# © 2017 - 2018 DAMGteam. All rights reserved
