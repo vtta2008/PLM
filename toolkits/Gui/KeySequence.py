@@ -12,11 +12,12 @@ from __future__ import absolute_import, unicode_literals
 from __buildtins__ import __copyright__
 
 # PyQt5
-from PyQt5.QtGui import QKeySequence
+from PyQt5.QtGui               import QKeySequence
 
 # PLM
-from appData                    import SETTING_FILEPTH, ST_FORMAT
-# from toolkits.Core              import Settings, SignalManager
+from appData                   import SETTING_FILEPTH, ST_FORMAT
+from cores.Settings            import Settings
+from cores.SignalManager       import SignalManager
 
 class KeySequence(QKeySequence):
 
@@ -25,12 +26,11 @@ class KeySequence(QKeySequence):
     _name                       = 'DAMG Painter Path'
     _copyright                  = __copyright__()
 
-    def __init__(self, parent=None):
-        QKeySequence.__init__(self)
+    def __init__(self, *args, **kwargs):
+        QKeySequence.__init__(*args, **kwargs)
 
-        self.parent = parent
-        # self.signals = SignalManager(self)
-        # self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals            = SignalManager(self)
+        self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
     @property
     def copyright(self):

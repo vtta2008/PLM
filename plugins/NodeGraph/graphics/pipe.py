@@ -12,25 +12,19 @@ from __future__ import absolute_import, unicode_literals
 
 import math
 
-from PyQt5.QtCore import Qt, QPointF, QLineF
-from PyQt5.QtGui import QPolygonF, QColor, QPainterPath
+from appData                import (PIPE_DEFAULT_COLOR, PIPE_ACTIVE_COLOR, PIPE_HIGHLIGHT_COLOR, PIPE_DISABLED_COLOR,
+                                    PIPE_LAYOUT_STRAIGHT, PIPE_WIDTH, IN_PORT, OUT_PORT, Z_VAL_PIPE, PIPE_STYLE_DOTTED,
+                                    PIPE_STYLE_DEFAULT, PIPE_STYLE_DASHED)
 
-from appData import (PIPE_DEFAULT_COLOR, PIPE_ACTIVE_COLOR, PIPE_HIGHLIGHT_COLOR, PIPE_DISABLED_COLOR,
-                     PIPE_LAYOUT_STRAIGHT, PIPE_WIDTH, IN_PORT, OUT_PORT, Z_VAL_PIPE,
-                     PIPE_STYLE_DOTTED, PIPE_STYLE_DEFAULT, PIPE_STYLE_DASHED)
+from .port                  import PortItem
 
-PIPE_STYLES = {
-    PIPE_STYLE_DEFAULT: Qt.SolidLine,
-    PIPE_STYLE_DASHED: Qt.DashLine,
-    PIPE_STYLE_DOTTED: Qt.DotLine
-}
+from toolkits.Widgets       import GraphicPathItem
+from toolkits.Gui           import Brush, Pen, Transform, PainterPath
 
+from PyQt5.QtCore           import Qt, QPointF, QLineF
+from PyQt5.QtGui            import QPolygonF, QColor
 
-from plugins.NodeGraph.base.port import PortItem
-from toolkits.Widgets import GraphicPathItem
-from toolkits.Gui import Brush, Pen, Transform
-
-
+PIPE_STYLES                 = {PIPE_STYLE_DEFAULT: Qt.SolidLine, PIPE_STYLE_DASHED: Qt.DashLine, PIPE_STYLE_DOTTED: Qt.DotLine}
 
 class Pipe(GraphicPathItem):
 
@@ -53,8 +47,7 @@ class Pipe(GraphicPathItem):
     def __repr__(self):
         in_name = self._input_port.name if self._input_port else ''
         out_name = self._output_port.name if self._output_port else ''
-        return '{}.Pipe(\'{}\', \'{}\')'.format(
-            self.__module__, in_name, out_name)
+        return '{}.Pipe(\'{}\', \'{}\')'.format(self.__module__, in_name, out_name)
 
     def hoverEnterEvent(self, event):
         self.activate()
@@ -151,7 +144,7 @@ class Pipe(GraphicPathItem):
             return
 
         line = QLineF(pos1, pos2)
-        path = QPainterPath()
+        path = PainterPath()
         path.moveTo(line.x1(), line.y1())
 
         if self.viewer_pipe_layout() == PIPE_LAYOUT_STRAIGHT:

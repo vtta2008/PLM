@@ -60,8 +60,7 @@ class QssFile(FileBase):
     qssPths = dict(dark                     = os.path.join(QSS_DIR, 'darkstyle.qss'),
                    chacoal                  = os.path.join(QSS_DIR, 'chacoal.qss'),
                    bright                   = os.path.join(QSS_DIR, 'brightstyle.qss'),
-                   nuker                    = os.path.join(QSS_DIR, 'nuker.qss'),
-                   )
+                   nuker                    = os.path.join(QSS_DIR, 'nuker.qss'),)
 
     def __init__(self, style):
         super(QssFile, self).__init__()

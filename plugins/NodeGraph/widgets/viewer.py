@@ -13,23 +13,25 @@ from __future__ import absolute_import, unicode_literals
 
 import os
 
-from appData import (IN_PORT, OUT_PORT, PIPE_LAYOUT_CURVED, PIPE_STYLE_DASHED, SCENE_AREA, Z_VAL_NODE_WIDGET)
+from appData                    import (IN_PORT, OUT_PORT, PIPE_LAYOUT_CURVED, PIPE_STYLE_DASHED, SCENE_AREA, Z_VAL_NODE_WIDGET)
 from plugins.NodeGraph.graphics import AbstractNodeItem, BackdropNodeItem, Pipe, PortItem, SlicerPipe
-from .scene import NodeScene
-from .stylesheet import STYLE_QMENU
-from .tab_search import TabSearchWidget
+from .scene                     import NodeScene
+from .stylesheet                import STYLE_QMENU
+from .tab_search                import TabSearchWidget
 
+from toolkits.Widgets           import GraphicView, Menu, RubberBand, MenuBar
+from toolkits.Core              import RectF, Rect
+from toolkits.Gui               import PainterPath
 
-from PyQt5.QtWidgets import QGraphicsView, QMenu, QUndoStack, QRubberBand, QMenuBar, QFileDialog, QMessageBox
-from PyQt5.QtCore import pyqtSignal, QMimeData, QPoint, Qt, QRectF, QRect, QSize, QPointF
-from PyQt5.QtGui import QPainter, QPainterPath
-
+from PyQt5.QtWidgets            import QUndoStack, QFileDialog, QMessageBox
+from PyQt5.QtCore               import pyqtSignal, QMimeData, QPoint, Qt, QSize, QPointF
+from PyQt5.QtGui                import QPainter
 
 ZOOM_MIN = -0.95
 ZOOM_MAX = 2.0
 
 
-class NodeViewer(QGraphicsView):
+class NodeViewer(GraphicView):
 
     moved_nodes = pyqtSignal(dict)
     search_triggered = pyqtSignal(str, tuple)
@@ -52,7 +54,7 @@ class NodeViewer(QGraphicsView):
         self.setRenderHint(QPainter.Antialiasing, True)
         self.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
         self.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
-        self.setViewportUpdateMode(QGraphicsView.FullViewportUpdate)
+        self.setViewportUpdateMode(GraphicView.FullViewportUpdate)
         self.setAcceptDrops(True)
         self.resize(1000, 800)
 
@@ -64,22 +66,22 @@ class NodeViewer(QGraphicsView):
         self._previous_pos = QPoint(self.width(), self.height())
         self._prev_selection = []
         self._node_positions = {}
-        self._rubber_band = QRubberBand(
-            QRubberBand.Rectangle, self
+        self._rubber_band = RubberBand(
+            RubberBand.Rectangle, self
         )
         self._pipe_slicer = SlicerPipe()
         self._pipe_slicer.setVisible(False)
         self.scene().addItem(self._pipe_slicer)
 
         self._undo_stack = QUndoStack(self)
-        self._context_menu = QMenu('main', self)
+        self._context_menu = Menu('main', self)
         self._context_menu.setStyleSheet(STYLE_QMENU)
         self._search_widget = TabSearchWidget(self)
         self._search_widget.search_submitted.connect(self._on_search_submitted)
 
         # workaround fix for shortcuts from the non-native menu actions
         # don't seem to trigger so we create a hidden menu bar.
-        menu_bar = QMenuBar(self)
+        menu_bar = MenuBar(self)
         menu_bar.setNativeMenuBar(False)
         # shortcuts don't work with "setVisibility(False)".
         menu_bar.resize(0, 0)
@@ -123,7 +125,7 @@ class NodeViewer(QGraphicsView):
 
     def _items_near(self, pos, item_type=None, width=20, height=20):
         x, y = pos.x() - width, pos.y() - height
-        rect = QRectF(x, y, width, height)
+        rect = RectF(x, y, width, height)
         items = []
         for item in self.scene().items(rect):
             if not item_type or isinstance(item, item_type):
@@ -197,7 +199,7 @@ class NodeViewer(QGraphicsView):
 
         # show selection selection marquee
         if self.LMB_state and not items:
-            rect = QRect(self._previous_pos, QSize())
+            rect = Rect(self._previous_pos, QSize())
             rect = rect.normalized()
             map_rect = self.mapToScene(rect).boundingRect()
             self.scene().update(map_rect)
@@ -264,9 +266,9 @@ class NodeViewer(QGraphicsView):
             self._set_viewer_pan(pos_x, pos_y)
 
         if self.LMB_state and self._rubber_band.isVisible():
-            rect = QRect(self._origin_pos, event.pos()).normalized()
+            rect = Rect(self._origin_pos, event.pos()).normalized()
             map_rect = self.mapToScene(rect).boundingRect()
-            path = QPainterPath()
+            path = PainterPath()
             path.addRect(map_rect)
             self._rubber_band.setGeometry(rect)
             self.scene().setSelectionArea(path, Qt.IntersectsItemShape)

@@ -33,8 +33,8 @@ class Image(QImage):
 
         self._image                         = image
         self.parent                         = parent
-        # self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], None)
-        # self.signals                        = SignalManager(self)
+        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], None)
+        self.signals                        = SignalManager(self)
 
         if self._image is None:
             print("ImageIsNoneError: {0}: Image should be a name or a path, not None".format(__name__))

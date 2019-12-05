@@ -16,8 +16,9 @@ from __buildtins__ import __copyright__
 from PyQt5.QtGui                import QTransform
 
 # PLM
-from appData                    import SETTING_FILEPTH, ST_FORMAT
-# from toolkits.Core              import Settings, SignalManager
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 
 class Transform(QTransform):
@@ -27,12 +28,11 @@ class Transform(QTransform):
     _name                       = 'DAMG Transform'
     _copyright                  = __copyright__()
 
-    def __init__(self, parent=None):
-        QTransform.__init__(self)
+    def __init__(self, *args, **kwargs):
+        QTransform.__init__(*args, **kwargs)
 
-        self.parent = parent
-        # self.signals = SignalManager(self)
-        # self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals = SignalManager(self)
+        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
     @property
     def copyright(self):

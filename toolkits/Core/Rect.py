@@ -28,11 +28,11 @@ class Rect(QRect):
     _name                       = 'DAMG Rect'
     _copyright                  = __copyright__()
 
-    def __init__(self, pos, size):
-        super(Rect, self).__init__(pos, size)
+    def __init__(self, *args, **kwargs):
+        QRect.__init__(*args, **kwargs)
 
-        # self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        # self.signals            = SignalManager(self)
+        self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals            = SignalManager(self)
 
     @property
     def copyright(self):
@@ -47,7 +47,7 @@ class Rect(QRect):
         self._name = val
 
 
-class QRectF(QRectF):
+class RectF(QRectF):
     Type = 'DAMGRECT'
     key = 'Rect'
     _name = 'DAMG Rect'

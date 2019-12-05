@@ -19,7 +19,7 @@ from plugins.NodeGraph.widgets  import NodeComboBox, NodeLineEdit, NodeCheckBox
 
 from .command                   import PropertyChangedCmd
 from .model                     import NodeModel
-from .port                      import PortItem as Port
+from .port                      import Port
 
 class classproperty(object):
 

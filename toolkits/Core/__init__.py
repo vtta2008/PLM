@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 
 from .File              import File, QssFile
 from .Process           import Process
-from .Rect              import Rect, QRectF
+from .Rect              import Rect, RectF
 from .TextSteam         import TextStream
 
 # -------------------------------------------------------------------------------------------------------------

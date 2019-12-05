@@ -10,25 +10,29 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
+from appData            import (Z_VAL_PIPE,NODE_SEL_COLOR, NODE_SEL_BORDER_COLOR)
+from .node_abstract     import AbstractNodeItem
+from .pipe              import Pipe
+from .port              import PortItem
 
+from toolkits.Widgets   import GraphicObject
+from toolkits.Gui       import Pen, PainterPath, Cursor
+from toolkits.Core      import RectF
 
-from appData import (Z_VAL_PIPE,NODE_SEL_COLOR, NODE_SEL_BORDER_COLOR)
-from .node_abstract import AbstractNodeItem
-from .pipe import Pipe
-from plugins.NodeGraph.base.port import PortItem
-from toolkits.Widgets import GraphicObject
-from PyQt5.QtGui import QCursor, QColor, QPen, QPainterPath
-from PyQt5.QtCore import Qt, QPointF, QRectF
+from PyQt5.QtGui        import QColor
+from PyQt5.QtCore       import Qt, QPointF
 
 
 class BackdropSizer(GraphicObject):
+
+    key                 = 'BackdropSizer'
 
     def __init__(self, parent=None, size=6.0):
         super(BackdropSizer, self).__init__(parent)
         self.setFlag(self.ItemIsSelectable, True)
         self.setFlag(self.ItemIsMovable, True)
         self.setFlag(self.ItemSendsScenePositionChanges, True)
-        self.setCursor(QCursor(Qt.SizeFDiagCursor))
+        self.setCursor(Cursor(Qt.SizeFDiagCursor))
         self.setToolTip('double-click auto resize')
         self._size = size
 
@@ -42,7 +46,7 @@ class BackdropSizer(GraphicObject):
         self.setPos(x, y)
 
     def boundingRect(self):
-        return QRectF(0.5, 0.5, self._size, self._size)
+        return RectF(0.5, 0.5, self._size, self._size)
 
     def itemChange(self, change, value):
         if change == self.ItemPositionChange:
@@ -69,7 +73,7 @@ class BackdropSizer(GraphicObject):
         else:
             color = QColor(*item.color)
             color = color.darker(110)
-        path = QPainterPath()
+        path = PainterPath()
         path.moveTo(rect.topRight())
         path.lineTo(rect.bottomRight())
         path.lineTo(rect.bottomLeft())
@@ -106,7 +110,7 @@ class BackdropNodeItem(AbstractNodeItem):
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             pos = event.scenePos()
-            rect = QRectF(pos.x() - 5, pos.y() - 5, 10, 10)
+            rect = RectF(pos.x() - 5, pos.y() - 5, 10, 10)
             item = self.scene().items(rect)[0]
 
             if isinstance(item, (PortItem, Pipe)):
@@ -143,14 +147,14 @@ class BackdropNodeItem(AbstractNodeItem):
         painter.setPen(Qt.NoPen)
         painter.drawRect(rect)
 
-        top_rect = QRectF(0.0, 0.0, rect.width(), 20.0)
+        top_rect = RectF(0.0, 0.0, rect.width(), 20.0)
         painter.setBrush(QColor(*self.color))
         painter.setPen(Qt.NoPen)
         painter.drawRect(top_rect)
 
         if self.backdrop_text:
             painter.setPen(QColor(*self.text_color))
-            txt_rect = QRectF(
+            txt_rect = RectF(
                 top_rect.x() + 5.0, top_rect.height() + 2.0,
                 rect.width() - 5.0, rect.height())
             painter.setPen(QColor(*self.text_color))
@@ -165,17 +169,17 @@ class BackdropNodeItem(AbstractNodeItem):
             painter.setPen(Qt.NoPen)
             painter.drawRect(rect)
 
-        txt_rect = QRectF(top_rect.x(), top_rect.y() + 1.2, rect.width(), top_rect.height())
+        txt_rect = RectF(top_rect.x(), top_rect.y() + 1.2, rect.width(), top_rect.height())
         painter.setPen(QColor(*self.text_color))
         painter.drawText(txt_rect, Qt.AlignCenter, self.name)
 
-        path = QPainterPath()
+        path = PainterPath()
         path.addRect(rect)
         border_color = self.color
         if self.selected and NODE_SEL_BORDER_COLOR:
             border_color = NODE_SEL_BORDER_COLOR
         painter.setBrush(Qt.NoBrush)
-        painter.setPen(QPen(QColor(*border_color), 1))
+        painter.setPen(Pen(QColor(*border_color), 1))
         painter.drawPath(path)
 
         painter.restore()

@@ -19,7 +19,20 @@ from PyQt5.QtWidgets import QApplication
 PIPE                                = subprocess.PIPE
 STDOUT                              = subprocess.STDOUT
 __envKey__                          = "DAMGTEAM"
-ROOT                                = os.path.abspath(os.getcwd())
+
+def get_root():
+    cwd                             = os.path.abspath(os.getcwd()).replace('\\', '/')
+    dirname                         = os.path.basename(cwd)
+    if not dirname == __envKey__.lower():
+        treeLst                     = cwd.split('/')
+        index                       = treeLst.index(__envKey__.lower()) + 1
+        root                        = '/'.join(treeLst[0:index])
+    else:
+        root                        = cwd
+
+    return root
+
+ROOT                                = get_root()
 
 def singleton(cls):
     instances = {}

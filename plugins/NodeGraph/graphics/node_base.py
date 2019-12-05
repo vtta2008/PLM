@@ -10,18 +10,19 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtCore import Qt
-from PyQt5.QtGui import QFontMetrics, QColor
-from PyQt5.QtWidgets import QGraphicsTextItem
+from cores.errors           import NodeWidgetError
+from .node_abstract         import AbstractNodeItem
+from .port                  import PortItem
 
-from appData import (IN_PORT, OUT_PORT, NODE_WIDTH, NODE_HEIGHT, NODE_ICON_SIZE, ICON_NODE_BASE, NODE_SEL_COLOR, NODE_SEL_BORDER_COLOR,
-                     PORT_FALLOFF, Z_VAL_NODE, Z_VAL_NODE_WIDGET)
-from cores.errors import NodeWidgetError
-from .node_abstract import AbstractNodeItem
-from plugins.NodeGraph.base.port import PortItem
-from toolkits.Widgets import GraphicObject, GraphicPathItem
-from toolkits.Gui import Pen, Pixmap, PainterPath
-from PyQt5.QtCore import QRectF
+from appData                import (IN_PORT, OUT_PORT, NODE_WIDTH, NODE_HEIGHT, NODE_ICON_SIZE, ICON_NODE_BASE, 
+                                    NODE_SEL_COLOR, NODE_SEL_BORDER_COLOR, PORT_FALLOFF, Z_VAL_NODE, Z_VAL_NODE_WIDGET)
+from toolkits.Widgets       import GraphicObject, GraphicPathItem
+from toolkits.Gui           import Pen, Pixmap, PainterPath
+from toolkits.Core          import RectF
+
+from PyQt5.QtCore           import Qt
+from PyQt5.QtGui            import QFontMetrics, QColor
+from PyQt5.QtWidgets        import QGraphicsTextItem
 
 
 class XDisabledItem(GraphicObject):
@@ -55,7 +56,7 @@ class XDisabledItem(GraphicObject):
         bg_color = QColor(*self.color)
         bg_color.setAlpha(100)
         bg_margin = -0.5
-        bg_rect = QRectF(dis_rect.left() - (bg_margin / 2),
+        bg_rect = RectF(dis_rect.left() - (bg_margin / 2),
                          dis_rect.top() - (bg_margin / 2),
                          dis_rect.width() + bg_margin,
                          dis_rect.height() + bg_margin)
@@ -75,8 +76,8 @@ class XDisabledItem(GraphicObject):
         for p in point_pos:
             p.setX(p.x() - (point_size / 2))
             p.setY(p.y() - (point_size / 2))
-            point_rect = QRectF(
-                p, QRectF(point_size, point_size))
+            point_rect = RectF(
+                p, RectF(point_size, point_size))
             painter.drawEllipse(point_rect)
 
         if self.text:
@@ -89,14 +90,14 @@ class XDisabledItem(GraphicObject):
             font_height = font_metrics.height()
             txt_w = font_width * 1.25
             txt_h = font_height * 2.25
-            text_bg_rect = QRectF((rect.width() / 2) - (txt_w / 2),
+            text_bg_rect = RectF((rect.width() / 2) - (txt_w / 2),
                                   (rect.height() / 2) - (txt_h / 2),
                                   txt_w, txt_h)
             painter.setPen(Pen(QColor(255, 0, 0), 0.5))
             painter.setBrush(QColor(*self.color))
             painter.drawRoundedRect(text_bg_rect, 2, 2)
 
-            text_rect = QRectF((rect.width() / 2) - (font_width / 2),
+            text_rect = RectF((rect.width() / 2) - (font_width / 2),
                                (rect.height() / 2) - (font_height / 2),
                                txt_w * 2, font_height * 2)
 
@@ -127,7 +128,7 @@ class NodeItem(AbstractNodeItem):
 
         painter.save()
         bg_border = 1.0
-        rect = QRectF(0.5 - (bg_border / 2),
+        rect = RectF(0.5 - (bg_border / 2),
                       0.5 - (bg_border / 2),
                       self._width + bg_border,
                       self._height + bg_border)
@@ -147,7 +148,7 @@ class NodeItem(AbstractNodeItem):
             painter.setBrush(QColor(*NODE_SEL_COLOR))
             painter.drawRoundedRect(rect, radius, radius)
 
-        label_rect = QRectF(rect.left() + (radius / 2),
+        label_rect = RectF(rect.left() + (radius / 2),
                             rect.top() + (radius / 2),
                             self._width - (radius / 1.25),
                             28)
@@ -160,7 +161,7 @@ class NodeItem(AbstractNodeItem):
         if self.selected and NODE_SEL_BORDER_COLOR:
             border_width = 1.2
             border_color = QColor(*NODE_SEL_BORDER_COLOR)
-        border_rect = QRectF(rect.left() - (border_width / 2),
+        border_rect = RectF(rect.left() - (border_width / 2),
                              rect.top() - (border_width / 2),
                              rect.width() + border_width,
                              rect.height() + border_width)

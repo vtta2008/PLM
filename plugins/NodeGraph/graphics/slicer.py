@@ -11,9 +11,11 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 from appData                import Z_VAL_NODE_WIDGET, PIPE_SLICER_COLOR, LINE_SOLID, LINE_DASH
+
+from toolkits.Core          import RectF
 from toolkits.Gui           import Pen, PainterPath
 from toolkits.Widgets       import GraphicPathItem
-from PyQt5.QtCore           import QRectF
+
 from PyQt5.QtGui            import QColor
 from PyQt5.QtCore           import QPointF
 
@@ -34,14 +36,14 @@ class SlicerPipe(GraphicPathItem):
         painter.save()
         painter.setRenderHint(painter.Antialiasing, True)
 
-        font = painter.font()
+        font                = painter.font()
         font.setPointSize(12)
         painter.setFont(font)
-        text = 'slice'
-        text_x = painter.fontMetrics().width(text) / 2
-        text_y = painter.fontMetrics().height() / 1.5
-        text_pos = QPointF(p1.x() - text_x, p1.y() - text_y)
-        text_color = QColor(*PIPE_SLICER_COLOR)
+        text                = 'slice'
+        text_x              = painter.fontMetrics().width(text) / 2
+        text_y              = painter.fontMetrics().height() / 1.5
+        text_pos            = QPointF(p1.x() - text_x, p1.y() - text_y)
+        text_color          = QColor(*PIPE_SLICER_COLOR)
         text_color.setAlpha(80)
         painter.setPen(Pen(text_color, 1.5, LINE_SOLID))
         painter.drawText(text_pos, text)
@@ -52,10 +54,10 @@ class SlicerPipe(GraphicPathItem):
         painter.setPen(Pen(color, 1.5, LINE_SOLID))
         painter.setBrush(color)
 
-        rect = QRectF(p1.x() - offset, p1.y() - offset, size, size)
+        rect = RectF(p1.x() - offset, p1.y() - offset, size, size)
         painter.drawEllipse(rect)
 
-        rect = QRectF(p2.x() - offset, p2.y() - offset, size, size)
+        rect = RectF(p2.x() - offset, p2.y() - offset, size, size)
         painter.drawEllipse(rect)
         painter.restore()
 

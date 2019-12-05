@@ -16,8 +16,9 @@ from __buildtins__ import __copyright__
 from PyQt5.QtGui                       import QFont
 
 # PLM
-# from appData                           import SETTING_FILEPTH, ST_FORMAT
-# from toolkits.Core                     import Settings, SignalManager
+from appData                                import SETTING_FILEPTH, ST_FORMAT
+from cores.Settings                         import Settings
+from cores.SignalManager                    import SignalManager
 
 class Font(QFont):
 
@@ -30,8 +31,8 @@ class Font(QFont):
         QFont.__init__(font, fontsize, fontAttr)
 
         self.parent                     = parent
-        # self.signals                    = SignalManager(self)
-        # self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals                    = SignalManager(self)
+        self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
     @property
     def copyright(self):

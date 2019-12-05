@@ -19,7 +19,7 @@ from .command                           import (NodeAddedCmd, NodeRemovedCmd, No
 from .factory                           import NodeFactory
 from .menu                              import Menu
 from .model                             import NodeGraphModel
-from .port                              import PortItem
+from .port                              import Port
 from .model                             import NodeModel
 from .node                              import BaseNode
 from plugins.NodeGraph.widgets.viewer   import NodeViewer
@@ -37,7 +37,7 @@ class NodeGraph(QObject):
     #: signal triggered when a node is double clicked and emits the node.
     node_double_clicked = pyqtSignal(NodeModel)
     #: signal for when a node has been connected emits (source port, target port).
-    port_connected = pyqtSignal(PortItem, PortItem)
+    port_connected = pyqtSignal(Port, Port)
     #: signal for when a node property has changed emits (node, property name, property value).
     property_changed = pyqtSignal(NodeModel, str, object)
     #: signal for when drop data has been added to the graph.
@@ -281,8 +281,7 @@ class NodeGraph(QObject):
 
         self._node_factory.register_node(node, alias)
 
-    def create_node(self, node_type, name=None, selected=True, color=None,
-                    text_color=None, pos=None):
+    def create_node(self, node_type, name=None, selected=True, color=None, text_color=None, pos=None):
 
         NodeCls = self._node_factory.create_node_instance(node_type)
         if NodeCls:

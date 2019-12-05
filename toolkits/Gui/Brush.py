@@ -16,9 +16,9 @@ from __buildtins__ import __copyright__
 from PyQt5.QtGui                       import QBrush
 
 # PLM
-# from appData                           import SETTING_FILEPTH, ST_FORMAT
-# from cores.Settings                    import Settings
-# from cores.SignalManager               import SignalManager
+from appData                           import SETTING_FILEPTH, ST_FORMAT
+from cores.Settings                    import Settings
+from cores.SignalManager               import SignalManager
 
 class Brush(QBrush):
 
@@ -27,12 +27,11 @@ class Brush(QBrush):
     _name                               = 'DAMG Brush'
     _copyright                          = __copyright__()
 
-    def __init__(self, parent=None):
-        QBrush.__init__(self)
+    def __init__(self, *args, **kwargs):
+        QBrush.__init__(*args, **kwargs)
 
-        self.parent                     = parent
-        # self.signals                    = SignalManager(self)
-        # self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals                    = SignalManager(self)
+        self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
 
     @property
     def copyright(self):
