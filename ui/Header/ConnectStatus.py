@@ -64,7 +64,7 @@ class ConnectStatus(GridLayout):
 
         try:
             r = requests.get(__localServer__)
-        except ConnectionError:
+        except requests.exceptions.ConnectionError:
             if not self._allowLocalMode:
                 MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                 sys.exit()

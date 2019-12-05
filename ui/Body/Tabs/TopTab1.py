@@ -62,13 +62,15 @@ class TopTab1(Widget):
 
         i = 1
         a = 0
+        h = 1
+        w = 1
         for t in tasks:
             if i > 4:
                 i = 1
-                a = a + 2
+                a = a + h
 
             task = TaskInfo(t)
-            self.layout.addWidget(task, a, i, 2 ,1)
+            self.layout.addWidget(task, a, i, h ,w)
             self.tasks.append(task)
             i += 1
 

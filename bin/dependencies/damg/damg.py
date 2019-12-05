@@ -29,8 +29,6 @@ from functools import partial
 from PyQt5.QtCore   import (pyqtSignal, pyqtSlot, QObject, pyqtProperty, QThreadPool, QThread, QRunnable, QTimer,
                             QDateTime, QDate)
 
-__copyright__   = "Copyright (c) 2017 - 2019 Trinh Do & Duong Minh Duc"
-
 # -------------------------------------------------------------------------------------------------------------
 STEP = 1
 START = 0

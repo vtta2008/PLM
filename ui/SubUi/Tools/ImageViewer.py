@@ -25,7 +25,7 @@ from PyQt5.QtWidgets        import QMainWindow, QApplication, QGraphicsScene, QG
 
 from toolkits.Widgets       import AppIcon, Widget
 from utils                  import get_screen_resolution
-from appData                import DB_PTH
+from appData                import LOCAL_DB
 
 # Plt
 
@@ -148,7 +148,7 @@ class ImageInitUI(ViewerWindow):
     def __init__(self, key=None, parent=None):
         super(ImageInitUI, self).__init__(parent)
 
-        self.dbfile = DB_PTH
+        self.dbfile = LOCAL_DB
         self.dbdir = os.path.dirname(self.dbfile)
 
         if not os.path.isfile(self.dbfile):

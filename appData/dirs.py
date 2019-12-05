@@ -108,15 +108,13 @@ WIDGETS_DIR                 = os.path.join(TOOLKIT_DIR, 'Widgets')
 
 UI_DIR                      = os.path.join(ROOT_DIR, 'ui')
 UI_BASE_DIR                 = os.path.join(UI_DIR, 'base')
-BODY_DIR                    = os.path.join(UI_DIR, 'Body')
-TABS_DIR                    = os.path.join(BODY_DIR, 'Tabs')
+
 
 FOOTER_DIR                  = os.path.join(UI_DIR, 'Footer')
-
+BODY_DIR                    = os.path.join(UI_DIR, 'Body')
+TABS_DIR                    = os.path.join(BODY_DIR, 'Tabs')
 HEADER_DIR                  = os.path.join(UI_DIR, 'Header')
-MENU_DIR                    = os.path.join(HEADER_DIR, 'Menus')
-NETWORK_DIR                 = os.path.join(HEADER_DIR, 'Network')
-TOOLBAR_DIR                 = os.path.join(HEADER_DIR, 'Toolbars')
+
 
 SUBUI_DIR                   = os.path.join(UI_DIR, 'SubUi')
 FUNCS_DIR                   = os.path.join(SUBUI_DIR, 'Funcs')

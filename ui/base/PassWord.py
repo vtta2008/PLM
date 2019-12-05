@@ -38,9 +38,9 @@ class PassWord(GroupGrid):
 
     def update_password(self):
 
-        old_pass        = text_to_hex(self.old_pass.text())
-        new_pass        = text_to_hex(self.new_pass.text())
-        confirm_pass    = text_to_hex(self.confirm_pass.text())
+        old_pass        = text_to_hex(self.oldPW.text())
+        new_pass        = text_to_hex(self.newPW.text())
+        confirm_pass    = text_to_hex(self.cfgPW.text())
 
         if len(old_pass) == 0 or len(new_pass) == 0 or len(confirm_pass) == 0:
             MessageBox(self, title='Failed', level='critical', message=PW_BLANK, btn='ok')

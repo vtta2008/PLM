@@ -34,14 +34,6 @@ def get_root():
 
 ROOT                                = get_root()
 
-def singleton(cls):
-    instances = {}
-    def getinstance():
-        if cls not in instances:
-            instances[cls] = cls()
-        return instances[cls]
-    return getinstance
-
 class Modes(dict):
     key = 'Modes'
 

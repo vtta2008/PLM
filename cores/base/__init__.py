@@ -10,11 +10,13 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
+# config
+
 from .BaseType          import BaseType
 from .SignalBase        import SignalBase
 from .Dateline          import DateLine
 
-# functions
+
 
 # widgets
 

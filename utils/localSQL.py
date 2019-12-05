@@ -17,7 +17,7 @@ import datetime, time
 import sqlite3 as lite
 
 # PLM
-from appData                        import DB_PTH, DB_ATTRIBUTE_TYPE
+from appData                        import LOCAL_DB, DB_ATTRIBUTE_TYPE
 from bin.dependencies.damg.damg import DAMG, DAMGTIMER, DAMGDATE, DAMGLIST, DAMGDICT
 
 def get_datetime():
@@ -36,7 +36,7 @@ def getTime():
 class LocalDatabase(DAMG):
 
     key                                 = 'LocalDatabase'
-    _dbPath                             = DB_PTH
+    _dbPath                             = LOCAL_DB
     conn                                = lite.connect(_dbPath)
     conn.text_factory                   = str
     cur                                 = conn.cursor()

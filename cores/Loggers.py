@@ -15,7 +15,7 @@ from __future__ import unicode_literals
 import sys, os, logging, json, enum, traceback, linecache, pdb
 
 # PLM
-from appData            import LOG_PTH, LOG_FORMAT, DT_FORMAT
+from appData            import LOCAL_LOG, LOG_FORMAT, DT_FORMAT
 
 # -------------------------------------------------------------------------------------------------------------
 
@@ -136,7 +136,7 @@ class Loggers(logging.Logger):
 
     key = 'PLM super logger'
 
-    def __init__(self, parent=None, level="debug", fmt=LOG_FORMAT['fullOpt'], dtfmt=DT_FORMAT['fullOpt'], filemode='a+', filename=LOG_PTH):
+    def __init__(self, parent=None, level="debug", fmt=LOG_FORMAT['fullOpt'], dtfmt=DT_FORMAT['fullOpt'], filemode='a+', filename=LOCAL_LOG):
         super(Loggers, self).__init__(parent)
 
         self._parent = parent

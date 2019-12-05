@@ -8,14 +8,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
 import os
 
-from .dirs                  import DAMG_LOGO_DIR, PLM_LOGO_DIR, CFG_DIR, SETTING_DIR, DB_DIR, LOG_DIR
-
-DAMG_LOGO_32                = os.path.join(DAMG_LOGO_DIR, '32x32.png')
-PLM_LOGO_32                 = os.path.join(PLM_LOGO_DIR, '32x32.png')
+from .dirs                  import CFG_DIR, SETTING_DIR, DB_DIR, LOG_DIR
 
 appIconCfg                  = os.path.join(CFG_DIR, 'appIcon.cfg')
 webIconCfg                  = os.path.join(CFG_DIR, 'webIcon.cfg')
@@ -30,8 +26,8 @@ USER_SETTING                = os.path.join(SETTING_DIR, 'user.ini')
 FORMAT_SETTING              = os.path.join(SETTING_DIR, 'format.ini')
 UNIX_SETTING                = os.path.join(SETTING_DIR, 'unix.ini')
 
-DB_PTH                      = os.path.join(DB_DIR, 'local.db')
-LOG_PTH                     = os.path.join(LOG_DIR, 'PLM.logs')
+LOCAL_DB                    = os.path.join(DB_DIR, 'local.db')
+LOCAL_LOG                   = os.path.join(LOG_DIR, 'PLM.logs')
 
 SETTING_FILEPTH = dict( app = APP_SETTING, user = USER_SETTING, unix = UNIX_SETTING, format = FORMAT_SETTING)
 
