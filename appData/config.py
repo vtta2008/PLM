@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # Python
-import platform, subprocess, json
+import platform, subprocess, json, os
 
 try:
     from importlib import reload
@@ -25,12 +25,12 @@ API_MINIMUM = 0.64
 from PyQt5                          import __file__ as pyqt_path
 
 from appData                        import metadatas as m
-from appData.dirs                   import *
-from appData.pths                   import *
+from .dirs                          import *
+from .pths                          import *
 from appData.text                   import *
-from appData.keys                   import *
-from appData.settingFormats         import *
-from appData.settingOptions         import *
+from .keys                          import *
+from .settingFormats                import *
+from .settingOptions                import *
 from bin.data.localSQL              import SQLS
 
 # -------------------------------------------------------------------------------------------------------------
@@ -98,6 +98,8 @@ __description__         = m.__description__
 __readme__              = m.__readme__
 __modules__             = m.__modules__
 __pkgsReq__             = m.__pkgsReq__
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Config directories """

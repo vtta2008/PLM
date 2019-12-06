@@ -90,3 +90,40 @@ tooltips_missing = [
 N_MESSAGES_TEXT = "{quantity} showLayout_new messages"
 
 SERVER_CONNECT_FAIL = " Connection to server failed. PLM can not run without connecting to server. Please try again "
+
+TEMPLATE_QRC_HEADER = '''
+<RCC warning="File created programmatically. All changes made in this file will be lost!">
+  <qresource prefix="{resource_prefix}">
+'''
+
+TEMPLATE_QRC_FILE = '    <file>rc/{fname}</file>'
+
+TEMPLATE_QRC_FOOTER = '''
+  </qresource>
+  <qresource prefix="{style_prefix}">
+      <file>style.qss</file>
+  </qresource>
+</RCC>
+'''
+
+HEADER_SCSS = '''// ---------------------------------------------------------------------------
+//
+//    File created programmatically
+//
+//    WARNING! All changes made in this file will be lost!
+//
+//----------------------------------------------------------------------------
+'''
+
+HEADER_QSS = '''/* ---------------------------------------------------------------------------
+
+    Created by the qtsass compiler
+
+    WARNING! All changes made in this file will be lost!
+
+--------------------------------------------------------------------------- */
+'''
+
+# -------------------------------------------------------------------------------------------------------------
+# Created by panda on 23/10/2019 - 2:48 AM
+# © 2017 - 2018 DAMGteam. All rights reserved

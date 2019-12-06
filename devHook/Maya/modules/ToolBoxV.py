@@ -161,7 +161,7 @@ class LightWidget(QtWidgets.QWidget):
 
         r, g, b = [c * 255 for c in color]
 
-        self.colorBtn.setStyleSheet('background-color: rgba(%s,,%s,%s,1.0)' % (r, g, b))
+        self.colorBtn.fixStyleSheet('background-color: rgba(%s,,%s,%s,1.0)' % (r, g, b))
 
     def setColorLight(self):
 

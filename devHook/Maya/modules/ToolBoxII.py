@@ -212,7 +212,7 @@ class ControllerManager(QtWidgets.QWidget):
 
         assert len(color) == 3, "You must provide a list of 3 colors"
         r, g, b = [c * 255 for c in color]
-        self.colorPlate.setStyleSheet('background-color: rgba(%s,%s,%s,1.0)' % (r, g, b))
+        self.colorPlate.fixStyleSheet('background-color: rgba(%s,%s,%s,1.0)' % (r, g, b))
 
     def setColor(self):
         nurbsIndexColor = self.nurbs.overrideColor.get()
@@ -1241,7 +1241,7 @@ class ToolBoxII(QtWidgets.QWidget):
                     button = QtWidgets.QPushButton()
                     button.setMinimumSize(mid2['size'][3], mid2['size'][4])
                     button.setMaximumSize(mid2['size'][3], mid2['size'][4])
-                    button.setStyleSheet('background-color: rgba(%s,%s,%s,1.0)' % (r, g, b))
+                    button.fixStyleSheet('background-color: rgba(%s,%s,%s,1.0)' % (r, g, b))
                     button.clicked.connect(partial(self.setColor, index))
                     self.scrollColorLayout.addWidget(button, x, y)
                 y += 1

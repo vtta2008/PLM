@@ -67,7 +67,7 @@ class TabSearchWidget(QtWidgets.QLineEdit):
         self.setCompleter(self._completer)
 
         popup = self._completer.popup()
-        popup.setStyleSheet(STYLE_TABSEARCH_LIST)
+        popup.fixStyleSheet(STYLE_TABSEARCH_LIST)
         popup.clicked.connect(self._on_search_submitted)
         self.returnPressed.connect(self._on_search_submitted)
 

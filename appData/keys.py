@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # Python
-import os
+import os, sys
 
 # --------------------------------------------------------------------------------------------------------------
 """ Autodesk _data """
@@ -195,6 +195,32 @@ START_FILE_KEY          = sorted([i for i in START_FILE if not i == 'Command Pro
 EXECUTING_KEY           = ['Exit', 'CleanPyc', 'ReConfig', 'Debug', 'Command Prompt', 'Showall'] + EDIT_KEY + STYLESHEET_KEY
 
 IGNORE_ICON_NAME        = ['Widget', 'TopTab1', 'TopTab2', 'TopTab3', 'ItemWidget']
+
+# Binding config
+QT_BINDINGS = ['PyQt5', 'PySide2', 'pyqt']
+"""list: values of all Qt bindings to import."""
+
+QT_ABSTRACTIONS = ['qtpy', 'pyqtgraph', 'Qt']
+"""list: values of all Qt abstraction layers to import."""
+
+QT5_IMPORT_API = ['QtCore', 'QtGui', 'QtWidgets', 'QtWebEngineWidgets', 'QtWebKitWidgets']
+"""list: which subpackage to import for Qt5 API."""
+
+QT_API_VALUES = ['pyqt', 'pyqt5', 'pyside2']
+"""list: values for QT_API environment variable used by QtPy."""
+
+QT_LIB_VALUES = ['PyQt', 'PyQt5', 'PySide2']
+"""list: values for PYQTGRAPH_QT_LIB environment variable used by PyQtGraph."""
+
+QT_BINDING = 'Not set or nonexistent'
+"""str: Qt binding in use."""
+
+QT_ABSTRACTION = 'Not set or nonexistent'
+"""str: Qt abstraction layer in use."""
+
+IMAGE_BLACKLIST = ['base_palette']
+
+PY2 = sys.version[0] == '2'
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/08/2018 - 2:30 AM

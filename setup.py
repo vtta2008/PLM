@@ -94,7 +94,8 @@ setup(name             = appname,
       keywords         = keywords,
       options          = options,
       zip_safe         = True,
-      executables      = [Executable(main_python_file, base=base, copyright=COPYRIGHT,icon = 'logo.ico',), ]
+      executables      = [Executable(main_python_file, base=base, copyright=COPYRIGHT,icon = 'logo.ico',), ],
+      entry_points     = {"console_scripts": ["damgteam=damgteam.__main__:main"]},
       )
 
 # -------------------------------------------------------------------------------------------------------------

@@ -10,7 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __envKey__, Application, configManager, ConfigManager, ROOT, Modes
+from __buildtins__ import __envKey__, configManager, ConfigManager, ROOT, Modes
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
@@ -19,7 +19,7 @@ import os, sys, requests, ctypes
 from ctypes                             import wintypes
 
 # PyQt5
-from PyQt5.QtCore                       import pyqtSlot
+from PyQt5.QtCore                       import pyqtSlot, QCoreApplication
 
 # PLM
 from appData                            import (__localServer__, __organization__, StateNormal, StateMax, StateMin,
@@ -36,6 +36,7 @@ from cores.SignalManager                import SignalManager
 from cores.EventManager                 import EventManager
 from cores.ThreadManager                import ThreadManager
 
+from toolkits.Application               import Application
 from toolkits.Widgets                   import LogoIcon, MessageBox
 from toolkits.Gui                       import Cursor
 
@@ -58,6 +59,8 @@ class DAMGTEAM(Application):
     def __init__(self):
         super(DAMGTEAM, self).__init__(sys.argv)
 
+        sys.path.insert(0, ROOT)
+        self.default_parser()
         self.setWindowIcon(LogoIcon("Logo"))                                                            # Setup icon
         self.setOrganizationName(__organization__)
         self.setApplicationName(__appname__)
@@ -68,6 +71,7 @@ class DAMGTEAM(Application):
         self.setQuitOnLastWindowClosed(False)
 
         self.cursor                     = Cursor(self)
+        self.appStyle                   = StyleSheet(self)
 
         lpBuffer                        = wintypes.LPWSTR()
         AppUserModelID                  = ctypes.windll.shell32.GetCurrentProcessExplicitAppUserModelID
@@ -82,6 +86,7 @@ class DAMGTEAM(Application):
         self.settings                   = Settings(filename=SETTING_FILEPTH['app'], fm=ST_FORMAT['ini'], parent=self)
         self.signals                    = SignalManager(self)
         self.settings._settingEnable    = True
+
 
         self.appInfo                    = self.dataConfig.appInfo                                    # Configuration qssPths
         self.set_styleSheet('dark')
@@ -156,7 +161,7 @@ class DAMGTEAM(Application):
                     else:
                         self.showLayout('SignIn', "show")
 
-        sys.exit(self.exec_())
+        self.startLoop()
 
     @pyqtSlot(str, name='openBrowser')
     def openBrowser(self, url):
@@ -407,9 +412,9 @@ class DAMGTEAM(Application):
         return self._login
 
     def set_styleSheet(self, style):
-        self.setStyleSheet(" ")
-        self._styleSheet = StyleSheet(style).stylesheet
-        self.setStyleSheet(self._styleSheet)
+
+        self.appStyle.getQssFile(style)
+        self.appStyle.changeStyleSheet(style)
         self.setSetting('styleSheet', style, self.key)
 
     def signInEvent(self):

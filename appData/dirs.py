@@ -69,6 +69,12 @@ HOUDINI_DIR                 = os.path.join(HOOK_DIR, 'Houdini')
 IMG_DIR                     = os.path.join(ROOT_DIR, 'imgs')
 AVATAR_DIR                  = os.path.join(IMG_DIR, 'avatar')
 PIC_DIR                     = os.path.join(IMG_DIR, 'pics')
+
+STYLE_DIR                   = os.path.join(IMG_DIR, 'styles')
+STYLE_IMAGE_DIR             = os.path.join(STYLE_DIR, 'images')
+STYLE_RC_DIR                = os.path.join(STYLE_DIR, 'rc')
+STYLE_SVG_DIR               = os.path.join(STYLE_DIR, 'svg')
+
 TAG_DIR                     = os.path.join(IMG_DIR, 'tags')
 MAYA_ICON_DIR               = os.path.join(IMG_DIR, 'maya')
 
@@ -98,6 +104,7 @@ SCRIPTS_DIR                 = os.path.join(ROOT_DIR, 'scripts')
 QSS_DIR                     = os.path.join(SCRIPTS_DIR, 'qss')
 JSON_DIR                    = os.path.join(SCRIPTS_DIR, 'json')
 RCS_DIR                     = os.path.join(SCRIPTS_DIR, 'rcs')
+SCSS_DIR                    = os.path.join(SCRIPTS_DIR, 'scss')
 
 TEST_DIR                    = os.path.join(ROOT_DIR, 'test')
 

@@ -14,7 +14,6 @@ from __future__ import absolute_import, unicode_literals
 
 # Python
 import os, sys, subprocess, json
-from PyQt5.QtWidgets import QApplication
 
 PIPE                                = subprocess.PIPE
 STDOUT                              = subprocess.STDOUT
@@ -255,7 +254,7 @@ else:
     if preSetting.checks.report:
         print('EnvironmentVariableError: {0} is not set to {1}, please try again.'.format(__envKey__, ROOT))
     sys.exit()
-# print(2)
+
 
 def __checkTmpPth__():
     import platform
@@ -340,125 +339,6 @@ def __copyright__():
         print(_copyright)
     return _copyright
 
-# print(3)
-
-class Application(QApplication):
-
-    Type                            = 'DAMGAPPLICATION'
-    key                             = 'Application'
-    _name                           = 'DAMG Application'
-    _envKey                         = __envKey__
-    _root                           = ROOT
-
-    _copyright                      = __copyright__()
-
-    _login                          = False
-
-    trackRecieveSignal             = preSetting.tracks.recieveSignal
-    trackBlockSignal               = preSetting.tracks.blockSignal
-    trackCommand                   = preSetting.tracks.command
-    trackRegistLayout              = preSetting.tracks.registLayout
-    trackJobsTodo                  = preSetting.tracks.jobsToDo
-    trackShowLayoutError           = preSetting.tracks.showLayoutError
-    trackEvents                    = preSetting.tracks.events
-
-    timeReset                       = 5
-
-    ignoreIDs                       = __ignoreIDs__()
-    toBuildUis                      = __tobuildUis__()
-    toBuildCmds                     = __tobuildCmds__()
-
-    TODO                            = dict(toBuildUis = toBuildUis, toBuildCmds = toBuildCmds)
-
-    showLayout_old                  = []
-    executing_old                   = []
-    setSetting_old                  = []
-    openBrowser_old                 = []
-    sysNotify_old                   = []
-
-    _styleSheet                     = None
-
-    _allowLocalMode                 = True
-
-
-    def checkSignalRepeat(self, old, data):
-        new = [i for i in data]
-
-        if len(new) == 0:
-            repeat = False
-        elif len(new) == len(old):
-            repeat = True
-            for i in range(len(new)):
-                if not new[i] == old[i]:
-                    repeat = False
-                    break
-        else:
-            repeat = False
-
-        old = new
-        return old, repeat
-
-    def runEvent(self):
-        return sys.exit(self.exec_())
-
-    def setRecieveSignal(self, bool):
-        preSetting.tracks.recieveSignal = bool
-        self.trackRecieveSignal = bool
-
-    def setBlockSignal(self, bool):
-        preSetting.tracks.blockSignal = bool
-        self.trackBlockSignal = bool
-
-    def setTrackCommand(self, bool):
-        preSetting.tracks.command = bool
-        self.trackCommand = bool
-
-    def setRegistLayout(self, bool):
-        preSetting.tracks.registLayout = bool
-        self.trackRegistLayout = bool
-
-    def setJobsTodo(self, bool):
-        preSetting.tracks.jobsToDo = bool
-        self.trackJobsTodo = bool
-
-    def setShowLayout(self, bool):
-        preSetting.tracks.showLayoutError = bool
-        self.trackShowLayoutError = bool
-
-    def setTrackEvent(self, bool):
-        preSetting.tracks.events = bool
-        self.trackEvents = bool
-
-    def countDownReset(self, limit):
-        self.count += 1
-        if self.count == limit:
-            self.showLayout_old     = []
-            self.executing_old      = []
-            self.setSetting_old     = []
-            self.openBrowser_old    = []
-            self.sysNotify_old      = []
-
-    @property
-    def login(self):
-        return self._login
-
-    @property
-    def copyright(self):
-        return self._copyright
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, val):
-        self._name                  = val
-
-    @login.setter
-    def login(self, val):
-        self._login                 = val
-
-# print(4)
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 6:55 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

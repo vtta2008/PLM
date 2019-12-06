@@ -133,15 +133,15 @@ class SplitJoint(QtWidgets.QDialog):
     def buildUI(self):
         self.fjButton = QtWidgets.QPushButton("Set")
         self.fjButton.setMaximumWidth(50)
-        self.fjButton.setStyleSheet("QtWidgets.QPushButton {background-color: rgb (70,90,100)}")
+        self.fjButton.fixStyleSheet("QtWidgets.QPushButton {background-color: rgb (70,90,100)}")
 
         self.sjButton = QtWidgets.QPushButton("Set")
         self.sjButton.setMaximumWidth(50)
-        self.sjButton.setStyleSheet("QtWidgets.QPushButton {background-color: rgb (70,90,100)}")
+        self.sjButton.fixStyleSheet("QtWidgets.QPushButton {background-color: rgb (70,90,100)}")
 
         self.splitButton = QtWidgets.QPushButton("Split")
         self.splitButton.setMaximumWidth(150)
-        self.splitButton.setStyleSheet("QtWidgets.QPushButton {background-color: rgb (70,90,100)}")
+        self.splitButton.fixStyleSheet("QtWidgets.QPushButton {background-color: rgb (70,90,100)}")
 
         self.splitCountName = QtWidgets.QLineEdit()
         self.splitCountName.setMaximumWidth(50)

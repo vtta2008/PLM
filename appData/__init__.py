@@ -19,7 +19,7 @@ __envKey__              = c.__envKey__
 PLMAPPID                = c.PLMAPPID
 VERSION                 = c.VERSION
 COPYRIGHT               = c.COPYRIGHT
-margin = 5
+margin                  = 5
 
 # -------------------------------------------------------------------------------------------------------------
 """ DAMG metadata """
@@ -77,3 +77,36 @@ __readme__              = c.__readme__
 __modules__             = c.__modules__
 __pkgsReq__             = c.__pkgsReq__
 
+# from . import dirs
+# from bin import DAMGDICT
+#
+# ignoreKey = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', ' __file__', ' __cached__',
+#              '__builtins__', ' os', ' __envKey__']
+#
+# from __buildtins__ import ROOT
+#
+#
+#
+# class Dirs(DAMGDICT):
+#
+#     key = 'Dirs'
+#
+#     _check = False
+#
+#     def __init__(self):
+#         super(Dirs, self).__init__()
+#
+#         keys = [k for k in vars(dirs).keys() if k not in ignoreKey]
+#         for k, v in vars(dirs).items():
+#             if k in keys:
+#                 self.add(k, v)
+#
+#         print(self)
+#
+#         ext = 'cfg'
+#         with open(os.path.join(ROOT, 'appData', '.config', '{0}.{1}'.format(self.__class__.__name__, ext)), 'w') as f:
+#             json.dump(self, f, indent=4)
+#             f.close()
+#         self.check = True
+#
+# a = Dirs()
