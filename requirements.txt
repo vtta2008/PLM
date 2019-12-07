@@ -5,7 +5,6 @@ deprecate
 msgpack
 winshell
 pyqtwebengine
-pandas
 wheel
 argparse
 green

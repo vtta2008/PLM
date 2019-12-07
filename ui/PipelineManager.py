@@ -11,7 +11,7 @@ from __future__ import absolute_import, unicode_literals
 
 # PLM
 from appData                            import __homepage__, dockB, __appname__
-from toolkits.Widgets                   import MainWindow, GroupBox, Widget, GridLayout, LogoIcon
+from toolkits.Widgets                   import MainWindow, Widget, GridLayout, LogoIcon
 from .Header                            import MainToolBar, MainMenuBar, ConnectStatus
 from .Body                              import TopTab, BotTab, Notification
 from .Footer                            import Footer, MainStatusBar
@@ -48,34 +48,25 @@ class PipelineManager(MainWindow):
         self.mainMenuBar                = MainMenuBar(self.actionManager, self)
         self.mainToolBar                = MainToolBar(self.actionManager, self)
         self.connectStatus              = ConnectStatus(self)
-        self.notification               = Notification(self.threadManager, self)
-
-        self.mainMenuSec                = GroupBox("Main Menu"      , self.mainMenuBar      , "qmainLayout" , self)
-        self.connectStatusSec           = GroupBox("Connect Status" , self.connectStatus    , "autoGrid"    , self)
-        self.mainToolBarSec             = GroupBox("Tool Bar"       , self.mainToolBar      , "qmainLayout" , self)
-        self.notifiSec                  = GroupBox("Notification"   , self.notification     , "autoGrid"    , self)
-
-        self.mainMenuSec.key            = "MainMenuSection"
-        self.mainToolBarSec.key         = "MainToolBarSection"
-        self.connectStatusSec.key       = "ConnectStatusSection"
-        self.notifiSec.key              = "NotificationSection"
 
         self.topTabUI                   = TopTab(self.buttonManager, self)
         self.botTabUI                   = BotTab(self)
+        self.notification               = Notification(self.threadManager, self)
+
         self.footer                     = Footer(self.buttonManager, self.threadManager, self)
         self.statusBar                  = MainStatusBar(self)
 
         self.layouts =  [self.mainMenuBar, self.mainToolBar      , self.connectStatus    , self.notification,
-                         self.mainMenuSec, self.mainToolBarSec   , self.connectStatusSec , self.notifiSec,
                          self.topTabUI   , self.botTabUI         , self.footer           , self.statusBar, ]
 
-        self.layout.addWidget(self.mainMenuSec, 0, 0, 1, 7)
-        self.layout.addWidget(self.connectStatusSec, 0, 7, 1, 2)
-        self.layout.addWidget(self.mainToolBarSec, 1, 0, 1, 9)
+        self.layout.addWidget(self.mainMenuBar, 0, 0, 1, 7)
+        self.layout.addWidget(self.mainToolBar, 1, 0, 1, 9)
+        self.layout.addWidget(self.connectStatus, 0, 7, 1, 2)
+
 
         self.layout.addWidget(self.topTabUI, 2, 0, 4, 9)
         self.layout.addWidget(self.botTabUI, 6, 0, 3, 6)
-        self.layout.addWidget(self.notifiSec, 6, 6, 3, 3)
+        self.layout.addWidget(self.notification, 6, 6, 3, 3)
 
         self.layout.addWidget(self.footer, 9, 0, 1, 9)
         self.setStatusBar(self.statusBar)
@@ -89,11 +80,6 @@ class PipelineManager(MainWindow):
         dock.signals.openBrowser.connect(self.signals.openBrowser)
 
         self.addDockWidget(pos, dock)
-
-    def showEvent(self, event):
-        for layout in [self.mainMenuSec, self.mainMenuSec, self.connectStatusSec, self.notifiSec]:
-            if layout.isHidden():
-                self.signals.emit('showLayout', layout.key, 'show')
 
     @property
     def mode(self):

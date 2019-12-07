@@ -14,7 +14,6 @@ from __buildtins__ import __copyright__
 # PyQt5
 from PyQt5.QtWidgets                        import QToolBar
 
-from appData                                import SETTING_FILEPTH, ST_FORMAT
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
 
@@ -33,8 +32,8 @@ class ToolBar(QToolBar):
         QToolBar.__init__(self)
 
         self.parent                         = parent
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.signals = SignalManager(self)
+        self.settings                       = Settings(self)
+        self.signals                        = SignalManager(self)
         self.setWindowTitle(self._name)
 
     def add_action(self, action):
@@ -49,43 +48,6 @@ class ToolBar(QToolBar):
             return self.settings.initValue(key, self.key)
         else:
             return self.settings.initValue(key, self.key, decode)
-
-    def closeEvent(self, event):
-        if self.settings._settingEnable:
-            geometry = self.saveGeometry()
-            self.setValue('geometry', geometry)
-
-        if __name__ == '__main__':
-            self.setValue('showLayout', 'hide')
-            self.hide()
-        else:
-            self.setValue('showLayout', 'hide')
-            self.signals.emit('showLayout', self.key, 'hide')
-
-    def hideEvent(self, event):
-        if self.settings._settingEnable:
-            geometry = self.saveGeometry()
-            self.setValue('geometry', geometry)
-
-        if __name__ == '__main__':
-            self.setValue('showLayout', 'hide')
-            self.hide()
-        else:
-            self.setValue('showLayout', 'hide')
-            self.signals.emit('showLayout', self.key, 'hide')
-
-    def showEvent(self, event):
-
-        geometry = self.getValue('geometry', bytes('', 'utf-8'))
-        if geometry is not None:
-            self.restoreGeometry(geometry)
-
-        if __name__ == '__main__':
-            self.setValue('showLayout', 'show')
-            self.show()
-        else:
-            self.setValue('showLayout', 'show')
-            self.signals.emit('showLayout', self.key, 'show')
 
     @property
     def copyright(self):

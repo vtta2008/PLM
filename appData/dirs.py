@@ -16,12 +16,16 @@ import os
 # PLM
 from .metadatas             import __envKey__
 
+cfgdir                      = 'applocal'
+# cfgdir                      = 'appdata'
+
 # -------------------------------------------------------------------------------------------------------------
 """ Directory local system """
 
 PROGRAM86                   = os.getenv('PROGRAMFILES(X86)')
 PROGRAM64                   = os.getenv('PROGRAMW6432')
 LOCALAPPDATA                = os.getenv('LOCALAPPDATA')
+USERAPPDATA                 = os.getenv('APPDATA')
 PROGRAMDATA                 = os.getenv('PROGRAMDATA')
 DESKTOP_DIR                 = os.path.join(os.environ["HOMEPATH"], "desktop")
 
@@ -33,22 +37,27 @@ RAWS_DATA_DIR               = os.path.join(APP_DATA_DIR, 'raws')
 DOCUMENTATION_DIR           = os.path.join(APP_DATA_DIR, 'documentations')
 TMP_DIR                     = os.path.join(APP_DATA_DIR, '.tmp')
 
+if cfgdir == 'applocal':
+    CFG_DIR                 = os.path.join(APP_DATA_DIR, '.config')
+elif cfgdir == 'appdata':
+    CFG_DIR                 = os.path.join(USERAPPDATA, '.config')
+else:
+    CFG_DIR                 = APP_DATA_DIR
 
-CFG_DIR                     = os.path.join(APP_DATA_DIR, '.config')
 SETTING_DIR                 = CFG_DIR
 LOG_DIR                     = CFG_DIR
 TASK_DIR                    = os.path.join(CFG_DIR, 'task')
 TEAM_DIR                    = os.path.join(CFG_DIR, 'team')
 ORG_DIR                     = os.path.join(CFG_DIR, 'organisation')
-CONFIG_DAMG_DIR             = os.path.join(ORG_DIR, 'damgteam')
+CFG_DAMG_DIR                = os.path.join(ORG_DIR, 'damgteam')
 
 PRJ_DIR                     = os.path.join(CFG_DIR, 'project')
-CONFIG_PLM_DIR              = os.path.join(PRJ_DIR, 'plm')
+CFG_PLM_DIR                 = os.path.join(PRJ_DIR, 'plm')
 
 CACHE_DIR                   = os.path.join(CFG_DIR, '.cache')
-NODEGRAPH_DIR               = CFG_DIR
-PREF_DIR                    = CFG_DIR
-USER_PREF_DIR               = CFG_DIR
+CFG_NODE_DIR                = CFG_DIR
+CFG_PREF_DIR                = CFG_DIR
+CFG_USER_DIR                = CFG_DIR
 
 BIN_DIR                     = os.path.join(ROOT_DIR, 'bin')
 DATA_DIR                    = os.path.join(BIN_DIR, 'data')
@@ -77,8 +86,10 @@ STYLE_SVG_DIR               = os.path.join(STYLE_DIR, 'svg')
 
 TAG_DIR                     = os.path.join(IMG_DIR, 'tags')
 MAYA_ICON_DIR               = os.path.join(IMG_DIR, 'maya')
+NODE_ICON_DIR               = os.path.join(IMG_DIR, 'node')
 
 APP_ICON_DIR                = os.path.join(IMG_DIR, 'icons')
+ICON_DIR_12                 = os.path.join(APP_ICON_DIR, 'x12')
 ICON_DIR_16                 = os.path.join(APP_ICON_DIR, 'x16')
 ICON_DIR_24                 = os.path.join(APP_ICON_DIR, 'x24')
 ICON_DIR_32                 = os.path.join(APP_ICON_DIR, 'x32')
@@ -125,10 +136,8 @@ HEADER_DIR                  = os.path.join(UI_DIR, 'Header')
 
 SUBUI_DIR                   = os.path.join(UI_DIR, 'SubUi')
 FUNCS_DIR                   = os.path.join(SUBUI_DIR, 'Funcs')
-INFO_DIR                    = os.path.join(SUBUI_DIR, 'Info')
 PROJECT_DIR                 = os.path.join(SUBUI_DIR, 'Projects')
 SETTINGS_DIR                = os.path.join(SUBUI_DIR, 'Settings')
-
 TOOLS_DIR                   = os.path.join(SUBUI_DIR, 'Tools')
 
 UTILS_DIR                   = os.path.join(ROOT_DIR, 'utils')

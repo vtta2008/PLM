@@ -9,19 +9,26 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __copyright__, __envKey__, ROOT, preSetting, __ignoreIDs__, __tobuildCmds__, __tobuildUis__
+from __buildtins__ import __copyright__, __envKey__, ROOT, preSetting
 """ Import """
 
 # Python
-import sys, argparse, helpdev
+import sys, argparse, helpdev, ctypes
+from ctypes                         import wintypes
 
 # PyQt5
 from PyQt5.QtWidgets                import QApplication
 from PyQt5.QtGui                    import QPalette
 
 # PLM
-from appData import __version__
-
+from appData                        import __version__, __appname__, __organization__, __website__
+from cores.Loggers                  import Loggers
+from cores.SignalManager            import SignalManager
+from cores.Settings                 import Settings
+from cores.StyleSheet               import StyleSheet
+from .Core                          import Process
+from .Gui                           import Cursor
+from .Widgets                       import LogoIcon
 
 class Application(QApplication):
 
@@ -35,35 +42,62 @@ class Application(QApplication):
 
     _login                          = False
 
-    trackRecieveSignal             = preSetting.tracks.recieveSignal
-    trackBlockSignal               = preSetting.tracks.blockSignal
-    trackCommand                   = preSetting.tracks.command
-    trackRegistLayout              = preSetting.tracks.registLayout
-    trackJobsTodo                  = preSetting.tracks.jobsToDo
-    trackShowLayoutError           = preSetting.tracks.showLayoutError
-    trackEvents                    = preSetting.tracks.events
-
-    timeReset                       = 5
-
-    ignoreIDs                       = __ignoreIDs__()
-    toBuildUis                      = __tobuildUis__()
-    toBuildCmds                     = __tobuildCmds__()
-
-    TODO                            = dict(toBuildUis = toBuildUis, toBuildCmds = toBuildCmds)
-
-    showLayout_old                  = []
-    executing_old                   = []
-    setSetting_old                  = []
-    openBrowser_old                 = []
-    sysNotify_old                   = []
-
     _styleSheet                     = None
-
     _allowLocalMode                 = True
 
     parser = argparse.ArgumentParser(description="damgteam helper. Use the option --all to report bugs",
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
     pallete = QPalette()
+
+
+    def __init__(self):
+        super(Application, self).__init__(sys.argv)
+
+        sys.path.insert(0, ROOT)
+        self.default_parser()
+        self.setWindowIcon(LogoIcon("Logo"))  # Setup icon
+        self.setOrganizationName(__organization__)
+        self.setApplicationName(__appname__)
+        self.setOrganizationDomain(__website__)
+        self.setApplicationVersion(__version__)
+        self.setApplicationDisplayName(__appname__)
+        self.setCursorFlashTime(1000)
+        self.setQuitOnLastWindowClosed(False)
+        self.setDesktopSettingsAware(False)
+
+        self.logger                     = Loggers(self.__class__.__name__)
+        self.settings                   = Settings(self)
+        self.signals                    = SignalManager(self)
+        self.cursor                     = Cursor(self)
+        self.appStyle                   = StyleSheet(self)
+
+        self.process                    = self.getAppProcess()
+
+        self.settings._settingEnable    = True
+        self.appInfo                    = self.dataConfig.appInfo  # Configuration qssPths
+
+    def set_styleSheet(self, style):
+        self.appStyle.getQssFile(style)
+        self.appStyle.changeStyleSheet(style)
+        self.settings.initSetValue('styleSheet', style, self.key)
+
+    def getAppProcess(self):
+        proc = Process(parent=self)
+        proc.setStandardInputFile(proc.nullDevice())
+        proc.setStandardOutputFile(proc.nullDevice())
+        proc.setStandardErrorFile(proc.nullDevice())
+        self.process = proc
+        return self.process
+
+    def getAppID(self):
+        lpBuffer            = wintypes.LPWSTR()
+        AppUserModelID      = ctypes.windll.shell32.GetCurrentProcessExplicitAppUserModelID
+        appID               = lpBuffer.value
+        ctypes.windll.kernel32.LocalFree(lpBuffer)
+        AppUserModelID(ctypes.cast(ctypes.byref(lpBuffer), wintypes.LPWSTR))
+        self.logger.info('Get AppID: {0}'.format(appID))
+
+        return appID
 
     def default_parser(self):
         self.parser.add_argument('-i', '--information', action='store_true', help="Show information about environment")
@@ -73,23 +107,6 @@ class Application(QApplication):
         self.parser.add_argument('-v', '--version', action='version', version='v{}'.format(__version__))
         self.parser.add_argument('-all', '--all', action='store_true', help="Show all information options at once")
         return self.parser
-
-    def checkSignalRepeat(self, old, data):
-        new = [i for i in data]
-
-        if len(new) == 0:
-            repeat = False
-        elif len(new) == len(old):
-            repeat = True
-            for i in range(len(new)):
-                if not new[i] == old[i]:
-                    repeat = False
-                    break
-        else:
-            repeat = False
-
-        old = new
-        return old, repeat
 
     def startLoop(self):
         # parsing arguments from command line
@@ -113,46 +130,8 @@ class Application(QApplication):
         if args.dependencies or args.all:
             info.update(helpdev.check_python_packages(packages='helpdev,damgteam'))
 
-        helpdev.print_output(info)
-
+        self.appID                      = self.getAppID()
         return sys.exit(self.exec_())
-
-    def setRecieveSignal(self, bool):
-        preSetting.tracks.recieveSignal = bool
-        self.trackRecieveSignal = bool
-
-    def setBlockSignal(self, bool):
-        preSetting.tracks.blockSignal = bool
-        self.trackBlockSignal = bool
-
-    def setTrackCommand(self, bool):
-        preSetting.tracks.command = bool
-        self.trackCommand = bool
-
-    def setRegistLayout(self, bool):
-        preSetting.tracks.registLayout = bool
-        self.trackRegistLayout = bool
-
-    def setJobsTodo(self, bool):
-        preSetting.tracks.jobsToDo = bool
-        self.trackJobsTodo = bool
-
-    def setShowLayout(self, bool):
-        preSetting.tracks.showLayoutError = bool
-        self.trackShowLayoutError = bool
-
-    def setTrackEvent(self, bool):
-        preSetting.tracks.events = bool
-        self.trackEvents = bool
-
-    def countDownReset(self, limit):
-        self.count += 1
-        if self.count == limit:
-            self.showLayout_old     = []
-            self.executing_old      = []
-            self.setSetting_old     = []
-            self.openBrowser_old    = []
-            self.sysNotify_old      = []
 
     @property
     def login(self):
@@ -173,6 +152,35 @@ class Application(QApplication):
     @login.setter
     def login(self, val):
         self._login                 = val
+
+    def setRecieveSignal(self, bool):
+        preSetting.tracks.recieveSignal = bool
+        self.commander.trackRecieveSignal = bool
+
+    def setBlockSignal(self, bool):
+        preSetting.tracks.blockSignal = bool
+        self.commander.trackBlockSignal = bool
+
+    def setTrackCommand(self, bool):
+        preSetting.tracks.command = bool
+        self.commander.trackCommand = bool
+
+    def setRegistLayout(self, bool):
+        preSetting.tracks.registLayout = bool
+        self.commander.trackRegistLayout = bool
+
+    def setJobsTodo(self, bool):
+        preSetting.tracks.jobsToDo = bool
+        self.commander.trackJobsTodo = bool
+
+    def setShowLayout(self, bool):
+        preSetting.tracks.showLayoutError = bool
+        self.commander.trackShowLayoutError = bool
+
+    def setTrackEvent(self, bool):
+        preSetting.tracks.events = bool
+        self.commander.trackEvents = bool
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/12/2019 - 8:49 AM

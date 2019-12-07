@@ -16,7 +16,6 @@ from __buildtins__ import __copyright__
 from PyQt5.QtGui                import QTransform
 
 # PLM
-from appData                                import SETTING_FILEPTH, ST_FORMAT
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
 
@@ -31,8 +30,8 @@ class Transform(QTransform):
     def __init__(self, *args, **kwargs):
         QTransform.__init__(*args, **kwargs)
 
-        self.signals = SignalManager(self)
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.signals            = SignalManager(self)
+        self.settings           = Settings(self)
 
     @property
     def copyright(self):

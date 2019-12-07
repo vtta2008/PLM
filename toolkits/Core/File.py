@@ -15,7 +15,7 @@ import os
 
 from PyQt5.QtCore                           import QFile
 
-from appData                                import SETTING_FILEPTH, ST_FORMAT, QSS_DIR
+from appData                                import QSS_DIR
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
 
@@ -30,8 +30,8 @@ class FileBase(QFile):
     def __init__(self):
         super(FileBase, self).__init__()
 
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.signals = SignalManager(self)
+        self.settings                       = Settings(self)
+        self.signals                        = SignalManager(self)
 
     @property
     def copyright(self):

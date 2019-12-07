@@ -11,8 +11,8 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 import datetime, time
-from bin.dependencies.damg.damg import DAMGDICT, DAMGLIST, DAMG
-from appData import layoutTypes
+from bin                    import DAMGDICT, DAMGLIST, DAMG
+from appData                import layoutTypes
 
 
 class InspectLayout(DAMG):
@@ -68,11 +68,11 @@ class InspectLayout(DAMG):
 
 class RegistryLayout(DAMGDICT):
 
-    awaitingSlots = DAMGLIST()
-    layout_names = DAMGLIST()
-    layout_ids = DAMGLIST()
-    layout_datetimes = DAMGLIST()
-    layout_keys = DAMGLIST()
+    awaitingSlots           = DAMGLIST()
+    layout_names            = DAMGLIST()
+    layout_ids              = DAMGLIST()
+    layout_datetimes        = DAMGLIST()
+    layout_keys             = DAMGLIST()
 
     def __init__(self):
         super(RegistryLayout, self).__init__(self)
@@ -109,7 +109,6 @@ class RegistryLayout(DAMGDICT):
         self.layout_datetimes.append(str(datetime.datetime.fromtimestamp(time.time()).strftime('%H:%M:%S|%d.%m.%Y')))
         self.layout_keys.append(layout.key)
 
-        # print("Registing layout: {0} : {1}".format(layout.key, layout))
         self[key] = layout
         return True
 

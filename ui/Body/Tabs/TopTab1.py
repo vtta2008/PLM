@@ -53,8 +53,8 @@ class TopTab1(Widget):
         self.taskGrp.setMaximumWidth(100)
         self.tabFilter.setMaximumWidth(100)
 
-        self.layout.addWidget(self.taskGrp, 0, 0, 2, 1)
-        self.layout.addWidget(self.tabFilter, 2, 0, 2, 1)
+        self.layout.addWidget(self.taskGrp, 0, 0, 1, 1)
+        self.layout.addWidget(self.tabFilter, 1, 0, 1, 1)
 
     def update_tasks(self):
 

@@ -78,25 +78,25 @@ class LayoutManager(DAMG):
             cb = tbcbs[i+1]
             tb = tbs[i]
             cb.stateChanged.connect(tb.setVisible)
-        tbcbs[0].stateChanged.connect(self.mainUI.mainToolBarSec.setVisible)
+        tbcbs[0].stateChanged.connect(self.mainUI.mainToolBar.setVisible)
 
         for i in range(1, len(mns)):
             cb = mncbs[i+1]
             mn = mns[i]
             cb.stateChanged.connect(mn.setEnabled)
-        mncbs[0].stateChanged.connect(self.mainUI.mainMenuSec.setVisible)
+        mncbs[0].stateChanged.connect(self.mainUI.mainMenuBar.setVisible)
 
         for i in range(len(cns)):
             cb = cncbs[i+1]
             lb = cns[i]
             cb.stateChanged.connect(lb.setVisible)
-        cncbs[0].stateChanged.connect(self.mainUI.connectStatusSec.setVisible)
+        cncbs[0].stateChanged.connect(self.mainUI.connectStatus.setVisible)
 
         for i in range(len(nts)):
             cb = ntcbs[i+1]
             lb = nts[i]
             cb.stateChanged.connect(lb.setVisible)
-        ntcbs[0].stateChanged.connect(self.mainUI.notifiSec.setVisible)
+        ntcbs[0].stateChanged.connect(self.mainUI.notification.setVisible)
 
         for layout in self.layouts():
             try:

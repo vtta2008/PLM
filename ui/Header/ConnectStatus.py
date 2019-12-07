@@ -18,12 +18,12 @@ import requests, sys
 from appData                    import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
 from bin                        import DAMGTIMER, DAMGLIST
 from ui.base                    import Conection
-from toolkits.Widgets           import GridLayout, Label, MessageBox
+from toolkits.Widgets           import GroupGrid, Label, MessageBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """
 
-class ConnectStatus(GridLayout):
+class ConnectStatus(GroupGrid):
 
     key                         = 'ConnectStatus'
     _allowLocalMode             = True
@@ -33,7 +33,7 @@ class ConnectStatus(GridLayout):
     labels                      = DAMGLIST()
 
     def __init__(self, parent=None):
-        super(ConnectStatus, self).__init__(parent)
+        super(ConnectStatus, self).__init__(parent=parent)
 
         self.parent             = parent
         self._server            = self.getServer()
@@ -47,9 +47,9 @@ class ConnectStatus(GridLayout):
         self.internet_status()
         self.mode_status()
 
-        self.addWidget(self.serverIcon, 0, 0, 1, 1)
-        self.addWidget(self.internetIcon, 0, 1, 1, 1)
-        self.addWidget(self.modeStatus, 0, 2, 1, 1)
+        self.layout.addWidget(self.serverIcon, 0, 0, 1, 1)
+        self.layout.addWidget(self.internetIcon, 0, 1, 1, 1)
+        self.layout.addWidget(self.modeStatus, 0, 2, 1, 1)
 
         self.labels.appendList([self.serverIcon, self.internetIcon, self.modeStatus])
 

@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 
 import datetime
 
-from toolkits.Widgets           import LCDNumber, GridLayout, Label
+from toolkits.Widgets           import LCDNumber, GroupGrid, Label
 from bin                        import DAMGTIMER
 
 class DigitalClock(LCDNumber):
@@ -61,16 +61,16 @@ class DigitalDate(LCDNumber):
         text = date.toString('dd/MM/yy')
         self.display(text)
 
-class Notification(GridLayout):
+class Notification(GroupGrid):
 
-    _currentTask = None
-    _duedate = 'dd:MM:yy'
-    _duetime = 'hh:mm:ss'
-    _countdown = 'hh:mm:ss'
+    _currentTask            = None
+    _duedate                = 'dd:MM:yy'
+    _duetime                = 'hh:mm:ss'
+    _countdown              = 'hh:mm:ss'
     labels = []
 
     def __init__(self, threadManager, parent=None):
-        super(Notification, self).__init__(parent)
+        super(Notification, self).__init__(parent=parent)
 
         self.parent         = parent
         self.threadManager  = threadManager
@@ -102,13 +102,13 @@ class Notification(GridLayout):
         self.labels         = [self.usage_cpu, self.usage_ram, self.usage_gpu, self.usage_disk, self.weekNumber,
                                self.timeClock, self.dateClock]
 
-        self.addWidget(self.usage_cpu, 0, 0, 1, 1)
-        self.addWidget(self.usage_ram, 0, 1, 1, 1)
-        self.addWidget(self.usage_gpu, 1, 0, 1, 1)
-        self.addWidget(self.usage_disk, 1, 1, 1, 1)
-        self.addWidget(self.weekNumber, 2, 0, 1, 2)
-        self.addWidget(self.timeClock, 3, 0, 1, 1)
-        self.addWidget(self.dateClock, 3, 1, 1, 1)
+        self.layout.addWidget(self.usage_cpu, 0, 0, 1, 1)
+        self.layout.addWidget(self.usage_ram, 0, 1, 1, 1)
+        self.layout.addWidget(self.usage_gpu, 1, 0, 1, 1)
+        self.layout.addWidget(self.usage_disk, 1, 1, 1, 1)
+        self.layout.addWidget(self.weekNumber, 2, 0, 1, 2)
+        self.layout.addWidget(self.timeClock, 3, 0, 1, 1)
+        self.layout.addWidget(self.dateClock, 3, 1, 1, 1)
 
     def setcurrentTask(self, task):
         self._currentTask = task

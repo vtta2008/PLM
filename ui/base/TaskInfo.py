@@ -12,12 +12,13 @@ from __future__ import absolute_import, unicode_literals
 
 import os, json
 
-from PyQt5.QtCore import QDate, QTime
+from PyQt5.QtCore                               import QDate, QTime
+from PyQt5.QtGui                                import QFont
 
-from toolkits.Widgets import GroupBox, VBoxLayout, Label
-from utils import LocalDatabase
-from cores.base import DateLine
-from cores.Task import Task
+from toolkits.Widgets                           import GroupBox, VBoxLayout, Label
+from utils                                      import LocalDatabase
+from cores.base                                 import DateLine
+from cores.Task                                 import Task
 
 
 
@@ -86,7 +87,7 @@ class TaskInfo(GroupBox):
         self.layout.addWidget(self.task_countdown)
 
         self.setLayout(self.layout)
-        self.setMaximumSize(100, 100)
+        self.setMaximumSize(100, 120)
 
     def update_countdown(self, val):
         if self.task.status == 'Overdued':

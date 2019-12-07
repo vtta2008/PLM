@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Pen.py
+Script Name: UndoCommand.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -10,28 +10,26 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 from __buildtins__ import __copyright__
-""" Import """
 
-# PyQt5
-from PyQt5.QtGui                       import QPen
 
-# PLM
-from cores.Settings                    import Settings
-from cores.SignalManager               import SignalManager
+from PyQt5.QtWidgets        import QUndoCommand
+from cores.Loggers          import Loggers
+from cores.Settings         import Settings
+from cores.SignalManager    import SignalManager
 
-class Pen(QPen):
+class UndoCommand(QUndoCommand):
 
-    Type                                = 'DAMGPEN'
-    key                                 = 'Pen'
-    _name                               = 'DAMG Pen'
-    _copyright                          = __copyright__()
+    Type                    = 'DAMGCOMMAND'
+    key                     = 'UndoCommand'
+    _name                   = 'DAMG Undo Command'
+    _copyright              = __copyright__()
 
-    def __init__(self, *args, **kwargs):
-        QPen.__init__(*args, **kwargs)
+    def __init__(self):
+        QUndoCommand.__init__(self)
 
-        self.signals                    = SignalManager(self)
-        self.settings                   = Settings(self)
-
+        self.logger         = Loggers(self.key)
+        self.SignalManager  = SignalManager(self)
+        self.Settings       = Settings(self)
 
     @property
     def copyright(self):
@@ -45,7 +43,6 @@ class Pen(QPen):
     def name(self, newName):
         self._name                      = newName
 
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 3/12/2019 - 3:17 AM
+# Created by panda on 6/12/2019 - 2:38 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

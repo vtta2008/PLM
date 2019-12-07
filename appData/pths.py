@@ -13,11 +13,22 @@ import os
 
 from .dirs                  import CFG_DIR, SETTING_DIR, DB_DIR, LOG_DIR, QSS_DIR, RCS_DIR, SCSS_DIR
 
-appIconCfg                  = os.path.join(CFG_DIR, 'appIcon.cfg')
+evnInfoCfg                  = os.path.join(CFG_DIR, 'envs.cfg')
+appIconCfg                  = os.path.join(CFG_DIR, 'icons.cfg')
+avatarCfg                   = os.path.join(CFG_DIR, 'avatars.cfg')
+logoCfg                     = os.path.join(CFG_DIR, 'logo.cfg')
+mayaIconCfg                 = os.path.join(CFG_DIR, 'mayaIcons.cfg')
 webIconCfg                  = os.path.join(CFG_DIR, 'webIcon.cfg')
-logoIconCfg                 = os.path.join(CFG_DIR, 'logoIcon.cfg')
-pyEnvCfg                    = os.path.join(CFG_DIR, 'envKey.cfg')
-mainConfig                  = os.path.join(CFG_DIR, 'main.cfg')
+nodeIconCfg                 = os.path.join(CFG_DIR, 'nodeIcons.cfg')
+picCfg                      = os.path.join(CFG_DIR, 'pics.cfg')
+pyPackageCfg                = os.path.join(CFG_DIR, 'pyPackage.cfg')
+mainCfg                     = os.path.join(CFG_DIR, 'main.cfg')
+appsCfg                     = os.path.join(CFG_DIR, 'installed.cfg')
+pyEnvCfg                    = os.path.join(CFG_DIR, 'envs.cfg')
+dirCfg                      = os.path.join(CFG_DIR, 'dirs.cfg')
+pthCfg                      = os.path.join(CFG_DIR, 'paths.cfg')
+platformCfg                 = os.path.join(CFG_DIR, 'platform.cfg')
+userCfg                     = os.path.join(CFG_DIR, 'user.cfg')
 PLMconfig                   = os.path.join(CFG_DIR, 'PLM.cfg')
 sceneGraphCfg               = os.path.join(CFG_DIR, 'sceneGraph.cfg')
 

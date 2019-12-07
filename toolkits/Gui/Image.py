@@ -16,7 +16,6 @@ import os
 from PyQt5.QtGui                            import QImage, QPixmap
 
 from utils                                  import get_avatar_image, get_app_icon, get_logo_icon, get_tag_icon
-from appData                                import SETTING_FILEPTH, ST_FORMAT
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
 
@@ -33,7 +32,7 @@ class Image(QImage):
 
         self._image                         = image
         self.parent                         = parent
-        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], None)
+        self.settings                       = Settings(None)
         self.signals                        = SignalManager(self)
 
         if self._image is None:
@@ -75,7 +74,7 @@ class Pixmap(QPixmap):
         self.mode                       = mode
         self.image                      = image
         self.parent                     = parent
-        self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], None)
+        self.settings                   = Settings(None)
         self.signals                    = SignalManager(self)
 
         if not self.image is None:

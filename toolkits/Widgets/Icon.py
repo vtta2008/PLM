@@ -17,8 +17,7 @@ from PyQt5.QtGui                            import QIcon
 from PyQt5.QtCore                           import QSize
 
 from utils                                  import data_handler, get_app_icon, get_tag_icon, get_logo_icon
-from appData                                import appIconCfg, IGNORE_ICON_NAME, SETTING_FILEPTH, ST_FORMAT
-from appData                                import SETTING_FILEPTH, ST_FORMAT
+from appData                                import appIconCfg, IGNORE_ICON_NAME
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
 
@@ -35,8 +34,8 @@ class Icon(QIcon):
         QIcon.__init__(self)
 
         self.parent                         = parent
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], None)
-        self.signals = SignalManager(self)
+        self.settings                       = Settings(self)
+        self.signals                        = SignalManager(self)
 
     @property
     def copyright(self):

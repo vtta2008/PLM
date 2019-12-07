@@ -15,7 +15,6 @@ from PyQt5.QtWidgets                        import QSystemTrayIcon
 
 from .Icon                                  import AppIcon
 from cores.Loggers                          import Loggers
-from appData                                import SETTING_FILEPTH, ST_FORMAT
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
 
@@ -30,8 +29,8 @@ class SystemTrayIcon(QSystemTrayIcon):
     def __init__(self, parent=None):
         QSystemTrayIcon.__init__(self)
         self.parent                         = parent
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.signals = SignalManager(self)
+        self.settings                       = Settings(self)
+        self.signals                        = SignalManager(self)
         self.logger                         = Loggers(self.__class__.__name__)
 
         self.setIcon(AppIcon(32, self.key))

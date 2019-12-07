@@ -36,8 +36,8 @@ class EventManager(DAMGDICT):
     def __init__(self, parent=None):
         DAMGDICT.__init__(self)
 
-        self.parent = parent
-        self.wheelEvent = WheelEvent()
+        self.parent         = parent
+        self.wheelEvent     = WheelEvent()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 5:25 PM

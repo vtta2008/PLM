@@ -18,35 +18,41 @@ import os
 from PyQt5.QtCore                       import QSettings, pyqtSlot
 
 # PLM
-from appData                            import INI
+from appData                            import INI, SETTING_FILEPTH
 
 
 
 class Settings(QSettings):
 
-    Type = 'DAMGSETTING'
-    key = 'Settings'
-    _name = 'DAMG Setting'
+    Type                                = 'DAMGSETTING'
+    key                                 = 'Settings'
+    _name                               = 'DAMG Setting'
 
-    _settingEnable = False
-    _checkSettingAble = False
-    _trackSetting = False
-    _trackFixKey = False
-    _trackDeleteKey = False
+    _settingEnable                      = False
+    _checkSettingAble                   = False
+    _trackSetting                       = False
+    _trackFixKey                        = False
+    _trackDeleteKey                     = False
 
-    _groups = None
-    _settingFile = None
-    _data = dict()
+    _groups                             = None
+    _settingFile                        = None
+    _data                               = dict()
 
-    keyFixedOld = '  '
+    modes                               = SETTING_FILEPTH
+    _mode                               = 'app'
 
-    def __init__(self, filename=None, fm=INI, parent=None):
+    keyFixedOld                         = '  '
+
+    def __init__(self, parent=None, filename=SETTING_FILEPTH['app'], fm=INI):
         QSettings.__init__(self, filename, fm)
 
-        self.parent                 = parent
-        self._format                = fm
-        self._settingFile           = filename
-        self._groups                = self.childGroups()
+        self.parent                     = parent
+        if not self.parent is None:
+            self.changeParent(self.parent)
+
+        self._format                    = fm
+        self._settingFile               = filename
+        self._groups                    = self.childGroups()
         self.cleanKey()
 
     def cleanKey(self):
@@ -76,6 +82,7 @@ class Settings(QSettings):
         self.parent             = parent
         self.key                = '{0}_{1}'.format(self.parent.key, self.key)
         self._name              = self.key.replace('_', ' ')
+        self.update()
 
     def initSetValue(self, key=None, value=None, grp=None):
         if self._settingEnable:
@@ -134,6 +141,10 @@ class Settings(QSettings):
     def delete_file(self):
         return os.remove(self._settingFile)
 
+    def setMode(self, mode):
+        self._mode = mode
+        self.setPath(self.format(), self.scope(), self.modes[self._mode])
+
     @pyqtSlot(str, name='removeGroup')
     def removeGrp(self, grpName):
         if grpName in self._groups:
@@ -159,6 +170,10 @@ class Settings(QSettings):
             return QSettings.SystemScope
         else:
             return QSettings.UserScope
+
+    @property
+    def mode(self):
+        return self._mode
 
     @property
     def copyright(self):
@@ -239,6 +254,10 @@ class Settings(QSettings):
     @settingEnable.setter
     def settingEnable(self, val):
         self._settingEnable = val
+
+    @mode.setter
+    def mode(self, val):
+        self._mode = val
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 28/11/2019 - 1:15 AM

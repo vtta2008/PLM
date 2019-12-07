@@ -16,7 +16,6 @@ from __buildtins__ import __copyright__
 from PyQt5.QtGui                       import QFontMetrics
 
 # PLM
-from appData                           import SETTING_FILEPTH, ST_FORMAT
 from cores.Settings                    import Settings
 from cores.SignalManager               import SignalManager
 
@@ -32,7 +31,7 @@ class FontMetric(QFontMetrics):
 
         self.parent                     = parent
         self.signals                    = SignalManager(self)
-        self.settings                   = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.settings                   = Settings(self)
 
     @property
     def copyright(self):

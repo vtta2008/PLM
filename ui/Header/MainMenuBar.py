@@ -13,14 +13,14 @@ Description:
 # Python
 
 # Plm
-from appData                        import __plmWiki__, mainConfig
-from toolkits.Widgets               import MenuBar
-from utils                          import data_handler
+from appData                        import __plmWiki__, mainCfg
+from toolkits.Widgets               import GroupVBox, MenuBar
+from utils                          import data_handler, is_string
 
-class MainMenuBar(MenuBar):
+class MainMenuBar(GroupVBox):
 
     key                             = 'MainMenuBar'
-    appInfo                         = data_handler(filePath=mainConfig)
+    appInfo                         = data_handler(filePath=mainCfg)
 
     def __init__(self, actionManager, parent=None):
         super(MainMenuBar, self).__init__(parent)
@@ -28,7 +28,10 @@ class MainMenuBar(MenuBar):
         self._parent                = parent
         self.actionManger           = actionManager
         self.url                    = __plmWiki__
-
+        self.setTitle('Main Menu')
+        self.menubar                = MenuBar(self)
+        self.menus                  = self.menubar.menus
+        self.layout.addWidget(self.menubar)
         self.buildMenu()
 
     def buildMenu(self):
@@ -135,23 +138,13 @@ class MainMenuBar(MenuBar):
         self.add_actions(menu, actions[3:])
         return menu
 
+    def addMenu(self, menu):
+        if is_string(menu):
+            return self.menubar.addMenu(menu)
+
     def add_actions(self, menu, actions):
         for action in actions:
             menu.addAction(action)
-
-    def showMenu(self, bool):
-        cb = self.sender()
-        key = cb.key.replace('CheckBox_', '').replace('Preferences', self.key)
-        for k, menu in self.menus.items():
-            check = True
-            for i in range(len(k)):
-                if not k[i] == key[i]:
-                    check = False
-                    break
-
-            if check:
-                menu.setEnabled(bool)
-                break
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 11/07/2018 - 12:59 AM

@@ -16,7 +16,6 @@ from __buildtins__ import __copyright__
 from PyQt5.QtWidgets                        import QGraphicsPathItem
 
 # PLM
-from appData                                import SETTING_FILEPTH, ST_FORMAT
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
 
@@ -31,7 +30,7 @@ class GraphicPathItem(QGraphicsPathItem):
     def __init__(self, *args):
         QGraphicsPathItem.__init__(*args)
 
-        self.settings                       = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.settings                       = Settings(self)
         self.signals                        = SignalManager()
 
     def setValue(self, key, value):

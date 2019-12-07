@@ -24,7 +24,7 @@ import appData as app
 # -------------------------------------------------------------------------------------------------------------
 from maya import cmds, mel
 
-from tankers.pMaya.modules import MayaVariables as var
+from devHook.Maya.modules import MayaVariables as var
 
 # ------------------------------------------------------
 # VARIALBES ARE USED BY ALL CLASSES

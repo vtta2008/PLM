@@ -16,7 +16,6 @@ from __buildtins__ import __copyright__
 from PyQt5.QtCore               import QRect, QRectF
 
 # PLM
-from appData                                import SETTING_FILEPTH, ST_FORMAT
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
 
@@ -31,7 +30,7 @@ class Rect(QRect):
     def __init__(self, *args, **kwargs):
         QRect.__init__(*args, **kwargs)
 
-        self.settings           = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.settings           = Settings(self)
         self.signals            = SignalManager(self)
 
     @property

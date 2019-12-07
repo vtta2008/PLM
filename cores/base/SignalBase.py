@@ -47,7 +47,7 @@ class SignalBase(DAMG):
     sysNotify                       = pyqtSignal(str, str, str, int, name="sysNotify")
     loginChanged                    = pyqtSignal(bool, name='loginChanged')
 
-    #
+    # Avatar
     updateAvatar                    = pyqtSignal(bool, name="updateAvatar")
 
     # Settings class
@@ -93,8 +93,8 @@ class SignalBase(DAMG):
         self.states.appendDict(data)
 
     def updateSignals(self):
-        keys = ['showLayout', 'executing', 'regisLayout', 'openBrowser', 'setSetting', 'sysNotify', 'updateAvatar',
-                'loginChanged']
+        keys = ['showLayout', 'executing', 'regisLayout', 'openBrowser', 'setSetting', 'sysNotify', 'updateAvatar', 'loginChanged']
+
         signals = [self.showLayout, self.executing, self.regisLayout, self.openBrowser, self.setSetting, self.sysNotify,
                    self.updateAvatar, self.loginChanged]
         olds = [self.showLayoutOld, self.executingOld, self.regisLayoutOld, self.openBrowserOld, self.setSettingOld,

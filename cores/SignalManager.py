@@ -26,6 +26,8 @@ class SignalManager(SignalBase):
         super(SignalManager, self).__init__(parent)
 
         self.parent                 = parent
+        self.key                    = '{0}_{1}'.format(self.parent.key, self.key)
+        self._data['key']           = self.key
 
     def emit(self, signal, op1=None, op2=None, op3=None, op4=None):
 

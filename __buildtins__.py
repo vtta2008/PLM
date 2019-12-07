@@ -38,12 +38,14 @@ class Modes(dict):
 
     _subprocess                     = True
     _config                         = 'Alpha'
+    _login                          = 'Offline'
 
     def __init__(self):
         dict.__init__(self)
 
         self['subprocess']          = self.subprocess
         self['config']              = self.config
+        self['login']               = self.login
 
     @property
     def subprocess(self):
@@ -53,6 +55,10 @@ class Modes(dict):
     def config(self):
         return self._config
 
+    @property
+    def login(self):
+        return self._login
+
     @subprocess.setter
     def subprocess(self, val):
         self._subprocess            = val
@@ -60,6 +66,10 @@ class Modes(dict):
     @config.setter
     def config(self, val):
         self._config                = val
+
+    @login.setter
+    def login(self, val):
+        self._login                 = val
 
 class Tracks(dict):
 
@@ -217,7 +227,7 @@ class PreSettings(object):
 
         self.tracks                 = Tracks()
         self.checks                 = Checks()
-        self.modes                  = Modes
+        self.modes                  = Modes()
 
     @property
     def cmds(self):
@@ -230,20 +240,20 @@ try:
     os.getenv(__envKey__)
 except KeyError:
     cmd = 'SetX {0} {1}'.format(__envKey__, ROOT)
-    subprocess.Popen(cmd, shell=True).wait()
+    proc = subprocess.Popen(cmd, shell=True).wait()
+
     preSetting.cfgable = True
 else:
     if os.getenv(__envKey__)   != ROOT:
         cmd = 'SetX {0} {1}'.format(__envKey__, ROOT)
-        subprocess.Popen(cmd, shell=True).wait()
+        proc = subprocess.Popen(cmd, shell=True).wait()
         preSetting.cfgable = True
     else:
         preSetting.cfgable = True
 
 if preSetting.cfgable:
-    from cores.ConfigManager import ConfigManager
-    configManager = ConfigManager(__envKey__, ROOT, Modes())
-    if not configManager.cfgs:
+    from appData import configs
+    if not configs.cfgs:
         if preSetting.checks.report:
             print("CONFIGERROR: configurations have not done yet.")
         sys.exit()
@@ -254,7 +264,6 @@ else:
     if preSetting.checks.report:
         print('EnvironmentVariableError: {0} is not set to {1}, please try again.'.format(__envKey__, ROOT))
     sys.exit()
-
 
 def __checkTmpPth__():
     import platform

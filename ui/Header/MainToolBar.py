@@ -16,35 +16,25 @@ from PyQt5.QtCore           import pyqtSlot
 
 # PLM
 from appData                import SiPoMin
-from toolkits.Widgets       import MainWindow, ToolBar
+from toolkits.Widgets       import MainWindow, ToolBar, GroupVBox
 from utils                  import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
 
-class MainToolBar(MainWindow):
+class MainToolBar(GroupVBox):
 
-    key = 'MainToolBar'
-    toolBars = dict()
-    _count = 0
+    key                     = 'MainToolBar'
+    toolBars                = dict()
+    _count                  = 0
 
     def __init__(self, actionManager, parent=None):
-        super(MainToolBar, self).__init__(parent)
+        super(MainToolBar, self).__init__(parent=parent)
 
         self.parent         = parent
-
-        try:
-            self.parent.children()
-        except AttributeError:
-            pass
-        else:
-            self.setParent(self.parent)
-
         self.actionManager  = actionManager
-
-        if not self.settings._settingEnable:
-            # print('setting enable value: {0}'.format(self.preSetting._settingEnable))
-            self.settings       = self.parent.settings
+        self.mainLayout     = MainWindow(self)
+        self.layout.addWidget(self.mainLayout)
 
         self.tdToolBar      = self.build_toolBar("TD")
         self.compToolBar    = self.build_toolBar("VFX")
@@ -54,9 +44,9 @@ class MainToolBar(MainWindow):
 
         self.tbs = [tb for tb in self.toolBars.values()]
 
-        self.updateWidth(True)
+        # self.updateWidth()
 
-    def updateWidth(self, bool):
+    def updateWidth(self):
         i = 13
         if not self.tdToolBar.isVisible():
             i = i - 4
@@ -90,7 +80,7 @@ class MainToolBar(MainWindow):
             toolBar.add_action(action)
 
         toolBar.setSizePolicy(SiPoMin, SiPoMin)
-        toolBar.visibilityChanged.connect(self.updateWidth)
+        # toolBar.visibilityChanged.connect(self.updateWidth)
         self.toolBars[name] = toolBar
         self.addToolBar(toolBar)
         return toolBar
@@ -129,5 +119,9 @@ class MainToolBar(MainWindow):
             for tb in self.toolBars.values():
                 tb.setVisible(str2bool(mode))
                 self.settings.iniSetValue('visible', bool2str(mode), tb.key)
+
+    def addToolBar(self, toolbar):
+        self.mainLayout.addToolBar(toolbar)
+        # self.updateWidth()
 
 

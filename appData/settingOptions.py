@@ -33,12 +33,7 @@ NORMAL                      = QFont.Normal
 
 NO_WRAP                     = QPlainTextEdit.NoWrap
 NO_FRAME                    = QPlainTextEdit.NoFrame
-
 ELIDE_RIGHT                 = Qt.ElideRight
-
-# -------------------------------------------------------------------------------------------------------------
-""" Event """
-
 KEY_PRESS                   = QEvent.KeyPress
 KEY_RELEASE                 = QEvent.KeyRelease
 
@@ -94,7 +89,7 @@ UPDATE_MINIMALVIEW          = QGraphicsView.MinimalViewportUpdate
 
 STAY_ON_TOP                 = Qt.WindowStaysOnTopHint
 STRONG_FOCUS                = Qt.StrongFocus
-FRAMELESS             = Qt.FramelessWindowHint
+FRAMELESS                   = Qt.FramelessWindowHint
 AUTO_COLOR                  = Qt.AutoColor
 
 # -------------------------------------------------------------------------------------------------------------
@@ -394,7 +389,7 @@ Z_VAL_NODE_WIDGET = 3
 
 PRS = dict( password    = QLineEdit.Password,       center = center ,   left  = left   ,    right  = right,
             spmax       = SiPoMax           ,       sppre  = SiPoPre,   spexp = SiPoExp,    spign  = SiPoIgn,
-            expanding   = QSizePolicy.Expanding,    spmin = SiPoMin,)
+            expanding   = QSizePolicy.Expanding,    spmin  = SiPoMin,)
 
 # node connection property types
 PROPERTY = dict( simple = ['FLOAT', 'STRING', 'BOOL', 'INT'] , arrays  = ['FLOAT2', 'FLOAT3', 'INT2', 'INT3', 'COLOR'],

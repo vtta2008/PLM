@@ -108,6 +108,13 @@ def obj_properties_setting(directory, mode):
     else:
         print("ERROR: (Unknown Operating System) Only Windows and Darwin(Mac) are Supported")
 
+def change_permissions_recursive(path, mode):
+    for root, dirs, files in os.walk(path, topdown=False):
+        for dir in [os.path.join(root,d) for d in dirs]:
+            os.chmod(dir, mode)
+    for file in [os.path.join(root, f) for f in files]:
+            os.chmod(file, mode)
+
 def batch_obj_properties_setting(listObj, mode):
 
     for obj in listObj:

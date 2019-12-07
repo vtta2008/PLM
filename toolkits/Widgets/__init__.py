@@ -22,7 +22,7 @@ from .GraphicItem       import GraphicItem
 from .GraphicObject     import GraphicObject
 from .GraphicPathItem   import GraphicPathItem
 from .GridLayout        import GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
-from .GroupBox          import GroupBoxBase, GroupBox, GroupGrid, GroupHBox, GroupVBox
+from .GroupBox          import GroupBox, GroupGrid, GroupHBox, GroupVBox
 from .Icon              import Icon, AppIcon, LogoIcon, TagIcon
 from .ItemDelegate      import ItemDelegate
 from .Label             import Label, LCDNumber, user_pass_label
@@ -37,6 +37,7 @@ from .SystemTrayIcon    import SystemTrayIcon
 from .TabBar            import TabBar
 from .TabWidget         import TabWidget
 from .ToolBar           import ToolBar
+from .UndoCommand       import UndoCommand
 from .Widget            import Widget
 
 

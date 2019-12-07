@@ -15,7 +15,6 @@ import os
 
 from PyQt5.QtCore                           import QProcess
 
-from appData                                import SETTING_FILEPTH, ST_FORMAT
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
 
@@ -29,9 +28,9 @@ class Process(QProcess):
     def __init__(self, readyReadFn=None, StandardErrorFn=None, StandardOutPutFn=None, finishFn=None, parent=None):
         super(Process, self).__init__(parent)
 
-        self.parent = parent
-        # self.preSetting = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self.parent)
-        # self.signals = SignalManager(self.parent)
+        self.parent                         = parent
+        self.preSetting                     = Settings(self.parent)
+        self.signals                        = SignalManager(self.parent)
 
         self.setProcessChannelMode(self.MergedChannels)
         self.setWorkingDirectory(os.getcwd())

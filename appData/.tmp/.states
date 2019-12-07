@@ -13,7 +13,7 @@
     "Licence": "hide",
     "Reference": "hide",
     "Version": "hide",
-    "SettingUI": "hide",
+    "SettingUI": "show",
     "Calculator": "hide",
     "Calendar": "hide",
     "Configuration": "hide",

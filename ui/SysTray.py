@@ -66,6 +66,10 @@ class SysTray(SystemTrayIcon):
     def close_event(self):
         self.showMessage('Notice', "{0} will keep running in the system tray.".format(__appname__), self.Information, 500)
 
+    def loginChanged(self, login):
+        self._login = login
+        self.rightClickMenu.loginChanged(self._login)
+
     @pyqtSlot(str, str, str, int)
     def sysNotify(self, title, mess, iconType='info', timeDelay=500):
         if iconType == 'info':
@@ -76,10 +80,6 @@ class SysTray(SystemTrayIcon):
             icon = self.Context
 
         self.showMessage(title, mess, icon, timeDelay)
-
-    def loginChanged(self, login):
-        self._login = login
-        self.rightClickMenu.loginChanged(self._login)
 
     @property
     def login(self):
