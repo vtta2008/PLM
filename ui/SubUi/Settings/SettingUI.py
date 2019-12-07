@@ -53,7 +53,7 @@ class SettingUI(Widget):
         self.autoRefreshAct.setChecked(True)
         self.fallbacksAct.setChecked(True)
 
-        self.setWindowTitle("PLM preSetting")
+        self.setWindowTitle("PLM glsetting")
 
     def openSettings(self):
         if not self.settings:

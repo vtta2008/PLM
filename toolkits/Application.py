@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __copyright__, __envKey__, ROOT, preSetting
+from __buildtins__ import __copyright__, __envKey__, ROOT, glsetting
 """ Import """
 
 # Python
@@ -43,7 +43,6 @@ class Application(QApplication):
     _login                          = False
 
     _styleSheet                     = None
-    _allowLocalMode                 = True
 
     parser = argparse.ArgumentParser(description="damgteam helper. Use the option --all to report bugs",
                                      formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -154,31 +153,31 @@ class Application(QApplication):
         self._login                 = val
 
     def setRecieveSignal(self, bool):
-        preSetting.tracks.recieveSignal = bool
+        glsetting.tracks.recieveSignal = bool
         self.commander.trackRecieveSignal = bool
 
     def setBlockSignal(self, bool):
-        preSetting.tracks.blockSignal = bool
+        glsetting.tracks.blockSignal = bool
         self.commander.trackBlockSignal = bool
 
     def setTrackCommand(self, bool):
-        preSetting.tracks.command = bool
+        glsetting.tracks.command = bool
         self.commander.trackCommand = bool
 
     def setRegistLayout(self, bool):
-        preSetting.tracks.registLayout = bool
+        glsetting.tracks.registLayout = bool
         self.commander.trackRegistLayout = bool
 
     def setJobsTodo(self, bool):
-        preSetting.tracks.jobsToDo = bool
+        glsetting.tracks.jobsToDo = bool
         self.commander.trackJobsTodo = bool
 
     def setShowLayout(self, bool):
-        preSetting.tracks.showLayoutError = bool
+        glsetting.tracks.showLayoutError = bool
         self.commander.trackShowLayoutError = bool
 
     def setTrackEvent(self, bool):
-        preSetting.tracks.events = bool
+        glsetting.tracks.events = bool
         self.commander.trackEvents = bool
 
 

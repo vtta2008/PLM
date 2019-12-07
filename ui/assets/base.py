@@ -125,8 +125,10 @@ class KeyBase(DAMGDICT):
 
     def createActions(self, keys, parent):
         actions = []
+
         for key in keys:
             if key in self.appInfo.keys():
+                # print('key in appinfo: {0}'.format(key))
                 if is_string(key):
                     action = self.createAction(key, parent)
                     actions.append(action)

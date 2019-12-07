@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __envKey__, ROOT, preSetting, __ignoreIDs__, __tobuildUis__, __tobuildCmds__
+from __buildtins__ import __envKey__, ROOT, glsetting, __ignoreIDs__, __tobuildUis__, __tobuildCmds__
 """ Import """
 
 # Python
@@ -20,9 +20,9 @@ from PyQt5.QtCore                       import pyqtSlot
 
 # PLM
 from bin                                import DAMG, DAMGDICT
-from appData                            import StateMax, StateMin, StateNormal
-from cores.ConfigManager                import ConfigManager
+from appData                            import StateMax, StateMin, StateNormal, ConfigManager
 from cores.Settings                     import Settings
+from cores.Loggers                      import Loggers
 from utils                              import clean_file_ext
 
 class Commands(DAMG):
@@ -38,13 +38,13 @@ class Commands(DAMG):
     openBrowser_old                     = []
     sysNotify_old                       = []
 
-    trackRecieveSignal                  = preSetting.tracks.recieveSignal
-    trackBlockSignal                    = preSetting.tracks.blockSignal
-    trackCommand                        = preSetting.tracks.command
-    trackRegistLayout                   = preSetting.tracks.registLayout
-    trackJobsTodo                       = preSetting.tracks.jobsToDo
-    trackShowLayoutError                = preSetting.tracks.showLayoutError
-    trackEvents                         = preSetting.tracks.events
+    trackRecieveSignal                  = glsetting.tracks.recieveSignal
+    trackBlockSignal                    = glsetting.tracks.blockSignal
+    trackCommand                        = glsetting.tracks.command
+    trackRegistLayout                   = glsetting.tracks.registLayout
+    trackJobsTodo                       = glsetting.tracks.jobsToDo
+    trackShowLayoutError                = glsetting.tracks.showLayoutError
+    trackEvents                         = glsetting.tracks.events
 
     ignoreIDs                           = __ignoreIDs__()
     toBuildUis                          = __tobuildUis__()
@@ -65,7 +65,8 @@ class Commands(DAMG):
         self.threadManager              = self.app.threadManager
         self.dataConfig                 = self.app.dataConfig
         self.browser                    = self.app.browser
-
+        self.layoutManager              = self.app.layoutManager
+        self.logger                     = Loggers(self)
         self.settings                   = Settings(self)
 
     @pyqtSlot(str, name='openBrowser')
@@ -295,7 +296,7 @@ class Commands(DAMG):
             elif cmd == 'CleanPyc':
                 return clean_file_ext('.pyc')
             elif cmd == 'ReConfig':
-                self.dataConfig = ConfigManager(__envKey__, ROOT)
+                self.dataConfig = ConfigManager()
                 return self.dataConfig
             elif cmd == 'Exit':
                 return self.exitEvent()
@@ -362,7 +363,7 @@ class Commands(DAMG):
         self.mainUI.signals.states.appendDict(states)
         self.mainUI.signals.updateState()
 
-        self.exit()
+        self.app.exit()
 
     def showAllEvent(self):
         for layout in self.layoutManager.layouts():

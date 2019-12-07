@@ -378,6 +378,7 @@ class ConfigManager(DAMG):
             self.avatarInfo.add(os.path.basename(i).split('.avatar')[0], i)
 
         self.save_data(avatarCfg, self.avatarInfo)
+        return True
 
     def cfg_logoPth(self):
 
@@ -454,8 +455,7 @@ class ConfigManager(DAMG):
         for key in delKeys:
             self.del_key(key, self.appInfo)
 
-        keepKeys = [k for k in KEYPACKAGE if k in self.appInfo and k in self.iconInfo]
-
+        keepKeys = [k for k in KEYPACKAGE if k in self.appInfo and k in self.iconInfo['icon32']]
         # Custom functions
 
         # show layout

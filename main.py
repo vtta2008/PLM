@@ -10,26 +10,26 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import preSetting
+from __buildtins__ import glsetting
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
 # Python
 import sys, requests
-
+# print(1)
 # PLM
 from appData                            import (__localServer__, SYSTRAY_UNAVAI, KEY_RELEASE, SERVER_CONNECT_FAIL, configs)
-
+# print(2)
 from utils                              import str2bool, LocalDatabase
-
+# print(3)
 from ui.assets                          import (ActionManager, ButtonManager, RegistryLayout, ThreadManager,
                                                 EventManager, Commands)
 from ui.LayoutManager                   import LayoutManager
 from ui.SubUi.Browser                   import Browser
-
+# print(4)
 from toolkits.Application               import Application
 from toolkits.Widgets                   import MessageBox
-
+# print(5)
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
@@ -91,7 +91,7 @@ class DAMGTEAM(Application):
                 if layout.key in ['SignIn', 'SignUp', 'SysTray', 'ForgotPassword']:
                     layout.signals.connect('loginChanged', self.commander.loginChanged)
 
-        if preSetting.modes == 'Offline':
+        if glsetting.modes == 'Offline':
             self.showLayout(self.mainUI.key, "show")
         else:
             try:
@@ -102,26 +102,27 @@ class DAMGTEAM(Application):
             else:
                 if not str2bool(remember):
                     self.signInEvent()
-                else:
-                    try:
-                        r = requests.get(__localServer__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
-                    except ConnectionError:
-                        if not self._allowLocalMode:
-                            MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
-                            sys.exit()
-                        else:
-                            self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
 
-                    if r.status_code == 200:
-                        if not self.sysTray.isSystemTrayAvailable():
-                            self.logger.report(SYSTRAY_UNAVAI)
-                            self.exitEvent()
-                        else:
-                            self.loginChanged(True)
-                            self.sysTray.log_in()
-                            self.showLayout(self.mainUI.key, "show")
+            try:
+                r = requests.get(__localServer__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
+            except Exception:
+                if not glsetting.modes.allowLocalMode:
+                    MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                    sys.exit()
+                else:
+                    self.commander.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
+                    self.showLayout(self.mainUI.key, 'show')
+            else:
+                if r.status_code == 200:
+                    if not self.sysTray.isSystemTrayAvailable():
+                        self.logger.report(SYSTRAY_UNAVAI)
+                        self.exitEvent()
                     else:
-                        self.showLayout('SignIn', "show")
+                        self.loginChanged(True)
+                        self.sysTray.log_in()
+                        self.showLayout(self.mainUI.key, "show")
+                else:
+                    self.showLayout('SignIn', "show")
 
         self.startLoop()
 

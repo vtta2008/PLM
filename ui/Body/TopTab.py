@@ -7,6 +7,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
+from __buildtins__ import glsetting
 
 # PLM
 from toolkits.Widgets           import TabWidget, VBoxLayout, AppIcon
@@ -26,7 +27,6 @@ class TopTab(TabWidget):
         self.parent             = parent
         self.layout             = VBoxLayout()
         self.buttonManager      = buttonManager
-        self.mode               = self.parent.mode
 
         self.buildUI()
         self.setLayout(self.layout)
@@ -43,12 +43,15 @@ class TopTab(TabWidget):
         self.tabNames           = DAMGLIST(listData=['Common', 'User', 'Cmd'])
 
         for tab in self.tabs:
-            if self.mode == 'Offline':
-                if tab.key == 'TopTab2':
-                    pass
+            if glsetting.modes.login == 'Offline':
+                if glsetting.modes.allowLocalMode:
+                    if tab.key == 'TopTab2':
+                        pass
+                    else:
+                        self.addTab(tab, self.tabNames[self.tabs.index(tab)])
+                        self.setTabIcon(self.tabs.index(tab), AppIcon(32, self.tabNames[self.tabs.index(tab)]))
                 else:
-                    self.addTab(tab, self.tabNames[self.tabs.index(tab)])
-                    self.setTabIcon(self.tabs.index(tab), AppIcon(32, self.tabNames[self.tabs.index(tab)]))
+                    return
             else:
                 self.addTab(tab, self.tabNames[self.tabs.index(tab)])
                 self.setTabIcon(self.tabs.index(tab), AppIcon(32, self.tabNames[self.tabs.index(tab)]))

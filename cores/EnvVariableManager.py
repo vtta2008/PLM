@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-
+from __buildtins__ import glsetting
 """ Import """
 
 # Python
@@ -32,8 +32,9 @@ class EnvVariableManager(DAMG):
     _data                                               = dict()
 
     def __init__(self, envKey=None, envVal=None, mode='add'):
+
         """
-        Do something with environment variable.
+        Dealing with environment variable.
         :param envKey: environment configKey.
         :param envVar: environment variable.
         """
@@ -47,18 +48,23 @@ class EnvVariableManager(DAMG):
 
         if self.mode == 'add':
             if not self.envKey is None and not self.envVal is None:
-                print('Adding configKey: {0} and value: {1}'.format(self.envKey, self.envVal))
+                if glsetting.checks.report:
+                    print('Adding configKey: {0} and value: {1}'.format(self.envKey, self.envVal))
                 self.set_env_var(self.envKey, self.envVal)
         elif self.mode == 'remove' or self.add == 'del' or self.add == 'delete':
             if self.check_envKey(self.envKey):
-                print('Removing configKey: {0}'.format(self.envKey))
+                if glsetting.checks.report:
+                    print('Removing configKey: {0}'.format(self.envKey))
                 self.remove_env_var(self.envKey)
         elif self.mode == 'add_to_path':
             if not self.envVal is None:
-                print('Add {0} to PATH variable.'.format(self.envVal))
+                if glsetting.checks.report:
+                    print('Add {0} to PATH variable.'.format(self.envVal))
                 self.add_to_PATH(self.envVal)
         else:
-            print('Not recognise intention from user.')
+            if glsetting.checks.report:
+                print('Not recognise intention from user.')
+            return
 
     def set_env_var(self, envKey, envVal):
         """
@@ -67,18 +73,22 @@ class EnvVariableManager(DAMG):
         try:
             os.getenv(envKey)
         except KeyError:
-            print('{0} is not existed, create new environment configKey.'.format(envKey))
+            if glsetting.checks.report:
+                print('{0} is not existed, create new environment configKey.'.format(envKey))
             subprocess.Popen('SetX {0} {1}'.format(envKey, envVal), shell=True).wait()
         else:
             if os.getenv(envKey) is None:
-                print('{0} has value as None, assign showLayout_new value {1}'.format(envKey, envVal))
+                if glsetting.checks.report:
+                    print('{0} has value as None, assign showLayout_new value {1}'.format(envKey, envVal))
                 subprocess.Popen('SetX {0} {1}'.format(envKey, envVal), shell=True).wait()
             else:
                 if os.getenv(envKey) != envVal:
-                    print('{0} has different value, edit to: {1}'.format(envKey, envVal))
+                    if glsetting.checks.report:
+                        print('{0} has different value, edit to: {1}'.format(envKey, envVal))
                     subprocess.Popen('SetX {0} {1}'.format(envKey, envVal), shell=True).wait()
                 else:
-                    print('{0} has already been set to {1}'.format(envKey, envVal))
+                    if glsetting.checks.report:
+                        print('{0} has already been set to {1}'.format(envKey, envVal))
 
         self.register(envKey, envVal)
 
@@ -91,7 +101,8 @@ class EnvVariableManager(DAMG):
         except KeyError:
             KeyError('Environment configKey: {0} does not exist'.format(envKey))
         else:
-            print('Delete environment configKey: {0}'.format(envKey))
+            if glsetting.checks.report:
+                print('Delete environment configKey: {0}'.format(envKey))
             subprocess.Popen('REG delete HKCU\Environment /F /V {0}'.format(envKey), shell=True).wait()
             self.deregister(envKey)
 
@@ -100,20 +111,24 @@ class EnvVariableManager(DAMG):
         Add configKey and value into qssPths
         """
         if not envKey in self._envKeys:
-            # print('append {0} to environment configKey list'.format(envKey))
+            if glsetting.checks.report:
+                print('append {0} to environment configKey list'.format(envKey))
             self._envKeys.append(envKey)
 
         if not envVal in self._envVals:
-            # print('append {0} to environment value list'.format(envVal))
+            if glsetting.checks.report:
+                print('append {0} to environment value list'.format(envVal))
             self._envVals.append(envVal)
 
         if os.getenv(envKey) == envVal:
             if envKey in self._envKeys and envVal in self._envVals:
                 if not envKey in self._data.keys() or self._data[envKey] != envVal:
-                    # print('append configKey: {0} and value: {1} into qssPths'.format(envKey, envVal))
+                    if glsetting.checks.report:
+                        print('append configKey: {0} and value: {1} into qssPths'.format(envKey, envVal))
                     self._data[envKey]                   = envVal
         else:
-            print('Key: {0}, value: {1} are already in qssPths.'.format(envKey, envVal))
+            if glsetting.checks.report:
+                print('Key: {0}, value: {1} are already in qssPths.'.format(envKey, envVal))
 
     def deregister(self, envKey):
         """
@@ -121,13 +136,16 @@ class EnvVariableManager(DAMG):
         """
         if self.check_envKey(envKey):
             if self.check_envVal(os.getenv(envKey)):
-                print('Remove environment value: {0}'.format(os.getenv(envKey)))
+                if glsetting.checks.report:
+                    print('Remove environment value: {0}'.format(os.getenv(envKey)))
 
-            # print('Remove environment configKey: {0}'.format(envKey))
+            if glsetting.checks.report:
+                print('Remove environment configKey: {0}'.format(envKey))
             self._envKeys.remove(envKey)
 
         if envKey in self._data.keys():
-            # print('Remove environment variable from qssPths.')
+            if glsetting.checks.report:
+                print('Remove environment variable from qssPths.')
             self._data.pop(envKey)
 
     def add_to_PATH(self, val):
@@ -153,7 +171,8 @@ class EnvVariableManager(DAMG):
         for key in self._envKeys:
             self._data[key]                             = os.environ[key]
 
-        # print('Update environment variable successful.')
+        if glsetting.checks.report:
+            print('Update environment variable successful.')
 
     def check_envKey(self, key):
         """

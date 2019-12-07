@@ -12,7 +12,8 @@ Description:
 """ Import """
 
 # PyQt5
-from PyQt5.QtCore           import pyqtSlot
+from PyQt5.QtCore           import pyqtSlot, Qt
+from PyQt5.QtWidgets        import QScrollArea
 
 # PLM
 from appData                import SiPoMin
@@ -34,38 +35,49 @@ class MainToolBar(GroupVBox):
         self.parent         = parent
         self.actionManager  = actionManager
         self.mainLayout     = MainWindow(self)
-        self.layout.addWidget(self.mainLayout)
+
+        # self.scrollbar      = QScrollArea()
+        # self.scrollbar.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        # self.scrollbar.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        # self.scrollbar.setWidgetResizable(True)
+        # self.mainLayout.setCentralWidget(self.scrollbar)
 
         self.tdToolBar      = self.build_toolBar("TD")
         self.compToolBar    = self.build_toolBar("VFX")
         self.artToolBar     = self.build_toolBar("ART")
         self.textureToolBar = self.build_toolBar('TEX')
         self.postToolBar    = self.build_toolBar('POST')
+        self.officeToolBar  = self.build_toolBar('MCO')
 
         self.tbs = [tb for tb in self.toolBars.values()]
 
-        # self.updateWidth()
+        for tb in self.tbs:
+            tb.settings._settingEnable = True
+            state = tb.getValue('visible')
+            if state is None:
+                tb.setVisible(True)
+            else:
+                tb.setVisible(str2bool(state))
+
+        self.updateWidth()
+        self.layout.addWidget(self.mainLayout)
 
     def updateWidth(self):
-        i = 13
-        if not self.tdToolBar.isVisible():
-            i = i - 4
+        i = 0
+        for tb in self.tbs:
+            i = i + len(tb.actions)
 
-        if not self.compToolBar.isVisible():
-            i = i - 2
-
-        if not self.artToolBar.isVisible():
-            i = i - 4
-
-        if not self.textureToolBar.isVisible():
-            i = i - 2
-
-        if not self.postToolBar.isVisible():
-            i = i - 1
+        for tb in self.tbs:
+            if not tb.isVisible():
+                i = i - len(tb.actions)
 
         w = i*32 + i*2
-        # print(w)
-        self.setMinimumWidth(w)
+        # if w >=490:
+        #     self.scrollbar.setVisible(True)
+        # else:
+        #     self.scrollbar.setVisible(False)
+
+        self.mainLayout.setMinimumWidth(w)
         # self.parent.setFixedWidth(w + 20)
 
     def build_toolBar(self, name=''):
@@ -80,7 +92,7 @@ class MainToolBar(GroupVBox):
             toolBar.add_action(action)
 
         toolBar.setSizePolicy(SiPoMin, SiPoMin)
-        # toolBar.visibilityChanged.connect(self.updateWidth)
+        toolBar.visibilityChanged.connect(self.updateWidth)
         self.toolBars[name] = toolBar
         self.addToolBar(toolBar)
         return toolBar
@@ -96,6 +108,8 @@ class MainToolBar(GroupVBox):
             actions = self.actionManager.texToolBarActions(self)
         elif title == 'POST':
             actions = self.actionManager.postToolBarActions(self)
+        elif title == 'MCO':
+            actions = self.actionManager.officeMenuActions(self)
         else:
             print('WindowTitleError: There is no toolBar name: {0}'.format(title))
             actions = self.actionManager.extraToolActions(self)
@@ -122,6 +136,5 @@ class MainToolBar(GroupVBox):
 
     def addToolBar(self, toolbar):
         self.mainLayout.addToolBar(toolbar)
-        # self.updateWidth()
 
 

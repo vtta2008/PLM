@@ -39,6 +39,7 @@ class Modes(dict):
     _subprocess                     = True
     _config                         = 'Alpha'
     _login                          = 'Offline'
+    _allowLocalMode                 = True
 
     def __init__(self):
         dict.__init__(self)
@@ -59,6 +60,10 @@ class Modes(dict):
     def login(self):
         return self._login
 
+    @property
+    def allowLocalMode(self):
+        return self._allowLocalMode
+
     @subprocess.setter
     def subprocess(self, val):
         self._subprocess            = val
@@ -70,6 +75,10 @@ class Modes(dict):
     @login.setter
     def login(self, val):
         self._login                 = val
+
+    @allowLocalMode.setter
+    def allowLocalMode(self, val):
+        self._allowLocalMode        = val
 
 class Tracks(dict):
 
@@ -208,7 +217,7 @@ class Checks(dict):
     def ignoreIDs(self, val):
         self._ignoreIDs = val
 
-class PreSettings(object):
+class GlobalSetting(object):
 
     Type                            = 'DAMGPRESETING'
     key                             = 'PreSetting'
@@ -223,7 +232,7 @@ class PreSettings(object):
     _cmds                           = dict()
 
     def __init__(self):
-        super(PreSettings, self).__init__()
+        super(GlobalSetting, self).__init__()
 
         self.tracks                 = Tracks()
         self.checks                 = Checks()
@@ -233,7 +242,7 @@ class PreSettings(object):
     def cmds(self):
         return self._cmds
 
-preSetting = PreSettings()
+glsetting = GlobalSetting()
 
 # print(1)
 try:
@@ -242,29 +251,30 @@ except KeyError:
     cmd = 'SetX {0} {1}'.format(__envKey__, ROOT)
     proc = subprocess.Popen(cmd, shell=True).wait()
 
-    preSetting.cfgable = True
+    glsetting.cfgable = True
 else:
     if os.getenv(__envKey__)   != ROOT:
         cmd = 'SetX {0} {1}'.format(__envKey__, ROOT)
         proc = subprocess.Popen(cmd, shell=True).wait()
-        preSetting.cfgable = True
+        glsetting.cfgable = True
     else:
-        preSetting.cfgable = True
-
-if preSetting.cfgable:
+        glsetting.cfgable = True
+# print(2)
+if glsetting.cfgable:
     from appData import configs
+
     if not configs.cfgs:
-        if preSetting.checks.report:
+        if glsetting.checks.report:
             print("CONFIGERROR: configurations have not done yet.")
         sys.exit()
     else:
-        if preSetting.checks.report:
+        if glsetting.checks.report:
             print('Configurations has been completed.')
 else:
-    if preSetting.checks.report:
+    if glsetting.checks.report:
         print('EnvironmentVariableError: {0} is not set to {1}, please try again.'.format(__envKey__, ROOT))
     sys.exit()
-
+# print(3)
 def __checkTmpPth__():
     import platform
     tmpPth = os.path.join(ROOT, 'appData/.tmp')
@@ -277,7 +287,7 @@ def __checkTmpPth__():
             subprocess.call(["chflags", "hidden", tmpPth])
 
     return tmpPth
-
+# print(4)
 def __ignoreIDs__():
     tmpPth = __checkTmpPth__()
     ignoreIDsFile = os.path.join(tmpPth, '.ignoreIDs')
@@ -297,10 +307,10 @@ def __ignoreIDs__():
         with open(ignoreIDsFile, 'w') as f:
             ignoreIDs = json.dump(ignoreIDs, f, indent=4)
 
-    if preSetting.checks.ignoreIDs:
+    if glsetting.checks.ignoreIDs:
         print(ignoreIDs)
     return ignoreIDs
-
+# print(5)
 def __tobuildUis__():
     import json
     tmpPth = __checkTmpPth__()
@@ -319,10 +329,10 @@ def __tobuildUis__():
                       ]
         with open(toBuildUIsFile, 'w') as f:
             toBuildUis = json.dump(toBuildUis, f, indent=4)
-    if preSetting.checks.toBuildUis:
+    if glsetting.checks.toBuildUis:
         print(toBuildUis)
     return toBuildUis
-
+# print(6)
 def __tobuildCmds__():
     import json
     tmpPth = __checkTmpPth__()
@@ -333,21 +343,21 @@ def __tobuildCmds__():
             try:
                 toBuildCmds = json.load(f)
             except json.decoder.JSONDecodeError:
-                toBuildCmds = preSetting.cmds
+                toBuildCmds = glsetting.cmds
     else:
         with open(toBuildCmdsFile, 'wb+') as f:
-            toBuildCmds = json.dump(preSetting.cmds, f, indent=4)
+            toBuildCmds = json.dump(glsetting.cmds, f, indent=4)
 
-    if preSetting.checks.toBuildCmds:
+    if glsetting.checks.toBuildCmds:
         print(toBuildCmds)
     return toBuildCmds
-
+# print(7)
 def __copyright__():
     _copyright = 'Pipeline Manager (PLM) Copyright (C) 2017 - 2019 by DAMGTEAM, contributed by Trinh Do & Duong Minh Duc.'
-    if preSetting.checks.copyright:
+    if glsetting.checks.copyright:
         print(_copyright)
     return _copyright
-
+# print(8)
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 6:55 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

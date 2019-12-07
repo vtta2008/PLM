@@ -114,10 +114,11 @@ class HeaderCheckBoxes(GroupGrid):
         self.tbArtCB = CheckBox("Art")
         self.tbTexCB = CheckBox("Tex")
         self.tbPostCB = CheckBox('Post')
+        self.tbOfficeCB = CheckBox('Office')
         self.allToolBarCB = CheckBox("All: ")
         self.allToolBarCB.stateChanged.connect(self.allToolBarStateChanged)
 
-        for cb in [self.allToolBarCB, self.tbTDCB, self.tbVfxCB, self.tbArtCB, self.tbTexCB, self.tbPostCB, ]:
+        for cb in [self.allToolBarCB, self.tbTDCB, self.tbVfxCB, self.tbArtCB, self.tbTexCB, self.tbPostCB, self.tbOfficeCB]:
             self.toolBarCBs.append(cb)
 
     def allToolBarStateChanged(self, bool):

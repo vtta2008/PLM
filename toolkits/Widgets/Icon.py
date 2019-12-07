@@ -60,7 +60,9 @@ class AppIcon(Icon):
         self.iconSize = size
         self.iconName = name
 
-        for icon in self.iconInfo.keys():
+        key = 'icon{0}'.format(self.iconSize)
+
+        for icon in self.iconInfo[key].keys():
             if self.iconName == icon:
                 self.iconPth = get_app_icon(self.iconSize, self.iconName)
                 self._found = True

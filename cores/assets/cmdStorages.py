@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import preSetting
+from __buildtins__ import glsetting
 
 import os
 
@@ -111,11 +111,11 @@ class ReConfigCmd(CmdBase):
 
     def run(self):
         from cores.ConfigManager import ConfigManager
-        self.app.dataConfig = ConfigManager(__envKey__, ROOT, preSetting.modes)
+        self.app.dataConfig = ConfigManager(__envKey__, ROOT, glsetting.modes)
 
     def redo(self):
         from cores.ConfigManager import ConfigManager
-        self.app.dataConfig = ConfigManager(__envKey__, ROOT, preSetting.modes)
+        self.app.dataConfig = ConfigManager(__envKey__, ROOT, glsetting.modes)
 
 class ExitCmd(CmdBase):
 

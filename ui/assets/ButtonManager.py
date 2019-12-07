@@ -36,7 +36,8 @@ class ButtonManager(KeyBase):
             self.buttonKeys.append(button.key)
             self[button.key] = button
         else:
-            return self.buttonRegisterError(button.key)
+            self.buttonRegisterError(button.key)
+            return self[button.key]
 
     def buttons(self):
         return self.values()

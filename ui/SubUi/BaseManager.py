@@ -46,14 +46,17 @@ class BaseManager(Widget):
         self.setWindowIcon(AppIcon(32, self.key))
 
         self.layout = VBoxLayout()
-        self.layout.addLayout(self.buildLine1())
+        self.baseInfo = BaseInfo()
+        self.baseDetails = BaseDetails()
+        self.layout.addWidget(self.baseInfo)
+        self.layout.addWidget(self.baseDetails)
         self.layout.addLayout(self.buildLine2())
         self.setLayout(self.layout)
 
-    def buildLine1(self):
-        self.baseInfo       = BaseInfo()
-        self.baseDetails    = BaseDetails()
-        return VBoxLayout({'addWidget': [self.baseInfo, self.baseDetails]})
+    # def buildLine1(self):
+    #     self.baseInfo       = BaseInfo()
+    #     self.baseDetails    = BaseDetails()
+    #     return VBoxLayout({'addWidget': [self.baseInfo, self.baseDetails]})
 
     def buildLine2(self):
         self.okButton       = Button({'txt': 'Ok', 'cl': self.createNewBaseType})

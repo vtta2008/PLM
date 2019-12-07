@@ -402,7 +402,7 @@ class ImageInitUI(ViewerWindow):
     def dbSearch(self, field):
 
         self.query.exec_("SELECT * FROM shuftery WHERE filename='%s'" % field)
-        # If the image is found in shufti.db, load the previous view preSetting
+        # If the image is found in shufti.db, load the previous view glsetting
         while self.query.next() and self.inshuft == 0:
             self.zoom = self.query.value(1)
             self.winposx = self.query.value(2)
