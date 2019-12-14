@@ -37,16 +37,11 @@ class Application(QApplication):
     _name                           = 'DAMG Application'
     _envKey                         = __envKey__
     _root                           = ROOT
-
     _copyright                      = __copyright__()
-
     _login                          = False
-
     _styleSheet                     = None
 
-    parser = argparse.ArgumentParser(description="damgteam helper. Use the option --all to report bugs",
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
-    pallete = QPalette()
+    pallete                         = QPalette()
 
 
     def __init__(self):
@@ -54,7 +49,7 @@ class Application(QApplication):
 
         sys.path.insert(0, ROOT)
         self.default_parser()
-        self.setWindowIcon(LogoIcon("Logo"))  # Setup icon
+        self.setWindowIcon(LogoIcon("Logo"))                        # Setup icon
         self.setOrganizationName(__organization__)
         self.setApplicationName(__appname__)
         self.setOrganizationDomain(__website__)
@@ -73,7 +68,7 @@ class Application(QApplication):
         self.process                    = self.getAppProcess()
 
         self.settings._settingEnable    = True
-        self.appInfo                    = self.dataConfig.appInfo  # Configuration qssPths
+        self.appInfo                    = self.dataConfig.appInfo   # Configuration qssPths
 
     def set_styleSheet(self, style):
         self.appStyle.getQssFile(style)
@@ -99,17 +94,22 @@ class Application(QApplication):
         return appID
 
     def default_parser(self):
-        self.parser.add_argument('-i', '--information', action='store_true', help="Show information about environment")
-        self.parser.add_argument('-b', '--bindings', action='store_true', help="Show available bindings for Qt")
-        self.parser.add_argument('-a', '--abstractions', action='store_true', help="Show available abstraction layers for Qt bindings")
-        self.parser.add_argument('-d', '--dependencies', action='store_true', help="Show information about dependencies")
-        self.parser.add_argument('-v', '--version', action='version', version='v{}'.format(__version__))
-        self.parser.add_argument('-all', '--all', action='store_true', help="Show all information options at once")
-        return self.parser
+        parser = argparse.ArgumentParser(description="damgteam helper. Use the option --all to report bugs",
+                                         formatter_class=argparse.RawDescriptionHelpFormatter)
+
+        parser.add_argument('-i', '--information', action='store_true', help="Show information about environment")
+        parser.add_argument('-b', '--bindings', action='store_true', help="Show available bindings for Qt")
+        parser.add_argument('-a', '--abstractions', action='store_true', help="Show available abstraction layers for Qt bindings")
+        parser.add_argument('-d', '--dependencies', action='store_true', help="Show information about dependencies")
+        parser.add_argument('-v', '--version', action='version', version='v{}'.format(__version__))
+        parser.add_argument('-all', '--all', action='store_true', help="Show all information options at once")
+
+        return parser
 
     def startLoop(self):
         # parsing arguments from command line
-        args = self.parser.parse_args()
+        parser = self.default_parser()
+        args = parser.parse_args()
         no_args = not len(sys.argv) > 1
         info = {}
 

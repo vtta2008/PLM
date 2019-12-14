@@ -100,6 +100,8 @@ class MainToolBar(GroupVBox):
     def getActions(self, title):
         if title == 'TD':
             actions = self.actionManager.tdToolBarActions(self)
+        elif title == 'PRE':
+            actions = self.actionManager.preToolBarActrions(self)
         elif title == 'VFX':
             actions = self.actionManager.vfxToolBarActions(self)
         elif title == 'ART':
@@ -113,6 +115,7 @@ class MainToolBar(GroupVBox):
         else:
             print('WindowTitleError: There is no toolBar name: {0}'.format(title))
             actions = self.actionManager.extraToolActions(self)
+
         return actions
 
     @property

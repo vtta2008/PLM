@@ -83,7 +83,7 @@ class LogoIcon(Icon):
 
     key = 'LogoIcon'
 
-    sizes = [16, 24, 32, 48, 64, 96, 128, 256, 512]
+    sizes = [16, 24, 32, 48, 64, 96, 128, 256, 512, 1024]
 
     def __init__(self, name="Logo", parent=None):
         super(LogoIcon, self).__init__()

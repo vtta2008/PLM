@@ -28,7 +28,6 @@ def get_root():
         root                        = '/'.join(treeLst[0:index])
     else:
         root                        = cwd
-
     return root
 
 ROOT                                = get_root()
@@ -84,13 +83,13 @@ class Tracks(dict):
 
     key = 'Tracks'
 
-    _recieveSignal                  = False
-    _blockSignal                    = False
-    _command                        = False
-    _registLayout                   = False
-    _jobsToDo                       = False
-    _showLayoutError                = False
-    _events                         = False
+    _recieveSignal                  = True
+    _blockSignal                    = True
+    _command                        = True
+    _registLayout                   = True
+    _jobsToDo                       = True
+    _showLayoutError                = True
+    _events                         = True
 
     def __init__(self):
         dict.__init__(self)
@@ -162,7 +161,7 @@ class Checks(dict):
 
     key                             = 'Checks'
 
-    _report                         = False
+    _report                         = True
     _copyright                      = False
     _toBuildUis                     = False
     _toBuildCmds                    = False
@@ -199,23 +198,23 @@ class Checks(dict):
 
     @report.setter
     def report(self, val):
-        self._report = val
+        self._report                = val
 
     @copyright.setter
     def copyright(self, val):
-        self._copyright = val
+        self._copyright             = val
 
     @toBuildUis.setter
     def toBuildUis(self, val):
-        self._toBuildUis = val
+        self._toBuildUis            = val
 
     @toBuildCmds.setter
     def toBuildCmds(self, val):
-        self._toBuildCmds = val
+        self._toBuildCmds           = val
 
     @ignoreIDs.setter
     def ignoreIDs(self, val):
-        self._ignoreIDs = val
+        self._ignoreIDs             = val
 
 class GlobalSetting(object):
 
@@ -225,7 +224,7 @@ class GlobalSetting(object):
 
     cfgable                         = False
     recordLog                       = False
-    printOutput                     = False
+    printOutput                     = True
 
     _data                           = dict()
     _log                            = dict()
@@ -241,6 +240,14 @@ class GlobalSetting(object):
     @property
     def cmds(self):
         return self._cmds
+
+    @property
+    def log(self):
+        return self._log
+
+    @property
+    def data(self):
+        return self._data
 
 glsetting = GlobalSetting()
 
@@ -274,6 +281,7 @@ else:
     if glsetting.checks.report:
         print('EnvironmentVariableError: {0} is not set to {1}, please try again.'.format(__envKey__, ROOT))
     sys.exit()
+
 # print(3)
 def __checkTmpPth__():
     import platform
@@ -287,6 +295,7 @@ def __checkTmpPth__():
             subprocess.call(["chflags", "hidden", tmpPth])
 
     return tmpPth
+
 # print(4)
 def __ignoreIDs__():
     tmpPth = __checkTmpPth__()
@@ -310,6 +319,7 @@ def __ignoreIDs__():
     if glsetting.checks.ignoreIDs:
         print(ignoreIDs)
     return ignoreIDs
+
 # print(5)
 def __tobuildUis__():
     import json
@@ -332,6 +342,7 @@ def __tobuildUis__():
     if glsetting.checks.toBuildUis:
         print(toBuildUis)
     return toBuildUis
+
 # print(6)
 def __tobuildCmds__():
     import json
@@ -351,6 +362,7 @@ def __tobuildCmds__():
     if glsetting.checks.toBuildCmds:
         print(toBuildCmds)
     return toBuildCmds
+
 # print(7)
 def __copyright__():
     _copyright = 'Pipeline Manager (PLM) Copyright (C) 2017 - 2019 by DAMGTEAM, contributed by Trinh Do & Duong Minh Duc.'
@@ -358,6 +370,7 @@ def __copyright__():
         print(_copyright)
     return _copyright
 # print(8)
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 6:55 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

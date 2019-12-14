@@ -66,9 +66,9 @@ __localServer__         = "{0}{1}".format(__localHost__, __localPort__)
 __localServerCheck__    = "{0}/check".format(__localServer__)
 __localServerAutho__    = "{0}/auth".format(__localServer__)
 
-__google__              = "http://www.google.com"
-__googleVN__            = "http://www.google.com.vn"
-__googleNZ__            = "http://www.google.co.nz"
+__google__              = "https://www.google.com"
+__googleVN__            = "https://www.google.com.vn"
+__googleNZ__            = "https://www.google.co.nz"
 
 # -------------------------------------------------------------------------------------------------------------
 """ Metadata """

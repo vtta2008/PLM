@@ -1,0 +1,260 @@
+INFO: (08/12/2019 02:36:47) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 02:43:08) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 02:46:29) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 02:52:25) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 02:56:02) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 02:57:45) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 03:01:53) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 03:06:25) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 03:09:53) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 03:11:08) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 03:17:49) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 03:19:33) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 03:21:00) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 03:23:38) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 03:26:10) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 03:32:38) DAMGTEAM, line 97: Get AppID: None
+TRACE: (08/12/2019 03:36:11) {
+    "Datetime": "03:32:33|08.12.2019",
+    "ObjectID": 2498101426648,
+    "ObjectName": "DAMG object 1008",
+    "key": "TextStream_SignalManager"
+}, line 226: message: >>> Layout key does not exists: <ui.SubUi.Funcs.SignUp.SignUp object at 0x00000245A1CE0438> >>> {}
+INFO: (08/12/2019 03:40:45) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 03:53:02) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 04:14:24) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 04:38:52) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 04:40:49) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 04:41:33) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 04:42:54) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 04:45:52) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 04:49:04) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 04:51:12) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 04:52:24) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 04:54:05) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 04:56:51) DAMGTEAM, line 97: Get AppID: None
+INFO: (08/12/2019 15:57:29) DAMGTEAM, line 97: Get AppID: None
+INFO: (15/12/2019 04:22:29) DAMGTEAM, line 97: Get AppID: None
+INFO: (15/12/2019 05:21:58) DAMGTEAM, line 97: Get AppID: None
+INFO: (15/12/2019 05:30:29) DAMGTEAM, line 97: Get AppID: None
+TRACE: (15/12/2019 05:38:24) {
+    "Datetime": "05:38:23|15.12.2019",
+    "ObjectID": 1405928371256,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from PipelineManager: show >>> {}
+TRACE: (15/12/2019 05:38:24) {
+    "Datetime": "05:38:23|15.12.2019",
+    "ObjectID": 1405928371256,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}
+TRACE: (15/12/2019 05:38:24) {
+    "Datetime": "05:38:23|15.12.2019",
+    "ObjectID": 1405928371256,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from SignIn: hide >>> {}
+TRACE: (15/12/2019 05:38:24) {
+    "Datetime": "05:38:23|15.12.2019",
+    "ObjectID": 1405928371256,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, hide, SignIn >>> {}
+TRACE: (15/12/2019 05:38:24) {
+    "Datetime": "05:38:23|15.12.2019",
+    "ObjectID": 1405928371256,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from SignUp: hide >>> {}
+TRACE: (15/12/2019 05:38:24) {
+    "Datetime": "05:38:23|15.12.2019",
+    "ObjectID": 1405928371256,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, hide, SignUp >>> {}
+TRACE: (15/12/2019 05:38:24) {
+    "Datetime": "05:38:23|15.12.2019",
+    "ObjectID": 1405928371256,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from ForgotPassword: hide >>> {}
+TRACE: (15/12/2019 05:38:24) {
+    "Datetime": "05:38:23|15.12.2019",
+    "ObjectID": 1405928371256,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, hide, ForgotPassword >>> {}
+TRACE: (15/12/2019 05:38:24) {
+    "Datetime": "05:38:23|15.12.2019",
+    "ObjectID": 1405928371256,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from PipelineManager: show >>> {}
+TRACE: (15/12/2019 05:38:24) {
+    "Datetime": "05:38:23|15.12.2019",
+    "ObjectID": 1405928371256,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}
+INFO: (15/12/2019 05:38:25) DAMGTEAM, line 97: Get AppID: None
+TRACE: (15/12/2019 05:41:27) {
+    "Datetime": "05:41:26|15.12.2019",
+    "ObjectID": 2362964882488,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from PipelineManager: show >>> {}
+TRACE: (15/12/2019 05:41:27) {
+    "Datetime": "05:41:26|15.12.2019",
+    "ObjectID": 2362964882488,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}
+TRACE: (15/12/2019 05:41:27) {
+    "Datetime": "05:41:26|15.12.2019",
+    "ObjectID": 2362964882488,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from SignIn: hide >>> {}
+TRACE: (15/12/2019 05:41:27) {
+    "Datetime": "05:41:26|15.12.2019",
+    "ObjectID": 2362964882488,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, hide, SignIn >>> {}
+TRACE: (15/12/2019 05:41:27) {
+    "Datetime": "05:41:26|15.12.2019",
+    "ObjectID": 2362964882488,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from SignUp: hide >>> {}
+TRACE: (15/12/2019 05:41:27) {
+    "Datetime": "05:41:26|15.12.2019",
+    "ObjectID": 2362964882488,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, hide, SignUp >>> {}
+TRACE: (15/12/2019 05:41:27) {
+    "Datetime": "05:41:26|15.12.2019",
+    "ObjectID": 2362964882488,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from ForgotPassword: hide >>> {}
+TRACE: (15/12/2019 05:41:27) {
+    "Datetime": "05:41:26|15.12.2019",
+    "ObjectID": 2362964882488,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, hide, ForgotPassword >>> {}
+TRACE: (15/12/2019 05:41:27) {
+    "Datetime": "05:41:26|15.12.2019",
+    "ObjectID": 2362964882488,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from PipelineManager: show >>> {}
+TRACE: (15/12/2019 05:41:27) {
+    "Datetime": "05:41:26|15.12.2019",
+    "ObjectID": 2362964882488,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}
+INFO: (15/12/2019 05:41:28) DAMGTEAM, line 97: Get AppID: None
+TRACE: (15/12/2019 05:43:39) {
+    "Datetime": "05:43:39|15.12.2019",
+    "ObjectID": 1915066283064,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from PipelineManager: show >>> {}
+TRACE: (15/12/2019 05:43:39) {
+    "Datetime": "05:43:39|15.12.2019",
+    "ObjectID": 1915066283064,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}
+TRACE: (15/12/2019 05:43:39) {
+    "Datetime": "05:43:39|15.12.2019",
+    "ObjectID": 1915066283064,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from SignIn: hide >>> {}
+TRACE: (15/12/2019 05:43:39) {
+    "Datetime": "05:43:39|15.12.2019",
+    "ObjectID": 1915066283064,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, hide, SignIn >>> {}
+TRACE: (15/12/2019 05:43:39) {
+    "Datetime": "05:43:39|15.12.2019",
+    "ObjectID": 1915066283064,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from SignUp: hide >>> {}
+TRACE: (15/12/2019 05:43:39) {
+    "Datetime": "05:43:39|15.12.2019",
+    "ObjectID": 1915066283064,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, hide, SignUp >>> {}
+TRACE: (15/12/2019 05:43:39) {
+    "Datetime": "05:43:39|15.12.2019",
+    "ObjectID": 1915066283064,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from ForgotPassword: hide >>> {}
+TRACE: (15/12/2019 05:43:39) {
+    "Datetime": "05:43:39|15.12.2019",
+    "ObjectID": 1915066283064,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, hide, ForgotPassword >>> {}
+TRACE: (15/12/2019 05:43:39) {
+    "Datetime": "05:43:39|15.12.2019",
+    "ObjectID": 1915066283064,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from PipelineManager: show >>> {}
+TRACE: (15/12/2019 05:43:39) {
+    "Datetime": "05:43:39|15.12.2019",
+    "ObjectID": 1915066283064,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}
+INFO: (15/12/2019 05:43:40) DAMGTEAM, line 97: Get AppID: None
+INFO: (15/12/2019 06:53:15) DAMGTEAM, line 112: Cannot connect to server
+TRACE: (15/12/2019 06:53:15) {
+    "Datetime": "06:53:11|15.12.2019",
+    "ObjectID": 1787892618296,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> Commands: block signal setSetting: Offline, Can not connect to Server, crit, 500 >>> {}
+TRACE: (15/12/2019 06:53:15) {
+    "Datetime": "06:53:11|15.12.2019",
+    "ObjectID": 1787892618296,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from PipelineManager: show >>> {}
+TRACE: (15/12/2019 06:53:15) {
+    "Datetime": "06:53:11|15.12.2019",
+    "ObjectID": 1787892618296,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}
+INFO: (15/12/2019 06:55:34) DAMGTEAM, line 112: Cannot connect to server
+TRACE: (15/12/2019 06:55:34) {
+    "Datetime": "06:55:30|15.12.2019",
+    "ObjectID": 1604538033208,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> Commands: block signal setSetting: Offline, Can not connect to Server, crit, 500 >>> {}
+TRACE: (15/12/2019 06:55:34) {
+    "Datetime": "06:55:30|15.12.2019",
+    "ObjectID": 1604538033208,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> recieve signal showLayout from PipelineManager: show >>> {}
+TRACE: (15/12/2019 06:55:35) {
+    "Datetime": "06:55:30|15.12.2019",
+    "ObjectID": 1604538033208,
+    "ObjectName": "DAMG object 1014",
+    "key": "Commands"
+}, line 226: message: >>> receive signal setSetting: showLayout, show, PipelineManager >>> {}

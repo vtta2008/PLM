@@ -63,7 +63,6 @@ class PipelineManager(MainWindow):
         self.layout.addWidget(self.mainToolBar, 1, 0, 1, 9)
         self.layout.addWidget(self.connectStatus, 0, 7, 1, 2)
 
-
         self.layout.addWidget(self.topTabUI, 2, 0, 4, 9)
         self.layout.addWidget(self.botTabUI, 6, 0, 3, 6)
         self.layout.addWidget(self.notification, 6, 6, 3, 3)

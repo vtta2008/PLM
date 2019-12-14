@@ -21,8 +21,11 @@ class ActionManager(KeyBase):
         super(ActionManager, self).__init__(self)
         self.parent               = parent
 
+    def preToolbarActions(self, parent):
+        return self.createActions(self.preActions, parent)
+
     def officeToolBarActions(self, parent):
-        return self.createAction(self.officeActions, parent)
+        return self.createActions(self.officeActions, parent)
 
     def editMenuActions(self, parent):
         return self.createActions(self.editActions, parent)

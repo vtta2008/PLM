@@ -20,7 +20,7 @@ cfgdir                      = 'applocal'
 # cfgdir                      = 'appdata'
 
 # -------------------------------------------------------------------------------------------------------------
-""" Directory local system """
+""" Directory system """
 
 PROGRAM86                   = os.getenv('PROGRAMFILES(X86)')
 PROGRAM64                   = os.getenv('PROGRAMW6432')
@@ -29,6 +29,8 @@ USERAPPDATA                 = os.getenv('APPDATA')
 PROGRAMDATA                 = os.getenv('PROGRAMDATA')
 DESKTOP_DIR                 = os.path.join(os.environ["HOMEPATH"], "desktop")
 
+# -------------------------------------------------------------------------------------------------------------
+""" Directory PLM """
 ROOT_DIR                    = os.path.join(os.getenv(__envKey__))
 
 APP_DATA_DIR                = os.path.join(ROOT_DIR, 'appData')

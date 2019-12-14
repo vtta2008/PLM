@@ -85,7 +85,8 @@ CONFIG_APPUI        = [ 'About', 'Calculator', 'Calendar', 'Credit', 'EnglishDic
 
 TRACK_TDS           = [ 'Maya', 'ZBrush', 'Houdini', '3Ds Max', 'Mudbox', 'BLender', ]
 TRACK_VFX           = [ 'NukeX', 'After Effects', ]
-TRACK_ART           = [ 'Photoshop', 'Illustrator', 'Storyboarder', 'Krita (x64)']
+TRACK_ART           = [ 'Photoshop', ]
+TRACK_PRE           = ['Storyboarder', 'Illustrator', 'Krita (x64)']
 TRACK_TEX           = [ 'Mari', 'Painter', ]
 TRACK_POST          = [ 'Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro']
 TRACK_OFFICE        = [ 'Word', 'Excel', 'PowerPoint', 'Wordpad']
@@ -105,7 +106,7 @@ pVERSION = dict(adobe=adobeVer, autodesk=autodeskVer, allegorithmic = allegorith
 pPACKAGE = dict(adobe=adobeApp, autodesk=autodeskApp, allegorithmic = allegorithmicApp, foundry=foundryApp,
                 pixologic=pixologiApp, sizefx=sizefxApp, office=officeApp, jetbrains=jetbrainsApp, wonderUnit=wonderUniApp,)
 
-pTRACK = dict(TDS=TRACK_TDS, VFX=TRACK_VFX, ART=TRACK_ART, TEXTURE = TRACK_TEX, POST = TRACK_POST,
+pTRACK = dict(TDS=TRACK_TDS, VFX=TRACK_VFX, ART=TRACK_ART, PRE = TRACK_PRE, TEXTURE = TRACK_TEX, POST = TRACK_POST,
               Office=TRACK_OFFICE, Dev=TRACK_DEV, Tools=TRACK_TOOLS, Extra=TRACK_EXTRA, sysTray=TRACK_SYSTRAY, )
 
 # --------------------------------------------------------------------------------------------------------------
@@ -146,6 +147,7 @@ KEYPACKAGE      = generate_key_packages()
 CONFIG_TDS      = generate_config('TDS')                            # TD artist
 CONFIG_VFX      = generate_config('VFX')                            # VFX artist
 CONFIG_ART      = generate_config('ART')                            # 2D artist
+CONFIG_PRE      = generate_config('PRE')                            # Preproduction
 CONFIG_TEX      = generate_config('TEXTURE')                        # ShadingTD artist
 CONFIG_POST     = generate_config('POST')                           # Post production
 
@@ -159,6 +161,7 @@ CONFIG_SYSTRAY  = generate_config('sysTray') + ['Exit', 'SignIn']
 ACTIONS_DATA = dict(TD                  = CONFIG_TDS,
                     VFX                 = CONFIG_VFX,
                     ART                 = CONFIG_ART,
+                    PRE                 = CONFIG_PRE,
                     TEXTURE             = CONFIG_TEX,
                     POST                = CONFIG_POST,
                     OFFICE              = CONFIG_OFFICE,

@@ -18,9 +18,11 @@ from __buildtins__ import glsetting
 import sys, requests
 # print(1)
 # PLM
-from appData                            import (__localServer__, SYSTRAY_UNAVAI, KEY_RELEASE, SERVER_CONNECT_FAIL, configs)
+from appData                            import (__localServer__, SYSTRAY_UNAVAI, KEY_RELEASE, SERVER_CONNECT_FAIL,
+                                                configs)
+from bin                                import DAMGDICT
 # print(2)
-from utils                              import str2bool, LocalDatabase
+from utils                              import LocalDatabase
 # print(3)
 from ui.assets                          import (ActionManager, ButtonManager, RegistryLayout, ThreadManager,
                                                 EventManager, Commands)
@@ -30,6 +32,7 @@ from ui.SubUi.Browser                   import Browser
 from toolkits.Application               import Application
 from toolkits.Widgets                   import MessageBox
 # print(5)
+
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
@@ -39,6 +42,7 @@ class DAMGTEAM(Application):
     dataConfig                          = configs
     count                               = 0
     onlyExists                          = True
+    events                              = DAMGDICT()
 
     def __init__(self):
         Application.__init__(self)
@@ -68,63 +72,136 @@ class DAMGTEAM(Application):
         self.shortcutCMD                = self.layoutManager.shortcutCMD
 
         self.commander                  = Commands(self)
+        self.signinEvent                = self.commander.signInEvent
+        self.signoutEvent               = self.commander.signOutEvent
+        self.signupEvent                = self.commander.signUpEvent
+        self.switchEvent                = self.commander.switchAccountEvent
+
+        self.events.add('signin', self.signinEvent)
+        self.events.add('signout', self.signoutEvent)
+        self.events.add('signup', self.signupEvent)
+        self.events.add('switch', self.switchEvent)
 
         self.loginChanged               = self.commander.loginChanged
         self.ignoreIDs                  = self.commander.ignoreIDs
         self.showLayout                 = self.commander.showLayout
 
-        self.set_styleSheet('dark')
-
-        for layout in [self.signIn, self.signUp, self.forgotPW, self.sysTray, self.mainUI]:
-            layout.signals.connect('loginChanged', self.commander.loginChanged)
-
         for layout in self.layoutManager.layouts():
-            if not layout.key in self.ignoreIDs:
+            key = layout.key
+            if not key in self.ignoreIDs:
+                # print('{0}: start connecting signals'.format(key))
+                if key in ['SignIn', 'SignUp', 'SysTray', 'ForgotPassword']:
+                    # print('{0}: connect to login event'.format(key))
+                    layout.signals.connect('loginChanged', self.commander.loginChanged)
+                # print('{0} start connecting show layout'.format(key))
                 layout.signals.connect('showLayout', self.commander.showLayout)
+                # print('{0} start connecting executing'.format(key))
                 layout.signals.connect('executing', self.commander.executing)
+                # print('{0} start connecting open browser'.format(key))
                 layout.signals.connect('openBrowser', self.commander.openBrowser)
+                # print('{0} start connecting set setting'.format(key))
                 layout.signals.connect('setSetting', self.commander.setSetting)
+                # print('{0} start connecting sys notify'.format(key))
                 layout.signals.connect('sysNotify', self.commander.sysNotify)
-
+                # print('{0} setting has been enabled: {1}'.format(key, layout.settings.key))
                 layout.settings._settingEnable = True
 
-                if layout.key in ['SignIn', 'SignUp', 'SysTray', 'ForgotPassword']:
-                    layout.signals.connect('loginChanged', self.commander.loginChanged)
-
-        if glsetting.modes == 'Offline':
-            self.showLayout(self.mainUI.key, "show")
+        try:
+            r = requests.get(__localServer__)
+        except requests.exceptions.ConnectionError:
+            self.logger.info('Cannot connect to server')
+            connectServer = False
         else:
-            try:
-                self.username, token, cookie, remember = self.database.query_table('curUser')
-            except (ValueError, IndexError):
-                self.logger.info("Error occur, can not query qssPths")
-                self.signInEvent()
-            else:
-                if not str2bool(remember):
-                    self.signInEvent()
+            connectServer = True
 
-            try:
-                r = requests.get(__localServer__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
-            except Exception:
+        try:
+            self.username, token, cookie, remember = self.database.query_table('curUser')
+        except (ValueError, IndexError):
+            self.logger.info("There is no user login data")
+            self.username, token, cookie, remember = (None, None, None, None)
+            queryUserLogin = False
+        else:
+            queryUserLogin = True
+
+        if queryUserLogin:
+            if connectServer:
+                try:
+                    r = requests.get(__localServer__, verify=False,
+                                     headers={'Authorization': 'Bearer {0}'.format(token)},
+                                     cookies={'connect.sid': cookie})
+                except Exception:
+                    if not glsetting.modes.allowLocalMode:
+                        MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                        sys.exit()
+                    else:
+                        self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
+                        self.showLayout(self.mainUI.key, 'show')
+                else:
+                    if r.status_code == 200:
+                        if not self.sysTray.isSystemTrayAvailable():
+                            self.logger.report(SYSTRAY_UNAVAI)
+                            self.exitEvent()
+                        else:
+                            self.loginChanged(True)
+                            self.sysTray.log_in()
+                            self.showLayout(self.mainUI.key, "show")
+                    else:
+                        self.signinEvent()
+            else:
                 if not glsetting.modes.allowLocalMode:
                     MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                     sys.exit()
                 else:
-                    self.commander.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
+                    self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
                     self.showLayout(self.mainUI.key, 'show')
+        else:
+            if connectServer:
+                self.signinEvent()
             else:
-                if r.status_code == 200:
-                    if not self.sysTray.isSystemTrayAvailable():
-                        self.logger.report(SYSTRAY_UNAVAI)
-                        self.exitEvent()
-                    else:
-                        self.loginChanged(True)
-                        self.sysTray.log_in()
-                        self.showLayout(self.mainUI.key, "show")
+                if not glsetting.modes.allowLocalMode:
+                    MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                    sys.exit()
                 else:
-                    self.showLayout('SignIn', "show")
+                    self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
+                    self.showLayout(self.mainUI.key, 'show')
 
-        self.startLoop()
+        self.set_styleSheet('dark')
+
+
+        # if glsetting.modes.login == 'Offline':
+        #     self.showLayout(self.mainUI.key, "show")
+        # else:
+        #     try:
+        #         self.username, token, cookie, remember = self.database.query_table('curUser')
+        #     except (ValueError, IndexError):
+        #         self.logger.info("Error occur, can not query qssPths")
+        #         self.signInEvent()
+        #     else:
+        #         if not str2bool(remember):
+        #             self.signInEvent()
+        #
+        #     try:
+        #         r = requests.get(__localServer__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
+        #     except Exception:
+        #         if not glsetting.modes.allowLocalMode:
+        #             MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+        #             sys.exit()
+        #         else:
+        #             self.commander.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
+        #             self.showLayout(self.mainUI.key, 'show')
+        #     else:
+        #         if r.status_code == 200:
+        #             if not self.sysTray.isSystemTrayAvailable():
+        #                 self.logger.report(SYSTRAY_UNAVAI)
+        #                 self.exitEvent()
+        #             else:
+        #                 self.loginChanged(True)
+        #                 self.sysTray.log_in()
+        #                 self.showLayout(self.mainUI.key, "show")
+        #         else:
+        #             self.showLayout('SignIn', "show")
+
+        # self.startLoop()
 
     def notify(self, receiver, event):
         if event.type() == KEY_RELEASE:
@@ -135,7 +212,13 @@ class DAMGTEAM(Application):
 
         return super(DAMGTEAM, self).notify(receiver, event)
 
-DAMGTEAM()
+    def sysNotify(self, title, mess, iconType, timeDelay):
+        return self.commander.sysNotify(title, mess, iconType, timeDelay)
+
+# print(6)
+app = DAMGTEAM()
+# print(7)
+app.startLoop()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 19/06/2018 - 2:26 AM
