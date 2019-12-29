@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: settingOptions.py
+Script Name: options.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:

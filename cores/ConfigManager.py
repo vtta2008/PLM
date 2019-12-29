@@ -198,16 +198,16 @@ from __future__ import absolute_import, unicode_literals
 #
 #         dirPth['cores']                = self.set_dir('cores')
 #
-#         dirPth['devHook']              = self.set_dir('devHook')
-#         dirPth['Houdini']              = self.set_dir('devHook/Houdini')
-#         dirPth['Mari']                 = self.set_dir('devHook/Mari')
-#         dirPth['Maya']                 = self.set_dir('devHook/Maya')
-#         dirPth['Nuke']                 = self.set_dir('devHook/Nuke')
-#         dirPth['Zbrush']               = self.set_dir('devHook/ZBrush')
-#         dirPth['DaVinci']              = self.set_dir('devHook/DaVinci')
-#         dirPth['Substances']           = self.set_dir('devHook/Substances')
-#         dirPth['Photoshop']            = self.set_dir('devHook/Photoshop')
-#         dirPth['Illustration']         = self.set_dir('devHook/Illustration')
+#         dirPth['hooks']              = self.set_dir('hooks')
+#         dirPth['Houdini']              = self.set_dir('hooks/Houdini')
+#         dirPth['Mari']                 = self.set_dir('hooks/Mari')
+#         dirPth['Maya']                 = self.set_dir('hooks/Maya')
+#         dirPth['Nuke']                 = self.set_dir('hooks/Nuke')
+#         dirPth['Zbrush']               = self.set_dir('hooks/ZBrush')
+#         dirPth['DaVinci']              = self.set_dir('hooks/DaVinci')
+#         dirPth['Substances']           = self.set_dir('hooks/Substances')
+#         dirPth['Photoshop']            = self.set_dir('hooks/Photoshop')
+#         dirPth['Illustration']         = self.set_dir('hooks/Illustration')
 #
 #         dirPth['img']                  = self.set_dir('imgs')
 #         dirPth['avatar']               = self.set_dir('imgs/avatar')
@@ -351,7 +351,7 @@ from __future__ import absolute_import, unicode_literals
 #         return True
 #
 #     def cfg_maya(self):
-#         tk = os.path.join(os.getenv(self.appKey), 'devHook', 'maya')
+#         tk = os.path.join(os.getenv(self.appKey), 'hooks', 'maya')
 #         tanker = dict(modules=['anim', 'lib', 'modeling', 'rendering', 'simulating', 'surfacing', ], )
 #
 #         pVal = ""

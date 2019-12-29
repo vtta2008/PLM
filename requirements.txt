@@ -1,4 +1,5 @@
 PyQt5
+wmi
 pip
 appdirs
 deprecate

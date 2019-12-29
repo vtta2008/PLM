@@ -18,13 +18,13 @@ from PyQt5.QtGui                            import QColor, QBrush, QPen, QCursor
 from PyQt5.QtWidgets                        import QRubberBand, QGraphicsView
 
 # PLM
-from appData.config                         import (ASPEC_RATIO, CACHE_BG, SCROLLBAROFF, RUBBER_DRAG, UPDATE_VIEWRECT,
-                                                    UPDATE_FULLVIEW, ANCHOR_CENTER, ANCHOR_UNDERMICE, ANTIALIAS,
-                                                    ANTIALIAS_TEXT, ANTIALIAS_HIGH_QUALITY, SMOOTH_PIXMAP_TRANSFORM,
-                                                    NON_COSMETIC_PEN, ALT_MODIFIER, MOUSE_LEFT, MOUSE_MIDDLE,
-                                                    MOUSE_RIGHT, KEY_SHIFT, KEY_CTRL, SHIFT_MODIFIER, NO_MODIFIER,
-                                                    CTRL_MODIFIER, CLOSE_HAND_CUSOR, ANCHOR_NO, CURSOR_ARROW, KEY_DEL,
-                                                    KEY_BACKSPACE, KEY_F, KEY_S, GRID_SIZE, RUBBER_REC)
+from appData.configs                         import (ASPEC_RATIO, CACHE_BG, SCROLLBAROFF, RUBBER_DRAG, UPDATE_VIEWRECT,
+                                                     UPDATE_FULLVIEW, ANCHOR_CENTER, ANCHOR_UNDERMICE, ANTIALIAS,
+                                                     ANTIALIAS_TEXT, ANTIALIAS_HIGH_QUALITY, SMOOTH_PIXMAP_TRANSFORM,
+                                                     NON_COSMETIC_PEN, ALT_MODIFIER, MOUSE_LEFT, MOUSE_MIDDLE,
+                                                     MOUSE_RIGHT, KEY_SHIFT, KEY_CTRL, SHIFT_MODIFIER, NO_MODIFIER,
+                                                     CTRL_MODIFIER, CLOSE_HAND_CUSOR, ANCHOR_NO, CURSOR_ARROW, KEY_DEL,
+                                                     KEY_BACKSPACE, KEY_F, KEY_S, GRID_SIZE, RUBBER_REC)
 from bin.Node import Edge, Node
 
 # -------------------------------------------------------------------------------------------------------------

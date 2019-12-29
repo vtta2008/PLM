@@ -42,7 +42,7 @@ logger.setLevel(logging.DEBUG)
 #     from Maya_tk.plugins.Qt.QtCore import Signal
 
 def importBTS():
-    from devHook.Maya.modules import MayaFuncs
+    from hooks.Maya.modules import MayaFuncs
     reload(MayaFuncs)
     return MayaFuncs
 

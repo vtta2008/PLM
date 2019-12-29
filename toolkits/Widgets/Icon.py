@@ -17,7 +17,7 @@ from PyQt5.QtGui                            import QIcon
 from PyQt5.QtCore                           import QSize
 
 from utils                                  import data_handler, get_app_icon, get_tag_icon, get_logo_icon
-from appData                                import appIconCfg, IGNORE_ICON_NAME
+from appData                                import iconCfg, IGNORE_ICON_NAME
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
 
@@ -28,7 +28,7 @@ class Icon(QIcon):
     key                                     = 'Icon'
     _name                                   = 'DAMG Icon'
     _copyright                              = __copyright__()
-    iconInfo                                = data_handler(filePath=appIconCfg)
+    iconInfo                                = data_handler(filePath=iconCfg)
 
     def __init__(self, parent=None):
         QIcon.__init__(self)

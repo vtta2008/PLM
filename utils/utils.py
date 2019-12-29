@@ -30,7 +30,7 @@ from PyQt5.QtGui        import QColor, QFont, QFontMetrics
 from PyQt5.QtWidgets    import QAction, QPushButton
 
 # PLM
-from appData            import (__envKey__, __pkgsReq__, KEYPACKAGE, LOGO_DIR, WEB_ICON_DIR, TAG_DIR, AVATAR_DIR,
+from appData            import (__envKey__, __pkgsReq__, KEYPACKAGE, LOGO_DIR, WEB_ICON_DIR, TAG_ICON_DIR, AVATAR_DIR,
                                 APP_ICON_DIR, actionTypes)
 
 # -------------------------------------------------------------------------------------------------------------
@@ -346,7 +346,7 @@ def get_avatar_image(name):
             return a
 
 def get_tag_icon(name):
-    tags = [t for t in get_file_path(TAG_DIR) if '.tag' in t]
+    tags = [t for t in get_file_path(TAG_ICON_DIR) if '.tag' in t]
     for t in tags:
         if name in t:
             # print(t, os.path.exists(t))

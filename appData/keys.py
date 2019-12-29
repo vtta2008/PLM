@@ -16,14 +16,14 @@ import os, sys
 # --------------------------------------------------------------------------------------------------------------
 """ Autodesk _data """
 
-autodeskVer         = [ "2017", "2018", "2019", "2020"]
+autodeskVer         = [ "2017", "2018", "2019", "2020", "2021"]
 autodeskApp         = [ "Autodesk Maya", "Autodesk MudBox", "Autodesk 3ds Max", "Autodesk AutoCAD"]
 userMayaDir         = os.path.expanduser(r"~/Documents/maya")
 
 # --------------------------------------------------------------------------------------------------------------
 """ Adobe _data """
 
-adobeVer            = [ "CC 2017", "CC 2018", "CC 2019", ]
+adobeVer            = [ "CC 2017", "CC 2018", "CC 2019", "CC 2020", "CC 2021"]
 adobeApp            = [ "Adobe Photoshop", "Adobe Illustrator", "Adobe Audition", "Adobe After Effects", "Adobe Premiere Pro",
                         "Adobe Media Encoder", ]
 
@@ -36,8 +36,8 @@ foundryApp          = [ 'Hiero', 'HieroPlayer', 'Mari', 'NukeX', 'Katana',]
 # --------------------------------------------------------------------------------------------------------------
 """ Pixologic _data """
 
-pixologiVer         = [ "4R6", "4R7", "4R8"]
-pixologiApp         = [ 'ZBrush', ]
+pixologiVer         = [ "4R6", "4R7", "4R8", "4R9"]
+pixologiApp         = [ 'ZBrush' ]
 
 # --------------------------------------------------------------------------------------------------------------
 """ Allegorithmic _data """
@@ -68,13 +68,14 @@ jetbrainsApp        = [ 'JetBrains PyCharm', ]
 """ Wonder Unit """
 
 wonderUnitVer       = [ ]
-wonderUniApp        = [ 'Storyboarder', 'Krita (x64)' ]
+wonderUniApp        = ['Storyboarder', 'Krita (x64)', 'Krita (x32)' ]
 
 # --------------------------------------------------------------------------------------------------------------
 """ another app _data """
 
 anacondaApp         = [ 'Spyder', 'QtDesigner', 'Git Bash']
 otherApp            = [ 'Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', ]
+
 CONFIG_APPUI        = [ 'About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary', 'FindFiles', 'ForgotPassword',
                         'ImageViewer', 'NewProject', 'Preferences', 'ScreenShot', 'UserSetting', 'PLMBrowser',
                         'NoteReminder', 'TextEditor', 'NodeGraph', 'Messenger', 'InviteFriend', 'SignIn', 'SignUp',
@@ -180,6 +181,7 @@ SHOWLAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 
                            'SettingUI', 'SignIn', 'SignOut', 'SignUp', 'StatusBar', 'SwitchAccount', 'SysTray',
                            'Task', 'Team', 'TextEditor', 'Texture', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3',
                            'UserSetting', 'Version']
+
 RESTORE_KEY             = ['Restore']
 SHOWMAX_KEY             = ['Maximize']
 SHOWMIN_KEY             = ['Minimize']
@@ -228,6 +230,10 @@ PY2 = sys.version[0] == '2'
 SYS_OPTS = ["Host Name", "OS Name", "OS Version", "Product ID", "System Manufacturer", "System Model",
             "System type", "BIOS Version", "Domain", "Windows Directory", "Total Physical Memory",
             "Available Physical Memory", "Logon Server"]
+
+notKeys = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__', '__cached__',
+           '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR', 'SETTING_DIR', 'DB_DIR', 'LOG_DIR',
+           'QSS_DIR', 'RCS_DIR', 'SCSS_DIR']
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/08/2018 - 2:30 AM

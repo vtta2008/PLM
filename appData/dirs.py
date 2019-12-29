@@ -70,7 +70,7 @@ SOUND_DIR                   = os.path.join(BIN_DIR, 'sound')
 BUILD_DIR                   = os.path.join(ROOT_DIR, 'build')
 CORES_DIR                   = os.path.join(ROOT_DIR, 'cores')
 
-HOOK_DIR                    = os.path.join(ROOT_DIR, 'devHook')
+HOOK_DIR                    = os.path.join(ROOT_DIR, 'hooks')
 MAYA_DIR                    = os.path.join(HOOK_DIR, 'Maya')
 MARI_DIR                    = os.path.join(HOOK_DIR, 'Mari')
 NUKE_DIR                    = os.path.join(HOOK_DIR, 'Nuke')
@@ -86,7 +86,7 @@ STYLE_IMAGE_DIR             = os.path.join(STYLE_DIR, 'images')
 STYLE_RC_DIR                = os.path.join(STYLE_DIR, 'rc')
 STYLE_SVG_DIR               = os.path.join(STYLE_DIR, 'svg')
 
-TAG_DIR                     = os.path.join(IMG_DIR, 'tags')
+TAG_ICON_DIR                     = os.path.join(IMG_DIR, 'tags')
 MAYA_ICON_DIR               = os.path.join(IMG_DIR, 'maya')
 NODE_ICON_DIR               = os.path.join(IMG_DIR, 'node')
 

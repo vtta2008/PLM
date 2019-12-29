@@ -20,7 +20,7 @@ from functools                          import partial
 from bin                                import DAMGDICT, DAMGLIST
 from toolkits.Widgets                   import Action, Button
 from utils                              import data_handler, is_string, is_action, is_button
-from appData                            import (mainCfg, SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY,
+from appData                            import (pipelineCfg, SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY,
                                                 CONFIG_DEV, CONFIG_TOOLS, CONFIG_OFFICE, CONFIG_TDS, CONFIG_ART, CONFIG_TEX,
                                                 CONFIG_POST, CONFIG_VFX, CONFIG_PRE, CONFIG_EXTRA, CONFIG_SYSTRAY,
                                                 RESTORE_KEY, SHOWMIN_KEY, SHOWMAX_KEY, EDIT_KEY, STYLESHEET_KEY,
@@ -30,7 +30,7 @@ class KeyBase(DAMGDICT):
 
     key                                 = 'KeyBase'
 
-    appInfo                             = data_handler(filePath=mainCfg)
+    appInfo                             = data_handler(filePath=pipelineCfg)
 
     actionKeys                          = DAMGLIST()
     showLayoutKeys                      = DAMGLIST()
