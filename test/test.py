@@ -20,69 +20,69 @@ except ImportError:
     import wmi
 
 RAMTYPE = {
-    '0': 'Unknown',
-    '1': 'Other',
-    '2': 'DRAM',
-    '3': 'Synchronous DRAM',
-    '4': 'Cache DRAM',
-    '5': 'EDO',
-    '6': 'EDRAM',
-    '7': 'VRAM',
-    '8': 'SRAM',
-    '9': 'RAM',
-    '10': 'ROM',
-    '11': 'Flash',
-    '12': 'EEPROM',
-    '13': 'FEPROM',
-    '14': 'EPROM',
-    '15': 'CDRAM',
-    '16': '3DRAM',
-    '17': 'SDRAM',
-    '18': 'SGRAM',
-    '19': 'RDRAM',
-    '20': 'DDR',
-    '21': 'DDR2',
-    '22': 'DDR2 FB-DIMM',
-    '24': 'DDR3',
-    '25': 'FBD2',
+    0: 'Unknown',
+    1: 'Other',
+    2: 'DRAM',
+    3: 'Synchronous DRAM',
+    4: 'Cache DRAM',
+    5: 'EDO',
+    6: 'EDRAM',
+    7: 'VRAM',
+    8: 'SRAM',
+    9: 'RAM',
+    10: 'ROM',
+    11: 'Flash',
+    12: 'EEPROM',
+    13: 'FEPROM',
+    14: 'EPROM',
+    15: 'CDRAM',
+    16: '3DRAM',
+    17: 'SDRAM',
+    18: 'SGRAM',
+    19: 'RDRAM',
+    20: 'DDR',
+    21: 'DDR2',
+    22: 'DDR2 FB-DIMM',
+    24: 'DDR3',
+    25: 'FBD2',
 }
 
 FORMFACTOR = {
-    '0': 'Unknown',
-    '1': 'Other',
-    '2': 'SIP',
-    '3': 'DIP',
-    '4': 'ZIP',
-    '5': 'SOJ',
-    '6': 'Proprietary',
-    '7': 'SIMM',
-    '8': 'DIMM',
-    '9': 'TSOP',
-    '10': 'PGA',
-    '11': 'RIMM',
-    '12': 'SODIMM',
-    '13': 'SRIMM',
-    '14': 'SMD',
-    '15': 'SSMP',
-    '16': 'QFP',
-    '17': 'TQFP',
-    '18': 'SOIC',
-    '19': 'LCC',
-    '20': 'PLCC',
-    '21': 'BGA',
-    '22': 'FPBGA',
-    '23': 'LGA',
-    '24': 'FB-DIMM',
+    0: 'Unknown',
+    1: 'Other',
+    2: 'SIP',
+    3: 'DIP',
+    4: 'ZIP',
+    5: 'SOJ',
+    6: 'Proprietary',
+    7: 'SIMM',
+    8: 'DIMM',
+    9: 'TSOP',
+    10: 'PGA',
+    11: 'RIMM',
+    12: 'SODIMM',
+    13: 'SRIMM',
+    14: 'SMD',
+    15: 'SSMP',
+    16: 'QFP',
+    17: 'TQFP',
+    18: 'SOIC',
+    19: 'LCC',
+    20: 'PLCC',
+    21: 'BGA',
+    22: 'FPBGA',
+    23: 'LGA',
+    24: 'FB-DIMM',
 }
 
 CPUTYPE = {
 
-    '1': 'Other',
-    '2': 'Unknown',
-    '3': 'Central Processor',
-    '4': 'Math Processor',
-    '5': 'DSP Processor',
-    '6': 'Video Processor',
+    1: 'Other',
+    2: 'Unknown',
+    3: 'Central Processor',
+    4: 'Math Processor',
+    5: 'DSP Processor',
+    6: 'Video Processor',
 }
 
 DRIVE_TYPES = {
@@ -96,79 +96,108 @@ DRIVE_TYPES = {
 }
 
 deviceInfo                      = DAMGDICT()
-usbCount = dvdCount = hddCount = pttCount = gpuCount = pciCount = keyboardCount = 1
+usbCount = dvdCount = hddCount = pttCount = gpuCount = pciCount = keyboardCount = netCount = ramCount = miceCount = 1
+cpuCount = biosCount = osCount = 1
+
 com                             = wmi.WMI()
 source                          = subprocess.Popen("SYSTEMINFO", stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0].decode('utf-8')
 
+for s in com.CIM_OperatingSystem():
+    print(s)
+#
+# for d in com.Win32_ComputerSystem():
+#     print(d)
+
+# Owner
+deviceInfo['type']              = [item.strip() for item in re.findall("%s:\w*(.*?)\n" % ('OS Configuration'), source, re.IGNORECASE)][0]
+
+
+# print(deviceInfo['type'])
+
 # os info
 osInfo                          = {}
+for o in com.Win32_OperatingSystem():
+    ops                         = {}
+    key                         = 'os {0}'.format(osCount)
+    ops['brand']                = o.Manufacturer
+    ops['os name']              = o.Caption
+    ops['device name']          = com.Win32_ComputerSystem()[0].DNSHostName
+    ops['device type']          = o
+    ops['registered email']     = o.RegisteredUser
+    ops['organisation']         = o.Organization
+    ops['version']              = o.Version
+    ops['os architecture']      = o.OSArchitecture
+    ops['serial number']        = o.SerialNumber
+    ops['mac adress']           = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
+    osInfo                      = ops
+    osCount += 1
 
-osInfo['name']                  = platform.system()
-osInfo['version']               = platform.version()
-osInfo['full name']             = platform.platform()
-osInfo['product id']            = [item.strip() for item in re.findall("%s:\w*(.*?)\n" % ('Product ID'), source, re.IGNORECASE)][0]
 
 # Bios info
 biosInfo                        = {}
-
-biosInfo['brand']               = com.Win32_ComputerSystem()[0].Manufacturer
-biosInfo['name']                = com.Win32_BIOS()[0].Manufacturer
-biosInfo['model']               = com.Win32_BaseBoard()[0].Product
-biosInfo['type']                = [item.strip() for item in re.findall("%s:\w*(.*?)\n" % ('System type'), source, re.IGNORECASE)][0]
-biosInfo['version']             = [item.strip() for item in re.findall("%s:\w*(.*?)\n" % ('BIOS Version'), source, re.IGNORECASE)][0]
-biosInfo['sockets']             = com.Win32_ComputerSystem()[0].NumberOfProcessors
+for b in com.Win32_BIOS():
+    bios                        = {}
+    key                         = 'bios {0}'.format(biosCount)
+    bios['brand']               = com.Win32_ComputerSystem()[0].Manufacturer
+    bios['name']                = b.Manufacturer
+    bios['model']               = com.Win32_BaseBoard()[0].Product
+    bios['type']                = com.Win32_ComputerSystem()[0].SystemType
+    bios['version']             = b.BIOSVersion
+    bios['sockets']             = com.Win32_ComputerSystem()[0].NumberOfProcessors
+    biosInfo[key]               = bios
+    biosCount += 1
 
 # CPU info
 cpuInfo                         = {}
 
-cpuType                         = subprocess.Popen('wmic cpu get ProcessorType', stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0].decode()
-cpuL2Cache                      = subprocess.Popen('wmic cpu get L2CacheSize', stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0].decode()
+for c in com.Win32_Processor():
+    cpu                         = {}
+    key                         = 'cpu {0}'.format(cpuCount)
+    cpu['name']                 = c.Name
+    cpu['cores']                = c.NumberOfCores
+    cpu['threads']              = c.NumberOfLogicalProcessors
+    cpu['family']               = c.Caption
+    cpu['max speed']            = '{0} GHz'.format(int(c.MaxClockSpeed)/1000)
+    cpu['type']                 = CPUTYPE[c.ProcessorType]
+    cpu['l2 size']              = '{0} MB'.format(c.L2CacheSize)
+    cpu['l3 size']              = '{0} MB'.format(c.L3CacheSize)
 
-cpuInfo['name']                 = cpu.info[0]['ProcessorNameString']
-cpuInfo['cores']                = psutil.cpu_count(logical=False)
-cpuInfo['threads']              = psutil.cpu_count(logical=True)
-cpuInfo['family']               = cpu.info[0]['Identifier']
-cpuInfo['max']                  = '{0} GHz'.format(psutil.cpu_freq(False)[2]/1000)
-cpuInfo['type']                 = CPUTYPE[[i for i in cpuType.replace('\r\r\n', '').strip().split(' ') if not i is ''][1:][0]]
-cpuInfo['L2cache']              = '{0} Mb'.format([i for i in cpuL2Cache.replace('\r\r\n', '').strip().split(' ') if not i is ''][1:][0])
+    cpuInfo[key]                = cpu
+    cpuCount += 1
 
 # RAM info
-ramInfo = {}
+ramInfo                         = {}
+rams                            = []
+for r in com.Win32_PhysicalMemory():
+    ram                         = {}
+    key                         = 'physical ram {0}'.format(ramCount)
+    ram['capacity']             = '{0} GB'.format(round(int(r.Capacity)/(1024.0 ** 3)))
+    ram['bus']                  = r.ConfiguredClockSpeed
+    ram['location']             = r.DeviceLocator
+    ram['form']                 = FORMFACTOR[r.FormFactor]
+    ram['type']                 = RAMTYPE[r.MemoryType]
+    ram['part number']          = r.PartNumber
+    rams.append(ram['capacity'])
+    ramInfo                     = ram
+    ramCount += 1
 
-rack                            = subprocess.Popen('wmic memorychip get devicelocator', stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0].decode('utf-8')
-ramName                         = subprocess.Popen('wmic memorychip get manufacturer', stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0].decode('utf-8')
-ramCapacity                     = subprocess.Popen('wmic memorychip get capacity', stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0].decode('utf-8')
-ramBus                          = subprocess.Popen('wmic memorychip get speed', stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0].decode('utf-8')
-ramType                         = subprocess.Popen('wmic memorychip get memorytype', stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0].decode('utf-8')
-ramForm                         = subprocess.Popen('wmic memorychip get formfactor', stdin=subprocess.PIPE, stdout=subprocess.PIPE).communicate()[0].decode('utf-8')
-ramCapacityInfo                 = [i for i in ramCapacity.replace('\r\r\n', '').strip().split(' ') if not i is ''][1:]
-
-ramInfo['total']                = '{0} GB'.format(round(psutil.virtual_memory().total / (1024.0 **3)))
-ramInfo['racks']                = len([i for i in rack.replace('\r\r\n', '').strip().split(' ') if not i is ''][1:])
-ramInfo['capacity']             = ['{0} GB'.format(int(i)/(1024.0 **3)) for i in ramCapacityInfo]
-ramInfo['speed']                = [i for i in ramBus.replace('\r\r\n', '').strip().split(' ') if not i is ''][1:]
-ramInfo['name']                 = [i for i in ramName.replace('\r\r\n', '').strip().split(' ') if not i is ''][1:]
-ramInfo['type']                 = RAMTYPE[[i for i in ramType.replace('\r\r\n', '').strip().split(' ') if not i is ''][1:][0]]
-ramInfo['form']                 = FORMFACTOR[[i for i in ramForm.replace('\r\r\n', '').strip().split(' ') if not i is ''][1:][0]]
+ramInfo['total']                = '{0} GB'.format(round(int(com.Win32_ComputerSystem()[0].TotalPhysicalMemory)/(1024.0 ** 3)))
+ramInfo['details']              = rams
+ramInfo['rams']                 = len(com.Win32_PhysicalMemory())
 
 # GPU Info
 gpuInfo                         = {}
-
 for g in (com.Win32_DisplayControllerConfiguration()):
     gpu                         = {}
     key                         = 'gpu {0}'.format(gpuCount)
     gpu['name']                 = g.Name
-
     gpu['refresh rate']         = g.RefreshRate
     gpu['bit rate']             = g.BitsPerPixel
     gpuInfo[key]                = gpu
     gpuCount += 1
 
-
 # Drives Info
-driversInfo                   = {}
-
-# HDD drive
+driversInfo                     = {}
 for physical_disk in com.Win32_DiskDrive():
     # USB drive
     if physical_disk.associators("Win32_DiskDriveToDiskPartition") == []:
@@ -252,27 +281,45 @@ keyboardInfo                    = {}
 for k in com.Win32_Keyboard():
     keyboard                    = {}
     key                         = 'keyboard {0}'.format(keyboardCount)
+    # keyboard['brand']           = k.Manufacturer
     keyboard['name']            = k.Name
     keyboard['id']              = k.DeviceID
     keyboard['status']          = k.Status
     keyboardInfo[key]           = keyboard
     keyboardCount += 1
 
+# Mice Info
+miceInfo                        = {}
+for m in com.Win32_PointingDevice():
+    mice                        = {}
+    key                         = 'mice {0}'.format(miceCount)
+    mice['brand']               = m.Manufacturer
+    mice['name']                = m.Name
+    mice['id']                  = m.DeviceID
+    mice['status']              = m.Status
+    miceInfo[key]               = mice
+    miceCount += 1
+
 # Network
 networkInfo                     = {}
-
 networkInfo['LAN ip']           = socket.gethostbyname(socket.gethostname())
-
-for d in (com.Win32_MemoryArray()):
-    print(d)
-
-
-# Owner
-deviceInfo['name']              = platform.node()
-deviceInfo['type']              = [item.strip() for item in re.findall("%s:\w*(.*?)\n" % ('OS Configuration'), source, re.IGNORECASE)][0]
-deviceInfo['registered email']  = com.Win32_ComputerSystem()[0].PrimaryOwnerName
-deviceInfo['organisation']      = [item.strip() for item in re.findall("%s:\w*(.*?)\n" % ('Registered Organization'), source, re.IGNORECASE)][0]
-deviceInfo['mac adress']        = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
+for n in com.Win32_NetworkAdapter():
+    if n.AdapterType:
+        network                     = {}
+        key                         = 'network device {0}'.format(netCount)
+        network['name']             = n.Name
+        network['brand']            = n.Manufacturer
+        network['id']               = n.DeviceID
+        network['uid']              = n.GUID
+        network['index']            = n.Index
+        network['MacAdress']        = n.MACAddress
+        network['connect id']       = n.NetConnectionID
+        network['service name']     = n.ServiceName
+        network['speed']            = n.Speed
+        network['type']             = n.AdapterType
+        network['type id']          = n.AdapterTypeID
+        networkInfo[key]            = network
+        netCount += 1
 
 # Collect Info
 deviceInfo['os']                = osInfo
@@ -285,7 +332,9 @@ deviceInfo['PCIs']              = pciInfo
 deviceInfo['keyboard']          = keyboardInfo
 deviceInfo['network']           = networkInfo
 
-pprint.pprint(deviceInfo)
+# pprint.pprint(deviceInfo)
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 1:38 AM
