@@ -1,4 +1,4 @@
-PyQt5>=5.13
+PyQt5
 pip
 appdirs
 deprecate

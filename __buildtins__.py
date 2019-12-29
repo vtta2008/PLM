@@ -32,6 +32,10 @@ def get_root():
 
 ROOT                                = get_root()
 
+# subprocess.Popen('python -m pip install -r requirements.txt --user', shell=True).wait()
+# subprocess.Popen('python -m pip install PyQt5 --user --upgrade', shell=True).wait()
+# subprocess.Popen('python -m pip install PyQt5.sip --user --upgrade').wait()
+
 class Modes(dict):
     key = 'Modes'
 
@@ -268,9 +272,9 @@ else:
         glsetting.cfgable = True
 # print(2)
 if glsetting.cfgable:
-    from appData import configs
+    from appData import configManager
 
-    if not configs.cfgs:
+    if not configManager.cfgs:
         if glsetting.checks.report:
             print("CONFIGERROR: configurations have not done yet.")
         sys.exit()

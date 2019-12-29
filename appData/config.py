@@ -29,7 +29,6 @@ API_MINIMUM = 0.64
 from PyQt5                          import __file__ as pyqt_path
 from PyQt5.QtCore                   import QProcess
 
-
 from appData                        import metadatas as m
 from .dirs                          import *
 from .pths                          import *
@@ -128,7 +127,7 @@ class ConfigManager(DAMG):
     mainInfo                            = DAMGDICT()
 
     appInfo                             = DAMGDICT()
-    osInfo                              = DAMGDICT()
+    deviceInfo                          = DAMGDICT()
     dirInfo                             = DAMGDICT()
     pthInfo                             = DAMGDICT()
     pyInfo                              = DAMGDICT()
@@ -154,7 +153,7 @@ class ConfigManager(DAMG):
     _appInfo                            = False
 
     allInfo                             = DAMGDICT()
-    allInfo.add('system', osInfo)
+    allInfo.add('system', deviceInfo)
     allInfo.add('dirs', dirInfo)
     allInfo.add('paths', pthInfo)
     allInfo.add('pyPths', pyInfo)
@@ -214,20 +213,17 @@ class ConfigManager(DAMG):
 
     def cfg_platform(self):
 
-        pythonVersion   = sys.version
-        windowOS        = platform.system()
-        windowVersion   = platform.version()
+        sysOpts                             = SYS_OPTS
+        cache                               = subprocess.Popen("SYSTEMINFO", stdin=PIPE, stdout=PIPE)
+        source                              = cache.communicate()[0].decode('utf-8')
 
-        sysOpts         = SYS_OPTS
-        cache           = subprocess.Popen("SYSTEMINFO", stdin=PIPE, stdout=PIPE)
-        source          = cache.communicate()[0].decode('utf-8')
+        self.deviceInfo['os']               = system()
+        self.deviceInfo['os version']       = platform.version()
+        self.deviceInfo['os system']        = platform.machine()
+        self.deviceInfo['device name']      = platform.node()
 
-        self.osInfo.add('platform', system())
-        self.osInfo['python'] = pythonVersion
-        self.osInfo['os'] = windowOS + "|" + windowVersion
-        self.osInfo['pcUser'] = platform.node()
-        self.osInfo['operating system'] = platform.system() + "/" + platform.platform()
-        self.osInfo['python version'] = platform.python_version()
+        self.deviceInfo['python']           = platform.python_build()
+        self.deviceInfo['python version']   = platform.python_version()
 
         values = {}
 
@@ -235,18 +231,19 @@ class ConfigManager(DAMG):
             values[opt] = [item.strip() for item in re.findall("%s:\w*(.*?)\n" % (opt), source, re.IGNORECASE)][0]
 
         r = requests.get('https://api.ipdata.co').json()
+        print(r)
 
         for key in r:
             k = (str(key))
             for c in ['ip', 'city', 'country_name']:
                 if k == c:
-                    self.osInfo[k] = str(r[key])
+                    self.deviceInfo[k] = str(r[key])
                 else:
-                    self.osInfo[k] = 'unknown'
+                    self.deviceInfo[k] = 'unknown'
 
-        self.osInfo.add('values', values)
+        self.deviceInfo.add('values', values)
 
-        self.save_data(platformCfg, self.osInfo)
+        self.save_data(deviceCfg, self.deviceInfo)
         return True
 
     def cfg_cfgDir(self):
@@ -774,7 +771,7 @@ class ConfigManager(DAMG):
 
         return output
 
-configs = ConfigManager()
+configManager = ConfigManager()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Config qssPths from text file """

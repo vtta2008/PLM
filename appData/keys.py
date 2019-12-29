@@ -226,8 +226,8 @@ IMAGE_BLACKLIST = ['base_palette']
 PY2 = sys.version[0] == '2'
 
 SYS_OPTS = ["Host Name", "OS Name", "OS Version", "Product ID", "System Manufacturer", "System Model",
-              "System type", "BIOS Version", "Domain", "Windows Directory", "Total Physical Memory",
-              "Available Physical Memory", "Logon Server"]
+            "System type", "BIOS Version", "Domain", "Windows Directory", "Total Physical Memory",
+            "Available Physical Memory", "Logon Server"]
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/08/2018 - 2:30 AM

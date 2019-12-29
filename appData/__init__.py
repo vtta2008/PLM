@@ -11,8 +11,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
-from appData            import config as c
-from appData.config     import *
+from .                  import config as c
+from .config            import *
 
 __envKey__              = c.__envKey__
 

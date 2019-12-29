@@ -10,7 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import glsetting
+from __buildtins__ import *
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
@@ -19,7 +19,7 @@ import sys, requests
 # print(1)
 # PLM
 from appData                            import (__localServer__, SYSTRAY_UNAVAI, KEY_RELEASE, SERVER_CONNECT_FAIL,
-                                                configs)
+                                                configManager)
 from bin                                import DAMGDICT
 # print(2)
 from utils                              import LocalDatabase
@@ -39,7 +39,7 @@ from toolkits.Widgets                   import MessageBox
 class DAMGTEAM(Application):
 
     key                                 = 'PLM'
-    dataConfig                          = configs
+    dataConfig                          = configManager
     count                               = 0
     onlyExists                          = True
     events                              = DAMGDICT()
@@ -167,42 +167,6 @@ class DAMGTEAM(Application):
 
         self.set_styleSheet('dark')
 
-
-        # if glsetting.modes.login == 'Offline':
-        #     self.showLayout(self.mainUI.key, "show")
-        # else:
-        #     try:
-        #         self.username, token, cookie, remember = self.database.query_table('curUser')
-        #     except (ValueError, IndexError):
-        #         self.logger.info("Error occur, can not query qssPths")
-        #         self.signInEvent()
-        #     else:
-        #         if not str2bool(remember):
-        #             self.signInEvent()
-        #
-        #     try:
-        #         r = requests.get(__localServer__, verify = False, headers = {'Authorization': 'Bearer {0}'.format(token)}, cookies = {'connect.sid': cookie})
-        #     except Exception:
-        #         if not glsetting.modes.allowLocalMode:
-        #             MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
-        #             sys.exit()
-        #         else:
-        #             self.commander.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
-        #             self.showLayout(self.mainUI.key, 'show')
-        #     else:
-        #         if r.status_code == 200:
-        #             if not self.sysTray.isSystemTrayAvailable():
-        #                 self.logger.report(SYSTRAY_UNAVAI)
-        #                 self.exitEvent()
-        #             else:
-        #                 self.loginChanged(True)
-        #                 self.sysTray.log_in()
-        #                 self.showLayout(self.mainUI.key, "show")
-        #         else:
-        #             self.showLayout('SignIn', "show")
-
-        # self.startLoop()
-
     def notify(self, receiver, event):
         if event.type() == KEY_RELEASE:
             if event.key() == 16777249 and 32:
@@ -222,4 +186,4 @@ app.startLoop()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 19/06/2018 - 2:26 AM
-# © 2017 - 2018 DAMGteam. All rights reserved
+# © 2017 - 2019 DAMGteam. All rights reserved
