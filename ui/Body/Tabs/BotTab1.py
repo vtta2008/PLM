@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from toolkits.Widgets                       import Widget, GridLayout, CheckBox
+from devkit.Widgets                       import Widget, GridLayout, CheckBox
 from bin                                    import DAMGDICT, DAMGLIST
 from utils                                  import str2bool
 

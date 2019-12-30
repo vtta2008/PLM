@@ -15,7 +15,7 @@ import os, json
 from PyQt5.QtCore                               import QDate, QTime
 from PyQt5.QtGui                                import QFont
 
-from toolkits.Widgets                           import GroupBox, VBoxLayout, Label
+from devkit.Widgets                           import GroupBox, VBoxLayout, Label
 from utils                                      import LocalDatabase
 from cores.base                                 import DateLine
 from cores.Task                                 import Task

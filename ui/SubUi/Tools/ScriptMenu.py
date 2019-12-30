@@ -18,7 +18,7 @@ from PyQt5.QtCore               import pyqtSignal
 from PyQt5.QtWidgets            import QApplication
 
 from cores.Loggers              import Loggers
-from toolkits.Widgets           import Menu, WidgetAction, Action, Icon
+from devkit.Widgets           import Menu, WidgetAction, Action, Icon
 
 
 class ScriptAction(Action):

@@ -20,7 +20,7 @@ from PyQt5.QtWidgets                import (QAction, QApplication, QComboBox, QD
                                             QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
 
 # Plm
-from toolkits.Widgets               import GridLayout, Widget, AppIcon, Label
+from devkit.Widgets               import GridLayout, Widget, AppIcon, Label
 
 
 def codec_name(codec):

@@ -18,19 +18,19 @@ from functools                          import partial
 
 # PLM
 from bin                                import DAMGDICT, DAMGLIST
-from toolkits.Widgets                   import Action, Button
-from utils                              import data_handler, is_string, is_action, is_button
-from appData                            import (pipelineCfg, SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY,
+from devkit.Widgets                     import Action, Button
+from utils                              import is_string, is_action, is_button
+from appData                            import (SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY,
                                                 CONFIG_DEV, CONFIG_TOOLS, CONFIG_OFFICE, CONFIG_TDS, CONFIG_ART, CONFIG_TEX,
                                                 CONFIG_POST, CONFIG_VFX, CONFIG_PRE, CONFIG_EXTRA, CONFIG_SYSTRAY,
                                                 RESTORE_KEY, SHOWMIN_KEY, SHOWMAX_KEY, EDIT_KEY, STYLESHEET_KEY,
-                                                BTNTAGSIZE, TAGBTNSIZE, BTNICONSIZE, ICONBTNSIZE)
+                                                BTNTAGSIZE, TAGBTNSIZE, BTNICONSIZE, ICONBTNSIZE, plmInfo)
 
 class KeyBase(DAMGDICT):
 
     key                                 = 'KeyBase'
 
-    appInfo                             = data_handler(filePath=pipelineCfg)
+    plmInfo                             = plmInfo
 
     actionKeys                          = DAMGLIST()
     showLayoutKeys                      = DAMGLIST()
@@ -129,7 +129,7 @@ class KeyBase(DAMGDICT):
         actions = []
 
         for key in keys:
-            if key in self.appInfo.keys():
+            if key in self.plmInfo.keys():
                 # print('key in appinfo: {0}'.format(key))
                 if is_string(key):
                     action = self.createAction(key, parent)
@@ -170,10 +170,10 @@ class KeyBase(DAMGDICT):
             return self.actionConfigError(key)
 
     def showLayoutAction(self, key, parent):
-        if key in self.appInfo.keys():
-            action = Action({'icon': self.appInfo[key][1],
+        if key in self.plmInfo.keys():
+            action = Action({'icon': self.plmInfo[key][1],
                              'txt': '&{0}'.format(key),
-                             'stt': self.appInfo[key][0],
+                             'stt': self.plmInfo[key][0],
                              'trg': partial(parent.signals.emit, 'showLayout', key, 'show'), }, parent)
             action.key = '{0}_{1}_Action'.format(parent.key, key)
             action._name = action.key
@@ -188,11 +188,11 @@ class KeyBase(DAMGDICT):
             return self.actionConfigError(key)
 
     def showRestoreAction(self, key, parent):
-        if key in self.appInfo.keys():
-            action = Action({'icon': self.appInfo[key][1],
+        if key in self.plmInfo.keys():
+            action = Action({'icon': self.plmInfo[key][1],
                              'txt': '&{0}'.format(key),
-                             'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.emit, 'showLayout', self.appInfo[key][2], 'showRestore'), }, parent)
+                             'stt': self.plmInfo[key][0],
+                             'trg': partial(parent.signals.emit, 'showLayout', self.plmInfo[key][2], 'showRestore'), }, parent)
             action.key = '{0}_{1}_Action'.format(parent.key, key)
             action._name = action.key
             if action.key in self.actionKeys:
@@ -206,11 +206,11 @@ class KeyBase(DAMGDICT):
             return self.actionConfigError(key)
 
     def showMaxAction(self, key, parent):
-        if key in self.appInfo.keys():
-            action = Action({'icon': self.appInfo[key][1],
+        if key in self.plmInfo.keys():
+            action = Action({'icon': self.plmInfo[key][1],
                              'txt': '&{0}'.format(key),
-                             'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.emit, 'showLayout', self.appInfo[key][2], 'showMax'), }, parent)
+                             'stt': self.plmInfo[key][0],
+                             'trg': partial(parent.signals.emit, 'showLayout', self.plmInfo[key][2], 'showMax'), }, parent)
             action.key = '{0}_{1}_Action'.format(parent.key, key)
             action._name = action.key
             if action.key in self.actionKeys:
@@ -224,11 +224,11 @@ class KeyBase(DAMGDICT):
             return self.actionConfigError(key)
 
     def showMinAction(self, key, parent):
-        if key in self.appInfo.keys():
-            action = Action({'icon': self.appInfo[key][1],
+        if key in self.plmInfo.keys():
+            action = Action({'icon': self.plmInfo[key][1],
                              'txt': '&{0}'.format(key),
-                             'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.emit, 'showLayout', self.appInfo[key][2], 'showMin'), }, parent)
+                             'stt': self.plmInfo[key][0],
+                             'trg': partial(parent.signals.emit, 'showLayout', self.plmInfo[key][2], 'showMin'), }, parent)
             action.key = '{0}_{1}_Action'.format(parent.key, key)
             action._name = action.key
             if action.key in self.actionKeys:
@@ -242,12 +242,12 @@ class KeyBase(DAMGDICT):
             return self.actionConfigError(key)
 
     def startFileAction(self, key, parent):
-        if key in self.appInfo.keys():
+        if key in self.plmInfo.keys():
             # print('create start file action: {} {}'.format(key, self.appInfo[key][2]))
-            action = Action({'icon': self.appInfo[key][1],
+            action = Action({'icon': self.plmInfo[key][1],
                              'txt': '&{0}'.format(key),
-                             'stt': self.appInfo[key][0],
-                             'trg': partial(os.startfile, self.appInfo[key][2])}, parent)
+                             'stt': self.plmInfo[key][0],
+                             'trg': partial(os.startfile, self.plmInfo[key][2])}, parent)
             action.key = '{0}_{1}_Action'.format(parent.key, key)
             action._name = action.key
             if action.key in self.actionKeys:
@@ -261,11 +261,11 @@ class KeyBase(DAMGDICT):
             return self.actionConfigError(key)
 
     def executingAction(self, key, parent):
-        if key in self.appInfo.keys():
-            action = Action({'icon': self.appInfo[key][1],
+        if key in self.plmInfo.keys():
+            action = Action({'icon': self.plmInfo[key][1],
                              'txt': '&{0}'.format(key),
-                             'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.emit, 'executing', self.appInfo[key][2]), }, parent)
+                             'stt': self.plmInfo[key][0],
+                             'trg': partial(parent.signals.emit, 'executing', self.plmInfo[key][2]), }, parent)
             action.key = '{0}_{1}_Action'.format(parent.key, key)
             action._name = '{0} Action'.format(key)
             if action.key in self.actionKeys:
@@ -278,11 +278,11 @@ class KeyBase(DAMGDICT):
             return self.actionConfigError(key)
 
     def openBrowserAction(self, key, parent):
-        if key in self.appInfo.keys():
-            action = Action({'icon': self.appInfo[key][1],
+        if key in self.plmInfo.keys():
+            action = Action({'icon': self.plmInfo[key][1],
                              'txt': '&{0}'.format(key),
-                             'stt': self.appInfo[key][0],
-                             'trg': partial(parent.signals.emit, 'openBrowser', self.appInfo[key][2]), }, parent)
+                             'stt': self.plmInfo[key][0],
+                             'trg': partial(parent.signals.emit, 'openBrowser', self.plmInfo[key][2]), }, parent)
             action.key = '{0}_{1}_Action'.format(parent.key, key)
             action._name = action.key
             if action.key in self.actionKeys:
@@ -298,9 +298,9 @@ class KeyBase(DAMGDICT):
     def createButtons(self, keys, parent):
         buttons = []
         for key in keys:
-            if key in self.appInfo.keys():
+            if key in self.plmInfo.keys():
                 if not key in self.checkedKeys:
-                    print('key: {0} is in appInfo: {1}'.format(key, self.appInfo[key]))
+                    print('key: {0} is in appInfo: {1}'.format(key, self.plmInfo[key]))
                 if is_string(key):
                     button = self.createButton(key, parent)
                     buttons.append(button)
@@ -312,7 +312,7 @@ class KeyBase(DAMGDICT):
                 else:
                     print("DataTypeError: Could not add Button: {0}".format(key))
             else:
-                print('key: {0} NOT in appInfo: {1}'.format(key, self.appInfo[key]))
+                print('key: {0} NOT in appInfo: {1}'.format(key, self.plmInfo[key]))
 
         return buttons
 
@@ -338,14 +338,14 @@ class KeyBase(DAMGDICT):
             return self.buttonConfigError(key)
 
     def showLayoutButton(self, key, parent):
-        if key in self.appInfo.keys():
+        if key in self.plmInfo.keys():
             if key in ['SignIn', 'SignOut', 'SignUp', 'SwitchAccount']:
                 show = key
             else:
                 show = 'show'
 
-            button = Button({'txt': self.appInfo[key][0],
-                             'stt': self.appInfo[key][2],
+            button = Button({'txt': self.plmInfo[key][0],
+                             'stt': self.plmInfo[key][2],
                              'cl': partial(parent.signals.emit, 'showLayout', key, show), })
             button.key = '{0}_{1}_Button'.format(parent.key, key)
             button._name = button.key
@@ -360,9 +360,9 @@ class KeyBase(DAMGDICT):
             return self.buttonConfigError(key)
 
     def showRestoreButton(self, key, parent):
-        if key in self.appInfo.keys():
-            button = Button({'txt': self.appInfo[key][0],
-                             'stt': self.appInfo[key][2],
+        if key in self.plmInfo.keys():
+            button = Button({'txt': self.plmInfo[key][0],
+                             'stt': self.plmInfo[key][2],
                              'cl': partial(parent.signals.emit, 'showLayout', key, 'showRestore'), })
             button.key = '{0}_{1}_Button'.format(parent.key, key)
             button._name = button.key
@@ -377,9 +377,9 @@ class KeyBase(DAMGDICT):
             return self.buttonConfigError(key)
 
     def showMaxButton(self, key, parent):
-        if key in self.appInfo.keys():
-            button = Button({'txt': self.appInfo[key][0],
-                             'stt': self.appInfo[key][2],
+        if key in self.plmInfo.keys():
+            button = Button({'txt': self.plmInfo[key][0],
+                             'stt': self.plmInfo[key][2],
                              'cl': partial(parent.signals.emit, 'showLayout', key, 'showMaximized'), })
             button.key = '{0}_{1}_Button'.format(parent.key, key)
             button._name = button.key
@@ -394,9 +394,9 @@ class KeyBase(DAMGDICT):
             return self.buttonConfigError(key)
 
     def showMinButton(self, key, parent):
-        if key in self.appInfo.keys():
-            button = Button({'txt': self.appInfo[key][0],
-                             'stt': self.appInfo[key][2],
+        if key in self.plmInfo.keys():
+            button = Button({'txt': self.plmInfo[key][0],
+                             'stt': self.plmInfo[key][2],
                              'cl': partial(parent.signals.emit, 'showLayout', key, 'showMinimized'), })
             button.key = '{0}_{1}_Button'.format(parent.key, key)
             button._name = button.key
@@ -411,9 +411,9 @@ class KeyBase(DAMGDICT):
             return self.buttonConfigError(key)
 
     def startFileButton(self, key, parent):
-        if key in self.appInfo.keys():
-            button = Button({'txt': self.appInfo[key][0],
-                             'stt': self.appInfo[key][2],
+        if key in self.plmInfo.keys():
+            button = Button({'txt': self.plmInfo[key][0],
+                             'stt': self.plmInfo[key][2],
                              'cl': partial(os.startfile, key)})
             button.key = '{0}_{1}_Button'.format(parent.key, key)
             button._name = button.key
@@ -428,9 +428,9 @@ class KeyBase(DAMGDICT):
             return self.buttonConfigError(key)
 
     def executingButton(self, key, parent):
-        if key in self.appInfo.keys():
-            button = Button({'txt': self.appInfo[key][0],
-                             'stt': self.appInfo[key][2],
+        if key in self.plmInfo.keys():
+            button = Button({'txt': self.plmInfo[key][0],
+                             'stt': self.plmInfo[key][2],
                              'cl': partial(parent.signals.emit, 'executing', key), })
             button.key = '{0}_{1}_Button'.format(parent.key, key)
             button._name = button.key
@@ -444,9 +444,9 @@ class KeyBase(DAMGDICT):
             return self.buttonConfigError(key)
 
     def openBrowserButton(self, key, parent):
-        if key in self.appInfo.keys():
-            button = Button({'txt': self.appInfo[key][0],
-                             'stt': self.appInfo[key][2],
+        if key in self.plmInfo.keys():
+            button = Button({'txt': self.plmInfo[key][0],
+                             'stt': self.plmInfo[key][2],
                              'cl': partial(parent.signals.emit, 'openBrowser', key), })
             button.key = '{0}_{1}_Button'.format(parent.key, key)
             button._name = button.key
@@ -461,9 +461,9 @@ class KeyBase(DAMGDICT):
             return self.buttonConfigError(key)
 
     def iconShowLayoutButton(self, key, parent):
-        if key in self.appInfo.keys():
+        if key in self.plmInfo.keys():
             button = Button({'icon': key,
-                             'tt': self.appInfo[key][2],
+                             'tt': self.plmInfo[key][2],
                              'fix': BTNICONSIZE,
                              'ics': ICONBTNSIZE,
                              'cl': partial(parent.signals.emit, 'showLayout', key, 'show')})

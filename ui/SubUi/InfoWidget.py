@@ -10,8 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from appData                import (SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE_MIT, REFERENCE, VERSION)
-from toolkits.Widgets       import Widget, AppIcon, GridLayout, Label, Button
+from appData                import (SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCE, VERSION)
+from devkit.Widgets       import Widget, AppIcon, GridLayout, Label, Button
 
 class InfoWidget(Widget):
 
@@ -20,7 +20,7 @@ class InfoWidget(Widget):
         CodeOfConduct       = CODECONDUCT,
         Contributing        = CONTRIBUTING,
         Credit              = CREDIT,
-        Licence             = LICENCE_MIT,
+        Licence             = LICENCE,
         Reference           = REFERENCE,
         Version             = VERSION
     )

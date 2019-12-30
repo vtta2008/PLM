@@ -20,7 +20,7 @@ from PyQt5.QtWidgets        import (QAbstractItemView, QApplication, QComboBox, 
                                     QHeaderView, QProgressDialog, QTableWidget, QTableWidgetItem, )
 
 from appData                import SiPoExp, SiPoPre
-from toolkits.Widgets       import Widget, AppIcon, Button, Label
+from devkit.Widgets       import Widget, AppIcon, Button, Label
 
 class FindFiles(Widget):
 

@@ -2,18 +2,11 @@
 from plugins.NodeGraph.base.commands import PropertyChangedCmd
 from plugins.NodeGraph.base.model import NodeModel
 from plugins.NodeGraph.base.port import Port
-from appData import (NODE_PROP,
-                                   NODE_PROP_QLINEEDIT,
-                                   NODE_PROP_QTEXTEDIT,
-                                   NODE_PROP_QCOMBO,
-                                   NODE_PROP_QCHECKBOX,
-                                   IN_PORT, OUT_PORT)
+from appData import (NODE_PROP, NODE_PROP_QLINEEDIT, NODE_PROP_QTEXTEDIT, NODE_PROP_QCOMBO, NODE_PROP_QCHECKBOX, IN_PORT, OUT_PORT)
 from cores.errors import PortRegistrationError
 from plugins.NodeGraph.qgraphics.node_backdrop import BackdropNodeItem
 from plugins.NodeGraph.qgraphics.node_base import NodeItem
-from plugins.NodeGraph.widgets.node_property import (NodeComboBox,
-                                                     NodeLineEdit,
-                                                     NodeCheckBox)
+from plugins.NodeGraph.widgets.node_property import (NodeComboBox, NodeLineEdit, NodeCheckBox)
 
 
 class classproperty(object):

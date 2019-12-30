@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from toolkits.Widgets               import GroupGrid, Label, CheckBox, PlainTextEdit
+from devkit.Widgets               import GroupGrid, Label, CheckBox, PlainTextEdit
 from utils                          import str2bool
 
 class BaseDetails(GroupGrid):

@@ -22,7 +22,7 @@ from GPUtil             import getGPUs
 
 __all__ = ['attr_type', 'auto_convert', 'camel_case_to_lower_case_underscore', 'camel_case_to_title', 'clean_name',
             'is_bool', 'is_dict', 'is_list', 'is_none', 'is_number', 'is_string', 'list_attr_types',
-            'lower_case_underscore_to_camel_case', 'is_newer', 'test_func']
+            'lower_case_underscore_to_camel_case', 'is_newer']
 
 # PyQt5
 from PyQt5.QtCore       import Qt, QRectF, QRect, QSize, pyqtSignal, pyqtSlot
@@ -31,7 +31,7 @@ from PyQt5.QtWidgets    import QAction, QPushButton
 
 # PLM
 from appData            import (__envKey__, __pkgsReq__, KEYPACKAGE, LOGO_DIR, WEB_ICON_DIR, TAG_ICON_DIR, AVATAR_DIR,
-                                APP_ICON_DIR, actionTypes)
+                                ICON_DIR, actionTypes)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Destop tool """
@@ -305,7 +305,7 @@ def get_disk_useage():
 
 def get_app_icon(size=32, iconName="About"):
     # Get the right directory base on icon size
-    iconPth = os.path.join(APP_ICON_DIR, "x{0}".format(str(size)))
+    iconPth = os.path.join(ICON_DIR, "x{0}".format(str(size)))
 
     # Get the icon file path
     iconFilePth = os.path.join(iconPth, "{0}.icon.png".format(iconName))
@@ -346,7 +346,7 @@ def get_avatar_image(name):
             return a
 
 def get_tag_icon(name):
-    tags = [t for t in get_file_path(TAG_ICON_DIR) if '.tag' in t]
+    tags = [t for t in get_file_path(TAG_ICON_DIR) if '.icon' in t]
     for t in tags:
         if name in t:
             # print(t, os.path.exists(t))

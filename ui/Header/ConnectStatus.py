@@ -18,7 +18,7 @@ import requests, sys
 from appData                    import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
 from bin                        import DAMGTIMER, DAMGLIST
 from ui.base                    import Conection
-from toolkits.Widgets           import GroupGrid, Label, MessageBox
+from devkit.Widgets           import GroupGrid, Label, MessageBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """

@@ -16,7 +16,7 @@ from PyQt5.QtCore                       import pyqtSlot
 
 # PLM
 from appData                            import __plmSlogan__, __appname__
-from toolkits.Widgets                   import LogoIcon, SystemTrayIcon
+from devkit.Widgets                   import LogoIcon, SystemTrayIcon
 from ui.Header.SysTrayIconMenu          import SysTrayIconMenu
 from utils                              import LocalDatabase
 

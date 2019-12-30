@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # Plt
-from toolkits.Widgets               import Widget, GridLayout, AppIcon
+from devkit.Widgets               import Widget, GridLayout, AppIcon
 from ui.base                        import Profile, Location, Avatar, PassWord
 
 # ----------------------------------------------------------------------------------------------------------- #

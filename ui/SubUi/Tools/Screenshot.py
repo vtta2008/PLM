@@ -23,7 +23,7 @@ from PyQt5.QtWidgets            import (QGridLayout, QFileDialog, QApplication, 
 
 # PLM
 from appData                    import ASPEC_RATIO
-from toolkits.Widgets           import Widget, AppIcon, GridLayout, Button, HBoxLayout, Label
+from devkit.Widgets           import Widget, AppIcon, GridLayout, Button, HBoxLayout, Label
 
 class Screenshot(Widget):
 

@@ -89,11 +89,11 @@ from .base.actions import setup_context_menu
 from .widgets.node_tree import NodeTreeWidget
 from .widgets.properties_bin import PropertiesBinWidget
 
-from appData import LICENCE_MIT as LICENSE
+from appData import LICENCE
 from appData import VERSION
 
 __all__ = [
-    'BackdropNode', 'BaseNode', 'LICENSE', 'Menu', 'MenuCommand', 'NodeGraph',
+    'BackdropNode', 'BaseNode', 'LICENCE', 'Menu', 'MenuCommand', 'NodeGraph',
     'NodeObject', 'NodeTreeWidget', 'Port', 'PropertiesBinWidget', 'VERSION',
     'setup_context_menu'
 ]

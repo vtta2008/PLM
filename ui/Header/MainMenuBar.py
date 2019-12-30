@@ -13,14 +13,14 @@ Description:
 # Python
 
 # Plm
-from appData                        import __plmWiki__, pipelineCfg
-from toolkits.Widgets               import GroupVBox, MenuBar
+from appData                        import __plmWiki__, plmInfo
+from devkit.Widgets                 import GroupVBox, MenuBar
 from utils                          import data_handler, is_string
 
 class MainMenuBar(GroupVBox):
 
     key                             = 'MainMenuBar'
-    appInfo                         = data_handler(filePath=pipelineCfg)
+    plmInfo                         = plmInfo
 
     def __init__(self, actionManager, parent=None):
         super(MainMenuBar, self).__init__(parent)

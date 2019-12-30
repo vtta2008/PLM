@@ -10,8 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from toolkits.Gui               import Image, Pixmap
-from toolkits.Widgets           import Label
+from devkit.Gui               import Image, Pixmap
+from devkit.Widgets           import Label
 from utils                      import get_app_icon
 from appData                    import AUTO_COLOR, center
 

@@ -1,20 +1,19 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import os
-import math
+import os, math
 
-from plugins.NodeGraph import QtGui, QtCore, QtWidgets
-from appData import (IN_PORT, OUT_PORT,
-                                   PIPE_LAYOUT_CURVED,
-                                   SCENE_AREA)
-from plugins.NodeGraph.qgraphics.node_abstract import AbstractNodeItem
-from plugins.NodeGraph.qgraphics.node_backdrop import BackdropNodeItem
-from plugins.NodeGraph.qgraphics.pipe import Pipe, LivePipe
-from plugins.NodeGraph.qgraphics.port import PortItem
-from plugins.NodeGraph.qgraphics.slicer import SlicerPipe
-from plugins.NodeGraph.widgets.scene import NodeScene
-from plugins.NodeGraph.widgets.stylesheet import STYLE_QMENU
-from plugins.NodeGraph.widgets.tab_search import TabSearchWidget
+from plugins.NodeGraph                          import QtGui, QtCore, QtWidgets
+from appData                                    import (IN_PORT, OUT_PORT, PIPE_LAYOUT_CURVED, SCENE_AREA)
+
+from plugins.NodeGraph.qgraphics.node_abstract  import AbstractNodeItem
+from plugins.NodeGraph.qgraphics.node_backdrop  import BackdropNodeItem
+from plugins.NodeGraph.qgraphics.pipe           import Pipe, LivePipe
+from plugins.NodeGraph.qgraphics.port           import PortItem
+from plugins.NodeGraph.qgraphics.slicer         import SlicerPipe
+
+from .scene                                     import NodeScene
+from .stylesheet                                import STYLE_QMENU
+from .tab_search                                import TabSearchWidget
 
 ZOOM_MIN = -0.95
 ZOOM_MAX = 2.0

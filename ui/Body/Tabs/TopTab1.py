@@ -13,7 +13,7 @@ Description:
 
 
 # PLM
-from toolkits.Widgets                           import GroupBox, GridLayout, Widget
+from devkit.Widgets                           import GroupBox, GridLayout, Widget
 from ui.base                                    import TaskInfo, TaskFilter
 from utils                                      import get_file_path
 from appData                                    import TASK_DIR

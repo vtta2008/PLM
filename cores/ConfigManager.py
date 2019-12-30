@@ -190,11 +190,11 @@ from __future__ import absolute_import, unicode_literals
 #         dirPth['nodegraph']            = self.set_dir('appData/.config')
 #         dirPth['cache']                = self.set_dir('appData/.config/.cache')
 #
-#         dirPth['documents']            = self.set_dir('appData/documentations')
+#         dirPth['docs']            = self.set_dir('appData/documentations')
 #         dirPth['source']               = self.set_dir('appData/raws')
 #
 #         dirPth['bin']                  = self.set_dir('bin')
-#         dirPth['resource']             = self.set_dir('bin/resources')
+#         dirPth['resource']             = self.set_dir('bin/rcs')
 #
 #         dirPth['cores']                = self.set_dir('cores')
 #
@@ -247,10 +247,10 @@ from __future__ import absolute_import, unicode_literals
 #
 #         dirPth['test']                 = self.set_dir('test')
 #
-#         dirPth['toolkits']             = self.set_dir('toolkits')
-#         dirPth['Core']                 = self.set_dir('toolkits/Core')
-#         dirPth['Gui']                  = self.set_dir('toolkits/Gui')
-#         dirPth['Widgets']              = self.set_dir('toolkits/Widgets')
+#         dirPth['devkit']             = self.set_dir('devkit')
+#         dirPth['Core']                 = self.set_dir('devkit/Core')
+#         dirPth['Gui']                  = self.set_dir('devkit/Gui')
+#         dirPth['Widgets']              = self.set_dir('devkit/Widgets')
 #
 #         dirPth['ui']                   = self.set_dir('ui')
 #         dirPth['base']                 = self.set_dir('ui/base')

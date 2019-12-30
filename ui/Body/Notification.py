@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 
 import datetime
 
-from toolkits.Widgets           import LCDNumber, GroupGrid, Label
+from devkit.Widgets           import LCDNumber, GroupGrid, Label
 from bin                        import DAMGTIMER
 
 class DigitalClock(LCDNumber):

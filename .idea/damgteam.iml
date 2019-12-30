@@ -2,6 +2,7 @@
 <module type="PYTHON_MODULE" version="4">
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
+      <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/@reference" />
       <excludeFolder url="file://$MODULE_DIR$/_windows" />
       <excludeFolder url="file://$MODULE_DIR$/imgs/scrImgs" />
@@ -18,8 +19,5 @@
     <orderEntry type="module" module-name="damgserver" />
     <orderEntry type="module" module-name="vanilla-server-side-rendering-flow" />
     <orderEntry type="module" module-name="test_app_compile" />
-  </component>
-  <component name="TestRunnerService">
-    <option name="PROJECT_TEST_RUNNER" value="Unittests" />
   </component>
 </module>

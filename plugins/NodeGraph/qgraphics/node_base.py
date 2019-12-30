@@ -1,11 +1,8 @@
 #!/usr/bin/python
 
 from plugins.NodeGraph import QtGui, QtCore, QtWidgets
-from appData import (IN_PORT, OUT_PORT,
-                                   NODE_WIDTH, NODE_HEIGHT,
-                                   NODE_ICON_SIZE, ICON_NODE_BASE,
-                                   NODE_SEL_COLOR, NODE_SEL_BORDER_COLOR,
-                                   PORT_FALLOFF, Z_VAL_NODE, Z_VAL_NODE_WIDGET)
+from appData import (IN_PORT, OUT_PORT, NODE_WIDTH, NODE_HEIGHT, NODE_ICON_SIZE, ICON_NODE_BASE, NODE_SEL_COLOR,
+                     NODE_SEL_BORDER_COLOR, PORT_FALLOFF, Z_VAL_NODE, Z_VAL_NODE_WIDGET)
 from cores.errors import NodeWidgetError
 from plugins.NodeGraph.qgraphics.node_abstract import AbstractNodeItem
 from plugins.NodeGraph.qgraphics.port import PortItem

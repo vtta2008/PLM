@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from toolkits.Widgets   import GroupGrid, LineEdit, Button, Label, MessageBox
+from devkit.Widgets   import GroupGrid, LineEdit, Button, Label, MessageBox
 from utils              import text_to_hex, check_match
 from appData            import PW_BLANK, PW_UNMATCH
 

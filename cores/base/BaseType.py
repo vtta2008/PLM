@@ -15,7 +15,6 @@ from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore               import pyqtSignal, QDate, QTime
 
-
 from bin                        import DAMG, DAMGTIMER, DAMGDICT
 
 

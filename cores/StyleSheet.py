@@ -23,7 +23,7 @@ from bin                            import DAMG, DAMGDICT
 from appData                        import DarkPalette
 from cores.Loggers                  import Loggers
 from appData                        import QSS_DIR
-from toolkits.Core                  import TextStream
+from devkit.Core                    import TextStream
 from plugins                        import Qt
 
 qt_api = Qt.__binding__
@@ -37,7 +37,7 @@ class StyleSheet(DAMG):
     def __init__(self, app=None):
         super(StyleSheet, self).__init__()
 
-        self.logger = Loggers(__name__)
+        self.logger                 = Loggers(__name__)
         self.app                    = app
 
     def getStyleSheet(self, fname):
@@ -52,15 +52,14 @@ class StyleSheet(DAMG):
         self._filename.open(QFile.ReadOnly | QFile.Text)
         ts                          = TextStream(self._filename)
         stylesheet                  = ts.readAll()
-        stylesheet            = self.fixStyleSheet(stylesheet)
+        stylesheet                  = self.fixStyleSheet(stylesheet)
         return stylesheet
 
     def getQssFile(self, name):
         if name == 'dark':
-            from scripts.rcs import darkstyle_rc
+            from bin.rcs import pyqt5_style_rc
             filename = QFile(os.path.join(QSS_DIR, 'darkstyle.qss'))
         elif name == 'bright':
-            from scripts.rcs import config_rc
             filename = QFile(os.path.join(QSS_DIR, 'brightstyle.qss'))
         elif name == 'chacoal':
             filename = QFile(os.path.join(QSS_DIR, 'chacoal.qss'))
@@ -68,10 +67,9 @@ class StyleSheet(DAMG):
             filename = QFile(os.path.join(QSS_DIR, 'nuker.qss'))
         else:
             if qt_api == 'PyQt5':
-                from scripts.rcs import pyqt5_style_rc
+                pass
             else:
-                from scripts.rcs import pyside2_style_rc
-
+                pass
             filename = QFile(os.path.join(QSS_DIR, 'style.qss'))
 
         return filename
@@ -101,7 +99,7 @@ class StyleSheet(DAMG):
     def changeStyleSheet(self, key):
         self.removeStyleSheet()
         filename                        = self.getQssFile(key)
-        self._stylesheet                      = self.getStyleSheet(filename)
+        self._stylesheet                = self.getStyleSheet(filename)
         self.app.setStyleSheet(self._stylesheet)
         return self._stylesheet
 

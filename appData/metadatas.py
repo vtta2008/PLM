@@ -9,32 +9,28 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import __envKey__, ROOT
+
+import os, subprocess
+
+if os.getenv(__envKey__) != ROOT:
+    subprocess.Popen('Set {0} {1}'.format(__envKey__, ROOT))
 
 # -------------------------------------------------------------------------------------------------------------
-""" DAMG team """
-
-__envKey__              = "DAMGTEAM"
+""" Organisation """
 
 __organization__        = "DAMG TEAM"
 __organizationID__      = "DAMG"
 __organizationName__    = 'DAMGTEAM'
 __groupname__           = "DAMGTEAM"
-__softwareName__        = "Pipeline Manager"
-__damgSlogan__          = "Comprehensive Solution Design"
+__orgSlogan__           = "desire design"
 __website__             = "https://damgteam.com"
-__author__             = "Trinh Do & Duong Minh Duc"
-__author1__             = "Trinh Do"
-__author2__             = "Duong Minh Duc"
-__Founders__            = __author1__
-__CoFonders__           = __author2__
-__emails__              = "damgteam@gmail.com"
-__email1__              = "dot@damgteam.com"
-__email2__              = "up@damgteam.com"
-
 # -------------------------------------------------------------------------------------------------------------
-""" PipelineTool """
+""" Application """
 
 __project__             = "PLM"
+__softwareName__        = "Pipeline Manager"
+__appSlogan__           = "Comprehensive Solution"
 __appname__             = "Pipeline Manager (PLM)"
 __appShortcut__         = "Plm.ink"
 
@@ -52,6 +48,20 @@ __about__               = "About Pipeline Manager"
 __homepage__            = "https://pipeline.damgteam.com"
 __plmSlogan__           = "Creative your own pipeline"
 __plmWiki__             = "https://github.com/vtta2008/PipelineTool/wiki"
+
+# -------------------------------------------------------------------------------------------------------------
+""" Authors """
+
+__author__              = "Trinh Do & Duong Minh Duc"
+__author1__             = "Trinh Do"
+__author2__             = "Duong Minh Duc"
+
+__Founders__            = __author1__
+__CoFonders__           = __author2__
+
+__emails__              = "damgteam@gmail.com"
+__email1__              = "dot@damgteam.com"
+__email2__              = "up@damgteam.com"
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """

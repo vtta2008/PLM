@@ -28,7 +28,7 @@ from PyQt5.QtGui                import QTextCursor
 
 # PLM
 from appData                    import SiPoMin
-from toolkits.Widgets           import GridLayout, Detector, Widget
+from devkit.Widgets           import GridLayout, Detector, Widget
 
 # -------------------------------------------------------------------------------------------------------------
 """ Processing User Input """

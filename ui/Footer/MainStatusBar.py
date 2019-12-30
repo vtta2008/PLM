@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from toolkits.Widgets               import StatusBar
+from devkit.Widgets               import StatusBar
 
 class MainStatusBar(StatusBar):
 

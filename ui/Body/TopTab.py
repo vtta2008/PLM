@@ -7,10 +7,10 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-from __buildtins__ import glsetting
+from __buildtins__ import globalSetting
 
 # PLM
-from toolkits.Widgets           import TabWidget, VBoxLayout, AppIcon
+from devkit.Widgets           import TabWidget, VBoxLayout, AppIcon
 from ui.Body.Tabs               import TopTab1, TopTab2, TopTap3
 from bin                        import DAMGLIST
 
@@ -43,8 +43,8 @@ class TopTab(TabWidget):
         self.tabNames           = DAMGLIST(listData=['Common', 'User', 'Cmd'])
 
         for tab in self.tabs:
-            if glsetting.modes.login == 'Offline':
-                if glsetting.modes.allowLocalMode:
+            if globalSetting.modes.login == 'Offline':
+                if globalSetting.modes.allowLocalMode:
                     if tab.key == 'TopTab2':
                         pass
                     else:

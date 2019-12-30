@@ -18,19 +18,17 @@ from __buildtins__ import *
 import sys, requests
 # print(1)
 # PLM
-from appData                            import (__localServer__, SYSTRAY_UNAVAI, KEY_RELEASE, SERVER_CONNECT_FAIL,
-                                                configManager)
+from appData                            import (__localServer__, SYSTRAY_UNAVAI, KEY_RELEASE, SERVER_CONNECT_FAIL,)
 from bin                                import DAMGDICT
 # print(2)
 from utils                              import LocalDatabase
 # print(3)
-from ui.assets                          import (ActionManager, ButtonManager, RegistryLayout, ThreadManager,
-                                                EventManager, Commands)
+from ui.assets                          import (ActionManager, ButtonManager, RegistryLayout, ThreadManager, EventManager, Commands)
 from ui.LayoutManager                   import LayoutManager
 from ui.SubUi.Browser                   import Browser
 # print(4)
-from toolkits.Application               import Application
-from toolkits.Widgets                   import MessageBox
+from devkit.Application                 import Application
+from devkit.Widgets                     import MessageBox
 # print(5)
 
 # -------------------------------------------------------------------------------------------------------------
@@ -39,7 +37,6 @@ from toolkits.Widgets                   import MessageBox
 class DAMGTEAM(Application):
 
     key                                 = 'PLM'
-    dataConfig                          = configManager
     count                               = 0
     onlyExists                          = True
     events                              = DAMGDICT()
@@ -130,7 +127,7 @@ class DAMGTEAM(Application):
                                      headers={'Authorization': 'Bearer {0}'.format(token)},
                                      cookies={'connect.sid': cookie})
                 except Exception:
-                    if not glsetting.modes.allowLocalMode:
+                    if not globalSetting.modes.allowLocalMode:
                         MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                         sys.exit()
                     else:
@@ -148,7 +145,7 @@ class DAMGTEAM(Application):
                     else:
                         self.signinEvent()
             else:
-                if not glsetting.modes.allowLocalMode:
+                if not globalSetting.modes.allowLocalMode:
                     MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                     sys.exit()
                 else:
@@ -158,7 +155,7 @@ class DAMGTEAM(Application):
             if connectServer:
                 self.signinEvent()
             else:
-                if not glsetting.modes.allowLocalMode:
+                if not globalSetting.modes.allowLocalMode:
                     MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                     sys.exit()
                 else:

@@ -8,118 +8,78 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+
+from __buildtins__ import ROOT, globalSetting
+
 """ Import """
 
 # Python
-import os, sys, platform, subprocess, json, shutil, pkg_resources, requests, uuid, socket, pprint
+import os, sys, platform, subprocess, json, shutil, pkg_resources, requests, uuid, socket, pprint, wmi, winshell
 from platform import system
 
 PIPE = subprocess.PIPE
 STDOUT = subprocess.STDOUT
 
-try:
-    from importlib import reload
-except ImportError:
-    pass
+from .dirs                          import (APPDATA_DAMG, APPDATA_PLM, CFG_DIR, TMP_DIR, SETTING_DIR, LOG_DIR, TASK_DIR,
+                                            TEAM_DIR, ORG_DIR, APP_DATA_DIR, DB_DIR, ASSETS_DIR, AVATAR_DIR, FONT_DIR,
+                                            IMAGE_DIR, LOGO_DIR, DAMG_LOGO_DIR, PLM_LOGO_DIR, PIC_DIR, STYLE_DIR,
+                                            STYLE_IMAGE_DIR, STYLE_RC_DIR, STYLE_SVG_DIR, BIN_DIR, DATA_DIR, JSON_DIR,
+                                            DEPENDANCIES_DIR, DOCS_DIR, RST_DIR, TXT_DIR, RAWS_DATA_DIR, TEMPLATE_DIR,
+                                            TEMPLATE_LICENCE, RCS_DIR, CSS_DIR, HTML_DIR, JS_DIR, QSS_DIR,
+                                            BUILD_DIR, CORES_DIR, CORES_ASSETS_DIR, CORES_BASE_DIR, DEVKIT_DIR,
+                                            DEVKIT_CORE, DEVKIT_GUI, DEVKIT_WIDGET, HOOK_DIR, MAYA_DIR, MARI_DIR,
+                                            NUKE_DIR, ZBRUSH_DIR, HOUDINI_DIR, ICON_DIR, TAG_ICON_DIR, MAYA_ICON_DIR,
+                                            NODE_ICON_DIR, WEB_ICON_DIR, WEB_ICON_16, WEB_ICON_24, WEB_ICON_32,
+                                            WEB_ICON_48, WEB_ICON_64, WEB_ICON_128, ICON_DIR_12, ICON_DIR_16,
+                                            ICON_DIR_24, ICON_DIR_32, ICON_DIR_48, ICON_DIR_64, LIB_DIR, SOUND_DIR,
+                                            MODULE_DIR, PLUGIN_DIR, NODEGRAPH_DIR, SCRIPT_DIR, TEST_DIR, UI_DIR,
+                                            UI_BASE_DIR, UI_ASSET_DIR, BODY_DIR, TABS_DIR, FOOTER_DIR, HEADER_DIR,
+                                            SUBUI_DIR, FUNCS_DIR, PRJ_DIR, SETTINGS_DIR, TOOLS_DIR, UTILS_DIR)
 
-PLATFORM = 'Windows'
-API_MINIMUM = 0.64
+from .pths                          import (evnInfoCfg, iconCfg, avatarCfg, logoCfg, mayaCfg, webIconCfg, nodeIconCfg,
+                                            picCfg, tagCfg, pythonCfg, plmCfg, appsCfg, envVarCfg, dirCfg, pthCfg,
+                                            deviceCfg, userCfg, PLMconfig, sceneGraphCfg, APP_SETTING, USER_SETTING,
+                                            FORMAT_SETTING, UNIX_SETTING, LOCAL_DB, LOCAL_LOG, QSS_PATH, MAIN_SCSS_PTH,
+                                            STYLE_SCSS_PTH, VAR_SCSS_PTH, SETTING_FILEPTH)
 
-from appData                        import metadatas as m
-from .dirs                          import *
-from .pths                          import *
-from .text                          import *
-from .keys                          import *
-from .types                         import *
-from .formats                       import *
+from .types                         import (RAMTYPE, CPUTYPE, FORMFACTOR, DRIVETYPE, DB_ATTRIBUTE_TYPE, actionTypes,
+                                            layoutTypes)
+
+from .text                          import (TRADE_MARK, PLM_ABOUT, WAIT_FOR_UPDATE, WAIT_TO_COMPLETE, WAIT_LAYOUT_COMPLETE,
+                                            PASSWORD_FORGOTTON, SIGNUP, DISALLOW, TIT_BLANK, PW_BLANK, PW_WRONG,
+                                            PW_UNMATCH, PW_CHANGED, FN_BLANK, LN_BLANK, SEC_BLANK, USER_CHECK_REQUIRED,
+                                            USER_NOT_CHECK, USER_BLANK, USER_CHECK_FAIL, USER_NOT_EXSIST, USER_CONDITION,
+                                            SYSTRAY_UNAVAI, PTH_NOT_EXSIST, ERROR_OPENFILE, ERROR_QIMAGE, tooltips_present,
+                                            tooltips_missing, N_MESSAGES_TEXT, SERVER_CONNECT_FAIL, TEMPLATE_QRC_HEADER,
+                                            TEMPLATE_QRC_FILE, TEMPLATE_QRC_FOOTER, HEADER_SCSS, HEADER_QSS)
+
+from .keys                          import (TRACK_TDS, TRACK_VFX, TRACK_ART, TRACK_PRE, TRACK_TEX, TRACK_POST,
+                                            TRACK_OFFICE, TRACK_DEV, TRACK_TOOLS, TRACK_EXTRA, TRACK_SYSTRAY,
+                                            KEYDETECT, FIX_KEY, CONFIG_APPUI, KEYPACKAGE, CONFIG_TDS, CONFIG_VFX,
+                                            CONFIG_ART, CONFIG_PRE, CONFIG_TEX, CONFIG_POST, CONFIG_OFFICE, CONFIG_DEV,
+                                            CONFIG_TOOLS, CONFIG_EXTRA, CONFIG_SYSTRAY, ACTIONS_DATA, SHOWLAYOUT_KEY,
+                                            RESTORE_KEY, SHOWMAX_KEY, SHOWMIN_KEY, STYLESHEET_KEY, OPEN_BROWSER_KEY,
+                                            START_FILE, EDIT_KEY, START_FILE_KEY, EXECUTING_KEY, IGNORE_ICON_NAME,
+                                            QT_BINDINGS, QT_ABSTRACTIONS, QT5_IMPORT_API, QT_API_VALUES, QT_LIB_VALUES,
+                                            QT_BINDING, QT_ABSTRACTION, IMAGE_BLACKLIST, PY2, SYS_OPTS, notKeys,
+                                            autodeskVer,  )
+
+
+from .formats                       import (INI, Native, Invalid, LOG_FORMAT, DT_FORMAT, ST_FORMAT, datetTimeStamp,
+                                            IMGEXT, )
 from .options                       import *
 
-from bin.data.localSQL              import SQLS
 from bin                            import DAMGDICT
 
-try:
-    import winshell
-except ImportError:
-    subprocess.Popen('python -m pip install winshell --user', shell=True).wait()
-    import winshell
-
-try:
-    import wmi
-except ImportError:
-    subprocess.Popen('python -m pip install wmi --user', shell=True).wait()
-    import wmi
-finally:
-    com = wmi.WMI()
-
-from cores.EnvVariableManager       import EnvVariableManager
-envVar                              = EnvVariableManager()
+from .metadatas                     import (__plmWiki__, __localServer__, __pkgsReq__, __homepage__, __appname__,
+                                            __organization__, __organizationID__, __organizationName__, __globalServer__,
+                                            __google__, __plmSlogan__, __localServerAutho__, __version__, __website__,
+                                            VERSION, )
 
 # -------------------------------------------------------------------------------------------------------------
-""" Environment configKey """
+""" Configs """
 
-__envKey__              = m.__envKey__
-PLMAPPID                = m.PLMAPPID
-VERSION                 = m.VERSION
-COPYRIGHT               = m.COPYRIGHT
-
-# -------------------------------------------------------------------------------------------------------------
-""" DAMG team """
-
-__copyright__           = m.COPYRIGHT
-__organization__        = m.__organization__
-__groupname__           = m.__groupname__
-__damgSlogan__          = m.__damgSlogan__
-__website__             = m.__website__
-__author1__             = m.__author1__
-__author2__             = m.__author2__
-__Founder__             = m.__author1__
-__CoFonder1__           = m.__author2__
-__email1__              = m.__email1__
-__email2__              = m.__email2__
-
-# -------------------------------------------------------------------------------------------------------------
-""" PipelineTool """
-
-__project__             = m.__project__
-__appname__             = m.__appname__
-__appShortcut__         = m.__appShortcut__
-__version__             = m.__version__
-__versionFull__         = m.VERSION
-__cfgVersion__          = m.__cfgVersion__
-__verType__             = m.__verType__
-__reverType__           = m.__reverType__
-__about__               = m.__about__
-__homepage__            = m.__homepage__
-__plmSlogan__           = m.__plmSlogan__
-__plmWiki__             = m.__plmWiki__
-
-# -------------------------------------------------------------------------------------------------------------
-""" Server """
-
-__globalServer__        = m.__globalServer__
-__globalServerCheck__   = m.__globalServerCheck__
-__globalServerAutho__   = m.__globalServerAutho__
-
-__localPort__           = m.__localPort__
-__localHost__           = m.__localHost__
-__localServer           = m.__localServer__
-__localServerCheck__    = m.__localServerCheck__
-__localServerAutho__    = m.__localServerAutho__
-
-__google__              = m.__google__
-__googleVN__            = m.__googleVN__
-__googleNZ__            = m.__googleNZ__
-
-__email__               = m.__email__
-
-__packages_dir__        = m.__packages_dir__
-__classifiers__         = m.__classifiers__
-__download__            = m.__download__
-__description__         = m.__description__
-__readme__              = m.__readme__
-__modules__             = m.__modules__
-__pkgsReq__             = m.__pkgsReq__
-
+com = wmi.WMI()
 
 class ConfigPython(DAMGDICT):
 
@@ -139,13 +99,10 @@ class ConfigPython(DAMGDICT):
                 if not p in sys.path:
                     sys.path.insert(-1, p)
 
-        self['PATH']    = sys.path
-        envVar.create_envVariable('PATH', sys.path)
-
         for py in pkg_resources.working_set:
             self[py.project_name] = py.version
 
-        pprint.pprint(self)
+        # pprint.pprint(self)
 
 
 class ConfigMachine(DAMGDICT):
@@ -169,7 +126,7 @@ class ConfigMachine(DAMGDICT):
         self['keyboard']                = self.keyboardInfo()
         self['mice']                    = self.miceInfo()
 
-        pprint.pprint(self)
+        # pprint.pprint(self)
 
     def osInfo(self, **info):
         source = subprocess.Popen("SYSTEMINFO", stdin=PIPE, stdout=PIPE).communicate()[0].decode('utf-8')
@@ -353,7 +310,6 @@ class ConfigMachine(DAMGDICT):
 
     def keyboardInfo(self, **info):
         for k in com.Win32_Keyboard():
-            print(k)
             keyboard                    = {}
             key                         = 'keyboard {0}'.format(self.keyboardCount)
             # keyboard['brand']           = k.Manufacturer
@@ -386,22 +342,19 @@ class ConfigDirectory(DAMGDICT):
         from . import dirs
         keys                            = [k for k in vars(dirs).keys() if not k in notKeys]
         for k in keys:
-            self[k]                     = vars(dirs)[k].replace('\\', '/')
+            self[k]                     = vars(dirs)[k]
 
         mode = 0o770
         for path in self.values():
             if not os.path.exists(path):
                 (head, tail) = os.path.split(path)
-                res = self.create_folder(head, mode)
                 try:
                     original_umask = os.umask(0)
                     os.makedirs(path, mode)
                 finally:
                     os.umask(original_umask)
-
                 os.chmod(path, mode)
-
-        pprint.pprint(self)
+        # pprint.pprint(self)
 
 
 class ConfigPath(DAMGDICT):
@@ -413,9 +366,9 @@ class ConfigPath(DAMGDICT):
         from . import pths
         keys                            = [k for k in vars(pths).keys() if not k in notKeys]
         for k in keys:
-            self[k]                     = vars(pths)[k].replace('\\', '/')
+            self[k]                     = vars(pths)[k]
 
-        pprint.pprint(self)
+        # pprint.pprint(self)
 
 
 class ConfigEnvVar(DAMGDICT):
@@ -424,11 +377,65 @@ class ConfigEnvVar(DAMGDICT):
 
     def __init__(self):
         super(ConfigEnvVar, self).__init__()
+        for k, v in os.environ.items():
+            self[k]                     = v.replace('\\', '/')
+        # pprint.pprint(self)
 
+    def update(self):
         for k, v in os.environ.items():
             self[k]                     = v.replace('\\', '/')
 
-        pprint.pprint(self)
+
+class ConfigAvatar(DAMGDICT):
+
+    key                                 = 'ConfigAvatar'
+
+    def __init__(self):
+        super(ConfigAvatar, self).__init__()
+
+        for root, dirs, names in os.walk(AVATAR_DIR, topdown=False):
+            for name in names:
+                self[name.split('.avatar')[0]] = os.path.join(root, name).replace('\\', '/')
+
+        # pprint.pprint(self)
+
+
+class ConfigLogo(DAMGDICT):
+
+    key                                 = 'ConfigLogo'
+
+    def __init__(self):
+        super(ConfigLogo, self).__init__()
+
+        damgLogos                       = DAMGDICT()
+        plmLogos                        = DAMGDICT()
+
+        for root, dirs, names in os.walk(DAMG_LOGO_DIR, topdown=False):
+            for name in names:
+                damgLogos[name.split('.png')[0]] = os.path.join(root, name).replace('\\', '/')
+
+        for root, dirs, names in os.walk(PLM_LOGO_DIR, topdown=False):
+            for name in names:
+                plmLogos[name.split('.png')[0]] = os.path.join(root, name).replace('\\', '/')
+
+        self['DAMGTEAM']                = damgLogos
+        self['PLM']                     = plmLogos
+
+        # pprint.pprint(self)
+
+
+class ConfigPics(DAMGDICT):
+
+    key                                 = 'ConfigPics'
+
+    def __init__(self):
+        super(ConfigPics, self).__init__()
+
+        for root, dirs, names, in os.walk(PIC_DIR, topdown=False):
+            for name in names:
+                self[name.split('.node')[0]] = os.path.join(root, name).replace('\\', '/')
+
+        # pprint.pprint(self)
 
 
 class ConfigIcon(DAMGDICT):
@@ -454,7 +461,16 @@ class ConfigIcon(DAMGDICT):
         self['web32']  = self.get_icons(WEB_ICON_32)
         self['web128'] = self.get_icons(WEB_ICON_128)
 
-        pprint.pprint(self)
+        self['avatar'] = ConfigAvatar()
+        self['logo']   = ConfigLogo()
+        self['pic']    = ConfigPics()
+
+        missingKey = ['ForgotPassword', 'PLMBrowser', 'Messenger', 'InviteFriend', 'SignOut', 'SwitchAccount']
+
+        for k in missingKey:
+            self['icon32'].add(k, '{0}.icon.png'.format(k))
+
+        # pprint.pprint(self)
 
     def get_icons(self, dir):
         icons = DAMGDICT()
@@ -462,58 +478,6 @@ class ConfigIcon(DAMGDICT):
             for name in names:
                 icons[name.split('.icon')[0]] = os.path.join(root, name).replace('\\', '/')
         return icons
-
-
-class ConfigAvatar(DAMGDICT):
-
-    key                                 = 'ConfigAvatar'
-
-    def __init__(self):
-        super(ConfigAvatar, self).__init__()
-
-        for root, dirs, names in os.walk(AVATAR_DIR, topdown=False):
-            for name in names:
-                self[name.split('.avatar')[0]] = os.path.join(root, name).replace('\\', '/')
-
-        pprint.pprint(self)
-
-
-class ConfigLogo(DAMGDICT):
-
-    key                                 = 'ConfigLogo'
-
-    def __init__(self):
-        super(ConfigLogo, self).__init__()
-
-        damgLogos                       = DAMGDICT()
-        plmLogos                        = DAMGDICT()
-
-        for root, dirs, names in os.walk(DAMG_LOGO_DIR, topdown=False):
-            for name in names:
-                damgLogos[name.split('.png')[0]] = os.path.join(root, name).replace('\\', '/')
-
-        for root, dirs, names in os.walk(PLM_LOGO_DIR, topdown=False):
-            for name in names:
-                plmLogos[name.split('.png')[0]] = os.path.join(root, name).replace('\\', '/')
-
-        self['DAMGTEAM']                = damgLogos
-        self['PLM']                     = plmLogos
-
-        pprint.pprint(self)
-
-
-class ConfigPics(DAMGDICT):
-
-    key                                 = 'ConfigPics'
-
-    def __init__(self):
-        super(ConfigPics, self).__init__()
-
-        for root, dirs, names, in os.walk(PIC_DIR, topdown=False):
-            for name in names:
-                self[name.split('.node')[0]] = os.path.join(root, name).replace('\\', '/')
-
-        pprint.pprint(self)
 
 
 class ConfigMaya(DAMGDICT):
@@ -525,7 +489,7 @@ class ConfigMaya(DAMGDICT):
         modules = ['anim', 'lib', 'modeling', 'rendering', 'simulating', 'surfacing']
         modulePth = os.path.join(MAYA_DIR, 'modules')
         paths = [os.path.join(modulePth, m) for m in modules]
-        envVar.create_envVariable('PYTHONPATH', ';'.join(paths))
+        sys.path.insert(-1, ';'.join(paths))
 
         usScr = os.path.join(MAYA_DIR, 'userSetup.py')
 
@@ -555,36 +519,31 @@ class ConfigApps(DAMGDICT):
                 name, _ = os.path.splitext(os.path.basename(lnk.lnk_filepath))
                 self[str(name)] = lnk.path
 
-        removeKeys = []
-        for key in self.keys():
-            for k in KEYDETECT:
-                if k in key:
-                    removeKeys.append(key)
-
-        for k in removeKeys:
-            self.del_key(k)
-
-        pprint.pprint(self)
-
-    def del_key(self, key):
-        try:
-            del self[key]
-        except KeyError:
-            self.pop(key, None)
-
 
 class ConfigPipeline(DAMGDICT):
 
     key                         = 'ConfigPipeline'
 
-    with open(iconCfg, 'r') as f:
-        iconInfo = json.load(f)
-
-    with open(appsCfg, 'r') as f:
-        appInfo = json.load(f)
-
-    def __init__(self):
+    def __init__(self, iconInfo, appInfo):
         super(ConfigPipeline, self).__init__()
+
+        self.iconInfo = iconInfo
+        self.appInfo = appInfo
+
+        removeKeys = []
+        for key in KEYDETECT:
+            for k in self.appInfo:
+                if key in k:
+                    removeKeys.append(k)
+
+        for k in removeKeys:
+            self.del_key(k)
+
+        self.appInfo.update()
+
+        keeps = [k for k in KEYPACKAGE if k in self.appInfo.keys()]
+        print(len(keeps), keeps)
+        sys.exit()
 
         qtDesigner = os.path.join(os.getenv('PROGRAMDATA'), 'Anaconda3', 'Library', 'bin', 'designer.exe')
         davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
@@ -607,7 +566,8 @@ class ConfigPipeline(DAMGDICT):
                 self.appInfo[key] = '"' + self.appInfo[key] + '"' + " -launch"
 
         for key in keepKeys:
-                    self[key] = [key, self.iconInfo['icon32'][key], "{0}".format(self.appInfo[key])]
+            if not key in self.keys():
+                self[key] = [key, self.iconInfo['icon32'][key], "{0}".format(self.appInfo[key])]
 
         for key in CONFIG_APPUI:
             if key == 'UserSetting':
@@ -671,9 +631,9 @@ class ConfigPipeline(DAMGDICT):
         self['Debug']                  = ['Run PLM Debugger', self.iconInfo['icon32']['Debug'], 'Debug']
         self['Exit']                   = ['Exit PLM', self.iconInfo['icon32']['Exit'], 'Exit']
         self['ConfigFolder']           = ['Go To Config Folder', 'ConfigFolder', CFG_DIR]
-        self['IconFolder']             = ['Go To Icon Folder', 'IconFolder', APP_ICON_DIR]
+        self['IconFolder']             = ['Go To Icon Folder', 'IconFolder', ICON_DIR]
         self['SettingFolder']          = ['Go To Setting Folder', 'SettingFolder', SETTING_DIR]
-        self['AppFolder']              = ['Go To PLM Folder', 'AppFolder', ROOT_DIR]
+        self['AppFolder']              = ['Go To PLM Folder', 'AppFolder', ROOT]
         self['Command Prompt']         = ['Open command prompt', self.iconInfo['icon32']['Command Prompt'], 'open_cmd']
 
         self['Cut']                    = ['Cut', 'Cut', 'Cut']
@@ -690,93 +650,86 @@ class ConfigPipeline(DAMGDICT):
         self['licenceTag']             = ['licenceLink', 'licenceTagIcon', 'https://github.com/vtta2008/damgteam/blob/master/LICENCE']
         self['versionTag']             = ['versionLink', 'versionTagIcon', 'https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst']
 
+    def del_key(self, key):
+        try:
+            del self.appInfo[key]
+        except KeyError:
+            self.appInfo.pop(key, None)
 
+def ignoreIDs(**info):
+    path = os.path.join(TMP_DIR, '.ignoreIDs')
+    if os.path.exists(path):
+        with open(path, 'r') as f:
+            info = json.load(f)
+    else:
+        info      = ['BotTab'       , 'ConnectStatus'      , 'ConnectStatusSection', 'Footer'                   ,
+                     'GridLayout'   , 'MainMenuBar'        , 'MainMenuSection'     , 'MainMenuSectionSection'   ,
+                     'MainStatusBar', 'MainToolBar'        , 'MainToolBarSection'  , 'MainToolBarSectionSection',
+                     'Notification' , 'NotificationSection', 'TerminalLayout'      , 'TopTab'                   ,
+                     'TopTab1'      , 'TopTab2'            , 'TopTab3'             , ]
+        if os.path.exists(path):
+            os.remove(path)
+        with open(path, 'w') as f:
+            info = json.dump(info, f, indent=4)
+    if globalSetting.checks.ignoreIDs:
+        print(info)
+    return info
 
+def tobuildUis(**info):
+    path = os.path.join(TMP_DIR, '.toBuildUis')
+    if os.path.exists(path):
+        with open(path, 'r') as f:
+            info = json.load(f)
+    else:
+        info = ['Alpha'           , 'ConfigOrganisation', 'ConfigProject'      , 'ConfigTask'         ,
+                      'ConfigTeam'      , 'ContactUs'         , 'EditOrganisation'   , 'EditProject'        ,
+                      'EditTask'        , 'EditTeam'          , 'Feedback'           , 'HDRI'               ,
+                      'NewOrganisation' ,  'NewTask'          , 'NewTeam'            , 'OrganisationManager',
+                      'ProjectManager'  , 'TaskManager'       , 'TeamManager'        , 'Texture'            ,]
+        if os.path.exists(path):
+            os.remove(path)
+        with open(path, 'w') as f:
+            info = json.dump(info, f, indent=4)
+    if globalSetting.checks.toBuildUis:
+        print(info)
+    return info
 
-# -------------------------------------------------------------------------------------------------------------
-""" Config directories """
+def tobuildCmds(**info):
+    path = os.path.join(TMP_DIR, '.cmds')
+    if os.path.exists(path):
+        with open(path, 'r') as f:
+            try:
+                info = json.load(f)
+            except json.decoder.JSONDecodeError:
+                info = globalSetting.cmds
+    else:
+        if os.path.exists(path):
+            os.remove(path)
+        with open(path, 'wb+') as f:
+            info = json.dump(globalSetting.cmds, f, indent=4)
+    if globalSetting.checks.toBuildCmds:
+        print(info)
+    return info
 
-class ConfigManager(DAMGDICT):
+ignoreIDs                           = ignoreIDs()
+toBuildUis                          = tobuildUis()
+toBuildCmds                         = tobuildCmds()
 
-    key                                 = 'Configurations'
+pythonInfo                          = ConfigPython()
+deviceInfo                          = ConfigMachine()
+dirInfo                             = ConfigDirectory()
+pthInfo                             = ConfigPath()
+envInfo                             = ConfigEnvVar()
+iconInfo                            = ConfigIcon()
+mayaInfo                            = ConfigMaya()
+appInfo                             = ConfigApps()
+plmInfo                             = ConfigPipeline(iconInfo, appInfo)
 
-    checkList                           = DAMGDICT()
+pprint.pprint(appInfo)
 
-    printOutput                         = False
-    subprocess                          = False
-    cfgs                                = True
-    _pthInfo                            = False
-    _iconInfo                           = False
-    _mainPkgs                           = False
-    _appInfo                            = False
+print(KEYPACKAGE, TRACK_ART, TRACK_TEX)
 
-    def __init__(self):
-        super(ConfigManager, self).__init__()
-
-        if not os.path.exists(LOCAL_DB):
-            SQLS(LOCAL_DB)
-
-        self.checkList['db']            = True
-
-        self.deviceInfo                 = ConfigMachine()
-        self.save_data(deviceCfg, self.deviceInfo)
-        self.checkList['device']        = True
-
-        self.dirInfo                    = ConfigDirectory()
-        self.save_data(dirCfg, self.dirInfo)
-        self.checkList['dirs']          = True
-
-        self.pathInfo                   = ConfigPath()
-        self.save_data(pthCfg, self.pthInfo)
-        self.checkList['paths']         = True
-
-        self.pyInfo                     = ConfigPython()
-        self.save_data(pythonCfg, self.pyInfo)
-        self.checkList['python']        = True
-
-        self.envInfo                    = ConfigEnvVar()
-        self.save_data(envVarCfg, self.envInfo)
-        self.checkList['envVar']        = True
-
-        self.iconInfo                   = ConfigIcon()
-        self.save_data(iconCfg, self.iconInfo)
-        self.checkList['icons']         = True
-
-        self.avatarInfo                 = ConfigAvatar()
-        self.save_data(avatarCfg, self.avatarInfo)
-        self.checkList['avatars']       = True
-
-        self.logoInfo                   = ConfigLogo()
-        self.save_data(logoCfg, self.logoInfo)
-        self.checkList['logos']         = True
-
-        self.picInfo                    = ConfigPics()
-        self.save_data(picCfg, self.picInfo)
-        self.checkList['pictures']      = True
-
-        self.mayaInfo                   = ConfigMaya()
-        self.save_data(mayaIconCfg, self.mayaInfo)
-        self.checkList['maya']          = True
-
-        self.appInfo                    = ConfigApps()
-        self.save_data(appsCfg, self.appInfo)
-        self.checkList['apps']          = True
-
-        self.pipelineInfo               = ConfigPipeline()
-        self.save_data(pipelineCfg, self.pipelineInfo)
-        self.checkList['pipeline']      = True
-
-
-    def save_data(self, filePth, data):
-        if os.path.exists(filePth):
-            os.remove(filePth)
-
-        with open(filePth, 'w+') as f:
-            json.dump(data, f, indent=4)
-            f.close()
-        return True
-
-configManager = ConfigManager()
+pprint.pprint(plmInfo)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Config qssPths from text file """
@@ -786,30 +739,22 @@ def read_file(fileName):
     filePth = os.path.join(RAWS_DATA_DIR, fileName)
 
     if not os.path.exists(filePth):
-        filePth = os.path.join(DOCUMENTATION_DIR, "{}.rst".format(fileName))
+        filePth = os.path.join(RST_DIR, "{}.rst".format(fileName))
 
     if os.path.exists(filePth):
         with open(filePth, 'r') as f:
             data = f.read()
         return data
 
-QUESTIONS = read_file('QUESTION')
-ABOUT = read_file('ABOUT')
-CREDIT = read_file('CREDIT')
-CODECONDUCT = read_file('CODECONDUCT')
-CONTRIBUTING = read_file('CONTRIBUTING')
-REFERENCE = read_file('REFERENCE')
-LICENCE_MIT = read_file('LICENCE_MIT')
+QUESTIONS           = read_file('QUESTION')
+ABOUT               = read_file('ABOUT')
+CREDIT              = read_file('CREDIT')
+CODECONDUCT         = read_file('CODECONDUCT')
+CONTRIBUTING        = read_file('CONTRIBUTING')
+REFERENCE           = read_file('REFERENCE')
+LICENCE             = read_file('LICENCE_MIT')
 
-actionTypes = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction', 'DAMGExecutingAction', 'DAMGOpenBrowserAction', ]
-
-layoutTypes = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
-
-with open(pipelineCfg, 'r') as f:
-    mainData = json.load(f)
-    f.close()
-
-CONFIG_OFFICE = [k for k in mainData.keys() if k in CONFIG_OFFICE]
+CONFIG_OFFICE = [k for k in plmInfo.keys() if k in CONFIG_OFFICE]
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:56 PM

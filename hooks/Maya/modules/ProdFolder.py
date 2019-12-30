@@ -33,7 +33,7 @@ WINPROFILE = dict(prodpthUI=['ProdPthUI', 'Create New Project', 'SET UP NEW PROJ
 
 APPS = ['maya', 'zbrush', 'mari', 'nuke', 'photoshop', 'houdini', 'after effects']
 
-MASTER = ['_assets', 'sequences', 'deliverables', 'documents', 'editorial', 'sound', 'resources', 'RnD']
+MASTER = ['_assets', 'sequences', 'deliverables', 'docs', 'editorial', 'sound', 'rcs', 'RnD']
 TASKS = ['art', 'plt_model', 'rigging', 'surfacing']
 SEQTASKS = ['anim', 'comp', 'fx', 'layout', 'lighting']
 ASSETS = {'heroObj': ['washer', 'dryer'], 'environment': [], 'props': []}
@@ -340,7 +340,7 @@ class ProdFolder(object):
         # Create master folder
         os.mkdir(self.rootPth)
         # Create content of master Folder
-        master = ['_assets', 'sequences', 'deliverables', 'documents', 'editorial', 'sound', 'resources', 'RnD']
+        master = ['_assets', 'sequences', 'deliverables', 'docs', 'editorial', 'sound', 'rcs', 'RnD']
         steps = ['publish', 'review', 'work']
         mayaFolders = ['scenes', 'sourceimages', 'images', 'movie', 'alembic', 'reference']
 

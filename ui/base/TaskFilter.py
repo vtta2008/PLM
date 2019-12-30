@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 
 
 from bin                                        import DAMGDICT, DAMGLIST
-from toolkits.Widgets                           import GroupGrid, CheckBox, Label
+from devkit.Widgets                           import GroupGrid, CheckBox, Label
 from utils                                      import str2bool
 
 

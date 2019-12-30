@@ -17,7 +17,7 @@ from PyQt5.QtGui                import QPixmap
 from PyQt5.QtWidgets            import QGraphicsScene
 
 # Plt
-from toolkits.Widgets           import Widget, GridLayout, GroupBox, GroupGrid, Label
+from devkit.Widgets           import Widget, GridLayout, GroupBox, GroupGrid, Label
 from utils                      import get_avatar_image, LocalDatabase
 
 # -------------------------------------------------------------------------------------------------------------

@@ -22,7 +22,8 @@ from PyQt5.QtWidgets        import (QFileDialog)
 
 # Plm
 from appData                import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_REQUIRED, QUESTIONS
-from toolkits.Widgets       import Widget, AppIcon, GridLayout, Label, Button, LineEdit, ComboBox, MessageBox, CheckBox, GroupGrid
+from devkit.Widgets         import (Widget, AppIcon, GridLayout, Label, Button, LineEdit, ComboBox, MessageBox, CheckBox,
+                                    GroupGrid)
 from utils                  import (check_blank, check_match, get_avatar_image, getToken, getUnix, getTime, getDate,
                                     get_local_pc_info, get_user_location)
 

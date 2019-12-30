@@ -14,10 +14,10 @@ from PyQt5.QtCore import QRegExp, Qt, QByteArray, QDate, QDateTime, QPoint, QRec
 from PyQt5.QtGui import QRegExpValidator, QValidator, QColor
 from PyQt5.QtWidgets import QStyleOptionViewItem, QStyle
 
-from toolkits.Widgets.LineEdit import LineEdit
+from devkit.Widgets.LineEdit import LineEdit
 
 
-from toolkits.Widgets import ItemDelegate
+from devkit.Widgets import ItemDelegate
 
 class VariantDelegate(ItemDelegate):
 

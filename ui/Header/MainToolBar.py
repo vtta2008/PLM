@@ -17,7 +17,7 @@ from PyQt5.QtWidgets        import QScrollArea
 
 # PLM
 from appData                import SiPoMin
-from toolkits.Widgets       import MainWindow, ToolBar, GroupVBox
+from devkit.Widgets       import MainWindow, ToolBar, GroupVBox
 from utils                  import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------

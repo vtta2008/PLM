@@ -13,7 +13,7 @@ Description:
 """ Import """
 
 # PLM
-from toolkits.Widgets                       import Widget, VBoxLayout, AppIcon
+from devkit.Widgets                       import Widget, VBoxLayout, AppIcon
 from ui.base                                import HeaderCheckBoxes, FooterCheckBoxes, BodyCheckBoxes
 
 # -------------------------------------------------------------------------------------------------------------

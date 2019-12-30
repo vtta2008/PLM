@@ -20,7 +20,7 @@ from functools import partial
 from PyQt5.QtWidgets            import (QGroupBox, QInputDialog, QComboBox, QFileDialog, QListWidget, QListWidgetItem)
 
 # PLM
-from toolkits.Widgets           import Widget, Label, HBoxLayout, Button, GridLayout, LineEdit, VBoxLayout
+from devkit.Widgets           import Widget, Label, HBoxLayout, Button, GridLayout, LineEdit, VBoxLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """
@@ -263,7 +263,7 @@ class VFXProject(Widget):
     #     # Create master folder
     #     os.mkdir(self.rootPth)
     #     # Create content of master Folder
-    #     master = ["assets", "sequences", "deliverables", "documents", "editorial", "sound", "resources", "RnD"]
+    #     master = ["assets", "sequences", "deliverables", "docs", "editorial", "sound", "rcs", "RnD"]
     #     steps = ["publish", "review", "work"]
     #     mayaFolders = ["scenes", "sourceimages", "images", "movie", "alembic", "reference"]
     #

@@ -165,7 +165,7 @@ class projectManager(object):
         curProjName = cmds.textField("prjFullName", text=True, query=True)
         # get current project path:
         curProjPath = cmds.textField('projectPth', query=True, text=True)
-        stage_Ls = ['_assets', 'deliverables', 'documents', 'editorial', 'reference', 'RnD', 'sequences', 'resources']
+        stage_Ls = ['_assets', 'deliverables', 'docs', 'editorial', 'reference', 'RnD', 'sequences', 'rcs']
         assets_Ls = ['character', 'enviroment', 'props']
         task_Ls = ['art', 'plt_model', 'rigging', 'surfacing', 'lighting', 'FX', 'anim', 'comp', 'layout']
         documents_Ls = ['template', 'moodboard', 'schedule', 'script', 'sound', 'storyboard', 'title', 'tools']
@@ -386,7 +386,7 @@ class projectManager(object):
                 item = item + 1
             i = i + 1
 
-        # resources folder
+        # rcs folder
         path = p + "/" + stage_Ls[7]
         i = 0
         for i in range(len(resources_Ls)):

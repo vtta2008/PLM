@@ -18,7 +18,7 @@ from PyQt5.QtCore               import Qt
 
 # PLM
 from bin                        import DAMGLIST
-from toolkits.Widgets           import Widget, AppIcon, LineEdit, GridLayout, ToolButton
+from devkit.Widgets           import Widget, AppIcon, LineEdit, GridLayout, ToolButton
 
 
 class Calculator(Widget):

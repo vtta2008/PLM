@@ -9,11 +9,11 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import glsetting
+from __buildtins__ import globalSetting
 
 import os
 
-from toolkits.Widgets import UndoCommand
+from devkit.Widgets import UndoCommand
 
 from __buildtins__ import __envKey__, ROOT
 
@@ -111,11 +111,11 @@ class ReConfigCmd(CmdBase):
 
     def run(self):
         from cores.ConfigManager import ConfigManager
-        self.app.dataConfig = ConfigManager(__envKey__, ROOT, glsetting.modes)
+        self.app.dataConfig = ConfigManager(__envKey__, ROOT, globalSetting.modes)
 
     def redo(self):
         from cores.ConfigManager import ConfigManager
-        self.app.dataConfig = ConfigManager(__envKey__, ROOT, glsetting.modes)
+        self.app.dataConfig = ConfigManager(__envKey__, ROOT, globalSetting.modes)
 
 class ExitCmd(CmdBase):
 

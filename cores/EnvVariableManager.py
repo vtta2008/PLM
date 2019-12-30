@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import glsetting
+from __buildtins__ import globalSetting
 
 """ Import """
 
@@ -43,21 +43,21 @@ class EnvVariableManager(DAMG):
         try:
             os.getenv(key)
         except KeyError:
-            if glsetting.checks.report:
+            if globalSetting.checks.report:
                 print('{0} is not existed, create new environment configKey.'.format(key))
             subprocess.Popen('SetX {0} {1}'.format(key, value), shell=True).wait()
         else:
             if os.getenv(key) is None:
-                if glsetting.checks.report:
+                if globalSetting.checks.report:
                     print('{0} has value as None, assign showLayout_new value {1}'.format(key, value))
                 subprocess.Popen('SetX {0} {1}'.format(key, value), shell=True).wait()
             else:
                 if os.getenv(key) != value:
-                    if glsetting.checks.report:
+                    if globalSetting.checks.report:
                         print('{0} has different value, edit to: {1}'.format(key, value))
                     subprocess.Popen('SetX {0} {1}'.format(key, value), shell=True).wait()
                 else:
-                    if glsetting.checks.report:
+                    if globalSetting.checks.report:
                         print('{0} has already been set to {1}'.format(key, value))
 
         self.update()
@@ -69,7 +69,7 @@ class EnvVariableManager(DAMG):
             print('EnvKeyError: {0} does not exist'.format(envKey))
             pass
         else:
-            if glsetting.checks.report:
+            if globalSetting.checks.report:
                 print('Delete environment configKey: {0}'.format(envKey))
             subprocess.Popen('REG delete HKCU\Environment /F /V {0}'.format(envKey), shell=True).wait()
 

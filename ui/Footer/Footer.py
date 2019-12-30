@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # PLM
-from toolkits.Widgets           import Widget, Label, GridLayout
+from devkit.Widgets           import Widget, Label, GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Footer """

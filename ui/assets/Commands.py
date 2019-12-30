@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __envKey__, ROOT, glsetting, __ignoreIDs__, __tobuildUis__, __tobuildCmds__
+from __buildtins__ import globalSetting
 """ Import """
 
 # Python
@@ -20,7 +20,9 @@ from PyQt5.QtCore                       import pyqtSlot
 
 # PLM
 from bin                                import DAMG, DAMGDICT
-from appData                            import StateMax, StateMin, StateNormal, ConfigManager
+from appData                            import (StateMax, StateMin, StateNormal, appInfo, ConfigPython, ConfigMachine,
+                                                ConfigDirectory, ConfigPath, ConfigEnvVar, ConfigIcon, ConfigMaya,
+                                                ConfigApps, ConfigPipeline, ignoreIDs, toBuildUis, toBuildCmds,)
 from cores.Settings                     import Settings
 from cores.Loggers                      import Loggers
 from utils                              import clean_file_ext
@@ -38,17 +40,17 @@ class Commands(DAMG):
     openBrowser_old                     = []
     sysNotify_old                       = []
 
-    trackRecieveSignal                  = glsetting.tracks.recieveSignal
-    trackBlockSignal                    = glsetting.tracks.blockSignal
-    trackCommand                        = glsetting.tracks.command
-    trackRegistLayout                   = glsetting.tracks.registLayout
-    trackJobsTodo                       = glsetting.tracks.jobsToDo
-    trackShowLayoutError                = glsetting.tracks.showLayoutError
-    trackEvents                         = glsetting.tracks.events
+    trackRecieveSignal                  = globalSetting.tracks.recieveSignal
+    trackBlockSignal                    = globalSetting.tracks.blockSignal
+    trackCommand                        = globalSetting.tracks.command
+    trackRegistLayout                   = globalSetting.tracks.registLayout
+    trackJobsTodo                       = globalSetting.tracks.jobsToDo
+    trackShowLayoutError                = globalSetting.tracks.showLayoutError
+    trackEvents                         = globalSetting.tracks.events
 
-    ignoreIDs                           = __ignoreIDs__()
-    toBuildUis                          = __tobuildUis__()
-    toBuildCmds                         = __tobuildCmds__()
+    ignoreIDs                           = ignoreIDs
+    toBuildUis                          = toBuildUis
+    toBuildCmds                         = toBuildCmds
 
     TODO                                = dict(toBuildUis=toBuildUis, toBuildCmds=toBuildCmds)
 
@@ -63,7 +65,7 @@ class Commands(DAMG):
         self.forgotPW                   = self.app.forgotPW
         self.registryLayout             = self.app.registryLayout
         self.threadManager              = self.app.threadManager
-        self.dataConfig                 = self.app.dataConfig
+        self.appInfo                    = appInfo
         self.browser                    = self.app.browser
         self.layoutManager              = self.app.layoutManager
         self.logger                     = Loggers(self)
@@ -287,7 +289,7 @@ class Commands(DAMG):
                 return self.signals.emit('showLayout', cmd, 'show')
             elif os.path.isdir(cmd):
                 return os.startfile(cmd)
-            elif cmd in self.dataConfig.appInfo.keys():
+            elif cmd in self.appInfo.keys():
                 return os.system(self.appInfo[cmd])
             elif cmd == 'Debug':
                 return self.mainUI.botTabUI.botTab2.test()
@@ -296,8 +298,17 @@ class Commands(DAMG):
             elif cmd == 'CleanPyc':
                 return clean_file_ext('.pyc')
             elif cmd == 'ReConfig':
-                self.dataConfig = ConfigManager()
-                return self.dataConfig
+                pythonInfo = ConfigPython()
+                deviceInfo = ConfigMachine()
+                dirInfo = ConfigDirectory()
+                pthInfo = ConfigPath()
+                envInfo = ConfigEnvVar()
+                iconInfo = ConfigIcon()
+                mayaInfo = ConfigMaya()
+                appInfo = ConfigApps()
+                plmInfo = ConfigPipeline(iconInfo, appInfo)
+                self.appInfo = appInfo
+                return self.appInfo
             elif cmd == 'Exit':
                 return self.exitEvent()
             elif cmd == 'dark':

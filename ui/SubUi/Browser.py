@@ -28,7 +28,7 @@ from PyQt5.QtWidgets            import (QAction, QApplication, QLineEdit, QMainW
 from PyQt5.QtNetwork            import QNetworkProxyFactory, QNetworkRequest
 
 # PLM
-from toolkits.Widgets           import Widget, VBoxLayout
+from devkit.Widgets           import Widget, VBoxLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Web browser """
@@ -137,7 +137,7 @@ class WebBrowser(QMainWindow):
     def highlightAllLinks(self):
         code = """$('a').each(
                     function () {
-                        $(this).css('background-color', 'yellow') 
+                        $(this).scss('background-color', 'yellow') 
                     } 
                   )"""
         self.view.page().javaScriptPrompt(code)
@@ -147,16 +147,16 @@ class WebBrowser(QMainWindow):
             code = """
                 $('img').each(
                     function () {
-                        $(this).css('-webkit-transition', '-webkit-transform 2s'); 
-                        $(this).css('-webkit-transform', 'rotate(180deg)') 
+                        $(this).scss('-webkit-transition', '-webkit-transform 2s'); 
+                        $(this).scss('-webkit-transform', 'rotate(180deg)') 
                     } 
                 )"""
         else:
             code = """
                 $('img').each(
                     function () { 
-                        $(this).css('-webkit-transition', '-webkit-transform 2s'); 
-                        $(this).css('-webkit-transform', 'rotate(0deg)') 
+                        $(this).scss('-webkit-transition', '-webkit-transform 2s'); 
+                        $(this).scss('-webkit-transform', 'rotate(0deg)') 
                     } 
                 )"""
 

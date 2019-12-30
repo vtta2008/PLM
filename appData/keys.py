@@ -16,53 +16,52 @@ import os, sys
 # --------------------------------------------------------------------------------------------------------------
 """ Autodesk _data """
 
-autodeskVer         = [ "2017", "2018", "2019", "2020", "2021"]
-autodeskApp         = [ "Autodesk Maya", "Autodesk MudBox", "Autodesk 3ds Max", "Autodesk AutoCAD"]
+autodeskVer         = ["2017", "2018", "2019", "2020", "2021"]
+autodeskApp         = ["Autodesk Maya", "Autodesk MudBox", "Autodesk 3ds Max", "Autodesk AutoCAD"]
 userMayaDir         = os.path.expanduser(r"~/Documents/maya")
 
 # --------------------------------------------------------------------------------------------------------------
 """ Adobe _data """
 
-adobeVer            = [ "CC 2017", "CC 2018", "CC 2019", "CC 2020", "CC 2021"]
-adobeApp            = [ "Adobe Photoshop", "Adobe Illustrator", "Adobe Audition", "Adobe After Effects", "Adobe Premiere Pro",
-                        "Adobe Media Encoder", ]
+adobeVer            = ["CC 2017", "CC 2018", "CC 2019", "CC 2020", "CC 2021"]
+adobeApp            = ["Adobe Photoshop", "Adobe Illustrator", "Adobe Audition", "Adobe After Effects",
+                       "Adobe Premiere Pro", "Adobe Media Encoder", ]
 
 # --------------------------------------------------------------------------------------------------------------
 """ Foundry _data """
 
-foundryVer          = [ "11.1v1", "11.2v1", "4.0v1", "4.1v1", "2.6v3"]
-foundryApp          = [ 'Hiero', 'HieroPlayer', 'Mari', 'NukeX', 'Katana',]
+foundryVer          = ["11.1v1", "11.2v1", "4.0v1", "4.1v1", "2.6v3", "4.6v1"]
+foundryApp          = ['Hiero', 'HieroPlayer', 'Mari', 'NukeX', 'Katana',]
 
 # --------------------------------------------------------------------------------------------------------------
 """ Pixologic _data """
 
-pixologiVer         = [ "4R6", "4R7", "4R8", "4R9"]
+pixologiVer         = [ "4R6", "4R7", "4R8", "4R9", '2018', '2019', '2020']
 pixologiApp         = [ 'ZBrush' ]
 
 # --------------------------------------------------------------------------------------------------------------
 """ Allegorithmic _data """
 
 allegorithmicVer    = [ ]
-
-allegorithmicApp    = [ 'Substance Painter', 'Substance Designer']
+allegorithmicApp    = ['Substance Painter', 'Substance Designer']
 
 # --------------------------------------------------------------------------------------------------------------
 """ SideFX _data """
 
-sizefxVer           = [ '16.5.439', '16.5.496']
-sizefxApp           = [ 'Houdini FX', ]
+sizefxVer           = ['16.5.439', '16.5.496', '17.5.425', '18.0.327']
+sizefxApp           = ['Houdini FX', ]
 
 # --------------------------------------------------------------------------------------------------------------
 """ Microsoft Office _data """
 
-officeVer           = [ '2013', '2015', '2016', '2017', "2018", "2019", "2020"]
-officeApp           = [ 'Word', 'Excel', 'PowerPoint', 'Wordpad']
+officeVer           = ['2017', "2018", "2019", "2020"]
+officeApp           = ['Word', 'Excel', 'PowerPoint', 'Wordpad']
 
 # --------------------------------------------------------------------------------------------------------------
 """ JetBrains _data """
 
-jetbrainsVer        = [ '2017.3.3', '2018.1', ]
-jetbrainsApp        = [ 'JetBrains PyCharm', ]
+jetbrainsVer        = ['2017.3.3', '2018.1', ]
+jetbrainsApp        = ['JetBrains PyCharm', ]
 
 # --------------------------------------------------------------------------------------------------------------
 """ Wonder Unit """
@@ -202,28 +201,14 @@ EXECUTING_KEY           = ['Exit', 'CleanPyc', 'ReConfig', 'Debug', 'Command Pro
 IGNORE_ICON_NAME        = ['Widget', 'TopTab1', 'TopTab2', 'TopTab3', 'ItemWidget']
 
 # Binding config
-QT_BINDINGS = ['PyQt5', 'PySide2', 'pyqt']
-"""list: values of all Qt bindings to import."""
-
-QT_ABSTRACTIONS = ['qtpy', 'pyqtgraph', 'Qt']
-"""list: values of all Qt abstraction layers to import."""
-
-QT5_IMPORT_API = ['QtCore', 'QtGui', 'QtWidgets', 'QtWebEngineWidgets', 'QtWebKitWidgets']
-"""list: which subpackage to import for Qt5 API."""
-
-QT_API_VALUES = ['pyqt', 'pyqt5', 'pyside2']
-"""list: values for QT_API environment variable used by QtPy."""
-
-QT_LIB_VALUES = ['PyQt', 'PyQt5', 'PySide2']
-"""list: values for PYQTGRAPH_QT_LIB environment variable used by PyQtGraph."""
-
-QT_BINDING = 'Not set or nonexistent'
-"""str: Qt binding in use."""
-
-QT_ABSTRACTION = 'Not set or nonexistent'
-"""str: Qt abstraction layer in use."""
-
-IMAGE_BLACKLIST = ['base_palette']
+QT_BINDINGS             = ['PyQt5', 'PySide2', 'pyqt']
+QT_ABSTRACTIONS         = ['qtpy', 'pyqtgraph', 'Qt']
+QT5_IMPORT_API          = ['QtCore', 'QtGui', 'QtWidgets', 'QtWebEngineWidgets', 'QtWebKitWidgets']
+QT_API_VALUES           = ['pyqt', 'pyqt5', 'pyside2']
+QT_LIB_VALUES           = ['PyQt', 'PyQt5', 'PySide2']
+QT_BINDING              = 'Not set or nonexistent'
+QT_ABSTRACTION          = 'Not set or nonexistent'
+IMAGE_BLACKLIST         = ['base_palette']
 
 PY2 = sys.version[0] == '2'
 
@@ -233,7 +218,7 @@ SYS_OPTS = ["Host Name", "OS Name", "OS Version", "Product ID", "System Manufact
 
 notKeys = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__', '__cached__',
            '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR', 'SETTING_DIR', 'DB_DIR', 'LOG_DIR',
-           'QSS_DIR', 'RCS_DIR', 'SCSS_DIR']
+           'QSS_DIR', 'RCS_DIR', 'SCSS_DIR', '__appname__', 'subprocess', 'unicode_literals', 'absolute_import', ]
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/08/2018 - 2:30 AM

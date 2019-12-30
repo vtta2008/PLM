@@ -11,6 +11,21 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
+actionTypes = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction', 'DAMGExecutingAction', 'DAMGOpenBrowserAction', ]
+layoutTypes = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
+
+DB_ATTRIBUTE_TYPE = {
+
+    'int_auto_increment'    : 'INTERGER PRIMARY KEY AUTOINCREMENT, ',
+    'int_primary_key'       : 'INT PRIMARY KEY, ',
+    'text_not_null'         : 'TEXT NOT NULL, ',
+    'text'                  : 'TEXT, ',
+    'bool'                  : 'BOOL, ',
+    'varchar'               : 'VARCHAR, ',
+    'varchar_20'            : 'VACHAR(20,)  ',
+
+}
+
 
 RAMTYPE = {
     0: 'Unknown',

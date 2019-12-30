@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtGui import QIntValidator
-from toolkits.Widgets import GroupGrid, LineEdit, Label
+from devkit.Widgets import GroupGrid, LineEdit, Label
 from ui.base import InfoPicture
 
 class BaseInfo(GroupGrid):

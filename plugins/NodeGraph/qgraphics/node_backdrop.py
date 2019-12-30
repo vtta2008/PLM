@@ -1,29 +1,39 @@
-#!/usr/bin/python
+# -*- coding: utf-8 -*-
+"""
 
-from plugins.NodeGraph import QtGui, QtCore, QtWidgets
-from appData import (Z_VAL_PIPE,
-                                   NODE_SEL_COLOR,
-                                   NODE_SEL_BORDER_COLOR)
-from plugins.NodeGraph.qgraphics.node_abstract import AbstractNodeItem
-from plugins.NodeGraph.qgraphics.pipe import Pipe
-from plugins.NodeGraph.qgraphics.port import PortItem
+Script Name: node_backdrops.py
+Author: Do Trinh/Jimmy - 3D artist.
+
+Description:
 
 
-class BackdropSizer(QtWidgets.QGraphicsItem):
-    """
-    Sizer item for resizing a backdrop item.
+"""
+# -------------------------------------------------------------------------------------------------------------
+from __future__ import absolute_import, unicode_literals
 
-    Args:
-        parent (BackdropNodeItem): the parent node item.
-        size (float): sizer size.
-    """
+
+
+from appData                            import (Z_VAL_PIPE, NODE_SEL_COLOR, NODE_SEL_BORDER_COLOR, SIZEF_CURSOR)
+from .node_abstract                     import AbstractNodeItem
+from plugins.NodeGraph                  import QtCore, QtWidgets, QtGui
+from plugins.NodeGraph.qgraphics.pipe   import Pipe
+from plugins.NodeGraph.qgraphics.port   import PortItem
+
+from devkit.Widgets                     import GraphicItem
+from devkit.Gui                         import Cursor
+
+
+
+class BackdropSizer(GraphicItem):
+
+    key                                 = 'BackdropSizer'
 
     def __init__(self, parent=None, size=6.0):
         super(BackdropSizer, self).__init__(parent)
         self.setFlag(self.ItemIsSelectable, True)
         self.setFlag(self.ItemIsMovable, True)
         self.setFlag(self.ItemSendsScenePositionChanges, True)
-        self.setCursor(QtGui.QCursor(QtCore.Qt.SizeFDiagCursor))
+        self.setCursor(Cursor(SIZEF_CURSOR))
         self.setToolTip('double-click auto resize')
         self._size = size
 
@@ -55,15 +65,7 @@ class BackdropSizer(QtWidgets.QGraphicsItem):
         item.on_sizer_double_clicked()
 
     def paint(self, painter, option, widget):
-        """
-        Draws the backdrop sizer on the bottom right corner.
 
-        Args:
-            painter (QtGui.QPainter): painter used for drawing the item.
-            option (QtGui.QStyleOptionGraphicsItem):
-                used to describe the parameters needed to draw.
-            widget (QtWidgets.QWidget): not used.
-        """
         painter.save()
 
         rect = self.boundingRect()
@@ -85,14 +87,6 @@ class BackdropSizer(QtWidgets.QGraphicsItem):
 
 
 class BackdropNodeItem(AbstractNodeItem):
-    """
-    Base Backdrop item.
-
-    Args:
-        name (str): name displayed on the node.
-        text (str): backdrop text.
-        parent (QtWidgets.QGraphicsItem): parent item.
-    """
 
     def __init__(self, name='backdrop', text='', parent=None):
         super(BackdropNodeItem, self).__init__(name, parent)
@@ -277,3 +271,7 @@ class BackdropNodeItem(AbstractNodeItem):
     def height(self, height=0.0):
         AbstractNodeItem.height.fset(self, height)
         self._sizer.set_pos(self._width, self._height)
+
+# -------------------------------------------------------------------------------------------------------------
+# Created by panda on 30/12/2019 - 15:15
+# © 2017 - 2019 DAMGteam. All rights reserved

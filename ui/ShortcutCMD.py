@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from toolkits.Widgets           import LineEdit, ShortCut
+from devkit.Widgets           import LineEdit, ShortCut
 from appData                    import FRAMELESS, KEY_RETURN
 
 class ShortcutCMD(LineEdit):

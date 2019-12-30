@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # PLM
-from toolkits.Widgets import DockWidget, ToolBar, GridLayout
+from devkit.Widgets import DockWidget, ToolBar, GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar docking class """

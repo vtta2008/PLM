@@ -13,10 +13,8 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # Python
-import os, sys, subprocess, json
+import os, sys, subprocess, platform
 
-PIPE                                = subprocess.PIPE
-STDOUT                              = subprocess.STDOUT
 __envKey__                          = "DAMGTEAM"
 
 def get_root():
@@ -32,9 +30,26 @@ def get_root():
 
 ROOT                                = get_root()
 
-# subprocess.Popen('python -m pip install -r requirements.txt --user', shell=True).wait()
-# subprocess.Popen('python -m pip install PyQt5 --user --upgrade', shell=True).wait()
-# subprocess.Popen('python -m pip install PyQt5.sip --user --upgrade').wait()
+if platform.system() == 'Windows':
+    try:
+        import winshell
+    except ImportError:
+        subprocess.Popen('python -m pip install winshell --user', shell=True).wait()
+
+    try:
+        import wmi
+    except ImportError:
+        subprocess.Popen('python -m pip install wmi --user', shell=True).wait()
+
+    try:
+        import helpdev
+    except ImportError:
+        subprocess.Popen('python -m pip install helpdev --user', shell=True).wait()
+
+else:
+    sys.exit()
+
+
 
 class Modes(dict):
     key = 'Modes'
@@ -253,127 +268,34 @@ class GlobalSetting(object):
     def data(self):
         return self._data
 
-glsetting = GlobalSetting()
+globalSetting = GlobalSetting()
 
 # print(1)
+
 try:
     os.getenv(__envKey__)
 except KeyError:
     cmd = 'SetX {0} {1}'.format(__envKey__, ROOT)
     proc = subprocess.Popen(cmd, shell=True).wait()
 
-    glsetting.cfgable = True
+    globalSetting.cfgable = True
 else:
     if os.getenv(__envKey__)   != ROOT:
         cmd = 'SetX {0} {1}'.format(__envKey__, ROOT)
         proc = subprocess.Popen(cmd, shell=True).wait()
-        glsetting.cfgable = True
+        globalSetting.cfgable = True
     else:
-        glsetting.cfgable = True
-# print(2)
-if glsetting.cfgable:
-    from appData import configManager
-
-    if not configManager.cfgs:
-        if glsetting.checks.report:
-            print("CONFIGERROR: configurations have not done yet.")
-        sys.exit()
-    else:
-        if glsetting.checks.report:
-            print('Configurations has been completed.')
-else:
-    if glsetting.checks.report:
-        print('EnvironmentVariableError: {0} is not set to {1}, please try again.'.format(__envKey__, ROOT))
-    sys.exit()
-
-# print(3)
-def __checkTmpPth__():
-    import platform
-    tmpPth = os.path.join(ROOT, 'appData/.tmp')
-
-    if not os.path.exists(tmpPth):
-        os.mkdir(tmpPth)
-        if platform.system() == "Windows":
-            subprocess.call(["attrib", "+H", tmpPth])
-        elif platform.system() == "Darwin":
-            subprocess.call(["chflags", "hidden", tmpPth])
-
-    return tmpPth
+        globalSetting.cfgable = True
 
 # print(4)
-def __ignoreIDs__():
-    tmpPth = __checkTmpPth__()
-    ignoreIDsFile = os.path.join(tmpPth, '.ignoreIDs')
 
-    if os.path.exists(ignoreIDsFile):
-        with open(ignoreIDsFile, 'r') as f:
-            ignoreIDs = json.load(f)
-    else:
-        ignoreIDs = [
-                     'BotTab'       , 'ConnectStatus'      , 'ConnectStatusSection', 'Footer'                   ,
-                     'GridLayout'   , 'MainMenuBar'        , 'MainMenuSection'     , 'MainMenuSectionSection'   ,
-                     'MainStatusBar', 'MainToolBar'        , 'MainToolBarSection'  , 'MainToolBarSectionSection',
-                     'Notification' , 'NotificationSection', 'TerminalLayout'      , 'TopTab'                   ,
-                     'TopTab1'      , 'TopTab2'            , 'TopTab3'             ,
-                    ]
-
-        with open(ignoreIDsFile, 'w') as f:
-            ignoreIDs = json.dump(ignoreIDs, f, indent=4)
-
-    if glsetting.checks.ignoreIDs:
-        print(ignoreIDs)
-    return ignoreIDs
-
-# print(5)
-def __tobuildUis__():
-    import json
-    tmpPth = __checkTmpPth__()
-    toBuildUIsFile = os.path.join(tmpPth, '.toBuildUis')
-
-    if os.path.exists(toBuildUIsFile):
-        with open(toBuildUIsFile, 'r') as f:
-            toBuildUis = json.load(f)
-    else:
-        toBuildUis = [
-                      'Alpha'           , 'ConfigOrganisation', 'ConfigProject'      , 'ConfigTask'         ,
-                      'ConfigTeam'      , 'ContactUs'         , 'EditOrganisation'   , 'EditProject'        ,
-                      'EditTask'        , 'EditTeam'          , 'Feedback'           , 'HDRI'               ,
-                      'NewOrganisation' ,  'NewTask'          , 'NewTeam'            , 'OrganisationManager',
-                      'ProjectManager'  , 'TaskManager'       , 'TeamManager'        , 'Texture'            ,
-                      ]
-        with open(toBuildUIsFile, 'w') as f:
-            toBuildUis = json.dump(toBuildUis, f, indent=4)
-    if glsetting.checks.toBuildUis:
-        print(toBuildUis)
-    return toBuildUis
-
-# print(6)
-def __tobuildCmds__():
-    import json
-    tmpPth = __checkTmpPth__()
-    toBuildCmdsFile = os.path.join(tmpPth, '.cmds')
-
-    if os.path.exists(toBuildCmdsFile):
-        with open(toBuildCmdsFile, 'r') as f:
-            try:
-                toBuildCmds = json.load(f)
-            except json.decoder.JSONDecodeError:
-                toBuildCmds = glsetting.cmds
-    else:
-        with open(toBuildCmdsFile, 'wb+') as f:
-            toBuildCmds = json.dump(glsetting.cmds, f, indent=4)
-
-    if glsetting.checks.toBuildCmds:
-        print(toBuildCmds)
-    return toBuildCmds
-
-# print(7)
 def __copyright__():
-    _copyright = 'Pipeline Manager (PLM) Copyright (C) 2017 - 2019 by DAMGTEAM, contributed by Trinh Do & Duong Minh Duc.'
-    if glsetting.checks.copyright:
+    _copyright = 'Pipeline Manager (PLM) Copyright (C) 2017 - 2020 by DAMGTEAM, contributed by Trinh Do & Duong Minh Duc.'
+    if globalSetting.checks.copyright:
         print(_copyright)
     return _copyright
-# print(8)
+
+# print(5)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 6:55 AM

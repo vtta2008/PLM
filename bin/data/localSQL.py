@@ -16,7 +16,7 @@ from __future__ import absolute_import
 import sqlite3 as lite
 import time, datetime, os, re
 
-from bin.dependencies.damg.damg import DAMG
+from bin                    import DAMG
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """

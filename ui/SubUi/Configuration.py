@@ -22,9 +22,8 @@ from PyQt5.QtWidgets            import (QCheckBox, QDateTimeEdit, QGridLayout, Q
 
 # PLM
 from appData                    import __globalServer__, __localServer__
-from toolkits.Widgets           import (GroupBox, Label, HBoxLayout, ComboBox, VBoxLayout, LineEdit, Button, Widget,
-                                        CheckBox, )
-from scripts.rcs                import config_rc
+from devkit.Widgets           import (GroupBox, Label, HBoxLayout, ComboBox, VBoxLayout, LineEdit, Button, Widget,
+                                      CheckBox, )
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """

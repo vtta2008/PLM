@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from toolkits.Widgets import GroupGrid, LineEdit, Button, Label
+from devkit.Widgets import GroupGrid, LineEdit, Button, Label
 
 class Profile(GroupGrid):
 

@@ -23,8 +23,8 @@ from PyQt5.QtGui                        import QTextCursor
 # PLM
 from bin                                import DAMGLIST
 from appData                            import SCROLLBAROFF, NO_WRAP
-from toolkits.Widgets                   import Widget, PlainTextEdit, ShortCut, VBoxLayout, StatusBar
-from toolkits.Core                      import Process
+from devkit.Widgets                     import Widget, PlainTextEdit, ShortCut, VBoxLayout, StatusBar
+from devkit.Core                        import Process
 
 class TopTap3(Widget):
 

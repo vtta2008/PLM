@@ -21,7 +21,7 @@ from PyQt5.QtWidgets        import (QAction, QMenuBar, QFileDialog,
 from PyQt5.QtCore           import QSettings
 
 # PLM
-from toolkits.Widgets       import Widget, GridLayout
+from devkit.Widgets       import Widget, GridLayout
 from ui.base                import SettingOutput, SettingInput
 from appData                import SETTING_FILEPTH, __appname__, __organization__
 
