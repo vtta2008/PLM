@@ -61,10 +61,15 @@ LN_BLANK = "Lastname must not be blank"
 SEC_BLANK = " section should not be blank."
 
 USER_CHECK_REQUIRED = "I agree to the DAMG Terms of Service"
+
 USER_NOT_CHECK = "You must agree with DAMG team term of service"
+
 USER_BLANK = "Username must not be blank."
+
 USER_CHECK_FAIL = "Wrong username or password"
+
 USER_NOT_EXSIST = "The username does not exists"
+
 USER_CONDITION = "This username is under condition and can not log in, please contact to admin."
 
 SYSTRAY_UNAVAI = "Systray could not detect any system tray on this system"
@@ -89,7 +94,7 @@ tooltips_missing = [
 
 N_MESSAGES_TEXT = "{quantity} showLayout_new messages"
 
-SERVER_CONNECT_FAIL = " Connection to server failed. PLM can not run without connecting to server. Please try again "
+SERVER_CONNECT_FAIL = "Connection to server failed. PLM can not run without connecting to server. Please try again "
 
 TEMPLATE_QRC_HEADER = '''
 <RCC warning="File created programmatically. All changes made in this file will be lost!">

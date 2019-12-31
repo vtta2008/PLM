@@ -14,7 +14,7 @@ Description:
 
 # PLM
 from devkit.Widgets                       import Widget, VBoxLayout, AppIcon
-from ui.base                                import HeaderCheckBoxes, FooterCheckBoxes, BodyCheckBoxes
+from ui.base                              import HeaderCheckBoxes, FooterCheckBoxes, BodyCheckBoxes
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """

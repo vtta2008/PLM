@@ -27,6 +27,14 @@ DB_ATTRIBUTE_TYPE = {
 }
 
 
+CMD_VALUE_TYPE = {
+
+    'dir': 'directory',
+    'pth': 'path',
+    'url': 'link',
+}
+
+
 RAMTYPE = {
     0: 'Unknown',
     1: 'Other',

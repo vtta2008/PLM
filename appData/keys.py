@@ -17,8 +17,8 @@ import os, sys
 """ Autodesk _data """
 
 autodeskVer         = ["2017", "2018", "2019", "2020", "2021"]
-autodeskApp         = ["Autodesk Maya", "Autodesk MudBox", "Autodesk 3ds Max", "Autodesk AutoCAD"]
-userMayaDir         = os.path.expanduser(r"~/Documents/maya")
+autodeskApp         = ["Maya", "MudBox", "3ds Max", "AutoCAD"]
+# userMayaDir         = os.path.expanduser(r"~/Documents/maya")
 
 # --------------------------------------------------------------------------------------------------------------
 """ Adobe _data """
@@ -30,8 +30,8 @@ adobeApp            = ["Adobe Photoshop", "Adobe Illustrator", "Adobe Audition",
 # --------------------------------------------------------------------------------------------------------------
 """ Foundry _data """
 
-foundryVer          = ["11.1v1", "11.2v1", "4.0v1", "4.1v1", "2.6v3", "4.6v1"]
-foundryApp          = ['Hiero', 'HieroPlayer', 'Mari', 'NukeX', 'Katana',]
+foundryVer          = ["11.1v1", "11.2v1", "4.0v1", "4.1v1", "2.6v3", "4.6v1", "12.0v1"]
+foundryApp          = ['Hiero', 'Mari', 'NukeStudio', 'NukeX', 'Katana',]
 
 # --------------------------------------------------------------------------------------------------------------
 """ Pixologic _data """
@@ -72,33 +72,11 @@ wonderUniApp        = ['Storyboarder', 'Krita (x64)', 'Krita (x32)' ]
 # --------------------------------------------------------------------------------------------------------------
 """ another app _data """
 
-anacondaApp         = [ 'Spyder', 'QtDesigner', 'Git Bash']
-otherApp            = [ 'Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', ]
-
-CONFIG_APPUI        = [ 'About', 'Calculator', 'Calendar', 'Credit', 'EnglishDictionary', 'FindFiles', 'ForgotPassword',
-                        'ImageViewer', 'NewProject', 'Preferences', 'ScreenShot', 'UserSetting', 'PLMBrowser',
-                        'NoteReminder', 'TextEditor', 'NodeGraph', 'Messenger', 'InviteFriend', 'SignIn', 'SignUp',
-                        'SignOut', 'SwitchAccount']
+anacondaApp         = ['Spyder', 'QtDesigner', 'Git Bash']
+windowApps          = ['Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', ]
 
 # --------------------------------------------------------------------------------------------------------------
-""" Tracking configKey """
-
-TRACK_TDS           = [ 'Maya', 'ZBrush', 'Houdini', '3Ds Max', 'Mudbox', 'BLender', ]
-TRACK_VFX           = [ 'NukeX', 'After Effects', ]
-TRACK_ART           = [ 'Photoshop', ]
-TRACK_PRE           = ['Storyboarder', 'Illustrator', 'Krita (x64)']
-TRACK_TEX           = [ 'Mari', 'Painter', ]
-TRACK_POST          = [ 'Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro']
-TRACK_OFFICE        = [ 'Word', 'Excel', 'PowerPoint', 'Wordpad']
-TRACK_DEV           = [ 'PyCharm', 'Sublime Text', 'QtDesigner', 'Git Bash', 'Spyder', 'Command Prompt']
-TRACK_TOOLS         = [ 'Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'ScreenShot', 'NodeGraph']
-TRACK_EXTRA         = [ 'ReConfig', 'CleanPyc', 'Debug', 'Snipping Tool']
-TRACK_SYSTRAY       = [ 'Snipping Tool', 'ScreenShot', 'Maximize', 'Minimize', 'Restore', 'Exit', ]
-KEYDETECT           = [ "Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url"]
-FIX_KEY             = { 'ScreenShot': 'ScreenShot', 'Snipping Tool': 'SnippingTool'}
-
-# --------------------------------------------------------------------------------------------------------------
-""" Combine _data qssPths """
+""" Combine data package """
 
 pVERSION = dict(adobe=adobeVer, autodesk=autodeskVer, allegorithmic = allegorithmicVer, foundry=foundryVer,
                 pixologic=pixologiVer, sizefx=sizefxVer, office=officeVer, jetbrains=jetbrainsVer, wonderUnit=wonderUnitVer, )
@@ -106,11 +84,94 @@ pVERSION = dict(adobe=adobeVer, autodesk=autodeskVer, allegorithmic = allegorith
 pPACKAGE = dict(adobe=adobeApp, autodesk=autodeskApp, allegorithmic = allegorithmicApp, foundry=foundryApp,
                 pixologic=pixologiApp, sizefx=sizefxApp, office=officeApp, jetbrains=jetbrainsApp, wonderUnit=wonderUniApp,)
 
+# --------------------------------------------------------------------------------------------------------------
+""" Tracking configKey """
+
+TRACK_TDS           = ['Maya', 'ZBrush', 'Houdini', '3Ds Max', 'Mudbox', 'BLender', ]
+TRACK_VFX           = ['NukeX', 'After Effects', ]
+TRACK_ART           = ['Photoshop', ]
+TRACK_PRE           = ['Storyboarder', 'Illustrator', 'Krita (x64)', 'Krita (x32)']
+TRACK_TEX           = ['Mari', 'Painter', ]
+TRACK_POST          = ['Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro']
+TRACK_OFFICE        = ['Word', 'Excel', 'PowerPoint', 'Wordpad']
+TRACK_DEV           = ['PyCharm', 'Sublime Text', 'QtDesigner', 'Git Bash', 'Spyder', 'Command Prompt']
+TRACK_TOOLS         = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'ScreenShot', 'NodeGraph']
+TRACK_EXTRA         = ['ReConfig', 'CleanPyc', 'Debug', 'Snipping Tool']
+TRACK_SYSTRAY       = ['Snipping Tool', 'ScreenShot', 'Maximize', 'Minimize', 'Restore', 'Exit', ]
+KEYDETECT           = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url", "Changelog", "Settings"]
+
+FIX_KEY             = {'ScreenShot': 'ScreenShot', 'Snipping Tool': 'SnippingTool'}
+
+# --------------------------------------------------------------------------------------------------------------
+""" Combine Tracking configKey """
+
 pTRACK = dict(TDS=TRACK_TDS, VFX=TRACK_VFX, ART=TRACK_ART, PRE = TRACK_PRE, TEXTURE = TRACK_TEX, POST = TRACK_POST,
               Office=TRACK_OFFICE, Dev=TRACK_DEV, Tools=TRACK_TOOLS, Extra=TRACK_EXTRA, sysTray=TRACK_SYSTRAY, )
 
 # --------------------------------------------------------------------------------------------------------------
-""" Store _data qssPths """
+""" PLM Layout Key """
+
+UI_ELEMENT_KEYS     = ['BotTab', 'ConnectStatus', 'GridLayout', 'MainMenuSection', 'MainToolBar', 'MainToolBarSection',
+                       'Notification','StatusBar', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting', ]
+
+MAIN_UI_KEYS        = ['SysTray', 'PipelineManager', 'ForgotPassword', 'SignIn', 'SignUp', 'SignOut', 'CommandUI', ]
+
+INFO_UI_KEYS        = ['About', 'CodeOfConduct', 'Contributing', 'Credit', 'Version', 'AppLicence', 'PythonLicence',
+                       'OrgInfo', 'References', ]
+
+PROJ_UI_KEYS        = ['ProjectManager', 'PreProductionProj', 'ProductionProj', 'PostProductionPrj', 'VFXProj',
+                       'ResearchProject', ]
+
+ORG_UI_KEYS         = ['OrganisationManager', ]
+
+TASK_UI_KEYS        = ['TaskManager', ]
+
+TEAM_UI_KEYS        = ['TeamManager', ]
+
+SETTING_UI_KEYS     = ['Configuratons', 'Preferences', 'AppSetting', 'GlobalSetting', 'UserSetting', 'BrowserSetting',
+                       'ProjSetting', 'OrgSetting', 'TaskSetting', 'TeamSetting']
+
+LIBRARY_UI_KEYS     = ['UserLibrary', 'HDRILibrary', 'TextureLibrary', 'AlphaLibrary', ]
+
+TOOL_UI_KEYS        = ['Calculator', 'Calendar', 'ContactUs', 'EnglishDictionary', 'FeedBack', 'ReportBug', 'FindFiles',
+                       'ImageViewer', 'InviteFriend', 'Messenger', 'NoteReminder', 'ScreenShot', 'TextEditor', ]
+
+PLUGIN_UI_KEYS      = ['PluginManager', 'NodeGraph', 'Browser', ]
+
+APP_UI_KEYS        = MAIN_UI_KEYS + INFO_UI_KEYS + PROJ_UI_KEYS + ORG_UI_KEYS + TASK_UI_KEYS + TEAM_UI_KEYS + \
+                     SETTING_UI_KEYS + LIBRARY_UI_KEYS + TOOL_UI_KEYS + PLUGIN_UI_KEYS
+
+# --------------------------------------------------------------------------------------------------------------
+""" PLM Function key """
+
+factors             = ['Organisation', 'Project', 'Department', 'Team', 'Task', ]
+factorActs          = ['New', 'Config', 'Edit', 'Remove']
+
+factorKeys     = []
+for f in factors:
+    for act in factorActs:
+        factorKeys.append('{0} {1}'.format(act, f))
+
+APP_EVENT_KEYS      = ['ShowAll', 'SwitchAccount', 'LogIn', 'LogOut', 'Quit', 'Exit', 'ChangePassword', 'UpdateAvatar',]
+
+STYLESHEET_KEYS     = ['bright', 'dark', 'charcoal', 'nuker', ]
+
+STYLE_KEYS          = []
+
+OPEN_DIR_KEYS       = ['ConfigDir', 'IconDir', 'SettingDir', 'AppdataDir', 'PreferenceDir', ]
+
+OPEN_URL_KEYS       = ['pythonTag', 'licenceTag', 'versionTag', 'PLM wiki']
+
+SYS_CMD_KEYS        = ['Command Promt', 'cmd', ]
+
+SHORTCUT_KEYS       = ['Copy', 'Cut', 'Paste', 'Delete', 'Find', 'ReName']
+
+APP_FUNCS_KEYS      = ['ReConfig', 'CleanPyc', 'Debug', 'Restore', 'Maximize', 'Minimize', ] + factorKeys + \
+                      APP_EVENT_KEYS + STYLESHEET_KEYS + STYLE_KEYS + OPEN_DIR_KEYS + OPEN_URL_KEYS + SYS_CMD_KEYS + \
+                      SHORTCUT_KEYS
+
+# --------------------------------------------------------------------------------------------------------------
+""" Store key data """
 
 def generate_key_packages(*args):
     keyPackage = []
@@ -122,7 +183,7 @@ def generate_key_packages(*args):
             else:
                 for ver in pVERSION[k]:
                     if name == 'Hiero' or name == 'HieroPlayer' or name == 'NukeX':
-                        key = name + ver
+                        key = name + " " + ver
                     else:
                         if not ver or ver == []:
                             key = name
@@ -130,7 +191,7 @@ def generate_key_packages(*args):
                             key = name + " " + ver
                     keyPackage.append(key)
 
-    return keyPackage + otherApp + anacondaApp + CONFIG_APPUI + ['Word', 'Excel', 'PowerPoint', 'ReConfig', 'CleanPyc', 'Debug', 'Restore', 'Maximize', 'Minimize', 'Quit']
+    return keyPackage + windowApps + anacondaApp + ['Word', 'Excel', 'PowerPoint']
 
 def generate_config(key, *args):
     keyPackages = generate_key_packages()
@@ -185,18 +246,12 @@ RESTORE_KEY             = ['Restore']
 SHOWMAX_KEY             = ['Maximize']
 SHOWMIN_KEY             = ['Minimize']
 
-STYLESHEET_KEY          = ['bright', 'dark', 'chacoal', 'nuker']
-
-OPEN_BROWSER_KEY        = ['PLM wiki']
-
 START_FILE              = CONFIG_DEV + CONFIG_OFFICE + CONFIG_TDS + CONFIG_VFX + CONFIG_ART + CONFIG_TEX + CONFIG_POST + \
-                            ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder', 'Snipping Tool']
-
-EDIT_KEY                = ['Cut', 'Copy', 'Paste']
+                          ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder', 'Snipping Tool']
 
 START_FILE_KEY          = sorted([i for i in START_FILE if not i == 'Command Prompt'])
 
-EXECUTING_KEY           = ['Exit', 'CleanPyc', 'ReConfig', 'Debug', 'Command Prompt', 'Showall'] + EDIT_KEY + STYLESHEET_KEY
+EXECUTING_KEY           = ['Exit', 'CleanPyc', 'ReConfig', 'Debug', 'Command Prompt', 'Showall'] + SHORTCUT_KEYS + STYLESHEET_KEYS
 
 IGNORE_ICON_NAME        = ['Widget', 'TopTab1', 'TopTab2', 'TopTab3', 'ItemWidget']
 

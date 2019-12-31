@@ -20,11 +20,12 @@ from functools                          import partial
 from bin                                import DAMGDICT, DAMGLIST
 from devkit.Widgets                     import Action, Button
 from utils                              import is_string, is_action, is_button
-from appData                            import (SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_BROWSER_KEY,
-                                                CONFIG_DEV, CONFIG_TOOLS, CONFIG_OFFICE, CONFIG_TDS, CONFIG_ART, CONFIG_TEX,
-                                                CONFIG_POST, CONFIG_VFX, CONFIG_PRE, CONFIG_EXTRA, CONFIG_SYSTRAY,
-                                                RESTORE_KEY, SHOWMIN_KEY, SHOWMAX_KEY, EDIT_KEY, STYLESHEET_KEY,
-                                                BTNTAGSIZE, TAGBTNSIZE, BTNICONSIZE, ICONBTNSIZE, plmInfo)
+from appData                            import (SHOWLAYOUT_KEY, START_FILE_KEY, EXECUTING_KEY, OPEN_URL_KEYS,
+                                                CONFIG_DEV, CONFIG_TOOLS, CONFIG_OFFICE, CONFIG_TDS, CONFIG_ART,
+                                                CONFIG_TEX, CONFIG_POST, CONFIG_VFX, CONFIG_PRE, CONFIG_EXTRA,
+                                                CONFIG_SYSTRAY, RESTORE_KEY, SHOWMIN_KEY, SHOWMAX_KEY, SHORTCUT_KEYS,
+                                                STYLESHEET_KEYS, BTNTAGSIZE, TAGBTNSIZE, BTNICONSIZE, ICONBTNSIZE,
+                                                plmInfo)
 
 class KeyBase(DAMGDICT):
 
@@ -48,7 +49,7 @@ class KeyBase(DAMGDICT):
     teamActions                         = ['Team']
     prjActions                          = ['Project']
     taskActions                         = ['Task']
-    stylesheetActions                   = STYLESHEET_KEY
+    stylesheetActions                   = STYLESHEET_KEYS
     viewActions                         = ['Showall']
     appActions                          = ['SettingUI', 'Configuration', 'Preferences', 'Exit']
     goActions                           = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder']
@@ -59,7 +60,7 @@ class KeyBase(DAMGDICT):
     helpActions                         = ['PLM wiki', 'About', 'CodeOfConduct', 'Contributing', 'Credit',
                                             'Reference', 'Version', 'Feedback', 'ContactUs', ]
 
-    editActions                         = EDIT_KEY
+    editActions                         = SHORTCUT_KEYS
     preActions                          = CONFIG_PRE
     tdActions                           = CONFIG_TDS
     artActions                          = CONFIG_ART
@@ -90,7 +91,7 @@ class KeyBase(DAMGDICT):
         self.showLayoutKeys.appendList(SHOWLAYOUT_KEY)
         self.startFileKeys.appendList(START_FILE_KEY)
         self.executingKeys.appendList(EXECUTING_KEY)
-        self.openBrowserKeys.appendList(OPEN_BROWSER_KEY)
+        self.openBrowserKeys.appendList(OPEN_URL_KEYS)
         self.showRestoreKeys.appendList(RESTORE_KEY)
         self.showMaximizeKeys.appendList(SHOWMAX_KEY)
         self.showMinimizeKeys.appendList(SHOWMIN_KEY)
@@ -101,7 +102,7 @@ class KeyBase(DAMGDICT):
         self.showLayoutKeys.appendList(SHOWLAYOUT_KEY)
         self.startFileKeys.appendList(START_FILE_KEY)
         self.executingKeys.appendList(EXECUTING_KEY)
-        self.openBrowserKeys.appendList(OPEN_BROWSER_KEY)
+        self.openBrowserKeys.appendList(OPEN_URL_KEYS)
         self.showRestoreKeys.appendList(RESTORE_KEY)
         self.showMaximizeKeys.appendList(SHOWMAX_KEY)
         self.showMinimizeKeys.appendList(SHOWMIN_KEY)

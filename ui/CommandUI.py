@@ -13,12 +13,12 @@ from __future__ import absolute_import, unicode_literals
 from devkit.Widgets           import LineEdit, ShortCut
 from appData                    import FRAMELESS, KEY_RETURN
 
-class ShortcutCMD(LineEdit):
+class CommandUI(LineEdit):
 
-    key                     = 'ShortcutCMD'
+    key                     = 'CommandUI'
 
     def __init__(self, parent=None):
-        super(ShortcutCMD, self).__init__(parent)
+        super(CommandUI, self).__init__(parent)
 
         self.parent         = parent
         self.setFixedSize(250, 25)

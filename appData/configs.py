@@ -10,6 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 from __buildtins__ import ROOT, globalSetting
+from functools import partial
 
 """ Import """
 
@@ -42,7 +43,7 @@ from .pths                          import (evnInfoCfg, iconCfg, avatarCfg, logo
                                             FORMAT_SETTING, UNIX_SETTING, LOCAL_DB, LOCAL_LOG, QSS_PATH, MAIN_SCSS_PTH,
                                             STYLE_SCSS_PTH, VAR_SCSS_PTH, SETTING_FILEPTH)
 
-from .types                         import (RAMTYPE, CPUTYPE, FORMFACTOR, DRIVETYPE, DB_ATTRIBUTE_TYPE, actionTypes,
+from .types                         import (RAMTYPE, CPUTYPE, FORMFACTOR, DRIVETYPE, DB_ATTRIBUTE_TYPE, CMD_VALUE_TYPE, actionTypes,
                                             layoutTypes)
 
 from .text                          import (TRADE_MARK, PLM_ABOUT, WAIT_FOR_UPDATE, WAIT_TO_COMPLETE, WAIT_LAYOUT_COMPLETE,
@@ -55,15 +56,14 @@ from .text                          import (TRADE_MARK, PLM_ABOUT, WAIT_FOR_UPDA
 
 from .keys                          import (TRACK_TDS, TRACK_VFX, TRACK_ART, TRACK_PRE, TRACK_TEX, TRACK_POST,
                                             TRACK_OFFICE, TRACK_DEV, TRACK_TOOLS, TRACK_EXTRA, TRACK_SYSTRAY,
-                                            KEYDETECT, FIX_KEY, CONFIG_APPUI, KEYPACKAGE, CONFIG_TDS, CONFIG_VFX,
+                                            KEYDETECT, FIX_KEY, APP_UI_KEYS, KEYPACKAGE, CONFIG_TDS, CONFIG_VFX,
                                             CONFIG_ART, CONFIG_PRE, CONFIG_TEX, CONFIG_POST, CONFIG_OFFICE, CONFIG_DEV,
                                             CONFIG_TOOLS, CONFIG_EXTRA, CONFIG_SYSTRAY, ACTIONS_DATA, SHOWLAYOUT_KEY,
-                                            RESTORE_KEY, SHOWMAX_KEY, SHOWMIN_KEY, STYLESHEET_KEY, OPEN_BROWSER_KEY,
-                                            START_FILE, EDIT_KEY, START_FILE_KEY, EXECUTING_KEY, IGNORE_ICON_NAME,
+                                            RESTORE_KEY, SHOWMAX_KEY, SHOWMIN_KEY, STYLESHEET_KEYS, OPEN_URL_KEYS,
+                                            START_FILE, SHORTCUT_KEYS, START_FILE_KEY, EXECUTING_KEY, IGNORE_ICON_NAME,
                                             QT_BINDINGS, QT_ABSTRACTIONS, QT5_IMPORT_API, QT_API_VALUES, QT_LIB_VALUES,
-                                            QT_BINDING, QT_ABSTRACTION, IMAGE_BLACKLIST, PY2, SYS_OPTS, notKeys,
-                                            autodeskVer,  )
-
+                                            QT_BINDING, QT_ABSTRACTION, IMAGE_BLACKLIST, PY2, SYS_OPTS, APP_FUNCS_KEYS,
+                                            notKeys, autodeskVer, )
 
 from .formats                       import (INI, Native, Invalid, LOG_FORMAT, DT_FORMAT, ST_FORMAT, datetTimeStamp,
                                             IMGEXT, )
@@ -75,6 +75,34 @@ from .metadatas                     import (__plmWiki__, __localServer__, __pkgs
                                             __organization__, __organizationID__, __organizationName__, __globalServer__,
                                             __google__, __plmSlogan__, __localServerAutho__, __version__, __website__,
                                             VERSION, )
+
+iconMissing                         = []
+toolTips                            = {}
+statusTips                          = {}
+
+
+class CommandData(DAMGDICT):
+    key = 'CommandData'
+
+    def __init__(self, key=None, icon=None, tooltip=None, statustip=None,
+                       value=None, valueType=None, arg=None, code=None):
+        super(CommandData, self).__init__()
+
+        self.key = key
+        self.icon = icon
+        self.tooltip = tooltip
+        self.statusTip = statustip
+        self.value = value
+        self.valueType = valueType
+        self.arg = arg
+        self.code = code
+
+        ks = ['key', 'icon', 'tooltip', 'statustip', 'value', 'valueType', 'arg', 'code']
+        vs = [key, icon, tooltip, statustip, value, valueType, arg, code]
+
+        for i in range(len(ks)):
+            self[ks[i]] = vs[i]
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configs """
@@ -354,7 +382,6 @@ class ConfigDirectory(DAMGDICT):
                 finally:
                     os.umask(original_umask)
                 os.chmod(path, mode)
-        # pprint.pprint(self)
 
 
 class ConfigPath(DAMGDICT):
@@ -520,17 +547,43 @@ class ConfigApps(DAMGDICT):
                 self[str(name)] = lnk.path
 
 
+class ConfigUrl(DAMGDICT):
+
+    key = 'ConfigUrl'
+
+    def __init__(self):
+        super(ConfigUrl, self).__init__()
+
+        self.add('pythonTag', 'https://docs.anaconda.com/anaconda/reference/release-notes/')
+        self.add('licenceTag', 'https://github.com/vtta2008/damgteam/blob/master/LICENCE')
+        self.add('versionTag', 'https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst')
+
+
 class ConfigPipeline(DAMGDICT):
 
     key                         = 'ConfigPipeline'
 
-    def __init__(self, iconInfo, appInfo):
+    def __init__(self, iconInfo, appInfo, urlInfo):
         super(ConfigPipeline, self).__init__()
 
         self.iconInfo = iconInfo
         self.appInfo = appInfo
+        self.urlInfo = urlInfo
 
-        removeKeys = []
+        removeKeys              = []
+        launchAppKeys           = []
+
+        functionKeys            = APP_FUNCS_KEYS
+        layoutKeys              = APP_UI_KEYS
+
+        for key in self.appInfo:
+            if 'NukeX' in key:
+                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --nukex"
+            elif 'Hiero' in key:
+                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --hiero"
+            elif 'UVLayout' in key:
+                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " -launch"
+
         for key in KEYDETECT:
             for k in self.appInfo:
                 if key in k:
@@ -541,120 +594,61 @@ class ConfigPipeline(DAMGDICT):
 
         self.appInfo.update()
 
-        keeps = [k for k in KEYPACKAGE if k in self.appInfo.keys()]
-        print(len(keeps), keeps)
-        sys.exit()
+        for k in KEYPACKAGE:
+            for key in self.appInfo.keys():
+                if k in key:
+                    launchAppKeys.append(key)
 
         qtDesigner = os.path.join(os.getenv('PROGRAMDATA'), 'Anaconda3', 'Library', 'bin', 'designer.exe')
         davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
 
-        eVal = [qtDesigner, davinciPth]
-        eKeys = ['QtDesigner', 'Davinci Resolve 14']
+        eVal       = [qtDesigner, davinciPth]
+        eKeys      = ['QtDesigner', 'Davinci Resolve']
 
         for key in eKeys:
             if os.path.exists(eVal[eKeys.index(key)]):
-                self[key] = [key, self.iconInfo['icon32'][key], "{0}".format(eVal[eKeys.index(key)])]
+                for k in self.appInfo.keys():
+                    if key in k:
+                        self.appInfo[k] = eVal[eKeys.index(key)]
+                        launchAppKeys.append(k)
 
-        keepKeys = [k for k in KEYPACKAGE if k in self.keys() and k in self.iconInfo['icon32']]
+        self.appInfo.update()
 
-        for key in self.appInfo:
-            if 'NukeX' in key:
-                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --nukex"
-            elif 'Hiero' in key:
-                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --hiero"
-            elif 'UVLayout' in key:
-                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " -launch"
+        # print(len(launchAppKeys), launchAppKeys)
+        # sys.exit()
 
-        for key in keepKeys:
-            if not key in self.keys():
-                self[key] = [key, self.iconInfo['icon32'][key], "{0}".format(self.appInfo[key])]
+        # pprint.pprint(self.iconInfo['icon32'])
+        # sys.exit()
 
-        for key in CONFIG_APPUI:
-            if key == 'UserSetting':
-                self[key] = ['Profile', self.iconInfo['icon32'][key], 'User Profile']
-            elif key == 'SignIn':
-                self[key] = ['Sign In', self.iconInfo['icon32'][key], 'SignIn']
-            elif key == 'SignUp':
-                self[key] = ['New Account', self.iconInfo['icon32'][key], 'Create new account']
-            elif key == 'SwtichAccount':
-                self[key] = ['Change Account', self.iconInfo['icon32'][key], 'Change other account']
-            elif key == 'SignOut':
-                self[key] = ['Sign Out', self.iconInfo['icon32'][key], 'Log Out']
-            else:
-                self[key] = [key, self.iconInfo['icon32'][key], "{0}".format(key)]
+        for key in launchAppKeys:
+            toolTips[key] = 'Lauch {0}'.format(key)
+            statusTips[key] = 'Lauch {0}: {1}'.format(key, self.appInfo[key])
 
-        for key in CONFIG_SYSTRAY:
-            if key in self.appInfo:
-                self[key] = [key, self.iconInfo['icon32'][key], self.appInfo[key]]
-            elif key in FIX_KEY.keys():
-                self[key] = [key, self.iconInfo['icon32'][key], FIX_KEY[key]]
-            else:
-                self[key] = [key, self.iconInfo['icon32'][key], key]
+            try:
+                icon = self.iconInfo['icon32'][key]
+            except KeyError:
+                icon = 'Icon Missing: {0}'.format(key)
+                print('Icon Missing: {0}'.format(key))
+                iconMissing.append(key)
 
+            tooltip = toolTips[key]
+            statustip = statusTips[key]
+            value = self.appInfo[key]
+            valueType = CMD_VALUE_TYPE['pth']
+            arg = value
+            code = 'os.system({0})'.format(value)
 
-        # show layout
-        self['About']                  = ['About PLM', self.iconInfo['icon32']['About'], 'About']
-        self['CodeOfConduct']          = ['Code of Conduct', self.iconInfo['icon32']['CodeOfConduct'], 'CodeOfConduct']
-        self['Contributing']           = ['Contributing', self.iconInfo['icon32']['Contributing'], 'Contributing']
-        self['ReConfig']               = ['Re configuring qssPths', self.iconInfo['icon32']['ReConfig'], 'ReConfig']
-        self['Reference']              = ['Reference', self.iconInfo['icon32']['Reference'], 'Reference']
-        self['PLM wiki']               = ['PLM wiki', self.iconInfo['icon32']['PLM wiki'], "{key}".format(key=__plmWiki__)]
-        self['Browser']                = ['Browser', self.iconInfo['icon32']['Browser'], "Browser"]
-        self['OpenConfig']             = ['Open config folder', self.iconInfo['icon32']['OpenConfig'], '']
-        self['Version']                = ['Version Info', 'Version', 'Version']
-        self['Licence']                = ['Licence Info', 'Licence', 'Licence Info']
+            self.add(key, CommandData(key, icon, tooltip, statustip, value, valueType, arg, code))
 
-        self['Organisation']           = ['Organisation', 'OrganisationManager', 'Organisation']
-        self['Team']                   = ['Team', 'TeamManager', 'Team']
-        self['Project']                = ['Project', 'ProjectManager', 'Project']
-        self['Task']                   = ['Task', 'TaskManager', 'Task']
-
-        self['SettingUI']              = ['PLM Settings', 'Settings', 'SettingUI']
-        self['Configuration']          = ['PLM Configuration', 'Configuration', 'Configuration']
-        self['Showall']                = ['showall', 'ShowAll', 'showall']
-
-        self['Alpha']                  = ['Open Alpha Map Library', 'AlphaLibrary', 'AlphaLibrary']
-        self['HDRI']                   = ['Open HDRI Map Library', 'HDRILibrary', 'HDRILibrary']
-        self['Texture']                = ['Open Texture Map Library', 'TextureLibrary', 'TextureLibrary']
-
-        self['Feedback']               = ['Feedback', 'Feedback', 'Feedback']
-        self['ContactUs']              = ['Contact Us', 'ContactUs', 'ContactUs']
-
-        self['Restore']                = ['Restore', 'Restore', 'PipelineManager']
-        self['Maximize']               = ['Maximize', 'Maximize', 'PipelineManager']
-        self['Minimize']               = ['Minimize', 'Minimize', 'PipelineManager']
-
-        self['Apperance']              = ['Appearance', 'Appearance', 'Appearance']
-
-        # Executing
-        self['CleanPyc']               = ['Clean ".pyc" files', self.iconInfo['icon32']['CleanPyc'], 'CleanPyc']
-        self['Debug']                  = ['Run PLM Debugger', self.iconInfo['icon32']['Debug'], 'Debug']
-        self['Exit']                   = ['Exit PLM', self.iconInfo['icon32']['Exit'], 'Exit']
-        self['ConfigFolder']           = ['Go To Config Folder', 'ConfigFolder', CFG_DIR]
-        self['IconFolder']             = ['Go To Icon Folder', 'IconFolder', ICON_DIR]
-        self['SettingFolder']          = ['Go To Setting Folder', 'SettingFolder', SETTING_DIR]
-        self['AppFolder']              = ['Go To PLM Folder', 'AppFolder', ROOT]
-        self['Command Prompt']         = ['Open command prompt', self.iconInfo['icon32']['Command Prompt'], 'open_cmd']
-
-        self['Cut']                    = ['Cut', 'Cut', 'Cut']
-        self['Copy']                   = ['Copy', 'Copy', 'Copy']
-        self['Paste']                  = ['Paste', 'Paste', 'Paste']
-
-        self['bright']                 = ['bright', 'bright', 'bright']
-        self['dark']                   = ['dark', 'dark', 'dark']
-        self['chacoal']                = ['chacoal', 'chacoal', 'chacoal']
-        self['nuker']                  = ['nuker', 'nuker', 'nuker']
-
-        # Update link
-        self['pythonTag']              = ['pythonLink', 'pythonTagIcon', 'https://docs.anaconda.com/anaconda/reference/release-notes/']
-        self['licenceTag']             = ['licenceLink', 'licenceTagIcon', 'https://github.com/vtta2008/damgteam/blob/master/LICENCE']
-        self['versionTag']             = ['versionLink', 'versionTagIcon', 'https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst']
+        pprint.pprint(self)
+        sys.exit()
 
     def del_key(self, key):
         try:
             del self.appInfo[key]
         except KeyError:
             self.appInfo.pop(key, None)
+
 
 def ignoreIDs(**info):
     path = os.path.join(TMP_DIR, '.ignoreIDs')
@@ -681,11 +675,11 @@ def tobuildUis(**info):
         with open(path, 'r') as f:
             info = json.load(f)
     else:
-        info = ['Alpha'           , 'ConfigOrganisation', 'ConfigProject'      , 'ConfigTask'         ,
-                      'ConfigTeam'      , 'ContactUs'         , 'EditOrganisation'   , 'EditProject'        ,
-                      'EditTask'        , 'EditTeam'          , 'Feedback'           , 'HDRI'               ,
-                      'NewOrganisation' ,  'NewTask'          , 'NewTeam'            , 'OrganisationManager',
-                      'ProjectManager'  , 'TaskManager'       , 'TeamManager'        , 'Texture'            ,]
+        info = [  'Alpha'           , 'ConfigOrganisation', 'ConfigProject'      , 'ConfigTask'         ,
+                  'ConfigTeam'      , 'ContactUs'         , 'EditOrganisation'   , 'EditProject'        ,
+                  'EditTask'        , 'EditTeam'          , 'Feedback'           , 'HDRI'               ,
+                  'NewOrganisation' ,  'NewTask'          , 'NewTeam'            , 'OrganisationManager',
+                  'ProjectManager'  , 'TaskManager'       , 'TeamManager'        , 'Texture'            ,]
         if os.path.exists(path):
             os.remove(path)
         with open(path, 'w') as f:
@@ -711,25 +705,23 @@ def tobuildCmds(**info):
         print(info)
     return info
 
+
 ignoreIDs                           = ignoreIDs()
 toBuildUis                          = tobuildUis()
 toBuildCmds                         = tobuildCmds()
 
+
 pythonInfo                          = ConfigPython()
-deviceInfo                          = ConfigMachine()
 dirInfo                             = ConfigDirectory()
 pthInfo                             = ConfigPath()
 envInfo                             = ConfigEnvVar()
 iconInfo                            = ConfigIcon()
 mayaInfo                            = ConfigMaya()
 appInfo                             = ConfigApps()
-plmInfo                             = ConfigPipeline(iconInfo, appInfo)
+urlInfo                             = ConfigUrl()
+plmInfo                             = ConfigPipeline(iconInfo, appInfo, urlInfo)
+deviceInfo                          = ConfigMachine()
 
-pprint.pprint(appInfo)
-
-print(KEYPACKAGE, TRACK_ART, TRACK_TEX)
-
-pprint.pprint(plmInfo)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Config qssPths from text file """

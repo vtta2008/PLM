@@ -16,13 +16,14 @@ from PyQt5.QtCore                       import Qt
 # PLM
 from appData                            import SiPoMin
 from bin                                import DAMG, DAMGLIST
-from ui.ShortcutCMD                     import ShortcutCMD
+from ui.base                            import BaseManager
+from ui.CommandUI                       import CommandUI
 from ui.PipelineManager                 import PipelineManager
 from ui.SysTray                         import SysTray
 from ui.SubUi                           import (Calendar, Calculator, EnglishDictionary,
                                                 FindFiles, ImageViewer, NoteReminder, Screenshot, TextEditor, ForgotPassword,
                                                 SignUp, SignIn, InfoWidget, VFXProject, SettingUI, UserSetting, Preferences,
-                                                Configuration, BaseManager)
+                                                Configuration)
 
 class LayoutManager(DAMG):
 
@@ -135,7 +136,7 @@ class LayoutManager(DAMG):
 
         self.mainUI                         = PipelineManager(self.actionManager, self.buttonManager, self.threadManager)
         self.sysTray                        = SysTray(self.actionManager, self.eventManager)
-        self.shortcutCMD                    = ShortcutCMD()
+        self.shortcutCMD                    = CommandUI()
 
         layouts = [self.mainUI, self.sysTray, self.shortcutCMD]
 

@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from devkit.Widgets               import GroupGrid, Label, CheckBox, PlainTextEdit
+from devkit.Widgets                 import GroupGrid, Label, CheckBox, PlainTextEdit
 from utils                          import str2bool
 
 class BaseDetails(GroupGrid):
@@ -33,23 +33,31 @@ class BaseDetails(GroupGrid):
         self.groupMode              = CheckBox('Group')
         self.departmentMode         = CheckBox('Department')
 
-        self.researchType           = CheckBox('Research')
-        self.readingType            = CheckBox('Reading')
-        self.vfxType                = CheckBox('VFX')
-
         self.individualMode.stateChanged.connect(self.individual)
         self.groupMode.stateChanged.connect(self.group)
         self.departmentMode.stateChanged.connect(self.department)
-        self.researchType.stateChanged.connect(self.research)
-        self.readingType.stateChanged.connect(self.reading)
+
+        self.preProductionType      = CheckBox('PreProduction')
+        self.productionType         = CheckBox('Production')
+        self.PostProduction         = CheckBox('PostProduction')
+        self.vfxType                = CheckBox('VFX')
+        self.researchType           = CheckBox('Research')
+
+        self.preProductione.stateChanged.connect(self.preProduction)
+        self.production.stateChanged.connect(self.production)
+        self.PostProduction.stateChanged.connect(self.postProduction)
         self.vfxType.stateChanged.connect(self.vfx)
+        self.researchType.stateChanged.connect(self.research)
 
         self.layout.addWidget(self.individualMode, 0, 1, 1, 1)
         self.layout.addWidget(self.groupMode, 0, 2, 1, 1)
         self.layout.addWidget(self.departmentMode, 0, 3, 1, 1)
-        self.layout.addWidget(self.researchType, 1, 1, 1, 1)
-        self.layout.addWidget(self.readingType, 1, 2, 1, 1)
-        self.layout.addWidget(self.vfxType, 1, 3, 1, 1)
+
+        self.layout.addWidget(self.preProductionType, 1, 1, 1, 1)
+        self.layout.addWidget(self.productionType, 1, 2, 1, 1)
+        self.layout.addWidget(self.PostProduction, 1, 3, 1, 1)
+        self.layout.addWidget(self.vfxType, 4, 2, 1, 1)
+        self.layout.addWidget(self.researchType, 1, 5, 1, 1)
 
         self.taskDetails = PlainTextEdit()
         self.layout.addWidget(self.taskDetails, 2, 0, 6, 6)
@@ -72,23 +80,49 @@ class BaseDetails(GroupGrid):
             self.groupMode.setChecked(False)
             self._mode = 'department'
 
-    def research(self, bool):
+    def preProduction(self, bool):
         if str2bool(bool):
-            self.readingType.setChecked(False)
-            self.vfxType.setChecked(False)
-            self._type = 'research'
+            self.productionType.setChecked(False)
+            self.postProductionType.setChecked(False)
+            self.vfxType.setCheced(False)
+            self.research.setChecked(False)
 
-    def reading(self, bool):
+            self._type = 'preProduction'
+
+    def production(self, bool):
         if str2bool(bool):
-            self.researchType.setChecked(False)
+            self.preProproductionType.setChecked(False)
+            self.PostProduction.setChecked(False)
             self.vfxType.setChecked(False)
-            self._type = 'reading'
+            self.researchType.setChecked(False)
+
+            self._type = 'Production'
+
+    def postProduction(self, bool):
+        if str2bool(bool):
+            self.preProductionType.setChecked(False)
+            self.productionType.setChecked(False)
+            self.vfxType.setChecked(False)
+            self.researchType.setChecked(False)
+
+            self._type = 'PostProduction'
 
     def vfx(self, bool):
         if str2bool(bool):
+            self.preProductionType.setChecked(False)
+            self.productionType.setChecked(False)
+            self.postProductionType.setChecked(False)
             self.researchType.setChecked(False)
-            self.readingType.setChecked(False)
+
             self._type = 'vfx'
+
+    def research(self, bool):
+        if str2bool(bool):
+            self.preProproductionType.setChecked(False)
+            self.PostProduction.setChecked(False)
+            self.vfxType.setChecked(False)
+            self.researchType.setChecked(False)
+
 
     @property
     def type(self):

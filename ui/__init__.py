@@ -11,12 +11,12 @@ Description:
 from __future__ import absolute_import, unicode_literals
 """ Import """
 
-from ui.LayoutManager import LayoutManager
+from ui.LayoutManager   import LayoutManager
+from plugins.Browser    import Browser
 from .PipelineManager   import PipelineManager
 from .SysTray           import SysTray
-from .ShortcutCMD       import ShortcutCMD
-from .SubUi             import (Browser, Calendar, Calculator, EnglishDictionary,
+from .CommandUI         import CommandUI
+from .SubUi             import (Calendar, Calculator, EnglishDictionary,
                                 FindFiles, ImageViewer, NoteReminder, Screenshot, TextEditor, ForgotPassword,
                                 SignUp, SignIn, InfoWidget, VFXProject, SettingUI, UserSetting, Preferences,
                                 Configuration)
-# print(15)

@@ -10,12 +10,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from .Browser               import Browser
 from .Tools                 import (Calculator, Calendar, EnglishDictionary, FindFiles, ImageViewer,
                                     NoteReminder, Screenshot, TextEditor)
 from .Funcs                 import ForgotPassword, SignUp, SignIn
 from .InfoWidget            import InfoWidget
-from .BaseManager           import BaseManager
 from .Projects              import VFXProject
 from .Settings              import SettingUI, UserSetting
 from .Configuration         import Configuration

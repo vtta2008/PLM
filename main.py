@@ -25,7 +25,7 @@ from utils                              import LocalDatabase
 # print(3)
 from ui.assets                          import (ActionManager, ButtonManager, RegistryLayout, ThreadManager, EventManager, Commands)
 from ui.LayoutManager                   import LayoutManager
-from ui.SubUi.Browser                   import Browser
+from plugins.Browser                    import Browser
 # print(4)
 from devkit.Application                 import Application
 from devkit.Widgets                     import MessageBox
@@ -176,10 +176,8 @@ class DAMGTEAM(Application):
     def sysNotify(self, title, mess, iconType, timeDelay):
         return self.commander.sysNotify(title, mess, iconType, timeDelay)
 
-# print(6)
-app = DAMGTEAM()
-# print(7)
-app.startLoop()
+if __name__ == '__main__':
+    DAMGTEAM().startLoop()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 19/06/2018 - 2:26 AM

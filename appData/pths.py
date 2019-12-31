@@ -26,7 +26,7 @@ nodeIconCfg                 = os.path.join(CFG_DIR, 'nodeIcons.cfg')
 picCfg                      = os.path.join(CFG_DIR, 'pics.cfg')
 tagCfg                      = os.path.join(CFG_DIR, 'tags.cfg')
 pythonCfg                   = os.path.join(CFG_DIR, 'python.cfg')
-plmCfg                 = os.path.join(CFG_DIR, 'pipeline.cfg')
+plmCfg                      = os.path.join(CFG_DIR, 'pipeline.cfg')
 appsCfg                     = os.path.join(CFG_DIR, 'installed.cfg')
 envVarCfg                   = os.path.join(CFG_DIR, 'envVar.cfg')
 dirCfg                      = os.path.join(CFG_DIR, 'dirs.cfg')
@@ -52,7 +52,7 @@ MAIN_SCSS_PTH               = os.path.join(QSS_DIR, 'main.scss')
 STYLE_SCSS_PTH              = os.path.join(QSS_DIR, '_styles.scss')
 VAR_SCSS_PTH                = os.path.join(QSS_DIR, '_variables.scss')
 
-SETTING_FILEPTH = dict( app = APP_SETTING, user = USER_SETTING, unix = UNIX_SETTING, format = FORMAT_SETTING)
+SETTING_FILEPTH = dict(app = APP_SETTING, user = USER_SETTING, unix = UNIX_SETTING, format = FORMAT_SETTING)
 
 
 # -------------------------------------------------------------------------------------------------------------

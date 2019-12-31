@@ -19,7 +19,7 @@ from cores.Temporary                    import Temporary
 from cores.base                         import DateLine
 from ui.base                            import BaseInfo, BaseDetails
 from functools                          import partial
-from devkit.Widgets                   import (Widget, Button, VBoxLayout, HBoxLayout, AppIcon)
+from devkit.Widgets                     import (Widget, Button, VBoxLayout, HBoxLayout, AppIcon)
 
 class BaseManager(Widget):
 

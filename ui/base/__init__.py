@@ -14,6 +14,7 @@ from __future__ import absolute_import, unicode_literals
 from .Avatar                import Avatar, InfoPicture
 from .BaseDetails           import BaseDetails
 from .BaseInfo              import BaseInfo
+from .BaseManager           import BaseManager
 from .BodyCheckBoxes        import BodyCheckBoxes
 from .ConnectionIcon        import Conection
 from .FooterCheckBoxes      import FooterCheckBoxes
