@@ -18,7 +18,8 @@ from __buildtins__ import *
 import sys, requests
 # print(1)
 # PLM
-from appData                            import (__localServer__, SYSTRAY_UNAVAI, KEY_RELEASE, SERVER_CONNECT_FAIL,)
+from appData                            import (__localServer__, SYSTRAY_UNAVAI, KEY_RELEASE, SERVER_CONNECT_FAIL,
+                                                DarkPalette, )
 from bin                                import DAMGDICT
 # print(2)
 from utils                              import LocalDatabase
@@ -29,7 +30,10 @@ from plugins.Browser                    import Browser
 # print(4)
 from devkit.Application                 import Application
 from devkit.Widgets                     import MessageBox
+from devkit.Gui                         import Color
 # print(5)
+from plugins                            import Qt
+qt_api                                  = Qt.__binding__
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -74,14 +78,14 @@ class DAMGTEAM(Application):
         self.signupEvent                = self.commander.signUpEvent
         self.switchEvent                = self.commander.switchAccountEvent
 
-        self.events.add('signin', self.signinEvent)
-        self.events.add('signout', self.signoutEvent)
-        self.events.add('signup', self.signupEvent)
-        self.events.add('switch', self.switchEvent)
-
         self.loginChanged               = self.commander.loginChanged
         self.ignoreIDs                  = self.commander.ignoreIDs
         self.showLayout                 = self.commander.showLayout
+
+        if qt_api == 'PyQt5':
+            palette = self.palette()
+            palette.setColor(palette.Normal, palette.Link, Color(DarkPalette.COLOR_BACKGROUND_LIGHT))
+            self.setPalette(palette)
 
         for layout in self.layoutManager.layouts():
             key = layout.key
@@ -110,7 +114,6 @@ class DAMGTEAM(Application):
             connectServer = False
         else:
             connectServer = True
-
         try:
             self.username, token, cookie, remember = self.database.query_table('curUser')
         except (ValueError, IndexError):

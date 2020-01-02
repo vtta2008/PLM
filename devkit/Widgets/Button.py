@@ -15,7 +15,7 @@ from __buildtins__ import __copyright__
 from PyQt5.QtWidgets                        import QPushButton, QToolButton
 
 # PLM
-from .Icon                                  import AppIcon, TagIcon
+from devkit.Gui.Icon import AppIcon, TagIcon
 from utils                                  import check_preset
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager

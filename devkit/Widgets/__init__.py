@@ -23,7 +23,6 @@ from .GraphicObject     import GraphicObject
 from .GraphicPathItem   import GraphicPathItem
 from .GridLayout        import GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
 from .GroupBox          import GroupBox, GroupGrid, GroupHBox, GroupVBox
-from .Icon              import Icon, AppIcon, LogoIcon, TagIcon
 from .ItemDelegate      import ItemDelegate
 from .Label             import Label, LCDNumber, user_pass_label
 from .LineEdit          import LineEdit

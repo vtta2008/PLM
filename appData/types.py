@@ -12,6 +12,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 actionTypes = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction', 'DAMGExecutingAction', 'DAMGOpenBrowserAction', ]
+
 layoutTypes = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
 
 DB_ATTRIBUTE_TYPE = {
@@ -29,9 +30,15 @@ DB_ATTRIBUTE_TYPE = {
 
 CMD_VALUE_TYPE = {
 
-    'dir': 'directory',
-    'pth': 'path',
-    'url': 'link',
+    'dir'                   : 'directory',
+    'pth'                   : 'path',
+    'url'                   : 'link',
+    'func'                  : 'function',
+    'cmd'                   : 'commandPrompt',
+    'event'                 : 'PLM Event',
+    'stylesheet'            : 'PLMstylesheet',
+    'shortcut'              : 'shortcut',
+    'uiKey'                 : 'PLM Layout Key',
 }
 
 

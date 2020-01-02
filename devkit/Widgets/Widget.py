@@ -14,7 +14,7 @@ from __buildtins__ import __copyright__
 from PyQt5.QtWidgets                        import QWidget
 
 # PLM
-from .Icon                                  import AppIcon
+from devkit.Gui.Icon import AppIcon
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
 

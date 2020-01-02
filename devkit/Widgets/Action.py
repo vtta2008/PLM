@@ -18,7 +18,7 @@ from PyQt5.QtWidgets                        import QAction, QWidgetAction
 from utils                                  import check_preset
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
-from .Icon                                  import AppIcon
+from devkit.Gui.Icon import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Action presets """

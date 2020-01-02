@@ -24,9 +24,6 @@ from appData                        import DarkPalette
 from cores.Loggers                  import Loggers
 from appData                        import QSS_DIR
 from devkit.Core                    import TextStream
-from plugins                        import Qt
-
-qt_api = Qt.__binding__
 
 class StyleSheet(DAMG):
 
@@ -41,12 +38,6 @@ class StyleSheet(DAMG):
         self.app                    = app
 
     def getStyleSheet(self, fname):
-
-        if qt_api == 'PyQt5':
-            if self.app:
-                palette = self.app.palette()
-                palette.setColor(palette.Normal, palette.Link, QColor(DarkPalette.COLOR_BACKGROUND_LIGHT))
-                self.app.setPalette(palette)
 
         self._filename              = self.getQssFile(fname)
         self._filename.open(QFile.ReadOnly | QFile.Text)

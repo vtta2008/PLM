@@ -94,7 +94,7 @@ TRACK_PRE           = ['Storyboarder', 'Illustrator', 'Krita (x64)', 'Krita (x32
 TRACK_TEX           = ['Mari', 'Painter', ]
 TRACK_POST          = ['Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro']
 TRACK_OFFICE        = ['Word', 'Excel', 'PowerPoint', 'Wordpad']
-TRACK_DEV           = ['PyCharm', 'Sublime Text', 'QtDesigner', 'Git Bash', 'Spyder', 'Command Prompt']
+TRACK_DEV           = ['Sublime Text', 'QtDesigner', 'Git Bash', 'Command Prompt']
 TRACK_TOOLS         = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'ScreenShot', 'NodeGraph']
 TRACK_EXTRA         = ['ReConfig', 'CleanPyc', 'Debug', 'Snipping Tool']
 TRACK_SYSTRAY       = ['Snipping Tool', 'ScreenShot', 'Maximize', 'Minimize', 'Restore', 'Exit', ]
@@ -147,10 +147,10 @@ APP_UI_KEYS        = MAIN_UI_KEYS + INFO_UI_KEYS + PROJ_UI_KEYS + ORG_UI_KEYS + 
 factors             = ['Organisation', 'Project', 'Department', 'Team', 'Task', ]
 factorActs          = ['New', 'Config', 'Edit', 'Remove']
 
-factorKeys     = []
+FACTOR_KEYS     = []
 for f in factors:
     for act in factorActs:
-        factorKeys.append('{0} {1}'.format(act, f))
+        FACTOR_KEYS.append('{0} {1}'.format(act, f))
 
 APP_EVENT_KEYS      = ['ShowAll', 'SwitchAccount', 'LogIn', 'LogOut', 'Quit', 'Exit', 'ChangePassword', 'UpdateAvatar',]
 
@@ -162,11 +162,11 @@ OPEN_DIR_KEYS       = ['ConfigDir', 'IconDir', 'SettingDir', 'AppdataDir', 'Pref
 
 OPEN_URL_KEYS       = ['pythonTag', 'licenceTag', 'versionTag', 'PLM wiki']
 
-SYS_CMD_KEYS        = ['Command Promt', 'cmd', ]
+SYS_CMD_KEYS        = ['Command Prompt', 'cmd', ]
 
 SHORTCUT_KEYS       = ['Copy', 'Cut', 'Paste', 'Delete', 'Find', 'ReName']
 
-APP_FUNCS_KEYS      = ['ReConfig', 'CleanPyc', 'Debug', 'Restore', 'Maximize', 'Minimize', ] + factorKeys + \
+APP_FUNCS_KEYS      = ['ReConfig', 'CleanPyc', 'Debug', 'Restore', 'Maximize', 'Minimize', ] + FACTOR_KEYS + \
                       APP_EVENT_KEYS + STYLESHEET_KEYS + STYLE_KEYS + OPEN_DIR_KEYS + OPEN_URL_KEYS + SYS_CMD_KEYS + \
                       SHORTCUT_KEYS
 

@@ -37,11 +37,6 @@ if platform.system() == 'Windows':
         subprocess.Popen('python -m pip install winshell --user', shell=True).wait()
 
     try:
-        import wmi
-    except ImportError:
-        subprocess.Popen('python -m pip install wmi --user', shell=True).wait()
-
-    try:
         import helpdev
     except ImportError:
         subprocess.Popen('python -m pip install helpdev --user', shell=True).wait()

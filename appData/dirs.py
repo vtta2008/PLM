@@ -31,9 +31,10 @@ TMP_DIR             = os.path.join(APPDATA_PLM, '.tmp')
 CACHE_DIR           = os.path.join(APPDATA_PLM, '.cache')
 SETTING_DIR         = CFG_DIR
 LOG_DIR             = CFG_DIR
+PREF_DIR            = CFG_DIR
 TASK_DIR            = os.path.join(CFG_DIR, 'task')
 TEAM_DIR            = os.path.join(CFG_DIR, 'team')
-PROJ_DIR            = os.path.join(CFG_DIR, 'project')
+OJ_DIR            = os.path.join(CFG_DIR, 'project')
 ORG_DIR             = os.path.join(CFG_DIR, 'organisation')
 USER_LOCAL_DATA     = os.path.join(CFG_DIR, 'userLocal')
 

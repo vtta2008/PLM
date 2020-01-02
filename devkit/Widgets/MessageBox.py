@@ -14,7 +14,7 @@ from __buildtins__ import __copyright__
 from PyQt5.QtWidgets                import QMessageBox
 
 # PLM
-from .Icon                          import AppIcon
+from devkit.Gui.Icon import AppIcon
 
 
 class MessageBox(QMessageBox):

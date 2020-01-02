@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Cursor.py
+Script Name: Color.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
+    
 
 """
 # -------------------------------------------------------------------------------------------------------------
@@ -12,23 +13,17 @@ from __future__ import absolute_import, unicode_literals
 from __buildtins__ import __copyright__
 """ Import """
 
-# PyQt5
-from PyQt5.QtGui                       import QCursor
+from PyQt5.QtGui import QColor
 
-# PLM
-from cores.Settings                    import Settings
-from cores.SignalManager               import SignalManager
+class Color(QColor):
 
-class Cursor(QCursor):
-
-    Type                                = 'DAMGCURSOR'
-    key                                 = 'Cursor'
-    _name                               = 'DAMG Cursor'
+    Type                                = 'DAMGCOLOR'
+    key                                 = 'Color'
+    _name                               = 'DAMG Color'
     _copyright                          = __copyright__()
 
-    def __init__(self, parent=None):
-        QCursor.__init__(self)
-        self.parent                     = parent
+    def __init__(self, *__args):
+        QColor.__init__(__args)
 
     @property
     def copyright(self):
@@ -43,5 +38,5 @@ class Cursor(QCursor):
         self._name                      = newName
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 3/12/2019 - 1:36 AM
-# © 2017 - 2018 DAMGteam. All rights reserved
+# Created by panda on 03/01/2020 - 01:27
+# © 2017 - 2019 DAMGteam. All rights reserved
