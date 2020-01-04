@@ -21,6 +21,15 @@ class ActionManager(KeyBase):
         super(ActionManager, self).__init__(self)
         self.parent             = parent
 
+    def register(self, action):
+        if not action.key in self.keys():
+            self[action.key] = action
+        else:
+            self.actionRegisterError(action.key)
+
+    def actions(self):
+        return self.values()
+
     def preToolbarActions(self, parent):
         return self.createActions(self.preActions, parent)
 
@@ -89,15 +98,6 @@ class ActionManager(KeyBase):
 
     def helpMenuActions(self, parent):
         return self.createActions(self.helpActions, parent)
-
-    def register(self, action):
-        if not action.key in self.keys():
-            self[action.key] = action
-        else:
-            self.actionRegisterError(action.key)
-
-    def actions(self):
-        return self.values()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/11/2019 - 5:26 PM

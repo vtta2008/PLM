@@ -152,13 +152,13 @@ class QueryPage(Widget):
 # -------------------------------------------------------------------------------------------------------------
 """ Config window """
 
-class Configuration(Widget):
+class Configurations(Widget):
 
-    key = 'Configuration'
+    key = 'Configurations'
     cfgReport = pyqtSignal(str)
 
     def __init__(self, parent=None):
-        super(Configuration, self).__init__(parent)
+        super(Configurations, self).__init__(parent)
 
         self.setWindowTitle("Configuration")
 

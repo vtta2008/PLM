@@ -458,7 +458,7 @@ class DefaultSetting(dict):
     _save_mayaInfo                  = False
     _save_urlInfo                   = False
     _save_appInfo                   = False
-    _save_plmInfo                   = False
+    _save_plmInfo                   = True
 
     def __init__(self):
         dict.__init__(self)

@@ -119,24 +119,11 @@ class MainMenuBar(GroupVBox):
     def build_appMenu(self):
         menu                        = self.addMenu("&App")
         actions                     = self.actionManger.appMenuActions(self.parent)
-        print(actions)
         self.add_actions(menu, actions[0:3])
-
         menu.addSeparator()
-
-        orgActions                  = self.actionManger.orgMenuActions(self.parent)
-        teamActions                 = self.actionManger.teamMenuActions(self.parent)
-        prjActions                  = self.actionManger.projectMenuActions(self.parent)
-        taskActions                 = self.actionManger.taskMenuActions(self.parent)
-
-        self.add_actions(menu, orgActions)
-        self.add_actions(menu, teamActions)
-        self.add_actions(menu, prjActions)
-        self.add_actions(menu, taskActions)
-
+        self.add_actions(menu, actions[3:7])
         menu.addSeparator()
-
-        self.add_actions(menu, actions[3:])
+        self.add_actions(menu, actions[7:])
         return menu
 
     def addMenu(self, menu):

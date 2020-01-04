@@ -344,8 +344,7 @@ class ConfigPipeline(DAMGDICT):
             try:
                 icon = self.iconInfo['icon32'][key]
             except KeyError:
-                icon = 'Icon Missing: {0}'.format(key)
-                # print('Icon Missing: {0}'.format(key))
+                icon = '{0}.icon.png'.format(key)
                 iconMissing.append(key)
             finally:
                 toolTips[key] = 'Lauch {0}'.format(key)
@@ -367,8 +366,7 @@ class ConfigPipeline(DAMGDICT):
                 try:
                     icon = self.iconInfo['icon32'][key]
                 except KeyError:
-                    icon = 'Icon Missing: {0}'.format(key)
-                    # print('Icon Missing: {0}'.format(key))
+                    icon = '{0}.icon.png'.format(key)
                     iconMissing.append(key)
             finally:
                 if key in OPEN_URL_KEYS:
@@ -386,8 +384,8 @@ class ConfigPipeline(DAMGDICT):
                     arg = value
                     code = 'os.system'
                 elif key in OPEN_DIR_KEYS:
-                    toolTips[key] = 'Open {0} folder'.format(key.replace('Dir', ''))
-                    statusTips[key] = 'Open {0} folder'.format(key.replace('Dir', ''))
+                    toolTips[key] = 'Open {0} folder'.format(key.replace('Folder', ''))
+                    statusTips[key] = 'Open {0} folder'.format(key.replace('Folder', ''))
                     value = self.dirInfo[key]
                     valueType = CMD_VALUE_TYPE['dir']
                     arg = value
@@ -429,8 +427,7 @@ class ConfigPipeline(DAMGDICT):
             try:
                 icon = self.iconInfo['icon32'][key]
             except KeyError:
-                icon = 'Icon Missing: {0}'.format(key)
-                # print('Icon Missing: {0}'.format(key))
+                icon = '{0}.icon.png'.format(key)
                 iconMissing.append(key)
             finally:
                 toolTips[key] = 'Show: {0}'.format(key)
@@ -452,15 +449,11 @@ class ConfigPipeline(DAMGDICT):
             if globalSetting.defaults.save_plmInfo:
                 save_data(pthInfo['plmCfg'], self)
 
-
     def del_key(self, key):
         try:
             del self.appInfo[key]
         except KeyError:
             self.appInfo.pop(key, None)
-
-
-
 
 def ignoreIDs(*info):
     path = os.path.join(dirInfo['TMP_DIR'], '.ignoreIDs')
@@ -492,10 +485,6 @@ def tobuildUis(*info):
                   'EditTask'        , 'EditTeam'          , 'Feedback'           , 'HDRI'               ,
                   'NewOrganisation' ,  'NewTask'          , 'NewTeam'            , 'OrganisationManager',
                   'ProjectManager'  , 'TaskManager'       , 'TeamManager'        , 'Texture'            ,]
-        # if os.path.exists(path):
-        #     os.remove(path)
-        # with open(path, 'w') as f:
-        #     info = json.dump(info, f, indent=4)
     if globalSetting.checks.toBuildUis:
         print(info)
     return info
@@ -508,11 +497,6 @@ def tobuildCmds(*info):
                 info = json.load(f)
             except json.decoder.JSONDecodeError:
                 info = {}
-    # else:
-    #     if os.path.exists(path):
-    #         os.remove(path)
-    #     with open(path, 'wb+') as f:
-    #         info = json.dump(globalSetting.cmds, f, indent=4)
     if globalSetting.checks.toBuildCmds:
         print(info)
     return info

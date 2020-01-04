@@ -20,7 +20,6 @@ import os, sys, requests
 # PLM
 from appData                            import (__localServer__, SYSTRAY_UNAVAI, KEY_RELEASE, SERVER_CONNECT_FAIL,
                                                 appInfo, plmInfo)
-from bin                                import DAMGDICT
 from utils                              import LocalDatabase, clean_file_ext
 from ui.assets                          import (ThreadManager, EventManager)
 from ui.LayoutManager                   import LayoutManager
@@ -34,14 +33,11 @@ from devkit.Widgets                     import MessageBox
 class DAMGTEAM(Application):
 
     key                                 = 'PLM'
-    count                               = 0
-    onlyExists                          = True
-    events                              = DAMGDICT()
 
     def __init__(self):
         Application.__init__(self)
 
-        self.cmdInfo                    = plmInfo
+        self.plmInfo                    = plmInfo
         self.appInfo                    = appInfo
 
         self.browser                    = Browser()
@@ -56,7 +52,7 @@ class DAMGTEAM(Application):
         self.layoutManager.globalSetting()
 
         self.mainUI, self.sysTray, self.shortcutCMD, self.signIn, self.signUp, self.forgotPW = self.layoutManager.mains
-        self.layouts                    = self.layoutManager.layouts()
+        self.layouts                    = self.layoutManager.register
 
         for layout in [self.mainUI, self.sysTray, self.signIn, self.signUp, self.forgotPW]:
             layout.signals.connect('loginChanged', self.loginChanged)
@@ -135,39 +131,40 @@ class DAMGTEAM(Application):
         return self.sysTray.sysNotify(title, mess, iconType, timeDelay)
 
     def command(self, key):
-        data = self.cmdData[key]
-        if data.code == 'os.startfile':
+        cmdData = self.plmInfo[key]
+        print(cmdData.code, cmdData.value)
+        if cmdData.code == 'os.startfile':
             func = os.startfile
-            arg = data.value
-        elif data.code == 'os.system':
+            arg = cmdData.value
+        elif cmdData.code == 'os.system':
             func = os.system
-            arg = data.value
-        elif data.code == 'showUI':
+            arg = cmdData.value
+        elif cmdData.code == 'showUI':
             func = self.showUI
-            arg = data.key
-        elif data.code == 'openURL':
+            arg = cmdData.key
+        elif cmdData.code == 'openURL':
             func = self.openURL
-            arg = data.value
-        elif data.code == 'shortcut':
+            arg = cmdData.value
+        elif cmdData.code == 'shortcut':
             func = self.shortcut
-            arg = data.value
-        elif data.code == 'appEvent':
+            arg = cmdData.value
+        elif cmdData.code == 'appEvent':
             func = self.appEvent
-            arg = data.key
+            arg = cmdData.key
         else:
-            if data.value == 'CleanPyc':
+            if cmdData.value == 'CleanPyc':
                 func = clean_file_ext
                 arg = None
-            elif data.value == 'Debug':
+            elif cmdData.value == 'Debug':
                 func = self.mainUI.botTabUI.botTab2.test
                 arg = None
-            elif data.value == 'Restore':
+            elif cmdData.value == 'Restore':
                 func = self.mainUI.showRestore
                 arg = None
-            elif data.value == 'Maximize':
+            elif cmdData.value == 'Maximize':
                 func = self.mainUI.showMaximize
                 arg = None
-            elif data.value == 'Minimize':
+            elif cmdData.value == 'Minimize':
                 func = self.mainUI.showMinimize
                 arg = None
             else:

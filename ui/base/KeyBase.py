@@ -34,8 +34,9 @@ class KeyBase(DAMGDICT):
     # Actions
     stylesheetActions                   = STYLESHEET_KEYS
     viewActions                         = ['Showall']
-    appActions                          = ['AppSetting', 'Configuration', 'Preferences', 'Organisation', 'Project', 'Team', 'Task', 'Exit']
-    goActions                           = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder']
+
+    appActions                          = ['AppSetting', 'Configurations', 'Preferences', 'Organisation', 'Project', 'Team', 'Task', 'Exit']
+    goActions                           = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppDataFolder', 'PreferenceFolder', ]
     officeActions                       = ['TextEditor', 'NoteReminder'] + CONFIG_OFFICE
     toolsActions                        = CONFIG_TOOLS + ['CleanPyc', 'ReConfig', 'Debug']
     devActions                          = CONFIG_DEV
@@ -78,8 +79,7 @@ class KeyBase(DAMGDICT):
     def createActions(self, keys, parent):
         actions = []
         for key in keys:
-            print(key)
-            if key in self.keys():
+            if key in self.checkedKeys:
                 if is_string(key):
                     action = self.createAction(key, parent)
                     actions.append(action)
@@ -107,17 +107,19 @@ class KeyBase(DAMGDICT):
                     self.register(Button)
                     buttons.append(Button)
                 else:
-                    print("DataTypeError: Could not add Button: {0}".format(key))
+                    self.actionRegisterError(key)
             else:
-                return self.keyConfigError(key)
+                self.keyConfigError(key)
         return buttons
 
     def createAction(self, key, parent):
+        # if key in ['Organisation', 'Project', 'Team', 'Task']:
+        #     key = '{0}Manager'.format(key)
         return self.action(key, parent)
 
     def createButton(self, key, parent):
         if key in OPEN_URL_KEYS:
-            return self.openUrlButton()
+            return self.openUrlButton(key, parent)
         else:
             return self.button(key, parent)
 
@@ -129,7 +131,7 @@ class KeyBase(DAMGDICT):
                          'trg': partial(self.parent.command, key), }, parent)
         action.key = '{0}_{1}_Action'.format(parent.key, key)
         action._name = action.key
-        if action.key in self.keys():
+        if action.key in self.checkedKeys:
             return self[action.key]
         else:
             action._name = '{0} Action'.format(key)
@@ -143,7 +145,7 @@ class KeyBase(DAMGDICT):
                          'cl': partial(self.parent.command, key), })
         button.key = '{0}_{1}_Button'.format(parent.key, key)
         button._name = button.key
-        if button.key in self.keys():
+        if button.key in self.checkedKeys:
             return self[button.key]
         else:
             button._name = '{0} Button'.format(key)
@@ -152,15 +154,14 @@ class KeyBase(DAMGDICT):
 
     def openUrlButton(self, key, parent):
         button = Button({'icon': self.plmInfo[key].icon,
-                         'txt': '&{0}'.format(key),
                          'stt': self.plmInfo[key].statusTip,
                          'tt': self.plmInfo[key].toolTip,
                          'fix': BTNTAGSIZE,
                          'ics': TAGBTNSIZE,
-                         'cl': partial(parent.signals.emit, 'openBrowser', self.tags[key])})
+                         'cl': partial(self.parent.command, key)})
         button.key = '{0}_{1}_Button'.format(parent.key, key)
         button._name = button.key
-        if button.key in self.buttonKeys:
+        if button.key in self.checkedKeys:
             return self[button.key]
         else:
             button._name = '{0} Button'.format(key)

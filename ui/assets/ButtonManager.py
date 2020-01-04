@@ -32,8 +32,7 @@ class ButtonManager(KeyBase):
         return self.createButtons(self.userButtons, parent)
 
     def register(self, button):
-        if not button.key in self.buttonKeys:
-            self.buttonKeys.append(button.key)
+        if not button.key in self.keys():
             self[button.key] = button
         else:
             self.buttonRegisterError(button.key)

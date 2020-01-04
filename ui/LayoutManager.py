@@ -24,7 +24,7 @@ from .SysTray                           import SysTray
 from .SubUi                             import (Calendar, Calculator, EnglishDictionary,
                                                 FindFiles, ImageViewer, NoteReminder, Screenshot, TextEditor, ForgotPassword,
                                                 SignUp, SignIn, InfoWidget, VFXProject, AppSetting, UserSetting, Preferences,
-                                                Configuration)
+                                                Configurations)
 
 class LayoutManager(DAMG):
 
@@ -171,7 +171,7 @@ class LayoutManager(DAMG):
 
         self.calculator                     = Calculator()
         self.calendar                       = Calendar()
-        self.configuration                  = Configuration()
+        self.configuration                  = Configurations()
         self.engDict                        = EnglishDictionary()
         self.findFile                       = FindFiles()
         self.imageViewer                    = ImageViewer()

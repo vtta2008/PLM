@@ -129,7 +129,7 @@ TEAM_UI_KEYS        = ['TeamManager', ]
 
 DEPA_UI_KEYS        = ['DepartmentManager']
 
-SETTING_UI_KEYS     = ['Configuratons', 'Preferences', 'AppSetting', 'GlobalSetting', 'UserSetting', 'BrowserSetting',
+SETTING_UI_KEYS     = ['Configurations', 'Preferences', 'AppSetting', 'GlobalSetting', 'UserSetting', 'BrowserSetting',
                        'ProjSetting', 'OrgSetting', 'TaskSetting', 'TeamSetting']
 
 LIBRARY_UI_KEYS     = ['UserLibrary', 'HDRILibrary', 'TextureLibrary', 'AlphaLibrary', ]
@@ -139,8 +139,7 @@ TOOL_UI_KEYS        = ['Calculator', 'Calendar', 'ContactUs', 'EnglishDictionary
 
 PLUGIN_UI_KEYS      = ['PluginManager', 'NodeGraph', 'Browser', ]
 
-APP_UI_KEYS         = MAIN_UI_KEYS + INFO_UI_KEYS + PROJ_UI_KEYS + ORG_UI_KEYS + TASK_UI_KEYS + TEAM_UI_KEYS + \
-                      SETTING_UI_KEYS + LIBRARY_UI_KEYS + TOOL_UI_KEYS + PLUGIN_UI_KEYS
+APP_UI_KEYS         = MAIN_UI_KEYS + INFO_UI_KEYS + PROJ_UI_KEYS + ORG_UI_KEYS + TASK_UI_KEYS + TEAM_UI_KEYS + SETTING_UI_KEYS + LIBRARY_UI_KEYS + TOOL_UI_KEYS + PLUGIN_UI_KEYS
 
 # --------------------------------------------------------------------------------------------------------------
 """ PLM Function key """
@@ -160,7 +159,7 @@ STYLESHEET_KEYS     = ['bright', 'dark', 'charcoal', 'nuker', ]
 
 STYLE_KEYS          = []
 
-OPEN_DIR_KEYS       = ['ConfigDir', 'IconDir', 'SettingDir', 'AppdataDir', 'PreferenceDir', ]
+OPEN_DIR_KEYS       = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppDataFolder', 'PreferenceFolder', ]
 
 OPEN_URL_KEYS       = ['pythonTag', 'licenceTag', 'versionTag', 'PLM wiki']
 

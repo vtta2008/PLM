@@ -16,7 +16,7 @@ from .Funcs                 import ForgotPassword, SignUp, SignIn
 from .InfoWidget            import InfoWidget
 from .Projects              import VFXProject
 from .Settings              import AppSetting, UserSetting
-from .Configuration         import Configuration
+from .Configurations         import Configurations
 from .Preferences           import Preferences
 
 # -------------------------------------------------------------------------------------------------------------

@@ -19,4 +19,4 @@ from .CommandUI         import CommandUI
 from .SubUi             import (Calendar, Calculator, EnglishDictionary,
                                 FindFiles, ImageViewer, NoteReminder, Screenshot, TextEditor, ForgotPassword,
                                 SignUp, SignIn, InfoWidget, VFXProject, AppSetting, UserSetting, Preferences,
-                                Configuration)
+                                Configurations)

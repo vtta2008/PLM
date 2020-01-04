@@ -288,11 +288,11 @@ class ConfigDirectory(DAMGDICT):
         self.add('TOOLS_DIR', TOOLS_DIR)
         self.add('UTILS_DIR', UTILS_DIR)
 
-        self.add('ConfigDir', CFG_DIR)
-        self.add('IconDir', ICON_DIR)
-        self.add('SettingDir', SETTING_DIR)
-        self.add('AppdataDir', APP_DATA_DIR)
-        self.add('PreferenceDir', PREF_DIR)
+        self.add('ConfigFolder', CFG_DIR)
+        self.add('IconFolder', ICON_DIR)
+        self.add('SettingFolder', SETTING_DIR)
+        self.add('AppDataFolder', APP_DATA_DIR)
+        self.add('PreferenceFolder', PREF_DIR)
 
         mode = 0o770
         for path in self.values():
