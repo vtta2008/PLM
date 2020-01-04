@@ -67,8 +67,8 @@ __email2__              = "up@damgteam.com"
 """ Server """
 
 __globalServer__        = "https://server.damgteam.com"
-__globalServerCheck__         = "https://server.damgteam.com/check"
-__globalServerAutho__         = "https://server.damgteam.com/auth"
+__globalServerCheck__   = "https://server.damgteam.com/check"
+__globalServerAutho__   = "https://server.damgteam.com/auth"
 
 __localPort__           = "20987"
 __localHost__           = "http://localhost:"

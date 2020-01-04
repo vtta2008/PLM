@@ -21,14 +21,15 @@ from PyQt5.QtWidgets                import QApplication
 from PyQt5.QtGui                    import QPalette
 
 # PLM
-from appData                        import __version__, __appname__, __organization__, __website__, appInfo
+from appData                        import __version__, __appname__, __organization__, __website__, appInfo, DarkPalette
 from cores.Loggers                  import Loggers
 from cores.SignalManager            import SignalManager
 from cores.Settings                 import Settings
 from cores.StyleSheet               import StyleSheet
 from .Core                          import Process
-from .Gui                           import Cursor
-from .Widgets                       import LogoIcon
+from .Gui                           import Cursor, LogoIcon, Color
+from plugins                        import Qt
+qt_api                              = Qt.__binding__
 
 class Application(QApplication):
 
@@ -70,6 +71,10 @@ class Application(QApplication):
 
         self.settings._settingEnable    = True
 
+        if qt_api == 'PyQt5':
+            palette = self.palette()
+            palette.setColor(palette.Normal, palette.Link, Color(DarkPalette.COLOR_BACKGROUND_LIGHT))
+            self.setPalette(palette)
 
     def set_styleSheet(self, style):
         self.appStyle.getQssFile(style)
@@ -155,31 +160,24 @@ class Application(QApplication):
 
     def setRecieveSignal(self, bool):
         globalSetting.tracks.recieveSignal = bool
-        self.commander.trackRecieveSignal = bool
 
     def setBlockSignal(self, bool):
         globalSetting.tracks.blockSignal = bool
-        self.commander.trackBlockSignal = bool
 
     def setTrackCommand(self, bool):
         globalSetting.tracks.command = bool
-        self.commander.trackCommand = bool
 
     def setRegistLayout(self, bool):
         globalSetting.tracks.registLayout = bool
-        self.commander.trackRegistLayout = bool
 
     def setJobsTodo(self, bool):
         globalSetting.tracks.jobsToDo = bool
-        self.commander.trackJobsTodo = bool
 
     def setShowLayout(self, bool):
         globalSetting.tracks.showLayoutError = bool
-        self.commander.trackShowLayoutError = bool
 
     def setTrackEvent(self, bool):
         globalSetting.tracks.events = bool
-        self.commander.trackEvents = bool
 
 
 # -------------------------------------------------------------------------------------------------------------

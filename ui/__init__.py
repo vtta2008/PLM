@@ -18,5 +18,5 @@ from .SysTray           import SysTray
 from .CommandUI         import CommandUI
 from .SubUi             import (Calendar, Calculator, EnglishDictionary,
                                 FindFiles, ImageViewer, NoteReminder, Screenshot, TextEditor, ForgotPassword,
-                                SignUp, SignIn, InfoWidget, VFXProject, SettingUI, UserSetting, Preferences,
+                                SignUp, SignIn, InfoWidget, VFXProject, AppSetting, UserSetting, Preferences,
                                 Configuration)

@@ -13,8 +13,9 @@ Description:
 """ Import """
 
 # PLM
-from devkit.Widgets                       import Widget, VBoxLayout, AppIcon
-from ui.base                              import HeaderCheckBoxes, FooterCheckBoxes, BodyCheckBoxes
+from devkit.Widgets                      import Widget, VBoxLayout
+from devkit.Gui                          import AppIcon
+from ui.base                             import HeaderCheckBoxes, FooterCheckBoxes, BodyCheckBoxes
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """
@@ -23,7 +24,7 @@ class Preferences(Widget):
 
     key = 'Preferences'
 
-    _msg_user_not_set = "Not configured yet, will be set with the first message received"
+    _msg_user_not_set                   = "Not configured yet, will be set with the first message received"
 
     def __init__(self, parent=None):
         super(Preferences, self).__init__(parent)

@@ -23,7 +23,8 @@ from PyQt5.QtWidgets            import (QApplication, QCalendarWidget, QCheckBox
 
 # Plt
 from appData                    import SiPoMin
-from devkit.Widgets           import Widget, AppIcon, GridLayout
+from devkit.Widgets             import Widget, GridLayout
+from devkit.Gui                 import AppIcon
 # -------------------------------------------------------------------------------------------------------------
 """ Clendar """
 

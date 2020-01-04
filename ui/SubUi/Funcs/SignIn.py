@@ -15,13 +15,14 @@ Description:
 
 # Python
 import sys, requests
-from functools              import partial
+from functools                  import partial
 
 # PLM
-from appData                import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
-from devkit.Widgets       import (Widget, AppIcon, GridLayout, LineEdit, CheckBox, Button, user_pass_label,
-                                  Label, MessageBox, GroupGrid, )
-from utils                  import str2bool, LocalDatabase
+from appData                    import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
+from devkit.Widgets             import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label,
+                                        Label, MessageBox, GroupGrid, )
+from devkit.Gui                 import AppIcon
+from utils                      import str2bool, LocalDatabase
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """

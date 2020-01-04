@@ -12,7 +12,8 @@ Description:
 """ Import """
 
 # Plt
-from devkit.Widgets               import Widget, GridLayout, AppIcon
+from devkit.Widgets                 import Widget, GridLayout
+from devkit.Gui                     import AppIcon
 from ui.base                        import Profile, Location, Avatar, PassWord
 
 # ----------------------------------------------------------------------------------------------------------- #

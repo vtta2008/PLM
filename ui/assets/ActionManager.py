@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from ui.assets import KeyBase
+from ui.base                    import KeyBase
 
 class ActionManager(KeyBase):
 
@@ -19,7 +19,7 @@ class ActionManager(KeyBase):
 
     def __init__(self, parent=None):
         super(ActionManager, self).__init__(self)
-        self.parent               = parent
+        self.parent             = parent
 
     def preToolbarActions(self, parent):
         return self.createActions(self.preActions, parent)
@@ -91,13 +91,10 @@ class ActionManager(KeyBase):
         return self.createActions(self.helpActions, parent)
 
     def register(self, action):
-        # print('register action: {}'.format(action))
-        if not action.key in self.actionKeys:
-            self.actionKeys.append(action.key)
+        if not action.key in self.keys():
             self[action.key] = action
         else:
             self.actionRegisterError(action.key)
-            return self[action.key]
 
     def actions(self):
         return self.values()

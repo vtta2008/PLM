@@ -51,55 +51,6 @@ class Label(QLabel):
         else:
             return self.settings.initValue(key, self.key, decode)
 
-    def closeEvent(self, event):
-        if self.settings._settingEnable:
-            geometry = self.saveGeometry()
-            self.setValue('geometry', geometry)
-
-        if __name__ == '__main__':
-            self.setValue('showLayout', 'hide')
-            self.hide()
-        else:
-            self.setValue('showLayout', 'hide')
-            self.signals.emit('showLayout', self.key, 'hide')
-
-    def hideEvent(self, event):
-        if self.settings._settingEnable:
-            geometry = self.saveGeometry()
-            self.setValue('geometry', geometry)
-
-        if __name__ == '__main__':
-            self.setValue('showLayout', 'hide')
-            self.hide()
-        else:
-            self.setValue('showLayout', 'hide')
-            self.signals.emit('showLayout', self.key, 'hide')
-
-    def showEvent(self, event):
-
-        geometry = self.getValue('geometry', bytes('', 'utf-8'))
-        if geometry is not None:
-            self.restoreGeometry(geometry)
-
-        if __name__ == '__main__':
-            self.setValue('showLayout', 'show')
-            self.show()
-        else:
-            self.setValue('showLayout', 'show')
-            self.signals.emit('showLayout', self.key, 'show')
-
-    @property
-    def copyright(self):
-        return self._copyright
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, newName):
-        self._name                      = newName
-
     def buildUI(self):
         for key, value in self.preset.items():
             if key == 'txt':
@@ -138,6 +89,18 @@ class Label(QLabel):
                 self.setStyleSheet(value)
             else:
                 print("PresetKeyError at {0}: No such key registed in preset: {1}: {2}".format(__name__, key, value))
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, newName):
+        self._name                      = newName
 
 class LCDNumber(QLCDNumber):
 

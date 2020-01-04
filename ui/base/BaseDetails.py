@@ -39,13 +39,13 @@ class BaseDetails(GroupGrid):
 
         self.preProductionType      = CheckBox('PreProduction')
         self.productionType         = CheckBox('Production')
-        self.PostProduction         = CheckBox('PostProduction')
+        self.postProductionType     = CheckBox('PostProduction')
         self.vfxType                = CheckBox('VFX')
         self.researchType           = CheckBox('Research')
 
-        self.preProductione.stateChanged.connect(self.preProduction)
-        self.production.stateChanged.connect(self.production)
-        self.PostProduction.stateChanged.connect(self.postProduction)
+        self.preProductionType.stateChanged.connect(self.preProduction)
+        self.productionType.stateChanged.connect(self.production)
+        self.postProductionType.stateChanged.connect(self.postProduction)
         self.vfxType.stateChanged.connect(self.vfx)
         self.researchType.stateChanged.connect(self.research)
 
@@ -55,8 +55,8 @@ class BaseDetails(GroupGrid):
 
         self.layout.addWidget(self.preProductionType, 1, 1, 1, 1)
         self.layout.addWidget(self.productionType, 1, 2, 1, 1)
-        self.layout.addWidget(self.PostProduction, 1, 3, 1, 1)
-        self.layout.addWidget(self.vfxType, 4, 2, 1, 1)
+        self.layout.addWidget(self.postProductionType, 1, 3, 1, 1)
+        self.layout.addWidget(self.vfxType, 1, 4, 1, 1)
         self.layout.addWidget(self.researchType, 1, 5, 1, 1)
 
         self.taskDetails = PlainTextEdit()
@@ -92,7 +92,7 @@ class BaseDetails(GroupGrid):
     def production(self, bool):
         if str2bool(bool):
             self.preProproductionType.setChecked(False)
-            self.PostProduction.setChecked(False)
+            self.postProduction.setChecked(False)
             self.vfxType.setChecked(False)
             self.researchType.setChecked(False)
 
@@ -119,10 +119,11 @@ class BaseDetails(GroupGrid):
     def research(self, bool):
         if str2bool(bool):
             self.preProproductionType.setChecked(False)
-            self.PostProduction.setChecked(False)
+            self.postProduction.setChecked(False)
             self.vfxType.setChecked(False)
             self.researchType.setChecked(False)
 
+            self._type = 'research'
 
     @property
     def type(self):

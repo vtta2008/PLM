@@ -22,8 +22,9 @@ from PyQt5.QtGui                import QPixmap
 from PyQt5.QtWidgets            import (QGridLayout, QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox, QLabel)
 
 # PLM
-from appData                    import ASPEC_RATIO
-from devkit.Widgets           import Widget, AppIcon, GridLayout, Button, HBoxLayout, Label
+from appData                    import ASPEC_RATIO, SMOOTH_TRANS
+from devkit.Widgets             import Widget, GridLayout, Button, HBoxLayout, Label
+from devkit.Gui                 import AppIcon
 
 class Screenshot(Widget):
 
@@ -42,10 +43,7 @@ class Screenshot(Widget):
         self.delaySpinBox.setValue(5)
 
     def buildUI(self):
-        self.screenshotLabel = Label({'alg': 'center',
-                                      'sizePolicy': ['expanding', 'expanding'],
-                                      'smin': [240, 160]})
-
+        self.screenshotLabel = Label({'alg': 'center', 'sizePolicy': ['expanding', 'expanding'], 'smin': [240, 160]})
         self.createOptionsGroupBox()
         self.createButtonsLayout()
 
@@ -120,18 +118,12 @@ class Screenshot(Widget):
     def createButtonsLayout(self):
         self.newScreenshotButton = Button({'txt': "New Screenshot", 'cl': self.newScreenshot})
         self.saveScreenshotButton = Button({'txt': "Save Screenshot", 'cl': self.saveScreenshot})
-        self.quitScreenshotButton = Button({'txt': "Quit", 'cl': partial(self.signals.showLayout.emit, self.key, 'hide')})
-
+        self.quitScreenshotButton = Button({'txt': "Quit", 'cl': self.close})
         self.buttonsLayout = HBoxLayout({'addWidget': [self.newScreenshotButton, self.saveScreenshotButton, self.quitScreenshotButton]})
         self.buttonsLayout.addStretch()
-        # self.buttonsLayout.addWidget(self.newScreenshotButton)
-        # self.buttonsLayout.addWidget(self.saveScreenshotButton)
-        # self.buttonsLayout.addWidget(self.quitScreenshotButton)
 
     def updateScreenshotLabel(self):
-        self.screenshotLabel.setPixmap(self.originalPixmap.scaled(
-                self.screenshotLabel.size(), Qt.KeepAspectRatio,
-                Qt.SmoothTransformation))
+        self.screenshotLabel.setPixmap(self.originalPixmap.scaled(self.screenshotLabel.size(), ASPEC_RATIO, SMOOTH_TRANS))
 
 def main():
     app = QApplication(sys.argv)

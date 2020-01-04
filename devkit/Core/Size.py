@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Color.py
+Script Name: Size.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -13,17 +13,18 @@ from __future__ import absolute_import, unicode_literals
 from __buildtins__ import __copyright__
 """ Import """
 
-from PyQt5.QtGui import QColor
+# PyQt5
+from PyQt5.QtCore                           import QSize
 
-class Color(QColor):
 
-    Type                                = 'DAMGCOLOR'
-    key                                 = 'Color'
-    _name                               = 'DAMG Color'
-    _copyright                          = __copyright__()
+class Size(QSize):
+    Type                                    = 'DAMGSIZE'
+    key                                     = 'Size'
+    _name                                   = 'DAMG Size'
+    _copyright                              = __copyright__()
 
     def __init__(self, *__args):
-        QColor.__init__(self)
+        QSize.__init__(self)
 
     @property
     def copyright(self):
@@ -35,8 +36,9 @@ class Color(QColor):
 
     @name.setter
     def name(self, newName):
-        self._name                      = newName
+        self._name                          = newName
+
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 03/01/2020 - 01:27
+# Created by panda on 05/01/2020 - 01:48
 # © 2017 - 2019 DAMGteam. All rights reserved

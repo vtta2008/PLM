@@ -16,9 +16,6 @@ from __buildtins__ import __copyright__
 from PyQt5.QtCore               import QRect, QRectF
 
 # PLM
-from cores.Settings                         import Settings
-from cores.SignalManager                    import SignalManager
-
 
 class Rect(QRect):
 
@@ -27,11 +24,8 @@ class Rect(QRect):
     _name                       = 'DAMG Rect'
     _copyright                  = __copyright__()
 
-    def __init__(self, *args, **kwargs):
-        QRect.__init__(*args, **kwargs)
-
-        self.settings           = Settings(self)
-        self.signals            = SignalManager(self)
+    def __init__(self, *__args):
+        QRect.__init__(self)
 
     @property
     def copyright(self):
@@ -43,20 +37,18 @@ class Rect(QRect):
 
     @name.setter
     def name(self, val):
-        self._name = val
+        self._name              = val
 
 
 class RectF(QRectF):
-    Type = 'DAMGRECT'
-    key = 'Rect'
-    _name = 'DAMG Rect'
-    _copyright = __copyright__()
 
-    def __init__(self, *args):
-        QRectF.__init__(*args)
+    Type                        = 'DAMGRECTF'
+    key                         = 'RectF'
+    _name                       = 'DAMG RectF'
+    _copyright                  = __copyright__()
 
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
-        self.signals = SignalManager(self)
+    def __init__(self, *__args):
+        QRectF.__init__(self)
 
     @property
     def copyright(self):

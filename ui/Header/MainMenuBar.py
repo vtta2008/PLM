@@ -15,7 +15,7 @@ Description:
 # Plm
 from appData                        import __plmWiki__, plmInfo
 from devkit.Widgets                 import GroupVBox, MenuBar
-from utils                          import data_handler, is_string
+from utils                          import is_string
 
 class MainMenuBar(GroupVBox):
 
@@ -119,6 +119,7 @@ class MainMenuBar(GroupVBox):
     def build_appMenu(self):
         menu                        = self.addMenu("&App")
         actions                     = self.actionManger.appMenuActions(self.parent)
+        print(actions)
         self.add_actions(menu, actions[0:3])
 
         menu.addSeparator()

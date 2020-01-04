@@ -19,6 +19,7 @@ from .BodyCheckBoxes        import BodyCheckBoxes
 from .ConnectionIcon        import Conection
 from .FooterCheckBoxes      import FooterCheckBoxes
 from .HeaderCheckBoxes      import HeaderCheckBoxes
+from .KeyBase               import KeyBase
 from .Location              import Location
 from .PassWord              import PassWord
 from .Profile               import Profile

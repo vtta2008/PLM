@@ -13,7 +13,7 @@ from __buildtins__ import __copyright__
 
 from PyQt5.QtWidgets                        import QSystemTrayIcon
 
-from devkit.Gui.Icon import AppIcon
+from devkit.Gui.Icon                        import AppIcon
 from cores.Loggers                          import Loggers
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager

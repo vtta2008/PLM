@@ -14,15 +14,16 @@ Description:
 from PyQt5.QtCore                       import Qt
 
 # PLM
-from appData                            import SiPoMin
+from appData                            import SiPoMin, ignoreIDs
 from bin                                import DAMG, DAMGLIST
-from ui.base                            import BaseManager
-from ui.CommandUI                       import CommandUI
-from ui.PipelineManager                 import PipelineManager
-from ui.SysTray                         import SysTray
-from ui.SubUi                           import (Calendar, Calculator, EnglishDictionary,
+from .assets                            import (RegistryLayout, ActionManager, ButtonManager, )
+from .base                              import BaseManager
+from .CommandUI                         import CommandUI
+from .PipelineManager                   import PipelineManager
+from .SysTray                           import SysTray
+from .SubUi                             import (Calendar, Calculator, EnglishDictionary,
                                                 FindFiles, ImageViewer, NoteReminder, Screenshot, TextEditor, ForgotPassword,
-                                                SignUp, SignIn, InfoWidget, VFXProject, SettingUI, UserSetting, Preferences,
+                                                SignUp, SignIn, InfoWidget, VFXProject, AppSetting, UserSetting, Preferences,
                                                 Configuration)
 
 class LayoutManager(DAMG):
@@ -35,17 +36,17 @@ class LayoutManager(DAMG):
     unHidableLayouts                    = DAMGLIST()
     unShowableLayouts                   = DAMGLIST()
 
-    ignoreIDs                           = DAMGLIST()
+    ignoreIDs                           = ignoreIDs
 
-    def __init__(self, registryLayout, actionManager, buttonManager, eventManager, threadManager, parent=None):
+    def __init__(self, eventManager, threadManager, parent=None):
         super(LayoutManager, self).__init__(parent)
 
         # self.ignoreIDs.appendList(self.parent.ignoreIDs)
 
         self.parent                     = parent
-        self.actionManager              = actionManager
-        self.buttonManager              = buttonManager
-        self._register                  = registryLayout
+        self.actionManager              = ActionManager(self.parent)
+        self.buttonManager              = ButtonManager(self.parent)
+        self._register                  = RegistryLayout()
         self.eventManager               = eventManager
         self.threadManager              = threadManager
 
@@ -60,7 +61,6 @@ class LayoutManager(DAMG):
     def buildLayouts(self):
 
         self.mains                      = self.mainLayouts()
-        self.funcs                      = self.functionLayouts()
         self.infos                      = self.infoLayouts()
         self.setts                      = self.settingLayouts()
         self.tools                      = self.toolLayouts()
@@ -114,36 +114,26 @@ class LayoutManager(DAMG):
         self.mainUI.botTabUI.botTab1.trackEventCB.stateChanged.connect(self.parent.setTrackEvent)
 
         layouts = []
-        for listLayout in [self.mains, self.funcs, self.infos, self.setts, self.tools, self.prjs]:
-            layouts = layouts + list(listLayout)
+        for listLayout in [self.mains, self.infos, self.setts, self.tools, self.prjs]:
+            layouts = layouts + listLayout
         self._buildAll = True
-
-        return layouts
-
-    def functionLayouts(self):
-
-        self.signin                         = SignIn()
-        self.forgotPW                       = ForgotPassword()
-        self.signup                         = SignUp()
-
-        layouts = [self.signin, self.signup, self.forgotPW]
-        for layout in layouts:
-            self.registLayout(layout)
 
         return layouts
 
     def mainLayouts(self):
 
-        self.mainUI                         = PipelineManager(self.actionManager, self.buttonManager, self.threadManager)
-        self.sysTray                        = SysTray(self.actionManager, self.eventManager)
-        self.shortcutCMD                    = CommandUI()
+        self.signin                         = SignIn()
+        self.forgotPW                       = ForgotPassword()
+        self.signup                         = SignUp()
+        self.mainUI                         = PipelineManager(self.actionManager, self.buttonManager, self.threadManager, self.parent)
+        self.sysTray                        = SysTray(self.actionManager, self.eventManager, self.parent)
+        self.shortcutCMD                    = CommandUI(parent=self.parent)
 
-        layouts = [self.mainUI, self.sysTray, self.shortcutCMD]
+        layouts = [self.mainUI, self.sysTray, self.shortcutCMD, self.signin, self.signup, self.forgotPW]
 
         for layout in layouts:
             layout.settings._settingEnable = True
             self.registLayout(layout)
-
         return layouts
 
     def infoLayouts(self):
@@ -167,7 +157,7 @@ class LayoutManager(DAMG):
 
     def settingLayouts(self):
 
-        self.settingUI                      = SettingUI()
+        self.settingUI                      = AppSetting()
         self.userSetting                    = UserSetting()
 
         layouts = [self.settingUI, self.userSetting]

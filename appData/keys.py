@@ -17,8 +17,7 @@ import os, sys
 """ Autodesk _data """
 
 autodeskVer         = ["2017", "2018", "2019", "2020", "2021"]
-autodeskApp         = ["Maya", "MudBox", "3ds Max", "AutoCAD"]
-# userMayaDir         = os.path.expanduser(r"~/Documents/maya")
+autodeskApp         = ["Autodesk Maya", "Autodesk Mudbox", "Maya", "Mudbox", "3ds Max", "AutoCAD"]
 
 # --------------------------------------------------------------------------------------------------------------
 """ Adobe _data """
@@ -36,8 +35,8 @@ foundryApp          = ['Hiero', 'Mari', 'NukeStudio', 'NukeX', 'Katana',]
 # --------------------------------------------------------------------------------------------------------------
 """ Pixologic _data """
 
-pixologiVer         = [ "4R6", "4R7", "4R8", "4R9", '2018', '2019', '2020']
-pixologiApp         = [ 'ZBrush' ]
+pixologiVer         = ["4R6", "4R7", "4R8", '2018', '2019', '2020', '2021']
+pixologiApp         = ['ZBrush' ]
 
 # --------------------------------------------------------------------------------------------------------------
 """ Allegorithmic _data """
@@ -72,8 +71,9 @@ wonderUniApp        = ['Storyboarder', 'Krita (x64)', 'Krita (x32)' ]
 # --------------------------------------------------------------------------------------------------------------
 """ another app _data """
 
-anacondaApp         = ['Spyder', 'QtDesigner', 'Git Bash']
-windowApps          = ['Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', ]
+anacondaApps        = ['Spyder', 'QtDesigner', 'Git Bash']
+mcOfficeApps        = ['Word', 'Excel', 'PowerPoint', 'Form']
+windowApps          = ['Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', ] + anacondaApps + mcOfficeApps
 
 # --------------------------------------------------------------------------------------------------------------
 """ Combine data package """
@@ -87,12 +87,12 @@ pPACKAGE = dict(adobe=adobeApp, autodesk=autodeskApp, allegorithmic = allegorith
 # --------------------------------------------------------------------------------------------------------------
 """ Tracking configKey """
 
-TRACK_TDS           = ['Maya', 'ZBrush', 'Houdini', '3Ds Max', 'Mudbox', 'BLender', ]
+TRACK_TDS           = ['Maya', 'ZBrush', 'Houdini', '3Ds Max', 'Mudbox', 'BLender', 'Katana']
 TRACK_VFX           = ['NukeX', 'After Effects', ]
-TRACK_ART           = ['Photoshop', ]
-TRACK_PRE           = ['Storyboarder', 'Illustrator', 'Krita (x64)', 'Krita (x32)']
-TRACK_TEX           = ['Mari', 'Painter', ]
-TRACK_POST          = ['Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro']
+TRACK_ART           = ['Photoshop', 'Krita (x64)', 'Krita (x32)']
+TRACK_PRE           = ['Storyboarder', 'Illustrator']
+TRACK_TEX           = ['Mari', 'Substance Painter'] + TRACK_ART
+TRACK_POST          = ['Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro', 'NukeStudio']
 TRACK_OFFICE        = ['Word', 'Excel', 'PowerPoint', 'Wordpad']
 TRACK_DEV           = ['Sublime Text', 'QtDesigner', 'Git Bash', 'Command Prompt']
 TRACK_TOOLS         = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'ScreenShot', 'NodeGraph']
@@ -113,7 +113,6 @@ pTRACK = dict(TDS=TRACK_TDS, VFX=TRACK_VFX, ART=TRACK_ART, PRE = TRACK_PRE, TEXT
 
 UI_ELEMENT_KEYS     = ['BotTab', 'ConnectStatus', 'GridLayout', 'MainMenuSection', 'MainToolBar', 'MainToolBarSection',
                        'Notification','StatusBar', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting', ]
-
 MAIN_UI_KEYS        = ['SysTray', 'PipelineManager', 'ForgotPassword', 'SignIn', 'SignUp', 'SignOut', 'CommandUI', ]
 
 INFO_UI_KEYS        = ['About', 'CodeOfConduct', 'Contributing', 'Credit', 'Version', 'AppLicence', 'PythonLicence',
@@ -128,6 +127,8 @@ TASK_UI_KEYS        = ['TaskManager', ]
 
 TEAM_UI_KEYS        = ['TeamManager', ]
 
+DEPA_UI_KEYS        = ['DepartmentManager']
+
 SETTING_UI_KEYS     = ['Configuratons', 'Preferences', 'AppSetting', 'GlobalSetting', 'UserSetting', 'BrowserSetting',
                        'ProjSetting', 'OrgSetting', 'TaskSetting', 'TeamSetting']
 
@@ -138,8 +139,8 @@ TOOL_UI_KEYS        = ['Calculator', 'Calendar', 'ContactUs', 'EnglishDictionary
 
 PLUGIN_UI_KEYS      = ['PluginManager', 'NodeGraph', 'Browser', ]
 
-APP_UI_KEYS        = MAIN_UI_KEYS + INFO_UI_KEYS + PROJ_UI_KEYS + ORG_UI_KEYS + TASK_UI_KEYS + TEAM_UI_KEYS + \
-                     SETTING_UI_KEYS + LIBRARY_UI_KEYS + TOOL_UI_KEYS + PLUGIN_UI_KEYS
+APP_UI_KEYS         = MAIN_UI_KEYS + INFO_UI_KEYS + PROJ_UI_KEYS + ORG_UI_KEYS + TASK_UI_KEYS + TEAM_UI_KEYS + \
+                      SETTING_UI_KEYS + LIBRARY_UI_KEYS + TOOL_UI_KEYS + PLUGIN_UI_KEYS
 
 # --------------------------------------------------------------------------------------------------------------
 """ PLM Function key """
@@ -147,8 +148,9 @@ APP_UI_KEYS        = MAIN_UI_KEYS + INFO_UI_KEYS + PROJ_UI_KEYS + ORG_UI_KEYS + 
 factors             = ['Organisation', 'Project', 'Department', 'Team', 'Task', ]
 factorActs          = ['New', 'Config', 'Edit', 'Remove']
 
-FACTOR_KEYS     = []
+FACTOR_KEYS         = []
 for f in factors:
+    FACTOR_KEYS.append(f)
     for act in factorActs:
         FACTOR_KEYS.append('{0} {1}'.format(act, f))
 
@@ -191,7 +193,8 @@ def generate_key_packages(*args):
                             key = name + " " + ver
                     keyPackage.append(key)
 
-    return keyPackage + windowApps + anacondaApp + ['Word', 'Excel', 'PowerPoint']
+    args = keyPackage + windowApps
+    return args
 
 def generate_config(key, *args):
     keyPackages = generate_key_packages()
@@ -231,30 +234,6 @@ ACTIONS_DATA = dict(TD                  = CONFIG_TDS,
                     EXTRA               = CONFIG_EXTRA,
                     SYSTRAY             = CONFIG_SYSTRAY, )
 
-SHOWLAYOUT_KEY          = ['About', 'Alpha', 'BotTab', 'Browser', 'Calculator', 'Calendar', 'CodeOfConduct', 'Configuration',
-                           'ConfigOrganisation', 'ConfigProject', 'ConfigTask', 'ConfigTeam', 'Configurations',
-                           'ConnectStatus', 'ContactUs', 'Contributing', 'Credit', 'EditOrganisation', 'EditProject',
-                           'EditTask', 'EditTeam', 'EnglishDictionary', 'Feedback', 'FindFiles', 'Footer',
-                           'ForgotPassword', 'GridLayout', 'HDRI', 'ImageViewer', 'Licence', 'MainMenuSection',
-                           'MainToolBar', 'MainToolBarSection', 'NodeGraph', 'NoteReminder', 'Notification',
-                           'Organisation', 'PipelineManager', 'Preferences', 'Project', 'Reference', 'ScreenShot',
-                           'SettingUI', 'SignIn', 'SignOut', 'SignUp', 'StatusBar', 'SwitchAccount', 'SysTray',
-                           'Task', 'Team', 'TextEditor', 'Texture', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3',
-                           'UserSetting', 'Version']
-
-RESTORE_KEY             = ['Restore']
-SHOWMAX_KEY             = ['Maximize']
-SHOWMIN_KEY             = ['Minimize']
-
-START_FILE              = CONFIG_DEV + CONFIG_OFFICE + CONFIG_TDS + CONFIG_VFX + CONFIG_ART + CONFIG_TEX + CONFIG_POST + \
-                          ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppFolder', 'Snipping Tool']
-
-START_FILE_KEY          = sorted([i for i in START_FILE if not i == 'Command Prompt'])
-
-EXECUTING_KEY           = ['Exit', 'CleanPyc', 'ReConfig', 'Debug', 'Command Prompt', 'Showall'] + SHORTCUT_KEYS + STYLESHEET_KEYS
-
-IGNORE_ICON_NAME        = ['Widget', 'TopTab1', 'TopTab2', 'TopTab3', 'ItemWidget']
-
 # Binding config
 QT_BINDINGS             = ['PyQt5', 'PySide2', 'pyqt']
 QT_ABSTRACTIONS         = ['qtpy', 'pyqtgraph', 'Qt']
@@ -273,7 +252,8 @@ SYS_OPTS = ["Host Name", "OS Name", "OS Version", "Product ID", "System Manufact
 
 notKeys = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__', '__cached__',
            '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR', 'SETTING_DIR', 'DB_DIR', 'LOG_DIR',
-           'QSS_DIR', 'RCS_DIR', 'SCSS_DIR', '__appname__', 'subprocess', 'unicode_literals', 'absolute_import', ]
+           'QSS_DIR', 'RCS_DIR', 'SCSS_DIR', '__appname__', 'subprocess', 'unicode_literals', 'absolute_import',
+           '__organization__']
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/08/2018 - 2:30 AM

@@ -18,7 +18,8 @@ from PyQt5.QtWidgets            import QTextEdit, QApplication
 
 # PLM
 from appData                    import JSON_DIR
-from devkit.Widgets           import Widget, GridLayout, LineEdit, Label, Button, AppIcon
+from devkit.Widgets             import Widget, GridLayout, LineEdit, Label, Button
+from devkit.Gui                 import AppIcon
 
 class EnglishDictionary(Widget):
 

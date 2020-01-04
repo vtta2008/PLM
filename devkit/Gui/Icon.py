@@ -10,15 +10,18 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 from __buildtins__ import __copyright__
+""" Import """
 
+# Python
 import os
 
+# PyQt5
 from PyQt5.QtGui                            import QIcon
-from PyQt5.QtCore                           import QSize
 
+# PLM
 from utils                                  import get_app_icon, get_tag_icon, get_logo_icon
-from appData                                import iconInfo, IGNORE_ICON_NAME
-
+from appData                                import iconInfo
+from devkit.Core                            import Size
 
 class Icon(QIcon):
 
@@ -28,9 +31,8 @@ class Icon(QIcon):
     _copyright                              = __copyright__()
     iconInfo                                = iconInfo
 
-    def __init__(self, parent=None):
+    def __init__(self, *__args):
         QIcon.__init__(self)
-        self.parent                         = parent
 
     @property
     def copyright(self):
@@ -46,33 +48,30 @@ class Icon(QIcon):
 
 class AppIcon(Icon):
 
-    key = 'AppIcon'
+    key                                     = 'AppIcon'
+    _found                                  = False
 
     def __init__(self, size=32, name="AboutPlt"):
-        super(AppIcon, self).__init__()
+        super(AppIcon, self).__init__(self)
 
-        self._found = False
-        self.iconSize = size
-        self.iconName = name
-
-        key = 'icon{0}'.format(self.iconSize)
+        self.iconSize                       = size
+        self.iconName                       = name
+        key                                 = 'icon{0}'.format(self.iconSize)
 
         for icon in self.iconInfo[key].keys():
             if self.iconName == icon:
-                self.iconPth = get_app_icon(self.iconSize, self.iconName)
-                self._found = True
+                self.iconPth                = get_app_icon(self.iconSize, self.iconName)
+                self._found                 = True
                 break
             elif os.path.exists(self.iconName):
-                self.iconPth = self.iconName
-                self._found = True
+                self.iconPth                = self.iconName
+                self._found                 = True
                 break
 
         if not self._found:
-            if not self.iconName in IGNORE_ICON_NAME:
-                # print("IconNotFound: {0}: Could not find icon name: {1}".format(__name__, self.iconName))
-                pass
+            print("IconNotFound: {0}: Could not find icon name: {1}".format(__name__, self.iconName))
         else:
-            self.addFile(self.iconPth, QSize(self.iconSize, self.iconSize))
+            self.addFile(self.iconPth, Size(self.iconSize, self.iconSize))
 
 class LogoIcon(Icon):
 
@@ -90,7 +89,7 @@ class LogoIcon(Icon):
 
     def find_icon(self):
         for s in self.sizes:
-            self.addFile(get_logo_icon(s, self.name), QSize(s, s))
+            self.addFile(get_logo_icon(s, self.name), Size(s, s))
         return True
 
 class TagIcon(Icon):
@@ -110,7 +109,7 @@ class TagIcon(Icon):
 
     def find_tag(self):
         if self.tag in self.tags:
-            self.addFile(get_tag_icon(self.tag), QSize(self.w, self.h))
+            self.addFile(get_tag_icon(self.tag), Size(self.w, self.h))
         return True
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 6:31 PM

@@ -17,7 +17,7 @@ from __buildtins__ import __copyright__
 from PyQt5.QtWidgets                        import QMainWindow
 
 # PLM
-from devkit.Widgets                       import AppIcon
+from devkit.Gui                             import AppIcon
 from cores.Loggers                          import Loggers
 from cores.Settings                         import Settings
 from cores.SignalManager                    import SignalManager
@@ -42,7 +42,6 @@ class MainWindow(QMainWindow):
         self.logger             = Loggers(self.__class__.__name__)
 
         self.setWindowTitle(self.key)
-        self.setWindowIcon(AppIcon(32, self.key))
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

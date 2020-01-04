@@ -15,7 +15,7 @@ from .Tools                 import (Calculator, Calendar, EnglishDictionary, Fin
 from .Funcs                 import ForgotPassword, SignUp, SignIn
 from .InfoWidget            import InfoWidget
 from .Projects              import VFXProject
-from .Settings              import SettingUI, UserSetting
+from .Settings              import AppSetting, UserSetting
 from .Configuration         import Configuration
 from .Preferences           import Preferences
 

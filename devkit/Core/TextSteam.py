@@ -14,23 +14,15 @@ from __buildtins__ import __copyright__
 
 from PyQt5.QtCore                           import QTextStream
 
-from appData                                import SETTING_FILEPTH, ST_FORMAT
-from cores.Settings                         import Settings
-from cores.SignalManager                    import SignalManager
-
 class TextStream(QTextStream):
 
-    Type                                    = 'DAMGSTREAM'
+    Type                                    = 'DAMGTEXTSTREAM'
     key                                     = 'TextStream'
     _name                                   = 'DAMG Text Stream'
     _copyright                              = __copyright__()
 
-    def __init__(self, fileName, parent=None):
-        super(TextStream, self).__init__(fileName)
-        self.parent                         = parent
-
-        self.settings                       = Settings(self)
-        self.signals                        = SignalManager(self)
+    def __init__(self, *__args):
+        QTextStream.__init__(self)
 
     @property
     def copyright(self):
@@ -42,7 +34,7 @@ class TextStream(QTextStream):
 
     @name.setter
     def name(self, newName):
-        self._name                      = newName
+        self._name                          = newName
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 15/11/2019 - 5:43 PM

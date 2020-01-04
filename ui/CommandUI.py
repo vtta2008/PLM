@@ -18,7 +18,7 @@ class CommandUI(LineEdit):
     key                     = 'CommandUI'
 
     def __init__(self, parent=None):
-        super(CommandUI, self).__init__(parent)
+        super(CommandUI, self).__init__({}, parent)
 
         self.parent         = parent
         self.setFixedSize(250, 25)

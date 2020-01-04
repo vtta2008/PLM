@@ -16,7 +16,8 @@ from PyQt5.QtCore                       import pyqtSlot
 
 # PLM
 from appData                            import __plmSlogan__, __appname__
-from devkit.Widgets                   import LogoIcon, SystemTrayIcon
+from devkit.Widgets                     import SystemTrayIcon
+from devkit.Gui                         import LogoIcon
 from ui.Header.SysTrayIconMenu          import SysTrayIconMenu
 from utils                              import LocalDatabase
 
@@ -24,11 +25,10 @@ from utils                              import LocalDatabase
 # -------------------------------------------------------------------------------------------------------------
 class SysTray(SystemTrayIcon):
 
-    key = 'SysTray'
-    _login = False
+    key                                 = 'SysTray'
+    _login                              = False
 
     def __init__(self, actionManager, eventManager, parent=None):
-
         super(SysTray, self).__init__(parent)
 
         self.db                         = LocalDatabase()
@@ -41,8 +41,7 @@ class SysTray(SystemTrayIcon):
             self.username = 'DemoUser'
 
         self.rightClickMenu             = SysTrayIconMenu(self.actionManager, self)
-        self.rightClickMenu.signals.executing.connect(self.signals.executing.emit)
-        self.rightClickMenu.signals.showLayout.connect(self.signals.showLayout.emit)
+        self.rightClickMenu.signals.connect('command', self.parent.command)
 
         self.setIcon(LogoIcon('Logo'))
         self.setToolTip(__plmSlogan__)
@@ -55,7 +54,7 @@ class SysTray(SystemTrayIcon):
     def sys_tray_icon_activated(self, reason):
         if reason == self.DoubleClick:
             if self._login:
-                self.signals.emit('showLayout', 'PipelineManager', 'showRestore')
+                self.signals.emit('command', 'Restore')
 
     def log_in(self):
         self.showMessage('Welcome', "Log in as {0}".format(self.username), self.Information, 500)
@@ -92,3 +91,9 @@ class SysTray(SystemTrayIcon):
     def hide(self):
         return self.show()
 
+    def close(self):
+        return self.show()
+
+    def setVisible(self, bool):
+        if not self.isVisible():
+            return self.setVisible(True)

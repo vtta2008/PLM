@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from ui.assets import KeyBase
+from ui.base            import KeyBase
 
 class ButtonManager(KeyBase):
 

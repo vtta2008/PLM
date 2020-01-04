@@ -16,28 +16,26 @@ import sys
 
 # PyQt5
 
-from PyQt5.QtWidgets        import (QAction, QMenuBar, QFileDialog,
-                                    QInputDialog, QLineEdit)
+from PyQt5.QtWidgets        import QAction, QFileDialog, QInputDialog, QLineEdit
 from PyQt5.QtCore           import QSettings
 
 # PLM
-from devkit.Widgets       import Widget, GridLayout
+from devkit.Widgets         import Widget, GridLayout, MenuBar
 from ui.base                import SettingOutput, SettingInput
 from appData                import SETTING_FILEPTH, __appname__, __organization__
 
 # -------------------------------------------------------------------------------------------------------------
 """ Setting Manager """
 
-class SettingUI(Widget):
+class AppSetting(Widget):
 
-    key = 'SettingUI'
-
+    key                     = 'AppSetting'
 
     def __init__(self, parent=None):
-        super(SettingUI, self).__init__(parent)
+        super(AppSetting, self).__init__(parent)
 
         self.parent         = parent
-        self.menubar        = QMenuBar(self)
+        self.menubar        = MenuBar(self)
         self.regValue       = SettingOutput(self.settings)
         self.regInfo        = SettingInput(self.settings)
 
@@ -53,7 +51,7 @@ class SettingUI(Widget):
         self.autoRefreshAct.setChecked(True)
         self.fallbacksAct.setChecked(True)
 
-        self.setWindowTitle("PLM glsetting")
+        self.setWindowTitle("Application Settings")
 
     def openSettings(self):
         if not self.settings:

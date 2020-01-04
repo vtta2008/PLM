@@ -11,7 +11,8 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 from appData                import (SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCE, VERSION)
-from devkit.Widgets       import Widget, AppIcon, GridLayout, Label, Button
+from devkit.Widgets         import Widget, GridLayout, Label, Button
+from devkit.Gui             import AppIcon
 
 class InfoWidget(Widget):
 

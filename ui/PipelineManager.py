@@ -11,7 +11,8 @@ from __future__ import absolute_import, unicode_literals
 
 # PLM
 from appData                            import __homepage__, dockB, __appname__
-from devkit.Widgets                   import MainWindow, Widget, GridLayout, LogoIcon
+from devkit.Widgets                     import MainWindow, Widget, GridLayout
+from devkit.Gui                         import LogoIcon
 from .Header                            import MainToolBar, MainMenuBar, ConnectStatus
 from .Body                              import TopTab, BotTab, Notification
 from .Footer                            import Footer, MainStatusBar
@@ -40,8 +41,8 @@ class PipelineManager(MainWindow):
         self.mainWidget                 = Widget()
         self.layout                     = GridLayout()
         self.mainWidget.setLayout(self.layout)
-        self.buildUI()
         self.setCentralWidget(self.mainWidget)
+        self.buildUI()
 
     def buildUI(self):
 

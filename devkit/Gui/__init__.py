@@ -15,6 +15,7 @@ from .Color         import Color
 from .Cursor        import Cursor
 from .Font          import Font
 from .FontMetric    import FontMetric
+from .Icon          import AppIcon, TagIcon, LogoIcon, Icon
 from .Image         import Pixmap, Image
 from .KeySequence   import KeySequence
 from .PainterPath   import PainterPath

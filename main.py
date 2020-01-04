@@ -10,30 +10,23 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import *
+from __buildtins__ import globalSetting
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
 # Python
-import sys, requests
-# print(1)
+import os, sys, requests
+
 # PLM
 from appData                            import (__localServer__, SYSTRAY_UNAVAI, KEY_RELEASE, SERVER_CONNECT_FAIL,
-                                                DarkPalette, )
+                                                appInfo, plmInfo)
 from bin                                import DAMGDICT
-# print(2)
-from utils                              import LocalDatabase
-# print(3)
-from ui.assets                          import (ActionManager, ButtonManager, RegistryLayout, ThreadManager, EventManager, Commands)
+from utils                              import LocalDatabase, clean_file_ext
+from ui.assets                          import (ThreadManager, EventManager)
 from ui.LayoutManager                   import LayoutManager
 from plugins.Browser                    import Browser
-# print(4)
 from devkit.Application                 import Application
 from devkit.Widgets                     import MessageBox
-from devkit.Gui                         import Color
-# print(5)
-from plugins                            import Qt
-qt_api                                  = Qt.__binding__
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -48,64 +41,27 @@ class DAMGTEAM(Application):
     def __init__(self):
         Application.__init__(self)
 
+        self.cmdInfo                    = plmInfo
+        self.appInfo                    = appInfo
+
         self.browser                    = Browser()
+        self.database                   = LocalDatabase()
 
-        # Multithreading.
         self.threadManager              = ThreadManager()
-        self.database                   = LocalDatabase()                                            # Database tool
-
         self.eventManager               = EventManager(self)
-        self.buttonManager              = ButtonManager()
-        self.actionManager              = ActionManager()
-        self.registryLayout             = RegistryLayout()
-        self.layoutManager              = LayoutManager(self.registryLayout, self.actionManager, self.buttonManager,
-                                                        self.eventManager, self.threadManager, self)
+        self.layoutManager              = LayoutManager(self.eventManager, self.threadManager, self)
 
         self.layoutManager.registLayout(self.browser)
         self.layoutManager.buildLayouts()
         self.layoutManager.globalSetting()
 
-        self.signIn                     = self.layoutManager.signin
-        self.signUp                     = self.layoutManager.signup
-        self.forgotPW                   = self.layoutManager.forgotPW
-        self.sysTray                    = self.layoutManager.sysTray
-        self.mainUI                     = self.layoutManager.mainUI
-        self.shortcutCMD                = self.layoutManager.shortcutCMD
+        self.mainUI, self.sysTray, self.shortcutCMD, self.signIn, self.signUp, self.forgotPW = self.layoutManager.mains
+        self.layouts                    = self.layoutManager.layouts()
 
-        self.commander                  = Commands(self)
-        self.signinEvent                = self.commander.signInEvent
-        self.signoutEvent               = self.commander.signOutEvent
-        self.signupEvent                = self.commander.signUpEvent
-        self.switchEvent                = self.commander.switchAccountEvent
+        for layout in [self.mainUI, self.sysTray, self.signIn, self.signUp, self.forgotPW]:
+            layout.signals.connect('loginChanged', self.loginChanged)
 
-        self.loginChanged               = self.commander.loginChanged
-        self.ignoreIDs                  = self.commander.ignoreIDs
-        self.showLayout                 = self.commander.showLayout
-
-        if qt_api == 'PyQt5':
-            palette = self.palette()
-            palette.setColor(palette.Normal, palette.Link, Color(DarkPalette.COLOR_BACKGROUND_LIGHT))
-            self.setPalette(palette)
-
-        for layout in self.layoutManager.layouts():
-            key = layout.key
-            if not key in self.ignoreIDs:
-                # print('{0}: start connecting signals'.format(key))
-                if key in ['SignIn', 'SignUp', 'SysTray', 'ForgotPassword']:
-                    # print('{0}: connect to login event'.format(key))
-                    layout.signals.connect('loginChanged', self.commander.loginChanged)
-                # print('{0} start connecting show layout'.format(key))
-                layout.signals.connect('showLayout', self.commander.showLayout)
-                # print('{0} start connecting executing'.format(key))
-                layout.signals.connect('executing', self.commander.executing)
-                # print('{0} start connecting open browser'.format(key))
-                layout.signals.connect('openBrowser', self.commander.openBrowser)
-                # print('{0} start connecting set setting'.format(key))
-                layout.signals.connect('setSetting', self.commander.setSetting)
-                # print('{0} start connecting sys notify'.format(key))
-                layout.signals.connect('sysNotify', self.commander.sysNotify)
-                # print('{0} setting has been enabled: {1}'.format(key, layout.settings.key))
-                layout.settings._settingEnable = True
+        self.set_styleSheet('dark')
 
         try:
             r = requests.get(__localServer__)
@@ -135,7 +91,7 @@ class DAMGTEAM(Application):
                         sys.exit()
                     else:
                         self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
-                        self.showLayout(self.mainUI.key, 'show')
+                        self.mainUI.show()
                 else:
                     if r.status_code == 200:
                         if not self.sysTray.isSystemTrayAvailable():
@@ -144,7 +100,7 @@ class DAMGTEAM(Application):
                         else:
                             self.loginChanged(True)
                             self.sysTray.log_in()
-                            self.showLayout(self.mainUI.key, "show")
+                            self.mainUI.show()
                     else:
                         self.signinEvent()
             else:
@@ -153,7 +109,7 @@ class DAMGTEAM(Application):
                     sys.exit()
                 else:
                     self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
-                    self.showLayout(self.mainUI.key, 'show')
+                    self.mainUI.show()
         else:
             if connectServer:
                 self.signinEvent()
@@ -163,9 +119,7 @@ class DAMGTEAM(Application):
                     sys.exit()
                 else:
                     self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
-                    self.showLayout(self.mainUI.key, 'show')
-
-        self.set_styleSheet('dark')
+                    self.mainUI.show()
 
     def notify(self, receiver, event):
         if event.type() == KEY_RELEASE:
@@ -176,8 +130,121 @@ class DAMGTEAM(Application):
 
         return super(DAMGTEAM, self).notify(receiver, event)
 
-    def sysNotify(self, title, mess, iconType, timeDelay):
-        return self.commander.sysNotify(title, mess, iconType, timeDelay)
+    def sysNotify(self, *arg):
+        title, mess, iconType, timeDelay = arg
+        return self.sysTray.sysNotify(title, mess, iconType, timeDelay)
+
+    def command(self, key):
+        data = self.cmdData[key]
+        if data.code == 'os.startfile':
+            func = os.startfile
+            arg = data.value
+        elif data.code == 'os.system':
+            func = os.system
+            arg = data.value
+        elif data.code == 'showUI':
+            func = self.showUI
+            arg = data.key
+        elif data.code == 'openURL':
+            func = self.openURL
+            arg = data.value
+        elif data.code == 'shortcut':
+            func = self.shortcut
+            arg = data.value
+        elif data.code == 'appEvent':
+            func = self.appEvent
+            arg = data.key
+        else:
+            if data.value == 'CleanPyc':
+                func = clean_file_ext
+                arg = None
+            elif data.value == 'Debug':
+                func = self.mainUI.botTabUI.botTab2.test
+                arg = None
+            elif data.value == 'Restore':
+                func = self.mainUI.showRestore
+                arg = None
+            elif data.value == 'Maximize':
+                func = self.mainUI.showMaximize
+                arg = None
+            elif data.value == 'Minimize':
+                func = self.mainUI.showMinimize
+                arg = None
+            else:
+                func = print
+                arg = key
+
+        if arg is None:
+            return func()
+        else:
+            return func(arg)
+
+    def appEvent(self, event):
+        if event == 'ShowAll':
+            self.showAll()
+        elif event == 'SwitchAccount':
+            self.switchAccountEvent()
+        elif event == 'LogIn':
+            self.signInEvent()
+        elif event == 'LogOut':
+            self.signOutEvent()
+        elif event == 'Quit':
+            self.quit()
+        elif event == 'Exit':
+            self.exit()
+        elif event == 'ChangePassword':
+            pass
+        else:
+            pass
+
+    def showUI(self, key):
+        ui = self.layouts[key]
+        ui.show()
+
+    def openURL(self, url):
+        self.browser.setUrl(url)
+        self.browser.update()
+        self.browser.show()
+
+    def loginChanged(self, val):
+        self._login = val
+
+        if not self._login:
+            self.mainUI.close()
+        else:
+            self.mainUI.show()
+            for layout in [self.signIn, self.signUp, self.forgotPW]:
+                layout.close()
+
+        self.sysTray.loginChanged(self._login)
+        self.signIn.loginChanged(self._login)
+        self.signUp.loginChanged(self._login)
+
+        return self._login
+
+    def showAll(self):
+        for ui in self.layouts:
+            ui.show()
+
+    def signInEvent(self):
+        self.switchAccountEvent()
+
+    def signOutEvent(self):
+        self.loginChanged(False)
+        self.signIn.show()
+        for layout in [self.mainUI, self.signUp, self.forgotPW] + self.layoutManager.infos + \
+                      self.layoutManager.setts + self.layoutManager.tools + self.layoutManager.prjs:
+            layout.hide()
+
+    def signUpEvent(self):
+        self.loginChanged(False)
+        self.signUp.show()
+        for layout in [self.mainUI, self.signUp, self.forgotPW] + self.layoutManager.infos + \
+                      self.layoutManager.setts + self.layoutManager.tools + self.layoutManager.prjs:
+            layout.hide()
+
+    def switchAccountEvent(self):
+        self.signOutEvent()
 
 if __name__ == '__main__':
     DAMGTEAM().startLoop()

@@ -16,7 +16,6 @@ import platform
 
 # PyQt5
 from PyQt5.QtCore                   import QFile
-from PyQt5.QtGui                    import QColor
 
 # Plm
 from bin                            import DAMG, DAMGDICT
@@ -57,10 +56,6 @@ class StyleSheet(DAMG):
         elif name == 'nuker':
             filename = QFile(os.path.join(QSS_DIR, 'nuker.qss'))
         else:
-            if qt_api == 'PyQt5':
-                pass
-            else:
-                pass
             filename = QFile(os.path.join(QSS_DIR, 'style.qss'))
 
         return filename

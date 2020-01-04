@@ -10,7 +10,8 @@ Description:
 from __buildtins__ import globalSetting
 
 # PLM
-from devkit.Widgets           import TabWidget, VBoxLayout, AppIcon
+from devkit.Widgets             import TabWidget, VBoxLayout
+from devkit.Gui                 import AppIcon
 from ui.Body.Tabs               import TopTab1, TopTab2, TopTap3
 from bin                        import DAMGLIST
 
@@ -43,20 +44,18 @@ class TopTab(TabWidget):
         self.tabNames           = DAMGLIST(listData=['Common', 'User', 'Cmd'])
 
         for tab in self.tabs:
-            if globalSetting.modes.login == 'Offline':
-                if globalSetting.modes.allowLocalMode:
-                    if tab.key == 'TopTab2':
-                        pass
-                    else:
-                        self.addTab(tab, self.tabNames[self.tabs.index(tab)])
-                        self.setTabIcon(self.tabs.index(tab), AppIcon(32, self.tabNames[self.tabs.index(tab)]))
+            if tab.key == 'TopTab2':
+                if not self.parent.connectStatus.connectServer:
+                    pass
                 else:
-                    return
+                    self.addTab(tab, self.tabNames[self.tabs.index(tab)])
+                    self.setTabIcon(self.tabs.index(tab), AppIcon(32, self.tabNames[self.tabs.index(tab)]))
+                    self.parent.signals.connect('updateAvatar', self.tab2.update_avatar)
             else:
                 self.addTab(tab, self.tabNames[self.tabs.index(tab)])
                 self.setTabIcon(self.tabs.index(tab), AppIcon(32, self.tabNames[self.tabs.index(tab)]))
 
-        self.signals.updateAvatar.connect(self.tab2.update_avatar)
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 25/05/2018
