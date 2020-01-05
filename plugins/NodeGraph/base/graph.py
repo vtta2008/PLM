@@ -5,46 +5,40 @@ import os
 import re
 
 from plugins.NodeGraph import QtCore, QtWidgets
-from plugins.NodeGraph.base.commands import (NodeAddedCmd, NodeRemovedCmd, NodeMovedCmd, PortConnectedCmd)
-from plugins.NodeGraph.base.factory import NodeFactory
-from plugins.NodeGraph.base.menu import Menu
-from plugins.NodeGraph.base.model import NodeGraphModel
-from plugins.NodeGraph.base.node import NodeObject
-from plugins.NodeGraph.base.port import Port
-from plugins.NodeGraph.widgets.viewer import NodeViewer
+from .commands                          import NodeAddedCmd, NodeRemovedCmd, NodeMovedCmd, PortConnectedCmd
+from .factory                           import NodeFactory
+from .menu                              import NodeGraphMenu, NodesMenu
+from .model                             import NodeGraphModel
+from .node                              import NodeObject
+from .port                              import Port
+from plugins.NodeGraph.widgets.viewer   import NodeViewer
 
-from appData import DRAG_DROP_ID, PIPE_LAYOUT_CURVED, PIPE_LAYOUT_STRAIGHT, PIPE_LAYOUT_ANGLE
-from bin import DAMG
+from appData                            import (DRAG_DROP_ID, PIPE_LAYOUT_CURVED, PIPE_LAYOUT_STRAIGHT, PIPE_LAYOUT_ANGLE,
+                                                IN_PORT, OUT_PORT)
+
+from bin                                import DAMG
+from PyQt5.QtCore                       import pyqtSignal
+
 
 class NodeGraph(DAMG):
-    """
-    base node graph controller.
-    """
 
-    #: signal emits the node object when a node is created in the node graph.
-    node_created = QtCore.Signal(NodeObject)
-    #: signal emits a list of node ids from the deleted nodes.
-    nodes_deleted = QtCore.Signal(list)
-    #: signal emits the node object when selected in the node graph.
-    node_selected = QtCore.Signal(NodeObject)
-    #: signal triggered when a node is double clicked and emits the node.
-    node_double_clicked = QtCore.Signal(NodeObject)
-    #: signal for when a node has been connected emits (source port, target port).
-    port_connected = QtCore.Signal(Port, Port)
-    #: signal for when a node has been disconnected emits (source port, target port).
-    port_disconnected = QtCore.Signal(Port, Port)
-    #: signal for when a node property has changed emits (node, property name, property value).
-    property_changed = QtCore.Signal(NodeObject, str, object)
-    #: signal for when drop data has been added to the graph.
-    data_dropped = QtCore.Signal(QtCore.QMimeData, QtCore.QPoint)
+    node_created                        = pyqtSignal(NodeObject)
+    nodes_deleted                       = pyqtSignal(list)
+    node_selected                       = pyqtSignal(NodeObject)
+    node_double_clicked                 = pyqtSignal(NodeObject)
+    port_connected                      = pyqtSignal(Port, Port)
+    port_disconnected                   = pyqtSignal(Port, Port)
+    property_changed                    = pyqtSignal(NodeObject, str, object)
+    data_dropped                        = pyqtSignal(QtCore.QMimeData, QtCore.QPoint)
 
     def __init__(self, parent=None):
         super(NodeGraph, self).__init__(parent)
         self.setObjectName('NodeGraphQt')
-        self._model = NodeGraphModel()
-        self._viewer = NodeViewer(parent)
-        self._node_factory = NodeFactory()
-        self._undo_stack = QtWidgets.QUndoStack(self)
+        self._widget                    = None
+        self._model                     = NodeGraphModel()
+        self._viewer                    = NodeViewer()
+        self._node_factory              = NodeFactory()
+        self._undo_stack                = QtWidgets.QUndoStack(self)
 
         tab = QtWidgets.QAction('Search Nodes', self)
         tab.setShortcut('tab')
@@ -57,37 +51,20 @@ class NodeGraph(DAMG):
         return '<{} object at {}>'.format(self.__class__.__name__, hex(id(self)))
 
     def _wire_signals(self):
-        # internal signals.
         self._viewer.search_triggered.connect(self._on_search_triggered)
         self._viewer.connection_sliced.connect(self._on_connection_sliced)
         self._viewer.connection_changed.connect(self._on_connection_changed)
         self._viewer.moved_nodes.connect(self._on_nodes_moved)
         self._viewer.node_double_clicked.connect(self._on_node_double_clicked)
-
-        # pass through signals.
         self._viewer.node_selected.connect(self._on_node_selected)
         self._viewer.data_dropped.connect(self._on_node_data_dropped)
 
     def _toggle_tab_search(self):
-        """
-        toggle the tab search widget.
-        """
         self._viewer.tab_search_set_nodes(self._node_factory.names)
         self._viewer.tab_search_toggle()
 
     def _on_property_bin_changed(self, node_id, prop_name, prop_value):
-        """
-        called when a property widget has changed in a properties bin.
-        (emits the node object, property name, property value)
-
-        Args:
-            node_id (str): node id.
-            prop_name (str): node property name.
-            prop_value (object): python object.
-        """
         node = self.get_node_by_id(node_id)
-
-        # prevent signals from causing a infinite loop.
         if node.get_property(prop_name) != prop_value:
             node.set_property(prop_name, prop_value)
 
@@ -127,7 +104,7 @@ class NodeGraph(DAMG):
             return
 
         label = 'connect node(s)' if connected else 'disconnect node(s)'
-        ptypes = {'in': 'inputs', 'out': 'outputs'}
+        ptypes = {IN_PORT: 'inputs', OUT_PORT: 'outputs'}
 
         self._undo_stack.beginMacro(label)
         for p1_view, p2_view in disconnected:
@@ -147,7 +124,7 @@ class NodeGraph(DAMG):
     def _on_connection_sliced(self, ports):
         if not ports:
             return
-        ptypes = {'in': 'inputs', 'out': 'outputs'}
+        ptypes = {IN_PORT: 'inputs', OUT_PORT: 'outputs'}
         self._undo_stack.beginMacro('slice connections')
         for p1_view, p2_view in ports:
             node1 = self._model.nodes[p1_view.node.id]
@@ -161,11 +138,20 @@ class NodeGraph(DAMG):
     def model(self):
         return self._model
 
+    @property
+    def widget(self):
+        if self._widget is None:
+            self._widget = QtWidgets.QWidget()
+            layout = QtWidgets.QVBoxLayout(self._widget)
+            layout.setContentsMargins(0, 0, 0, 0)
+            layout.addWidget(self._viewer)
+        return self._widget
+
     def show(self):
-        self._viewer.show()
+        self._widget.show()
 
     def close(self):
-        self._viewer.close()
+        self._widget.close()
 
     def viewer(self):
         return self._viewer
@@ -204,12 +190,29 @@ class NodeGraph(DAMG):
         self._undo_stack.endMacro()
 
     def context_menu(self):
-        return Menu(self._viewer, self._viewer.context_menu())
+        return self.get_context_menu('graph')
 
-    def disable_context_menu(self, disabled=True):
-        menu = self._viewer.context_menu()
-        menu.setDisabled(disabled)
-        menu.setVisible(not disabled)
+    def context_nodes_menu(self):
+        return self.get_context_menu('nodes')
+
+    def get_context_menu(self, menu):
+        menus = self._viewer.context_menus()
+        if menus.get(menu):
+            if menu == 'graph':
+                return NodeGraphMenu(self, menus[menu])
+            elif menu == 'nodes':
+                return NodesMenu(self, menus[menu])
+
+    def disable_context_menu(self, disabled=True, name='all'):
+        if name == 'all':
+            for k, menu in self._viewer.context_menus().items():
+                menu.setDisabled(disabled)
+                menu.setVisible(not disabled)
+            return
+        menus = self._viewer.context_menus()
+        if menus.get(name):
+            menus[name].setDisabled(disabled)
+            menus[name].setVisible(not disabled)
 
     def acyclic(self):
         return self._model.acyclic
@@ -255,7 +258,6 @@ class NodeGraph(DAMG):
 
     def create_node(self, node_type, name=None, selected=True, color=None, text_color=None, pos=None):
         NodeCls = self._node_factory.create_node_instance(node_type)
-        print('NodeCls: {0}'.format(NodeCls))
         if NodeCls:
             node = NodeCls()
 
@@ -266,7 +268,9 @@ class NodeGraph(DAMG):
             prop_attrs = node.model.__dict__.pop('_TEMP_property_attrs')
 
             if self.model.get_node_common_properties(node.type_) is None:
-                node_attrs = {node.type_: {n: {'widget_type': wt} for n, wt in wid_types.items()}}
+                node_attrs = {node.type_: {
+                    n: {'widget_type': wt} for n, wt in wid_types.items()
+                }}
                 for pname, pattrs in prop_attrs.items():
                     node_attrs[node.type_][pname].update(pattrs)
                 self.model.set_node_common_properties(node_attrs)
@@ -399,20 +403,23 @@ class NodeGraph(DAMG):
 
         for n_id, n_data in nodes_data.items():
             serial_data['nodes'][n_id] = n_data
+
             inputs = n_data.pop('inputs') if n_data.get('inputs') else {}
             outputs = n_data.pop('outputs') if n_data.get('outputs') else {}
 
             for pname, conn_data in inputs.items():
                 for conn_id, prt_names in conn_data.items():
                     for conn_prt in prt_names:
-                        pipe = {'in': [n_id, pname], 'out': [conn_id, conn_prt]}
+                        pipe = {IN_PORT: [n_id, pname],
+                                OUT_PORT: [conn_id, conn_prt]}
                         if pipe not in serial_data['connections']:
                             serial_data['connections'].append(pipe)
 
             for pname, conn_data in outputs.items():
                 for conn_id, prt_names in conn_data.items():
                     for conn_prt in prt_names:
-                        pipe = {'out': [n_id, pname], 'in': [conn_id, conn_prt]}
+                        pipe = {OUT_PORT: [n_id, pname],
+                                IN_PORT: [conn_id, conn_prt]}
                         if pipe not in serial_data['connections']:
                             serial_data['connections'].append(pipe)
 
@@ -423,26 +430,23 @@ class NodeGraph(DAMG):
 
     def _deserialize(self, data, relative_pos=False, pos=None):
         nodes = {}
-
-        # build the nodes.
         for n_id, n_data in data.get('nodes', {}).items():
             identifier = n_data['type_']
             NodeCls = self._node_factory.create_node_instance(identifier)
             if NodeCls:
                 node = NodeCls()
                 node.NODE_NAME = n_data.get('name', node.NODE_NAME)
-                # set properties.
+
                 for prop in node.model.properties.keys():
                     if prop in n_data.keys():
                         node.model.set_property(prop, n_data[prop])
-                # set custom properties.
+
                 for prop, val in n_data.get('custom', {}).items():
                     node.model.set_property(prop, val)
 
                 nodes[n_id] = node
                 self.add_node(node, n_data.get('pos'))
 
-        # build the connections.
         for connection in data.get('connections', []):
             nid, pname = connection.get('in', ('', ''))
             in_node = nodes.get(nid)

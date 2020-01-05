@@ -58,7 +58,7 @@ UNIX_SETTING                = os.path.join(SETTING_DIR, 'unix.ini')
 LOCAL_DB                    = os.path.join(DB_DIR, 'local.db')
 LOCAL_LOG                   = os.path.join(LOG_DIR, 'PLM.logs')
 
-QSS_PATH                    = os.path.join(QSS_DIR, 'style.qss')
+QSS_PATH                    = os.path.join(QSS_DIR, 'dark.qss')
 MAIN_SCSS_PTH               = os.path.join(QSS_DIR, 'main.scss')
 STYLE_SCSS_PTH              = os.path.join(QSS_DIR, '_styles.scss')
 VAR_SCSS_PTH                = os.path.join(QSS_DIR, '_variables.scss')

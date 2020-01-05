@@ -27,6 +27,7 @@ from PyQt5.QtWidgets            import (QAction, QActionGroup, QApplication, QCo
 from cores.Loggers              import Loggers
 from devkit.Widgets             import Widget, MainWindow
 from devkit.Gui                 import AppIcon
+from bin.rcs                    import TextEditor_rc
 
 if sys.platform.startswith('darwin'):
     rsrcPath = ":/images/mac"

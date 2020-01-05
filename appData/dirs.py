@@ -43,7 +43,7 @@ USER_LOCAL_DATA     = os.path.join(CFG_DIR, 'userLocal')
 ''' appData '''
 
 APP_DATA_DIR        = os.path.join(ROOT, 'appData')
-DB_DIR              = APP_DATA_DIR
+DB_DIR              = APPDATA_PLM
 
 # -------------------------------------------------------------------------------------------------------------
 ''' assets '''

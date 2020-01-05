@@ -36,18 +36,15 @@ class MainToolBar(GroupVBox):
         self.actionManager  = actionManager
         self.mainLayout     = MainWindow(self)
 
-        # self.scrollbar      = QScrollArea()
-        # self.scrollbar.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        # self.scrollbar.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
-        # self.scrollbar.setWidgetResizable(True)
-        # self.mainLayout.setCentralWidget(self.scrollbar)
-
         self.tdToolBar      = self.build_toolBar("TD")
         self.compToolBar    = self.build_toolBar("VFX")
         self.artToolBar     = self.build_toolBar("ART")
         self.textureToolBar = self.build_toolBar('TEX')
         self.postToolBar    = self.build_toolBar('POST')
         self.officeToolBar  = self.build_toolBar('MCO')
+
+        self.artToolBar.hide()
+        self.officeToolBar.hide()
 
         self.tbs = [tb for tb in self.toolBars.values()]
 

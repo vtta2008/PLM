@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 from .Tools                 import (Calculator, Calendar, EnglishDictionary, FindFiles, ImageViewer,
-                                    NoteReminder, Screenshot, TextEditor)
+                                    NoteReminder, ScreenShot, TextEditor)
 from .Funcs                 import ForgotPassword, SignUp, SignIn
 from .InfoWidget            import InfoWidget
 from .Projects              import VFXProject

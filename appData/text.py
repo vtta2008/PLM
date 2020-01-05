@@ -106,7 +106,7 @@ TEMPLATE_QRC_FILE = '    <file>rc/{fname}</file>'
 TEMPLATE_QRC_FOOTER = '''
   </qresource>
   <qresource prefix="{style_prefix}">
-      <file>style.qss</file>
+      <file>dark.qss</file>
   </qresource>
 </RCC>
 '''

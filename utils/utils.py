@@ -623,7 +623,7 @@ def del_key(key, dict = {}):
         print("configKey poped: {key}".format(key=key))
 
 def clean_file_ext(ext):
-    fileNames = [f for f in get_file_path(os.getenv(__envKey__)) if ext in f] or []
+    fileNames = [f for f in get_file_path(os.getenv(__envKey__)) if f.endswith(ext)] or []
     if not fileNames == []:
         for filePth in fileNames:
             os.remove(filePth)

@@ -22,7 +22,7 @@ from .CommandUI                         import CommandUI
 from .PipelineManager                   import PipelineManager
 from .SysTray                           import SysTray
 from .SubUi                             import (Calendar, Calculator, EnglishDictionary,
-                                                FindFiles, ImageViewer, NoteReminder, Screenshot, TextEditor, ForgotPassword,
+                                                FindFiles, ImageViewer, NoteReminder, ScreenShot, TextEditor, ForgotPassword,
                                                 SignUp, SignIn, InfoWidget, VFXProject, AppSetting, UserSetting, Preferences,
                                                 Configurations)
 
@@ -65,6 +65,7 @@ class LayoutManager(DAMG):
         self.setts                      = self.settingLayouts()
         self.tools                      = self.toolLayouts()
         self.prjs                       = self.projectLayouts()
+        self.plgins                     = self.pluginsLayouts()
 
         tbcbs                           = self.preferences.header.toolBarCBs
         tbs                             = self.mainUI.mainToolBar.tbs
@@ -143,11 +144,11 @@ class LayoutManager(DAMG):
         self.contributing                   = InfoWidget(key='Contributing')
         self.credit                         = InfoWidget(key="Credit")
         self.licence                        = InfoWidget(key='Licence')
-        self.reference                      = InfoWidget(key='Reference')
+        self.references                     = InfoWidget(key='References')
         self.version                        = InfoWidget(key='Version')
 
         layouts = [self.about, self.codeConduct, self.contributing, self.credit, self.licence,
-                    self. reference, self.version]
+                    self.references, self.version]
 
         for layout in layouts:
             layout.settings._settingEnable = True
@@ -163,6 +164,7 @@ class LayoutManager(DAMG):
         layouts = [self.settingUI, self.userSetting]
 
         for layout in layouts:
+            layout.settings._settingEnable  = True
             self.registLayout(layout)
 
         return layouts
@@ -177,7 +179,7 @@ class LayoutManager(DAMG):
         self.imageViewer                    = ImageViewer()
         self.noteReminder                   = NoteReminder()
         self.preferences                    = Preferences()
-        self.screenShot                     = Screenshot()
+        self.screenShot                     = ScreenShot()
         self.textEditor                     = TextEditor()
 
         self.taskManager                    = BaseManager('TaskManager')
@@ -190,7 +192,7 @@ class LayoutManager(DAMG):
                        self.textEditor, self.taskManager, self.orgManager, self.prjManager, self.teamManager]
 
         for layout in layouts:
-            layout.settings._settingEnable = True
+            layout.settings._settingEnable  = True
             self.registLayout(layout)
 
         return layouts
@@ -199,11 +201,21 @@ class LayoutManager(DAMG):
 
         self.setupVFXprj                     = VFXProject()
 
-        for layout in [self.setupVFXprj, ]:
-            layout.settings._settingEnable = True
+        layouts = [self.setupVFXprj, ]
+        for layout in layouts:
+            layout.settings._settingEnable  = True
             self.registLayout(layout)
+        return layouts
 
-        layouts = [self.setupVFXprj]
+    def pluginsLayouts(self):
+        from plugins.NodeGraph.NodeGraph import NodeGraph
+
+        self.nodeGraph                      = NodeGraph()
+
+        layouts = [self.nodeGraph, ]
+        for layout in layouts:
+            layout.settings._settingEnable  = True
+            self.registLayout(layout)
         return layouts
 
     def registLayout(self, layout):

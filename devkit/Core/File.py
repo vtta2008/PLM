@@ -16,8 +16,6 @@ import os
 from PyQt5.QtCore                           import QFile
 
 from appData                                import QSS_DIR
-from cores.Settings                         import Settings
-from cores.SignalManager                    import SignalManager
 
 class FileBase(QFile):
 
@@ -27,11 +25,8 @@ class FileBase(QFile):
     _copyright                              = __copyright__()
     _filePath                               = None
 
-    def __init__(self):
-        super(FileBase, self).__init__()
-
-        self.settings                       = Settings(self)
-        self.signals                        = SignalManager(self)
+    def __init__(self, *__args):
+        QFile.__init__(self)
 
     @property
     def copyright(self):
@@ -57,10 +52,14 @@ class QssFile(FileBase):
 
     key                                     = 'QssFile'
 
-    qssPths = dict(dark                     = os.path.join(QSS_DIR, 'darkstyle.qss'),
-                   chacoal                  = os.path.join(QSS_DIR, 'chacoal.qss'),
-                   bright                   = os.path.join(QSS_DIR, 'brightstyle.qss'),
-                   nuker                    = os.path.join(QSS_DIR, 'nuker.qss'),)
+    qssPths = dict(
+                    bright                   = os.path.join(QSS_DIR, 'bright.qss'),
+                    chacoal                  = os.path.join(QSS_DIR, 'chacoal.qss'),
+                    cmd                      = os.path.join(QSS_DIR, 'cmd.qss'),
+                    dark                     = os.path.join(QSS_DIR, 'grey.qss'),
+                    grey                     = os.path.join(QSS_DIR, 'grey.qss'),
+                    nuker                    = os.path.join(QSS_DIR, 'nuker.qss'),
+                   )
 
     def __init__(self, style):
         super(QssFile, self).__init__()

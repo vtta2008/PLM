@@ -393,6 +393,8 @@ class Checks(dict):
     _toBuildCmds                    = False
     _ignoreIDs                      = False
 
+    _actionRegisterError            = False
+
     def __init__(self):
         dict.__init__(self)
 
@@ -421,6 +423,14 @@ class Checks(dict):
     @property
     def ignoreIDs(self):
         return self._ignoreIDs
+
+    @property
+    def actionRegisterError(self):
+        return self._actionRegisterError
+
+    @actionRegisterError.setter
+    def actionRegisterError(self, val):
+        self._actionRegisterError   = val
 
     @report.setter
     def report(self, val):
@@ -562,6 +572,7 @@ class DefaultSetting(dict):
     @save_plmInfo.setter
     def save_plmInfo(self, val):
         self._save_plmInfo          = val
+
 
 class GlobalSetting(object):
 

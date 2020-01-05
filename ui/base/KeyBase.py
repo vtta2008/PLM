@@ -9,11 +9,10 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-
+from __buildtins__ import globalSetting
 """ Import """
 
 # Python
-import os
 from functools                          import partial
 
 # PLM
@@ -21,8 +20,8 @@ from bin                                import DAMGDICT
 from devkit.Widgets                     import Action, Button
 from utils                              import is_string, is_action, is_button
 from appData                            import (OPEN_URL_KEYS, CONFIG_DEV, CONFIG_TOOLS, CONFIG_OFFICE, CONFIG_TDS,
-                                                CONFIG_ART, CONFIG_TEX, CONFIG_POST, CONFIG_VFX, CONFIG_PRE,
-                                                CONFIG_EXTRA, CONFIG_SYSTRAY, SHORTCUT_KEYS, STYLESHEET_KEYS,
+                                                CONFIG_ART, CONFIG_TEX, CONFIG_POST, CONFIG_VFX, CONFIG_PRE, LIBRARY_UI_KEYS,
+                                                SHORTCUT_KEYS, STYLESHEET_KEYS, PLUGIN_UI_KEY, FORM_KEY,
                                                 BTNTAGSIZE, TAGBTNSIZE, plmInfo)
 
 class KeyBase(DAMGDICT):
@@ -32,31 +31,35 @@ class KeyBase(DAMGDICT):
     plmInfo                             = plmInfo
 
     # Actions
-    stylesheetActions                   = STYLESHEET_KEYS
-    viewActions                         = ['Showall']
-
     appActions                          = ['AppSetting', 'Configurations', 'Preferences', 'Organisation', 'Project', 'Team', 'Task', 'Exit']
     goActions                           = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppDataFolder', 'PreferenceFolder', ]
-    officeActions                       = ['TextEditor', 'NoteReminder'] + CONFIG_OFFICE
-    toolsActions                        = CONFIG_TOOLS + ['CleanPyc', 'ReConfig', 'Debug']
-    devActions                          = CONFIG_DEV
-    libActions                          = ['Alpha', 'HDRI', 'Texture']
-    helpActions                         = ['PLM wiki', 'About', 'CodeOfConduct', 'Contributing', 'Credit',
-                                            'Reference', 'Version', 'Feedback', 'ContactUs', ]
-
     editActions                         = SHORTCUT_KEYS
-    preActions                          = CONFIG_PRE
-    tdActions                           = CONFIG_TDS
-    artActions                          = CONFIG_ART
-    texActions                          = CONFIG_TEX
-    postActions                         = CONFIG_POST
-    vfxActions                          = CONFIG_VFX
-    extraActions                        = CONFIG_EXTRA
-    sysTrayActions                      = CONFIG_SYSTRAY
+    viewActions                         = ['ShowAll']
+    stylesheetActions                   = STYLESHEET_KEYS
+    officeActions                       = ['TextEditor', 'NoteReminder'] + [k for k in CONFIG_OFFICE if k in plmInfo.keys()]
+
+    devActions                          = [k for k in CONFIG_DEV if k in plmInfo.keys() and not k in ['QtDesigner']]
+    toolsActions                        = [k for k in CONFIG_TOOLS if k in plmInfo.keys()] + ['CleanPyc', 'ReConfig', 'Debug', ] + devActions
+
+    pluginActions                       = PLUGIN_UI_KEY
+    formActions                         = FORM_KEY
+
+    libActions                          = LIBRARY_UI_KEYS
+    helpActions                         = ['PLM wiki', 'About', 'CodeOfConduct', 'Contributing', 'Credit', 'References',
+                                           'Version', 'FeedBack', 'ContactUs', ] + formActions
+
+    artActions                          = [k for k in CONFIG_ART if k in plmInfo.keys()]
+    tdActions                           = [k for k in CONFIG_TDS if k in plmInfo.keys()]
+    vfxActions                          = [k for k in CONFIG_VFX if k in plmInfo.keys()]
+    texActions                          = [k for k in CONFIG_TEX if k in plmInfo.keys()]
+    postActions                         = [k for k in CONFIG_POST if k in plmInfo.keys()]
+    preActions                          = [k for k in CONFIG_PRE if k in plmInfo.keys()]
+
+    sysTrayActions                      = ['Minimize', 'Restore', 'Maximize', 'Snipping Tool', 'ScreenShot', 'Exit', 'SignIn']
 
     tagButtons                          = ['pythonTag', 'licenceTag', 'versionTag']
     managerButtons                      = ['Organisation', 'Project', 'Team', 'Task']
-    userButtons                         = ['UserSetting', 'SignUp', 'SwitchAccount', 'SignOut']
+    userButtons                         = ['UserSetting', 'LogIn', 'SwitchAccount', 'LogOut']
 
     checkedKeys                         = [k for k in plmInfo.keys()]
 
@@ -71,7 +74,8 @@ class KeyBase(DAMGDICT):
         print('ActionKeyConfigError: Key is not in plmInfo: {0}'.format(key))
 
     def actionRegisterError(self, key):
-        print('ActionRegisterError: This action is already registered: {0}'.format(key))
+        if globalSetting.checks.actionRegisterError:
+            print('ActionRegisterError: This action is already registered: {0}'.format(key))
 
     def buttonRegisterError(self, key):
         print('ButtonRegisterError: This button is already registered: {0}'.format(key))

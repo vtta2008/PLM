@@ -25,6 +25,7 @@ class SysTrayIconMenu(Menu):
         self.parent                 = parent
         self.actionManager          = actionManager
         self.actions                = self.actionManager.sysTrayMenuActions(self.parent)
+        self.loginChanged(self._login)
 
     def loginChanged(self, val):
         self._login = val

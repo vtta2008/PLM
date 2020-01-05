@@ -37,16 +37,16 @@ from .configs            import (__plmWiki__, __localServer__, __pkgsReq__, __ho
                                  N_MESSAGES_TEXT, SERVER_CONNECT_FAIL, TEMPLATE_QRC_HEADER, TEMPLATE_QRC_FILE,
                                  TEMPLATE_QRC_FOOTER, HEADER_SCSS, HEADER_QSS,
 
-                                 TRACK_TDS, TRACK_VFX, TRACK_ART, TRACK_PRE, TRACK_TEX, TRACK_POST,
-                                 TRACK_OFFICE, TRACK_DEV, TRACK_TOOLS, TRACK_EXTRA, TRACK_SYSTRAY,
-                                 KEYDETECT, FIX_KEY, APP_UI_KEYS, KEYPACKAGE, CONFIG_TDS, CONFIG_VFX,
+                                 TRACK_TDS, TRACK_VFX, TRACK_ART, TRACK_PRE, TRACK_TEX, TRACK_POST, LIBRARY_UI_KEYS,
+                                 TRACK_OFFICE, TRACK_DEV, TRACK_TOOLS, TRACK_EXTRA, TRACK_SYSTRAY, PLUGIN_UI_KEY,
+                                 KEYDETECT, APP_UI_KEYS, KEYPACKAGE, CONFIG_TDS, CONFIG_VFX, FORM_KEY,
                                  CONFIG_ART, CONFIG_PRE, CONFIG_TEX, CONFIG_POST, CONFIG_OFFICE, CONFIG_DEV,
                                  CONFIG_TOOLS, CONFIG_EXTRA, CONFIG_SYSTRAY, ACTIONS_DATA, STYLESHEET_KEYS, OPEN_URL_KEYS,
-                                 SHORTCUT_KEYS,  QT_BINDINGS, QT_ABSTRACTIONS, QT5_IMPORT_API, QT_API_VALUES, QT_LIB_VALUES,
+                                 SHORTCUT_KEYS, QT_BINDINGS, QT_ABSTRACTIONS, QT5_IMPORT_API, QT_API_VALUES, QT_LIB_VALUES,
                                  QT_BINDING, QT_ABSTRACTION, IMAGE_BLACKLIST, PY2, SYS_OPTS, APP_FUNCS_KEYS,
-                                 notKeys, autodeskVer,
+                                 IGNORE_ICONS, notKeys, autodeskVer,
 
-                                 QUESTIONS, ABOUT, CREDIT, CODECONDUCT, CONTRIBUTING, REFERENCE, LICENCE, VERSION,
+                                 QUESTIONS, ABOUT, CREDIT, CODECONDUCT, CONTRIBUTING, REFERENCES, LICENCE, VERSION,
 
                                  INI, Native, Invalid, LOG_FORMAT, DT_FORMAT, ST_FORMAT, datetTimeStamp, IMGEXT,
 

@@ -140,7 +140,8 @@ class SignalBase(DAMG):
             signal                           = self.getSignal(key)
             signal.emit(arg)
         else:
-            self.logger.info('EmittableError: {0} is not allowed to emit'.format(self.key))
+            if globalSetting.tracks.emittable:
+                self.logger.info('EmittableError: {0} is not allowed to emit'.format(self.key))
             return
 
     def connect(self, key, target):

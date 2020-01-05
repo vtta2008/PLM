@@ -10,13 +10,13 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-import os, shutil
+import os, shutil, sqlite3
 
 from PyQt5.QtWidgets            import QFileDialog
 from PyQt5.QtCore               import QSize
 
-from devkit.Gui               import Image, Pixmap
-from devkit.Widgets           import Label, GroupBox, VBoxLayout, Button
+from devkit.Gui                 import Image, Pixmap
+from devkit.Widgets             import Label, GroupBox, VBoxLayout, Button
 from utils                      import LocalDatabase, get_avatar_image, resize_image
 from appData                    import AUTO_COLOR, AVATAR_DIR, center, ASPEC_RATIO
 
@@ -66,7 +66,7 @@ class AvatarLabel(Label):
 
     try:
         username = db.query_table('curUser')[0]
-    except (ValueError, IndexError):
+    except (ValueError, IndexError, sqlite3.OperationalError):
         username = 'DemoUser'
 
     _name = username

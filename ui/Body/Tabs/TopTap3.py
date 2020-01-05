@@ -23,8 +23,10 @@ from PyQt5.QtGui                        import QTextCursor
 # PLM
 from bin                                import DAMGLIST
 from appData                            import SCROLLBAROFF, NO_WRAP
+from cores.StyleSheet                   import StyleSheet
 from devkit.Widgets                     import Widget, PlainTextEdit, ShortCut, VBoxLayout, StatusBar
 from devkit.Core                        import Process
+
 
 class TopTap3(Widget):
 
@@ -47,7 +49,7 @@ class TopTap3(Widget):
         self.layout = VBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
-        self.setStyleSheet(mystylesheet(self))
+        # self.stylesheet                 = StyleSheet(self).changeStyleSheet('cmd')
 
     def buildUI(self):
         self.process                    = Process(self.dataReady, self.onError, self.onOutput, self.isFinished, self)
@@ -314,56 +316,7 @@ class TopTap3(Widget):
         self._cwd = os.path.join(fixPath, fixName).replace('\\', '/')
         self.process.setWorkingDirectory(self._cwd)
         self.cursorEnd()
-            
 
-def mystylesheet(self):
-    return """
-QMainWindow{
-background-color: #212121; }
-QMainWindow:title
-{
-background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #ca0619);
-color: #3465a4;
-}
-QPlainTextEdit
- {font-family: Noto Sans Mono; 
-font-size: 8pt; 
-background-color: #212121; 
-color: #f3f3f3; padding: 2; 
-border: none;}
-QPlainTextEdit:focus { 
-border: none; }
-QScrollBar {            
-border: 1px solid #2e3436;
-background: #292929;
-width:8px;
-height: 8px;
-margin: 0px 0px 0px 0px;
-}
-QScrollBar::handle {
-background: #2e3436;
-min-height: 0px;
-min-width: 0px;
-}
-QScrollBar::add-line {
-background: #2e3436;
-height: 0px;
-width: 0px;
-subcontrol-position: bottom;
-subcontrol-origin: margin;
-}
-QScrollBar::sub-line {
-background: #2e3436;
-height: 0px;
-width: 0px;
-subcontrol-position: top;
-subcontrol-origin: margin;
-}
-QStatusBar {
-font-family: Noto Sans Mono; 
-font-size: 7pt; 
-color: #729fcf;}
-"""
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 1:31 AM

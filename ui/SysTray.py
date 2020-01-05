@@ -54,7 +54,7 @@ class SysTray(SystemTrayIcon):
     def sys_tray_icon_activated(self, reason):
         if reason == self.DoubleClick:
             if self._login:
-                self.signals.emit('command', 'Restore')
+                self.parent.command('Restore')
 
     def log_in(self):
         self.showMessage('Welcome', "Log in as {0}".format(self.username), self.Information, 500)
@@ -69,7 +69,6 @@ class SysTray(SystemTrayIcon):
         self._login = login
         self.rightClickMenu.loginChanged(self._login)
 
-    @pyqtSlot(str, str, str, int)
     def sysNotify(self, title, mess, iconType='info', timeDelay=500):
         if iconType == 'info':
             icon = self.Information

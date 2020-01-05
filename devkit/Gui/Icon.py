@@ -20,7 +20,7 @@ from PyQt5.QtGui                            import QIcon
 
 # PLM
 from utils                                  import get_app_icon, get_tag_icon, get_logo_icon
-from appData                                import iconInfo
+from appData                                import iconInfo, IGNORE_ICONS
 from devkit.Core                            import Size
 
 class Icon(QIcon):
@@ -69,7 +69,8 @@ class AppIcon(Icon):
                 break
 
         if not self._found:
-            print("IconNotFound: {0}: Could not find icon name: {1}".format(__name__, self.iconName))
+            if not self.iconName in IGNORE_ICONS:
+                print("IconNotFound: {0}: Could not find icon name: {1}".format(self.__class__.__name__, self.iconName))
         else:
             self.addFile(self.iconPth, Size(self.iconSize, self.iconSize))
 

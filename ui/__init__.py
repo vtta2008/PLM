@@ -17,6 +17,6 @@ from .PipelineManager   import PipelineManager
 from .SysTray           import SysTray
 from .CommandUI         import CommandUI
 from .SubUi             import (Calendar, Calculator, EnglishDictionary,
-                                FindFiles, ImageViewer, NoteReminder, Screenshot, TextEditor, ForgotPassword,
+                                FindFiles, ImageViewer, NoteReminder, ScreenShot, TextEditor, ForgotPassword,
                                 SignUp, SignIn, InfoWidget, VFXProject, AppSetting, UserSetting, Preferences,
                                 Configurations)

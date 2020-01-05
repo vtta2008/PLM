@@ -55,6 +55,7 @@ class DAMGTEAM(Application):
         self.layouts                    = self.layoutManager.register
 
         for layout in [self.mainUI, self.sysTray, self.signIn, self.signUp, self.forgotPW]:
+            layout.signals._emitable    = True
             layout.signals.connect('loginChanged', self.loginChanged)
 
         self.set_styleSheet('dark')
@@ -66,6 +67,7 @@ class DAMGTEAM(Application):
             connectServer = False
         else:
             connectServer = True
+
         try:
             self.username, token, cookie, remember = self.database.query_table('curUser')
         except (ValueError, IndexError):
@@ -98,7 +100,7 @@ class DAMGTEAM(Application):
                             self.sysTray.log_in()
                             self.mainUI.show()
                     else:
-                        self.signinEvent()
+                        self.signInEvent()
             else:
                 if not globalSetting.modes.allowLocalMode:
                     MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
@@ -108,7 +110,7 @@ class DAMGTEAM(Application):
                     self.mainUI.show()
         else:
             if connectServer:
-                self.signinEvent()
+                self.signInEvent()
             else:
                 if not globalSetting.modes.allowLocalMode:
                     MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
@@ -154,19 +156,22 @@ class DAMGTEAM(Application):
         else:
             if cmdData.value == 'CleanPyc':
                 func = clean_file_ext
-                arg = None
+                arg = 'py'
             elif cmdData.value == 'Debug':
                 func = self.mainUI.botTabUI.botTab2.test
                 arg = None
             elif cmdData.value == 'Restore':
-                func = self.mainUI.showRestore
+                func = self.mainUI.showNormal
                 arg = None
             elif cmdData.value == 'Maximize':
-                func = self.mainUI.showMaximize
+                func = self.mainUI.showMaximized
                 arg = None
             elif cmdData.value == 'Minimize':
-                func = self.mainUI.showMinimize
+                func = self.mainUI.showMinimized
                 arg = None
+            elif cmdData.value in ['Organisation', 'Project', 'Team', 'Task']:
+                func = self.showUI
+                arg = '{0}Manager'.format(cmdData.value)
             else:
                 func = print
                 arg = key
@@ -220,7 +225,7 @@ class DAMGTEAM(Application):
         return self._login
 
     def showAll(self):
-        for ui in self.layouts:
+        for ui in self.layouts.values():
             ui.show()
 
     def signInEvent(self):

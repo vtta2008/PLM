@@ -71,6 +71,9 @@ statusTips                          = {}
 dirInfo                            = ConfigDirectory()
 pthInfo                            = ConfigPath()
 
+from bin import PresetDB
+localDB = PresetDB(filename=pthInfo['LOCAL_DB'])
+
 class CommandData(DAMGDICT):
     key = 'CommandData'
 
@@ -263,6 +266,7 @@ class ConfigApps(DAMGDICT):
             if globalSetting.tracks.appInfo:
                 pprint.pprint(self)
 
+
 class ConfigUrl(DAMGDICT):
 
     key = 'ConfigUrl'
@@ -282,6 +286,7 @@ class ConfigUrl(DAMGDICT):
         if globalSetting.defaults.save_configInfo:
             if globalSetting.defaults.save_urlInfo:
                 save_data(pthInfo['urlCfg', self])
+
 
 class ConfigPipeline(DAMGDICT):
 
@@ -333,10 +338,8 @@ class ConfigPipeline(DAMGDICT):
 
         for key in eKeys:
             if os.path.exists(eVal[eKeys.index(key)]):
-                for k in self.appInfo.keys():
-                    if key in k:
-                        self.appInfo[k] = eVal[eKeys.index(key)]
-                        launchAppKeys.append(k)
+                self.appInfo[k] = eVal[eKeys.index(key)]
+                launchAppKeys.append(k)
 
         self.appInfo.update()
 
@@ -344,11 +347,11 @@ class ConfigPipeline(DAMGDICT):
             try:
                 icon = self.iconInfo['icon32'][key]
             except KeyError:
-                icon = '{0}.icon.png'.format(key)
+                icon = key
                 iconMissing.append(key)
             finally:
-                toolTips[key] = 'Lauch {0}'.format(key)
-                statusTips[key] = 'Lauch {0}: {1}'.format(key, self.appInfo[key])
+                toolTips[key] = 'Launch {0}'.format(key)
+                statusTips[key] = 'Launch {0}: {1}'.format(key, self.appInfo[key])
                 value = self.appInfo[key]
                 valueType = CMD_VALUE_TYPE['pth']
                 arg = value
@@ -366,7 +369,7 @@ class ConfigPipeline(DAMGDICT):
                 try:
                     icon = self.iconInfo['icon32'][key]
                 except KeyError:
-                    icon = '{0}.icon.png'.format(key)
+                    icon = key
                     iconMissing.append(key)
             finally:
                 if key in OPEN_URL_KEYS:
@@ -427,7 +430,7 @@ class ConfigPipeline(DAMGDICT):
             try:
                 icon = self.iconInfo['icon32'][key]
             except KeyError:
-                icon = '{0}.icon.png'.format(key)
+                icon = key
                 iconMissing.append(key)
             finally:
                 toolTips[key] = 'Show: {0}'.format(key)
@@ -536,10 +539,8 @@ ABOUT               = read_file('ABOUT')
 CREDIT              = read_file('CREDIT')
 CODECONDUCT         = read_file('CODECONDUCT')
 CONTRIBUTING        = read_file('CONTRIBUTING')
-REFERENCE           = read_file('REFERENCE')
+REFERENCES          = read_file('REFERENCES')
 LICENCE             = read_file('LICENCE_MIT')
-
-CONFIG_OFFICE = [k for k in plmInfo.keys() if k in CONFIG_OFFICE]
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:56 PM

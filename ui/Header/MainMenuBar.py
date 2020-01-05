@@ -42,12 +42,12 @@ class MainMenuBar(GroupVBox):
         self.viewMenu               = self.build_viewMenu()
         self.officeMenu             = self.build_officceMenu()
         self.toolsMenu              = self.build_toolMenu()
-        self.devMenu                = self.build_devMenu()
+        self.pluginMenu             = self.build_pluginMenu()
         self.libMenu                = self.build_libMenu()
         self.helpMenu               = self.build_helpMenu()
 
         for menu in [self.appMenu, self.goMenu, self.editMenu, self.viewMenu, self.officeMenu, self.toolsMenu,
-                     self.devMenu, self.libMenu, self.helpMenu]:
+                     self.pluginMenu, self.libMenu, self.helpMenu]:
             menu.key                = '{0}_Menu_{1}'.format(self.key, menu.title())
             menu._name              = '{0} Menu {1}'.format(self.key, menu.title())
 
@@ -90,18 +90,20 @@ class MainMenuBar(GroupVBox):
         self.add_actions(menu, actions)
         return menu
 
-    def build_devMenu(self):
-        menu                        = self.addMenu("&Dev")
-        actions                     = self.actionManger.devMenuActions(self.parent)
+    def build_pluginMenu(self):
+        menu                        = self.addMenu("&Plug-ins")
+        actions                     = self.actionManger.pluginMenuActions(self.parent)
         self.add_actions(menu, actions)
         return menu
 
     def build_toolMenu(self):
         menu                        = self.addMenu("&Tools")
         actions                     = self.actionManger.toolsMenuActions(self.parent)
-        self.add_actions(menu, actions[0:7])
+        self.add_actions(menu, actions[0:8])
         menu.addSeparator()
-        self.add_actions(menu, actions[7:])
+        self.add_actions(menu, actions[8:11])
+        menu.addSeparator()
+        self.add_actions(menu, actions[11:])
         return menu
 
     def build_officceMenu(self):

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: localSQL.py
+Script Name: PresetDB.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -47,8 +47,8 @@ class LocalDatabase(DAMG):
     def __init__(self):
         super(LocalDatabase, self).__init__(self)
 
-        self.date = DAMGDATE()
-        self.time = DAMGTIMER()
+        self.date                       = DAMGDATE()
+        self.time                       = DAMGTIMER()
         self.update()
 
     def update(self):
@@ -64,31 +64,33 @@ class LocalDatabase(DAMG):
         self.cur.fetchall()
         self.cur.execute("DELETE FROM {0}".format(tableName))
         self.conn.commit()
-        return
 
     def timelog(self, details):
         self.username, token, cookie, remember = self.query_table("curUser")
         time = self.time.currentTime()
         date = self.date.currentDate()
-
         self.cur.execute("INSERT INTO timelog (username, time, date, details) VALUES (?,?,?,?)", (self.username, time, date, details))
         self.conn.commit()
-        return
+
+    def update_user_login(self, username, token, cookie, remember):
+        self.cur.execute("SELECT * FROM curUser")
+        self.cur.fetchall()
+        self.cur.execute("DELETE FROM curUser")
+        self.cur.execute("INSERT INTO curUser ('username', 'token', 'cookie', 'remember') VALUES (?,?,?,?)", (username, token, cookie, remember))
+        self.conn.commit()
+        self.conn.close()
 
     def update_table(self, tableName, values):
         columns = self.columnList(tableName)
-        prefix = "INSERT INTO {0}".format(tableName)
-        midfix = "VALUES"
-
         cmd = ""
         vcmd = ""
         for i in range(len(columns)):
-            cmd += columns[i] + ", "
-            vcmd += values[i] + ", "
-        command = "{0} ({1}) {2} ({3})".format(prefix, cmd, midfix, vcmd)
-        self.cur.execute("{0}".format(command))
+            cmd += '{0}, '.format(str(columns[i]))
+            vcmd += '{0}, '.format(values[i])
+        command = "INSERT INTO {0} ({1}) VALUES ({2})".format(tableName, cmd[0:-2], vcmd[0:-2])
+
+        self.cur.execute("{0} ".format(command), )
         self.conn.commit()
-        return
 
     def columnList(self, tableName):
         result = self.cur.execute("PRAGMA table_info({0})".format(tableName)).fetchall()

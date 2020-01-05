@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from appData                import (SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCE, VERSION)
+from appData                import (SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCES, VERSION)
 from devkit.Widgets         import Widget, GridLayout, Label, Button
 from devkit.Gui             import AppIcon
 
@@ -22,15 +22,15 @@ class InfoWidget(Widget):
         Contributing        = CONTRIBUTING,
         Credit              = CREDIT,
         Licence             = LICENCE,
-        Reference           = REFERENCE,
+        References          = REFERENCES,
         Version             = VERSION
     )
 
     def __init__(self, key=None, parent=None):
         super(InfoWidget, self).__init__(parent)
 
-        self.key = key
-        self.parent = parent
+        self.key            = key
+        self.parent         = parent
 
         if self.key is None or self.key not in self.content.keys():
             print("KeyError: Key is None, or not in content qssPths: {0}".format(self.key))

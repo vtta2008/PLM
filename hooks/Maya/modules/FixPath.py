@@ -102,7 +102,7 @@ class FixPath(object):
 
         cmds.setParent(mainLayout)
 
-        # referencePart = cmds.frameLayout(l='REFERENCE', lv=True, cll=True)
+        # referencePart = cmds.frameLayout(l='REFERENCES', lv=True, cll=True)
         #
         # for i in range(len(REFERENCE_NODES)):
         #     cmds.rowColumnLayout(nc=4, cw=CW)

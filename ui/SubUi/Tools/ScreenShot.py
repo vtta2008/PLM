@@ -26,13 +26,13 @@ from appData                    import ASPEC_RATIO, SMOOTH_TRANS
 from devkit.Widgets             import Widget, GridLayout, Button, HBoxLayout, Label
 from devkit.Gui                 import AppIcon
 
-class Screenshot(Widget):
+class ScreenShot(Widget):
 
     key = 'ScreenShot'
 
     def __init__(self, parent=None):
-        super(Screenshot, self).__init__(parent)
-        self.setWindowIcon(AppIcon(32, "Screenshot"))
+        super(ScreenShot, self).__init__(parent)
+        self.setWindowIcon(AppIcon(32, "ScreenShot"))
         self.resize(960, 540)
 
         self.layout = GridLayout()
@@ -127,7 +127,7 @@ class Screenshot(Widget):
 
 def main():
     app = QApplication(sys.argv)
-    screenshot = Screenshot()
+    screenshot = ScreenShot()
     screenshot.show()
     app.exec_()
 

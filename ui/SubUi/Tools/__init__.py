@@ -15,7 +15,7 @@ from .EnglishDictionary     import EnglishDictionary
 from .FindFiles             import FindFiles
 from .ImageViewer           import ImageViewer
 from .NoteReminder          import NoteReminder
-from .Screenshot            import Screenshot
+from .ScreenShot            import ScreenShot
 from .TextEditor            import TextEditor
 
 # -------------------------------------------------------------------------------------------------------------

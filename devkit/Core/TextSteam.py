@@ -21,8 +21,9 @@ class TextStream(QTextStream):
     _name                                   = 'DAMG Text Stream'
     _copyright                              = __copyright__()
 
-    def __init__(self, *__args):
+    def __init__(self, fileName):
         QTextStream.__init__(self)
+        self.setDevice(fileName)
 
     @property
     def copyright(self):

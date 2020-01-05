@@ -18,10 +18,10 @@ from ctypes                         import wintypes
 
 # PyQt5
 from PyQt5.QtWidgets                import QApplication
-from PyQt5.QtGui                    import QPalette
+from PyQt5.QtGui                    import QColor
 
 # PLM
-from appData                        import __version__, __appname__, __organization__, __website__, appInfo, DarkPalette
+from appData                        import __version__, __appname__, __organization__, __website__, DarkPalette
 from cores.Loggers                  import Loggers
 from cores.SignalManager            import SignalManager
 from cores.Settings                 import Settings
@@ -36,15 +36,10 @@ class Application(QApplication):
     Type                            = 'DAMGAPPLICATION'
     key                             = 'Application'
     _name                           = 'DAMG Application'
-    _envKey                         = __envKey__
-    _root                           = ROOT
     _copyright                      = __copyright__()
 
     _login                          = False
-    _styleSheet                     = None
-
-    pallete                         = QPalette()
-    appInfo                         = appInfo
+    _styleSheetData                 = None
 
     def __init__(self):
         super(Application, self).__init__(sys.argv)
@@ -72,14 +67,23 @@ class Application(QApplication):
         self.settings._settingEnable    = True
 
         if qt_api == 'PyQt5':
-            palette = self.palette()
-            palette.setColor(palette.Normal, palette.Link, Color(DarkPalette.COLOR_BACKGROUND_LIGHT))
-            self.setPalette(palette)
+            self.palette = self.palette()
+            self.palette.setColor(self.palette.Normal, self.palette.Link, QColor(DarkPalette.COLOR_BACKGROUND_LIGHT))
+            self.setPalette(self.palette)
 
     def set_styleSheet(self, style):
-        self.appStyle.getQssFile(style)
-        self.appStyle.changeStyleSheet(style)
+        self._styleSheetData            = self.appStyle.getStyleSheet(style)
+        self.setStyleSheet(self._styleSheetData)
         self.settings.initSetValue('styleSheet', style, self.key)
+
+    def clearStyleSheet(self):
+        self._styleSheetData            = ''
+        self.setStyleSheet(self._styleSheetData)
+        self.settings.initSetValue('styleSheet', None, self.key)
+
+    def changeStyleSheet(self, style):
+        self.clearStyleSheet()
+        self.set_styleSheet(style)
 
     def getAppProcess(self):
         proc = Process(parent=self)
@@ -149,6 +153,14 @@ class Application(QApplication):
     @property
     def name(self):
         return self._name
+
+    @property
+    def styleSheetData(self):
+        return self._styleSheetData
+
+    @styleSheetData.setter
+    def styleSheetData(self, val):
+        self._styleSheetData        = val
 
     @name.setter
     def name(self, val):

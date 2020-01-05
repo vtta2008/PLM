@@ -22,7 +22,7 @@ from appData                    import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, _
 from devkit.Widgets             import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label,
                                         Label, MessageBox, GroupGrid, )
 from devkit.Gui                 import AppIcon
-from utils                      import str2bool, LocalDatabase
+from utils                      import str2bool, bool2str, LocalDatabase
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """
@@ -112,10 +112,10 @@ class SignIn(Widget):
                     continue
 
             token = r.json()['token']
-            check = self.userCB.checkState()
+            check = bool2str(self.userCB.checkState())
 
             self.db.remove_data("curUser")
-            self.db.update_table("curUser", [username, token, cookie, str2bool(check)])
+            self.db.update_user_login(username, token, cookie, bool2str(check))
             self.signals.emit('loginChanged', True)
         else:
             self.db.remove_data("curUser")

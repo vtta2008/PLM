@@ -11,21 +11,17 @@ Description:
 """ Import """
 
 # Python
-import os
 import platform
-
-# PyQt5
-from PyQt5.QtCore                   import QFile
 
 # Plm
 from bin                            import DAMG, DAMGDICT
 from appData                        import DarkPalette
 from cores.Loggers                  import Loggers
-from appData                        import QSS_DIR
-from devkit.Core                    import TextStream
+from devkit.Core                    import TextStream, File, QssFile
 
 class StyleSheet(DAMG):
 
+    key                             = 'StylesSheet'
     _filename                       = None
     _stylesheet                     = None
     filenames                       = DAMGDICT()
@@ -36,34 +32,25 @@ class StyleSheet(DAMG):
         self.logger                 = Loggers(__name__)
         self.app                    = app
 
-    def getStyleSheet(self, fname):
+    def getStyleSheet(self, style):
 
-        self._filename              = self.getQssFile(fname)
-        self._filename.open(QFile.ReadOnly | QFile.Text)
+        self._filename              = self.getQssFile(style)
+        self._filename.open(File.ReadOnly | File.Text)
         ts                          = TextStream(self._filename)
         stylesheet                  = ts.readAll()
-        stylesheet                  = self.fixStyleSheet(stylesheet)
+        self._stylesheet            = self.fixStyleSheet(stylesheet)
+
         return stylesheet
 
-    def getQssFile(self, name):
-        if name == 'dark':
-            from bin.rcs import pyqt5_style_rc
-            filename = QFile(os.path.join(QSS_DIR, 'darkstyle.qss'))
-        elif name == 'bright':
-            filename = QFile(os.path.join(QSS_DIR, 'brightstyle.qss'))
-        elif name == 'chacoal':
-            filename = QFile(os.path.join(QSS_DIR, 'chacoal.qss'))
-        elif name == 'nuker':
-            filename = QFile(os.path.join(QSS_DIR, 'nuker.qss'))
+    def getQssFile(self, style):
+        if style == 'dark':
+            from bin.rcs import darkstyle_rc
         else:
-            filename = QFile(os.path.join(QSS_DIR, 'style.qss'))
-
-        return filename
+            from bin.rcs import pyqt5_style_rc
+        return QssFile(style)
 
     def fixStyleSheet(self, style):
-
         stylesheet                  = style
-
         if platform.system().lower() == 'darwin':
             mac_fix = '''
             QDockWidget::title
@@ -74,25 +61,11 @@ class StyleSheet(DAMG):
             }
             '''.format(DarkPalette.COLOR_BACKGROUND_NORMAL)
             stylesheet += mac_fix
-
         return stylesheet
 
     def removeStyleSheet(self):
-        self._stylesheet                = None
-        self.app.setStyleSheet(' ')
-        return self._stylesheet
-
-    def changeStyleSheet(self, key):
-        self.removeStyleSheet()
-        filename                        = self.getQssFile(key)
-        self._stylesheet                = self.getStyleSheet(filename)
-        self.app.setStyleSheet(self._stylesheet)
-        return self._stylesheet
-
-    def set_style(self, key):
-        fname = self.getQssFile(key)
-        style = self.getStyleSheet(fname)
-        self.changeStyleSheet(style)
+        self._filename                  = ''
+        self._stylesheet                = ''
 
     @property
     def filename(self):

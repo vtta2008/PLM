@@ -72,7 +72,7 @@ wonderUniApp        = ['Storyboarder', 'Krita (x64)', 'Krita (x32)' ]
 """ another app _data """
 
 anacondaApps        = ['Spyder', 'QtDesigner', 'Git Bash']
-mcOfficeApps        = ['Word', 'Excel', 'PowerPoint', 'Form']
+mcOfficeApps        = ['Word', 'Excel', 'PowerPoint']
 windowApps          = ['Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', ] + anacondaApps + mcOfficeApps
 
 # --------------------------------------------------------------------------------------------------------------
@@ -95,12 +95,12 @@ TRACK_TEX           = ['Mari', 'Substance Painter'] + TRACK_ART
 TRACK_POST          = ['Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro', 'NukeStudio']
 TRACK_OFFICE        = ['Word', 'Excel', 'PowerPoint', 'Wordpad']
 TRACK_DEV           = ['Sublime Text', 'QtDesigner', 'Git Bash', 'Command Prompt']
-TRACK_TOOLS         = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'ScreenShot', 'NodeGraph']
+TRACK_TOOLS         = ['Calculator', 'Calendar', 'ContactUs', 'EnglishDictionary', 'FeedBack', 'ReportBug', 'FindFiles',
+                       'ImageViewer', 'InviteFriend', 'Messenger', 'NoteReminder', 'ScreenShot', 'TextEditor',
+                       'PluginManager', 'NodeGraph', 'Browser', ]
 TRACK_EXTRA         = ['ReConfig', 'CleanPyc', 'Debug', 'Snipping Tool']
 TRACK_SYSTRAY       = ['Snipping Tool', 'ScreenShot', 'Maximize', 'Minimize', 'Restore', 'Exit', ]
 KEYDETECT           = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url", "Changelog", "Settings"]
-
-FIX_KEY             = {'ScreenShot': 'ScreenShot', 'Snipping Tool': 'SnippingTool'}
 
 # --------------------------------------------------------------------------------------------------------------
 """ Combine Tracking configKey """
@@ -113,6 +113,7 @@ pTRACK = dict(TDS=TRACK_TDS, VFX=TRACK_VFX, ART=TRACK_ART, PRE = TRACK_PRE, TEXT
 
 UI_ELEMENT_KEYS     = ['BotTab', 'ConnectStatus', 'GridLayout', 'MainMenuSection', 'MainToolBar', 'MainToolBarSection',
                        'Notification','StatusBar', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting', ]
+
 MAIN_UI_KEYS        = ['SysTray', 'PipelineManager', 'ForgotPassword', 'SignIn', 'SignUp', 'SignOut', 'CommandUI', ]
 
 INFO_UI_KEYS        = ['About', 'CodeOfConduct', 'Contributing', 'Credit', 'Version', 'AppLicence', 'PythonLicence',
@@ -134,12 +135,15 @@ SETTING_UI_KEYS     = ['Configurations', 'Preferences', 'AppSetting', 'GlobalSet
 
 LIBRARY_UI_KEYS     = ['UserLibrary', 'HDRILibrary', 'TextureLibrary', 'AlphaLibrary', ]
 
-TOOL_UI_KEYS        = ['Calculator', 'Calendar', 'ContactUs', 'EnglishDictionary', 'FeedBack', 'ReportBug', 'FindFiles',
-                       'ImageViewer', 'InviteFriend', 'Messenger', 'NoteReminder', 'ScreenShot', 'TextEditor', ]
+TOOL_UI_KEYS        = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'NoteReminder',
+                       'ScreenShot', 'TextEditor', ]
 
-PLUGIN_UI_KEYS      = ['PluginManager', 'NodeGraph', 'Browser', ]
+PLUGIN_UI_KEY       = ['PluginManager', 'NodeGraph', 'Browser', 'Messenger', 'QtDesigner']
 
-APP_UI_KEYS         = MAIN_UI_KEYS + INFO_UI_KEYS + PROJ_UI_KEYS + ORG_UI_KEYS + TASK_UI_KEYS + TEAM_UI_KEYS + SETTING_UI_KEYS + LIBRARY_UI_KEYS + TOOL_UI_KEYS + PLUGIN_UI_KEYS
+FORM_KEY            = ['ContactUs', 'InviteFriend', 'ReportBug', ]
+
+APP_UI_KEYS         = MAIN_UI_KEYS + INFO_UI_KEYS + PROJ_UI_KEYS + ORG_UI_KEYS + TASK_UI_KEYS + TEAM_UI_KEYS + \
+                      SETTING_UI_KEYS + LIBRARY_UI_KEYS + TOOL_UI_KEYS + PLUGIN_UI_KEY + FORM_KEY
 
 # --------------------------------------------------------------------------------------------------------------
 """ PLM Function key """
@@ -165,9 +169,9 @@ OPEN_URL_KEYS       = ['pythonTag', 'licenceTag', 'versionTag', 'PLM wiki']
 
 SYS_CMD_KEYS        = ['Command Prompt', 'cmd', ]
 
-SHORTCUT_KEYS       = ['Copy', 'Cut', 'Paste', 'Delete', 'Find', 'ReName']
+SHORTCUT_KEYS       = ['Copy', 'Cut', 'Paste', 'Delete', 'Find', 'Rename']
 
-APP_FUNCS_KEYS      = ['ReConfig', 'CleanPyc', 'Debug', 'Restore', 'Maximize', 'Minimize', ] + FACTOR_KEYS + \
+APP_FUNCS_KEYS      = ['ReConfig', 'CleanPyc', 'Debug', 'Maximize', 'Minimize', 'Restore', ] + FACTOR_KEYS + \
                       APP_EVENT_KEYS + STYLESHEET_KEYS + STYLE_KEYS + OPEN_DIR_KEYS + OPEN_URL_KEYS + SYS_CMD_KEYS + \
                       SHORTCUT_KEYS
 
@@ -195,16 +199,15 @@ def generate_key_packages(*args):
     args = keyPackage + windowApps
     return args
 
+KEYPACKAGE      = generate_key_packages()
+
 def generate_config(key, *args):
-    keyPackages = generate_key_packages()
     keys = []
-    for k in keyPackages:
+    for k in KEYPACKAGE:
         for t in pTRACK[key]:
             if t in k:
                 keys.append(k)
     return list(sorted(set(keys)))
-
-KEYPACKAGE      = generate_key_packages()
 
 # Toolbar _data
 CONFIG_TDS      = generate_config('TDS')                            # TD artist
@@ -217,7 +220,7 @@ CONFIG_POST     = generate_config('POST')                           # Post produ
 # Tab 1 sections _data
 CONFIG_OFFICE   = generate_config('Office')                         # Paper work department
 CONFIG_DEV      = generate_config('Dev') + ['Command Prompt']       # Rnd - Research and development
-CONFIG_TOOLS    = generate_config('Tools')                          # useful/custom tool supporting for the whole pipeline
+CONFIG_TOOLS    = generate_config('Tools') + TOOL_UI_KEYS           # useful/custom tool supporting for the whole pipeline
 CONFIG_EXTRA    = generate_config('Extra')                          # Extra tool may be considering to use
 CONFIG_SYSTRAY  = generate_config('sysTray') + ['Exit', 'SignIn']
 
@@ -253,6 +256,10 @@ notKeys = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__fi
            '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR', 'SETTING_DIR', 'DB_DIR', 'LOG_DIR',
            'QSS_DIR', 'RCS_DIR', 'SCSS_DIR', '__appname__', 'subprocess', 'unicode_literals', 'absolute_import',
            '__organization__']
+
+IGNORE_ICONS = ['Widget', 'bright', 'dark', 'charcoal', 'nuker', 'TopTab1', 'TopTab2', 'Organisation', 'Project',
+                'Team', 'Task', 'ShowAll','ItemWidget', 'BaseManager', 'SettingInput', 'QueryPage', 'SysTray', 'Footer',
+                'BotTab1', 'BotTab2', 'Cmd', 'User', 'Tracking']
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/08/2018 - 2:30 AM

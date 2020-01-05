@@ -61,7 +61,6 @@ class TopTab2(Widget):
         self.layout.addWidget(self.settingGrp, 3, 0, 3, 3)
         self.layout.addWidget(self.messGrp, 0, 3, 6, 6)
 
-    @pyqtSlot(bool)
     def update_avatar(self, param):
         if param:
             self.username, token, cookie, remember = self.query.query_table('curUser')

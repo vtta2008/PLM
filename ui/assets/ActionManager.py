@@ -36,15 +36,6 @@ class ActionManager(KeyBase):
     def officeToolBarActions(self, parent):
         return self.createActions(self.officeActions, parent)
 
-    def editMenuActions(self, parent):
-        return self.createActions(self.editActions, parent)
-
-    def viewMenuActions(self, parent):
-        return self.createActions(self.viewActions, parent)
-
-    def extraToolActions(self, parent):
-        return self.createActions(self.extraActions, parent)
-
     def tdToolBarActions(self, parent):
         return self.createActions(self.tdActions, parent)
 
@@ -66,20 +57,14 @@ class ActionManager(KeyBase):
     def appMenuActions(self, parent):
         return self.createActions(self.appActions, parent)
 
-    def orgMenuActions(self, parent):
-        return self.createActions(self.orgActions, parent)
+    def editMenuActions(self, parent):
+        return self.createActions(self.editActions, parent)
 
-    def teamMenuActions(self, parent):
-        return self.createActions(self.teamActions, parent)
+    def viewMenuActions(self, parent):
+        return self.createActions(self.viewActions, parent)
 
     def stylesheetMenuActions(self, parent):
         return self.createActions(self.stylesheetActions, parent)
-
-    def projectMenuActions(self, parent):
-        return self.createActions(self.prjActions, parent)
-
-    def taskMenuActions(self, parent):
-        return self.createActions(self.taskActions, parent)
 
     def goMenuActions(self, parent):
         return self.createActions(self.goActions, parent)
@@ -90,8 +75,8 @@ class ActionManager(KeyBase):
     def toolsMenuActions(self, parent):
         return self.createActions(self.toolsActions, parent)
 
-    def devMenuActions(self, parent):
-        return self.createActions(self.devActions, parent)
+    def pluginMenuActions(self, parent):
+        return self.createActions(self.pluginActions, parent)
 
     def libMenuActions(self, parent):
         return self.createActions(self.libActions, parent)

@@ -10,17 +10,17 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from devkit.Widgets import GroupGrid, CheckBox, Label
-from bin import DAMGLIST, DAMGDICT
-from utils import str2bool
+from devkit.Widgets             import GroupGrid, CheckBox, Label
+from bin                        import DAMGLIST, DAMGDICT
+from utils                      import str2bool
 
 class HeaderCheckBoxes(GroupGrid):
 
-    key = 'HeaderCheckBoxes'
-    toolBarCBs = DAMGLIST()
-    menuCBs = DAMGLIST()
-    connectCBs = DAMGLIST()
-    checkboxes = DAMGDICT()
+    key                         = 'HeaderCheckBoxes'
+    toolBarCBs                  = DAMGLIST()
+    menuCBs                     = DAMGLIST()
+    connectCBs                  = DAMGLIST()
+    checkboxes                  = DAMGDICT()
 
     def __init__(self, title, parent=None):
         super(HeaderCheckBoxes, self).__init__(title, parent)
@@ -32,13 +32,13 @@ class HeaderCheckBoxes(GroupGrid):
 
         for i in range(len(cbs)):
             if i == 0:
-                prefix = 'ToolBar'
+                prefix          = 'ToolBar'
             elif i == 1:
-                prefix = 'Menu'
+                prefix          = 'Menu'
             elif i == 2:
-                prefix = 'Network'
+                prefix          = 'Network'
             else:
-                prefix = 'Header'
+                prefix          = 'Header'
 
             for cb in cbs[i]:
                 cb.key = '{0}_{1}_CheckBox_{2}'.format(self.parent.key, prefix, cb.text())
@@ -56,13 +56,13 @@ class HeaderCheckBoxes(GroupGrid):
         self.buildToolBarCheckBoxes()
         self.buildMenuCheckBoxes()
         self.buildServerStatusCheckBoxes()
-        self.headerCB = CheckBox('Header')
+        self.headerCB           = CheckBox('Header')
         self.headerCB.stateChanged.connect(self.headerStateChanged)
 
-        mnl = 0
-        csl = mnl + 1
-        tbl = csl + 1
-        hdl = tbl + 1
+        mnl                     = 0
+        csl                     = mnl + 1
+        tbl                     = csl + 1
+        hdl                     = tbl + 1
 
         self.layout.addWidget(Label({'txt': 'Menus'}), mnl, 0, 1, 1)
 
@@ -83,39 +83,39 @@ class HeaderCheckBoxes(GroupGrid):
         self.layout.addWidget(self.headerCB, hdl, 1, 1, 1)
 
     def buildServerStatusCheckBoxes(self):
-        self.serverCB = CheckBox('Server')
-        self.onlineCB = CheckBox('Internet')
-        self.modeCB = CheckBox('Mode')
-        self.allConnectCB = CheckBox("All: ")
+        self.serverCB           = CheckBox('Server')
+        self.onlineCB           = CheckBox('Internet')
+        self.modeCB             = CheckBox('Mode')
+        self.allConnectCB       = CheckBox("All: ")
         self.allConnectCB.stateChanged.connect(self.allConnectStateChanged)
         for cb in [self.allConnectCB, self.serverCB, self.onlineCB, self.modeCB]:
             self.connectCBs.append(cb)
 
     def buildMenuCheckBoxes(self):
-        self.mnAppCB = CheckBox('&App')
-        self.mnGoCB = CheckBox('&Go to')
-        self.mnEditCB = CheckBox('&Edit')
-        self.mnViewCB = CheckBox('&View')
-        self.mnOfficeCB = CheckBox('&Office')
-        self.mnToolsCB = CheckBox('&Tools')
-        self.mnDevCB = CheckBox('&Dev')
-        self.mnLibCB = CheckBox('&Lib')
-        self.mnHelpCB = CheckBox('&Help')
-        self.allMenuCB = CheckBox('All: ')
+        self.mnAppCB            = CheckBox('&App')
+        self.mnGoCB             = CheckBox('&Go to')
+        self.mnEditCB           = CheckBox('&Edit')
+        self.mnViewCB           = CheckBox('&View')
+        self.mnOfficeCB         = CheckBox('&Office')
+        self.mnToolsCB          = CheckBox('&Tools')
+        self.mnPluginCB         = CheckBox('&Plug-ins')
+        self.mnLibCB            = CheckBox('&Lib')
+        self.mnHelpCB           = CheckBox('&Help')
+        self.allMenuCB          = CheckBox('All: ')
         self.allMenuCB.stateChanged.connect(self.allMenuStateChanged)
 
         for cb in [self.allMenuCB, self.mnAppCB, self.mnGoCB, self.mnEditCB, self.mnViewCB,
-                   self.mnOfficeCB, self.mnToolsCB, self.mnDevCB, self.mnLibCB, self.mnHelpCB, ]:
+                   self.mnOfficeCB, self.mnToolsCB, self.mnPluginCB, self.mnLibCB, self.mnHelpCB, ]:
             self.menuCBs.append(cb)
 
     def buildToolBarCheckBoxes(self):
-        self.tbTDCB = CheckBox("TD")
-        self.tbVfxCB = CheckBox("VFX")
-        self.tbArtCB = CheckBox("Art")
-        self.tbTexCB = CheckBox("Tex")
-        self.tbPostCB = CheckBox('Post')
-        self.tbOfficeCB = CheckBox('Office')
-        self.allToolBarCB = CheckBox("All: ")
+        self.tbTDCB             = CheckBox("TD")
+        self.tbVfxCB            = CheckBox("VFX")
+        self.tbArtCB            = CheckBox("Art")
+        self.tbTexCB            = CheckBox("Tex")
+        self.tbPostCB           = CheckBox('Post')
+        self.tbOfficeCB         = CheckBox('Office')
+        self.allToolBarCB       = CheckBox("All: ")
         self.allToolBarCB.stateChanged.connect(self.allToolBarStateChanged)
 
         for cb in [self.allToolBarCB, self.tbTDCB, self.tbVfxCB, self.tbArtCB, self.tbTexCB, self.tbPostCB, self.tbOfficeCB]:

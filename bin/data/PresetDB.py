@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: localSQL.py
+Script Name: PresetDB.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -13,9 +13,9 @@ from __future__ import absolute_import
 """ Import """
 
 # Python
-import sqlite3 as lite
-import time, datetime, os, re
 
+import os, re
+import sqlite3              as lite
 from bin                    import DAMG
 
 # -------------------------------------------------------------------------------------------------------------
@@ -53,18 +53,6 @@ LTD = dict(
 # -------------------------------------------------------------------------------------------------------------
 """ Create database """
 
-def get_datetime():
-    datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
-    return datetime_stamp
-
-def getDate():
-    datetimeLog = get_datetime()
-    return datetimeLog.split('||')[0]
-
-def getTime():
-    datetimeLog = get_datetime()
-    return datetimeLog.split('||')[1]
-
 if __name__ == '__main__':
     with open(os.path.join(os.getcwd(), 'metadatas.py').replace('\\', '/'), "rb") as f:
         metadata = f.read().decode('utf-8')
@@ -75,12 +63,12 @@ else:
 def parse(pattern):
     return re.search(pattern, metadata).group(1).replace('"', '').strip()
 
-class SQLS(DAMG):
+class PresetDB(DAMG):
 
     key = "Resource DB"
 
     def __init__(self, filename='local.db', parent=None):
-        super(SQLS, self).__init__(parent)
+        super(PresetDB, self).__init__(parent)
 
         self.fn = filename
         self.conn = lite.connect(self.fn)
@@ -96,10 +84,13 @@ class SQLS(DAMG):
         author = parse(r'__author__\s+=\s+(.*)')
         display = parse(r'__appname__\s+=\s+(.*)')
 
+        self.cur.execute("SELECT * FROM metadata")
+        self.cur.fetchall()
+        self.cur.execute("DELETE FROM metadata")
         self.cur.execute("INSERT INTO metadata ('organisation', 'application', 'domain', 'version', 'display', 'author') VALUES (?,?,?,?,?,?)",
                          (orgname, appname, domain, version, display, author))
         self.conn.commit()
-
+        self.conn.close()
 
     def generate_command(self, tn = TN[0]):
         cl = LTD[tn]
