@@ -58,7 +58,7 @@ class Modes(dict):
     _subprocess                     = True
     _config                         = 'Alpha'
     _login                          = 'Offline'
-    _allowLocalMode                 = True
+    _allowLocalMode                 = False
 
     def __init__(self):
         dict.__init__(self)

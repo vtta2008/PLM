@@ -353,7 +353,14 @@ class ConfigPipeline(DAMGDICT):
                 value = self.appInfo[key]
                 valueType = CMD_VALUE_TYPE['pth']
                 arg = value
-                code = 'os.startfile'
+                if 'NukeX' in key:
+                    code = 'os.system'
+                elif 'Hiero' in key:
+                    code = 'os.system'
+                elif 'UVLayout' in key:
+                    code = 'os.system'
+                else:
+                    code = 'os.startfile'
 
             tooltip = toolTips[key]
             statustip = statusTips[key]
@@ -508,16 +515,6 @@ def tobuildCmds(*info):
 ignoreIDs                           = ignoreIDs()
 toBuildUis                          = tobuildUis()
 toBuildCmds                         = tobuildCmds()
-
-# pythonInfo                          = ConfigPython()
-# envInfo                             = ConfigEnvVar()
-# iconInfo                            = ConfigIcon()
-# mayaInfo                            = ConfigMaya()
-# appInfo                             = ConfigApps()
-# urlInfo                             = ConfigUrl()
-# plmInfo                             = ConfigPipeline(iconInfo, appInfo, urlInfo, dirInfo, pthInfo)
-# deviceInfo                          = ConfigMachine()
-
 
 # -------------------------------------------------------------------------------------------------------------
 """ Config qssPths from text file """

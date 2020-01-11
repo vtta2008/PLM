@@ -21,13 +21,14 @@ from PyQt5.QtWidgets                import QApplication
 from PyQt5.QtGui                    import QColor
 
 # PLM
-from appData                        import __version__, __appname__, __organization__, __website__, DarkPalette
+from appData                        import __version__, __appname__, __organization__, __website__, DarkPalette, STAY_ON_TOP
 from cores.Loggers                  import Loggers
 from cores.SignalManager            import SignalManager
 from cores.Settings                 import Settings
 from cores.StyleSheet               import StyleSheet
 from .Core                          import Process
 from .Gui                           import Cursor, LogoIcon, Color
+from .Widgets                       import MessageBox
 from plugins                        import Qt
 qt_api                              = Qt.__binding__
 
@@ -70,6 +71,11 @@ class Application(QApplication):
             self.palette = self.palette()
             self.palette.setColor(self.palette.Normal, self.palette.Link, QColor(DarkPalette.COLOR_BACKGROUND_LIGHT))
             self.setPalette(self.palette)
+
+    def messageBox(self, parent=None, title="auto", level="auto", message="test message", btn='ok'):
+        messBox = MessageBox(parent, title, level, message, btn)
+        messBox.setWindowFlag(STAY_ON_TOP)
+        return messBox
 
     def set_styleSheet(self, style):
         self._styleSheetData            = self.appStyle.getStyleSheet(style)

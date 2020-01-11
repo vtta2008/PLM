@@ -13,14 +13,6 @@ from __future__ import absolute_import, unicode_literals
 from __buildtins__ import ROOT, __envKey__
 """ import """
 
-# Python
-import os
-
-# PyQt5
-from PyQt5.QtGui                import QPixmap
-from PyQt5.QtCore               import Qt
-from PyQt5.QtWidgets            import QSplashScreen, QProgressBar
-
 # PLM
 from .configs            import (__plmWiki__, __localServer__, __pkgsReq__, __homepage__, __appname__, __organization__,
                                  __organizationID__, __organizationName__, __globalServer__, __google__, __plmSlogan__,
@@ -56,7 +48,7 @@ from .configs            import (__plmWiki__, __localServer__, __pkgsReq__, __ho
 
                                  SiPoExp, SiPoIgn, SiPoMax, SiPoMin, SiPoPre, right, left, center, bottom, cyan,
                                  StateMax, StateMin, StateNormal, dockB, dockL, dockR, dockT, DarkPalette, PRS, FRAMELESS, KEY_RETURN,
-                                 SCROLLBAROFF, NO_WRAP, BTNTAGSIZE, TAGBTNSIZE, BTNICONSIZE, ICONBTNSIZE, KEY_RELEASE,
+                                 SCROLLBAROFF, NO_WRAP, BTNTAGSIZE, TAGBTNSIZE, BTNICONSIZE, ICONBTNSIZE, KEY_RELEASE, BOLD,
 
                                  AUTO_COLOR, ASPEC_RATIO, SMOOTH_TRANS, IN_PORT, OUT_PORT, ICON_DOWN_ARROW, NODE_PROP, NODE_PROP_QLABEL, NODE_PROP_QLINEEDIT,
                                  NODE_PROP_QCHECKBOX, NODE_PROP_COLORPICKER, NODE_PROP_QTEXTEDIT, NODE_PROP_QCOMBO, Z_VAL_PIPE, NODE_SEL_COLOR,
@@ -69,67 +61,14 @@ from .configs            import (__plmWiki__, __localServer__, __pkgsReq__, __ho
                                  DRAG_DROP_ID, NODE_PROP_QSPINBOX, NODE_PROP_SLIDER, PEN_NONE, MOUSE_LEFT, WORD_WRAP, BRUSH_NONE, INTERSECT_ITEM_SHAPE, CONTAIN_ITEM_SHAPE, ROUND_CAP,
                                  ALT_MODIFIER, LINE_DASH, LINE_SOLID, LINE_DOT, LINE_DASH_DOT, MATCH_EXACTLY, DRAG_ONLY, ITEMENABLE, NO_BUTTON, hori, top, ANTIALIAS, State_Selected,
                                  MOUSE_MIDDLE, MOUSE_RIGHT,
+
+                                 STAY_ON_TOP,
+
                                  )
 
 
 
-class SplashScreen(QSplashScreen):
 
-    key                         = 'SplashScreen'
-    value                       = 0
-
-    def __init__(self):
-        super(SplashScreen, self).__init__(QPixmap(os.path.join(ROOT, 'assets', 'pics', 'splash.png')))
-        self.pic                = QPixmap(os.path.join(ROOT, 'assets', 'pics', 'splash.png'))
-        self.flag               = Qt.WindowStaysOnTopHint
-
-        self.setWindowFlag(self.flag)
-        self.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
-        self.setEnabled(False)
-
-        self.progressBar        = QProgressBar(self)
-        self.progressBar.setTextVisible(False)
-        self.progressBar.setMinimum(0)
-        self.progressBar.setMaximum(100)
-        self.progressBar.setGeometry(0, self.pic.height() - 50, self.pic.width(), 20)
-        self.show()
-
-        self.runPreConfig()
-
-    def runPreConfig(self):
-
-        self.show_message("Config python.")
-        self.pythonInfo          = ConfigPython()
-        self.envInfo             = ConfigEnvVar()
-        self.urlInfo             = ConfigUrl()
-        self.mayaInfo            = ConfigMaya()
-        self.updateProgress(3)
-
-        self.show_message("Config icon.")
-        self.iconInfo            = ConfigIcon()
-        self.updateProgress(1)
-
-        self.show_message("Config Installed apps.")
-        self.appInfo             = ConfigApps()
-        self.updateProgress(2)
-
-        self.show_message("Config device.")
-        self.deviceInfo          = ConfigMachine()
-        self.updateProgress(2)
-
-        self.show_message("Config pipeline.")
-        self.plmInfo             = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, dirInfo, pthInfo)
-        self.updateProgress(2)
-
-    def show_message(self, mess):
-        return self.showMessage(mess, bottom|center, cyan)
-
-    def updateProgress(self, value):
-        value = value*10
-        for i in range(value):
-            self.value += 1
-            self.progressBar.setValue(self.value)
-            i += 1
 
 iconInfo                        = ConfigIcon()
 appInfo                         = ConfigApps()

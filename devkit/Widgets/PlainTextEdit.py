@@ -28,8 +28,8 @@ class PlainTextEdit(QPlainTextEdit):
         QPlainTextEdit.__init__(self)
 
         self.parent                         = parent
-        self.settings = Settings(self)
-        self.signals = SignalManager(self)
+        self.settings                       = Settings(self)
+        self.signals                        = SignalManager(self)
 
         self.preset                         = preset
         if check_preset(self.preset):

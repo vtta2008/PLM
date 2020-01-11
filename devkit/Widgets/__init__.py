@@ -30,7 +30,9 @@ from .MainWindow        import MainWindow
 from .MenuBar           import MenuBar, Menu
 from .MessageBox        import MessageBox
 from .PlainTextEdit     import PlainTextEdit, Detector
+from .ProgressBar       import ProgressBar
 from .RubberBand        import RubberBand
+from .SplashScreen      import SplashScreen
 from .StatusBar         import StatusBar
 from .SystemTrayIcon    import SystemTrayIcon
 from .TabBar            import TabBar

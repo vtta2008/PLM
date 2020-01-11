@@ -18,13 +18,13 @@ from __buildtins__ import globalSetting
 import os, sys, requests
 
 # PLM
-from appData                            import (__localServer__, SYSTRAY_UNAVAI, SERVER_CONNECT_FAIL, KEY_RELEASE, SplashScreen)
+from appData                            import __localServer__, SYSTRAY_UNAVAI, SERVER_CONNECT_FAIL, KEY_RELEASE
 from utils                              import LocalDatabase, clean_file_ext
-from ui.assets                          import (ThreadManager, EventManager)
+from ui.SplashUI                        import SplashUI
+from ui.assets                          import ThreadManager, EventManager
 from ui.LayoutManager                   import LayoutManager
 from plugins.Browser                    import Browser
 from devkit.Application                 import Application
-from devkit.Widgets                     import MessageBox
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -36,26 +36,7 @@ class DAMGTEAM(Application):
     def __init__(self):
         Application.__init__(self)
 
-        # splash_pic = QPixmap(os.path.join(ROOT, 'assets', 'pics', 'splash.png'))
-        # splash = QSplashScreen(splash_pic, Qt.WindowStaysOnTopHint)
-        # splash.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
-        # splash.setEnabled(False)
-        #
-        # progressBar = QProgressBar(splash)
-        # progressBar.setMaximum(10)
-        # progressBar.setGeometry(0, splash_pic.height() - 50, splash_pic.width(), 20)
-        #
-        # splash.show()
-        # # splash.showMessage("<h1><font color='green'>Welcome BeeMan!</font></h1>", Qt.AlignTop | Qt.AlignCenter, Qt.black)
-        # for i in range(1, 11):
-        #     progressBar.setValue(i)
-        #     t = time.time()
-        #     while time.time() < t + 0.1:
-        #         self.processEvents()
-
-        # Simulate something that takes time
-        # time.sleep(1)
-        splash                          = SplashScreen()
+        splash                          = SplashUI(self)
         self.plmInfo                    = splash.plmInfo
         self.appInfo                    = splash.appInfo
 
@@ -102,7 +83,7 @@ class DAMGTEAM(Application):
                     r = requests.get(__localServer__, verify=False, headers={'Authorization': 'Bearer {0}'.format(token)}, cookies={'connect.sid': cookie})
                 except Exception:
                     if not globalSetting.modes.allowLocalMode:
-                        MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                        self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                         sys.exit()
                     else:
                         self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
@@ -123,7 +104,7 @@ class DAMGTEAM(Application):
                         splash.finish(self.signIn)
             else:
                 if not globalSetting.modes.allowLocalMode:
-                    MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                    self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                     sys.exit()
                 else:
                     self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
@@ -135,7 +116,7 @@ class DAMGTEAM(Application):
                 splash.finish(self.signIn)
             else:
                 if not globalSetting.modes.allowLocalMode:
-                    MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                    self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                     sys.exit()
                 else:
                     self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
