@@ -1,10 +1,13 @@
 #!/usr/bin/python
-from plugins.NodeGraph import QtGui, QtCore, QtWidgets
 
-from appData import (VIEWER_BG_COLOR, VIEWER_GRID_SIZE, VIEWER_GRID_OVERLAY, VIEWER_GRID_COLOR)
+from appData import (VIEWER_BG_COLOR, VIEWER_GRID_SIZE, VIEWER_GRID_OVERLAY, VIEWER_GRID_COLOR, ANTIALIAS, BRUSH_NONE,
+                     MOUSE_MIDDLE, MOUSE_RIGHT, ALT_MODIFIER,  )
 
+from PyQt5.QtWidgets import QGraphicsScene
+from PyQt5.QtCore import QLineF
+from PyQt5.QtGui import QColor, QPen, QBrush, QPainterPath
 
-class NodeScene(QtWidgets.QGraphicsScene):
+class NodeScene(QGraphicsScene):
 
     def __init__(self, parent=None):
         super(NodeScene, self).__init__(parent)
@@ -24,19 +27,19 @@ class NodeScene(QtWidgets.QGraphicsScene):
         x = left
         while x < rect.right():
             x += grid_size
-            lines.append(QtCore.QLineF(x, rect.top(), x, rect.bottom()))
+            lines.append(QLineF(x, rect.top(), x, rect.bottom()))
         y = top
         while y < rect.bottom():
             y += grid_size
-            lines.append(QtCore.QLineF(rect.left(), y, rect.right(), y))
+            lines.append(QLineF(rect.left(), y, rect.right(), y))
         painter.setPen(pen)
         painter.drawLines(lines)
 
     def drawBackground(self, painter, rect):
         painter.save()
 
-        bg_color = QtGui.QColor(*self._bg_color)
-        painter.setRenderHint(QtGui.QPainter.Antialiasing, False)
+        bg_color = QColor(*self._bg_color)
+        painter.setRenderHint(ANTIALIAS, False)
         painter.setBrush(bg_color)
         painter.drawRect(rect)
 
@@ -47,21 +50,21 @@ class NodeScene(QtWidgets.QGraphicsScene):
         zoom = self.viewer().get_zoom()
 
         if zoom > -0.5:
-            pen = QtGui.QPen(QtGui.QColor(*self.grid_color), 0.65)
+            pen = QPen(QColor(*self.grid_color), 0.65)
             self._draw_grid(painter, rect, pen, VIEWER_GRID_SIZE)
 
         color = bg_color.darker(150)
         if zoom < -0.0:
             color = color.darker(100 - int(zoom * 110))
-        pen = QtGui.QPen(color, 0.65)
+        pen = QPen(color, 0.65)
         self._draw_grid(painter, rect, pen, VIEWER_GRID_SIZE * 8)
 
         # fix border issue on the scene edge.
-        pen = QtGui.QPen(bg_color, 2)
+        pen = QPen(bg_color, 2)
         pen.setCosmetic(True)
-        path = QtGui.QPainterPath()
+        path = QPainterPath()
         path.addRect(rect)
-        painter.setBrush(QtCore.Qt.NoBrush)
+        painter.setBrush(BRUSH_NONE)
         painter.setPen(pen)
         painter.drawPath(path)
 
@@ -72,11 +75,7 @@ class NodeScene(QtWidgets.QGraphicsScene):
         if self.viewer():
             self.viewer().sceneMousePressEvent(event)
         super(NodeScene, self).mousePressEvent(event)
-        keep_selection = any([
-            event.button() == QtCore.Qt.MiddleButton,
-            event.button() == QtCore.Qt.RightButton,
-            event.modifiers() == QtCore.Qt.AltModifier
-        ])
+        keep_selection = any([event.button() == MOUSE_MIDDLE, event.button() == MOUSE_RIGHT, event.modifiers() == ALT_MODIFIER,])
         if keep_selection:
             for node in selected_nodes:
                 node.setSelected(True)

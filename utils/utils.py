@@ -9,24 +9,20 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
+from distutils.version import LooseVersion
 """ Import """
 
 # Python
-import os, sys, requests, platform, subprocess, winshell, yaml, json, re, datetime, time, uuid, win32api, linecache, \
-    shutil
+import os, sys, requests, platform, subprocess, winshell, yaml, json, re, datetime, time, uuid, win32api, linecache
 
 from PIL                import Image
 from resizeimage        import resizeimage
 from psutil             import cpu_percent, virtual_memory, disk_usage
 from GPUtil             import getGPUs
 
-__all__ = ['attr_type', 'auto_convert', 'camel_case_to_lower_case_underscore', 'camel_case_to_title', 'clean_name',
-            'is_bool', 'is_dict', 'is_list', 'is_none', 'is_number', 'is_string', 'list_attr_types',
-            'lower_case_underscore_to_camel_case', 'is_newer']
-
 # PyQt5
-from PyQt5.QtCore       import Qt, QRectF, QRect, QSize, pyqtSignal, pyqtSlot
-from PyQt5.QtGui        import QColor, QFont, QFontMetrics
+from PyQt5.QtCore       import Qt, QRectF, QRect, QSize, pyqtSignal, pyqtSlot, qVersion
+from PyQt5.QtGui        import QColor, QFont, QFontMetrics, QKeySequence
 from PyQt5.QtWidgets    import QAction, QPushButton
 
 # PLM
@@ -646,26 +642,6 @@ def clean_name(text):
     """
     return re.sub(r'[^a-zA-Z0-9\n\.]', '_', text)
 
-
-def camel_case_to_lower_case_underscore(text):
-    """
-    Split string by upper case letters.
-    F.e. useful to convert camel case strings to underscore separated ones.
-
-    :param str text: string to convert.
-    :returns: formatted string.
-    :rtype: str
-    """
-    words = []
-    from_char_position = 0
-    for current_char_position, char in enumerate(text):
-        if char.isupper() and from_char_position < text:
-            words.append(s[from_char_position:current_char_position].lower())
-            from_char_position = current_char_position
-    words.append(text[from_char_position:].lower())
-    return '_'.join(words)
-
-
 def camel_case_to_title(text):
     """
     Split string by upper case letters and return a nice name.
@@ -683,7 +659,6 @@ def camel_case_to_title(text):
     words.append(text[from_char_position:].title())
     return ' '.join(words)
 
-
 def lower_case_underscore_to_camel_case(text):
     """
     Convert string or unicode from lower-case underscore to camel-case.
@@ -696,7 +671,6 @@ def lower_case_underscore_to_camel_case(text):
     # use string's class to work on the string to keep its type
     class_ = text.__class__
     return split_string[0] + class_.join('', map(class_.capitalize, split_string[1:]))
-
 
 # - Attribute Functions ----
 def auto_convert(value):
@@ -716,7 +690,6 @@ def auto_convert(value):
     if atype == 'int':
         return int(value)
     return value
-
 
 def attr_type(value):
     """
@@ -754,7 +727,6 @@ def attr_type(value):
                 return 'int'
     return 'unknown'
 
-
 def list_attr_types(s):
     """
     Return a string type for the value.
@@ -775,7 +747,6 @@ def list_attr_types(s):
     if False not in list(set([is_number(x) for x in s])):
         return 'float%d' % len(s)
     return 'unknown'
-
 
 def is_none(s):
     return type(s).__name__ == 'NoneType'
@@ -876,7 +847,189 @@ def _swapListIndices(inputList, oldIndex, newIndex):
     inputList.pop(oldIndex)
     inputList.insert(newIndex, value)
 
+def setup_context_menu(graph):
+    """
+    Sets up the node graphs context menu with some basic menus and commands.
+    .. code-block:: python
+        :linenos:
+        from NodeGraphQt import NodeGraph, setup_context_menu
+        graph = NodeGraph()
+        setup_context_menu(graph)
+    Args:
+        graph (NodeGraphQt.NodeGraph): node graph.
+    """
+    root_menu = graph.get_context_menu('graph')
 
+    file_menu = root_menu.add_menu('&File')
+    edit_menu = root_menu.add_menu('&Edit')
+
+    # create "File" menu.
+    file_menu.add_command('Open...', _open_session, QKeySequence.Open)
+    file_menu.add_command('Save...', _save_session, QKeySequence.Save)
+    file_menu.add_command('Save As...', _save_session_as, 'Ctrl+Shift+s')
+    file_menu.add_command('Clear', _clear_session)
+
+    file_menu.add_separator()
+
+    file_menu.add_command('Zoom In', _zoom_in, '=')
+    file_menu.add_command('Zoom Out', _zoom_out, '-')
+    file_menu.add_command('Reset Zoom', _reset_zoom, 'h')
+
+    # create "Edit" menu.
+    undo_actn = graph.undo_stack().createUndoAction(graph.viewer(), '&Undo')
+    if LooseVersion(qVersion()) >= LooseVersion('5.10'):
+        undo_actn.setShortcutVisibleInContextMenu(True)
+    undo_actn.setShortcuts(QKeySequence.Undo)
+    edit_menu.qmenu.addAction(undo_actn)
+
+    redo_actn = graph.undo_stack().createRedoAction(graph.viewer(), '&Redo')
+    if LooseVersion(qVersion()) >= LooseVersion('5.10'):
+        redo_actn.setShortcutVisibleInContextMenu(True)
+    redo_actn.setShortcuts(QKeySequence.Redo)
+    edit_menu.qmenu.addAction(redo_actn)
+
+    edit_menu.add_separator()
+    edit_menu.add_command('Clear Undo History', _clear_undo)
+    edit_menu.add_separator()
+
+    edit_menu.add_command('Copy', _copy_nodes, QKeySequence.Copy)
+    edit_menu.add_command('Paste', _paste_nodes, QKeySequence.Paste)
+    edit_menu.add_command('Delete', _delete_nodes, QKeySequence.Delete)
+
+    edit_menu.add_separator()
+
+    edit_menu.add_command('Select all', _select_all_nodes, 'Ctrl+A')
+    edit_menu.add_command('Deselect all', _clear_node_selection, 'Ctrl+Shift+A')
+    edit_menu.add_command('Enable/Disable', _disable_nodes, 'd')
+
+    edit_menu.add_command('Duplicate', _duplicate_nodes, 'Alt+c')
+    edit_menu.add_command('Center Selection', _fit_to_selection, 'f')
+
+    edit_menu.add_separator()
+
+
+# --- menu command functions. ---
+
+
+def _zoom_in(graph):
+    """
+    Set the node graph to zoom in by 0.1
+    Args:
+        graph (NodeGraphQt.NodeGraph): node graph.
+    """
+    zoom = graph.get_zoom() + 0.1
+    graph.set_zoom(zoom)
+
+
+def _zoom_out(graph):
+    """
+    Set the node graph to zoom in by 0.1
+    Args:
+        graph (NodeGraphQt.NodeGraph): node graph.
+    """
+    zoom = graph.get_zoom() - 0.2
+    graph.set_zoom(zoom)
+
+
+def _reset_zoom(graph):
+    graph.reset_zoom()
+
+
+def _open_session(graph):
+    """
+    Prompts a file open dialog to load a session.
+    Args:
+        graph (NodeGraphQt.NodeGraph): node graph.
+    """
+    current = graph.current_session()
+    viewer = graph.viewer()
+    file_path = viewer.load_dialog(current)
+    if file_path:
+        graph.load_session(file_path)
+
+
+def _save_session(graph):
+    """
+    Prompts a file save dialog to serialize a session if required.
+    Args:
+        graph (NodeGraphQt.NodeGraph): node graph.
+    """
+    current = graph.current_session()
+    if current:
+        graph.save_session(current)
+        msg = 'Session layout saved:\n{}'.format(current)
+        viewer = graph.viewer()
+        viewer.message_dialog(msg, title='Session Saved')
+    else:
+        _save_session_as(graph)
+
+
+def _save_session_as(graph):
+    """
+    Prompts a file save dialog to serialize a session.
+    Args:
+        graph (NodeGraphQt.NodeGraph): node graph.
+    """
+    current = graph.current_session()
+    viewer = graph.viewer()
+    file_path = viewer.save_dialog(current)
+    if file_path:
+        graph.save_session(file_path)
+
+
+def _clear_session(graph):
+    """
+    Prompts a warning dialog to clear the node graph session.
+    Args:
+        graph (NodeGraphQt.NodeGraph): node graph.
+    """
+    viewer = graph.viewer()
+    if viewer.question_dialog('Clear Current Session?', 'Clear Session'):
+        graph.clear_session()
+
+
+def _clear_undo(graph):
+    """
+    Prompts a warning dialog to clear undo.
+    Args:
+        graph (NodeGraphQt.NodeGraph): node graph.
+    """
+    viewer = graph.viewer()
+    msg = 'Clear all undo history, Are you sure?'
+    if viewer.question_dialog('Clear Undo History', msg):
+        graph.undo_stack().clear()
+
+
+def _copy_nodes(graph):
+    graph.copy_nodes()
+
+
+def _paste_nodes(graph):
+    graph.paste_nodes()
+
+
+def _delete_nodes(graph):
+    graph.delete_nodes(graph.selected_nodes())
+
+
+def _select_all_nodes(graph):
+    graph.select_all()
+
+
+def _clear_node_selection(graph):
+    graph.clear_selection()
+
+
+def _disable_nodes(graph):
+    graph.disable_nodes(graph.selected_nodes())
+
+
+def _duplicate_nodes(graph):
+    graph.duplicate_nodes(graph.selected_nodes())
+
+
+def _fit_to_selection(graph):
+    graph.fit_to_selection()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 3:58 AM

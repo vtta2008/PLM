@@ -305,9 +305,9 @@ class ShowLayoutCmd(CmdBase):
         self.task.show()
 
     def undo(self):
-        self.task.setValue('pos', self.task.pos())
-        self.task.setValue('size', self.task.size())
-        self.task.setValue('state', self.task.state())
+        self.task.updateProgress('pos', self.task.pos())
+        self.task.updateProgress('size', self.task.size())
+        self.task.updateProgress('state', self.task.state())
         self.task.hide()
 
     def redo(self):
@@ -329,9 +329,9 @@ class HideLayoutCmd(CmdBase):
                 self.task = self.app.registryLayout[key]
 
     def run(self):
-        self.task.setValue('pos', self.task.pos())
-        self.task.setValue('size', self.task.size())
-        self.task.setValue('state', self.task.state())
+        self.task.updateProgress('pos', self.task.pos())
+        self.task.updateProgress('size', self.task.size())
+        self.task.updateProgress('state', self.task.state())
         self.task.hide()
 
     def undo(self):
@@ -366,9 +366,9 @@ class CloseLayoutCmd(CmdBase):
                 self.task = self.app.registryLayout[key]
 
     def run(self):
-        self.task.setValue('pos', self.task.pos())
-        self.task.setValue('size', self.task.size())
-        self.task.setValue('state', self.task.state())
+        self.task.updateProgress('pos', self.task.pos())
+        self.task.updateProgress('size', self.task.size())
+        self.task.updateProgress('state', self.task.state())
         self.task.close()
         self.app.registerLayout.deRegister(self.task)
 
@@ -420,9 +420,9 @@ class ShowMaximizedCmd(CmdBase):
         self.task.showMaximized()
 
     def undo(self):
-        self.task.setValue('pos', self.task.pos())
-        self.task.setValue('size', self.task.size())
-        self.task.setValue('state', self.task.state())
+        self.task.updateProgress('pos', self.task.pos())
+        self.task.updateProgress('size', self.task.size())
+        self.task.updateProgress('state', self.task.state())
         self.task.hide()
 
     def redo(self):
@@ -444,9 +444,9 @@ class ShowMinimizedCmd(CmdBase):
                 self.task = self.app.registryLayout[key]
 
     def run(self):
-        self.task.setValue('pos', self.task.pos())
-        self.task.setValue('size', self.task.size())
-        self.task.setValue('state', self.task.state())
+        self.task.updateProgress('pos', self.task.pos())
+        self.task.updateProgress('size', self.task.size())
+        self.task.updateProgress('state', self.task.state())
 
         self.task.showMinimized()
 
@@ -497,9 +497,9 @@ class ShowRestoreCmd(CmdBase):
         self.task.showRestore()
 
     def undo(self):
-        self.task.setValue('pos', self.task.pos())
-        self.task.setValue('size', self.task.size())
-        self.task.setValue('state', self.task.state())
+        self.task.updateProgress('pos', self.task.pos())
+        self.task.updateProgress('size', self.task.size())
+        self.task.updateProgress('state', self.task.state())
         self.task.hide()
 
     def redo(self):

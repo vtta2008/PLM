@@ -1,28 +1,19 @@
 #!/usr/bin/python
-from plugins.NodeGraph import QtCore, QtWidgets
 
 from appData import Z_VAL_NODE, NODE_WIDTH, NODE_HEIGHT
+from devkit.Widgets import GraphicObject
+from devkit.Core import RectF
 
 
-class AbstractNodeItem(QtWidgets.QGraphicsItem):
-    """
-    The base class of all node qgraphics item.
-    """
+class AbstractNodeItem(GraphicObject):
 
     def __init__(self, name='node', parent=None):
         super(AbstractNodeItem, self).__init__(parent)
         self.setFlags(self.ItemIsSelectable | self.ItemIsMovable)
         self.setZValue(Z_VAL_NODE)
-        self._properties = {
-            'id': None,
-            'name': name.strip(),
-            'color': (13, 18, 23, 255),
-            'border_color': (46, 57, 66, 255),
-            'text_color': (255, 255, 255, 180),
-            'type_': 'AbstractBaseNode',
-            'selected': False,
-            'disabled': False,
-        }
+        self._properties = {'id': None, 'name': name.strip(), 'color': (13, 18, 23, 255),
+                            'border_color': (46, 57, 66, 255), 'text_color': (255, 255, 255, 180),
+                            'type_': 'AbstractBaseNode', 'selected': False, 'disabled': False, }
         self._width = NODE_WIDTH
         self._height = NODE_HEIGHT
 
@@ -31,7 +22,7 @@ class AbstractNodeItem(QtWidgets.QGraphicsItem):
             self.__module__, self.__class__.__name__, self.name)
 
     def boundingRect(self):
-        return QtCore.QRectF(0.0, 0.0, self._width, self._height)
+        return RectF(0.0, 0.0, self._width, self._height)
 
     def mousePressEvent(self, event):
         self._properties['selected'] = True
@@ -42,23 +33,9 @@ class AbstractNodeItem(QtWidgets.QGraphicsItem):
         super(AbstractNodeItem, self).setSelected(selected)
 
     def pre_init(self, viewer, pos=None):
-        """
-        Called before node has been added into the scene.
-
-        Args:
-            viewer (NodeGraphQt.widgets.viewer.NodeViewer): main viewer.
-            pos (tuple): the cursor pos if node is called with tab search.
-        """
         pass
 
     def post_init(self, viewer, pos=None):
-        """
-        Called after node has been added into the scene.
-
-        Args:
-            viewer (NodeGraphQt.widgets.viewer.NodeViewer): main viewer
-            pos (tuple): the cursor pos if node is called with tab search.
-        """
         pass
 
     @property
@@ -157,42 +134,19 @@ class AbstractNodeItem(QtWidgets.QGraphicsItem):
 
     @property
     def properties(self):
-        """
-        return the node view attributes.
-
-        Returns:
-            dict: {property_name: property_value}
-        """
-        props = {'width': self.width,
-                 'height': self.height,
-                 'pos':  self.xy_pos}
+        props = {'width': self.width, 'height': self.height, 'pos':  self.xy_pos}
         props.update(self._properties)
         return props
 
     def viewer(self):
-        """
-        return the main viewer.
-
-        Returns:
-            NodeGraphQt.widgets.viewer.NodeViewer: viewer object.
-        """
         if self.scene():
             return self.scene().viewer()
 
     def delete(self):
-        """
-        remove node view from the scene.
-        """
         if self.scene():
             self.scene().removeItem(self)
 
     def from_dict(self, node_dict):
-        """
-        set the node view attributes from the dictionary.
-
-        Args:
-            node_dict (dict): serialized node dict.
-        """
         node_attrs = list(self._properties.keys()) + ['width', 'height', 'pos']
         for name, value in node_dict.items():
             if name in node_attrs:

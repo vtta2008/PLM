@@ -1,35 +1,25 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-from plugins.NodeGraph import QtWidgets, QtCore
-from appData import DRAG_DROP_ID
+
+from appData import DRAG_DROP_ID, DRAG_ONLY, ITEMENABLE
+
+from PyQt5.QtWidgets import QTreeWidgetItem, QTreeWidget
+
+TYPE_NODE = QTreeWidgetItem.UserType + 1
+TYPE_CATEGORY = QTreeWidgetItem.UserType + 2
 
 
-TYPE_NODE = QtWidgets.QTreeWidgetItem.UserType + 1
-TYPE_CATEGORY = QtWidgets.QTreeWidgetItem.UserType + 2
-
-
-class BaseNodeTreeItem(QtWidgets.QTreeWidgetItem):
+class BaseNodeTreeItem(QTreeWidgetItem):
 
     def __eq__(self, other):
-        """
-        Workaround fix for QTreeWidgetItem "operator not implemented error".
-        see link: https://bugreports.qt.io/browse/PYSIDE-74
-        """
         return id(self) == id(other)
 
 
-class NodeTreeWidget(QtWidgets.QTreeWidget):
-    """
-    Node tree for displaying node types.
-
-    Args:
-        parent (QtWidgets.QWidget): parent of the new widget.
-        node_graph (NodeGraphQt.NodeGraph): node graph.
-    """
+class NodeTreeWidget(QTreeWidget):
 
     def __init__(self, parent=None, node_graph=None):
         super(NodeTreeWidget, self).__init__(parent)
-        self.setDragDropMode(QtWidgets.QAbstractItemView.DragOnly)
+        self.setDragDropMode(DRAG_ONLY)
         self.setHeaderHidden(True)
         self._factory = None
         self._custom_labels = {}
@@ -45,9 +35,6 @@ class NodeTreeWidget(QtWidgets.QTreeWidget):
         return mime_data
 
     def _build_tree(self):
-        """
-        Populate the node tree.
-        """
         self.clear()
         categories = set()
         node_types = {}
@@ -64,7 +51,7 @@ class NodeTreeWidget(QtWidgets.QTreeWidget):
                 label = '- {}'.format(category)
             cat_item = BaseNodeTreeItem(self, [label], type=TYPE_CATEGORY)
             cat_item.setFirstColumnSpanned(True)
-            cat_item.setFlags(QtCore.Qt.ItemIsEnabled)
+            cat_item.setFlags(ITEMENABLE)
             self.addTopLevelItem(cat_item)
             cat_item.setExpanded(True)
             category_items[category] = cat_item
@@ -79,26 +66,10 @@ class NodeTreeWidget(QtWidgets.QTreeWidget):
             category_item.addChild(item)
 
     def _set_node_factory(self, factory):
-        """
-        Set current node factory.
-
-        Args:
-            factory (NodeFactory): node factory.
-        """
         self._factory = factory
 
     def set_category_label(self, category, label):
-        """
-        Set custom display label for a node category.
-
-        Args:
-            category (str): node identifier category eg. "nodeGraphQt.nodes"
-            label (str): custom display label.
-        """
         self._custom_labels[category] = label
 
     def update(self):
-        """
-        Update and refresh the node tree widget.
-        """
         self._build_tree()

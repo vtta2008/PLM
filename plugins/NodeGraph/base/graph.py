@@ -1,10 +1,8 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
-import json
-import os
-import re
 
-from plugins.NodeGraph import QtCore, QtWidgets
+import os, re, json
+
 from .commands                          import NodeAddedCmd, NodeRemovedCmd, NodeMovedCmd, PortConnectedCmd
 from .factory                           import NodeFactory
 from .menu                              import NodeGraphMenu, NodesMenu
@@ -13,12 +11,13 @@ from .node                              import NodeObject
 from .port                              import Port
 from plugins.NodeGraph.widgets.viewer   import NodeViewer
 
+from bin                                import DAMG
+from PyQt5.QtCore                       import pyqtSignal, QMimeData, QPoint
+from PyQt5.QtWidgets                    import QUndoStack, QAction, QApplication
+
 from appData                            import (DRAG_DROP_ID, PIPE_LAYOUT_CURVED, PIPE_LAYOUT_STRAIGHT, PIPE_LAYOUT_ANGLE,
                                                 IN_PORT, OUT_PORT)
-
-from bin                                import DAMG
-from PyQt5.QtCore                       import pyqtSignal
-
+from devkit.Widgets                     import Widget, VBoxLayout
 
 class NodeGraph(DAMG):
 
@@ -29,7 +28,7 @@ class NodeGraph(DAMG):
     port_connected                      = pyqtSignal(Port, Port)
     port_disconnected                   = pyqtSignal(Port, Port)
     property_changed                    = pyqtSignal(NodeObject, str, object)
-    data_dropped                        = pyqtSignal(QtCore.QMimeData, QtCore.QPoint)
+    data_dropped                        = pyqtSignal(QMimeData, QPoint)
 
     def __init__(self, parent=None):
         super(NodeGraph, self).__init__(parent)
@@ -38,9 +37,9 @@ class NodeGraph(DAMG):
         self._model                     = NodeGraphModel()
         self._viewer                    = NodeViewer()
         self._node_factory              = NodeFactory()
-        self._undo_stack                = QtWidgets.QUndoStack(self)
+        self._undo_stack                = QUndoStack(self)
 
-        tab = QtWidgets.QAction('Search Nodes', self)
+        tab = QAction('Search Nodes', self)
         tab.setShortcut('tab')
         tab.triggered.connect(self._toggle_tab_search)
         self._viewer.addAction(tab)
@@ -141,8 +140,8 @@ class NodeGraph(DAMG):
     @property
     def widget(self):
         if self._widget is None:
-            self._widget = QtWidgets.QWidget()
-            layout = QtWidgets.QVBoxLayout(self._widget)
+            self._widget = Widget()
+            layout = VBoxLayout(self._widget)
             layout.setContentsMargins(0, 0, 0, 0)
             layout.addWidget(self._viewer)
         return self._widget
@@ -512,7 +511,7 @@ class NodeGraph(DAMG):
         nodes = nodes or self.selected_nodes()
         if not nodes:
             return False
-        clipboard = QtWidgets.QApplication.clipboard()
+        clipboard = QApplication.clipboard()
         serial_data = self._serialize(nodes)
         serial_str = json.dumps(serial_data)
         if serial_str:
@@ -521,7 +520,7 @@ class NodeGraph(DAMG):
         return False
 
     def paste_nodes(self):
-        clipboard = QtWidgets.QApplication.clipboard()
+        clipboard = QApplication.clipboard()
         cb_text = clipboard.text()
         if not cb_text:
             return

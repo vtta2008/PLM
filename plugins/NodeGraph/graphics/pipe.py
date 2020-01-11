@@ -1,23 +1,23 @@
 #!/usr/bin/python
 import math
 
-from plugins.NodeGraph import QtCore, QtGui, QtWidgets
 from appData import (PIPE_DEFAULT_COLOR, PIPE_ACTIVE_COLOR, PIPE_HIGHLIGHT_COLOR, PIPE_DISABLED_COLOR, PIPE_STYLE_DASHED,
                      PIPE_STYLE_DEFAULT, PIPE_STYLE_DOTTED, PIPE_LAYOUT_STRAIGHT, PIPE_WIDTH, IN_PORT, OUT_PORT, Z_VAL_PIPE,
-                     Z_VAL_NODE_WIDGET, PIPE_LAYOUT_ANGLE, PIPE_LAYOUT_CURVED)
-from plugins.NodeGraph.qgraphics.port import PortItem
+                     Z_VAL_NODE_WIDGET, PIPE_LAYOUT_ANGLE, PIPE_LAYOUT_CURVED, LINE_DASH, LINE_DOT, LINE_SOLID,
+                     LINE_DASH_DOT, ROUND_CAP, )
 
-PIPE_STYLES = {
-    PIPE_STYLE_DEFAULT: QtCore.Qt.SolidLine,
-    PIPE_STYLE_DASHED: QtCore.Qt.DashLine,
-    PIPE_STYLE_DOTTED: QtCore.Qt.DotLine
-}
+from plugins.NodeGraph.graphics.port import PortItem
 
+PIPE_STYLES = {PIPE_STYLE_DEFAULT: LINE_SOLID, PIPE_STYLE_DASHED: LINE_DASH, PIPE_STYLE_DOTTED: LINE_DOT}
 
-class Pipe(QtWidgets.QGraphicsPathItem):
-    """
-    Base Pipe item used for drawing node connections.
-    """
+from devkit.Widgets import GraphicPathItem
+from devkit.Gui import Pen, Brush, PainterPath
+from devkit.Core import RectF
+
+from PyQt5.QtGui import QPolygonF, QColor, QTransform
+from PyQt5.QtCore import QPointF, QLineF
+
+class Pipe(GraphicPathItem):
 
     def __init__(self, input_port=None, output_port=None):
         super(Pipe, self).__init__()
@@ -30,10 +30,10 @@ class Pipe(QtWidgets.QGraphicsPathItem):
         self._input_port = input_port
         self._output_port = output_port
         size = 6.0
-        self._arrow = QtGui.QPolygonF()
-        self._arrow.append(QtCore.QPointF(-size, size))
-        self._arrow.append(QtCore.QPointF(0.0, -size * 1.5))
-        self._arrow.append(QtCore.QPointF(size, size))
+        self._arrow = QPolygonF()
+        self._arrow.append(QPointF(-size, size))
+        self._arrow.append(QPointF(0.0, -size * 1.5))
+        self._arrow.append(QPointF(size, size))
 
     def __repr__(self):
         in_name = self._input_port.name if self._input_port else ''
@@ -53,37 +53,28 @@ class Pipe(QtWidgets.QGraphicsPathItem):
                 self.highlight()
 
     def paint(self, painter, option, widget):
-        """
-        Draws the connection line between nodes.
-
-        Args:
-            painter (QtGui.QPainter): painter used for drawing the item.
-            option (QtGui.QStyleOptionGraphicsItem):
-                used to describe the parameters needed to draw.
-            widget (QtWidgets.QWidget): not used.
-        """
-        color = QtGui.QColor(*self._color)
+        color = QColor(*self._color)
         pen_style = PIPE_STYLES.get(self.style)
         pen_width = PIPE_WIDTH
         if self._active:
-            color = QtGui.QColor(*PIPE_ACTIVE_COLOR)
-            if pen_style == QtCore.Qt.DashDotDotLine:
+            color = QColor(*PIPE_ACTIVE_COLOR)
+            if pen_style == LINE_DASH_DOT:
                 pen_width += 1
             else:
                 pen_width += 0.35
         elif self._highlight:
-            color = QtGui.QColor(*PIPE_HIGHLIGHT_COLOR)
+            color = QColor(*PIPE_HIGHLIGHT_COLOR)
             pen_style = PIPE_STYLES.get(PIPE_STYLE_DEFAULT)
 
         if self.disabled():
             if not self._active:
-                color = QtGui.QColor(*PIPE_DISABLED_COLOR)
+                color = QColor(*PIPE_DISABLED_COLOR)
             pen_width += 0.2
             pen_style = PIPE_STYLES.get(PIPE_STYLE_DOTTED)
 
-        pen = QtGui.QPen(color, pen_width)
+        pen = Pen(color, pen_width)
         pen.setStyle(pen_style)
-        pen.setCapStyle(QtCore.Qt.RoundCap)
+        pen.setCapStyle(ROUND_CAP)
 
         painter.save()
         painter.setPen(pen)
@@ -104,18 +95,18 @@ class Pipe(QtWidgets.QGraphicsPathItem):
 
             color.setAlpha(255)
             if self._highlight:
-                painter.setBrush(QtGui.QBrush(color.lighter(150)))
+                painter.setBrush(Brush(color.lighter(150)))
             elif self._active or self.disabled():
-                painter.setBrush(QtGui.QBrush(color.darker(200)))
+                painter.setBrush(Brush(color.darker(200)))
             else:
-                painter.setBrush(QtGui.QBrush(color.darker(130)))
+                painter.setBrush(Brush(color.darker(130)))
 
             pen_width = 0.6
             if dist < 1.0:
                 pen_width *= (1.0 + dist)
-            painter.setPen(QtGui.QPen(color, pen_width))
+            painter.setPen(Pen(color, pen_width))
 
-            transform = QtGui.QTransform()
+            transform = QTransform()
             transform.translate(cen_x, cen_y)
             radians = math.atan2(tgt_pt.y() - loc_pt.y(),
                                  tgt_pt.x() - loc_pt.x())
@@ -151,8 +142,8 @@ class Pipe(QtWidgets.QGraphicsPathItem):
         else:
             return
 
-        line = QtCore.QLineF(pos1, pos2)
-        path = QtGui.QPainterPath()
+        line = QLineF(pos1, pos2)
+        path = PainterPath()
         path.moveTo(line.x1(), line.y1())
 
         if self.viewer_pipe_layout() == PIPE_LAYOUT_STRAIGHT:
@@ -173,8 +164,8 @@ class Pipe(QtWidgets.QGraphicsPathItem):
                 ctr_offset_x1 += tangent
                 ctr_offset_x2 -= tangent
 
-            ctr_point1 = QtCore.QPointF(ctr_offset_x1, pos1.y())
-            ctr_point2 = QtCore.QPointF(ctr_offset_x2, pos2.y())
+            ctr_point1 = QPointF(ctr_offset_x1, pos1.y())
+            ctr_point2 = QPointF(ctr_offset_x2, pos2.y())
             path.cubicTo(ctr_point1, ctr_point2, pos2)
             self.setPath(path)
         elif self.viewer_pipe_layout() == PIPE_LAYOUT_ANGLE:
@@ -189,15 +180,15 @@ class Pipe(QtWidgets.QGraphicsPathItem):
                 ctr_offset_x1 += distance
                 ctr_offset_x2 -= distance
 
-            ctr_point1 = QtCore.QPointF(ctr_offset_x1, pos1.y())
-            ctr_point2 = QtCore.QPointF(ctr_offset_x2, pos2.y())
+            ctr_point1 = QPointF(ctr_offset_x1, pos1.y())
+            ctr_point2 = QPointF(ctr_offset_x2, pos2.y())
             path.lineTo(ctr_point1)
             path.lineTo(ctr_point2)
             path.lineTo(pos2)
             self.setPath(path)
 
     def reset_path(self):
-        path = QtGui.QPainterPath(QtCore.QPointF(0.0, 0.0))
+        path = PainterPath(QPointF(0.0, 0.0))
         self.setPath(path)
 
     def calc_distance(self, p1, p2):
@@ -223,8 +214,8 @@ class Pipe(QtWidgets.QGraphicsPathItem):
 
     def activate(self):
         self._active = True
-        color = QtGui.QColor(*PIPE_ACTIVE_COLOR)
-        pen = QtGui.QPen(color, 2.5, PIPE_STYLES.get(PIPE_STYLE_DEFAULT))
+        color = QColor(*PIPE_ACTIVE_COLOR)
+        pen = Pen(color, 2.5, PIPE_STYLES.get(PIPE_STYLE_DEFAULT))
         self.setPen(pen)
 
     def active(self):
@@ -232,8 +223,8 @@ class Pipe(QtWidgets.QGraphicsPathItem):
 
     def highlight(self):
         self._highlight = True
-        color = QtGui.QColor(*PIPE_HIGHLIGHT_COLOR)
-        pen = QtGui.QPen(color, 2, PIPE_STYLES.get(PIPE_STYLE_DEFAULT))
+        color = QColor(*PIPE_HIGHLIGHT_COLOR)
+        pen = Pen(color, 2, PIPE_STYLES.get(PIPE_STYLE_DEFAULT))
         self.setPen(pen)
 
     def highlighted(self):
@@ -242,8 +233,8 @@ class Pipe(QtWidgets.QGraphicsPathItem):
     def reset(self):
         self._active = False
         self._highlight = False
-        color = QtGui.QColor(*self.color)
-        pen = QtGui.QPen(color, 2, PIPE_STYLES.get(self.style))
+        color = QColor(*self.color)
+        pen = Pen(color, 2, PIPE_STYLES.get(self.style))
         self.setPen(pen)
 
     def set_connections(self, port1, port2):
@@ -320,22 +311,13 @@ class LivePipe(Pipe):
         self.shift_selected = False
 
     def paint(self, painter, option, widget):
-        """
-        Draws the connection line.
-
-        Args:
-            painter (QtGui.QPainter): painter used for drawing the item.
-            option (QtGui.QStyleOptionGraphicsItem):
-                used to describe the parameters needed to draw.
-            widget (QtWidgets.QWidget): not used.
-        """
-        color = QtGui.QColor(*PIPE_ACTIVE_COLOR)
+        color = QColor(*PIPE_ACTIVE_COLOR)
         pen_style = PIPE_STYLES.get(PIPE_STYLE_DASHED)
         pen_width = PIPE_WIDTH + 0.35
 
-        pen = QtGui.QPen(color, pen_width)
+        pen = Pen(color, pen_width)
         pen.setStyle(pen_style)
-        pen.setCapStyle(QtCore.Qt.RoundCap)
+        pen.setCapStyle(ROUND_CAP)
 
         painter.save()
         painter.setPen(pen)
@@ -356,9 +338,9 @@ class LivePipe(Pipe):
         size = 10.0
         if dist < 50.0:
             size *= (dist / 50.0)
-        rect = QtCore.QRectF(cen_x-(size/2), cen_y-(size/2), size, size)
+        rect = RectF(cen_x-(size/2), cen_y-(size/2), size, size)
         painter.setBrush(color)
-        painter.setPen(QtGui.QPen(color.darker(130), pen_width))
+        painter.setPen(Pen(color.darker(130), pen_width))
         painter.drawEllipse(rect)
 
         # draw arrow
@@ -368,9 +350,9 @@ class LivePipe(Pipe):
         pen_width = 0.6
         if dist < 1.0:
             pen_width *= 1.0 + dist
-        painter.setPen(QtGui.QPen(color, pen_width))
+        painter.setPen(Pen(color, pen_width))
 
-        transform = QtGui.QTransform()
+        transform = QTransform()
         transform.translate(tgt_pt.x(), tgt_pt.y())
 
         radians = math.atan2(tgt_pt.y() - loc_pt.y(),

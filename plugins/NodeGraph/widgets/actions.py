@@ -11,11 +11,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from plugins.Qt import QtWidgets, QtGui
-from plugins.NodeGraph.widgets.stylesheet import STYLE_QMENU
+from devkit.Widgets import Menu, Action
+from PyQt5.QtCore import pyqtSignal
+from .stylesheet import STYLE_QMENU
 
-
-class BaseMenu(QtWidgets.QMenu):
+class BaseMenu(Menu):
 
     def __init__(self, *args, **kwargs):
         super(BaseMenu, self).__init__(*args, **kwargs)
@@ -33,9 +33,9 @@ class BaseMenu(QtWidgets.QMenu):
                 return action.menu()
 
 
-class GraphAction(QtWidgets.QAction):
+class GraphAction(Action):
 
-    executed = QtCore.Signal(object)
+    executed = pyqtSignal(object)
 
     def __init__(self, *args, **kwargs):
         super(GraphAction, self).__init__(*args, **kwargs)
@@ -53,7 +53,7 @@ class GraphAction(QtWidgets.QAction):
 
 class NodeAction(GraphAction):
 
-    executed = QtCore.Signal(object, object)
+    executed = pyqtSignal(object, object)
 
     def __init__(self, *args, **kwargs):
         super(NodeAction, self).__init__(*args, **kwargs)

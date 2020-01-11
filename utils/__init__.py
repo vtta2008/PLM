@@ -20,4 +20,4 @@ from .utils                     import (str2bool, clean_file_ext, get_app_icon, 
                                         create_signal_slot, get_ram_useage, byte2gigabyte, is_string, is_action,
                                         get_gpu_useage, get_disk_useage, get_file_path, get_logo_icon, get_tag_icon,
                                         check_preset, _loadConfig, _loadData, _saveData, _swapListIndices,
-                                        _convert_to_QColor, _get_pointer_bounding_box)
+                                        _convert_to_QColor, _get_pointer_bounding_box, setup_context_menu)

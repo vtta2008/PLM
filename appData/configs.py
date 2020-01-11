@@ -336,12 +336,10 @@ class ConfigPipeline(DAMGDICT):
         eVal       = [qtDesigner, davinciPth]
         eKeys      = ['QtDesigner', 'Davinci Resolve']
 
-        for key in eKeys:
-            if os.path.exists(eVal[eKeys.index(key)]):
-                self.appInfo[k] = eVal[eKeys.index(key)]
-                launchAppKeys.append(k)
-
-        self.appInfo.update()
+        for i in range(len(eVal)):
+            if os.path.exists(eVal[i]):
+                self.appInfo[eKeys[i]] = eVal[i]
+                launchAppKeys.append(eKeys[i])
 
         for key in launchAppKeys:
             try:
@@ -427,22 +425,24 @@ class ConfigPipeline(DAMGDICT):
             self.add(key, CommandData(key, icon, tooltip, statustip, value, valueType, arg, code))
 
         for key in layoutKeys:
-            try:
-                icon = self.iconInfo['icon32'][key]
-            except KeyError:
-                icon = key
-                iconMissing.append(key)
-            finally:
-                toolTips[key] = 'Show: {0}'.format(key)
-                statusTips[key] = 'Show: {0}'.format(key)
-                value = key
-                valueType = CMD_VALUE_TYPE['uiKey']
-                arg = value
-                code = 'showUI'
+            if not key in launchAppKeys:
+                # print(key)
+                try:
+                    icon = self.iconInfo['icon32'][key]
+                except KeyError:
+                    icon = key
+                    iconMissing.append(key)
+                finally:
+                    toolTips[key] = 'Show: {0}'.format(key)
+                    statusTips[key] = 'Show: {0}'.format(key)
+                    value = key
+                    valueType = CMD_VALUE_TYPE['uiKey']
+                    arg = value
+                    code = 'showUI'
 
-            tooltip = toolTips[key]
-            statustip = statusTips[key]
-            self.add(key, CommandData(key, icon, tooltip, statustip, value, valueType, arg, code))
+                tooltip = toolTips[key]
+                statustip = statusTips[key]
+                self.add(key, CommandData(key, icon, tooltip, statustip, value, valueType, arg, code))
 
         if globalSetting.tracks.configInfo:
             if globalSetting.tracks.plmInfo:
@@ -509,14 +509,14 @@ ignoreIDs                           = ignoreIDs()
 toBuildUis                          = tobuildUis()
 toBuildCmds                         = tobuildCmds()
 
-pythonInfo                          = ConfigPython()
-envInfo                             = ConfigEnvVar()
-iconInfo                            = ConfigIcon()
-mayaInfo                            = ConfigMaya()
-appInfo                             = ConfigApps()
-urlInfo                             = ConfigUrl()
-plmInfo                             = ConfigPipeline(iconInfo, appInfo, urlInfo, dirInfo, pthInfo)
-deviceInfo                          = ConfigMachine()
+# pythonInfo                          = ConfigPython()
+# envInfo                             = ConfigEnvVar()
+# iconInfo                            = ConfigIcon()
+# mayaInfo                            = ConfigMaya()
+# appInfo                             = ConfigApps()
+# urlInfo                             = ConfigUrl()
+# plmInfo                             = ConfigPipeline(iconInfo, appInfo, urlInfo, dirInfo, pthInfo)
+# deviceInfo                          = ConfigMachine()
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -18,8 +18,7 @@ from __buildtins__ import globalSetting
 import os, sys, requests
 
 # PLM
-from appData                            import (__localServer__, SYSTRAY_UNAVAI, KEY_RELEASE, SERVER_CONNECT_FAIL,
-                                                appInfo, plmInfo)
+from appData                            import (__localServer__, SYSTRAY_UNAVAI, SERVER_CONNECT_FAIL, KEY_RELEASE, SplashScreen)
 from utils                              import LocalDatabase, clean_file_ext
 from ui.assets                          import (ThreadManager, EventManager)
 from ui.LayoutManager                   import LayoutManager
@@ -37,8 +36,28 @@ class DAMGTEAM(Application):
     def __init__(self):
         Application.__init__(self)
 
-        self.plmInfo                    = plmInfo
-        self.appInfo                    = appInfo
+        # splash_pic = QPixmap(os.path.join(ROOT, 'assets', 'pics', 'splash.png'))
+        # splash = QSplashScreen(splash_pic, Qt.WindowStaysOnTopHint)
+        # splash.setWindowFlags(Qt.WindowStaysOnTopHint | Qt.FramelessWindowHint)
+        # splash.setEnabled(False)
+        #
+        # progressBar = QProgressBar(splash)
+        # progressBar.setMaximum(10)
+        # progressBar.setGeometry(0, splash_pic.height() - 50, splash_pic.width(), 20)
+        #
+        # splash.show()
+        # # splash.showMessage("<h1><font color='green'>Welcome BeeMan!</font></h1>", Qt.AlignTop | Qt.AlignCenter, Qt.black)
+        # for i in range(1, 11):
+        #     progressBar.setValue(i)
+        #     t = time.time()
+        #     while time.time() < t + 0.1:
+        #         self.processEvents()
+
+        # Simulate something that takes time
+        # time.sleep(1)
+        splash                          = SplashScreen()
+        self.plmInfo                    = splash.plmInfo
+        self.appInfo                    = splash.appInfo
 
         self.browser                    = Browser()
         self.database                   = LocalDatabase()
@@ -80,9 +99,7 @@ class DAMGTEAM(Application):
         if queryUserLogin:
             if connectServer:
                 try:
-                    r = requests.get(__localServer__, verify=False,
-                                     headers={'Authorization': 'Bearer {0}'.format(token)},
-                                     cookies={'connect.sid': cookie})
+                    r = requests.get(__localServer__, verify=False, headers={'Authorization': 'Bearer {0}'.format(token)}, cookies={'connect.sid': cookie})
                 except Exception:
                     if not globalSetting.modes.allowLocalMode:
                         MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
@@ -90,6 +107,7 @@ class DAMGTEAM(Application):
                     else:
                         self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
                         self.mainUI.show()
+                        splash.finish(self.mainUI)
                 else:
                     if r.status_code == 200:
                         if not self.sysTray.isSystemTrayAvailable():
@@ -99,8 +117,10 @@ class DAMGTEAM(Application):
                             self.loginChanged(True)
                             self.sysTray.log_in()
                             self.mainUI.show()
+                            splash.finish(self.mainUI)
                     else:
-                        self.signInEvent()
+                        self.signIn.show()
+                        splash.finish(self.signIn)
             else:
                 if not globalSetting.modes.allowLocalMode:
                     MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
@@ -108,9 +128,11 @@ class DAMGTEAM(Application):
                 else:
                     self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
                     self.mainUI.show()
+                    splash.finish(self.mainUI)
         else:
             if connectServer:
-                self.signInEvent()
+                self.signIn.show()
+                splash.finish(self.signIn)
             else:
                 if not globalSetting.modes.allowLocalMode:
                     MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
@@ -118,6 +140,7 @@ class DAMGTEAM(Application):
                 else:
                     self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
                     self.mainUI.show()
+                    splash.finish(self.mainUI)
 
     def notify(self, receiver, event):
         if event.type() == KEY_RELEASE:
@@ -249,7 +272,8 @@ class DAMGTEAM(Application):
         self.signOutEvent()
 
 if __name__ == '__main__':
-    DAMGTEAM().startLoop()
+    app = DAMGTEAM()
+    app.startLoop()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 19/06/2018 - 2:26 AM

@@ -97,6 +97,13 @@ class Application(QApplication):
         lpBuffer            = wintypes.LPWSTR()
         AppUserModelID      = ctypes.windll.shell32.GetCurrentProcessExplicitAppUserModelID
         appID               = lpBuffer.value
+        if appID is None:
+            appID           = self.key
+            try:
+                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appID)
+            except:
+                print("Could not set the app model ID. If the plaftorm is older than Windows 7, this is normal.")
+
         ctypes.windll.kernel32.LocalFree(lpBuffer)
         AppUserModelID(ctypes.cast(ctypes.byref(lpBuffer), wintypes.LPWSTR))
         self.logger.info('Get AppID: {0}'.format(appID))

@@ -78,12 +78,12 @@ except ImportError as ie:
     from plugins.Qt import QtWidgets, QtGui, QtCore, QtCompat
 
 from .base.graph import NodeGraph
-from .base.menu import Menu, MenuCommand
+from .base.menu import NodesMenu, NodeGraphMenu, NodeGraphCommand
 from .base.node import NodeObject, BaseNode, BackdropNode
 from .base.port import Port
 
 # functions
-from .base.actions import setup_context_menu
+from utils import setup_context_menu
 
 # widgets
 from .widgets.node_tree import NodeTreeWidget
@@ -92,8 +92,19 @@ from .widgets.properties_bin import PropertiesBinWidget
 from appData import LICENCE
 from appData import VERSION
 
+
 __all__ = [
-    'BackdropNode', 'BaseNode', 'LICENCE', 'Menu', 'MenuCommand', 'NodeGraph',
-    'NodeObject', 'NodeTreeWidget', 'Port', 'PropertiesBinWidget', 'VERSION',
-    'setup_context_menu'
+    'BackdropNode',
+    'BaseNode',
+    'LICENCE',
+    'NodeGraph',
+    'NodeGraphCommand',
+    'NodeGraphMenu',
+    'NodeObject',
+    'NodeTreeWidget',
+    'NodesMenu',
+    'Port',
+    'PropertiesBinWidget',
+    'VERSION',
+    'setup_context_menu',
 ]

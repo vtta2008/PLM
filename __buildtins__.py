@@ -29,21 +29,24 @@ def get_root():
         root                        = cwd
     return root
 
+def __copyright__():
+    _copyright = 'Pipeline Manager (PLM) Copyright (C) 2017 - 2020 by DAMGTEAM, contributed by Trinh Do & Duong Minh Duc.'
+    if globalSetting.checks.copyright:
+        print(_copyright)
+    return _copyright
+
 ROOT                                = get_root()
 cmd                                 = 'SetX {0} {1}'.format(__envKey__, ROOT)
 
 if platform.system() == 'Windows':
-
     try:
         import winshell
     except ImportError:
         subprocess.Popen('python -m pip install winshell --user', shell=True).wait()
-
     try:
         import helpdev
     except ImportError:
         subprocess.Popen('python -m pip install helpdev --user', shell=True).wait()
-
 else:
     sys.exit()
 
@@ -605,11 +608,7 @@ else:
 finally:
     globalSetting.cfgable = True
 
-def __copyright__():
-    _copyright = 'Pipeline Manager (PLM) Copyright (C) 2017 - 2020 by DAMGTEAM, contributed by Trinh Do & Duong Minh Duc.'
-    if globalSetting.checks.copyright:
-        print(_copyright)
-    return _copyright
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 6:55 AM

@@ -107,7 +107,7 @@ class SettingOutput(QTreeWidget):
             ancestor = ancestor.parent()
 
         d = item.data(2, Qt.UserRole)
-        self.settings.setValue(key, item.data(2, Qt.UserRole))
+        self.settings.updateProgress(key, item.data(2, Qt.UserRole))
 
         if self.autoRefresh:
             self.refresh()

@@ -182,7 +182,7 @@ class ControllerManager(QtWidgets.QWidget):
         self.color_slider.setMinimumWidth(2.5 * btnW)
         self.color_slider.setMinimum(1)
         self.color_slider.setMaximum(31)
-        self.color_slider.setValue(self.nurbs.overrideColor.get())
+        self.color_slider.updateProgress(self.nurbs.overrideColor.get())
         self.color_slider.valueChanged.connect(self.sliderSetColor)
         layout.addWidget(self.color_slider, 0, 4)
 

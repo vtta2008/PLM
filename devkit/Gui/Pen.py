@@ -26,8 +26,8 @@ class Pen(QPen):
     _name                               = 'DAMG Pen'
     _copyright                          = __copyright__()
 
-    def __init__(self, *args, **kwargs):
-        QPen.__init__(*args, **kwargs)
+    def __init__(self, *__args):
+        QPen.__init__(self)
 
         self.signals                    = SignalManager(self)
         self.settings                   = Settings(self)

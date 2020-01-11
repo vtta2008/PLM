@@ -2,17 +2,19 @@
 # -*- coding: utf-8 -*-
 import os, math
 
-from plugins.NodeGraph                          import QtGui, QtCore, QtWidgets
+from PyQt5                                      import QtCore, QtWidgets, QtGui
 from appData                                    import (IN_PORT, OUT_PORT, PIPE_LAYOUT_CURVED, SCENE_AREA)
 
-from plugins.NodeGraph.qgraphics.node_abstract  import AbstractNodeItem
-from plugins.NodeGraph.qgraphics.node_backdrop  import BackdropNodeItem
-from plugins.NodeGraph.qgraphics.pipe           import Pipe, LivePipe
-from plugins.NodeGraph.qgraphics.port           import PortItem
-from plugins.NodeGraph.qgraphics.slicer         import SlicerPipe
+from PyQt5.QtCore                               import pyqtSignal
 
+from plugins.NodeGraph.graphics.node_abstract   import AbstractNodeItem
+from plugins.NodeGraph.graphics.node_backdrop   import BackdropNodeItem
+from plugins.NodeGraph.graphics.pipe            import Pipe, LivePipe
+from plugins.NodeGraph.graphics.port            import PortItem
+from plugins.NodeGraph.graphics.slicer          import SlicerPipe
+
+from .actions                                   import BaseMenu
 from .scene                                     import NodeScene
-from .stylesheet                                import STYLE_QMENU
 from .tab_search                                import TabSearchWidget
 
 ZOOM_MIN = -0.95
@@ -20,27 +22,19 @@ ZOOM_MAX = 2.0
 
 
 class NodeViewer(QtWidgets.QGraphicsView):
-    """
-    node viewer is the widget used for displaying the scene and nodes
 
-    functions in this class is used internally by the
-    class:`NodeGraphQt.NodeGraph` class.
-    """
-
-    moved_nodes = QtCore.Signal(dict)
-    search_triggered = QtCore.Signal(str, tuple)
-    connection_sliced = QtCore.Signal(list)
-    connection_changed = QtCore.Signal(list, list)
+    moved_nodes = pyqtSignal(dict)
+    search_triggered = pyqtSignal(str, tuple)
+    connection_sliced = pyqtSignal(list)
+    connection_changed = pyqtSignal(list, list)
 
     # pass through signals
-    node_selected = QtCore.Signal(str)
-    node_double_clicked = QtCore.Signal(str)
-    data_dropped = QtCore.Signal(QtCore.QMimeData, QtCore.QPoint)
+    node_selected = pyqtSignal(str)
+    node_double_clicked = pyqtSignal(str)
+    data_dropped = pyqtSignal(QtCore.QMimeData, QtCore.QPoint)
 
     def __init__(self, parent=None):
         super(NodeViewer, self).__init__(parent)
-        if parent is not None:
-            self.setWindowFlags(QtCore.Qt.Window)
 
         scene_pos = (SCENE_AREA / 2) * -1
         self.setScene(NodeScene(self))
@@ -50,7 +44,7 @@ class NodeViewer(QtWidgets.QGraphicsView):
         self.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
         self.setViewportUpdateMode(QtWidgets.QGraphicsView.FullViewportUpdate)
         self.setAcceptDrops(True)
-        self.resize(1000, 800)
+        self.resize(850, 800)
 
         self._pipe_layout = PIPE_LAYOUT_CURVED
         self._detached_port = None
@@ -72,8 +66,6 @@ class NodeViewer(QtWidgets.QGraphicsView):
         self.scene().addItem(self._SLICER_PIPE)
 
         self._undo_stack = QtWidgets.QUndoStack(self)
-        self._context_menu = QtWidgets.QMenu('main', self)
-        self._context_menu.setStyleSheet(STYLE_QMENU)
         self._search_widget = TabSearchWidget(self)
         self._search_widget.search_submitted.connect(self._on_search_submitted)
 
@@ -83,7 +75,13 @@ class NodeViewer(QtWidgets.QGraphicsView):
         menu_bar.setNativeMenuBar(False)
         # shortcuts don't work with "setVisibility(False)".
         menu_bar.resize(0, 0)
-        menu_bar.addMenu(self._context_menu)
+
+        self._ctx_menu = BaseMenu('NodeGraph', self)
+        self._ctx_node_menu = BaseMenu('Nodes', self)
+        menu_bar.addMenu(self._ctx_menu)
+        menu_bar.addMenu(self._ctx_node_menu)
+
+        self._ctx_node_menu.setDisabled(True)
 
         self.acyclic = True
         self.LMB_state = False
@@ -115,8 +113,8 @@ class NodeViewer(QtWidgets.QGraphicsView):
     def _set_viewer_pan(self, pos_x, pos_y):
         scroll_x = self.horizontalScrollBar()
         scroll_y = self.verticalScrollBar()
-        scroll_x.setValue(scroll_x.value() - pos_x)
-        scroll_y.setValue(scroll_y.value() - pos_y)
+        scroll_x.updateProgress(scroll_x.value() - pos_x)
+        scroll_y.updateProgress(scroll_y.value() - pos_y)
 
     def _combined_rect(self, nodes):
         group = self.scene().createItemGroup(nodes)
@@ -154,8 +152,23 @@ class NodeViewer(QtWidgets.QGraphicsView):
 
     def contextMenuEvent(self, event):
         self.RMB_state = False
-        if self._context_menu.isEnabled():
-            self._context_menu.exec_(event.globalPos())
+        ctx_menu = None
+
+        if self._ctx_node_menu.isEnabled():
+            pos = self.mapToScene(self._previous_pos)
+            items = self._items_near(pos)
+            nodes = [i for i in items if isinstance(i, AbstractNodeItem)]
+            if nodes:
+                node = nodes[0]
+                ctx_menu = self._ctx_node_menu.get_menu(node.type_)
+                if ctx_menu:
+                    for action in ctx_menu.actions():
+                        if not action.menu():
+                            action.node_id = node.id
+
+        ctx_menu = ctx_menu or self._ctx_menu
+        if ctx_menu.isEnabled():
+            ctx_menu.exec_(event.globalPos())
         else:
             return super(NodeViewer, self).contextMenuEvent(event)
 
@@ -342,7 +355,6 @@ class NodeViewer(QtWidgets.QGraphicsView):
         """
         triggered mouse move event for the scene.
          - redraw the connection pipe.
-
         Args:
             event (QtWidgets.QGraphicsSceneMouseEvent):
                 The event handler from the QtWidgets.QGraphicsScene
@@ -368,7 +380,6 @@ class NodeViewer(QtWidgets.QGraphicsView):
         triggered mouse press event for the scene (takes priority over viewer event).
          - detect selected pipe and start connection.
          - remap Shift and Ctrl modifier.
-
         Args:
             event (QtWidgets.QGraphicsScenePressEvent):
                 The event handler from the QtWidgets.QGraphicsScene
@@ -429,7 +440,6 @@ class NodeViewer(QtWidgets.QGraphicsView):
         """
         triggered mouse release event for the scene.
          - verify to make a the connection Pipe.
-
         Args:
             event (QtWidgets.QGraphicsSceneMouseEvent):
                 The event handler from the QtWidgets.QGraphicsScene
@@ -552,7 +562,6 @@ class NodeViewer(QtWidgets.QGraphicsView):
     def acyclic_check(self, start_port, end_port):
         """
         validate the connection so it doesn't loop itself.
-
         Returns:
             bool: True if port connection is valid.
         """
@@ -590,8 +599,9 @@ class NodeViewer(QtWidgets.QGraphicsView):
             self._search_widget.setVisible(state)
             self.clearFocus()
 
-    def context_menu(self):
-        return self._context_menu
+    def context_menus(self):
+        return {'graph': self._ctx_menu,
+                'nodes': self._ctx_node_menu}
 
     def question_dialog(self, text, title='Node Graph'):
         dlg = QtWidgets.QMessageBox.question(

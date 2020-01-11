@@ -367,8 +367,8 @@ class View(QGraphicsView):
         elif self.currentState == 'DRAG_VIEW':                              # Drag canvas.
             offset = self.prevPos - event.pos()
             self.prevPos = event.pos()
-            self.verticalScrollBar().setValue(self.verticalScrollBar().value() + offset.y())
-            self.horizontalScrollBar().setValue(self.horizontalScrollBar().value() + offset.x())
+            self.verticalScrollBar().updateProgress(self.verticalScrollBar().value() + offset.y())
+            self.horizontalScrollBar().updateProgress(self.horizontalScrollBar().value() + offset.x())
         elif (self.currentState == 'SELECTION' or self.currentState == 'ADD_SELECTION' or
               self.currentState == 'SUBTRACT_SELECTION' or self.currentState == 'TOGGLE_SELECTION'):   # RuberBand selection.
             self.rubberband.setGeometry(QRect(self.origin, event.pos()).normalized())

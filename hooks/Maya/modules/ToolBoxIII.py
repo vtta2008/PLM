@@ -150,7 +150,7 @@ class LightManager(QtWidgets.QWidget):
         intensity.setMinimum(0)
         intensity.setMaximum(1000)
         intensity.setMinimumWidth(160)
-        intensity.setValue(self.light.intensity.get())
+        intensity.updateProgress(self.light.intensity.get())
         intensity.valueChanged.connect(lambda val: self.light.intensity.set(val))
         layout.addWidget(intensity, 0, 4, 1, 1)
 

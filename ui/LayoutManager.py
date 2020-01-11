@@ -65,7 +65,7 @@ class LayoutManager(DAMG):
         self.setts                      = self.settingLayouts()
         self.tools                      = self.toolLayouts()
         self.prjs                       = self.projectLayouts()
-        self.plgins                     = self.pluginsLayouts()
+        self.plugins                     = self.pluginsLayouts()
 
         tbcbs                           = self.preferences.header.toolBarCBs
         tbs                             = self.mainUI.mainToolBar.tbs
@@ -208,15 +208,16 @@ class LayoutManager(DAMG):
         return layouts
 
     def pluginsLayouts(self):
-        from plugins.NodeGraph.NodeGraph import NodeGraph
-
-        self.nodeGraph                      = NodeGraph()
-
-        layouts = [self.nodeGraph, ]
-        for layout in layouts:
-            layout.settings._settingEnable  = True
-            self.registLayout(layout)
-        return layouts
+        # from plugins.NodeGraph.NodeGraph import NodeGraph
+        #
+        # self.nodeGraph                      = NodeGraph()
+        #
+        # layouts = [self.nodeGraph, ]
+        # for layout in layouts:
+        #     layout.settings._settingEnable  = True
+        #     self.registLayout(layout)
+        # return layouts
+        return []
 
     def registLayout(self, layout):
         return self._register.regisLayout(layout)

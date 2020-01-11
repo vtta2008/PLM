@@ -1,11 +1,12 @@
 #!/usr/bin/python
-from plugins.NodeGraph import QtCore, QtWidgets
 
-from appData import Z_VAL_NODE_WIDGET
+from appData import Z_VAL_NODE_WIDGET, MATCH_EXACTLY, center
 from plugins.NodeGraph.widgets.stylesheet import *
+from devkit.Widgets import GroupBox, VBoxLayout, ComboBox, LineEdit, CheckBox
+from PyQt5.QtWidgets import QGraphicsProxyWidget, QListView
+from PyQt5.QtCore import pyqtSignal
 
-
-class _NodeGroupBox(QtWidgets.QGroupBox):
+class _NodeGroupBox(GroupBox):
 
     def __init__(self, label, parent=None):
         super(_NodeGroupBox, self).__init__(parent)
@@ -18,7 +19,7 @@ class _NodeGroupBox(QtWidgets.QGroupBox):
         self.setTitle(label)
         self.setStyleSheet(style)
 
-        self._layout = QtWidgets.QVBoxLayout(self)
+        self._layout = VBoxLayout(self)
         self._layout.setContentsMargins(*margin)
         self._layout.setSpacing(1)
 
@@ -26,12 +27,9 @@ class _NodeGroupBox(QtWidgets.QGroupBox):
         self._layout.addWidget(widget)
 
 
-class NodeBaseWidget(QtWidgets.QGraphicsProxyWidget):
-    """
-    Base Node Widget.
-    """
+class NodeBaseWidget(QGraphicsProxyWidget):
 
-    value_changed = QtCore.Signal(str, object)
+    value_changed = pyqtSignal(str, object)
 
     def __init__(self, parent=None, name='widget', label=''):
         super(NodeBaseWidget, self).__init__(parent)
@@ -81,18 +79,15 @@ class NodeBaseWidget(QtWidgets.QGraphicsProxyWidget):
 
 
 class NodeComboBox(NodeBaseWidget):
-    """
-    ComboBox Node Widget.
-    """
 
     def __init__(self, parent=None, name='', label='', items=None):
         super(NodeComboBox, self).__init__(parent, name, label)
         self.setZValue(Z_VAL_NODE_WIDGET + 1)
-        self._combo = QtWidgets.QComboBox()
+        self._combo = ComboBox()
         self._combo.setStyleSheet(STYLE_QCOMBOBOX)
         self._combo.setMinimumHeight(24)
         self._combo.currentIndexChanged.connect(self._value_changed)
-        list_view = QtWidgets.QListView(self._combo)
+        list_view = QListView(self._combo)
         list_view.setStyleSheet(STYLE_QLISTVIEW)
         self._combo.setView(list_view)
         self._combo.clearFocus()
@@ -116,7 +111,7 @@ class NodeComboBox(NodeBaseWidget):
     @value.setter
     def value(self, text=''):
         if text != self.value:
-            index = self._combo.findText(text, QtCore.Qt.MatchExactly)
+            index = self._combo.findText(text, MATCH_EXACTLY)
             self._combo.setCurrentIndex(index)
 
     def add_item(self, item):
@@ -145,9 +140,9 @@ class NodeLineEdit(NodeBaseWidget):
 
     def __init__(self, parent=None, name='', label='', text=''):
         super(NodeLineEdit, self).__init__(parent, name, label)
-        self._ledit = QtWidgets.QLineEdit()
+        self._ledit = LineEdit()
         self._ledit.setStyleSheet(STYLE_QLINEEDIT)
-        self._ledit.setAlignment(QtCore.Qt.AlignCenter)
+        self._ledit.setAlignment(center)
         self._ledit.returnPressed.connect(self._value_changed)
         self._ledit.clearFocus()
         group = _NodeGroupBox(label)
@@ -176,13 +171,10 @@ class NodeLineEdit(NodeBaseWidget):
 
 
 class NodeCheckBox(NodeBaseWidget):
-    """
-    CheckBox Node Widget.
-    """
 
     def __init__(self, parent=None, name='', label='', text='', state=False):
         super(NodeCheckBox, self).__init__(parent, name, label)
-        self._cbox = QtWidgets.QCheckBox(text)
+        self._cbox = CheckBox(text)
         self._cbox.setChecked(state)
         self._cbox.setMinimumWidth(80)
         self._cbox.setStyleSheet(STYLE_QCHECKBOX)

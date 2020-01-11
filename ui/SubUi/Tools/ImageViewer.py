@@ -279,8 +279,8 @@ class ImageInitUI(ViewerWindow):
         self.updateView()
         self.show()
         self.setGeometry(self.winposx, self.winposy, self.winsizex, self.winsizey)
-        self.view.verticalScrollBar().setValue(self.vscroll)
-        self.view.horizontalScrollBar().setValue(self.hscroll)
+        self.view.verticalScrollBar().updateProgress(self.vscroll)
+        self.view.horizontalScrollBar().updateProgress(self.hscroll)
 
     def goToLocation(self):
         os.startfile(self.path)
@@ -470,8 +470,8 @@ class ImageInitUI(ViewerWindow):
 
     def resetScroll(self):
 
-        self.view.verticalScrollBar().setValue(0)
-        self.view.horizontalScrollBar().setValue(0)
+        self.view.verticalScrollBar().updateProgress(0)
+        self.view.horizontalScrollBar().updateProgress(0)
 
     def getScreenRes(self):
         self.screenw, self.screenh = get_screen_resolution()

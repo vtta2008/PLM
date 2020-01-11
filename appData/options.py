@@ -20,7 +20,7 @@ from collections import OrderedDict
 from PyQt5.QtCore           import Qt, QSize, QEvent
 from PyQt5.QtGui            import QPainter, QFont
 from PyQt5.QtWidgets        import (QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy,
-                                    QLineEdit, QPlainTextEdit)
+                                    QLineEdit, QPlainTextEdit, QAbstractItemView, QStyle)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Font """
@@ -43,6 +43,7 @@ KEY_RELEASE                 = QEvent.KeyRelease
 StateNormal                 = Qt.WindowNoState
 StateMax                    = Qt.WindowMaximized
 StateMin                    = Qt.WindowMinimized
+State_Selected              = QStyle.State_Selected
 
 # -------------------------------------------------------------------------------------------------------------
 """ Nodegraph setting variables """
@@ -53,9 +54,16 @@ SCROLLBAROFF                = Qt.ScrollBarAlwaysOff                             
 SCROLLBARON                 = Qt.ScrollBarAlwaysOn
 SCROLLBARNEED               = Qt.ScrollBarAsNeeded
 
+WORD_WRAP                   = Qt.TextWordWrap
+INTERSECT_ITEM_SHAPE        = Qt.IntersectsItemShape
+CONTAIN_ITEM_SHAPE          = Qt.ContainsItemShape
+MATCH_EXACTLY               = Qt.MatchExactly
+DRAG_ONLY                   = QAbstractItemView.DragOnly
+
 # -------------------------------------------------------------------------------------------------------------
 """ UI flags """
 
+ITEMENABLE                  = Qt.ItemIsEnabled
 ITEMMOVEABLE                = QGraphicsItem.ItemIsMovable
 ITEMSENDGEOCHANGE           = QGraphicsItem.ItemSendsGeometryChanges
 ITEMSCALECHANGE             = QGraphicsItem.ItemScaleChange
@@ -111,6 +119,8 @@ PATTERN_SOLID               = Qt.SolidPattern                                   
 
 LINE_SOLID                  = Qt.SolidLine                                              # Line
 LINE_DASH                   = Qt.DashLine
+LINE_DOT                    = Qt.DotLine
+LINE_DASH_DOT               = Qt.DashDotDotLine
 
 # -------------------------------------------------------------------------------------------------------------
 """ Week Day  """
@@ -226,8 +236,14 @@ frameStyle                  = QFrame.Sunken | QFrame.Panel
 center                      = Qt.AlignCenter                                                    # Alignment
 right                       = Qt.AlignRight
 left                        = Qt.AlignLeft
+top                         = Qt.AlignTop
+bottom                      = Qt.AlignBottom
 hori                        = Qt.Horizontal
 vert                        = Qt.Vertical
+black                       = Qt.black
+blue                        = Qt.blue
+darkBlue                    = Qt.darkBlue
+cyan                        = Qt.cyan
 
 dockL                       = Qt.LeftDockWidgetArea                                             # Docking area
 dockR                       = Qt.RightDockWidgetArea

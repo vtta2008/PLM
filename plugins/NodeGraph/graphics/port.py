@@ -1,14 +1,16 @@
 #!/usr/bin/python
-from plugins.NodeGraph import QtGui, QtCore, QtWidgets
 
 from appData import (IN_PORT, OUT_PORT, PORT_DEFAULT_COLOR, PORT_DEFAULT_BORDER_COLOR, PORT_DEFAULT_SIZE, PORT_FALLOFF,
-                     PORT_HOVER_COLOR, PORT_HOVER_BORDER_COLOR, PORT_ACTIVE_COLOR, PORT_ACTIVE_BORDER_COLOR, Z_VAL_PORT)
+                     PORT_HOVER_COLOR, PORT_HOVER_BORDER_COLOR, PORT_ACTIVE_COLOR, PORT_ACTIVE_BORDER_COLOR, Z_VAL_PORT,
+                     ALT_MODIFIER)
 
+from PyQt5.QtGui import QColor
 
-class PortItem(QtWidgets.QGraphicsItem):
-    """
-    Base Port Item.
-    """
+from devkit.Widgets import GraphicObject
+from devkit.Core import RectF
+from devkit.Gui import Pen
+
+class PortItem(GraphicObject):
 
     def __init__(self, parent=None):
         super(PortItem, self).__init__(parent)
@@ -35,43 +37,28 @@ class PortItem(QtWidgets.QGraphicsItem):
         return '{}.PortItem("{}")'.format(self.__module__, self.name)
 
     def boundingRect(self):
-        return QtCore.QRectF(0.0, 0.0, self._width + PORT_FALLOFF, self._height)
+        return RectF(0.0, 0.0, self._width + PORT_FALLOFF, self._height)
 
     def paint(self, painter, option, widget):
-        """
-        Draws the circular port.
-
-        Args:
-            painter (QtGui.QPainter): painter used for drawing the item.
-            option (QtGui.QStyleOptionGraphicsItem):
-                used to describe the parameters needed to draw.
-            widget (QtWidgets.QWidget): not used.
-        """
         painter.save()
-
-        ### display the falloff colision ###
-        # pen = QtGui.QPen(QtGui.QColor(255, 255, 255, 80), 0.8)
-        # pen.setStyle(QtCore.Qt.DotLine)
-        # painter.setPen(pen)
-        # painter.drawRect(self.boundingRect())
 
         rect_w = self._width / 1.8
         rect_h = self._height / 1.8
         rect_x = self.boundingRect().center().x() - (rect_w / 2)
         rect_y = self.boundingRect().center().y() - (rect_h / 2)
-        port_rect = QtCore.QRectF(rect_x, rect_y, rect_w, rect_h)
+        port_rect = RectF(rect_x, rect_y, rect_w, rect_h)
 
         if self._hovered:
-            color = QtGui.QColor(*PORT_HOVER_COLOR)
-            border_color = QtGui.QColor(*PORT_HOVER_BORDER_COLOR)
+            color = QColor(*PORT_HOVER_COLOR)
+            border_color = QColor(*PORT_HOVER_BORDER_COLOR)
         elif self.connected_pipes:
-            color = QtGui.QColor(*PORT_ACTIVE_COLOR)
-            border_color = QtGui.QColor(*PORT_ACTIVE_BORDER_COLOR)
+            color = QColor(*PORT_ACTIVE_COLOR)
+            border_color = QColor(*PORT_ACTIVE_BORDER_COLOR)
         else:
-            color = QtGui.QColor(*self.color)
-            border_color = QtGui.QColor(*self.border_color)
+            color = QColor(*self.color)
+            border_color = QColor(*self.border_color)
 
-        pen = QtGui.QPen(border_color, 1.8)
+        pen = Pen(border_color, 1.8)
         painter.setPen(pen)
         painter.setBrush(color)
         painter.drawEllipse(port_rect)
@@ -80,17 +67,17 @@ class PortItem(QtWidgets.QGraphicsItem):
             painter.setBrush(border_color)
             w = port_rect.width() / 2.5
             h = port_rect.height() / 2.5
-            rect = QtCore.QRectF(port_rect.center().x() - w / 2,
+            rect = RectF(port_rect.center().x() - w / 2,
                                  port_rect.center().y() - h / 2,
                                  w, h)
-            border_color = QtGui.QColor(*self.border_color)
-            pen = QtGui.QPen(border_color, 1.6)
+            border_color = QColor(*self.border_color)
+            pen = Pen(border_color, 1.6)
             painter.setPen(pen)
             painter.setBrush(border_color)
             painter.drawEllipse(rect)
         elif self._hovered:
             if self.multi_connection:
-                pen = QtGui.QPen(border_color, 1.4)
+                pen = Pen(border_color, 1.4)
                 painter.setPen(pen)
                 painter.setBrush(color)
                 w = port_rect.width() / 1.8
@@ -99,7 +86,7 @@ class PortItem(QtWidgets.QGraphicsItem):
                 painter.setBrush(border_color)
                 w = port_rect.width() / 3.5
                 h = port_rect.height() / 3.5
-            rect = QtCore.QRectF(port_rect.center().x() - w / 2,
+            rect = RectF(port_rect.center().x() - w / 2,
                                  port_rect.center().y() - h / 2,
                                  w, h)
             painter.drawEllipse(rect)
@@ -111,7 +98,7 @@ class PortItem(QtWidgets.QGraphicsItem):
         return super(PortItem, self).itemChange(change, value)
 
     def mousePressEvent(self, event):
-        if event.modifiers() != QtCore.Qt.AltModifier:
+        if event.modifiers() != ALT_MODIFIER:
             self.viewer_start_connection()
         super(PortItem, self).mousePressEvent(event)
         

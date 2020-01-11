@@ -1,48 +1,30 @@
 #!/usr/bin/python
-from plugins.NodeGraph import QtWidgets
+from appData                        import IN_PORT, OUT_PORT
+from devkit.Widgets                 import UndoCommand
 
-from appData import IN_PORT, OUT_PORT
 
-
-class PropertyChangedCmd(QtWidgets.QUndoCommand):
-    """
-    Node property changed command.
-
-    Args:
-        node (NodeGraphQt.NodeObject): node.
-        name (str): node property name.
-        value (object): node property value.
-    """
+class PropertyChangedCmd(UndoCommand):
 
     def __init__(self, node, name, value):
-        QtWidgets.QUndoCommand.__init__(self)
+        UndoCommand.__init__(self)
         if name == 'name':
             self.setText('renamed "{}" to "{}"'.format(node.name(), value))
         else:
             self.setText('property "{}:{}"'.format(node.name(), name))
-        self.node = node
-        self.name = name
-        self.old_val = node.get_property(name)
-        self.new_val = value
+        self.node               = node
+        self.name               = name
+        self.old_val            = node.get_property(name)
+        self.new_val            = value
 
     def set_node_prop(self, name, value):
-        """
-        updates the node view and model.
-        """
         # set model data.
-        model = self.node.model
+        model                   = self.node.model
+        view                    = self.node.view
         model.set_property(name, value)
-
-        # set view data.
-        view = self.node.view
-
         # view widgets.
         if hasattr(view, 'widgets') and name in view.widgets.keys():
-            # check if previous value is identical to current value,
-            # prevent signals from causing a infinite loop.
             if view.widgets[name].value != value:
                 view.widgets[name].value = value
-
         # view properties.
         if name in view.properties.keys():
             # remap "pos" to "xy_pos" node view has pre-existing pos method.
@@ -53,7 +35,6 @@ class PropertyChangedCmd(QtWidgets.QUndoCommand):
     def undo(self):
         if self.old_val != self.new_val:
             self.set_node_prop(self.name, self.old_val)
-
             # emit property changed signal.
             graph = self.node.graph
             graph.property_changed.emit(self.node, self.name, self.old_val)
@@ -61,24 +42,15 @@ class PropertyChangedCmd(QtWidgets.QUndoCommand):
     def redo(self):
         if self.old_val != self.new_val:
             self.set_node_prop(self.name, self.new_val)
-
             # emit property changed signal.
             graph = self.node.graph
             graph.property_changed.emit(self.node, self.name, self.new_val)
 
 
-class NodeMovedCmd(QtWidgets.QUndoCommand):
-    """
-    Node moved command.
-
-    Args:
-        node (NodeGraphQt.NodeObject): node.
-        pos (tuple(float, float)): new node position.
-        prev_pos (tuple(float, float)): previous node position.
-    """
+class NodeMovedCmd(UndoCommand):
 
     def __init__(self, node, pos, prev_pos):
-        QtWidgets.QUndoCommand.__init__(self)
+        UndoCommand.__init__(self)
         self.node = node
         self.pos = pos
         self.prev_pos = prev_pos
@@ -94,18 +66,10 @@ class NodeMovedCmd(QtWidgets.QUndoCommand):
         self.node.model.pos = self.pos
 
 
-class NodeAddedCmd(QtWidgets.QUndoCommand):
-    """
-    Node added command.
-
-    Args:
-        graph (NodeGraphQt.NodeGraph): node graph.
-        node (NodeGraphQt.NodeObject): node.
-        pos (tuple(float, float)): initial node position (optional).
-    """
+class NodeAddedCmd(UndoCommand):
 
     def __init__(self, graph, node, pos=None):
-        QtWidgets.QUndoCommand.__init__(self)
+        UndoCommand.__init__(self)
         self.setText('added node')
         self.viewer = graph.viewer()
         self.model = graph.model
@@ -122,17 +86,10 @@ class NodeAddedCmd(QtWidgets.QUndoCommand):
         self.viewer.add_node(self.node.view, self.pos)
 
 
-class NodeRemovedCmd(QtWidgets.QUndoCommand):
-    """
-    Node deleted command.
-
-    Args:
-        graph (NodeGraphQt.NodeGraph): node graph.
-        node (NodeGraphQt.NodeObject): node.
-    """
+class NodeRemovedCmd(UndoCommand):
 
     def __init__(self, graph, node):
-        QtWidgets.QUndoCommand.__init__(self)
+        UndoCommand.__init__(self)
         self.setText('deleted node')
         self.scene = graph.scene()
         self.model = graph.model
@@ -163,17 +120,50 @@ class NodeRemovedCmd(QtWidgets.QUndoCommand):
         self.node.view.delete()
 
 
-class PortConnectedCmd(QtWidgets.QUndoCommand):
-    """
-    Port connected command.
-
-    Args:
-        src_port (NodeGraphQt.Port): source port.
-        trg_port (NodeGraphQt.Port): target port.
-    """
+class NodeInputConnectedCmd(UndoCommand):
 
     def __init__(self, src_port, trg_port):
-        QtWidgets.QUndoCommand.__init__(self)
+        UndoCommand.__init__(self)
+        if src_port.type_() == IN_PORT:
+            self.source = src_port
+            self.target = trg_port
+        else:
+            self.source = trg_port
+            self.target = src_port
+
+    def undo(self):
+        node = self.source.node()
+        node.on_input_disconnected(self.source, self.target)
+
+    def redo(self):
+        node = self.source.node()
+        node.on_input_connected(self.source, self.target)
+
+
+class NodeInputDisconnectedCmd(UndoCommand):
+
+    def __init__(self, src_port, trg_port):
+        UndoCommand.__init__(self)
+        if src_port.type_() == IN_PORT:
+            self.source = src_port
+            self.target = trg_port
+        else:
+            self.source = trg_port
+            self.target = src_port
+
+    def undo(self):
+        node = self.source.node()
+        node.on_input_connected(self.source, self.target)
+
+    def redo(self):
+        node = self.source.node()
+        node.on_input_disconnected(self.source, self.target)
+
+
+class PortConnectedCmd(UndoCommand):
+
+    def __init__(self, src_port, trg_port):
+        UndoCommand.__init__(self)
         self.source = src_port
         self.target = trg_port
 
@@ -209,17 +199,10 @@ class PortConnectedCmd(QtWidgets.QUndoCommand):
         self.source.view.connect_to(self.target.view)
 
 
-class PortDisconnectedCmd(QtWidgets.QUndoCommand):
-    """
-    Port disconnected command.
-
-    Args:
-        src_port (NodeGraphQt.Port): source port.
-        trg_port (NodeGraphQt.Port): target port.
-    """
+class PortDisconnectedCmd(UndoCommand):
 
     def __init__(self, src_port, trg_port):
-        QtWidgets.QUndoCommand.__init__(self)
+        UndoCommand.__init__(self)
         self.source = src_port
         self.target = trg_port
 
@@ -255,16 +238,10 @@ class PortDisconnectedCmd(QtWidgets.QUndoCommand):
         self.source.view.disconnect_from(self.target.view)
 
 
-class PortVisibleCmd(QtWidgets.QUndoCommand):
-    """
-    Port visibility command.
-
-    Args:
-        port (NodeGraphQt.Port): node port.
-    """
+class PortVisibleCmd(UndoCommand):
 
     def __init__(self, port):
-        QtWidgets.QUndoCommand.__init__(self)
+        UndoCommand.__init__(self)
         self.port = port
         self.visible = port.visible()
 

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: test.py
+Script Name: analogClock.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
