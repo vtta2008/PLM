@@ -25,7 +25,7 @@ from bin            import DAMGDICT
 # -------------------------------------------------------------------------------------------------------------
 ''' Local pc '''
 
-APPDATA_DAMG        = os.path.join(os.getenv('APPDATA'), __organization__)
+APPDATA_DAMG        = os.path.join(os.getenv('LOCALAPPDATA'), __organization__)
 APPDATA_PLM         = os.path.join(APPDATA_DAMG, __appname__)
 CFG_DIR             = os.path.join(APPDATA_PLM, '.configs')
 TMP_DIR             = os.path.join(APPDATA_PLM, '.tmp')

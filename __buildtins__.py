@@ -27,6 +27,9 @@ def get_root():
         root                        = '/'.join(treeLst[0:index])
     else:
         root                        = cwd
+
+    print('Set root: {0}'.format(root))
+
     return root
 
 def __copyright__():
@@ -34,21 +37,6 @@ def __copyright__():
     if globalSetting.checks.copyright:
         print(_copyright)
     return _copyright
-
-ROOT                                = get_root()
-cmd                                 = 'SetX {0} {1}'.format(__envKey__, ROOT)
-
-if platform.system() == 'Windows':
-    try:
-        import winshell
-    except ImportError:
-        subprocess.Popen('python -m pip install winshell --user', shell=True).wait()
-    try:
-        import helpdev
-    except ImportError:
-        subprocess.Popen('python -m pip install helpdev --user', shell=True).wait()
-else:
-    sys.exit()
 
 
 class Modes(dict):
@@ -596,7 +584,9 @@ class GlobalSetting(object):
         self.defaults               = DefaultSetting()
 
 
-globalSetting = GlobalSetting()
+globalSetting                       = GlobalSetting()
+ROOT                                = get_root()
+cmd                                 = 'SetX {0} {1}'.format(__envKey__, ROOT)
 
 try:
     os.getenv(__envKey__)
@@ -608,7 +598,17 @@ else:
 finally:
     globalSetting.cfgable = True
 
-
+if platform.system() == 'Windows':
+    try:
+        import winshell
+    except ImportError:
+        subprocess.Popen('python -m pip install winshell --user', shell=True).wait()
+    try:
+        import helpdev
+    except ImportError:
+        subprocess.Popen('python -m pip install helpdev --user', shell=True).wait()
+else:
+    sys.exit()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 6:55 AM

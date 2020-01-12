@@ -18,7 +18,7 @@ from __buildtins__ import globalSetting
 import os, sys, requests
 
 # PLM
-from appData                            import __localServer__, SYSTRAY_UNAVAI, SERVER_CONNECT_FAIL, KEY_RELEASE
+from appData                            import __localServer__, SYSTRAY_UNAVAI, SERVER_CONNECT_FAIL, KEY_RELEASE, STAY_ON_TOP
 from utils                              import LocalDatabase, clean_file_ext
 from ui.SplashUI                        import SplashUI
 from ui.assets                          import ThreadManager, LayoutManager
@@ -28,122 +28,89 @@ from devkit.Application                 import Application
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
-class DAMGTEAM(Application):
+class AppBase(Application):
 
-    key                                 = 'PLM'
+    key                                 = 'AppBase'
 
     def __init__(self):
         Application.__init__(self)
 
-        splash                          = SplashUI(self)
-        self.plmInfo                    = splash.plmInfo
-        self.appInfo                    = splash.appInfo
+        self.splash                     = SplashUI(self)
+        self.plmInfo                    = self.splash.plmInfo
+        self.appInfo                    = self.splash.appInfo
 
-        self.browser                    = Browser()
+        if not self._server:
+            self._server                = self.configServer()
+
         self.database                   = LocalDatabase()
-
         self.threadManager              = ThreadManager()
         self.layoutManager              = LayoutManager(self.threadManager, self)
-
+        self.browser                    = Browser()
         self.layoutManager.registLayout(self.browser)
+
         self.layoutManager.buildLayouts()
         self.layoutManager.globalSetting()
 
-        self.mainUI, self.sysTray, self.shortcutCMD, self.signIn, self.signUp, self.forgotPW = self.layoutManager.mains
         self.layouts                    = self.layoutManager.register
-
-        for layout in [self.mainUI, self.sysTray, self.signIn, self.signUp, self.forgotPW]:
-            layout.signals._emitable    = True
-            layout.signals.connect('loginChanged', self.loginChanged)
 
         self.set_styleSheet('dark')
 
-        try:
-            r = requests.get(__localServer__)
-        except requests.exceptions.ConnectionError:
-            self.logger.info('Cannot connect to server')
-            connectServer = False
-        else:
-            connectServer = True
+        self.mainUI, self.sysTray, self.shortcutCMD, self.signIn, self.signUp, self.forgotPW = self.layoutManager.mains
 
+        for layout in [self.mainUI, self.sysTray, self.signIn, self.signUp, self.forgotPW]:
+            layout.signals._emitable = True
+            layout.signals.connect('loginChanged', self.loginChanged)
+
+    def checkUserData(self):
         try:
-            self.username, token, cookie, remember = self.database.query_table('curUser')
+            self.username, self.token, self.cookie, self.remember = self.getUserData()
         except (ValueError, IndexError):
             self.logger.info("There is no user login data")
-            self.username, token, cookie, remember = (None, None, None, None)
-            queryUserLogin = False
+            self.username, self.token, self.cookie, self.remember = (None, None, None, None)
+            return False
         else:
-            queryUserLogin = True
+            return True
 
-        if queryUserLogin:
-            if connectServer:
-                try:
-                    r = requests.get(__localServer__, verify=False, headers={'Authorization': 'Bearer {0}'.format(token)}, cookies={'connect.sid': cookie})
-                except Exception:
-                    if not globalSetting.modes.allowLocalMode:
-                        self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
-                        sys.exit()
-                    else:
-                        self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
-                        self.mainUI.show()
-                        splash.finish(self.mainUI)
-                else:
-                    if r.status_code == 200:
-                        if not self.sysTray.isSystemTrayAvailable():
-                            self.logger.report(SYSTRAY_UNAVAI)
-                            self.exitEvent()
-                        else:
-                            self.loginChanged(True)
-                            self.sysTray.log_in()
-                            self.mainUI.show()
-                            splash.finish(self.mainUI)
-                    else:
-                        self.signIn.show()
-                        splash.finish(self.signIn)
-            else:
-                if not globalSetting.modes.allowLocalMode:
-                    self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
-                    sys.exit()
-                else:
-                    self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
-                    self.mainUI.show()
-                    splash.finish(self.mainUI)
+    def getUserData(self):
+        username, token, cookie, remember = self.database.query_table('curUser')
+        return username, token, cookie, remember
+
+    def checkConnectServer(self):
+        try:
+            requests.get(self._server)
+        except requests.exceptions.ConnectionError:
+            self.logger.info('Cannot connect to server')
+            return False
         else:
-            if connectServer:
-                self.signIn.show()
-                splash.finish(self.signIn)
+            return True
+
+    def serverAuthorization(self):
+        try:
+            r = requests.get(self._server, verify=self.getVerify(), headers=self.getHeaders(), cookies=self.getCookies())
+        except Exception:
+            if not globalSetting.modes.allowLocalMode:
+                self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', STAY_ON_TOP)
+                sys.exit()
             else:
-                if not globalSetting.modes.allowLocalMode:
-                    self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
-                    sys.exit()
-                else:
-                    self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
-                    self.mainUI.show()
-                    splash.finish(self.mainUI)
+                self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
+                return False
+        else:
+            return r.status_code
 
-    def notify(self, receiver, event):
+    def configServer(self):
+        return __localServer__
 
-        if event.type() == KEY_RELEASE:
-            if event.key() == 16777249 and 32:
-                pos = self.cursor.pos()
-                self.shortcutCMD.show()
-                self.shortcutCMD.move(pos)
+    def getVerify(self):
+        return self._verify
 
-        elif event.type() == 18:                                            # QHideEvent
-            if hasattr(receiver, 'key'):
-                if self.layoutManager:
-                    if receiver.key in self.layouts.keys():
-                        geometry = receiver.saveGeometry()
-                        receiver.setValue('geometry', geometry)
+    def setVerify(self, val):
+        self._verify                    = val
 
-        elif event.type() == 17:                                            # QShowEvent
-            if hasattr(receiver, 'key'):
-                if self.layoutManager:
-                    if receiver.key in self.layoutManager.keys():
-                        geometry = receiver.settings.value('geometry', b'')
-                        receiver.restoreGeometry(geometry)
+    def getHeaders(self):
+        return {'Authorization': 'Bearer {0}'.format(self.token)}
 
-        return super(DAMGTEAM, self).notify(receiver, event)
+    def getCookies(self):
+        return {'connect.sid': self.cookie}
 
     def command(self, key):
         try:
@@ -216,9 +183,9 @@ class DAMGTEAM(Application):
         elif event == 'LogOut':
             self.signOutEvent()
         elif event == 'Quit':
-            self.quit()
+            self.exitEvent()
         elif event == 'Exit':
-            self.exit()
+            self.exitEvent()
         elif event == 'ChangePassword':
             pass
         else:
@@ -287,6 +254,83 @@ class DAMGTEAM(Application):
 
     def switchAccountEvent(self):
         self.signOutEvent()
+
+    def exitEvent(self):
+        self.exit()
+
+class DAMGTEAM(AppBase):
+
+    key                                 = 'PLM'
+
+    def __init__(self):
+        AppBase.__init__(self)
+
+        serverReady                     = self.checkConnectServer()
+        userData                        = self.checkUserData()
+
+        if userData:
+            if serverReady:
+                statusCode = self.serverAuthorization()
+                if not statusCode:
+                    self.mainUI.show()
+                    self.splash.finish(self.mainUI)
+                else:
+                    if statusCode == 200:
+                        if not self.sysTray.isSystemTrayAvailable():
+                            self.logger.report(SYSTRAY_UNAVAI)
+                            self.exitEvent()
+                        else:
+                            self.loginChanged(True)
+                            self.sysTray.log_in()
+                            self.mainUI.show()
+                            self.splash.finish(self.mainUI)
+                    else:
+                        self.signIn.show()
+                        self.splash.finish(self.signIn)
+            else:
+                if not globalSetting.modes.allowLocalMode:
+                    self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                    sys.exit()
+                else:
+                    self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
+                    self.mainUI.show()
+                    self.splash.finish(self.mainUI)
+        else:
+            if serverReady:
+                self.signIn.show()
+                self.splash.finish(self.signIn)
+            else:
+                if not globalSetting.modes.allowLocalMode:
+                    self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                    sys.exit()
+                else:
+                    self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
+                    self.mainUI.show()
+                    self.splash.finish(self.mainUI)
+
+    def notify(self, receiver, event):
+
+        if event.type() == KEY_RELEASE:
+            if event.key() == 16777249 and 32:
+                pos = self.cursor.pos()
+                self.shortcutCMD.show()
+                self.shortcutCMD.move(pos)
+
+        elif event.type() == 18:                                            # QHideEvent
+            if hasattr(receiver, 'key'):
+                if self.layoutManager:
+                    if receiver.key in self.layouts.keys():
+                        geometry = receiver.saveGeometry()
+                        receiver.setValue('geometry', geometry)
+
+        elif event.type() == 17:                                            # QShowEvent
+            if hasattr(receiver, 'key'):
+                if self.layoutManager:
+                    if receiver.key in self.layoutManager.keys():
+                        geometry = receiver.settings.value('geometry', b'')
+                        receiver.restoreGeometry(geometry)
+
+        return super(DAMGTEAM, self).notify(receiver, event)
 
 if __name__ == '__main__':
     app = DAMGTEAM()

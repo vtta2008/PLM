@@ -40,7 +40,7 @@ from .configs            import (__plmWiki__, __localServer__, __pkgsReq__, __ho
                                  CONFIG_TOOLS, CONFIG_EXTRA, CONFIG_SYSTRAY, ACTIONS_DATA, STYLESHEET_KEYS, OPEN_URL_KEYS,
                                  SHORTCUT_KEYS, QT_BINDINGS, QT_ABSTRACTIONS, QT5_IMPORT_API, QT_API_VALUES, QT_LIB_VALUES,
                                  QT_BINDING, QT_ABSTRACTION, IMAGE_BLACKLIST, PY2, SYS_OPTS, APP_FUNCS_KEYS,
-                                 IGNORE_ICONS, notKeys, autodeskVer,
+                                 IGNORE_ICONS, notKeys, autodeskVer, PLMAPPID,
 
                                  QUESTIONS, ABOUT, CREDIT, CODECONDUCT, CONTRIBUTING, REFERENCES, LICENCE, VERSION,
 

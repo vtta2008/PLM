@@ -46,7 +46,7 @@ from .options                       import *
 from .metadatas                     import (__plmWiki__, __localServer__, __pkgsReq__, __homepage__, __appname__,
                                             __organization__, __organizationID__, __organizationName__, __globalServer__,
                                             __google__, __plmSlogan__, __localServerAutho__, __version__, __website__,
-                                            VERSION, )
+                                            VERSION, PLMAPPID)
 
 from .device                        import ConfigMachine
 
@@ -61,12 +61,6 @@ def save_data(filePth, data):
 iconMissing                         = []
 toolTips                            = {}
 statusTips                          = {}
-
-
-# from . import dirs
-# keys                            = [k for k in vars(dirs).keys() if not k in notKeys]
-# for k in keys:
-#     print("self.add('{0}', {0})".format(k))
 
 dirInfo                            = ConfigDirectory()
 pthInfo                            = ConfigPath()

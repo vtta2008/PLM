@@ -19,7 +19,7 @@ from PyQt5.QtWidgets                        import QGraphicsScene
 
 # PLM
 from appData.configs                         import GRID_SIZE, ACTION_MOVE
-from test.NodeGraph import Edge
+from test.test import Edge
 
 # -------------------------------------------------------------------------------------------------------------
 """ Scene """

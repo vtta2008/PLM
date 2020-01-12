@@ -32,7 +32,7 @@ class PipelineManager(MainWindow):
         self.url                        = __homepage__
         self.setObjectName(self._name)
         self.setWindowTitle(__appname__)
-        self.setWindowIcon(LogoIcon("Logo"))
+        self.setWindowIcon(LogoIcon('DAMG'))
 
         self.actionManager              = actionManager
         self.buttonManager              = buttonManager

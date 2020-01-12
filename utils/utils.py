@@ -323,7 +323,7 @@ def get_logo_icon(size=32, name="DAMG"):
     logoFilePth = os.path.join(logoPth, "{0}x{0}.png".format(str(size)))
 
     if not os.path.exists(logoFilePth):
-        raise FileNotFoundError('{} not exists'.format(logoFilePth))
+        return FileNotFoundError('{} not exists'.format(logoFilePth))
     else:
         return logoFilePth
 

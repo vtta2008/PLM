@@ -24,7 +24,7 @@ class MessageBox(QMessageBox):
     _name                           = 'DAMG Widget'
     _copyright                      = __copyright__()
 
-    def __init__(self, parent=None, title="auto", level="auto", message="test message", btn='ok'):
+    def __init__(self, parent=None, title="auto", level="auto", message="test message", btn='ok', flag=None):
         QMessageBox.__init__(self)
 
         self._parent                = parent
@@ -32,11 +32,15 @@ class MessageBox(QMessageBox):
         self._level                 = level
         self._message               = message
         self._btn                   = btn
+        self.flag                   = flag
 
         if self._title == 'auto' or self._title is None:
             self.popupTitle             = self._level
         else:
             self.popupTitle             = self._title
+
+        if self.flag:
+            self.setWindowFlag(self.flag)
 
         self.popupIcon                  = self.config_icon()
         self.popupLevel                 = self.config_level()

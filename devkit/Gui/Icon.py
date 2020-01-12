@@ -83,22 +83,19 @@ class LogoIcon(Icon):
     def __init__(self, name="Logo", parent=None):
         super(LogoIcon, self).__init__()
 
-        self.parent = parent
-        self.name =name
+        self.parent                         = parent
+        self.name                           = name
 
-        self.find_icon()
-
-    def find_icon(self):
         for s in self.sizes:
             self.addFile(get_logo_icon(s, self.name), Size(s, s))
-        return True
+
 
 class TagIcon(Icon):
 
-    key = 'TagIcon'
-    tags = ['licenceTag', 'pythonTag', 'versionTag']
-    w = 87
-    h = 20
+    key                                     = 'TagIcon'
+    tags                                    = ['licenceTag', 'pythonTag', 'versionTag']
+    w                                       = 87
+    h                                       = 20
 
     def __init__(self, name='Tag', parent=None):
         super(TagIcon, self).__init__()

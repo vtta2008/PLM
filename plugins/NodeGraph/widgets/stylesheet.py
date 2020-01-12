@@ -4,6 +4,7 @@ from appData import ICON_DOWN_ARROW
 
 # Reformat the icon path on Windows OS.
 match = re.match('(\\w:)', ICON_DOWN_ARROW)
+
 if match:
     ICON_DOWN_ARROW = ICON_DOWN_ARROW[len(match.group(1)):]
     ICON_DOWN_ARROW = ICON_DOWN_ARROW.replace('\\', '/')
@@ -19,6 +20,7 @@ QGroupBox {
     padding-right: 1px;
     font-size: 10pt;
 }
+
 QGroupBox::title {
     subcontrol-origin: margin;
     subcontrol-position: top center;

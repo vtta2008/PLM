@@ -9,19 +9,25 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import __copyright__, __envKey__, ROOT, globalSetting
+from __buildtins__ import __copyright__, ROOT, globalSetting
 """ Import """
 
 # Python
-import sys, argparse, helpdev, ctypes
-from ctypes                         import wintypes
+import sys, ctypes
+
+try:
+    from ctypes.wintypes            import HRESULT
+except ImportError:
+    from ctypes                     import HRESULT
+finally:
+    from ctypes                     import wintypes
 
 # PyQt5
 from PyQt5.QtWidgets                import QApplication
 from PyQt5.QtGui                    import QColor
 
 # PLM
-from appData                        import __version__, __appname__, __organization__, __website__, DarkPalette, STAY_ON_TOP
+from appData                        import __version__, __appname__, __organization__, __website__, DarkPalette, PLMAPPID
 from cores.Loggers                  import Loggers
 from cores.SignalManager            import SignalManager
 from cores.Settings                 import Settings
@@ -30,7 +36,12 @@ from .Core                          import Process
 from .Gui                           import Cursor, LogoIcon, Color
 from .Widgets                       import MessageBox
 from plugins                        import Qt
-qt_api                              = Qt.__binding__
+
+PCWSTR                              = ctypes.c_wchar_p
+AppUserModelID                      = ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID
+AppUserModelID.argtypes             = [PCWSTR]
+AppUserModelID.restype              = HRESULT
+
 
 class Application(QApplication):
 
@@ -42,20 +53,35 @@ class Application(QApplication):
     _login                          = False
     _styleSheetData                 = None
 
+    _server                         = None
+    _verify                         = False
+
     threadManager                   = None
     eventManager                    = None
     layoutManager                   = None
 
     appInfo                         = None
     plmInfo                         = None
-
     layouts                         = None
+
+    token                           = None
+    cookie                          = None
+
+    browser                         = None
+    mainUI                          = None
+    sysTray                         = None
+    shortcutCMD                     = None
+    signIn                          = None
+    signUp                          = None
+    forgotPW                        = None
+
+    _appID                          = None
 
     def __init__(self):
         super(Application, self).__init__(sys.argv)
 
         sys.path.insert(0, ROOT)
-        self.default_parser()
+
         self.setWindowIcon(LogoIcon("Logo"))                        # Setup icon
         self.setOrganizationName(__organization__)
         self.setApplicationName(__appname__)
@@ -64,26 +90,28 @@ class Application(QApplication):
         self.setApplicationDisplayName(__appname__)
         self.setCursorFlashTime(1000)
         self.setQuitOnLastWindowClosed(False)
-        self.setDesktopSettingsAware(False)
+        self.setDesktopSettingsAware(True)
 
         self.logger                     = Loggers(self.__class__.__name__)
         self.settings                   = Settings(self)
         self.signals                    = SignalManager(self)
+
         self.cursor                     = Cursor(self)
         self.appStyle                   = StyleSheet(self)
-
         self.process                    = self.getAppProcess()
-
         self.settings._settingEnable    = True
 
-        if qt_api == 'PyQt5':
-            self.palette = self.palette()
+        if Qt.__binding__ == 'PyQt5':
+            self.palette                = self.palette()
             self.palette.setColor(self.palette.Normal, self.palette.Link, QColor(DarkPalette.COLOR_BACKGROUND_LIGHT))
             self.setPalette(self.palette)
 
-    def messageBox(self, parent=None, title="auto", level="auto", message="test message", btn='ok'):
-        messBox = MessageBox(parent, title, level, message, btn)
-        messBox.setWindowFlag(STAY_ON_TOP)
+        appID                           = PLMAPPID
+        hresult                         = AppUserModelID(appID)
+        assert hresult == 0, "SetCurrentProcessExplicitAppUserModelID failed"
+
+    def messageBox(self, parent=None, title="auto", level="auto", message="test message", btn='ok', flag=None):
+        messBox = MessageBox(parent, title, level, message, btn, flag)
         return messBox
 
     def set_styleSheet(self, style):
@@ -109,59 +137,15 @@ class Application(QApplication):
         return self.process
 
     def getAppID(self):
-        lpBuffer            = wintypes.LPWSTR()
-        AppUserModelID      = ctypes.windll.shell32.GetCurrentProcessExplicitAppUserModelID
-        appID               = lpBuffer.value
-        if appID is None:
-            appID           = self.key
-            try:
-                ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(appID)
-            except:
-                print("Could not set the app model ID. If the plaftorm is older than Windows 7, this is normal.")
-
-        ctypes.windll.kernel32.LocalFree(lpBuffer)
+        lpBuffer                        = wintypes.LPWSTR()
+        appID                           = lpBuffer.value
         AppUserModelID(ctypes.cast(ctypes.byref(lpBuffer), wintypes.LPWSTR))
+        ctypes.windll.kernel32.LocalFree(lpBuffer)
         self.logger.info('Get AppID: {0}'.format(appID))
-
         return appID
 
-    def default_parser(self):
-        parser = argparse.ArgumentParser(description="damgteam helper. Use the option --all to report bugs",
-                                         formatter_class=argparse.RawDescriptionHelpFormatter)
-
-        parser.add_argument('-i', '--information', action='store_true', help="Show information about environment")
-        parser.add_argument('-b', '--bindings', action='store_true', help="Show available bindings for Qt")
-        parser.add_argument('-a', '--abstractions', action='store_true', help="Show available abstraction layers for Qt bindings")
-        parser.add_argument('-d', '--dependencies', action='store_true', help="Show information about dependencies")
-        parser.add_argument('-v', '--version', action='version', version='v{}'.format(__version__))
-        parser.add_argument('-all', '--all', action='store_true', help="Show all information options at once")
-
-        return parser
-
     def startLoop(self):
-        # parsing arguments from command line
-        parser = self.default_parser()
-        args = parser.parse_args()
-        no_args = not len(sys.argv) > 1
-        info = {}
-
-        if no_args:
-            parser.print_help()
-
-        if args.information or args.all:
-            info.update(helpdev.check_os())
-            info.update(helpdev.check_python())
-
-        if args.bindings or args.all:
-            info.update(helpdev.check_qt_bindings())
-
-        if args.abstractions or args.all:
-            info.update(helpdev.check_qt_abstractions())
-
-        if args.dependencies or args.all:
-            info.update(helpdev.check_python_packages(packages='helpdev,damgteam'))
-
-        self.appID                      = self.getAppID()
+        self._appID                     = self.getAppID()
         return sys.exit(self.exec_())
 
     @property
@@ -180,6 +164,18 @@ class Application(QApplication):
     def styleSheetData(self):
         return self._styleSheetData
 
+    @property
+    def appID(self):
+        return self._appID
+
+    @property
+    def server(self):
+        return self._server
+
+    @property
+    def verify(self):
+        return self._verify
+
     @styleSheetData.setter
     def styleSheetData(self, val):
         self._styleSheetData        = val
@@ -191,6 +187,18 @@ class Application(QApplication):
     @login.setter
     def login(self, val):
         self._login                 = val
+
+    @appID.setter
+    def appID(self, val):
+        self._appID                 = val
+
+    @server.setter
+    def server(self, val):
+        self._server               = val
+
+    @verify.setter
+    def verify(self, val):
+        self._verify               = val
 
     def setRecieveSignal(self, bool):
         globalSetting.tracks.recieveSignal = bool
