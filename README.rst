@@ -1,15 +1,14 @@
-SHORT FILM PIPELINE
-===================
+PIPELINE MANAGER
+================
 
-This application can be used to build, manage, and optimise film making pipelines. The latest version is compatible
-with Windows 10 and may run on earlier versions. It does not run in Maya 2016 or lower.
+This application can be used to build, manage, and optimise vfx pipelines. The current version is compatible with Windows 10.
 
 Due to VFX Reference Platform and the large invention, we need to stay with python 2.7 but expect to migrate to python 3 in 2019 (Delayed to 2020).
 See `details <http://www.vfxplatform.com>`_
 
 NOTE:
 
-    - It is still under developing, some function will not be working yet.
+    - It is still under developing, some function may not be working yet.
     - Really struggling at compling to executable file as well as build the installation.
 
 REQUIREMENTS
