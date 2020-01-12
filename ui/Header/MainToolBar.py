@@ -12,18 +12,17 @@ Description:
 """ Import """
 
 # PyQt5
-from PyQt5.QtCore           import pyqtSlot, Qt
-from PyQt5.QtWidgets        import QScrollArea
+from PyQt5.QtCore           import pyqtSlot
 
 # PLM
 from appData                import SiPoMin
-from devkit.Widgets       import MainWindow, ToolBar, GroupVBox
+from devkit.Widgets         import MainWindow, ToolBar, GroupHBox, VBoxLayout
 from utils                  import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
 
-class MainToolBar(GroupVBox):
+class MainToolBar(GroupHBox):
 
     key                     = 'MainToolBar'
     toolBars                = dict()
@@ -43,9 +42,6 @@ class MainToolBar(GroupVBox):
         self.postToolBar    = self.build_toolBar('POST')
         self.officeToolBar  = self.build_toolBar('MCO')
 
-        self.artToolBar.hide()
-        self.officeToolBar.hide()
-
         self.tbs = [tb for tb in self.toolBars.values()]
 
         for tb in self.tbs:
@@ -55,6 +51,9 @@ class MainToolBar(GroupVBox):
                 tb.setVisible(True)
             else:
                 tb.setVisible(str2bool(state))
+
+        self.artToolBar.setVisible(False)
+        self.officeToolBar.setVisible(False)
 
         self.updateWidth()
         self.layout.addWidget(self.mainLayout)
@@ -69,13 +68,8 @@ class MainToolBar(GroupVBox):
                 i = i - len(tb.actions)
 
         w = i*32 + i*2
-        # if w >=490:
-        #     self.scrollbar.setVisible(True)
-        # else:
-        #     self.scrollbar.setVisible(False)
-
+        self.setMinimumWidth(w)
         self.mainLayout.setMinimumWidth(w)
-        # self.parent.setFixedWidth(w + 20)
 
     def build_toolBar(self, name=''):
         toolBar = ToolBar(self)
@@ -123,7 +117,6 @@ class MainToolBar(GroupVBox):
     def count(self, val):
         self._count = val
 
-    @pyqtSlot(str, bool)
     def showToolBar(self, toolbar, mode):
         if toolbar in self.toolBars.keys():
             tb = self.toolBars[toolbar]

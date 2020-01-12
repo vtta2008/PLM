@@ -15,34 +15,15 @@ NOTE:
 REQUIREMENTS
 ============
 
-Python 3.6 for Windows:
+    - Anaconda Python 3+ for Windows: download `64bit <https://repo.anaconda.com/archive/Anaconda3-5.2.0-Windows-x86_64.exe>`_ or `32bit <https://repo.anaconda.com/archive/Anaconda3-5.2.0-Windows-x86.exe>`_
 
-    - 64 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.2.0-Windows-x86_64.exe>`_
+    Software & plugins available:
 
-    - 32 bit `download <https://repo.anaconda.com/archive/Anaconda3-5.2.0-Windows-x86.exe>`_
-
-Also require extra python packages (will update more):
-
-.. code:: bash
-
-    deprecated, winshell, pandas
-
-To install extra packages, run command in CMD:
-
-.. code:: bash
-
-    python -m pip install {packagename}
-
-LIST SOFTWARE PACKAGE
-======================
-
-    - `Maya 2017 and/or Maya 2018 <https://www.autodesk.com/education/free-software/maya>`_
-    - `Vray 3.6 <https://www.chaosgroup.com/vray/maya>`_
-    - `Phoenix FD 3.0 <https://www.chaosgroup.com/phoenix-fd/maya>`_
+    - `Maya 2017+ <https://www.autodesk.com/education/free-software/maya>`_
+    - `Vray <https://www.chaosgroup.com/vray/maya>`_, `Phoenix FD for Maya <https://www.chaosgroup.com/phoenix-fd/maya>`_
     - `VMM for maya <https://www.mediafire.com/#gu9s1tbb2u4g9>`_
     - `Houdini <https://www.sidefx.com/download/>`_
     - `Mari <https://www.foundry.com/products/mari>`_
-    - Mari extension: "Will update later"
     - `Nuke <https://www.foundry.com/products/nuke>`_
     - `ZBrush <https://pixologic.com/zbrush/downloadcenter/>`_
     - `Davinci Resolve <https://www.blackmagicdesign.com/nz/products/davinciresolve/>`_

@@ -27,13 +27,13 @@ class HBoxLayout(QHBoxLayout):
     _name                                   = 'DAMG H Box Layout'
     _copyright                              = __copyright__()
 
-    def __init__(self, preset={}, parent=None):
+    def __init__(self, parent=None, preset={}):
         QHBoxLayout.__init__(self)
         self.parent                         = parent
-        self.settings = Settings(self)
-        self.signals = SignalManager(self)
+        self.settings                       = Settings(self)
+        self.signals                        = SignalManager(self)
 
-        self.preset = preset
+        self.preset                         = preset
         if check_preset(self.preset):
             self.buildUI()
 
