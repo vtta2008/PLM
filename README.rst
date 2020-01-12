@@ -1,7 +1,7 @@
 PIPELINE MANAGER
 ================
 
-This application can be used to build, manage, and optimise vfx pipelines. The current version is compatible with Windows 10.
+This application aimed to build, manage, and optimise vfx pipelines using Python 3 and PyQt5. The current version is compatible with Windows 10.
 
 Due to VFX Reference Platform and the large invention, we need to stay with python 2.7 but expect to migrate to python 3 in 2019 (Delayed to 2020).
 See `details <http://www.vfxplatform.com>`_
@@ -19,7 +19,7 @@ Python:
 
 Software available:
 
-    - `Maya 2017+ <https://www.autodesk.com/education/free-software/maya>`_
+    - `Maya <https://www.autodesk.com/education/free-software/maya>`_ 2017+
     - `Houdini <https://www.sidefx.com/download/>`_
     - `Mari <https://www.foundry.com/products/mari>`_
     - `Nuke <https://www.foundry.com/products/nuke>`_
@@ -29,8 +29,8 @@ Software available:
 
 Plugin available:
 
-    - `Vray <https://www.chaosgroup.com/vray/maya>`_, `Phoenix FD for Maya <https://www.chaosgroup.com/phoenix-fd/maya>`_
-    - `VMM for maya <https://www.mediafire.com/#gu9s1tbb2u4g9>`_
+    - `Vray <https://www.chaosgroup.com/vray/maya>`_, `Phoenix FD <https://www.chaosgroup.com/phoenix-fd/maya>`_  for `Maya <https://www.autodesk.com/education/free-software/maya>`_
+    - `VMM <https://www.mediafire.com/#gu9s1tbb2u4g9>`_ for `Maya <https://www.autodesk.com/education/free-software/maya>`_
 
 NOTE:
     - For VMM for maya, remember to configure the path once it is opened in Maya. (sadly, the author has stopped developing the plugin.)
