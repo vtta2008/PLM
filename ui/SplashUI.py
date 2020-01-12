@@ -15,12 +15,7 @@ from __buildtins__ import ROOT
 """ Import """
 
 # Python
-import os, sys
-
-
-from PyQt5.QtGui import QPixmap
-from PyQt5.QtWidgets import QSplashScreen, QProgressBar
-
+import os
 
 # PLM
 from appData                    import (STAY_ON_TOP, FRAMELESS, bottom, center, cyan,
@@ -30,27 +25,29 @@ from devkit.Widgets             import SplashScreen, ProgressBar
 from devkit.Gui                 import Pixmap
 
 
-class SplashUI(QSplashScreen):
+class SplashUI(SplashScreen):
 
     key                         = 'SplashScreen'
     value                       = 0
 
     def __init__(self, app=None):
-        super(SplashUI, self).__init__(QPixmap(os.path.join(ROOT, 'assets', 'pics', 'splash.png')))
+        super(SplashUI, self).__init__()
 
         self.app                = app
-        self.pic                = QPixmap(os.path.join(ROOT, 'assets', 'pics', 'splash.png'))
+        self.pix                = Pixmap(os.path.join(ROOT, 'assets', 'pics', 'splash.png'))
         self.flag               = STAY_ON_TOP
+
+        self.setPixmap(self.pix)
         self.setWindowFlag(self.flag)
         self.setWindowFlags(STAY_ON_TOP | FRAMELESS)
-        self.setMask(self.pic.mask())
+        self.setMask(self.pix.mask())
         self.setEnabled(False)
 
-        self.progressBar        = QProgressBar(self)
+        self.progressBar        = ProgressBar(self)
         self.progressBar.setTextVisible(False)
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(100)
-        self.progressBar.setGeometry(50, self.pic.height() - 50, self.pic.width() - 100, 20)
+        self.progressBar.setGeometry(50, self.pix.height() - 50, self.pix.width() - 100, 20)
         self.updateProgress(0)
         self.show()
         self.runPreConfig()

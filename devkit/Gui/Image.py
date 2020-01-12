@@ -10,12 +10,14 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 from __buildtins__ import __copyright__
+""" Import """
 
-import os
-
+# PyQt5
 from PyQt5.QtGui                            import QImage, QPixmap
 
-from utils                                  import get_avatar_image, get_app_icon, get_logo_icon, get_tag_icon
+# PLM
+from appData                                import AUTO_COLOR
+
 
 class Image(QImage):
 
@@ -23,10 +25,20 @@ class Image(QImage):
     key                                     = 'Image'
     _name                                   = 'DAMG Image'
     _copyright                              = __copyright__()
-    loaded                                  = False
 
-    def __init__(self, *__args):
-        QImage.__init__(self)
+    def __init__(self, image=None, parent=None):
+        super(Image, self).__init__(image, parent)
+
+        self.parent                         = parent
+        self._image                         = image
+        self.setImage(self._image)
+
+    def setImage(self, image):
+        self.load(image)
+
+    @property
+    def image(self):
+        return self._image
 
     @property
     def copyright(self):
@@ -38,7 +50,11 @@ class Image(QImage):
 
     @name.setter
     def name(self, newName):
-        self._name              = newName
+        self._name                      = newName
+
+    @image.setter
+    def image(self, imagePth):
+        self._image                     = imagePth
 
 class Pixmap(QPixmap):
 
@@ -47,8 +63,20 @@ class Pixmap(QPixmap):
     _name                               = 'DAMG Pixel Map'
     _copyright                          = __copyright__()
 
-    def __init__(self, *__args):
-        QPixmap.__init__(self)
+    def __init__(self, imgPth=None, flag=AUTO_COLOR, parent=None):
+        super(Pixmap, self).__init__(imgPth)
+
+        self.flag                       = flag
+        self.parent                     = parent
+
+        if imgPth is None:
+            self.imgPth                 = imgPth
+        else:
+            self.imgPth                 = QImage(imgPth)
+            self.fromImage(self.imgPth, flag)
+
+    def setImage(self, image, flags):
+        return self.fromImage(image, flags)
 
     @property
     def copyright(self):

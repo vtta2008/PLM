@@ -157,7 +157,8 @@ for f in factors:
     for act in factorActs:
         FACTOR_KEYS.append('{0} {1}'.format(act, f))
 
-APP_EVENT_KEYS      = ['ShowAll', 'SwitchAccount', 'LogIn', 'LogOut', 'Quit', 'Exit', 'ChangePassword', 'UpdateAvatar',]
+APP_EVENT_KEYS      = ['ShowAll', 'HideAll', 'CloseAll', 'SwitchAccount', 'LogIn', 'LogOut', 'Quit', 'Exit',
+                       'ChangePassword', 'UpdateAvatar',]
 
 STYLESHEET_KEYS     = ['bright', 'dark', 'charcoal', 'nuker', ]
 

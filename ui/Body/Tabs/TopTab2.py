@@ -64,10 +64,8 @@ class TopTab2(Widget):
     def update_avatar(self, param):
         if param:
             self.username, token, cookie, remember = self.query.query_table('curUser')
-            self.avatar = QPixmap(get_avatar_image(self.username))
-            self.avatarScene = QGraphicsScene()
-            self.avatarScene.addPixmap(self.avatar)
-            self.avatarScene.update()
+            self.avatar.setPixmap(QPixmap(get_avatar_image(self.username)))
+            self.avatar.update()
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -14,6 +14,7 @@ from .ActionManager         import ActionManager
 from .ButtonManager         import ButtonManager
 from .CommandManager        import CommandManager
 from .EventManager          import EventManager
+from .LayoutManager         import LayoutManager
 from .Registry              import RegistryLayout
 from .ThreadManager         import ThreadManager
 

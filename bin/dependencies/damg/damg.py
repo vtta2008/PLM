@@ -603,8 +603,8 @@ class BaseThreadPool(QThreadPool):
         self.workers.remove(worker)
         return print('worker commpleted')
 
-    def create_worker(self, task):
-        worker = DAMGWORKER(task)
+    def create_worker(self, task, args):
+        worker = DAMGWORKER(task, args)
         worker.signals.result.connect(self.process_output)
         worker.signals.progress.connect(self.progress_task)
         worker.signals.finished.connect(partial(self.task_completed, worker))
@@ -1266,10 +1266,10 @@ class DAMGTHREADPOOL(BaseThreadPool):
     def run_test(self):
         return self.execute_task(self.test_task)
 
-    def execute_task(self, task, thread=False, worker=True):
+    def execute_task(self, task, args, thread=False, worker=True):
 
         if worker:
-            worker = self.create_worker(task)
+            worker = self.create_worker(task, args)
             return self.start(worker)
         else:
             thread = self.create_thread(task)

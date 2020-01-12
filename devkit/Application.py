@@ -42,6 +42,15 @@ class Application(QApplication):
     _login                          = False
     _styleSheetData                 = None
 
+    threadManager                   = None
+    eventManager                    = None
+    layoutManager                   = None
+
+    appInfo                         = None
+    plmInfo                         = None
+
+    layouts                         = None
+
     def __init__(self):
         super(Application, self).__init__(sys.argv)
 

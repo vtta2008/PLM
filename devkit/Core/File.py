@@ -10,12 +10,17 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 from __buildtins__ import __copyright__
+""" Import """
 
+# Python
 import os
 
+# PyQt5
 from PyQt5.QtCore                           import QFile
 
+# PLM
 from appData                                import QSS_DIR
+
 
 class FileBase(QFile):
 
@@ -48,13 +53,14 @@ class FileBase(QFile):
     def filePath(self, val):
         self._filePath                      = val
 
+
 class QssFile(FileBase):
 
     key                                     = 'QssFile'
 
     qssPths = dict(
                     bright                   = os.path.join(QSS_DIR, 'bright.qss'),
-                    chacoal                  = os.path.join(QSS_DIR, 'chacoal.qss'),
+                    charcoal                 = os.path.join(QSS_DIR, 'chacoal.qss'),
                     cmd                      = os.path.join(QSS_DIR, 'cmd.qss'),
                     dark                     = os.path.join(QSS_DIR, 'grey.qss'),
                     grey                     = os.path.join(QSS_DIR, 'grey.qss'),
@@ -65,7 +71,13 @@ class QssFile(FileBase):
         super(QssFile, self).__init__()
 
         self._style                         = style
-        self._filePath                      = self.qssPths[self._style]
+
+        try:
+            self._filePath                      = self.qssPths[self._style]
+        except KeyError:
+            print('There is no style: {0}'.format(self._style))
+            self._filePath                      = self.qssPths['dark']
+
         self.setFileName(self._filePath)
 
     @property
@@ -75,6 +87,7 @@ class QssFile(FileBase):
     @style.setter
     def style(self, val):
         self._style                         = val
+
 
 class File(FileBase):
 

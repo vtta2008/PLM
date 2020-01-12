@@ -29,7 +29,7 @@ class SplashScreen(QSplashScreen):
     _copyright                              = __copyright__()
 
     def __init__(self, app=None):
-        QSplashScreen.__init__(self)
+        super(SplashScreen, self).__init__(app)
 
         self.app                            = app
         self.settings                       = Settings(self)

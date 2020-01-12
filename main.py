@@ -21,8 +21,7 @@ import os, sys, requests
 from appData                            import __localServer__, SYSTRAY_UNAVAI, SERVER_CONNECT_FAIL, KEY_RELEASE
 from utils                              import LocalDatabase, clean_file_ext
 from ui.SplashUI                        import SplashUI
-from ui.assets                          import ThreadManager, EventManager
-from ui.LayoutManager                   import LayoutManager
+from ui.assets                          import ThreadManager, LayoutManager
 from plugins.Browser                    import Browser
 from devkit.Application                 import Application
 
@@ -44,8 +43,7 @@ class DAMGTEAM(Application):
         self.database                   = LocalDatabase()
 
         self.threadManager              = ThreadManager()
-        self.eventManager               = EventManager(self)
-        self.layoutManager              = LayoutManager(self.eventManager, self.threadManager, self)
+        self.layoutManager              = LayoutManager(self.threadManager, self)
 
         self.layoutManager.registLayout(self.browser)
         self.layoutManager.buildLayouts()
@@ -124,21 +122,37 @@ class DAMGTEAM(Application):
                     splash.finish(self.mainUI)
 
     def notify(self, receiver, event):
+
         if event.type() == KEY_RELEASE:
             if event.key() == 16777249 and 32:
                 pos = self.cursor.pos()
                 self.shortcutCMD.show()
                 self.shortcutCMD.move(pos)
 
+        elif event.type() == 18:                                            # QHideEvent
+            if hasattr(receiver, 'key'):
+                if self.layoutManager:
+                    if receiver.key in self.layouts.keys():
+                        geometry = receiver.saveGeometry()
+                        receiver.setValue('geometry', geometry)
+
+        elif event.type() == 17:                                            # QShowEvent
+            if hasattr(receiver, 'key'):
+                if self.layoutManager:
+                    if receiver.key in self.layoutManager.keys():
+                        geometry = receiver.settings.value('geometry', b'')
+                        receiver.restoreGeometry(geometry)
+
         return super(DAMGTEAM, self).notify(receiver, event)
 
-    def sysNotify(self, *arg):
-        title, mess, iconType, timeDelay = arg
-        return self.sysTray.sysNotify(title, mess, iconType, timeDelay)
-
     def command(self, key):
-        cmdData = self.plmInfo[key]
+        try:
+            cmdData = self.plmInfo[key]
+        except KeyError:
+            return print('There is no key: {0}'.format(key))
+
         print(cmdData.code, cmdData.value)
+
         if cmdData.code == 'os.startfile':
             func = os.startfile
             arg = cmdData.value
@@ -157,6 +171,9 @@ class DAMGTEAM(Application):
         elif cmdData.code == 'appEvent':
             func = self.appEvent
             arg = cmdData.key
+        elif cmdData.code == 'stylesheet':
+            func = self.changeStyleSheet
+            arg = cmdData.value
         else:
             if cmdData.value == 'CleanPyc':
                 func = clean_file_ext
@@ -188,6 +205,10 @@ class DAMGTEAM(Application):
     def appEvent(self, event):
         if event == 'ShowAll':
             self.showAll()
+        elif event == 'CloseAll':
+            self.closeAll()
+        elif event == 'HideAll':
+            self.hideAll()
         elif event == 'SwitchAccount':
             self.switchAccountEvent()
         elif event == 'LogIn':
@@ -204,8 +225,12 @@ class DAMGTEAM(Application):
             pass
 
     def showUI(self, key):
-        ui = self.layouts[key]
-        ui.show()
+        try:
+            ui = self.layouts[key]
+        except KeyError:
+            return print('There is no layout: {0}'.format(key))
+        else:
+            return ui.show()
 
     def openURL(self, url):
         self.browser.setUrl(url)
@@ -232,6 +257,13 @@ class DAMGTEAM(Application):
         for ui in self.layouts.values():
             ui.show()
 
+    def closeAll(self):
+        for ui in self.layouts.values():
+            ui.close()
+
+    def hideAll(self):
+        return self.closeAll()
+
     def signInEvent(self):
         self.switchAccountEvent()
 
@@ -248,6 +280,10 @@ class DAMGTEAM(Application):
         for layout in [self.mainUI, self.signUp, self.forgotPW] + self.layoutManager.infos + \
                       self.layoutManager.setts + self.layoutManager.tools + self.layoutManager.prjs:
             layout.hide()
+
+    def sysNotify(self, *arg):
+        title, mess, iconType, timeDelay = arg
+        return self.sysTray.sysNotify(title, mess, iconType, timeDelay)
 
     def switchAccountEvent(self):
         self.signOutEvent()

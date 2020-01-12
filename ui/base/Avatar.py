@@ -20,30 +20,21 @@ from devkit.Widgets             import Label, GroupBox, VBoxLayout, Button
 from utils                      import LocalDatabase, get_avatar_image, resize_image
 from appData                    import AUTO_COLOR, AVATAR_DIR, center, ASPEC_RATIO
 
+db                              = LocalDatabase()
+
+try:
+    username = db.query_table('curUser')[0]
+except (ValueError, IndexError, sqlite3.OperationalError):
+    username = 'DemoUser'
 
 class ImageAvatar(Image):
 
     Type                        = 'DAMGAVATARIMAGE'
     key                         = 'ImageAvatar'
-    _name                       = 'DAMG Avatar Image'
+    _name                       = 'DAMG Avatar Image: {0}'.format(username)
 
     def __init__(self, fileName=None, parent=None):
         super(ImageAvatar, self).__init__(fileName, parent)
-        self.parent             = parent
-        self._image             = fileName
-        self.setImage(self._image)
-
-    def setImage(self, image):
-        self.load(image)
-        # self.smoothScaled(100, 100)
-
-    @property
-    def image(self):
-        return self._image
-
-    @image.setter
-    def image(self, imagePth):
-        self._image = imagePth
 
 class PixAvatar(Pixmap):
 
@@ -54,43 +45,28 @@ class PixAvatar(Pixmap):
         super(PixAvatar, self).__init__()
         self.parent             = parent
 
-    def setImage(self, image, flags):
-        return self.fromImage(image, flags)
-
 class AvatarLabel(Label):
 
-    Type = 'DAMGAVATARLABEL'
-    key = 'AvatarLabel'
-
-    db = LocalDatabase()
-
-    try:
-        username = db.query_table('curUser')[0]
-    except (ValueError, IndexError, sqlite3.OperationalError):
-        username = 'DemoUser'
-
-    _name = username
+    Type                        = 'DAMGAVATARLABEL'
+    key                         = 'AvatarLabel'
+    _name                       = username
 
     def __init__(self, parent=None):
         super(AvatarLabel, self).__init__()
 
-        self.parent = parent
-        image = get_avatar_image(self.username)
-        pixAvatar = PixAvatar()
-        imgAvatar = ImageAvatar(image)
-        self.setPixmap(pixAvatar.fromImage(imgAvatar, AUTO_COLOR))
-
+        self.parent             = parent
+        self.setPixmap(PixAvatar().fromImage(ImageAvatar(get_avatar_image(username)), AUTO_COLOR))
         self.setScaledContents(True)
         self.setAlignment(center)
 
     def resizeEvent(self, event):
-        size = QSize(1, 1)
+        size                    = QSize(1, 1)
         size.scale(100, 100, ASPEC_RATIO)
         self.resize(size)
 
 class Avatar(GroupBox):
 
-    key = 'Avatar'
+    key                             = 'Avatar'
 
     def __init__(self, parent=None):
         super(Avatar, self).__init__(parent=parent)
@@ -102,30 +78,26 @@ class Avatar(GroupBox):
         self.changeAvatarBtn        = Button({'txt': 'Change Avatar', 'cl': self.update_avatar})
         self.layout.addWidget(self.avatar)
         self.layout.addWidget(self.changeAvatarBtn)
-
-        self.username               = self.avatar.username
-        self.setTitle(self.username)
+        self.setTitle(username)
 
         self.setLayout(self.layout)
 
     def update_avatar(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        fileFormat = "All Files (*);;Img Files (*.jpg)"
-
-        fileName, _ = QFileDialog.getOpenFileName(self, "Your Avatar", AVATAR_DIR, fileFormat, options=options)
+        options                     = QFileDialog.Options()
+        options                    |= QFileDialog.DontUseNativeDialog
+        fileFormat                  = "All Files (*);;Img Files (*.jpg)"
+        fileName, _                 = QFileDialog.getOpenFileName(self, "Your Avatar", AVATAR_DIR, fileFormat, options=options)
 
         if fileName:
-            baseFileName = self.username + '.avatar.jpg'
-            desPth = os.path.join(AVATAR_DIR, baseFileName)
+            baseFileName            = '{0}.avatar.jpg'.format(username)
+            desPth                  = os.path.join(AVATAR_DIR, baseFileName)
 
-            if desPth == fileName:
-                pass
-            elif os.path.exists(desPth):
-                if os.path.exists(desPth + '.old'):
-                    os.remove(desPth + '.old')
+            if os.path.exists(desPth):
+                oldPth              = '{0}.old'.format(desPth)
+                if os.path.exists(oldPth):
+                    os.remove(oldPth)
 
-                os.rename(desPth, desPth + '.showLayout_old')
+                os.rename(desPth, oldPth)
                 resize_image(fileName, desPth)
                 shutil.copy2(fileName, desPth)
 
@@ -145,17 +117,16 @@ class InfoPicLabel(Label):
 
         self.parent = parent
 
-
     def updatePicture(self, image):
-        pix = PixAvatar()
-        img = ImageAvatar(image)
+        pix                         = PixAvatar()
+        img                         = ImageAvatar(image)
         self.setPixmap(pix.fromImage(img, AUTO_COLOR))
         self.setScaledContents(True)
         self.setAlignment(center)
         self.update()
 
     def resizeEvent(self, event):
-        size = QSize(1, 1)
+        size                        = QSize(1, 1)
         size.scale(self.size(), ASPEC_RATIO)
         self.resize(size)
 
@@ -166,20 +137,20 @@ class InfoPicture(GroupBox):
     def __init__(self, parent=None):
         super(InfoPicture, self).__init__(parent=parent)
 
-        self.parent = parent
         self.setTitle('Images')
-        self.layout = VBoxLayout()
-        self.infoPic = InfoPicLabel()
-        self.changePictureBtn = Button({'txt': 'Choose an Image', 'cl': self.update_image})
+        self.parent                 = parent
+        self.layout                 = VBoxLayout()
+        self.infoPic                = InfoPicLabel()
+        self.changePictureBtn       = Button({'txt': 'Choose an Image', 'cl': self.update_image})
+
         self.layout.addWidget(self.infoPic)
         self.layout.addWidget(self.changePictureBtn)
 
     def update_image(self):
-        options = QFileDialog.Options()
-        options |= QFileDialog.DontUseNativeDialog
-        fileFormat = "All Files (*);;Img Files (*.jpg)"
-
-        fileName, _ = QFileDialog.getOpenFileName(self, "Your Avatar", AVATAR_DIR, fileFormat, options=options)
+        options                     = QFileDialog.Options()
+        options                    |= QFileDialog.DontUseNativeDialog
+        fileFormat                  = "All Files (*);;Img Files (*.jpg)"
+        fileName, _                 = QFileDialog.getOpenFileName(self, "Your Avatar", AVATAR_DIR, fileFormat, options=options)
 
         if fileName:
             self.infoPic.updatePicture(fileName)

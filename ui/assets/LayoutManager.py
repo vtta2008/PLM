@@ -16,14 +16,19 @@ from PyQt5.QtCore                       import Qt
 # PLM
 from appData                            import SiPoMin, ignoreIDs
 from bin                                import DAMG, DAMGLIST
-from .assets                            import (RegistryLayout, ActionManager, ButtonManager, )
-from .base                              import BaseManager
-from .CommandUI                         import CommandUI
-from .PipelineManager                   import PipelineManager
-from .SysTray                           import SysTray
-from .SubUi                             import (Calendar, Calculator, EnglishDictionary,
-                                                FindFiles, ImageViewer, NoteReminder, ScreenShot, TextEditor, ForgotPassword,
-                                                SignUp, SignIn, InfoWidget, VFXProject, AppSetting, UserSetting, Preferences,
+
+from .ActionManager                     import ActionManager
+from .ButtonManager                     import ButtonManager
+from .Registry                          import RegistryLayout
+from .EventManager                      import EventManager
+
+from ui.base                            import BaseManager
+from ui.CommandUI                       import CommandUI
+from ui.PipelineManager                 import PipelineManager
+from ui.SysTray                         import SysTray
+from ui.SubUi                           import (Calendar, Calculator, EnglishDictionary, FindFiles, ImageViewer,
+                                                NoteReminder, ScreenShot, TextEditor, ForgotPassword, SignUp, SignIn,
+                                                InfoWidget, VFXProject, AppSetting, UserSetting, Preferences,
                                                 Configurations)
 
 class LayoutManager(DAMG):
@@ -38,16 +43,14 @@ class LayoutManager(DAMG):
 
     ignoreIDs                           = ignoreIDs
 
-    def __init__(self, eventManager, threadManager, parent=None):
+    def __init__(self, threadManager, parent=None):
         super(LayoutManager, self).__init__(parent)
-
-        # self.ignoreIDs.appendList(self.parent.ignoreIDs)
 
         self.parent                     = parent
         self.actionManager              = ActionManager(self.parent)
         self.buttonManager              = ButtonManager(self.parent)
         self._register                  = RegistryLayout()
-        self.eventManager               = eventManager
+        self.eventManager               = EventManager(self.parent)
         self.threadManager              = threadManager
 
         self.globalSetting()
@@ -65,7 +68,7 @@ class LayoutManager(DAMG):
         self.setts                      = self.settingLayouts()
         self.tools                      = self.toolLayouts()
         self.prjs                       = self.projectLayouts()
-        self.plugins                     = self.pluginsLayouts()
+        self.plugins                    = self.pluginsLayouts()
 
         tbcbs                           = self.preferences.header.toolBarCBs
         tbs                             = self.mainUI.mainToolBar.tbs
@@ -117,6 +120,7 @@ class LayoutManager(DAMG):
         layouts = []
         for listLayout in [self.mains, self.infos, self.setts, self.tools, self.prjs]:
             layouts = layouts + listLayout
+
         self._buildAll = True
 
         return layouts

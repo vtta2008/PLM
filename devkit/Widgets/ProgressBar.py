@@ -14,7 +14,7 @@ from __buildtins__ import __copyright__
 """ Import """
 
 # PyQt5
-from PyQt5.QtWidgets import QProgressBar
+from PyQt5.QtWidgets                        import QProgressBar
 
 # PLM
 from cores.SignalManager                    import SignalManager
@@ -28,9 +28,8 @@ class ProgressBar(QProgressBar):
     _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
-        QProgressBar.__init__(self)
+        super(ProgressBar, self).__init__(parent)
 
-        self.parent                         = parent
         self.signals                        = SignalManager(self)
 
     @property

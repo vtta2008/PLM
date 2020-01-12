@@ -62,7 +62,7 @@ class BaseManager(Widget):
     def buildLine2(self):
         self.okButton       = Button({'txt': 'Ok', 'cl': self.createNewBaseType})
         self.editButton     = Button({'txt': 'Edit', 'cl': self.editData})
-        self.cancelButton   = Button({'txt': 'Cancel', 'cl': partial(self.signals.emit, 'showLayout', self.key, 'hide')})
+        self.cancelButton   = Button({'txt': 'Cancel', 'cl': self.close})
         return HBoxLayout({'addWidget': [self.okButton, self.editButton, self.cancelButton]})
 
     def createNewBaseType(self):

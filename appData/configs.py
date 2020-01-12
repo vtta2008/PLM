@@ -25,7 +25,7 @@ STDOUT = subprocess.STDOUT
 from bin                            import DAMGDICT
 from .dirs                          import ConfigDirectory
 from .pths                          import ConfigPath
-
+from .urls                          import ConfigUrl
 from .types                         import (RAMTYPE, CPUTYPE, FORMFACTOR, DRIVETYPE, DB_ATTRIBUTE_TYPE, CMD_VALUE_TYPE,
                                             actionTypes, layoutTypes)
 
@@ -99,6 +99,7 @@ class CommandData(DAMGDICT):
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configs """
+
 
 class ConfigPython(DAMGDICT):
 
@@ -265,27 +266,6 @@ class ConfigApps(DAMGDICT):
         if globalSetting.tracks.configInfo:
             if globalSetting.tracks.appInfo:
                 pprint.pprint(self)
-
-
-class ConfigUrl(DAMGDICT):
-
-    key = 'ConfigUrl'
-
-    def __init__(self):
-        super(ConfigUrl, self).__init__()
-
-        self.add('pythonTag', 'https://docs.anaconda.com/anaconda/reference/release-notes/')
-        self.add('licenceTag', 'https://github.com/vtta2008/damgteam/blob/master/LICENCE')
-        self.add('versionTag', 'https://github.com/vtta2008/damgteam/blob/master/appData/documentations/version.rst')
-        self.add('PLM wiki', __plmWiki__)
-
-        if globalSetting.tracks.configInfo:
-            if globalSetting.tracks.urlInfo:
-                pprint.pprint(self)
-
-        if globalSetting.defaults.save_configInfo:
-            if globalSetting.defaults.save_urlInfo:
-                save_data(pthInfo['urlCfg', self])
 
 
 class ConfigPipeline(DAMGDICT):
@@ -465,6 +445,7 @@ class ConfigPipeline(DAMGDICT):
         except KeyError:
             self.appInfo.pop(key, None)
 
+
 def ignoreIDs(*info):
     path = os.path.join(dirInfo['TMP_DIR'], '.ignoreIDs')
     if os.path.exists(path):
@@ -510,7 +491,6 @@ def tobuildCmds(*info):
     if globalSetting.checks.toBuildCmds:
         print(info)
     return info
-
 
 ignoreIDs                           = ignoreIDs()
 toBuildUis                          = tobuildUis()

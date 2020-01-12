@@ -77,12 +77,13 @@ class RegistryLayout(DAMGDICT):
     def __init__(self):
         super(RegistryLayout, self).__init__(self)
 
-        self.inspect = InspectLayout(self)
+        self.inspect        = InspectLayout(self)
 
     def regisLayout(self, layout):
 
-        ui = self.inspect.doInspection(layout)
-        key = ui.key
+        ui                  = self.inspect.doInspection(layout)
+        key                 = ui.key
+
         if self.isLayout(ui):
             if self.isAwaitingSlot(ui):
                 self.awaitingSlots.remove(key)
