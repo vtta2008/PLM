@@ -313,7 +313,7 @@ def get_app_icon(size=32, iconName="About"):
     return iconFilePth
 
 def get_logo_icon(size=32, name="DAMG"):
-    if name == "Logo":
+    if name == "PLM":
         logoPth = os.path.join(LOGO_DIR, 'PLM')
     elif name == 'DAMG':
         logoPth = os.path.join(LOGO_DIR, 'DAMGTEAM')

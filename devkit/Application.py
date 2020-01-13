@@ -82,7 +82,7 @@ class Application(QApplication):
 
         sys.path.insert(0, ROOT)
 
-        self.setWindowIcon(LogoIcon("Logo"))                        # Setup icon
+        self.setWindowIcon(LogoIcon("DAMG"))                        # Setup icon
         self.setOrganizationName(__organization__)
         self.setApplicationName(__appname__)
         self.setOrganizationDomain(__website__)

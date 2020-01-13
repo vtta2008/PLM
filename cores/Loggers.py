@@ -12,21 +12,35 @@ from __future__ import unicode_literals
 """ Import """
 
 # Python
-import sys, os, logging, json, enum, traceback, linecache, pdb
+import sys, os, logging, json, enum, traceback, linecache, pdb, collections, copy
+import html as pyhtml
 
 # PLM
 from appData            import LOCAL_LOG, LOG_FORMAT, DT_FORMAT
 
+COLORS                  = ['black', 'red', 'green', 'yellow', 'blue', 'purple', 'cyan', 'white']
+COLOR_ESCAPES           = {color: '\033[{}m'.format(i) for i, color in enumerate(COLORS, start=30)}
+RESET_ESCAPE            = '\033[0m'
+LOG_COLORS              = {'VDEBUG': 'white',
+                           'DEBUG': 'white',
+                           'INFO': 'green',
+                           'WARNING': 'yellow',
+                           'ERROR': 'red',
+                           'CRITICAL': 'red',}
+
+VDEBUG_LEVEL            = 9
+
 # -------------------------------------------------------------------------------------------------------------
+""" utils """
 
 class Encoder(json.JSONEncoder):
 
     def default(self, o):
         if isinstance(o, set):
             return tuple(o)
-        elif isinstance(o, unicode):
-            return o.encode('unicode_escape').decode('ascii')
+
         return super(Encoder, self).default(o)
+
 
 class StyleMessage(object):
 
@@ -39,20 +53,6 @@ class StyleMessage(object):
         s = Encoder().encode(self.kwargs)
         return 'message: >>> {0} >>> {1}'.format(self.message, s)
 
-class OneLineExceptionFormatter(logging.Formatter):
-
-    def formatException(self, exc_info):
-        """ Format an exception so that it prints on a single line. """
-        result = super(OneLineExceptionFormatter, self).formatException(exc_info)
-
-        # or format into one line however you want to
-        return repr(result)
-
-    def format(self, record):
-        s = super(OneLineExceptionFormatter, self).format(record)
-        if record.exc_text:
-            s = s.replace('\n', '') + '|'
-        return s
 
 class LogLevel(enum.IntEnum):
 
@@ -80,6 +80,79 @@ class LogLevel(enum.IntEnum):
         if intvalue > maxvalue:
             intvalue = maxvalue
         return cls(intvalue)
+
+
+# -------------------------------------------------------------------------------------------------------------
+""" Fomatter """
+
+
+class OneLineExceptionFormatter(logging.Formatter):
+
+    def formatException(self, exc_info):
+        """ Format an exception so that it prints on a single line. """
+        result = super(OneLineExceptionFormatter, self).formatException(exc_info)
+
+        # or format into one line however you want to
+        return repr(result)
+
+    def format(self, record):
+        s = super(OneLineExceptionFormatter, self).format(record)
+        if record.exc_text:
+            s = s.replace('\n', '') + '|'
+        return s
+
+class ColoredFormatter(logging.Formatter):
+
+    use_colors = True
+
+    def format(self, record: logging.LogRecord) -> str:
+        if self.use_colors:
+            color_dict = dict(COLOR_ESCAPES)
+            color_dict['reset'] = RESET_ESCAPE
+            log_color = LOG_COLORS[record.levelname]
+            color_dict['log_color'] = COLOR_ESCAPES[log_color]
+        else:
+            color_dict = {color: '' for color in COLOR_ESCAPES}
+            color_dict['reset'] = ''
+            color_dict['log_color'] = ''
+        record.__dict__.update(color_dict)
+        return super().format(record)
+
+
+class HTMLFormatter(logging.Formatter):
+
+    _log_colors = LOG_COLORS
+    _colordict = dict()
+
+    def __init__(self, fmt, datefmt):
+        super().__init__(fmt, datefmt)
+
+        for color in COLORS:
+            self._colordict[color] = '<font color="{}">'.format(color)
+        self._colordict['reset'] = '</font>'
+
+    def format(self, record):
+        record_clone = copy.copy(record)
+        record_clone.__dict__.update(self._colordict)
+        if record_clone.levelname in self._log_colors:
+            color = self._log_colors[record_clone.levelname]
+            record_clone.log_color = self._colordict[color]
+        else:
+            record_clone.log_color = ''
+        for field in ['msg', 'filename', 'funcName', 'levelname', 'module', 'name', 'pathname', 'processName', 'threadName']:
+            data = str(getattr(record_clone, field))
+            setattr(record_clone, field, pyhtml.escape(data))
+        msg = super().format(record_clone)
+        if not msg.endswith(self._colordict['reset']):
+            msg += self._colordict['reset']
+        return msg
+
+    def formatTime(self, record, datefmt):
+        out = super().formatTime(record, datefmt)
+        return pyhtml.escape(out)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Handler """
 
 class Stream_Handler(logging.StreamHandler):
 
@@ -112,10 +185,10 @@ class Stream_Handler(logging.StreamHandler):
 
         return exception
 
+
 class File_Handler(logging.FileHandler):
 
     def __init__(self, filename=None, level=None, fmt=None, dtfmt=None):
-
         super(File_Handler, self).__init__(filename)
 
         self.fn       = filename                                                # File name (full path)
@@ -129,8 +202,10 @@ class File_Handler(logging.FileHandler):
     def get_formatter(self):
         return OneLineExceptionFormatter(self.fmt, self.dtfmt)
 
+
 # -------------------------------------------------------------------------------------------------------------
 """ Logger """
+
 
 class Loggers(logging.Logger):
 
@@ -143,13 +218,13 @@ class Loggers(logging.Logger):
 
         logging.getLogger(__name__)
 
-        self.level = self.define_level(level)
-        self.logLevel = self.level_config(self.level)
+        self.level                  = self.define_level(level)
+        self.logLevel               = self.level_config(self.level)
 
-        self.fmt = fmt                                                          # format
-        self.dtfmt = dtfmt                                                      # datetime format
-        self.fn = filename
-        self.fm = filemode
+        self.fmt                    = fmt                                                         # format
+        self.dtfmt                  = dtfmt                                                       # datetime format
+        self.fn                     = filename
+        self.fm                     = filemode
 
         self.addLoggingLevel(levelName='TRACE', levelNum=LogLevel.Trace)
 

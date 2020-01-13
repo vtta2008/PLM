@@ -30,22 +30,23 @@ progressBar_stylesheet = '''
 
 QProgressBar {
     
-    border: 1px solid black;
-    text-align: top;
-    padding: 1px;
-    border-bottom-right-radius: 7px;
-    border-bottom-left-radius: 7px;
+    width: 20px;
+    margin: 10px;
+    background-color: #19232D;
     background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #fff, stop: 0.4999 #eee, stop: 0.5 #ddd, stop: 1 #eee );
-    width: 15px;
+    text-align: center;
+    border: 2px  solid #32414B;
+    border-radius: 5px;
+    border-color: beige;
+    
 
 }
 
 QProgressBar::chunk {
 
-    background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #78d, stop: 0.4999 #46a, stop: 0.5 #45a, stop: 1 #238 );
-    border-bottom-right-radius: 7px;
-    border-bottom-left-radius: 7px;
+    border-color: #19232D;
     border: 1px solid black;
+    background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #78d, stop: 0.4999 #46a, stop: 0.5 #45a, stop: 1 #238 );
 
 }
 
@@ -76,7 +77,7 @@ class SplashUI(SplashScreen):
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(100)
         self.progressBar.setGeometry(50, self.pix.height() - 50, self.pix.width() - 100, 20)
-
+        self.progressBar.setTextVisible(False)
         self.progressBar.setStyleSheet(progressBar_stylesheet)
 
         self.updateProgress(0)
