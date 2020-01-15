@@ -46,7 +46,7 @@ from .configs            import (__plmWiki__, __localServer__, __pkgsReq__, __ho
 
                                  INI, Native, Invalid, LOG_FORMAT, DT_FORMAT, ST_FORMAT, datetTimeStamp, IMGEXT,
 
-                                 SiPoExp, SiPoIgn, SiPoMax, SiPoMin, SiPoPre, right, left, center, bottom, cyan,
+                                 SiPoExp, SiPoIgn, SiPoMax, SiPoMin, SiPoPre, right, left, center, bottom, blue,
                                  StateMax, StateMin, StateNormal, dockB, dockL, dockR, dockT, DarkPalette, PRS, FRAMELESS, KEY_RETURN,
                                  SCROLLBAROFF, NO_WRAP, BTNTAGSIZE, TAGBTNSIZE, BTNICONSIZE, ICONBTNSIZE, KEY_RELEASE, BOLD,
 

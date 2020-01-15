@@ -17,6 +17,7 @@ from .EventManager          import EventManager
 from .LayoutManager         import LayoutManager
 from .Registry              import RegistryLayout
 from .ThreadManager         import ThreadManager
+from .AppBase               import AppBase
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 7/12/2019 - 4:35 PM

@@ -11,9 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PyQt5.QtCore                       import pyqtSlot
-
 # PLM
 from appData                            import __plmSlogan__, __appname__
 from devkit.Widgets                     import SystemTrayIcon
