@@ -10,15 +10,10 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import globalSetting
-# -------------------------------------------------------------------------------------------------------------
 """ import """
 
-# Python
-import sys
-
 # PLM
-from appData                            import SYSTRAY_UNAVAI, SERVER_CONNECT_FAIL, KEY_RELEASE
+from appData                            import SYSTRAY_UNAVAI, KEY_RELEASE
 from ui.assets                          import AppBase
 
 # -------------------------------------------------------------------------------------------------------------
