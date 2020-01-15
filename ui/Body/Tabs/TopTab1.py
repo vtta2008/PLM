@@ -13,7 +13,7 @@ Description:
 
 
 # PLM
-from devkit.Widgets                           import GroupBox, GridLayout, Widget
+from devkit.Widgets                             import GroupBox, GridLayout, Widget, GroupGrid
 from ui.base                                    import TaskInfo, TaskFilter
 from utils                                      import get_file_path
 from appData                                    import TASK_DIR
@@ -30,37 +30,39 @@ class TopTab1(Widget):
     def __init__(self, buttonManager, parent=None):
         super(TopTab1, self).__init__(parent)
 
-        self.buttonManager = buttonManager
-        self.parent = parent
+        self.buttonManager                      = buttonManager
+        self.parent                             = parent
 
-        self.layout = GridLayout()
+        self.layout                             = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
 
-        self.taskButtons    = self.buttonManager.managerButtonGroupBox(self.parent)
-        self.taskGrp        = GroupBox("Manager", self.taskButtons, "BtnGrid")
-
+        self.taskButtons                        = self.buttonManager.managerButtonGroupBox(self.parent)
+        self.taskGrp                            = GroupBox("Manager", self.taskButtons, "BtnGrid")
         self.update_tasks()
 
-        self.taskGrp     = GroupBox("Manager", self.taskButtons, "BtnGrid")
-        self.tabFilter   = TaskFilter()
-        self.tabFilter.overduedCB.stateChanged.connect(self.overdue)
-        self.tabFilter.urgentCB.stateChanged.connect(self.urgent)
-        self.tabFilter.safetyCB.stateChanged.connect(self.safety)
+        self.taskFilter                         = TaskFilter()
+        self.taskFilter.overduedCB.stateChanged.connect(self.overdue)
+        self.taskFilter.urgentCB.stateChanged.connect(self.urgent)
+        self.taskFilter.safetyCB.stateChanged.connect(self.safety)
 
-        self.taskGrp.setMaximumWidth(100)
-        self.tabFilter.setMaximumWidth(100)
+        self.taskTracker                        = GroupGrid('Tasks', self)
+
+        self.taskGrp.setMaximumWidth(110)
+        self.taskFilter.setMaximumWidth(110)
+        self.taskTracker.setMinimumWidth(390)
 
         self.layout.addWidget(self.taskGrp, 0, 0, 1, 1)
-        self.layout.addWidget(self.tabFilter, 1, 0, 1, 1)
+        self.layout.addWidget(self.taskFilter, 1, 0, 1, 1)
+        self.layout.addWidget(self.taskTracker, 0, 1, 2, 2)
 
     def update_tasks(self):
 
         tasks = get_file_path(TASK_DIR)
 
-        i = 1
+        i = 0
         a = 0
         h = 1
         w = 1
@@ -70,7 +72,7 @@ class TopTab1(Widget):
                 a = a + h
 
             task = TaskInfo(t)
-            self.layout.addWidget(task, a, i, h ,w)
+            self.taskTracker.layout.addWidget(task, a, i, h ,w)
             self.tasks.append(task)
             i += 1
 

@@ -46,7 +46,7 @@ class Modes(dict):
     _subprocess                     = True
     _config                         = 'Alpha'
     _login                          = 'Offline'
-    _allowLocalMode                 = False
+    _allowOfflineMode               = False
 
     def __init__(self):
         dict.__init__(self)
@@ -70,7 +70,7 @@ class Modes(dict):
 
     @property
     def allowLocalMode(self):
-        return self._allowLocalMode
+        return self._allowOfflineMode
 
     @subprocess.setter
     def subprocess(self, val):
@@ -86,7 +86,7 @@ class Modes(dict):
 
     @allowLocalMode.setter
     def allowLocalMode(self, val):
-        self._allowLocalMode        = val
+        self._allowOfflineMode        = val
 
 
 class Tracks(dict):

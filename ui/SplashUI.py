@@ -20,7 +20,7 @@ import os
 # PLM
 from appData                    import (STAY_ON_TOP, FRAMELESS, bottom, center, blue, cyan,
                                         ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon, ConfigEnvVar,
-                                        ConfigMaya, ConfigMachine, dirInfo, pthInfo)
+                                        ConfigMaya, ConfigMachine, ConfigServer, dirInfo, pthInfo)
 from devkit.Widgets             import SplashScreen, ProgressBar
 from devkit.Gui                 import Pixmap
 
@@ -89,10 +89,23 @@ class SplashUI(SplashScreen):
 
         self.show_message("Config python.")
         self.pythonInfo          = ConfigPython()
+        self.updateProgress(1)
+
+        self.show_message('Config evnironment')
         self.envInfo             = ConfigEnvVar()
+        self.updateProgress(1)
+
+        self.show_message('Config url')
         self.urlInfo             = ConfigUrl()
+        self.updateProgress(1)
+
+        self.show_message('Config server')
+        self.serverInfo         = ConfigServer()
+        self.updateProgress(1)
+
+        self.show_message('Config Maya')
         self.mayaInfo            = ConfigMaya()
-        self.updateProgress(3)
+        self.updateProgress(1)
 
         self.show_message("Config icon.")
         self.iconInfo            = ConfigIcon()
@@ -100,11 +113,11 @@ class SplashUI(SplashScreen):
 
         self.show_message("Config Installed apps.")
         self.appInfo             = ConfigApps()
-        self.updateProgress(2)
+        self.updateProgress(1)
 
         self.show_message("Config device.")
         self.deviceInfo          = ConfigMachine()
-        self.updateProgress(2)
+        self.updateProgress(1)
 
         self.show_message("Config pipeline.")
         self.plmInfo             = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, dirInfo, pthInfo)

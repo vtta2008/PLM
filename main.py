@@ -21,7 +21,6 @@ import sys
 from appData                            import SYSTRAY_UNAVAI, SERVER_CONNECT_FAIL, KEY_RELEASE
 from ui.assets                          import AppBase
 
-
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
@@ -38,7 +37,7 @@ class DAMGTEAM(AppBase):
 
         if userData:
             if serverReady:
-                statusCode = self.serverAuthorization()
+                statusCode              = self.serverAuthorization()
                 if not statusCode:
                     self.mainUI.show()
                     self.splash.finish(self.mainUI)
@@ -56,25 +55,17 @@ class DAMGTEAM(AppBase):
                         self.signIn.show()
                         self.splash.finish(self.signIn)
             else:
-                if not globalSetting.modes.allowLocalMode:
-                    self.splash.finish(self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close'))
-                    sys.exit()
-                else:
-                    self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
-                    self.mainUI.show()
-                    self.splash.finish(self.mainUI)
+                self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
+                self.mainUI.show()
+                self.splash.finish(self.mainUI)
         else:
             if serverReady:
                 self.signIn.show()
                 self.splash.finish(self.signIn)
             else:
-                if not globalSetting.modes.allowLocalMode:
-                    self.splash.finish(self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close'))
-                    sys.exit()
-                else:
-                    self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
-                    self.mainUI.show()
-                    self.splash.finish(self.mainUI)
+                self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
+                self.mainUI.show()
+                self.splash.finish(self.mainUI)
 
     def notify(self, receiver, event):
 

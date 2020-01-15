@@ -18,7 +18,7 @@ from utils                                      import str2bool
 
 class TaskFilter(GroupGrid):
 
-    key                                         = 'TopTab1Info'
+    key                                         = 'TaskFilter'
     cbs                                         = DAMGLIST()
     checkboxes                                  = DAMGDICT()
 

@@ -12,12 +12,11 @@ Description:
 """ Import """
 
 # PyQt5
-from PyQt5.QtCore               import pyqtSlot
 from PyQt5.QtGui                import QPixmap
-from PyQt5.QtWidgets            import QGraphicsScene
 
 # Plt
-from devkit.Widgets           import Widget, GridLayout, GroupBox, GroupGrid, Label
+from devkit.Widgets             import Widget, GridLayout, GroupBox, GroupGrid
+from ui.base                    import Avatar
 from utils                      import get_avatar_image, LocalDatabase
 
 # -------------------------------------------------------------------------------------------------------------
@@ -45,21 +44,19 @@ class TopTab2(Widget):
         except (ValueError, IndexError):
             self.username = 'DemoUser'
 
-        self.avatar             = Label()
-        self.avatar.setPixmap(QPixmap(get_avatar_image(self.username)))
-        self.avatar.setScaledContents(True)
-        self.avatar.setFixedSize(100, 100)
-        self.avatarGrp          = GroupBox(self.username, [self.avatar], "ImageView")
+        self.avatarGrp           = Avatar(self)
 
         self.avatarBtn          = self.buttonManager.userButtonGroupBox(self.parent)
         self.settingGrp         = GroupBox("Setting", self.avatarBtn, "BtnGrid")
-
         self.messGrp            = GroupGrid("Messenger")
-        self.messGrid           = self.messGrp.layout
 
-        self.layout.addWidget(self.avatarGrp, 0, 0, 3, 3)
-        self.layout.addWidget(self.settingGrp, 3, 0, 3, 3)
-        self.layout.addWidget(self.messGrp, 0, 3, 6, 6)
+        self.settingGrp.setMaximumWidth(120)
+        self.avatarGrp.setMaximumSize(120, 180)
+        self.messGrp.setMinimumWidth(380)
+
+        self.layout.addWidget(self.avatarGrp, 0, 0, 1, 1)
+        self.layout.addWidget(self.settingGrp, 1, 0, 1, 1)
+        self.layout.addWidget(self.messGrp, 0, 1, 2, 2)
 
     def update_avatar(self, param):
         if param:

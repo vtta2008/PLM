@@ -76,6 +76,9 @@ class Avatar(GroupBox):
 
         self.avatar                 = AvatarLabel()
         self.changeAvatarBtn        = Button({'txt': 'Change Avatar', 'cl': self.update_avatar})
+        self.changeAvatarBtn.setMaximumWidth(self.avatar.width())
+        self.changeAvatarBtn.setMaximumHeight(25)
+
         self.layout.addWidget(self.avatar)
         self.layout.addWidget(self.changeAvatarBtn)
         self.setTitle(username)
@@ -103,10 +106,6 @@ class Avatar(GroupBox):
 
             self.avatar.pixAvatar._imageAvatar.setImage(desPth)
             self.avatar.update()
-
-    def resizeEvent(self, event):
-        self.changeAvatarBtn.setMaximumWidth(self.avatar.width())
-        self.changeAvatarBtn.setMaximumHeight(25)
 
 class InfoPicLabel(Label):
 

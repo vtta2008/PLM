@@ -27,16 +27,16 @@ class UserSetting(Widget):
         super(UserSetting, self).__init__(parent)
 
         self.setWindowIcon(AppIcon(32, "UserSetting"))
-        self.layout = GridLayout()
+        self.layout                 = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)
 
     def buildUI(self):
 
-        self.avatar = Avatar(self)
-        self.password = PassWord(self)
-        self.profile = Profile(self)
-        self.location = Location(self)
+        self.avatar                 = Avatar(self)
+        self.password               = PassWord(self)
+        self.profile                = Profile(self)
+        self.location               = Location(self)
 
         self.layout.addWidget(self.avatar, 0, 0, 1, 1)
         self.layout.addWidget(self.password, 0, 1, 1, 1)

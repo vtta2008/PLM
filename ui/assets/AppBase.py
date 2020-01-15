@@ -15,7 +15,7 @@ from __buildtins__ import globalSetting
 
 import os, sys, requests
 
-from appData                            import __localServer__, STAY_ON_TOP, SERVER_CONNECT_FAIL
+from appData                            import __localServer__, __google__, STAY_ON_TOP, SERVER_CONNECT_FAIL
 from utils                              import LocalDatabase, clean_file_ext
 from ui.SplashUI                        import SplashUI
 from .ThreadManager                     import ThreadManager
@@ -30,12 +30,21 @@ class AppBase(Application):
     def __init__(self):
         Application.__init__(self)
 
-        self.splash                     = SplashUI(self)
-        self.plmInfo                    = self.splash.plmInfo
-        self.appInfo                    = self.splash.appInfo
-
         if not self._server:
             self._server                = self.configServer()
+
+        serverReady                     = self.checkConnectServer()
+
+        if not serverReady:
+            if not globalSetting.modes.allowLocalMode:
+                self.messageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                sys.exit()
+
+        self.splash                     = SplashUI(self)
+
+        self.urlInfo                    = self.splash.urlInfo
+        self.plmInfo                    = self.splash.plmInfo
+        self.appInfo                    = self.splash.appInfo
 
         self.database                   = LocalDatabase()
         self.threadManager              = ThreadManager()
@@ -194,7 +203,7 @@ class AppBase(Application):
         else:
             return ui.show()
 
-    def openURL(self, url):
+    def openURL(self, url=__google__):
         self.browser.setUrl(url)
         self.browser.update()
         self.browser.show()
