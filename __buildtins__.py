@@ -28,8 +28,6 @@ def get_root():
     else:
         root                        = cwd
 
-    print('Set root: {0}'.format(root))
-
     return root
 
 def __copyright__():
@@ -597,6 +595,10 @@ else:
         proc = subprocess.Popen(cmd, shell=True).wait()
 finally:
     globalSetting.cfgable = True
+
+
+subprocess.Popen('python -m pip install -r requirements.txt --user')
+
 
 if platform.system() == 'Windows':
     try:
