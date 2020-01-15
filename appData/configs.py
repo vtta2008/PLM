@@ -45,10 +45,13 @@ from .options                       import *
 
 from .metadatas                     import (__plmWiki__, __localServer__, __pkgsReq__, __homepage__, __appname__,
                                             __organization__, __organizationID__, __organizationName__, __globalServer__,
-                                            __google__, __plmSlogan__, __localServerAutho__, __version__, __website__,
+                                            __google__, __appSlogan__, __localServerAutho__, __version__, __website__,
                                             VERSION, PLMAPPID)
 
+from .servers                       import ConfigServer
+
 from .device                        import ConfigMachine
+
 
 
 def save_data(filePth, data):

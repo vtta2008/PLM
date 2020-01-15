@@ -18,7 +18,7 @@ import pprint
 
 # PLM
 from bin                            import DAMGDICT
-from .metadatas                     import __plmWiki__
+from .metadatas                     import __plmWiki__, __google__, __googleNZ__, __googleVN__
 
 PYTHON_TAG                          = 'https://docs.anaconda.com/anaconda/reference/release-notes/'
 LICENCE_TAG                         = 'https://github.com/vtta2008/damgteam/blob/master/LICENCE'
@@ -35,6 +35,9 @@ class ConfigUrl(DAMGDICT):
         self.add('licenceTag', LICENCE_TAG)
         self.add('versionTag', VERSION_TAG)
         self.add('PLM wiki', __plmWiki__)
+        self.add('goole', __google__)
+        self.add('google vn', __googleVN__)
+        self.add('google nz', __googleNZ__)
 
         if globalSetting.tracks.configInfo:
             if globalSetting.tracks.urlInfo:

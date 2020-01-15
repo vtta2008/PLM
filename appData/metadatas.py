@@ -49,7 +49,6 @@ __reverType__           = "2"
 
 __about__               = "About Pipeline Manager"
 __homepage__            = "https://pipeline.damgteam.com"
-__plmSlogan__           = "Creative your own pipeline"
 __plmWiki__             = "https://github.com/vtta2008/PipelineTool/wiki"
 
 # -------------------------------------------------------------------------------------------------------------

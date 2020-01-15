@@ -21,6 +21,7 @@ import sys
 from appData                            import SYSTRAY_UNAVAI, SERVER_CONNECT_FAIL, KEY_RELEASE
 from ui.assets                          import AppBase
 
+
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
@@ -56,7 +57,7 @@ class DAMGTEAM(AppBase):
                         self.splash.finish(self.signIn)
             else:
                 if not globalSetting.modes.allowLocalMode:
-                    self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                    self.splash.finish(self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close'))
                     sys.exit()
                 else:
                     self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
@@ -68,7 +69,7 @@ class DAMGTEAM(AppBase):
                 self.splash.finish(self.signIn)
             else:
                 if not globalSetting.modes.allowLocalMode:
-                    self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                    self.splash.finish(self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close'))
                     sys.exit()
                 else:
                     self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)

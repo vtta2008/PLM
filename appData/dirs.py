@@ -58,10 +58,6 @@ DAMG_LOGO_DIR       = os.path.join(LOGO_DIR, 'DAMGTEAM')
 PLM_LOGO_DIR        = os.path.join(LOGO_DIR, 'PLM')
 
 PIC_DIR             = os.path.join(ASSETS_DIR, 'pics')
-STYLE_DIR           = os.path.join(ASSETS_DIR, 'styles')
-STYLE_IMAGE_DIR     = os.path.join(STYLE_DIR, 'images')
-STYLE_RC_DIR        = os.path.join(STYLE_DIR, 'rc')
-STYLE_SVG_DIR       = os.path.join(STYLE_DIR, 'svg')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' bin '''
@@ -218,10 +214,6 @@ class ConfigDirectory(DAMGDICT):
         self.add('DAMG_LOGO_DIR', DAMG_LOGO_DIR)
         self.add('PLM_LOGO_DIR', PLM_LOGO_DIR)
         self.add('PIC_DIR', PIC_DIR)
-        self.add('STYLE_DIR', STYLE_DIR)
-        self.add('STYLE_IMAGE_DIR', STYLE_IMAGE_DIR)
-        self.add('STYLE_RC_DIR', STYLE_RC_DIR)
-        self.add('STYLE_SVG_DIR', STYLE_SVG_DIR)
         self.add('BIN_DIR', BIN_DIR)
         self.add('DATA_DIR', DATA_DIR)
         self.add('JSON_DIR', JSON_DIR)

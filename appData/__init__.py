@@ -15,11 +15,11 @@ from __buildtins__ import ROOT, __envKey__
 
 # PLM
 from .configs            import (__plmWiki__, __localServer__, __pkgsReq__, __homepage__, __appname__, __organization__,
-                                 __organizationID__, __organizationName__, __globalServer__, __google__, __plmSlogan__,
+                                 __organizationID__, __organizationName__, __globalServer__, __google__, __appSlogan__,
                                  __localServerAutho__, __version__, __website__,
 
                                  ConfigPython, ConfigMachine, ConfigDirectory, ConfigPath, ConfigEnvVar, ConfigIcon,
-                                 ConfigMaya, ConfigApps, ConfigPipeline, ConfigUrl, dirInfo, pthInfo,
+                                 ConfigMaya, ConfigApps, ConfigPipeline, ConfigUrl, ConfigServer, dirInfo, pthInfo,
 
                                  ignoreIDs, toBuildCmds, toBuildUis,
 
@@ -46,7 +46,7 @@ from .configs            import (__plmWiki__, __localServer__, __pkgsReq__, __ho
 
                                  INI, Native, Invalid, LOG_FORMAT, DT_FORMAT, ST_FORMAT, datetTimeStamp, IMGEXT,
 
-                                 SiPoExp, SiPoIgn, SiPoMax, SiPoMin, SiPoPre, right, left, center, bottom, blue,
+                                 SiPoExp, SiPoIgn, SiPoMax, SiPoMin, SiPoPre, right, left, center, bottom, blue, cyan,
                                  StateMax, StateMin, StateNormal, dockB, dockL, dockR, dockT, DarkPalette, PRS, FRAMELESS, KEY_RETURN,
                                  SCROLLBAROFF, NO_WRAP, BTNTAGSIZE, TAGBTNSIZE, BTNICONSIZE, ICONBTNSIZE, KEY_RELEASE, BOLD,
 

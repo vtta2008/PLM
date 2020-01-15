@@ -84,7 +84,7 @@ class AppBase(Application):
             r = requests.get(self._server, verify=self.getVerify(), headers=self.getHeaders(), cookies=self.getCookies())
         except Exception:
             if not globalSetting.modes.allowLocalMode:
-                self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', STAY_ON_TOP)
+                self.splash.finish(self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', STAY_ON_TOP))
                 sys.exit()
             else:
                 self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)

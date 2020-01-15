@@ -18,7 +18,7 @@ from __buildtins__ import ROOT
 import os
 
 # PLM
-from appData                    import (STAY_ON_TOP, FRAMELESS, bottom, center, blue,
+from appData                    import (STAY_ON_TOP, FRAMELESS, bottom, center, blue, cyan,
                                         ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon, ConfigEnvVar,
                                         ConfigMaya, ConfigMachine, dirInfo, pthInfo)
 from devkit.Widgets             import SplashScreen, ProgressBar
@@ -31,7 +31,7 @@ progressBar_stylesheet = '''
 QProgressBar {
     
     width: 20px;
-    margin: 1px;
+    margin: 2px;
     background-color: #19232D;
     background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #fff, stop: 0.4999 #eee, stop: 0.5 #ddd, stop: 1 #eee );
     text-align: center;
@@ -77,7 +77,7 @@ class SplashUI(SplashScreen):
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(100)
         self.progressBar.setGeometry(50, self.pix.height() - 50, self.pix.width() - 100, 20)
-        self.progressBar.setTextVisible(False)
+        self.progressBar.setTextVisible(True)
         self.progressBar.setStyleSheet(progressBar_stylesheet)
 
         self.updateProgress(0)
@@ -111,7 +111,7 @@ class SplashUI(SplashScreen):
         self.updateProgress(2)
 
     def show_message(self, mess):
-        return self.showMessage(mess, bottom|center, blue)
+        return self.showMessage(mess, bottom|center, cyan)
 
     def updateProgress(self, value):
         if value == 0:

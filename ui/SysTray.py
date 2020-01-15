@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # PLM
-from appData                            import __plmSlogan__, __appname__
+from appData                            import __appSlogan__, __appname__
 from devkit.Widgets                     import SystemTrayIcon
 from devkit.Gui                         import LogoIcon
 from ui.Header.SysTrayIconMenu          import SysTrayIconMenu
@@ -41,7 +41,7 @@ class SysTray(SystemTrayIcon):
         self.rightClickMenu.signals.connect('command', self.parent.command)
 
         self.setIcon(LogoIcon('Logo'))
-        self.setToolTip(__plmSlogan__)
+        self.setToolTip(__appSlogan__)
         self.activated.connect(self.sys_tray_icon_activated)
         self.setContextMenu(self.rightClickMenu)
         self.installEventFilter(self.eventManager.wheelEvent)
