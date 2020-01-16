@@ -136,11 +136,6 @@ LIB_DIR             = os.path.join(ROOT, 'libs')
 SOUND_DIR           = os.path.join(LIB_DIR, 'sound')
 
 # -------------------------------------------------------------------------------------------------------------
-''' modules '''
-
-MODULE_DIR          = os.path.join(ROOT, 'modules')
-
-# -------------------------------------------------------------------------------------------------------------
 ''' plugins '''
 
 PLUGIN_DIR          = os.path.join(ROOT, 'plugins')
@@ -250,7 +245,6 @@ class ConfigDirectory(dict):
         self.add('ICON_DIR_64', ICON_DIR_64)
         self.add('LIB_DIR', LIB_DIR)
         self.add('SOUND_DIR', SOUND_DIR)
-        self.add('MODULE_DIR', MODULE_DIR)
         self.add('PLUGIN_DIR', PLUGIN_DIR)
         self.add('NODEGRAPH_DIR', NODEGRAPH_DIR)
         self.add('SCRIPT_DIR', SCRIPT_DIR)

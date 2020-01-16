@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 
 # Python
 import os, json
-from playsound import playsound
+from playsound                          import playsound
 
 # PyQt5
 from PyQt5.QtCore                       import QDateTime
