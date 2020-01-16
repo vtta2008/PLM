@@ -12,8 +12,8 @@ from __future__ import absolute_import, unicode_literals
 
 import datetime
 
-from devkit.Widgets           import LCDNumber, GroupGrid, Label
-from bin                        import DAMGTIMER
+from devkit.Widgets             import LCDNumber, GroupGrid, Label
+from devkit.Core                import Timer
 
 class DigitalClock(LCDNumber):
 
@@ -25,7 +25,7 @@ class DigitalClock(LCDNumber):
         self.parent = parent
         self.setSegmentStyle(LCDNumber.Flat)
         self.setDigitCount(8)
-        timer = DAMGTIMER()
+        timer = Timer()
         timer.setParent(self.parent)
         timer.timeout.connect(self.showTime)
         timer.start(1000)
@@ -49,7 +49,7 @@ class DigitalDate(LCDNumber):
         self.parent = parent
         self.setSegmentStyle(LCDNumber.Flat)
         self.setDigitCount(8)
-        timer = DAMGTIMER()
+        timer = Timer()
         timer.setParent(self.parent)
         timer.timeout.connect(self.showdate)
         timer.start(1000)

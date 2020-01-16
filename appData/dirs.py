@@ -20,7 +20,6 @@ if os.getenv(__envKey__) != ROOT:
 
 # PLM
 from .metadatas     import __appname__, __organization__
-from bin            import DAMGDICT
 
 # -------------------------------------------------------------------------------------------------------------
 ''' Local pc '''
@@ -66,8 +65,6 @@ BIN_DIR             = os.path.join(ROOT, 'bin')
 DATA_DIR            = os.path.join(BIN_DIR, 'data')
 JSON_DIR            = os.path.join(DATA_DIR, 'json')
 
-DEPENDANCIES_DIR    = os.path.join(BIN_DIR, 'dependencies')
-
 DOCS_DIR            = os.path.join(BIN_DIR, 'docs')
 RST_DIR             = os.path.join(DOCS_DIR, 'rst')
 TXT_DIR             = os.path.join(DOCS_DIR, 'txt')
@@ -80,12 +77,6 @@ CSS_DIR             = os.path.join(RCS_DIR, 'css')
 HTML_DIR            = os.path.join(RCS_DIR, 'html')
 JS_DIR              = os.path.join(RCS_DIR, 'js')
 QSS_DIR             = os.path.join(RCS_DIR, 'qss')
-
-
-# -------------------------------------------------------------------------------------------------------------
-''' build '''
-
-BUILD_DIR           = os.path.join(ROOT, 'build')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' cores '''
@@ -187,7 +178,7 @@ TOOLS_DIR           = os.path.join(SUBUI_DIR, 'Tools')
 
 UTILS_DIR           = os.path.join(ROOT, 'utils')
 
-class ConfigDirectory(DAMGDICT):
+class ConfigDirectory(dict):
 
     key                                 = 'ConfigDirectory'
 
@@ -217,7 +208,6 @@ class ConfigDirectory(DAMGDICT):
         self.add('BIN_DIR', BIN_DIR)
         self.add('DATA_DIR', DATA_DIR)
         self.add('JSON_DIR', JSON_DIR)
-        self.add('DEPENDANCIES_DIR', DEPENDANCIES_DIR)
         self.add('DOCS_DIR', DOCS_DIR)
         self.add('RST_DIR', RST_DIR)
         self.add('TXT_DIR', TXT_DIR)
@@ -228,7 +218,6 @@ class ConfigDirectory(DAMGDICT):
         self.add('HTML_DIR', HTML_DIR)
         self.add('JS_DIR', JS_DIR)
         self.add('QSS_DIR', QSS_DIR)
-        self.add('BUILD_DIR', BUILD_DIR)
         self.add('CORES_DIR', CORES_DIR)
         self.add('CORES_ASSETS_DIR', CORES_ASSETS_DIR)
         self.add('CORES_BASE_DIR', CORES_BASE_DIR)
@@ -297,6 +286,8 @@ class ConfigDirectory(DAMGDICT):
                     os.umask(original_umask)
                 os.chmod(path, mode)
 
+    def add(self, key, value):
+        self[key]                       = value
 
 
 # -------------------------------------------------------------------------------------------------------------

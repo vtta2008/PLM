@@ -86,6 +86,7 @@ class DAMGTEAM(AppBase):
 
         return super(DAMGTEAM, self).notify(receiver, event)
 
+
 if __name__ == '__main__':
     app = DAMGTEAM()
     app.startLoop()

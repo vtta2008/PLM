@@ -18,9 +18,10 @@ import requests, sys
 
 # PLM
 from appData                            import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
-from bin                                import DAMGTIMER, DAMGLIST
+from bin                                import DAMGLIST
 from ui.base                            import Conection
 from devkit.Widgets                     import GroupGrid, Label, MessageBox
+from devkit.Core                        import Timer
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """
@@ -41,7 +42,7 @@ class ConnectStatus(GroupGrid):
         self.parent                     = parent
         self._server                    = self.getServer()
         self.modeStatus                 = Label({'txt': self._mode, 'sst': 'Operating Mode Status'})
-        self.updateTimer                = DAMGTIMER()
+        self.updateTimer                = Timer()
 
         self.updateTimer.setParent(self)
         self.updateTimer.timeout.connect(self.update_icon)

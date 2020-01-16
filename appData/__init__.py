@@ -10,7 +10,6 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import ROOT, __envKey__
 """ import """
 
 # PLM

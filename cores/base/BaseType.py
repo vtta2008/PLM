@@ -13,9 +13,10 @@ from __future__ import absolute_import, unicode_literals
 
 
 
-from PyQt5.QtCore               import pyqtSignal, QDate, QTime
+from PyQt5.QtCore               import pyqtSignal
 
-from bin                        import DAMG, DAMGTIMER, DAMGDICT
+from bin                        import DAMG, DAMGDICT
+from devkit.Core                import Date, Time, Timer
 
 
 class BaseType(DAMG):
@@ -44,10 +45,10 @@ class BaseType(DAMG):
                        startdate=None, enddate=None, details={}):
         DAMG.__init__(self)
 
-        self.date               = QDate()
-        self.time               = QTime()
+        self.date               = Date()
+        self.time               = Time()
 
-        self.timer              = DAMGTIMER()
+        self.timer              = Timer()
         self.timer.setParent(self)
 
         self._id                = id

@@ -12,10 +12,12 @@ from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore                        import pyqtSignal
 
-from bin                                 import DAMGLIST, DAMGTHREADPOOL, DAMGTIMER, DAMGTHREAD
+from bin                                 import DAMGLIST, DAMGTHREADPOOL, DAMGTHREAD
 from utils                               import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
+from devkit.Core                         import Timer
 from cores.SignalManager                 import SignalManager
 from cores.Settings                      import Settings
+
 
 class BackgroundService(DAMGTHREAD):
 
@@ -60,7 +62,7 @@ class BackgroundService(DAMGTHREAD):
     def monitor(self, val):
         self._monitoring                  = val
 
-class Counting(DAMGTIMER):
+class Counting(Timer):
 
     key = 'Counting'
     printCounter = False

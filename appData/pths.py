@@ -14,7 +14,7 @@ from __buildtins__ import globalSetting
 import os, json, pprint
 
 from .dirs                          import CFG_DIR, SETTING_DIR, DB_DIR, LOG_DIR, QSS_DIR
-from bin                            import DAMGDICT
+
 
 def save_data(filePth, data):
     if os.path.exists(filePth):
@@ -70,7 +70,7 @@ SETTING_FILEPTH = dict(app          = APP_SETTING,
 
 
 
-class ConfigPath(DAMGDICT):
+class ConfigPath(dict):
 
     key                             = 'ConfigPath'
 
@@ -116,6 +116,9 @@ class ConfigPath(DAMGDICT):
         if globalSetting.defaults.save_configInfo:
             if globalSetting.defaults.save_pathInfo:
                 save_data(pthCfg, self)
+
+    def add(self, key, value):
+        self[key]                   = value
 
 
 # -------------------------------------------------------------------------------------------------------------

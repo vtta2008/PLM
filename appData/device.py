@@ -17,7 +17,6 @@ from __buildtins__ import globalSetting
 import platform, subprocess, sys, re, socket, uuid, pprint
 
 # PLM
-from bin                                        import DAMGDICT
 from .types                                     import DRIVETYPE, FORMFACTOR, RAMTYPE, CPUTYPE
 
 
@@ -58,7 +57,7 @@ else:
     sys.exit()
 
 
-class ConfigMachine(DAMGDICT):
+class ConfigMachine(dict):
 
     key                                         = 'ConfigMachine'
 

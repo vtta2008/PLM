@@ -18,7 +18,8 @@ import sqlite3 as lite
 
 # PLM
 from appData                        import LOCAL_DB, DB_ATTRIBUTE_TYPE
-from bin                            import DAMG, DAMGTIMER, DAMGDATE, DAMGLIST, DAMGDICT
+from bin                            import DAMG, DAMGLIST, DAMGDICT
+from devkit.Core                    import Timer, Date
 
 def get_datetime():
     datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
@@ -47,8 +48,8 @@ class LocalDatabase(DAMG):
     def __init__(self):
         super(LocalDatabase, self).__init__(self)
 
-        self.date                       = DAMGDATE()
-        self.time                       = DAMGTIMER()
+        self.date                       = Date()
+        self.time                       = Timer()
         self.update()
 
     def update(self):

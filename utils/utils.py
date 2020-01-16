@@ -9,6 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
+from __buildtins__ import __envKey__
 from distutils.version import LooseVersion
 """ Import """
 
@@ -26,7 +27,7 @@ from PyQt5.QtGui        import QColor, QFont, QFontMetrics, QKeySequence
 from PyQt5.QtWidgets    import QAction, QPushButton
 
 # PLM
-from appData            import (__envKey__, __pkgsReq__, KEYPACKAGE, LOGO_DIR, WEB_ICON_DIR, TAG_ICON_DIR, AVATAR_DIR,
+from appData            import (__pkgsReq__, KEYPACKAGE, LOGO_DIR, WEB_ICON_DIR, TAG_ICON_DIR, AVATAR_DIR,
                                 ICON_DIR, actionTypes)
 
 # -------------------------------------------------------------------------------------------------------------

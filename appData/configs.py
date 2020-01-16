@@ -22,7 +22,6 @@ if os.getenv(__envKey__) != ROOT:
 PIPE = subprocess.PIPE
 STDOUT = subprocess.STDOUT
 
-from bin                            import DAMGDICT
 from .dirs                          import ConfigDirectory
 from .pths                          import ConfigPath
 from .urls                          import ConfigUrl
@@ -49,7 +48,7 @@ from .metadatas                     import (__plmWiki__, __localServer__, __pkgs
                                             VERSION, PLMAPPID)
 
 from .servers                       import ConfigServer
-
+from .icons                         import ConfigIcon
 from .device                        import ConfigMachine
 
 
@@ -71,7 +70,7 @@ pthInfo                            = ConfigPath()
 from bin import PresetDB
 localDB = PresetDB(filename=pthInfo['LOCAL_DB'])
 
-class CommandData(DAMGDICT):
+class CommandData(dict):
     key = 'CommandData'
 
     def __init__(self, key=None, icon=None, tooltip=None, statustip=None,
@@ -91,14 +90,14 @@ class CommandData(DAMGDICT):
         vs = [key, icon, tooltip, statustip, value, valueType, arg, code]
 
         for i in range(len(ks)):
-            self[ks[i]] = vs[i]
+            self[ks[i]]             = vs[i]
 
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configs """
 
 
-class ConfigPython(DAMGDICT):
+class ConfigPython(dict):
 
     key                             = 'ConfigPython'
 
@@ -122,7 +121,7 @@ class ConfigPython(DAMGDICT):
         # pprint.pprint(self)
 
 
-class ConfigEnvVar(DAMGDICT):
+class ConfigEnvVar(dict):
 
     key                                 = 'ConfigEnvVar'
 
@@ -136,92 +135,7 @@ class ConfigEnvVar(DAMGDICT):
             self[k]                     = v.replace('\\', '/')
 
 
-class ConfigAvatar(DAMGDICT):
-
-    key                                 = 'ConfigAvatar'
-
-    def __init__(self):
-        super(ConfigAvatar, self).__init__()
-
-        for root, dirs, names in os.walk(dirInfo['AVATAR_DIR'], topdown=False):
-            for name in names:
-                self[name.split('.avatar')[0]] = os.path.join(root, name).replace('\\', '/')
-
-
-class ConfigLogo(DAMGDICT):
-
-    key                                 = 'ConfigLogo'
-
-    def __init__(self):
-        super(ConfigLogo, self).__init__()
-
-        damgLogos                       = DAMGDICT()
-        plmLogos                        = DAMGDICT()
-
-        for root, dirs, names in os.walk(dirInfo['DAMG_LOGO_DIR'], topdown=False):
-            for name in names:
-                damgLogos[name.split('.png')[0]] = os.path.join(root, name).replace('\\', '/')
-
-        for root, dirs, names in os.walk(dirInfo['PLM_LOGO_DIR'], topdown=False):
-            for name in names:
-                plmLogos[name.split('.png')[0]] = os.path.join(root, name).replace('\\', '/')
-
-        self['DAMGTEAM']                = damgLogos
-        self['PLM']                     = plmLogos
-
-
-class ConfigPics(DAMGDICT):
-
-    key                                 = 'ConfigPics'
-
-    def __init__(self):
-        super(ConfigPics, self).__init__()
-
-        for root, dirs, names, in os.walk(dirInfo['PIC_DIR'], topdown=False):
-            for name in names:
-                self[name.split('.node')[0]] = os.path.join(root, name).replace('\\', '/')
-
-
-class ConfigIcon(DAMGDICT):
-
-    key                                 = 'ConfigIcon'
-
-    def __init__(self):
-        super(ConfigIcon, self).__init__()
-
-        self['icon12']                  = self.get_icons(dirInfo['ICON_DIR_12'])
-        self['icon16']                  = self.get_icons(dirInfo['ICON_DIR_16'])
-        self['icon24']                  = self.get_icons(dirInfo['ICON_DIR_24'])
-        self['icon32']                  = self.get_icons(dirInfo['ICON_DIR_32'])
-        self['icon48']                  = self.get_icons(dirInfo['ICON_DIR_48'])
-        self['icon64']                  = self.get_icons(dirInfo['ICON_DIR_64'])
-
-        self['maya']                    = self.get_icons(dirInfo['MAYA_ICON_DIR'])
-
-        self['node']                    = self.get_icons(dirInfo['NODE_ICON_DIR'])
-
-        self['tag']                     = self.get_icons(dirInfo['TAG_ICON_DIR'])
-
-        self['web32']                   = self.get_icons(dirInfo['WEB_ICON_32'])
-        self['web128']                  = self.get_icons(dirInfo['WEB_ICON_128'])
-
-        self['avatar']                  = ConfigAvatar()
-        self['logo']                    = ConfigLogo()
-        self['pic']                     = ConfigPics()
-
-        if globalSetting.tracks.configInfo:
-            if globalSetting.tracks.iconInfo:
-                pprint.pprint(self)
-
-    def get_icons(self, dir):
-        icons = DAMGDICT()
-        for root, dirs, names in os.walk(dir, topdown=False):
-            for name in names:
-                icons[name.split('.icon')[0]] = os.path.join(root, name).replace('\\', '/')
-        return icons
-
-
-class ConfigMaya(DAMGDICT):
+class ConfigMaya(dict):
 
     key                                 = 'ConfigMaya'
 
@@ -241,7 +155,7 @@ class ConfigMaya(DAMGDICT):
                     shutil.copy(usScr, usDes)
 
 
-class ConfigApps(DAMGDICT):
+class ConfigApps(dict):
 
     key                         = 'ConfigApps'
 
@@ -265,7 +179,7 @@ class ConfigApps(DAMGDICT):
                 pprint.pprint(self)
 
 
-class ConfigPipeline(DAMGDICT):
+class ConfigPipeline(dict):
 
     key                         = 'ConfigPipeline'
 
@@ -441,6 +355,9 @@ class ConfigPipeline(DAMGDICT):
             del self.appInfo[key]
         except KeyError:
             self.appInfo.pop(key, None)
+
+    def add(self, key, value):
+        self[key]                           = value
 
 
 def ignoreIDs(*info):

@@ -45,7 +45,9 @@ ST_FORMAT = dict(
 
 datetTimeStamp = QDateTime.currentDateTime().toString("hh:mm - dd MMMM yy")             # datestamp
 
+
 IMGEXT = "All Files (*);;Img Files (*.jpg);;Img Files (*.png)"
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 23/10/2019 - 2:50 AM

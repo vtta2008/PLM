@@ -9,25 +9,38 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+""" Import """
 
-class NodePropertyError(Exception):
-    pass
-
-
-class NodeWidgetError(Exception):
-    pass
+# PLM
+from bin import DAMGERROR
 
 
-class NodeRegistrationError(Exception):
-    pass
+class NodePropertyError(DAMGERROR): pass
 
 
-class PortRegistrationError(Exception):
-    pass
+class NodeWidgetError(DAMGERROR): pass
 
 
-class NodeMenuError(Exception):
-    pass
+class NodeRegistrationError(DAMGERROR): pass
+
+
+class PortRegistrationError(DAMGERROR): pass
+
+
+class NodeMenuError(DAMGERROR): pass
+
+
+class IconNotFound(DAMGERROR): pass
+
+
+class ActionKeyConfigError(DAMGERROR): pass
+
+
+class ActionRegisterError(DAMGERROR): pass
+
+
+class ButtonRegisterError(DAMGERROR): pass
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 4/12/2019 - 1:22 AM

@@ -90,8 +90,6 @@ COPYRIGHT               = "{0} software (c) 2017-2018 {1}. All rights reserved."
 PLUGINVERSION           = "{0}.13.cfg.{1}".format(__appname__, __cfgVersion__)
 PLMAPPID                = "{0}.{1}.{2}.{3}".format(__organizationName__, __productName__, __subProduct__, __version__)
 
-print(PLMAPPID.encode('utf-16', 'surrogatepass').decode('utf-16'))
-
 API_MAJOR_VERSION       = 0.69
 API_REVISION            = 0
 API_VERSION             = float('%s%s' % (API_MAJOR_VERSION, API_REVISION))

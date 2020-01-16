@@ -13,7 +13,6 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # PLM
-from bin                            import DAMGDICT
 from .metadatas                     import __localServer__, __globalServer__
 
 
@@ -21,7 +20,7 @@ LOCAL_SERVER                        = __localServer__
 ONLINE_SERVER                       = __globalServer__
 
 
-class ConfigServer(DAMGDICT):
+class ConfigServer(dict):
 
     key                             = 'ConfigServer'
 
@@ -30,6 +29,9 @@ class ConfigServer(DAMGDICT):
 
         self.add('local', LOCAL_SERVER)
         self.add('online', ONLINE_SERVER)
+
+    def add(self, key, value):
+        self[key]                   = value
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -19,6 +19,7 @@ from functools                          import partial
 from bin                                import DAMGDICT
 from devkit.Widgets                     import Action, Button
 from utils                              import is_string, is_action, is_button
+from cores.Errors                       import ActionKeyConfigError, ActionRegisterError, ButtonRegisterError
 from appData                            import (OPEN_URL_KEYS, CONFIG_DEV, CONFIG_TOOLS, CONFIG_OFFICE, CONFIG_TDS,
                                                 CONFIG_ART, CONFIG_TEX, CONFIG_POST, CONFIG_VFX, CONFIG_PRE, LIBRARY_UI_KEYS,
                                                 SHORTCUT_KEYS, STYLESHEET_KEYS, PLUGIN_UI_KEY, FORM_KEY,
@@ -46,7 +47,7 @@ class KeyBase(DAMGDICT):
 
     libActions                          = LIBRARY_UI_KEYS
     helpActions                         = ['PLM wiki', 'About', 'CodeOfConduct', 'Contributing', 'Credit', 'References',
-                                           'Version', 'FeedBack', 'ContactUs', ] + formActions
+                                           'Version', 'FeedBack', ] + formActions
 
     artActions                          = [k for k in CONFIG_ART if k in plmInfo.keys()]
     tdActions                           = [k for k in CONFIG_TDS if k in plmInfo.keys()]
@@ -71,14 +72,15 @@ class KeyBase(DAMGDICT):
         pass
 
     def keyConfigError(self, key):
-        print('ActionKeyConfigError: Key is not in plmInfo: {0}'.format(key))
+        ActionKeyConfigError('Key is not in plmInfo: {0}'.format(key))
 
     def actionRegisterError(self, key):
         if globalSetting.checks.actionRegisterError:
-            print('ActionRegisterError: This action is already registered: {0}'.format(key))
+            ActionRegisterError('This action is already registered: {0}'.format(key))
 
     def buttonRegisterError(self, key):
-        print('ButtonRegisterError: This button is already registered: {0}'.format(key))
+        if globalSetting.checks.buttonRegisterError:
+            ButtonRegisterError('This button is already registered: {0}'.format(key))
 
     def createActions(self, keys, parent):
         actions = []

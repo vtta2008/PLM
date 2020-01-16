@@ -15,8 +15,6 @@ import os
 
 from PyQt5.QtCore                           import QProcess
 
-from cores.Settings                         import Settings
-from cores.SignalManager                    import SignalManager
 
 class Process(QProcess):
 
@@ -29,8 +27,6 @@ class Process(QProcess):
         super(Process, self).__init__(parent)
 
         self.parent                         = parent
-        self.preSetting                     = Settings(self.parent)
-        self.signals                        = SignalManager(self.parent)
 
         self.setProcessChannelMode(self.MergedChannels)
         self.setWorkingDirectory(os.getcwd())

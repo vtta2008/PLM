@@ -9,9 +9,13 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+""" Import """
 
+# PLM
 from appData                        import ELIDE_RIGHT
 from .Widgets                       import Widget, GridLayout, Label, TabWidget, TabBar
+
+
 
 class TabContent(Widget):
 
