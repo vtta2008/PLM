@@ -4,7 +4,7 @@ from appData import (IN_PORT, OUT_PORT, NODE_WIDTH, NODE_HEIGHT, NODE_ICON_SIZE,
                      NODE_SEL_BORDER_COLOR, PORT_FALLOFF, Z_VAL_NODE, Z_VAL_NODE_WIDGET, ROUND_CAP, SMOOTH_TRANS,
                      PEN_NONE, BRUSH_NONE, MOUSE_LEFT, ALT_MODIFIER)
 
-from cores.errors import NodeWidgetError
+from cores.Errors import NodeWidgetError
 from .node_abstract import AbstractNodeItem
 from plugins.NodeGraph.graphics.port import PortItem
 

@@ -1,4 +1,5 @@
 PyQt5
+helpdev
 wmi
 pip
 appdirs

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Project.py
+Script Name: Team.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -20,17 +20,17 @@ from PyQt5.QtCore                       import QDateTime
 
 # PLM
 from cores.base                         import BaseType
-from appData                            import SOUND_DIR, TASK_DIR, PRJ_DIR, ORG_DIR, TEAM_DIR, TMP_DIR
+from appData                            import SOUND_DIR, TEAM_DIR
 
 
-class Project(BaseType):
+class Team(BaseType):
 
-    key                                 = 'Project'
+    key                                 = 'Team'
 
     def __init__(self, id=None, name=None, mode=None, type=None,
                        teamID=None, projectID=None, organisationID=None,
                        startdate=None, enddate=None, details={}):
-        super(Project, self).__init__(id, name, mode, type, teamID, projectID, organisationID, startdate, enddate, details)
+        super(Team, self).__init__(id, name, mode, type, teamID, projectID, organisationID, startdate, enddate, details)
 
         if self.startdate is None:
             self.start = QDateTime(self.date.currentDate(), self.time.currentTime())
@@ -40,10 +40,6 @@ class Project(BaseType):
         self.end = self.enddate.endDate
 
         self.update()
-
-        format = self.countter_format()
-        self.timer.timeout.connect(self.update)
-        self.timer.start(format)
 
     def update(self):
         self.days = self.start.daysTo(self.end)
@@ -94,6 +90,7 @@ class Project(BaseType):
 
         self.updateData()
 
+
     def updateData(self):
 
         self.dataForm.add('name', self._name)
@@ -116,10 +113,11 @@ class Project(BaseType):
 
         self.dataForm.add('details', self.details)
 
-        with open(os.path.join(PRJ_DIR, '{0}.prj'.format(self._id)).replace('\\', '/'), 'w') as f:
+        with open(os.path.join(TEAM_DIR, '{0}.team'.format(self._id)).replace('\\', '/'), 'w') as f:
             self.dataForm = json.dump(self.dataForm, f, indent=4)
 
         return self.dataForm
+
 
     def get_status(self):
         if self.days < 0:
@@ -156,5 +154,5 @@ class Project(BaseType):
         return self._endtime
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 2/12/2019 - 1:46 PM
+# Created by panda on 2/12/2019 - 4:41 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

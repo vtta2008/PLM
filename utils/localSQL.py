@@ -78,7 +78,6 @@ class LocalDatabase(DAMG):
         self.cur.execute("DELETE FROM curUser")
         self.cur.execute("INSERT INTO curUser ('username', 'token', 'cookie', 'remember') VALUES (?,?,?,?)", (username, token, cookie, remember))
         self.conn.commit()
-        self.conn.close()
 
     def update_table(self, tableName, values):
         columns = self.columnList(tableName)

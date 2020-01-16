@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Organisation.py
+Script Name: Project.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -20,21 +20,17 @@ from PyQt5.QtCore                       import QDateTime
 
 # PLM
 from cores.base                         import BaseType
-from appData                            import SOUND_DIR, TASK_DIR, PRJ_DIR, ORG_DIR, TEAM_DIR, TMP_DIR
+from appData                            import SOUND_DIR, PRJ_DIR
 
 
-# -------------------------------------------------------------------------------------------------------------
-""" Organisation class """
+class Project(BaseType):
 
-
-class Organisation(BaseType):
-
-    key                                 = 'Organisation'
+    key                                 = 'Project'
 
     def __init__(self, id=None, name=None, mode=None, type=None,
                        teamID=None, projectID=None, organisationID=None,
                        startdate=None, enddate=None, details={}):
-        super(Organisation, self).__init__(id, name, mode, type, teamID, projectID, organisationID, startdate, enddate, details)
+        super(Project, self).__init__(id, name, mode, type, teamID, projectID, organisationID, startdate, enddate, details)
 
         if self.startdate is None:
             self.start = QDateTime(self.date.currentDate(), self.time.currentTime())
@@ -44,6 +40,10 @@ class Organisation(BaseType):
         self.end = self.enddate.endDate
 
         self.update()
+
+        format = self.countter_format()
+        self.timer.timeout.connect(self.update)
+        self.timer.start(format)
 
     def update(self):
         self.days = self.start.daysTo(self.end)
@@ -77,7 +77,7 @@ class Organisation(BaseType):
                             playsound(pth)
                             self.play_alarm = True
         if self.days != 0:
-            hrs = self.hours + self.days*24
+            hrs = self.hours + self.days * 24
         else:
             hrs = self.hours
 
@@ -116,7 +116,7 @@ class Organisation(BaseType):
 
         self.dataForm.add('details', self.details)
 
-        with open(os.path.join(ORG_DIR, '{0}.org'.format(self._id)).replace('\\', '/'), 'w') as f:
+        with open(os.path.join(PRJ_DIR, '{0}.prj'.format(self._id)).replace('\\', '/'), 'w') as f:
             self.dataForm = json.dump(self.dataForm, f, indent=4)
 
         return self.dataForm
@@ -145,6 +145,7 @@ class Organisation(BaseType):
 
         return self._status
 
+
     def dateline(self):
         return self._dateline
 
@@ -154,7 +155,6 @@ class Organisation(BaseType):
     def endtime(self):
         return self._endtime
 
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 2/12/2019 - 12:54 PM
+# Created by panda on 2/12/2019 - 1:46 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

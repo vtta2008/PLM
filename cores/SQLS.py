@@ -14,7 +14,7 @@ Description:
 import sqlite3 as lite
 
 # PLM
-from bin.dependencies.damg.damg import DAMG
+from bin                    import DAMG
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """
@@ -66,9 +66,9 @@ class SQLS(DAMG):
     def __init__(self, filename, parent=None):
         super(SQLS, self).__init__(parent)
 
-        self.fn = filename
-        self.conn = lite.connect(self.fn)
-        self.cur = self.conn.cursor()
+        self.fn             = filename
+        self.conn           = lite.connect(self.fn)
+        self.cur            = self.conn.cursor()
 
         for tn in TABLENAME:
             self.create_table(tn)

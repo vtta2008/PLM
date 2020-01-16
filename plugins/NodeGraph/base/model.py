@@ -4,7 +4,7 @@ from collections import defaultdict
 
 from appData                            import (NODE_PROP, NODE_PROP_QLABEL, NODE_PROP_QLINEEDIT, NODE_PROP_QCHECKBOX,
                                                 NODE_PROP_COLORPICKER)
-from cores.errors                       import NodePropertyError
+from cores.Errors                       import NodePropertyError
 
 
 class PortModel(object):

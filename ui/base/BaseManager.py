@@ -10,15 +10,14 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from cores.Task                         import Task
-from cores.Project                      import Project
-from cores.Team                         import Team
-from cores.Organisation                 import Organisation
-from cores.Temporary                    import Temporary
+from cores.models.Task import Task
+from cores.models.Project import Project
+from cores.models.Team import Team
+from cores.models.Organisation import Organisation
+from cores.models.Temporary import Temporary
 
 from cores.base                         import DateLine
 from ui.base                            import BaseInfo, BaseDetails
-from functools                          import partial
 from devkit.Widgets                     import (Widget, Button, VBoxLayout, HBoxLayout)
 from devkit.Gui                         import AppIcon
 

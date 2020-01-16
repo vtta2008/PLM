@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: test.py
+Script Name: __init__.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -11,7 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 1/13/2020 - 1:54 AM
+# Created by panda on 1/16/2020 - 7:11 PM
 # © 2017 - 2019 DAMGteam. All rights reserved

@@ -10,15 +10,14 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-import os, json
+import json
 
 from PyQt5.QtCore                               import QDate, QTime
-from PyQt5.QtGui                                import QFont
 
 from devkit.Widgets                           import GroupBox, VBoxLayout, Label
 from utils                                      import LocalDatabase
 from cores.base                                 import DateLine
-from cores.Task                                 import Task
+from cores.models.Task import Task
 
 
 

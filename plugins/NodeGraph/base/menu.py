@@ -3,7 +3,7 @@
 from distutils.version                  import LooseVersion
 
 from plugins.NodeGraph                  import QtGui, QtCore
-from cores.errors                       import NodeMenuError
+from cores.Errors                       import NodeMenuError
 from plugins.NodeGraph.widgets.actions  import BaseMenu, GraphAction, NodeAction
 
 class NodeGraphMenu(object):

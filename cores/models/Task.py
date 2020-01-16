@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Team.py
+Script Name: Task.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -20,28 +20,36 @@ from PyQt5.QtCore                       import QDateTime
 
 # PLM
 from cores.base                         import BaseType
-from appData                            import SOUND_DIR, TASK_DIR, PRJ_DIR, ORG_DIR, TEAM_DIR, TMP_DIR
+from appData                            import SOUND_DIR, TASK_DIR
 
 
-class Team(BaseType):
+# -------------------------------------------------------------------------------------------------------------
+""" Task class """
 
-    key                                 = 'Team'
+class Task(BaseType):
+
+    key                                 = 'Task'
 
     def __init__(self, id=None, name=None, mode=None, type=None,
                        teamID=None, projectID=None, organisationID=None,
                        startdate=None, enddate=None, details={}):
-        super(Team, self).__init__(id, name, mode, type, teamID, projectID, organisationID, startdate, enddate, details)
+        super(Task, self).__init__(id, name, mode, type, teamID, projectID, organisationID, startdate, enddate, details)
 
         if self.startdate is None:
-            self.start = QDateTime(self.date.currentDate(), self.time.currentTime())
+            self.start                  = QDateTime(self.date.currentDate(), self.time.currentTime())
         else:
-            self.start = self.startdate.endDate
+            self.start                  = self.startdate.endDate
 
-        self.end = self.enddate.endDate
+        self.end                        = self.enddate.endDate
 
         self.update()
 
+        format = self.countter_format()
+        self.timer.timeout.connect(self.update)
+        self.timer.start(format)
+
     def update(self):
+        self.start = QDateTime(self.date.currentDate(), self.time.currentTime())
         self.days = self.start.daysTo(self.end)
 
         self.hours = self.end.time().hour() - self.start.time().hour()
@@ -73,7 +81,7 @@ class Team(BaseType):
                             playsound(pth)
                             self.play_alarm = True
         if self.days != 0:
-            hrs = self.hours + self.days * 24
+            hrs = self.hours + self.days*24
         else:
             hrs = self.hours
 
@@ -113,8 +121,11 @@ class Team(BaseType):
 
         self.dataForm.add('details', self.details)
 
-        with open(os.path.join(TEAM_DIR, '{0}.team'.format(self._id)).replace('\\', '/'), 'w') as f:
-            self.dataForm = json.dump(self.dataForm, f, indent=4)
+        try:
+            with open(os.path.join(TASK_DIR, '{0}.task'.format(self._id)).replace('\\', '/'), 'w') as f:
+                json.dump(self.dataForm, f, indent=4)
+        except PermissionError:
+            pass
 
         return self.dataForm
 
@@ -154,5 +165,5 @@ class Team(BaseType):
         return self._endtime
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 2/12/2019 - 4:41 PM
+# Created by panda on 16/11/2019 - 7:00 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

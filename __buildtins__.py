@@ -15,7 +15,6 @@ from __future__ import absolute_import, unicode_literals
 # Python
 import os, sys, subprocess, platform
 
-
 __envKey__                          = "DAMGTEAM"
 
 def get_root():
@@ -597,7 +596,7 @@ finally:
     globalSetting.cfgable = True
 
 
-subprocess.Popen('python -m pip install -r requirements.txt --user')
+# subprocess.Popen('python -m pip install -r requirements.txt --user')
 
 
 if platform.system() == 'Windows':

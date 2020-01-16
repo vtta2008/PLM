@@ -16,11 +16,14 @@ from __buildtins__ import globalSetting
 # Python
 import os, sys, subprocess
 
-from bin import DAMG
+# PLM
+from bin                           import DAMG
 
-class EnvVariableManager(DAMG):
 
-    key                            = 'EnvVariableManager'
+
+class EnvironmentVariable(DAMG):
+
+    key                            = 'EnvironmentVariable'
     _data                          = dict()
 
     for k,v in os.environ.items():
@@ -28,7 +31,7 @@ class EnvVariableManager(DAMG):
     _paths                         = os.getenv('PATH')
 
     def __init__(self):
-        super(EnvVariableManager, self).__init__()
+        super(EnvironmentVariable, self).__init__()
 
         pths = [p for p in os.getenv('PATH').split(';')[0:]]
 

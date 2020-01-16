@@ -9,13 +9,17 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import ROOT
+""" Import """
 
+# Python
 import os, re
-from bin import DAMGTUPLE
 
-from appData import APP_DATA_DIR
+# PLM
+from bin                                import DAMGTUPLE
 
-with open(os.path.join(APP_DATA_DIR, 'metadatas.py'), 'rb') as f:
+
+with open(os.path.join(ROOT, 'appData', 'metadatas.py'), 'rb') as f:
     metadata = f.read().decode('utf-8')
 
 def parse(pattern):
@@ -25,10 +29,12 @@ def setup_read(fname):
     with open(os.path.join(os.path.dirname(__file__), fname), 'r') as f:
         return f.read()
 
-appname = parse(r'__appname__\s+=\s+(.*)')
+appname                                 = parse(r'__appname__\s+=\s+(.*)')
 
-__name__ = appname
-__file__ = appname
+__name__                                = appname
+__file__                                = appname
+
+
 
 class __version_info__(DAMGTUPLE):
 
@@ -73,18 +79,19 @@ class __version_info__(DAMGTUPLE):
         self._MINOR = newVal
 
 
-
 version_info = __version_info__()
 
-version_construct_class = dict(
-                                __version_info__ = version_info,
-                                __doc__='PLM documentations',
-                                __name__='version',
-                                __module__='PLM',
-                                __type__='version: {0}'.format('.'.join(str(i) for i in version_info)),
-                                __str__='.'.join(str(i) for i in version_info)
 
-                                )
+version_construct_class = dict(
+
+    __version_info__                = version_info,
+    __doc__                         = 'PLM documentations',
+    __name__                        = 'version',
+    __module__                      = 'PLM',
+    __type__                        = 'version: {0}'.format('.'.join(str(i) for i in version_info)),
+    __str__                         = '.'.join(str(i) for i in version_info)
+
+    )
 
 
 class _version(type):
@@ -118,10 +125,6 @@ class _version(type):
     def step(self):
         return self._step
 
-    @step.setter
-    def step(self, newVal):
-        self._step = newVal
-
     @property
     def majo_step(self):
         return self._majo_step
@@ -136,15 +139,19 @@ class _version(type):
 
     @majo_step.setter
     def majo_step(self, newVal):
-        self._majo_step = newVal
+        self._majo_step             = newVal
 
     @mino_step.setter
     def mino_step(self, newVal):
-        self._mino_step = newVal
+        self._mino_step             = newVal
 
     @micro_step.setter
     def micro_step(self, newVal):
-        self._micro_step = newVal
+        self._micro_step            = newVal
+
+    @step.setter
+    def step(self, newVal):
+        self._step                  = newVal
 
     def __bases__(cls):
         return type.__new__(_version, 'version', (_version,), version_construct_class)
@@ -158,21 +165,21 @@ class _version(type):
     def __call__(self):
         return isinstance(self, type)
 
-    __version__ = '.'.join(str(i) for i in version_info)
+    __version__                 = '.'.join(str(i) for i in version_info)
 
-    __qualname__ = 'version'
+    __qualname__                = 'version'
 
 
 class version(_version):
 
+    key                         = 'version'
+
     def __init__(self):
         super(version, self).__init__()
-        print(self)
 
     def release_note(self):
         pass
 
-ver = version()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 1/11/2019 - 4:48 PM

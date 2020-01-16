@@ -1,34 +1,16 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: errors.py
+Script Name: __init__.py.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
+    
 
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-class NodePropertyError(Exception):
-    pass
-
-
-class NodeWidgetError(Exception):
-    pass
-
-
-class NodeRegistrationError(Exception):
-    pass
-
-
-class PortRegistrationError(Exception):
-    pass
-
-
-class NodeMenuError(Exception):
-    pass
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 4/12/2019 - 1:22 AM
-# © 2017 - 2018 DAMGteam. All rights reserved
+# Created by panda on 1/16/2020 - 9:50 PM
+# © 2017 - 2019 DAMGteam. All rights reserved

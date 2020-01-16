@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-from cores.errors import NodeRegistrationError
+from cores.Errors import NodeRegistrationError
 
 
 class NodeFactory(object):

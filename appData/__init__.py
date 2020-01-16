@@ -75,6 +75,8 @@ appInfo                         = ConfigApps()
 urlInfo                         = ConfigUrl()
 plmInfo                         = ConfigPipeline(iconInfo, appInfo, urlInfo, dirInfo, pthInfo)
 
+APP_DATA_DIR                    = dirInfo['APP_DATA_DIR']
+
 LOGO_DIR                        = dirInfo['LOGO_DIR']
 WEB_ICON_DIR                    = dirInfo['WEB_ICON_DIR']
 TAG_ICON_DIR                    = dirInfo['TAG_ICON_DIR']

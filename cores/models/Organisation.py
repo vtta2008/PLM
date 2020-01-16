@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Task.py
+Script Name: Organisation.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -20,36 +20,32 @@ from PyQt5.QtCore                       import QDateTime
 
 # PLM
 from cores.base                         import BaseType
-from appData                            import SOUND_DIR, TASK_DIR, PRJ_DIR, ORG_DIR, TEAM_DIR, TMP_DIR
+from appData                            import SOUND_DIR, ORG_DIR
 
 
 # -------------------------------------------------------------------------------------------------------------
-""" Task class """
+""" Organisation class """
 
-class Task(BaseType):
 
-    key                                 = 'Task'
+class Organisation(BaseType):
+
+    key                                 = 'Organisation'
 
     def __init__(self, id=None, name=None, mode=None, type=None,
                        teamID=None, projectID=None, organisationID=None,
                        startdate=None, enddate=None, details={}):
-        super(Task, self).__init__(id, name, mode, type, teamID, projectID, organisationID, startdate, enddate, details)
+        super(Organisation, self).__init__(id, name, mode, type, teamID, projectID, organisationID, startdate, enddate, details)
 
         if self.startdate is None:
-            self.start                  = QDateTime(self.date.currentDate(), self.time.currentTime())
+            self.start = QDateTime(self.date.currentDate(), self.time.currentTime())
         else:
-            self.start                  = self.startdate.endDate
+            self.start = self.startdate.endDate
 
-        self.end                        = self.enddate.endDate
+        self.end = self.enddate.endDate
 
         self.update()
 
-        format = self.countter_format()
-        self.timer.timeout.connect(self.update)
-        self.timer.start(format)
-
     def update(self):
-        self.start = QDateTime(self.date.currentDate(), self.time.currentTime())
         self.days = self.start.daysTo(self.end)
 
         self.hours = self.end.time().hour() - self.start.time().hour()
@@ -98,7 +94,6 @@ class Task(BaseType):
 
         self.updateData()
 
-
     def updateData(self):
 
         self.dataForm.add('name', self._name)
@@ -121,14 +116,10 @@ class Task(BaseType):
 
         self.dataForm.add('details', self.details)
 
-        try:
-            with open(os.path.join(TASK_DIR, '{0}.task'.format(self._id)).replace('\\', '/'), 'w') as f:
-                json.dump(self.dataForm, f, indent=4)
-        except PermissionError:
-            pass
+        with open(os.path.join(ORG_DIR, '{0}.org'.format(self._id)).replace('\\', '/'), 'w') as f:
+            self.dataForm = json.dump(self.dataForm, f, indent=4)
 
         return self.dataForm
-
 
     def get_status(self):
         if self.days < 0:
@@ -154,7 +145,6 @@ class Task(BaseType):
 
         return self._status
 
-
     def dateline(self):
         return self._dateline
 
@@ -164,6 +154,7 @@ class Task(BaseType):
     def endtime(self):
         return self._endtime
 
+
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 16/11/2019 - 7:00 PM
+# Created by panda on 2/12/2019 - 12:54 PM
 # © 2017 - 2018 DAMGteam. All rights reserved
