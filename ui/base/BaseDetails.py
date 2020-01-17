@@ -84,15 +84,15 @@ class BaseDetails(GroupGrid):
         if str2bool(bool):
             self.productionType.setChecked(False)
             self.postProductionType.setChecked(False)
-            self.vfxType.setCheced(False)
-            self.research.setChecked(False)
+            self.vfxType.setChecked(False)
+            self.researchType.setChecked(False)
 
             self._type = 'preProduction'
 
     def production(self, bool):
         if str2bool(bool):
-            self.preProproductionType.setChecked(False)
-            self.postProduction.setChecked(False)
+            self.preProductionType.setChecked(False)
+            self.postProductionType.setChecked(False)
             self.vfxType.setChecked(False)
             self.researchType.setChecked(False)
 
@@ -118,8 +118,8 @@ class BaseDetails(GroupGrid):
 
     def research(self, bool):
         if str2bool(bool):
-            self.preProproductionType.setChecked(False)
-            self.postProduction.setChecked(False)
+            self.preProductionType.setChecked(False)
+            self.postProductionType.setChecked(False)
             self.vfxType.setChecked(False)
             self.researchType.setChecked(False)
 

@@ -57,8 +57,6 @@ class AppBase(Application):
 
         self.layouts                    = self.layoutManager.register
 
-        self.set_styleSheet('dark')
-
         self.mainUI, self.sysTray, self.shortcutCMD, self.signIn, self.signUp, self.forgotPW = self.layoutManager.mains
 
         for layout in [self.mainUI, self.sysTray, self.signIn, self.signUp, self.forgotPW]:

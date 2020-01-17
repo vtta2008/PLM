@@ -14,7 +14,7 @@ from __buildtins__ import __copyright__
 from PyQt5.QtWidgets                        import QMenuBar, QMenu
 
 from bin                                    import DAMGDICT
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 class Menu(QMenu):
@@ -29,7 +29,7 @@ class Menu(QMenu):
 
         self._title                         = title
         self.parent                         = parent
-        self.settings = Settings(self)
+        self.settings = SettingManager(self)
         self.signals = SignalManager(self)
 
     def setValue(self, key, value):
@@ -65,7 +65,7 @@ class MenuBar(QMenuBar):
         QMenuBar.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
     def setValue(self, key, value):

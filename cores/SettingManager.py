@@ -9,30 +9,25 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import globalSetting
 """ Import """
 
 # Python
 import os
 
 # PyQt5
-from PyQt5.QtCore                       import QSettings, pyqtSlot
+from PyQt5.QtCore                       import QSettings
 
 # PLM
 from appData                            import INI, SETTING_FILEPTH
+from devkit.Core                        import Settings
 
 
+class SettingManager(Settings):
 
-class Settings(QSettings):
-
-    Type                                = 'DAMGSETTING'
     key                                 = 'Settings'
-    _name                               = 'DAMG Setting'
 
     _settingEnable                      = False
-    _checkSettingAble                   = False
-    _trackSetting                       = False
-    _trackFixKey                        = False
-    _trackDeleteKey                     = False
 
     _groups                             = None
     _settingFile                        = None
@@ -44,7 +39,7 @@ class Settings(QSettings):
     keyFixedOld                         = '  '
 
     def __init__(self, parent=None, filename=SETTING_FILEPTH['app'], fm=INI):
-        QSettings.__init__(self, filename, fm)
+        super(SettingManager, self).__init__(filename, fm)
 
         self.parent                     = parent
         if not self.parent is None:
@@ -95,7 +90,7 @@ class Settings(QSettings):
             else:
                 oldValue = self.value(key)
                 if not value == oldValue:
-                    if self._trackSetting:
+                    if globalSetting.tracks.setting:
                         print('{0}: set {1} - {2} - {3}.'.format(self.key, key, value, grpChecked))
                     self.setValue(key, value)
 
@@ -114,7 +109,7 @@ class Settings(QSettings):
                     value = self.value(key)
                 else:
                     value = self.value(key, decode)
-                if self._trackSetting:
+                if globalSetting.tracks.setting:
                     print('{0}: get value from key: {1}, value: {2}, at group: {3}.'.format(self.key, key, value,
                                                                                             grpChecked))
                 return value
@@ -145,7 +140,6 @@ class Settings(QSettings):
         self._mode = mode
         self.setPath(self.format(), self.scope(), self.modes[self._mode])
 
-    @pyqtSlot(str, name='removeGroup')
     def removeGrp(self, grpName):
         if grpName in self._groups:
             self._groups.remove(grpName)
@@ -153,7 +147,6 @@ class Settings(QSettings):
         else:
             return False
 
-    @pyqtSlot(str, name='setFormat')
     def set_format(self, fm):
         if fm == 'ini':
             _format = QSettings.IniFormat
@@ -164,7 +157,6 @@ class Settings(QSettings):
         self.setDefaultFormat(_format)
         return _format
 
-    @pyqtSlot(str, name='setScope')
     def set_scope(self, scope):
         if scope == 'system':
             return QSettings.SystemScope
@@ -174,14 +166,6 @@ class Settings(QSettings):
     @property
     def mode(self):
         return self._mode
-
-    @property
-    def copyright(self):
-        return self._copyright
-
-    @property
-    def name(self):
-        return self._name
 
     @property
     def settingFile(self):
@@ -194,22 +178,6 @@ class Settings(QSettings):
     @property
     def groups(self):
         return self._groups
-
-    @property
-    def checkSettingAble(self):
-        return self._checkSettingAble
-
-    @property
-    def trackSetting(self):
-        return self._trackSetting
-
-    @property
-    def trackFixKey(self):
-        return self._trackFixKey
-
-    @property
-    def trackDeleteKey(self):
-        return self._trackDeleteKey
 
     @property
     def grp(self):
@@ -230,26 +198,6 @@ class Settings(QSettings):
     @settingFile.setter
     def settingFile(self, val):
         self._settingFile = val
-
-    @name.setter
-    def name(self, newName):
-        self._name = newName
-
-    @checkSettingAble.setter
-    def checkSettingAble(self, val):
-        self._checkSettingAble = val
-
-    @trackSetting.setter
-    def trackSetting(self, val):
-        self._trackSetting = val
-
-    @trackFixKey.setter
-    def trackFixKey(self, val):
-        self._trackFixKey = val
-
-    @trackDeleteKey.setter
-    def trackDeleteKey(self, val):
-        self._trackDeleteKey = val
 
     @settingEnable.setter
     def settingEnable(self, val):

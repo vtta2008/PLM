@@ -14,7 +14,7 @@ from __buildtins__ import __copyright__
 from PyQt5.QtWidgets                        import QPlainTextEdit
 
 from utils                                  import check_preset
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 class PlainTextEdit(QPlainTextEdit):
@@ -28,7 +28,7 @@ class PlainTextEdit(QPlainTextEdit):
         QPlainTextEdit.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
         self.preset                         = preset

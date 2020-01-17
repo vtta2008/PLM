@@ -10,11 +10,14 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
+# Python
 import os, shutil, sqlite3
 
+# PyQt5
 from PyQt5.QtWidgets            import QFileDialog
-from PyQt5.QtCore               import QSize
 
+# PLM
+from devkit.Core                import Size
 from devkit.Gui                 import Image, Pixmap
 from devkit.Widgets             import Label, GroupBox, VBoxLayout, Button
 from utils                      import LocalDatabase, get_avatar_image, resize_image
@@ -34,6 +37,8 @@ class ImageAvatar(Image):
     _name                       = 'DAMG Avatar Image: {0}'.format(username)
 
     def __init__(self, fileName=None, parent=None):
+        if not fileName or not os.path.exists(fileName):
+            fileName            = get_avatar_image('default')
         super(ImageAvatar, self).__init__(fileName, parent)
 
 class PixAvatar(Pixmap):
@@ -55,12 +60,14 @@ class AvatarLabel(Label):
         super(AvatarLabel, self).__init__()
 
         self.parent             = parent
-        self.setPixmap(PixAvatar().fromImage(ImageAvatar(get_avatar_image(username)), AUTO_COLOR))
+        self.pixAvatar          = PixAvatar()
+        self.imageAvatar        = ImageAvatar(get_avatar_image(username))
+        self.setPixmap(self.pixAvatar.fromImage(self.imageAvatar, AUTO_COLOR))
         self.setScaledContents(True)
         self.setAlignment(center)
 
     def resizeEvent(self, event):
-        size                    = QSize(1, 1)
+        size                    = Size(1, 1)
         size.scale(100, 100, ASPEC_RATIO)
         self.resize(size)
 
@@ -92,6 +99,7 @@ class Avatar(GroupBox):
         fileName, _                 = QFileDialog.getOpenFileName(self, "Your Avatar", AVATAR_DIR, fileFormat, options=options)
 
         if fileName:
+            scrPth                  = fileName
             baseFileName            = '{0}.avatar.jpg'.format(username)
             desPth                  = os.path.join(AVATAR_DIR, baseFileName)
 
@@ -101,10 +109,10 @@ class Avatar(GroupBox):
                     os.remove(oldPth)
 
                 os.rename(desPth, oldPth)
-                resize_image(fileName, desPth)
+                resize_image(fileName, desPth, 100, 100)
                 shutil.copy2(fileName, desPth)
 
-            self.avatar.pixAvatar._imageAvatar.setImage(desPth)
+            self.avatar.imageAvatar.setImage(desPth)
             self.avatar.update()
 
 class InfoPicLabel(Label):
@@ -125,7 +133,7 @@ class InfoPicLabel(Label):
         self.update()
 
     def resizeEvent(self, event):
-        size                        = QSize(1, 1)
+        size                        = Size(1, 1)
         size.scale(self.size(), ASPEC_RATIO)
         self.resize(size)
 

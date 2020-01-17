@@ -20,7 +20,7 @@ from PyQt5.QtCore                           import QTimeZone, QTime, QDate
 # PLM
 from utils                                  import check_preset
 from appData                                import PRS
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
@@ -35,7 +35,7 @@ class Label(QLabel):
         QLabel.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
         self.preset                         = preset
@@ -113,7 +113,7 @@ class LCDNumber(QLCDNumber):
         QLCDNumber.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
         self.time                           = QTime()
         self.zone                           = QTimeZone()

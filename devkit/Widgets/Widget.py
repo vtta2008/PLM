@@ -15,7 +15,7 @@ from PyQt5.QtWidgets                        import QWidget
 
 # PLM
 from devkit.Gui.Icon import AppIcon
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 class Widget(QWidget):
@@ -29,7 +29,7 @@ class Widget(QWidget):
         super(Widget, self).__init__(parent)
 
         self.parent                         = parent
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
         self.setWindowIcon(AppIcon(32, self.key))

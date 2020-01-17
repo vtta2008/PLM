@@ -18,7 +18,7 @@ from __buildtins__ import __copyright__
 from PyQt5.QtWidgets                        import QSplashScreen
 
 # PLM
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 class SplashScreen(QSplashScreen):
@@ -32,7 +32,7 @@ class SplashScreen(QSplashScreen):
         super(SplashScreen, self).__init__(app)
 
         self.app                            = app
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
     def setValue(self, key, value):

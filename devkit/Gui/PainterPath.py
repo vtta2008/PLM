@@ -16,7 +16,7 @@ from __buildtins__ import __copyright__
 from PyQt5.QtGui                import QPainterPath
 
 # PLM
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 
@@ -31,7 +31,7 @@ class PainterPath(QPainterPath):
         QPainterPath.__init__(*args)
 
         self.signals            = SignalManager(self)
-        self.settings           = Settings(self)
+        self.settings           = SettingManager(self)
 
     @property
     def copyright(self):

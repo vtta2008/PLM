@@ -19,7 +19,7 @@ from PyQt5.QtWidgets                        import QMainWindow
 # PLM
 from devkit.Gui                             import AppIcon
 from cores.Loggers                          import Loggers
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ class MainWindow(QMainWindow):
         QMainWindow.__init__(self)
 
         self.parent             = parent
-        self.settings           = Settings(self)
+        self.settings           = SettingManager(self)
         self.signals            = SignalManager(self)
         self.logger             = Loggers(self.__class__.__name__)
 

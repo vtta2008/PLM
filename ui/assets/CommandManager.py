@@ -23,7 +23,7 @@ from bin                                import DAMG, DAMGDICT
 from appData                            import (StateMax, StateMin, StateNormal, appInfo, plmInfo, ConfigPython, ConfigMachine,
                                                 ConfigDirectory, ConfigPath, ConfigEnvVar, ConfigIcon, ConfigMaya,
                                                 ConfigApps, ConfigPipeline, ignoreIDs, toBuildUis, toBuildCmds,)
-from cores.Settings                     import Settings
+from cores.SettingManager                     import SettingManager
 from cores.Loggers                      import Loggers
 from utils                              import clean_file_ext
 

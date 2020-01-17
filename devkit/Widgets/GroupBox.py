@@ -20,7 +20,7 @@ from appData                                import WAIT_LAYOUT_COMPLETE
 from .                                      import VBoxLayout, HBoxLayout, GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
 from .MenuBar                               import MenuBar
 from .Label                                 import Label
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
@@ -37,7 +37,7 @@ class GroupBoxBase(QGroupBox):
         QGroupBox.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
     def setValue(self, key, value):

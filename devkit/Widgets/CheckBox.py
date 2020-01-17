@@ -13,7 +13,7 @@ from __buildtins__ import __copyright__
 
 from PyQt5.QtWidgets                        import QCheckBox
 from utils                                  import check_preset
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 class CheckBox(QCheckBox):
@@ -27,7 +27,7 @@ class CheckBox(QCheckBox):
         QCheckBox.__init__(self)
 
         self.parent                         = parent
-        self.settings = Settings(self)
+        self.settings = SettingManager(self)
         self.signals = SignalManager(self)
 
         self.txt                            = txt

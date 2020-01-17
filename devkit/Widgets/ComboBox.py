@@ -16,7 +16,7 @@ from PyQt5.QtWidgets                        import QComboBox
 
 # PLM
 from utils                                  import check_preset
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 class ComboBox(QComboBox):
@@ -30,7 +30,7 @@ class ComboBox(QComboBox):
         QComboBox.__init__(self)
 
         self.parent                         = parent
-        self.settings = Settings(self)
+        self.settings = SettingManager(self)
         self.signals = SignalManager(self)
         self.preset                         = preset
 

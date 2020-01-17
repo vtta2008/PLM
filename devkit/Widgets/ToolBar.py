@@ -14,7 +14,7 @@ from __buildtins__ import __copyright__
 # PyQt5
 from PyQt5.QtWidgets                        import QToolBar
 
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ class ToolBar(QToolBar):
         QToolBar.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
         self.setWindowTitle(self._name)
 

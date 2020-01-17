@@ -14,7 +14,7 @@ from __buildtins__ import __copyright__
 from PyQt5.QtWidgets                        import QTabBar
 
 from appData                                import SETTING_FILEPTH, ST_FORMAT
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 class TabBar(QTabBar):
@@ -27,7 +27,7 @@ class TabBar(QTabBar):
     def __init__(self, parent=None):
         QTabBar.__init__(self)
         self.parent                         = parent
-        self.settings = Settings(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
+        self.settings = SettingManager(SETTING_FILEPTH['app'], ST_FORMAT['ini'], self)
         self.signals = SignalManager(self)
 
     def setValue(self, key, value):

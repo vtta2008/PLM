@@ -16,7 +16,7 @@ from __buildtins__ import __copyright__
 # PyQt5
 from PyQt5.QtWidgets                        import QStatusBar
 
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
@@ -34,7 +34,7 @@ class StatusBar(QStatusBar):
     def __init__(self, parent=None):
         QStatusBar.__init__(self)
         self.parent                         = parent
-        self.settings = Settings(self)
+        self.settings = SettingManager(self)
         self.signals = SignalManager(self)
 
     def setValue(self, key, value):

@@ -30,7 +30,7 @@ from PyQt5.QtGui                    import QColor
 from appData                        import __version__, __appname__, __organization__, __website__, DarkPalette, PLMAPPID
 from cores.Loggers                  import Loggers
 from cores.SignalManager            import SignalManager
-from cores.Settings                 import Settings
+from cores.SettingManager           import SettingManager
 from cores.StyleSheet               import StyleSheet
 from .Core                          import Process
 from .Gui                           import Cursor, LogoIcon, Color
@@ -93,11 +93,12 @@ class Application(QApplication):
         self.setDesktopSettingsAware(True)
 
         self.logger                     = Loggers(self.__class__.__name__)
-        self.settings                   = Settings(self)
+        self.settings                   = SettingManager(self)
         self.signals                    = SignalManager(self)
+        self.appStyle                   = StyleSheet(self)
+        self.set_styleSheet('dark')
 
         self.cursor                     = Cursor(self)
-        self.appStyle                   = StyleSheet(self)
         self.process                    = self.getAppProcess()
         self.settings._settingEnable    = True
 

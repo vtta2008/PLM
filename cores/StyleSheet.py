@@ -13,7 +13,7 @@ Description:
 # Python
 import platform
 
-# Plm
+# PLM
 from bin                            import DAMG, DAMGDICT
 from appData                        import DarkPalette
 from cores.Loggers                  import Loggers

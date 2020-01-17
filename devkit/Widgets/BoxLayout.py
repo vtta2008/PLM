@@ -17,7 +17,7 @@ from PyQt5.QtWidgets                        import QVBoxLayout, QHBoxLayout
 
 # PLM
 from utils                                  import check_preset
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 class HBoxLayout(QHBoxLayout):
@@ -30,7 +30,7 @@ class HBoxLayout(QHBoxLayout):
     def __init__(self, parent=None, preset={}):
         QHBoxLayout.__init__(self)
         self.parent                         = parent
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
         self.preset                         = preset
@@ -73,7 +73,7 @@ class VBoxLayout(QVBoxLayout):
     def __init__(self, parent=None, preset={}):
         QVBoxLayout.__init__(self)
         self.parent                         = parent
-        self.settings = Settings(self)
+        self.settings = SettingManager(self)
         self.signals = SignalManager(self)
 
         self.preset                         = preset

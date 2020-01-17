@@ -13,7 +13,7 @@ from __buildtins__ import __copyright__
 
 from PyQt5.QtWidgets                        import QItemDelegate
 
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 class ItemDelegate(QItemDelegate):
@@ -27,7 +27,7 @@ class ItemDelegate(QItemDelegate):
         QItemDelegate.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = self.settings = Settings(self)
+        self.settings                       = self.settings = SettingManager(self)
         self.signals                        = SignalManager(self)
 
     @property

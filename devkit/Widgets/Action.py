@@ -16,7 +16,7 @@ from PyQt5.QtWidgets                        import QAction, QWidgetAction
 
 # PLM
 from utils                                  import check_preset
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 from devkit.Gui.Icon import AppIcon
 
@@ -34,7 +34,7 @@ class WidgetAction(QWidgetAction):
         QWidgetAction.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
 
@@ -60,7 +60,7 @@ class Action(QAction):
     def __init__(self, preset={}, parent=None):
         QAction.__init__(self)
         self.parent                         = parent
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
         self.preset                         = preset
@@ -116,7 +116,7 @@ class ShortCut(Action):
         Action.__init__(self)
 
         self.parent                      = parent
-        self.settings                    = Settings(self)
+        self.settings                    = SettingManager(self)
         self.signals                     = SignalManager(self)
 
         if text is not None:

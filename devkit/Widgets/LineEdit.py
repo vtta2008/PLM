@@ -16,7 +16,7 @@ from PyQt5.QtGui                            import QIntValidator
 
 # PLM
 from appData                                import PRS
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 from utils                                  import check_preset
 
@@ -31,7 +31,7 @@ class LineEdit(QLineEdit):
         QLineEdit.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
         self.preset                         = preset

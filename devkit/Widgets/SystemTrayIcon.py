@@ -15,7 +15,7 @@ from PyQt5.QtWidgets                        import QSystemTrayIcon
 
 from devkit.Gui.Icon                        import AppIcon
 from cores.Loggers                          import Loggers
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 class SystemTrayIcon(QSystemTrayIcon):
@@ -29,7 +29,7 @@ class SystemTrayIcon(QSystemTrayIcon):
     def __init__(self, parent=None):
         QSystemTrayIcon.__init__(self)
         self.parent                         = parent
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
         self.logger                         = Loggers(self.__class__.__name__)
 

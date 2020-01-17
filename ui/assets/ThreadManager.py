@@ -16,7 +16,7 @@ from bin                                 import DAMGLIST, DAMGTHREADPOOL, DAMGTH
 from utils                               import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
 from devkit.Core                         import Timer
 from cores.SignalManager                 import SignalManager
-from cores.Settings                      import Settings
+from cores.SettingManager                      import SettingManager
 
 
 class BackgroundService(DAMGTHREAD):
@@ -159,7 +159,7 @@ class ThreadManager(DAMGTHREADPOOL):
         super(ThreadManager, self).__init__()
 
         self.counter                = Counting()
-        self.settings               = Settings(self)
+        self.settings               = SettingManager(self)
         self.signals                = SignalManager(self)
 
     def startCounting(self):

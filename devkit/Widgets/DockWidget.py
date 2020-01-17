@@ -18,7 +18,7 @@ from PyQt5.QtWidgets                        import QTextEdit, QDockWidget
 
 # PLM
 from appData                                import right, datetTimeStamp
-from cores.Settings                         import Settings
+from cores.SettingManager                         import SettingManager
 from cores.SignalManager                    import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ class DockWidget(QDockWidget):
         super(DockWidget, self).__init__(parent)
 
         self.parent                         = parent
-        self.settings                       = Settings(self)
+        self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
     def setValue(self, key, value):

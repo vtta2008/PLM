@@ -16,7 +16,7 @@ from __buildtins__ import __copyright__
 from PyQt5.QtGui                       import QPen
 
 # PLM
-from cores.Settings                    import Settings
+from cores.SettingManager                    import SettingManager
 from cores.SignalManager               import SignalManager
 
 class Pen(QPen):
@@ -30,7 +30,7 @@ class Pen(QPen):
         QPen.__init__(self)
 
         self.signals                    = SignalManager(self)
-        self.settings                   = Settings(self)
+        self.settings                   = SettingManager(self)
 
 
     @property

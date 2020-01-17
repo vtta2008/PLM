@@ -14,7 +14,7 @@ from __buildtins__ import __copyright__
 
 from PyQt5.QtWidgets        import QUndoCommand
 from cores.Loggers          import Loggers
-from cores.Settings         import Settings
+from cores.SettingManager         import SettingManager
 from cores.SignalManager    import SignalManager
 
 class UndoCommand(QUndoCommand):
@@ -29,7 +29,7 @@ class UndoCommand(QUndoCommand):
 
         self.logger         = Loggers(self.key)
         self.SignalManager  = SignalManager(self)
-        self.Settings       = Settings(self)
+        self.Settings       = SettingManager(self)
 
     @property
     def copyright(self):

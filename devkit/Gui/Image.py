@@ -34,6 +34,7 @@ class Image(QImage):
         self.setImage(self._image)
 
     def setImage(self, image):
+        self._image                         = image
         self.load(image)
 
     @property
@@ -50,29 +51,29 @@ class Image(QImage):
 
     @name.setter
     def name(self, newName):
-        self._name                      = newName
+        self._name                          = newName
 
     @image.setter
     def image(self, imagePth):
-        self._image                     = imagePth
+        self._image                         = imagePth
 
 class Pixmap(QPixmap):
 
-    Type                                = 'DAMGPIXMAP'
-    key                                 = 'Pixmap'
-    _name                               = 'DAMG Pixel Map'
-    _copyright                          = __copyright__()
+    Type                                    = 'DAMGPIXMAP'
+    key                                     = 'Pixmap'
+    _name                                   = 'DAMG Pixel Map'
+    _copyright                              = __copyright__()
 
     def __init__(self, imgPth=None, flag=AUTO_COLOR, parent=None):
         super(Pixmap, self).__init__(imgPth)
 
-        self.flag                       = flag
-        self.parent                     = parent
+        self.flag                           = flag
+        self.parent                         = parent
 
         if imgPth is None:
-            self.imgPth                 = imgPth
+            self.imgPth                     = imgPth
         else:
-            self.imgPth                 = QImage(imgPth)
+            self.imgPth                     = QImage(imgPth)
             self.fromImage(self.imgPth, flag)
 
     def setImage(self, image, flags):
@@ -88,7 +89,7 @@ class Pixmap(QPixmap):
 
     @name.setter
     def name(self, newName):
-        self._name                      = newName
+        self._name                          = newName
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 30/10/2019 - 1:33 AM

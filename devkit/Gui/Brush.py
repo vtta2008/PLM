@@ -16,7 +16,7 @@ from __buildtins__ import __copyright__
 from PyQt5.QtGui                       import QBrush
 
 # PLM
-from cores.Settings                    import Settings
+from cores.SettingManager                    import SettingManager
 from cores.SignalManager               import SignalManager
 
 class Brush(QBrush):
@@ -30,7 +30,7 @@ class Brush(QBrush):
         QBrush.__init__(*args, **kwargs)
 
         self.signals                    = SignalManager(self)
-        self.settings                   = Settings(self)
+        self.settings                   = SettingManager(self)
 
     @property
     def copyright(self):

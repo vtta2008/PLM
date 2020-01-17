@@ -110,6 +110,10 @@ class Tracks(dict):
     _missingIcon                    = False
     _missingUI                      = False
 
+    _setting                        = False
+    _fixKey                         = False
+    _deleteKey                      = False
+
     _configInfo                     = True
     _deviceInfo                     = False
     _iconInfo                       = False
@@ -142,6 +146,10 @@ class Tracks(dict):
 
         self['missingIcon']         = self.missingIcon
         self['missingUI']           = self.missingUI
+
+        self['setting']             = self.setting
+        self['fixKey']              = self.fixKey
+        self['deleteKey']           = self.deleteKey
 
         self['configInfo']          = self.configInfo
         self['deviceInfo']          = self.deviceInfo
@@ -255,6 +263,18 @@ class Tracks(dict):
         return self._getSlot
 
     @property
+    def setting(self):
+        return self._setting
+
+    @property
+    def fixKey(self):
+        return self._fixKey
+
+    @property
+    def deleteKey(self):
+        return self._deleteKey
+
+    @property
     def appInfo(self):
         return self._appInfo
 
@@ -288,11 +308,11 @@ class Tracks(dict):
 
     @pthInfo.setter
     def pthInfo(self, val):
-        self._pthInfo              = val
+        self._pthInfo               = val
 
     @mayaInfo.setter
     def mayaInfo(self, val):
-        self._pthInfo              = val
+        self._pthInfo               = val
 
     @urlInfo.setter
     def urlInfo(self, val):
@@ -361,6 +381,18 @@ class Tracks(dict):
     @events.setter
     def events(self, val):
         self._events                = val
+
+    @setting.setter
+    def setting(self, val):
+        self._setting               = val
+
+    @fixKey.setter
+    def fixKey(self, val):
+        self._fixKey                = val
+
+    @deleteKey.setter
+    def deleteKey(self, val):
+        self._deleteKey             = val
 
     @appInfo.setter
     def appInfo(self, val):
