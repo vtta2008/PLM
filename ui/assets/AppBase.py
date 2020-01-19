@@ -23,6 +23,7 @@ from .LayoutManager                     import LayoutManager
 from plugins.Browser                    import Browser
 from devkit.Application                 import Application
 
+
 class AppBase(Application):
 
     key                                 = 'AppBase'
@@ -42,7 +43,14 @@ class AppBase(Application):
 
         self.splash                     = SplashUI(self)
 
+        self.deviceInfo                 = self.splash.deviceInfo
+        self.formatInfo                 = self.splash.formatInfo
+        self.pyInfo                     = self.splash.pythonInfo
+        self.envInfo                    = self.splash.envInfo
         self.urlInfo                    = self.splash.urlInfo
+        self.serverInfo                 = self.splash.serverInfo
+        self.mayaInfo                   = self.splash.mayaInfo
+        self.iconInfo                   = self.splash.iconInfo
         self.plmInfo                    = self.splash.plmInfo
         self.appInfo                    = self.splash.appInfo
 

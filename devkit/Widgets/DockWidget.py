@@ -18,7 +18,7 @@ from PyQt5.QtWidgets                        import QTextEdit, QDockWidget
 
 # PLM
 from appData                                import right, datetTimeStamp
-from cores.SettingManager                         import SettingManager
+from cores.SettingManager                   import SettingManager
 from cores.SignalManager                    import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------

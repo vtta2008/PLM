@@ -16,8 +16,8 @@ from __future__ import absolute_import, unicode_literals
 from .metadatas                     import __localServer__, __globalServer__
 
 
-LOCAL_SERVER                        = __localServer__
-ONLINE_SERVER                       = __globalServer__
+VANILA_LOCAL                        = __localServer__
+AWS_GLOBAL                          = __globalServer__
 
 
 class ConfigServer(dict):
@@ -27,8 +27,8 @@ class ConfigServer(dict):
     def __init__(self):
         super(ConfigServer, self).__init__()
 
-        self.add('local', LOCAL_SERVER)
-        self.add('online', ONLINE_SERVER)
+        self.add('vanila'           , VANILA_LOCAL)
+        self.add('AWS'              , AWS_GLOBAL)
 
     def add(self, key, value):
         self[key]                   = value

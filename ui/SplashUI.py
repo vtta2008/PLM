@@ -18,9 +18,9 @@ from __buildtins__ import ROOT
 import os
 
 # PLM
-from appData                    import (STAY_ON_TOP, FRAMELESS, bottom, center, blue, cyan,
+from appData                    import (STAY_ON_TOP, FRAMELESS, bottom, center, cyan,
                                         ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon, ConfigEnvVar,
-                                        ConfigMaya, ConfigMachine, ConfigServer, dirInfo, pthInfo)
+                                        ConfigMaya, ConfigMachine, ConfigServer, ConfigFormats, dirInfo, pthInfo)
 from devkit.Widgets             import SplashScreen, ProgressBar
 from devkit.Gui                 import Pixmap
 
@@ -66,6 +66,7 @@ class SplashUI(SplashScreen):
         self.app                = app
         self.pix                = Pixmap(os.path.join(ROOT, 'assets', 'pics', 'splash.png'))
         self.flag               = STAY_ON_TOP
+        self.progressBar        = ProgressBar(self)
 
         self.setPixmap(self.pix)
         self.setWindowFlag(self.flag)
@@ -73,7 +74,6 @@ class SplashUI(SplashScreen):
         self.setMask(self.pix.mask())
         self.setEnabled(False)
 
-        self.progressBar        = ProgressBar(self)
         self.progressBar.setMinimum(0)
         self.progressBar.setMaximum(100)
         self.progressBar.setGeometry(50, self.pix.height() - 50, self.pix.width() - 100, 20)
@@ -86,6 +86,14 @@ class SplashUI(SplashScreen):
         self.app.processEvents()
 
     def runPreConfig(self):
+
+        self.show_message("Config device.")
+        self.deviceInfo         = ConfigMachine()
+        self.updateProgress(1)
+
+        self.show_message("Config Format")
+        self.formatInfo         = ConfigFormats()
+        self.updateProgress(1)
 
         self.show_message("Config python.")
         self.pythonInfo          = ConfigPython()
@@ -115,13 +123,9 @@ class SplashUI(SplashScreen):
         self.appInfo             = ConfigApps()
         self.updateProgress(1)
 
-        self.show_message("Config device.")
-        self.deviceInfo          = ConfigMachine()
-        self.updateProgress(1)
-
         self.show_message("Config pipeline.")
         self.plmInfo             = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, dirInfo, pthInfo)
-        self.updateProgress(2)
+        self.updateProgress(1)
 
     def show_message(self, mess):
         return self.showMessage(mess, bottom|center, cyan)

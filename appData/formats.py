@@ -9,8 +9,15 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import globalSetting
+""" Import """
 
+# Python
+import pprint
+
+# PyQt5
 from PyQt5.QtCore           import QSettings, QDateTime
+
 
 INI                         = QSettings.IniFormat
 Native                      = QSettings.NativeFormat
@@ -48,6 +55,31 @@ datetTimeStamp = QDateTime.currentDateTime().toString("hh:mm - dd MMMM yy")     
 
 IMGEXT = "All Files (*);;Img Files (*.jpg);;Img Files (*.png)"
 
+
+
+
+class ConfigFormats(dict):
+
+    key                     = 'ConfigFormats'
+
+    def __init__(self):
+        super(ConfigFormats, self).__init__()
+
+        self.add('INI'      , INI)
+        self.add('Native'   , Native)
+        self.add('Invalid'  , Invalid)
+        self.add('Log'      , LOG_FORMAT)
+        self.add('Datetime' , DT_FORMAT)
+        self.add('Setting'  , ST_FORMAT)
+        self.add('dt stamp' , datetTimeStamp)
+        self.add('image ext', IMGEXT)
+
+        if globalSetting.tracks.configInfo:
+            if globalSetting.tracks.pthInfo:
+                pprint.pprint(self)
+
+    def add(self, key, value):
+        self[key]           = value
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 23/10/2019 - 2:50 AM

@@ -17,7 +17,7 @@ from __buildtins__ import globalSetting
 import pprint
 
 # PLM
-from .metadatas                     import __plmWiki__, __google__, __googleNZ__, __googleVN__
+from .metadatas                     import __homepage__, __plmWiki__, __google__, __googleNZ__, __googleVN__
 
 PYTHON_TAG                          = 'https://docs.anaconda.com/anaconda/reference/release-notes/'
 LICENCE_TAG                         = 'https://github.com/vtta2008/damgteam/blob/master/LICENCE'
@@ -30,6 +30,7 @@ class ConfigUrl(dict):
     def __init__(self):
         super(ConfigUrl, self).__init__()
 
+        self.add('homepage'         , __homepage__)
         self.add('pythonTag'        , PYTHON_TAG)
         self.add('licenceTag'       , LICENCE_TAG)
         self.add('versionTag'       , VERSION_TAG)

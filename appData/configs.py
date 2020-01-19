@@ -22,9 +22,6 @@ if os.getenv(__envKey__) != ROOT:
 PIPE = subprocess.PIPE
 STDOUT = subprocess.STDOUT
 
-from .dirs                          import ConfigDirectory
-from .pths                          import ConfigPath
-from .urls                          import ConfigUrl
 from .types                         import (RAMTYPE, CPUTYPE, FORMFACTOR, DRIVETYPE, DB_ATTRIBUTE_TYPE, CMD_VALUE_TYPE,
                                             actionTypes, layoutTypes)
 
@@ -36,22 +33,23 @@ from .text                          import (TRADE_MARK, PLM_ABOUT, WAIT_FOR_UPDA
                                             tooltips_missing, N_MESSAGES_TEXT, SERVER_CONNECT_FAIL, TEMPLATE_QRC_HEADER,
                                             TEMPLATE_QRC_FILE, TEMPLATE_QRC_FOOTER, HEADER_SCSS, HEADER_QSS)
 
-from .keys                          import *
-
-from .formats                       import (INI, Native, Invalid, LOG_FORMAT, DT_FORMAT, ST_FORMAT, datetTimeStamp,
-                                            IMGEXT, )
-from .options                       import *
-
 from .metadatas                     import (__plmWiki__, __localServer__, __pkgsReq__, __homepage__, __appname__,
                                             __organization__, __organizationID__, __organizationName__, __globalServer__,
                                             __google__, __appSlogan__, __localServerAutho__, __version__, __website__,
                                             VERSION, PLMAPPID)
 
+from .keys                          import *
+from .options                       import *
+
+
+
+from .dirs                          import ConfigDirectory
+from .pths                          import ConfigPath
+from .urls                          import ConfigUrl
+from .formats                       import ConfigFormats
 from .servers                       import ConfigServer
 from .icons                         import ConfigIcon
 from .device                        import ConfigMachine
-
-
 
 def save_data(filePth, data):
     if os.path.exists(filePth):
