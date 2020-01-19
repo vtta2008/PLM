@@ -10,7 +10,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 from __buildtins__ import ROOT, __envKey__, globalSetting
-
 """ Import """
 
 # Python
@@ -45,6 +44,7 @@ from .options                       import *
 
 from .dirs                          import ConfigDirectory
 from .pths                          import ConfigPath
+from .pys                           import ConfigPython
 from .urls                          import ConfigUrl
 from .formats                       import ConfigFormats
 from .servers                       import ConfigServer
@@ -67,6 +67,7 @@ pthInfo                            = ConfigPath()
 
 from bin import PresetDB
 localDB = PresetDB(filename=pthInfo['LOCAL_DB'])
+
 
 class CommandData(dict):
     key = 'CommandData'
@@ -93,30 +94,6 @@ class CommandData(dict):
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configs """
-
-
-class ConfigPython(dict):
-
-    key                             = 'ConfigPython'
-
-    def __init__(self):
-        super(ConfigPython, self).__init__()
-
-        self['python']              = platform.python_build()
-        self['python version']      = platform.python_version()
-
-        pths                        = [p.replace('\\', '/') for p in os.getenv('PATH').split(';')[0:]]
-        sys.path                    = [p.replace('\\', '/') for p in sys.path]
-
-        for p in pths:
-            if os.path.exists(p):
-                if not p in sys.path:
-                    sys.path.insert(-1, p)
-
-        for py in pkg_resources.working_set:
-            self[py.project_name]   = py.version
-
-        # pprint.pprint(self)
 
 
 class ConfigEnvVar(dict):
@@ -175,6 +152,10 @@ class ConfigApps(dict):
         if globalSetting.tracks.configInfo:
             if globalSetting.tracks.appInfo:
                 pprint.pprint(self)
+
+        if globalSetting.defaults.save_configInfo:
+            if globalSetting.defaults.save_appInfo:
+                save_data(pthInfo['appsCfg'], self)
 
 
 class ConfigPipeline(dict):

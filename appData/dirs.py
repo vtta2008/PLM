@@ -171,7 +171,7 @@ TOOLS_DIR           = os.path.join(SUBUI_DIR, 'Tools')
 # -------------------------------------------------------------------------------------------------------------
 ''' utils '''
 
-UTILS_DIR           = os.path.join(ROOT, 'utils')
+UTILS_DIR                                = os.path.join(ROOT, 'utils')
 
 class ConfigDirectory(dict):
 

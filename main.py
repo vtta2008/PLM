@@ -47,7 +47,6 @@ class DAMGTEAM(AppBase):
             info.add('dpi', screen.physicalDotsPerInch())
             pprint(info)
 
-
         if userData:
             if serverReady:
                 statusCode              = self.serverAuthorization()
