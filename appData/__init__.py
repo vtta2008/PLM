@@ -13,44 +13,14 @@ from __future__ import absolute_import, unicode_literals
 """ import """
 
 # PLM
-
-from .configs                   import dirInfo, pthInfo
-
-APP_DATA_DIR                    = dirInfo['APP_DATA_DIR']
-
-LOGO_DIR                        = dirInfo['LOGO_DIR']
-WEB_ICON_DIR                    = dirInfo['WEB_ICON_DIR']
-TAG_ICON_DIR                    = dirInfo['TAG_ICON_DIR']
-AVATAR_DIR                      = dirInfo['AVATAR_DIR']
-ICON_DIR                        = dirInfo['ICON_DIR']
-
-SOUND_DIR                       = dirInfo['SOUND_DIR']
-TASK_DIR                        = dirInfo['TASK_DIR']
-PRJ_DIR                         = dirInfo['PRJ_DIR']
-ORG_DIR                         = dirInfo['ORG_DIR']
-TEAM_DIR                        = dirInfo['TEAM_DIR']
-TMP_DIR                         = dirInfo['TMP_DIR']
-
-QSS_DIR                         = dirInfo['QSS_DIR']
-
-JSON_DIR                        = dirInfo['JSON_DIR']
-
-LOCAL_DB                        = pthInfo['LOCAL_DB']
-LOCAL_LOG                       = pthInfo['LOCAL_LOG']
-SETTING_FILEPTH                 = pthInfo['SETTING_FILEPTH']
-
-
 from .configs                   import (__plmWiki__, __localServer__, __pkgsReq__, __homepage__, __appname__,
                                         __organization__, __organizationID__, __organizationName__, __globalServer__,
                                         __google__, __appSlogan__, __localServerAutho__, __version__, __website__,)
 
 
 from .configs            import (
-
                                  ConfigPython, ConfigMachine, ConfigDirectory, ConfigPath, ConfigEnvVar, ConfigIcon,
                                  ConfigMaya, ConfigApps, ConfigPipeline, ConfigUrl, ConfigServer, ConfigFormats,
-
-                                 dirInfo, pthInfo,
 
                                  ignoreIDs, toBuildCmds, toBuildUis,
 
@@ -96,8 +66,8 @@ from .configs            import (
                                  )
 
 
-
-
+dirInfo                         = ConfigDirectory()
+pthInfo                         = ConfigPath()
 formatInfo                      = ConfigFormats()
 iconInfo                        = ConfigIcon()
 appInfo                         = ConfigApps()
@@ -109,3 +79,27 @@ LOG_FORMAT                      = formatInfo['Log']
 DT_FORMAT                       = formatInfo['Datetime']
 datetTimeStamp                  = formatInfo['dt stamp']
 ST_FORMAT                       = formatInfo['Setting']
+
+
+APP_DATA_DIR                    = dirInfo['APP_DATA_DIR']
+
+LOGO_DIR                        = dirInfo['LOGO_DIR']
+WEB_ICON_DIR                    = dirInfo['WEB_ICON_DIR']
+TAG_ICON_DIR                    = dirInfo['TAG_ICON_DIR']
+AVATAR_DIR                      = dirInfo['AVATAR_DIR']
+ICON_DIR                        = dirInfo['ICON_DIR']
+
+SOUND_DIR                       = dirInfo['SOUND_DIR']
+TASK_DIR                        = dirInfo['TASK_DIR']
+PRJ_DIR                         = dirInfo['PRJ_DIR']
+ORG_DIR                         = dirInfo['ORG_DIR']
+TEAM_DIR                        = dirInfo['TEAM_DIR']
+TMP_DIR                         = dirInfo['TMP_DIR']
+
+QSS_DIR                         = dirInfo['QSS_DIR']
+
+JSON_DIR                        = dirInfo['JSON_DIR']
+
+LOCAL_DB                        = pthInfo['LOCAL_DB']
+LOCAL_LOG                       = pthInfo['LOCAL_LOG']
+SETTING_FILEPTH                 = pthInfo['SETTING_FILEPTH']

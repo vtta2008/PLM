@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # Python
-import os, sys, subprocess, platform, pkg_resources
+import os, sys, subprocess, platform, pkg_resources, json
 
 __envKey__                          = "DAMGTEAM"
 
@@ -29,6 +29,12 @@ def get_root():
 
     return root
 
+def save_data(filePth, data):
+    if os.path.exists(filePth):
+        os.remove(filePth)
+    with open(filePth, 'w+') as f:
+        json.dump(data, f, indent=4)
+    return True
 
 def install_py_packages(name):
     """
@@ -106,7 +112,7 @@ def check_pkgRequired_win():
             install_py_packages(pkg)
 
 
-class Modes(dict):
+class Modes(object):
 
     key = 'Modes'
 
@@ -114,14 +120,6 @@ class Modes(dict):
     _config                         = 'Alpha'
     _login                          = 'Offline'
     _allowOfflineMode               = False
-
-    def __init__(self):
-        dict.__init__(self)
-
-        self['subprocess']          = self.subprocess
-        self['config']              = self.config
-        self['login']               = self.login
-        self['allowLocalMode']      = self.allowLocalMode
 
     @property
     def subprocess(self):
@@ -156,7 +154,7 @@ class Modes(dict):
         self._allowOfflineMode        = val
 
 
-class Tracks(dict):
+class Tracks(object):
 
     key = 'Tracks'
 
@@ -195,47 +193,15 @@ class Tracks(dict):
     _urlInfo                        = False
     _appInfo                        = False
     _plmInfo                        = False
-
-    def __init__(self):
-        dict.__init__(self)
-
-        self['recieveSignal']       = self.recieveSignal
-        self['blockSignal']         = self.blockSignal
-        self['registLayout']        = self.registLayout
-        self['jobjsTodo']           = self.jobsToDo
-        self['showLayoutError']     = self.showLayoutError
-        self['events']              = self.events
-        self['lineCode']            = self.lineCode
-
-        self['emittable']           = self.emittable
-        self['emit']                = self.emit
-        self['block']               = self.block
-        self['checkRepeat']         = self.checkRepeat
-        self['getSignal']           = self.getSignal
-        self['getSlot']             = self.getSlot
-        self['checkState']          = self.checkState
-
-        self['missingIcon']         = self.missingIcon
-        self['missingUI']           = self.missingUI
-
-        self['setting']             = self.setting
-        self['fixKey']              = self.fixKey
-        self['deleteKey']           = self.deleteKey
-
-        self['configInfo']          = self.configInfo
-        self['deviceInfo']          = self.deviceInfo
-        self['iconInfo']            = self.iconInfo
-        self['pythonInfo']          = self.pythonInfo
-        self['directoryInfo']       = self.directoryInfo
-        self['pathInfo']            = self.pthInfo
-        self['mayaInfo']            = self.mayaInfo
-        self['urlInfo']             = self.urlInfo
-        self['appInfo']             = self.appInfo
-        self['plmInfo']             = self.plmInfo
+    _envInfo                        = False
 
     @property
     def configInfo(self):
         return self._configInfo
+
+    @property
+    def envInfo(self):
+        return self._envInfo
 
     @property
     def formatInfo(self):
@@ -365,6 +331,10 @@ class Tracks(dict):
     def configInfo(self, val):
         self._configInfo            = val
 
+    @envInfo.setter
+    def envInfo(self, val):
+        self._envInfo               = val
+
     @formatInfo.setter
     def formatInfo(self, val):
         self._formatInfo            = val
@@ -491,17 +461,10 @@ class Checks(dict):
     _toBuildUis                     = False
     _toBuildCmds                    = False
     _ignoreIDs                      = False
-
     _actionRegisterError            = False
 
     def __init__(self):
         dict.__init__(self)
-
-        self['report']              = self.report
-        self['copyright']           = self.copyright
-        self['toBuildUis']          = self.toBuildUis
-        self['toBUildCmds']         = self.toBuildCmds
-        self['ignoreIDs']           = self.ignoreIDs
 
     @property
     def report(self):
@@ -559,6 +522,7 @@ class DefaultSetting(dict):
     _auto_changeEmmitable           = True
 
     _save_configInfo                = True
+    _save_envInfo                   = True
     _save_formatInfo                = True
     _save_deviceInfo                = True
     _save_iconInfo                  = True
@@ -573,18 +537,6 @@ class DefaultSetting(dict):
     def __init__(self):
         dict.__init__(self)
 
-        self['auto_changeEmmitable'] = self.auto_changeEmitable
-        self['save_configInfo']     = self.save_configInfo
-        self['save_deviceInfo']     = self.save_deviceInfo
-        self['save_iconInfo']       = self.save_iconInfo
-        self['save_pythonInfo']     = self.save_pythonInfo
-        self['save_directoryInfo']  = self.save_directoryInfo
-        self['save_pathInfo']       = self.save_pathInfo
-        self['save_mayaInfo']       = self.save_mayaInfo
-        self['save_urlInfo']        = self.save_urlInfo
-        self['save_appInfo']        = self.save_appInfo
-        self['save_plmInfo']        = self.save_plmInfo
-
     @property
     def auto_changeEmitable(self):
         return self._auto_changeEmmitable
@@ -592,6 +544,10 @@ class DefaultSetting(dict):
     @property
     def save_configInfo(self):
         return self._save_configInfo
+
+    @property
+    def save_envInfo(self):
+        return self._save_envInfo
 
     @property
     def save_deviceInfo(self):
@@ -640,6 +596,10 @@ class DefaultSetting(dict):
     @save_configInfo.setter
     def save_configInfo(self, val):
         self._save_configInfo       = val
+
+    @save_envInfo.setter
+    def save_envInfo(self, val):
+        self._save_envInfo          = val
 
     @save_deviceInfo.setter
     def save_deviceInfo(self, val):

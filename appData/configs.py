@@ -9,11 +9,11 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import ROOT, __envKey__, globalSetting
+from __buildtins__ import ROOT, __envKey__, globalSetting, save_data
 """ Import """
 
 # Python
-import os, platform, subprocess, json, shutil, pkg_resources, pprint, winshell
+import os, subprocess, json, shutil, pprint, winshell
 
 if os.getenv(__envKey__) != ROOT:
     subprocess.Popen('Set {0} {1}'.format(__envKey__, ROOT), shell=True).wait()
@@ -50,13 +50,9 @@ from .formats                       import ConfigFormats
 from .servers                       import ConfigServer
 from .icons                         import ConfigIcon
 from .device                        import ConfigMachine
-
-def save_data(filePth, data):
-    if os.path.exists(filePth):
-        os.remove(filePth)
-    with open(filePth, 'w+') as f:
-        json.dump(data, f, indent=4)
-    return True
+from .envs                          import ConfigEnvVar
+from .apps                          import ConfigApps
+from .mayas                         import ConfigMaya
 
 iconMissing                         = []
 toolTips                            = {}
@@ -94,68 +90,6 @@ class CommandData(dict):
 
 # -------------------------------------------------------------------------------------------------------------
 """ Configs """
-
-
-class ConfigEnvVar(dict):
-
-    key                                 = 'ConfigEnvVar'
-
-    def __init__(self):
-        super(ConfigEnvVar, self).__init__()
-        for k, v in os.environ.items():
-            self[k]                     = v.replace('\\', '/')
-
-    def update(self):
-        for k, v in os.environ.items():
-            self[k]                     = v.replace('\\', '/')
-
-
-class ConfigMaya(dict):
-
-    key                                 = 'ConfigMaya'
-
-    def __init__(self):
-        super(ConfigMaya, self).__init__()
-        modules = ['anim', 'lib', 'modeling', 'rendering', 'simulating', 'surfacing']
-        modulePth = os.path.join(dirInfo['MAYA_DIR'], 'modules')
-        paths = [os.path.join(modulePth, m) for m in modules]
-        sys.path.insert(-1, ';'.join(paths))
-
-        usScr = os.path.join(dirInfo['MAYA_DIR'], 'userSetup.py')
-
-        if os.path.exists(usScr):
-            mayaVers = [os.path.join(dirInfo['MAYA_DIR'], v) for v in autodeskVer if os.path.exists(os.path.join(dirInfo['MAYA_DIR'], v))] or []
-            if not len(mayaVers) == 0 or not mayaVers == []:
-                for usDes in mayaVers:
-                    shutil.copy(usScr, usDes)
-
-
-class ConfigApps(dict):
-
-    key                         = 'ConfigApps'
-
-    def __init__(self):
-        super(ConfigApps, self).__init__()
-
-        shortcuts               = {}
-        programs                = winshell.programs(common=1)
-
-        for paths, dirs, names in os.walk(programs):
-            relpath = paths[len(programs) + 1:]
-            shortcuts.setdefault(relpath, []).extend([winshell.shortcut(os.path.join(paths, n)) for n in names])
-
-        for relpath, lnks in sorted(shortcuts.items()):
-            for lnk in lnks:
-                name, _ = os.path.splitext(os.path.basename(lnk.lnk_filepath))
-                self[str(name)] = lnk.path
-
-        if globalSetting.tracks.configInfo:
-            if globalSetting.tracks.appInfo:
-                pprint.pprint(self)
-
-        if globalSetting.defaults.save_configInfo:
-            if globalSetting.defaults.save_appInfo:
-                save_data(pthInfo['appsCfg'], self)
 
 
 class ConfigPipeline(dict):
@@ -367,7 +301,7 @@ def tobuildUis(*info):
         info = [  'Alpha'           , 'ConfigOrganisation', 'ConfigProject'      , 'ConfigTask'         ,
                   'ConfigTeam'      , 'ContactUs'         , 'EditOrganisation'   , 'EditProject'        ,
                   'EditTask'        , 'EditTeam'          , 'Feedback'           , 'HDRI'               ,
-                  'NewOrganisation' ,  'NewTask'          , 'NewTeam'            , 'OrganisationManager',
+                  'NewOrganisation' , 'NewTask'           , 'NewTeam'            , 'OrganisationManager',
                   'ProjectManager'  , 'TaskManager'       , 'TeamManager'        , 'Texture'            ,]
     if globalSetting.checks.toBuildUis:
         print(info)

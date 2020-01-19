@@ -9,19 +9,11 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import globalSetting
+from __buildtins__ import globalSetting, save_data
 
 import os, json, pprint
 
 from .dirs                          import CFG_DIR, SETTING_DIR, DB_DIR, LOG_DIR, QSS_DIR
-
-
-def save_data(filePth, data):
-    if os.path.exists(filePth):
-        os.remove(filePth)
-    with open(filePth, 'w+') as f:
-        json.dump(data, f, indent=4)
-    return True
 
 # -------------------------------------------------------------------------------------------------------------
 """ config file """
