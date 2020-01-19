@@ -28,7 +28,7 @@ from PyQt5.QtWidgets    import QAction, QPushButton
 
 # PLM
 from appData            import (__pkgsReq__, KEYPACKAGE, LOGO_DIR, WEB_ICON_DIR, TAG_ICON_DIR, AVATAR_DIR,
-                                ICON_DIR, actionTypes)
+                                USER_LOCAL_DATA, ICON_DIR, actionTypes)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Destop tool """
@@ -336,11 +336,10 @@ def get_web_icon(name):
             return i
 
 def get_avatar_image(name):
-    avatars = [a for a in get_file_path(AVATAR_DIR) if '.avatar' in a]
-    for a in avatars:
-        if name in a:
-            # print(a, os.path.exists(a))
-            return a
+    avatarPth = os.path.join(USER_LOCAL_DATA, '{0}.avatar.jpg'.format(name))
+    if not os.path.exists(avatarPth):
+        avatarPth = os.path.join(AVATAR_DIR, 'default.avatar.jpg')
+    return avatarPth
 
 def get_tag_icon(name):
     tags = [t for t in get_file_path(TAG_ICON_DIR) if '.icon' in t]

@@ -29,12 +29,14 @@ def get_root():
 
     return root
 
+
 def save_data(filePth, data):
     if os.path.exists(filePth):
         os.remove(filePth)
     with open(filePth, 'w+') as f:
         json.dump(data, f, indent=4)
     return True
+
 
 def install_py_packages(name):
     """
@@ -80,32 +82,35 @@ def check_pkgRequired_win():
         'GPUtil':               '1.4.0',
         'playsound':            '1.2.2',
         'python-resize-image':  '1.1.19',
-        'wmi':                  '1.4.9',
+        'WMI':                  '1.4.9',
 
     }
 
     names = [pkg.project_name for pkg in pkg_resources.working_set]
     versions = [pkg.version for pkg in pkg_resources.working_set]
     for pkg, ver in pkgRequired.items():
-        pkg_installed = False
-        ver_installed = False
-        for i in range(len(names)):
-            name = names[i]
-            if pkg == name:
-                pkg_installed = True
-                version = versions[i]
-                if len(version.split('.')) == 2:
-                    major = int(version.split('.')[0])
-                    minor = int(version.split('.')[1])
-                    micro = 0
-                else:
-                    major = int(version.split('.')[0])
-                    minor = int(version.split('.')[1])
-                    micro = int(version.split('.')[2])
+        pkg_installed           = False
+        ver_installed           = False
 
-                v1, v2, v3 = ver.split('.')
+        for i in range(len(names)):
+            name                = names[i]
+            if pkg == name:
+                pkg_installed   = True
+                version         = versions[i]
+                if len(version.split('.')) == 2:
+                    major       = int(version.split('.')[0])
+                    minor       = int(version.split('.')[1])
+                    micro       = 0
+                else:
+                    major       = int(version.split('.')[0])
+                    minor       = int(version.split('.')[1])
+                    micro       = int(version.split('.')[2])
+
+                v1, v2, v3      = ver.split('.')
+
                 if not major < int(v1) and not minor < int(v2) and not micro < int(v3):
                     ver_installed = True
+
                 break
 
         if not pkg_installed or not ver_installed:
@@ -679,8 +684,6 @@ if check_platform():
 else:
     print('Sorry, we only work with windows for now.')
     sys.exit()
-
-# subprocess.Popen('python -m pip install -r requirements.txt --user')
 
 
 # -------------------------------------------------------------------------------------------------------------

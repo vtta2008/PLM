@@ -24,154 +24,168 @@ from .metadatas     import __appname__, __organization__
 # -------------------------------------------------------------------------------------------------------------
 ''' Local pc '''
 
-APPDATA_DAMG        = os.path.join(os.getenv('LOCALAPPDATA'), __organization__)
-APPDATA_PLM         = os.path.join(APPDATA_DAMG, __appname__)
-CFG_DIR             = os.path.join(APPDATA_PLM, '.configs')
-TMP_DIR             = os.path.join(APPDATA_PLM, '.tmp')
-CACHE_DIR           = os.path.join(APPDATA_PLM, '.cache')
+APPDATA_DAMG        = os.path.join(os.getenv('LOCALAPPDATA'), __organization__).replace('\\', '/')
+APPDATA_PLM         = os.path.join(APPDATA_DAMG, __appname__).replace('\\', '/')
+CFG_DIR             = os.path.join(APPDATA_PLM, '.configs').replace('\\', '/')
+TMP_DIR             = os.path.join(APPDATA_PLM, '.tmp').replace('\\', '/')
+CACHE_DIR           = os.path.join(APPDATA_PLM, '.cache').replace('\\', '/')
 SETTING_DIR         = CFG_DIR
 LOG_DIR             = CFG_DIR
 PREF_DIR            = CFG_DIR
-TASK_DIR            = os.path.join(CFG_DIR, 'task')
-TEAM_DIR            = os.path.join(CFG_DIR, 'team')
-OJ_DIR              = os.path.join(CFG_DIR, 'project')
-ORG_DIR             = os.path.join(CFG_DIR, 'organisation')
-USER_LOCAL_DATA     = os.path.join(CFG_DIR, 'userLocal')
+TASK_DIR            = os.path.join(CFG_DIR, 'task').replace('\\', '/')
+TEAM_DIR            = os.path.join(CFG_DIR, 'team').replace('\\', '/')
+OJ_DIR              = os.path.join(CFG_DIR, 'project').replace('\\', '/')
+ORG_DIR             = os.path.join(CFG_DIR, 'organisation').replace('\\', '/')
+USER_LOCAL_DATA     = os.path.join(CFG_DIR, 'userLocal').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' appData '''
 
-APP_DATA_DIR        = os.path.join(ROOT, 'appData')
+APP_DATA_DIR        = os.path.join(ROOT, 'appData').replace('\\', '/')
 DB_DIR              = APPDATA_PLM
 
 # -------------------------------------------------------------------------------------------------------------
 ''' assets '''
 
-ASSETS_DIR          = os.path.join(ROOT, 'assets')
-AVATAR_DIR          = os.path.join(ASSETS_DIR, 'avatar')
-FONT_DIR            = os.path.join(ASSETS_DIR, 'fonts')
-IMAGE_DIR           = os.path.join(ASSETS_DIR, 'images')
+ASSETS_DIR          = os.path.join(ROOT, 'assets').replace('\\', '/')
+AVATAR_DIR          = os.path.join(ASSETS_DIR, 'avatar').replace('\\', '/')
+FONT_DIR            = os.path.join(ASSETS_DIR, 'fonts').replace('\\', '/')
+IMAGE_DIR           = os.path.join(ASSETS_DIR, 'images').replace('\\', '/')
 
-LOGO_DIR            = os.path.join(ASSETS_DIR, 'logo')
-DAMG_LOGO_DIR       = os.path.join(LOGO_DIR, 'DAMGTEAM')
-PLM_LOGO_DIR        = os.path.join(LOGO_DIR, 'PLM')
+LOGO_DIR            = os.path.join(ASSETS_DIR, 'logo').replace('\\', '/')
+DAMG_LOGO_DIR       = os.path.join(LOGO_DIR, 'DAMGTEAM').replace('\\', '/')
+PLM_LOGO_DIR        = os.path.join(LOGO_DIR, 'PLM').replace('\\', '/')
 
-PIC_DIR             = os.path.join(ASSETS_DIR, 'pics')
+PIC_DIR             = os.path.join(ASSETS_DIR, 'pics').replace('\\', '/')
+
+SOUND_DIR           = os.path.join(ASSETS_DIR, 'sound').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' bin '''
 
-BIN_DIR             = os.path.join(ROOT, 'bin')
-DATA_DIR            = os.path.join(BIN_DIR, 'data')
-JSON_DIR            = os.path.join(DATA_DIR, 'json')
+BIN_DIR             = os.path.join(ROOT, 'bin').replace('\\', '/')
+DAMG_DIR            = os.path.join(BIN_DIR, 'damg').replace('\\', '/')
+DATA_DIR            = os.path.join(BIN_DIR, 'data').replace('\\', '/')
+JSON_DIR            = os.path.join(DATA_DIR, 'json').replace('\\', '/')
 
-DOCS_DIR            = os.path.join(BIN_DIR, 'docs')
-RST_DIR             = os.path.join(DOCS_DIR, 'rst')
-TXT_DIR             = os.path.join(DOCS_DIR, 'txt')
-RAWS_DATA_DIR       = os.path.join(DOCS_DIR, 'raws')
-TEMPLATE_DIR        = os.path.join(DOCS_DIR, 'template')
-TEMPLATE_LICENCE    = os.path.join(TEMPLATE_DIR, 'LICENCE')
+DOCS_DIR            = os.path.join(BIN_DIR, 'docs').replace('\\', '/')
+RST_DIR             = os.path.join(DOCS_DIR, 'rst').replace('\\', '/')
+TXT_DIR             = os.path.join(DOCS_DIR, 'txt').replace('\\', '/')
+RAWS_DATA_DIR       = os.path.join(DOCS_DIR, 'raws').replace('\\', '/')
+TEMPLATE_DIR        = os.path.join(DOCS_DIR, 'template').replace('\\', '/')
+TEMPLATE_LICENCE    = os.path.join(TEMPLATE_DIR, 'LICENCE').replace('\\', '/')
 
-RCS_DIR             = os.path.join(BIN_DIR, 'rcs')
-CSS_DIR             = os.path.join(RCS_DIR, 'css')
-HTML_DIR            = os.path.join(RCS_DIR, 'html')
-JS_DIR              = os.path.join(RCS_DIR, 'js')
-QSS_DIR             = os.path.join(RCS_DIR, 'qss')
+RCS_DIR             = os.path.join(BIN_DIR, 'rcs').replace('\\', '/')
+CSS_DIR             = os.path.join(RCS_DIR, 'css').replace('\\', '/')
+HTML_DIR            = os.path.join(RCS_DIR, 'html').replace('\\', '/')
+JS_DIR              = os.path.join(RCS_DIR, 'js').replace('\\', '/')
+QSS_DIR             = os.path.join(RCS_DIR, 'qss').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' cores '''
 
-CORES_DIR           = os.path.join(ROOT, 'cores')
-CORES_ASSETS_DIR    = os.path.join(CORES_DIR, 'assets')
-CORES_BASE_DIR      = os.path.join(CORES_DIR, 'base')
+CORES_DIR           = os.path.join(ROOT, 'cores').replace('\\', '/')
+CORES_ASSETS_DIR    = os.path.join(CORES_DIR, 'assets').replace('\\', '/')
+CORES_BASE_DIR      = os.path.join(CORES_DIR, 'base').replace('\\', '/')
+CORES_LOGGER_DIR    = os.path.join(CORES_DIR, 'Loggers').replace('\\', '/')
+CORES_MODEL_DIR     = os.path.join(CORES_DIR, 'models').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' devkit '''
 
-DEVKIT_DIR          = os.path.join(ROOT, 'devkit')
-DEVKIT_CORE         = os.path.join(DEVKIT_DIR, 'Core')
-DEVKIT_GUI          = os.path.join(DEVKIT_DIR, 'Gui')
-DEVKIT_WIDGET       = os.path.join(DEVKIT_DIR, 'Widgets')
+DEVKIT_DIR          = os.path.join(ROOT, 'devkit').replace('\\', '/')
+DEVKIT_CORE         = os.path.join(DEVKIT_DIR, 'Core').replace('\\', '/')
+DEVKIT_GUI          = os.path.join(DEVKIT_DIR, 'Gui').replace('\\', '/')
+DEVKIT_WIDGET       = os.path.join(DEVKIT_DIR, 'Widgets').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' hooks '''
 
-HOOK_DIR            = os.path.join(ROOT, 'hooks')
-MAYA_DIR            = os.path.join(HOOK_DIR, 'Maya')
-MARI_DIR            = os.path.join(HOOK_DIR, 'Mari')
-NUKE_DIR            = os.path.join(HOOK_DIR, 'Nuke')
-ZBRUSH_DIR          = os.path.join(HOOK_DIR, 'ZBrush')
-HOUDINI_DIR         = os.path.join(HOOK_DIR, 'Houdini')
+HOOK_DIR            = os.path.join(ROOT, 'hooks').replace('\\', '/')
+BLENDER_DIR         = os.path.join(HOOK_DIR, 'Blender').replace('\\', '/')
+HOUDINI_DIR         = os.path.join(HOOK_DIR, 'Houdini').replace('\\', '/')
+MARI_DIR            = os.path.join(HOOK_DIR, 'Mari').replace('\\', '/')
+MAYA_DIR            = os.path.join(HOOK_DIR, 'Maya').replace('\\', '/')
+MUDBOX_DIR          = os.path.join(HOOK_DIR, 'Mudbox').replace('\\', '/')
+PAINTER_DIR         = os.path.join(HOOK_DIR, 'Painter').replace('\\', '/')
+NUKE_DIR            = os.path.join(HOOK_DIR, 'Nuke').replace('\\', '/')
+ZBRUSH_DIR          = os.path.join(HOOK_DIR, 'ZBrush').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' icons '''
 
-ICON_DIR            = os.path.join(ROOT, 'icons')
+ICON_DIR            = os.path.join(ROOT, 'icons').replace('\\', '/')
 
-TAG_ICON_DIR        = os.path.join(ICON_DIR, 'tags')
+TAG_ICON_DIR        = os.path.join(ICON_DIR, 'tags').replace('\\', '/')
 
-MAYA_ICON_DIR       = os.path.join(ICON_DIR, 'maya')
+MAYA_ICON_DIR       = os.path.join(ICON_DIR, 'maya').replace('\\', '/')
 
-NODE_ICON_DIR       = os.path.join(ICON_DIR, 'node')
+NODE_ICON_DIR       = os.path.join(ICON_DIR, 'node').replace('\\', '/')
 
-WEB_ICON_DIR        = os.path.join(ICON_DIR, 'web')
-WEB_ICON_16         = os.path.join(WEB_ICON_DIR, 'x16')
-WEB_ICON_24         = os.path.join(WEB_ICON_DIR, 'x24')
-WEB_ICON_32         = os.path.join(WEB_ICON_DIR, 'x32')
-WEB_ICON_48         = os.path.join(WEB_ICON_DIR, 'x48')
-WEB_ICON_64         = os.path.join(WEB_ICON_DIR, 'x64')
-WEB_ICON_128        = os.path.join(WEB_ICON_DIR, 'x128')
+WEB_ICON_DIR        = os.path.join(ICON_DIR, 'web').replace('\\', '/')
+WEB_ICON_16         = os.path.join(WEB_ICON_DIR, 'x16').replace('\\', '/')
+WEB_ICON_24         = os.path.join(WEB_ICON_DIR, 'x24').replace('\\', '/')
+WEB_ICON_32         = os.path.join(WEB_ICON_DIR, 'x32').replace('\\', '/')
+WEB_ICON_48         = os.path.join(WEB_ICON_DIR, 'x48').replace('\\', '/')
+WEB_ICON_64         = os.path.join(WEB_ICON_DIR, 'x64').replace('\\', '/')
+WEB_ICON_128        = os.path.join(WEB_ICON_DIR, 'x128').replace('\\', '/')
 
-ICON_DIR_12         = os.path.join(ICON_DIR, 'x12')
-ICON_DIR_16         = os.path.join(ICON_DIR, 'x16')
-ICON_DIR_24         = os.path.join(ICON_DIR, 'x24')
-ICON_DIR_32         = os.path.join(ICON_DIR, 'x32')
-ICON_DIR_48         = os.path.join(ICON_DIR, 'x48')
-ICON_DIR_64         = os.path.join(ICON_DIR, 'x64')
+ICON_DIR_12         = os.path.join(ICON_DIR, 'x12').replace('\\', '/')
+ICON_DIR_16         = os.path.join(ICON_DIR, 'x16').replace('\\', '/')
+ICON_DIR_24         = os.path.join(ICON_DIR, 'x24').replace('\\', '/')
+ICON_DIR_32         = os.path.join(ICON_DIR, 'x32').replace('\\', '/')
+ICON_DIR_48         = os.path.join(ICON_DIR, 'x48').replace('\\', '/')
+ICON_DIR_64         = os.path.join(ICON_DIR, 'x64').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' libs '''
 
-LIB_DIR             = os.path.join(ROOT, 'libs')
-SOUND_DIR           = os.path.join(LIB_DIR, 'sound')
+LIB_DIR             = os.path.join(ROOT, 'libs').replace('\\', '/')
+
+# -------------------------------------------------------------------------------------------------------------
+''' libs '''
+
+NETWORK_DIR         = os.path.join(ROOT, 'network').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' plugins '''
 
-PLUGIN_DIR          = os.path.join(ROOT, 'plugins')
-NODEGRAPH_DIR       = os.path.join(PLUGIN_DIR, 'NodeGraph')
+PLUGIN_DIR          = os.path.join(ROOT, 'plugins').replace('\\', '/')
+BROWSER_DIR         = os.path.join(PLUGIN_DIR, 'Browser').replace('\\', '/')
+NODEGRAPH_DIR       = os.path.join(PLUGIN_DIR, 'NodeGraph').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' scripts '''
 
-SCRIPT_DIR          = os.path.join(ROOT, 'scripts')
+SCRIPT_DIR          = os.path.join(ROOT, 'scripts').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' test '''
 
-TEST_DIR            = os.path.join(ROOT, 'test')
+TEST_DIR            = os.path.join(ROOT, 'test').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' ui '''
 
-UI_DIR              = os.path.join(ROOT, 'ui')
-UI_BASE_DIR         = os.path.join(UI_DIR, 'base')
-UI_ASSET_DIR        = os.path.join(UI_DIR, 'assets')
-BODY_DIR            = os.path.join(UI_DIR, 'Body')
-TABS_DIR            = os.path.join(BODY_DIR, 'Tabs')
-FOOTER_DIR          = os.path.join(UI_DIR, 'Footer')
-HEADER_DIR          = os.path.join(UI_DIR, 'Header')
+UI_DIR              = os.path.join(ROOT, 'ui').replace('\\', '/')
+UI_BASE_DIR         = os.path.join(UI_DIR, 'base').replace('\\', '/')
+UI_ASSET_DIR        = os.path.join(UI_DIR, 'assets').replace('\\', '/')
+BODY_DIR            = os.path.join(UI_DIR, 'Body').replace('\\', '/')
+TABS_DIR            = os.path.join(BODY_DIR, 'Tabs').replace('\\', '/')
+FOOTER_DIR          = os.path.join(UI_DIR, 'Footer').replace('\\', '/')
+HEADER_DIR          = os.path.join(UI_DIR, 'Header').replace('\\', '/')
 
-SUBUI_DIR           = os.path.join(UI_DIR, 'SubUi')
-FUNCS_DIR           = os.path.join(SUBUI_DIR, 'Funcs')
-PRJ_DIR             = os.path.join(SUBUI_DIR, 'Projects')
-SETTINGS_DIR        = os.path.join(SUBUI_DIR, 'Settings')
-TOOLS_DIR           = os.path.join(SUBUI_DIR, 'Tools')
+SUBUI_DIR           = os.path.join(UI_DIR, 'SubUi').replace('\\', '/')
+FUNCS_DIR           = os.path.join(SUBUI_DIR, 'Funcs').replace('\\', '/')
+PRJ_DIR             = os.path.join(SUBUI_DIR, 'Projects').replace('\\', '/')
+SETTINGS_DIR        = os.path.join(SUBUI_DIR, 'Settings').replace('\\', '/')
+TOOLS_DIR           = os.path.join(SUBUI_DIR, 'Tools').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' utils '''
 
-UTILS_DIR                                = os.path.join(ROOT, 'utils')
+UTILS_DIR                                = os.path.join(ROOT, 'utils').replace('\\', '/')
+
 
 class ConfigDirectory(dict):
 
@@ -191,7 +205,9 @@ class ConfigDirectory(dict):
         self.add('OJ_DIR', OJ_DIR)
         self.add('ORG_DIR', ORG_DIR)
         self.add('USER_LOCAL_DATA', USER_LOCAL_DATA)
+
         self.add('APP_DATA_DIR', APP_DATA_DIR)
+
         self.add('ASSETS_DIR', ASSETS_DIR)
         self.add('AVATAR_DIR', AVATAR_DIR)
         self.add('FONT_DIR', FONT_DIR)
@@ -200,7 +216,10 @@ class ConfigDirectory(dict):
         self.add('DAMG_LOGO_DIR', DAMG_LOGO_DIR)
         self.add('PLM_LOGO_DIR', PLM_LOGO_DIR)
         self.add('PIC_DIR', PIC_DIR)
+        self.add('SOUND_DIR', SOUND_DIR)
+
         self.add('BIN_DIR', BIN_DIR)
+        self.add('DAMG_DIR', DAMG_DIR)
         self.add('DATA_DIR', DATA_DIR)
         self.add('JSON_DIR', JSON_DIR)
         self.add('DOCS_DIR', DOCS_DIR)
@@ -213,19 +232,28 @@ class ConfigDirectory(dict):
         self.add('HTML_DIR', HTML_DIR)
         self.add('JS_DIR', JS_DIR)
         self.add('QSS_DIR', QSS_DIR)
+
         self.add('CORES_DIR', CORES_DIR)
         self.add('CORES_ASSETS_DIR', CORES_ASSETS_DIR)
         self.add('CORES_BASE_DIR', CORES_BASE_DIR)
+        self.add('CORES_LOGGER_DIR', CORES_LOGGER_DIR)
+        self.add('CORES_MODEL_DIR', CORES_MODEL_DIR)
+
         self.add('DEVKIT_DIR', DEVKIT_DIR)
         self.add('DEVKIT_CORE', DEVKIT_CORE)
         self.add('DEVKIT_GUI', DEVKIT_GUI)
         self.add('DEVKIT_WIDGET', DEVKIT_WIDGET)
+
         self.add('HOOK_DIR', HOOK_DIR)
-        self.add('MAYA_DIR', MAYA_DIR)
-        self.add('MARI_DIR', MARI_DIR)
-        self.add('NUKE_DIR', NUKE_DIR)
-        self.add('ZBRUSH_DIR', ZBRUSH_DIR)
+        self.add('BLENDER_DIR', BLENDER_DIR)
         self.add('HOUDINI_DIR', HOUDINI_DIR)
+        self.add('MARI_DIR', MARI_DIR)
+        self.add('MAYA_DIR', MAYA_DIR)
+        self.add('MUDBOX_DIR', MUDBOX_DIR)
+        self.add('NUKE_DIR', NUKE_DIR)
+        self.add('PAINTER_DIR', PAINTER_DIR)
+        self.add('ZBRUSH_DIR', ZBRUSH_DIR)
+
         self.add('ICON_DIR', ICON_DIR)
         self.add('TAG_ICON_DIR', TAG_ICON_DIR)
         self.add('MAYA_ICON_DIR', MAYA_ICON_DIR)
@@ -243,15 +271,22 @@ class ConfigDirectory(dict):
         self.add('ICON_DIR_32', ICON_DIR_32)
         self.add('ICON_DIR_48', ICON_DIR_48)
         self.add('ICON_DIR_64', ICON_DIR_64)
+
         self.add('LIB_DIR', LIB_DIR)
-        self.add('SOUND_DIR', SOUND_DIR)
+
+        self.add('NETWORK_DIR', NETWORK_DIR)
+
         self.add('PLUGIN_DIR', PLUGIN_DIR)
+        self.add('BROWSER_DIR', BROWSER_DIR)
         self.add('NODEGRAPH_DIR', NODEGRAPH_DIR)
+
         self.add('SCRIPT_DIR', SCRIPT_DIR)
+
         self.add('TEST_DIR', TEST_DIR)
+
         self.add('UI_DIR', UI_DIR)
-        self.add('UI_BASE_DIR', UI_BASE_DIR)
         self.add('UI_ASSET_DIR', UI_ASSET_DIR)
+        self.add('UI_BASE_DIR', UI_BASE_DIR)
         self.add('BODY_DIR', BODY_DIR)
         self.add('TABS_DIR', TABS_DIR)
         self.add('FOOTER_DIR', FOOTER_DIR)
@@ -261,6 +296,7 @@ class ConfigDirectory(dict):
         self.add('PRJ_DIR', PRJ_DIR)
         self.add('SETTINGS_DIR', SETTINGS_DIR)
         self.add('TOOLS_DIR', TOOLS_DIR)
+
         self.add('UTILS_DIR', UTILS_DIR)
 
         self.add('ConfigFolder', CFG_DIR)

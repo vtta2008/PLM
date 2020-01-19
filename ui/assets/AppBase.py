@@ -16,7 +16,7 @@ from __buildtins__ import globalSetting
 import os, sys, requests
 
 from appData                            import __localServer__, __google__, STAY_ON_TOP, SERVER_CONNECT_FAIL
-from utils                              import LocalDatabase, clean_file_ext
+from utils                              import LocalDatabase, clean_file_ext, get_avatar_image
 from ui.SplashUI                        import SplashUI
 from .ThreadManager                     import ThreadManager
 from .LayoutManager                     import LayoutManager

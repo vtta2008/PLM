@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 
-from .Avatar                import Avatar, InfoPicture
+from .Avatar                import Avatar, InfoPicture, ImageAvatar, PixAvatar
 from .BaseDetails           import BaseDetails
 from .BaseInfo              import BaseInfo
 from .BaseManager           import BaseManager

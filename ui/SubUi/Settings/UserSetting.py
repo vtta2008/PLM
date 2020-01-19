@@ -33,18 +33,18 @@ class UserSetting(Widget):
 
     def buildUI(self):
 
-        self.avatar                 = Avatar(self)
+        self.avatarGrp                 = Avatar(self)
         self.password               = PassWord(self)
         self.profile                = Profile(self)
         self.location               = Location(self)
 
-        self.layout.addWidget(self.avatar, 0, 0, 1, 1)
+        self.layout.addWidget(self.avatarGrp, 0, 0, 1, 1)
         self.layout.addWidget(self.password, 0, 1, 1, 1)
         self.layout.addWidget(self.profile, 1, 0, 1, 1)
         self.layout.addWidget(self.location, 1, 1, 1, 1)
 
     def resizeEvent(self, event):
-        for gb in [self.avatar, self.password, self.profile, self.location]:
+        for gb in [self.avatarGrp, self.password, self.profile, self.location]:
             gb.setMaximumHeight(self.height()/2)
             gb.setMaximumWidth(self.width()/2)
 

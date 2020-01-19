@@ -83,10 +83,12 @@ ST_FORMAT                       = formatInfo['Setting']
 
 APP_DATA_DIR                    = dirInfo['APP_DATA_DIR']
 
+USER_LOCAL_DATA                 = dirInfo['USER_LOCAL_DATA']
+AVATAR_DIR                      = dirInfo['AVATAR_DIR']
+
 LOGO_DIR                        = dirInfo['LOGO_DIR']
 WEB_ICON_DIR                    = dirInfo['WEB_ICON_DIR']
 TAG_ICON_DIR                    = dirInfo['TAG_ICON_DIR']
-AVATAR_DIR                      = dirInfo['AVATAR_DIR']
 ICON_DIR                        = dirInfo['ICON_DIR']
 
 SOUND_DIR                       = dirInfo['SOUND_DIR']

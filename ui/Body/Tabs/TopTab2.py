@@ -58,12 +58,6 @@ class TopTab2(Widget):
         self.layout.addWidget(self.settingGrp, 1, 0, 1, 1)
         self.layout.addWidget(self.messGrp, 0, 1, 2, 2)
 
-    def update_avatar(self, param):
-        if param:
-            self.username, token, cookie, remember = self.query.query_table('curUser')
-            self.avatar.setPixmap(QPixmap(get_avatar_image(self.username)))
-            self.avatar.update()
-
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 25/05/2018

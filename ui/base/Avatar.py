@@ -21,7 +21,7 @@ from devkit.Core                import Size
 from devkit.Gui                 import Image, Pixmap
 from devkit.Widgets             import Label, GroupBox, VBoxLayout, Button
 from utils                      import LocalDatabase, get_avatar_image, resize_image
-from appData                    import AUTO_COLOR, AVATAR_DIR, center, ASPEC_RATIO
+from appData                    import AUTO_COLOR, USER_LOCAL_DATA, center, ASPEC_RATIO
 
 db                              = LocalDatabase()
 
@@ -58,22 +58,24 @@ class AvatarLabel(Label):
 
     def __init__(self, parent=None):
         super(AvatarLabel, self).__init__()
-
         self.parent             = parent
         self.pixAvatar          = PixAvatar()
         self.imageAvatar        = ImageAvatar(get_avatar_image(username))
         self.setPixmap(self.pixAvatar.fromImage(self.imageAvatar, AUTO_COLOR))
         self.setScaledContents(True)
         self.setAlignment(center)
+        self.update()
 
     def resizeEvent(self, event):
         size                    = Size(1, 1)
         size.scale(100, 100, ASPEC_RATIO)
         self.resize(size)
 
+
 class Avatar(GroupBox):
 
     key                             = 'Avatar'
+    app                             = None
 
     def __init__(self, parent=None):
         super(Avatar, self).__init__(parent=parent)
@@ -96,24 +98,39 @@ class Avatar(GroupBox):
         options                     = QFileDialog.Options()
         options                    |= QFileDialog.DontUseNativeDialog
         fileFormat                  = "All Files (*);;Img Files (*.jpg)"
-        fileName, _                 = QFileDialog.getOpenFileName(self, "Your Avatar", AVATAR_DIR, fileFormat, options=options)
+        fileName, _                 = QFileDialog.getOpenFileName(self, "Your Avatar", USER_LOCAL_DATA, fileFormat, options=options)
+        fileName                    = fileName.replace('\\', '/')
+        baseFileName                = '{0}.avatar.jpg'.format(username)
+        desPth                      = os.path.join(USER_LOCAL_DATA, baseFileName).replace('\\', '/')
 
         if fileName:
             scrPth                  = fileName
-            baseFileName            = '{0}.avatar.jpg'.format(username)
-            desPth                  = os.path.join(AVATAR_DIR, baseFileName)
-
             if os.path.exists(desPth):
-                oldPth              = '{0}.old'.format(desPth)
-                if os.path.exists(oldPth):
-                    os.remove(oldPth)
+                if not scrPth == desPth:
+                    oldPth          = '{0}.old'.format(desPth)
+                    if os.path.exists(oldPth):
+                        os.remove(oldPth)
+                    os.rename(desPth, oldPth)
+                    a = shutil.copy2(scrPth, desPth)
+                else:
+                    a = desPth
+            else:
+                a = shutil.copy2(scrPth, desPth)
 
-                os.rename(desPth, oldPth)
-                resize_image(fileName, desPth, 100, 100)
-                shutil.copy2(fileName, desPth)
+            if self.app:
+                self.app.updateAvatar(a)
+            else:
+                self.avatar.imageAvatar = ImageAvatar(a)
+                self.avatar.pixAvatar = PixAvatar()
+                self.avatar.setPixmap(self.avatar.pixAvatar.fromImage(self.avatar.imageAvatar, AUTO_COLOR))
+                self.avatar.update()
+        else:
+            pass
 
-            self.avatar.imageAvatar.setImage(desPth)
-            self.avatar.update()
+
+
+    def setApp(self, app):
+        self.app = app
 
 class InfoPicLabel(Label):
 
@@ -157,7 +174,7 @@ class InfoPicture(GroupBox):
         options                     = QFileDialog.Options()
         options                    |= QFileDialog.DontUseNativeDialog
         fileFormat                  = "All Files (*);;Img Files (*.jpg)"
-        fileName, _                 = QFileDialog.getOpenFileName(self, "Your Avatar", AVATAR_DIR, fileFormat, options=options)
+        fileName, _                 = QFileDialog.getOpenFileName(self, "Your Avatar", USER_LOCAL_DATA, fileFormat, options=options)
 
         if fileName:
             self.infoPic.updatePicture(fileName)

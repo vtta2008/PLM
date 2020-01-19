@@ -22,7 +22,7 @@ from .ButtonManager                     import ButtonManager
 from .Registry                          import RegistryLayout
 from .EventManager                      import EventManager
 
-from ui.base                            import BaseManager
+from ui.base                            import BaseManager, ImageAvatar, PixAvatar
 from ui.CommandUI                       import CommandUI
 from ui.PipelineManager                 import PipelineManager
 from ui.SysTray                         import SysTray
@@ -165,6 +165,9 @@ class LayoutManager(DAMG):
         self.settingUI                      = AppSetting()
         self.userSetting                    = UserSetting()
 
+        self.mainUI.topTabUI.tab2.avatarGrp.setApp(self)
+        self.userSetting.avatarGrp.setApp(self)
+
         layouts = [self.settingUI, self.userSetting]
 
         for layout in layouts:
@@ -255,6 +258,21 @@ class LayoutManager(DAMG):
                 layout.setElideMode(Qt.ElideRight)
                 layout.setUsesScrollButtons(True)
                 pass
+
+    def updateAvatar(self, pth):
+        self.mainUI.topTabUI.tab2.avatarGrp.avatar.imageAvatar = ImageAvatar(pth)
+        self.mainUI.topTabUI.tab2.avatarGrp.avatar.pixAvatar = PixAvatar()
+        image = self.mainUI.topTabUI.tab2.avatarGrp.avatar.imageAvatar
+        pixmap = self.mainUI.topTabUI.tab2.avatarGrp.avatar.pixAvatar
+        self.mainUI.topTabUI.tab2.avatarGrp.avatar.setPixmap(pixmap.fromImage(image))
+        self.mainUI.topTabUI.tab2.avatarGrp.avatar.update()
+
+        self.userSetting.avatarGrp.avatar.imageAvatar = ImageAvatar(pth)
+        self.userSetting.avatarGrp.avatar.pixAvatar = PixAvatar()
+        image = self.userSetting.avatarGrp.avatar.imageAvatar
+        pixmap = self.userSetting.avatarGrp.avatar.pixAvatar
+        self.userSetting.avatarGrp.avatar.setPixmap(pixmap.fromImage(image))
+        self.userSetting.avatarGrp.avatar.update()
 
     @property
     def buildAll(self):

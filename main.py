@@ -12,9 +12,6 @@ Description:
 from __future__ import absolute_import, unicode_literals
 """ import """
 
-from pprint import pprint
-from bin import DAMGDICT
-
 # PLM
 from appData                            import SYSTRAY_UNAVAI, KEY_RELEASE
 from ui.assets                          import AppBase
@@ -32,20 +29,6 @@ class DAMGTEAM(AppBase):
 
         serverReady                     = self.checkConnectServer()
         userData                        = self.checkUserData()
-
-        allScreens                      = self.screens()
-
-        for index, screen_no in enumerate(allScreens):
-            info                        = DAMGDICT()
-            screen                      = allScreens[index]
-            info.add('resolution', '{0}x{1}'.format(screen.availableSize().width(), screen.availableSize().height()))
-            info.add('depth', screen.depth())
-            info.add('serial', screen.serialNumber())
-            info.add('brand', screen.manufacturer())
-            info.add('model', screen.model())
-            info.add('name', screen.name())
-            info.add('dpi', screen.physicalDotsPerInch())
-            pprint(info)
 
         if userData:
             if serverReady:
@@ -82,6 +65,7 @@ class DAMGTEAM(AppBase):
     def notify(self, receiver, event):
 
         if event.type() == KEY_RELEASE:
+            print(event.key())
             if event.key() == 16777249 and 32:
                 pos = self.cursor.pos()
                 self.shortcutCMD.show()

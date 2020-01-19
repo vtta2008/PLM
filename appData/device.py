@@ -10,39 +10,43 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
-from __buildtins__ import globalSetting
+from __buildtins__ import globalSetting, save_data
 """ Import """
 
 # Python
-import subprocess, re, socket, uuid, pprint, wmi
+import subprocess, re, socket, uuid, pprint, wmi, win32api
+
+# PyQt5
+from PyQt5.QtWidgets                            import QApplication
 
 # PLM
 from .types                                     import DRIVETYPE, FORMFACTOR, RAMTYPE, CPUTYPE
+from .pths                                      import deviceCfg
 
-PIPE                                        = subprocess.PIPE
-runs                                        = subprocess.Popen
-sysKey                                      = 'SYSTEMINFO'
-optKey1                                     = 'OS Configuration'
-igCase                                      = re.IGNORECASE
-scr                                         = runs(sysKey, stdin=PIPE, stdout=PIPE).communicate()[0].decode('utf-8')
-optInfo1                                    = re.findall("{0}:\w*(.*?)\n".format(optKey1), scr, igCase)
+PIPE                                            = subprocess.PIPE
+runs                                            = subprocess.Popen
+sysKey                                          = 'SYSTEMINFO'
+optKey1                                         = 'OS Configuration'
+igCase                                          = re.IGNORECASE
+scr                                             = runs(sysKey, stdin=PIPE, stdout=PIPE).communicate()[0].decode('utf-8')
+optInfo1                                        = re.findall("{0}:\w*(.*?)\n".format(optKey1), scr, igCase)
 
-com                                         = wmi.WMI()
-operatingSys                                = com.Win32_OperatingSystem()
-computerSys                                 = com.Win32_ComputerSystem()
-biosSys                                     = com.Win32_BIOS()
-baseBoardSys                                = com.Win32_BaseBoard()
-processorSys                                = com.Win32_Processor()
-displaySys                                  = com.Win32_DisplayControllerConfiguration()
-memorySys                                   = com.Win32_PhysicalMemory()
-logicalDiskSys                              = com.Win32_LogicalDisk()
-cdromSys                                    = com.Win32_CDROMDrive()
-diskDriveSys                                = com.Win32_DiskDrive()
-pciSys                                      = com.Win32_IDEController()
-networkSys                                  = com.Win32_NetworkAdapter()
-keyboardSys                                 = com.Win32_Keyboard()
-miceSys                                     = com.Win32_PointingDevice()
-totalRam                                    = computerSys[0].TotalPhysicalMemory
+com                                             = wmi.WMI()
+operatingSys                                    = com.Win32_OperatingSystem()
+computerSys                                     = com.Win32_ComputerSystem()
+biosSys                                         = com.Win32_BIOS()
+baseBoardSys                                    = com.Win32_BaseBoard()
+processorSys                                    = com.Win32_Processor()
+displaySys                                      = com.Win32_DisplayControllerConfiguration()
+memorySys                                       = com.Win32_PhysicalMemory()
+logicalDiskSys                                  = com.Win32_LogicalDisk()
+cdromSys                                        = com.Win32_CDROMDrive()
+diskDriveSys                                    = com.Win32_DiskDrive()
+pciSys                                          = com.Win32_IDEController()
+networkSys                                      = com.Win32_NetworkAdapter()
+keyboardSys                                     = com.Win32_Keyboard()
+miceSys                                         = com.Win32_PointingDevice()
+totalRam                                        = computerSys[0].TotalPhysicalMemory
 
 
 
@@ -51,7 +55,7 @@ class ConfigMachine(dict):
     key                                         = 'ConfigMachine'
 
     usbCount = dvdCount = hddCount = pttCount = gpuCount = pciCount = keyboardCount = netCount = ramCount = 1
-    miceCount = cpuCount = biosCount = osCount = 1
+    miceCount = cpuCount = biosCount = osCount = screenCount = 1
 
     def __init__(self):
         super(ConfigMachine, self).__init__()
@@ -60,6 +64,7 @@ class ConfigMachine(dict):
         self['bios']                            = self.biosInfo()
         self['cpu']                             = self.cpuInfo()
         self['gpu']                             = self.gpuInfo()
+        self['monitors']                        = self.screenInfo()
         self['ram']                             = self.ramInfo()
         self['drivers']                         = self.driverInfo()
         self['PCIs']                            = self.pciInfo()
@@ -70,6 +75,10 @@ class ConfigMachine(dict):
         if globalSetting.tracks.configInfo:
             if globalSetting.tracks.deviceInfo:
                 pprint.pprint(self)
+
+        if globalSetting.defaults.save_configInfo:
+            if globalSetting.defaults.save_deviceInfo:
+                save_data(deviceCfg, self)
 
     def osInfo(self, **info):
 
@@ -129,6 +138,25 @@ class ConfigMachine(dict):
             gpu['bit rate']                     = g.BitsPerPixel
             info[key]                           = gpu
             self.gpuCount += 1
+        return info
+
+    def screenInfo(self, **info):
+
+        allScreens = QApplication.screens()
+
+        for index, screen_no in enumerate(allScreens):
+            screenInfo                          = {}
+            key                                 = 'screen {0}'.format(self.screenCount)
+            screen                              = allScreens[index]
+            screenInfo['resolution']            = '{0}x{1}'.format(screen.size().width(), screen.size().height())
+            screenInfo['depth']                 = screen.depth()
+            screenInfo['serial']                = screen.serialNumber()
+            screenInfo['brand']                 = screen.manufacturer()
+            screenInfo['model']                 = screen.model()
+            screenInfo['name']                  = screen.name()
+            screenInfo['dpi']                   = screen.physicalDotsPerInch()
+            info[key]                           = screenInfo
+            self.screenCount += 1
         return info
 
     def ramInfo(self, **info):
@@ -255,7 +283,6 @@ class ConfigMachine(dict):
         for k in keyboardSys:
             keyboard                            = {}
             key                                 = 'keyboard {0}'.format(self.keyboardCount)
-            # keyboard['brand']                   = k.Manufacturer
             keyboard['name']                    = k.Name
             keyboard['id']                      = k.DeviceID
             keyboard['status']                  = k.Status

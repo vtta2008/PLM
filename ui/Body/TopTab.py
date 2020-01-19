@@ -50,7 +50,6 @@ class TopTab(TabWidget):
                 else:
                     self.addTab(tab, self.tabNames[self.tabs.index(tab)])
                     self.setTabIcon(self.tabs.index(tab), AppIcon(32, self.tabNames[self.tabs.index(tab)]))
-                    self.parent.signals.connect('updateAvatar', self.tab2.update_avatar)
             else:
                 self.addTab(tab, self.tabNames[self.tabs.index(tab)])
                 self.setTabIcon(self.tabs.index(tab), AppIcon(32, self.tabNames[self.tabs.index(tab)]))
