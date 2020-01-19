@@ -410,7 +410,7 @@ CREDIT              = read_file('CREDIT')
 CODECONDUCT         = read_file('CODECONDUCT')
 CONTRIBUTING        = read_file('CONTRIBUTING')
 REFERENCES          = read_file('REFERENCES')
-LICENCE             = read_file('LICENCE_MIT')
+LICENCE             = read_file('LICENCE')
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:56 PM

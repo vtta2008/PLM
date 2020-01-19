@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # Python
-import os, sys, subprocess, platform
+import os, sys, subprocess, platform, pkg_resources
 
 __envKey__                          = "DAMGTEAM"
 
@@ -29,11 +29,81 @@ def get_root():
 
     return root
 
+
+def install_py_packages(name):
+    """
+    Install python package via command prompt
+    :param name: name of component
+    :return:
+    """
+    # print('Using pip to install %s' % name)
+    if os.path.exists(name):
+        subprocess.Popen('python %s install' % name)
+    else:
+        subprocess.Popen('python -m pip install %s --user --upgrade' % name, shell=True).wait()
+
+
 def __copyright__():
     _copyright = 'Pipeline Manager (PLM) Copyright (C) 2017 - 2020 by DAMGTEAM, contributed by Trinh Do & Duong Minh Duc.'
     if globalSetting.checks.copyright:
         print(_copyright)
     return _copyright
+
+
+def check_platform():
+    if platform.system() == 'Windows':
+        return True
+    else:
+        return False
+
+
+def check_pkgRequired_win():
+
+    pkgRequired = {
+
+        'msgpack':              '0.6.2',
+        'pip':                  '19.3.1',
+        'PyQt5':                '5.14.1',
+        'PyQtWebEngine':        '5.14.0',
+        'PyQt5-sip':            '12.7.0',
+        'winshell':             '0.6.0',
+        'helpdev':              '0.6.10',
+        'deprecate':            '1.0.5',
+        'argparse':             '1.4.0',
+        'green':                '3.1.0',
+        'GPUtil':               '1.4.0',
+        'playsound':            '1.2.2',
+        'python-resize-image':  '1.1.19',
+        'wmi':                  '1.4.9',
+
+    }
+
+    names = [pkg.project_name for pkg in pkg_resources.working_set]
+    versions = [pkg.version for pkg in pkg_resources.working_set]
+    for pkg, ver in pkgRequired.items():
+        pkg_installed = False
+        ver_installed = False
+        for i in range(len(names)):
+            name = names[i]
+            if pkg == name:
+                pkg_installed = True
+                version = versions[i]
+                if len(version.split('.')) == 2:
+                    major = int(version.split('.')[0])
+                    minor = int(version.split('.')[1])
+                    micro = 0
+                else:
+                    major = int(version.split('.')[0])
+                    minor = int(version.split('.')[1])
+                    micro = int(version.split('.')[2])
+
+                v1, v2, v3 = ver.split('.')
+                if not major < int(v1) and not minor < int(v2) and not micro < int(v3):
+                    ver_installed = True
+                break
+
+        if not pkg_installed or not ver_installed:
+            install_py_packages(pkg)
 
 
 class Modes(dict):
@@ -115,6 +185,7 @@ class Tracks(dict):
     _deleteKey                      = False
 
     _configInfo                     = True
+    _formatInfo                     = False
     _deviceInfo                     = False
     _iconInfo                       = False
     _pythonInfo                     = False
@@ -165,6 +236,10 @@ class Tracks(dict):
     @property
     def configInfo(self):
         return self._configInfo
+
+    @property
+    def formatInfo(self):
+        return self._formatInfo
 
     @property
     def deviceInfo(self):
@@ -289,6 +364,10 @@ class Tracks(dict):
     @configInfo.setter
     def configInfo(self, val):
         self._configInfo            = val
+
+    @formatInfo.setter
+    def formatInfo(self, val):
+        self._formatInfo            = val
 
     @deviceInfo.setter
     def deviceInfo(self, val):
@@ -480,14 +559,15 @@ class DefaultSetting(dict):
     _auto_changeEmmitable           = True
 
     _save_configInfo                = True
-    _save_deviceInfo                = False
-    _save_iconInfo                  = False
-    _save_pythonInfo                = False
-    _save_directoryInfo             = False
-    _save_pathInfo                  = False
-    _save_mayaInfo                  = False
-    _save_urlInfo                   = False
-    _save_appInfo                   = False
+    _save_formatInfo                = True
+    _save_deviceInfo                = True
+    _save_iconInfo                  = True
+    _save_pythonInfo                = True
+    _save_directoryInfo             = True
+    _save_pathInfo                  = True
+    _save_mayaInfo                  = True
+    _save_urlInfo                   = True
+    _save_appInfo                   = True
     _save_plmInfo                   = True
 
     def __init__(self):
@@ -549,6 +629,10 @@ class DefaultSetting(dict):
     def save_plmInfo(self):
         return self._save_plmInfo
 
+    @property
+    def save_formatInfo(self):
+        return self._save_formatInfo
+
     @auto_changeEmitable.setter
     def auto_changeEmitable(self, val):
         self._auto_changeEmmitable  = val
@@ -586,12 +670,16 @@ class DefaultSetting(dict):
         self._save_urlInfo          = val
 
     @save_appInfo.setter
-    def save_apInfo(self, val):
+    def save_appInfo(self, val):
         self._save_appInfo          = val
 
     @save_plmInfo.setter
     def save_plmInfo(self, val):
         self._save_plmInfo          = val
+
+    @save_formatInfo.setter
+    def save_formatInfo(self, val):
+        self._save_formatInfo       = val
 
 
 class GlobalSetting(object):
@@ -617,31 +705,23 @@ globalSetting                       = GlobalSetting()
 ROOT                                = get_root()
 cmd                                 = 'SetX {0} {1}'.format(__envKey__, ROOT)
 
-try:
-    os.getenv(__envKey__)
-except KeyError:
-    proc = subprocess.Popen(cmd, shell=True).wait()
-else:
-    if os.getenv(__envKey__)   != ROOT:
+if check_platform():
+    try:
+        os.getenv(__envKey__)
+    except KeyError:
         proc = subprocess.Popen(cmd, shell=True).wait()
-finally:
-    globalSetting.cfgable = True
-
+    else:
+        if os.getenv(__envKey__)   != ROOT:
+            proc = subprocess.Popen(cmd, shell=True).wait()
+    finally:
+        globalSetting.cfgable = True
+        check_pkgRequired_win()
+else:
+    print('Sorry, we only work with windows for now.')
+    sys.exit()
 
 # subprocess.Popen('python -m pip install -r requirements.txt --user')
 
-
-if platform.system() == 'Windows':
-    try:
-        import winshell
-    except ImportError:
-        subprocess.Popen('python -m pip install winshell --user', shell=True).wait()
-    try:
-        import helpdev
-    except ImportError:
-        subprocess.Popen('python -m pip install helpdev --user', shell=True).wait()
-else:
-    sys.exit()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 6:55 AM

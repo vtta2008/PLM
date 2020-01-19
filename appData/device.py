@@ -14,47 +14,36 @@ from __buildtins__ import globalSetting
 """ Import """
 
 # Python
-import platform, subprocess, sys, re, socket, uuid, pprint
+import subprocess, re, socket, uuid, pprint, wmi
 
 # PLM
 from .types                                     import DRIVETYPE, FORMFACTOR, RAMTYPE, CPUTYPE
 
+PIPE                                        = subprocess.PIPE
+runs                                        = subprocess.Popen
+sysKey                                      = 'SYSTEMINFO'
+optKey1                                     = 'OS Configuration'
+igCase                                      = re.IGNORECASE
+scr                                         = runs(sysKey, stdin=PIPE, stdout=PIPE).communicate()[0].decode('utf-8')
+optInfo1                                    = re.findall("{0}:\w*(.*?)\n".format(optKey1), scr, igCase)
 
-if platform.system() == 'Windows':
-    try:
-        import wmi
-    except ImportError:
-        subprocess.Popen('python -m pip install wmi --user', shell=True).wait()
-        import wmi
+com                                         = wmi.WMI()
+operatingSys                                = com.Win32_OperatingSystem()
+computerSys                                 = com.Win32_ComputerSystem()
+biosSys                                     = com.Win32_BIOS()
+baseBoardSys                                = com.Win32_BaseBoard()
+processorSys                                = com.Win32_Processor()
+displaySys                                  = com.Win32_DisplayControllerConfiguration()
+memorySys                                   = com.Win32_PhysicalMemory()
+logicalDiskSys                              = com.Win32_LogicalDisk()
+cdromSys                                    = com.Win32_CDROMDrive()
+diskDriveSys                                = com.Win32_DiskDrive()
+pciSys                                      = com.Win32_IDEController()
+networkSys                                  = com.Win32_NetworkAdapter()
+keyboardSys                                 = com.Win32_Keyboard()
+miceSys                                     = com.Win32_PointingDevice()
+totalRam                                    = computerSys[0].TotalPhysicalMemory
 
-    PIPE                                        = subprocess.PIPE
-    runs                                        = subprocess.Popen
-    sysKey                                      = 'SYSTEMINFO'
-    optKey1                                     = 'OS Configuration'
-    igCase                                      = re.IGNORECASE
-    scr                                         = runs(sysKey, stdin=PIPE, stdout=PIPE).communicate()[0].decode('utf-8')
-    optInfo1                                    = re.findall("{0}:\w*(.*?)\n".format(optKey1), scr, igCase)
-
-    com                                         = wmi.WMI()
-    operatingSys                                = com.Win32_OperatingSystem()
-    computerSys                                 = com.Win32_ComputerSystem()
-    biosSys                                     = com.Win32_BIOS()
-    baseBoardSys                                = com.Win32_BaseBoard()
-    processorSys                                = com.Win32_Processor()
-    displaySys                                  = com.Win32_DisplayControllerConfiguration()
-    memorySys                                   = com.Win32_PhysicalMemory()
-    logicalDiskSys                              = com.Win32_LogicalDisk()
-    cdromSys                                    = com.Win32_CDROMDrive()
-    diskDriveSys                                = com.Win32_DiskDrive()
-    pciSys                                      = com.Win32_IDEController()
-    networkSys                                  = com.Win32_NetworkAdapter()
-    keyboardSys                                 = com.Win32_Keyboard()
-    miceSys                                     = com.Win32_PointingDevice()
-
-    totalRam                                    = computerSys[0].TotalPhysicalMemory
-
-else:
-    sys.exit()
 
 
 class ConfigMachine(dict):
