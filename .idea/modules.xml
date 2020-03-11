@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../consuldoku/.idea/consuldoku.iml" filepath="$PROJECT_DIR$/../consuldoku/.idea/consuldoku.iml" />
       <module fileurl="file://$PROJECT_DIR$/../damgserver/.idea/damgserver.iml" filepath="$PROJECT_DIR$/../damgserver/.idea/damgserver.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/damgteam.iml" filepath="$PROJECT_DIR$/.idea/damgteam.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../plm/.idea/plm.iml" filepath="$PROJECT_DIR$/../plm/.idea/plm.iml" />
       <module fileurl="file://$PROJECT_DIR$/../test_app_compile/.idea/test_app_compile.iml" filepath="$PROJECT_DIR$/../test_app_compile/.idea/test_app_compile.iml" />
       <module fileurl="file://$PROJECT_DIR$/../vanilla-server-side-rendering-flow/.idea/vanilla-server-side-rendering-flow.iml" filepath="$PROJECT_DIR$/../vanilla-server-side-rendering-flow/.idea/vanilla-server-side-rendering-flow.iml" />
     </modules>

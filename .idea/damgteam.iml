@@ -4,6 +4,7 @@
     <content url="file://$MODULE_DIR$">
       <excludeFolder url="file://$MODULE_DIR$/.idea" />
       <excludeFolder url="file://$MODULE_DIR$/@reference" />
+      <excludeFolder url="file://$MODULE_DIR$/@release" />
       <excludeFolder url="file://$MODULE_DIR$/_windows" />
       <excludeFolder url="file://$MODULE_DIR$/imgs/scrImgs" />
       <excludeFolder url="file://$MODULE_DIR$/lib_tk/@pdf" />
@@ -19,5 +20,7 @@
     <orderEntry type="module" module-name="damgserver" />
     <orderEntry type="module" module-name="vanilla-server-side-rendering-flow" />
     <orderEntry type="module" module-name="test_app_compile" />
+    <orderEntry type="module" module-name="plm" />
+    <orderEntry type="module" module-name="consuldoku" />
   </component>
 </module>

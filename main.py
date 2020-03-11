@@ -10,6 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
+from __buildtins__ import globalSetting
 """ import """
 
 # PLM
@@ -65,8 +66,8 @@ class DAMGTEAM(AppBase):
     def notify(self, receiver, event):
 
         if event.type() == KEY_RELEASE:
-            print(event.key())
-            if event.key() == 16777249 and 32:
+
+            if event.key() == 16777217:
                 pos = self.cursor.pos()
                 self.shortcutCMD.show()
                 self.shortcutCMD.move(pos)
