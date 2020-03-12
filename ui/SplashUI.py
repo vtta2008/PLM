@@ -64,7 +64,7 @@ class SplashUI(SplashScreen):
         super(SplashUI, self).__init__()
 
         self.app                = app
-        self.pix                = Pixmap(os.path.join(ROOT, 'assets', 'pics', 'splash.png'))
+        self.pix                = Pixmap(os.path.join(ROOT, 'assets', 'images', 'splash.png'))
         self.flag               = STAY_ON_TOP
         self.progressBar        = ProgressBar(self)
 

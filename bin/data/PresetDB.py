@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
-
+from __buildtins__ import __envKey__
 """ Import """
 
 # Python
@@ -57,7 +57,7 @@ if __name__ == '__main__':
     with open(os.path.join(os.getcwd(), 'metadatas.py').replace('\\', '/'), "rb") as f:
         metadata = f.read().decode('utf-8')
 else:
-    with open(os.path.join(os.getenv('DAMGTEAM'), 'bin', 'data', 'metadatas.py').replace('\\', '/'), 'rb') as f:
+    with open(os.path.join(os.getenv(__envKey__), 'bin', 'data', 'metadatas.py').replace('\\', '/'), 'rb') as f:
         metadata = f.read().decode('utf-8')
 
 def parse(pattern):
