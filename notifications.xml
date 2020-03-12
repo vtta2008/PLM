@@ -1,0 +1,5 @@
+<application>
+  <component name="NotificationConfiguration">
+    <notification groupId="RInterpreter" shouldLog="false" />
+  </component>
+</application>
