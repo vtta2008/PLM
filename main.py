@@ -21,7 +21,7 @@ from ui.assets                          import AppBase
 """ Operation """
 
 
-class DAMGTEAM(AppBase):
+class PLM(AppBase):
 
     key                                 = 'PLM'
 
@@ -30,6 +30,8 @@ class DAMGTEAM(AppBase):
 
         serverReady                     = self.checkConnectServer()
         userData                        = self.checkUserData()
+
+        self.logger.info('Start app')
 
         if userData:
             if serverReady:
@@ -86,11 +88,11 @@ class DAMGTEAM(AppBase):
                         geometry = receiver.settings.value('geometry', b'')
                         receiver.restoreGeometry(geometry)
 
-        return super(DAMGTEAM, self).notify(receiver, event)
+        return super(PLM, self).notify(receiver, event)
 
 
 if __name__ == '__main__':
-    app = DAMGTEAM()
+    app = PLM()
     app.startLoop()
 
 # -------------------------------------------------------------------------------------------------------------
