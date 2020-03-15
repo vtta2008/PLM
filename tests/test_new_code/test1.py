@@ -9,11 +9,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
+import os
 
-import platform, sys
-print(sys.platform)
-print(platform.platform())
+root = os.path.abspath(os.path.dirname(__file__))
+print(os.path.dirname(root))
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 1/13/2020 - 1:54 AM

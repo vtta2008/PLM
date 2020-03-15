@@ -8,8 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import __copyright__, ROOT, globalSetting
+from PLM import __copyright__, ROOT, globalSetting
 """ Import """
 
 # Python
@@ -27,15 +26,15 @@ from PyQt5.QtWidgets                import QApplication
 from PyQt5.QtGui                    import QColor
 
 # PLM
-from configs                        import __version__, __appname__, __organization__, __website__, DarkPalette, PLMAPPID
-from PLM.cores import Loggers
-from PLM.cores import SignalManager
-from PLM.cores import SettingManager
-from PLM.cores import StyleSheet
+from PLM.configs                    import __version__, __appname__, __organization__, __website__, DarkPalette, PLMAPPID
+from PLM.cores                      import Loggers
+from PLM.cores                      import SignalManager
+from PLM.cores                      import SettingManager
+from PLM.cores                      import StyleSheet
 from PLM.commons.Core import Process
 from PLM.commons.Gui import Cursor, LogoIcon
 from PLM.commons.Widgets import MessageBox
-from plugins                        import Qt
+from PLM.plugins import Qt
 
 PCWSTR                              = ctypes.c_wchar_p
 AppUserModelID                      = ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID

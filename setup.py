@@ -8,25 +8,18 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import
-
-""" Setup envronment configKey to be able to work """
-
-import re
-from setuptools import find_packages
-
-# -------------------------------------------------------------------------------------------------------------
 """ Import """
 
 # Python
-from cx_Freeze import setup, Executable
+import os
+import sys
+import re
+from setuptools                 import find_packages
+from cx_Freeze                  import setup, Executable
 
 # PLM
-from PLM.__main__ import *
-
-from configs import LICENCE_MIT, APP_DATA_DIR, COPYRIGHT, __pkgsReq__
-
-from PLM.cores import version
+from PLM.configs                import LICENCE, APP_DATA_DIR, COPYRIGHT, __pkgsReq__
+from PLM.cores                  import version
 
 os.environ['TCL_LIBRARY']   = "C:/ProgramData/Anaconda3/tcl/tcl8.6"
 os.environ['TK_LIBRARY']    = "C:/ProgramData/Anaconda3/tcl/tk8.6"
@@ -81,7 +74,7 @@ setup(name             = appname,
       packages         = find_packages(),
       url              = website,
       download_url     = download,
-      license          = LICENCE_MIT,
+      license          = LICENCE,
       author           = author,
       author_email     = email,
       maintainer       = maintainer,

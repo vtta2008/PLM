@@ -676,6 +676,7 @@ class GlobalSetting(object):
 
 globalSetting                       = GlobalSetting()
 ROOT                                = get_root()
+ROOT_APP                            = os.path.dirname(ROOT)
 cmd                                 = 'SetX {0} {1}'.format(__envKey__, ROOT)
 
 if check_platform():

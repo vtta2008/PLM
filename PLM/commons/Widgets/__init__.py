@@ -8,19 +8,20 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
+
 
 from .Action            import Action, ShortCut, WidgetAction
+from .Application       import Application
 from .BoxLayout         import VBoxLayout, HBoxLayout
 from .Button            import Button, ToolButton
 from .CheckBox          import CheckBox
 from .ComboBox          import ComboBox
 from .DockWidget        import DockStamp, DockWidget, NoteStamp
-from .GraphicView       import GraphicView
-from .GraphicScene      import GraphicScene
 from .GraphicItem       import GraphicItem
 from .GraphicObject     import GraphicObject
 from .GraphicPathItem   import GraphicPathItem
+from .GraphicScene      import GraphicScene
+from .GraphicView       import GraphicView
 from .GridLayout        import GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
 from .GroupBox          import GroupBox, GroupGrid, GroupHBox, GroupVBox
 from .ItemDelegate      import ItemDelegate

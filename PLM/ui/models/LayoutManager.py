@@ -23,7 +23,7 @@ from .Registry                          import RegistryLayout
 from .EventManager                      import EventManager
 
 from PLM.ui.base import BaseManager, ImageAvatar, PixAvatar
-from PLM.ui import CommandUI
+from ..tools import CommandUI
 from PLM.ui.PipelineManager import PipelineManager
 from PLM.ui import SysTray
 from PLM.ui.SubUi import (Calendar, Calculator, EnglishDictionary, FindFiles, ImageViewer,

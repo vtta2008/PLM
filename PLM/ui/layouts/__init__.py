@@ -5,15 +5,12 @@ Script Name: __init__.py.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
+    
 
 """
 # -------------------------------------------------------------------------------------------------------------
-
-
-
-
-
+from __future__ import absolute_import, unicode_literals
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 15/06/2018 - 8:26 PM
-# © 2017 - 2018 DAMGteam. All rights reserved
+# Created by panda on 3/16/2020 - 4:35 AM
+# © 2017 - 2019 DAMGteam. All rights reserved

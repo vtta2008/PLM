@@ -10,12 +10,21 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 # Python
-import re, os, sys, platform, pkg_resources, pprint, winshell, socket, uuid, wmi, subprocess
-
+import os
+import re
+import sys
+import subprocess
+import platform
+import pkg_resources
+import winshell
+import socket
+import uuid
+import wmi
+import pprint
 from collections                    import OrderedDict
 
 # PLM
-from PLM.__main__ import globalSetting, ROOT, save_data
+from PLM                            import globalSetting, ROOT, ROOT_APP, save_data
 
 from .metadatas                     import (__appname__, __organizationName__, __localServer__, __globalServer__,
                                             __homepage__, __plmWiki__, __google__, __googleNZ__, __googleVN__,
@@ -24,10 +33,10 @@ from .metadatas                     import (__appname__, __organizationName__, _
                                             __google__, __appSlogan__, __localServerAutho__, __version__, __website__,
                                             VERSION, PLMAPPID)
 # PyQt5
-from PyQt5.QtCore           import Qt, QSize, QEvent, QSettings, QDateTime
-from PyQt5.QtGui            import QPainter, QFont
-from PyQt5.QtWidgets        import (QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy,
-                                    QLineEdit, QPlainTextEdit, QAbstractItemView, QStyle, QApplication)
+from PyQt5.QtCore                   import Qt, QSize, QEvent, QSettings, QDateTime
+from PyQt5.QtGui                    import QPainter, QFont
+from PyQt5.QtWidgets                import (QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy,
+                                            QLineEdit, QPlainTextEdit, QAbstractItemView, QStyle, QApplication)
 
 
 TRADE_MARK = '™'
@@ -162,86 +171,64 @@ LICENCE_TAG                         = 'https://github.com/vtta2008/damgteam/blob
 VERSION_TAG                         = 'https://github.com/vtta2008/damgteam/blob/master/bin/docs/rst/version.rst'
 
 # -------------------------------------------------------------------------------------------------------------
-''' Local pc '''
+''' configs '''
+LOCALAPPDATA        = os.environ('LOCALAPPDATA')
 
-APPDATA_DAMG        = os.path.join(os.getenv('LOCALAPPDATA'), __organizationName__).replace('\\', '/')
+APPDATA_DAMG        = os.path.join(LOCALAPPDATA, __organizationName__).replace('\\', '/')
 APPDATA_PLM         = os.path.join(APPDATA_DAMG, __appname__).replace('\\', '/')
 CFG_DIR             = os.path.join(APPDATA_PLM, '.configs').replace('\\', '/')
 TMP_DIR             = os.path.join(APPDATA_PLM, '.tmp').replace('\\', '/')
 CACHE_DIR           = os.path.join(APPDATA_PLM, '.cache').replace('\\', '/')
+PREF_DIR            = os.path.join(APPDATA_PLM, 'preferences').replace('\\', '/')
+
 SETTING_DIR         = CFG_DIR
 LOG_DIR             = CFG_DIR
-PREF_DIR            = CFG_DIR
 TASK_DIR            = os.path.join(CFG_DIR, 'task').replace('\\', '/')
 TEAM_DIR            = os.path.join(CFG_DIR, 'team').replace('\\', '/')
-OJ_DIR              = os.path.join(CFG_DIR, 'project').replace('\\', '/')
+PRJ_DIR             = os.path.join(CFG_DIR, 'project').replace('\\', '/')
 ORG_DIR             = os.path.join(CFG_DIR, 'organisation').replace('\\', '/')
 USER_LOCAL_DATA     = os.path.join(CFG_DIR, 'userLocal').replace('\\', '/')
 
-# -------------------------------------------------------------------------------------------------------------
-''' appData '''
-
-APP_DATA_DIR        = os.path.join(ROOT, 'appData').replace('\\', '/')
 DB_DIR              = APPDATA_PLM
 
 # -------------------------------------------------------------------------------------------------------------
-''' assets '''
+''' docs '''
 
-ASSETS_DIR          = os.path.join(ROOT, 'assets').replace('\\', '/')
-AVATAR_DIR          = os.path.join(ASSETS_DIR, 'avatar').replace('\\', '/')
-FONT_DIR            = os.path.join(ASSETS_DIR, 'fonts').replace('\\', '/')
-IMAGE_DIR           = os.path.join(ASSETS_DIR, 'images').replace('\\', '/')
-
-LOGO_DIR            = os.path.join(ASSETS_DIR, 'logo').replace('\\', '/')
-DAMG_LOGO_DIR       = os.path.join(LOGO_DIR, 'DAMGTEAM').replace('\\', '/')
-PLM_LOGO_DIR        = os.path.join(LOGO_DIR, 'PLM').replace('\\', '/')
-
-SOUND_DIR           = os.path.join(ASSETS_DIR, 'sound').replace('\\', '/')
+DOCS_DIR            = os.path.join(ROOT_APP, 'docs').replace('\\', '/')
+TEMPLATE_DIR        = os.path.join(DOCS_DIR, 'template').replace('\\', '/')
+TEMPLATE_LICENSE    = os.path.join(TEMPLATE_DIR, 'LICENSE').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
-''' bin '''
+''' integrations '''
 
-BIN_DIR             = os.path.join(ROOT, 'bin').replace('\\', '/')
-DAMG_DIR            = os.path.join(BIN_DIR, 'damg').replace('\\', '/')
-DATA_DIR            = os.path.join(BIN_DIR, 'data').replace('\\', '/')
-JSON_DIR            = os.path.join(DATA_DIR, 'json').replace('\\', '/')
+INTERGRATIONS_DIR   = os.path.join(ROOT_APP, 'intergrations').replace('\\', '/')
 
-DOCS_DIR            = os.path.join(BIN_DIR, 'docs').replace('\\', '/')
-RST_DIR             = os.path.join(DOCS_DIR, 'rst').replace('\\', '/')
-TXT_DIR             = os.path.join(DOCS_DIR, 'txt').replace('\\', '/')
-RAWS_DATA_DIR       = os.path.join(DOCS_DIR, 'raws').replace('\\', '/')
-TEMPLATE_DIR        = os.path.join(DOCS_DIR, 'template').replace('\\', '/')
-TEMPLATE_LICENCE    = os.path.join(TEMPLATE_DIR, 'LICENCE').replace('\\', '/')
+# -------------------------------------------------------------------------------------------------------------
+''' common '''
 
-RCS_DIR             = os.path.join(BIN_DIR, 'rcs').replace('\\', '/')
-CSS_DIR             = os.path.join(RCS_DIR, 'css').replace('\\', '/')
-HTML_DIR            = os.path.join(RCS_DIR, 'html').replace('\\', '/')
-JS_DIR              = os.path.join(RCS_DIR, 'js').replace('\\', '/')
-QSS_DIR             = os.path.join(RCS_DIR, 'qss').replace('\\', '/')
+COMMONS_DIR         = os.path.join(ROOT, 'common').replace('\\', '/')
+CORE_DIR            = os.path.join(COMMONS_DIR, 'Core').replace('\\', '/')
+DAMG_DIR            = os.path.join(COMMONS_DIR, 'damg').replace('\\', '/')
+GUI_DIR             = os.path.join(COMMONS_DIR, 'Gui').replace('\\', '/')
+WIDGET_DIR          = os.path.join(COMMONS_DIR, 'Widgets').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' cores '''
 
 CORES_DIR           = os.path.join(ROOT, 'cores').replace('\\', '/')
-CORES_ASSETS_DIR    = os.path.join(CORES_DIR, 'assets').replace('\\', '/')
-CORES_BASE_DIR      = os.path.join(CORES_DIR, 'base').replace('\\', '/')
-CORES_LOGGER_DIR    = os.path.join(CORES_DIR, 'Loggers').replace('\\', '/')
-CORES_MODEL_DIR     = os.path.join(CORES_DIR, 'models').replace('\\', '/')
+BASE_DIR            = os.path.join(CORES_DIR, 'base').replace('\\', '/')
+LOGGER_DIR          = os.path.join(CORES_DIR, 'Loggers').replace('\\', '/')
+MODELS_DIR          = os.path.join(CORES_DIR, 'models').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
-''' devkit '''
+''' resources '''
 
-DEVKIT_DIR          = os.path.join(ROOT, 'devkit').replace('\\', '/')
-DEVKIT_CORE         = os.path.join(DEVKIT_DIR, 'Core').replace('\\', '/')
-DEVKIT_GUI          = os.path.join(DEVKIT_DIR, 'Gui').replace('\\', '/')
-DEVKIT_WIDGET       = os.path.join(DEVKIT_DIR, 'Widgets').replace('\\', '/')
+RESOURCES_DIR       = os.path.join(ROOT, 'resources').replace('\\', '/')
+AVATAR_DIR          = os.path.join(RESOURCES_DIR, 'avatar').replace('\\', '/')
+DESIGN_DIR          = os.path.join(RESOURCES_DIR, 'design').replace('\\', '/')
+FONT_DIR            = os.path.join(RESOURCES_DIR, 'fonts').replace('\\', '/')
 
-
-# -------------------------------------------------------------------------------------------------------------
-''' icons '''
-
-ICON_DIR            = os.path.join(ROOT, 'assets', 'icons').replace('\\', '/')
-
+ICON_DIR            = os.path.join(RESOURCES_DIR, 'icons').replace('\\', '/')
 TAG_ICON_DIR        = os.path.join(ICON_DIR, 'tags').replace('\\', '/')
 
 NODE_ICON_DIR       = os.path.join(ICON_DIR, 'node').replace('\\', '/')
@@ -261,55 +248,55 @@ ICON_DIR_32         = os.path.join(ICON_DIR, 'x32').replace('\\', '/')
 ICON_DIR_48         = os.path.join(ICON_DIR, 'x48').replace('\\', '/')
 ICON_DIR_64         = os.path.join(ICON_DIR, 'x64').replace('\\', '/')
 
-# -------------------------------------------------------------------------------------------------------------
-''' libs '''
+IMAGE_DIR           = os.path.join(RESOURCES_DIR, 'images').replace('\\', '/')
 
-LIB_DIR             = os.path.join(ROOT, 'libs').replace('\\', '/')
+JSON_DIR            = os.path.join(RESOURCES_DIR, 'json').replace('\\', '/')
 
-# -------------------------------------------------------------------------------------------------------------
-''' libs '''
+LOGO_DIR            = os.path.join(RESOURCES_DIR, 'logo').replace('\\', '/')
+DAMG_LOGO_DIR       = os.path.join(LOGO_DIR, 'DAMGTEAM').replace('\\', '/')
+PLM_LOGO_DIR        = os.path.join(LOGO_DIR, 'PLM').replace('\\', '/')
 
-NETWORK_DIR         = os.path.join(ROOT, 'network').replace('\\', '/')
-
-# -------------------------------------------------------------------------------------------------------------
-''' plugins '''
-
-PLUGIN_DIR          = os.path.join(ROOT, 'plugins').replace('\\', '/')
-BROWSER_DIR         = os.path.join(PLUGIN_DIR, 'Browser').replace('\\', '/')
-NODEGRAPH_DIR       = os.path.join(PLUGIN_DIR, 'NodeGraph').replace('\\', '/')
-
-# -------------------------------------------------------------------------------------------------------------
-''' scripts '''
-
-SCRIPT_DIR          = os.path.join(ROOT, 'scripts').replace('\\', '/')
-
-# -------------------------------------------------------------------------------------------------------------
-''' test '''
-
-TEST_DIR            = os.path.join(ROOT, 'test').replace('\\', '/')
+SOUND_DIR           = os.path.join(RESOURCES_DIR, 'sound').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' ui '''
 
 UI_DIR              = os.path.join(ROOT, 'ui').replace('\\', '/')
 UI_BASE_DIR         = os.path.join(UI_DIR, 'base').replace('\\', '/')
-UI_ASSET_DIR        = os.path.join(UI_DIR, 'assets').replace('\\', '/')
-BODY_DIR            = os.path.join(UI_DIR, 'Body').replace('\\', '/')
-TABS_DIR            = os.path.join(BODY_DIR, 'Tabs').replace('\\', '/')
-FOOTER_DIR          = os.path.join(UI_DIR, 'Footer').replace('\\', '/')
-HEADER_DIR          = os.path.join(UI_DIR, 'Header').replace('\\', '/')
-
-SUBUI_DIR           = os.path.join(UI_DIR, 'SubUi').replace('\\', '/')
-FUNCS_DIR           = os.path.join(SUBUI_DIR, 'Funcs').replace('\\', '/')
-PRJ_DIR             = os.path.join(SUBUI_DIR, 'Projects').replace('\\', '/')
-SETTINGS_DIR        = os.path.join(SUBUI_DIR, 'Settings').replace('\\', '/')
-TOOLS_DIR           = os.path.join(SUBUI_DIR, 'Tools').replace('\\', '/')
+UI_COMPONENTS_DIR   = os.path.join(UI_DIR, 'components').replace('\\', '/')
+UI_LAYOUTS_DIR      = os.path.join(UI_DIR, 'layouts').replace('\\', '/')
+UI_MODELS_DIR       = os.path.join(UI_DIR, 'models').replace('\\', '/')
+UI_RCS_DIR          = os.path.join(UI_DIR, 'rcs').replace('\\', '/')
+UI_TOOLS_DIR        = os.path.join(UI_DIR, 'tools').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' utils '''
 
-UTILS_DIR                                = os.path.join(ROOT, 'utils').replace('\\', '/')
+UTILS_DIR           = os.path.join(ROOT, 'utils').replace('\\', '/')
 
+# -------------------------------------------------------------------------------------------------------------
+''' scripts '''
+
+REQUIREMENTS_DIR    = os.path.join(ROOT_APP, 'requirements').replace('\\', '/')
+
+# -------------------------------------------------------------------------------------------------------------
+''' scripts '''
+
+SCRIPTS_DIR         = os.path.join(ROOT_APP, 'rcs').replace('\\', '/')
+CSS_DIR             = os.path.join(SCRIPTS_DIR, 'css').replace('\\', '/')
+HTML_DIR            = os.path.join(SCRIPTS_DIR, 'html').replace('\\', '/')
+JS_DIR              = os.path.join(SCRIPTS_DIR, 'js').replace('\\', '/')
+QSS_DIR             = os.path.join(SCRIPTS_DIR, 'qss').replace('\\', '/')
+
+# -------------------------------------------------------------------------------------------------------------
+''' plugins '''
+
+PLUGIN_DIR          = os.path.join(ROOT_APP, 'plugins').replace('\\', '/')
+
+# -------------------------------------------------------------------------------------------------------------
+''' test '''
+
+TEST_DIR            = os.path.join(ROOT_APP, 'test').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 """ config file """
@@ -1086,55 +1073,55 @@ PRS = dict( password    = QLineEdit.Password,       center = center ,   left  = 
             spmax       = SiPoMax           ,       sppre  = SiPoPre,   spexp = SiPoExp,    spign  = SiPoIgn,
             expanding   = QSizePolicy.Expanding,    spmin  = SiPoMin,)
 
-# node connection property types
-PROPERTY = dict( simple = ['FLOAT', 'STRING', 'BOOL', 'INT'] , arrays  = ['FLOAT2', 'FLOAT3', 'INT2', 'INT3', 'COLOR'],
-                 max    = 'maximum value'                    , types   = ['FILE', 'MULTI', 'MERGE', 'NODE', 'DIR']    ,
-                 min    = 'minimum value'                    , default = 'default value'                              ,
-                 label  = 'node label'                       , private = 'attribute is private (hiddent)'             ,
-                 desc   = 'attribute description',)
-
-REGEX   = dict( section        = re.compile(r"^\[[^\]\r\n]+]"),
-                section_value  = re.compile(r"\[(?P<attr>[\w]*?) (?P<value>[\w\s]*?)\]$"),
-                properties     = re.compile("(?P<name>[\.\w]*)\s*(?P<type>\w*)\s*(?P<value>.*)$"),)
-
-# Default preferences
-PREFERENCES = dict(
-    ignore_scene_prefs  = {"default": False,     "desc": "Use user prefences instead of scene preferences.", "label": "Ignore scene preferences",    "class": "global"},
-    use_gl              = {"default": False,     "desc": "Render graph with OpenGL.",                        "label": "Use OpenGL",                  "class": "scene" },
-    edge_type           = {"default": "bezier",  "desc": "Draw edges with bezier paths.",                    "label": "Edge name",                  "class": "scene" },
-    render_fx           = {"default": False,     "desc": "Render node drop shadows and effects.",            "label": "render FX",                   "class": "scene" },
-    antialiasing        = {"default": 2,         "desc": "Antialiasing level.",                              "label": "Antialiasing",                "class": "scene" },
-    logging_level       = {"default": 30,        "desc": "Verbosity level.",                                 "label": "Logging level",               "class": "global"},
-    autosave_inc        = {"default": 90000,     "desc": "Autosave delay (seconds x 1000).",                 "label": "Autosave time",               "class": "global"},
-    stylesheet_name     = {"default": "default", "desc": "Stylesheet to use.",                               "label": "Stylesheet",                  "class": "global"},
-    palette_style       = {"default": "default", "desc": "Color palette to use.",                            "label": "Palette",                     "class": "global"},
-    font_style          = {"default": "default", "desc": "font name to use.",                               "label": "Font name",                  "class": "global"},
-    viewport_mode       = {"default": "smart",   "desc": "viewport update fn.",                              "label": "Viewport Mode",               "class": "global"}, )
-
-VALID_FONTS = dict( ui   = [ 'Arial', 'Cantarell', 'Corbel', 'DejaVu Sans', 'DejaVu Serif', 'FreeSans', 'Liberation Sans',
-                             'Lucida Sans Unicode', 'MS Sans Serif', 'Open Sans', 'PT Sans', 'Tahoma', 'Verdana'],
-
-                    mono = [ 'Consolas', 'Courier', 'Courier 10 Pitch', 'Courier New', 'DejaVu Sans Mono', 'Fixed',
-                             'FreeMono', 'Liberation Mono', 'Lucida Console', 'Menlo', 'Monaco'],
-
-                    nodes= [ 'Consolas', 'DejaVu Sans Mono', 'Menlo', 'DejaVu Sans'])
-
-EDGE_TYPES      = dict(bezier = 'bezier'        , polygon = 'polygon'       , )
-POS_EVENTS      = dict(change = POS_CHANGE      , )
-DRAG_MODES      = dict(none   = NODRAG          , rubber = RUBBER_DRAG)
-VIEWPORT_MODES  = dict(full   = UPDATE_FULLVIEW , smart  = UPDATE_SMARTVIEW , minimal = UPDATE_MINIMALVIEW  , bounding = UPDATE_BOUNDINGVIEW, viewrect = UPDATE_VIEWRECT)
-FLAG_MODES      = dict(select = SELECTABLE      , move   = MOVEABLE         , focus   = FOCUSABLE           , panel    = PANEL)
-ANCHOR_MODES    = dict(none   = ANCHOR_NO       , under  = ANCHOR_UNDERMICE , center  = ANCHOR_CENTER, )
-
-
-NODE            = dict( width               = NODE_WIDTH            , height       = 25              , radius                 = 10                  , border    = 2 ,
-                        attHeight           = 30                    , con_width    = 2               , font                   = 'Arial'             , font_size = 12,
-                        attFont             = 'Arial'               , attFont_size = 10              , mouse_bounding_box     = 80                  , alternate= 20,
-                        grid_color          = [50, 50, 50, 255]     , slot_border  = [50, 50, 50, 255], non_connectable_color = [100, 100, 100, 255],
-                        connection_color    = [255, 155, 0, 255], )
-
-SCENE           = dict( width               = 2000                  , height = 2000                 , size              = 36       , antialiasing = True,
-                        antialiasing_boost  = True                  , smooth_pixmap = True, )
+# # node connection property types
+# PROPERTY = dict( simple = ['FLOAT', 'STRING', 'BOOL', 'INT'] , arrays  = ['FLOAT2', 'FLOAT3', 'INT2', 'INT3', 'COLOR'],
+#                  max    = 'maximum value'                    , types   = ['FILE', 'MULTI', 'MERGE', 'NODE', 'DIR']    ,
+#                  min    = 'minimum value'                    , default = 'default value'                              ,
+#                  label  = 'node label'                       , private = 'attribute is private (hiddent)'             ,
+#                  desc   = 'attribute description',)
+#
+# REGEX   = dict( section        = re.compile(r"^\[[^\]\r\n]+]"),
+#                 section_value  = re.compile(r"\[(?P<attr>[\w]*?) (?P<value>[\w\s]*?)\]$"),
+#                 properties     = re.compile("(?P<name>[\.\w]*)\s*(?P<type>\w*)\s*(?P<value>.*)$"),)
+#
+# # Default preferences
+# PREFERENCES = dict(
+#     ignore_scene_prefs  = {"default": False,     "desc": "Use user prefences instead of scene preferences.", "label": "Ignore scene preferences",    "class": "global"},
+#     use_gl              = {"default": False,     "desc": "Render graph with OpenGL.",                        "label": "Use OpenGL",                  "class": "scene" },
+#     edge_type           = {"default": "bezier",  "desc": "Draw edges with bezier paths.",                    "label": "Edge name",                  "class": "scene" },
+#     render_fx           = {"default": False,     "desc": "Render node drop shadows and effects.",            "label": "render FX",                   "class": "scene" },
+#     antialiasing        = {"default": 2,         "desc": "Antialiasing level.",                              "label": "Antialiasing",                "class": "scene" },
+#     logging_level       = {"default": 30,        "desc": "Verbosity level.",                                 "label": "Logging level",               "class": "global"},
+#     autosave_inc        = {"default": 90000,     "desc": "Autosave delay (seconds x 1000).",                 "label": "Autosave time",               "class": "global"},
+#     stylesheet_name     = {"default": "default", "desc": "Stylesheet to use.",                               "label": "Stylesheet",                  "class": "global"},
+#     palette_style       = {"default": "default", "desc": "Color palette to use.",                            "label": "Palette",                     "class": "global"},
+#     font_style          = {"default": "default", "desc": "font name to use.",                               "label": "Font name",                  "class": "global"},
+#     viewport_mode       = {"default": "smart",   "desc": "viewport update fn.",                              "label": "Viewport Mode",               "class": "global"}, )
+#
+# VALID_FONTS = dict( ui   = [ 'Arial', 'Cantarell', 'Corbel', 'DejaVu Sans', 'DejaVu Serif', 'FreeSans', 'Liberation Sans',
+#                              'Lucida Sans Unicode', 'MS Sans Serif', 'Open Sans', 'PT Sans', 'Tahoma', 'Verdana'],
+#
+#                     mono = [ 'Consolas', 'Courier', 'Courier 10 Pitch', 'Courier New', 'DejaVu Sans Mono', 'Fixed',
+#                              'FreeMono', 'Liberation Mono', 'Lucida Console', 'Menlo', 'Monaco'],
+#
+#                     nodes= [ 'Consolas', 'DejaVu Sans Mono', 'Menlo', 'DejaVu Sans'])
+#
+# EDGE_TYPES      = dict(bezier = 'bezier'        , polygon = 'polygon'       , )
+# POS_EVENTS      = dict(change = POS_CHANGE      , )
+# DRAG_MODES      = dict(none   = NODRAG          , rubber = RUBBER_DRAG)
+# VIEWPORT_MODES  = dict(full   = UPDATE_FULLVIEW , smart  = UPDATE_SMARTVIEW , minimal = UPDATE_MINIMALVIEW  , bounding = UPDATE_BOUNDINGVIEW, viewrect = UPDATE_VIEWRECT)
+# FLAG_MODES      = dict(select = SELECTABLE      , move   = MOVEABLE         , focus   = FOCUSABLE           , panel    = PANEL)
+# ANCHOR_MODES    = dict(none   = ANCHOR_NO       , under  = ANCHOR_UNDERMICE , center  = ANCHOR_CENTER, )
+#
+#
+# NODE            = dict( width               = NODE_WIDTH            , height       = 25              , radius                 = 10                  , border    = 2 ,
+#                         attHeight           = 30                    , con_width    = 2               , font                   = 'Arial'             , font_size = 12,
+#                         attFont             = 'Arial'               , attFont_size = 10              , mouse_bounding_box     = 80                  , alternate= 20,
+#                         grid_color          = [50, 50, 50, 255]     , slot_border  = [50, 50, 50, 255], non_connectable_color = [100, 100, 100, 255],
+#                         connection_color    = [255, 155, 0, 255], )
+#
+# SCENE           = dict( width               = 2000                  , height = 2000                 , size              = 36       , antialiasing = True,
+#                         antialiasing_boost  = True                  , smooth_pixmap = True, )
 
 # -------------------------------------------------------------------------------------------------------------
 """ PLM project base """
@@ -1328,53 +1315,43 @@ class ConfigDirectory(dict):
         super(ConfigDirectory, self).__init__()
 
         self.add('ROOT', ROOT)
+        self.add('ROOT_APP', ROOT_APP)
+
         self.add('APPDATA_DAMG', APPDATA_DAMG)
         self.add('APPDATA_PLM', APPDATA_PLM)
+        self.add('CFG_DIR', CFG_DIR)
         self.add('TMP_DIR', TMP_DIR)
         self.add('CACHE_DIR', CACHE_DIR)
         self.add('PREF_DIR', PREF_DIR)
+        self.add('SETTING_DIR', SETTING_DIR)
         self.add('TASK_DIR', TASK_DIR)
         self.add('TEAM_DIR', TEAM_DIR)
-        self.add('OJ_DIR', OJ_DIR)
+        self.add('PRJ_DIR', PRJ_DIR)
         self.add('ORG_DIR', ORG_DIR)
         self.add('USER_LOCAL_DATA', USER_LOCAL_DATA)
+        self.add('DB_DIR', DB_DIR)
 
-        self.add('APP_DATA_DIR', APP_DATA_DIR)
-
-        self.add('ASSETS_DIR', ASSETS_DIR)
-        self.add('AVATAR_DIR', AVATAR_DIR)
-        self.add('FONT_DIR', FONT_DIR)
-        self.add('IMAGE_DIR', IMAGE_DIR)
-        self.add('LOGO_DIR', LOGO_DIR)
-        self.add('DAMG_LOGO_DIR', DAMG_LOGO_DIR)
-        self.add('PLM_LOGO_DIR', PLM_LOGO_DIR)
-        self.add('SOUND_DIR', SOUND_DIR)
-
-        self.add('BIN_DIR', BIN_DIR)
-        self.add('DAMG_DIR', DAMG_DIR)
-        self.add('DATA_DIR', DATA_DIR)
-        self.add('JSON_DIR', JSON_DIR)
         self.add('DOCS_DIR', DOCS_DIR)
-        self.add('RST_DIR', RST_DIR)
-        self.add('TXT_DIR', TXT_DIR)
-        self.add('RAWS_DATA_DIR', RAWS_DATA_DIR)
         self.add('TEMPLATE_DIR', TEMPLATE_DIR)
-        self.add('TEMPLATE_LICENCE', TEMPLATE_LICENCE)
-        self.add('CSS_DIR', CSS_DIR)
-        self.add('HTML_DIR', HTML_DIR)
-        self.add('JS_DIR', JS_DIR)
-        self.add('QSS_DIR', QSS_DIR)
+        self.add('TEMPLATE_LICENSE', TEMPLATE_LICENSE)
+
+        self.add('INTERGRATIONS_DIR', INTERGRATIONS_DIR)
+
+        self.add('COMMONS_DIR', COMMONS_DIR)
+        self.add('CORE_DIR', CORE_DIR)
+        self.add('DAMG_DIR', DAMG_DIR)
+        self.add('GUI_DIR', GUI_DIR)
+        self.add('WIDGET_DIR', WIDGET_DIR)
 
         self.add('CORES_DIR', CORES_DIR)
-        self.add('CORES_ASSETS_DIR', CORES_ASSETS_DIR)
-        self.add('CORES_BASE_DIR', CORES_BASE_DIR)
-        self.add('CORES_LOGGER_DIR', CORES_LOGGER_DIR)
-        self.add('CORES_MODEL_DIR', CORES_MODEL_DIR)
+        self.add('BASE_DIR', BASE_DIR)
+        self.add('LOGGER_DIR', LOGGER_DIR)
+        self.add('MODELS_DIR', MODELS_DIR)
 
-        self.add('DEVKIT_DIR', DEVKIT_DIR)
-        self.add('DEVKIT_CORE', DEVKIT_CORE)
-        self.add('DEVKIT_GUI', DEVKIT_GUI)
-        self.add('DEVKIT_WIDGET', DEVKIT_WIDGET)
+        self.add('RESOURCES_DIR', RESOURCES_DIR)
+        self.add('AVATAR_DIR', AVATAR_DIR)
+        self.add('DESIGN_DIR', DESIGN_DIR)
+        self.add('FONT_DIR', FONT_DIR)
 
         self.add('ICON_DIR', ICON_DIR)
         self.add('TAG_ICON_DIR', TAG_ICON_DIR)
@@ -1393,37 +1370,37 @@ class ConfigDirectory(dict):
         self.add('ICON_DIR_48', ICON_DIR_48)
         self.add('ICON_DIR_64', ICON_DIR_64)
 
-        self.add('LIB_DIR', LIB_DIR)
+        self.add('IMAGE_DIR', IMAGE_DIR)
+        self.add('JSON_DIR', JSON_DIR)
+        self.add('LOGO_DIR', LOGO_DIR)
+        self.add('DAMG_LOGO_DIR', DAMG_LOGO_DIR)
+        self.add('PLM_LOGO_DIR', PLM_LOGO_DIR)
+        self.add('SOUND_DIR', SOUND_DIR)
 
-        self.add('NETWORK_DIR', NETWORK_DIR)
-
-        self.add('PLUGIN_DIR', PLUGIN_DIR)
-        self.add('BROWSER_DIR', BROWSER_DIR)
-        self.add('NODEGRAPH_DIR', NODEGRAPH_DIR)
-
-        self.add('SCRIPT_DIR', SCRIPT_DIR)
-
-        self.add('TEST_DIR', TEST_DIR)
+        self.add('SCRIPTS_DIR', SCRIPTS_DIR)
+        self.add('CSS_DIR', CSS_DIR)
+        self.add('HTML_DIR', HTML_DIR)
+        self.add('JS_DIR', JS_DIR)
+        self.add('QSS_DIR', QSS_DIR)
 
         self.add('UI_DIR', UI_DIR)
-        self.add('UI_ASSET_DIR', UI_ASSET_DIR)
         self.add('UI_BASE_DIR', UI_BASE_DIR)
-        self.add('BODY_DIR', BODY_DIR)
-        self.add('TABS_DIR', TABS_DIR)
-        self.add('FOOTER_DIR', FOOTER_DIR)
-        self.add('HEADER_DIR', HEADER_DIR)
-        self.add('SUBUI_DIR', SUBUI_DIR)
-        self.add('FUNCS_DIR', FUNCS_DIR)
-        self.add('PRJ_DIR', PRJ_DIR)
-        self.add('SETTINGS_DIR', SETTINGS_DIR)
-        self.add('TOOLS_DIR', TOOLS_DIR)
+        self.add('UI_COMPONENTS_DIR', UI_COMPONENTS_DIR)
+        self.add('UI_LAYOUTS_DIR', UI_LAYOUTS_DIR)
+        self.add('UI_MODELS_DIR', UI_MODELS_DIR)
+        self.add('UI_RCS_DIR', UI_RCS_DIR)
+        self.add('UI_TOOLS_DIR', UI_TOOLS_DIR)
 
         self.add('UTILS_DIR', UTILS_DIR)
+
+        self.add('PLUGIN_DIR', PLUGIN_DIR)
+
+        self.add('TEST_DIR', TEST_DIR)
 
         self.add('ConfigFolder', CFG_DIR)
         self.add('IconFolder', ICON_DIR)
         self.add('SettingFolder', SETTING_DIR)
-        self.add('AppDataFolder', APP_DATA_DIR)
+        self.add('AppDataFolder', LOCALAPPDATA)
         self.add('PreferenceFolder', PREF_DIR)
 
         mode = 0o770
@@ -1883,15 +1860,18 @@ def read_file(fileName):
             data = f.read()
         return data
 
-QUESTIONS           = read_file('QUESTION')
+
 ABOUT               = read_file('ABOUT')
-CREDIT              = read_file('CREDIT')
-CODECONDUCT         = read_file('CODECONDUCT')
+CODEOFCONDUCT       = read_file('CODEOFCONDUCT')
 CONTRIBUTING        = read_file('CONTRIBUTING')
+COPYRIGHT           = read_file('COPYRIGHT')
+CREDIT              = read_file('CREDIT')
+LICENCE             = read_file('LICENSE')
+LINKS               = read_file('LINKS')
 REFERENCES          = read_file('REFERENCES')
-LICENCE             = read_file('LICENCE')
-
-
+QUESTIONS           = read_file('QUESTION')
+REFERENCES          = read_file('REFERENCES')
+VERSION             = read_file('VERSION')
 
 
 if sys.platform == 'win32':

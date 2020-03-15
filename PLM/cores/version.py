@@ -1,22 +1,21 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Version.py
+Script Name: version.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import ROOT
+from PLM import ROOT
 """ Import """
 
 # Python
 import os, re
 
 # PLM
-from bin                                import DAMGTUPLE
+from PLM.commons                         import DAMGTUPLE
 
 
 with open(os.path.join(ROOT, 'appData', 'metadatas.py'), 'rb') as f:

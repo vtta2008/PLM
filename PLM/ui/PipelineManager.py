@@ -15,7 +15,7 @@ from PLM.commons.Widgets import MainWindow, Widget, GridLayout
 from devkit.Gui                         import LogoIcon
 from .Header                            import MainToolBar, MainMenuBar, ConnectStatus
 from .Body                              import TopTab, BotTab, Notification
-from .Footer                            import Footer, MainStatusBar
+from PLM.ui.components.Footer import Footer, MainStatusBar
 
 
 # -------------------------------------------------------------------------------------------------------------
