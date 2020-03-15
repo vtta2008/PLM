@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 
 # PLM
 from configs                        import ELIDE_RIGHT
-from PLM.Widgets import Widget, GridLayout, Label, TabWidget, TabBar
+from PLM.commons.Widgets import Widget, GridLayout, Label, TabWidget, TabBar
 
 
 

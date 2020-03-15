@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PLM.Widgets import GroupGrid, LineEdit, Button, Label, MessageBox
+from PLM.commons.Widgets import GroupGrid, LineEdit, Button, Label, MessageBox
 from PLM.utils import text_to_hex, check_match
 from configs            import PW_BLANK, PW_UNMATCH
 

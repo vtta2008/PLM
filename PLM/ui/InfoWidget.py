@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 from configs                import (SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCES, VERSION)
-from PLM.Widgets import Widget, GridLayout, Label, Button
+from PLM.commons.Widgets import Widget, GridLayout, Label, Button
 from devkit.Gui             import AppIcon
 
 class InfoWidget(Widget):

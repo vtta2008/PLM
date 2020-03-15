@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # Plt
-from PLM.Widgets import Widget, GridLayout
+from PLM.commons.Widgets import Widget, GridLayout
 from devkit.Gui                     import AppIcon
 from PLM.ui.base import Profile, Location, Avatar, PassWord
 

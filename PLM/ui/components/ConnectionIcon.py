@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 from devkit.Gui               import Image, Pixmap
-from PLM.Widgets import Label
+from PLM.commons.Widgets import Label
 from PLM.utils import get_app_icon
 from configs                    import AUTO_COLOR, center
 

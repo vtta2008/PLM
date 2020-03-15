@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # PLM
-from PLM.Widgets import Widget, Label, GridLayout
+from PLM.commons.Widgets import Widget, Label, GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Footer """

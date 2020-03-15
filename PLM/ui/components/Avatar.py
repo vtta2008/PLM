@@ -19,7 +19,7 @@ from PyQt5.QtWidgets            import QFileDialog
 # PLM
 from devkit.Core                import Size
 from devkit.Gui                 import Image, Pixmap
-from PLM.Widgets import Label, GroupBox, VBoxLayout, Button
+from PLM.commons.Widgets import Label, GroupBox, VBoxLayout, Button
 from PLM.utils import LocalDatabase, get_avatar_image
 from configs                    import AUTO_COLOR, USER_LOCAL_DATA, center, ASPEC_RATIO
 

@@ -16,7 +16,7 @@ from bin                                import DAMGLIST
 
 # PLM
 from PLM.ui.Body.Tabs import BotTab1, BotTab2
-from PLM.Widgets import TabWidget, VBoxLayout
+from PLM.commons.Widgets import TabWidget, VBoxLayout
 from devkit.Gui                         import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------

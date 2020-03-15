@@ -20,7 +20,7 @@ from PyQt5.QtWidgets        import QAction, QFileDialog, QInputDialog, QLineEdit
 from PyQt5.QtCore           import QSettings
 
 # PLM
-from PLM.Widgets import Widget, GridLayout, MenuBar
+from PLM.commons.Widgets import Widget, GridLayout, MenuBar
 from PLM.ui.base            import SettingOutput, SettingInput
 from PLM.configs            import SETTING_FILEPTH, __appname__, __organization__
 

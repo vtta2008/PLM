@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PLM.Widgets import LineEdit, ShortCut
+from PLM.commons.Widgets import LineEdit, ShortCut
 from configs                    import FRAMELESS, KEY_RETURN
 
 class CommandUI(LineEdit):

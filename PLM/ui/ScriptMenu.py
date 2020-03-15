@@ -18,7 +18,7 @@ from PyQt5.QtCore               import pyqtSignal
 from PyQt5.QtWidgets            import QApplication
 
 from PLM.cores import Loggers
-from PLM.Widgets import Menu, WidgetAction, Action, Icon, LineEdit
+from PLM.commons.Widgets import Menu, WidgetAction, Action, Icon, LineEdit
 
 
 class ScriptAction(Action):

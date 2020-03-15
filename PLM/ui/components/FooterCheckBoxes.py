@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PLM.Widgets import GroupGrid
+from PLM.commons.Widgets import GroupGrid
 
 
 class FooterCheckBoxes(GroupGrid):

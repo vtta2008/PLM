@@ -25,7 +25,7 @@ from PyQt5.QtWidgets            import (QAction, QActionGroup, QApplication, QCo
 
 # PLM
 from PLM.cores import Loggers
-from PLM.Widgets import Widget, MainWindow
+from PLM.commons.Widgets import Widget, MainWindow
 from devkit.Gui                 import AppIcon
 
 if sys.platform.startswith('darwin'):

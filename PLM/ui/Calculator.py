@@ -18,7 +18,7 @@ from PyQt5.QtCore               import Qt
 
 # PLM
 from bin                        import DAMGLIST
-from PLM.Widgets import Widget, LineEdit, GridLayout, ToolButton
+from PLM.commons.Widgets import Widget, LineEdit, GridLayout, ToolButton
 from devkit.Gui                 import AppIcon
 
 
