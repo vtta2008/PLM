@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import, unicode_literals
 
-from PLM.Widgets import GridLayout, GroupBox, LineEdit, Button, Label
+from PLM.commons.Widgets import GridLayout, GroupBox, LineEdit, Button, Label
 
 class Location(GroupBox):
 

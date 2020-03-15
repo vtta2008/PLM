@@ -17,7 +17,7 @@ from functools                          import partial
 
 # PLM
 from bin                                import DAMGDICT
-from PLM.Widgets import Action, Button
+from PLM.commons.Widgets import Action, Button
 from PLM.utils import is_string, is_action, is_button
 from PLM.cores import ActionKeyConfigError, ActionRegisterError, ButtonRegisterError
 from configs                            import (OPEN_URL_KEYS, CONFIG_DEV, CONFIG_TOOLS, CONFIG_OFFICE, CONFIG_TDS,

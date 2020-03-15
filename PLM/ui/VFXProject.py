@@ -20,7 +20,7 @@ from functools import partial
 from PyQt5.QtWidgets            import (QGroupBox, QInputDialog, QComboBox, QFileDialog, QListWidget, QListWidgetItem)
 
 # PLM
-from PLM.Widgets import Widget, Label, HBoxLayout, Button, GridLayout, LineEdit, VBoxLayout
+from PLM.commons.Widgets import Widget, Label, HBoxLayout, Button, GridLayout, LineEdit, VBoxLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """

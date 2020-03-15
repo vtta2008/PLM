@@ -13,7 +13,7 @@ from __future__ import absolute_import, unicode_literals
 from .BaseDetails           import BaseDetails
 from .BaseInfo              import BaseInfo
 from .BaseManager           import BaseManager
-from .BaseKeys               import BaseKeys
+from .BaseKeys              import BaseKeys
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 2/12/2019 - 7:34 AM

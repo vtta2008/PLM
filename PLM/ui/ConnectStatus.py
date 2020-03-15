@@ -20,7 +20,7 @@ import requests, sys
 from configs                            import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
 from bin                                import DAMGLIST
 from PLM.ui.base import Conection
-from PLM.Widgets import GroupGrid, Label, MessageBox
+from PLM.commons.Widgets import GroupGrid, Label, MessageBox
 from devkit.Core                        import Timer
 
 # -------------------------------------------------------------------------------------------------------------

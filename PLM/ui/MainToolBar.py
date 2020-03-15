@@ -15,7 +15,7 @@ Description:
 
 # PLM
 from configs                import SiPoMin
-from PLM.Widgets import MainWindow, ToolBar, GroupHBox
+from PLM.commons.Widgets import MainWindow, ToolBar, GroupHBox
 from PLM.utils import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------

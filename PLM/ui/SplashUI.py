@@ -22,7 +22,7 @@ from configs                    import (STAY_ON_TOP, FRAMELESS, bottom, center, 
                                         ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
                                         ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar,
                                         ConfigMachine, ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath)
-from PLM.Widgets import SplashScreen, ProgressBar
+from PLM.commons.Widgets import SplashScreen, ProgressBar
 from devkit.Gui                 import Pixmap
 
 

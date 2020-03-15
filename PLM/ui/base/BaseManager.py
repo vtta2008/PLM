@@ -18,7 +18,7 @@ from PLM.cores import Temporary
 
 from PLM.cores import DateLine
 from PLM.ui.base import BaseInfo, BaseDetails
-from PLM.Widgets import (Widget, Button, VBoxLayout, HBoxLayout)
+from PLM.commons.Widgets import (Widget, Button, VBoxLayout, HBoxLayout)
 from devkit.Gui                         import AppIcon
 
 class BaseManager(Widget):

@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 
 
 from bin                                        import DAMGDICT, DAMGLIST
-from PLM.Widgets import GroupGrid, CheckBox, Label
+from PLM.commons.Widgets import GroupGrid, CheckBox, Label
 from PLM.utils import str2bool
 
 

@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # PLM
-from PLM.Widgets import DockWidget, ToolBar, GridLayout
+from PLM.commons.Widgets import DockWidget, ToolBar, GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar docking class """

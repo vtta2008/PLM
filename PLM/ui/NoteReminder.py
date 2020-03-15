@@ -20,7 +20,7 @@ from PyQt5.QtWidgets                import (QAction, QApplication, QComboBox, QD
                                             QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
 
 # Plm
-from PLM.Widgets import GridLayout, Widget, Label
+from PLM.commons.Widgets import GridLayout, Widget, Label
 from devkit.Gui                     import AppIcon
 
 

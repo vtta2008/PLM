@@ -15,7 +15,7 @@ Description:
 from PyQt5.QtWidgets        import (QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit)
 
 # PLM
-from PLM.Widgets import Widget, VBoxLayout, Label, GroupBox, LineEdit
+from PLM.commons.Widgets import Widget, VBoxLayout, Label, GroupBox, LineEdit
 
 
 class ForgotPassword(Widget):

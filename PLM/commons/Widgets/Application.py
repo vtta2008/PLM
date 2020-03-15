@@ -32,9 +32,9 @@ from PLM.cores import Loggers
 from PLM.cores import SignalManager
 from PLM.cores import SettingManager
 from PLM.cores import StyleSheet
-from PLM.Core import Process
-from PLM.Gui import Cursor, LogoIcon
-from PLM.Widgets import MessageBox
+from PLM.commons.Core import Process
+from PLM.commons.Gui import Cursor, LogoIcon
+from PLM.commons.Widgets import MessageBox
 from plugins                        import Qt
 
 PCWSTR                              = ctypes.c_wchar_p

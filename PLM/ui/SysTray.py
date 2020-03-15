@@ -13,7 +13,7 @@ Description:
 
 # PLM
 from configs                            import __appSlogan__, __appname__
-from PLM.Widgets import SystemTrayIcon
+from PLM.commons.Widgets import SystemTrayIcon
 from devkit.Gui                         import LogoIcon
 from PLM.ui.SysTrayIconMenu import SysTrayIconMenu
 from PLM.utils import LocalDatabase

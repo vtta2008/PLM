@@ -19,8 +19,8 @@ from functools                  import partial
 
 # PLM
 from configs                    import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
-from PLM.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label,
-                         Label, MessageBox, GroupGrid, )
+from PLM.commons.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label,
+                                 Label, MessageBox, GroupGrid, )
 from devkit.Gui                 import AppIcon
 from PLM.utils import bool2str, LocalDatabase
 

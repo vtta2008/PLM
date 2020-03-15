@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore import QSettings, Qt
 from PyQt5.QtWidgets import QTableWidget, QAbstractItemView, QHeaderView, QTableWidgetItem
-from PLM.Widgets import Widget, ComboBox, Label, GroupGrid, GridLayout
+from PLM.commons.Widgets import Widget, ComboBox, Label, GroupGrid, GridLayout
 
 class SettingInput(Widget):
 

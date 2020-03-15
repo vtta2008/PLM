@@ -22,7 +22,7 @@ from PyQt5.QtWidgets            import (QGridLayout, QFileDialog, QApplication, 
 
 # PLM
 from configs                    import ASPEC_RATIO, SMOOTH_TRANS
-from PLM.Widgets import Widget, GridLayout, Button, HBoxLayout, Label
+from PLM.commons.Widgets import Widget, GridLayout, Button, HBoxLayout, Label
 from devkit.Gui                 import AppIcon
 
 class ScreenShot(Widget):

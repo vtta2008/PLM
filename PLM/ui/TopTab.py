@@ -9,7 +9,7 @@ Description:
 """ Import """
 
 # PLM
-from PLM.Widgets import TabWidget, VBoxLayout
+from PLM.commons.Widgets import TabWidget, VBoxLayout
 from devkit.Gui                 import AppIcon
 from PLM.ui.Body.Tabs import TopTab1, TopTab2, TopTap3
 from bin                        import DAMGLIST

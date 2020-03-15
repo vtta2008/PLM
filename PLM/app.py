@@ -13,18 +13,18 @@ Description:
 
 # PLM
 from PLM.configs                        import SYSTRAY_UNAVAI, KEY_RELEASE
-from PLM.ui                             import AppBase
+from PLM.ui.models                      import AppModel
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
 
-class PLM(AppBase):
+class PLM(AppModel):
 
     key                                 = 'PLM'
 
     def __init__(self):
-        AppBase.__init__(self)
+        AppModel.__init__(self)
 
         serverReady                     = self.checkConnectServer()
         userData                        = self.checkUserData()

@@ -11,7 +11,7 @@ from __future__ import absolute_import, unicode_literals
 
 # PLM
 from configs                            import __homepage__, dockB, __appname__
-from PLM.Widgets import MainWindow, Widget, GridLayout
+from PLM.commons.Widgets import MainWindow, Widget, GridLayout
 from devkit.Gui                         import LogoIcon
 from .Header                            import MainToolBar, MainMenuBar, ConnectStatus
 from .Body                              import TopTab, BotTab, Notification
