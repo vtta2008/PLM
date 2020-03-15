@@ -1,9 +1,0 @@
-<application>
-  <component name="UISettings">
-    <option name="COLOR_BLINDNESS" value="deuteranopia" />
-    <option name="OVERRIDE_NONIDEA_LAF_FONTS" value="true" />
-    <option name="SHOW_INPLACE_COMMENTS" value="true" />
-    <option name="SHOW_MAIN_TOOLBAR" value="true" />
-    <option name="CONTRAST_SCROLLBARS" value="true" />
-  </component>
-</application>

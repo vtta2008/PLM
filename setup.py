@@ -22,11 +22,11 @@ from setuptools import find_packages
 from cx_Freeze import setup, Executable
 
 # PLM
-from __buildtins__ import *
+from PLM.__main__ import *
 
-from appData import LICENCE_MIT, APP_DATA_DIR, COPYRIGHT, __pkgsReq__
+from configs import LICENCE_MIT, APP_DATA_DIR, COPYRIGHT, __pkgsReq__
 
-from cores.Version import version
+from PLM.cores import version
 
 os.environ['TCL_LIBRARY']   = "C:/ProgramData/Anaconda3/tcl/tcl8.6"
 os.environ['TK_LIBRARY']    = "C:/ProgramData/Anaconda3/tcl/tk8.6"
@@ -70,7 +70,7 @@ keywords            = parse(r'__plmSlogan__\s+=\s+(.*)')
 
 print(install_requires, type(install_requires))
 
-main_python_file    = "main.py"
+main_python_file    = "PLM/app.py"
 
 build_exe_options = {'packages': ['os', 'sys', ], "excludes": ["tkinter"]}      #'include_files': includefiles,}
 options = {"build_exe" : build_exe_options, 'bdist_msi': {}}
