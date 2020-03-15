@@ -21,10 +21,10 @@ from PyQt5.QtGui                        import QTextCursor
 
 
 # PLM
-from bin                                import DAMGLIST
-from configs                            import SCROLLBAROFF, NO_WRAP
-from PLM.commons.Widgets import Widget, PlainTextEdit, ShortCut, VBoxLayout, StatusBar
-from devkit.Core                        import Process
+from PLM.commons                        import DAMGLIST
+from PLM.configs                        import SCROLLBAROFF, NO_WRAP
+from PLM.commons.Widgets                import Widget, PlainTextEdit, ShortCut, VBoxLayout, StatusBar
+from PLM.commons.Core                   import Process
 
 
 class TopTap3(Widget):

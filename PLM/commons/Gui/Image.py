@@ -8,15 +8,14 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 """ Import """
 
 # PyQt5
 from PyQt5.QtGui                            import QImage, QPixmap
 
 # PLM
-from configs                                import AUTO_COLOR
+from PLM.configs                                import AUTO_COLOR
 
 
 class Image(QImage):

@@ -8,6 +8,7 @@ Description:
     This script is a Calculator demo
 
 """
+# -------------------------------------------------------------------------------------------------------------
 """ Import """
 
 # Python
@@ -17,9 +18,9 @@ import math
 from PyQt5.QtCore               import Qt
 
 # PLM
-from bin                        import DAMGLIST
+from PLM.commons                        import DAMGLIST
 from PLM.commons.Widgets import Widget, LineEdit, GridLayout, ToolButton
-from devkit.Gui                 import AppIcon
+from PLM.commons.Gui                 import AppIcon
 
 
 class Calculator(Widget):

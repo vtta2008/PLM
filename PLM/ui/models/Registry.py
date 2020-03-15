@@ -8,11 +8,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
 import datetime, time
-from bin                    import DAMGDICT, DAMGLIST, DAMG
-from configs                import layoutTypes
+from PLM.commons                import DAMGDICT, DAMGLIST, DAMG
+from PLM.configs                import layoutTypes
 
 
 class InspectLayout(DAMG):

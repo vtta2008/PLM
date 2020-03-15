@@ -8,8 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import globalSetting
+from PLM import globalSetting
 
 """ Import """
 
@@ -17,7 +16,7 @@ from PLM.__main__ import globalSetting
 import os, sys, subprocess
 
 # PLM
-from bin                           import DAMG
+from PLM.commons                           import DAMG
 
 
 

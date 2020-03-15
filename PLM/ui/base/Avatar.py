@@ -8,8 +8,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-
 # Python
 import os, shutil, sqlite3
 
@@ -17,11 +15,12 @@ import os, shutil, sqlite3
 from PyQt5.QtWidgets            import QFileDialog
 
 # PLM
-from devkit.Core                import Size
-from devkit.Gui                 import Image, Pixmap
-from PLM.commons.Widgets import Label, GroupBox, VBoxLayout, Button
-from PLM.utils import LocalDatabase, get_avatar_image
-from configs                    import AUTO_COLOR, USER_LOCAL_DATA, center, ASPEC_RATIO
+from PLM.commons.Core           import Size
+from PLM.commons.Gui            import Image, Pixmap
+from PLM.commons.Widgets        import Label, GroupBox, VBoxLayout, Button
+from PLM.cores                  import LocalDatabase
+from PLM.utils                  import get_avatar_image
+from PLM.configs                import AUTO_COLOR, USER_LOCAL_DATA, center, ASPEC_RATIO
 
 db                              = LocalDatabase()
 

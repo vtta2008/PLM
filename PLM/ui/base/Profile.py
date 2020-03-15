@@ -8,7 +8,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
 from PLM.commons.Widgets import GroupGrid, LineEdit, Button, Label
 

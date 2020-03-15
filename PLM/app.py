@@ -15,6 +15,7 @@ Description:
 from PLM.configs                        import SYSTRAY_UNAVAI, KEY_RELEASE
 from PLM.ui.models                      import AppModel
 
+
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
@@ -91,7 +92,8 @@ class PLM(AppModel):
 
 if __name__ == '__main__':
     app = PLM()
-    app.startLoop()
+    app.run()
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 19/06/2018 - 2:26 AM

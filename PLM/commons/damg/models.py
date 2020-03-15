@@ -9,17 +9,14 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-
-
 # Python
-import datetime, time, re
-from functools                              import partial
+import time
+import datetime
+import re
 
 # PLM
 from .base                                  import (BaseDict, BaseObject, BaseWorker, BaseThread, BaseThreadPool,
                                                     BaseError, BaseTuple, BaseList)
-
 
 # -------------------------------------------------------------------------------------------------------------
 """ Registry """

@@ -10,12 +10,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-
-# Plm
-from configs                        import __plmWiki__, plmInfo
-from PLM.commons.Widgets import GroupVBox, MenuBar
-from PLM.utils import is_string
+# PLM
+from PLM.configs                    import __plmWiki__, plmInfo
+from PLM.commons.Widgets            import GroupVBox, MenuBar
+from PLM.utils                      import is_string
 
 class MainMenuBar(GroupVBox):
 

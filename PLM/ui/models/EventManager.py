@@ -8,9 +8,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
-from bin                import DAMGDICT, DAMG
+from PLM.commons                import DAMGDICT, DAMG
 
 from PyQt5.QtGui        import QWheelEvent
 

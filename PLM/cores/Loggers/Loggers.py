@@ -8,7 +8,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import unicode_literals
 """ Import """
 
 # Python
@@ -16,7 +15,7 @@ import os, sys, traceback, linecache, logging
 
 
 # PLM
-from configs                        import LOG_FORMAT, DT_FORMAT, LOCAL_LOG
+from PLM.configs                    import LOG_FORMAT, DT_FORMAT, LOCAL_LOG
 from .base                          import StyleMessage, LogLevel
 from .Handlers                      import StreamHandler, FileHandler
 

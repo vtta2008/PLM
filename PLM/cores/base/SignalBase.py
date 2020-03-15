@@ -8,15 +8,14 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import globalSetting
+from PLM import globalSetting
 """ Import """
 
 # PyQt5
 from PyQt5.QtCore                            import pyqtSignal, pyqtSlot
 
 # PLM
-from bin                                     import DAMG, DAMGDICT
+from PLM.commons                             import DAMG, DAMGDICT
 from PLM.cores import Loggers
 
 # -------------------------------------------------------------------------------------------------------------

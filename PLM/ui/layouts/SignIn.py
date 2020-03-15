@@ -18,11 +18,12 @@ import sys, requests
 from functools                  import partial
 
 # PLM
-from configs                    import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
+from PLM.configs                    import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
 from PLM.commons.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label,
                                  Label, MessageBox, GroupGrid, )
-from devkit.Gui                 import AppIcon
-from PLM.utils import bool2str, LocalDatabase
+from PLM.commons.Gui                 import AppIcon
+from PLM.utils import bool2str
+from PLM.cores.localSQL import LocalDatabase
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """

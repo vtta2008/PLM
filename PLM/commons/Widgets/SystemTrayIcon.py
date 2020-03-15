@@ -8,12 +8,11 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 
 from PyQt5.QtWidgets                        import QSystemTrayIcon
 
-from devkit.Gui.Icon                        import AppIcon
+from PLM.commons.Gui.Icon                   import AppIcon
 from PLM.cores import Loggers
 from PLM.cores import SettingManager
 from PLM.cores import SignalManager

@@ -8,14 +8,13 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 
 from PyQt5.QtWidgets                        import QLineEdit
 from PyQt5.QtGui                            import QIntValidator
 
 # PLM
-from configs                                import PRS
+from PLM.configs                            import PRS
 from PLM.cores import SettingManager
 from PLM.cores import SignalManager
 from PLM.utils import check_preset

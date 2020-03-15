@@ -8,12 +8,11 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 
 from PyQt5.QtWidgets                        import QMenuBar, QMenu
 
-from bin                                    import DAMGDICT
+from PLM.commons                            import DAMGDICT
 from PLM.cores import SettingManager
 from PLM.cores import SignalManager
 

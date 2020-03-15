@@ -14,8 +14,8 @@ Description:
 from PyQt5.QtCore                       import Qt
 
 # PLM
-from configs                            import SiPoMin
-from bin                                import DAMG, DAMGLIST
+from PLM.configs                            import SiPoMin
+from PLM.commons                                import DAMG, DAMGLIST
 
 from .ActionManager                     import ActionManager
 from .ButtonManager                     import ButtonManager
@@ -25,11 +25,11 @@ from .EventManager                      import EventManager
 from PLM.ui.base import BaseManager, ImageAvatar, PixAvatar
 from ..tools import CommandUI
 from PLM.ui.PipelineManager import PipelineManager
-from PLM.ui import SysTray
-from PLM.ui.SubUi import (Calendar, Calculator, EnglishDictionary, FindFiles, ImageViewer,
-                          NoteReminder, ScreenShot, TextEditor, ForgotPassword, SignUp, SignIn,
-                          InfoWidget, VFXProject, AppSetting, UserSetting, Preferences,
-                          Configurations)
+from PLM.ui.SysTray import SysTray
+from PLM.ui.tools import (Calendar, Calculator, EnglishDictionary, FindFiles, ImageViewer,
+                          NoteReminder, ScreenShot, TextEditor)
+from PLM.ui.layouts import (ForgotPassword, SignUp, SignIn, InfoWidget, VFXProject, AppSetting, UserSetting,
+                            Preferences, Configurations)
 
 class LayoutManager(DAMG):
 

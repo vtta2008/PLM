@@ -14,10 +14,11 @@ Description:
 import platform
 
 # PLM
-from bin                            import DAMG, DAMGDICT
-from configs                        import DarkPalette
-from PLM.cores import Loggers
-from devkit.Core                    import TextStream, File, QssFile
+from PLM.commons                    import DAMG, DAMGDICT
+from PLM.commons.Core               import TextStream, File, QssFile
+from PLM.configs                    import DarkPalette
+from PLM.cores                      import Loggers
+
 
 class StyleSheet(DAMG):
 

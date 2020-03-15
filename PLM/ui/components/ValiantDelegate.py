@@ -8,7 +8,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore import QRegExp, Qt, QByteArray, QDate, QDateTime, QPoint, QRect, QSize, QTime
 from PyQt5.QtGui import QRegExpValidator, QValidator, QColor

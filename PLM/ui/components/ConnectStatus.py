@@ -9,19 +9,18 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import globalSetting
+from PLM import globalSetting
 """ Import """
 
 # Python
 import requests, sys
 
 # PLM
-from configs                            import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
-from bin                                import DAMGLIST
-from PLM.ui.base import Conection
-from PLM.commons.Widgets import GroupGrid, Label, MessageBox
-from devkit.Core                        import Timer
+from PLM.configs                            import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
+from PLM.commons.Widgets                    import GroupGrid, Label, MessageBox
+from PLM.commons.Core                       import Timer
+from PLM.commons                            import DAMGLIST
+from PLM.ui.base                            import Conection
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """

@@ -12,7 +12,7 @@ from __future__ import absolute_import, unicode_literals
 
 
 
-from PLM.cores import BaseType
+from PLM.cores.base import BaseType
 from PyQt5.QtCore                       import QDateTime
 
 

@@ -172,7 +172,7 @@ VERSION_TAG                         = 'https://github.com/vtta2008/damgteam/blob
 
 # -------------------------------------------------------------------------------------------------------------
 ''' configs '''
-LOCALAPPDATA        = os.environ('LOCALAPPDATA')
+LOCALAPPDATA        = os.getenv('LOCALAPPDATA')
 
 APPDATA_DAMG        = os.path.join(LOCALAPPDATA, __organizationName__).replace('\\', '/')
 APPDATA_PLM         = os.path.join(APPDATA_DAMG, __appname__).replace('\\', '/')
@@ -206,7 +206,7 @@ INTERGRATIONS_DIR   = os.path.join(ROOT_APP, 'intergrations').replace('\\', '/')
 # -------------------------------------------------------------------------------------------------------------
 ''' common '''
 
-COMMONS_DIR         = os.path.join(ROOT, 'common').replace('\\', '/')
+COMMONS_DIR         = os.path.join(ROOT, 'commons').replace('\\', '/')
 CORE_DIR            = os.path.join(COMMONS_DIR, 'Core').replace('\\', '/')
 DAMG_DIR            = os.path.join(COMMONS_DIR, 'damg').replace('\\', '/')
 GUI_DIR             = os.path.join(COMMONS_DIR, 'Gui').replace('\\', '/')
@@ -282,7 +282,7 @@ REQUIREMENTS_DIR    = os.path.join(ROOT_APP, 'requirements').replace('\\', '/')
 # -------------------------------------------------------------------------------------------------------------
 ''' scripts '''
 
-SCRIPTS_DIR         = os.path.join(ROOT_APP, 'rcs').replace('\\', '/')
+SCRIPTS_DIR         = os.path.join(ROOT, 'rcs').replace('\\', '/')
 CSS_DIR             = os.path.join(SCRIPTS_DIR, 'css').replace('\\', '/')
 HTML_DIR            = os.path.join(SCRIPTS_DIR, 'html').replace('\\', '/')
 JS_DIR              = os.path.join(SCRIPTS_DIR, 'js').replace('\\', '/')
@@ -296,7 +296,7 @@ PLUGIN_DIR          = os.path.join(ROOT_APP, 'plugins').replace('\\', '/')
 # -------------------------------------------------------------------------------------------------------------
 ''' test '''
 
-TEST_DIR            = os.path.join(ROOT_APP, 'test').replace('\\', '/')
+TEST_DIR            = os.path.join(ROOT_APP, 'tests').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 """ config file """
@@ -320,6 +320,8 @@ urlCfg                              = os.path.join(CFG_DIR, 'url.cfg')
 userCfg                             = os.path.join(CFG_DIR, 'user.cfg')
 PLMconfig                           = os.path.join(CFG_DIR, 'PLM.cfg')
 sceneGraphCfg                       = os.path.join(CFG_DIR, 'sceneGraph.cfg')
+
+splashImagePth                      = os.path.join(IMAGE_DIR, 'splash.png')
 
 # -------------------------------------------------------------------------------------------------------------
 """ setting file """
@@ -1283,6 +1285,8 @@ class ConfigPath(dict):
         self.add('userCfg'          , userCfg)
         self.add('PLMconfig'        , PLMconfig)
         self.add('sceneGraphCfg'    , sceneGraphCfg)
+        self.add('splashImagePth'   , splashImagePth)
+
         self.add('APP_SETTING'      , APP_SETTING)
         self.add('USER_SETTING'     , USER_SETTING)
         self.add('FORMAT_SETTING'   , FORMAT_SETTING)
@@ -1841,7 +1845,7 @@ appInfo                            = ConfigApps()
 urlInfo                            = ConfigUrl()
 plmInfo                            = ConfigPipeline(iconInfo, appInfo, urlInfo, dirInfo, pthInfo)
 
-from bin import PresetDB
+from PLM.cores import PresetDB
 localDB = PresetDB(filename=pthInfo['LOCAL_DB'])
 
 
@@ -1850,7 +1854,7 @@ localDB = PresetDB(filename=pthInfo['LOCAL_DB'])
 
 def read_file(fileName):
 
-    filePth = os.path.join(dirInfo['RAWS_DATA_DIR'], fileName)
+    filePth = os.path.join(dirInfo['DOCS_DIR'], fileName)
 
     if not os.path.exists(filePth):
         filePth = os.path.join(dirInfo['RST_DIR'], "{}.rst".format(fileName))

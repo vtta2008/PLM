@@ -13,7 +13,7 @@ Description:
 
 # Plt
 from PLM.commons.Widgets import Widget, GridLayout
-from devkit.Gui                     import AppIcon
+from PLM.commons.Gui                     import AppIcon
 from PLM.ui.base import Profile, Location, Avatar, PassWord
 
 # ----------------------------------------------------------------------------------------------------------- #

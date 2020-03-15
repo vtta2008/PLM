@@ -24,9 +24,9 @@ from PyQt5.QtGui            import QPixmap, QTransform, QIcon
 from PyQt5.QtWidgets        import QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout
 
 from PLM.commons.Widgets import Widget
-from devkit.Gui             import AppIcon
+from PLM.commons.Gui             import AppIcon
 from PLM.utils import get_screen_resolution
-from configs                import LOCAL_DB
+from PLM.configs                import LOCAL_DB
 
 # Plt
 

@@ -9,12 +9,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-
 from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QColor
 
-from bin import DAMGDICT
+from PLM.commons import DAMGDICT
 
 class ColorLibs(DAMGDICT):
 

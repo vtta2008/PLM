@@ -9,8 +9,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-
 import ctypes, sys
 from ctypes import windll, wintypes
 from uuid import UUID

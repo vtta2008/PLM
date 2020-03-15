@@ -8,15 +8,12 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 """ Import """
-
-
 
 from PyQt5.QtCore               import pyqtSignal
 
-from bin                        import DAMG, DAMGDICT
-from devkit.Core                import Date, Time, Timer
+from PLM.commons                import DAMG, DAMGDICT
+from PLM.commons.Core           import Date, Time, Timer
 
 
 class BaseType(DAMG):

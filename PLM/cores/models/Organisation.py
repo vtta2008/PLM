@@ -8,7 +8,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # Python
@@ -19,8 +18,8 @@ from playsound                          import playsound
 from PyQt5.QtCore                       import QDateTime
 
 # PLM
-from PLM.cores import BaseType
-from configs                            import SOUND_DIR, ORG_DIR
+from PLM.cores.base                     import BaseType
+from PLM.configs                        import SOUND_DIR, ORG_DIR
 
 
 # -------------------------------------------------------------------------------------------------------------

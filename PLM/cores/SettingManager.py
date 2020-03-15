@@ -8,8 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import globalSetting
+from PLM import globalSetting
 """ Import """
 
 # Python
@@ -19,8 +18,8 @@ import os
 from PyQt5.QtCore                       import QSettings
 
 # PLM
-from configs                            import INI, SETTING_FILEPTH
-from devkit.Core                        import Settings
+from PLM.configs                        import INI, SETTING_FILEPTH
+from PLM.commons.Core                   import Settings
 
 
 class SettingManager(Settings):

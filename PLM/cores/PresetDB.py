@@ -8,15 +8,14 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import
-from PLM.__main__ import __envKey__
+from PLM import ROOT, __envKey__
 """ Import """
 
 # Python
 
 import os, re
 import sqlite3              as lite
-from bin                    import DAMG
+from PLM.commons                    import DAMG
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """
@@ -53,12 +52,9 @@ LTD = dict(
 # -------------------------------------------------------------------------------------------------------------
 """ Create database """
 
-if __name__ == '__main__':
-    with open(os.path.join(os.getcwd(), 'metadatas.py').replace('\\', '/'), "rb") as f:
-        metadata = f.read().decode('utf-8')
-else:
-    with open(os.path.join(os.getenv(__envKey__), 'bin', 'data', 'metadatas.py').replace('\\', '/'), 'rb') as f:
-        metadata = f.read().decode('utf-8')
+
+with open(os.path.join(ROOT, 'configs', 'metadatas.py').replace('\\', '/'), 'rb') as f:
+    metadata = f.read().decode('utf-8')
 
 def parse(pattern):
     return re.search(pattern, metadata).group(1).replace('"', '').strip()

@@ -8,8 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 """ Import """
 
 # Python
@@ -19,7 +18,7 @@ import os
 from PyQt5.QtCore                           import QFile
 
 # PLM
-from configs                                import QSS_DIR
+from PLM.configs                            import QSS_DIR
 
 
 class FileBase(QFile):

@@ -19,8 +19,8 @@ from playsound import playsound
 from PyQt5.QtCore                       import QDateTime
 
 # PLM
-from PLM.cores import BaseType
-from configs                            import SOUND_DIR, TEAM_DIR
+from PLM.cores.base import BaseType
+from PLM.configs                            import SOUND_DIR, TEAM_DIR
 
 
 class Team(BaseType):

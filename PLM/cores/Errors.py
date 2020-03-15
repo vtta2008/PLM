@@ -8,11 +8,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # PLM
-from bin import DAMGERROR
+from PLM.commons import DAMGERROR
 
 
 class NodePropertyError(DAMGERROR): pass

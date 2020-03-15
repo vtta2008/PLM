@@ -6,17 +6,14 @@ Description:
     This is main UI of PipelineTool.
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # PLM
-from configs                            import __homepage__, dockB, __appname__
-from PLM.commons.Widgets import MainWindow, Widget, GridLayout
-from devkit.Gui                         import LogoIcon
-from .Header                            import MainToolBar, MainMenuBar, ConnectStatus
-from .Body                              import TopTab, BotTab, Notification
-from PLM.ui.components.Footer import Footer, MainStatusBar
-
+from PLM.configs                        import __homepage__, dockB, __appname__
+from PLM.commons.Widgets                import MainWindow, Widget, GridLayout
+from PLM.commons.Gui                    import LogoIcon
+from PLM.ui.components                  import MainToolBar, MainMenuBar, ConnectStatus, Footer, MainStatusBar, Notification
+from PLM.ui.layouts                     import TopTab, BotTab
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """

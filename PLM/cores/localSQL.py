@@ -8,18 +8,18 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import
-
 """ Import """
 
 # Python
-import datetime, time
+import time
+import datetime
 import sqlite3 as lite
 
 # PLM
-from configs                        import LOCAL_DB, DB_ATTRIBUTE_TYPE
-from bin                            import DAMG, DAMGLIST, DAMGDICT
-from devkit.Core                    import Timer, Date
+from PLM.configs                    import LOCAL_DB, DB_ATTRIBUTE_TYPE
+from PLM.commons.Core               import Timer, Date
+from PLM.commons                    import DAMG, DAMGLIST, DAMGDICT
+
 
 def get_datetime():
     datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
