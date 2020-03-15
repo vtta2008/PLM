@@ -4,6 +4,7 @@
     <extensionMap>
       <mapping pattern=".cmds" type="PLAIN_TEXT" />
       <mapping pattern="VERSION" type="PLAIN_TEXT" />
+      <mapping pattern="project_structure" type="PLAIN_TEXT" />
       <mapping ext="qss" type="PLAIN_TEXT" />
       <mapping ext="in" type="PLAIN_TEXT" />
     </extensionMap>
