@@ -12,11 +12,11 @@ Description:
 """ Import """
 
 # PLM
-from configs                            import __appSlogan__, __appname__
-from PLM.commons.Widgets import SystemTrayIcon
-from devkit.Gui                         import LogoIcon
-from PLM.ui.components.SysTrayIconMenu import SysTrayIconMenu
-from PLM.utils import LocalDatabase
+from PLM.configs                        import __appSlogan__, __appname__
+from PLM.commons.Widgets                import SystemTrayIcon
+from PLM.commons.Gui                    import LogoIcon
+from PLM.ui.components                  import SysTrayIconMenu
+from PLM.cores                          import LocalDatabase
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -11,12 +11,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-
 # PLM
-from configs                import SiPoMin
-from PLM.commons.Widgets import MainWindow, ToolBar, GroupHBox
-from PLM.utils import str2bool, bool2str
+from PLM.configs            import SiPoMin
+from PLM.commons.Widgets    import MainWindow, ToolBar, GroupHBox
+from PLM.utils              import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """

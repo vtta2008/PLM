@@ -8,15 +8,13 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore                        import pyqtSignal
 
-from bin                                 import DAMGLIST, DAMGTHREADPOOL, DAMGTHREAD
-from PLM.utils import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
-from devkit.Core                         import Timer
-from PLM.cores import SignalManager
-from PLM.cores import SettingManager
+from PLM.commons                         import DAMGLIST, DAMGTHREADPOOL, DAMGTHREAD
+from PLM.utils                           import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
+from PLM.commons.Core                    import Timer
+from PLM.cores                           import SignalManager, SettingManager
 
 
 class BackgroundService(DAMGTHREAD):

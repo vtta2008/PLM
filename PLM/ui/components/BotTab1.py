@@ -8,11 +8,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
-from PLM.commons.Widgets import Widget, GridLayout, CheckBox
-from bin                                    import DAMGDICT, DAMGLIST
-from PLM.utils import str2bool
+from PLM.commons.Widgets    import Widget, GridLayout, CheckBox
+from PLM.commons            import DAMGDICT, DAMGLIST
+from PLM.utils              import str2bool
 
 class BotTab1(Widget):
 

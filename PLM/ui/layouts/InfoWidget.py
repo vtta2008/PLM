@@ -8,17 +8,16 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
-from configs                import (SiPoMin, PLM_ABOUT, CODECONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCES, VERSION)
-from PLM.commons.Widgets import Widget, GridLayout, Label, Button
-from devkit.Gui             import AppIcon
+from PLM.configs            import (SiPoMin, PLM_ABOUT, CODEOFCONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCES, VERSION)
+from PLM.commons.Widgets    import Widget, GridLayout, Label, Button
+from PLM.commons.Gui             import AppIcon
 
 class InfoWidget(Widget):
 
     content = dict(
         About               = PLM_ABOUT,
-        CodeOfConduct       = CODECONDUCT,
+        CodeOfConduct       = CODEOFCONDUCT,
         Contributing        = CONTRIBUTING,
         Credit              = CREDIT,
         Licence             = LICENCE,

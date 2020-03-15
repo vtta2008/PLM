@@ -8,10 +8,9 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtCore import QDate, QTime, QDateTime
-from bin import DAMG
+from PLM.commons import DAMG
 
 class DateLine(DAMG):
 

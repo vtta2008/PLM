@@ -21,7 +21,7 @@ from PyQt5.QtCore           import QSettings
 
 # PLM
 from PLM.commons.Widgets import Widget, GridLayout, MenuBar
-from PLM.ui.base            import SettingOutput, SettingInput
+from PLM.ui.components            import SettingOutput, SettingInput
 from PLM.configs            import SETTING_FILEPTH, __appname__, __organization__
 
 # -------------------------------------------------------------------------------------------------------------

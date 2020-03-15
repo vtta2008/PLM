@@ -8,6 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from PLM import ROOT
 """ Import """
 
 # Python
@@ -18,7 +19,7 @@ from setuptools                 import find_packages
 from cx_Freeze                  import setup, Executable
 
 # PLM
-from PLM.configs                import LICENCE, APP_DATA_DIR, COPYRIGHT, __pkgsReq__
+from PLM.configs                import LICENCE, COPYRIGHT, __pkgsReq__
 from PLM.cores                  import version
 
 os.environ['TCL_LIBRARY']   = "C:/ProgramData/Anaconda3/tcl/tcl8.6"
@@ -39,7 +40,7 @@ def find_data_file(filename):
         datadir = os.path.dirname(__file__)
     return os.path.join(datadir, filename)
 
-with open(os.path.join(APP_DATA_DIR, 'metadatas.py'), "rb") as f:
+with open(os.path.join(ROOT, 'configs', 'metadatas.py'), "rb") as f:
     metadata = f.read().decode('utf-8')
 
 def parse(pattern):

@@ -15,13 +15,13 @@ from PLM import globalSetting
 import os, sys, requests
 
 from PLM.configs                        import __localServer__, __google__, STAY_ON_TOP, SERVER_CONNECT_FAIL
-from PLM.utils                          import LocalDatabase, clean_file_ext
-from PLM.ui.layouts.SplashUI import SplashUI
+from PLM.cores                          import LocalDatabase
+from PLM.ui.layouts.SplashUI            import SplashUI
 from PLM.ui.models.ThreadManager        import ThreadManager
 from PLM.ui.models.LayoutManager        import LayoutManager
-from PLM.ui.tools.Browser import Browser
+from PLM.ui.tools.Browser               import Browser
 from PLM.commons.Widgets                import Application
-
+from PLM.utils                          import clean_file_ext
 
 class AppModel(Application):
 

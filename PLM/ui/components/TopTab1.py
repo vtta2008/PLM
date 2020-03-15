@@ -16,8 +16,8 @@ Description:
 from PLM.commons.Widgets import GroupBox, GridLayout, Widget, GroupGrid
 from PLM.ui.base import TaskInfo, TaskFilter
 from PLM.utils import get_file_path
-from configs                                    import TASK_DIR
-from bin                                        import DAMGLIST
+from PLM.configs                                    import TASK_DIR
+from PLM.commons                                        import DAMGLIST
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab1 """

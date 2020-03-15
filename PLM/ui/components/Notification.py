@@ -8,12 +8,11 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
 import datetime
 
-from PLM.commons.Widgets import LCDNumber, GroupGrid, Label
-from devkit.Core                import Timer
+from PLM.commons.Widgets            import LCDNumber, GroupGrid, Label
+from PLM.commons.Core                import Timer
 
 class DigitalClock(LCDNumber):
 

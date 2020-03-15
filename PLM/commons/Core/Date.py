@@ -9,8 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 """ Import """
 
 # PyQt5
@@ -22,7 +21,7 @@ class Date(QDate):
     Type                                    = 'DAMGDATE'
     key                                     = 'Date'
     _name                                   = 'DAMG Date'
-    _copyright                              = __copyright__
+    _copyright                              = __copyright__()
 
 
     def __init__(self, *__args):

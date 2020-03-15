@@ -12,13 +12,14 @@ from PLM import ROOT
 """ Import """
 
 # Python
-import os, re
+import os
+import re
 
 # PLM
 from PLM.commons                         import DAMGTUPLE
 
 
-with open(os.path.join(ROOT, 'appData', 'metadatas.py'), 'rb') as f:
+with open(os.path.join(ROOT, 'configs', 'metadatas.py'), 'rb') as f:
     metadata = f.read().decode('utf-8')
 
 def parse(pattern):

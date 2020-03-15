@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 
 """ Import """
 
@@ -17,7 +17,7 @@ from PyQt5.QtGui                            import QTextTableFormat, QTextCharFo
 from PyQt5.QtWidgets                        import QTextEdit, QDockWidget
 
 # PLM
-from configs                                import right, datetTimeStamp
+from PLM.configs                            import right, datetTimeStamp
 from PLM.cores import SettingManager
 from PLM.cores import SignalManager
 

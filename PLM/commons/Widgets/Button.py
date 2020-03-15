@@ -8,17 +8,16 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 """ Import """
 
 # PyQt5
 from PyQt5.QtWidgets                        import QPushButton, QToolButton
 
 # PLM
-from devkit.Gui.Icon import AppIcon, TagIcon
-from PLM.utils import check_preset
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
+from PLM.commons.Gui                        import AppIcon, TagIcon
+from PLM.utils                              import check_preset
+from PLM.cores                              import SettingManager, SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Button presets """

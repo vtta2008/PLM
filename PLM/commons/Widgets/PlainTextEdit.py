@@ -8,8 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 
 from PyQt5.QtWidgets                        import QPlainTextEdit
 

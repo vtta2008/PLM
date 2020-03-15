@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-
+from .damg import DAMGTUPLE, DAMGTHREAD, DAMGWORKER, DAMGTHREADPOOL, DAMGERROR, DAMGDICT, DAMGLIST, DAMG
 
 
 

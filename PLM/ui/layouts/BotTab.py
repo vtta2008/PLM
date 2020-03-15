@@ -11,13 +11,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-from bin                                import DAMGLIST
-
-# PLM
-from PLM.ui.Body.Tabs import BotTab1, BotTab2
-from PLM.commons.Widgets import TabWidget, VBoxLayout
-from devkit.Gui                         import AppIcon
+from PLM.commons                    import DAMGLIST
+from PLM.commons.Gui                import AppIcon
+from PLM.commons.Widgets            import TabWidget, VBoxLayout
+from PLM.ui.components              import BotTab1, BotTab2
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """

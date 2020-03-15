@@ -8,18 +8,12 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
-from PLM.cores import Task
-from PLM.cores import Project
-from PLM.cores import Team
-from PLM.cores import Organisation
-from PLM.cores import Temporary
-
-from PLM.cores import DateLine
-from PLM.ui.base import BaseInfo, BaseDetails
-from PLM.commons.Widgets import (Widget, Button, VBoxLayout, HBoxLayout)
-from devkit.Gui                         import AppIcon
+from PLM.cores                          import Task, Project, Team, Organisation, Temporary
+from PLM.cores.base                     import DateLine
+from PLM.ui.base                        import BaseInfo, BaseDetails
+from PLM.commons.Widgets                import Widget, Button, VBoxLayout, HBoxLayout
+from PLM.commons.Gui                    import AppIcon
 
 class BaseManager(Widget):
 

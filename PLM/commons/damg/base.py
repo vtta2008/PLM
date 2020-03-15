@@ -9,8 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 """ Import """
 
 # Python
@@ -84,7 +83,7 @@ class BaseList(list):
     key                                 = 'BaseList'
     _name                               = 'DAMG list'
     _count                              = 0
-    _copyright                          = __copyright__
+    _copyright                          = __copyright__()
     _data                               = dict()
 
     def __init__(self):
@@ -138,7 +137,7 @@ class BaseDict(dict):
     key                                 = 'BaseDict'
     _name                               = 'DAMG dict'
     _count                              = 0
-    _copyright                          = __copyright__
+    _copyright                          = __copyright__()
     _data                               = dict()
 
     def __init__(self):
@@ -205,7 +204,7 @@ class BaseTuple(tuple):
     _name                               = 'DAMG Base Tuple'
     _data                               = dict()
     __count                             = 0
-    _copyright                          = __copyright__
+    _copyright                          = __copyright__()
 
     def __new__(cls, *args):
         cls.args = args
@@ -264,7 +263,7 @@ class BaseError(Exception):
     _name                               = 'DAMG error'
     _count                              = 0
     _data                               = dict()
-    _copyright                          = __copyright__
+    _copyright                          = __copyright__()
 
     def __str__(self):
 
@@ -328,7 +327,7 @@ class BaseObject(QObject):
     _name                               = 'DAMG object'
     _count                              = 0
     _data                               = dict()
-    _copyright                          = __copyright__
+    _copyright                          = __copyright__()
 
     def __init__(self):
         QObject.__init__(self)
@@ -398,7 +397,7 @@ class BaseWorker(QRunnable):
     key                                     = 'BaseWorker'
     _name                                   = 'DAMG Worker'
     _count                                  = 0
-    _copyright                              = __copyright__
+    _copyright                              = __copyright__()
     _data                                   = dict()
 
     def __init__(self, task, *args, **kwargs):
@@ -476,7 +475,7 @@ class BaseThread(QThread):
     _key                                = 'BaseThread'
     _name                               = 'DAMG Thread'
     _count                              = 0
-    _copyright                          = __copyright__
+    _copyright                          = __copyright__()
     _data                               = dict()
 
     def __init__(self, *args, **kwargs):
@@ -547,7 +546,7 @@ class BaseThreadPool(QThreadPool):
     key                                     = 'BaseThreadPool'
     _name                                   = 'DAMG Thread Pool'
     _count                                  = 0
-    _copyright                              = __copyright__
+    _copyright                              = __copyright__()
     _data                                   = dict()
 
     workers = []

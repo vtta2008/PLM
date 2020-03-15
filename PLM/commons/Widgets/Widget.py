@@ -8,13 +8,13 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 
 # PyQt5
 from PyQt5.QtWidgets                        import QWidget
 
 # PLM
-from devkit.Gui.Icon import AppIcon
+from PLM.commons.Gui.Icon import AppIcon
 from PLM.cores import SettingManager
 from PLM.cores import SignalManager
 

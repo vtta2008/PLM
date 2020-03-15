@@ -17,9 +17,9 @@ from difflib                    import get_close_matches
 from PyQt5.QtWidgets            import QTextEdit, QApplication
 
 # PLM
-from configs                    import JSON_DIR
-from PLM.commons.Widgets import Widget, GridLayout, LineEdit, Label, Button
-from devkit.Gui                 import AppIcon
+from PLM.configs                    import JSON_DIR
+from PLM.commons.Widgets            import Widget, GridLayout, LineEdit, Label, Button
+from PLM.commons.Gui                 import AppIcon
 
 class EnglishDictionary(Widget):
 

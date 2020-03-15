@@ -144,7 +144,7 @@ class Application(QApplication):
         self.logger.info('Get AppID: {0}'.format(appID))
         return appID
 
-    def startLoop(self):
+    def run(self):
         self._appID                     = self.getAppID()
         return sys.exit(self.exec_())
 

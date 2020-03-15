@@ -8,7 +8,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
 from PLM.commons.Widgets import GroupGrid, Label, CheckBox, PlainTextEdit
 from PLM.utils import str2bool

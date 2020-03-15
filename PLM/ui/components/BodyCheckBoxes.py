@@ -8,11 +8,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
-from PLM.commons.Widgets import GroupGrid, CheckBox, Label
-from bin                                    import DAMGLIST, DAMGDICT
-from PLM.utils import str2bool
+from PLM.commons.Widgets                    import GroupGrid, CheckBox, Label
+from PLM.commons                            import DAMGLIST, DAMGDICT
+from PLM.utils                              import str2bool
 
 class BodyCheckBoxes(GroupGrid):
 

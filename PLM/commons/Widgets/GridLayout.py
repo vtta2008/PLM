@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 
 """ Import """
 

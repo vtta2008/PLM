@@ -8,8 +8,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-
 
 from collections                import defaultdict
 import os
@@ -18,7 +16,8 @@ from PyQt5.QtCore               import pyqtSignal
 from PyQt5.QtWidgets            import QApplication
 
 from PLM.cores import Loggers
-from PLM.commons.Widgets import Menu, WidgetAction, Action, Icon, LineEdit
+from PLM.commons.Widgets import Menu, WidgetAction, Action, LineEdit
+from PLM.commons.Gui import Icon
 
 
 class ScriptAction(Action):

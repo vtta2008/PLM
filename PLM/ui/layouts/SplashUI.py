@@ -9,8 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import ROOT
+from PLM import ROOT
 
 """ Import """
 
@@ -18,12 +17,12 @@ from PLM.__main__ import ROOT
 import os
 
 # PLM
-from configs                    import (STAY_ON_TOP, FRAMELESS, bottom, center, cyan,
+from PLM.configs                import (STAY_ON_TOP, FRAMELESS, bottom, center, cyan, splashImagePth,
                                         ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
                                         ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar,
                                         ConfigMachine, ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath)
-from PLM.commons.Widgets import SplashScreen, ProgressBar
-from devkit.Gui                 import Pixmap
+from PLM.commons.Widgets        import SplashScreen, ProgressBar
+from PLM.commons.Gui            import Pixmap
 
 
 
@@ -59,7 +58,7 @@ QProgressBar::chunk {
 class SplashUI(SplashScreen):
 
     key                         = 'SplashScreen'
-    _value                       = 0
+    _value                      = 0
     _num                        = 15
 
 
@@ -67,7 +66,7 @@ class SplashUI(SplashScreen):
         super(SplashUI, self).__init__()
 
         self.app                = app
-        self.pix                = Pixmap(os.path.join(ROOT, 'assets', 'images', 'splash.png'))
+        self.pix                = Pixmap(splashImagePth)
         self.flag               = STAY_ON_TOP
         self.progressBar        = ProgressBar(self)
 
@@ -78,7 +77,7 @@ class SplashUI(SplashScreen):
         self.setEnabled(False)
 
         self.progressBar.setMinimum(0)
-        self.progressBar.setMaximum(self.num)
+        self.progressBar.setMaximum(self.num*10)
         self.progressBar.setGeometry(50, self.pix.height() - 50, self.pix.width() - 100, 20)
         self.progressBar.setTextVisible(True)
         self.progressBar.setStyleSheet(progressBar_stylesheet)

@@ -19,9 +19,9 @@ from PyQt5.QtGui            import QDesktopServices
 from PyQt5.QtWidgets        import (QAbstractItemView, QApplication, QComboBox, QFileDialog, QGridLayout, QHBoxLayout, QWidget,
                                     QHeaderView, QProgressDialog, QTableWidget, QTableWidgetItem, )
 
-from configs                import SiPoExp, SiPoPre
+from PLM.configs                import SiPoExp, SiPoPre
 from PLM.commons.Widgets import Widget, Button, Label
-from devkit.Gui             import AppIcon
+from PLM.commons.Gui             import AppIcon
 
 class FindFiles(Widget):
 

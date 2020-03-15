@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 
 """ Import """
 
@@ -16,7 +16,7 @@ from PLM.__main__ import __copyright__
 from PyQt5.QtWidgets                        import QGroupBox
 
 # PLM
-from configs                                import WAIT_LAYOUT_COMPLETE
+from PLM.configs                            import WAIT_LAYOUT_COMPLETE
 from .                                      import VBoxLayout, HBoxLayout, GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
 from .Label                                 import Label
 from PLM.cores import SettingManager

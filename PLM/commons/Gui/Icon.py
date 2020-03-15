@@ -8,8 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-from PLM.__main__ import __copyright__
+from PLM import __copyright__
 """ Import """
 
 # Python
@@ -20,9 +19,9 @@ from PyQt5.QtGui                            import QIcon
 
 # PLM
 from PLM.utils import get_app_icon, get_tag_icon, get_logo_icon
-from configs                                import iconInfo, IGNORE_ICONS
-from devkit.Core                            import Size
-from PLM.cores import IconNotFound
+from PLM.configs                                import iconInfo, IGNORE_ICONS
+from PLM.commons.Core                            import Size
+from PLM.cores.Errors import IconNotFound
 
 class Icon(QIcon):
 
