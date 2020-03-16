@@ -9,13 +9,15 @@ Description:
 """ Import """
 
 # PLM
+from PLM.cores.Errors                   import ToolbarNameError
 from PLM.configs                        import __homepage__, __appname__, SiPoMin, dockB
 from PLM.commons                        import DAMGDICT
 from PLM.commons.Widgets                import MainWindow, Widget, GridLayout, ToolBar
 from PLM.commons.Gui                    import LogoIcon
 from .components                        import ConnectStatus, Footer, MainStatusBar, Notification
 from .layouts                           import TopTab, BotTab
-from .models                            import ActionManager, ButtonManager
+from .models.ButtonManager              import ButtonManager
+from .models.ActionManager              import ActionManager
 from PLM.utils                          import str2bool, bool2str
 
 # -------------------------------------------------------------------------------------------------------------
@@ -40,8 +42,8 @@ class PipelineManager(MainWindow):
         self.setWindowTitle(__appname__)
         self.setWindowIcon(LogoIcon('PLM'))
 
-        self.actionManager              = ActionManager(self)
-        self.buttonManager              = ButtonManager(self)
+        self.actionManager              = ActionManager(self.parent)
+        self.buttonManager              = ButtonManager(self.parent)
         self.threadManager              = threadManager
 
         self.mainWidget                 = Widget()
@@ -80,17 +82,17 @@ class PipelineManager(MainWindow):
 
     def setup_menuBar(self):
 
-        self.mainMenuBar            = self.menuBar()
+        self.mainMenuBar                = self.menuBar()
 
-        self.appMenu                = self.build_app_menu()
-        self.goMenu                 = self.build_goTo_menu()
-        self.editMenu               = self.build_edit_menu()
-        self.viewMenu               = self.build_view_menu()
-        self.officeMenu             = self.build_officceMenu()
-        self.toolsMenu              = self.build_toolMenu()
-        self.pluginMenu             = self.build_pluins_menu()
-        self.libMenu                = self.build_libs_menu()
-        self.helpMenu               = self.build_help_menu()
+        self.appMenu                    = self.build_app_menu()
+        self.goMenu                     = self.build_goTo_menu()
+        self.editMenu                   = self.build_edit_menu()
+        self.viewMenu                   = self.build_view_menu()
+        self.officeMenu                 = self.build_officceMenu()
+        self.toolsMenu                  = self.build_toolMenu()
+        self.pluginMenu                 = self.build_pluins_menu()
+        self.libMenu                    = self.build_libs_menu()
+        self.helpMenu                   = self.build_help_menu()
 
         for menu in [self.appMenu, self.goMenu, self.editMenu, self.viewMenu, self.officeMenu, self.toolsMenu,
                      self.pluginMenu, self.libMenu, self.helpMenu]:
@@ -104,12 +106,16 @@ class PipelineManager(MainWindow):
     def setup_toolBars(self):
 
         self.tdToolBar                  = self.build_toolBar("TD")
-        self.preToolBar                 = self.build_toolBar('PRE')
         self.compToolBar                = self.build_toolBar("VFX")
         self.artToolBar                 = self.build_toolBar("ART")
+        self.preToolBar                 = self.build_toolBar('PRE')
         self.textureToolBar             = self.build_toolBar('TEX')
         self.postToolBar                = self.build_toolBar('POST')
         self.officeToolBar              = self.build_toolBar('MCO')
+        self.devToolBar                 = self.build_toolBar('DEV')
+        self.toolToolBar                = self.build_toolBar('TOOL')
+        self.extraToolBar               = self.build_toolBar('EXTRA')
+        self.systrayToolBar             = self.build_toolBar('SYSTRAY')
 
         self.tbs                        = [tb for tb in self.toolBars.values()]
 
@@ -156,43 +162,43 @@ class PipelineManager(MainWindow):
 
     def build_goTo_menu(self):
         menu                        = self.mainMenuBar.addMenu('&Go To')
-        actions                     = self.actionManger.goMenuActions(self.parent)
+        actions                     = self.actionManager.goMenuActions(self.parent)
         self.add_actions_to_menu(menu, actions)
         return menu
 
     def build_edit_menu(self):
-        menu                        = self.addMenu('&Edit')
-        editActions                 = self.actionManger.editMenuActions(self.parent)
+        menu                        = self.mainMenuBar.addMenu('&Edit')
+        editActions                 = self.actionManager.editMenuActions(self.parent)
         self.add_actions_to_menu(menu, editActions)
         return menu
 
     def build_view_menu(self):
-        menu                        = self.addMenu('&View')
+        menu                        = self.mainMenuBar.addMenu('&View')
 
         self.stylesheetMenu         = menu.addMenu('&Stylesheet')
-        stylesheetActions           = self.actionManger.stylesheetMenuActions(self.parent)
+        stylesheetActions           = self.actionManager.stylesheetMenuActions(self.parent)
         self.add_actions_to_menu(self.stylesheetMenu, stylesheetActions)
 
-        viewActions                 = self.actionManger.viewMenuActions(self.parent)
+        viewActions                 = self.actionManager.viewMenuActions(self.parent)
         self.add_actions_to_menu(menu, viewActions)
         return menu
 
     def build_officceMenu(self):
         menu                        = self.mainMenuBar.addMenu("&Office")
-        action                      = self.actionManger.officeMenuActions(self.parent)
+        action                      = self.actionManager.officeMenuActions(self.parent)
         self.add_actions_to_menu(menu, action)
         return menu
 
 
     def build_pluins_menu(self):
-        menu                        = self.addMenu("&Plug-ins")
-        actions                     = self.actionManger.pluginMenuActions(self.parent)
+        menu                        = self.mainMenuBar.addMenu("&Plug-ins")
+        actions                     = self.actionManager.pluginMenuActions(self.parent)
         self.add_actions_to_menu(menu, actions)
         return menu
 
     def build_toolMenu(self):
-        menu                        = self.addMenu("&Tools")
-        actions                     = self.actionManger.toolsMenuActions(self.parent)
+        menu                        = self.mainMenuBar.addMenu("&Tools")
+        actions                     = self.actionManager.toolsMenuActions(self.parent)
         self.add_actions_to_menu(menu, actions[0:8])
         menu.addSeparator()
         self.add_actions_to_menu(menu, actions[8:11])
@@ -201,14 +207,14 @@ class PipelineManager(MainWindow):
         return menu
 
     def build_libs_menu(self):
-        menu                        = self.addMenu("&Libs")
-        actions                     = self.actionManger.libMenuActions(self.parent)
+        menu                        = self.mainMenuBar.addMenu("&Libs")
+        actions                     = self.actionManager.libMenuActions(self.parent)
         self.add_actions_to_menu(menu, actions)
         return menu
 
     def build_help_menu(self):
-        menu                        = self.addMenu("&Help")
-        actions                     = self.actionManger.helpMenuActions(self.parent)
+        menu                        = self.mainMenuBar.addMenu("&Help")
+        actions                     = self.actionManager.helpMenuActions(self.parent)
         self.add_actions_to_menu(menu, actions[0:2])
         menu.addSeparator()
         self.add_actions_to_menu(menu, actions[2:5])
@@ -220,22 +226,30 @@ class PipelineManager(MainWindow):
 
     def getActions(self, title):
         if title == 'TD':
-            actions = self.actionManager.tdToolBarActions(self)
+            actions = self.actionManager.tdToolBarActions(self.parent)
         elif title == 'PRE':
-            actions = self.actionManager.preToolbarActions(self)
+            actions = self.actionManager.preToolbarActions(self.parent)
         elif title == 'VFX':
-            actions = self.actionManager.vfxToolBarActions(self)
+            actions = self.actionManager.vfxToolBarActions(self.parent)
         elif title == 'ART':
-            actions = self.actionManager.artToolBarActions(self)
+            actions = self.actionManager.artToolBarActions(self.parent)
         elif title == 'TEX':
-            actions = self.actionManager.texToolBarActions(self)
+            actions = self.actionManager.texToolBarActions(self.parent)
         elif title == 'POST':
-            actions = self.actionManager.postToolBarActions(self)
+            actions = self.actionManager.postToolBarActions(self.parent)
         elif title == 'MCO':
-            actions = self.actionManager.officeMenuActions(self)
+            actions = self.actionManager.officeMenuActions(self.parent)
+        elif title == 'DEV':
+            actions = self.actionManager.devToolbarActions(self.parent)
+        elif title == 'TOOL':
+            actions = self.actionManager.toolsMenuActions(self.parent)
+        elif title == 'EXTRA':
+            actions = self.actionManager.extraToolbarActions(self.parent)
+        elif title == 'SYSTRAY':
+            actions = self.actionManager.sysTrayMenuActions(self.parent)
         else:
-            print('WindowTitleError: There is no toolBar name: {0}'.format(title))
-            actions = self.actionManager.extraToolActions(self)
+            print(ToolbarNameError('There is no toolBar name: {0}'.format(title)))
+
 
         return actions
 

@@ -33,7 +33,7 @@ from PLM.configs                    import __version__, __appname__, __organizat
 from PLM.cores                      import Loggers, SignalManager, SettingManager, StyleSheet
 from PLM.commons.Core               import Process
 from PLM.commons.Gui                import Cursor, LogoIcon
-from PLM.commons.Widgets            import MessageBox
+from PLM.commons.Widgets.MessageBox import MessageBox
 from PLM.plugins                    import Qt
 
 PCWSTR                              = ctypes.c_wchar_p

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Registry.py
+Script Name: RegistryLayout.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -64,6 +64,8 @@ class InspectLayout(DAMG):
             return False
         else:
             return True
+
+
 
 class RegistryLayout(DAMGDICT):
 
@@ -141,6 +143,8 @@ class RegistryLayout(DAMGDICT):
             return True
         else:
             return False
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 8/11/2019 - 4:18 PM

@@ -46,9 +46,10 @@ def save_data(filePth, data):
 def __copyright__():
     return 'Pipeline Manager (PLM) Copyright (C) 2017 - 2020 by DAMGTEAM, contributed by Trinh Do & Duong Minh Duc.'
 
-ROOT_APP                            = get_root()
-ROOT                                = os.path.join(ROOT_APP, __envKey__)
-cmd                                 = 'SetX {0} {1}'.format(__envKey__, ROOT)
+
+# -------------------------------------------------------------------------------------------------------------
+""" Base Object """
+
 
 class ObjectGlb(object):
 
@@ -69,23 +70,11 @@ class ObjectGlb(object):
         return self._copyright
 
 
-class ModesGlb(ObjectGlb):
-
-    _allowLocalMode                 = False
-
-    def __init__(self):
-        ObjectGlb.__init__(self)
-
-    @property
-    def allowLocalMode(self):
-        return self._allowLocalMode
-
-    @allowLocalMode.setter
-    def allowLocalMode(self, val):
-        self._allowLocalMode        = val
+# -------------------------------------------------------------------------------------------------------------
+""" Config global """
 
 
-class SettingsGlb(ModesGlb):
+class ConfigGlb(ObjectGlb):
 
     _cfgable                        = False
 
@@ -105,6 +94,8 @@ class SettingsGlb(ModesGlb):
     _printFmtInfo                   = False
     _printPlmInfo                   = False
     _printPcInfo                    = False
+    _printSettingInfo               = False
+    _printSignalReceive             = False
 
     _saveCfgInfo                    = True
     _savePthInfo                    = True
@@ -256,20 +247,28 @@ class SettingsGlb(ModesGlb):
         return self._savePcInfo
 
     @property
-    def printIconInfo(self):
-        return self._printIconInfo
-
-    @property
     def saveIconInfo(self):
         return self._saveIconInfo
+
+    @property
+    def printSettingInfo(self):
+        return self._printSettingInfo
+
+    @property
+    def printSignalReceive(self):
+        return self._printSignalReceive
+
+    @printSignalReceive.setter
+    def printSignalReceive(self, val):
+        self._printSignalReceive    = val
+    
+    @printSettingInfo.setter
+    def printSettingInfo(self, val):
+        self._printSettingInfo      = val
 
     @saveIconInfo.setter
     def saveIconInfo(self, val):
         self._saveIconInfo          = val
-
-    @printIconInfo.setter
-    def printIconInfo(self, val):
-        self._printIconInfo         = val
 
     @savePcInfo.setter
     def savePcInfo(self, val):
@@ -400,19 +399,108 @@ class SettingsGlb(ModesGlb):
         self._cfgable               = val
 
 
-class GlobalBase(SettingsGlb):
+# -------------------------------------------------------------------------------------------------------------
+""" Mode global """
+
+
+class ModesGlb(ConfigGlb):
+
+    _allowLocalMode                 = False
 
     def __init__(self):
-        super(GlobalBase, self).__init__()
+        ConfigGlb.__init__(self)
+
+    @property
+    def allowLocalMode(self):
+        return self._allowLocalMode
+
+    @allowLocalMode.setter
+    def allowLocalMode(self, val):
+        self._allowLocalMode        = val
+
+
+# -------------------------------------------------------------------------------------------------------------
+""" Error global """
+
+
+class ErrorsGlb(ModesGlb):
+
+    _allowAllErrors                 = True
+    _actionRegisterError            = True
+
+    def __init__(self):
+        ModesGlb.__init__(self)
+
+
+    @property
+    def allowAllErrors(self):
+        return self._allowAllErrors
+
+    @property
+    def actionRegisterError(self):
+        return self._actionRegisterError
+
+    @actionRegisterError.setter
+    def actionRegisterError(self, val):
+        self._actionRegisterError   = val
+
+    @allowAllErrors.setter
+    def allowAllErrors(self, val):
+        self._allowAllErrors        = val
+
+
+# -------------------------------------------------------------------------------------------------------------
+""" Signal global """
+
+
+class SignalGlb(ErrorsGlb):
+
+    _emittable                      = False
+    _autoChangeEmittable            = True
+
+    def __init__(self):
+        ErrorsGlb.__init__(self)
+
+    @property
+    def emittable(self):
+        return self._emittable
+
+    @property
+    def autoChangeEmittable(self):
+        return self._autoChangeEmittable
+
+    @autoChangeEmittable.setter
+    def autoChangeEmittable(self, val):
+        self._autoChangeEmittable   = val
+
+    @emittable.setter
+    def emittable(self, val):
+        self._emittable             = val
+
+
+# -------------------------------------------------------------------------------------------------------------
+""" Setting global """
+
+
+class GlobalBase(SignalGlb):
+
+    def __init__(self):
+        SignalGlb.__init__(self)
+
+
+# -------------------------------------------------------------------------------------------------------------
 
 
 class GlobalSetting(GlobalBase):
 
     def __init__(self):
-        super(GlobalSetting, self).__init__()
+        GlobalBase.__init__(self)
 
 
-globalSetting = GlobalSetting()
+globalSetting                       = GlobalSetting()
+ROOT_APP                            = get_root()
+ROOT                                = os.path.join(ROOT_APP, __envKey__)
+cmd                                 = 'SetX {0} {1}'.format(__envKey__, ROOT)
 
 
 try:

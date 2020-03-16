@@ -24,7 +24,7 @@ class PLM(AppModel):
     key                                 = 'PLM'
 
     def __init__(self):
-        super(PLM, self).__init__()
+        AppModel.__init__(self)
 
         serverReady                     = self.checkConnectServer()
         userData                        = self.checkUserData()

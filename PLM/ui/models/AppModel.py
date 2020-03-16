@@ -20,7 +20,7 @@ from PLM.configs                        import __localServer__, __google__, STAY
 from PLM.cores                          import LocalDatabase
 from PLM.ui.layouts.SplashUI            import SplashUI
 from PLM.ui.models.ThreadManager        import ThreadManager
-from PLM.ui.models.LayoutManager        import LayoutManager
+from PLM.ui.LayoutManager               import LayoutManager
 from PLM.ui.tools.Browser               import Browser
 from PLM.commons.Widgets                import Application
 from PLM.utils                          import clean_file_ext

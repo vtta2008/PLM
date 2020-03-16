@@ -125,7 +125,7 @@ class SignalBase(DAMG):
         self._slots.update()
 
     def getSignal(self, key):
-        if globalSetting.tracks.getSignal:
+        if globalSetting.printSignalReceive:
             self.logger.info('{0} get signal: {1}'.format(self.parent.key, key))
         return self.signals.get(key)
 
@@ -139,12 +139,12 @@ class SignalBase(DAMG):
             signal                           = self.getSignal(key)
             signal.emit(arg)
         else:
-            if globalSetting.tracks.emittable:
+            if globalSetting.emittable:
                 self.logger.info('EmittableError: {0} is not allowed to emit'.format(self.key))
             return
 
     def connect(self, key, target):
-        if globalSetting.defaults.auto_changeEmitable:
+        if globalSetting.autoChangeEmittable:
             self._emitable                   = True
         else:
             self.logger.info('SignalConnectArror: {0} is not allowed to connect'.format(self.key))

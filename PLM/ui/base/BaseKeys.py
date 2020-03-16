@@ -20,9 +20,9 @@ from PLM.commons.Widgets                import Action, Button
 from PLM.utils                          import is_string, is_action, is_button
 from PLM.cores.Errors                   import ActionKeyConfigError, ActionRegisterError, ButtonRegisterError
 from PLM.configs                        import (OPEN_URL_KEYS, CONFIG_DEV, CONFIG_TOOLS, CONFIG_OFFICE, CONFIG_TDS,
-                                                CONFIG_ART, CONFIG_TEX, CONFIG_POST, CONFIG_VFX, CONFIG_PRE, LIBRARY_UI_KEYS,
-                                                SHORTCUT_KEYS, STYLESHEET_KEYS, PLUGIN_UI_KEY, FORM_KEY,
-                                                BTNTAGSIZE, TAGBTNSIZE, plmInfo)
+                                                CONFIG_ART, CONFIG_TEX, CONFIG_POST, CONFIG_VFX, CONFIG_PRE,
+                                                CONFIG_EXTRA, LIBRARY_UI_KEYS, SHORTCUT_KEYS, STYLESHEET_KEYS,
+                                                PLUGIN_UI_KEY, FORM_KEY, BTNTAGSIZE, TAGBTNSIZE, plmInfo)
 
 class BaseKeys(DAMGDICT):
 
@@ -54,8 +54,11 @@ class BaseKeys(DAMGDICT):
     texActions                          = [k for k in CONFIG_TEX if k in plmInfo.keys()]
     postActions                         = [k for k in CONFIG_POST if k in plmInfo.keys()]
     preActions                          = [k for k in CONFIG_PRE if k in plmInfo.keys()]
+    extraActions                        = [k for k in CONFIG_EXTRA if k in plmInfo.keys()]
 
     sysTrayActions                      = ['Minimize', 'Restore', 'Maximize', 'Snipping Tool', 'ScreenShot', 'Exit', 'SignIn']
+
+    # Buttons
 
     tagButtons                          = ['pythonTag', 'licenceTag', 'versionTag']
     managerButtons                      = ['Organisation', 'Project', 'Team', 'Task']
@@ -74,7 +77,7 @@ class BaseKeys(DAMGDICT):
         ActionKeyConfigError('Key is not in plmInfo: {0}'.format(key))
 
     def actionRegisterError(self, key):
-        if globalSetting.checks.actionRegisterError:
+        if globalSetting.actionRegisterError:
             ActionRegisterError('This action is already registered: {0}'.format(key))
 
     def buttonRegisterError(self, key):
@@ -133,7 +136,7 @@ class BaseKeys(DAMGDICT):
                          'txt': '&{0}'.format(key),
                          'stt': self.plmInfo[key].statusTip,
                          'tt': self.plmInfo[key].toolTip,
-                         'trg': partial(self.parent.command, key), }, parent)
+                         'trg': partial(parent.command, key), }, parent)
         action.key = '{0}_{1}_Action'.format(parent.key, key)
         action._name = action.key
         if action.key in self.checkedKeys:

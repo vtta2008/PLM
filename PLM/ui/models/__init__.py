@@ -14,8 +14,7 @@ from .ActionManager         import ActionManager
 from .AppModel              import AppModel
 from .ButtonManager         import ButtonManager
 from .EventManager          import EventManager
-from .LayoutManager         import LayoutManager
-from .Registry              import RegistryLayout
+from .RegistryLayout              import RegistryLayout
 from .ThreadManager         import ThreadManager
 
 # -------------------------------------------------------------------------------------------------------------

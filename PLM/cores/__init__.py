@@ -18,7 +18,6 @@ from .models.Team               import Team
 from .models.Temporary          import Temporary
 from .EnvironmentVariable       import EnvironmentVariable
 from .localSQL                  import LocalDatabase
-from .PresetDB                  import PresetDB
 from .SettingManager            import SettingManager
 from .SignalManager             import SignalManager
 from .StyleSheet                import StyleSheet

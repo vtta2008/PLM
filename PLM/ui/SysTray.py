@@ -16,7 +16,8 @@ from PLM.configs                        import __appSlogan__, __appname__
 from PLM.commons.Widgets                import SystemTrayIcon
 from PLM.commons.Gui                    import LogoIcon
 from PLM.ui.components                  import SysTrayIconMenu
-from PLM.ui.models                      import ActionManager, EventManager
+from PLM.ui.models.EventManager         import EventManager
+from PLM.ui.models.ActionManager        import ActionManager
 from PLM.cores                          import LocalDatabase
 
 
@@ -37,8 +38,8 @@ class SysTray(SystemTrayIcon):
             self.username               = self.db.query_table('curUser')[0]
         except (ValueError, IndexError):
             self.username = 'DemoUser'
-
-        self.rightClickMenu             = SysTrayIconMenu(self.actionManager, self)
+        print(self.parent)
+        self.rightClickMenu             = SysTrayIconMenu(self.actionManager, self.parent)
         self.rightClickMenu.signals.connect('command', self.parent.command)
 
         self.setIcon(LogoIcon('Logo'))
