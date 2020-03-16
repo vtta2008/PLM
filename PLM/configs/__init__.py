@@ -714,8 +714,6 @@ IGNORE_ICONS = ['Widget', 'bright', 'dark', 'charcoal', 'nuker', 'TopTab1', 'Top
                 'Team', 'Task', 'ShowAll','ItemWidget', 'BaseManager', 'SettingInput', 'QueryPage', 'SysTray', 'Footer',
                 'BotTab1', 'BotTab2', 'Cmd', 'User', 'Tracking']
 
-
-
 INI                         = QSettings.IniFormat
 NATIVE                      = QSettings.NativeFormat
 INVALID                     = QSettings.InvalidFormat
@@ -1078,57 +1076,6 @@ PRS = dict( password    = QLineEdit.Password,       center = center ,   left  = 
             spmax       = SiPoMax           ,       sppre  = SiPoPre,   spexp = SiPoExp,    spign  = SiPoIgn,
             expanding   = QSizePolicy.Expanding,    spmin  = SiPoMin,)
 
-# # node connection property types
-# PROPERTY = dict( simple = ['FLOAT', 'STRING', 'BOOL', 'INT'] , arrays  = ['FLOAT2', 'FLOAT3', 'INT2', 'INT3', 'COLOR'],
-#                  max    = 'maximum value'                    , types   = ['FILE', 'MULTI', 'MERGE', 'NODE', 'DIR']    ,
-#                  min    = 'minimum value'                    , default = 'default value'                              ,
-#                  label  = 'node label'                       , private = 'attribute is private (hiddent)'             ,
-#                  desc   = 'attribute description',)
-#
-# REGEX   = dict( section        = re.compile(r"^\[[^\]\r\n]+]"),
-#                 section_value  = re.compile(r"\[(?P<attr>[\w]*?) (?P<value>[\w\s]*?)\]$"),
-#                 properties     = re.compile("(?P<name>[\.\w]*)\s*(?P<type>\w*)\s*(?P<value>.*)$"),)
-#
-# # Default preferences
-# PREFERENCES = dict(
-#     ignore_scene_prefs  = {"default": False,     "desc": "Use user prefences instead of scene preferences.", "label": "Ignore scene preferences",    "class": "global"},
-#     use_gl              = {"default": False,     "desc": "Render graph with OpenGL.",                        "label": "Use OpenGL",                  "class": "scene" },
-#     edge_type           = {"default": "bezier",  "desc": "Draw edges with bezier paths.",                    "label": "Edge name",                  "class": "scene" },
-#     render_fx           = {"default": False,     "desc": "Render node drop shadows and effects.",            "label": "render FX",                   "class": "scene" },
-#     antialiasing        = {"default": 2,         "desc": "Antialiasing level.",                              "label": "Antialiasing",                "class": "scene" },
-#     logging_level       = {"default": 30,        "desc": "Verbosity level.",                                 "label": "Logging level",               "class": "global"},
-#     autosave_inc        = {"default": 90000,     "desc": "Autosave delay (seconds x 1000).",                 "label": "Autosave time",               "class": "global"},
-#     stylesheet_name     = {"default": "default", "desc": "Stylesheet to use.",                               "label": "Stylesheet",                  "class": "global"},
-#     palette_style       = {"default": "default", "desc": "Color palette to use.",                            "label": "Palette",                     "class": "global"},
-#     font_style          = {"default": "default", "desc": "font name to use.",                               "label": "Font name",                  "class": "global"},
-#     viewport_mode       = {"default": "smart",   "desc": "viewport update fn.",                              "label": "Viewport Mode",               "class": "global"}, )
-#
-# VALID_FONTS = dict( ui   = [ 'Arial', 'Cantarell', 'Corbel', 'DejaVu Sans', 'DejaVu Serif', 'FreeSans', 'Liberation Sans',
-#                              'Lucida Sans Unicode', 'MS Sans Serif', 'Open Sans', 'PT Sans', 'Tahoma', 'Verdana'],
-#
-#                     mono = [ 'Consolas', 'Courier', 'Courier 10 Pitch', 'Courier New', 'DejaVu Sans Mono', 'Fixed',
-#                              'FreeMono', 'Liberation Mono', 'Lucida Console', 'Menlo', 'Monaco'],
-#
-#                     nodes= [ 'Consolas', 'DejaVu Sans Mono', 'Menlo', 'DejaVu Sans'])
-#
-# EDGE_TYPES      = dict(bezier = 'bezier'        , polygon = 'polygon'       , )
-# POS_EVENTS      = dict(change = POS_CHANGE      , )
-# DRAG_MODES      = dict(none   = NODRAG          , rubber = RUBBER_DRAG)
-# VIEWPORT_MODES  = dict(full   = UPDATE_FULLVIEW , smart  = UPDATE_SMARTVIEW , minimal = UPDATE_MINIMALVIEW  , bounding = UPDATE_BOUNDINGVIEW, viewrect = UPDATE_VIEWRECT)
-# FLAG_MODES      = dict(select = SELECTABLE      , move   = MOVEABLE         , focus   = FOCUSABLE           , panel    = PANEL)
-# ANCHOR_MODES    = dict(none   = ANCHOR_NO       , under  = ANCHOR_UNDERMICE , center  = ANCHOR_CENTER, )
-#
-#
-# NODE            = dict( width               = NODE_WIDTH            , height       = 25              , radius                 = 10                  , border    = 2 ,
-#                         attHeight           = 30                    , con_width    = 2               , font                   = 'Arial'             , font_size = 12,
-#                         attFont             = 'Arial'               , attFont_size = 10              , mouse_bounding_box     = 80                  , alternate= 20,
-#                         grid_color          = [50, 50, 50, 255]     , slot_border  = [50, 50, 50, 255], non_connectable_color = [100, 100, 100, 255],
-#                         connection_color    = [255, 155, 0, 255], )
-#
-# SCENE           = dict( width               = 2000                  , height = 2000                 , size              = 36       , antialiasing = True,
-#                         antialiasing_boost  = True                  , smooth_pixmap = True, )
-
-# -------------------------------------------------------------------------------------------------------------
 """ PLM project base """
 
 PRJ_INFO = dict( APPS               = ["maya", "zbrush", "mari", "nuke", "photoshop", "houdini", "after effects"],
@@ -1233,12 +1180,6 @@ iconMissing                         = []
 toolTips                            = {}
 statusTips                          = {}
 
-
-if not os.path.exists(LOCAL_DB):
-    from PLM.cores import PresetDB
-    localDB = PresetDB(filename=LOCAL_DB)
-
-
 # -------------------------------------------------------------------------------------------------------------
 """ Config qssPths from text file """
 
@@ -1261,7 +1202,6 @@ LICENCE             = read_file('LICENSE')
 LINKS               = read_file('LINKS')
 REFERENCES          = read_file('REFERENCES')
 QUESTIONS           = read_file('QUESTION')
-REFERENCES          = read_file('REFERENCES')
 VERSION             = read_file('VERSION')
 
 
@@ -1343,14 +1283,15 @@ class ConfigPython(dict):
             # mac os
             self.check_package_required(self.macRequires)
         else:
+            # untubu
             self.check_package_required(self.utuRequires)
+
+        if globalSetting.printCfgInfo:
+            if globalSetting.printPythonInfo:
+                pprint.pprint(self)
 
         if globalSetting.saveCfgInfo:
             if globalSetting.savePythonInfo:
-                pprint.pprint(self)
-
-        if globalSetting.defaults.save_configInfo:
-            if globalSetting.defaults.save_pythonInfo:
                 save_data(pythonCfg, self)
 
     def check_package_required(self, pkgs):
@@ -1407,7 +1348,7 @@ class ConfigPython(dict):
         else:
             major               = int(ver.split('.')[0])
             minor               = int(ver.split('.')[1])
-            micro               = int(ver.split('.')[3])
+            micro               = int(ver.split('.')[2])
 
         return major, minor, micro
 
@@ -2342,6 +2283,9 @@ appInfo                            = ConfigApps()
 urlInfo                            = ConfigUrl()
 plmInfo                            = ConfigPipeline(iconInfo, appInfo, urlInfo, dirInfo, pthInfo)
 
+if not os.path.exists(LOCAL_DB):
+    from .PresetDB import PresetDB
+    localDB = PresetDB(filename=LOCAL_DB)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:45 PM

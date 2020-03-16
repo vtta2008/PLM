@@ -89,7 +89,7 @@ class SettingManager(Settings):
             else:
                 oldValue = self.value(key)
                 if not value == oldValue:
-                    if globalSetting.tracks.setting:
+                    if globalSetting.printSettingInfo:
                         print('{0}: set {1} - {2} - {3}.'.format(self.key, key, value, grpChecked))
                     self.setValue(key, value)
 
@@ -108,9 +108,8 @@ class SettingManager(Settings):
                     value = self.value(key)
                 else:
                     value = self.value(key, decode)
-                if globalSetting.tracks.setting:
-                    print('{0}: get value from key: {1}, value: {2}, at group: {3}.'.format(self.key, key, value,
-                                                                                            grpChecked))
+                if globalSetting.printSettingInfo:
+                    print('{0}: get value from key: {1}, value: {2}, at group: {3}.'.format(self.key, key, value, grpChecked))
                 return value
 
             while self.group():

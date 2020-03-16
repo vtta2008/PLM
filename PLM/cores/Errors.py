@@ -41,6 +41,9 @@ class ActionRegisterError(DAMGERROR): pass
 class ButtonRegisterError(DAMGERROR): pass
 
 
+class ToolbarNameError(DAMGERROR): pass
+
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 4/12/2019 - 1:22 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

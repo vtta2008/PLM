@@ -29,6 +29,12 @@ class ActionManager(BaseKeys):
     def actions(self):
         return self.values()
 
+    def extraToolbarActions(self, parent):
+        return self.createActions(self.extraActions, parent)
+
+    def devToolbarActions(self, parent):
+        return self.createActions(self.devActions, parent)
+
     def preToolbarActions(self, parent):
         return self.createActions(self.preActions, parent)
 

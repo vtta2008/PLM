@@ -68,7 +68,7 @@ class ConnectStatus(GroupGrid):
         try:
             r = requests.get(__localServer__)
         except requests.exceptions.ConnectionError:
-            if not globalSetting.modes.allowLocalMode:
+            if not globalSetting.allowLocalMode:
                 MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                 sys.exit()
             else:
@@ -119,7 +119,7 @@ class ConnectStatus(GroupGrid):
             try:
                 r                       = requests.get(__localServer__)
             except Exception:
-                if not globalSetting.modes.allowLocalMode:
+                if not globalSetting.allowLocalMode:
                     MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                     sys.exit()
                 else:

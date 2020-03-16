@@ -17,13 +17,13 @@ from PyQt5.QtCore                       import Qt
 from PLM.configs                            import SiPoMin
 from PLM.commons                                import DAMG, DAMGLIST
 
-from .ActionManager                     import ActionManager
-from .ButtonManager                     import ButtonManager
-from .Registry                          import RegistryLayout
-from .EventManager                      import EventManager
+from PLM.ui.models.ActionManager import ActionManager
+from PLM.ui.models.ButtonManager import ButtonManager
+from PLM.ui.models.RegistryLayout import RegistryLayout
+from PLM.ui.models.EventManager import EventManager
 
 from PLM.ui.base import BaseManager, ImageAvatar, PixAvatar
-from ..tools import CommandUI
+from PLM.ui.tools import CommandUI
 from PLM.ui.PipelineManager import PipelineManager
 from PLM.ui.SysTray import SysTray
 from PLM.ui.tools import (Calendar, Calculator, EnglishDictionary, FindFiles, ImageViewer,

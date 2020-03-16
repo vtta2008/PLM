@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
 # coding=utf-8
 """
-Script Name: utilities.py
+Script Name: utils.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
     Here is where a lot of function need to use multiple times overall
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __envKey__
 from distutils.version import LooseVersion
 """ Import """
 
@@ -26,6 +25,7 @@ from PyQt5.QtGui        import QColor, QFont, QFontMetrics, QKeySequence
 from PyQt5.QtWidgets    import QAction, QPushButton
 
 # PLM
+from PLM                import __envKey__
 from PLM.configs        import (__pkgsReq__, KEYPACKAGE, LOGO_DIR, WEB_ICON_DIR, TAG_ICON_DIR, AVATAR_DIR,
                                 USER_LOCAL_DATA, ICON_DIR, actionTypes)
 

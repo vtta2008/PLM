@@ -27,6 +27,7 @@ class SystemTrayIcon(QSystemTrayIcon):
 
     def __init__(self, parent=None):
         QSystemTrayIcon.__init__(self)
+
         self.parent                         = parent
         self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
