@@ -50,8 +50,42 @@ ROOT_APP                            = get_root()
 ROOT                                = os.path.join(ROOT_APP, __envKey__)
 cmd                                 = 'SetX {0} {1}'.format(__envKey__, ROOT)
 
+class ObjectGlb(object):
 
-class SettingsRequired(object):
+    key                             = 'GlobalSetting'
+    Type                            = 'DAMG Global Setting'
+    _name                           = 'DAMG Global Setting'
+    _copyright                      = __copyright__()
+
+    def __init__(self):
+        object.__init__(self)
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+
+class ModesGlb(ObjectGlb):
+
+    _allowLocalMode                 = False
+
+    def __init__(self):
+        ObjectGlb.__init__(self)
+
+    @property
+    def allowLocalMode(self):
+        return self._allowLocalMode
+
+    @allowLocalMode.setter
+    def allowLocalMode(self, val):
+        self._allowLocalMode        = val
+
+
+class SettingsGlb(ModesGlb):
 
     _cfgable                        = False
 
@@ -63,18 +97,34 @@ class SettingsRequired(object):
     _printAvatarInfo                = False
     _printLogoInfo                  = False
     _printImgInfo                   = False
+    _printIconInfo                  = False
+    _printServerInfo                = False
+    _printEnvInfo                   = False
+    _printUrlInfo                   = False
+    _printTypeInfo                  = False
+    _printFmtInfo                   = False
+    _printPlmInfo                   = False
+    _printPcInfo                    = False
 
     _saveCfgInfo                    = True
-    _savePthInfo                    = False
-    _savePythonInfo                 = False
-    _saveAppInfo                    = False
-    _saveDirInfo                    = False
-    _saveAvatarInfo                 = False
-    _saveLogoInfo                   = False
-    _saveImgInfo                    = False
+    _savePthInfo                    = True
+    _savePythonInfo                 = True
+    _saveAppInfo                    = True
+    _saveDirInfo                    = True
+    _saveAvatarInfo                 = True
+    _saveLogoInfo                   = True
+    _saveImgInfo                    = True
+    _saveIconInfo                   = True
+    _saveServerInfo                 = True
+    _saveEnvInfo                    = True
+    _saveUrlInfo                    = True
+    _saveTypeInfo                   = True
+    _saveFmtInfo                    = True
+    _savePlmInfo                    = True
+    _savePcInfo                     = True
 
     def __init__(self):
-        object.__init__(self)
+        ObjectGlb.__init__(self)
 
 
     @property
@@ -145,6 +195,142 @@ class SettingsRequired(object):
     def saveImgInfo(self):
         return self._saveImgInfo
 
+    @property
+    def printIconInfo(self):
+        return self._printIconInfo
+
+    @property
+    def printEnvInfo(self):
+        return self._printEnvInfo
+
+    @property
+    def saveEnvInfo(self):
+        return self._saveEnvInfo
+
+    @property
+    def printServerInfo(self):
+        return self._printServerInfo
+
+    @property
+    def saveServerInfo(self):
+        return self._saveServerInfo
+
+    @property
+    def printUrlInfo(self):
+        return self._printUrlInfo
+
+    @property
+    def saveUrlInfo(self):
+        return self._saveUrlInfo
+
+    @property
+    def printTypeInfo(self):
+        return self._printTypeInfo
+
+    @property
+    def saveTypeInfo(self):
+        return self._saveTypeInfo
+
+    @property
+    def printFmtInfo(self):
+        return self._printFmtInfo
+
+    @property
+    def saveFmtInfo(self):
+        return self._saveFmtInfo
+
+    @property
+    def printPlmInfo(self):
+        return self._printPlmInfo
+
+    @property
+    def savePlmInfo(self):
+        return self._savePlmInfo
+
+    @property
+    def printPcInfo(self):
+        return self._printPcInfo
+
+    @property
+    def savePcInfo(self):
+        return self._savePcInfo
+
+    @property
+    def printIconInfo(self):
+        return self._printIconInfo
+
+    @property
+    def saveIconInfo(self):
+        return self._saveIconInfo
+
+    @saveIconInfo.setter
+    def saveIconInfo(self, val):
+        self._saveIconInfo          = val
+
+    @printIconInfo.setter
+    def printIconInfo(self, val):
+        self._printIconInfo         = val
+
+    @savePcInfo.setter
+    def savePcInfo(self, val):
+        self._savePcInfo            = val
+
+    @printPcInfo.setter
+    def printPcInfo(self, val):
+        self._printPcInfo           = val
+
+    @savePlmInfo.setter
+    def savePlmInfo(self, val):
+        self._savePlmInfo           = val
+
+    @printPlmInfo.setter
+    def printPlmInfo(self, val):
+        self._printPlmInfo          = val
+
+    @saveFmtInfo.setter
+    def saveFmtInfo(self, val):
+        self._saveFmtInfo           = val
+
+    @printFmtInfo.setter
+    def printFmtInfo(self, val):
+        self._printFmtInfo          = val
+
+    @saveTypeInfo.setter
+    def saveTypeInfo(self, val):
+        self._saveTypeInfo          = val
+
+    @printTypeInfo.setter
+    def printTypeInfo(self, val):
+        self._printTypeInfo         = val
+
+    @saveUrlInfo.setter
+    def saveUrlInfo(self, val):
+        self._saveUrlInfo           = val
+
+    @printUrlInfo.setter
+    def printUrlInfo(self, val):
+        self._printUrlInfo          = val
+
+    @saveServerInfo.setter
+    def saveServerInfo(self, val):
+        self._saveServerInfo        = val
+
+    @printServerInfo.setter
+    def printServerInfo(self, val):
+        self._printServerInfo       = val
+
+    @saveEnvInfo.setter
+    def saveEnvInfo(self, val):
+        self._saveEnvInfo           = val
+
+    @printEnvInfo.setter
+    def printEnvInfo(self, val):
+        self._printEnvInfo          = val
+
+    @printIconInfo.setter
+    def printIconInfo(self, val):
+        self._printIconInfo         = val
+
     @saveImgInfo.setter
     def saveImgInfo(self, val):
         self._saveImgInfo           = val
@@ -164,7 +350,6 @@ class SettingsRequired(object):
     @saveAvatarInfo.setter
     def saveAvatarInfo(self, val):
         self._saveAvatarInfo        = val
-
 
     @printAvatarInfo.setter
     def printAvatarInfo(self, val):
@@ -215,24 +400,10 @@ class SettingsRequired(object):
         self._cfgable               = val
 
 
-class GlobalBase(SettingsRequired):
-
-    key                             = 'GlobalSetting'
-    Type                            = 'DAMG Global Setting'
-    _name                           = 'DAMG Global Setting'
-    _copyright                      = __copyright__()
+class GlobalBase(SettingsGlb):
 
     def __init__(self):
         super(GlobalBase, self).__init__()
-
-    @property
-    def name(self):
-        return self._name
-
-    @property
-    def copyright(self):
-        return self._copyright
-
 
 
 class GlobalSetting(GlobalBase):

@@ -111,7 +111,7 @@ class Application(QApplication):
         assert hresult == 0, "SetCurrentProcessExplicitAppUserModelID failed"
 
     def sys_message(self, parent=None, title="auto", level="auto", message="test message", btn='ok', flag=None):
-        messBox =  MessageBox(parent, title, level, message, btn, flag)
+        messBox = MessageBox(parent, title, level, message, btn, flag)
         return messBox
 
     def set_styleSheet(self, style):

@@ -231,7 +231,7 @@ FONT_DIR            = os.path.join(RESOURCES_DIR, 'fonts').replace('\\', '/')
 ICON_DIR            = os.path.join(RESOURCES_DIR, 'icons').replace('\\', '/')
 TAG_ICON_DIR        = os.path.join(ICON_DIR, 'tags').replace('\\', '/')
 
-NODE_ICON_DIR       = os.path.join(ICON_DIR, 'node').replace('\\', '/')
+NODE_ICON_DIR       = os.path.join(ICON_DIR, 'nodes').replace('\\', '/')
 
 WEB_ICON_DIR        = os.path.join(ICON_DIR, 'web').replace('\\', '/')
 WEB_ICON_16         = os.path.join(WEB_ICON_DIR, 'x16').replace('\\', '/')
@@ -315,9 +315,12 @@ appsCfg                             = os.path.join(CFG_DIR, 'installed.cfg')
 envVarCfg                           = os.path.join(CFG_DIR, 'envVar.cfg')
 dirCfg                              = os.path.join(CFG_DIR, 'dirs.cfg')
 pthCfg                              = os.path.join(CFG_DIR, 'paths.cfg')
-deviceCfg                           = os.path.join(CFG_DIR, 'device.cfg')
+pcCfg                               = os.path.join(CFG_DIR, 'pc.cfg')
 urlCfg                              = os.path.join(CFG_DIR, 'url.cfg')
+typeCfg                             = os.path.join(CFG_DIR, 'types.cfg')
 userCfg                             = os.path.join(CFG_DIR, 'user.cfg')
+serverCfg                           = os.path.join(CFG_DIR, 'server.cfg')
+fmtCfg                              = os.path.join(CFG_DIR, 'formats.cfg')
 PLMconfig                           = os.path.join(CFG_DIR, 'PLM.cfg')
 sceneGraphCfg                       = os.path.join(CFG_DIR, 'sceneGraph.cfg')
 
@@ -1342,7 +1345,6 @@ class ConfigPython(dict):
         else:
             self.check_package_required(self.utuRequires)
 
-
         if globalSetting.saveCfgInfo:
             if globalSetting.savePythonInfo:
                 pprint.pprint(self)
@@ -1429,12 +1431,12 @@ class ConfigApps(dict):
                 name, _ = os.path.splitext(os.path.basename(lnk.lnk_filepath))
                 self[str(name)] = lnk.path
 
-        if globalSetting.tracks.configInfo:
-            if globalSetting.tracks.appInfo:
+        if globalSetting.printCfgInfo:
+            if globalSetting.printAppInfo:
                 pprint.pprint(self)
 
-        if globalSetting.defaults.save_configInfo:
-            if globalSetting.defaults.save_appInfo:
+        if globalSetting.saveCfgInfo:
+            if globalSetting.saveAppInfo:
                 save_data(appsCfg, self)
 
 
@@ -1459,7 +1461,7 @@ class ConfigPath(dict):
         self.add('envVarCfg'        , envVarCfg)
         self.add('dirCfg'           , dirCfg)
         self.add('pthCfg'           , pthCfg)
-        self.add('deviceCfg'        , deviceCfg)
+        self.add('deviceCfg', pcCfg)
         self.add('urlCfg'           , urlCfg)
         self.add('userCfg'          , userCfg)
         self.add('PLMconfig'        , PLMconfig)
@@ -1479,7 +1481,7 @@ class ConfigPath(dict):
         self.add('SETTING_FILEPTH'  , SETTING_FILEPTH)
 
         if globalSetting.printCfgInfo:
-            if globalSetting.tracks.pthInfo:
+            if globalSetting.printPthInfo:
                 pprint.pprint(self)
 
         if globalSetting.saveCfgInfo:
@@ -1670,6 +1672,14 @@ class ConfigImage(dict):
             for name in names:
                 self[name.split('.node')[0]] = os.path.join(root, name).replace('\\', '/')
 
+        if globalSetting.printCfgInfo:
+            if globalSetting.printImgInfo:
+                pprint.pprint(self)
+
+        if globalSetting.saveCfgInfo:
+            if globalSetting.saveImgInfo:
+                save_data(imageConfig, self)
+
 
 class ConfigIcon(dict):
 
@@ -1686,15 +1696,22 @@ class ConfigIcon(dict):
         self['icon64']                  = self.get_icons(ICON_DIR_64)
 
         self['node']                    = self.get_icons(NODE_ICON_DIR)
-
         self['tag']                     = self.get_icons(TAG_ICON_DIR)
-
+        self['web16']                   = self.get_icons(WEB_ICON_16)
+        self['web24']                   = self.get_icons(WEB_ICON_24)
         self['web32']                   = self.get_icons(WEB_ICON_32)
+        self['web48']                   = self.get_icons(WEB_ICON_48)
+        self['web64']                   = self.get_icons(WEB_ICON_64)
         self['web128']                  = self.get_icons(WEB_ICON_128)
 
-        if globalSetting.tracks.configInfo:
-            if globalSetting.tracks.iconInfo:
+
+        if globalSetting.printCfgInfo:
+            if globalSetting.printIconInfo:
                 pprint.pprint(self)
+
+        if globalSetting.saveCfgInfo:
+            if globalSetting.saveIconInfo:
+                save_data(iconCfg, self)
 
     def get_icons(self, dir):
         icons = dict()
@@ -1714,6 +1731,14 @@ class ConfigServer(dict):
         self.add('vanila'           , VANILA_LOCAL)
         self.add('AWS'              , AWS_GLOBAL)
 
+        if globalSetting.printCfgInfo:
+            if globalSetting.printServerInfo:
+                pprint.pprint(self)
+
+        if globalSetting.saveCfgInfo:
+            if globalSetting.saveServerInfo:
+                save_data(serverCfg, self)
+
     def add(self, key, value):
         self[key]                   = value
 
@@ -1727,12 +1752,12 @@ class ConfigEnvVar(dict):
         for k, v in os.environ.items():
             self[k]                     = v.replace('\\', '/')
 
-        if globalSetting.tracks.configInfo:
-            if globalSetting.tracks.envInfo:
+        if globalSetting.printCfgInfo:
+            if globalSetting.printEnvInfo:
                 pprint.pprint(self)
 
-        if globalSetting.defaults.save_configInfo:
-            if globalSetting.defaults.save_envInfo:
+        if globalSetting.saveCfgInfo:
+            if globalSetting.saveEnvInfo:
                 save_data(envVarCfg, self)
 
     def update(self):
@@ -1760,9 +1785,13 @@ class ConfigUrl(dict):
         self.add('google vn'        , __googleVN__)
         self.add('google nz'        , __googleNZ__)
 
-        if globalSetting.tracks.configInfo:
-            if globalSetting.tracks.urlInfo:
+        if globalSetting.printCfgInfo:
+            if globalSetting.printUrlInfo:
                 pprint.pprint(self)
+
+        if globalSetting.saveCfgInfo:
+            if globalSetting.saveUrlInfo:
+                save_data(urlCfg, self)
 
     def add(self, key, value):
         self[key]                   = value
@@ -1784,6 +1813,14 @@ class ConfigTypes(dict):
         self['CPUTYPE'] = CPUTYPE
         self['DRIVETYPE'] = DRIVETYPE
 
+        if globalSetting.printCfgInfo:
+            if globalSetting.printTypeInfo:
+                pprint.pprint(self)
+
+        if globalSetting.saveCfgInfo:
+            if globalSetting.saveTypeInfo:
+                save_data(typeCfg, self)
+
 
 class ConfigFormats(dict):
 
@@ -1801,9 +1838,13 @@ class ConfigFormats(dict):
         self.add('dt datetTimeStamp' , datetTimeStamp)
         self.add('IMGEXT ext', IMGEXT)
 
-        if globalSetting.tracks.configInfo:
-            if globalSetting.tracks.pthInfo:
+        if globalSetting.printCfgInfo:
+            if globalSetting.printFmtInfo:
                 pprint.pprint(self)
+
+        if globalSetting.saveCfgInfo:
+            if globalSetting.saveFmtInfo:
+                save_data(fmtCfg, self)
 
     def add(self, key, value):
         self[key]           = value
@@ -1996,13 +2037,13 @@ class ConfigPipeline(dict):
                 statustip = statusTips[key]
                 self.add(key, CommandData(key, icon, tooltip, statustip, value, valueType, arg, code))
 
-        if globalSetting.tracks.configInfo:
-            if globalSetting.tracks.plmInfo:
+        if globalSetting.printCfgInfo:
+            if globalSetting.printPlmInfo:
                 pprint.pprint(self)
 
-        if globalSetting.defaults.save_configInfo:
-            if globalSetting.defaults.save_plmInfo:
-                save_data(pthInfo['plmCfg'], self)
+        if globalSetting.saveCfgInfo:
+            if globalSetting.savePlmInfo:
+                save_data(plmCfg, self)
 
     def del_key(self, key):
         try:
@@ -2061,13 +2102,13 @@ if platform.system() == 'Windows':
             self['keyboard'] = self.keyboardInfo()
             self['mice'] = self.miceInfo()
 
-            if globalSetting.tracks.configInfo:
-                if globalSetting.tracks.deviceInfo:
+            if globalSetting.printCfgInfo:
+                if globalSetting.printPcInfo:
                     pprint.pprint(self)
 
-            if globalSetting.defaults.save_configInfo:
-                if globalSetting.defaults.save_deviceInfo:
-                    save_data(deviceCfg, self)
+            if globalSetting.saveCfgInfo:
+                if globalSetting.savePcInfo:
+                    save_data(pcCfg, self)
 
         def osInfo(self, **info):
 

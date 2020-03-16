@@ -38,7 +38,7 @@ class AppModel(Application):
         serverReady                     = self.checkConnectServer()
 
         if not serverReady:
-            if not globalSetting.modes.allowLocalMode:
+            if not globalSetting.allowLocalMode:
                 print(SERVER_CONNECT_FAIL)
                 self.sys_message(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', None)
                 sys.exit()
