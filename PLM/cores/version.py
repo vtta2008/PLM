@@ -180,11 +180,6 @@ class version(_version):
     def release_note(self):
         pass
 
-
-v = version()
-print(v, type(v))
-
-
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 1/11/2019 - 4:48 PM
 # © 2017 - 2018 DAMGteam. All rights reserved

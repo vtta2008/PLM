@@ -827,6 +827,9 @@ UPDATE_MINIMALVIEW          = QGraphicsView.MinimalViewportUpdate
 STAY_ON_TOP                 = Qt.WindowStaysOnTopHint
 STRONG_FOCUS                = Qt.StrongFocus
 FRAMELESS                   = Qt.FramelessWindowHint
+CUSTOMIZE                   = Qt.CustomizeWindowHint
+CLOSEBTN                    = Qt.WindowCloseButtonHint
+MINIMIZEBTN                 = Qt.WindowMinimizeButtonHint
 AUTO_COLOR                  = Qt.AutoColor
 
 # -------------------------------------------------------------------------------------------------------------

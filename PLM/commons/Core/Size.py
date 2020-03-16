@@ -17,6 +17,7 @@ from PyQt5.QtCore                           import QSize
 
 
 class Size(QSize):
+
     Type                                    = 'DAMGSIZE'
     key                                     = 'Size'
     _name                                   = 'DAMG Size'

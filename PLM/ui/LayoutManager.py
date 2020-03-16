@@ -52,7 +52,7 @@ class LayoutManager(DAMG):
         self.eventManager               = EventManager(self.parent)
         self.threadManager              = threadManager
 
-        self.globalSetting()
+        # self.globalSetting()
 
     def layouts(self):
         return self._register.values()
@@ -72,9 +72,9 @@ class LayoutManager(DAMG):
         tbcbs                           = self.preferences.header.toolBarCBs
         tbs                             = self.mainUI.tbs
         cncbs                           = self.preferences.header.connectCBs
-        cns                             = self.mainUI.connectStatus.labels
+        cns                             = self.mainUI.dockNetwork.status.labels
         mncbs                           = self.preferences.header.menuCBs
-        mns                             = self.mainUI.mainMenuBar.mns
+        mns                             = self.mainUI.mns
         ntcbs                           = self.preferences.body.notificationCBs
         nts                             = self.mainUI.notification.labels
 
@@ -88,13 +88,13 @@ class LayoutManager(DAMG):
             cb = mncbs[i+1]
             mn = mns[i]
             cb.stateChanged.connect(mn.setEnabled)
-        mncbs[0].stateChanged.connect(self.mainUI.mainMenuBar.setVisible)
+        mncbs[0].stateChanged.connect(self.mainUI.dockMenu.setVisible)
 
         for i in range(len(cns)):
             cb = cncbs[i+1]
             lb = cns[i]
             cb.stateChanged.connect(lb.setVisible)
-        cncbs[0].stateChanged.connect(self.mainUI.connectStatus.setVisible)
+        cncbs[0].stateChanged.connect(self.mainUI.dockNetwork.status.setVisible)
 
         for i in range(len(nts)):
             cb = ntcbs[i+1]
@@ -129,7 +129,7 @@ class LayoutManager(DAMG):
         self.signin                         = SignIn()
         self.forgotPW                       = ForgotPassword()
         self.signup                         = SignUp()
-        self.mainUI                         = PipelineManager(self.threadManager, self.parent)
+        self.mainUI                         = PipelineManager(self.parent)
         self.sysTray                        = SysTray(self.parent)
         self.shortcutCMD                    = CommandUI(parent=self.parent)
 
@@ -247,7 +247,7 @@ class LayoutManager(DAMG):
                 pass
 
             if layout.key == 'PipelineManager':
-                layout.setFixedWidth(550)
+                # layout.setFixedWidth(550)
                 # layout.setFixedHeight(850)
                 # self.parent.setWindowFlags(STAY_ON_TOP)
                 pass

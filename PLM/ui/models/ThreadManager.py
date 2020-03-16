@@ -153,9 +153,10 @@ class ThreadManager(DAMGTHREADPOOL):
     key = 'ThreadManager'
     tasks = DAMGLIST()
 
-    def __init__(self):
-        super(ThreadManager, self).__init__()
+    def __init__(self, parent=None):
+        super(ThreadManager, self).__init__(parent)
 
+        self.parent                 = parent
         self.counter                = Counting()
         self.settings               = SettingManager(self)
         self.signals                = SignalManager(self)

@@ -12,34 +12,42 @@ Description:
 """ Import """
 
 # PLM
-from PLM.configs            import SiPoMin
-from PLM.commons.Widgets    import MainWindow, ToolBar, GroupHBox
-from PLM.utils              import str2bool, bool2str
+from PLM.configs                        import SiPoMin
+from PLM.commons.Widgets                import MainWindow, ToolBar, GroupHBox
+from PLM.commons.Core                   import Size
+from PLM.utils                          import str2bool, bool2str
+from PLM.cores.Errors                   import ToolbarNameError
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
 
 class MainToolBar(GroupHBox):
 
-    key                     = 'MainToolBar'
-    toolBars                = dict()
-    _count                  = 0
+    key                                 = 'MainToolBar'
+    toolBars                            = dict()
+    _count                              = 0
 
     def __init__(self, actionManager, parent=None):
         super(MainToolBar, self).__init__(parent=parent)
 
-        self.parent         = parent
-        self.actionManager  = actionManager
-        self.mainLayout     = MainWindow(self)
+        self.parent                     = parent
+        self.actionManager              = actionManager
+        self.mainLayout                 = MainWindow(self.parent)
+        self.layout.addWidget(self.mainLayout)
 
-        self.tdToolBar      = self.build_toolBar("TD")
-        self.compToolBar    = self.build_toolBar("VFX")
-        self.artToolBar     = self.build_toolBar("ART")
-        self.textureToolBar = self.build_toolBar('TEX')
-        self.postToolBar    = self.build_toolBar('POST')
-        self.officeToolBar  = self.build_toolBar('MCO')
+        self.tdToolBar                  = self.build_toolBar("TD")
+        self.compToolBar                = self.build_toolBar("VFX")
+        self.artToolBar                 = self.build_toolBar("ART")
+        self.textureToolBar             = self.build_toolBar('TEX')
+        self.preToolBar                 = self.build_toolBar('PRE')
+        self.postToolBar                = self.build_toolBar('POST')
+        self.officeToolBar              = self.build_toolBar('MCO')
+        self.devToolBar                 = self.build_toolBar('DEV')
+        self.toolToolBar                = self.build_toolBar('TOOL')
+        self.extraToolBar               = self.build_toolBar('EXTRA')
+        self.systrayToolBar             = self.build_toolBar('SYSTRAY')
 
-        self.tbs = [tb for tb in self.toolBars.values()]
+        self.tbs                        = [tb for tb in self.toolBars.values()]
 
         for tb in self.tbs:
             tb.settings._settingEnable = True
@@ -49,27 +57,16 @@ class MainToolBar(GroupHBox):
             else:
                 tb.setVisible(str2bool(state))
 
-        self.artToolBar.setVisible(False)
-        self.officeToolBar.setVisible(False)
+        for tb in [self.artToolBar, self.officeToolBar, self.devToolBar, self.toolToolBar, self.extraToolBar,
+                   self.systrayToolBar]:
+            tb.setVisible(False)
 
         self.updateWidth()
-        self.layout.addWidget(self.mainLayout)
-
-    def updateWidth(self):
-        i = 0
-        for tb in self.tbs:
-            i = i + len(tb.actions)
-
-        for tb in self.tbs:
-            if not tb.isVisible():
-                i = i - len(tb.actions)
-
-        w = i*32 + i*2
-        self.setMinimumWidth(w)
-        self.mainLayout.setMinimumWidth(w)
 
     def build_toolBar(self, name=''):
+
         toolBar = ToolBar(self)
+        toolBar.setIconSize(Size(24, 24))
         toolBar.key = '{0}_{1}'.format(self.key, name)
         toolBar._name = toolBar.key
         toolBar.setWindowTitle(name)
@@ -87,34 +84,33 @@ class MainToolBar(GroupHBox):
 
     def getActions(self, title):
         if title == 'TD':
-            actions = self.actionManager.tdToolBarActions(self)
+            actions = self.actionManager.tdToolBarActions(self.parent)
         elif title == 'PRE':
-            actions = self.actionManager.preToolBarActrions(self)
+            actions = self.actionManager.preToolbarActions(self.parent)
         elif title == 'VFX':
-            actions = self.actionManager.vfxToolBarActions(self)
+            actions = self.actionManager.vfxToolBarActions(self.parent)
         elif title == 'ART':
-            actions = self.actionManager.artToolBarActions(self)
+            actions = self.actionManager.artToolBarActions(self.parent)
         elif title == 'TEX':
-            actions = self.actionManager.texToolBarActions(self)
+            actions = self.actionManager.texToolBarActions(self.parent)
         elif title == 'POST':
-            actions = self.actionManager.postToolBarActions(self)
+            actions = self.actionManager.postToolBarActions(self.parent)
         elif title == 'MCO':
-            actions = self.actionManager.officeMenuActions(self)
+            actions = self.actionManager.officeMenuActions(self.parent)
+        elif title == 'DEV':
+            actions = self.actionManager.devToolbarActions(self.parent)
+        elif title == 'TOOL':
+            actions = self.actionManager.toolsMenuActions(self.parent)
+        elif title == 'EXTRA':
+            actions = self.actionManager.extraToolbarActions(self.parent)
+        elif title == 'SYSTRAY':
+            actions = self.actionManager.sysTrayMenuActions(self.parent)
         else:
-            print('WindowTitleError: There is no toolBar name: {0}'.format(title))
-            actions = self.actionManager.extraToolActions(self)
+            print(ToolbarNameError('There is no toolBar name: {0}'.format(title)))
 
         return actions
 
-    @property
-    def count(self):
-        return self._count
-
-    @count.setter
-    def count(self, val):
-        self._count = val
-
-    def showToolBar(self, toolbar, mode):
+    def show_toolBar(self, toolbar, mode):
         if toolbar in self.toolBars.keys():
             tb = self.toolBars[toolbar]
             tb.setVisible(str2bool(mode))
@@ -124,7 +120,29 @@ class MainToolBar(GroupHBox):
                 tb.setVisible(str2bool(mode))
                 self.settings.iniSetValue('visible', bool2str(mode), tb.key)
 
+    def add_actions_to_menu(self, menu, actions):
+        for action in actions:
+            menu.addAction(action)
+
+    def updateWidth(self):
+        i = 0
+        for tb in self.tbs:
+            if tb.isVisible():
+                i += 1
+        w = i*32
+        self.setMinimumWidth(w)
+
     def addToolBar(self, toolbar):
         self.mainLayout.addToolBar(toolbar)
+
+    @property
+    def count(self):
+        return self._count
+
+    @count.setter
+    def count(self, val):
+        self._count = val
+
+
 
 

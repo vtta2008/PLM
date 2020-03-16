@@ -14,8 +14,8 @@ from PLM import __copyright__
 # PyQt5
 from PyQt5.QtWidgets                        import QToolBar
 
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
+from PLM.cores                              import SettingManager
+from PLM.cores                              import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar class """
@@ -29,7 +29,7 @@ class ToolBar(QToolBar):
     actions                                 = []
 
     def __init__(self, parent=None):
-        QToolBar.__init__(self)
+        super(ToolBar, self).__init__(parent)
 
         self.parent                         = parent
         self.settings                       = SettingManager(self)
@@ -39,6 +39,10 @@ class ToolBar(QToolBar):
     def add_action(self, action):
         self.actions.append(action)
         return self.addAction(action)
+
+    def add_actions(self, actions):
+        for action in actions:
+            self.add_action(action)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

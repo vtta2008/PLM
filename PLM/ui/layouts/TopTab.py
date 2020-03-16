@@ -44,7 +44,7 @@ class TopTab(TabWidget):
 
         for tab in self.tabs:
             if tab.key == 'TopTab2':
-                if not self.parent.connectStatus.connectServer:
+                if not self.parent.connectServer:
                     pass
                 else:
                     self.addTab(tab, self.tabNames[self.tabs.index(tab)])

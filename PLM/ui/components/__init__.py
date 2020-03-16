@@ -14,7 +14,6 @@ from .BodyCheckBoxes        import BodyCheckBoxes
 from .BotTab1               import BotTab1
 from .BotTab2               import BotTab2
 from .ConnectStatus         import ConnectStatus
-from .DockToolBar           import DockToolBar
 from .Footer                import Footer
 from .FooterCheckBoxes      import FooterCheckBoxes
 from .HeaderCheckBoxes      import HeaderCheckBoxes

@@ -108,16 +108,24 @@ class HeaderCheckBoxes(GroupGrid):
             self.menuCBs.append(cb)
 
     def buildToolBarCheckBoxes(self):
+
         self.tbTDCB             = CheckBox("TD")
         self.tbVfxCB            = CheckBox("VFX")
         self.tbArtCB            = CheckBox("Art")
         self.tbTexCB            = CheckBox("Tex")
+        self.tbPreCB            = CheckBox('Pre')
         self.tbPostCB           = CheckBox('Post')
         self.tbOfficeCB         = CheckBox('Office')
+        self.tbDevCB            = CheckBox('Dev')
+        self.tbToolCB           = CheckBox('Tool')
+        self.tbExtraCB          = CheckBox('Extra')
+        self.tbSysTrayCB        = CheckBox('SysTray')
         self.allToolBarCB       = CheckBox("All: ")
         self.allToolBarCB.stateChanged.connect(self.allToolBarStateChanged)
 
-        for cb in [self.allToolBarCB, self.tbTDCB, self.tbVfxCB, self.tbArtCB, self.tbTexCB, self.tbPostCB, self.tbOfficeCB]:
+        for cb in [self.allToolBarCB, self.tbTDCB, self.tbVfxCB, self.tbArtCB, self.tbTexCB, self.tbPreCB,
+                   self.tbPostCB, self.tbOfficeCB, self.tbDevCB, self.tbToolCB, self.tbExtraCB, self.tbSysTrayCB, ]:
+
             self.toolBarCBs.append(cb)
 
     def allToolBarStateChanged(self, bool):
