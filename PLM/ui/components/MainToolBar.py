@@ -58,7 +58,7 @@ class MainToolBar(GroupHBox):
                 tb.setVisible(str2bool(state))
 
         for tb in [self.artToolBar, self.officeToolBar, self.devToolBar, self.toolToolBar, self.extraToolBar,
-                   self.systrayToolBar]:
+                   self.systrayToolBar, self.compToolBar, self.preToolBar]:
             tb.setVisible(False)
 
         self.updateWidth()

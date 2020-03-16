@@ -26,13 +26,13 @@ class PLM(AppModel):
     def __init__(self):
         AppModel.__init__(self)
 
-        serverReady                     = self.checkConnectServer()
+        self.connectServer              = self.checkConnectServer()
         userData                        = self.checkUserData()
 
         self.logger.info('Start app')
 
         if userData:
-            if serverReady:
+            if self.connectServer:
                 statusCode              = self.serverAuthorization()
                 if not statusCode:
                     self.mainUI.show()
@@ -55,7 +55,7 @@ class PLM(AppModel):
                 self.mainUI.show()
                 self.splash.finish(self.mainUI)
         else:
-            if serverReady:
+            if self.connectServer:
                 self.signIn.show()
                 self.splash.finish(self.signIn)
             else:

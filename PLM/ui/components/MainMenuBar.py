@@ -42,16 +42,21 @@ class MainMenuBar(GroupVBox):
         self.toolsMenu              = self.build_toolMenu()
         self.pluginMenu             = self.build_pluginMenu()
         self.libMenu                = self.build_libMenu()
+        self.windowMenu             = self.build_windowMenu()
         self.helpMenu               = self.build_helpMenu()
 
         for menu in [self.appMenu, self.goMenu, self.editMenu, self.viewMenu, self.officeMenu, self.toolsMenu,
-                     self.pluginMenu, self.libMenu, self.helpMenu]:
+                     self.pluginMenu, self.libMenu, self.windowMenu, self.helpMenu]:
             menu.key                = '{0}_Menu_{1}'.format(self.key, menu.title())
             menu._name              = '{0} Menu {1}'.format(self.key, menu.title())
 
             self.menus.add(menu.key, menu)
 
         self.mns                    = [mn for mn in self.menus.values()]
+
+    def build_windowMenu(self):
+        menu                        = self.addMenu('&Window')
+        return menu
 
     def build_editMenu(self):
         menu                        = self.addMenu('&Edit')

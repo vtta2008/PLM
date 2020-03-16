@@ -14,9 +14,8 @@ from PLM import __copyright__
 from PyQt5.QtWidgets                        import QWidget
 
 # PLM
-from PLM.commons.Gui.Icon import AppIcon
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
+from PLM.commons.Gui.Icon                   import AppIcon
+from PLM.cores                              import SettingManager, SignalManager
 
 class Widget(QWidget):
 

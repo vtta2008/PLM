@@ -99,12 +99,13 @@ class HeaderCheckBoxes(GroupGrid):
         self.mnToolsCB          = CheckBox('&Tools')
         self.mnPluginCB         = CheckBox('&Plug-ins')
         self.mnLibCB            = CheckBox('&Lib')
+        self.mnWinCB            = CheckBox('&Window')
         self.mnHelpCB           = CheckBox('&Help')
         self.allMenuCB          = CheckBox('All: ')
         self.allMenuCB.stateChanged.connect(self.allMenuStateChanged)
 
         for cb in [self.allMenuCB, self.mnAppCB, self.mnGoCB, self.mnEditCB, self.mnViewCB,
-                   self.mnOfficeCB, self.mnToolsCB, self.mnPluginCB, self.mnLibCB, self.mnHelpCB, ]:
+                   self.mnOfficeCB, self.mnToolsCB, self.mnPluginCB, self.mnLibCB, self.mnWinCB, self.mnHelpCB, ]:
             self.menuCBs.append(cb)
 
     def buildToolBarCheckBoxes(self):

@@ -14,7 +14,7 @@ Description:
 from PyQt5.QtCore                       import Qt
 
 # PLM
-from PLM.configs                            import SiPoMin
+from PLM.configs                            import SiPoMin, FRAMELESS, ELIDE_RIGHT
 from PLM.commons                                import DAMG, DAMGLIST
 
 from PLM.ui.models.ActionManager import ActionManager
@@ -52,7 +52,7 @@ class LayoutManager(DAMG):
         self.eventManager               = EventManager(self.parent)
         self.threadManager              = threadManager
 
-        # self.globalSetting()
+        self.globalSetting()
 
     def layouts(self):
         return self._register.values()
@@ -76,7 +76,7 @@ class LayoutManager(DAMG):
         mncbs                           = self.preferences.header.menuCBs
         mns                             = self.mainUI.mns
         ntcbs                           = self.preferences.body.notificationCBs
-        nts                             = self.mainUI.notification.labels
+        nts                             = self.mainUI.notificationDock.notify.labels
 
         for i in range(len(tbs)):
             cb = tbcbs[i+1]
@@ -100,7 +100,7 @@ class LayoutManager(DAMG):
             cb = ntcbs[i+1]
             lb = nts[i]
             cb.stateChanged.connect(lb.setVisible)
-        ntcbs[0].stateChanged.connect(self.mainUI.notification.setVisible)
+        ntcbs[0].stateChanged.connect(self.mainUI.notificationDock.notify.setVisible)
 
         for layout in self.layouts():
             try:
@@ -108,13 +108,13 @@ class LayoutManager(DAMG):
             except AttributeError:
                 self.noShowHideAttrs.append(layout)
 
-        self.mainUI.botTabUI.botTab1.recieveSignalCB.stateChanged.connect(self.parent.setRecieveSignal)
-        self.mainUI.botTabUI.botTab1.blockSignalCB.stateChanged.connect(self.parent.setBlockSignal)
-        self.mainUI.botTabUI.botTab1.commandCB.stateChanged.connect(self.parent.setTrackCommand)
-        self.mainUI.botTabUI.botTab1.registLayoutCB.stateChanged.connect(self.parent.setRegistLayout)
-        self.mainUI.botTabUI.botTab1.jobsTodoCB.stateChanged.connect(self.parent.setJobsTodo)
-        self.mainUI.botTabUI.botTab1.showLayoutErrorCB.stateChanged.connect(self.parent.setShowLayout)
-        self.mainUI.botTabUI.botTab1.trackEventCB.stateChanged.connect(self.parent.setTrackEvent)
+        self.mainUI.botTabDock.tabs.botTab1.recieveSignalCB.stateChanged.connect(self.parent.setRecieveSignal)
+        self.mainUI.botTabDock.tabs.botTab1.blockSignalCB.stateChanged.connect(self.parent.setBlockSignal)
+        self.mainUI.botTabDock.tabs.botTab1.commandCB.stateChanged.connect(self.parent.setTrackCommand)
+        self.mainUI.botTabDock.tabs.botTab1.registLayoutCB.stateChanged.connect(self.parent.setRegistLayout)
+        self.mainUI.botTabDock.tabs.botTab1.jobsTodoCB.stateChanged.connect(self.parent.setJobsTodo)
+        self.mainUI.botTabDock.tabs.botTab1.showLayoutErrorCB.stateChanged.connect(self.parent.setShowLayout)
+        self.mainUI.botTabDock.tabs.botTab1.trackEventCB.stateChanged.connect(self.parent.setTrackEvent)
 
         layouts = []
         for listLayout in [self.mains, self.infos, self.setts, self.tools, self.prjs]:
@@ -164,7 +164,7 @@ class LayoutManager(DAMG):
         self.settingUI                      = AppSetting()
         self.userSetting                    = UserSetting()
 
-        self.mainUI.topTabUI.tab2.avatarGrp.setApp(self)
+        self.mainUI.midTabDock.tabs.tab2.avatarGrp.setApp(self)
         self.userSetting.avatarGrp.setApp(self)
 
         layouts = [self.settingUI, self.userSetting]
@@ -229,10 +229,11 @@ class LayoutManager(DAMG):
         return self._register.regisLayout(layout)
 
     def globalSetting(self):
+
         for layout in self.layouts():
             # print(layout.key)
             try:
-                layout.setContentMargin(1,1,1,1)
+                layout.setContentMargin(0, 0, 0, 0)
             except AttributeError:
                 pass
 
@@ -242,29 +243,30 @@ class LayoutManager(DAMG):
                 pass
 
             try:
-                layout.setSpacing(2)
+                layout.setSpacing(0)
             except AttributeError:
                 pass
 
             if layout.key == 'PipelineManager':
                 # layout.setFixedWidth(550)
                 # layout.setFixedHeight(850)
-                # self.parent.setWindowFlags(STAY_ON_TOP)
+                # layout.setWindowFlags(FRAMELESS)
                 pass
 
             if layout.key in ['TobTab', 'BotTab']:
                 layout.setMovable(True)
-                layout.setElideMode(Qt.ElideRight)
+                layout.setElideMode(ELIDE_RIGHT)
                 layout.setUsesScrollButtons(True)
                 pass
 
     def updateAvatar(self, pth):
-        self.mainUI.topTabUI.tab2.avatarGrp.avatar.imageAvatar = ImageAvatar(pth)
-        self.mainUI.topTabUI.tab2.avatarGrp.avatar.pixAvatar = PixAvatar()
-        image = self.mainUI.topTabUI.tab2.avatarGrp.avatar.imageAvatar
-        pixmap = self.mainUI.topTabUI.tab2.avatarGrp.avatar.pixAvatar
-        self.mainUI.topTabUI.tab2.avatarGrp.avatar.setPixmap(pixmap.fromImage(image))
-        self.mainUI.topTabUI.tab2.avatarGrp.avatar.update()
+
+        self.mainUI.midTabDock.tabs.tab2.avatarGrp.avatar.imageAvatar = ImageAvatar(pth)
+        self.mainUI.midTabDock.tabs.tab2.avatarGrp.avatar.pixAvatar = PixAvatar()
+        image = self.mainUI.midTabDock.tabs.tab2.avatarGrp.avatar.imageAvatar
+        pixmap = self.mainUI.midTabDock.tabs.tab2.avatarGrp.avatar.pixAvatar
+        self.mainUI.midTabDock.tabs.tab2.avatarGrp.avatar.setPixmap(pixmap.fromImage(image))
+        self.mainUI.midTabDock.tabs.tab2.avatarGrp.avatar.update()
 
         self.userSetting.avatarGrp.avatar.imageAvatar = ImageAvatar(pth)
         self.userSetting.avatarGrp.avatar.pixAvatar = PixAvatar()

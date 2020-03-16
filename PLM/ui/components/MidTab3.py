@@ -8,8 +8,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-
 """ Import """
 
 # Python
@@ -27,7 +25,7 @@ from PLM.commons.Widgets                import Widget, PlainTextEdit, ShortCut, 
 from PLM.commons.Core                   import Process
 
 
-class TopTap3(Widget):
+class MidTab3(Widget):
 
     key                                 = 'TerminalLayout'
     _name                               = 'TerminalLayout'
@@ -40,7 +38,7 @@ class TopTap3(Widget):
     _host                               = socket.gethostname()
 
     def __init__(self, buttonManager, parent=None):
-        super(TopTap3, self).__init__(parent)
+        super(MidTab3, self).__init__(parent)
 
         self.buttonManager = buttonManager
         self.parent = parent

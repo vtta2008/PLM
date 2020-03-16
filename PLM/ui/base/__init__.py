@@ -11,6 +11,7 @@ Description:
 
 from .Avatar                import Avatar, ImageAvatar, PixAvatar
 from .BaseDetails           import BaseDetails
+from .BaseDock              import BaseDock
 from .BaseInfo              import BaseInfo
 from .BaseKeys              import BaseKeys
 from .BaseManager           import BaseManager

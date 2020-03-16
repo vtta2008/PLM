@@ -11,7 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 from .AppSetting import AppSetting
-from .BotTab import BotTab
 from .Configurations import Configurations
 from .ForgotPassword import ForgotPassword
 from .InfoWidget import InfoWidget
@@ -20,7 +19,6 @@ from .ScriptMenu import ScriptsMenu
 from .SignIn import SignIn
 from .SignUp import SignUp
 from .SplashUI import SplashUI
-from .TopTab import TopTab
 from .UserSetting import UserSetting
 from .VFXProject import VFXProject
 
