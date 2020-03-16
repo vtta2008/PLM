@@ -16,7 +16,7 @@ import os, sys, traceback, linecache, logging
 
 # PLM
 from PLM.configs                    import LOG_FORMAT, DT_FORMAT, LOCAL_LOG
-from .base                          import StyleMessage, LogLevel
+from .BaseLog                       import StyleMessage, LogLevel
 from .Handlers                      import StreamHandler, FileHandler
 
 class Loggers(logging.Logger):

@@ -94,7 +94,7 @@ version_construct_class = dict(
     )
 
 
-class _version(type):
+class version(type):
 
     key                             = 'DAMGVERSION'
     Type                            = 'DamgVersion'
@@ -105,12 +105,12 @@ class _version(type):
     _micro_step                     = 1
 
     def __new__(cls, *args, **kwargs):
-        newType = type.__new__(_version, 'version', (_version,), version_construct_class)
+        newType = type.__new__(version, 'version', (version,), version_construct_class)
         return newType
 
     def __init__(self):
         self.__new__()
-        super(_version, self).__init__(self, _version)
+        super(version, self).__init__(self, version)
 
     def increase_majo_step(self):
         return self._majo_step + self._step
@@ -154,7 +154,7 @@ class _version(type):
         self._step                  = newVal
 
     def __bases__(cls):
-        return type.__new__(_version, 'version', (_version,), version_construct_class)
+        return type.__new__(version, 'version', (version,), version_construct_class)
 
     def __str__(self):
         return self.__str__
@@ -170,16 +170,19 @@ class _version(type):
     __qualname__                = 'version'
 
 
-class version(_version):
+# class version(_version):
+#
+#     key                         = 'version'
+#
+#     def __init__(self):
+#         super(version, self).__init__()
+#
+#     def release_note(self):
+#         pass
 
-    key                         = 'version'
 
-    def __init__(self):
-        super(version, self).__init__()
-
-    def release_note(self):
-        pass
-
+__version__ = version()
+print(__version__)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 1/11/2019 - 4:48 PM

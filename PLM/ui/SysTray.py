@@ -16,6 +16,7 @@ from PLM.configs                        import __appSlogan__, __appname__
 from PLM.commons.Widgets                import SystemTrayIcon
 from PLM.commons.Gui                    import LogoIcon
 from PLM.ui.components                  import SysTrayIconMenu
+from PLM.ui.models                      import ActionManager, EventManager
 from PLM.cores                          import LocalDatabase
 
 
@@ -25,12 +26,12 @@ class SysTray(SystemTrayIcon):
     key                                 = 'SysTray'
     _login                              = False
 
-    def __init__(self, actionManager, eventManager, parent=None):
+    def __init__(self, parent=None):
         super(SysTray, self).__init__(parent)
 
         self.db                         = LocalDatabase()
-        self.actionManager              = actionManager
-        self.eventManager               = eventManager
+        self.actionManager              = ActionManager()
+        self.eventManager               = EventManager()
 
         try:
             self.username               = self.db.query_table('curUser')[0]

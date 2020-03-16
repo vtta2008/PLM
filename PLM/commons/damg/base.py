@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: base.py
+Script Name: BaseLog.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:

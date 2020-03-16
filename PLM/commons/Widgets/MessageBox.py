@@ -47,6 +47,12 @@ class MessageBox(QMessageBox):
 
         self.popupLevel(self._parent, self.popupTitle, self._message, self.btn)
 
+    def __call__(self, *args, **kwargs):
+
+        if isinstance(self, object):
+            return True
+        else:
+            return False
 
     def config_level(self):
 

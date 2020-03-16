@@ -8,11 +8,11 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__, ROOT, globalSetting
 """ Import """
 
 # Python
-import sys, ctypes
+import sys
+import ctypes
 
 try:
     from ctypes.wintypes            import HRESULT
@@ -21,20 +21,20 @@ except ImportError:
 finally:
     from ctypes                     import wintypes
 
+
+
 # PyQt5
 from PyQt5.QtWidgets                import QApplication
 from PyQt5.QtGui                    import QColor
 
 # PLM
+from PLM                            import __copyright__, ROOT, globalSetting
 from PLM.configs                    import __version__, __appname__, __organization__, __website__, DarkPalette, PLMAPPID
-from PLM.cores                      import Loggers
-from PLM.cores                      import SignalManager
-from PLM.cores                      import SettingManager
-from PLM.cores                      import StyleSheet
-from PLM.commons.Core import Process
-from PLM.commons.Gui import Cursor, LogoIcon
-from PLM.commons.Widgets import MessageBox
-from PLM.plugins import Qt
+from PLM.cores                      import Loggers, SignalManager, SettingManager, StyleSheet
+from PLM.commons.Core               import Process
+from PLM.commons.Gui                import Cursor, LogoIcon
+from PLM.commons.Widgets            import MessageBox
+from PLM.plugins                    import Qt
 
 PCWSTR                              = ctypes.c_wchar_p
 AppUserModelID                      = ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID
@@ -91,7 +91,7 @@ class Application(QApplication):
         self.setQuitOnLastWindowClosed(False)
         self.setDesktopSettingsAware(True)
 
-        self.logger                     = Loggers(self.__class__.__name__)
+        self.logger                     = Loggers(__name__)
         self.settings                   = SettingManager(self)
         self.signals                    = SignalManager(self)
         self.appStyle                   = StyleSheet(self)
@@ -110,8 +110,8 @@ class Application(QApplication):
         hresult                         = AppUserModelID(appID)
         assert hresult == 0, "SetCurrentProcessExplicitAppUserModelID failed"
 
-    def messageBox(self, parent=None, title="auto", level="auto", message="test message", btn='ok', flag=None):
-        messBox = MessageBox(parent, title, level, message, btn, flag)
+    def sys_message(self, parent=None, title="auto", level="auto", message="test message", btn='ok', flag=None):
+        messBox =  MessageBox(parent, title, level, message, btn, flag)
         return messBox
 
     def set_styleSheet(self, style):

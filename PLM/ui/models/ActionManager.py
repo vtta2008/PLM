@@ -17,7 +17,7 @@ class ActionManager(BaseKeys):
     _name                       = 'ActionManager'
 
     def __init__(self, parent=None):
-        super(ActionManager, self).__init__(self)
+        super(ActionManager, self).__init__(parent)
         self.parent             = parent
 
     def register(self, action):

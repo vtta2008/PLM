@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Organisation """
 
-__organization__        = "DAMG TEAM"
+__organization__        = "DAMGTEAM"
 __organizationID__      = "DAMG"
 __organizationName__    = 'DAMGTEAM'
 __groupname__           = "DAMGTEAM"

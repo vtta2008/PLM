@@ -12,7 +12,9 @@ Description:
 """ Import """
 from PLM import globalSetting
 
-import os, sys, requests
+import os
+import sys
+import requests
 
 from PLM.configs                        import __localServer__, __google__, STAY_ON_TOP, SERVER_CONNECT_FAIL
 from PLM.cores                          import LocalDatabase
@@ -37,7 +39,8 @@ class AppModel(Application):
 
         if not serverReady:
             if not globalSetting.modes.allowLocalMode:
-                self.messageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                print(SERVER_CONNECT_FAIL)
+                self.sys_message(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', None)
                 sys.exit()
 
         self.splash                     = SplashUI(self)
@@ -102,7 +105,7 @@ class AppModel(Application):
             r = requests.get(self._server, verify=self.getVerify(), headers=self.getHeaders(), cookies=self.getCookies())
         except Exception:
             if not globalSetting.modes.allowLocalMode:
-                self.splash.finish(self.messageBox(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', STAY_ON_TOP))
+                self.splash.finish(self.sys_message(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', STAY_ON_TOP))
                 sys.exit()
             else:
                 self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)

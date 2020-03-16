@@ -17,7 +17,8 @@ class ButtonManager(BaseKeys):
     _name               = 'ButtonManager'
 
     def __init__(self, parent=None):
-        super(ButtonManager, self).__init__(self)
+
+        super(ButtonManager, self).__init__(parent)
 
         self.parent                 = parent
 

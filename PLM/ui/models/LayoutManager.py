@@ -70,7 +70,7 @@ class LayoutManager(DAMG):
         self.plugins                    = self.pluginsLayouts()
 
         tbcbs                           = self.preferences.header.toolBarCBs
-        tbs                             = self.mainUI.mainToolBar.tbs
+        tbs                             = self.mainUI.tbs
         cncbs                           = self.preferences.header.connectCBs
         cns                             = self.mainUI.connectStatus.labels
         mncbs                           = self.preferences.header.menuCBs
@@ -82,7 +82,7 @@ class LayoutManager(DAMG):
             cb = tbcbs[i+1]
             tb = tbs[i]
             cb.stateChanged.connect(tb.setVisible)
-        tbcbs[0].stateChanged.connect(self.mainUI.mainToolBar.setVisible)
+        tbcbs[0].stateChanged.connect(self.mainUI.setVisible)
 
         for i in range(1, len(mns)):
             cb = mncbs[i+1]
@@ -129,8 +129,8 @@ class LayoutManager(DAMG):
         self.signin                         = SignIn()
         self.forgotPW                       = ForgotPassword()
         self.signup                         = SignUp()
-        self.mainUI                         = PipelineManager(self.actionManager, self.buttonManager, self.threadManager, self.parent)
-        self.sysTray                        = SysTray(self.actionManager, self.eventManager, self.parent)
+        self.mainUI                         = PipelineManager(self.threadManager, self.parent)
+        self.sysTray                        = SysTray(self.parent)
         self.shortcutCMD                    = CommandUI(parent=self.parent)
 
         layouts = [self.mainUI, self.sysTray, self.shortcutCMD, self.signin, self.signup, self.forgotPW]

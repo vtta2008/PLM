@@ -15,7 +15,6 @@ Description:
 from PLM.configs                        import SYSTRAY_UNAVAI, KEY_RELEASE
 from PLM.ui.models                      import AppModel
 
-
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
@@ -25,7 +24,7 @@ class PLM(AppModel):
     key                                 = 'PLM'
 
     def __init__(self):
-        AppModel.__init__(self)
+        super(PLM, self).__init__()
 
         serverReady                     = self.checkConnectServer()
         userData                        = self.checkUserData()

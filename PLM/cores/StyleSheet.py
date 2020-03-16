@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # Python
-import platform
+import platform, os
 
 # PLM
 from PLM.commons                    import DAMG, DAMGDICT
@@ -34,8 +34,14 @@ class StyleSheet(DAMG):
         self.app                    = app
 
     def getStyleSheet(self, style):
+        if style == 'dark':
+            from PLM.ui.rcs import darkstyle_rc
+        # elif style == 'bright':
+        #     pass
+        else:
+            from PLM.ui.rcs import pyqt5_style_rc
 
-        self._filename              = self.getQssFile(style)
+        self._filename              = QssFile(style)
         self._filename.open(File.ReadOnly | File.Text)
         ts                          = TextStream(self._filename)
         stylesheet                  = ts.readAll()
@@ -43,12 +49,6 @@ class StyleSheet(DAMG):
 
         return stylesheet
 
-    def getQssFile(self, style):
-        if style == 'dark':
-            pass
-        else:
-            pass
-        return QssFile(style)
 
     def fixStyleSheet(self, style):
         stylesheet                  = style

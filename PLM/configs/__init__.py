@@ -282,7 +282,7 @@ REQUIREMENTS_DIR    = os.path.join(ROOT_APP, 'requirements').replace('\\', '/')
 # -------------------------------------------------------------------------------------------------------------
 ''' scripts '''
 
-SCRIPTS_DIR         = os.path.join(ROOT, 'rcs').replace('\\', '/')
+SCRIPTS_DIR         = os.path.join(ROOT, 'scripts').replace('\\', '/')
 CSS_DIR             = os.path.join(SCRIPTS_DIR, 'css').replace('\\', '/')
 HTML_DIR            = os.path.join(SCRIPTS_DIR, 'html').replace('\\', '/')
 JS_DIR              = os.path.join(SCRIPTS_DIR, 'js').replace('\\', '/')
@@ -291,7 +291,7 @@ QSS_DIR             = os.path.join(SCRIPTS_DIR, 'qss').replace('\\', '/')
 # -------------------------------------------------------------------------------------------------------------
 ''' plugins '''
 
-PLUGIN_DIR          = os.path.join(ROOT_APP, 'plugins').replace('\\', '/')
+PLUGIN_DIR          = os.path.join(ROOT, 'plugins').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' test '''
@@ -1231,6 +1231,185 @@ toolTips                            = {}
 statusTips                          = {}
 
 
+if not os.path.exists(LOCAL_DB):
+    from PLM.cores import PresetDB
+    localDB = PresetDB(filename=LOCAL_DB)
+
+
+# -------------------------------------------------------------------------------------------------------------
+""" Config qssPths from text file """
+
+def read_file(fileName):
+
+    filePth = os.path.join(DOCS_DIR, fileName)
+
+    if os.path.exists(filePth):
+        with open(filePth) as f:
+            data = f.read()
+        return data
+
+
+ABOUT               = read_file('ABOUT')
+CODEOFCONDUCT       = read_file('CODEOFCONDUCT')
+CONTRIBUTING        = read_file('CONTRIBUTING')
+COPYRIGHT           = read_file('COPYRIGHT')
+CREDIT              = read_file('CREDIT')
+LICENCE             = read_file('LICENSE')
+LINKS               = read_file('LINKS')
+REFERENCES          = read_file('REFERENCES')
+QUESTIONS           = read_file('QUESTION')
+REFERENCES          = read_file('REFERENCES')
+VERSION             = read_file('VERSION')
+
+
+class ConfigPython(dict):
+
+    key                             = 'ConfigPython'
+
+    pkgsRequires = {
+
+        'cx_Freeze'             : ['>=', '6.1'],
+        'pytest'                : ['==', '5.3.2'],
+        'pytest-cov'            : ['==', '2.8.1'],
+        'msgpack'               : ['>=', '0.6.2'],
+        'pip'                   : ['>=', '19.3.1'],
+        'PyQtWebEngine'         : ['>=', '5.14.0'],
+        'PyQt5-sip'             : ['>=', '12.7.0'],
+        'winshell'              : ['>=', '0.6.0'],
+        'helpdev'               : ['>=', '0.6.10'],
+        'deprecate'             : ['>=', '1.0.5'],
+        'argparse'              : ['>=', '1.4.0'],
+        'green'                 : ['>=', '3.1.0'],
+        'GPUtil'                : ['>=', '1.4.0'],
+        'playsound'             : ['>=', '1.2.2'],
+        'python-resize-image'   : ['>=', '1.1.19'],
+
+    }
+
+    winRequires = {
+
+        'WMI'                   : ['>=', '1.4.9']
+
+    }
+
+
+    macRequires = {}
+
+    utuRequires = {}
+
+    pyqt5Required = {
+
+        'PyQt5'                 : ['>=', '5.14.1'],
+        'PyQtWebEngine'         : ['>=', '5.14.0'],
+        'PyQt5-sip'             : ['>=', '12.7.0'],
+
+    }
+
+
+    pyside2Required = {
+
+        'Pyside2'               : ['>=', '5.14.1'],
+        'shiboken2'             : ['>=', '5.14.1'],
+
+    }
+
+
+    def __init__(self):
+        super(ConfigPython, self).__init__()
+
+        self['python']              = platform.python_build()
+        self['python version']      = platform.python_version()
+
+        pths                        = [p.replace('\\', '/') for p in os.getenv('PATH').split(';')[0:]]
+        sys.path                    = [p.replace('\\', '/') for p in sys.path]
+
+        for p in pths:
+            if os.path.exists(p):
+                if not p in sys.path:
+                    sys.path.insert(-1, p)
+
+        for py in pkg_resources.working_set:
+            self[py.project_name]   = py.version
+
+        self.check_package_required(self.pkgsRequires)
+
+        if platform.system() == 'Windows':
+            # microsoft windows
+            self.check_package_required(self.winRequires)
+        elif platform.system() == 'Darwin':
+            # mac os
+            self.check_package_required(self.macRequires)
+        else:
+            self.check_package_required(self.utuRequires)
+
+
+        if globalSetting.saveCfgInfo:
+            if globalSetting.savePythonInfo:
+                pprint.pprint(self)
+
+        if globalSetting.defaults.save_configInfo:
+            if globalSetting.defaults.save_pythonInfo:
+                save_data(pythonCfg, self)
+
+    def check_package_required(self, pkgs):
+
+        for pk, ver in pkgs.items():
+            if pk not in self.keys():
+                self.install_python_package_required(pk, pkgs)
+            else:
+                conReq = ver[0]
+                verReq = ver[1]
+                verCur = self[pk]
+
+                major, minor, micro     = self.get_version_info(verCur)
+                v1, v2, v3              = self.get_version_info(verReq)
+
+                if conReq == '==':
+                    if v1 != major or v2 != minor or v3 != micro:
+                        self.install_python_package_required(pk, pkgs)
+                elif conReq == '>=':
+                    if not v1 >= major or not v2 >= minor or not v3 >= micro:
+                        self.install_python_package_required(pk, pkgs)
+                elif conReq == '<=':
+                    if not v1 <= major or not v2 <= minor or not v3 <= micro:
+                        self.install_python_package_required(pk, pkgs)
+                elif conReq == '<':
+                    if not v1 < major or not v2 < minor or not v3 < micro:
+                        self.install_python_package_required(pk, pkgs)
+                elif conReq == '>':
+                    if not v1 > major or not v2 > minor or not v3 > micro:
+                        self.install_python_package_required(pk, pkgs)
+
+    def install_python_package_required(self, pk, reqs):
+
+        if pk in reqs.keys():
+            ver                         = reqs[pk]
+            conReq                      = ver[0]
+            if conReq == '==' or conReq == '<=':
+                subprocess.Popen('python -m pip install {0}={1} --user'.format(pk, ver), shell=True).wait()
+            elif conReq == '>=':
+                subprocess.Popen('python -m pip install {0} --user --upgrade'.format(pk, ver), shell=True).wait()
+            else:
+                subprocess.Popen('python -m pip install {0}={1} --user'.format(pk, ver), shell=True).wait()
+
+    def get_version_info(self, ver):
+
+        if len(ver.split('.')) == 1:
+            major               = int(ver.split('.')[0])
+            minor               = 0
+            micro               = 0
+        elif len(ver.split('.')) == 2:
+            major               = int(ver.split('.')[0])
+            minor               = int(ver.split('.')[1])
+            micro               = 0
+        else:
+            major               = int(ver.split('.')[0])
+            minor               = int(ver.split('.')[1])
+            micro               = int(ver.split('.')[3])
+
+        return major, minor, micro
+
+
 class ConfigApps(dict):
 
     key                         = 'ConfigApps'
@@ -1299,12 +1478,12 @@ class ConfigPath(dict):
         self.add('VAR_SCSS_PTH'     , VAR_SCSS_PTH)
         self.add('SETTING_FILEPTH'  , SETTING_FILEPTH)
 
-        if globalSetting.tracks.configInfo:
+        if globalSetting.printCfgInfo:
             if globalSetting.tracks.pthInfo:
                 pprint.pprint(self)
 
-        if globalSetting.defaults.save_configInfo:
-            if globalSetting.defaults.save_pathInfo:
+        if globalSetting.saveCfgInfo:
+            if globalSetting.savePthInfo:
                 save_data(pthCfg, self)
 
     def add(self, key, value):
@@ -1418,38 +1597,16 @@ class ConfigDirectory(dict):
                     os.umask(original_umask)
                 os.chmod(path, mode)
 
-    def add(self, key, value):
-        self[key]                       = value
-
-
-class ConfigPython(dict):
-
-    key                             = 'ConfigPython'
-
-    def __init__(self):
-        super(ConfigPython, self).__init__()
-
-        self['python']              = platform.python_build()
-        self['python version']      = platform.python_version()
-
-        pths                        = [p.replace('\\', '/') for p in os.getenv('PATH').split(';')[0:]]
-        sys.path                    = [p.replace('\\', '/') for p in sys.path]
-
-        for p in pths:
-            if os.path.exists(p):
-                if not p in sys.path:
-                    sys.path.insert(-1, p)
-
-        for py in pkg_resources.working_set:
-            self[py.project_name]   = py.version
-
-        if globalSetting.tracks.configInfo:
-            if globalSetting.tracks.pythonInfo:
+        if globalSetting.printCfgInfo:
+            if globalSetting.printDirInfo:
                 pprint.pprint(self)
 
-        if globalSetting.defaults.save_configInfo:
-            if globalSetting.defaults.save_pythonInfo:
-                save_data(pythonCfg, self)
+        if globalSetting.saveCfgInfo:
+            if globalSetting.saveDirInfo:
+                save_data(dirCfg, self)
+
+    def add(self, key, value):
+        self[key]                       = value
 
 
 class ConfigAvatar(dict):
@@ -1463,6 +1620,13 @@ class ConfigAvatar(dict):
             for name in names:
                 self[name.split('.avatar')[0]] = os.path.join(root, name).replace('\\', '/')
 
+        if globalSetting.printCfgInfo:
+            if globalSetting.printAvatarInfo:
+                pprint.pprint(self)
+
+        if globalSetting.saveCfgInfo:
+            if globalSetting.saveAvatarInfo:
+                save_data(avatarCfg, self)
 
 class ConfigLogo(dict):
 
@@ -1597,6 +1761,8 @@ class ConfigUrl(dict):
 
 class ConfigTypes(dict):
 
+    key                     = 'ConfigTypes'
+
     def __init__(self):
         super(ConfigTypes, self).__init__()
 
@@ -1635,7 +1801,8 @@ class ConfigFormats(dict):
 
 
 class CommandData(dict):
-    key = 'CommandData'
+
+    key                             = 'CommandData'
 
     def __init__(self, key=None, icon=None, tooltip=None, statustip=None,
                        value=None, valueType=None, arg=None, code=None):
@@ -1838,72 +2005,30 @@ class ConfigPipeline(dict):
         self[key]                           = value
 
 
-dirInfo                            = ConfigDirectory()
-pthInfo                            = ConfigPath()
-iconInfo                           = ConfigIcon()
-appInfo                            = ConfigApps()
-urlInfo                            = ConfigUrl()
-plmInfo                            = ConfigPipeline(iconInfo, appInfo, urlInfo, dirInfo, pthInfo)
+if platform.system() == 'Windows':
 
-from PLM.cores import PresetDB
-localDB = PresetDB(filename=pthInfo['LOCAL_DB'])
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" Config qssPths from text file """
-
-def read_file(fileName):
-
-    filePth = os.path.join(dirInfo['DOCS_DIR'], fileName)
-
-    if not os.path.exists(filePth):
-        filePth = os.path.join(dirInfo['RST_DIR'], "{}.rst".format(fileName))
-
-    if os.path.exists(filePth):
-        with open(filePth, 'r') as f:
-            data = f.read()
-        return data
-
-
-ABOUT               = read_file('ABOUT')
-CODEOFCONDUCT       = read_file('CODEOFCONDUCT')
-CONTRIBUTING        = read_file('CONTRIBUTING')
-COPYRIGHT           = read_file('COPYRIGHT')
-CREDIT              = read_file('CREDIT')
-LICENCE             = read_file('LICENSE')
-LINKS               = read_file('LINKS')
-REFERENCES          = read_file('REFERENCES')
-QUESTIONS           = read_file('QUESTION')
-REFERENCES          = read_file('REFERENCES')
-VERSION             = read_file('VERSION')
-
-
-if sys.platform == 'win32':
-
-    runs = subprocess.Popen
-    sysKey = 'SYSTEMINFO'
-    optKey1 = 'OS Configuration'
-    igCase = re.IGNORECASE
-    scr = runs(sysKey, stdin=PIPE, stdout=PIPE).communicate()[0].decode('utf-8')
-    optInfo1 = re.findall("{0}:\w*(.*?)\n".format(optKey1), scr, igCase)
-
-    com = wmi.WMI()
-    operatingSys = com.Win32_OperatingSystem()
-    computerSys = com.Win32_ComputerSystem()
-    biosSys = com.Win32_BIOS()
-    baseBoardSys = com.Win32_BaseBoard()
-    processorSys = com.Win32_Processor()
-    displaySys = com.Win32_DisplayControllerConfiguration()
-    memorySys = com.Win32_PhysicalMemory()
-    logicalDiskSys = com.Win32_LogicalDisk()
-    cdromSys = com.Win32_CDROMDrive()
-    diskDriveSys = com.Win32_DiskDrive()
-    pciSys = com.Win32_IDEController()
-    networkSys = com.Win32_NetworkAdapter()
-    keyboardSys = com.Win32_Keyboard()
-    miceSys = com.Win32_PointingDevice()
-    totalRam = computerSys[0].TotalPhysicalMemory
-
+    runs                        = subprocess.Popen
+    sysKey                      = 'SYSTEMINFO'
+    optKey1                     = 'OS Configuration'
+    igCase                      = re.IGNORECASE
+    scr                         = runs(sysKey, stdin=PIPE, stdout=PIPE).communicate()[0].decode('utf-8')
+    optInfo1                    = re.findall("{0}:\w*(.*?)\n".format(optKey1), scr, igCase)
+    com                         = wmi.WMI()
+    operatingSys                = com.Win32_OperatingSystem()
+    computerSys                 = com.Win32_ComputerSystem()
+    biosSys                     = com.Win32_BIOS()
+    baseBoardSys                = com.Win32_BaseBoard()
+    processorSys                = com.Win32_Processor()
+    displaySys                  = com.Win32_DisplayControllerConfiguration()
+    memorySys                   = com.Win32_PhysicalMemory()
+    logicalDiskSys              = com.Win32_LogicalDisk()
+    cdromSys                    = com.Win32_CDROMDrive()
+    diskDriveSys                = com.Win32_DiskDrive()
+    pciSys                      = com.Win32_IDEController()
+    networkSys                  = com.Win32_NetworkAdapter()
+    keyboardSys                 = com.Win32_Keyboard()
+    miceSys                     = com.Win32_PointingDevice()
+    totalRam                    = computerSys[0].TotalPhysicalMemory
 
     class ConfigMachine(dict):
 
@@ -2158,6 +2283,15 @@ if sys.platform == 'win32':
                 self.miceCount += 1
 
             return info
+
+
+dirInfo                            = ConfigDirectory()
+pthInfo                            = ConfigPath()
+iconInfo                           = ConfigIcon()
+appInfo                            = ConfigApps()
+urlInfo                            = ConfigUrl()
+plmInfo                            = ConfigPipeline(iconInfo, appInfo, urlInfo, dirInfo, pthInfo)
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:45 PM
