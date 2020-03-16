@@ -61,6 +61,8 @@ class SettingsRequired(object):
     _printAppInfo                   = False
     _printDirInfo                   = False
     _printAvatarInfo                = False
+    _printLogoInfo                  = False
+    _printImgInfo                   = False
 
     _saveCfgInfo                    = True
     _savePthInfo                    = False
@@ -68,6 +70,8 @@ class SettingsRequired(object):
     _saveAppInfo                    = False
     _saveDirInfo                    = False
     _saveAvatarInfo                 = False
+    _saveLogoInfo                   = False
+    _saveImgInfo                    = False
 
     def __init__(self):
         object.__init__(self)
@@ -124,6 +128,38 @@ class SettingsRequired(object):
     @property
     def saveAvatarInfo(self):
         return self._saveAvatarInfo
+
+    @property
+    def printLogoInfo(self):
+        return self._printLogoInfo
+
+    @property
+    def saveLogoInfo(self):
+        return self._saveLogoInfo
+
+    @property
+    def printImgInfo(self):
+        return self._printImgInfo
+
+    @property
+    def saveImgInfo(self):
+        return self._saveImgInfo
+
+    @saveImgInfo.setter
+    def saveImgInfo(self, val):
+        self._saveImgInfo           = val
+
+    @printImgInfo.setter
+    def printImgInfo(self, val):
+        self._printImgInfo          = val
+
+    @saveLogoInfo.setter
+    def saveLogoInfo(self, val):
+        self._saveLogoInfo          = val
+
+    @printLogoInfo.setter
+    def printLogoInfo(self, val):
+        self._printLogoInfo         = val
 
     @saveAvatarInfo.setter
     def saveAvatarInfo(self, val):

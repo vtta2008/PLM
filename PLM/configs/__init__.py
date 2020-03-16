@@ -1628,6 +1628,7 @@ class ConfigAvatar(dict):
             if globalSetting.saveAvatarInfo:
                 save_data(avatarCfg, self)
 
+
 class ConfigLogo(dict):
 
     key                                 = 'ConfigLogo'
@@ -1648,6 +1649,14 @@ class ConfigLogo(dict):
 
         self['DAMGTEAM']                = damgLogos
         self['PLM']                     = plmLogos
+
+        if globalSetting.printCfgInfo:
+            if globalSetting.printAvatarInfo:
+                pprint.pprint(self)
+
+        if globalSetting.saveCfgInfo:
+            if globalSetting.saveAvatarInfo:
+                save_data(logoCfg, self)
 
 
 class ConfigImage(dict):
