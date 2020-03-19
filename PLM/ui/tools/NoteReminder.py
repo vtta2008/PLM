@@ -20,8 +20,10 @@ from PyQt5.QtWidgets                import (QAction, QApplication, QComboBox, QD
                                             QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
 
 # Plm
-from PLM.commons.Widgets import GridLayout, Widget, Label
-from PLM.commons.Gui                     import AppIcon
+from PLM.commons.Widgets.GridLayout import GridLayout
+from PLM.commons.Widgets.Label      import Label
+from PLM.commons.Widgets.Widget     import Widget
+from PLM.commons.Gui                import AppIcon
 
 
 def codec_name(codec):
@@ -221,11 +223,8 @@ class NoteReminder(Widget):
 
         self.setLayout(layout)
 
-def main():
-    app = QApplication(sys.argv)
-    mainWin = NoteReminder()
-    mainWin.show()
-    app.exec_()
 
-if __name__ == '__main__':
-    main()
+
+# -------------------------------------------------------------------------------------------------------------
+# Created by panda on 6/07/2018 - 11:31 AM
+# © 2017 - 2018 DAMGTEAM. All rights reserved

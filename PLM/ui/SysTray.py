@@ -95,3 +95,8 @@ class SysTray(SystemTrayIcon):
     def setVisible(self, bool):
         if not self.isVisible():
             return self.setVisible(True)
+
+
+# -------------------------------------------------------------------------------------------------------------
+# Created by panda on 6/07/2018 - 11:31 AM
+# © 2017 - 2018 DAMGTEAM. All rights reserved

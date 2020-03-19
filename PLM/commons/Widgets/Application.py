@@ -15,72 +15,74 @@ import sys
 import ctypes
 
 try:
-    from ctypes.wintypes            import HRESULT
+    from ctypes.wintypes                import HRESULT
 except ImportError:
-    from ctypes                     import HRESULT
+    from ctypes                         import HRESULT
 finally:
-    from ctypes                     import wintypes
+    from ctypes                         import wintypes
 
 
 
 # PyQt5
-from PyQt5.QtWidgets                import QApplication
-from PyQt5.QtGui                    import QColor
+from PyQt5.QtWidgets                    import QApplication
+from PyQt5.QtGui                        import QColor
 
 # PLM
-from PLM                            import __copyright__, ROOT, globalSetting
-from PLM.configs                    import __version__, __appname__, __organization__, __website__, DarkPalette, PLMAPPID
-from PLM.cores                      import Loggers, SignalManager, SettingManager, StyleSheet
-from PLM.commons.Core               import Process
-from PLM.commons.Gui                import Cursor, LogoIcon
-from PLM.commons.Widgets.MessageBox import MessageBox
-from PLM.plugins                    import Qt
+from PLM                                import __copyright__, ROOT, globalSetting
+from PLM.configs                        import __version__, __appname__, __organization__, __website__, DarkPalette, PLMAPPID
+from PLM.cores                          import Loggers, SignalManager, SettingManager, StyleSheet
+from PLM.commons.Core                   import Process
+from PLM.commons.Gui                    import Cursor, LogoIcon
+from PLM.commons.Widgets.MessageBox     import MessageBox
+from PLM.plugins                        import Qt
+from PLM.ui.tools.Browser               import Browser
 
-PCWSTR                              = ctypes.c_wchar_p
-AppUserModelID                      = ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID
-AppUserModelID.argtypes             = [PCWSTR]
-AppUserModelID.restype              = HRESULT
+
+PCWSTR                                  = ctypes.c_wchar_p
+AppUserModelID                          = ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID
+AppUserModelID.argtypes                 = [PCWSTR]
+AppUserModelID.restype                  = HRESULT
 
 
 class Application(QApplication):
 
-    Type                            = 'DAMGAPPLICATION'
-    key                             = 'Application'
-    _name                           = 'DAMG Application'
-    _copyright                      = __copyright__()
+    Type                                = 'DAMGAPPLICATION'
+    key                                 = 'Application'
+    _name                               = 'DAMG Application'
+    _copyright                          = __copyright__()
 
-    _login                          = False
-    _styleSheetData                 = None
+    _login                              = False
+    _styleSheetData                     = None
 
-    _server                         = None
-    _verify                         = False
+    _server                             = None
+    _verify                             = False
 
-    threadManager                   = None
-    eventManager                    = None
-    layoutManager                   = None
+    threadManager                       = None
+    eventManager                        = None
+    layoutManager                       = None
 
-    appInfo                         = None
-    plmInfo                         = None
-    layouts                         = None
+    appInfo                             = None
+    plmInfo                             = None
+    layouts                             = None
 
-    token                           = None
-    cookie                          = None
+    token                               = None
+    cookie                              = None
 
-    browser                         = None
-    mainUI                          = None
-    sysTray                         = None
-    shortcutCMD                     = None
-    signIn                          = None
-    signUp                          = None
-    forgotPW                        = None
+    browser                             = None
+    mainUI                              = None
+    sysTray                             = None
+    shortcutCMD                         = None
+    signIn                              = None
+    signUp                              = None
+    forgotPW                            = None
 
-    _appID                          = None
+    _appID                              = None
 
     def __init__(self):
         super(Application, self).__init__(sys.argv)
 
         sys.path.insert(0, ROOT)
-
+        self.browser                    = Browser()
         self.setWindowIcon(LogoIcon("DAMG"))                        # Setup icon
         self.setOrganizationName(__organization__)
         self.setApplicationName(__appname__)
@@ -178,48 +180,39 @@ class Application(QApplication):
 
     @styleSheetData.setter
     def styleSheetData(self, val):
-        self._styleSheetData        = val
+        self._styleSheetData            = val
 
     @name.setter
     def name(self, val):
-        self._name                  = val
+        self._name                      = val
 
     @login.setter
     def login(self, val):
-        self._login                 = val
+        self._login                     = val
 
     @appID.setter
     def appID(self, val):
-        self._appID                 = val
+        self._appID                     = val
 
     @server.setter
     def server(self, val):
-        self._server               = val
+        self._server                    = val
 
     @verify.setter
     def verify(self, val):
-        self._verify               = val
+        self._verify                    = val
 
     def setRecieveSignal(self, bool):
-        globalSetting.tracks.recieveSignal = bool
+        globalSetting.recieveSignal = bool
 
     def setBlockSignal(self, bool):
-        globalSetting.tracks.blockSignal = bool
+        globalSetting.blockSignal = bool
 
     def setTrackCommand(self, bool):
-        globalSetting.tracks.command = bool
+        globalSetting.command = bool
 
     def setRegistLayout(self, bool):
-        globalSetting.tracks.registLayout = bool
-
-    def setJobsTodo(self, bool):
-        globalSetting.tracks.jobsToDo = bool
-
-    def setShowLayout(self, bool):
-        globalSetting.tracks.showLayoutError = bool
-
-    def setTrackEvent(self, bool):
-        globalSetting.tracks.events = bool
+        globalSetting.registLayout = bool
 
 
 # -------------------------------------------------------------------------------------------------------------

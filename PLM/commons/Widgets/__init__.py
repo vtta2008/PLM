@@ -38,6 +38,7 @@ from .StatusBar         import StatusBar
 from .SystemTrayIcon    import SystemTrayIcon
 from .TabBar            import TabBar
 from .TabWidget         import TabWidget
+from .TextEdit          import TextEdit
 from .ToolBar           import ToolBar
 from .UndoCommand       import UndoCommand
 from .Widget            import Widget

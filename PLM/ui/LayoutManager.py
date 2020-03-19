@@ -10,26 +10,24 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PyQt5.QtCore                       import Qt
 
 # PLM
-from PLM.configs                            import SiPoMin, FRAMELESS, ELIDE_RIGHT
-from PLM.commons                                import DAMG, DAMGLIST
+from PLM.configs                        import SiPoMin, ELIDE_RIGHT
+from PLM.commons                        import DAMG, DAMGLIST
 
-from PLM.ui.models.ActionManager import ActionManager
-from PLM.ui.models.ButtonManager import ButtonManager
-from PLM.ui.models.RegistryLayout import RegistryLayout
-from PLM.ui.models.EventManager import EventManager
+from PLM.ui.models.ActionManager        import ActionManager
+from PLM.ui.models.ButtonManager        import ButtonManager
+from PLM.ui.models.RegistryLayout       import RegistryLayout
+from PLM.ui.models.EventManager         import EventManager
 
-from PLM.ui.base import BaseManager, ImageAvatar, PixAvatar
-from PLM.ui.tools import CommandUI
-from PLM.ui.PipelineManager import PipelineManager
-from PLM.ui.SysTray import SysTray
-from PLM.ui.tools import (Calendar, Calculator, EnglishDictionary, FindFiles, ImageViewer,
-                          NoteReminder, ScreenShot, TextEditor)
-from PLM.ui.layouts import (ForgotPassword, SignUp, SignIn, InfoWidget, VFXProject, AppSetting, UserSetting,
-                            Preferences, Configurations)
+from PLM.ui.base                        import BaseManager, ImageAvatar, PixAvatar
+from PLM.ui.tools                       import CommandUI
+from PLM.ui.PipelineManager             import PipelineManager
+from PLM.ui.SysTray                     import SysTray
+from PLM.ui.tools                       import (Calendar, Calculator, EnglishDictionary, FindFiles, ImageViewer,
+                                                NoteReminder, ScreenShot, TextEditor)
+from PLM.ui.layouts                     import (ForgotPassword, SignUp, SignIn, InfoWidget, VFXProject, AppSetting,
+                                                UserSetting, Preferences, Configurations)
 
 class LayoutManager(DAMG):
 
@@ -52,7 +50,7 @@ class LayoutManager(DAMG):
         self.eventManager               = EventManager(self.parent)
         self.threadManager              = threadManager
 
-        self.globalSetting()
+        self.globalLayoutSetting()
 
     def layouts(self):
         return self._register.values()
@@ -112,9 +110,6 @@ class LayoutManager(DAMG):
         self.mainUI.botTabDock.tabs.botTab1.blockSignalCB.stateChanged.connect(self.parent.setBlockSignal)
         self.mainUI.botTabDock.tabs.botTab1.commandCB.stateChanged.connect(self.parent.setTrackCommand)
         self.mainUI.botTabDock.tabs.botTab1.registLayoutCB.stateChanged.connect(self.parent.setRegistLayout)
-        self.mainUI.botTabDock.tabs.botTab1.jobsTodoCB.stateChanged.connect(self.parent.setJobsTodo)
-        self.mainUI.botTabDock.tabs.botTab1.showLayoutErrorCB.stateChanged.connect(self.parent.setShowLayout)
-        self.mainUI.botTabDock.tabs.botTab1.trackEventCB.stateChanged.connect(self.parent.setTrackEvent)
 
         layouts = []
         for listLayout in [self.mains, self.infos, self.setts, self.tools, self.prjs]:
@@ -228,7 +223,10 @@ class LayoutManager(DAMG):
     def registLayout(self, layout):
         return self._register.regisLayout(layout)
 
-    def globalSetting(self):
+    def globalLayoutSetting(self):
+
+        from PLM.configs import ConfigFonts
+        self.fontInfo                         = ConfigFonts()
 
         for layout in self.layouts():
             # print(layout.key)
@@ -291,6 +289,8 @@ class LayoutManager(DAMG):
     def register(self, val):
         self._register = val
 
+
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/07/2018 - 11:31 AM
-# © 2017 - 2018 DAMGteam. All rights reserved
+# © 2017 - 2018 DAMGTEAM. All rights reserved

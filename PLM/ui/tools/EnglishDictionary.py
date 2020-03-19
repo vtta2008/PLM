@@ -10,16 +10,20 @@ Description:
 """ Import """
 
 # Python
-import json, os, sys
-from difflib                    import get_close_matches
+import json, os
+from difflib                            import get_close_matches
 
 # PyQt5
-from PyQt5.QtWidgets            import QTextEdit, QApplication
+from PyQt5.QtWidgets                    import QTextEdit
 
 # PLM
-from PLM.configs                    import JSON_DIR
-from PLM.commons.Widgets            import Widget, GridLayout, LineEdit, Label, Button
-from PLM.commons.Gui                 import AppIcon
+from PLM.configs                        import JSON_DIR
+from PLM.commons.Widgets.Button         import Button
+from PLM.commons.Widgets.Label          import Label
+from PLM.commons.Widgets.LineEdit       import LineEdit
+from PLM.commons.Widgets.GridLayout     import GridLayout
+from PLM.commons.Widgets.Widget         import Widget
+from PLM.commons.Gui                    import AppIcon
 
 class EnglishDictionary(Widget):
 
@@ -98,12 +102,6 @@ class EnglishDictionary(Widget):
             listToString += i
         return listToString
 
-
-def initialize():
-    app = QApplication(sys.argv)
-    dictUI = EnglishDictionary()
-    dictUI.show()
-    app.exec_()
-
-if __name__ == "__main__":
-    initialize()
+# -------------------------------------------------------------------------------------------------------------
+# Created by panda on 6/12/2019 - 8:49 AM
+# © 2017 - 2018 DAMGteam. All rights reserved

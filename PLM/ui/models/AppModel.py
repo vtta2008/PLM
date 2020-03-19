@@ -20,8 +20,6 @@ from PLM.configs                        import __localServer__, __google__, STAY
 from PLM.cores                          import LocalDatabase
 from PLM.ui.layouts.SplashUI            import SplashUI
 from PLM.ui.models.ThreadManager        import ThreadManager
-from PLM.ui.LayoutManager               import LayoutManager
-from PLM.ui.tools.Browser               import Browser
 from PLM.commons.Widgets                import Application
 from PLM.utils                          import clean_file_ext
 
@@ -62,20 +60,6 @@ class AppModel(Application):
 
         self.database                   = LocalDatabase()
         self.threadManager              = ThreadManager()
-        self.layoutManager              = LayoutManager(self.threadManager, self)
-        self.browser                    = Browser()
-        self.layoutManager.registLayout(self.browser)
-
-        self.layoutManager.buildLayouts()
-        self.layoutManager.globalSetting()
-
-        self.layouts                    = self.layoutManager.register
-
-        self.mainUI, self.sysTray, self.shortcutCMD, self.signIn, self.signUp, self.forgotPW = self.layoutManager.mains
-
-        for layout in [self.mainUI, self.sysTray, self.signIn, self.signUp, self.forgotPW]:
-            layout.signals._emitable = True
-            layout.signals.connect('loginChanged', self.loginChanged)
 
     def checkUserData(self):
         try:

@@ -12,8 +12,9 @@ Description:
 """ import """
 
 # PLM
-from PLM.configs                        import SYSTRAY_UNAVAI, KEY_RELEASE
 from PLM.ui.models                      import AppModel
+from PLM.ui.LayoutManager               import LayoutManager
+from PLM.configs                        import SYSTRAY_UNAVAI, KEY_RELEASE
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -25,6 +26,19 @@ class PLM(AppModel):
 
     def __init__(self):
         AppModel.__init__(self)
+
+        self.layoutManager              = LayoutManager(self.threadManager, self)
+        self.layoutManager.registLayout(self.browser)
+        self.layoutManager.buildLayouts()
+        self.layoutManager.globalLayoutSetting()
+
+        self.layouts                    = self.layoutManager.register
+
+        self.mainUI, self.sysTray, self.shortcutCMD, self.signIn, self.signUp, self.forgotPW = self.layoutManager.mains
+
+        for layout in [self.mainUI, self.sysTray, self.signIn, self.signUp, self.forgotPW]:
+            layout.signals._emitable = True
+            layout.signals.connect('loginChanged', self.loginChanged)
 
         self.connectServer              = self.checkConnectServer()
         userData                        = self.checkUserData()

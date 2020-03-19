@@ -99,4 +99,8 @@ class PipelineManager(MainWindow):
     def count(self, val):
         self._count = val
 
+
+
 # -------------------------------------------------------------------------------------------------------------
+# Created by panda on 6/07/2018 - 11:31 AM
+# © 2017 - 2018 DAMGTEAM. All rights reserved

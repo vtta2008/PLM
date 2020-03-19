@@ -18,15 +18,15 @@ import os, glob
 from functools import partial
 
 # PyQt5
-from PyQt5                  import QtSql
-from PyQt5.QtCore           import Qt, QDir, pyqtSignal
-from PyQt5.QtGui            import QPixmap, QTransform, QIcon
-from PyQt5.QtWidgets        import QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout
+from PyQt5                          import QtSql
+from PyQt5.QtCore                   import Qt, QDir, pyqtSignal
+from PyQt5.QtGui                    import QPixmap, QTransform, QIcon
+from PyQt5.QtWidgets                import QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout
 
-from PLM.commons.Widgets import Widget
-from PLM.commons.Gui             import AppIcon
-from PLM.utils import get_screen_resolution
-from PLM.configs                import LOCAL_DB
+from PLM.commons.Widgets.Widget     import Widget
+from PLM.commons.Gui                import AppIcon
+from PLM.utils                      import get_screen_resolution
+from PLM.configs                    import LOCAL_DB
 
 # Plt
 

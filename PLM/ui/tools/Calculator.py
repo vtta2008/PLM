@@ -15,29 +15,33 @@ Description:
 import math
 
 # PyQt5
-from PyQt5.QtCore               import Qt
+from PyQt5.QtCore                               import Qt
 
 # PLM
-from PLM.commons                        import DAMGLIST
-from PLM.commons.Widgets import Widget, LineEdit, GridLayout, ToolButton
-from PLM.commons.Gui                 import AppIcon
+from PLM.commons                                import DAMGLIST
+from PLM.commons.Widgets.LineEdit               import LineEdit
+from PLM.commons.Widgets.GridLayout             import GridLayout
+from PLM.commons.Widgets.Widget                 import Widget
+from PLM.commons.Widgets.Button                 import ToolButton
+from PLM.commons.Gui                            import AppIcon
 
 
 class Calculator(Widget):
 
-    key                         = 'Calculator'
-    NumDigitButtons             = 10
-    digitButtons                = DAMGLIST()
+    key                                         = 'Calculator'
+    NumDigitButtons                             = 10
+    digitButtons                                = DAMGLIST()
 
     def __init__(self, parent=None):
         super(Calculator, self).__init__(parent)
 
         self.setWindowIcon(AppIcon(32, 'Calculator'))
         self.setWindowTitle(self.key)
+        self.parent                             = parent
         self.buildUI()
 
     def buildUI(self):
-        self.layout = GridLayout(self)
+        self.layout                             = GridLayout(self)
 
         self.pendingAdditiveOperator            = ''
         self.pendingMultiplicativeOperator      = ''
