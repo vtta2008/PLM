@@ -22,9 +22,11 @@ from PyQt5.QtWidgets            import (QApplication, QCalendarWidget, QCheckBox
                                         QLayout)
 
 # Plt
-from PLM.configs                    import SiPoMin
-from PLM.commons.Widgets import Widget, GridLayout
-from PLM.commons.Gui                 import AppIcon
+from PLM.configs                        import SiPoMin
+from PLM.commons.Widgets.GridLayout     import GridLayout
+from PLM.commons.Widgets.Widget         import Widget
+from PLM.commons.Gui                    import AppIcon
+
 # -------------------------------------------------------------------------------------------------------------
 """ Clendar """
 
@@ -40,7 +42,7 @@ class Calendar(Widget):
         self.buildUI()
 
     def buildUI(self):
-        self.layout = GridLayout()
+        self.layout                     = GridLayout()
 
         self.createPreviewGroupBox()
         self.createGeneralOptionsGroupBox()

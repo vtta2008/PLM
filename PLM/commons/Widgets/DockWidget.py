@@ -58,7 +58,7 @@ class DockWidget(QDockWidget):
     _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
-        super(DockWidget, self).__init__(parent)
+        QDockWidget.__init__(self)
 
         self.parent                         = parent
         self.settings                       = SettingManager(self)

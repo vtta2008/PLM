@@ -552,8 +552,10 @@ class BaseThreadPool(QThreadPool):
     workers = []
     threads = []
 
-    def __init__(self):
+    def __init__(self, parent=None):
         QThreadPool.__init__(self)
+
+        self.parent                         = parent
 
     def __str__(self):
         """ Print object will return qssPths string """

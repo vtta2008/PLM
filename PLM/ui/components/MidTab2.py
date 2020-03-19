@@ -14,19 +14,19 @@ Description:
 # PyQt5
 
 # Plt
-from PLM.commons.Widgets import Widget, GridLayout, GroupBox, GroupGrid
-from PLM.ui.base import Avatar
-from PLM.cores import LocalDatabase
+from PLM.commons.Widgets        import Widget, GridLayout, GroupBox, GroupGrid
+from PLM.ui.base                import Avatar
+from PLM.cores                  import LocalDatabase
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab3 """
 
-class TopTab2(Widget):
+class MidTab2(Widget):
 
     key = 'TopTab2'
 
     def __init__(self, buttonManager, parent=None):
-        super(TopTab2, self).__init__(parent)
+        super(MidTab2, self).__init__(parent)
 
         self.buttonManager      = buttonManager
         self.parent             = parent

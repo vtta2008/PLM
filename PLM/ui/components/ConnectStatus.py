@@ -28,7 +28,7 @@ from PLM.ui.base                            import Conection
 class ConnectStatus(GroupGrid):
 
     key                                 = 'ConnectStatus'
-    _updatting                          = False
+    _updating                          = False
     _mode                               = None
     _server                             = None
     _connectServer                      = False
@@ -56,7 +56,7 @@ class ConnectStatus(GroupGrid):
 
         self.labels.appendList([self.serverIcon, self.internetIcon, self.modeStatus])
 
-        if not self._updatting:
+        if not self._updating:
             self.updateTimer.stop()
         else:
             self.updateTimer.start(1000)
@@ -145,8 +145,8 @@ class ConnectStatus(GroupGrid):
         return self._server
 
     @property
-    def updatting(self):
-        return self._updatting
+    def updating(self):
+        return self._updating
 
     @property
     def mode(self):
@@ -180,9 +180,9 @@ class ConnectStatus(GroupGrid):
     def mode(self, val):
         self._mode                      = val
 
-    @updatting.setter
-    def updatting(self, val):
-        self._updatting                 = val
+    @updating.setter
+    def updating(self, val):
+        self._updating                 = val
 
 
 

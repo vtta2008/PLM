@@ -495,7 +495,7 @@ class DAMGTHREADPOOL(BaseThreadPool):
     workers                                 = DAMGLIST()
     threads                                 = DAMGLIST()
 
-    def __init__(self):
+    def __init__(self, parent=None):
         BaseThreadPool.__init__(self)
 
         objRegistry.register(self)

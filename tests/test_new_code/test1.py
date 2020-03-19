@@ -9,13 +9,22 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-import os
+from PyQt5.QtGui import QFontDatabase, QFont, QFontMetrics, QFontInfo, QRawFont
+from PyQt5.QtWidgets import QApplication
+import sys
 
-root = os.path.abspath(os.path.dirname(__file__))
-print(os.path.dirname(root))
 
-import shiboken2
-print(type(shiboken2.__version__), type(shiboken2.__version_info__))
+
+
+
+app = QApplication(sys.argv)
+dataFont = QFontDatabase()
+for family in dataFont.families():
+    print(family)
+    for style in dataFont.styles(family):
+        print(style)
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 1/13/2020 - 1:54 AM

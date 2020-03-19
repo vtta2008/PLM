@@ -24,9 +24,10 @@ from PyQt5.QtWidgets            import (QAction, QActionGroup, QApplication, QCo
                                         QFontComboBox, QMenu, QMessageBox, QTextEdit, QToolBar, QHBoxLayout)
 
 # PLM
-from PLM.cores                  import Loggers
-from PLM.commons.Widgets        import Widget, MainWindow
-from PLM.commons.Gui            import AppIcon
+from PLM.cores                          import Loggers
+from PLM.commons.Widgets.Widget         import Widget
+from PLM.commons.Widgets.MainWindow     import MainWindow
+from PLM.commons.Gui                    import AppIcon
 
 from PLM.ui.rcs                 import TextEditor_rc
 
@@ -559,11 +560,8 @@ class TextEditor(Widget):
         self.layout.addWidget(textEditor)
 
 
-def main():
-    app = QApplication(sys.argv)
-    layout = TextEditor()
-    layout.show()
-    app.exec_()
 
-if __name__ == '__main__':
-    main()
+
+# -------------------------------------------------------------------------------------------------------------
+# Created by panda on 6/07/2018 - 11:31 AM
+# © 2017 - 2018 DAMGTEAM. All rights reserved

@@ -82,6 +82,7 @@ class Button(QPushButton):
     def name(self, newName):
         self._name                      = newName
 
+
 class ToolButton(QToolButton):
 
     Type                                    = 'DAMGUI'
@@ -93,8 +94,8 @@ class ToolButton(QToolButton):
         QToolButton.__init__(self)
 
         self.parent                         = parent
-        self.settings = SettingManager(self)
-        self.signals = SignalManager(self)
+        self.settings                       = SettingManager(self)
+        self.signals                        = SignalManager(self)
         self.setText(text)
 
     def setValue(self, key, value):

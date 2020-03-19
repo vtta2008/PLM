@@ -11,10 +11,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 from .BodyCheckBoxes        import BodyCheckBoxes
+from .BotTab                import BotTab
 from .BotTab1               import BotTab1
 from .BotTab2               import BotTab2
 from .ConnectStatus         import ConnectStatus
-from .DockToolBar           import DockToolBar
+from .DockHeader            import ToolBarDock, MenubarDock, NetworkStatusDock, BotTabDock, NotificationDock, MidTabDock
 from .Footer                import Footer
 from .FooterCheckBoxes      import FooterCheckBoxes
 from .HeaderCheckBoxes      import HeaderCheckBoxes
@@ -25,9 +26,9 @@ from .Notification          import Notification
 from .SettingInput          import SettingInput
 from .SettingOutput         import SettingOutput
 from .SysTrayIconMenu       import SysTrayIconMenu
-from .TopTab1               import TopTab1
-from .TopTab2               import TopTab2
-from .TopTap3               import TopTap3
+from .MidTab1               import MidTab1
+from .MidTab2               import MidTab2
+from .MidTab3               import MidTab3
 from .ValiantDelegate       import VariantDelegate
 
 # -------------------------------------------------------------------------------------------------------------

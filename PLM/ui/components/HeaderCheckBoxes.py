@@ -99,25 +99,34 @@ class HeaderCheckBoxes(GroupGrid):
         self.mnToolsCB          = CheckBox('&Tools')
         self.mnPluginCB         = CheckBox('&Plug-ins')
         self.mnLibCB            = CheckBox('&Lib')
+        self.mnWinCB            = CheckBox('&Window')
         self.mnHelpCB           = CheckBox('&Help')
         self.allMenuCB          = CheckBox('All: ')
         self.allMenuCB.stateChanged.connect(self.allMenuStateChanged)
 
         for cb in [self.allMenuCB, self.mnAppCB, self.mnGoCB, self.mnEditCB, self.mnViewCB,
-                   self.mnOfficeCB, self.mnToolsCB, self.mnPluginCB, self.mnLibCB, self.mnHelpCB, ]:
+                   self.mnOfficeCB, self.mnToolsCB, self.mnPluginCB, self.mnLibCB, self.mnWinCB, self.mnHelpCB, ]:
             self.menuCBs.append(cb)
 
     def buildToolBarCheckBoxes(self):
+
         self.tbTDCB             = CheckBox("TD")
         self.tbVfxCB            = CheckBox("VFX")
         self.tbArtCB            = CheckBox("Art")
         self.tbTexCB            = CheckBox("Tex")
+        self.tbPreCB            = CheckBox('Pre')
         self.tbPostCB           = CheckBox('Post')
         self.tbOfficeCB         = CheckBox('Office')
+        self.tbDevCB            = CheckBox('Dev')
+        self.tbToolCB           = CheckBox('Tool')
+        self.tbExtraCB          = CheckBox('Extra')
+        self.tbSysTrayCB        = CheckBox('SysTray')
         self.allToolBarCB       = CheckBox("All: ")
         self.allToolBarCB.stateChanged.connect(self.allToolBarStateChanged)
 
-        for cb in [self.allToolBarCB, self.tbTDCB, self.tbVfxCB, self.tbArtCB, self.tbTexCB, self.tbPostCB, self.tbOfficeCB]:
+        for cb in [self.allToolBarCB, self.tbTDCB, self.tbVfxCB, self.tbArtCB, self.tbTexCB, self.tbPreCB,
+                   self.tbPostCB, self.tbOfficeCB, self.tbDevCB, self.tbToolCB, self.tbExtraCB, self.tbSysTrayCB, ]:
+
             self.toolBarCBs.append(cb)
 
     def allToolBarStateChanged(self, bool):

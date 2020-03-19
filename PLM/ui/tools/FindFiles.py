@@ -14,18 +14,22 @@ Description:
 
 import sys
 
-from PyQt5.QtCore           import (QDir, QIODevice, QFile, QFileInfo, Qt, QTextStream, QUrl)
-from PyQt5.QtGui            import QDesktopServices
-from PyQt5.QtWidgets        import (QAbstractItemView, QApplication, QComboBox, QFileDialog, QGridLayout, QHBoxLayout, QWidget,
-                                    QHeaderView, QProgressDialog, QTableWidget, QTableWidgetItem, )
+from PyQt5.QtCore                   import (QDir, QIODevice, QFile, QFileInfo, Qt, QTextStream, QUrl)
+from PyQt5.QtGui                    import QDesktopServices
+from PyQt5.QtWidgets                import (QAbstractItemView, QApplication, QComboBox, QFileDialog, QGridLayout,
+                                            QHBoxLayout, QWidget, QHeaderView, QProgressDialog, QTableWidget,
+                                            QTableWidgetItem, )
 
-from PLM.configs                import SiPoExp, SiPoPre
-from PLM.commons.Widgets import Widget, Button, Label
-from PLM.commons.Gui             import AppIcon
+from PLM.configs                    import SiPoExp, SiPoPre
+from PLM.commons.Widgets.Button     import Button
+from PLM.commons.Widgets.Label      import Label
+from PLM.commons.Widgets.Widget     import Widget
+from PLM.commons.Gui                import AppIcon
+
 
 class FindFiles(Widget):
 
-    key = 'FindFiles'
+    key                             = 'FindFiles'
 
     def __init__(self, parent=None):
         super(FindFiles, self).__init__(parent)

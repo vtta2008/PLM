@@ -13,9 +13,9 @@ Description:
 """ Import """
 
 # PLM
-from PLM.commons.Widgets import Widget, VBoxLayout
-from PLM.commons.Gui                          import AppIcon
-from PLM.ui.components import HeaderCheckBoxes, FooterCheckBoxes, BodyCheckBoxes
+from PLM.commons.Widgets                import Widget, VBoxLayout
+from PLM.commons.Gui                    import AppIcon
+from PLM.ui.components                  import HeaderCheckBoxes, FooterCheckBoxes, BodyCheckBoxes
 
 # -------------------------------------------------------------------------------------------------------------
 """ Preferences window """

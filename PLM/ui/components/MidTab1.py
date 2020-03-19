@@ -13,22 +13,22 @@ Description:
 
 
 # PLM
-from PLM.commons.Widgets import GroupBox, GridLayout, Widget, GroupGrid
-from PLM.ui.base import TaskInfo, TaskFilter
-from PLM.utils import get_file_path
-from PLM.configs                                    import TASK_DIR
-from PLM.commons                                        import DAMGLIST
+from PLM.commons.Widgets                        import GroupBox, GridLayout, Widget, GroupGrid
+from PLM.ui.base                                import TaskInfo, TaskFilter
+from PLM.utils                                  import get_file_path
+from PLM.configs                                import TASK_DIR
+from PLM.commons                                import DAMGLIST
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab1 """
 
-class TopTab1(Widget):
+class MidTab1(Widget):
 
     key                                         = 'TopTab1'
     tasks                                       = DAMGLIST()
 
     def __init__(self, buttonManager, parent=None):
-        super(TopTab1, self).__init__(parent)
+        super(MidTab1, self).__init__(parent)
 
         self.buttonManager                      = buttonManager
         self.parent                             = parent

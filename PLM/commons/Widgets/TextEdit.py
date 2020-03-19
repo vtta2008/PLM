@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Size.py
+Script Name: TextEdit.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -9,22 +9,21 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
-""" Import """
 
-# PyQt5
-from PyQt5.QtCore                           import QSize
+from PyQt5.QtWidgets            import QTextEdit
 
+from PLM                        import __copyright__
 
-class Size(QSize):
+class TextEdit(QTextEdit):
 
-    Type                                    = 'DAMGSIZE'
-    key                                     = 'Size'
-    _name                                   = 'DAMG Size'
+    Type                                    = 'DAMGUI'
+    key                                     = 'TextEdit'
+    _name                                   = 'DAMG Text Edit'
     _copyright                              = __copyright__()
 
     def __init__(self, *__args):
-        QSize.__init__(self)
+        QTextEdit.__init__(__args)
+
 
     @property
     def copyright(self):
@@ -36,9 +35,9 @@ class Size(QSize):
 
     @name.setter
     def name(self, newName):
-        self._name                          = newName
+        self._name                      = newName
 
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 05/01/2020 - 01:48
+# Created by panda on 3/20/2020 - 3:11 AM
 # © 2017 - 2019 DAMGteam. All rights reserved

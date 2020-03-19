@@ -33,9 +33,6 @@ class BotTab1(Widget):
         self.blockSignalCB                  = CheckBox('Block')
         self.commandCB                      = CheckBox('Command')
         self.registLayoutCB                 = CheckBox('Register')
-        self.jobsTodoCB                     = CheckBox('TODO')
-        self.showLayoutErrorCB              = CheckBox('ShowError')
-        self.trackEventCB                   = CheckBox('Events')
         self.allTrackingCB                  = CheckBox('All')
 
         self.allTrackingCB.stateChanged.connect(self.changeAllCB)
@@ -45,8 +42,7 @@ class BotTab1(Widget):
         w = 1
         h = 1
 
-        for cb in [self.recieveSignalCB, self.blockSignalCB, self.commandCB, self.registLayoutCB, self.jobsTodoCB,
-                   self.showLayoutErrorCB, self.trackEventCB, self.allTrackingCB]:
+        for cb in [self.recieveSignalCB, self.blockSignalCB, self.commandCB, self.registLayoutCB, self.allTrackingCB]:
             cb.key = '{0}_{1}_CheckBox_{2}'.format(self.parent.key, self.key, cb.text())
             cb._name = '{0} {1} Check Box: {2}'.format(self.parent.key, self.key, cb.text())
             cb.settings._settingEnable = True
@@ -67,21 +63,15 @@ class BotTab1(Widget):
                 y = 0
 
     def set_tooltip(self):
+
         self.recieveSignalCB.setToolTip('Tracking Signal recieved')
         self.blockSignalCB.setToolTip('Tracking Signal is blocked')
         self.commandCB.setToolTip('Tracking Command working')
         self.registLayoutCB.setToolTip('Tracking layout is registed')
-        self.jobsTodoCB.setToolTip('Tracking Jobs to do')
-        self.showLayoutErrorCB.setToolTip('Tracking show layout error')
-        self.trackEventCB.setToolTip('Tracking Events happening')
 
     def changeAllCB(self, bool):
         for cb in self.cbs:
             cb.setChecked(bool)
-
-    def showEvent(self, event):
-        self.resize(100, 30)
-        self.resize(297, 112)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 11/11/2019 - 12:19 PM

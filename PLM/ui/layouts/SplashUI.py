@@ -19,8 +19,9 @@ import os
 # PLM
 from PLM.configs                import (STAY_ON_TOP, FRAMELESS, bottom, center, cyan, splashImagePth,
                                         ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
-                                        ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar,
-                                        ConfigMachine, ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath)
+                                        ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
+                                        ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath)
+
 from PLM.commons.Widgets        import SplashScreen, ProgressBar
 from PLM.commons.Gui            import Pixmap
 
@@ -59,7 +60,7 @@ class SplashUI(SplashScreen):
 
     key                         = 'SplashScreen'
     _value                      = 0
-    _num                        = 15
+    _num                        = 16
 
 
     def __init__(self, app=None):
@@ -89,24 +90,23 @@ class SplashUI(SplashScreen):
 
     def runPreConfig(self):
 
-        self.iconInfo = self.run_config('Icons', ConfigIcon)
-        self.appInfo = self.run_config('Installed apps', ConfigApps)
-        self.urlInfo = self.run_config('Url', ConfigUrl)
-        self.dirInfo = self.run_config('Directories', ConfigDirectory)
-        self.pthInfo = self.run_config('Paths', ConfigPath)
+        self.iconInfo           = self.run_config('Icons', ConfigIcon)
+        self.appInfo            = self.run_config('Installed apps', ConfigApps)
+        self.urlInfo            = self.run_config('Url', ConfigUrl)
+        self.dirInfo            = self.run_config('Directories', ConfigDirectory)
+        self.pthInfo            = self.run_config('Paths', ConfigPath)
+        self.deviceInfo         = self.run_config('Local Device', ConfigMachine)
+        self.pythonInfo         = self.run_config('Python', ConfigPython)
+        self.avatarInfo         = self.run_config('Avatars', ConfigAvatar)
+        self.logoInfo           = self.run_config('Logo', ConfigLogo)
+        self.imageInfo          = self.run_config('Images', ConfigImage)
+        self.envInfo            = self.run_config('Evironment Variables', ConfigEnvVar)
+        self.serverInfo         = self.run_config('Server', ConfigServer)
+        self.formatInfo         = self.run_config('Formats', ConfigFormats)
 
         self.show_message('Pipeline Configuration')
-        self.plmInfo = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
-        self.updateProgress(1)
-
-        self.deviceInfo = self.run_config('Local Device', ConfigMachine)
-        self.pythonInfo = self.run_config('Python', ConfigPython)
-        self.avatarInfo = self.run_config('Avatars', ConfigAvatar)
-        self.logoInfo = self.run_config('Logo', ConfigLogo)
-        self.imageInfo = self.run_config('Images', ConfigImage)
-        self.envInfo = self.run_config('Evironment Variables', ConfigEnvVar)
-        self.serverInfo = self.run_config('Server', ConfigServer)
-        self.formatInfo = self.run_config('Formats', ConfigFormats)
+        self.plmInfo            = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
+        self.updateProgress(2)
 
     def run_config(self, name, config, value=1):
         self.show_message('Config {0}'.format(name))
