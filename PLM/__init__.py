@@ -686,12 +686,21 @@ class ConfigGlb(ObjectGlb):
 
 class ModesGlb(ConfigGlb):
 
-    _switchQtBindingMode            = False
-    _switchLoginMode                = False
-    _switchDataTypeSavingMode       = False
-    _allowLocalMode                 = False
-    _qtBindingMode                  = 'PyQt5'
-    _dataTypeSavingMode             = 'json'
+    _allModeSwitchAble                          = True
+    _switchQtBindingMode                        = False
+    _switchLoginMode                            = False
+    _switchDataTypeSavingMode                   = False
+    _switchSplashLoadingMode                    = False
+
+    _allowLocalMode                             = False
+
+    _qtBindingMode                              = 'PyQt5'
+    _dataTypeSavingMode                         = 'json'
+    _splashLoadingMode                          = 'loading'
+
+    loadingMode                                 = ['loading', 'progress']
+    bindingMode                                 = ['PyQt5', 'PySide2']
+    savingMode                                  = ['json', 'yaml']
 
     def __init__(self):
         ConfigGlb.__init__(self)
@@ -720,29 +729,60 @@ class ModesGlb(ConfigGlb):
     def dataTypeSavingMode(self):
         return self._dataTypeSavingMode
 
+    @property
+    def splashLoadingMode(self):
+        return self._splashLoadingMode
+
+    @property
+    def switchSplashLoadingMode(self):
+        return self._switchSplashLoadingMode
+
+    @property
+    def allModeSwitchAble(self):
+        return self._allModeSwitchAble
+
+    @allModeSwitchAble.setter
+    def allModeSwitchAble(self, val):
+        self._allModeSwitchAble                 = val
+
+    @switchSplashLoadingMode.setter
+    def switchSplashLoadingMode(self, val):
+        self._switchSplashLoadingMode           = val
+
+    @splashLoadingMode.setter
+    def splashLoadingMode(self, val):
+        if self.allModeSwitchAble and self.switchSplashLoadingMode:
+            if val in self.loadingMode:
+                self._splashLoadingMode         = val
+
     @dataTypeSavingMode.setter
     def dataTypeSavingMode(self, val):
-        self._dataTypeSavingMode    = val
+        if self.allModeSwitchAble and self.switchDataTypeSavingMode:
+            if val in self.savingMode:
+                self._dataTypeSavingMode        = val
 
     @switchDataTypeSavingMode.setter
     def switchDataTypeSavingMode(self, val):
-        self._switchDataTypeSavingMode = val
+        self._switchDataTypeSavingMode          = val
 
     @switchLoginMode.setter
     def switchLoginMode(self, val):
-        self._switchLoginMode       = val
+        self._switchLoginMode                   = val
 
     @switchQtBindingMode.setter
     def switchQtBindingMode(self, val):
-        self._switchQtBindingMode   = val
+        self._switchQtBindingMode               = val
 
     @qtBindingMode.setter
     def qtBindingMode(self, val):
-        self._qtBindingMode         = val
+        if self.allModeSwitchAble and self.switchQtBindingMode:
+            if val in self.bindingMode:
+                self._qtBindingMode             = val
 
     @allowLocalMode.setter
     def allowLocalMode(self, val):
-        self._allowLocalMode        = val
+        if self.allModeSwitchAble and self.switchLoginMode:
+            self._allowLocalMode                = val
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -10,6 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
+
 from .Loggers                   import Loggers
 from .models.Organisation       import Organisation
 from .models.Project            import Project
@@ -21,7 +22,7 @@ from .localSQL                  import LocalDatabase
 from .SettingManager            import SettingManager
 from .SignalManager             import SignalManager
 from .StyleSheet                import StyleSheet
-from .version                   import version
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/16/2020 - 4:41 AM

@@ -9,51 +9,24 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import ROOT
-
 """ Import """
 
 # Python
-import os
+import sys
+import traceback
+
 
 # PLM
-from PLM.configs                import (STAY_ON_TOP, FRAMELESS, bottom, center, cyan, splashImagePth,
+from PLM                        import globalSetting
+from PLM.configs                import (FRAMELESS, bottom, center, colorLibs, splashImagePth, ERROR_APPLICATION,
                                         ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
                                         ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
                                         ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath)
 
-from PLM.commons.Widgets        import SplashScreen, ProgressBar
+from PLM.cores.Errors           import LayoutComponentError
+from PLM.commons.Widgets        import SplashScreen, MessageBox
 from PLM.commons.Gui            import Pixmap
-
-
-
-progressBar_stylesheet = '''
-
-QProgressBar {
-    
-    width: 20px;
-    margin: 2px;
-    background-color: #19232D;
-    background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #fff, stop: 0.4999 #eee, stop: 0.5 #ddd, stop: 1 #eee );
-    text-align: center;
-    border: 2px  solid #32414B;
-    border-radius: 5px;
-    border-color: beige;
-    
-
-}
-
-QProgressBar::chunk {
-
-    border-color: #19232D;
-    border: 1px solid black;
-    background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #78d, stop: 0.4999 #46a, stop: 0.5 #45a, stop: 1 #238 );
-
-}
-
-
-'''
-
+from PLM.ui.components          import AutoLoading, CircleLoading, PotionLoading
 
 
 class SplashUI(SplashScreen):
@@ -61,71 +34,142 @@ class SplashUI(SplashScreen):
     key                         = 'SplashScreen'
     _value                      = 0
     _num                        = 16
+    _textColor                  = colorLibs.CYAN
 
+    iconInfo                    = None
+    appInfo                     = None
+    urlInfo                     = None
+    dirInfo                     = None
+    pthInfo                     = None
+    deviceInfo                  = None
+    pythonInfo                  = None
+    avatarInfo                  = None
+    logoInfo                    = None
+    imageInfo                   = None
+    envInfo                     = None
+    serverInfo                  = None
+    formatInfo                  = None
 
     def __init__(self, app=None):
         super(SplashUI, self).__init__()
 
         self.app                = app
+
+        if not self.app:
+            MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
+            sys.exit()
+
         self.pix                = Pixmap(splashImagePth)
-        self.flag               = STAY_ON_TOP
-        self.progressBar        = ProgressBar(self)
 
         self.setPixmap(self.pix)
-        self.setWindowFlag(self.flag)
-        self.setWindowFlags(STAY_ON_TOP | FRAMELESS)
+        self.setWindowFlags(FRAMELESS)
         self.setMask(self.pix.mask())
         self.setEnabled(False)
 
-        self.progressBar.setMinimum(0)
-        self.progressBar.setMaximum(self.num*10)
-        self.progressBar.setGeometry(50, self.pix.height() - 50, self.pix.width() - 100, 20)
-        self.progressBar.setTextVisible(True)
-        self.progressBar.setStyleSheet(progressBar_stylesheet)
+        self.autoLoading            = AutoLoading(self)
 
-        self.updateProgress(0)
+        if globalSetting.splashLoadingMode == 'progress':
+            self.progressBar        = PotionLoading(self)
+        elif globalSetting.splashLoadingMode == 'loading':
+            self.progressBar        = CircleLoading(self)
+        else:
+            LayoutComponentError('There is no progress bar mode: {0}'.format(globalSetting.splashLoadingMode))
+            sys.exit()
+
         self.show()
-        self.runPreConfig()
+        self.autoLoading.start()
+        self.progressBar.start()
+        self.start_configuring()
         self.app.processEvents()
 
-    def runPreConfig(self):
+    def start_configuring(self):
 
-        self.iconInfo           = self.run_config('Icons', ConfigIcon)
-        self.appInfo            = self.run_config('Installed apps', ConfigApps)
-        self.urlInfo            = self.run_config('Url', ConfigUrl)
-        self.dirInfo            = self.run_config('Directories', ConfigDirectory)
-        self.pthInfo            = self.run_config('Paths', ConfigPath)
-        self.deviceInfo         = self.run_config('Local Device', ConfigMachine)
-        self.pythonInfo         = self.run_config('Python', ConfigPython)
-        self.avatarInfo         = self.run_config('Avatars', ConfigAvatar)
-        self.logoInfo           = self.run_config('Logo', ConfigLogo)
-        self.imageInfo          = self.run_config('Images', ConfigImage)
-        self.envInfo            = self.run_config('Evironment Variables', ConfigEnvVar)
-        self.serverInfo         = self.run_config('Server', ConfigServer)
-        self.formatInfo         = self.run_config('Formats', ConfigFormats)
+        ws = ['Icons', 'Installed apps', 'Urls', 'Directories', 'Paths', 'Local Device', 'Python', 'Avatars', 'Logo',
+              'Images', 'Evironment Variables', 'Server', 'Formats', 'Pipeline', ]
 
-        self.show_message('Pipeline Configuration')
-        self.plmInfo            = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
-        self.updateProgress(2)
+        fs = [ConfigIcon, ConfigApps, ConfigUrl, ConfigDirectory, ConfigPath, ConfigMachine, ConfigPython, ConfigAvatar,
+              ConfigLogo, ConfigImage, ConfigEnvVar, ConfigServer, ConfigFormats, ConfigPipeline]
 
-    def run_config(self, name, config, value=1):
-        self.show_message('Config {0}'.format(name))
-        configed = config()
-        self.updateProgress(value)
-        return configed
+        vs = [1,1,1,1,1,1,1,1,1,1,1,1,1,2]
+
+        for i in range(len(ws)):
+            w = ws[i]
+            f = fs[i]
+            v = vs[i]
+            self.process_config(w, f, v)
+
+    def process_config(self, w, f, v):
+
+        try:
+            self.show_message('Config {0}'.format(w))
+        except:
+            traceback.print_exc()
+            exctype, value = sys.exc_info()[:2]
+            print(exctype, value, traceback.format_exc())
+
+        try:
+            if w == 'Icons':
+                self.iconInfo = f()
+            elif w == 'Installed apps':
+                self.appInfo = f()
+            elif w == 'Urls':
+                self.urlInfo = f()
+            elif w == 'Directories':
+                self.dirInfo = f()
+            elif w == 'Paths':
+                self.pthInfo = f()
+            elif w == 'Local Device':
+                self.deviceInfo = f()
+            elif w == 'Python':
+                self.pythonInfo = f()
+            elif w == 'Avatars':
+                self.avatarInfo = f()
+            elif w == 'Logo':
+                self.logoInfo = f()
+            elif w == 'Images':
+                self.imageInfo = f()
+            elif w == 'Evironment Variables':
+                self.envInfo = f()
+            elif w == 'Server':
+                self.serverInfo = f()
+            elif w == 'Formats':
+                self.formatInfo = f()
+            else:
+                self.plmInfo = f(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
+        except:
+            traceback.print_exc()
+            exctype, value = sys.exc_info()[:2]
+            print(exctype, value, traceback.format_exc())
+
+        try:
+            self.updateProgress(v)
+        except:
+            traceback.print_exc()
+            exctype, value = sys.exc_info()[:2]
+            print(exctype, value, traceback.format_exc())
 
     def show_message(self, mess):
-        return self.showMessage(mess, bottom|center, cyan)
+        if globalSetting.splashLoadingMode == 'progress':
+            self.showMessage(mess, bottom|center, colorLibs.CYAN)
+        elif globalSetting.splashLoadingMode == 'loading':
+            pass
+        else:
+            pass
 
     def updateProgress(self, value):
-        if value == 0:
-            self.progressBar.setValue(0)
+        if globalSetting.splashLoadingMode == 'progress':
+            if value == 0:
+                self.progressBar.setValue(0)
+            else:
+                value = value*10
+                for i in range(value):
+                    self.value += 1
+                    self.progressBar.setValue(self.value)
+                    i += 1
+        elif globalSetting.splashLoadingMode == 'loading':
+            self.progressBar.setProgress(value)
         else:
-            value = value*10
-            for i in range(value):
-                self.value += 1
-                self.progressBar.setValue(self.value)
-                i += 1
+            pass
 
     @property
     def value(self):
@@ -135,6 +179,14 @@ class SplashUI(SplashScreen):
     def num(self):
         return self._num
 
+    @property
+    def textColor(self):
+        return self._textColor
+
+    @textColor.setter
+    def textColor(self, val):
+        self._textColor             = val
+
     @value.setter
     def value(self, val):
         self._value                 = val
@@ -142,6 +194,13 @@ class SplashUI(SplashScreen):
     @num.setter
     def num(self, val):
         self._num                   = val
+
+
+if __name__ == '__main__':
+    from PyQt5.QtWidgets import QApplication
+    app = QApplication(sys.argv)
+    ui = SplashUI(app)
+    sys.exit(app.exec_())
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -12,11 +12,9 @@ Description:
 # Python
 import time
 import datetime
-import re
 
 # PLM
-from .base                                  import (BaseDict, BaseObject, BaseWorker, BaseThread, BaseThreadPool,
-                                                    BaseError, BaseTuple, BaseList)
+from .base                                  import (BaseDict, BaseObject, BaseError, BaseList)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Registry """
@@ -27,6 +25,7 @@ START                                       = 0
 
 
 class DAMGREGISTER(BaseDict):
+
     """
     This is the class to manage all of DAMG object type.
     Whenever a DAMGobject is create, it will be registerd to this class with metadata info.
@@ -55,10 +54,6 @@ class DAMGREGISTER(BaseDict):
         self._DICTcount                     = 0
         self._ERRORcount                    = 0
         self._LISTcount                     = 0
-        self._WORKERcount                   = 0
-        self._THREADcount                   = 0
-        self._POOLcount                     = 0
-        self._TUPLEcount                    = 0
 
     def register(self, obj):
         """ Conduct register for object """
@@ -149,22 +144,6 @@ class DAMGREGISTER(BaseDict):
         elif obj.Type == 'DAMGLIST':
             self._LISTcount += self._step
             obj._count = self._LISTcount
-        # for DAMGWORKER class
-        elif obj.Type == 'DAMGWORKER':
-            self._WORKERcount += self._step
-            obj._count = self._WORKERcount
-        # for DAMGTHREAD clas
-        elif obj.Type == 'DAMGTHREAD':
-            self._THREADcount += self._step
-            obj._count = self._THREADcount
-        # for DAMGTHREADPOOL class
-        elif obj.Type == 'DAMGTHREADPOOL':
-            self._POOLcount += self._step
-            obj._count = self._POOLcount
-        # for DAMGTUPLE class
-        elif obj.Type == 'DAMGTUPLE':
-            self._TUPLEcount += self._step
-            obj.__count = self._TUPLEcount
         else:
             # for DAMGERROR class
             self._ERRORcount += self._step
@@ -188,6 +167,7 @@ class DAMGREGISTER(BaseDict):
             return True
 
     def isTypeRegisted(self, obj):
+
         """ Fix obj.Type attribute obj, and check obj.Type registered """
 
         # Fix obj.Type attribute
@@ -254,48 +234,12 @@ class DAMGREGISTER(BaseDict):
         return self._LISTcount
 
     @property
-    def SIGNALcount(self):
-        return self._SIGNALcount
-
-    @property
-    def WOKERcount(self):
-        return self._WORKERcount
-
-    @property
-    def THREADcount(self):
-        return self._THREADcount
-
-    @property
-    def POOLcount(self):
-        return self._POOLcount
-
-    @property
-    def TUPLEcount(self):
-        return self._TUPLEcount
-
-    @property
-    def TIMMERcount(self):
-        return self._TIMERcount
-
-    @property
-    def DATEcount(self):
-        return self._DATEcount
-
-    @property
-    def DATETIMEcount(self):
-        return self._DATETIMEcount
-
-    @property
     def step(self):
         return self._step
 
     @step.setter
     def step(self, newVal):
         self._step                          = newVal
-
-    @TUPLEcount.setter
-    def TUPLEcount(self, newVal):
-        self._TUPLEcount                    = newVal
 
     @DAMGcount.setter
     def DAMGcount(self, newVal):
@@ -312,35 +256,6 @@ class DAMGREGISTER(BaseDict):
     @LISTcount.setter
     def LISTcount(self, newVal):
         self._LISTcount                     = newVal
-
-    @SIGNALcount.setter
-    def SIGNALcount(self, newVal):
-        self._SIGNALcount                   = newVal
-
-    @WOKERcount.setter
-    def WOKERcount(self, newVal):
-        self._WORKERcount                   = newVal
-
-    @THREADcount.setter
-    def THREADcount(self, newVal):
-        self._THREADcount                   = newVal
-
-    @POOLcount.setter
-    def POOLcount(self, newVal):
-        self._POOLcount                     = newVal
-
-    @TIMMERcount.setter
-    def TIMMERcount(self, newVal):
-        self._TIMERcount                    = newVal
-
-    @DATEcount.setter
-    def DATEcount(self, newVal):
-        self._DATEcount                     = newVal
-
-    @DATETIMEcount.setter
-    def DATETIMEcount(self, newVal):
-        self._DATETIMEcount                 = newVal
-
 
 objRegistry = DAMGREGISTER()
 
@@ -394,25 +309,6 @@ class DAMGDICT(BaseDict):
 
 
 # -------------------------------------------------------------------------------------------------------------
-""" Tuple """
-
-
-class DAMGTUPLE(BaseTuple):
-
-    key                                 = 'DAMGTUPLE'
-
-    def __init__(self, *args, **kwargs):
-        BaseTuple.__new__(self)
-
-        self.metadata = kwargs
-        self.args = args
-        objRegistry.register(self)
-
-    def parse(self, pattern):
-        return re.search(pattern, self.metadata).group(1).replace('"', '').strip()
-
-
-# -------------------------------------------------------------------------------------------------------------
 """ Error """
 
 
@@ -445,93 +341,6 @@ class DAMG(BaseObject):
         self._parent                        = parent
         objRegistry.register(self)
 
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" Worker """
-
-
-class DAMGWORKER(BaseWorker):
-
-    key                                     = 'DAMGWORKER'
-
-    def __init__(self, task=None, *args, **kwargs):
-        super(DAMGWORKER, self).__init__(task)
-
-        self.args                           = args
-        self.kwargs                         = kwargs
-        self.task                           = task
-
-        if not self.task or self.task is None:
-            print("TaskErrorWorker: {0} at {1} : task should be specific type, not {2}".format(self.__class__.__name__, __file__, type(self.task)))
-
-        objRegistry.register(self)
-
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" Thread """
-
-
-class DAMGTHREAD(BaseThread):
-
-    key                                     = 'DAMGTHREAD'
-
-    def __init__(self, task):
-        super(DAMGTHREAD, self).__init__()
-
-        self.task = task
-
-        objRegistry.register(self)
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" ThreadPool """
-
-
-class DAMGTHREADPOOL(BaseThreadPool):
-
-    key                                     = 'DAMGTHREADPOOL'
-    workers                                 = DAMGLIST()
-    threads                                 = DAMGLIST()
-
-    def __init__(self, parent=None):
-        BaseThreadPool.__init__(self)
-
-        objRegistry.register(self)
-
-    def test_task(self, progres_callback):
-        for n in range(0, 5):
-            time.sleep(1)
-            progres_callback.emit(n*100/4)
-        return 'Done.'
-
-    def run_test(self):
-        return self.execute_task(self.test_task)
-
-    def execute_task(self, task, args, worker=True):
-
-        if worker:
-            worker = self.create_worker(task, args)
-            return self.start(worker)
-        else:
-            thread = self.create_thread(task)
-            return thread.start()
-
-    def execute_multi_tasks(self, tasks):
-        for task in tasks:
-            self.tasks.append(task)
-            self.execute_task(task)
-
-    def create_worker(self, task, args):
-        worker = DAMGWORKER(task, args)
-        self.workers.append(worker)
-        return worker
-
-    def create_thread(self, task):
-        thread = DAMGTHREAD(task)
-        self.threads.append(thread)
-        return thread
 
 
 # -------------------------------------------------------------------------------------------------------------

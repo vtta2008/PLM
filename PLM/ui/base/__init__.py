@@ -14,7 +14,9 @@ from .BaseDetails           import BaseDetails
 from .BaseDock              import BaseDock
 from .BaseInfo              import BaseInfo
 from .BaseKeys              import BaseKeys
+from .BaseLoading           import BaseLoading
 from .BaseManager           import BaseManager
+from .BaseStorage           import BaseStorage
 from .ConnectionIcon        import Conection
 from .Location              import Location
 from .PassWord              import PassWord
