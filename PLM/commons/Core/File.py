@@ -58,12 +58,13 @@ class QssFile(FileBase):
     key                                     = 'QssFile'
 
     qssPths = dict(
-                    bright                   = os.path.join(QSS_DIR, 'bright.qss'),
-                    charcoal                 = os.path.join(QSS_DIR, 'chacoal.qss'),
-                    cmd                      = os.path.join(QSS_DIR, 'cmd.qss'),
-                    dark                     = os.path.join(QSS_DIR, 'grey.qss'),
-                    grey                     = os.path.join(QSS_DIR, 'grey.qss'),
-                    nuker                    = os.path.join(QSS_DIR, 'nuker.qss'),
+                    bright                  = os.path.join(QSS_DIR, 'bright.qss'),
+                    charcoal                = os.path.join(QSS_DIR, 'chacoal.qss'),
+                    cmd                     = os.path.join(QSS_DIR, 'cmd.qss'),
+                    dark                    = os.path.join(QSS_DIR, 'grey.qss'),
+                    grey                    = os.path.join(QSS_DIR, 'grey.qss'),
+                    nuker                   = os.path.join(QSS_DIR, 'nuker.qss'),
+                    progressBar             = os.path.join(QSS_DIR, 'progressBar.qss')
                    )
 
     def __init__(self, style):

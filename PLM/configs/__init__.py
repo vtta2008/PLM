@@ -111,6 +111,14 @@ ERROR_OPENFILE = "There was an error opening the file"
 
 ERROR_QIMAGE = "ImageViewer.setImage: Argument must be a QImage or QPixmap."
 
+ERROR_APPLICATION = "Application have not been defined yet. Please define it, QApplication type is expected."
+
+ERROR_WIDGET = "Widget have not been difined yet. Please define it, QWidget type is expected."
+
+ERROR_LAYOUT_COMPONENT = "This layout is a component layout type, it requires a parent layout to be able to run."
+
+
+
 # what to present when the user hovers the cells
 tooltips_present = [ "When the message was sent", "The text of the message (double click to copy to the clipboard)",
                      "The media (image, audio, etc) included in the message",
@@ -846,9 +854,9 @@ ANTIALIAS_HIGH_QUALITY      = QPainter.HighQualityAntialiasing
 SMOOTH_PIXMAP_TRANSFORM     = QPainter.SmoothPixmapTransform
 NON_COSMETIC_PEN            = QPainter.NonCosmeticDefaultPen
 
-BRUSH_NONE                  = Qt.NoBrush                                                # Brush
+NO_BRUSH                  = Qt.NoBrush                                                # Brush
 
-PEN_NONE                    = Qt.NoPen                                                  # Pen
+NO_PEN                      = Qt.NoPen                                                  # Pen
 ROUND_CAP                   = Qt.RoundCap
 ROUND_JOIN                  = Qt.RoundJoin
 
@@ -858,6 +866,14 @@ LINE_SOLID                  = Qt.SolidLine                                      
 LINE_DASH                   = Qt.DashLine
 LINE_DOT                    = Qt.DotLine
 LINE_DASH_DOT               = Qt.DashDotDotLine
+
+TRANSPARENT                 = Qt.transparent
+TRANSPARENT_MODE            = Qt.TransparentMode
+
+# -------------------------------------------------------------------------------------------------------------
+""" Meta Object """
+
+QUEUEDCONNECTION            = Qt.QueuedConnection
 
 # -------------------------------------------------------------------------------------------------------------
 """ Week Day  """
@@ -977,10 +993,6 @@ top                         = Qt.AlignTop
 bottom                      = Qt.AlignBottom
 hori                        = Qt.Horizontal
 vert                        = Qt.Vertical
-black                       = Qt.black
-blue                        = Qt.blue
-darkBlue                    = Qt.darkBlue
-cyan                        = Qt.cyan
 
 dockL                       = Qt.LeftDockWidgetArea                                             # Docking area
 dockR                       = Qt.RightDockWidgetArea
@@ -1105,38 +1117,125 @@ FIX_KEYS = dict( TextEditor         = 'TextEditor', NoteReminder = 'NoteReminder
                  Screenshot         = 'Screenshot', )
 
 
+class ColorLibs(dict):
+
+    key                             = 'ColorLibs'
+
+    # Basic color
+    WHITE                           = QColor(Qt.white)
+    LIGHTGRAY                       = QColor(Qt.lightGray)
+    GRAY                            = QColor(Qt.gray)
+    DARKGRAY                        = QColor(Qt.darkGray)
+    BLACK                           = QColor(Qt.black)
+    RED                             = QColor(Qt.red)
+    GREEN                           = QColor(Qt.green)
+    BLUE                            = QColor(Qt.blue)
+    DARKRED                         = QColor(Qt.darkGreen)
+    DARKGREEN                       = QColor(Qt.darkGreen)
+    DARKBLUE                        = QColor(Qt.darkBlue)
+    CYAN                            = QColor(Qt.cyan)
+    MAGENTA                         = QColor(Qt.magenta)
+    YELLOW                          = QColor(Qt.yellow)
+    DARKCYAN                        = QColor(Qt.darkCyan)
+    DARKMAGENTA                     = QColor(Qt.darkMagenta)
+    DARKYELLOW                      = QColor(Qt.darkYellow)
+
+    # Dark Palette color
+    COLOR_BACKGROUND_LIGHT          = QColor('#505F69')
+    COLOR_BACKGROUND_NORMAL         = QColor('#32414B')
+    COLOR_BACKGROUND_DARK           = QColor('#19232D')
+
+    COLOR_FOREGROUND_LIGHT          = QColor('#F0F0F0')
+    COLOR_FOREGROUND_NORMAL         = QColor('#AAAAAA')
+    COLOR_FOREGROUND_DARK           = QColor('#787878')
+
+    COLOR_SELECTION_LIGHT           = QColor('#148CD2')
+    COLOR_SELECTION_NORMAL          = QColor('#1464A0')
+    COLOR_SELECTION_DARK            = QColor('#14506E')
+
+    # Nice color
+    blush                           = QColor(246, 202, 203, 255)
+    petal                           = QColor(247, 170, 189, 255)
+    petunia                         = QColor(231, 62, 151, 255)
+    deep_pink                       = QColor(229, 2, 120, 255)
+    melon                           = QColor(241, 118, 110, 255)
+    pomegranate                     = QColor(178, 27, 32, 255)
+    poppy_red                       = QColor(236, 51, 39, 255)
+    orange_red                      = QColor(240, 101, 53, 255)
+    olive                           = QColor(174, 188, 43, 255)
+    spring                          = QColor(227, 229, 121, 255)
+    yellow                          = QColor(255, 240, 29, 255)
+    mango                           = QColor(254, 209, 26, 255)
+    cantaloupe                      = QColor(250, 176, 98, 255)
+    tangelo                         = QColor(247, 151, 47, 255)
+    burnt_orange                    = QColor(236, 137, 36, 255)
+    bright_orange                   = QColor(242, 124, 53, 255)
+    moss                            = QColor(176, 186, 39, 255)
+    sage                            = QColor(212, 219, 145, 255)
+    apple                           = QColor(178, 215, 140, 255)
+    grass                           = QColor(111, 178, 68, 255)
+    forest                          = QColor(69, 149, 62, 255)
+    peacock                         = QColor(21, 140, 167, 255)
+    teal                            = QColor(24, 157, 193, 255)
+    aqua                            = QColor(153, 214, 218, 255)
+    violet                          = QColor(55, 52, 144, 255)
+    deep_blue                       = QColor(15, 86, 163, 255)
+    hydrangea                       = QColor(150, 191, 229, 255)
+    sky                             = QColor(139, 210, 244, 255)
+    dusk                            = QColor(16, 102, 162, 255)
+    midnight                        = QColor(14, 90, 131, 255)
+    seaside                         = QColor(87, 154, 188, 255)
+    poolside                        = QColor(137, 203, 225, 255)
+    eggplant                        = QColor(86, 5, 79, 255)
+    lilac                           = QColor(222, 192, 219, 255)
+    chocolate                       = QColor(87, 43, 3, 255)
+    blackout                        = QColor(19, 17, 15, 255)
+    stone                           = QColor(125, 127, 130, 255)
+    gravel                          = QColor(181, 182, 185, 255)
+    pebble                          = QColor(217, 212, 206, 255)
+    sand                            = QColor(185, 172, 151, 255)
+
+    def __init__(self):
+        super(ColorLibs, self).__init__()
+
+
+colorLibs                           = ColorLibs()
+
+
+
+
 class DarkPalette(object):
     """Theme variables."""
 
     # Color
-    COLOR_BACKGROUND_LIGHT = '#505F69'
-    COLOR_BACKGROUND_NORMAL = '#32414B'
-    COLOR_BACKGROUND_DARK = '#19232D'
+    COLOR_BACKGROUND_LIGHT          = colorLibs.COLOR_BACKGROUND_LIGHT
+    COLOR_BACKGROUND_NORMAL         = colorLibs.COLOR_BACKGROUND_NORMAL
+    COLOR_BACKGROUND_DARK           = colorLibs.COLOR_BACKGROUND_DARK
 
-    COLOR_FOREGROUND_LIGHT = '#F0F0F0'
-    COLOR_FOREGROUND_NORMAL = '#AAAAAA'
-    COLOR_FOREGROUND_DARK = '#787878'
+    COLOR_FOREGROUND_LIGHT          = colorLibs.COLOR_FOREGROUND_LIGHT
+    COLOR_FOREGROUND_NORMAL         = colorLibs.COLOR_FOREGROUND_NORMAL
+    COLOR_FOREGROUND_DARK           = colorLibs.COLOR_FOREGROUND_DARK
 
-    COLOR_SELECTION_LIGHT = '#148CD2'
-    COLOR_SELECTION_NORMAL = '#1464A0'
-    COLOR_SELECTION_DARK = '#14506E'
+    COLOR_SELECTION_LIGHT           = colorLibs.COLOR_SELECTION_LIGHT
+    COLOR_SELECTION_NORMAL          = colorLibs.COLOR_SELECTION_NORMAL
+    COLOR_SELECTION_DARK            = colorLibs.COLOR_SELECTION_DARK
 
-    OPACITY_TOOLTIP = 230
+    OPACITY_TOOLTIP                 = 230
 
     # Size
-    SIZE_BORDER_RADIUS = '4px'
+    SIZE_BORDER_RADIUS              = '4px'
 
     # Borders
-    BORDER_LIGHT = '1px solid $COLOR_BACKGROUND_LIGHT'
-    BORDER_NORMAL = '1px solid $COLOR_BACKGROUND_NORMAL'
-    BORDER_DARK = '1px solid $COLOR_BACKGROUND_DARK'
+    BORDER_LIGHT                    = '1px solid $COLOR_BACKGROUND_LIGHT'
+    BORDER_NORMAL                   = '1px solid $COLOR_BACKGROUND_NORMAL'
+    BORDER_DARK                     = '1px solid $COLOR_BACKGROUND_DARK'
 
-    BORDER_SELECTION_LIGHT = '1px solid $COLOR_SELECTION_LIGHT'
-    BORDER_SELECTION_NORMAL = '1px solid $COLOR_SELECTION_NORMAL'
-    BORDER_SELECTION_DARK = '1px solid $COLOR_SELECTION_DARK'
+    BORDER_SELECTION_LIGHT          = '1px solid $COLOR_SELECTION_LIGHT'
+    BORDER_SELECTION_NORMAL         = '1px solid $COLOR_SELECTION_NORMAL'
+    BORDER_SELECTION_DARK           = '1px solid $COLOR_SELECTION_DARK'
 
     # Example of additional widget specific variables
-    W_STATUS_BAR_BACKGROUND_COLOR = COLOR_SELECTION_DARK
+    W_STATUS_BAR_BACKGROUND_COLOR   = COLOR_SELECTION_DARK
 
     # Paths
     PATH_RESOURCES = "':/qss_icons'"
@@ -1182,73 +1281,6 @@ class DarkPalette(object):
     def color_palette(cls):
         """Return the ordered colored palette dictionary."""
         return cls.to_dict(colors_only=True)
-
-
-class ColorLibs(dict):
-
-    key                 = 'ColorLibs'
-
-    WHITE           = Qt.white
-    LIGHTGRAY       = Qt.lightGray
-    GRAY            = Qt.gray
-    DARKGRAY        = Qt.darkGray
-    BLACK           = Qt.black
-    RED             = Qt.red
-    GREEN           = Qt.green
-    BLUE            = Qt.blue
-    DARKRED         = Qt.darkGreen
-    DARKGREEN       = Qt.darkGreen
-    DARKBLUE        = Qt.darkBlue
-    CYAN            = Qt.cyan
-    MAGENTA         = Qt.magenta
-    YELLOW          = Qt.yellow
-    DARKCYAN        = Qt.darkCyan
-    DARKMAGENTA     = Qt.darkMagenta
-    DARKYELLOW      = Qt.darkYellow
-
-    blush           = QColor(246, 202, 203, 255)
-    petal           = QColor(247, 170, 189, 255)
-    petunia         = QColor(231, 62, 151, 255)
-    deep_pink       = QColor(229, 2, 120, 255)
-    melon           = QColor(241, 118, 110, 255)
-    pomegranate     = QColor(178, 27, 32, 255)
-    poppy_red       = QColor(236, 51, 39, 255)
-    orange_red      = QColor(240, 101, 53, 255)
-    olive           = QColor(174, 188, 43, 255)
-    spring          = QColor(227, 229, 121, 255)
-    yellow          = QColor(255, 240, 29, 255)
-    mango           = QColor(254, 209, 26, 255)
-    cantaloupe      = QColor(250, 176, 98, 255)
-    tangelo         = QColor(247, 151, 47, 255)
-    burnt_orange    = QColor(236, 137, 36, 255)
-    bright_orange   = QColor(242, 124, 53, 255)
-    moss            = QColor(176, 186, 39, 255)
-    sage            = QColor(212, 219, 145, 255)
-    apple           = QColor(178, 215, 140, 255)
-    grass           = QColor(111, 178, 68, 255)
-    forest          = QColor(69, 149, 62, 255)
-    peacock         = QColor(21, 140, 167, 255)
-    teal            = QColor(24, 157, 193, 255)
-    aqua            = QColor(153, 214, 218, 255)
-    violet          = QColor(55, 52, 144, 255)
-    deep_blue       = QColor(15, 86, 163, 255)
-    hydrangea       = QColor(150, 191, 229, 255)
-    sky             = QColor(139, 210, 244, 255)
-    dusk            = QColor(16, 102, 162, 255)
-    midnight        = QColor(14, 90, 131, 255)
-    seaside         = QColor(87, 154, 188, 255)
-    poolside        = QColor(137, 203, 225, 255)
-    eggplant        = QColor(86, 5, 79, 255)
-    lilac           = QColor(222, 192, 219, 255)
-    chocolate       = QColor(87, 43, 3, 255)
-    blackout        = QColor(19, 17, 15, 255)
-    stone           = QColor(125, 127, 130, 255)
-    gravel          = QColor(181, 182, 185, 255)
-    pebble          = QColor(217, 212, 206, 255)
-    sand            = QColor(185, 172, 151, 255)
-
-    def __init__(self):
-        super(ColorLibs, self).__init__()
 
 
 iconMissing                         = []

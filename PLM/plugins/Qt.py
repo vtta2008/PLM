@@ -1,55 +1,162 @@
 # -*- coding: utf-8 -*-
-"""Minimal Python 2 & 3 shim around all Qt bindings
+"""
 
-RAWS_DATA_DIR
+Script Name: Qt.py
+Author: mottosso
+
+Title:
+
+    Minimal Python 2 & 3 shim around all Qt bindings
+
+Version:
+
+    1.2.5
+
+Description:
+    
     Qt.py was born in the film and visual effects industry to address
     the growing need for the development of software capable of running
     with more than one flavour of the Qt bindings for Python - PySide,
     PySide2, PyQt4 and PyQt5.
-
     1. Build for one, run with all
     2. Explicit is better than implicit
     3. Support co-existence
-
     Default resolution order:
         - PySide2
         - PyQt5
         - PySide
         - PyQt4
-
     Usage:
         >> import sys
         >> from Qt import QtWidgets
         >> app = QtWidgets.QApplication(sys.argv)
-        >> okButton = QtWidgets.QPushButton("Hello World")
-        >> okButton.show()
+        >> button = QtWidgets.QPushButton("Hello World")
+        >> button.show()
         >> app.exec_()
-
     All members of PySide2 are mapped from other bindings, should they exist.
     If no equivalent member exist, it is excluded from Qt.py and inaccessible.
     The idea is to highlight members that exist across all supported binding,
     and guarantee that code that runs on one binding runs on all others.
-
     For more details, visit https://github.com/mottosso/Qt.py
 
-LICENSE
+Source:
 
-    See end of file for license (MIT, BSD) information.
+    https://github.com/mottosso/Qt.py
+
+License:
+
+    The MIT License (MIT)
+
+    Copyright (c) 2016-2017 Marcus Ottosson
+
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+    IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+    FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+    AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+    LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+    SOFTWARE.
+
+    In PySide(2), loadUi does not exist, so we implement it
+
+    `_UiLoader` is adapted from the qtpy project, which was further influenced
+    by qt-helpers which was released under a 3-clause BSD license which in turn
+    is based on a solution at:
+
+    - https://gist.github.com/cpbotha/1b42a20c8f3eb9bb7cb8
+
+    The License for this code is as follows:
+
+    qt-helpers - a common front-end to various Qt modules
+
+    Copyright (c) 2015, Chris Beaumont and Thomas Robitaille
+
+    All rights reserved.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions are
+    met:
+
+     * Redistributions of source code must retain the above copyright
+       notice, this list of conditions and the following disclaimer.
+     * Redistributions in binary form must reproduce the above copyright
+       notice, this list of conditions and the following disclaimer in the
+       documentation and/or other materials provided with the
+       distribution.
+     * Neither the name of the Glue project nor the names of its contributors
+       may be used to endorse or promote products derived from this software
+       without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
+    IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+    THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
+    PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
+    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+    Which itself was based on the solution at
+
+    https://gist.github.com/cpbotha/1b42a20c8f3eb9bb7cb8
+
+    which was released under the MIT license:
+
+    Copyright (c) 2011 Sebastian Wiesner <lunaryorn@gmail.com>
+    Modifications by Charl Botha <cpbotha@vxlabs.com>
+
+    Permission is hereby granted, free of charge, to any person obtaining a
+    copy of this software and associated documentation files
+    (the "Software"),to deal in the Software without restriction,
+    including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the
+    Software is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included
+    in all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+    OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+    MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+    SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 """
+# -------------------------------------------------------------------------------------------------------------
+""" Import """
 
 import os
-import shutil
 import sys
 import types
+import shutil
+import importlib
+import json
 
-__version__ = "1.2.0.b2"
+
+__version__ = "1.2.5"
 
 # Enable support for `from Qt import *`
 __all__ = []
 
 # Flags from environment variables
 QT_VERBOSE = bool(os.getenv("QT_VERBOSE"))
+QT_PREFERRED_BINDING_JSON = os.getenv("QT_PREFERRED_BINDING_JSON", "")
 QT_PREFERRED_BINDING = os.getenv("QT_PREFERRED_BINDING", "")
 QT_SIP_API_HINT = os.getenv("QT_SIP_API_HINT")
 
@@ -65,14 +172,11 @@ except NameError:
 
 
 """Common members of all bindings
-
 This is where each member of Qt.py is explicitly defined.
 It is based on a "lowest common denominator" of all bindings;
 including members found in each of the 4 bindings.
-
 The "_common_members" dictionary is generated using the
-build_membership.handler script.
-
+build_membership.sh script.
 """
 
 _common_members = {
@@ -678,10 +782,23 @@ _common_members = {
     ]
 }
 
+""" Missing members
+This mapping describes members that have been deprecated
+in one or more bindings and have been left out of the
+_common_members mapping.
+The member can provide an extra details string to be
+included in exceptions and warnings.
+"""
+
+_missing_members = {
+    "QtGui": {
+        "QMatrix": "Deprecated in PyQt5",
+    },
+}
+
 
 def _qInstallMessageHandler(handler):
-    """Install a message stream that works in all bindings
-
+    """Install a message handler that works in all bindings
     Args:
         handler: A function that takes 3 arguments, or None
     """
@@ -698,7 +815,7 @@ def _qInstallMessageHandler(handler):
             logContext = None
         else:
             raise TypeError(
-                "stream expected 2 or 3 arguments, got {0}".format(len(args)))
+                "handler expected 2 or 3 arguments, got {0}".format(len(args)))
 
         if isinstance(msg, bytes):
             # In python 3, some bindings pass a bytestring, which cannot be
@@ -727,23 +844,17 @@ def _getcpppointer(object):
 
 def _wrapinstance(ptr, base=None):
     """Enable implicit cast of pointer to most suitable class
-
     This behaviour is available in sip per default.
-
     Based on http://nathanhorne.com/pyqtpyside-wrap-instance
-
     Usage:
         This mechanism kicks in under these circumstances.
         1. Qt.py is using PySide 1 or 2.
         2. A `base` argument is not provided.
-
         See :func:`QtCompat.wrapInstance()`
-
     Arguments:
         ptr (long): Pointer to QObject in memory
         base (QObject, optional): Base class to wrap with. Defaults to QObject,
             which should handle anything.
-
     """
 
     assert isinstance(ptr, long), "Argument 'ptr' must be of type <long>"
@@ -775,6 +886,29 @@ def _wrapinstance(ptr, base=None):
             base = Qt.QtCore.QObject
 
     return func(long(ptr), base)
+
+
+def _isvalid(object):
+    """Check if the object is valid to use in Python runtime.
+    Usage:
+        See :func:`QtCompat.isValid()`
+    Arguments:
+        object (QObject): QObject to check the validity of.
+    """
+
+    assert isinstance(object, Qt.QtCore.QObject)
+
+    if hasattr(Qt, "_shiboken2"):
+        return getattr(Qt, "_shiboken2").isValid(object)
+
+    elif hasattr(Qt, "_shiboken"):
+        return getattr(Qt, "_shiboken").isValid(object)
+
+    elif hasattr(Qt, "_sip"):
+        return not getattr(Qt, "_sip").isdeleted(object)
+
+    else:
+        raise AttributeError("'module' has no attribute isValid")
 
 
 def _translate(context, sourceText, *args):
@@ -815,21 +949,16 @@ def _translate(context, sourceText, *args):
 
 def _loadUi(uifile, baseinstance=None):
     """Dynamically load a user interface from the given `uifile`
-
     This function calls `uic.loadUi` if using PyQt bindings,
     else it implements a comparable binding for PySide.
-
     Documentation:
         http://pyqt.sourceforge.net/Docs/PyQt5/designer.html#PyQt5.uic.loadUi
-
     Arguments:
         uifile (str): Absolute path to Qt Designer file.
         baseinstance (QWidget): Instantiated QWidget or subclass thereof
-
     Return:
         baseinstance if `baseinstance` is not `None`. Otherwise
         return the newly created instance of the user interface.
-
     """
     if hasattr(Qt, "_uic"):
         return Qt._uic.loadUi(uifile, baseinstance)
@@ -839,18 +968,48 @@ def _loadUi(uifile, baseinstance=None):
 
         class _UiLoader(Qt._QtUiTools.QUiLoader):
             """Create the user interface in a base instance.
-
             Unlike `Qt._QtUiTools.QUiLoader` itself this class does not
-            create a showLayout_new instance of the top-level widget, but creates the user
+            create a new instance of the top-level widget, but creates the user
             interface in an existing instance of the top-level class if needed.
-
             This mimics the behaviour of `PyQt5.uic.loadUi`.
-
             """
 
             def __init__(self, baseinstance):
                 super(_UiLoader, self).__init__(baseinstance)
                 self.baseinstance = baseinstance
+                self.custom_widgets = {}
+
+            def _loadCustomWidgets(self, etree):
+                """
+                Workaround to pyside-77 bug.
+                From QUiLoader doc we should use registerCustomWidget method.
+                But this causes a segfault on some platforms.
+                Instead we fetch from customwidgets DOM node the python class
+                objects. Then we can directly use them in createWidget method.
+                """
+
+                def headerToModule(header):
+                    """
+                    Translate a header file to python module path
+                    foo/bar.h => foo.bar
+                    """
+                    # Remove header extension
+                    module = os.path.splitext(header)[0]
+
+                    # Replace os separator by python module separator
+                    return module.replace("/", ".").replace("\\", ".")
+
+                custom_widgets = etree.find("customwidgets")
+
+                if custom_widgets is None:
+                    return
+
+                for custom_widget in custom_widgets:
+                    class_name = custom_widget.find("class").text
+                    header = custom_widget.find("header").text
+                    module = importlib.import_module(headerToModule(header))
+                    self.custom_widgets[class_name] = getattr(module,
+                                                              class_name)
 
             def load(self, uifile, *args, **kwargs):
                 from xml.etree.ElementTree import ElementTree
@@ -860,6 +1019,7 @@ def _loadUi(uifile, baseinstance=None):
                 # a RuntimeError.
                 etree = ElementTree()
                 etree.parse(uifile)
+                self._loadCustomWidgets(etree)
 
                 widget = Qt._QtUiTools.QUiLoader.load(
                     self, uifile, *args, **kwargs)
@@ -871,9 +1031,7 @@ def _loadUi(uifile, baseinstance=None):
 
             def createWidget(self, class_name, parent=None, name=""):
                 """Called for each widget defined in ui file
-
                 Overridden here to populate `baseinstance` instead.
-
                 """
 
                 if parent is None and self.baseinstance:
@@ -884,18 +1042,19 @@ def _loadUi(uifile, baseinstance=None):
                 # For some reason, Line is not in the list of available
                 # widgets, but works fine, so we have to special case it here.
                 if class_name in self.availableWidgets() + ["Line"]:
-                    # Create a showLayout_new widget for child widgets
+                    # Create a new widget for child widgets
                     widget = Qt._QtUiTools.QUiLoader.createWidget(self,
                                                                   class_name,
                                                                   parent,
                                                                   name)
-
+                elif class_name in self.custom_widgets:
+                    widget = self.custom_widgets[class_name](parent)
                 else:
                     raise Exception("Custom widget '%s' not supported"
                                     % class_name)
 
                 if self.baseinstance:
-                    # Set an attribute for the showLayout_new child widget on the base
+                    # Set an attribute for the new child widget on the base
                     # instance, just like PyQt5.uic.loadUi does.
                     setattr(self.baseinstance, name, widget)
 
@@ -911,12 +1070,11 @@ def _loadUi(uifile, baseinstance=None):
 
 
 """Misplaced members
-
 These members from the original submodule are misplaced relative PySide2
-
 """
 _misplaced_members = {
     "PySide2": {
+        "QtCore.QStringListModel": "QtCore.QStringListModel",
         "QtGui.QStringListModel": "QtCore.QStringListModel",
         "QtCore.Property": "QtCore.Property",
         "QtCore.Signal": "QtCore.Signal",
@@ -929,6 +1087,7 @@ _misplaced_members = {
         "QtUiTools.QUiLoader": ["QtCompat.loadUi", _loadUi],
         "shiboken2.wrapInstance": ["QtCompat.wrapInstance", _wrapinstance],
         "shiboken2.getCppPointer": ["QtCompat.getCppPointer", _getcpppointer],
+        "shiboken2.isValid": ["QtCompat.isValid", _isvalid],
         "QtWidgets.qApp": "QtWidgets.QApplication.instance()",
         "QtCore.QCoreApplication.translate": [
             "QtCompat.translate", _translate
@@ -939,6 +1098,7 @@ _misplaced_members = {
         "QtCore.qInstallMessageHandler": [
             "QtCompat.qInstallMessageHandler", _qInstallMessageHandler
         ],
+        "QtWidgets.QStyleOptionViewItem": "QtCompat.QStyleOptionViewItemV4",
     },
     "PyQt5": {
         "QtCore.pyqtProperty": "QtCore.Property",
@@ -953,6 +1113,7 @@ _misplaced_members = {
         "uic.loadUi": ["QtCompat.loadUi", _loadUi],
         "sip.wrapinstance": ["QtCompat.wrapInstance", _wrapinstance],
         "sip.unwrapinstance": ["QtCompat.getCppPointer", _getcpppointer],
+        "sip.isdeleted": ["QtCompat.isValid", _isvalid],
         "QtWidgets.qApp": "QtWidgets.QApplication.instance()",
         "QtCore.QCoreApplication.translate": [
             "QtCompat.translate", _translate
@@ -963,6 +1124,7 @@ _misplaced_members = {
         "QtCore.qInstallMessageHandler": [
             "QtCompat.qInstallMessageHandler", _qInstallMessageHandler
         ],
+        "QtWidgets.QStyleOptionViewItem": "QtCompat.QStyleOptionViewItemV4",
     },
     "PySide": {
         "QtGui.QAbstractProxyModel": "QtCore.QAbstractProxyModel",
@@ -985,6 +1147,7 @@ _misplaced_members = {
         "QtUiTools.QUiLoader": ["QtCompat.loadUi", _loadUi],
         "shiboken.wrapInstance": ["QtCompat.wrapInstance", _wrapinstance],
         "shiboken.unwrapInstance": ["QtCompat.getCppPointer", _getcpppointer],
+        "shiboken.isValid": ["QtCompat.isValid", _isvalid],
         "QtGui.qApp": "QtWidgets.QApplication.instance()",
         "QtCore.QCoreApplication.translate": [
             "QtCompat.translate", _translate
@@ -995,6 +1158,7 @@ _misplaced_members = {
         "QtCore.qInstallMsgHandler": [
             "QtCompat.qInstallMessageHandler", _qInstallMessageHandler
         ],
+        "QtGui.QStyleOptionViewItemV4": "QtCompat.QStyleOptionViewItemV4",
     },
     "PyQt4": {
         "QtGui.QAbstractProxyModel": "QtCore.QAbstractProxyModel",
@@ -1018,6 +1182,7 @@ _misplaced_members = {
         "uic.loadUi": ["QtCompat.loadUi", _loadUi],
         "sip.wrapinstance": ["QtCompat.wrapInstance", _wrapinstance],
         "sip.unwrapinstance": ["QtCompat.getCppPointer", _getcpppointer],
+        "sip.isdeleted": ["QtCompat.isValid", _isvalid],
         "QtCore.QString": "str",
         "QtGui.qApp": "QtWidgets.QApplication.instance()",
         "QtCore.QCoreApplication.translate": [
@@ -1029,14 +1194,13 @@ _misplaced_members = {
         "QtCore.qInstallMsgHandler": [
             "QtCompat.qInstallMessageHandler", _qInstallMessageHandler
         ],
+        "QtGui.QStyleOptionViewItemV4": "QtCompat.QStyleOptionViewItemV4",
     }
 }
 
 """ Compatibility Members
-
 This dictionary is used to build Qt.QtCompat objects that provide a consistent
 interface for obsolete members, and differences in binding return values.
-
 {
     "binding": {
         "classname": {
@@ -1185,10 +1349,8 @@ def _setup(module, extras):
 
 def _reassign_misplaced_members(binding):
     """Apply misplaced members from `binding` to Qt.py
-
     Arguments:
         binding (dict): Misplaced members
-
     """
 
     for src, dst in _misplaced_members[binding].items():
@@ -1222,25 +1384,25 @@ def _reassign_misplaced_members(binding):
                 # exist, there is no need to continue. This can happen if a
                 # request was made to rename a member that didn't exist, for
                 # example if QtWidgets isn't available on the target platform.
-                _log("Misplaced member has no source: {}".format(src))
+                _log("Misplaced member has no source: {0}".format(src))
                 continue
 
         try:
             src_object = getattr(Qt, dst_module)
         except AttributeError:
             if dst_module not in _common_members:
-                # Only create the Qt _parent module if its listed in
+                # Only create the Qt parent module if its listed in
                 # _common_members. Without this check, if you remove QtCore
                 # from _common_members, the default _misplaced_members will add
                 # Qt.QtCore so it can add Signal, Slot, etc.
                 msg = 'Not creating missing member module "{m}" for "{c}"'
                 _log(msg.format(m=dst_module, c=dst_member))
                 continue
-            # If the dst is valid but the Qt _parent module does not exist
-            # then go ahead and create a showLayout_new module to contain the member.
+            # If the dst is valid but the Qt parent module does not exist
+            # then go ahead and create a new module to contain the member.
             setattr(Qt, dst_module, _new_module(dst_module))
             src_object = getattr(Qt, dst_module)
-            # Enable direct import of the showLayout_new module
+            # Enable direct import of the new module
             sys.modules[__name__ + "." + dst_module] = src_object
 
         if not dst_value:
@@ -1257,15 +1419,13 @@ def _reassign_misplaced_members(binding):
 
 def _build_compatibility_members(binding, decorators=None):
     """Apply `binding` to QtCompat
-
     Arguments:
         binding (str): Top level binding in _compatibility_members.
         decorators (dict, optional): Provides the ability to decorate the
             original Qt methods when needed by a binding. This can be used
-            to change the returned value to a standard value. The configKey should
-            be the classname, the value is a dict where the envKeys are the
+            to change the returned value to a standard value. The key should
+            be the classname, the value is a dict where the keys are the
             target method names, and the values are the decorator functions.
-
     """
 
     decorators = decorators or dict()
@@ -1318,12 +1478,10 @@ def _build_compatibility_members(binding, decorators=None):
 
 def _pyside2():
     """Initialise PySide2
-
     These functions serve to test the existence of a binding
     along with set it up in such a way that it aligns with
     the final step; adding members from the original binding
     to Qt.py
-
     """
 
     import PySide2 as module
@@ -1352,6 +1510,10 @@ def _pyside2():
 
     if hasattr(Qt, "_QtCore"):
         Qt.__qt_version__ = Qt._QtCore.qVersion()
+        Qt.QtCompat.dataChanged = (
+            lambda self, topleft, bottomright, roles=None:
+            self.dataChanged.emit(topleft, bottomright, roles or [])
+        )
 
     if hasattr(Qt, "_QtWidgets"):
         Qt.QtCompat.setSectionResizeMode = \
@@ -1399,6 +1561,10 @@ def _pyside():
 
     if hasattr(Qt, "_QtCore"):
         Qt.__qt_version__ = Qt._QtCore.qVersion()
+        Qt.QtCompat.dataChanged = (
+            lambda self, topleft, bottomright, roles=None:
+            self.dataChanged.emit(topleft, bottomright)
+        )
 
     _reassign_misplaced_members("PySide")
     _build_compatibility_members("PySide")
@@ -1409,11 +1575,18 @@ def _pyqt5():
 
     import PyQt5 as module
     extras = ["uic"]
+
     try:
-        import sip
-        extras.append(sip.__name__)
+        # Relevant to PyQt5 5.11 and above
+        from PyQt5 import sip
+        extras += ["sip"]
     except ImportError:
-        sip = None
+
+        try:
+            import sip
+            extras += ["sip"]
+        except ImportError:
+            sip = None
 
     _setup(module, extras)
     if hasattr(Qt, "_sip"):
@@ -1427,6 +1600,10 @@ def _pyqt5():
     if hasattr(Qt, "_QtCore"):
         Qt.__binding_version__ = Qt._QtCore.PYQT_VERSION_STR
         Qt.__qt_version__ = Qt._QtCore.QT_VERSION_STR
+        Qt.QtCompat.dataChanged = (
+            lambda self, topleft, bottomright, roles=None:
+            self.dataChanged.emit(topleft, bottomright, roles or [])
+        )
 
     if hasattr(Qt, "_QtWidgets"):
         Qt.QtCompat.setSectionResizeMode = \
@@ -1503,6 +1680,10 @@ def _pyqt4():
     if hasattr(Qt, "_QtCore"):
         Qt.__binding_version__ = Qt._QtCore.PYQT_VERSION_STR
         Qt.__qt_version__ = Qt._QtCore.QT_VERSION_STR
+        Qt.QtCompat.dataChanged = (
+            lambda self, topleft, bottomright, roles=None:
+            self.dataChanged.emit(topleft, bottomright)
+        )
 
     _reassign_misplaced_members("PyQt4")
 
@@ -1550,19 +1731,20 @@ def _none():
 
 def _log(text):
     if QT_VERBOSE:
-        sys.stdout.write(text + "\n")
+        sys.stdout.write("Qt.py [info]: %s\n" % text)
+
+
+def _warn(text):
+    sys.stderr.write("Qt.py [warning]: %s\n" % text)
 
 
 def _convert(lines):
     """Convert compiled .ui file from PySide2 to Qt.py
-
     Arguments:
         lines (list): Each line of of .ui file
-
     Usage:
         >> with open("myui.py") as f:
         ..   lines = _convert(f.readlines())
-
     """
 
     def parse(line):
@@ -1638,12 +1820,66 @@ def _cli(args):
         sys.stdout.write("Successfully converted \"%s\"\n" % args.convert)
 
 
+class MissingMember(object):
+    """
+    A placeholder type for a missing Qt object not
+    included in Qt.py
+    Args:
+        name (str): The name of the missing type
+        details (str): An optional custom error message
+    """
+    ERR_TMPL = ("{} is not a common object across PySide2 "
+                "and the other Qt bindings. It is not included "
+                "as a common member in the Qt.py layer")
+
+    def __init__(self, name, details=''):
+        self.__name = name
+        self.__err = self.ERR_TMPL.format(name)
+
+        if details:
+            self.__err = "{}: {}".format(self.__err, details)
+
+    def __repr__(self):
+        return "<{}: {}>".format(self.__class__.__name__, self.__name)
+
+    def __getattr__(self, name):
+        raise NotImplementedError(self.__err)
+
+    def __call__(self, *a, **kw):
+        raise NotImplementedError(self.__err)
+
+
 def _install():
-    # Default order (customise order and content via QT_PREFERRED_BINDING)
+    # Default order (customize order and content via QT_PREFERRED_BINDING)
     default_order = ("PySide2", "PyQt5", "PySide", "PyQt4")
-    preferred_order = list(
-        b for b in QT_PREFERRED_BINDING.split(os.pathsep) if b
-    )
+    preferred_order = None
+    if QT_PREFERRED_BINDING_JSON:
+        # A per-vendor preferred binding customization was defined
+        # This should be a dictionary of the full Qt.py module namespace to
+        # apply binding settings to. The "default" key can be used to apply
+        # custom bindings to all modules not explicitly defined. If the json
+        # data is invalid this will raise a exception.
+        # Example:
+        #   {"mylibrary.vendor.Qt": ["PySide2"], "default":["PyQt5","PyQt4"]}
+        try:
+            preferred_bindings = json.loads(QT_PREFERRED_BINDING_JSON)
+        except ValueError:
+            # Python 2 raises ValueError, Python 3 raises json.JSONDecodeError
+            # a subclass of ValueError
+            _warn("Failed to parse QT_PREFERRED_BINDING_JSON='%s'"
+                  % QT_PREFERRED_BINDING_JSON)
+            _warn("Falling back to default preferred order")
+        else:
+            preferred_order = preferred_bindings.get(__name__)
+            # If no matching binding was used, optionally apply a default.
+            if preferred_order is None:
+                preferred_order = preferred_bindings.get("default", None)
+    if preferred_order is None:
+        # If a json preferred binding was not used use, respect the
+        # QT_PREFERRED_BINDING environment variable if defined.
+        preferred_order = list(
+            b for b in QT_PREFERRED_BINDING.split(os.pathsep) if b
+        )
 
     order = preferred_order or default_order
 
@@ -1705,6 +1941,22 @@ def _install():
 
             setattr(our_submodule, member, their_member)
 
+    # Install missing member placeholders
+    for name, members in _missing_members.items():
+        our_submodule = getattr(Qt, name)
+
+        for member in members:
+
+            # If the submodule already has this member installed,
+            # either by the common members, or the site config,
+            # then skip installing this one over it.
+            if hasattr(our_submodule, member):
+                continue
+
+            placeholder = MissingMember("{}.{}".format(name, member),
+                                        details=members[member])
+            setattr(our_submodule, member, placeholder)
+
     # Enable direct import of QtCompat
     sys.modules['Qt.QtCompat'] = Qt.QtCompat
 
@@ -1722,12 +1974,10 @@ Qt.IsPySide = Qt.__binding__ == 'PySide'
 Qt.IsPyQt4 = Qt.__binding__ == 'PyQt4'
 
 """Augment QtCompat
-
 QtCompat contains wrappers and added functionality
 to the original bindings, such as the CLI interface
 and otherwise incompatible members between bindings,
 such as `QHeaderView.setSectionResizeMode`.
-
 """
 
 Qt.QtCompat._cli = _cli
@@ -1738,98 +1988,8 @@ if __name__ == "__main__":
     _cli(sys.argv[1:])
 
 
-# The MIT License (MIT)
-#
-# Copyright (c) 2016-2017 Marcus Ottosson
-#
-# Permission is hereby granted, free of charge, to any person obtaining a copy
-# of this software and associated documentation files (the "Software"), to deal
-# in the Software without restriction, including without limitation the rights
-# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-# copies of the Software, and to permit persons to whom the Software is
-# furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included in
-# all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-# SOFTWARE.
-#
-# In PySide(2), loadUi does not exist, so we implement it
-#
-# `_UiLoader` is adapted from the qtpy project, which was further influenced
-# by qt-helpers which was released under a 3-clause BSD license which in turn
-# is based on a solution at:
-#
-# - https://gist.github.com/cpbotha/1b42a20c8f3eb9bb7cb8
-#
-# The License for this code is as follows:
-#
-# qt-helpers - a common front-end to various Qt modules
-#
-# Copyright (c) 2015, Chris Beaumont and Thomas Robitaille
-#
-# All rights reserved.
-#
-# Redistribution and use in source and binary forms, with or without
-# modification, are permitted provided that the following conditions are
-# met:
-#
-#  * Redistributions of source code must retain the above copyright
-#    notice, this list of conditions and the following disclaimer.
-#  * Redistributions in binary form must reproduce the above copyright
-#    notice, this list of conditions and the following disclaimer in the
-#    documentation and/or other materials provided with the
-#    distribution.
-#  * Neither the name of the Glue project nor the names of its contributors
-#    may be used to endorse or promote products derived from this software
-#    without specific prior written permission.
-#
-# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS
-# IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
-# THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR
-# PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-# CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-# EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-# PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-# PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-# LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-# NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#
-# Which itself was based on the solution at
-#
-# https://gist.github.com/cpbotha/1b42a20c8f3eb9bb7cb8
-#
-# which was released under the MIT license:
-#
-# Copyright (c) 2011 Sebastian Wiesner <lunaryorn@gmail.com>
-# Modifications by Charl Botha <cpbotha@vxlabs.com>
-#
-# Permission is hereby granted, free of charge, to any person obtaining a
-# copy of this software and associated documentation files
-# (the "Software"),to deal in the Software without restriction,
-# including without limitation
-# the rights to use, copy, modify, merge, publish, distribute, sublicense,
-# and/or sell copies of the Software, and to permit persons to whom the
-# Software is furnished to do so, subject to the following conditions:
-#
-# The above copyright notice and this permission notice shall be included
-# in all copies or substantial portions of the Software.
-#
-# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
-# OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-# MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-# IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
-# CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
-# TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
-# SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 23/06/2018 - 1:12 PM
-# © 2017 - 2018 DAMGteam. All rights reserved
+# Created by panda on 3/20/2020 - 8:56 AM
+# ©2017 - 2019 DAMGTEAM. All rights reserved

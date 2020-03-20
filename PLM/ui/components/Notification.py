@@ -12,7 +12,7 @@ Description:
 import datetime
 
 from PLM.commons.Widgets            import LCDNumber, GroupGrid, Label
-from PLM.commons.Core                import Timer
+from PLM.commons.Core               import Timer
 
 class DigitalClock(LCDNumber):
 
@@ -91,12 +91,12 @@ class Notification(GroupGrid):
 
         self.weekNumber     = Label({'txt': 'Weeknumber: {0}'.format(wk)})
 
-        worker              = self.threadManager.serviceThread()
+        worker              = self.threadManager.getThread('PcMonitor')
         worker.cpu.connect(self.update_cpu_useage)
         worker.ram.connect(self.update_ram_useage)
         worker.gpu.connect(self.update_gpu_useage)
         worker.disk.connect(self.update_disk_useage)
-        worker.start()
+        worker().start()
 
         self.labels         = [self.usage_cpu, self.usage_ram, self.usage_gpu, self.usage_disk, self.weekNumber,
                                self.timeClock, self.dateClock]

@@ -8,169 +8,46 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+""" Import """
 
-from PyQt5.QtCore                        import pyqtSignal
+# Python
+import time
 
-from PLM.commons                         import DAMGLIST, DAMGTHREADPOOL, DAMGTHREAD
-from PLM.utils                           import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
-from PLM.commons.Core                    import Timer
-from PLM.cores                           import SignalManager, SettingManager
+# PLM
+from PLM.commons                            import DAMGLIST
+from PLM.commons.Core                       import ThreadPool
+from PLM.cores                              import SignalManager, SettingManager
+from PLM.ui.components.Counting             import Counting
+from PLM.ui.components.Storages             import ThreadStorage, WorkerStorage
 
 
-class BackgroundService(DAMGTHREAD):
+class ThreadManager(ThreadPool):
 
-    key                                   = 'Notification_rWorker'
-
-    cpu                                   = pyqtSignal(str, name='CPU')
-    ram                                   = pyqtSignal(str, name='RAM')
-    gpu                                   = pyqtSignal(str, name='GPU')
-    disk                                  = pyqtSignal(str, name='DISK')
-
-    _monitoring                           = True
-
-    def __init__(self, name='PC Monitor', *args, **kwargs):
-        super(BackgroundService, self).__init__(self)
-
-        self.args = args
-        self.kwargs = kwargs
-        self._name = name
-
-    def run(self):
-        while self._monitoring:
-            cpu = str(get_cpu_useage())
-            ram = str(get_ram_useage())
-            gpu = str(get_gpu_useage())
-            disk = str(get_disk_useage())
-            self.cpu.emit(cpu)
-            self.ram.emit(ram)
-            self.gpu.emit(gpu)
-            self.disk.emit(disk)
-
-    def stop_monitoring(self):
-        self._monitoring                  = False
-
-    def start_monitoring(self):
-        self._monitoring                  = True
-
-    @property
-    def monitor(self):
-        return self._monitoring
-
-    @monitor.setter
-    def monitor(self, val):
-        self._monitoring                  = val
-
-class Counting(Timer):
-
-    key = 'Counting'
-    printCounter = False
-    _isCounting = False
-    _counter = 0
-
-    def __init__(self, countLimited=0, interval=10000):
-        super(Counting, self).__init__()
-
-        self._interval = interval
-        self._countLimited = countLimited
-        self.setInterval(self._interval)
-
-    def begin(self):
-        if self.printCounter:
-            print("Start counting")
-        # self.timeout.connect(self.start_thread)
-        self.timeout.connect(self.counting)
-        self.start(1000)
-        self._isCounting = True
-
-    def counting(self):
-        if self._counter == 0:
-            self._counter += 1
-        elif self._counter == self._countLimited:
-            self.finish()
-        else:
-            self._counter += 1
-
-        if self.printCounter:
-            print(self._counter)
-
-    def finish(self):
-        if self.printCounter:
-            print("Stop counting")
-        self.stop()
-        self._isCounting = False
-
-    def setStartCounter(self, val):
-        self._counter = val
-        return self._counter
-
-    def setCountLimited(self, val):
-        if not self._countLimited == val:
-            if self.printCounter:
-                print('countLimited is set to: {0}'.format(val))
-            self._countLimited = val
-
-        return self._countLimited
-
-    def setPrintCounter(self, bool):
-        if bool:
-            if not self.printCounter:
-                self.printCounter = bool
-        else:
-            if self.printCounter:
-                print('printCounter is set to: {0}'.format(bool))
-                self.printCounter = bool
-            else:
-                print('printCounter is set to: {0}'.format(bool))
-
-        return self.printCounter
-
-    @property
-    def counter(self):
-        return self._counter
-
-    @property
-    def countLimited(self):
-        return self._countLimited
-
-    @property
-    def isCounting(self):
-        return self._isCounting
-
-    @counter.setter
-    def counter(self, val):
-        self._counter = val
-
-    @countLimited.setter
-    def countLimited(self, val):
-        self._countLimited = val
-
-    @isCounting.setter
-    def isCounting(self, val):
-        self._isCounting = val
-
-class ThreadManager(DAMGTHREADPOOL):
-
-    key = 'ThreadManager'
-    tasks = DAMGLIST()
+    key                                     = 'ThreadManager'
+    tasks                                   = DAMGLIST()
+    threads                                 = ThreadStorage()
+    workers                                 = WorkerStorage()
 
     def __init__(self, parent=None):
         super(ThreadManager, self).__init__(parent)
 
-        self.parent                 = parent
-        self.counter                = Counting()
-        self.settings               = SettingManager(self)
-        self.signals                = SignalManager(self)
+        self.parent                         = parent
+        self.counter                        = Counting()
+        self.settings                       = SettingManager(self)
+        self.signals                        = SignalManager(self)
+
+
+    def getThread(self, key):
+        return self.threads.getThread(key)
+
+    def getWorker(self, key):
+        return self.workers.getWorker(key)
 
     def startCounting(self):
         self.counter.begin()
 
     def stopCounting(self):
         self.counter.finish()
-
-    def serviceThread(self):
-        thread = BackgroundService()
-        self.threads.append(thread)
-        return thread
 
     def setCountLimited(self, val):
         return self.counter.setCountLimited(val)
@@ -180,6 +57,45 @@ class ThreadManager(DAMGTHREADPOOL):
 
     def isCounting(self):
         return self.counter.isCounting
+
+    def process_output(self, val):
+        return print(val)
+
+    def progress_task(self, val):
+        return print('{0}% done'.format(val))
+
+    def task_completed(self):
+        return print('worker commpleted')
+
+    def stop_thread(self, thread):
+        thread.quit_thread.emit()
+        return print('thread stopes')
+
+    def error_output(self, errorTuple):
+        return print(errorTuple)
+
+    def test_task(self, progres_callback):
+        for n in range(0, 5):
+            time.sleep(1)
+            progres_callback.emit(n*100/4)
+        return 'Done.'
+
+    def run_test(self):
+        return self.execute_task(self.test_task)
+
+    def execute_task(self, key, task, args, worker=True):
+
+        if worker:
+            worker = self.workers.createWorker(key)
+            return self.start(worker(task, args))
+        else:
+            thread = self.threads.createThread(key)
+            return thread(task).start()
+
+    def execute_multi_tasks(self, tasks):
+        for task in tasks:
+            self.tasks.append(task)
+            self.execute_task(task)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 20/10/2019 - 6:23 PM

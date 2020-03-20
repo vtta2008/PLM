@@ -17,6 +17,7 @@ from .FontMetric    import FontMetric
 from .Icon          import AppIcon, TagIcon, LogoIcon, Icon
 from .Image         import Pixmap, Image
 from .KeySequence   import KeySequence
+from .Painter       import Painter
 from .PainterPath   import PainterPath
 from .Pen           import Pen
 from .Transform     import Transform
