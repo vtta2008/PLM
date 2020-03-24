@@ -696,7 +696,7 @@ class ModesGlb(ConfigGlb):
 
     _qtBindingMode                              = 'PyQt5'
     _dataTypeSavingMode                         = 'json'
-    _splashLoadingMode                          = 'loading'
+    _splashLoadingMode                          = 'progress'
 
     loadingMode                                 = ['loading', 'progress']
     bindingMode                                 = ['PyQt5', 'PySide2']

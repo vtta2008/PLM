@@ -82,13 +82,8 @@ class AutoRunLoading(Thread):
         self.timer.timeout.connect(self.widget.rotate)
 
     def run(self):
-        self.widget.updateSize()
-        self.widget.updatePosition()
 
         while self._spinning:
-
-            self.widget._spinning                   = True
-            self.widget.show()
 
             if not self.timer.isActive():
                 self.timer.start(50)

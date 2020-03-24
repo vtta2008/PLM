@@ -25,10 +25,9 @@ class Font(QFont):
     _name                               = 'DAMG Font'
     _copyright                          = __copyright__()
 
-    def __init__(self, font, fontsize, fontAttr, parent=None):
-        QFont.__init__(font, fontsize, fontAttr)
+    def __init__(self, *__args):
+        QFont.__init__(self)
 
-        self.parent                     = parent
         self.signals                    = SignalManager(self)
         self.settings                   = SettingManager(self)
 

@@ -25,7 +25,7 @@ class Widget(QWidget):
     _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
-        super(Widget, self).__init__(parent)
+        QWidget.__init__(self, parent)
 
         self.parent                         = parent
         self.settings                       = SettingManager(self)

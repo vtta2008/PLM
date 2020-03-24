@@ -29,10 +29,11 @@ from PyQt5.QtGui                        import QColor
 
 # PLM
 from PLM                                import __copyright__, ROOT, globalSetting
-from PLM.configs                        import __version__, __appname__, __organization__, __website__, DarkPalette, PLMAPPID
+from PLM.configs                        import (__version__, __appname__, __organization__, __website__, DarkPalette,
+                                                PLMAPPID, MONO_SPACE)
 from PLM.cores                          import Loggers, SignalManager, SettingManager, StyleSheet
 from PLM.commons.Core                   import Process
-from PLM.commons.Gui                    import Cursor, LogoIcon
+from PLM.commons.Gui                    import Cursor, LogoIcon, Font
 from PLM.commons.Widgets.MessageBox     import MessageBox
 from PLM.plugins                        import Qt
 from PLM.ui.tools.Browser               import Browser
@@ -92,6 +93,10 @@ class Application(QApplication):
         self.setCursorFlashTime(1000)
         self.setQuitOnLastWindowClosed(False)
         self.setDesktopSettingsAware(True)
+
+        defaultAppFont                  = Font('UTM Avo')
+        defaultAppFont.setStyleHint(MONO_SPACE)
+        self.setFont(defaultAppFont)
 
         self.logger                     = Loggers(__name__)
         self.settings                   = SettingManager(self)

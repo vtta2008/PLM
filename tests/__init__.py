@@ -18,6 +18,12 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
+import sys
+from PyQt5.QtWidgets import QApplication
+
+app = QApplication(sys.argv)
+print(app.desktop().availableGeometry().width(), app.desktop().screenGeometry())
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 1/16/2020 - 7:11 PM

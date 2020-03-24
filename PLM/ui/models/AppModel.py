@@ -21,8 +21,8 @@ from PLM.cores                          import LocalDatabase
 from PLM.ui.layouts.SplashUI            import SplashUI
 from PLM.ui.models.ThreadManager        import ThreadManager
 from PLM.commons.Widgets                import Application
-from PLM.commons.Core                   import Timer
 from PLM.utils                          import clean_file_ext
+
 
 class AppModel(Application):
 
@@ -59,6 +59,7 @@ class AppModel(Application):
         self.envInfo                    = self.splash.envInfo
         self.serverInfo                 = self.splash.serverInfo
         self.formatInfo                 = self.splash.formatInfo
+        self.fontInfo                   = self.splash.fontInfo
 
         self.database                   = LocalDatabase()
         self.threadManager              = ThreadManager()

@@ -19,7 +19,6 @@ import pkg_resources
 import winshell
 import socket
 import uuid
-import wmi
 import pprint
 from collections                    import OrderedDict
 
@@ -36,7 +35,7 @@ from .metadatas                     import (__appname__, __organizationName__, _
 from PyQt5.QtCore                   import Qt, QSize, QEvent, QSettings, QDateTime
 from PyQt5.QtGui                    import QPainter, QFont, QColor
 from PyQt5.QtWidgets                import (QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy,
-                                            QLineEdit, QPlainTextEdit, QAbstractItemView, QStyle, QApplication)
+                                            QLineEdit, QPlainTextEdit, QAbstractItemView, QStyle, QApplication, )
 
 
 TRADE_MARK = '™'
@@ -763,12 +762,12 @@ datetTimeStamp = QDateTime.currentDateTime().toString("hh:mm - dd MMMM yy")     
 
 IMGEXT = "All Files (*);;Img Files (*.jpg);;Img Files (*.png)"
 
-
 # -------------------------------------------------------------------------------------------------------------
 """ Font """
 
-BOLD                        = QFont.Bold
-NORMAL                      = QFont.Normal
+TEXT_BOLD                   = QFont.Bold
+TEXT_NORMAL                 = QFont.Normal
+MONO_SPACE                  = QFont.Monospace
 
 # -------------------------------------------------------------------------------------------------------------
 """ Event """
@@ -1121,6 +1120,8 @@ class ColorLibs(dict):
 
     key                             = 'ColorLibs'
 
+    DAMG_LOGO_COLOR                 = QColor(0, 114, 188, 255)
+
     # Basic color
     WHITE                           = QColor(Qt.white)
     LIGHTGRAY                       = QColor(Qt.lightGray)
@@ -1130,7 +1131,7 @@ class ColorLibs(dict):
     RED                             = QColor(Qt.red)
     GREEN                           = QColor(Qt.green)
     BLUE                            = QColor(Qt.blue)
-    DARKRED                         = QColor(Qt.darkGreen)
+    DARKRED                         = QColor(Qt.darkRed)
     DARKGREEN                       = QColor(Qt.darkGreen)
     DARKBLUE                        = QColor(Qt.darkBlue)
     CYAN                            = QColor(Qt.cyan)
@@ -1904,8 +1905,6 @@ class ConfigFormats(dict):
 
 class ConfigFonts(dict):
 
-
-
     key                     = 'ConfigFonts'
 
     def __init__(self):
@@ -2474,6 +2473,8 @@ elif platform.system() == 'Linux':
 
 
 else:
+
+    import wmi
 
     runs                        = subprocess.Popen
     sysKey                      = 'SYSTEMINFO'
