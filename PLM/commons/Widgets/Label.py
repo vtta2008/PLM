@@ -19,7 +19,8 @@ from PyQt5.QtCore                           import QTimeZone, QTime, QDate
 # PLM
 from PLM.utils                              import check_preset
 from PLM.configs                            import PRS
-from PLM.commons                            import SignalManager, SettingManager
+from PLM.commons.SettingManager             import SettingManager
+from PLM.plugins.SignalManager              import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 class Label(QLabel):
@@ -34,7 +35,7 @@ class Label(QLabel):
 
         self.parent                         = parent
         self.settings                       = SettingManager(self)
-        self.signals                        = SignalManager(self)
+        # self.signals                        = SignalManager(self)
 
         self.preset                         = preset
         if check_preset(self.preset):

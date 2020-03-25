@@ -67,7 +67,7 @@ class BaseKeys(BaseStorage):
     checkedKeys                         = [k for k in plmInfo.keys()]
 
     def __init__(self, parent=None):
-        super(BaseKeys, self).__init__(self)
+        super(BaseKeys, self).__init__()
         self.parent                     = parent
 
     def keyConfigError(self, key):

@@ -15,7 +15,8 @@ from PLM import __copyright__
 from PyQt5.QtWidgets                        import QStatusBar
 
 # PLM
-from PLM.commons                            import SignalManager, SettingManager
+from PLM.plugins.SignalManager              import SignalManager
+from PLM.commons.SettingManager             import SettingManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ StatusBar """
@@ -32,8 +33,8 @@ class StatusBar(QStatusBar):
     def __init__(self, parent=None):
         QStatusBar.__init__(self)
         self.parent                         = parent
-        self.settings = SettingManager(self)
-        self.signals = SignalManager(self)
+        self.settings                       = SettingManager(self)
+        self.signals                        = SignalManager(self)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

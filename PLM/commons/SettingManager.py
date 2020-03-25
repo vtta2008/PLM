@@ -8,15 +8,16 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import globalSetting
 """ Import """
 
 # Python
 import os
 
 # PLM
+from PLM                                import globalSetting
 from PLM.configs                        import SETTING_FILEPTH, INI, NATIVE, INVALID, SYS_SCOPE, USER_SCOPE
 from PLM.commons.Core                   import Settings
+
 
 
 class SettingManager(Settings):

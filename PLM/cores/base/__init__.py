@@ -13,8 +13,6 @@ from .BaseKeys          import BaseKeys
 from .BaseType          import BaseType
 from .BaseThreading     import TaskThread, TaskWorker, WidgetThread, WidgetWorker
 from .BaseStorage       import BaseStorage
-from .BaseSignal        import BaseSignal
-
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 2/12/2019 - 10:17 AM

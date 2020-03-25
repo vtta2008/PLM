@@ -300,7 +300,7 @@ class RealtimeLoading(Widget):
 
     def pTextWidth(self):
         fm = QFontMetrics(self.currentFont)
-        return fm.width(self.pText)
+        return fm.width(str(self.pText))
 
     def textHeight(self):
         fm = QFontMetrics(self.currentFont)

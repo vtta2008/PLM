@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # PLM
-from PLM.cores.base.BaseSignal import BaseSignal
+from PLM.plugins.BaseSignal import BaseSignal
 
 # -------------------------------------------------------------------------------------------------------------
 """ Signal class: setup all the signal which will be using. """

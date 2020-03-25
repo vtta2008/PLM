@@ -15,7 +15,8 @@ from PLM import __copyright__
 from PyQt5.QtGui                       import QPen
 
 # PLM
-from PLM.commons                        import SignalManager, SettingManager
+from PLM.plugins.SignalManager              import SignalManager
+from PLM.commons.SettingManager             import SettingManager
 
 class Pen(QPen):
 
