@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: PresetDB.py
+Script Name: sqlPreset.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:

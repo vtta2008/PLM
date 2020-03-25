@@ -213,9 +213,7 @@ class RealtimeLoading(Widget):
 
     key                                 = 'RealtimeLoading'
 
-    _percentCount                       = 0
-
-    _configs                            = 15
+    _configs                            = 16
 
     _fontFamily                         = 'UTM Avo'
     _fontSize                           = 12.0
@@ -292,20 +290,9 @@ class RealtimeLoading(Widget):
 
     def setText(self, text):
         self._text                      = text
-        self.update()
 
-    def setProgress(self, value):
-        result                          = int((100/self.configs)*value)
-        for i in range(result):
-            self._pText                 = '{0}%'.format(self._percentCount)
-            self._percentCount += 1
-            if self._percentCount == 96:
-                for i in range(4):
-                    self._percentCount += 1
-                    self.update()
-            else:
-                self.update()
-        return self.update()
+    def setProgress(self, val):
+        self._pText                     = val
 
     def textWidth(self):
         fm = QFontMetrics(self.currentFont)
@@ -379,14 +366,6 @@ class RealtimeLoading(Widget):
     def pText(self):
         return self._pText
 
-    @property
-    def percentCount(self):
-        return self._percentCount
-
-    @percentCount.setter
-    def percentCount(self, val):
-        self._percentCount              = val
-
     @pText.setter
     def pText(self, val):
         self._pText                     = val
@@ -416,7 +395,7 @@ class RealtimeLoading(Widget):
         self._text                      = val
 
     @currentFont.setter
-    def currentFont(self):
+    def currentFont(self, val):
         self._currentFont               = QFont(self.fontFamily, self.fontSize, self.fontAttr)
 
     @fontAttr.setter
