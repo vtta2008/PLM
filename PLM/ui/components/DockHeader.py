@@ -13,7 +13,7 @@ Description:
 
 
 from PLM.ui.base                        import BaseDock
-from PLM.cores.ThreadManager import ThreadManager
+from PLM.cores.MultiThreadManager import MultiThreadManager
 from .MainMenuBar                       import MainMenuBar
 from .MainToolBar                       import MainToolBar
 from .ConnectStatus                     import ConnectStatus
@@ -95,7 +95,7 @@ class NotificationDock(BaseDock):
     def __init__(self, parent=None):
         super(NotificationDock, self).__init__(parent)
 
-        self.threadManager              = ThreadManager()
+        self.threadManager              = MultiThreadManager()
         self.notify                     = Notification(self.threadManager, self.parent)
         self.setWidget(self.notify)
 

@@ -18,11 +18,11 @@ from .models.Task               import Task
 from .models.Team               import Team
 from .models.Temporary          import Temporary
 from .EnvironmentVariable       import EnvironmentVariable
-from .localSQL                  import LocalDatabase
+from PLM.cores.sqls.sqlUtils import sqlUtils
 from .SettingManager            import SettingManager
 from .SignalManager             import SignalManager
 from .StyleSheet                import StyleSheet
-from .ThreadManager             import ThreadManager
+from .MultiThreadManager             import MultiThreadManager
 
 
 # -------------------------------------------------------------------------------------------------------------

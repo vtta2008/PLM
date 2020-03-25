@@ -19,11 +19,11 @@ from PLM.commons.Core           import Size
 from PLM.commons.Gui            import Image, Pixmap
 from PLM.commons.Widgets.BoxLayout      import VBoxLayout
 from PLM.commons.Widgets        import Label, GroupBox, Button
-from PLM.cores                  import LocalDatabase
+from PLM.cores                  import sqlUtils
 from PLM.utils                  import get_avatar_image
 from PLM.configs                import AUTO_COLOR, USER_LOCAL_DATA, center, ASPEC_RATIO
 
-db                              = LocalDatabase()
+db                              = sqlUtils()
 
 try:
     username = db.query_table('curUser')[0]

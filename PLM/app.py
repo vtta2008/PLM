@@ -74,8 +74,6 @@ class PLM(AppModel):
                 self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
                 self.splash.finish(self.mainUI)
 
-        self.processEvents()
-
     def notify(self, receiver, event):
 
         if event.type() == KEY_RELEASE:

@@ -226,6 +226,7 @@ CORES_DIR           = os.path.join(ROOT, 'cores').replace('\\', '/')
 BASE_DIR            = os.path.join(CORES_DIR, 'base').replace('\\', '/')
 LOGGER_DIR          = os.path.join(CORES_DIR, 'Loggers').replace('\\', '/')
 MODELS_DIR          = os.path.join(CORES_DIR, 'models').replace('\\', '/')
+SQL_DIR             = os.path.join(CORES_DIR, 'sqls').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' resources '''
@@ -314,7 +315,7 @@ avatarCfg                           = os.path.join(CFG_DIR, 'avatars.cfg')
 logoCfg                             = os.path.join(CFG_DIR, 'logo.cfg')
 webIconCfg                          = os.path.join(CFG_DIR, 'webIcon.cfg')
 nodeIconCfg                         = os.path.join(CFG_DIR, 'nodeIcons.cfg')
-imageCfg                         = os.path.join(CFG_DIR, 'images.cfg')
+imageCfg                            = os.path.join(CFG_DIR, 'images.cfg')
 tagCfg                              = os.path.join(CFG_DIR, 'tags.cfg')
 pythonCfg                           = os.path.join(CFG_DIR, 'python.cfg')
 plmCfg                              = os.path.join(CFG_DIR, 'pipeline.cfg')
@@ -1600,6 +1601,7 @@ class ConfigDirectory(Cfg):
         self.add('BASE_DIR', BASE_DIR)
         self.add('LOGGER_DIR', LOGGER_DIR)
         self.add('MODELS_DIR', MODELS_DIR)
+        self.add('SQL_DIR', SQL_DIR)
 
         self.add('RESOURCES_DIR', RESOURCES_DIR)
         self.add('AVATAR_DIR', AVATAR_DIR)

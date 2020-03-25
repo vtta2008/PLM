@@ -5,17 +5,15 @@ Script Name: __init__.py.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
+    
 
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from .BaseKeys          import BaseKeys
-from .BaseType          import BaseType
-from .BaseThreading     import TaskThread, TaskWorker, WidgetThread, WidgetWorker
-from .BaseStorage       import BaseStorage
-from .BaseSignal        import BaseSignal
 
+if __name__ == '__main__':
+    pass
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 2/12/2019 - 10:17 AM
-# © 2017 - 2018 DAMGteam. All rights reserved
+# Created by panda on 3/25/2020 - 11:55 PM
+# © 2017 - 2019 DAMGteam. All rights reserved

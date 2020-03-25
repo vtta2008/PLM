@@ -18,7 +18,7 @@ from PLM.commons                        import DAMG, DAMGLIST
 from PLM.ui.models.ActionManager        import ActionManager
 from PLM.ui.models.ButtonManager        import ButtonManager
 from PLM.ui.models.RegistryLayout       import RegistryLayout
-from PLM.ui.models.EventManager         import EventManager
+from PLM.cores.EventManager import EventManager
 
 from PLM.ui.base                        import BaseManager, ImageAvatar, PixAvatar
 from PLM.ui.tools                       import CommandUI

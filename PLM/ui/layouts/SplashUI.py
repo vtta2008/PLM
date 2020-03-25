@@ -20,7 +20,7 @@ from PyQt5.QtWidgets                    import QApplication
 # PLM
 from PLM                                import globalSetting
 from PLM.ui.components.Loading          import StaticLoading, RealtimeLoading
-from PLM.cores.Storages                 import AutoLoadingThread, RealtimeUpdatingThread, ConfigTaskWorker
+from PLM.cores.models                   import AutoLoadingThread, RealtimeUpdatingThread, ConfigTaskWorker
 from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, SPLASHSCREEN, splashImagePth,
                                                 ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
                                                 ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
@@ -28,7 +28,7 @@ from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, SP
 from PLM.commons.Widgets                import SplashScreen, MessageBox
 from PLM.commons.Gui                    import LogoIcon, Pixmap
 from PLM.commons.Core                   import Timer
-from PLM.cores                          import ThreadManager
+from PLM.cores                          import MultiThreadManager
 
 
 class SplashUI(SplashScreen):
@@ -72,7 +72,7 @@ class SplashUI(SplashScreen):
         self.setWindowFlags(SPLASHSCREEN | FRAMELESS)
 
         self.timer                      = Timer(self)
-        self.threadManager              = ThreadManager(self)
+        self.threadManager              = MultiThreadManager(self)
         self.screen                     = self.app.desktop().availableGeometry()
 
         self.realtimeLoading            = RealtimeLoading(self)
@@ -84,6 +84,7 @@ class SplashUI(SplashScreen):
 
         self.start()
 
+        self.app.processEvent
 
     def autoConfig(self):
 

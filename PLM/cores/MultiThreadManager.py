@@ -16,11 +16,11 @@ Description:
 from PLM.commons                            import DAMGLIST
 from PLM.commons.Core                       import ThreadPool
 from PLM.cores                              import SignalManager, SettingManager
-from PLM.cores.Counting                     import Counting
-from PLM.cores.Storages import ThreadStorage, WorkerStorage
+from PLM.cores.models.Counter              import Counter
+from PLM.cores.Storages                     import ThreadStorage, WorkerStorage
 
 
-class ThreadManager(ThreadPool):
+class MultiThreadManager(ThreadPool):
 
     key                                     = 'ThreadManager'
     tasks                                   = DAMGLIST()
@@ -28,10 +28,10 @@ class ThreadManager(ThreadPool):
     workers                                 = WorkerStorage()
 
     def __init__(self, parent=None):
-        super(ThreadManager, self).__init__(parent)
+        super(MultiThreadManager, self).__init__(parent)
 
         self.parent                         = parent
-        self.counter                        = Counting()
+        self.counter                        = Counter()
         self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
@@ -71,7 +71,6 @@ class ThreadManager(ThreadPool):
 
     def error_output(self, errorTuple):
         return print(errorTuple)
-
 
     def execute_multi_tasks(self, tasks):
         for task in tasks:

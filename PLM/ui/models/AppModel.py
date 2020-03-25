@@ -19,9 +19,9 @@ import requests
 
 from PLM.configs                        import (__localServer__, __google__, STAY_ON_TOP, SERVER_CONNECT_FAIL,
                                                 cfgData)
-from PLM.cores                          import LocalDatabase
+from PLM.cores                          import sqlUtils
 from PLM.ui.layouts.SplashUI            import SplashUI
-from PLM.cores.ThreadManager            import ThreadManager
+from PLM.cores.MultiThreadManager            import MultiThreadManager
 from PLM.commons.Widgets                import Application
 from PLM.utils                          import clean_file_ext
 
@@ -65,8 +65,8 @@ class AppModel(Application):
         self.formatInfo                 = self.loadConfigInfo('fmt')
         self.fontInfo                   = self.loadConfigInfo('font')
 
-        self.threadManager              = ThreadManager(self)
-        self.database                   = LocalDatabase()
+        self.threadManager              = MultiThreadManager(self)
+        self.database                   = sqlUtils()
 
     def wait(self):
         pass
