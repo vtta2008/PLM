@@ -20,10 +20,11 @@ import winshell
 import socket
 import uuid
 import pprint
+import psutil
 from collections                    import OrderedDict
 
 # PLM
-from PLM                            import globalSetting, ROOT, ROOT_APP, save_data
+from PLM                            import globalSetting, ROOT, ROOT_APP, Cfg
 
 from .metadatas                     import (__appname__, __organizationName__, __localServer__, __globalServer__,
                                             __homepage__, __plmWiki__, __google__, __googleNZ__, __googleVN__,
@@ -314,7 +315,7 @@ avatarCfg                           = os.path.join(CFG_DIR, 'avatars.cfg')
 logoCfg                             = os.path.join(CFG_DIR, 'logo.cfg')
 webIconCfg                          = os.path.join(CFG_DIR, 'webIcon.cfg')
 nodeIconCfg                         = os.path.join(CFG_DIR, 'nodeIcons.cfg')
-imageConfig                         = os.path.join(CFG_DIR, 'images.cfg')
+imageCfg                         = os.path.join(CFG_DIR, 'images.cfg')
 tagCfg                              = os.path.join(CFG_DIR, 'tags.cfg')
 pythonCfg                           = os.path.join(CFG_DIR, 'python.cfg')
 plmCfg                              = os.path.join(CFG_DIR, 'pipeline.cfg')
@@ -1313,9 +1314,10 @@ QUESTIONS           = read_file('QUESTION')
 VERSION             = read_file('VERSION')
 
 
-class ConfigPython(dict):
+class ConfigPython(Cfg):
 
-    key                             = 'ConfigPython'
+    key                         = 'ConfigPython'
+    _filePath                   = pythonCfg
 
     pkgsRequires = {
 
@@ -1356,7 +1358,6 @@ class ConfigPython(dict):
 
     }
 
-
     pyside2Required = {
 
         'Pyside2'               : ['>=', '5.14.1'],
@@ -1366,7 +1367,7 @@ class ConfigPython(dict):
 
 
     def __init__(self):
-        super(ConfigPython, self).__init__()
+        Cfg.__init__(self)
 
         self['python']              = platform.python_build()
         self['python version']      = platform.python_version()
@@ -1396,11 +1397,11 @@ class ConfigPython(dict):
 
         if globalSetting.printCfgInfo:
             if globalSetting.printPythonInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.savePythonInfo:
-                save_data(pythonCfg, self)
+                self.save_data()
 
     def check_package_required(self, pkgs):
 
@@ -1461,12 +1462,13 @@ class ConfigPython(dict):
         return major, minor, micro
 
 
-class ConfigApps(dict):
+class ConfigApps(Cfg):
 
     key                         = 'ConfigApps'
+    _filePath                   = appsCfg
 
     def __init__(self):
-        super(ConfigApps, self).__init__()
+        Cfg.__init__(self)
 
         shortcuts               = {}
         programs                = winshell.programs(common=1)
@@ -1486,15 +1488,16 @@ class ConfigApps(dict):
 
         if globalSetting.saveCfgInfo:
             if globalSetting.saveAppInfo:
-                save_data(appsCfg, self)
+                self.save_data()
 
 
-class ConfigPath(dict):
+class ConfigPath(Cfg):
 
     key                             = 'ConfigPath'
+    _filePath                       = pthCfg
 
     def __init__(self):
-        super(ConfigPath, self).__init__()
+        Cfg.__init__(self)
 
         self.add('evnInfoCfg'       , evnInfoCfg)
         self.add('iconCfg'          , iconCfg)
@@ -1502,7 +1505,7 @@ class ConfigPath(dict):
         self.add('logoCfg'          , logoCfg)
         self.add('webIconCfg'       , webIconCfg)
         self.add('nodeIconCfg'      , nodeIconCfg)
-        self.add('imageCfg'         , imageConfig)
+        self.add('imageCfg', imageCfg)
         self.add('tagCfg'           , tagCfg)
         self.add('pythonCfg'        , pythonCfg)
         self.add('plmCfg'           , plmCfg)
@@ -1532,22 +1535,20 @@ class ConfigPath(dict):
 
         if globalSetting.printCfgInfo:
             if globalSetting.printPthInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.savePthInfo:
-                save_data(pthCfg, self)
-
-    def add(self, key, value):
-        self[key]                   = value
+                self.save_data()
 
 
-class ConfigDirectory(dict):
+class ConfigDirectory(Cfg):
 
-    key                                 = 'ConfigDirectory'
+    key                             = 'ConfigDirectory'
+    _filePath                       = dirCfg
 
     def __init__(self):
-        super(ConfigDirectory, self).__init__()
+        Cfg.__init__(self)
 
         self.add('ROOT', ROOT)
         self.add('ROOT_APP', ROOT_APP)
@@ -1651,22 +1652,20 @@ class ConfigDirectory(dict):
 
         if globalSetting.printCfgInfo:
             if globalSetting.printDirInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.saveDirInfo:
-                save_data(dirCfg, self)
-
-    def add(self, key, value):
-        self[key]                       = value
+                self.save_data()
 
 
-class ConfigAvatar(dict):
+class ConfigAvatar(Cfg):
 
-    key                                 = 'ConfigAvatar'
+    key                         = 'ConfigAvatar'
+    _filePath                   = avatarCfg
 
     def __init__(self):
-        super(ConfigAvatar, self).__init__()
+        Cfg.__init__(self)
 
         for root, dirs, names in os.walk(AVATAR_DIR, topdown=False):
             for name in names:
@@ -1674,19 +1673,20 @@ class ConfigAvatar(dict):
 
         if globalSetting.printCfgInfo:
             if globalSetting.printAvatarInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.saveAvatarInfo:
-                save_data(avatarCfg, self)
+                self.save_data()
 
 
-class ConfigLogo(dict):
+class ConfigLogo(Cfg):
 
     key                                 = 'ConfigLogo'
+    _filePath                           = logoCfg
 
     def __init__(self):
-        super(ConfigLogo, self).__init__()
+        Cfg.__init__(self)
 
         damgLogos                       = dict()
         plmLogos                        = dict()
@@ -1699,69 +1699,63 @@ class ConfigLogo(dict):
             for name in names:
                 plmLogos[name.split('.png')[0]] = os.path.join(root, name).replace('\\', '/')
 
-        self['DAMGTEAM']                = damgLogos
-        self['PLM']                     = plmLogos
+        self.add('DAMGTEAM', damgLogos)
+        self.add('PLM', plmLogos)
 
         if globalSetting.printCfgInfo:
             if globalSetting.printAvatarInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.saveAvatarInfo:
-                save_data(logoCfg, self)
+                self.save_data()
 
 
-class ConfigImage(dict):
+class ConfigImage(Cfg):
 
     key                                 = 'ConfigImage'
+    _filePath                           = imageCfg
 
     def __init__(self):
-        super(ConfigImage, self).__init__()
+        Cfg.__init__(self)
 
         for root, dirs, names, in os.walk(IMAGE_DIR, topdown=False):
             for name in names:
-                self[name.split('.node')[0]] = os.path.join(root, name).replace('\\', '/')
+                self.add(name.split('.node')[0], os.path.join(root, name).replace('\\', '/'))
 
         if globalSetting.printCfgInfo:
             if globalSetting.printImgInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.saveImgInfo:
-                save_data(imageConfig, self)
+                self.save_data()
 
 
-class ConfigIcon(dict):
+class ConfigIcon(Cfg):
 
     key                                 = 'ConfigIcon'
 
     def __init__(self):
-        super(ConfigIcon, self).__init__()
+        Cfg.__init__(self)
 
-        self['icon12']                  = self.get_icons(ICON_DIR_12)
-        self['icon16']                  = self.get_icons(ICON_DIR_16)
-        self['icon24']                  = self.get_icons(ICON_DIR_24)
-        self['icon32']                  = self.get_icons(ICON_DIR_32)
-        self['icon48']                  = self.get_icons(ICON_DIR_48)
-        self['icon64']                  = self.get_icons(ICON_DIR_64)
+        ks = ['icon12', 'icon16', 'icon24', 'icon32', 'icon48', 'icon64', 'node', 'tag', 'web16', 'web24', 'web32',
+              'web48', 'web64', 'web128']
+        ds = [ICON_DIR_12, ICON_DIR_16, ICON_DIR_24, ICON_DIR_32, ICON_DIR_48, ICON_DIR_64, NODE_ICON_DIR, TAG_ICON_DIR,
+              WEB_ICON_16, WEB_ICON_24, WEB_ICON_32, WEB_ICON_48, WEB_ICON_64, WEB_ICON_128]
 
-        self['node']                    = self.get_icons(NODE_ICON_DIR)
-        self['tag']                     = self.get_icons(TAG_ICON_DIR)
-        self['web16']                   = self.get_icons(WEB_ICON_16)
-        self['web24']                   = self.get_icons(WEB_ICON_24)
-        self['web32']                   = self.get_icons(WEB_ICON_32)
-        self['web48']                   = self.get_icons(WEB_ICON_48)
-        self['web64']                   = self.get_icons(WEB_ICON_64)
-        self['web128']                  = self.get_icons(WEB_ICON_128)
-
+        for i in range(len(ks)):
+            k = ks[i]
+            d = ds[i]
+            self.add(k, self.get_icons(d))
 
         if globalSetting.printCfgInfo:
             if globalSetting.printIconInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.saveIconInfo:
-                save_data(iconCfg, self)
+                self.save_data()
 
     def get_icons(self, dir):
         icons = dict()
@@ -1771,60 +1765,59 @@ class ConfigIcon(dict):
         return icons
 
 
-class ConfigServer(dict):
+class ConfigServer(Cfg):
 
     key                             = 'ConfigServer'
+    _filePath                       = serverCfg
 
     def __init__(self):
-        super(ConfigServer, self).__init__()
+        Cfg.__init__(self)
 
         self.add('vanila'           , VANILA_LOCAL)
         self.add('AWS'              , AWS_GLOBAL)
 
         if globalSetting.printCfgInfo:
             if globalSetting.printServerInfo:
-                pprint.pprint(self)
+                self.pprint(self)
 
         if globalSetting.saveCfgInfo:
             if globalSetting.saveServerInfo:
-                save_data(serverCfg, self)
-
-    def add(self, key, value):
-        self[key]                   = value
+                self.save_data()
 
 
-class ConfigEnvVar(dict):
+class ConfigEnvVar(Cfg):
 
     key                                 = 'ConfigEnvVar'
+    _filePath                           = envVarCfg
 
     def __init__(self):
-        super(ConfigEnvVar, self).__init__()
+        Cfg.__init__(self)
         for k, v in os.environ.items():
             self[k]                     = v.replace('\\', '/')
 
         if globalSetting.printCfgInfo:
             if globalSetting.printEnvInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.saveEnvInfo:
-                save_data(envVarCfg, self)
+                self.save_data()
 
     def update(self):
         for k, v in os.environ.items():
             self[k]                     = v.replace('\\', '/')
 
-        if globalSetting.defaults.save_configInfo:
-            if globalSetting.defaults.save_envInfo:
-                save_data(envVarCfg, self)
+        if globalSetting.saveCfgInfo:
+            if globalSetting.saveEnvInfo:
+                self.save_data()
 
 
-class ConfigUrl(dict):
+class ConfigUrl(Cfg):
 
     key                             = 'ConfigUrl'
 
     def __init__(self):
-        super(ConfigUrl, self).__init__()
+        Cfg.__init__(self)
 
         self.add('homepage'         , __homepage__)
         self.add('pythonTag'        , PYTHON_TAG)
@@ -1837,22 +1830,20 @@ class ConfigUrl(dict):
 
         if globalSetting.printCfgInfo:
             if globalSetting.printUrlInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.saveUrlInfo:
-                save_data(urlCfg, self)
-
-    def add(self, key, value):
-        self[key]                   = value
+                self.save_data()
 
 
-class ConfigTypes(dict):
+class ConfigTypes(Cfg):
 
     key                     = 'ConfigTypes'
+    _filePath               = typeCfg
 
     def __init__(self):
-        super(ConfigTypes, self).__init__()
+        Cfg.__init__(self)
 
         self['actionTypes'] = actionTypes
         self['layoutTypes'] = layoutTypes
@@ -1865,19 +1856,20 @@ class ConfigTypes(dict):
 
         if globalSetting.printCfgInfo:
             if globalSetting.printTypeInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.saveTypeInfo:
-                save_data(typeCfg, self)
+                self.save_data()
 
 
-class ConfigFormats(dict):
+class ConfigFormats(Cfg):
 
     key                     = 'ConfigFormats'
+    _filePath               = fmtCfg
 
     def __init__(self):
-        super(ConfigFormats, self).__init__()
+        Cfg.__init__(self)
 
         self.add('INI'      , INI)
         self.add('NATIVE', NATIVE)
@@ -1890,25 +1882,21 @@ class ConfigFormats(dict):
 
         if globalSetting.printCfgInfo:
             if globalSetting.printFmtInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.saveFmtInfo:
-                save_data(fmtCfg, self)
-
-    def add(self, key, value):
-        self[key]           = value
+                self.save_data()
 
 
-# app                         = QApplication(sys.argv)
-
-
-class ConfigFonts(dict):
+class ConfigFonts(Cfg):
 
     key                     = 'ConfigFonts'
+    _filePath               = fontCfg
 
     def __init__(self):
-        super(ConfigFonts, self).__init__()
+        Cfg.__init__(self)
+
         from PyQt5.QtGui    import QFontDatabase
         self.fontData       = QFontDatabase()
 
@@ -1934,11 +1922,11 @@ class ConfigFonts(dict):
 
         if globalSetting.printCfgInfo:
             if globalSetting.printFontInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.saveFontInfo:
-                save_data(fontCfg, self)
+                self.save_data()
 
 
     def update_installed_fonts(self):
@@ -1949,13 +1937,14 @@ class ConfigFonts(dict):
         return fonts
 
 
-class CommandData(dict):
+class CommandData(Cfg):
 
     key                             = 'CommandData'
+    _filePath                       = None
 
     def __init__(self, key=None, icon=None, tooltip=None, statustip=None,
                        value=None, valueType=None, arg=None, code=None):
-        super(CommandData, self).__init__()
+        Cfg.__init__(self)
 
         self.key                    = key
         self.icon                   = icon
@@ -1970,15 +1959,16 @@ class CommandData(dict):
         vs = [key, icon, tooltip, statustip, value, valueType, arg, code]
 
         for i in range(len(ks)):
-            self[ks[i]]             = vs[i]
+            self.add(ks[i]          , vs[i])
 
 
-class ConfigPipeline(dict):
+class ConfigPipeline(Cfg):
 
     key                         = 'ConfigPipeline'
+    _filePath                   = plmCfg
 
     def __init__(self, iconInfo, appInfo, urlInfo, dirInfo, pthInfo):
-        super(ConfigPipeline, self).__init__()
+        Cfg.__init__(self)
 
         self.iconInfo           = iconInfo
         self.appInfo            = appInfo
@@ -2138,20 +2128,17 @@ class ConfigPipeline(dict):
 
         if globalSetting.printCfgInfo:
             if globalSetting.printPlmInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.savePlmInfo:
-                save_data(plmCfg, self)
+                self.save_data()
 
     def del_key(self, key):
         try:
             del self.appInfo[key]
         except KeyError:
             self.appInfo.pop(key, None)
-
-    def add(self, key, value):
-        self[key]                           = value
 
 
 if platform.system() == 'Darwin':
@@ -2499,9 +2486,10 @@ else:
     miceSys                     = com.Win32_PointingDevice()
     totalRam                    = computerSys[0].TotalPhysicalMemory
 
-    class ConfigMachine(dict):
+    class ConfigMachine(Cfg):
 
         key                     = 'ConfigMachine'
+        _filePath               = pcCfg
 
         usbCount = dvdCount = hddCount = pttCount = gpuCount = pciCount = keyboardCount = netCount = ramCount = 1
         miceCount = cpuCount = biosCount = osCount = screenCount = 1
@@ -2523,14 +2511,13 @@ else:
 
             if globalSetting.printCfgInfo:
                 if globalSetting.printPcInfo:
-                    pprint.pprint(self)
+                    self.pprint()
 
             if globalSetting.saveCfgInfo:
                 if globalSetting.savePcInfo:
-                    save_data(pcCfg, self)
+                    self.save_data()
 
         def osInfo(self, **info):
-
             for o in operatingSys:
                 ops = {}
                 key = 'os {0}'.format(self.osCount)
@@ -2630,58 +2617,68 @@ else:
 
         def driverInfo(self, **info):
             for physical_disk in diskDriveSys:
-                if physical_disk.associators("Win32_DiskDriveToDiskPartition") == []:
-                    disk = {}
-                    key = 'USB drive {0}'.format(self.usbCount)
-                    disk['brand'] = (physical_disk.PNPDeviceID).replace('SCSI\\DISK&VEN_', '').split('&PROD')[0]
-                    disk['index'] = physical_disk.Index
-                    disk['name'] = physical_disk.Name.replace('\\\\.\\', '')
-                    disk['model'] = physical_disk.Model
-                    disk['partition'] = physical_disk.Partitions
-                    disk['size'] = '0 GB'
-                    disk['type'] = DRIVETYPE[2]
-                    for d in logicalDiskSys:
-                        if d.DriveType == 2:
-                            disk['path'] = '{0}/'.format(d.Caption)
 
-                    disk['firmware'] = physical_disk.FirmwareRevision
+                try:
+                    physical_disk.associators("Win32_DiskDriveToDiskPartition")
+                except Exception:
+                    disk = {}
+                    key = 'Hard Drive'
+                    for partition in psutil.disk_partitions():
+                        disk[partition.mountpoint] = (partition.fstype, partition.device)
                     info[key] = disk
-                    self.usbCount += 1
                 else:
-                    for partition in physical_disk.associators("Win32_DiskDriveToDiskPartition"):
-                        if partition.associators("Win32_LogicalDiskToPartition") == []:
-                            disk = {}
-                            key = 'partition {0}'.format(self.pttCount)
-                            disk['brand'] = (physical_disk.PNPDeviceID).replace('SCSI\\DISK&VEN_', '').split('&PROD')[0]
-                            disk['firmware'] = physical_disk.FirmwareRevision
-                            disk['index'] = '{0} - {1}'.format(partition.DiskIndex, partition.Index)
-                            disk['name'] = partition.Name
-                            disk['model'] = physical_disk.Model
-                            disk['partition'] = partition.Caption
-                            disk['size'] = '{0} GB'.format(round(int(partition.size) / (1024.0 ** 3)))
-                            disk['block'] = '{0} MB'.format(round(int(partition.NumberOfBlocks) / (1024.0 ** 2)))
-                            disk['offset'] = '{0} GB'.format(round(int(partition.StartingOffset) / (1024.0 ** 3)))
-                            disk['type'] = partition.Type
-                            info[key] = disk
-                            self.pttCount += 1
-                        else:
-                            for logical_disk in partition.associators("Win32_LogicalDiskToPartition"):
+                    if physical_disk.associators("Win32_DiskDriveToDiskPartition") == []:
+                        disk = {}
+                        key = 'USB drive {0}'.format(self.usbCount)
+                        disk['brand'] = (physical_disk.PNPDeviceID).replace('SCSI\\DISK&VEN_', '').split('&PROD')[0]
+                        disk['index'] = physical_disk.Index
+                        disk['name'] = physical_disk.Name.replace('\\\\.\\', '')
+                        disk['model'] = physical_disk.Model
+                        disk['partition'] = physical_disk.Partitions
+                        disk['size'] = '0 GB'
+                        disk['type'] = DRIVETYPE[2]
+                        for d in logicalDiskSys:
+                            if d.DriveType == 2:
+                                disk['path'] = '{0}/'.format(d.Caption)
+
+                        disk['firmware'] = physical_disk.FirmwareRevision
+                        info[key] = disk
+                        self.usbCount += 1
+                    else:
+                        for partition in physical_disk.associators("Win32_DiskDriveToDiskPartition"):
+                            if partition.associators("Win32_LogicalDiskToPartition") == []:
                                 disk = {}
-                                key = 'harddrive {0}'.format(self.hddCount)
-                                disk['brand'] = \
-                                (physical_disk.PNPDeviceID).replace('SCSI\\DISK&VEN_', '').split('&PROD')[0]
-                                disk['path'] = '{0}/'.format(logical_disk.Caption)
-                                disk['index'] = physical_disk.Index
-                                disk['name'] = '{0} ({1})'.format(logical_disk.VolumeName, logical_disk.Caption)
+                                key = 'partition {0}'.format(self.pttCount)
+                                disk['brand'] = (physical_disk.PNPDeviceID).replace('SCSI\\DISK&VEN_', '').split('&PROD')[0]
+                                disk['firmware'] = physical_disk.FirmwareRevision
+                                disk['index'] = '{0} - {1}'.format(partition.DiskIndex, partition.Index)
+                                disk['name'] = partition.Name
                                 disk['model'] = physical_disk.Model
                                 disk['partition'] = partition.Caption
-                                disk['size'] = '{0} GB'.format(round(int(logical_disk.size) / (1024.0 ** 3)))
-                                disk['free size'] = '{0} GB'.format(round(int(logical_disk.FreeSpace) / (1024.0 ** 3)))
-                                disk['type'] = DRIVETYPE[logical_disk.DriveType]
-                                disk['firmware'] = physical_disk.FirmwareRevision
-                                disk['setup type'] = logical_disk.FileSystem
+                                disk['size'] = '{0} GB'.format(round(int(partition.size) / (1024.0 ** 3)))
+                                disk['block'] = '{0} MB'.format(round(int(partition.NumberOfBlocks) / (1024.0 ** 2)))
+                                disk['offset'] = '{0} GB'.format(round(int(partition.StartingOffset) / (1024.0 ** 3)))
+                                disk['type'] = partition.Type
                                 info[key] = disk
-                                self.hddCount += 1
+                                self.pttCount += 1
+                            else:
+                                for logical_disk in partition.associators("Win32_LogicalDiskToPartition"):
+                                    disk = {}
+                                    key = 'harddrive {0}'.format(self.hddCount)
+                                    disk['brand'] = \
+                                    (physical_disk.PNPDeviceID).replace('SCSI\\DISK&VEN_', '').split('&PROD')[0]
+                                    disk['path'] = '{0}/'.format(logical_disk.Caption)
+                                    disk['index'] = physical_disk.Index
+                                    disk['name'] = '{0} ({1})'.format(logical_disk.VolumeName, logical_disk.Caption)
+                                    disk['model'] = physical_disk.Model
+                                    disk['partition'] = partition.Caption
+                                    disk['size'] = '{0} GB'.format(round(int(logical_disk.size) / (1024.0 ** 3)))
+                                    disk['free size'] = '{0} GB'.format(round(int(logical_disk.FreeSpace) / (1024.0 ** 3)))
+                                    disk['type'] = DRIVETYPE[logical_disk.DriveType]
+                                    disk['firmware'] = physical_disk.FirmwareRevision
+                                    disk['setup type'] = logical_disk.FileSystem
+                                    info[key] = disk
+                                    self.hddCount += 1
 
             if not cdromSys is []:
                 disk = {}

@@ -23,7 +23,7 @@ import os
 import subprocess
 import json
 import yaml
-
+import pprint
 
 # -------------------------------------------------------------------------------------------------------------
 """ Metadatas """
@@ -340,6 +340,7 @@ class ObjectGlb(object):
 class ConfigGlb(ObjectGlb):
 
     _cfgable                        = False
+    _cfgAll                         = False
 
     _printCfgInfo                   = True
     _printPthInfo                   = False
@@ -531,6 +532,14 @@ class ConfigGlb(ObjectGlb):
     def saveFontInfo(self):
         return self._saveFontInfo
 
+    @property
+    def cfgAll(self):
+        return self._cfgAll
+
+    @cfgAll.setter
+    def cfgAll(self, val):
+        self._cfgAll                = val
+
     @saveFontInfo.setter
     def saveFontInfo(self, val):
         self._saveFontInfo          = val
@@ -695,7 +704,7 @@ class ModesGlb(ConfigGlb):
     _allowLocalMode                             = False
 
     _qtBindingMode                              = 'PyQt5'
-    _dataTypeSavingMode                         = 'json'
+    _dataTypeSaving                         = 'json'
     _splashLoadingMode                          = 'progress'
 
     loadingMode                                 = ['loading', 'progress']
@@ -726,8 +735,8 @@ class ModesGlb(ConfigGlb):
         return self._switchDataTypeSavingMode
 
     @property
-    def dataTypeSavingMode(self):
-        return self._dataTypeSavingMode
+    def dataTypeSaving(self):
+        return self._dataTypeSaving
 
     @property
     def splashLoadingMode(self):
@@ -755,11 +764,11 @@ class ModesGlb(ConfigGlb):
             if val in self.loadingMode:
                 self._splashLoadingMode         = val
 
-    @dataTypeSavingMode.setter
-    def dataTypeSavingMode(self, val):
+    @dataTypeSaving.setter
+    def dataTypeSaving(self, val):
         if self.allModeSwitchAble and self.switchDataTypeSavingMode:
             if val in self.savingMode:
-                self._dataTypeSavingMode        = val
+                self._dataTypeSaving        = val
 
     @switchDataTypeSavingMode.setter
     def switchDataTypeSavingMode(self, val):
@@ -886,8 +895,12 @@ class SignalGlb(ErrorsGlb):
 
 class GlobalBase(SignalGlb):
 
+
     def __init__(self):
         SignalGlb.__init__(self)
+
+    def setCfgAll(self, val):
+        self._cfgAll                = val
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -905,20 +918,45 @@ ROOT                                = os.path.join(ROOT_APP, __envKey__)
 cmd                                 = 'SetX {0} {1}'.format(__envKey__, ROOT)
 
 
-def save_data(filePth, data):
-    if os.path.exists(filePth):
-        os.remove(filePth)
-    with open(filePth, 'w+') as f:
-        if globalSetting.dataTypeSavingMode == 'json':
-            json.dump(data, f, indent=4)
-        elif globalSetting.dataTypeSavingMode == 'yaml':
-            yaml.dump(data, f, default_flow_style=False)
-        else:
-            # will update more data type library later if need
-            pass
+class Cfg(dict):
 
-    return True
+    key                             = 'ConfigBase'
+    _filePath                       = None
 
+    def __init__(self):
+        dict.__init__(self)
+
+        self.update()
+
+    def save_data(self):
+        if not self.filePath:
+            return
+
+        if os.path.exists(self.filePath):
+            os.remove(self.filePath)
+        with open(self.filePath, 'w+') as f:
+            if globalSetting.dataTypeSaving == 'json':
+                json.dump(self, f, indent=4)
+            elif globalSetting.dataTypeSaving == 'yaml':
+                yaml.dump(self, f, default_flow_style=False)
+            else:
+                # will update more data type library later if need
+                pass
+        return True
+
+    def pprint(self):
+        return pprint.pprint(self)
+
+    def add(self, key, value):
+        self[key]                   = value
+
+    @property
+    def filePath(self):
+        return self._filePath
+
+    @filePath.setter
+    def filePath(self, val):
+        self._filePath              = val
 
 try:
     os.getenv(__envKey__)

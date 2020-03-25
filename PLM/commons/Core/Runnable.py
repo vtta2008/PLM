@@ -76,8 +76,6 @@ class Worker(Runnable):
         self.kwargs                         = kwargs
 
 
-
-
 class RequestWorker(QRunnable):
 
     Type                                    = 'DAMGWORKER'

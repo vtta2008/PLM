@@ -24,6 +24,7 @@ from PyQt5.QtCore                       import QRect
 from PyQt5.QtWidgets                    import QApplication
 
 # PLM
+from PLM                                import globalSetting
 from PLM.configs                        import (TRANSPARENT, NO_PEN, TEXT_BOLD, TEXT_NORMAL, ERROR_APPLICATION, AUTO_COLOR,
                                                 FRAMELESS, ANTIALIAS, STAY_ON_TOP,
                                                 DAMG_LOGO_DIR, splashImagePth,
@@ -41,32 +42,95 @@ class AutoRunLoading(Thread):
 
     key                                             = 'AutoRunLoading'
 
-    _spinning                                       = True
-
-
-    def __init__(self, widget):
+    def __init__(self, widget, parent):
         super(AutoRunLoading, self).__init__(self)
 
         self.widget                                 = widget
+        self.parent                                 = parent
+        if self.parent:
+            self.setParent(self.parent)
+
         self.widget.show()
-        self.timer                                  = self.startTimer(50)
+        self.timer                                  = Timer(self)
 
     def run(self):
-        self.widget.rotate()
+        if self.running:
+            self.widget.rotate()
 
-    def start_loading(self):
-        self._spinning                              = True
+    def stop(self):
+        self.timer.stop()
+        self._running                               = False
 
-    def stop_loading(self):
-        self._spinning                              = False
+
+
+class RealtimeUpdating(Thread):
+
+    key                                             = 'RealtimeUpdating'
+
+    def __init__(self, widget, parent):
+        super(RealtimeUpdating, self).__init__(self)
+
+        self.widget                                 = widget
+        self.parent                                 = parent
+        if self.parent:
+            self.setParent(self.parent)
+
+        self.widget.show()
+        self.timer                                  = Timer(self)
+
+    def run(self):
+        if self.running:
+            self.widget.update()
+
+    def stop(self):
+        self.timer.stop()
+        self._running                               = False
+
+    def setText(self, v):
+        return self.widget.setText(v)
+
+    def setProgress(self, v):
+        return self.widget.setProgress(v)
+
+
+
+class ConfigTasking(Thread):
+
+    key                                             = 'ConfigTasking'
+    _output                                         = []
+
+    def __init__(self, task, parent):
+        super(ConfigTasking, self).__init__(self)
+
+        self.task                                   = task
+        self.parent                                 = parent
+        if self.parent:
+            self.setParent(self.parent)
+
+    def run(self):
+        if self.running:
+            self._output                            = self.task()
+
+        self.parent.iconInfo, self.parent.appInfo, self.parent.urlInfo, self.parent.dirInfo, self.parent.pthInfo, \
+        self.parent.deviceInfo, self.parent.pythonInfo, self.parent.avatarInfo, self.parent.logoInfo, \
+        self.parent.imageInfo, self.parent.envInfo, self.parent.serverInfo, self.parent.formatInfo, self.parent.fontInfo, \
+        self.parent.plmInfo = self.output
+
+        globalSetting.setCfgAll(True)
+
+        print(len(self.output))
+
+    def stop(self):
+        self._running                               = False
 
     @property
-    def spinning(self):
-        return self._spinning
+    def output(self):
+        return self._output
 
-    @spinning.setter
-    def spinning(self, val):
-        self._spinning                              = val
+    @output.setter
+    def output(self, val):
+        self._output                                = val
+
 
 
 class StaticLoading(Widget):
@@ -114,7 +178,6 @@ class StaticLoading(Widget):
         painter.drawImage(self.damgLogoImgTargetRect, self.damgLogoImg, self.damgLogoImg.rect(), AUTO_COLOR)
 
         painter.setPen(QPen(NO_PEN))
-        painter.save()
 
         if self.count > self.numOfitems:
             self._count                 = 0
@@ -128,7 +191,6 @@ class StaticLoading(Widget):
                                 self.height()/2 + self.innerRadius*math.sin(2*math.pi*i/self.num) - (self.itemRadius/2),
                                 self.itemRadius, self.itemRadius)
 
-            painter.restore()
         painter.end()
 
     def distance(self, current, primary):
@@ -249,15 +311,14 @@ class StaticLoading(Widget):
         self._numOfitems                = val
 
 
-class SplashUI(SplashScreen):
 
-    key                                 = 'SplashUI'
+class RealtimeLoading(Widget):
+
+    key                                 = 'RealtimeLoading'
 
     _percentCount                       = 0
 
-    _configs                            = 17
-    _bufferH                            = 100
-    _bufferW                            = 200
+    _configs                            = 15
 
     _fontFamily                         = 'UTM Avo'
     _fontSize                           = 12.0
@@ -277,115 +338,20 @@ class SplashUI(SplashScreen):
     _lMargin                            = 10
     _rMargin                            = 10
 
-    def __init__(self, app=None):
-        super(SplashUI, self).__init__(app)
+    def __init__(self, parent):
+        super(RealtimeLoading, self).__init__(parent)
 
-        self.app                        = app
-        if not self.app:
-            MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
-            sys.exit()
-
-        self.setWindowFlags(STAY_ON_TOP|FRAMELESS)
-
+        self.screen                     = self.parent.screen
         palette                         = QPalette(self.palette())
-        # palette.setColor(palette.Background, TRANSPARENT)
+        palette.setColor(palette.Background, TRANSPARENT)
         self.setPalette(palette)
-        self.screen                     = self.app.desktop().availableGeometry()
-
-        # self.splashPix                  = Pixmap(splashImagePth)
-        # self.setPixmap(self.splashPix)
-        # self.setMask(self.splashPix.mask())
-
-        self.iconInfo                        = None
-        self.appInfo                         = None
-        self.urlInfo                         = None
-        self.dirInfo                         = None
-        self.pthInfo                         = None
-        self.deviceInfo                      = None
-        self.pythonInfo                      = None
-        self.avatarInfo                      = None
-        self.logoInfo                        = None
-        self.imageInfo                       = None
-        self.envInfo                         = None
-        self.serverInfo                      = None
-        self.formatInfo                      = None
-        self.fontInfo                        = None
-
-        self.staticLoading                   = StaticLoading(self)
-        # self.staticLoading.show()
-        thread                               = AutoRunLoading(self.staticLoading)
-        thread.start()
-        self.show()
-        self.autoConfig()
-        self.app.processEvents()
-
-    def autoConfig(self):
-
-        ws = ['Icons', 'Installed apps', 'Urls', 'Directories', 'Paths', 'Local Device', 'Python', 'Avatars', 'Logo',
-              'Images', 'Evironment Variables', 'Server', 'Formats', 'Fonts', 'Pipeline', ]
-
-        fs = [ConfigIcon, ConfigApps, ConfigUrl, ConfigDirectory, ConfigPath, ConfigMachine, ConfigPython, ConfigAvatar,
-              ConfigLogo, ConfigImage, ConfigEnvVar, ConfigServer, ConfigFormats, ConfigFonts, ConfigPipeline]
-
-        vs = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,2]
-
-        for i in range(len(ws)):
-
-            w = ws[i]
-            f = fs[i]
-            v = vs[i]
-
-            self.setText('Config {0}'.format(w))
-
-            if w == 'Icons':
-                self.iconInfo = f()
-            elif w == 'Installed apps':
-                self.appInfo = f()
-            elif w == 'Urls':
-                self.urlInfo = f()
-            elif w == 'Directories':
-                self.dirInfo = f()
-            elif w == 'Paths':
-                self.pthInfo = f()
-            elif w == 'Local Device':
-                self.deviceInfo = f()
-            elif w == 'Python':
-                self.pythonInfo = f()
-            elif w == 'Avatars':
-                self.avatarInfo = f()
-            elif w == 'Logo':
-                self.logoInfo = f()
-            elif w == 'Images':
-                self.imageInfo = f()
-            elif w == 'Evironment Variables':
-                self.envInfo = f()
-            elif w == 'Server':
-                self.serverInfo = f()
-            elif w == 'Formats':
-                self.formatInfo = f()
-            elif w == 'Fonts':
-                self.fontInfo = f()
-            else:
-                self.plmInfo = f(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
-
-            self.setProgress(v)
-
-            i += 1
-
-    def updatePosition(self):
-        return self.move((self.screen.width() - self.width())/2, (self.screen.height() - self.height())/2)
-
-    def resizeEvent(self, event):
-        self.resize(event.size().width() + self.bufferW, event.size().height() + self.bufferH)
-        self.staticLoading.resize(self.size())
-        self.updatePosition()
-        event.accept()
 
     def paintEvent(self, event):
+
         painter                         = QPainter()
         painter.begin(self)
         painter.setRenderHint(ANTIALIAS)
-        # painter.fillRect(event.rect(), TRANSPARENT)
+        painter.fillRect(event.rect(), TRANSPARENT)
 
         painter.setPen(self.textColor)
         painter.setFont(self.currentFont)
@@ -412,7 +378,7 @@ class SplashUI(SplashScreen):
         else:
             x                           = (self.width() + self.rMargin + self.lMargin)
 
-        y                               = self.height() -self.bufferH + self.textHeight() + self.bMargin
+        y                               = self.height() - self.parent.bufferH + self.textHeight() + self.bMargin
 
         return x, y
 
@@ -423,19 +389,26 @@ class SplashUI(SplashScreen):
         else:
             x                           = (self.width() + self.rMargin + self.lMargin)
 
-        y                               = self.height() -self.bufferH + self.textHeight() + self.bMargin*4
+        y                               = self.height() - self.parent.bufferH + self.textHeight() + self.bMargin*4
 
         return x, y
 
     def setText(self, text):
         self._text                      = text
+        self.update()
 
     def setProgress(self, value):
         result                          = int((100/self.configs)*value)
         for i in range(result):
             self._pText                 = '{0}%'.format(self._percentCount)
             self._percentCount += 1
-            print(self._percentCount)
+            if self._percentCount == 96:
+                for i in range(4):
+                    self._percentCount += 1
+                    self.update()
+            else:
+                self.update()
+        return self.update()
 
     def textWidth(self):
         fm = QFontMetrics(self.currentFont)
@@ -448,14 +421,6 @@ class SplashUI(SplashScreen):
     def textHeight(self):
         fm = QFontMetrics(self.currentFont)
         return fm.height()
-
-    @property
-    def bufferH(self):
-        return self._bufferH
-
-    @property
-    def bufferW(self):
-        return self._bufferW
 
     @property
     def configs(self):
@@ -584,6 +549,103 @@ class SplashUI(SplashScreen):
     @configs.setter
     def configs(self, val):
         self._configs                   = val
+
+
+
+class SplashUI(SplashScreen):
+
+    key                                 = 'SplashUI'
+    _bufferH                            = 100
+    _bufferW                            = 200
+
+    def __init__(self, app=None):
+        super(SplashUI, self).__init__(app)
+
+        self.app                        = app
+        if not self.app:
+            MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
+            sys.exit()
+
+        self.setWindowFlags(STAY_ON_TOP|FRAMELESS)
+
+        self.screen                     = self.app.desktop().availableGeometry()
+
+        # self.splashPix                  = Pixmap(splashImagePth)
+        # self.setPixmap(self.splashPix)
+        # self.setMask(self.splashPix.mask())
+
+        self.realtimeLoading                 = RealtimeLoading(self)
+        self.staticLoading                   = StaticLoading(self)
+
+        self.autoThread                      = AutoRunLoading(self.staticLoading, self)
+        self.realtimeThread                  = RealtimeUpdating(self.realtimeLoading, self)
+        self.configTask                      = ConfigTasking(self.autoConfig, self)
+
+        self.start()
+
+    def autoConfig(self):
+
+        ws = ['Icons', 'Urls', 'Directories', 'Paths', 'Local Device', 'Python', 'Avatars', 'Logo',
+              'Images', 'Evironment Variables', 'Server', 'Formats', 'Fonts', 'Installed Apps']
+
+        fs = [ConfigIcon, ConfigUrl, ConfigDirectory, ConfigPath, ConfigMachine, ConfigPython, ConfigAvatar,
+              ConfigLogo, ConfigImage, ConfigEnvVar, ConfigServer, ConfigFormats, ConfigFonts, ConfigApps]
+
+        vs = [1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+
+        output = []
+
+        for i in range(len(ws)):
+            w = ws[i]
+            f = fs[i]
+            v = vs[i]
+
+            self.realtimeThread.setText('Config {0}'.format(w))
+            cfgInfo = f()
+            output.append(cfgInfo)
+            self.realtimeThread.setProgress(v)
+            i += 1
+
+        [iconInfo, urlInfo, dirInfo, pthInfo, deviceInfo, pythonInfo, avatarInfo, logoInfo, imageInfo,
+        envInfo, serverInfo, formatInfo, fontInfo, appInfo] = output
+
+        self.realtimeThread.setText('Config {0}'.format('Pipeline'))
+        plmInfo = ConfigPipeline(iconInfo, appInfo, urlInfo, dirInfo, pthInfo)
+        self.realtimeThread.setProgress(2)
+
+        output.append(plmInfo)
+
+        return output
+
+    def updatePosition(self):
+        return self.move((self.screen.width() - self.width())/2, (self.screen.height() - self.height())/2)
+
+    def start(self):
+        self.updatePosition()
+        self.autoThread.start()
+        self.realtimeThread.start()
+        self.configTask.start()
+
+    def finish(self, widget):
+        self.autoThread.stop()
+        self.realtimeThread.stop()
+        self.configTask.stop()
+        self.close()
+        return widget.show()
+
+    def resizeEvent(self, event):
+        self.resize(event.size().width() + self.bufferW, event.size().height() + self.bufferH)
+        self.staticLoading.resize(self.size())
+        self.realtimeLoading.resize(self.size())
+        event.accept()
+
+    @property
+    def bufferH(self):
+        return self._bufferH
+
+    @property
+    def bufferW(self):
+        return self._bufferW
 
     @bufferW.setter
     def bufferW(self, val):
