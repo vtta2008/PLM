@@ -110,3 +110,7 @@ config.env
 
 OpenMayaErrorLog.txt
 Viethoa
+
+bin/xml/ide.general.xml
+markdown.xml
+wsl.distributions.xml

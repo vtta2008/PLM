@@ -14,7 +14,9 @@ from PLM import __copyright__
 
 # PyQt5
 from PyQt5.QtWidgets                        import QGridLayout
-from PLM.commons                            import SignalManager, SettingManager
+from PLM.commons.SettingManager             import SettingManager
+from PLM.plugins.SignalManager              import SignalManager
+from PLM.commons.SettingManager             import SettingManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Gridlayout presets """

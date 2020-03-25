@@ -25,7 +25,7 @@ class Signals(DAMG):
 
     key                                             = 'Signals'
 
-    finished                                        = pyqtSignal()
+    finished                                        = pyqtSignal(str)
     error                                           = pyqtSignal(tuple)
     result                                          = pyqtSignal(object)
     progress                                        = pyqtSignal(int)

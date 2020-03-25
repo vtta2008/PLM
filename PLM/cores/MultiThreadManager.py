@@ -15,7 +15,8 @@ Description:
 # PLM
 from PLM.commons                            import DAMGLIST
 from PLM.commons.Core                       import ThreadPool
-from PLM.commons                            import SignalManager, SettingManager
+from PLM.plugins.SignalManager              import SignalManager
+from PLM.commons.SettingManager             import SettingManager
 from PLM.cores.models.Counter               import Counter
 from PLM.cores.Storages                     import ThreadStorage, WorkerStorage
 
@@ -56,13 +57,13 @@ class MultiThreadManager(ThreadPool):
     def isCounting(self):
         return self.counter.isCounting
 
-    def process_output(self, val):
+    def print_output(self, val):
         return print(val)
 
-    def progress_task(self, val):
+    def progress_fn(self, val):
         return print('{0}% done'.format(val))
 
-    def task_completed(self):
+    def worker_completed(self, worker):
         return print('worker commpleted')
 
     def stop_thread(self, thread):

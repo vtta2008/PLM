@@ -17,7 +17,9 @@ from PyQt5.QtWidgets                        import QPushButton, QToolButton
 # PLM
 from PLM.commons.Gui                        import AppIcon, TagIcon
 from PLM.utils                              import check_preset
-from PLM.commons                            import SignalManager, SettingManager
+from PLM.plugins.SignalManager              import SignalManager
+from PLM.commons.SettingManager             import SettingManager
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Button presets """
@@ -32,7 +34,7 @@ class Button(QPushButton):
     def __init__(self, preset={}, parent=None):
         QPushButton.__init__(self)
         self.parent                         = parent
-        self.settings = SettingManager(self)
+        self.settings                       = SettingManager(self)
         self.signals = SignalManager(self)
         self.preset                         = preset
         if check_preset(self.preset):

@@ -11,6 +11,7 @@ Description:
 
 import datetime
 
+from PLM.cores.models.Threads       import PcMonitor
 from PLM.commons.Widgets            import LCDNumber, GroupGrid, Label
 from PLM.commons.Core               import Timer
 
@@ -91,8 +92,7 @@ class Notification(GroupGrid):
 
         self.weekNumber     = Label({'txt': 'Weeknumber: {0}'.format(wk)})
 
-        thread              = self.threadManager.getThread('PcMonitor')
-        worker              = thread()
+        worker              = PcMonitor()
         worker.cpu.connect(self.update_cpu_useage)
         worker.ram.connect(self.update_ram_useage)
         worker.gpu.connect(self.update_gpu_useage)

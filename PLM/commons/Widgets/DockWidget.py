@@ -18,7 +18,8 @@ from PyQt5.QtWidgets                        import QTextEdit, QDockWidget
 
 # PLM
 from PLM.configs                            import right, datetTimeStamp
-from PLM.commons                            import SignalManager, SettingManager
+from PLM.plugins.SignalManager              import SignalManager
+from PLM.commons.SettingManager             import SettingManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Dock widget """

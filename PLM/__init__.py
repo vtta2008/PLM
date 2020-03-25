@@ -59,7 +59,7 @@ def get_root():
 
 
 def __copyright__():
-    return 'Pipeline Manager (PLM) Copyright (C) 2017 - 2020 by DAMGTEAM, contributed by Trinh Do & Duong Minh Duc.'
+    return '{0} Copyright (C) 2017 - 2020 by DAMGTEAM, contributed by Trinh Do & Duong Minh Duc.'.format(__appName__)
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -961,14 +961,14 @@ class Cfg(dict):
 try:
     os.getenv(__envKey__)
 except KeyError:
-    proc = subprocess.Popen(cmd, shell=True).wait()
+    subprocess.Popen(cmd, shell=True).wait()
 else:
     if os.getenv(__envKey__)   != ROOT:
-        proc = subprocess.Popen(cmd, shell=True).wait()
+        subprocess.Popen(cmd, shell=True).wait()
 finally:
     globalSetting.cfgable = True
 
-
+from .app import PLM
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/16/2020 - 2:15 AM

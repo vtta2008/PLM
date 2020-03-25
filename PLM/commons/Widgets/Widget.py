@@ -15,7 +15,7 @@ from PyQt5.QtWidgets                        import QWidget
 
 # PLM
 from PLM.commons.Gui.Icon                   import AppIcon
-from PLM.commons.SignalManager              import SignalManager
+from PLM.plugins.SignalManager              import SignalManager
 from PLM.commons.SettingManager             import SettingManager
 
 

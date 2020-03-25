@@ -18,12 +18,13 @@ import sys, requests
 from functools                  import partial
 
 # PLM
-from PLM.configs                    import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
-from PLM.commons.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label,
-                                 Label, MessageBox, GroupGrid, )
-from PLM.commons.Gui                 import AppIcon
-from PLM.utils import bool2str
-from PLM.cores.sqls.sqlUtils import sqlUtils
+from PLM.configs                import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
+from PLM.plugins.SignalManager import SignalManager
+from PLM.commons.Widgets        import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label,
+                                        Label, MessageBox, GroupGrid, )
+from PLM.commons.Gui            import AppIcon
+from PLM.utils                  import bool2str
+from PLM.cores.sqls.sqlUtils    import sqlUtils
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """
@@ -41,6 +42,7 @@ class SignIn(Widget):
         self.setFixedSize(400, 300)
         self.setWindowTitle('Sign In')
 
+        self.signals            = SignalManager(self)
         self.layout             = GridLayout()
         self.db                 = sqlUtils()
         self.buildUI()
@@ -82,7 +84,7 @@ class SignIn(Widget):
 
     def forgetPwClicked(self):
         if __name__ == '__main__':
-            from PLM.ui.SubUi.Funcs import ForgotPassword
+            from PLM.ui.layouts import ForgotPassword
             self.forgotPW = ForgotPassword()
             self.forgotPW.show()
         else:

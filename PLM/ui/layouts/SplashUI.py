@@ -48,7 +48,7 @@ class LoadingBar(ProgressBar):
             sys.exit()
         else:
             self.num                    = self.parent.num
-            self.pix                    = self.parent.pix
+            self.pix                    = self.parent.splashPix
             self.setMinimum(0)
             self.setMaximum(self.num*10)
             self.setGeometry(50, self.pix.height() - 50, self.pix.width() - 100, 20)
@@ -115,7 +115,7 @@ class SplashUI(SplashScreen):
 
         self.start()
 
-        self.app.processEvent()
+        self.app.processEvents()
 
     def autoConfig(self):
 
@@ -192,7 +192,7 @@ class SplashUI(SplashScreen):
 
         self.autoThread.start()
         self.realtimeThread.start()
-        self.threadManager.start(self.configTask)
+        # self.threadManager.start(self.configTask)
 
         self.updatePosition()
         self.show()
@@ -213,14 +213,7 @@ class SplashUI(SplashScreen):
         for i in range(value):
             self._percentCount += (i+1)
             self.progress.setValue(self._percentCount)
-            self.realtimeThread.setProgress(self._percentCount)
-
-    def finish(self, widget):
-        self.autoThread.stop()
-        self.realtimeThread.stop()
-        self.configTask.stop()
-        self.hide()
-        return widget.show()
+            self.realtimeThread.setProgress(str(self._percentCount))
 
     @property
     def bufferH(self):

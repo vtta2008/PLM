@@ -31,8 +31,10 @@ from PyQt5.QtGui                        import QColor
 from PLM                                import __copyright__, ROOT, globalSetting
 from PLM.configs                        import (__version__, __appname__, __organization__, __website__, DarkPalette,
                                                 PLMAPPID, MONO_SPACE)
-from PLM.cores                          import Loggers, StyleSheet
-from PLM.commons                        import SignalManager, SettingManager
+from PLM.cores                          import Loggers
+from PLM.cores.StyleSheet               import StyleSheet
+from PLM.plugins.SignalManager              import SignalManager
+from PLM.commons.SettingManager             import SettingManager
 from PLM.commons.Core                   import Process
 from PLM.commons.Gui                    import Cursor, LogoIcon, Font
 from PLM.commons.Widgets.MessageBox     import MessageBox

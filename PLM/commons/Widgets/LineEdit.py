@@ -15,7 +15,8 @@ from PyQt5.QtGui                            import QIntValidator
 
 # PLM
 from PLM.configs                            import PRS
-from PLM.commons                            import SignalManager, SettingManager
+from PLM.plugins.SignalManager              import SignalManager
+from PLM.commons.SettingManager             import SettingManager
 from PLM.utils                              import check_preset
 
 class LineEdit(QLineEdit):

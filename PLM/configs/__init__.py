@@ -19,7 +19,6 @@ import pkg_resources
 import winshell
 import socket
 import uuid
-import psutil
 from collections                    import OrderedDict
 
 # PLM
@@ -1960,14 +1959,13 @@ class ConfigFonts(Cfg):
         return fonts
 
 
-class CommandData(Cfg):
+class CommandData(dict):
 
     key                             = 'CommandData'
-    _filePath                       = None
 
     def __init__(self, key=None, icon=None, tooltip=None, statustip=None,
                        value=None, valueType=None, arg=None, code=None):
-        Cfg.__init__(self)
+        super(CommandData, self).__init__()
 
         self.key                    = key
         self.icon                   = icon
@@ -1982,7 +1980,7 @@ class CommandData(Cfg):
         vs = [key, icon, tooltip, statustip, value, valueType, arg, code]
 
         for i in range(len(ks)):
-            self.add(ks[i]          , vs[i])
+            self[ks[i]]             = vs[i]
 
 
 class ConfigPipeline(Cfg):
@@ -2645,6 +2643,7 @@ else:
                     physical_disk.associators("Win32_DiskDriveToDiskPartition")
                 except Exception:
                     print('Error occur due to the use of multi thread')
+                    import psutil
                     disk = {}
                     key = 'Hard Drive'
                     for partition in psutil.disk_partitions():
