@@ -27,7 +27,7 @@ class SplashScreen(QSplashScreen):
     _copyright                              = __copyright__()
 
     def __init__(self, app=None):
-        super(SplashScreen, self).__init__()
+        QSplashScreen.__init__(self)
 
         self.app                            = app
         self.settings                       = SettingManager(self)

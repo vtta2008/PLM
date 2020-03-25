@@ -36,7 +36,6 @@ class ThreadManager(ThreadPool):
         self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
-
     def getThread(self, key):
         return self.threads.getThread(key)
 
@@ -74,23 +73,6 @@ class ThreadManager(ThreadPool):
     def error_output(self, errorTuple):
         return print(errorTuple)
 
-    def test_task(self, progres_callback):
-        for n in range(0, 5):
-            time.sleep(1)
-            progres_callback.emit(n*100/4)
-        return 'Done.'
-
-    def run_test(self):
-        return self.execute_task(self.test_task)
-
-    def execute_task(self, key, task, args, worker=True):
-
-        if worker:
-            worker = self.workers.createWorker(key)
-            return self.start(worker(task, args))
-        else:
-            thread = self.threads.createThread(key)
-            return thread(task).start()
 
     def execute_multi_tasks(self, tasks):
         for task in tasks:

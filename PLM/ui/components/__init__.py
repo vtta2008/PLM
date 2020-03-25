@@ -22,6 +22,7 @@ from .DockHeader            import ToolBarDock, MenubarDock, NetworkStatusDock, 
 from .Footer                import Footer
 from .FooterCheckBoxes      import FooterCheckBoxes
 from .HeaderCheckBoxes      import HeaderCheckBoxes
+from .Loading               import StaticLoading, RealtimeLoading
 from .MainMenuBar           import MainMenuBar
 from .MainStatusBar         import MainStatusBar
 from .MainToolBar           import MainToolBar

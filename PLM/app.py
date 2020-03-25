@@ -79,11 +79,11 @@ class PLM(AppModel):
     def notify(self, receiver, event):
 
         if event.type() == KEY_RELEASE:
-
-            if event.key() == 16777217:
-                pos = self.cursor.pos()
-                self.shortcutCMD.show()
-                self.shortcutCMD.move(pos)
+            if self.login:
+                if event.key() == 16777217:
+                    pos = self.cursor.pos()
+                    self.shortcutCMD.show()
+                    self.shortcutCMD.move(pos)
 
         elif event.type() == 18:                                            # QHideEvent
             if hasattr(receiver, 'key'):

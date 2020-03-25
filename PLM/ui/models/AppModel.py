@@ -61,8 +61,8 @@ class AppModel(Application):
         self.formatInfo                 = self.splash.formatInfo
         self.fontInfo                   = self.splash.fontInfo
 
+        self.threadManager              = ThreadManager(self)
         self.database                   = LocalDatabase()
-        self.threadManager              = ThreadManager()
 
     def checkUserData(self):
         try:
@@ -117,6 +117,7 @@ class AppModel(Application):
 
     def command(self, key):
         try:
+            print(self.plmInfo)
             cmdData = self.plmInfo[key]
         except KeyError:
             return print('There is no key: {0}'.format(key))
