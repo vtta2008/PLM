@@ -25,6 +25,8 @@ class Thread(QThread):
     _name                               = 'DAMG Thread'
     _copyright                          = __copyright__()
 
+    _running                            = True
+
     def __init__(self, *args, **kwargs):
         QThread.__init__(self)
 
@@ -38,6 +40,14 @@ class Thread(QThread):
     @property
     def name(self):
         return self._name
+
+    @property
+    def running(self):
+        return self._running
+
+    @running.setter
+    def running(self, val):
+        self._running                       = val
 
     @name.setter
     def name(self, val):

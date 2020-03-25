@@ -69,6 +69,7 @@ class PcMonitor(Thread):
         self._monitoring                    = val
 
 
+
 class AutoRunLoading(Thread):
 
     key                                             = 'AutoRunLoading'
@@ -99,6 +100,7 @@ class AutoRunLoading(Thread):
     @spinning.setter
     def spinning(self, val):
         self._spinning                              = val
+
 
 
 class ThreadStorage(BaseStorage):
