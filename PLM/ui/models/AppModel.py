@@ -45,24 +45,21 @@ class AppModel(Application):
 
         self.splash                     = SplashUI(self)
 
-        while not globalSetting.cfgAll:
-            pass
-        else:
-            self.iconInfo                   = self.splash.iconInfo
-            self.appInfo                    = self.splash.appInfo
-            self.urlInfo                    = self.splash.urlInfo
-            self.dirInfo                    = self.splash.dirInfo
-            self.pthInfo                    = self.splash.pthInfo
-            self.plmInfo                    = self.splash.plmInfo
-            self.deviceInfo                 = self.splash.deviceInfo
-            self.pythonInfo                 = self.splash.pythonInfo
-            self.avatarInfo                 = self.splash.avatarInfo
-            self.logoInfo                   = self.splash.logoInfo
-            self.imageInfo                  = self.splash.imageInfo
-            self.envInfo                    = self.splash.envInfo
-            self.serverInfo                 = self.splash.serverInfo
-            self.formatInfo                 = self.splash.formatInfo
-            self.fontInfo                   = self.splash.fontInfo
+        self.iconInfo                   = self.splash.iconInfo
+        self.appInfo                    = self.splash.appInfo
+        self.urlInfo                    = self.splash.urlInfo
+        self.dirInfo                    = self.splash.dirInfo
+        self.pthInfo                    = self.splash.pthInfo
+        self.plmInfo                    = self.splash.plmInfo
+        self.deviceInfo                 = self.splash.deviceInfo
+        self.pythonInfo                 = self.splash.pythonInfo
+        self.avatarInfo                 = self.splash.avatarInfo
+        self.logoInfo                   = self.splash.logoInfo
+        self.imageInfo                  = self.splash.imageInfo
+        self.envInfo                    = self.splash.envInfo
+        self.serverInfo                 = self.splash.serverInfo
+        self.formatInfo                 = self.splash.formatInfo
+        self.fontInfo                   = self.splash.fontInfo
 
         self.database                   = LocalDatabase()
         self.threadManager              = ThreadManager()

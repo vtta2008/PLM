@@ -19,7 +19,6 @@ import pkg_resources
 import winshell
 import socket
 import uuid
-import pprint
 import psutil
 from collections                    import OrderedDict
 
@@ -1484,7 +1483,7 @@ class ConfigApps(Cfg):
 
         if globalSetting.printCfgInfo:
             if globalSetting.printAppInfo:
-                pprint.pprint(self)
+                self.pprint()
 
         if globalSetting.saveCfgInfo:
             if globalSetting.saveAppInfo:

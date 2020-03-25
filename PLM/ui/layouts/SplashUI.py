@@ -19,8 +19,8 @@ import traceback
 from math                               import ceil
 
 # PyQt5
-from PyQt5.QtGui                        import QPainter, QPalette, QBrush, QColor, QPen, QFont, QFontMetrics
-from PyQt5.QtCore                       import QRect
+from PyQt5.QtGui                        import QPainter, QPalette, QPen, QFont, QFontMetrics
+from PyQt5.QtCore                       import QRect, QThreadPool, pyqtSignal
 from PyQt5.QtWidgets                    import QApplication
 
 # PLM
@@ -32,59 +32,110 @@ from PLM.configs                        import (TRANSPARENT, NO_PEN, TEXT_BOLD, 
                                                 ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
                                                 ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
                                                 ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath, ConfigFonts)
+from PLM.commons                        import DAMG
 from PLM.commons.Widgets.Widget         import Widget
 from PLM.commons.Widgets                import SplashScreen, MessageBox
-from PLM.commons.Core                   import Timer, Thread
+from PLM.commons.Core                   import Timer, Thread, Worker
 from PLM.commons.Gui                    import Image, Pixmap
 
 
-class AutoRunLoading(Thread):
 
-    key                                             = 'AutoRunLoading'
+class Signals(DAMG):
+
+    key                                             = 'Signals'
+
+    finished                                        = pyqtSignal()
+    error                                           = pyqtSignal(tuple)
+    result                                          = pyqtSignal(object)
+    progress                                        = pyqtSignal(int)
+
+
+class TaskWorker(Worker):
+
+    key                                             = 'TaskWorker'
+    _running                                        = True
+    signal                                          = Signals()
+
+    def __init__(self, task, parent):
+        Worker.__init__(self)
+
+        self.parent                                 = parent
+        self.task                                   = task
+        self.timer                                  = Timer(self)
+
+    def run(self):
+        if self.running:
+            pass
+
+    def stop(self):
+        self._running                               = False
+        self.timer.stop()
+
+
+class WidgetThread(Thread):
+
+    key                                             = 'WidgetThread'
 
     def __init__(self, widget, parent):
-        super(AutoRunLoading, self).__init__(self)
+        Thread.__init__(self)
 
         self.widget                                 = widget
         self.parent                                 = parent
+        self.timer                                  = Timer(self)
+        self.widget.show()
+
+    def stop(self):
+        self.timer.stop()
+        self._running                               = False
+
+
+class TaskThread(Thread):
+
+    key                                             = 'TaskThread'
+
+    def __init__(self, task, parent):
+        Thread.__init__(self)
+
+        self.task                                   = task
+        self.parent                                 = parent
+        self.timer                                  = Timer(self)
+
+    def stop(self):
+        self.timer.stop()
+        self._running                               = False
+
+
+
+
+class AutoLoadingThread(WidgetThread):
+
+    key                                             = 'AutoLoadingThread'
+
+    def __init__(self, widget, parent):
+        super(AutoLoadingThread, self).__init__(widget, parent)
+
         if self.parent:
             self.setParent(self.parent)
-
-        self.widget.show()
-        self.timer                                  = Timer(self)
 
     def run(self):
         if self.running:
             self.widget.rotate()
 
-    def stop(self):
-        self.timer.stop()
-        self._running                               = False
 
 
+class RealtimeUpdatingThread(WidgetThread):
 
-class RealtimeUpdating(Thread):
-
-    key                                             = 'RealtimeUpdating'
+    key                                             = 'RealtimeUpdatingThread'
 
     def __init__(self, widget, parent):
-        super(RealtimeUpdating, self).__init__(self)
+        super(RealtimeUpdatingThread, self).__init__(widget, parent)
 
-        self.widget                                 = widget
-        self.parent                                 = parent
         if self.parent:
             self.setParent(self.parent)
-
-        self.widget.show()
-        self.timer                                  = Timer(self)
 
     def run(self):
         if self.running:
             self.widget.update()
-
-    def stop(self):
-        self.timer.stop()
-        self._running                               = False
 
     def setText(self, v):
         return self.widget.setText(v)
@@ -94,42 +145,29 @@ class RealtimeUpdating(Thread):
 
 
 
-class ConfigTasking(Thread):
+class ConfigWorker(TaskWorker):
 
     key                                             = 'ConfigTasking'
-    _output                                         = []
+    signal                                          = Signals()
 
     def __init__(self, task, parent):
-        super(ConfigTasking, self).__init__(self)
+        super(ConfigWorker, self).__init__(task, parent)
 
-        self.task                                   = task
-        self.parent                                 = parent
-        if self.parent:
-            self.setParent(self.parent)
+        # if self.parent:
+        #     self.setParent(self.parent)
 
     def run(self):
         if self.running:
-            self._output                            = self.task()
-
-        self.parent.iconInfo, self.parent.appInfo, self.parent.urlInfo, self.parent.dirInfo, self.parent.pthInfo, \
-        self.parent.deviceInfo, self.parent.pythonInfo, self.parent.avatarInfo, self.parent.logoInfo, \
-        self.parent.imageInfo, self.parent.envInfo, self.parent.serverInfo, self.parent.formatInfo, self.parent.fontInfo, \
-        self.parent.plmInfo = self.output
-
-        globalSetting.setCfgAll(True)
-
-        print(len(self.output))
-
-    def stop(self):
-        self._running                               = False
-
-    @property
-    def output(self):
-        return self._output
-
-    @output.setter
-    def output(self, val):
-        self._output                                = val
+            try:
+                result = self.task()
+            except:
+                traceback.print_exc()
+                exctype, value = sys.exc_info()[:2]
+                self.signal.error.emit((exctype, value, traceback.format_exc()))
+            else:
+                self.signal.result.emit(result)
+            finally:
+                self.signal.finished.emit()
 
 
 
@@ -558,10 +596,29 @@ class SplashUI(SplashScreen):
     _bufferH                            = 100
     _bufferW                            = 200
 
+    pythonInfo                          = None
+    dirInfo                             = None
+    pthInfo                             = None
+    urlInfo                             = None
+    envInfo                             = None
+    iconInfo                            = None
+    avatarInfo                          = None
+    logoInfo                            = None
+    imageInfo                           = None
+    serverInfo                          = None
+    formatInfo                          = None
+    fontInfo                            = None
+    deviceInfo                          = None
+    appInfo                             = None
+    plmInfo                             = None
+
+    _cfgCount                           = 0
+
     def __init__(self, app=None):
         super(SplashUI, self).__init__(app)
 
         self.app                        = app
+
         if not self.app:
             MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
             sys.exit()
@@ -574,57 +631,90 @@ class SplashUI(SplashScreen):
         # self.setPixmap(self.splashPix)
         # self.setMask(self.splashPix.mask())
 
+        self.threadPool                      = QThreadPool(self)
         self.realtimeLoading                 = RealtimeLoading(self)
         self.staticLoading                   = StaticLoading(self)
 
-        self.autoThread                      = AutoRunLoading(self.staticLoading, self)
-        self.realtimeThread                  = RealtimeUpdating(self.realtimeLoading, self)
-        self.configTask                      = ConfigTasking(self.autoConfig, self)
+        self.autoThread                      = AutoLoadingThread(self.staticLoading, self)
+        self.realtimeThread                  = RealtimeUpdatingThread(self.realtimeLoading, self)
+        self.configTask                      = ConfigWorker(self.autoConfig, self)
 
         self.start()
 
     def autoConfig(self):
 
-        ws = ['Icons', 'Urls', 'Directories', 'Paths', 'Local Device', 'Python', 'Avatars', 'Logo',
-              'Images', 'Evironment Variables', 'Server', 'Formats', 'Fonts', 'Installed Apps']
+        words = ['Python', 'Directories', 'File Paths', 'Urls & Links', 'System Environment Variable', 'Icons', 'Avatars',
+                 'Logo', 'Images', 'Servers', 'Formats', 'Fonts', 'Local Devices', 'App Installed', 'Pipeline']
 
-        fs = [ConfigIcon, ConfigUrl, ConfigDirectory, ConfigPath, ConfigMachine, ConfigPython, ConfigAvatar,
-              ConfigLogo, ConfigImage, ConfigEnvVar, ConfigServer, ConfigFormats, ConfigFonts, ConfigApps]
+        for i in range(len(words)):
 
-        vs = [1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+            self.setText('Config {0}'.format(words[i]))
 
-        output = []
+            if i == 0:
+                self.pythonInfo = ConfigPython()
+            elif i == 1:
+                self.dirInfo = ConfigDirectory()
+            elif i == 2:
+                self.pthInfo = ConfigPath()
+            elif i == 3:
+                self.urlInfo = ConfigUrl()
+            elif i == 4:
+                self.envInfo = ConfigEnvVar()
+            elif i == 5:
+                self.iconInfo = ConfigIcon()
+            elif i == 6:
+                self.avatarInfo = ConfigAvatar()
+            elif i == 7:
+                self.logoInfo = ConfigLogo()
+            elif i == 8:
+                self.imageInfo = ConfigImage()
+            elif i == 9:
+                self.serverInfo = ConfigServer()
+            elif i == 10:
+                self.formatInfo = ConfigFormats()
+            elif i == 11:
+                self.fontInfo = ConfigFonts()
+            elif i == 12:
+                self.deviceInfo = ConfigMachine()
+            elif i == 13:
+                self.appInfo = ConfigApps()
+            else:
+                if self.iconInfo and self.appInfo and self.urlInfo and self.dirInfo and self.pthInfo:
+                    self.plmInfo = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
 
-        for i in range(len(ws)):
-            w = ws[i]
-            f = fs[i]
-            v = vs[i]
+            if i == 14:
+                self.setProgress(2)
+            else:
+                self.setProgress(1)
 
-            self.realtimeThread.setText('Config {0}'.format(w))
-            cfgInfo = f()
-            output.append(cfgInfo)
-            self.realtimeThread.setProgress(v)
-            i += 1
+            self._cfgCount = i + 1
 
-        [iconInfo, urlInfo, dirInfo, pthInfo, deviceInfo, pythonInfo, avatarInfo, logoInfo, imageInfo,
-        envInfo, serverInfo, formatInfo, fontInfo, appInfo] = output
-
-        self.realtimeThread.setText('Config {0}'.format('Pipeline'))
-        plmInfo = ConfigPipeline(iconInfo, appInfo, urlInfo, dirInfo, pthInfo)
-        self.realtimeThread.setProgress(2)
-
-        output.append(plmInfo)
-
-        return output
+            if self._cfgCount == len(words):
+                check = True
+                for info in [self.pythonInfo, self.dirInfo, self.pthInfo, self.urlInfo, self.envInfo, self.iconInfo,
+                             self.avatarInfo, self.logoInfo, self.imageInfo, self.serverInfo, self.formatInfo,
+                             self.fontInfo, self.deviceInfo, self.appInfo, self.plmInfo]:
+                    if not info:
+                        print('{0} is None.'.format(info.key))
+                        check = False
+                globalSetting.setCfgAll(check)
+            else:
+                globalSetting.setCfgAll(False)
 
     def updatePosition(self):
         return self.move((self.screen.width() - self.width())/2, (self.screen.height() - self.height())/2)
 
     def start(self):
-        self.updatePosition()
+        self.show()
+
+        self.configTask.signal.result.connect(self.print_output)
+        self.configTask.signal.finished.connect(self.worker_completed)
+        self.configTask.signal.progress.connect(self.progress_fn)
+
         self.autoThread.start()
         self.realtimeThread.start()
-        self.configTask.start()
+        self.threadPool.start(self.configTask)
+        self.updatePosition()
 
     def finish(self, widget):
         self.autoThread.stop()
@@ -639,6 +729,21 @@ class SplashUI(SplashScreen):
         self.realtimeLoading.resize(self.size())
         event.accept()
 
+    def setText(self, text):
+        self.realtimeThread.setText(text)
+
+    def setProgress(self, val):
+        self.realtimeThread.setProgress(val)
+
+    def progress_fn(self, n):
+        print('{0}% done'.format(n))
+
+    def print_output(self, s):
+        print(s)
+
+    def worker_completed(self):
+        print('worker completed.')
+
     @property
     def bufferH(self):
         return self._bufferH
@@ -646,6 +751,14 @@ class SplashUI(SplashScreen):
     @property
     def bufferW(self):
         return self._bufferW
+
+    @property
+    def cfgCount(self):
+        return self._cfgCount
+
+    @cfgCount.setter
+    def cfgCount(self, val):
+        self._cfgCount                  = val
 
     @bufferW.setter
     def bufferW(self, val):
