@@ -18,10 +18,10 @@ import os
 from PyQt5.QtGui                            import QIcon
 
 # PLM
-from PLM.utils import get_app_icon, get_tag_icon, get_logo_icon
-from PLM.configs                                import iconInfo, IGNORE_ICONS
-from PLM.commons.Core                            import Size
-from PLM.cores.Errors import IconNotFound
+from PLM.utils                              import get_app_icon, get_tag_icon, get_logo_icon
+from PLM.configs                            import iconInfo, IGNORE_ICONS
+from PLM.commons.Core                       import Size
+from PLM.cores.Errors                       import IconNotFound
 
 class Icon(QIcon):
 

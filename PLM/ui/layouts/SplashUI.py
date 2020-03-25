@@ -20,20 +20,49 @@ from PyQt5.QtWidgets                    import QApplication
 # PLM
 from PLM                                import globalSetting
 from PLM.ui.components.Loading          import StaticLoading, RealtimeLoading
-from PLM.cores.models                   import AutoLoadingThread, RealtimeUpdatingThread, ConfigTaskWorker
-from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, SPLASHSCREEN, splashImagePth,
+from PLM.cores.models                   import AutoLoadingThread, RealtimeUpdatingThread
+from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, SPLASHSCREEN, ERROR_LAYOUT_COMPONENT,
+                                                splashImagePth,
                                                 ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
                                                 ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
                                                 ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath, ConfigFonts)
-from PLM.commons.Widgets                import SplashScreen, MessageBox
+from PLM.commons.Widgets                import SplashScreen, MessageBox, ProgressBar
 from PLM.commons.Gui                    import LogoIcon, Pixmap
 from PLM.commons.Core                   import Timer
-from PLM.cores                          import MultiThreadManager
+from PLM.cores                          import MultiThreadManager, StyleSheet
+
+
+
+class LoadingBar(ProgressBar):
+
+    key                                 = 'ProgressUI'
+    _name                               = 'DAMG Progress UI'
+
+    def __init__(self, parent=None):
+        super(LoadingBar, self).__init__(parent)
+
+        self.parent                     = parent
+
+        if not self.parent:
+            MessageBox(self, 'Loading Layout Component', 'critical', ERROR_LAYOUT_COMPONENT)
+            sys.exit()
+        else:
+            self.num                    = self.parent.num
+            self.pix                    = self.parent.pix
+            self.setMinimum(0)
+            self.setMaximum(self.num*10)
+            self.setGeometry(50, self.pix.height() - 50, self.pix.width() - 100, 20)
+            self.setTextVisible(True)
+            self.setStyleSheet(StyleSheet.progressBar())
+
+    def start(self):
+        self.show()
 
 
 class SplashUI(SplashScreen):
 
     key                                 = 'SplashUI'
+
     _bufferH                            = 100
     _bufferW                            = 200
 
@@ -54,6 +83,8 @@ class SplashUI(SplashScreen):
     plmInfo                             = None
 
     _cfgCount                           = 0
+    _percentCount                       = 0
+    _num                                = 16
 
     def __init__(self, app=None):
         super(SplashUI, self).__init__(app)
@@ -80,11 +111,11 @@ class SplashUI(SplashScreen):
 
         self.autoThread                 = AutoLoadingThread(self.staticLoading, self)
         self.realtimeThread             = RealtimeUpdatingThread(self.realtimeLoading, self)
-        self.configTask                 = ConfigTaskWorker(self.autoConfig, self)
+        self.progress                   = LoadingBar(self)
 
         self.start()
 
-        self.app.processEvent
+        self.app.processEvent()
 
     def autoConfig(self):
 
@@ -96,33 +127,33 @@ class SplashUI(SplashScreen):
             self.setText('Config {0}'.format(words[i]))
 
             if i == 0:
-                self.pythonInfo = ConfigPython()
+                self.pythonInfo             = ConfigPython()
             elif i == 1:
-                self.dirInfo = ConfigDirectory()
+                self.dirInfo                = ConfigDirectory()
             elif i == 2:
-                self.pthInfo = ConfigPath()
+                self.pthInfo                = ConfigPath()
             elif i == 3:
-                self.urlInfo = ConfigUrl()
+                self.urlInfo                = ConfigUrl()
             elif i == 4:
-                self.envInfo = ConfigEnvVar()
+                self.envInfo                = ConfigEnvVar()
             elif i == 5:
-                self.iconInfo = ConfigIcon()
+                self.iconInfo               = ConfigIcon()
             elif i == 6:
-                self.avatarInfo = ConfigAvatar()
+                self.avatarInfo             = ConfigAvatar()
             elif i == 7:
-                self.logoInfo = ConfigLogo()
+                self.logoInfo               = ConfigLogo()
             elif i == 8:
-                self.imageInfo = ConfigImage()
+                self.imageInfo              = ConfigImage()
             elif i == 9:
-                self.serverInfo = ConfigServer()
+                self.serverInfo             = ConfigServer()
             elif i == 10:
-                self.formatInfo = ConfigFormats()
+                self.formatInfo             = ConfigFormats()
             elif i == 11:
-                self.fontInfo = ConfigFonts()
+                self.fontInfo               = ConfigFonts()
             elif i == 12:
-                self.deviceInfo = ConfigMachine()
+                self.deviceInfo             = ConfigMachine()
             elif i == 13:
-                self.appInfo = ConfigApps()
+                self.appInfo                = ConfigApps()
             else:
                 if self.iconInfo and self.appInfo and self.urlInfo and self.dirInfo and self.pthInfo:
                     self.plmInfo = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
@@ -151,24 +182,22 @@ class SplashUI(SplashScreen):
 
     def start(self):
 
-        self.autoThread.signal.result.connect(self.print_output)
-        self.autoThread.signal.finished.connect(self.worker_completed)
-        self.autoThread.signal.progress.connect(self.progress_fn)
+        self.autoThread.signal.result.connect(self.threadManager.print_output)
+        self.autoThread.signal.finished.connect(self.threadManager.worker_completed)
+        self.autoThread.signal.progress.connect(self.threadManager.progress_fn)
 
-        self.realtimeThread.signal.result.connect(self.print_output)
-        self.realtimeThread.signal.finished.connect(self.worker_completed)
-        self.realtimeThread.signal.progress.connect(self.progress_fn)
-
-        self.configTask.signal.result.connect(self.print_output)
-        self.configTask.signal.finished.connect(self.worker_completed)
-        self.configTask.signal.progress.connect(self.progress_fn)
-
-        self.updatePosition()
-        self.show()
+        self.realtimeThread.signal.result.connect(self.threadManager.print_output)
+        self.realtimeThread.signal.finished.connect(self.threadManager.worker_completed)
+        self.realtimeThread.signal.progress.connect(self.threadManager.progress_fn)
 
         self.autoThread.start()
         self.realtimeThread.start()
         self.threadManager.start(self.configTask)
+
+        self.updatePosition()
+        self.show()
+        self.progress.show()
+        self.autoConfig()
 
     def resizeEvent(self, event):
         self.resize(event.size().width() + self.bufferW, event.size().height() + self.bufferH)
@@ -180,16 +209,11 @@ class SplashUI(SplashScreen):
         self.realtimeThread.setText(text)
 
     def setProgress(self, val):
-        self.realtimeThread.setProgress(val)
-
-    def progress_fn(self, n):
-        print('{0}% done'.format(n))
-
-    def print_output(self, s):
-        print(s)
-
-    def worker_completed(self):
-        print('worker completed')
+        value = int((100*val)/(self.num*10))
+        for i in range(value):
+            self._percentCount += (i+1)
+            self.progress.setValue(self._percentCount)
+            self.realtimeThread.setProgress(self._percentCount)
 
     def finish(self, widget):
         self.autoThread.stop()
@@ -209,6 +233,22 @@ class SplashUI(SplashScreen):
     @property
     def cfgCount(self):
         return self._cfgCount
+
+    @property
+    def num(self):
+        return self._num
+
+    @property
+    def percentCount(self):
+        return self._percentCount
+
+    @percentCount.setter
+    def percentCount(self, val):
+        self._percentCount              = val
+
+    @num.setter
+    def num(self, val):
+        self._num                       = val
 
     @cfgCount.setter
     def cfgCount(self, val):

@@ -20,7 +20,7 @@ from PLM.configs                            import WAIT_LAYOUT_COMPLETE
 from .BoxLayout                             import VBoxLayout, HBoxLayout
 from .GridLayout                            import GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
 from .Label                                 import Label
-from PLM.cores                              import SettingManager, SignalManager
+from PLM.commons                            import SignalManager, SettingManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Groupbox presets """

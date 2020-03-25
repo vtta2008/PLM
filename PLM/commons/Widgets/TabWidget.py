@@ -10,9 +10,12 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from PLM import __copyright__
 
+# PyQt5
 from PyQt5.QtWidgets                        import QTabWidget
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
+
+# PLM
+from PLM.commons                            import SignalManager, SettingManager
+
 
 class TabWidget(QTabWidget):
 

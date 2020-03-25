@@ -12,8 +12,7 @@ from PLM import __copyright__
 
 from PyQt5.QtWidgets                        import QCheckBox
 from PLM.utils                              import check_preset
-from PLM.cores                              import SettingManager
-from PLM.cores                              import SignalManager
+from PLM.commons                            import SignalManager, SettingManager
 
 class CheckBox(QCheckBox):
 

@@ -16,9 +16,8 @@ from PLM import __copyright__
 from PyQt5.QtWidgets                        import QMainWindow
 
 # PLM
-from PLM.cores import Loggers
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
+from PLM.cores                              import Loggers
+from PLM.commons                            import SignalManager, SettingManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Main window layout preset """

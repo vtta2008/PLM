@@ -15,8 +15,8 @@ from PLM import __copyright__
 from PyQt5.QtGui                       import QFont
 
 # PLM
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
+from PLM.commons                        import SignalManager, SettingManager
+
 
 class Font(QFont):
 
@@ -28,8 +28,8 @@ class Font(QFont):
     def __init__(self, *__args):
         QFont.__init__(self)
 
-        self.signals                    = SignalManager(self)
         self.settings                   = SettingManager(self)
+        self.signals                    = SignalManager(self)
 
     @property
     def copyright(self):

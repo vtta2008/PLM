@@ -13,8 +13,7 @@ from PLM import __copyright__
 from PyQt5.QtWidgets                        import QTabBar
 
 from PLM.configs                            import SETTING_FILEPTH, ST_FORMAT
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
+from PLM.commons                            import SignalManager, SettingManager
 
 class TabBar(QTabBar):
 

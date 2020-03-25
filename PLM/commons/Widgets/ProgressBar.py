@@ -16,7 +16,7 @@ from PLM import __copyright__
 from PyQt5.QtWidgets                        import QProgressBar
 
 # PLM
-from PLM.cores import SignalManager
+from PLM.commons                            import SignalManager, SettingManager
 
 
 class ProgressBar(QProgressBar):
@@ -30,6 +30,7 @@ class ProgressBar(QProgressBar):
         super(ProgressBar, self).__init__(parent)
 
         self.signals                        = SignalManager(self)
+        self.settings                       = SettingManager(self)
 
     @property
     def copyright(self):

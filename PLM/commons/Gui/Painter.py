@@ -24,7 +24,7 @@ class Painter(QPainter):
     _copyright                  = __copyright__()
 
     def __init__(self, parent=None):
-        Painter.__init__(self)
+        QPainter.__init__(self)
 
         self.parent             = parent
 

@@ -19,8 +19,7 @@ from PyQt5.QtCore                           import QTimeZone, QTime, QDate
 # PLM
 from PLM.utils                              import check_preset
 from PLM.configs                            import PRS
-from PLM.cores                              import SettingManager
-from PLM.cores                              import SignalManager
+from PLM.commons                            import SignalManager, SettingManager
 
 # -------------------------------------------------------------------------------------------------------------
 class Label(QLabel):

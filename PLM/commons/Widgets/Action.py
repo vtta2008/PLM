@@ -15,10 +15,9 @@ from PLM import __copyright__
 from PyQt5.QtWidgets                        import QAction, QWidgetAction
 
 # PLM
-from PLM.utils import check_preset
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
-from PLM.commons.Gui.Icon import AppIcon
+from PLM.utils                              import check_preset
+from PLM.commons                            import SignalManager, SettingManager
+from PLM.commons.Gui.Icon                   import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Action presets """

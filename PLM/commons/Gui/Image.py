@@ -15,7 +15,7 @@ from PLM import __copyright__
 from PyQt5.QtGui                            import QImage, QPixmap
 
 # PLM
-from PLM.configs                                import AUTO_COLOR
+from PLM.configs                            import AUTO_COLOR
 
 
 class Image(QImage):

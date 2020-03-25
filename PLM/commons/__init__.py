@@ -9,9 +9,9 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from .damg import DAMGERROR, DAMGDICT, DAMGLIST, DAMG
-
-
+from .damg                  import DAMGERROR, DAMGDICT, DAMGLIST, DAMG
+from .SignalManager         import SignalManager
+from .SettingManager        import SettingManager
 
 
 # -------------------------------------------------------------------------------------------------------------

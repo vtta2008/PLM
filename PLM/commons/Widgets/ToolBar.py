@@ -14,8 +14,7 @@ from PLM import __copyright__
 # PyQt5
 from PyQt5.QtWidgets                        import QToolBar
 
-from PLM.cores                              import SettingManager
-from PLM.cores                              import SignalManager
+from PLM.commons                            import SignalManager, SettingManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tool bar class """

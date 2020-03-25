@@ -1,20 +1,23 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: PresetDB.py
+Script Name: sqlPreset.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import ROOT, __envKey__
 """ Import """
 
 # Python
+import os
+import re
+import sqlite3 as lite
 
-import os, re
-import sqlite3              as lite
+
+# PLM
+from PLM                            import ROOT, __envKey__
 from PLM.commons                    import DAMG
 
 # -------------------------------------------------------------------------------------------------------------
@@ -59,6 +62,8 @@ with open(os.path.join(ROOT, 'configs', 'metadatas.py').replace('\\', '/'), 'rb'
 def parse(pattern):
     return re.search(pattern, metadata).group(1).replace('"', '').strip()
 
+
+
 class PresetDB(DAMG):
 
     key = "Resource DB"
@@ -100,6 +105,8 @@ class PresetDB(DAMG):
         cmd = self.generate_command(tn)
         self.cur.execute("CREATE TABLE IF NOT EXISTS `{0}` ({1})".format(tn, cmd))
         self.conn.commit()
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 3:58 AM

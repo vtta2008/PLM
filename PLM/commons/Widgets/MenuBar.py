@@ -13,8 +13,7 @@ from PLM import __copyright__
 from PyQt5.QtWidgets                        import QMenuBar, QMenu
 
 from PLM.commons                            import DAMGDICT
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
+from PLM.commons                            import SignalManager, SettingManager
 
 class Menu(QMenu):
 

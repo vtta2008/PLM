@@ -12,12 +12,10 @@ from __future__ import absolute_import, unicode_literals
 
 import json
 
-from PyQt5.QtCore                               import QDate, QTime
-
-from PLM.commons.Widgets import GroupBox, VBoxLayout, Label
-from PLM.cores import sqlUtils
-from PLM.cores.models import DateLine
-from PLM.cores import Task
+from PLM.commons.Core                           import Date, Time
+from PLM.commons.Widgets                        import GroupBox, VBoxLayout, Label
+from PLM.cores                                  import sqlUtils
+from PLM.cores.models                           import DateLine, Task
 
 
 
@@ -58,9 +56,9 @@ class TaskInfo(GroupBox):
         self._month                             = int(self._data['enddate'].split('/')[1])
         self._year                              = int(self._data['enddate'].split('/')[2])
 
-        self.start                              = DateLine(QTime.currentTime().hour(), QTime.currentTime().minute(),
-                                                           QTime.currentTime().second(), QDate.currentDate().day(),
-                                                           QDate.currentDate().month(), QDate.currentDate().year())
+        self.start                              = DateLine(Time.currentTime().hour(), Time.currentTime().minute(),
+                                                           Time.currentTime().second(), Date.currentDate().day(),
+                                                           Date.currentDate().month(), Date.currentDate().year())
         self.end                                = DateLine(self._hour, self._minute, self._second, self._day, self._month, self._year)
 
         try:

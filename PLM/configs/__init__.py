@@ -730,6 +730,8 @@ IGNORE_ICONS = ['Widget', 'bright', 'dark', 'charcoal', 'nuker', 'TopTab1', 'Top
 INI                         = QSettings.IniFormat
 NATIVE                      = QSettings.NativeFormat
 INVALID                     = QSettings.InvalidFormat
+SYS_SCOPE                   = QSettings.SystemScope
+USER_SCOPE                  = QSettings.UserScope
 
 # -------------------------------------------------------------------------------------------------------------
 """ Format """
@@ -2781,7 +2783,7 @@ urlInfo                            = ConfigUrl()
 plmInfo                            = ConfigPipeline(iconInfo, appInfo, urlInfo, dirInfo, pthInfo)
 
 if not os.path.exists(LOCAL_DB):
-    from .PresetDB import PresetDB
+    from PLM.cores.sqls.sqlPreset import PresetDB
     localDB = PresetDB(filename=LOCAL_DB)
 
 # -------------------------------------------------------------------------------------------------------------
