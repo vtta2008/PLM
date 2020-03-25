@@ -15,8 +15,8 @@ Description:
 # PLM
 from PLM.commons                            import DAMGLIST
 from PLM.commons.Core                       import ThreadPool
-from PLM.cores                              import SignalManager, SettingManager
-from PLM.cores.models.Counter              import Counter
+from PLM.commons                            import SignalManager, SettingManager
+from PLM.cores.models.Counter               import Counter
 from PLM.cores.Storages                     import ThreadStorage, WorkerStorage
 
 

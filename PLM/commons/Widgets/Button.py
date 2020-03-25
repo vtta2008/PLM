@@ -17,7 +17,7 @@ from PyQt5.QtWidgets                        import QPushButton, QToolButton
 # PLM
 from PLM.commons.Gui                        import AppIcon, TagIcon
 from PLM.utils                              import check_preset
-from PLM.cores                              import SettingManager, SignalManager
+from PLM.commons                            import SignalManager, SettingManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Button presets """

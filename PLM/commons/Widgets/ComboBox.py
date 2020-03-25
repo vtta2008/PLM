@@ -14,9 +14,8 @@ from PLM import __copyright__
 from PyQt5.QtWidgets                        import QComboBox
 
 # PLM
-from PLM.utils import check_preset
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
+from PLM.utils                              import check_preset
+from PLM.commons                            import SignalManager, SettingManager
 
 class ComboBox(QComboBox):
 

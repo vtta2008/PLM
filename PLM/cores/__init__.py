@@ -12,17 +12,10 @@ Description:
 
 
 from .Loggers                   import Loggers
-from .models.Organisation       import Organisation
-from .models.Project            import Project
-from .models.Task               import Task
-from .models.Team               import Team
-from .models.Temporary          import Temporary
 from .EnvironmentVariable       import EnvironmentVariable
-from PLM.cores.sqls.sqlUtils import sqlUtils
-from .SettingManager            import SettingManager
-from .SignalManager             import SignalManager
+from .sqls                      import sqlUtils, sqlPreset
 from .StyleSheet                import StyleSheet
-from .MultiThreadManager             import MultiThreadManager
+from .MultiThreadManager        import MultiThreadManager
 
 
 # -------------------------------------------------------------------------------------------------------------

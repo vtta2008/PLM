@@ -730,6 +730,8 @@ IGNORE_ICONS = ['Widget', 'bright', 'dark', 'charcoal', 'nuker', 'TopTab1', 'Top
 INI                         = QSettings.IniFormat
 NATIVE                      = QSettings.NativeFormat
 INVALID                     = QSettings.InvalidFormat
+SYS_SCOPE                   = QSettings.SystemScope
+USER_SCOPE                  = QSettings.UserScope
 
 # -------------------------------------------------------------------------------------------------------------
 """ Format """

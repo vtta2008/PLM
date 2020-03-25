@@ -13,7 +13,7 @@ from PLM import __copyright__
 """ Import """
 
 # PyQt5
-from PyQt5.QtCore import QDateTime
+from PyQt5.QtCore                   import QDateTime
 
 
 class DateTime(QDateTime):

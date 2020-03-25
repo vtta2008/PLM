@@ -16,8 +16,7 @@ from PLM import __copyright__
 from PyQt5.QtWidgets                        import QSplashScreen
 
 # PLM
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
+from PLM.commons                            import SignalManager, SettingManager
 
 class SplashScreen(QSplashScreen):
 

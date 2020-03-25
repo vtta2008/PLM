@@ -15,8 +15,7 @@ from PLM import __copyright__
 from PyQt5.QtWidgets                        import QGraphicsItem
 
 # PLM
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
+from PLM.commons                            import SignalManager, SettingManager
 
 
 class GraphicItem(QGraphicsItem):

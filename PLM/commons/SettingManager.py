@@ -14,11 +14,8 @@ from PLM import globalSetting
 # Python
 import os
 
-# PyQt5
-from PyQt5.QtCore                       import QSettings
-
 # PLM
-from PLM.configs                        import INI, SETTING_FILEPTH
+from PLM.configs                        import SETTING_FILEPTH, INI, NATIVE, INVALID, SYS_SCOPE, USER_SCOPE
 from PLM.commons.Core                   import Settings
 
 
@@ -147,19 +144,19 @@ class SettingManager(Settings):
 
     def set_format(self, fm):
         if fm == 'ini':
-            _format = QSettings.IniFormat
+            _format = INI
         elif fm == 'native':
-            _format = QSettings.NativeFormat
+            _format = NATIVE
         else:
-            _format = QSettings.InvalidFormat
+            _format = INVALID
         self.setDefaultFormat(_format)
         return _format
 
     def set_scope(self, scope):
         if scope == 'system':
-            return QSettings.SystemScope
+            return SYS_SCOPE
         else:
-            return QSettings.UserScope
+            return USER_SCOPE
 
     @property
     def mode(self):

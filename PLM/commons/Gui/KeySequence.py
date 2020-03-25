@@ -14,8 +14,8 @@ from PLM import __copyright__
 from PyQt5.QtGui               import QKeySequence
 
 # PLM
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
+from PLM.commons                        import SignalManager, SettingManager
+
 
 class KeySequence(QKeySequence):
 
