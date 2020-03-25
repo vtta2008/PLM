@@ -17,10 +17,11 @@ import sys
 import requests
 
 
-from PLM.configs                        import __localServer__, __google__, STAY_ON_TOP, SERVER_CONNECT_FAIL
+from PLM.configs                        import (__localServer__, __google__, STAY_ON_TOP, SERVER_CONNECT_FAIL,
+                                                cfgData)
 from PLM.cores                          import LocalDatabase
 from PLM.ui.layouts.SplashUI            import SplashUI
-from PLM.ui.models.ThreadManager        import ThreadManager
+from PLM.cores.ThreadManager            import ThreadManager
 from PLM.commons.Widgets                import Application
 from PLM.utils                          import clean_file_ext
 
@@ -45,24 +46,44 @@ class AppModel(Application):
 
         self.splash                     = SplashUI(self)
 
-        self.iconInfo                   = self.splash.iconInfo
-        self.appInfo                    = self.splash.appInfo
-        self.urlInfo                    = self.splash.urlInfo
-        self.dirInfo                    = self.splash.dirInfo
-        self.pthInfo                    = self.splash.pthInfo
-        self.plmInfo                    = self.splash.plmInfo
-        self.deviceInfo                 = self.splash.deviceInfo
-        self.pythonInfo                 = self.splash.pythonInfo
-        self.avatarInfo                 = self.splash.avatarInfo
-        self.logoInfo                   = self.splash.logoInfo
-        self.imageInfo                  = self.splash.imageInfo
-        self.envInfo                    = self.splash.envInfo
-        self.serverInfo                 = self.splash.serverInfo
-        self.formatInfo                 = self.splash.formatInfo
-        self.fontInfo                   = self.splash.fontInfo
+        while not globalSetting.cfgAll:
+            self.wait()
+
+        self.iconInfo                   = self.loadConfigInfo('icon')
+        self.appInfo                    = self.loadConfigInfo('apps')
+        self.urlInfo                    = self.loadConfigInfo('url')
+        self.dirInfo                    = self.loadConfigInfo('dir')
+        self.pthInfo                    = self.loadConfigInfo('pth')
+        self.plmInfo                    = self.loadConfigInfo('plm')
+        self.deviceInfo                 = self.loadConfigInfo('pc')
+        self.pythonInfo                 = self.loadConfigInfo('py')
+        self.avatarInfo                 = self.loadConfigInfo('avatar')
+        self.logoInfo                   = self.loadConfigInfo('logo')
+        self.imageInfo                  = self.loadConfigInfo('img')
+        self.envInfo                    = self.loadConfigInfo('env')
+        self.serverInfo                 = self.loadConfigInfo('server')
+        self.formatInfo                 = self.loadConfigInfo('fmt')
+        self.fontInfo                   = self.loadConfigInfo('font')
 
         self.threadManager              = ThreadManager(self)
         self.database                   = LocalDatabase()
+
+    def wait(self):
+        pass
+
+    def loadConfigInfo(self, config):
+
+        filePth                         = cfgData[config]
+
+        with open(filePth, 'rb') as f:
+            if globalSetting.dataTypeSaving == 'json':
+                import json
+                data = json.load(f)
+            else:
+                import yaml
+                data = yaml.load(f)
+
+        return data
 
     def checkUserData(self):
         try:

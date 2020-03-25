@@ -20,13 +20,15 @@ from PyQt5.QtWidgets                    import QApplication
 # PLM
 from PLM                                import globalSetting
 from PLM.ui.components.Loading          import StaticLoading, RealtimeLoading
-from PLM.ui.components.Storages         import AutoLoadingThread, RealtimeUpdatingThread, ConfigTaskThread
-from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, STAY_ON_TOP,
+from PLM.cores.Storages                 import AutoLoadingThread, RealtimeUpdatingThread, ConfigTaskWorker
+from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, SPLASHSCREEN, splashImagePth,
                                                 ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
                                                 ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
                                                 ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath, ConfigFonts)
 from PLM.commons.Widgets                import SplashScreen, MessageBox
-from PLM.commons.Gui                    import LogoIcon
+from PLM.commons.Gui                    import LogoIcon, Pixmap
+from PLM.commons.Core                   import Timer
+from PLM.cores                          import ThreadManager
 
 
 class SplashUI(SplashScreen):
@@ -62,12 +64,15 @@ class SplashUI(SplashScreen):
             MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
             sys.exit()
 
-        # self.splashPix                  = Pixmap(splashImagePth)
-        # self.setPixmap(self.splashPix)
-        # self.setMask(self.splashPix.mask())
+        self.splashPix                  = Pixmap(splashImagePth)
+        self.setPixmap(self.splashPix)
+        self.setMask(self.splashPix.mask())
 
         self.setWindowIcon(LogoIcon('DAMGTEAM'))
-        self.setWindowFlags(STAY_ON_TOP|FRAMELESS)
+        self.setWindowFlags(SPLASHSCREEN | FRAMELESS)
+
+        self.timer                      = Timer(self)
+        self.threadManager              = ThreadManager(self)
         self.screen                     = self.app.desktop().availableGeometry()
 
         self.realtimeLoading            = RealtimeLoading(self)
@@ -75,7 +80,7 @@ class SplashUI(SplashScreen):
 
         self.autoThread                 = AutoLoadingThread(self.staticLoading, self)
         self.realtimeThread             = RealtimeUpdatingThread(self.realtimeLoading, self)
-        self.configTask                 = ConfigTaskThread(self.autoConfig, self)
+        self.configTask                 = ConfigTaskWorker(self.autoConfig, self)
 
         self.start()
 
@@ -145,16 +150,24 @@ class SplashUI(SplashScreen):
 
     def start(self):
 
+        self.autoThread.signal.result.connect(self.print_output)
+        self.autoThread.signal.finished.connect(self.worker_completed)
+        self.autoThread.signal.progress.connect(self.progress_fn)
+
+        self.realtimeThread.signal.result.connect(self.print_output)
+        self.realtimeThread.signal.finished.connect(self.worker_completed)
+        self.realtimeThread.signal.progress.connect(self.progress_fn)
+
         self.configTask.signal.result.connect(self.print_output)
         self.configTask.signal.finished.connect(self.worker_completed)
         self.configTask.signal.progress.connect(self.progress_fn)
 
+        self.updatePosition()
         self.show()
 
         self.autoThread.start()
         self.realtimeThread.start()
-        self.configTask.start()
-        self.updatePosition()
+        self.threadManager.start(self.configTask)
 
     def resizeEvent(self, event):
         self.resize(event.size().width() + self.bufferW, event.size().height() + self.bufferH)
@@ -176,7 +189,6 @@ class SplashUI(SplashScreen):
 
     def worker_completed(self):
         print('worker completed')
-
 
     def finish(self, widget):
         self.autoThread.stop()

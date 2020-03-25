@@ -11,8 +11,7 @@ Description:
 
 
 from .BaseType          import BaseType
-from .SignalBase        import SignalBase
-from .Dateline          import DateLine
+from .BaseSignal        import BaseSignal
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 2/12/2019 - 10:17 AM

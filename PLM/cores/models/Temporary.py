@@ -8,12 +8,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
-
 
 
 from PLM.cores.base import BaseType
-from PyQt5.QtCore                       import QDateTime
+from PLM.commons.Core import DateTime
 
 
 class Temporary(BaseType):
@@ -26,7 +24,7 @@ class Temporary(BaseType):
         super(Temporary, self).__init__(id, name, mode, type, teamID, projectID, organisationID, startdate, enddate, details)
 
         if self.startdate is None:
-            self.start = QDateTime(self.date.currentDate(), self.time.currentTime())
+            self.start = DateTime(self.date.currentDate(), self.time.currentTime())
         else:
             self.start = self.startdate.endDate
 

@@ -21,7 +21,7 @@ from PLM.cores import Loggers
 # -------------------------------------------------------------------------------------------------------------
 """ Signal class: setup all the signal which will be using. """
 
-class SignalBase(DAMG):
+class BaseSignal(DAMG):
 
     key                                      = 'Signal'
 
@@ -69,7 +69,7 @@ class SignalBase(DAMG):
     _slots                                   = DAMGDICT()
 
     def __init__(self, parent):
-        super(SignalBase, self).__init__(parent)
+        super(BaseSignal, self).__init__(parent)
 
         self.parent                          = parent
         self.logger                          = Loggers(self.__class__.__name__)

@@ -8,20 +8,17 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 """ Import """
 
 # Python
 import os, json
 from playsound import playsound
 
-# PyQt5
-from PyQt5.QtCore                       import QDateTime
 
 # PLM
 from PLM.cores.base import BaseType
 from PLM.configs                            import SOUND_DIR, TASK_DIR
-
+from PLM.commons.Core                       import DateTime
 
 # -------------------------------------------------------------------------------------------------------------
 """ Task class """
@@ -36,7 +33,7 @@ class Task(BaseType):
         super(Task, self).__init__(id, name, mode, type, teamID, projectID, organisationID, startdate, enddate, details)
 
         if self.startdate is None:
-            self.start                  = QDateTime(self.date.currentDate(), self.time.currentTime())
+            self.start                  = DateTime(self.date.currentDate(), self.time.currentTime())
         else:
             self.start                  = self.startdate.endDate
 

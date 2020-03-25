@@ -17,10 +17,10 @@ from PyQt5.QtWidgets                        import QGroupBox
 
 # PLM
 from PLM.configs                            import WAIT_LAYOUT_COMPLETE
-from .                                      import VBoxLayout, HBoxLayout, GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
+from .BoxLayout                             import VBoxLayout, HBoxLayout
+from .GridLayout                            import GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
 from .Label                                 import Label
-from PLM.cores import SettingManager
-from PLM.cores import SignalManager
+from PLM.cores                              import SettingManager, SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Groupbox presets """

@@ -15,13 +15,11 @@ from __future__ import absolute_import, unicode_literals
 import os, json
 from playsound import playsound
 
-# PyQt5
-from PyQt5.QtCore                       import QDateTime
 
 # PLM
 from PLM.cores.base import BaseType
 from PLM.configs                            import SOUND_DIR, PRJ_DIR
-
+from PLM.commons.Core                       import DateTime
 
 class Project(BaseType):
 
@@ -33,7 +31,7 @@ class Project(BaseType):
         super(Project, self).__init__(id, name, mode, type, teamID, projectID, organisationID, startdate, enddate, details)
 
         if self.startdate is None:
-            self.start = QDateTime(self.date.currentDate(), self.time.currentTime())
+            self.start = DateTime(self.date.currentDate(), self.time.currentTime())
         else:
             self.start = self.startdate.endDate
 

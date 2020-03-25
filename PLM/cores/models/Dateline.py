@@ -9,8 +9,9 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PyQt5.QtCore import QDate, QTime, QDateTime
+
 from PLM.commons import DAMG
+from PLM.commons.Core import Date, Time, DateTime
 
 class DateLine(DAMG):
 
@@ -20,7 +21,7 @@ class DateLine(DAMG):
         super(DateLine, self).__init__()
 
         if not year:
-            year = int(QDate().currentDate().year())
+            year = int(Date().currentDate().year())
         elif year < 99:
             year = int("20{0}".format(year))
         else:
@@ -57,9 +58,9 @@ class DateLine(DAMG):
         self.month = int(month)
         self.year = int(year)
 
-        self.time = QTime(self.hour, self.minute, self.second)
-        self.date = QDate(self.year, self.month, self.day)
-        self.endDate = QDateTime(self.date, self.time)
+        self.time = Time(self.hour, self.minute, self.second)
+        self.date = Date(self.year, self.month, self.day)
+        self.endDate = DateTime(self.date, self.time)
 
     def setTime(self, hour=0, minute=0, sec=0):
         return self.time.setHMS(hour, minute, sec)

@@ -16,7 +16,7 @@ from PyQt5.QtCore                               import QDate, QTime
 
 from PLM.commons.Widgets import GroupBox, VBoxLayout, Label
 from PLM.cores import LocalDatabase
-from PLM.cores.base import DateLine
+from PLM.cores.models import DateLine
 from PLM.cores import Task
 
 

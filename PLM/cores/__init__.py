@@ -22,6 +22,7 @@ from .localSQL                  import LocalDatabase
 from .SettingManager            import SettingManager
 from .SignalManager             import SignalManager
 from .StyleSheet                import StyleSheet
+from .ThreadManager             import ThreadManager
 
 
 # -------------------------------------------------------------------------------------------------------------

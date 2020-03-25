@@ -167,6 +167,7 @@ class AutoLoadingThread(WidgetThread):
             self.setParent(self.parent)
 
     def run(self):
+        self.widget.show()
         if self.running:
             self.widget.rotate()
 
@@ -182,6 +183,7 @@ class RealtimeUpdatingThread(WidgetThread):
             self.setParent(self.parent)
 
     def run(self):
+        self.widget.show()
         if self.running:
             self.widget.update()
 

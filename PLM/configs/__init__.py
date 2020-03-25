@@ -838,6 +838,7 @@ UPDATE_MINIMALVIEW          = QGraphicsView.MinimalViewportUpdate
 
 STAY_ON_TOP                 = Qt.WindowStaysOnTopHint
 STRONG_FOCUS                = Qt.StrongFocus
+SPLASHSCREEN                = Qt.SplashScreen
 FRAMELESS                   = Qt.FramelessWindowHint
 CUSTOMIZE                   = Qt.CustomizeWindowHint
 CLOSEBTN                    = Qt.WindowCloseButtonHint
@@ -1283,6 +1284,23 @@ class DarkPalette(object):
         """Return the ordered colored palette dictionary."""
         return cls.to_dict(colors_only=True)
 
+cfgData = {
+    'icon': iconCfg,
+    'apps': appsCfg,
+    'url': urlCfg,
+    'dir': dirCfg,
+    'pth': pthCfg,
+    'plm': plmCfg,
+    'logo': logoCfg,
+    'pc': pcCfg,
+    'py': pythonCfg,
+    'avatar': avatarCfg,
+    'img': imageCfg,
+    'env': envVarCfg,
+    'server': serverCfg,
+    'fmt': fmtCfg,
+    'font': fontCfg,
+}
 
 iconMissing                         = []
 toolTips                            = {}
@@ -1734,6 +1752,7 @@ class ConfigImage(Cfg):
 class ConfigIcon(Cfg):
 
     key                                 = 'ConfigIcon'
+    _filePath                           = iconCfg
 
     def __init__(self):
         Cfg.__init__(self)
@@ -1814,6 +1833,7 @@ class ConfigEnvVar(Cfg):
 class ConfigUrl(Cfg):
 
     key                             = 'ConfigUrl'
+    _filePath                       = urlCfg
 
     def __init__(self):
         Cfg.__init__(self)
@@ -2620,6 +2640,7 @@ else:
                 try:
                     physical_disk.associators("Win32_DiskDriveToDiskPartition")
                 except Exception:
+                    print('Error occur due to the use of multi thread')
                     disk = {}
                     key = 'Hard Drive'
                     for partition in psutil.disk_partitions():

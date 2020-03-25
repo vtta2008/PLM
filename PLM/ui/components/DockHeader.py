@@ -13,7 +13,7 @@ Description:
 
 
 from PLM.ui.base                        import BaseDock
-from PLM.ui.models.ThreadManager        import ThreadManager
+from PLM.cores.ThreadManager import ThreadManager
 from .MainMenuBar                       import MainMenuBar
 from .MainToolBar                       import MainToolBar
 from .ConnectStatus                     import ConnectStatus
