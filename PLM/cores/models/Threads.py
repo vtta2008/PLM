@@ -85,8 +85,11 @@ class AutoLoadingThread(WidgetThread):
         if self.parent:
             self.setParent(self.parent)
 
-    def run(self):
+        # self.timer.timeout.connect(self.widget.rotate)
+        # self.timer.start(50)
         self.widget.show()
+
+    def run(self):
         if self.running:
             self.widget.rotate()
 
@@ -102,8 +105,10 @@ class RealtimeUpdatingThread(WidgetThread):
         if self.parent:
             self.setParent(self.parent)
 
-    def run(self):
+        self.timer.timeout.connect(self.widget.update)
         self.widget.show()
+
+    def run(self):
         if self.running:
             self.widget.update()
 
