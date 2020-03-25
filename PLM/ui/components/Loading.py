@@ -60,6 +60,13 @@ class StaticLoading(Widget):
         self.timer.timeout.connect(self.rotate)
         self.updateTimmer()
 
+    def rotate(self):
+        self._count += 1
+        if self._count > self._numOfitems:
+            self._count                 = 0
+        self.update()
+        print('count: {0}'.format(self._count))
+
     def paintEvent(self, event):
 
         painter                         = QPainter()
@@ -114,18 +121,13 @@ class StaticLoading(Widget):
 
         return color
 
-    def rotate(self):
-        self._count += 1
-        if self._count > self._numOfitems:
-            self._count                 = 0
-        self.update()
-
     def updateTimmer(self):
         return self.timer.setInterval(1000/(self.numOfitems*self.revolutionPerSec))
 
     def showEvent(self, event):
         self._count                     = 0
         self.timer.start(50)
+        event.accept()
 
     @property
     def numOfitems(self):

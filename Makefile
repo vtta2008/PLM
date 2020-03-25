@@ -2,10 +2,10 @@
 # that will help us automate commonly performed tasks like building, testing, linting or cleaning our project
 
 # The binary to build (just the basename).
-MODULE := PLM
+MODULE := 
 
 # Where to push the docker image.
-REGISTRY ?= docker.pkg.github.com/vtta2008/PLM
+REGISTRY ?= 
 
 IMAGE := $(REGISTRY)/$(MODULE)
 

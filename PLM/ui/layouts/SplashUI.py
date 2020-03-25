@@ -51,7 +51,8 @@ class LoadingBar(ProgressBar):
             self.pix                    = self.parent.splashPix
             self.setMinimum(0)
             self.setMaximum(self.num*10)
-            self.setGeometry(50, self.pix.height() - 50, self.pix.width() - 100, 20)
+
+            self.setGeometry((self.pix.width()-self.width())/4, self.pix.height() - 50, self.pix.width()/4, 20)
             self.setTextVisible(True)
             self.setStyleSheet(StyleSheet.progressBar())
 
@@ -111,11 +112,58 @@ class SplashUI(SplashScreen):
 
         self.autoThread                 = AutoLoadingThread(self.staticLoading, self)
         self.realtimeThread             = RealtimeUpdatingThread(self.realtimeLoading, self)
+
+        self.autoThread.signal.result.connect(self.threadManager.print_output)
+        self.autoThread.signal.finished.connect(self.threadManager.worker_completed)
+        self.autoThread.signal.progress.connect(self.threadManager.progress_fn)
+
+        self.realtimeThread.signal.result.connect(self.threadManager.print_output)
+        self.realtimeThread.signal.finished.connect(self.threadManager.worker_completed)
+        self.realtimeThread.signal.progress.connect(self.threadManager.progress_fn)
+
+        self.updatePosition()
+        self.autoThread.start()
+        self.realtimeThread.start()
+
         self.progress                   = LoadingBar(self)
+        self.show()
+        self.progress.show()
+        self.autoConfig()
+        # self.app.processEvents()
 
-        self.start()
+    def updatePosition(self):
+        return self.move((self.screen.width() - self.width())/2, (self.screen.height() - self.height())/2)
 
-        self.app.processEvents()
+    def stopThreads(self):
+        print('thread stop')
+        self.autoThread.stop()
+        self.realtimeThread.stop()
+        self.autoThread.wait()
+        self.realtimeThread.wait()
+
+    def killThreads(self):
+        self.autoThread.terminate()
+        self.realtimeThread.terminate()
+
+    def resizeEvent(self, event):
+        self.resize(event.size().width() + self.bufferW, event.size().height() + self.bufferH)
+        self.staticLoading.resize(self.size())
+        self.realtimeLoading.resize(self.size())
+        event.accept()
+
+    def setText(self, text):
+        self.realtimeThread.setText(text)
+        # super(SplashUI, self).setText(text)
+        # self.app.processEvents()
+
+    def setProgress(self, val):
+        value = int((100*val)/(self.num*10))
+        for i in range(value):
+            self._percentCount += (i+1)
+            self.progress.setValue(self._percentCount)
+            self.realtimeThread.setProgress(str(self._percentCount))
+            # super(SplashUI, self).setProgress(self._percentCount)
+            # self.app.processEvents()
 
     def autoConfig(self):
 
@@ -174,46 +222,9 @@ class SplashUI(SplashScreen):
                         print('{0} is None.'.format(info.key))
                         check = False
                 globalSetting.setCfgAll(check)
+                self.stopThreads()
             else:
                 globalSetting.setCfgAll(False)
-
-    def updatePosition(self):
-        return self.move((self.screen.width() - self.width())/2, (self.screen.height() - self.height())/2)
-
-    def start(self):
-
-        self.autoThread.signal.result.connect(self.threadManager.print_output)
-        self.autoThread.signal.finished.connect(self.threadManager.worker_completed)
-        self.autoThread.signal.progress.connect(self.threadManager.progress_fn)
-
-        self.realtimeThread.signal.result.connect(self.threadManager.print_output)
-        self.realtimeThread.signal.finished.connect(self.threadManager.worker_completed)
-        self.realtimeThread.signal.progress.connect(self.threadManager.progress_fn)
-
-        self.autoThread.start()
-        self.realtimeThread.start()
-        # self.threadManager.start(self.configTask)
-
-        self.updatePosition()
-        self.show()
-        self.progress.show()
-        self.autoConfig()
-
-    def resizeEvent(self, event):
-        self.resize(event.size().width() + self.bufferW, event.size().height() + self.bufferH)
-        self.staticLoading.resize(self.size())
-        self.realtimeLoading.resize(self.size())
-        event.accept()
-
-    def setText(self, text):
-        self.realtimeThread.setText(text)
-
-    def setProgress(self, val):
-        value = int((100*val)/(self.num*10))
-        for i in range(value):
-            self._percentCount += (i+1)
-            self.progress.setValue(self._percentCount)
-            self.realtimeThread.setProgress(str(self._percentCount))
 
     @property
     def bufferH(self):
