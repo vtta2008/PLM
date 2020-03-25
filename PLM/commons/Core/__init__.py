@@ -14,7 +14,7 @@ from .DateTime          import DateTime
 from .File              import File, QssFile
 from .Process           import Process
 from .Rect              import Rect, RectF
-from .Runnable          import Runnable, RequestWorker, Worker
+from .Runnable          import Runnable, Worker
 from .Settings          import Settings
 from .Size              import Size
 from .TextSteam         import TextStream

@@ -16,7 +16,7 @@ from PyQt5.QtCore                           import pyqtSignal
 
 from PLM.ui.base                            import BaseStorage
 from PLM.commons                            import DAMGLIST
-from PLM.commons.Core                       import Thread, Worker, RequestWorker, Timer
+from PLM.commons.Core                       import Thread, Worker, Timer
 from PLM.cores.Errors                       import (ThreadNotFoundError, WorkerNotFoundError, CreateThreadError,
                                                     CreateWorkerError)
 from PLM.utils                              import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
@@ -142,9 +142,9 @@ class WorkerStorage(BaseStorage):
     def __init__(self):
         super(WorkerStorage, self).__init__()
 
-        for worker in [RequestWorker, ]:
-            self.workers.append(RequestWorker)
-            self.register(worker)
+        # for worker in [RequestWorker, ]:
+        #     self.workers.append(RequestWorker)
+        #     self.register(worker)
 
     def getWorker(self, key):
         if key in self.keys():
