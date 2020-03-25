@@ -16,7 +16,7 @@ Description:
 # Plt
 from PLM.commons.Widgets        import Widget, GridLayout, GroupBox, GroupGrid
 from PLM.ui.base                import Avatar
-from PLM.cores                  import LocalDatabase
+from PLM.cores                  import sqlUtils
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab3 """
@@ -31,7 +31,7 @@ class MidTab2(Widget):
         self.buttonManager      = buttonManager
         self.parent             = parent
         self.layout             = GridLayout()
-        self.query              = LocalDatabase()
+        self.query              = sqlUtils()
 
         self.buildUI()
         self.setLayout(self.layout)

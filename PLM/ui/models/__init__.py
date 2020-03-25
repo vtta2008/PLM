@@ -13,9 +13,7 @@ Description:
 from .ActionManager         import ActionManager
 from .AppModel              import AppModel
 from .ButtonManager         import ButtonManager
-from .EventManager          import EventManager
-from .RegistryLayout              import RegistryLayout
-from .ThreadManager         import ThreadManager
+from .RegistryLayout        import RegistryLayout
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 7/12/2019 - 4:35 PM

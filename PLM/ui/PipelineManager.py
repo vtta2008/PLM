@@ -9,7 +9,7 @@ Description:
 """ Import """
 
 # PLM
-from PLM.configs                        import __homepage__, __appname__, dockT, dockB, dockAll
+from PLM.configs                        import __homepage__, __appname__, dockT, dockB
 from PLM.commons                        import DAMGDICT
 from PLM.commons.Widgets                import MainWindow, Widget, GridLayout
 from PLM.commons.Gui                    import LogoIcon
@@ -17,7 +17,7 @@ from .components                        import (Footer, MainStatusBar, MenubarDo
                                                 BotTabDock, NotificationDock, MidTabDock)
 from .models.ButtonManager              import ButtonManager
 from .models.ActionManager              import ActionManager
-from .models.ThreadManager              import ThreadManager
+from PLM.cores.MultiThreadManager            import MultiThreadManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
@@ -40,7 +40,7 @@ class PipelineManager(MainWindow):
 
         self.actionManager              = ActionManager(self.parent)
         self.buttonManager              = ButtonManager(self.parent)
-        self.threadManager              = ThreadManager(self.parent)
+        self.threadManager              = MultiThreadManager(self.parent)
 
         self.mainWidget                 = Widget()
         self.layout                     = GridLayout()

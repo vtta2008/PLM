@@ -11,12 +11,12 @@ Description:
 """ Import """
 
 # PLM
-from .base                              import SignalBase
+from .base                              import BaseSignal
 
 # -------------------------------------------------------------------------------------------------------------
 """ Signal class: setup all the signal which will be using. """
 
-class SignalManager(SignalBase):
+class SignalManager(BaseSignal):
 
     key                             = "SignalManager"
 

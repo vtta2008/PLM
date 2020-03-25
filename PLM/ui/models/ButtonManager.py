@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.ui.base import BaseKeys
+from PLM.cores.base import BaseKeys
 
 class ButtonManager(BaseKeys):
 
@@ -17,19 +17,9 @@ class ButtonManager(BaseKeys):
     _name               = 'ButtonManager'
 
     def __init__(self, parent=None):
-
         super(ButtonManager, self).__init__(parent)
-
         self.parent                 = parent
 
-    def managerButtonGroupBox(self, parent):
-        return self.createButtons(self.managerButtons, parent)
-
-    def tagButtonsFooterWidget(self, parent):
-        return self.createButtons(self.tagButtons, parent)
-
-    def userButtonGroupBox(self, parent):
-        return self.createButtons(self.userButtons, parent)
 
     def register(self, button):
         if not button.key in self.keys():
@@ -40,6 +30,15 @@ class ButtonManager(BaseKeys):
 
     def buttons(self):
         return self.values()
+
+    def managerButtonGroupBox(self, parent):
+        return self.createButtons(self.managerButtons, parent)
+
+    def tagButtonsFooterWidget(self, parent):
+        return self.createButtons(self.tagButtons, parent)
+
+    def userButtonGroupBox(self, parent):
+        return self.createButtons(self.userButtons, parent)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 10:22 AM

@@ -226,6 +226,7 @@ CORES_DIR           = os.path.join(ROOT, 'cores').replace('\\', '/')
 BASE_DIR            = os.path.join(CORES_DIR, 'base').replace('\\', '/')
 LOGGER_DIR          = os.path.join(CORES_DIR, 'Loggers').replace('\\', '/')
 MODELS_DIR          = os.path.join(CORES_DIR, 'models').replace('\\', '/')
+SQL_DIR             = os.path.join(CORES_DIR, 'sqls').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' resources '''
@@ -314,7 +315,7 @@ avatarCfg                           = os.path.join(CFG_DIR, 'avatars.cfg')
 logoCfg                             = os.path.join(CFG_DIR, 'logo.cfg')
 webIconCfg                          = os.path.join(CFG_DIR, 'webIcon.cfg')
 nodeIconCfg                         = os.path.join(CFG_DIR, 'nodeIcons.cfg')
-imageCfg                         = os.path.join(CFG_DIR, 'images.cfg')
+imageCfg                            = os.path.join(CFG_DIR, 'images.cfg')
 tagCfg                              = os.path.join(CFG_DIR, 'tags.cfg')
 pythonCfg                           = os.path.join(CFG_DIR, 'python.cfg')
 plmCfg                              = os.path.join(CFG_DIR, 'pipeline.cfg')
@@ -838,6 +839,7 @@ UPDATE_MINIMALVIEW          = QGraphicsView.MinimalViewportUpdate
 
 STAY_ON_TOP                 = Qt.WindowStaysOnTopHint
 STRONG_FOCUS                = Qt.StrongFocus
+SPLASHSCREEN                = Qt.SplashScreen
 FRAMELESS                   = Qt.FramelessWindowHint
 CUSTOMIZE                   = Qt.CustomizeWindowHint
 CLOSEBTN                    = Qt.WindowCloseButtonHint
@@ -1283,6 +1285,23 @@ class DarkPalette(object):
         """Return the ordered colored palette dictionary."""
         return cls.to_dict(colors_only=True)
 
+cfgData = {
+    'icon': iconCfg,
+    'apps': appsCfg,
+    'url': urlCfg,
+    'dir': dirCfg,
+    'pth': pthCfg,
+    'plm': plmCfg,
+    'logo': logoCfg,
+    'pc': pcCfg,
+    'py': pythonCfg,
+    'avatar': avatarCfg,
+    'img': imageCfg,
+    'env': envVarCfg,
+    'server': serverCfg,
+    'fmt': fmtCfg,
+    'font': fontCfg,
+}
 
 iconMissing                         = []
 toolTips                            = {}
@@ -1582,6 +1601,7 @@ class ConfigDirectory(Cfg):
         self.add('BASE_DIR', BASE_DIR)
         self.add('LOGGER_DIR', LOGGER_DIR)
         self.add('MODELS_DIR', MODELS_DIR)
+        self.add('SQL_DIR', SQL_DIR)
 
         self.add('RESOURCES_DIR', RESOURCES_DIR)
         self.add('AVATAR_DIR', AVATAR_DIR)
@@ -1734,6 +1754,7 @@ class ConfigImage(Cfg):
 class ConfigIcon(Cfg):
 
     key                                 = 'ConfigIcon'
+    _filePath                           = iconCfg
 
     def __init__(self):
         Cfg.__init__(self)
@@ -1814,6 +1835,7 @@ class ConfigEnvVar(Cfg):
 class ConfigUrl(Cfg):
 
     key                             = 'ConfigUrl'
+    _filePath                       = urlCfg
 
     def __init__(self):
         Cfg.__init__(self)
@@ -2620,6 +2642,7 @@ else:
                 try:
                     physical_disk.associators("Win32_DiskDriveToDiskPartition")
                 except Exception:
+                    print('Error occur due to the use of multi thread')
                     disk = {}
                     key = 'Hard Drive'
                     for partition in psutil.disk_partitions():

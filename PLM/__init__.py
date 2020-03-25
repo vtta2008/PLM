@@ -704,7 +704,7 @@ class ModesGlb(ConfigGlb):
     _allowLocalMode                             = False
 
     _qtBindingMode                              = 'PyQt5'
-    _dataTypeSaving                         = 'json'
+    _dataTypeSaving                             = 'json'
     _splashLoadingMode                          = 'progress'
 
     loadingMode                                 = ['loading', 'progress']

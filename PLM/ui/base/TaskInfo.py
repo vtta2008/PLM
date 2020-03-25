@@ -15,8 +15,8 @@ import json
 from PyQt5.QtCore                               import QDate, QTime
 
 from PLM.commons.Widgets import GroupBox, VBoxLayout, Label
-from PLM.cores import LocalDatabase
-from PLM.cores.base import DateLine
+from PLM.cores import sqlUtils
+from PLM.cores.models import DateLine
 from PLM.cores import Task
 
 
@@ -29,7 +29,7 @@ class TaskInfo(GroupBox):
     def __init__(self, task):
         super(TaskInfo, self).__init__()
 
-        self.database                           = LocalDatabase()
+        self.database                           = sqlUtils()
 
         with open(task, 'r') as f:
             self._data                          = json.load(f)

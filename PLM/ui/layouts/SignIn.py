@@ -23,7 +23,7 @@ from PLM.commons.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button,
                                  Label, MessageBox, GroupGrid, )
 from PLM.commons.Gui                 import AppIcon
 from PLM.utils import bool2str
-from PLM.cores.localSQL import LocalDatabase
+from PLM.cores.sqls.sqlUtils import sqlUtils
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """
@@ -42,7 +42,7 @@ class SignIn(Widget):
         self.setWindowTitle('Sign In')
 
         self.layout             = GridLayout()
-        self.db                 = LocalDatabase()
+        self.db                 = sqlUtils()
         self.buildUI()
         self.setLayout(self.layout)
 

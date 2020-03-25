@@ -16,9 +16,9 @@ from PLM.configs                        import __appSlogan__, __appname__
 from PLM.commons.Widgets                import SystemTrayIcon
 from PLM.commons.Gui                    import LogoIcon
 from PLM.ui.components                  import SysTrayIconMenu
-from PLM.ui.models.EventManager         import EventManager
+from PLM.cores.EventManager import EventManager
 from PLM.ui.models.ActionManager        import ActionManager
-from PLM.cores                          import LocalDatabase
+from PLM.cores                          import sqlUtils
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -30,7 +30,7 @@ class SysTray(SystemTrayIcon):
     def __init__(self, parent=None):
         super(SysTray, self).__init__(parent)
 
-        self.db                         = LocalDatabase()
+        self.db                         = sqlUtils()
         self.actionManager              = ActionManager()
         self.eventManager               = EventManager()
 
@@ -86,10 +86,10 @@ class SysTray(SystemTrayIcon):
     def login(self, newVal):
         self._login = newVal
 
-    def hide(self):
+    def close(self):
         return self.show()
 
-    def close(self):
+    def hide(self):
         return self.show()
 
     def setVisible(self, bool):

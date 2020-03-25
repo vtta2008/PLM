@@ -15,7 +15,7 @@ from PLM import globalSetting
 from functools                          import partial
 
 # PLM
-from PLM.commons                        import DAMGDICT
+from .BaseStorage                       import BaseStorage
 from PLM.commons.Widgets                import Action, Button
 from PLM.utils                          import is_string, is_action, is_button
 from PLM.cores.Errors                   import ActionKeyConfigError, ActionRegisterError, ButtonRegisterError
@@ -24,7 +24,7 @@ from PLM.configs                        import (OPEN_URL_KEYS, CONFIG_DEV, CONFI
                                                 CONFIG_EXTRA, LIBRARY_UI_KEYS, SHORTCUT_KEYS, STYLESHEET_KEYS,
                                                 PLUGIN_UI_KEY, FORM_KEY, BTNTAGSIZE, TAGBTNSIZE, plmInfo)
 
-class BaseKeys(DAMGDICT):
+class BaseKeys(BaseStorage):
 
     key                                 = 'KeyBase'
 
@@ -69,9 +69,6 @@ class BaseKeys(DAMGDICT):
     def __init__(self, parent=None):
         super(BaseKeys, self).__init__(self)
         self.parent                     = parent
-
-    def register(self, object):
-        pass
 
     def keyConfigError(self, key):
         ActionKeyConfigError('Key is not in plmInfo: {0}'.format(key))

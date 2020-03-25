@@ -9,9 +9,13 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.commons                import DAMGDICT, DAMG
 
-from PyQt5.QtGui        import QWheelEvent
+
+from PyQt5.QtGui                import QWheelEvent
+
+from PLM.commons                import DAMGDICT, DAMG
+from PLM.cores.base             import BaseStorage
+
 
 class WheelEvent(DAMG):
 
@@ -28,7 +32,8 @@ class WheelEvent(DAMG):
             return True
         return False
 
-class EventManager(DAMGDICT):
+
+class EventManager(BaseStorage):
 
     key = 'EventManager'
 

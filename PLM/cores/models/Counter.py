@@ -15,7 +15,7 @@ Description:
 from PLM.commons.Core                       import Timer
 
 
-class Counting(Timer):
+class Counter(Timer):
 
     key                                     = 'Counting'
     printCounter                            = False
@@ -23,7 +23,7 @@ class Counting(Timer):
     _counter                                = 0
 
     def __init__(self, countLimited=0, interval=10000):
-        super(Counting, self).__init__()
+        super(Counter, self).__init__()
 
         self._interval                      = interval
         self._countLimited                  = countLimited

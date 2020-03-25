@@ -34,7 +34,7 @@ def getTime():
     return datetimeLog.split('||')[1]
 
 
-class LocalDatabase(DAMG):
+class sqlUtils(DAMG):
 
     key                                 = 'LocalDatabase'
     _dbPath                             = LOCAL_DB
@@ -46,7 +46,7 @@ class LocalDatabase(DAMG):
     db_types                            = DB_ATTRIBUTE_TYPE
 
     def __init__(self):
-        super(LocalDatabase, self).__init__(self)
+        super(sqlUtils, self).__init__(self)
 
         self.date                       = Date()
         self.time                       = Timer()

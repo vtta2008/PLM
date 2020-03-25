@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.ui.base import BaseKeys
+from PLM.cores.base import BaseKeys
 
 class ActionManager(BaseKeys):
 
