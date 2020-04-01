@@ -65,7 +65,7 @@ class StaticLoading(Widget):
         if self._count > self._numOfitems:
             self._count                 = 0
         self.update()
-        print('count: {0}'.format(self._count))
+        # print('count: {0}'.format(self._count))
 
     def paintEvent(self, event):
 
@@ -275,7 +275,7 @@ class RealtimeLoading(Widget):
         else:
             x                           = (self.width() + self.rMargin + self.lMargin)
 
-        y                               = self.height() - self.parent.bufferH + self.textHeight() + self.bMargin
+        y                               = self.height() - self.parent.bufferH - self.textHeight() - self.bMargin
 
         return x, y
 
@@ -286,7 +286,7 @@ class RealtimeLoading(Widget):
         else:
             x                           = (self.width() + self.rMargin + self.lMargin)
 
-        y                               = self.height() - self.parent.bufferH + self.textHeight() + self.bMargin*4
+        y                               = self.height() - self.parent.bufferH - self.textHeight() + self.bMargin*2
 
         return x, y
 

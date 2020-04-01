@@ -50,10 +50,10 @@ class LoadingBar(ProgressBar):
             self.num                    = self.parent.num
             self.pix                    = self.parent.splashPix
             self.setMinimum(0)
-            self.setMaximum(self.num*10)
+            self.setMaximum(100)
 
-            self.setGeometry((self.pix.width()-self.width())/4, self.pix.height() - 50, self.pix.width()/4, 20)
-            self.setTextVisible(True)
+            self.setGeometry((self.pix.width()-self.width())/2 + 115, self.pix.height() - 115, self.pix.width()/10, 10)
+            self.setTextVisible(False)
             self.setStyleSheet(StyleSheet.progressBar())
 
     def start(self):
@@ -107,11 +107,8 @@ class SplashUI(SplashScreen):
         self.threadManager              = MultiThreadManager(self)
         self.screen                     = self.app.desktop().availableGeometry()
 
-        self.realtimeLoading            = RealtimeLoading(self)
-        self.staticLoading              = StaticLoading(self)
-
-        self.autoThread                 = AutoLoadingThread(self.staticLoading, self)
-        self.realtimeThread             = RealtimeUpdatingThread(self.realtimeLoading, self)
+        self.autoThread                 = AutoLoadingThread(StaticLoading(self), self)
+        self.realtimeThread             = RealtimeUpdatingThread(RealtimeLoading(self), self)
 
         self.autoThread.signal.result.connect(self.threadManager.print_output)
         self.autoThread.signal.finished.connect(self.threadManager.worker_completed)
@@ -126,10 +123,105 @@ class SplashUI(SplashScreen):
         self.realtimeThread.start()
 
         self.progress                   = LoadingBar(self)
-        self.show()
         self.progress.show()
+        self.show()
         self.autoConfig()
-        # self.app.processEvents()
+
+    def autoConfig(self):
+
+        words = ['Python', 'Directories', 'File Paths', 'Urls & Links', 'Environment Variable', 'Icons', 'Avatars',
+                 'Logo', 'Images', 'Servers', 'Formats', 'Fonts', 'Local Devices', 'Installed Apps', 'Pipeline Functions']
+
+        configs = [ConfigPython, ConfigDirectory, ConfigPath, ConfigUrl, ConfigEnvVar, ConfigIcon, ConfigAvatar,
+                   ConfigLogo, ConfigImage, ConfigServer, ConfigFormats, ConfigFonts, ConfigMachine, ConfigApps,
+                   ConfigPipeline]
+
+        for i in range(len(words)):
+            if not i == (len(words) - 1):
+                self.setText('Config {0}'.format(words[i]))
+                if i == 0:
+                    self.pythonInfo = configs[i]()
+                elif i == 1:
+                    self.dirInfo    = configs[i]()
+                elif i == 2:
+                    self.pthInfo    = configs[i]()
+                elif i == 3:
+                    self.urlInfo    = configs[i]()
+                elif i == 4:
+                    self.envInfo    = configs[i]()
+                elif i == 5:
+                    self.iconInfo   = configs[i]()
+                elif i == 6:
+                    self.avatarInfo = configs[i]()
+                elif i == 7:
+                    self.logoInfo   = configs[i]()
+                elif i == 8:
+                    self.imageInfo  = configs[i]()
+                elif i == 9:
+                    self.serverInfo = configs[i]()
+                elif i == 10:
+                    self.formatInfo = configs[i]()
+                elif i == 11:
+                    self.fontInfo   = configs[i]()
+                elif i == 12:
+                    self.deviceInfo = configs[i]()
+                elif i == 13:
+                    self.appInfo    = configs[i]()
+                self.setProgress(1)
+            else:
+                self.setText('Config {0}'.format('Pipeline Functions'))
+                if self.iconInfo and self.appInfo and self.urlInfo and self.dirInfo and self.pthInfo:
+                    self.plmInfo = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
+                    self.setProgress(2)
+                else:
+                    print('Can not conducting Pipeline Functions configurations, some of other configs has not been done yet.')
+                    self.app.exit()
+
+            self._cfgCount += 1
+            self.processEvents()
+
+        check = False
+
+        if self.cfgCount == len(words):
+            for info in [self.pythonInfo, self.dirInfo, self.pthInfo, self.urlInfo, self.envInfo, self.iconInfo,
+                         self.avatarInfo, self.logoInfo, self.imageInfo, self.serverInfo, self.formatInfo,
+                         self.fontInfo, self.deviceInfo, self.appInfo, self.plmInfo]:
+                if not info:
+                    print('{0} is None.'.format(info.key))
+                    check = False
+                else:
+                    check = True
+            self.stopThreads()
+
+        globalSetting.setCfgAll(check)
+
+    def resizeEvent(self, event):
+        self.resize(event.size().width() + self.bufferW, event.size().height() + self.bufferH)
+        self.autoThread.widget.resize(self.size())
+        self.realtimeThread.widget.resize(self.size())
+        event.accept()
+
+    def processEvents(self):
+        if not self.app:
+            MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
+            sys.exit()
+        else:
+            return self.app.processEvents()
+
+    def setText(self, text):
+        self.realtimeThread.setText(text)
+        self.processEvents()
+
+    def setProgress(self, val):
+        value                   = (100*val)/self.num
+        for i in range(int(value)):
+            self._percentCount  += 1
+            if self.progress:
+                self.progress.setValue(self.percentCount)
+            self.realtimeThread.setProgress('{0}%'.format(str(self.percentCount)))
+
+            if self.percentCount == 96:
+                self._percentCount = 100
 
     def updatePosition(self):
         return self.move((self.screen.width() - self.width())/2, (self.screen.height() - self.height())/2)
@@ -144,87 +236,6 @@ class SplashUI(SplashScreen):
     def killThreads(self):
         self.autoThread.terminate()
         self.realtimeThread.terminate()
-
-    def resizeEvent(self, event):
-        self.resize(event.size().width() + self.bufferW, event.size().height() + self.bufferH)
-        self.staticLoading.resize(self.size())
-        self.realtimeLoading.resize(self.size())
-        event.accept()
-
-    def setText(self, text):
-        self.realtimeThread.setText(text)
-        # super(SplashUI, self).setText(text)
-        # self.app.processEvents()
-
-    def setProgress(self, val):
-        value = int((100*val)/(self.num*10))
-        for i in range(value):
-            self._percentCount += (i+1)
-            self.progress.setValue(self._percentCount)
-            self.realtimeThread.setProgress(str(self._percentCount))
-            # super(SplashUI, self).setProgress(self._percentCount)
-            # self.app.processEvents()
-
-    def autoConfig(self):
-
-        words = ['Python', 'Directories', 'File Paths', 'Urls & Links', 'System Environment Variable', 'Icons', 'Avatars',
-                 'Logo', 'Images', 'Servers', 'Formats', 'Fonts', 'Local Devices', 'App Installed', 'Pipeline']
-
-        for i in range(len(words)):
-
-            self.setText('Config {0}'.format(words[i]))
-
-            if i == 0:
-                self.pythonInfo             = ConfigPython()
-            elif i == 1:
-                self.dirInfo                = ConfigDirectory()
-            elif i == 2:
-                self.pthInfo                = ConfigPath()
-            elif i == 3:
-                self.urlInfo                = ConfigUrl()
-            elif i == 4:
-                self.envInfo                = ConfigEnvVar()
-            elif i == 5:
-                self.iconInfo               = ConfigIcon()
-            elif i == 6:
-                self.avatarInfo             = ConfigAvatar()
-            elif i == 7:
-                self.logoInfo               = ConfigLogo()
-            elif i == 8:
-                self.imageInfo              = ConfigImage()
-            elif i == 9:
-                self.serverInfo             = ConfigServer()
-            elif i == 10:
-                self.formatInfo             = ConfigFormats()
-            elif i == 11:
-                self.fontInfo               = ConfigFonts()
-            elif i == 12:
-                self.deviceInfo             = ConfigMachine()
-            elif i == 13:
-                self.appInfo                = ConfigApps()
-            else:
-                if self.iconInfo and self.appInfo and self.urlInfo and self.dirInfo and self.pthInfo:
-                    self.plmInfo = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
-
-            if i == 14:
-                self.setProgress(2)
-            else:
-                self.setProgress(1)
-
-            self._cfgCount = i + 1
-
-            if self._cfgCount == len(words):
-                check = True
-                for info in [self.pythonInfo, self.dirInfo, self.pthInfo, self.urlInfo, self.envInfo, self.iconInfo,
-                             self.avatarInfo, self.logoInfo, self.imageInfo, self.serverInfo, self.formatInfo,
-                             self.fontInfo, self.deviceInfo, self.appInfo, self.plmInfo]:
-                    if not info:
-                        print('{0} is None.'.format(info.key))
-                        check = False
-                globalSetting.setCfgAll(check)
-                self.stopThreads()
-            else:
-                globalSetting.setCfgAll(False)
 
     @property
     def bufferH(self):
