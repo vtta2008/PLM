@@ -5,7 +5,7 @@ QProgressBar {
     background-color: #19232D;
     background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #fff, stop: 0.4999 #eee, stop: 0.5 #ddd, stop: 1 #eee );
     text-align: center;
-    border: 2px  solid #32414B;
+    border: 0.1px  solid #32414B;
     border-radius: 5px;
     border-color: beige;
 
@@ -16,6 +16,7 @@ QProgressBar::chunk {
 
     border-color: #19232D;
     border: 1px solid black;
+    border-radius: 5px;
     background: QLinearGradient( x1: 0, y1: 0, x2: 1, y2: 0, stop: 0 #78d, stop: 0.4999 #46a, stop: 0.5 #45a, stop: 1 #238 );
 
 }
