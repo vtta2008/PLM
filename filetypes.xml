@@ -10,7 +10,6 @@
       <mapping pattern="requirements_pyside2" type="PLAIN_TEXT" />
       <mapping pattern="LICENCE" type="PLAIN_TEXT" />
       <mapping pattern="LINKS" type="PLAIN_TEXT" />
-      <mapping ext="qss" type="PLAIN_TEXT" />
       <mapping ext="in" type="PLAIN_TEXT" />
     </extensionMap>
   </component>
