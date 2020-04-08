@@ -4,6 +4,7 @@
     <extensionMap>
       <mapping pattern="requirements_pyqt5.txt" type="PLAIN_TEXT" />
       <mapping pattern=".cmds" type="PLAIN_TEXT" />
+      <mapping pattern="token" type="PLAIN_TEXT" />
       <mapping pattern="VERSION" type="PLAIN_TEXT" />
       <mapping pattern="requirements_pyqt5" type="PLAIN_TEXT" />
       <mapping pattern="project_structure" type="PLAIN_TEXT" />
