@@ -27,7 +27,7 @@ TN  = ['curUser'     , 'userTokenLogin', 'timelog' , 'tmpConfig', 'metadata', ] 
 
 MTN = ['organisation', 'application'   , 'domain'  , 'version'  , 'display' , 'author', ]         # Metadata name
 IDN = ['id'          , 'userid'        , 'tokenid' , 'pcid'     , ]                               # ID name
-CTN = ['username'    , 'token'         , 'cookie'  , 'remember' , 'details' , ]                   # Common name
+CTN = ['username'    , 'authorisation_local'         , 'cookie'  , 'remember' , 'details' , ]                   # Common name
 TCN = ['date'        , 'time'          , 'datetime', ]                                            # Time column name
 CCN = ['lastConfig'  , 'curSettingPth' , ]                                                        # Config column name
 
