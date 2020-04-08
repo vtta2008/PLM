@@ -66,12 +66,15 @@ class PLM(AppModel):
                         self.splash.finish(self.signIn)
             else:
                 self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
+                self.mainUI.show()
                 self.splash.finish(self.mainUI)
         else:
             if self.connectServer:
+                self.signIn.show()
                 self.splash.finish(self.signIn)
             else:
                 self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
+                self.mainUI.show()
                 self.splash.finish(self.mainUI)
 
     def notify(self, receiver, event):
