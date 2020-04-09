@@ -15,6 +15,7 @@ from PLM.cores.models.Threads       import PcMonitor
 from PLM.commons.Widgets            import LCDNumber, GroupGrid, Label
 from PLM.commons.Core               import Timer
 
+
 class DigitalClock(LCDNumber):
 
     key = 'DigitalClock'
@@ -39,6 +40,7 @@ class DigitalClock(LCDNumber):
             text = text[:2] + ' ' + text[3:5] + ' ' + text[6:]
         self.display(text)
 
+
 class DigitalDate(LCDNumber):
 
     key = 'DigitalDate'
@@ -60,6 +62,7 @@ class DigitalDate(LCDNumber):
         date = self.currentDate()
         text = date.toString('dd/MM/yy')
         self.display(text)
+
 
 class Notification(GroupGrid):
 

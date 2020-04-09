@@ -47,7 +47,7 @@ class PcMonitor(Thread):
         self._name                          = name
 
     def run(self):
-        if self._monitoring:
+        if self.monitoring:
 
             cpu                             = str(get_cpu_useage())
             ram                             = str(get_ram_useage())
@@ -66,18 +66,20 @@ class PcMonitor(Thread):
         self._monitoring                    = True
 
     @property
-    def monitor(self):
+    def monitoring(self):
         return self._monitoring
 
-    @monitor.setter
-    def monitor(self, val):
+    @monitoring.setter
+    def monitoring(self, val):
         self._monitoring                    = val
 
 
 
 class AutoLoadingThread(WidgetThread):
 
-    key                                             = 'AutoLoadingThread'
+    key                                     = 'AutoLoadingThread'
+
+    rotate                                  = pyqtSignal(bool, name='rotate')
 
     def __init__(self, widget, parent):
         super(AutoLoadingThread, self).__init__(widget, parent)
@@ -87,11 +89,11 @@ class AutoLoadingThread(WidgetThread):
 
         # self.timer.timeout.connect(self.widget.rotate)
         # self.timer.start(50)
-        self.widget.show()
+        # self.widget.show()
 
     def run(self):
         if self.running:
-            self.widget.rotate()
+            self.rotate.emit(True)
 
 
 
@@ -106,17 +108,17 @@ class RealtimeUpdatingThread(WidgetThread):
             self.setParent(self.parent)
 
         self.timer.timeout.connect(self.widget.update)
-        self.widget.show()
+        # self.widget.show()
 
     def run(self):
         if self.running:
             self.widget.update()
 
-    def setText(self, v):
-        return self.widget.setText(v)
-
-    def setProgress(self, v):
-        return self.widget.setProgress(v)
+    # def setText(self, v):
+    #     return self.widget.setText(v)
+    #
+    # def setProgress(self, v):
+    #     return self.widget.setProgress(v)
 
 
 

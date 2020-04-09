@@ -182,6 +182,9 @@ LOCALAPPDATA        = os.getenv('LOCALAPPDATA')
 
 APPDATA_DAMG        = os.path.join(LOCALAPPDATA, __organizationName__).replace('\\', '/')
 APPDATA_PLM         = os.path.join(APPDATA_DAMG, __appname__).replace('\\', '/')
+
+LIBRARY_DIR         = os.path.join(APPDATA_DAMG, 'libraries').replace('\\', '/')
+
 CFG_DIR             = os.path.join(APPDATA_PLM, '.configs').replace('\\', '/')
 TMP_DIR             = os.path.join(APPDATA_PLM, '.tmp').replace('\\', '/')
 CACHE_DIR           = os.path.join(APPDATA_PLM, '.cache').replace('\\', '/')
@@ -1341,8 +1344,8 @@ class ConfigPython(Cfg):
     pkgsRequires = {
 
         'cx_Freeze'             : ['>=', '6.1'],
-        'pytest'                : ['==', '5.3.2'],
-        'pytest-cov'            : ['==', '2.8.1'],
+        'pytest'                : ['=', '5.3.2'],
+        'pytest-cov'            : ['=', '2.8.1'],
         'msgpack'               : ['>=', '0.6.2'],
         'pip'                   : ['>=', '19.3.1'],
         'PyQtWebEngine'         : ['>=', '5.14.0'],
@@ -1524,7 +1527,7 @@ class ConfigPath(Cfg):
         self.add('logoCfg'          , logoCfg)
         self.add('webIconCfg'       , webIconCfg)
         self.add('nodeIconCfg'      , nodeIconCfg)
-        self.add('imageCfg', imageCfg)
+        self.add('imageCfg'         , imageCfg)
         self.add('tagCfg'           , tagCfg)
         self.add('pythonCfg'        , pythonCfg)
         self.add('plmCfg'           , plmCfg)
@@ -1571,6 +1574,8 @@ class ConfigDirectory(Cfg):
 
         self.add('ROOT', ROOT)
         self.add('ROOT_APP', ROOT_APP)
+
+        self.add('LIBRARY_DIR', LIBRARY_DIR)
 
         self.add('APPDATA_DAMG', APPDATA_DAMG)
         self.add('APPDATA_PLM', APPDATA_PLM)

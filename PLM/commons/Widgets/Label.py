@@ -101,6 +101,7 @@ class Label(QLabel):
     def name(self, newName):
         self._name                      = newName
 
+
 class LCDNumber(QLCDNumber):
 
     Type                                    = 'DAMGUI'
@@ -147,6 +148,7 @@ class LCDNumber(QLCDNumber):
 
     def currentDate(self):
         return self.date.currentDate()
+
 
 def user_pass_label():
     usernameLabel = Label({'txt': 'Username'})
