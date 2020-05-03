@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1588514321 source:c:\users\dapco\pycharmprojects\plm\sources\main.cpp
+	<iostream>
+	<Windows.h>
+

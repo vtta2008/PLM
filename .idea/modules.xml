@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../CPLM/.idea/CPLM.iml" filepath="$PROJECT_DIR$/../CPLM/.idea/CPLM.iml" />
       <module fileurl="file://$PROJECT_DIR$/../DamgServer/.idea/DamgServer.iml" filepath="$PROJECT_DIR$/../DamgServer/.idea/DamgServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/../PyFlow/.idea/PyFlow.iml" filepath="$PROJECT_DIR$/../PyFlow/.idea/PyFlow.iml" />
       <module fileurl="file://$PROJECT_DIR$/../consuldoku/.idea/consuldoku.iml" filepath="$PROJECT_DIR$/../consuldoku/.idea/consuldoku.iml" />
