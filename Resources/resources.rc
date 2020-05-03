@@ -1,4 +1,4 @@
-MAINICON ICON "icon.ico";
+MAINICON ICON "Others/icon.ico";
 
 //include version information in .exe, modify these values to match your needs
 1 VERSIONINFO;

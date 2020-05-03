@@ -8,6 +8,11 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+_windows
+.vs
+.vscode
+
+.pytest_cache
 env/
 build/
 develop-eggs/
