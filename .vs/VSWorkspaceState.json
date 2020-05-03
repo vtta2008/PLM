@@ -1,7 +1,8 @@
 {
   "ExpandedNodes": [
-    ""
+    "",
+    "\\Sources"
   ],
-  "SelectedNode": "\\bin",
+  "SelectedNode": "\\main.cpp",
   "PreviewInSolutionExplorer": false
 }
