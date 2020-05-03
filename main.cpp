@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <Windows.h>
 #include <string>
@@ -35,11 +34,6 @@ std::string get_env_var( std::string key )
 
 main()
 {
-
-    if(get_env_var("DAMGTEAM") =! ExePath())
-    {
-        std::cout << "It works?" << '/n';
-    }
 
     ShowWindow(GetConsoleWindow(), SW_HIDE);
     system("python -m PLM");

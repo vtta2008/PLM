@@ -1358,7 +1358,11 @@ class ConfigPython(Cfg):
         'GPUtil'                : ['>=', '1.4.0'],
         'playsound'             : ['>=', '1.2.2'],
         'python-resize-image'   : ['>=', '1.1.19'],
-
+        'sphinx'                : ['=', '3.0.2'],
+        'sphinx_rtd_theme'      : ['=', '0.4.3'],
+        'reportlab'             : ['=', '3.5.42'],
+        'zopfli'                : ['==', '0.1.6'],
+        'fs'                    : ['==', '2.4.11'],
     }
 
     winRequires = {
@@ -1438,7 +1442,7 @@ class ConfigPython(Cfg):
                 major, minor, micro     = self.get_version_info(verCur)
                 v1, v2, v3              = self.get_version_info(verReq)
 
-                if conReq == '==':
+                if conReq == '=':
                     if v1 != major or v2 != minor or v3 != micro:
                         self.install_python_package_required(pk, pkgs)
                 elif conReq == '>=':
@@ -1459,7 +1463,7 @@ class ConfigPython(Cfg):
         if pk in reqs.keys():
             ver                         = reqs[pk]
             conReq                      = ver[0]
-            if conReq == '==' or conReq == '<=':
+            if conReq == '=' or conReq == '<=':
                 subprocess.Popen('python -m pip install {0}={1} --user'.format(pk, ver), shell=True).wait()
             elif conReq == '>=':
                 subprocess.Popen('python -m pip install {0} --user --upgrade'.format(pk, ver), shell=True).wait()
