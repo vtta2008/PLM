@@ -18,7 +18,6 @@ rInterpreterSettings.xml
 .Python
 _windows
 .vs
-.vscode
 
 .pytest_cache
 env/

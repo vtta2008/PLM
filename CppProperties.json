@@ -1,15 +1,17 @@
 {
   "configurations": [
     {
-      "inheritEnvironments": [
-        "mingw_64"
-      ],
-      "name": "Mingw64",
-      "includePath": [
-        "${env.INCLUDE}",
-        "${workspaceRoot}\\**"
-      ],
-      "intelliSenseMode": "linux-gcc-x64"
+
+      "name": "MinGW",
+      "includePath": ["${env.INCLUDE}", "${workspaceRoot}\\**" ],
+      "defines": ["_DEBUG", "UNICODE", "_UNICODE"],
+      "windowsSdkVersion": "10.0.18362.0",
+      "compilerPath": "C:/MinGW/bin/cpp.exe",
+      "inheritEnvironments": ["MinGW"],
+      "cStandard": "c11",
+      "cppStandard": "c++17",
+      "intelliSenseMode": "msvc-x64"
     }
-  ]
+  ],
+  "version": 4
 }
