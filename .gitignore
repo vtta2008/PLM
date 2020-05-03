@@ -5,7 +5,15 @@ __pycache__/
 
 # C extensions
 *.so
-
+colors.scheme.xml
+databaseDrivers.xml
+debugger.xml
+docker.xml
+filetypes.xml
+github.xml
+ide.general.xml
+remote-servers.xml
+rInterpreterSettings.xml
 # Distribution / packaging
 .Python
 _windows
