@@ -1361,8 +1361,8 @@ class ConfigPython(Cfg):
         'sphinx'                : ['=', '3.0.2'],
         'sphinx_rtd_theme'      : ['=', '0.4.3'],
         'reportlab'             : ['=', '3.5.42'],
-        'zopfli'                : ['==', '0.1.6'],
-        'fs'                    : ['==', '2.4.11'],
+        'zopfli'                : ['=', '0.1.6'],
+        'fs'                    : ['=', '2.4.11'],
     }
 
     winRequires = {
