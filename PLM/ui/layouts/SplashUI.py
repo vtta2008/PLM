@@ -106,10 +106,13 @@ class SplashUI(SplashScreen):
         self.timer                      = Timer(self)
         self.threadManager              = MultiThreadManager(self)
         self.screen                     = self.app.desktop().availableGeometry()
+        self.autoLoading                = StaticLoading(self)
+        self.autoThread                 = AutoLoadingThread(self.autoLoading, self)
 
-        self.autoThread                 = AutoLoadingThread(StaticLoading(self), self)
-        self.realtimeThread             = RealtimeUpdatingThread(RealtimeLoading(self), self)
+        self.realtimeLoading            = RealtimeLoading(self)
+        self.realtimeThread             = RealtimeUpdatingThread(self.realtimeLoading, self)
 
+        self.autoThread.rotate.connect(self.update_rotate)
         self.autoThread.signal.result.connect(self.threadManager.print_output)
         self.autoThread.signal.finished.connect(self.threadManager.worker_completed)
         self.autoThread.signal.progress.connect(self.threadManager.progress_fn)
@@ -197,8 +200,8 @@ class SplashUI(SplashScreen):
 
     def resizeEvent(self, event):
         self.resize(event.size().width() + self.bufferW, event.size().height() + self.bufferH)
-        self.autoThread.widget.resize(self.size())
-        self.realtimeThread.widget.resize(self.size())
+        self.autoLoading.resize(self.size())
+        self.realtimeLoading.resize(self.size())
         event.accept()
 
     def processEvents(self):
@@ -208,9 +211,12 @@ class SplashUI(SplashScreen):
         else:
             return self.app.processEvents()
 
+    def update_rotate(self, bool):
+        self.autoLoading.rotate()
+
     def setText(self, text):
-        self.realtimeThread.setText(text)
-        self.processEvents()
+        self.realtimeLoading.setText(text)
+        # self.processEvents()
 
     def setProgress(self, val):
         value                   = (100*val)/self.num
@@ -218,20 +224,27 @@ class SplashUI(SplashScreen):
             self._percentCount  += 1
             if self.progress:
                 self.progress.setValue(self.percentCount)
-            self.realtimeThread.setProgress('{0}%'.format(str(self.percentCount)))
+            self.realtimeLoading.setProgress('{0}%'.format(str(self.percentCount)))
 
             if self.percentCount == 96:
-                self._percentCount = 100
+                print('overhere')
+                for i in range(4):
+                    self._percentCount  += 1
+                    if self.progress:
+                        self.progress.setValue(self.percentCount)
+                    self.realtimeLoading.setProgress('{0}%'.format(str(self.percentCount)))
+
 
     def updatePosition(self):
         return self.move((self.screen.width() - self.width())/2, (self.screen.height() - self.height())/2)
 
     def stopThreads(self):
-        print('thread stop')
         self.autoThread.stop()
         self.realtimeThread.stop()
         self.autoThread.wait()
         self.realtimeThread.wait()
+        self.killThreads()
+        self.processEvents()
 
     def killThreads(self):
         self.autoThread.terminate()

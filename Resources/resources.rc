@@ -1,0 +1,29 @@
+MAINICON ICON "icon.ico";
+
+//include version information in .exe, modify these values to match your needs
+1 VERSIONINFO;
+FILEVERSION "0.0.1";
+PRODUCTVERSION "13.0.1";
+FILETYPE VFT_APP;
+
+{
+  BLOCK "StringFileInfo"
+	 {
+		 BLOCK "040904E4";
+		 {
+			 VALUE "CompanyName", "DAMGTEAM";
+			 VALUE "FileVersion", "0.0.1";
+			 VALUE "FileDescription", "This applications can be used to build, manage, and optimise film making pipelines.";
+			 VALUE "InternalName", "DAMGTEAM";
+			 VALUE "LegalCopyright", "Copyright (C) 2017 - 2020 by DAMGTEAM, contributed by Trinh Do & Duong Minh Duc.";
+			 VALUE "LegalTrademarks", "DAMGTEAM�";
+			 VALUE "OriginalFilename", "PLM.cpp";
+			 VALUE "ProductName", "Pipeline Manager (PLM)";
+			 VALUE "ProductVersion", "13.0.1";
+		 };
+	 };
+  BLOCK "VarFileInfo"
+	 {
+		 VALUE "Translation", 0x0409, 1252; //language codes
+	 };
+};

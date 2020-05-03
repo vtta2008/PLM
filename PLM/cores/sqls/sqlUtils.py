@@ -77,7 +77,7 @@ class sqlUtils(DAMG):
         self.cur.execute("SELECT * FROM curUser")
         self.cur.fetchall()
         self.cur.execute("DELETE FROM curUser")
-        self.cur.execute("INSERT INTO curUser ('username', 'authorisation_local', 'cookie', 'remember') VALUES (?,?,?,?)", (username, token, cookie, remember))
+        self.cur.execute("INSERT INTO curUser ('username', 'token', 'cookie', 'remember') VALUES (?,?,?,?)", (username, token, cookie, remember))
         self.conn.commit()
 
     def update_table(self, tableName, values):

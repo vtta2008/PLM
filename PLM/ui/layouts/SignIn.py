@@ -114,7 +114,7 @@ class SignIn(Widget):
                     cookie="No value"
                     continue
 
-            token = r.json()['authorisation_local']
+            token = r.json()['token']
             check = bool2str(self.userCB.checkState())
 
             self.db.remove_data("curUser")

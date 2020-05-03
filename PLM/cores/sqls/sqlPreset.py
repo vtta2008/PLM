@@ -27,7 +27,7 @@ TN  = ['curUser'     , 'userTokenLogin', 'timelog' , 'tmpConfig', 'metadata', ] 
 
 MTN = ['organisation', 'application'   , 'domain'  , 'version'  , 'display' , 'author', ]         # Metadata name
 IDN = ['id'          , 'userid'        , 'tokenid' , 'pcid'     , ]                               # ID name
-CTN = ['username'    , 'authorisation_local'         , 'cookie'  , 'remember' , 'details' , ]                   # Common name
+CTN = ['username'    , 'token'         , 'cookie'  , 'remember' , 'details' , ]                   # Common name
 TCN = ['date'        , 'time'          , 'datetime', ]                                            # Time column name
 CCN = ['lastConfig'  , 'curSettingPth' , ]                                                        # Config column name
 
@@ -81,9 +81,11 @@ class PresetDB(DAMG):
         orgname = parse(r'__organization__\s+=\s+(.*)')
         appname = parse(r'__softwareName__\s+=\s+(.*)')
         domain = parse(r'__website__\s+=\s+(.*)')
-        version = parse((r'__version__\s+=\s+(.*)'))
+        version = parse(r'__version__\s+=\s+(.*)')
         author = parse(r'__author__\s+=\s+(.*)')
         display = parse(r'__appname__\s+=\s+(.*)')
+
+        print(orgname, appname, domain, version, author, display)
 
         self.cur.execute("SELECT * FROM metadata")
         self.cur.fetchall()
