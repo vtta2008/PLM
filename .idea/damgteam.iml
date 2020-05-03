@@ -4,6 +4,9 @@
     <facet type="Python" name="Python facet">
       <configuration sdkName="" />
     </facet>
+    <facet type="Python" name="Python facet">
+      <configuration sdkName="" />
+    </facet>
   </component>
   <component name="NewModuleRootManager">
     <content url="file://$MODULE_DIR$">
