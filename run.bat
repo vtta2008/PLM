@@ -1,1 +1,1 @@
-start python -m PLM
+python -m PLM
