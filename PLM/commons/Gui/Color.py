@@ -36,6 +36,7 @@ class Color(QColor):
     def name(self, newName):
         self._name                      = newName
 
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 03/01/2020 - 01:27
 # © 2017 - 2019 DAMGteam. All rights reserved

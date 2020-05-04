@@ -41,6 +41,7 @@ class ImageAvatar(Image):
             fileName            = get_avatar_image('default')
         super(ImageAvatar, self).__init__(fileName, parent)
 
+
 class PixAvatar(Pixmap):
 
     Type = 'DAMGPIXMAP'
@@ -49,6 +50,7 @@ class PixAvatar(Pixmap):
     def __init__(self, parent=None):
         super(PixAvatar, self).__init__()
         self.parent             = parent
+
 
 class AvatarLabel(Label):
 

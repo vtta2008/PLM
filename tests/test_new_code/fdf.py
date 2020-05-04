@@ -9,8 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PyQt5.QtCore import (pyqtSignal, QMutex, QMutexLocker, QPoint, QSize, Qt,
-                          QThread, QWaitCondition)
+from PyQt5.QtCore import (pyqtSignal, QMutex, QMutexLocker, QPoint, QSize, Qt, QThread, QWaitCondition)
 from PyQt5.QtGui import QColor, QImage, QPainter, QPixmap, qRgb
 from PyQt5.QtWidgets import QApplication, QWidget
 

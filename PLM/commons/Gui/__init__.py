@@ -20,6 +20,7 @@ from .KeySequence   import KeySequence
 from .Painter       import Painter
 from .PainterPath   import PainterPath
 from .Pen           import Pen
+from .Polygon       import Polygon
 from .Transform     import Transform
 
 # -------------------------------------------------------------------------------------------------------------

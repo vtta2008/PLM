@@ -1,29 +1,29 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Brush.py
+Script Name: Polygon.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
+    
 
 """
 # -------------------------------------------------------------------------------------------------------------
 from PLM import __copyright__
-""" Import """
 
-# PyQt5
-from PyQt5.QtGui                       import QBrush
+from PyQt5.QtGui                        import QPolygon
 
+class Polygon(QPolygon):
 
-class Brush(QBrush):
-
-    Type                                = 'DAMGBRUSH'
-    key                                 = 'Brush'
-    _name                               = 'DAMG Brush'
+    Type                                = 'DAMGPOLYGON'
+    key                                 = 'Polygon'
+    _name                               = 'DAMG Polygon'
     _copyright                          = __copyright__()
 
-    def __init__(self, *__args):
-        super(Brush, self).__init__(__args)
+    def __init__(self, points):
+        QPolygon.__init__(self)
+
+        self.points                     = points
 
     @property
     def copyright(self):
@@ -37,7 +37,6 @@ class Brush(QBrush):
     def name(self, newName):
         self._name                      = newName
 
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 3/12/2019 - 3:11 AM
-# © 2017 - 2018 DAMGteam. All rights reserved
+# Created by panda on 5/4/2020 - 6:34 PM
+# © 2017 - 2019 DAMGteam. All rights reserved

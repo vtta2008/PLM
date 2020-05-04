@@ -1,58 +1,57 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: analogClock.py
+Script Name: AnalogClock.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
+from PyQt5.QtCore                       import pyqtProperty, pyqtSignal, pyqtSlot
+from PyQt5.QtWidgets import QApplication
 
-from PyQt5.QtCore import (pyqtProperty, pyqtSignal, pyqtSlot, QPoint, QSize, Qt, QTime, QTimer)
-from PyQt5.QtGui import QBrush, QColor, QPainter, QPen, QPolygon
-from PyQt5.QtWidgets import QApplication, QWidget
+from PLM.commons.Widgets                import Widget
+from PLM.commons.Core                   import Time, Timer, Size, Point
+from PLM.commons.Gui                    import Painter, Brush, Color, Pen, Polygon
+from PLM.configs                        import ASPEC_RATIO, ANTIALIAS, NO_PEN
 
+class AnalogClock(Widget):
 
-class PyAnalogClock(QWidget):
-
-    timeChanged = pyqtSignal(QTime)
-    timeZoneChanged = pyqtSignal(int)
+    key                                 = 'DAMG Analog Clock'
+    timeChanged                         = pyqtSignal(Time)
+    timeZoneChanged                     = pyqtSignal(int)
+    timeZoneOffset                      = 0
 
     def __init__(self, parent=None):
+        super(AnalogClock, self).__init__(parent)
 
-        super(PyAnalogClock, self).__init__(parent)
-
-        self.timeZoneOffset = 0
-
-        timer = QTimer(self)
+        timer = Timer(self)
         timer.timeout.connect(self.update)
         timer.timeout.connect(self.updateTime)
         timer.start(1000)
 
         self.setWindowTitle("Analog Clock")
-        self.resize(200, 200)
 
-        self.hourHand = QPolygon([ QPoint(7, 8), QPoint(-7, 8), QPoint(0, -40)])
-        self.minuteHand = QPolygon([QPoint(7, 8), QPoint(-7, 8), QPoint(0, -70)])
-        self.hourColor = QColor(0, 127, 0)
-        self.minuteColor = QColor(0, 127, 127, 191)
+        self.hourHand                   = Polygon([Point(7, 8), Point(-7, 8), Point(0, -40)])
+        self.minuteHand                 = Polygon([Point(7, 8), Point(-7, 8), Point(0, -70)])
+        self.hourColor                  = Color(0, 127, 0)
+        self.minuteColor                = Color(0, 127, 127, 191)
 
     def paintEvent(self, event):
 
-        side = min(self.width(), self.height())
-        time = QTime.currentTime()
-        time = time.addSecs(self.timeZoneOffset * 3600)
+        side                            = min(self.width(), self.height())
+        time                            = Time.currentTime()
+        time                            = time.addSecs(self.timeZoneOffset * 3600)
 
-        painter = QPainter()
+        painter                         = Painter()
         painter.begin(self)
-        painter.setRenderHint(QPainter.Antialiasing)
+        painter.setRenderHint(ANTIALIAS)
         painter.translate(self.width() / 2, self.height() / 2)
         painter.scale(side / 200.0, side / 200.0)
 
-        painter.setPen(Qt.NoPen)
-        painter.setBrush(QBrush(self.hourColor))
+        painter.setPen(NO_PEN)
+        painter.setBrush(Brush(self.hourColor))
 
         painter.save()
         painter.rotate(30.0 * ((time.hour() + time.minute() / 60.0)))
@@ -65,15 +64,15 @@ class PyAnalogClock(QWidget):
             painter.drawLine(88, 0, 96, 0)
             painter.rotate(30.0)
 
-        painter.setPen(Qt.NoPen)
-        painter.setBrush(QBrush(self.minuteColor))
+        painter.setPen(NO_PEN)
+        painter.setBrush(Brush(self.minuteColor))
 
         painter.save()
         painter.rotate(6.0 * (time.minute() + time.second() / 60.0))
         painter.drawConvexPolygon(self.minuteHand)
         painter.restore()
 
-        painter.setPen(QPen(self.minuteColor))
+        painter.setPen(Pen(self.minuteColor))
 
         for j in range(0, 60):
             if (j % 5) != 0:
@@ -82,15 +81,13 @@ class PyAnalogClock(QWidget):
 
         painter.end()
 
-    def minimumSizeHint(self):
-
-        return QSize(50, 50)
-
-    def sizeHint(self):
-        return QSize(100, 100)
+    def resizeEvent(self, event):
+        size                    = Size(1, 1)
+        size.scale(event.size(), ASPEC_RATIO)
+        self.resize(size)
 
     def updateTime(self):
-        self.timeChanged.emit(QTime.currentTime())
+        self.timeChanged.emit(Time.currentTime())
 
     def getTimeZone(self):
         return self.timeZoneOffset
@@ -113,7 +110,7 @@ if __name__ == "__main__":
     import sys
 
     app = QApplication(sys.argv)
-    clock = PyAnalogClock()
+    clock = AnalogClock()
     clock.show()
     sys.exit(app.exec_())
 
