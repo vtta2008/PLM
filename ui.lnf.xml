@@ -1,0 +1,13 @@
+<application>
+  <component name="UISettings">
+    <option name="COLOR_BLINDNESS" value="deuteranopia" />
+    <option name="compactTreeIndents" value="true" />
+    <option name="MAX_LOOKUP_WIDTH2" value="639" />
+    <option name="MOVE_MOUSE_ON_DEFAULT_BUTTON" value="true" />
+    <option name="OVERRIDE_NONIDEA_LAF_FONTS" value="true" />
+    <option name="SHOW_MAIN_TOOLBAR" value="true" />
+    <option name="showTreeIndentGuides" value="true" />
+    <option name="CONTRAST_SCROLLBARS" value="true" />
+    <option name="WIDESCREEN_SUPPORT" value="true" />
+  </component>
+</application>
