@@ -89,7 +89,7 @@ class InitUserSetup(object):
         for pth in sys.path:
             sysPth += pth
         info['sysPth'] = sysPth
-        filePth = os.path.join(os.getenv(appData.__envKey__), 'appData', '_data', 'maya.json')
+        filePth = os.path.join(os.getenv(appData.__serverName__), 'appData', '_data', 'maya.json')
 
         with open(filePth, 'w') as f:
             json.dump(info, f, indent=4)
@@ -134,7 +134,7 @@ class InitUserSetup(object):
         # Check Layout exists, if not, import pipeline layout from source qssPths
         if not 'PipelineTool' in listLayout:
             # Path of layout file from source qssPths by default
-            layoutPth = os.path.join(os.getenv(appData.__envKey__), 'packages', 'maya', 'layout', 'plt.json')
+            layoutPth = os.path.join(os.getenv(appData.__serverName__), 'packages', 'maya', 'layout', 'plt.json')
 
             # Check if it is not there, it may happen because the file might be moved or deleted
             if os.path.exists(layoutPth):

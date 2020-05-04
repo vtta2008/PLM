@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/../BaseServer/.idea/BaseServer.iml" filepath="$PROJECT_DIR$/../BaseServer/.idea/BaseServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/../CPLM/.idea/CPLM.iml" filepath="$PROJECT_DIR$/../CPLM/.idea/CPLM.iml" />
       <module fileurl="file://$PROJECT_DIR$/../PyFlow/.idea/PyFlow.iml" filepath="$PROJECT_DIR$/../PyFlow/.idea/PyFlow.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../TrialServer/.idea/TrialServer.iml" filepath="$PROJECT_DIR$/../TrialServer/.idea/TrialServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/../VanilaServer/.idea/VanillaServer.iml" filepath="$PROJECT_DIR$/../VanilaServer/.idea/VanillaServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/../consuldoku/.idea/consuldoku.iml" filepath="$PROJECT_DIR$/../consuldoku/.idea/consuldoku.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/damgteam.iml" filepath="$PROJECT_DIR$/.idea/damgteam.iml" />
