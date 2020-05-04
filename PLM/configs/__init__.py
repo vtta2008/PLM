@@ -1343,9 +1343,9 @@ class ConfigPython(Cfg):
 
     pkgsRequires = {
 
-        'cx_Freeze'             : ['>=', '6.1'],
-        'pytest'                : ['=', '5.3.2'],
-        'pytest-cov'            : ['=', '2.8.1'],
+        'cx_Freeze'             : ['>=', '6.1.0'],
+        'pytest'                : ['>=', '5.3.2'],
+        'pytest-cov'            : ['>=', '2.8.1'],
         'msgpack'               : ['>=', '0.6.2'],
         'pip'                   : ['>=', '19.3.1'],
         'PyQtWebEngine'         : ['>=', '5.14.0'],
@@ -1358,11 +1358,11 @@ class ConfigPython(Cfg):
         'GPUtil'                : ['>=', '1.4.0'],
         'playsound'             : ['>=', '1.2.2'],
         'python-resize-image'   : ['>=', '1.1.19'],
-        'sphinx'                : ['=', '3.0.2'],
-        'sphinx_rtd_theme'      : ['=', '0.4.3'],
-        'reportlab'             : ['=', '3.5.42'],
-        'zopfli'                : ['=', '0.1.6'],
-        'fs'                    : ['=', '2.4.11'],
+        'sphinx'                : ['>=', '3.0.2'],
+        'sphinx_rtd_theme'      : ['>=', '0.4.3'],
+        'reportlab'             : ['>=', '3.5.42'],
+        'zopfli'                : ['>=', '0.1.6'],
+        'fs'                    : ['>=', '2.4.11'],
     }
 
     winRequires = {
@@ -1442,7 +1442,7 @@ class ConfigPython(Cfg):
                 major, minor, micro     = self.get_version_info(verCur)
                 v1, v2, v3              = self.get_version_info(verReq)
 
-                if conReq == '=':
+                if conReq == '=>':
                     if v1 != major or v2 != minor or v3 != micro:
                         self.install_python_package_required(pk, pkgs)
                 elif conReq == '>=':
@@ -1459,6 +1459,8 @@ class ConfigPython(Cfg):
                         self.install_python_package_required(pk, pkgs)
 
     def install_python_package_required(self, pk, reqs):
+
+        pk = 1
 
         if pk in reqs.keys():
             ver                         = reqs[pk]
