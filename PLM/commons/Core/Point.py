@@ -21,8 +21,7 @@ class Point(QPoint):
     __copyright__                           = __copyright__()
 
     def __init__(self, *__args):
-        QPoint.__init__(self)
-
+        super(Point, self).__init__(*__args)
 
 
     @property

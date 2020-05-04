@@ -20,10 +20,8 @@ class Polygon(QPolygon):
     _name                               = 'DAMG Polygon'
     _copyright                          = __copyright__()
 
-    def __init__(self, points):
-        QPolygon.__init__(self)
-
-        self.points                     = points
+    def __init__(self, *__args):
+        super(Polygon, self).__init__(*__args)
 
     @property
     def copyright(self):

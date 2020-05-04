@@ -9,12 +9,13 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from PyQt5.QtCore                       import pyqtProperty, pyqtSignal, pyqtSlot
-from PyQt5.QtWidgets import QApplication
+
 
 from PLM.commons.Widgets                import Widget
 from PLM.commons.Core                   import Time, Timer, Size, Point
 from PLM.commons.Gui                    import Painter, Brush, Color, Pen, Polygon
 from PLM.configs                        import ASPEC_RATIO, ANTIALIAS, NO_PEN
+
 
 class AnalogClock(Widget):
 
@@ -32,6 +33,7 @@ class AnalogClock(Widget):
         timer.start(1000)
 
         self.setWindowTitle("Analog Clock")
+        # self.setWindowFlags(FRAMELESS)
 
         self.hourHand                   = Polygon([Point(7, 8), Point(-7, 8), Point(0, -40)])
         self.minuteHand                 = Polygon([Point(7, 8), Point(-7, 8), Point(0, -70)])
@@ -54,7 +56,7 @@ class AnalogClock(Widget):
         painter.setBrush(Brush(self.hourColor))
 
         painter.save()
-        painter.rotate(30.0 * ((time.hour() + time.minute() / 60.0)))
+        painter.rotate(30.0 * (time.hour() + time.minute() / 60.0))
         painter.drawConvexPolygon(self.hourHand)
         painter.restore()
 
@@ -105,14 +107,6 @@ class AnalogClock(Widget):
 
     timeZone = pyqtProperty(int, getTimeZone, setTimeZone, resetTimeZone)
 
-
-if __name__ == "__main__":
-    import sys
-
-    app = QApplication(sys.argv)
-    clock = AnalogClock()
-    clock.show()
-    sys.exit(app.exec_())
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 1:38 AM
