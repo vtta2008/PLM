@@ -43,7 +43,7 @@ class PLM(AppModel):
         self.connectServer              = self.checkConnectServer()
         userData                        = self.checkUserData()
 
-        self.logger.info('Start app')
+        # self.logger.info('Start app')
 
         if userData:
             if self.connectServer:
@@ -79,13 +79,14 @@ class PLM(AppModel):
 
     def notify(self, receiver, event):
 
+        # press tab to show shortcut command ui
         if event.type() == KEY_RELEASE:
-            if self.login:
-                if event.key() == 16777217:
-                    pos = self.cursor.pos()
-                    self.shortcutCMD.show()
-                    self.shortcutCMD.move(pos)
+            if self.login and event.key() == 16777217:
+                pos = self.cursor.pos()
+                self.shortcutCMD.show()
+                self.shortcutCMD.move(pos)
 
+        # save ui geometry when it is closed
         elif event.type() == 18:                                            # QHideEvent
             if hasattr(receiver, 'key'):
                 if self.layoutManager:
@@ -93,6 +94,7 @@ class PLM(AppModel):
                         geometry = receiver.saveGeometry()
                         receiver.setValue('geometry', geometry)
 
+        # load ui geometry when it is showed
         elif event.type() == 17:                                            # QShowEvent
             if hasattr(receiver, 'key'):
                 if self.layoutManager:

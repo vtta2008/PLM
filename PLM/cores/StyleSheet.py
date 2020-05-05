@@ -35,17 +35,17 @@ class StyleSheet(DAMG):
 
     def getStyleSheet(self, style):
         if style == 'dark':
-            self.logger.info("Loading darkstyle_rc")
+            # self.logger.info("Loading darkstyle_rc")
             from PLM.ui.rcs             import darkstyle_rc
         else:
             if Qt.__binding__ == 'PyQt5':
-                self.logger.info("Loading pyqt5_style_rc")
+                # self.logger.info("Loading pyqt5_style_rc")
                 from PLM.ui.rcs         import pyqt5_style_rc
             elif Qt.__binding__ == 'PySide2':
-                self.logger.info("Loading pyside2_style_rc")
+                # self.logger.info("Loading pyside2_style_rc")
                 from PLM.ui.rcs         import pyside2_style_rc
             else:
-                self.logger.info("Loading pyqtgraph_style_rc")
+                # self.logger.info("Loading pyqtgraph_style_rc")
                 from PLM.ui.rcs         import pyqtgraph_style_rc
 
         self._filename                  = QssFile(style)

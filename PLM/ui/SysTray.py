@@ -38,7 +38,7 @@ class SysTray(SystemTrayIcon):
             self.username               = self.db.query_table('curUser')[0]
         except (ValueError, IndexError):
             self.username = 'DemoUser'
-        print(self.parent)
+
         self.rightClickMenu             = SysTrayIconMenu(self.actionManager, self.parent)
         self.rightClickMenu.signals.connect('command', self.parent.command)
 
