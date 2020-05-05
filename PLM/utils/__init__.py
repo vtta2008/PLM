@@ -10,16 +10,19 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-from .utils            import (clean_file_ext, get_app_icon, get_avatar_image, check_blank, check_match,
-                               get_avatar_image, getToken, getUnix, getTime, getDate, get_local_pc_info,
-                               get_user_location, resize_image, get_screen_resolution, data_handler, get_cpu_useage,
-                               create_signal_slot,  get_ram_useage,  get_gpu_useage, get_disk_useage, get_file_path,
-                               get_logo_icon, get_tag_icon, check_preset, _loadConfig, _loadData, _saveData,
-                               _swapListIndices, _convert_to_QColor, _get_pointer_bounding_box, setup_context_menu,
-                               autoRename, wait)
+from .utils            import (clean_file_ext, check_blank, check_match, resize_image, data_handler, create_signal_slot,
+                               get_file_path, check_preset, _loadConfig, _loadData,  _saveData, _swapListIndices,
+                               setup_context_menu, autoRename, wait)
 
 from .typeUtils         import is_button, is_string, is_action, is_url
 
 from .netUtils          import filenameFromUrl, filenameFromHeader
 
-from .converter         import str2bool, text_to_hex, bool2str, byte2gb
+from .converter         import str2bool, text_to_hex, bool2str, byte2gb, tuple2Qcolor
+
+from .inspectUtils      import (getToken, getUnix, getTime, getDate, get_local_pc_info, get_user_location,
+                                get_screen_resolution, _get_pointer_bounding_box)
+
+from .monitoring        import get_ram_useage,  get_gpu_useage, get_disk_useage, get_cpu_useage
+
+from .iconUtils         import get_app_icon, get_avatar_image, get_avatar_image, get_logo_icon, get_tag_icon

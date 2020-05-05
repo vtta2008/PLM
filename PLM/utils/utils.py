@@ -12,21 +12,18 @@ from distutils.version import LooseVersion
 """ Import """
 
 # Python
-import os, sys, requests, platform, subprocess, winshell, yaml, json, re, datetime, time, uuid, win32api, linecache
+import os, sys, platform, subprocess, winshell, yaml, json, re, linecache
 
 from PIL                import Image
 from resizeimage        import resizeimage
-from psutil             import cpu_percent, virtual_memory, disk_usage
-from GPUtil             import getGPUs
 
 # PyQt5
-from PyQt5.QtCore       import Qt, QRectF, QRect, QSize, pyqtSignal, pyqtSlot, qVersion
-from PyQt5.QtGui        import QColor, QFont, QFontMetrics, QKeySequence
+from PyQt5.QtCore       import pyqtSignal, pyqtSlot, qVersion
+from PyQt5.QtGui        import QKeySequence
 
 # PLM
 from PLM                import __envKey__
-from PLM.configs        import (__pkgsReq__, KEYPACKAGE, LOGO_DIR, WEB_ICON_DIR, TAG_ICON_DIR, AVATAR_DIR,
-                                USER_LOCAL_DATA, ICON_DIR)
+
 
 from PLM.commons.Core   import EventLoop, Timer
 
@@ -266,128 +263,14 @@ def get_base_folder(path):
 def get_base_name(path):
     return os.path.basename(path)
 
-def get_cpu_useage(interval=1, percpu=False):
-    return cpu_percent(interval, percpu)
 
-def get_ram_total():
-    return byte2gigabyte(virtual_memory()[0])
-
-def get_ram_useage():
-    return virtual_memory()[2]
-
-def get_gpu_total():
-    gpus = getGPUs()
-    total = 0.0
-    for gpu in gpus:
-        total += float(gpu.memoryTotal)
-    return megabyte2gigabyte(total)
-
-def get_gpu_useage():
-    gpus = getGPUs()
-    used = 0.0
-    for gpu in gpus:
-        used += float(gpu.memoryUsed/gpu.memoryTotal*100)
-    rate = used/len(gpus)
-    return round(rate, 2)
-
-def get_disk_total():
-    disk = disk_usage('/')
-    return round(disk.total/(1024**3))
-
-def get_disk_used():
-    disk = disk_usage('/')
-    return round(disk.used/(1024**3))
-
-def get_disk_free():
-    disk = disk_usage('/')
-    return round(disk.free/(1024**3))
-
-def get_disk_useage():
-    disk = disk_usage('/')
-    return disk.percent
-
-def get_app_icon(size=32, iconName="About"):
-    # Get the right directory base on icon size
-    iconPth = os.path.join(ICON_DIR, "x{0}".format(str(size)))
-
-    # Get the icon file path
-    iconFilePth = os.path.join(iconPth, "{0}.icon.png".format(iconName))
-
-    # Check icon file path
-    if not os.path.exists(iconFilePth):
-        print('could not find: {0}, please try a gain'.format(iconFilePth))
-
-    return iconFilePth
-
-def get_logo_icon(size=32, name="DAMG"):
-    if name == "PLM":
-        logoPth = os.path.join(LOGO_DIR, 'PLM')
-    elif name == 'DAMG':
-        logoPth = os.path.join(LOGO_DIR, 'DAMGTEAM')
-    else:
-        logoPth = os.path.join(LOGO_DIR, 'PLM')
-
-    logoFilePth = os.path.join(logoPth, "{0}x{0}.png".format(str(size)))
-
-    if not os.path.exists(logoFilePth):
-        return FileNotFoundError('{} not exists'.format(logoFilePth))
-    else:
-        return logoFilePth
-
-def get_web_icon(name):
-    icons = [i for i in get_file_path(WEB_ICON_DIR) if ".icon" in i]
-    for i in icons:
-        if name in i:
-            # print(i, os.path.exists(i))
-            return i
-
-def get_avatar_image(name):
-    avatarPth = os.path.join(USER_LOCAL_DATA, '{0}.avatar.jpg'.format(name))
-    if not os.path.exists(avatarPth):
-        avatarPth = os.path.join(AVATAR_DIR, 'default.avatar.jpg')
-    return avatarPth
-
-def get_tag_icon(name):
-    tags = [t for t in get_file_path(TAG_ICON_DIR) if '.icon' in t]
-    for t in tags:
-        if name in t:
-            # print(t, os.path.exists(t))
-            return t
 
 def generate_alternative_color(color, av):
     lightness = color.lightness()
     mult = float(lightness)/255
     return mult
 
-def _convert_to_QColor(data=None, alternate=False, av=20):
-    if len(data) == 3:
-        color = QColor(data[0], data[1], data[2])
-        if alternate:
-            mult = generate_alternative_color(color, av)
-            color = QColor(max(0, data[0]-(av*mult)), max(0, data[1]-(av*mult)), max(0, data[2]-(av*mult)))
-        return color
-    elif len(data) == 4:
-        color = QColor(data[0], data[1], data[2], data[3])
-        if alternate:
-            mult = generate_alternative_color(color, av)
-            color = QColor(max(0, data[0]-(av*mult)), max(0, data[1]-(av*mult)), max(0, data[2]-(av*mult)), data[3])
-        return color
-    else:
-        print('ColorNotRecognize: Can only be [R, G, B] or [R, G, B, A], Using default color !', data)
-        color = QColor(120, 120, 120)
-        if alternate:
-            color = QColor(120-av, 120-av, 120-av)
-        return color
 
-def _get_pointer_bounding_box(pointerPos, bbSize):
-    point = pointerPos
-    mbbPos = point
-    point.setX(point.x() - bbSize / 2)
-    point.setY(point.y() - bbSize / 2)
-    size = QSize(bbSize, bbSize)
-    bb = QRect(mbbPos, size)
-    bb = QRectF(bb)
-    return bb
 
 # -------------------------------------------------------------------------------------------------------------
 """ Read, Write, Edit json/yaml/_data info """
@@ -443,75 +326,6 @@ def load_data(filePath):
     json_file.close()
     return j_data
 
-# -------------------------------------------------------------------------------------------------------------
-""" Collecting info user """
-
-def get_user_location():
-
-    package = KEYPACKAGE
-    pythonVersion = sys.version
-    windowOS = platform.system()
-    windowVersion = platform.version()
-
-    sysOpts = package['sysOpts']
-    cache = os.popen2("SYSTEMINFO")
-    source = cache[1].read()
-
-    sysInfo = {}
-
-    sysInfo['python'] = pythonVersion
-    sysInfo['os'] = windowOS + "|" + windowVersion
-    sysInfo['pcUser'] = platform.node()
-    sysInfo['operating system'] = platform.system() + "/" + platform.platform()
-    sysInfo['python version'] = platform.python_version()
-
-    values = {}
-
-    for opt in sysOpts:
-        values[opt] = [item.strip() for item in re.findall("%s:\w*(.*?)\n" % (opt), source, re.IGNORECASE)][0]
-    for item in values:
-        sysInfo[item] = values[item]
-
-    return sysInfo
-
-def get_screen_resolution():
-    resW = win32api.GetSystemMetrics(0)
-    resH = win32api.GetSystemMetrics(1)
-    return resW, resH
-
-def get_window_taskbar_size():
-    resW, resH = get_screen_resolution()
-    monitors = win32api.EnumDisplayMonitors()
-    display1 = win32api.GetMonitorInfo(monitors[0][0])
-    tbH = resH - display1['Work'][3]
-    tbW = resW
-    return tbW, tbH
-
-def get_local_pc_info():
-    r = requests.get('https://api.ipdata.co').json()
-    info = dict()
-    for key in r:
-        k = (str(key))
-        for c in ['ip', 'city', 'country_name']:
-            if k == c:
-                info[k] = str(r[key])
-            else:
-                info[k] = 'unknown'
-
-    return info['ip'], info['city'], info['country_name']
-
-def get_layout_size(layout):
-    sizeW = layout.frameGeometry().width()
-    sizeH = layout.frameGeometry().height()
-    return sizeW, sizeH
-
-def get_text_size(text, painter=None):
-    if not painter:
-        metrics = QFontMetrics(QFont())
-    else:
-        metrics = painter.fontMetrics()
-    size = metrics.size(Qt.TextSingleLine, text)
-    return size
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Encode, decode, convert """
@@ -522,24 +336,6 @@ def codec_name(codec):
     except TypeError:
         name = str(codec.name())                            # Python v2.
     return name
-
-def get_datetime():
-    datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
-    return datetime_stamp
-
-def getDate():
-    datetimeLog = get_datetime()
-    return datetimeLog.split('||')[0]
-
-def getTime():
-    datetimeLog = get_datetime()
-    return datetimeLog.split('||')[1]
-
-def getToken():
-    return str(uuid.uuid4())
-
-def getUnix():
-    return (str(uuid.uuid4())).split('-')[-1]
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ String """
