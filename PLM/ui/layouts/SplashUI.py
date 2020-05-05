@@ -107,10 +107,10 @@ class SplashUI(SplashScreen):
         self.threadManager              = MultiThreadManager(self)
         self.screen                     = self.app.desktop().availableGeometry()
         self.autoLoading                = StaticLoading(self)
-        self.autoThread                 = AutoLoadingThread(self.autoLoading, self)
+        self.autoThread                 = AutoLoadingThread(self.autoLoading, self.app)
 
         self.realtimeLoading            = RealtimeLoading(self)
-        self.realtimeThread             = RealtimeUpdatingThread(self.realtimeLoading, self)
+        self.realtimeThread             = RealtimeUpdatingThread(self.realtimeLoading, self.app)
 
         self.autoThread.rotate.connect(self.update_rotate)
         self.autoThread.signal.result.connect(self.threadManager.print_output)
@@ -227,7 +227,6 @@ class SplashUI(SplashScreen):
             self.realtimeLoading.setProgress('{0}%'.format(str(self.percentCount)))
 
             if self.percentCount == 96:
-                print('overhere')
                 for i in range(4):
                     self._percentCount  += 1
                     if self.progress:

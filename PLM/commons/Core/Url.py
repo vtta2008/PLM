@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Timer.py
+Script Name: Url.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -10,24 +10,18 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from PLM import __copyright__
-""" Import """
 
-# PyQt5
-from PyQt5.QtCore import QTimer
+from PyQt5.QtCore                       import QUrl
 
-
-
-class Timer(QTimer):
+class Url(QUrl):
 
     Type                                = 'DAMGTIMER'
     key                                 = 'Timer'
     _name                               = 'DAMG Timer'
     _copyright                          = __copyright__
 
-    def __init__(self, parent=None):
-        super(Timer, self).__init__(parent)
-
-        self.parent                     = parent
+    def __init__(self, *__args):
+        super(Url, self).__init__(*__args)
 
 
     @property
@@ -42,7 +36,6 @@ class Timer(QTimer):
     def name(self, val):
         self._name                      = val
 
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 1/17/2020 - 12:50 AM
+# Created by panda on 5/5/2020 - 9:10 PM
 # © 2017 - 2019 DAMGteam. All rights reserved

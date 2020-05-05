@@ -96,7 +96,6 @@ class AutoLoadingThread(WidgetThread):
             self.rotate.emit(True)
 
 
-
 class RealtimeUpdatingThread(WidgetThread):
 
     key                                             = 'RealtimeUpdatingThread'
@@ -121,7 +120,6 @@ class RealtimeUpdatingThread(WidgetThread):
     #     return self.widget.setProgress(v)
 
 
-
 class ConfigTaskThread(TaskThread):
 
     key                                             = 'ConfigTaskThread'
@@ -144,7 +142,6 @@ class ConfigTaskThread(TaskThread):
                 self.signal.result.emit(result)
             finally:
                 self.signal.finished.emit()
-
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -219,6 +219,7 @@ COMMONS_DIR         = os.path.join(ROOT, 'commons').replace('\\', '/')
 CORE_DIR            = os.path.join(COMMONS_DIR, 'Core').replace('\\', '/')
 DAMG_DIR            = os.path.join(COMMONS_DIR, 'damg').replace('\\', '/')
 GUI_DIR             = os.path.join(COMMONS_DIR, 'Gui').replace('\\', '/')
+NETWORK_DIR         = os.path.join(COMMONS_DIR, 'Network').replace('\\', '/')
 WIDGET_DIR          = os.path.join(COMMONS_DIR, 'Widgets').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
@@ -1607,6 +1608,7 @@ class ConfigDirectory(Cfg):
         self.add('CORE_DIR', CORE_DIR)
         self.add('DAMG_DIR', DAMG_DIR)
         self.add('GUI_DIR', GUI_DIR)
+        self.add('NETWORK_DIR', NETWORK_DIR)
         self.add('WIDGET_DIR', WIDGET_DIR)
 
         self.add('CORES_DIR', CORES_DIR)

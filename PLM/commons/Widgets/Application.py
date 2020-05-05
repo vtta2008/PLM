@@ -151,7 +151,7 @@ class Application(QApplication):
         appID                           = lpBuffer.value
         AppUserModelID(ctypes.cast(ctypes.byref(lpBuffer), wintypes.LPWSTR))
         ctypes.windll.kernel32.LocalFree(lpBuffer)
-        self.logger.info('Get AppID: {0}'.format(appID))
+        # self.logger.info('Get AppID: {0}'.format(appID))
         return appID
 
     def run(self):
