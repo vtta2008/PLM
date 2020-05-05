@@ -5,10 +5,13 @@
       <module fileurl="file://$PROJECT_DIR$/../BaseServer/.idea/BaseServer.iml" filepath="$PROJECT_DIR$/../BaseServer/.idea/BaseServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/../CPLM/.idea/CPLM.iml" filepath="$PROJECT_DIR$/../CPLM/.idea/CPLM.iml" />
       <module fileurl="file://$PROJECT_DIR$/../PyFlow/.idea/PyFlow.iml" filepath="$PROJECT_DIR$/../PyFlow/.idea/PyFlow.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../VanilaServer/.idea/VanilaServer.iml" filepath="$PROJECT_DIR$/../VanilaServer/.idea/VanilaServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/../VanilaServer/.idea/VanillaServer.iml" filepath="$PROJECT_DIR$/../VanilaServer/.idea/VanillaServer.iml" />
       <module fileurl="file://$PROJECT_DIR$/../consuldoku/.idea/consuldoku.iml" filepath="$PROJECT_DIR$/../consuldoku/.idea/consuldoku.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/damgteam.iml" filepath="$PROJECT_DIR$/.idea/damgteam.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../fonttools/.idea/fonttools.iml" filepath="$PROJECT_DIR$/../fonttools/.idea/fonttools.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/plm.iml" filepath="$PROJECT_DIR$/.idea/plm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../qutebrowser/.idea/qutebrowser.iml" filepath="$PROJECT_DIR$/../qutebrowser/.idea/qutebrowser.iml" />
       <module fileurl="file://$PROJECT_DIR$/../test_app_compile/.idea/test_app_compile.iml" filepath="$PROJECT_DIR$/../test_app_compile/.idea/test_app_compile.iml" />
       <module fileurl="file://$PROJECT_DIR$/../VanilaServer/.idea/vanilla-server-side-rendering-flow.iml" filepath="$PROJECT_DIR$/../VanilaServer/.idea/vanilla-server-side-rendering-flow.iml" />
     </modules>

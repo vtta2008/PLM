@@ -11,8 +11,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 
-if __name__ == '__main__':
-    pass
+from .NetworkAccessManager      import NetworkAccessManager
+from .NetworkRequest            import NetworkRequest
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 5/5/2020 - 8:45 PM

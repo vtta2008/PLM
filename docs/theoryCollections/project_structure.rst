@@ -1,4 +1,5 @@
-# https://towardsdatascience.com/ultimate-setup-for-your-next-python-project-179bda8a7c2c
+PROJECT MANAGEMENT FUNDAMENTAL - HOW TO CONSTRUCT A PYTHON PROJECT
+==================================================================
 
 Whether you are working on some machine learning/AI project, building web apps in Flask or just writing some quick
 Python script, it’s always useful to have some template for your project that satisfies all your needs, namely:
@@ -193,8 +194,7 @@ In the future, we will look into adding CI/CD into the mix with GitHub Actions a
 Dockerize our project and create both debuggable and optimized production ready Docker images and add some more code
 quality tooling using CodeClimate and SonarCloud.
 
-Resources
-
-Sample Python Module Repository
-Pytest Docs
-Python Code Quality Authority
+References
+==========
+Heinz, M. (2020, January 15). Ultimate setup for your next Python project.
+Retrieved from https://towardsdatascience.com/ultimate-setup-for-your-next-python-project-179bda8a7c2c
