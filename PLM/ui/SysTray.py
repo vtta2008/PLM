@@ -68,7 +68,7 @@ class SysTray(SystemTrayIcon):
         self._login = login
         self.rightClickMenu.loginChanged(self._login)
 
-    def sysNotify(self, title, mess, iconType='info', timeDelay=500):
+    def notifier(self, title, mess, iconType='info', timeDelay=500):
         if iconType == 'info':
             icon = self.Information
         elif iconType == 'crit':

@@ -22,15 +22,22 @@ from GPUtil             import getGPUs
 # PyQt5
 from PyQt5.QtCore       import Qt, QRectF, QRect, QSize, pyqtSignal, pyqtSlot, qVersion
 from PyQt5.QtGui        import QColor, QFont, QFontMetrics, QKeySequence
-from PyQt5.QtWidgets    import QAction, QPushButton
 
 # PLM
 from PLM                import __envKey__
 from PLM.configs        import (__pkgsReq__, KEYPACKAGE, LOGO_DIR, WEB_ICON_DIR, TAG_ICON_DIR, AVATAR_DIR,
-                                USER_LOCAL_DATA, ICON_DIR, actionTypes)
+                                USER_LOCAL_DATA, ICON_DIR)
+
+from PLM.commons.Core   import EventLoop, Timer
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Destop tool """
+
+def wait(msec):
+    loop = EventLoop()
+    Timer.singleShot(msec, loop.quit())
+    loop.exec_()
 
 def create_shotcut(target, icon, shortcut, description):
     winshell.CreateShortcut(
@@ -671,6 +678,7 @@ def lower_case_underscore_to_camel_case(text):
     class_ = text.__class__
     return split_string[0] + class_.join('', map(class_.capitalize, split_string[1:]))
 
+
 def autoRename(filename):
     # rename filename if already exists
     name, ext = os.path.splitext(filename)
@@ -699,112 +707,8 @@ def auto_convert(value):
         return int(value)
     return value
 
-def attr_type(value):
-    """
-    Determine the attribute type based on a value.
-    Returns a string.
 
-    For example:
 
-        value = [2.1, 0.5]
-        type = 'float2'
-
-    :param value: attribute value.
-
-    :returns: attribute type.
-    :rtype: str
-    """
-    if is_none(value):
-        return 'null'
-
-    if is_list(value):
-        return list_attr_types(value)
-
-    else:
-        if is_bool(value):
-            return 'bool'
-
-        if is_string(value):
-            return 'str'
-
-        if is_number(value):
-            if type(value) is float:
-                return 'float'
-
-            if type(value) is int:
-                return 'int'
-    return 'unknown'
-
-def list_attr_types(s):
-    """
-    Return a string type for the value.
-
-    .. todo::
-        - 'unknown' might need to be changed
-        - we'll need a feature to convert valid int/str to floats
-          ie:
-            [eval(x) for x in s if type(x) in [str, unicode]]
-    """
-    if not is_list(s):
-        return 'unknown'
-
-    for typ in [str, int, float, bool]:
-        if all(isinstance(n, typ) for n in s):
-            return '%s%d' % (typ.__name__, len(s))
-
-    if False not in list(set([is_number(x) for x in s])):
-        return 'float%d' % len(s)
-    return 'unknown'
-
-def is_none(s):
-    return type(s).__name__ == 'NoneType'
-
-def is_string(s):
-    return type(s) in [str]
-
-def is_button(s):
-    if type(s) in [QPushButton]:
-        return True
-    elif s.Type in actionTypes:
-        return True
-    else:
-        return False
-
-def is_action(s):
-    if type(s) in [QAction]:
-        return True
-    elif s.Type in actionTypes:
-        return True
-    else:
-        return False
-
-def is_number(s):
-    """
-    Check if a string is a int/float
-    """
-    if is_bool(s):
-        return False
-    return isinstance(s, int) or isinstance(s, float)
-
-def is_bool(s):
-    """
-    Returns true if the object is a boolean value.
-    * Updated to support custom decoders.
-    """
-    return isinstance(s, bool) or str(s).lower() in ['true', 'false']
-
-def is_list(s):
-    """
-    Returns true if the object is a list type.
-    """
-    return type(s) in [list, tuple]
-
-def is_dict(s):
-    """
-    Returns true if the object is a dict type.
-    """
-    from collections import OrderedDict
-    return type(s) in [dict, OrderedDict]
 
 def is_newer(file1, file2):
     """

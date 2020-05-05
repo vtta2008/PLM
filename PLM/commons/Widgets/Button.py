@@ -26,7 +26,7 @@ from PLM.commons.SettingManager             import SettingManager
 
 class Button(QPushButton):
 
-    Type                                    = 'DAMGUI'
+    Type                                    = 'DAMGBUTTON'
     key                                     = 'Button'
     _name                                   = 'DAMG Button'
     _copyright                              = __copyright__()
@@ -87,7 +87,7 @@ class Button(QPushButton):
 
 class ToolButton(QToolButton):
 
-    Type                                    = 'DAMGUI'
+    Type                                    = 'DAMGTOOLBUTTON'
     key                                     = 'ToolButton'
     _name                                   = 'DAMG Tool Button'
     _copyright                              = __copyright__()

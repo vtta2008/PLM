@@ -11,8 +11,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 
-from .Counter          import Counter
+from .Counter           import Counter
 from .Dateline          import DateLine
+from .DownloadChannel   import DownloadChannel
 from .Organisation      import Organisation
 from .Project           import Project
 from .Task              import Task

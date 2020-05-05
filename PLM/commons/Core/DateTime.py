@@ -24,7 +24,7 @@ class DateTime(QDateTime):
     _copyright                      = __copyright__()
 
     def __init__(self, *__args):
-        QDateTime.__init__(self)
+        super(DateTime, self).__init__(*__args)
 
     @property
     def copyright(self):

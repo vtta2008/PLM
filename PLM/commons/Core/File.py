@@ -89,6 +89,19 @@ class QssFile(FileBase):
         self._style                         = val
 
 
+
+class DownloadFile(FileBase):
+
+    key                                     = 'DownloadFile'
+
+    def __init__(self, filePth=None, parent=None):
+        super(DownloadFile, self).__init__(filePth, parent)
+
+        self.parent                         = parent
+        self._filePath                      = filePth
+        self.setFileName(self._filePath)
+
+
 class File(FileBase):
 
     key                                     = 'File'

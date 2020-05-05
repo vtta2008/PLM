@@ -12,7 +12,8 @@ Description:
 from .ByteArray         import ByteArray
 from .Date              import Date
 from .DateTime          import DateTime
-from .File              import File, QssFile
+from .EventLoop         import EventLoop
+from .File              import File, QssFile, DownloadFile
 from .FileInfo          import FileInfo
 from .IODevice          import IODevice
 from .Point             import Point

@@ -289,7 +289,7 @@ class AppModel(Application):
 
     def sysNotify(self, *arg):
         title, mess, iconType, timeDelay = arg
-        return self.sysTray.sysNotify(title, mess, iconType, timeDelay)
+        return self.sysTray.notifier(title, mess, iconType, timeDelay)
 
     def switchAccountEvent(self):
         self.signOutEvent()
