@@ -10,6 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
+import re, json
 from distutils.version import LooseVersion
 from PyQt5.QtGui import QKeySequence
 from PyQt5.QtCore import qVersion
@@ -195,6 +196,41 @@ def _clear_undo(graph):
     msg = 'Clear all undo history, Are you sure?'
     if viewer.question_dialog('Clear Undo History', msg):
         graph.undo_stack().clear()
+
+
+def _loadConfig(filePath):
+    with open(filePath, 'r') as myfile:
+        fileString = myfile.read()
+        cleanString = re.sub('//.*?\n|/\*.*?\*/', '', fileString, re.S)
+        data = json.loads(cleanString)
+    return data
+
+
+def _saveData(filePath, data):
+    f = open(filePath, "w")
+    f.write(json.dumps(data,
+                       sort_keys = True,
+                       indent = 4,
+                       ensure_ascii=False))
+    f.close()
+    print("Data successfully saved !")
+
+def _loadData(filePath):
+    with open(filePath) as json_file:
+        j_data = json.load(json_file)
+    json_file.close()
+    print("Data successfully loaded !")
+    return j_data
+
+def _swapListIndices(inputList, oldIndex, newIndex):
+    if oldIndex == -1:
+        oldIndex = len(inputList)-1
+    if newIndex == -1:
+        newIndex = len(inputList)
+    value = inputList[oldIndex]
+    inputList.pop(oldIndex)
+    inputList.insert(newIndex, value)
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

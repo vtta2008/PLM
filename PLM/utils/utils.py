@@ -88,70 +88,6 @@ def create_signal_slot(argType, name):
     return signal, slot
 
 
-
-# -------------------------------------------------------------------------------------------------------------
-""" Error handle """
-
-def handle_path_error(directory=None):
-    if not os.path.exists(directory) or directory is None:
-        try:
-            raise ("IsADirectoryError: Path is not exists: {directory}".format(directory=directory))
-        except IsADirectoryError as error:
-            raise('Caught error: ' + repr(error))
-
-def raise_exception():
-
-    exc_type, exc_obj, tb = sys.exc_info()
-    f = tb.tb_frame
-    lineno = tb.tb_lineno
-    filename = f.f_code.co_filename
-    linecache.checkcache(filename)
-    line = linecache.getline(filename, lineno, f.f_globals)
-
-    print("--------------------------------------------------------------------------------- \n"
-            "Tracking from:   {0} \n"
-            "At line number:  {1} \n"
-            "Details code:    {2} \n"
-            "{3} \n"
-            "---------------------------------------------------------------------------------".format(os.path.basename(filename), lineno, line.strip(), exc_obj))
-    return
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" Find Path """
-
-def get_all_path_from_dir(directory):
-    """
-        This function will generate the file names in a directory
-        tree by walking the tree either top-down or bottom-up. For each
-        directory in the tree rooted at directory top (including top itself),
-        it yields a 3-tuple (dirpath, dirnames, filenames).
-    """
-    filePths = []   # List which will store all of the full file paths.
-    dirPths = []    # List which will store all of the full folder paths.
-
-    # Walk the tree.
-    for root, directories, files in os.walk(directory, topdown=False):
-        for filename in files:
-            filePths.append(os.path.join(root, filename).replace('\\', '/'))  # Add to file list.
-        for folder in directories:
-            dirPths.append(os.path.join(root, folder).replace('\\', '/')) # Add to folder list.
-    return [filePths, dirPths]
-
-def get_file_path(directory):
-    handle_path_error(directory)
-    return get_all_path_from_dir(directory)[0]
-
-def get_folder_path(directory):
-    handle_path_error(directory)
-    return get_all_path_from_dir(directory)[1]
-
-def get_base_folder(path):
-    return os.path.dirname(path)
-
-def get_base_name(path):
-    return os.path.basename(path)
-
 def generate_alternative_color(color, av):
     lightness = color.lightness()
     mult = float(lightness)/255
@@ -231,12 +167,6 @@ def codec_name(codec):
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ Math """
-
-def get_all_odd(numLst):
-    return [i for i in numLst if check_odd(i)]
-
-def get_all_even(numLst):
-    return [i for i in numLst if not check_odd(i)]
 
 def resize_image(filename, desPth, w, h):
     with open(filename, 'r+b') as f:

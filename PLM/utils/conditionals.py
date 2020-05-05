@@ -62,6 +62,13 @@ def is_newer(file1, file2):
     time2 = os.path.getmtime(file2)
     return time1 > time2
 
+
+def get_all_odd(numLst):
+    return [i for i in numLst if check_odd(i)]
+
+def get_all_even(numLst):
+    return [i for i in numLst if not check_odd(i)]
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM
 # © 2017 - 2020 DAMGteam. All rights reserved

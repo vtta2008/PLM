@@ -10,67 +10,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-
 import platform, subprocess, os, sys, re, json
 from PLM.configs import __pkgsReq__
-
-
-
-def _loadConfig(filePath):
-    with open(filePath, 'r') as myfile:
-        fileString = myfile.read()
-        cleanString = re.sub('//.*?\n|/\*.*?\*/', '', fileString, re.S)
-        data = json.loads(cleanString)
-    return data
-
-def _saveData(filePath, data):
-    f = open(filePath, "w")
-    f.write(json.dumps(data,
-                       sort_keys = True,
-                       indent = 4,
-                       ensure_ascii=False))
-    f.close()
-    print("Data successfully saved !")
-
-def _loadData(filePath):
-    with open(filePath) as json_file:
-        j_data = json.load(json_file)
-    json_file.close()
-    print("Data successfully loaded !")
-    return j_data
-
-def _swapListIndices(inputList, oldIndex, newIndex):
-    if oldIndex == -1:
-        oldIndex = len(inputList)-1
-    if newIndex == -1:
-        newIndex = len(inputList)
-    value = inputList[oldIndex]
-    inputList.pop(oldIndex)
-    inputList.insert(newIndex, value)
-
-
-def _zoom_in(graph):
-    """
-    Set the node graph to zoom in by 0.1
-    Args:
-        graph (NodeGraphQt.NodeGraph): node graph.
-    """
-    zoom = graph.get_zoom() + 0.1
-    graph.set_zoom(zoom)
-
-
-def _zoom_out(graph):
-    """
-    Set the node graph to zoom in by 0.1
-    Args:
-        graph (NodeGraphQt.NodeGraph): node graph.
-    """
-    zoom = graph.get_zoom() - 0.2
-    graph.set_zoom(zoom)
-
-
-def _reset_zoom(graph):
-    graph.reset_zoom()
 
 
 def obj_properties_setting(directory, mode):
