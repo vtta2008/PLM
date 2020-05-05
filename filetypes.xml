@@ -4,16 +4,17 @@
     <extensionMap>
       <mapping pattern="*.0.txt" type="PLAIN_TEXT" />
       <mapping pattern="requirements_pyqt5.txt" type="PLAIN_TEXT" />
+      <mapping pattern="LINKS" type="PLAIN_TEXT" />
       <mapping pattern="LICESE" type="PLAIN_TEXT" />
       <mapping pattern=".cmds" type="PLAIN_TEXT" />
-      <mapping pattern="token" type="PLAIN_TEXT" />
+      <mapping pattern=".gitkeep" type="PLAIN_TEXT" />
       <mapping pattern="VERSION" type="PLAIN_TEXT" />
       <mapping pattern="LICENSE" type="PLAIN_TEXT" />
       <mapping pattern="requirements_pyqt5" type="PLAIN_TEXT" />
       <mapping pattern="project_structure" type="PLAIN_TEXT" />
       <mapping pattern="requirements_pyside2" type="PLAIN_TEXT" />
       <mapping pattern="LICENCE" type="PLAIN_TEXT" />
-      <mapping pattern="LINKS" type="PLAIN_TEXT" />
+      <mapping pattern="token" type="PLAIN_TEXT" />
       <mapping ext="in" type="PLAIN_TEXT" />
       <mapping ext="0" type="PLAIN_TEXT" />
     </extensionMap>
