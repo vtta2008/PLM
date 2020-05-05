@@ -40,10 +40,10 @@ class MidTab3(Widget):
     def __init__(self, buttonManager, parent=None):
         super(MidTab3, self).__init__(parent)
 
-        self.buttonManager = buttonManager
-        self.parent = parent
+        self.buttonManager              = buttonManager
+        self.parent                     = parent
 
-        self.layout = VBoxLayout()
+        self.layout                     = VBoxLayout()
         self.buildUI()
         self.setLayout(self.layout)
         # self.stylesheet                 = StyleSheet(self).changeStyleSheet('cmd')

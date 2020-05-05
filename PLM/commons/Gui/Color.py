@@ -14,6 +14,7 @@ from PLM import __copyright__
 
 from PyQt5.QtGui import QColor
 
+
 class Color(QColor):
 
     Type                                = 'DAMGCOLOR'
@@ -22,7 +23,7 @@ class Color(QColor):
     _copyright                          = __copyright__()
 
     def __init__(self, *__args):
-        QColor.__init__(self)
+        super(Color, self).__init__(*__args)
 
     @property
     def copyright(self):
@@ -35,6 +36,7 @@ class Color(QColor):
     @name.setter
     def name(self, newName):
         self._name                      = newName
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 03/01/2020 - 01:27

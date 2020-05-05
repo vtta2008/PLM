@@ -9,13 +9,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
+import collections, html, typing, attr, prompt
 
-
-import collections, html, typing, attr
-
-from PyQt5.QtCore import (pyqtSlot, pyqtSignal, QCoreApplication, QUrl, QByteArray)
-from PyQt5.QtNetwork import (QNetworkAccessManager, QNetworkReply)
+from PyQt5.QtCore import pyqtSlot, pyqtSignal, QCoreApplication, QUrl, QByteArray
+from PyQt5.QtNetwork import QNetworkAccessManager, QNetworkReply
 
 from PLM.cores import Loggers
 

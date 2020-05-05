@@ -1,29 +1,28 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Brush.py
+Script Name: Point.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
+    
 
 """
 # -------------------------------------------------------------------------------------------------------------
 from PLM import __copyright__
-""" Import """
 
-# PyQt5
-from PyQt5.QtGui                       import QBrush
+from PyQt5.QtCore import QPoint
 
+class Point(QPoint):
 
-class Brush(QBrush):
-
-    Type                                = 'DAMGBRUSH'
-    key                                 = 'Brush'
-    _name                               = 'DAMG Brush'
-    _copyright                          = __copyright__()
+    Type                                    = 'DAMGPOINT'
+    key                                     = 'Point'
+    _name                                   = 'DAMG Point'
+    __copyright__                           = __copyright__()
 
     def __init__(self, *__args):
-        super(Brush, self).__init__(*__args)
+        super(Point, self).__init__(*__args)
+
 
     @property
     def copyright(self):
@@ -35,9 +34,8 @@ class Brush(QBrush):
 
     @name.setter
     def name(self, newName):
-        self._name                      = newName
-
+        self._name                          = newName
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 3/12/2019 - 3:11 AM
-# © 2017 - 2018 DAMGteam. All rights reserved
+# Created by panda on 5/4/2020 - 6:45 PM
+# © 2017 - 2019 DAMGteam. All rights reserved

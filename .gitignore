@@ -114,3 +114,9 @@ Viethoa
 bin/xml/ide.general.xml
 markdown.xml
 wsl.distributions.xml
+
+.github
+.vs
+_windows
+codestyles
+inspection
