@@ -13,7 +13,6 @@ import os
 from PLM.configs        import (LOGO_DIR, WEB_ICON_DIR, TAG_ICON_DIR, AVATAR_DIR, USER_LOCAL_DATA, ICON_DIR)
 from .utils             import get_file_path
 
-
 def get_app_icon(size=32, iconName="About"):
     # Get the right directory base on icon size
     iconPth = os.path.join(ICON_DIR, "x{0}".format(str(size)))

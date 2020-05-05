@@ -16,7 +16,22 @@ from PyQt5.QtCore import QSize, QRect, QRectF
 
 from PLM.configs import KEYPACKAGE
 
-def _get_pointer_bounding_box(pointerPos, bbSize):
+
+
+def get_py_env_var(key, path):
+    try:
+        pth = os.getenv(key)
+        if pth == None or pth == '':
+            print('install showLayout_new environment variable')
+            os.environ[key] = path
+    except KeyError:
+        print('install showLayout_new environment variable')
+        os.environ[key] = path
+    else:
+        pass
+
+
+def get_pointer_bounding_box(pointerPos, bbSize):
     point = pointerPos
     mbbPos = point
     point.setX(point.x() - bbSize / 2)

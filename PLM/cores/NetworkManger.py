@@ -16,10 +16,8 @@ import sys
 
 from PLM.commons.Widgets                    import MessageBox
 from PLM.commons.Network                    import NetworkAccessManager, NetworkRequest, NetworkReply
-from PLM.commons.Core                       import Url
 from PLM.cores.models                       import DownloadChannel
 from PLM.configs                            import ERROR_APPLICATION
-from PLM.utils                              import is_url
 
 
 class NetworkManger(NetworkAccessManager):
@@ -37,8 +35,6 @@ class NetworkManger(NetworkAccessManager):
         self._checkUrl                      = self.app.urlInfo['google']
 
     def getUrl(self, url):
-
-        if
 
         self.request                        = NetworkRequest(self.url)
         self.reply                          = NetworkReply(self)
