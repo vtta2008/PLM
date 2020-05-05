@@ -523,35 +523,6 @@ def codec_name(codec):
         name = str(codec.name())                            # Python v2.
     return name
 
-def text_to_utf8(input):
-    return input.encode('utf-8')
-
-def text_to_hex(text):
-    return ''.join(["%02X" % ord(x) for x in str(text)])
-
-def hex_to_text(hex):
-    bytes = []
-    hexStr = ''.join(str(hex).split(" "))
-    for i in range(0, len(hexStr), 2):
-        bytes.append(chr(int(hexStr[i:i + 2], 16)))
-    outPut = ''.join(bytes)
-    return outPut
-
-def str2bool(arg):
-    return str(arg).lower() in ['true', 1, '1', 'ok', '2']
-
-def bool2str(arg):
-    if arg:
-        return "True"
-    else:
-        return "False"
-
-def byte2gigabyte(byte):
-    return round(byte/1073741824)
-
-def megabyte2gigabyte(megabyte):
-    return round(megabyte/1024)
-
 def get_datetime():
     datetime_stamp = str(datetime.datetime.fromtimestamp(time.time()).strftime('%Y.%m.%d||%H:%M:%S'))
     return datetime_stamp

@@ -15,7 +15,7 @@ from PyQt5.QtCore                       import QUrl
 
 class Url(QUrl):
 
-    Type                                = 'DAMGTIMER'
+    Type                                = 'DAMGURL'
     key                                 = 'Timer'
     _name                               = 'DAMG Timer'
     _copyright                          = __copyright__

@@ -363,10 +363,12 @@ SETTING_FILEPTH = dict(app          = APP_SETTING,
                        unix         = UNIX_SETTING,
                        format       = FORMAT_SETTING)
 
-actionTypes = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction', 'DAMGExecutingAction',
-               'DAMGOpenBrowserAction', 'DAMGWIDGETACTION']
+actionTypes                 = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction', 'DAMGExecutingAction',
+                                'DAMGOpenBrowserAction', 'DAMGWIDGETACTION']
 
-buttonTypes = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
+buttonTypes                 = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
+
+urlType                     = ['DAMGURL', ]
 
 layoutTypes = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
 

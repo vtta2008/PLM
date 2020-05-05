@@ -19,6 +19,7 @@ from PLM.commons.Network                    import NetworkAccessManager, Network
 from PLM.commons.Core                       import Url
 from PLM.cores.models                       import DownloadChannel
 from PLM.configs                            import ERROR_APPLICATION
+from PLM.utils                              import is_url
 
 
 class NetworkManger(NetworkAccessManager):
@@ -26,18 +27,18 @@ class NetworkManger(NetworkAccessManager):
     key = 'NetworkManger'
 
     def __init__(self, app=None):
-        super(NetworkManger, self).__init__()
+        super(NetworkManger, self).__init__(app)
 
         self.app                            = app
         if not self.app:
             MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
             sys.exit()
 
+        self._checkUrl                      = self.app.urlInfo['google']
+
     def getUrl(self, url):
-        if url is None:
-            self.url                        = Url(self.app.urlInfo['google'])
-        else:
-            self.url                        = Url(url)
+
+        if
 
         self.request                        = NetworkRequest(self.url)
         self.reply                          = NetworkReply(self)
@@ -66,7 +67,7 @@ class NetworkManger(NetworkAccessManager):
         ping: int
         speed: speed level
         """
-        pass
+
 
     def serverStatus(self):
         """

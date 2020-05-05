@@ -10,12 +10,37 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
+import validators, re
 from collections            import OrderedDict
 from PLM.commons            import DAMGDICT, DAMGLIST
-from PLM.configs            import actionTypes, buttonTypes
+from PLM.configs            import actionTypes, buttonTypes, urlType
 
 
-from PyQt5.QtWidgets import QPushButton, QToolButton, QWidgetAction, QAction, QActionGroup
+from PyQt5.QtWidgets        import QPushButton, QToolButton, QWidgetAction, QAction, QActionGroup
+from PyQt5.QtCore           import QUrl, QUrlQuery
+
+
+def detect_url(s):
+    return re.findall('http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+] |[!*\(\), ]|(?:%[0-9a-fA-F][0-9a-fA-F]))+', s)
+
+
+def url_valid(s):
+    if validators.url(s):
+        return True
+    else:
+        return False
+
+
+def is_url(s):
+    if is_string(s):
+        return url_valid(s)
+    else:
+        if type(s) in [QUrl, QUrlQuery]:
+            return True
+        elif s.Type in urlType:
+            return True
+        else:
+            return False
 
 
 def is_button(s):
