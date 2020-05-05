@@ -13,6 +13,7 @@ Description:
 
 from .NetworkAccessManager      import NetworkAccessManager
 from .NetworkRequest            import NetworkRequest
+from .NetworkReply              import NetworkReply
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 5/5/2020 - 8:45 PM

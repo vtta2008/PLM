@@ -105,6 +105,10 @@ SYSTRAY_UNAVAI = "Systray could not detect any system tray on this system"
 
 PTH_NOT_EXSIST = "Could not find directory path specific"
 
+
+ASK_OVERWRITE = "The file already exists.\nDo you want to Overwrite old file?"
+
+
 ERROR_OPENFILE = "There was an error opening the file"
 
 ERROR_QIMAGE = "ImageViewer.setImage: Argument must be a QImage or QPixmap."

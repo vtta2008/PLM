@@ -671,6 +671,15 @@ def lower_case_underscore_to_camel_case(text):
     class_ = text.__class__
     return split_string[0] + class_.join('', map(class_.capitalize, split_string[1:]))
 
+def autoRename(filename):
+    # rename filename if already exists
+    name, ext = os.path.splitext(filename)
+    i = 0
+    while 1:
+        if not os.path.exists(filename) : return filename
+        i+=1
+        filename = name + str(i) + ext
+
 # - Attribute Functions ----
 def auto_convert(value):
     """

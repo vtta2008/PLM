@@ -9,9 +9,12 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
+from .ByteArray         import ByteArray
 from .Date              import Date
 from .DateTime          import DateTime
 from .File              import File, QssFile
+from .FileInfo          import FileInfo
+from .IODevice          import IODevice
 from .Point             import Point
 from .Process           import Process
 from .Rect              import Rect, RectF

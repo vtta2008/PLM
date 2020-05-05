@@ -10,10 +10,12 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from PLM import __copyright__
 
+
 from PyQt5.QtWidgets                import QMessageBox
 
 # PLM
 from PLM.commons.Gui.Icon           import AppIcon
+from PLM.commons                    import DAMGDICT
 
 
 class MessageBox(QMessageBox):
@@ -23,38 +25,42 @@ class MessageBox(QMessageBox):
     _name                           = 'DAMG Widget'
     _copyright                      = __copyright__()
 
-    def __init__(self, parent=None, title="auto", level="auto", message="test message", btn='ok', flag=None):
+    buttons                         = DAMGDICT()
+
+    def __init__(self, parent=None, title="auto", level="auto", message="test message", btns=[], flag=None):
         QMessageBox.__init__(self)
 
         self._parent                = parent
         self._title                 = title
         self._level                 = level
         self._message               = message
-        self._btn                   = btn
+        self.btns                   = btns
         self.flag                   = flag
 
         if self._title == 'auto' or self._title is None:
-            self.popupTitle             = self._level
+            self.title             = self._level
         else:
-            self.popupTitle             = self._title
+            self.title             = self._title
 
         if self.flag:
             self.setWindowFlag(self.flag)
 
-        self.popupIcon                  = self.config_icon()
-        self.popupLevel                 = self.config_level()
-        self.btn                        = self.config_button()
+        self.icon                  = self.getIcon()
+        self.level                 = self.getLevel()
 
-        self.popupLevel(self._parent, self.popupTitle, self._message, self.btn)
-
-    def __call__(self, *args, **kwargs):
-
-        if isinstance(self, object):
-            return True
+        if type(self.btns) in [str]:
+            self.btns                   = self.getBtnSetting('ok')
         else:
-            return False
+            for btn in self.btns:
+                self.addButton(btn, self.getBtnSetting(btn))
 
-    def config_level(self):
+
+    def addBtn(self, btn):
+        button = self.addButton(btn, self.getBtnSetting(btn))
+        self.buttons.add(btn, button)
+        return button
+
+    def getLevel(self):
 
         levels = dict(
 
@@ -68,7 +74,7 @@ class MessageBox(QMessageBox):
 
         return levels[self._level]
         
-    def config_icon(self):
+    def getIcon(self):
 
         icons = dict(
 
@@ -85,7 +91,7 @@ class MessageBox(QMessageBox):
         else:
             AppIcon(self._level)
 
-    def config_button(self):
+    def getBtnSetting(self, btn):
         
         buttons = dict(
 
@@ -102,10 +108,13 @@ class MessageBox(QMessageBox):
             discard                 = self.Discard,
             yes_no                  = self.Yes|QMessageBox.No,
             retry_close             = self.Retry|QMessageBox.Close,
+            Overwrite               = self.NoRole,
+            Rename                  = self.RejectRole,
+            Resume                  = self.YesRole,
             
         )
 
-        return buttons[self._btn]
+        return buttons[btn]
 
 
     @property

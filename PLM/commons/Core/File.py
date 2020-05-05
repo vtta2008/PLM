@@ -30,7 +30,7 @@ class FileBase(QFile):
     _filePath                               = None
 
     def __init__(self, *__args):
-        QFile.__init__(self)
+        super(FileBase, self).__init__(*__args)
 
     @property
     def copyright(self):
