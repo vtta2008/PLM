@@ -11,7 +11,8 @@ Description:
 """ Import """
 
 # PLM
-from PLM.commons import DAMGERROR
+from PLM.commons                    import DAMGERROR
+from PLM.commons.Network            import NetworkReply
 
 
 class NodePropertyError(DAMGERROR): pass
@@ -60,6 +61,9 @@ class CreateWorkerError(DAMGERROR): pass
 
 
 class DirectoryError(DAMGERROR): pass
+
+
+class NetworkReplyError(NetworkReply.error): pass
 
 
 # -------------------------------------------------------------------------------------------------------------

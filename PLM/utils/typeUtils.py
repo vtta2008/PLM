@@ -13,7 +13,7 @@ Description:
 import validators, re
 from collections            import OrderedDict
 from PLM.commons            import DAMGDICT, DAMGLIST
-from PLM.configs            import actionTypes, buttonTypes, urlType
+from PLM.configs            import actionTypes, buttonTypes, urlTypes
 
 
 from PyQt5.QtWidgets        import QPushButton, QToolButton, QWidgetAction, QAction, QActionGroup
@@ -37,7 +37,7 @@ def is_url(s):
     else:
         if type(s) in [QUrl, QUrlQuery]:
             return True
-        elif s.Type in urlType:
+        elif s.Type in urlTypes:
             return True
         else:
             return False

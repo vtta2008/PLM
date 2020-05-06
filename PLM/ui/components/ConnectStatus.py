@@ -28,7 +28,7 @@ from PLM.ui.base                            import Conection
 class ConnectStatus(GroupGrid):
 
     key                                 = 'ConnectStatus'
-    _updating                          = False
+    _updating                           = False
     _mode                               = None
     _server                             = None
     _connectServer                      = False

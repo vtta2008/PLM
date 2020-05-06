@@ -368,7 +368,7 @@ actionTypes                 = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartF
 
 buttonTypes                 = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
 
-urlType                     = ['DAMGURL', ]
+urlTypes                    = ['DAMGURL', ]
 
 layoutTypes = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
 

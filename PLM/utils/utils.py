@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # Python
-import os, sys, winshell, yaml, json, re, linecache
+import os, sys, winshell, yaml, json, re
 
 from PIL                import Image
 from resizeimage        import resizeimage
@@ -23,6 +23,7 @@ from PyQt5.QtCore       import pyqtSignal, pyqtSlot
 from PLM                import __envKey__
 from PLM.commons.Core   import EventLoop, Timer
 
+from .pathUtils         import get_file_path
 
 # -------------------------------------------------------------------------------------------------------------
 """ Destop tool """
