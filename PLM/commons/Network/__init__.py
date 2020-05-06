@@ -12,6 +12,8 @@ Description:
 
 
 from .NetworkAccessManager      import NetworkAccessManager
+from .NetworkCookie             import NetworkCookie
+from .NetworkCookieJar          import NetworkCookieJar
 from .NetworkRequest            import NetworkRequest
 from .NetworkReply              import NetworkReply
 

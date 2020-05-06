@@ -10,6 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 from .BaseKeys          import BaseKeys
+from .BaseRequest       import HTTPrequest, CookieRequest, AuthRequest
 from .BaseType          import BaseType
 from .BaseThreading     import TaskThread, TaskWorker, WidgetThread, WidgetWorker
 from .BaseStorage       import BaseStorage

@@ -15,7 +15,7 @@ from .typeUtils         import is_button, is_string, is_action, is_url, url_vali
 
 from .netUtils          import filenameFromUrl, filenameFromHeader
 
-from .converter         import str2bool, text_to_hex, bool2str, byte2gb, tuple2Qcolor
+from .converter         import str2bool, text_to_hex, bool2str, byte2gb, tuple2Qcolor, bytes2str, format_bytes
 
 from .inspectUtils      import (getToken, getUnix, getTime, getDate, get_local_pc_info, get_user_location,
                                 get_screen_resolution, get_pointer_bounding_box)

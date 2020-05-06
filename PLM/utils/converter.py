@@ -12,7 +12,17 @@ Description:
 
 from PyQt5.QtGui    import QColor
 from .utils         import generate_alternative_color
-from .typeUtils     import is_string, is_bool, is_list, is_none, is_number, list_attr_types_obj
+from .typeUtils     import is_string, is_bool, is_list, is_none, is_number
+
+def format_bytes(size):
+    # 2**10 = 1024
+    power = 2**10
+    n = 0
+    power_labels = {0 : '', 1: 'kilo', 2: 'mega', 3: 'giga', 4: 'tera'}
+    while size > power:
+        size /= power
+        n += 1
+    return power_labels[n]+'bytes', size
 
 def tuple2Qcolor(data=None, alternate=False, av=20):
     if len(data) == 3:
@@ -67,6 +77,8 @@ def byte2gb(byte):
 def mb2gb(mb):
     return round(mb/1024)
 
+def bytes2str(s):
+    return str(s, 'utf-8')
 
 def auto_convert(value):
     """

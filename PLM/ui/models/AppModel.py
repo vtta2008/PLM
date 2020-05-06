@@ -16,9 +16,7 @@ import os
 import sys
 import requests
 
-
-from PLM.configs                        import (__localServer__, __google__, STAY_ON_TOP, SERVER_CONNECT_FAIL,
-                                                cfgData)
+from PLM.configs                        import (__localServer__, __google__, STAY_ON_TOP, SERVER_CONNECT_FAIL, cfgData)
 from PLM.cores                          import sqlUtils
 from PLM.ui.layouts.SplashUI            import SplashUI
 from PLM.cores.MultiThreadManager       import MultiThreadManager
@@ -48,7 +46,6 @@ class AppModel(Application):
         while not globalSetting.cfgAll:
             self.wait()
 
-
         self.iconInfo                   = self.splash.iconInfo
         self.appInfo                    = self.splash.appInfo
         self.urlInfo                    = self.splash.urlInfo
@@ -64,23 +61,6 @@ class AppModel(Application):
         self.serverInfo                 = self.splash.serverInfo
         self.formatInfo                 = self.splash.formatInfo
         self.fontInfo                   = self.splash.fontInfo
-
-
-        # self.iconInfo                   = self.loadConfigInfo('icon')
-        # self.appInfo                    = self.loadConfigInfo('apps')
-        # self.urlInfo                    = self.loadConfigInfo('url')
-        # self.dirInfo                    = self.loadConfigInfo('dir')
-        # self.pthInfo                    = self.loadConfigInfo('pth')
-        # self.plmInfo                    = self.loadConfigInfo('plm')
-        # self.deviceInfo                 = self.loadConfigInfo('pc')
-        # self.pythonInfo                 = self.loadConfigInfo('py')
-        # self.avatarInfo                 = self.loadConfigInfo('avatar')
-        # self.logoInfo                   = self.loadConfigInfo('logo')
-        # self.imageInfo                  = self.loadConfigInfo('img')
-        # self.envInfo                    = self.loadConfigInfo('env')
-        # self.serverInfo                 = self.loadConfigInfo('server')
-        # self.formatInfo                 = self.loadConfigInfo('fmt')
-        # self.fontInfo                   = self.loadConfigInfo('font')
 
         self.threadManager              = MultiThreadManager(self)
         self.database                   = sqlUtils()
