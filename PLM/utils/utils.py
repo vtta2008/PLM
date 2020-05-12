@@ -14,6 +14,7 @@ Description:
 import os, sys, winshell, yaml, json, re
 
 from PIL                import Image
+from functools          import partial
 from resizeimage        import resizeimage
 
 # PyQt5
@@ -22,11 +23,63 @@ from PyQt5.QtCore       import pyqtSignal, pyqtSlot
 # PLM
 from PLM                import __envKey__
 from PLM.commons.Core   import EventLoop, Timer
+from PLM.cores.Errors   import EnsureValueError
 
 from .pathUtils         import get_file_path
 
 # -------------------------------------------------------------------------------------------------------------
 """ Destop tool """
+
+def qualname(obj):
+    """Get the fully qualified name of an object.
+    Based on twisted.python.reflect.fullyQualifiedName.
+    Should work with:
+        - functools.partial objects
+        - functions
+        - classes
+        - methods
+        - modules
+    """
+    if isinstance(obj, partial):
+        obj = obj.func
+
+    if hasattr(obj, '__module__'):
+        prefix = '{}.'.format(obj.__module__)
+    else:
+        prefix = ''
+
+    if hasattr(obj, '__qualname__'):
+        return '{}{}'.format(prefix, obj.__qualname__)
+    elif hasattr(obj, '__name__'):
+        return '{}{}'.format(prefix, obj.__name__)
+    else:
+        return repr(obj)
+
+def get_repr(obj, constructor=False, **attrs):
+    """Get a suitable __repr__ string for an object.
+    Args:
+        obj: The object to get a repr for.
+        constructor: If True, show the Foo(one=1, two=2) form instead of
+                     <Foo one=1 two=2>.
+        attrs: The attributes to add.
+    """
+    cls = qualname(obj.__class__)
+    parts = []
+    items = sorted(attrs.items())
+    for name, val in items:
+        parts.append('{}={!r}'.format(name, val))
+    if constructor:
+        return '{}({})'.format(cls, ', '.join(parts))
+    else:
+        if parts:
+            return '<{} {}>'.format(cls, ' '.join(parts))
+        else:
+            return '<{}>'.format(cls)
+
+def ensure_valid(obj) -> None:
+    """Ensure a Qt object with an .isValid() method is valid."""
+    if not obj.isValid():
+        raise EnsureValueError(obj)
 
 def wait(msec):
     loop = EventLoop()

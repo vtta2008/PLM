@@ -9,7 +9,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-from .utils            import (clean_file_ext, resize_image, data_handler, create_signal_slot, autoRename, wait)
+from .utils            import (clean_file_ext, resize_image, data_handler, create_signal_slot, autoRename, wait,
+                               get_repr, ensure_valid)
 
 from .typeUtils         import is_button, is_string, is_action, is_url, url_valid, detect_url
 

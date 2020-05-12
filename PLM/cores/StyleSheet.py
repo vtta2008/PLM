@@ -20,6 +20,17 @@ from PLM.configs                        import DarkPalette
 from PLM.cores                          import Loggers
 from PLM.plugins                        import Qt
 
+
+def set_register(obj, stylesheet=None, update=True):
+    observer = _StyleSheetObserver(obj, stylesheet, update)
+    observer.register()
+
+
+def _render_stylesheet(stylesheet):
+    pass
+
+
+
 class StyleSheet(DAMG):
 
     key                                 = 'StylesSheet'

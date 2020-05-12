@@ -778,11 +778,13 @@ datetTimeStamp = QDateTime.currentDateTime().toString("hh:mm - dd MMMM yy")     
 IMGEXT = "All Files (*);;Img Files (*.jpg);;Img Files (*.png)"
 
 # -------------------------------------------------------------------------------------------------------------
-""" Font """
+""" Font & Text """
 
 TEXT_BOLD                   = QFont.Bold
 TEXT_NORMAL                 = QFont.Normal
 MONO_SPACE                  = QFont.Monospace
+
+TEXT_MENEOMIC               = Qt.TextShowMnemonic
 
 # -------------------------------------------------------------------------------------------------------------
 """ Event """
@@ -790,6 +792,7 @@ MONO_SPACE                  = QFont.Monospace
 NO_WRAP                     = QPlainTextEdit.NoWrap
 NO_FRAME                    = QPlainTextEdit.NoFrame
 ELIDE_RIGHT                 = Qt.ElideRight
+ELIDE_NONE                  = Qt.ElideNone
 KEY_PRESS                   = QEvent.KeyPress
 KEY_RELEASE                 = QEvent.KeyRelease
 

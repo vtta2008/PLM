@@ -25,7 +25,7 @@ from .GraphicView       import GraphicView
 from .GridLayout        import GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
 from .GroupBox          import GroupBox, GroupGrid, GroupHBox, GroupVBox
 from .ItemDelegate      import ItemDelegate
-from .Label             import Label, LCDNumber, user_pass_label
+from .Label             import Label, TextLabel, LCDNumber, user_pass_label
 from .LineEdit          import LineEdit
 from .MainWindow        import MainWindow
 from .MenuBar           import MenuBar, Menu

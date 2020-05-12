@@ -9,6 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
+from PyQt5.QtCore       import pyqtSlot as damgslot, pyqtSignal as damgsignal, pyqtProperty as damgproperty
 from .ByteArray         import ByteArray
 from .Date              import Date
 from .DateTime          import DateTime

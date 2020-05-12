@@ -102,6 +102,29 @@ class Label(QLabel):
         self._name                      = newName
 
 
+class TextLabel(QLabel):
+
+    Type                                = 'DAMGUI'
+    key                                 = 'LCDNumber'
+    _name                               = 'DAMG LCD Number'
+    _copyright                          = __copyright__()
+
+    def __init__(self, parent=None, elideMode=None):
+        super(TextLabel, self).__init__(parent)
+
+    @property
+    def copyright(self):
+        return self._copyright
+
+    @property
+    def name(self):
+        return self._name
+
+    @name.setter
+    def name(self, val):
+        self._name                      = val
+
+
 class LCDNumber(QLCDNumber):
 
     Type                                    = 'DAMGUI'

@@ -66,6 +66,20 @@ class DirectoryError(DAMGERROR): pass
 class NetworkReplyError(NetworkReply.error): pass
 
 
+class EnsureValueError(ValueError):
+
+    """Exception which gets raised by ensure_valid."""
+
+    def __init__(self, obj):
+        try:
+            self.reason = obj.errorString()
+        except AttributeError:
+            self.reason = None
+        err = "{} is not valid".format(obj)
+        if self.reason:
+            err += ": {}".format(self.reason)
+        super(EnsureValueError, self).__init__(err)
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 4/12/2019 - 1:22 AM
 # © 2017 - 2018 DAMGteam. All rights reserved
