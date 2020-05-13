@@ -48,3 +48,6 @@
 /.
 # Project exclude paths
 /.
+
+*.cbp
+*.res
