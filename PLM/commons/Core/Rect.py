@@ -24,7 +24,7 @@ class Rect(QRect):
     _copyright                  = __copyright__()
 
     def __init__(self, *__args):
-        QRect.__init__(*__args)
+        super(Rect, self).__init__(*__args)
 
     @property
     def copyright(self):
@@ -47,7 +47,7 @@ class RectF(QRectF):
     _copyright                  = __copyright__()
 
     def __init__(self, *__args):
-        QRectF.__init__(self)
+        super(RectF, self).__init__(*__args)
 
     @property
     def copyright(self):

@@ -15,9 +15,6 @@ from PLM import __copyright__
 # PyQt5
 from PyQt5.QtWidgets                        import QSplashScreen
 
-# PLM
-from PLM.plugins.SignalManager              import SignalManager
-from PLM.commons.SettingManager             import SettingManager
 
 class SplashScreen(QSplashScreen):
 
@@ -26,21 +23,10 @@ class SplashScreen(QSplashScreen):
     _name                                   = 'DAMG Splash Screen'
     _copyright                              = __copyright__()
 
-    def __init__(self, app=None):
+    def __init__(self, app):
         QSplashScreen.__init__(self)
 
         self.app                            = app
-        self.settings                       = SettingManager(self)
-        self.signals                        = SignalManager(self)
-
-    def setValue(self, key, value):
-        return self.settings.initSetValue(key, value, self.key)
-
-    def getValue(self, key, decode=None):
-        if decode is None:
-            return self.settings.initValue(key, self.key)
-        else:
-            return self.settings.initValue(key, self.key, decode)
 
     @property
     def copyright(self):

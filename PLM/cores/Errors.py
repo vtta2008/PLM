@@ -63,9 +63,6 @@ class CreateWorkerError(DAMGERROR): pass
 class DirectoryError(DAMGERROR): pass
 
 
-class NetworkReplyError(NetworkReply.error): pass
-
-
 class EnsureValueError(ValueError):
 
     """Exception which gets raised by ensure_valid."""

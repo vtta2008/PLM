@@ -33,6 +33,12 @@ class Thread(QThread):
         self.args = args
         self.kwargs = kwargs
 
+    def start_running(self):
+        self._running                       = True
+
+    def stop_running(self):
+        self._running                       = False
+
     @property
     def copyright(self):
         return self._copyright

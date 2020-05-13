@@ -95,7 +95,7 @@ class Notification(GroupGrid):
 
         self.weekNumber     = Label({'txt': 'Weeknumber: {0}'.format(wk)})
 
-        worker              = PcMonitor()
+        worker              = PcMonitor(self)
         worker.cpu.connect(self.update_cpu_useage)
         worker.ram.connect(self.update_ram_useage)
         worker.gpu.connect(self.update_gpu_useage)

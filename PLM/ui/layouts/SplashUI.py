@@ -13,122 +13,76 @@ Description:
 
 # Python
 import sys
+from math import cos, sin, pi
 
 # PyQt5
 from PyQt5.QtWidgets                    import QApplication
 
 # PLM
 from PLM                                import globalSetting
-from PLM.ui.components.Loading          import StaticLoading, RealtimeLoading
-from PLM.cores.models                   import AutoLoadingThread, RealtimeUpdatingThread
-from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, SPLASHSCREEN, ERROR_LAYOUT_COMPONENT,
-                                                splashImagePth,
-                                                ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
+from PLM.configs                        import (ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
                                                 ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
-                                                ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath, ConfigFonts)
-from PLM.commons.Widgets                import SplashScreen, MessageBox, ProgressBar
-from PLM.commons.Gui                    import LogoIcon, Pixmap
-from PLM.commons.Core                   import Timer
-from PLM.cores                          import MultiThreadManager, StyleSheet
+                                                ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath, ConfigFonts,
+                                                TRANSPARENT, AUTO_COLOR)
+from PLM.ui.base                        import BaseSplash
+from PLM.commons.Core                   import Rect
 
 
 
-class LoadingBar(ProgressBar):
-
-    key                                 = 'ProgressUI'
-    _name                               = 'DAMG Progress UI'
-
-    def __init__(self, parent=None):
-        super(LoadingBar, self).__init__(parent)
-
-        self.parent                     = parent
-
-        if not self.parent:
-            MessageBox(self, 'Loading Layout Component', 'critical', ERROR_LAYOUT_COMPONENT)
-            sys.exit()
-        else:
-            self.num                    = self.parent.num
-            self.pix                    = self.parent.splashPix
-            self.setMinimum(0)
-            self.setMaximum(100)
-
-            self.setGeometry((self.pix.width()-self.width())/2 + 115, self.pix.height() - 115, self.pix.width()/10, 10)
-            self.setTextVisible(False)
-            self.setStyleSheet(StyleSheet.progressBar())
-
-    def start(self):
-        self.show()
-
-
-class SplashUI(SplashScreen):
+class SplashUI(BaseSplash):
 
     key                                 = 'SplashUI'
 
-    _bufferH                            = 100
-    _bufferW                            = 200
-
-    pythonInfo                          = None
-    dirInfo                             = None
-    pthInfo                             = None
-    urlInfo                             = None
-    envInfo                             = None
-    iconInfo                            = None
-    avatarInfo                          = None
-    logoInfo                            = None
-    imageInfo                           = None
-    serverInfo                          = None
-    formatInfo                          = None
-    fontInfo                            = None
-    deviceInfo                          = None
-    appInfo                             = None
-    plmInfo                             = None
-
-    _cfgCount                           = 0
-    _percentCount                       = 0
-    _num                                = 16
-
-    def __init__(self, app=None):
-        super(SplashUI, self).__init__(app)
-
-        self.app                        = app
-
-        if not self.app:
-            MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
-            sys.exit()
-
-        self.splashPix                  = Pixmap(splashImagePth)
-        self.setPixmap(self.splashPix)
-        self.setMask(self.splashPix.mask())
-
-        self.setWindowIcon(LogoIcon('DAMGTEAM'))
-        self.setWindowFlags(SPLASHSCREEN | FRAMELESS)
-
-        self.timer                      = Timer(self)
-        self.threadManager              = MultiThreadManager(self)
-        self.screen                     = self.app.desktop().availableGeometry()
-        self.autoLoading                = StaticLoading(self)
-        self.autoThread                 = AutoLoadingThread(self.autoLoading, self.app)
-
-        self.realtimeLoading            = RealtimeLoading(self)
-        self.realtimeThread             = RealtimeUpdatingThread(self.realtimeLoading, self.app)
-
-        self.autoThread.rotate.connect(self.update_rotate)
-        self.autoThread.signal.result.connect(self.threadManager.print_output)
-        self.autoThread.signal.finished.connect(self.threadManager.worker_completed)
-        self.autoThread.signal.progress.connect(self.threadManager.progress_fn)
-
-        self.realtimeThread.signal.result.connect(self.threadManager.print_output)
-        self.realtimeThread.signal.finished.connect(self.threadManager.worker_completed)
-        self.realtimeThread.signal.progress.connect(self.threadManager.progress_fn)
-
-        self.updatePosition()
-        self.autoThread.start()
-        self.realtimeThread.start()
-
-        self.progress                   = LoadingBar(self)
-        self.progress.show()
-        self.show()
+    def __init__(self, app=None, imagePth=None):
+        super(SplashUI, self).__init__(app, imagePth)
+        print(0)
         self.autoConfig()
+
+    def paintEvent(self, event):
+
+        self.painter.fillRect(event.rect(), TRANSPARENT)
+
+        self.painter.begin(self)
+
+        # Draw logo
+        self.logoRect = Rect(self.width()/2 - self.logo.width()/2,
+                                   self.height()/2 - self.logo.height()/2,
+                                   self.logo.width(),
+                                   self.logo.height())
+
+        self.painter.drawImage(self.logoRect, self.logo, self.logo.rect(), AUTO_COLOR)
+
+        # Draw loading animation
+        self.setNoPen()
+
+        if self.count > self.numOfitems:
+            self._count                 = 0
+
+        for i in range(self.numOfitems):
+
+            distance                    = self.distance(i, self.count)
+            self._brushColor            = self.getBrushColor(distance, self.mainColor)
+            self.painter.setBrush(self.brushColor)
+            self.painter.drawEllipse(self.width()/2 + self.innerRadius*cos(2*pi*i/self.num) - (self.itemRadius/2),
+                                    self.height()/2 + self.innerRadius*sin(2*pi*i/self.num) - (self.itemRadius/2),
+                                    self.itemRadius, self.itemRadius)
+
+        self.setTextPen()
+
+        x, y                            = self.getTextPos()
+        self.painter.drawText(x, y, '')
+        self.update()
+        self.painter.drawText(x, y, self.text)
+        self.update()
+
+        x, y = self.getProgressTextPos()
+        self.painter.drawText(x, y, '')
+        self.update()
+        self.painter.drawText(x, y, self.pText)
+        self.update()
+
+        self.painter.end()
+
 
     def autoConfig(self):
 
@@ -194,29 +148,10 @@ class SplashUI(SplashScreen):
                     check = False
                 else:
                     check = True
-            self.stopThreads()
+            # self.stopThreads()
 
         globalSetting.setCfgAll(check)
 
-    def resizeEvent(self, event):
-        self.resize(event.size().width() + self.bufferW, event.size().height() + self.bufferH)
-        self.autoLoading.resize(self.size())
-        self.realtimeLoading.resize(self.size())
-        event.accept()
-
-    def processEvents(self):
-        if not self.app:
-            MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
-            sys.exit()
-        else:
-            return self.app.processEvents()
-
-    def update_rotate(self, bool):
-        self.autoLoading.rotate()
-
-    def setText(self, text):
-        self.realtimeLoading.setText(text)
-        # self.processEvents()
 
     def setProgress(self, val):
         value                   = (100*val)/self.num
@@ -233,61 +168,30 @@ class SplashUI(SplashScreen):
                         self.progress.setValue(self.percentCount)
                     self.realtimeLoading.setProgress('{0}%'.format(str(self.percentCount)))
 
-
-    def updatePosition(self):
-        return self.move((self.screen.width() - self.width())/2, (self.screen.height() - self.height())/2)
-
-    def stopThreads(self):
-        self.autoThread.stop()
-        self.realtimeThread.stop()
-        self.autoThread.wait()
-        self.realtimeThread.wait()
-        self.killThreads()
-        self.processEvents()
-
-    def killThreads(self):
-        self.autoThread.terminate()
-        self.realtimeThread.terminate()
-
-    @property
-    def bufferH(self):
-        return self._bufferH
-
-    @property
-    def bufferW(self):
-        return self._bufferW
-
-    @property
-    def cfgCount(self):
-        return self._cfgCount
-
-    @property
-    def num(self):
-        return self._num
-
-    @property
-    def percentCount(self):
-        return self._percentCount
-
-    @percentCount.setter
-    def percentCount(self, val):
-        self._percentCount              = val
-
-    @num.setter
-    def num(self, val):
-        self._num                       = val
-
-    @cfgCount.setter
-    def cfgCount(self, val):
-        self._cfgCount                  = val
-
-    @bufferW.setter
-    def bufferW(self, val):
-        self._bufferW                   = val
-
-    @bufferH.setter
-    def bufferH(self, val):
-        self._bufferH                   = val
+    # def stopThreads(self):
+    #     print('stop thread')
+    #     self.autoThread.stop()
+    #     # self.realtimeThread.stop()
+    #     self.autoThread.wait()
+    #     # self.realtimeThread.wait()
+    #     self.killThreads()
+    #     self.processEvents()
+    #
+    # def killThreads(self):
+    #     self.autoThread.terminate()
+    #     # self.realtimeThread.terminate()
+    #
+    # def rotate(self, bool):
+    #     print(1)
+    #     self.realtimeLoading.update()
+    #     self.progress.update()
+    #     return self.autoLoading.rotate()
+    #
+    # def realtimeUpdate(self, bool):
+    #     return self.realtimeLoading.update()
+    #
+    # def updateTimmer(self):
+    #     return self.timer.setInterval(1000/(self.autoLoading.numOfitems*self.autoLoading.revolutionPerSec))
 
 
 if __name__ == '__main__':

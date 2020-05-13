@@ -12,8 +12,7 @@ Description:
 """ Import """
 
 # Python
-import os
-import math
+import os, sys, math
 from math                               import ceil
 
 # PyQt5
@@ -23,24 +22,53 @@ from PyQt5.QtCore                       import QRect
 # PLM
 from PLM.configs                        import (TRANSPARENT, NO_PEN, TEXT_NORMAL, AUTO_COLOR, ANTIALIAS, DAMG_LOGO_DIR,
                                                 colorLibs, )
-from PLM.commons.Widgets.Widget         import Widget
-from PLM.commons.Core                   import Timer
+from PLM.commons.Widgets                import Widget, MessageBox, ProgressBar
 from PLM.commons.Gui                    import Image
+from PLM.configs                        import ERROR_LAYOUT_COMPONENT
+from PLM.cores.StyleSheet               import StyleSheet
 
+
+
+class LoadingBar(ProgressBar):
+
+    key                                 = 'ProgressUI'
+    _name                               = 'DAMG Progress UI'
+
+    def __init__(self, parent=None):
+        super(LoadingBar, self).__init__(parent)
+
+        self.parent                     = parent
+
+        if not self.parent:
+            MessageBox(self, 'Loading Layout Component', 'critical', ERROR_LAYOUT_COMPONENT)
+            sys.exit()
+        else:
+            self.num                    = self.parent.num
+            self.pix                    = self.parent.splashPix
+            self.setMinimum(0)
+            self.setMaximum(100)
+
+            self.setGeometry((self.pix.width()-self.width())/2 + 115, self.pix.height() - 115, self.pix.width()/10, 10)
+            self.setTextVisible(False)
+            self.setStyleSheet(StyleSheet.progressBar())
+
+    def start(self):
+        self.show()
 
 
 
 class StaticLoading(Widget):
 
-    key                                 = 'BusyLoading'
+    key                                 = 'StaticLoading'
 
     _count                              = 0
 
     _numOfitems                         = 20
+    _revolutionPerSec                   = 1.57079632679489661923
     _num                                = float(_numOfitems)
     _itemRadius                         = 25
 
-    _revolutionPerSec                   = 1.57079632679489661923
+
     _minOpacity                         = 31.4159265358979323846
     _fadeRate                           = 25
 
@@ -55,10 +83,6 @@ class StaticLoading(Widget):
         palette                         = QPalette(self.palette())
         palette.setColor(palette.Background, TRANSPARENT)
         self.setPalette(palette)
-
-        self.timer                                  = Timer(self)
-        self.timer.timeout.connect(self.rotate)
-        self.updateTimmer()
 
     def rotate(self):
         self._count += 1
@@ -121,13 +145,10 @@ class StaticLoading(Widget):
 
         return color
 
-    def updateTimmer(self):
-        return self.timer.setInterval(1000/(self.numOfitems*self.revolutionPerSec))
-
     def showEvent(self, event):
         self._count                     = 0
-        self.timer.start(50)
-        event.accept()
+        # self.timer.start(50)
+        # super(StaticLoading, self).showEvent(event)
 
     @property
     def numOfitems(self):

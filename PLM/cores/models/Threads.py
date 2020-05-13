@@ -37,17 +37,14 @@ class PcMonitor(Thread):
     gpu                                     = pyqtSignal(str, name='GPU')
     disk                                    = pyqtSignal(str, name='DISK')
 
-    _monitoring                             = True
+    def __init__(self, parent):
+        super(PcMonitor, self).__init__(parent)
 
-    def __init__(self, name='PC Monitor', *args, **kwargs):
-        super(PcMonitor, self).__init__(self)
-
-        self.args                           = args
-        self.kwargs                         = kwargs
-        self._name                          = name
+        if self.parent:
+            self.setParent(self.parent)
 
     def run(self):
-        if self.monitoring:
+        if self.running:
 
             cpu                             = str(get_cpu_useage())
             ram                             = str(get_ram_useage())
@@ -59,21 +56,6 @@ class PcMonitor(Thread):
             self.gpu.emit(gpu)
             self.disk.emit(disk)
 
-    def stop_monitoring(self):
-        self._monitoring                    = False
-
-    def start_monitoring(self):
-        self._monitoring                    = True
-
-    @property
-    def monitoring(self):
-        return self._monitoring
-
-    @monitoring.setter
-    def monitoring(self, val):
-        self._monitoring                    = val
-
-
 
 class AutoLoadingThread(WidgetThread):
 
@@ -81,43 +63,34 @@ class AutoLoadingThread(WidgetThread):
 
     rotate                                  = pyqtSignal(bool, name='rotate')
 
-    def __init__(self, widget, parent):
-        super(AutoLoadingThread, self).__init__(widget, parent)
+    def __init__(self, parent):
+        super(AutoLoadingThread, self).__init__(parent)
 
         if self.parent:
             self.setParent(self.parent)
 
-        # self.timer.timeout.connect(self.widget.rotate)
-        # self.timer.start(50)
-        # self.widget.show()
-
     def run(self):
         if self.running:
+            print('rotate signal emit')
             self.rotate.emit(True)
 
 
 class RealtimeUpdatingThread(WidgetThread):
 
     key                                             = 'RealtimeUpdatingThread'
+    update                                          = pyqtSignal(bool, name='update')
 
-    def __init__(self, widget, parent):
-        super(RealtimeUpdatingThread, self).__init__(widget, parent)
+    def __init__(self, parent):
+        super(RealtimeUpdatingThread, self).__init__(parent)
 
         if self.parent:
             self.setParent(self.parent)
 
-        self.timer.timeout.connect(self.widget.update)
-        # self.widget.show()
-
     def run(self):
         if self.running:
-            self.widget.update()
+            print('update widget signal emit')
+            self.update.emit(True)
 
-    # def setText(self, v):
-    #     return self.widget.setText(v)
-    #
-    # def setProgress(self, v):
-    #     return self.widget.setProgress(v)
 
 
 class ConfigTaskThread(TaskThread):

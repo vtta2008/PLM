@@ -81,15 +81,12 @@ class WidgetThread(Thread):
     key                                             = 'WidgetThread'
     signal                                          = Signals()
 
-    def __init__(self, widget, parent):
+    def __init__(self, parent):
         Thread.__init__(self)
 
-        self.widget                                 = widget
         self.parent                                 = parent
-        self.timer                                  = Timer(self)
 
     def stop(self):
-        self.timer.stop()
         self._running                               = False
 
 
@@ -104,10 +101,8 @@ class TaskThread(Thread):
 
         self.task                                   = task
         self.parent                                 = parent
-        self.timer                                  = Timer(self)
 
     def stop(self):
-        self.timer.stop()
         self._running                               = False
 
 
