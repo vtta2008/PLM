@@ -54,10 +54,16 @@ class ThreadNotFoundError(DAMGERROR): pass
 class WorkerNotFoundError(DAMGERROR): pass
 
 
+class TaskNotFoundError(DAMGERROR): pass
+
+
 class CreateThreadError(DAMGERROR): pass
 
 
 class CreateWorkerError(DAMGERROR): pass
+
+
+class CreateTaskError(DAMGERROR): pass
 
 
 class DirectoryError(DAMGERROR): pass

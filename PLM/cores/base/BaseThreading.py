@@ -81,9 +81,11 @@ class WidgetThread(Thread):
     key                                             = 'WidgetThread'
     signal                                          = Signals()
 
-    def __init__(self, parent):
+    def __init__(self, widget, parent):
         Thread.__init__(self)
 
+        self.widget                                 = widget
+        self.widget.show()
         self.parent                                 = parent
 
     def stop(self):

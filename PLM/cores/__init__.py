@@ -15,7 +15,7 @@ from .Loggers                   import Loggers
 from .EnvironmentVariable       import EnvironmentVariable
 from .sqls                      import sqlUtils, sqlPreset
 from .StyleSheet                import StyleSheet
-from .MultiThreadManager        import MultiThreadManager
+from .MultiThreadManager        import ThreadsManager
 
 
 # -------------------------------------------------------------------------------------------------------------

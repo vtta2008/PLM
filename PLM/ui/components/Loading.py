@@ -24,8 +24,9 @@ from PLM.configs                        import (TRANSPARENT, NO_PEN, TEXT_NORMAL
                                                 colorLibs, )
 from PLM.commons.Widgets                import Widget, MessageBox, ProgressBar
 from PLM.commons.Gui                    import Image
-from PLM.configs                        import ERROR_LAYOUT_COMPONENT
-from PLM.cores.StyleSheet               import StyleSheet
+from PLM.commons.Core                   import Timer
+from PLM.configs                        import ERROR_LAYOUT_COMPONENT, SPLASHSCREEN, FRAMELESS
+from PLM.cores                          import StyleSheet
 
 
 
@@ -80,9 +81,15 @@ class StaticLoading(Widget):
     def __init__(self, parent):
         super(StaticLoading, self).__init__(parent)
 
-        palette                         = QPalette(self.palette())
+        self.setWindowFlags(SPLASHSCREEN | FRAMELESS)
+
+        palette                         = QPalette()
         palette.setColor(palette.Background, TRANSPARENT)
         self.setPalette(palette)
+
+        self.timer                      = Timer(self)
+        self.timer.timeout.connect(self.rotate)
+        self.timer.start(1000)
 
     def rotate(self):
         self._count += 1
@@ -144,11 +151,6 @@ class StaticLoading(Widget):
             color.setAlphaF(result)
 
         return color
-
-    def showEvent(self, event):
-        self._count                     = 0
-        # self.timer.start(50)
-        # super(StaticLoading, self).showEvent(event)
 
     @property
     def numOfitems(self):
@@ -260,7 +262,7 @@ class RealtimeLoading(Widget):
         super(RealtimeLoading, self).__init__(parent)
 
         self.screen                     = self.parent.screen
-        palette                         = QPalette(self.palette())
+        palette                         = QPalette()
         palette.setColor(palette.Background, TRANSPARENT)
         self.setPalette(palette)
 
@@ -448,6 +450,8 @@ class RealtimeLoading(Widget):
     @configs.setter
     def configs(self, val):
         self._configs                   = val
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/25/2020 - 7:27 PM

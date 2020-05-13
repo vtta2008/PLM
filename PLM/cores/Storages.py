@@ -12,11 +12,13 @@ Description:
 """ Import """
 
 # PLM
-from PLM.cores.base.BaseStorage             import BaseStorage
-from PLM.commons                            import DAMGLIST
-from PLM.commons.Core                       import Thread, Worker
-from PLM.cores.Errors                       import (ThreadNotFoundError, WorkerNotFoundError, CreateThreadError,
-                                                    CreateWorkerError)
+from PLM.cores.base.BaseStorage                 import BaseStorage
+from PLM.commons                                import DAMGLIST
+from PLM.commons.Core                           import Thread, Worker
+from PLM.cores.models                           import Task
+from PLM.cores.Errors                           import (ThreadNotFoundError, CreateThreadError,
+                                                        TaskNotFoundError, CreateTaskError,
+                                                        WorkerNotFoundError, CreateWorkerError)
 
 # -------------------------------------------------------------------------------------------------------------
 """ Storages """
@@ -25,8 +27,8 @@ from PLM.cores.Errors                       import (ThreadNotFoundError, WorkerN
 
 class ThreadStorage(BaseStorage):
 
-    key                                     = 'ThreadStorage'
-    threads                                 = DAMGLIST()
+    key                                         = 'ThreadStorage'
+    threads                                     = DAMGLIST()
 
     def __init__(self):
         BaseStorage.__init__(self)
@@ -52,8 +54,8 @@ class ThreadStorage(BaseStorage):
 
 class WorkerStorage(BaseStorage):
 
-    key                                     = 'WorkerStorage'
-    workers                                 = DAMGLIST()
+    key                                         = 'WorkerStorage'
+    workers                                     = DAMGLIST()
 
     def __init__(self):
         super(WorkerStorage, self).__init__()
@@ -76,6 +78,31 @@ class WorkerStorage(BaseStorage):
             CreateWorkerError('Could not create worker: {0}, key already existed'.format(key))
 
 
+
+class TaskStorage(BaseStorage):
+
+    key                                         = 'TaskStorage'
+    tasks                                       = DAMGLIST()
+
+    def __init__(self):
+        super(TaskStorage, self).__init__()
+        self.update()
+
+    def getTask(self, key):
+        if key in self.keys():
+            return self[key]
+        else:
+            return TaskNotFoundError('Could not find task: {0}'.format(key))
+
+    def createTask(self, key):
+        if key not in self.keys():
+            task                               = Task
+            task.key                           = key
+            self.tasks.append(task)
+            self.register(task)
+            return task
+        else:
+            CreateTaskError('Could not create task: {0}, key already existed'.format(key))
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/21/2020 - 3:08 AM

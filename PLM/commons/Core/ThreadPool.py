@@ -16,9 +16,6 @@ from PLM                                    import __copyright__
 
 from PyQt5.QtCore                           import QThreadPool
 
-from .Runnable                              import Runnable
-from .Thread                                import Thread
-
 
 class ThreadPool(QThreadPool):
 
@@ -29,7 +26,7 @@ class ThreadPool(QThreadPool):
 
 
     def __init__(self, parent=None):
-        QThreadPool.__init__(self)
+        super(ThreadPool, self).__init__(parent)
 
         self.parent                         = parent
 

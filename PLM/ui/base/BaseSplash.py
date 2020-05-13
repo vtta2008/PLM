@@ -17,11 +17,38 @@ from math import ceil
 
 # PLM
 from PLM.configs                            import (ERROR_APPLICATION, FRAMELESS, SPLASHSCREEN, TRANSPARENT, TEXT_NORMAL,
-                                                    colorLibs, ANTIALIAS, DAMG_LOGO_DIR, NO_PEN)
-from PLM.commons.Widgets                    import SplashScreen, MessageBox
-from PLM.commons.Gui                        import Font, Pixmap, Pallette, FontMetrics, Image, Pen, Brush, Painter
+                                                    colorLibs, ANTIALIAS, DAMG_LOGO_DIR, NO_PEN, ERROR_LAYOUT_COMPONENT,
+                                                    )
+from PLM.commons.Widgets                    import SplashScreen, MessageBox, ProgressBar
+from PLM.commons.Gui                        import Font, Pixmap, Pallette, Image, Pen, Painter, FontMetrics
 from PLM.commons.Core                       import Timer
-from PLM.cores                              import Loggers
+from PLM.cores                              import Loggers, StyleSheet
+
+
+
+class LoadingBar(ProgressBar):
+
+    key                                 = 'ProgressUI'
+    _name                               = 'DAMG Progress UI'
+
+    def __init__(self, parent=None):
+        super(LoadingBar, self).__init__(parent)
+
+        self.parent                     = parent
+
+        if not self.parent:
+            MessageBox(self, 'Loading Layout Component', 'critical', ERROR_LAYOUT_COMPONENT)
+            sys.exit()
+        else:
+            self.num                    = self.parent.num
+            self.pix                    = self.parent.splashPix
+            self.setMinimum(0)
+            self.setMaximum(100)
+
+            self.setGeometry((self.pix.width()-self.width())/2 + 115, self.pix.height() - 115, self.pix.width()/10, 10)
+            self.setTextVisible(False)
+            self.setStyleSheet(StyleSheet.progressBar())
+
 
 
 class BaseSplash(SplashScreen):
@@ -87,34 +114,24 @@ class BaseSplash(SplashScreen):
     plmInfo                                 = None
 
 
-    def __init__(self, app=None, imagePth=None):
-        super(BaseSplash, self).__init__(app)
+    def __init__(self, app=None):
+        SplashScreen.__init__(app)
 
-        self.app                            = app
-        self.splashPix                      = Pixmap(imagePth)
+        self.app = app
 
         if not app:
             MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
             sys.exit()
-
-        if imagePth:
-            if not os.path.exists(imagePth):
-                self.logger.debug("splash image is not exist: {0}".format(self.splashPix))
-            else:
-                self.setImage(self.splashPix)
 
         if not self.logo:
             self.logo                       = Image(os.path.join(DAMG_LOGO_DIR, '96x96.png'))
 
         # set logger
         self.logger                         = Loggers(self)
-        self.timer                          = Timer(self)
-
-        # get screen res
-        self.screen                         = self.app.desktop().availableGeometry()
 
         # set flag
         self.setWindowFlags(SPLASHSCREEN | FRAMELESS)
+        self.setFont(self.currentFont)
 
         # set palette
         palette = Pallette()
@@ -122,8 +139,15 @@ class BaseSplash(SplashScreen):
         self.setPalette(palette)
 
         # set painter
-        self.painter = Painter()
+        self.painter                        = Painter()
         self.painter.setRenderHint(ANTIALIAS)
+
+        self.progress                       = LoadingBar(self)
+        self.progress.show()
+        self.updatePosition()
+
+        self.timer                          = Timer(self)
+
 
     def rotate(self):
         self._count += 1
@@ -206,18 +230,31 @@ class BaseSplash(SplashScreen):
         self._text                          = text
 
     def setProgress(self, val):
-        self._pText                         = val
+        value = (100 * val) / self.num
+        for i in range(int(value)):
+            self._percentCount += 1
+            if self.progress:
+                self.progress.setValue(self.percentCount)
+            self._pText = '{0}%'.format(str(self.percentCount))
+
+            if self.percentCount == 96:
+                for i in range(4):
+                    self._percentCount += 1
+                    if self.progress:
+                        self.progress.setValue(self.percentCount)
+                    self._pText = '{0}%'.format(str(self.percentCount))
+
 
     def textWidth(self):
-        fm                                  = FontMetrics(self.currentFont)
+        fm = FontMetrics(self.currentFont)
         return fm.width(self.text)
 
     def pTextWidth(self):
-        fm                                  = FontMetrics(self.currentFont)
+        fm = FontMetrics(self.currentFont)
         return fm.width(str(self.pText))
 
     def textHeight(self):
-        fm                                  = FontMetrics(self.currentFont)
+        fm = FontMetrics(self.currentFont)
         return fm.height()
 
     @property

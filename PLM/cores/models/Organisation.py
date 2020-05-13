@@ -34,18 +34,18 @@ class Organisation(BaseType):
         super(Organisation, self).__init__(id, name, mode, type, teamID, projectID, organisationID, startdate, enddate, details)
 
         if self.startdate is None:
-            self.start = DateTime(self.date.currentDate(), self.time.currentTime())
+            self.start                  = DateTime(self.date.currentDate(), self.time.currentTime())
         else:
-            self.start = self.startdate.endDate
+            self.start                  = self.startdate.endDate
 
-        self.end = self.enddate.endDate
+        self.end                        = self.enddate
 
         self.update()
 
     def update(self):
-        self.days = self.start.daysTo(self.end)
+        self.days                       = self.start.daysTo(self.end)
 
-        self.hours = self.end.time().hour() - self.start.time().hour()
+        self.hours                      = self.end.time().hour() - self.start.time().hour()
         if self.hours <= 0:
             if self.days > 0:
                 self.days = self.days - 1

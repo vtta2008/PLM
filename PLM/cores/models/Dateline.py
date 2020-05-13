@@ -8,34 +8,35 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+""" Import """
 
-
-from PLM.commons import DAMG
-from PLM.commons.Core import Date, Time, DateTime
+# PLM
+from PLM.commons                    import DAMG
+from PLM.commons.Core               import Date, Time, DateTime
 
 class DateLine(DAMG):
 
-    key = 'DateLine'
+    key                             = 'DateLine'
 
     def __init__(self, hour, minute, second, day, month, year):
         super(DateLine, self).__init__()
 
         if not year:
-            year = int(Date().currentDate().year())
+            year                    = int(Date().currentDate().year())
         elif year < 99:
-            year = int("20{0}".format(year))
+            year                    = int("20{0}".format(year))
         else:
-            year = int(year)
+            year                    = int(year)
 
         if month > 12:
             raise IndexError('Expect month smaller than 12: {0}'.format(month))
 
         if month in [1, 3, 5, 7, 8, 10, 12]:
-            days = 31
+            days                    = 31
         elif month in [2]:
-            days = 28
+            days                    = 28
         else:
-            days = 30
+            days                    = 30
 
         if day > days:
             raise IndexError('Expect day smaller than (0): {1}'.format(days, day))
@@ -50,17 +51,17 @@ class DateLine(DAMG):
             raise IndexError('Expect second smaller than 60: {0}'.format(second))
 
 
-        self.hour = int(hour)
-        self.minute = int(minute)
-        self.second = int(second)
+        self.hour                   = int(hour)
+        self.minute                 = int(minute)
+        self.second                 = int(second)
 
-        self.day = int(day)
-        self.month = int(month)
-        self.year = int(year)
+        self.day                    = int(day)
+        self.month                  = int(month)
+        self.year                   = int(year)
 
-        self.time = Time(self.hour, self.minute, self.second)
-        self.date = Date(self.year, self.month, self.day)
-        self.endDate = DateTime(self.date, self.time)
+        self.time                   = Time(self.hour, self.minute, self.second)
+        self.date                   = Date(self.year, self.month, self.day)
+        self.endDate                = DateTime(self.date, self.time)
 
     def setTime(self, hour=0, minute=0, sec=0):
         return self.time.setHMS(hour, minute, sec)
@@ -71,6 +72,7 @@ class DateLine(DAMG):
     def setDateLine(self, hour, minute, sec, day, month, year):
         self.time.setHMS(hour, minute, sec)
         self.date.setDate(year, month, day)
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 2/12/2019 - 10:25 AM

@@ -11,15 +11,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-import sys
-import traceback
-
 # PyQt5
 from PyQt5.QtCore                           import pyqtSignal
 
 # PLM
-from PLM.cores.base                         import WidgetThread, TaskThread
 from PLM.commons.Core                       import Thread
 from PLM.utils                              import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
 
@@ -40,6 +35,7 @@ class PcMonitor(Thread):
     def __init__(self, parent):
         super(PcMonitor, self).__init__(parent)
 
+        self.parent                         = parent
         if self.parent:
             self.setParent(self.parent)
 
@@ -55,66 +51,6 @@ class PcMonitor(Thread):
             self.ram.emit(ram)
             self.gpu.emit(gpu)
             self.disk.emit(disk)
-
-
-class AutoLoadingThread(WidgetThread):
-
-    key                                     = 'AutoLoadingThread'
-
-    rotate                                  = pyqtSignal(bool, name='rotate')
-
-    def __init__(self, parent):
-        super(AutoLoadingThread, self).__init__(parent)
-
-        if self.parent:
-            self.setParent(self.parent)
-
-    def run(self):
-        if self.running:
-            print('rotate signal emit')
-            self.rotate.emit(True)
-
-
-class RealtimeUpdatingThread(WidgetThread):
-
-    key                                             = 'RealtimeUpdatingThread'
-    update                                          = pyqtSignal(bool, name='update')
-
-    def __init__(self, parent):
-        super(RealtimeUpdatingThread, self).__init__(parent)
-
-        if self.parent:
-            self.setParent(self.parent)
-
-    def run(self):
-        if self.running:
-            print('update widget signal emit')
-            self.update.emit(True)
-
-
-
-class ConfigTaskThread(TaskThread):
-
-    key                                             = 'ConfigTaskThread'
-
-    def __init__(self, task, parent):
-        super(ConfigTaskThread, self).__init__(task, parent)
-
-        if self.parent:
-            self.setParent(self.parent)
-
-    def run(self):
-        if self.running:
-            try:
-                result = self.task()
-            except:
-                traceback.print_exc()
-                exctype, value = sys.exc_info()[:2]
-                self.signal.error.emit((exctype, value, traceback.format_exc()))
-            else:
-                self.signal.result.emit(result)
-            finally:
-                self.signal.finished.emit()
 
 
 # -------------------------------------------------------------------------------------------------------------

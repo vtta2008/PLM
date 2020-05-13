@@ -14,9 +14,8 @@ Description:
 import os, json
 from playsound import playsound
 
-
 # PLM
-from PLM.cores.base import BaseType
+from PLM.cores.base                         import BaseType
 from PLM.configs                            import SOUND_DIR, TASK_DIR
 from PLM.commons.Core                       import DateTime
 
@@ -46,7 +45,7 @@ class Task(BaseType):
         self.timer.start(format)
 
     def update(self):
-        self.start = QDateTime(self.date.currentDate(), self.time.currentTime())
+        self.start = DateTime(self.date.currentDate(), self.time.currentTime())
         self.days = self.start.daysTo(self.end)
 
         self.hours = self.end.time().hour() - self.start.time().hour()
@@ -125,7 +124,6 @@ class Task(BaseType):
             pass
 
         return self.dataForm
-
 
     def get_status(self):
         if self.days < 0:

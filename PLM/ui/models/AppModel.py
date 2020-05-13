@@ -16,10 +16,11 @@ import os
 import sys
 import requests
 
-from PLM.configs                        import (__localServer__, __google__, STAY_ON_TOP, SERVER_CONNECT_FAIL, cfgData)
+from PLM.configs                        import (__localServer__, __google__, STAY_ON_TOP, SERVER_CONNECT_FAIL, cfgData,
+                                                splashImagePth, )
 from PLM.cores                          import sqlUtils
 from PLM.ui.layouts.SplashUI            import SplashUI
-from PLM.cores.MultiThreadManager       import MultiThreadManager
+from PLM.cores.MultiThreadManager       import ThreadsManager
 from PLM.commons.Widgets                import Application
 from PLM.utils                          import clean_file_ext
 
@@ -42,6 +43,7 @@ class AppModel(Application):
                 sys.exit()
 
         self.splash                     = SplashUI(self)
+        self.splash.start()
 
         while not globalSetting.cfgAll:
             self.wait()
@@ -62,25 +64,8 @@ class AppModel(Application):
         self.formatInfo                 = self.splash.formatInfo
         self.fontInfo                   = self.splash.fontInfo
 
-        self.threadManager              = MultiThreadManager(self)
+        self.threadManager              = ThreadsManager(self)
         self.database                   = sqlUtils()
-
-    def wait(self):
-        pass
-
-    def loadConfigInfo(self, config):
-
-        filePth                         = cfgData[config]
-
-        with open(filePth, 'rb') as f:
-            if globalSetting.dataTypeSaving == 'json':
-                import json
-                data = json.load(f)
-            else:
-                import yaml
-                data = yaml.load(f)
-
-        return data
 
     def checkUserData(self):
         try:
@@ -134,6 +119,7 @@ class AppModel(Application):
         return {'connect.sid': self.cookie}
 
     def command(self, key):
+
         try:
             cmdData = self.plmInfo[key]
         except KeyError:

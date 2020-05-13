@@ -13,26 +13,23 @@ Description:
 # Python
 
 # PLM
-from PLM.commons                            import DAMGLIST
 from PLM.commons.Core                       import ThreadPool
 from PLM.plugins.SignalManager              import SignalManager
 from PLM.commons.SettingManager             import SettingManager
-from PLM.cores.models.Counter               import Counter
-from PLM.cores.Storages                     import ThreadStorage, WorkerStorage
+from PLM.cores.Storages                     import ThreadStorage, WorkerStorage, TaskStorage
 
 
-class MultiThreadManager(ThreadPool):
+class ThreadManager(ThreadPool):
 
     key                                     = 'ThreadManager'
-    tasks                                   = DAMGLIST()
+    tasks                                   = TaskStorage()
     threads                                 = ThreadStorage()
     workers                                 = WorkerStorage()
 
     def __init__(self, parent=None):
-        super(MultiThreadManager, self).__init__(parent)
+        super(ThreadManager, self).__init__(parent)
 
         self.parent                         = parent
-        self.counter                        = Counter()
         self.settings                       = SettingManager(self)
         self.signals                        = SignalManager(self)
 
