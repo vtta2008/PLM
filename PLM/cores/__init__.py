@@ -12,10 +12,10 @@ Description:
 
 
 from .Loggers                   import Loggers
-from .EnvironmentVariable       import EnvironmentVariable
+from .Env                       import Env
 from .sqls                      import sqlUtils, sqlPreset
 from .StyleSheet                import StyleSheet
-from .MultiThreadManager        import ThreadsManager
+from .ThreadManager             import ThreadManager
 
 
 # -------------------------------------------------------------------------------------------------------------

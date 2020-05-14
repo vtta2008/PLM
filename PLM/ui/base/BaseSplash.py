@@ -20,7 +20,7 @@ from PLM.configs                            import (ERROR_APPLICATION, FRAMELESS
                                                     colorLibs, ANTIALIAS, DAMG_LOGO_DIR, NO_PEN, ERROR_LAYOUT_COMPONENT,
                                                     )
 from PLM.commons.Widgets                    import SplashScreen, MessageBox, ProgressBar
-from PLM.commons.Gui                        import Font, Pixmap, Pallette, Image, Pen, Painter, FontMetrics
+from PLM.commons.Gui                        import Font, Pixmap, Palette, Image, Pen, Painter, FontMetrics
 from PLM.commons.Core                       import Timer
 from PLM.cores                              import Loggers, StyleSheet
 
@@ -134,7 +134,7 @@ class BaseSplash(SplashScreen):
         self.setFont(self.currentFont)
 
         # set palette
-        palette = Pallette()
+        palette = Palette()
         palette.setColor(palette.Background, TRANSPARENT)
         self.setPalette(palette)
 

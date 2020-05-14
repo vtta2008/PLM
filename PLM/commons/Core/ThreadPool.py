@@ -9,10 +9,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-
-import time
-
 from PLM                                    import __copyright__
+
 
 from PyQt5.QtCore                           import QThreadPool
 

@@ -10,7 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-import platform, subprocess, os, sys, re, json
+import platform, subprocess, os, sys
 from PLM.configs import __pkgsReq__
 
 

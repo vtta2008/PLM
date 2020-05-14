@@ -17,7 +17,7 @@ from .components                        import (Footer, MainStatusBar, MenubarDo
                                                 BotTabDock, NotificationDock, MidTabDock)
 from .models.ButtonManager              import ButtonManager
 from .models.ActionManager              import ActionManager
-from PLM.cores.MultiThreadManager            import ThreadsManager
+from PLM.cores.ThreadManager            import ThreadManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """
@@ -40,7 +40,7 @@ class PipelineManager(MainWindow):
 
         self.actionManager              = ActionManager(self.parent)
         self.buttonManager              = ButtonManager(self.parent)
-        self.threadManager              = ThreadsManager(self.parent)
+        self.threadManager              = ThreadManager(self.parent)
 
         self.mainWidget                 = Widget()
         self.layout                     = GridLayout()

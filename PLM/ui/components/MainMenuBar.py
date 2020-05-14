@@ -10,15 +10,20 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
+# Python
+import json
+
 # PLM
-from PLM.configs                    import __plmWiki__, plmInfo
+from PLM.configs                    import __plmWiki__, plmCfg
 from PLM.commons.Widgets            import GroupVBox, MenuBar
 from PLM.utils                      import is_string
+
+with open(plmCfg, 'r') as f:
+    plmInfo = json.load(f)
 
 class MainMenuBar(GroupVBox):
 
     key                             = 'MainMenuBar'
-    plmInfo                         = plmInfo
 
     def __init__(self, actionManager, parent=None):
         super(MainMenuBar, self).__init__(parent)

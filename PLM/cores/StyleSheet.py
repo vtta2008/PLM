@@ -16,14 +16,14 @@ import platform
 # PLM
 from PLM.commons                        import DAMG, DAMGDICT
 from PLM.commons.Core                   import TextStream, File, QssFile
-from PLM.configs                        import DarkPalette
+from PLM.configs                        import colorLibs
 from PLM.cores                          import Loggers
 from PLM.plugins                        import Qt
 
 
-def set_register(obj, stylesheet=None, update=True):
-    observer = _StyleSheetObserver(obj, stylesheet, update)
-    observer.register()
+# def set_register(obj, stylesheet=None, update=True):
+#     observer = _StyleSheetObserver(obj, stylesheet, update)
+#     observer.register()
 
 
 def _render_stylesheet(stylesheet):
@@ -77,7 +77,7 @@ class StyleSheet(DAMG):
                 text-align: center;
                 height: 12px;
             }
-            '''.format(DarkPalette.COLOR_BACKGROUND_NORMAL)
+            '''.format(colorLibs.COLOR_BACKGROUND_NORMAL)
             stylesheet += mac_fix
         return stylesheet
 

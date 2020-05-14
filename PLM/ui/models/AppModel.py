@@ -12,24 +12,88 @@ Description:
 """ Import """
 from PLM import globalSetting
 
-import os
-import sys
-import requests
+# Python
+import os, sys, requests, ctypes
+try:
+    from ctypes.wintypes                import HRESULT
+except ImportError:
+    from ctypes                         import HRESULT
+finally:
+    from ctypes                         import wintypes
 
-from PLM.configs                        import (__localServer__, __google__, STAY_ON_TOP, SERVER_CONNECT_FAIL, cfgData,
-                                                splashImagePth, )
-from PLM.cores                          import sqlUtils
-from PLM.ui.layouts.SplashUI            import SplashUI
-from PLM.cores.MultiThreadManager       import ThreadsManager
-from PLM.commons.Widgets                import Application
+# PLM
+from PLM.cores                          import Loggers, sqlUtils, StyleSheet, ThreadManager
+from PLM.configs                        import (__version__, __appname__, __organization__, __website__, __localServer__,
+                                                STAY_ON_TOP, SERVER_CONNECT_FAIL, PLMAPPID, )
+from PLM.commons.Widgets                import Application, MessageBox
+from PLM.commons.Gui                    import LogoIcon
+
 from PLM.utils                          import clean_file_ext
+from PLM.ui.layouts                     import SplashUI
+from PLM.ui.tools.Browser               import Browser
+
+
+PCWSTR                                  = ctypes.c_wchar_p
+AppUserModelID                          = ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID
+AppUserModelID.argtypes                 = [PCWSTR]
+AppUserModelID.restype                  = HRESULT
+hresult                                 = AppUserModelID(PLMAPPID)
+lpBuffer                                = wintypes.LPWSTR()
+appID                                   = lpBuffer.value
+AppUserModelID(ctypes.cast(ctypes.byref(lpBuffer), wintypes.LPWSTR))
+ctypes.windll.kernel32.LocalFree(lpBuffer)
+
+
 
 class AppModel(Application):
 
     key                                 = 'AppBase'
 
+    _login                              = False
+    _styleSheetData                     = None
+
+    _server                             = None
+    _verify                             = False
+
+    threadManager                       = None
+    eventManager                        = None
+    layoutManager                       = None
+
+    appInfo                             = None
+    plmInfo                             = None
+    layouts                             = None
+
+    token                               = None
+    cookie                              = None
+
+    browser                             = None
+    mainUI                              = None
+    sysTray                             = None
+    shortcutCMD                         = None
+    signIn                              = None
+    signUp                              = None
+    forgotPW                            = None
+
+    _appID                              = None
+
     def __init__(self):
         Application.__init__(self)
+
+        self.setWindowIcon(LogoIcon("DAMG"))
+        self.logger                     = Loggers(__name__)
+        self.browser                    = Browser()
+        self.settings._settingEnable    = True
+        self.setCursorFlashTime(1000)
+        self.setQuitOnLastWindowClosed(False)
+        self.setDesktopSettingsAware(True)
+        self.appStyle                   = StyleSheet(self)
+        self.set_styleSheet('dark')
+
+        self.setOrganizationName(__organization__)
+        self.setApplicationName(__appname__)
+        self.setOrganizationDomain(__website__)
+        self.setApplicationVersion(__version__)
+        self.setApplicationDisplayName(__appname__)
 
         if not self._server:
             self._server                = self.configServer()
@@ -44,9 +108,6 @@ class AppModel(Application):
 
         self.splash                     = SplashUI(self)
         self.splash.start()
-
-        while not globalSetting.cfgAll:
-            self.wait()
 
         self.iconInfo                   = self.splash.iconInfo
         self.appInfo                    = self.splash.appInfo
@@ -64,8 +125,36 @@ class AppModel(Application):
         self.formatInfo                 = self.splash.formatInfo
         self.fontInfo                   = self.splash.fontInfo
 
-        self.threadManager              = ThreadsManager(self)
+        self.threadManager              = ThreadManager(self)
         self.database                   = sqlUtils()
+
+    def sys_message(self, parent=None, title="auto", level="auto", message="test message", btn='ok', flag=None):
+        messBox = MessageBox(parent, title, level, message, btn, flag)
+        return messBox
+
+    def set_styleSheet(self, style):
+        self._styleSheetData            = self.appStyle.getStyleSheet(style)
+        self.setStyleSheet(self._styleSheetData)
+        self.settings.initSetValue('styleSheet', style, self.key)
+
+    def clearStyleSheet(self):
+        self._styleSheetData            = None
+        self.setStyleSheet(self._styleSheetData)
+        self.settings.initSetValue('styleSheet', None, self.key)
+
+    def changeStyleSheet(self, style):
+        self.clearStyleSheet()
+        self.set_styleSheet(style)
+
+    def run(self):
+
+        """
+        avoids some QThread messages in the shell on exit, cancel all running tasks avoid QThread/QTimer error messages,
+        on exit
+
+        """
+        self.exec_()
+        self.deleteLater()
 
     def checkUserData(self):
         try:
@@ -174,28 +263,6 @@ class AppModel(Application):
         else:
             return func(arg)
 
-    def appEvent(self, event):
-        if event == 'ShowAll':
-            self.showAll()
-        elif event == 'CloseAll':
-            self.closeAll()
-        elif event == 'HideAll':
-            self.hideAll()
-        elif event == 'SwitchAccount':
-            self.switchAccountEvent()
-        elif event == 'LogIn':
-            self.signInEvent()
-        elif event == 'LogOut':
-            self.signOutEvent()
-        elif event == 'Quit':
-            self.exitEvent()
-        elif event == 'Exit':
-            self.exitEvent()
-        elif event == 'ChangePassword':
-            pass
-        else:
-            pass
-
     def showUI(self, key):
         try:
             ui = self.layouts[key]
@@ -203,11 +270,6 @@ class AppModel(Application):
             return print('There is no layout: {0}'.format(key))
         else:
             return ui.show()
-
-    def openURL(self, url=__google__):
-        self.browser.setUrl(url)
-        self.browser.update()
-        self.browser.show()
 
     def loginChanged(self, val):
         self._login = val
@@ -236,6 +298,28 @@ class AppModel(Application):
     def hideAll(self):
         return self.closeAll()
 
+    def appEvent(self, event):
+        if event == 'ShowAll':
+            self.showAll()
+        elif event == 'CloseAll':
+            self.closeAll()
+        elif event == 'HideAll':
+            self.hideAll()
+        elif event == 'SwitchAccount':
+            self.switchAccountEvent()
+        elif event == 'LogIn':
+            self.signInEvent()
+        elif event == 'LogOut':
+            self.signOutEvent()
+        elif event == 'Quit':
+            self.exitEvent()
+        elif event == 'Exit':
+            self.exitEvent()
+        elif event == 'ChangePassword':
+            pass
+        else:
+            pass
+
     def signInEvent(self):
         self.switchAccountEvent()
 
@@ -253,16 +337,63 @@ class AppModel(Application):
                       self.layoutManager.setts + self.layoutManager.tools + self.layoutManager.prjs:
             layout.hide()
 
-    def sysNotify(self, *arg):
-        title, mess, iconType, timeDelay = arg
-        return self.sysTray.notifier(title, mess, iconType, timeDelay)
-
     def switchAccountEvent(self):
         self.signOutEvent()
 
     def exitEvent(self):
         self.exit()
 
+    def setRecieveSignal(self, bool):
+        globalSetting.recieveSignal = bool
+
+    def setBlockSignal(self, bool):
+        globalSetting.blockSignal = bool
+
+    def setTrackCommand(self, bool):
+        globalSetting.command = bool
+
+    def setRegistLayout(self, bool):
+        globalSetting.registLayout = bool
+
+    @property
+    def login(self):
+        return self._login
+
+    @property
+    def styleSheetData(self):
+        return self._styleSheetData
+
+    @property
+    def appID(self):
+        return self._appID
+
+    @property
+    def server(self):
+        return self._server
+
+    @property
+    def verify(self):
+        return self._verify
+
+    @styleSheetData.setter
+    def styleSheetData(self, val):
+        self._styleSheetData            = val
+
+    @login.setter
+    def login(self, val):
+        self._login                     = val
+
+    @appID.setter
+    def appID(self, val):
+        self._appID                     = val
+
+    @server.setter
+    def server(self, val):
+        self._server                    = val
+
+    @verify.setter
+    def verify(self, val):
+        self._verify                    = val
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 1/16/2020 - 12:05 AM

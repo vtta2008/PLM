@@ -45,8 +45,8 @@ class sqlUtils(DAMG):
     tables                              = DAMGDICT()
     db_types                            = DB_ATTRIBUTE_TYPE
 
-    def __init__(self):
-        super(sqlUtils, self).__init__(self)
+    def __init__(self, parent=None):
+        super(sqlUtils, self).__init__(parent)
 
         self.date                       = Date()
         self.time                       = Timer()

@@ -13,7 +13,7 @@ from PLM import __copyright__
 
 from PyQt5.QtGui import QPalette
 
-class Pallette(QPalette):
+class Palette(QPalette):
 
     Type                            = 'DAMGPALETTE'
     key                             = 'Pallette'
@@ -21,7 +21,7 @@ class Pallette(QPalette):
     _copyright                      = __copyright__()
 
     def __init__(self, *__args):
-        super(Pallette, self).__init__(*__args)
+        super(Palette, self).__init__(*__args)
 
 
     @property

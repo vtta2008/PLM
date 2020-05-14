@@ -12,6 +12,7 @@ from PLM import globalSetting
 """ Import """
 
 # Python
+import json
 from functools                          import partial
 
 # PLM
@@ -22,13 +23,16 @@ from PLM.cores.Errors                   import ActionKeyConfigError, ActionRegis
 from PLM.configs                        import (OPEN_URL_KEYS, CONFIG_DEV, CONFIG_TOOLS, CONFIG_OFFICE, CONFIG_TDS,
                                                 CONFIG_ART, CONFIG_TEX, CONFIG_POST, CONFIG_VFX, CONFIG_PRE,
                                                 CONFIG_EXTRA, LIBRARY_UI_KEYS, SHORTCUT_KEYS, STYLESHEET_KEYS,
-                                                PLUGIN_UI_KEY, FORM_KEY, BTNTAGSIZE, TAGBTNSIZE, plmInfo)
+                                                PLUGIN_UI_KEY, FORM_KEY, BTNTAGSIZE, TAGBTNSIZE, plmCfg)
+
+
+with open(plmCfg, 'r') as f:
+    plmInfo = json.load(f)
+
 
 class BaseKeys(BaseStorage):
 
     key                                 = 'KeyBase'
-
-    plmInfo                             = plmInfo
 
     # Actions
     appActions                          = ['AppSetting', 'Configurations', 'Preferences', 'Organisation', 'Project', 'Team', 'Task', 'Exit']
@@ -129,10 +133,10 @@ class BaseKeys(BaseStorage):
             return self.button(key, parent)
 
     def action(self, key, parent):
-        action = Action({'icon': self.plmInfo[key].icon,
+        action = Action({'icon': plmInfo[key]['icon'],
                          'txt': '&{0}'.format(key),
-                         'stt': self.plmInfo[key].statusTip,
-                         'tt': self.plmInfo[key].toolTip,
+                         'stt': plmInfo[key]['statustip'],
+                         'tt': plmInfo[key]['tooltip'],
                          'trg': partial(parent.command, key), }, parent)
         action.key = '{0}_{1}_Action'.format(parent.key, key)
         action._name = action.key
@@ -145,8 +149,8 @@ class BaseKeys(BaseStorage):
 
     def button(self, key, parent):
         button = Button({'txt': '&{0}'.format(key),
-                         'stt': self.plmInfo[key].statusTip,
-                         'tt': self.plmInfo[key].toolTip,
+                         'stt': plmInfo[key]['statustip'],
+                         'tt': plmInfo[key]['tooltip'],
                          'cl': partial(self.parent.command, key), })
         button.key = '{0}_{1}_Button'.format(parent.key, key)
         button._name = button.key
@@ -158,9 +162,9 @@ class BaseKeys(BaseStorage):
             return button
 
     def openUrlButton(self, key, parent):
-        button = Button({'icon': self.plmInfo[key].icon,
-                         'stt': self.plmInfo[key].statusTip,
-                         'tt': self.plmInfo[key].toolTip,
+        button = Button({'icon': plmInfo[key]['icon'],
+                         'stt': plmInfo[key]['statustip'],
+                         'tt': plmInfo[key]['tooltip'],
                          'fix': BTNTAGSIZE,
                          'ics': TAGBTNSIZE,
                          'cl': partial(self.parent.command, key)})

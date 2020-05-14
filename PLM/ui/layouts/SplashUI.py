@@ -17,46 +17,21 @@ from math import sin, cos, pi, ceil
 
 # PyQt5
 from PyQt5.QtWidgets                    import QApplication
-from PyQt5.QtGui import QPainter, QPen, QPalette
-from PyQt5.QtCore import QRect
 
 # PLM
 from PLM                                import globalSetting
-from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, SPLASHSCREEN, ERROR_LAYOUT_COMPONENT,
+from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, SPLASHSCREEN,
                                                 splashImagePth, colorLibs, ANTIALIAS, TRANSPARENT, NO_PEN, AUTO_COLOR,
-                                                DAMG_LOGO_DIR, TEXT_NORMAL, TEXT_BOLD,
+                                                DAMG_LOGO_DIR, TEXT_NORMAL,
                                                 ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
                                                 ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
                                                 ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath, ConfigFonts)
-from PLM.commons.Widgets                import SplashScreen, MessageBox, ProgressBar
-from PLM.commons.Gui                    import Image, Font, FontMetrics
+
+from PLM.commons.Widgets                import SplashScreen, MessageBox
+from PLM.commons.Gui                    import Pixmap, Image, Font, FontMetrics, Palette, Painter, Pen
 from PLM.commons.Core                   import Timer, Rect
-from PLM.cores                          import StyleSheet
-
-
-
-class LoadingBar(ProgressBar):
-
-    key                                 = 'ProgressUI'
-    _name                               = 'DAMG Progress UI'
-
-    def __init__(self, parent=None):
-        super(LoadingBar, self).__init__(parent)
-
-        self.parent                     = parent
-
-        if not self.parent:
-            MessageBox(self, 'Loading Layout Component', 'critical', ERROR_LAYOUT_COMPONENT)
-            sys.exit()
-        else:
-            self.num                    = self.parent.num
-            self.pix                    = self.parent.splashPix
-            self.setMinimum(0)
-            self.setMaximum(100)
-
-            self.setGeometry((self.pix.width()-self.width())/2 + 115, self.pix.height() - 115, self.pix.width()/10, 10)
-            self.setTextVisible(False)
-            self.setStyleSheet(StyleSheet.progressBar())
+from PLM.cores                          import ThreadManager
+from PLM.cores.models                   import Worker
 
 
 class SplashUI(SplashScreen):
@@ -132,13 +107,21 @@ class SplashUI(SplashScreen):
             sys.exit()
 
         # setting 100% transperiency background
-        palette = QPalette(self.palette())
+        palette = Palette(self.palette())
         palette.setColor(palette.Background, TRANSPARENT)
         self.setPalette(palette)
 
         # make widget frameless like splash screen style
         self.setWindowFlags(SPLASHSCREEN | FRAMELESS)
         self.setEnabled(False)
+
+        # load splash image
+        self.splashPix                  = Pixmap(splashImagePth)
+        self.setPixmap(self.splashPix)
+        self.setMask(self.splashPix.mask())
+
+        # load thread manager
+        self.threadManager              = ThreadManager(self)
 
         # set new font
         self.setFont(self.currentFont)
@@ -160,15 +143,19 @@ class SplashUI(SplashScreen):
         # after update size, need to move to center spot of the screen
         self.updatePosition()
 
+        self.runConfigs()
+
+
     def start(self):
 
         self.show()
 
         if not self.timer.isActive():
             self.timer.start()
-            self._count                 = 0
+            self._count = 0
 
-        self.runConfigs()
+        # worker = Worker(self.runConfigs)
+        # self.threadManager.start(worker)
 
     def stop(self):
 
@@ -183,7 +170,7 @@ class SplashUI(SplashScreen):
 
     def updateSize(self):
         size = (self.innerRadius + self.itemRadius)*3
-        self.setMinimumSize(size, size)
+        self.setFixedSize(size, size)
 
     def updatePosition(self):
         x = self.screen.width()/2 - self.width()/2
@@ -240,6 +227,8 @@ class SplashUI(SplashScreen):
                     print('Can not conducting Pipeline Functions configurations, some of other configs has not been done yet.')
                     self.app.exit()
 
+            self.app.processEvents()
+
             self._cfgCount += 1
 
         check = False
@@ -249,13 +238,11 @@ class SplashUI(SplashScreen):
                          self.avatarInfo, self.logoInfo, self.imageInfo, self.serverInfo, self.formatInfo,
                          self.fontInfo, self.deviceInfo, self.appInfo, self.plmInfo]:
                 if not info:
-                    print('{0} is None.'.format(info.key))
                     check = False
                 else:
                     check = True
 
         globalSetting.setCfgAll(check)
-
 
     def rotate(self):
         self._count += 1
@@ -263,14 +250,12 @@ class SplashUI(SplashScreen):
             self._count                 = 0
         self.update()
 
-
     def paintEvent(self, event):
 
-        painter                         = QPainter()
+        painter                         = Painter()
         painter.begin(self)
         painter.setRenderHint(ANTIALIAS, True)
         painter.fillRect(event.rect(), TRANSPARENT)
-
 
         # Indicating DAMG logo
         self.logo                       = Image(os.path.join(DAMG_LOGO_DIR, '96x96.png'))
@@ -281,7 +266,7 @@ class SplashUI(SplashScreen):
         # Indiating busy loading animation layout
         painter.drawImage(self.logoRect, self.logo, self.logo.rect(), AUTO_COLOR)
 
-        painter.setPen(QPen(NO_PEN))
+        painter.setPen(Pen(NO_PEN))
 
         for i in range(self.numOfitems):
 
@@ -312,13 +297,11 @@ class SplashUI(SplashScreen):
 
         painter.end()
 
-
     def distance(self, current, primary):
         distance                        = primary - current
         if distance < 0:
             distance += self.numOfitems
         return distance
-
 
     def getBrushColor(self, distance, color):
         if distance == 0:
@@ -338,11 +321,10 @@ class SplashUI(SplashScreen):
 
         return color
 
-
     def getTextPos(self):
 
         if self.width() + (self.lMargin + self.rMargin) <= self.textWidth() or self.width() <= self.textWidth():
-            self.setMinimumSize(self.height() * 2, self.width() * 2)
+            self.setFixedSize(self.height() * 2, self.width() * 2)
 
         validW = self.width() + (self.lMargin + self.rMargin)
 
@@ -358,7 +340,7 @@ class SplashUI(SplashScreen):
     def getProgressTextPos(self):
 
         if self.width() + (self.lMargin + self.rMargin) <= self.pTextWidth() or self.width() <= self.pTextWidth():
-            self.setMinimumSize(self.height()*2, self.width()*2)
+            self.setFixedSize(self.height()*2, self.width()*2)
 
         validW = self.width() + (self.lMargin + self.rMargin)
 

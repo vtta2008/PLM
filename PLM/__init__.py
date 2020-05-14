@@ -933,7 +933,11 @@ class Cfg(dict):
             return
 
         if os.path.exists(self.filePath):
-            os.remove(self.filePath)
+            try:
+                os.remove(self.filePath)
+            except FileNotFoundError:
+                pass
+
         with open(self.filePath, 'w+') as f:
             if globalSetting.dataTypeSaving == 'json':
                 json.dump(self, f, indent=4)

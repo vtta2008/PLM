@@ -26,7 +26,7 @@ class Pen(QPen):
     _copyright                          = __copyright__()
 
     def __init__(self, *__args):
-        QPen.__init__(self)
+        super(Pen, self).__init__(*__args)
 
         self.signals                    = SignalManager(self)
         self.settings                   = SettingManager(self)

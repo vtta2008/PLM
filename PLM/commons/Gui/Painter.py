@@ -23,8 +23,8 @@ class Painter(QPainter):
     _name                       = 'DAMG Painter'
     _copyright                  = __copyright__()
 
-    def __init__(self, PaintDevice=None):
-        super(Painter, self).__init__(PaintDevice)
+    def __init__(self):
+        super(Painter, self).__init__()
 
 
     @property

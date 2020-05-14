@@ -17,7 +17,6 @@ import sys
 
 from PLM.commons.Widgets                    import MessageBox
 from PLM.commons.Network                    import NetworkAccessManager
-from PLM.cores.base                         import HTTPrequest, CookieRequest, AuthRequest
 from PLM.cores.models                       import DownloadChannel
 from PLM.configs                            import ERROR_APPLICATION
 

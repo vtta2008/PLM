@@ -19,7 +19,6 @@ import pkg_resources
 import winshell
 import socket
 import uuid
-from collections                    import OrderedDict
 
 # PLM
 from PLM                            import globalSetting, ROOT, ROOT_APP, Cfg
@@ -105,9 +104,7 @@ SYSTRAY_UNAVAI = "Systray could not detect any system tray on this system"
 
 PTH_NOT_EXSIST = "Could not find directory path specific"
 
-
 ASK_OVERWRITE = "The file already exists.\nDo you want to Overwrite old file?"
-
 
 ERROR_OPENFILE = "There was an error opening the file"
 
@@ -119,62 +116,7 @@ ERROR_WIDGET = "Widget have not been difined yet. Please define it, QWidget type
 
 ERROR_LAYOUT_COMPONENT = "This layout is a component layout type, it requires a parent layout to be able to run."
 
-
-
-# what to present when the user hovers the cells
-tooltips_present = [ "When the message was sent", "The text of the message (double click to copy to the clipboard)",
-                     "The media (image, audio, etc) included in the message",
-                     "Select to remove the message from the system", ]
-
-tooltips_missing = [
-    None,
-    "No text included in the message",
-    "No media included in the message",
-    None,
-]
-
-N_MESSAGES_TEXT = "{quantity} showLayout_new messages"
-
 SERVER_CONNECT_FAIL = "Connection to server failed. PLM can not run without connecting to server. Please try again "
-
-TEMPLATE_QRC_HEADER = '''
-<RCC warning="File created programmatically. All changes made in this file will be lost!">
-  <qresource prefix="{resource_prefix}">
-'''
-
-TEMPLATE_QRC_FILE = '    <file>rc/{fname}</file>'
-
-TEMPLATE_QRC_FOOTER = '''
-  </qresource>
-  <qresource prefix="{style_prefix}">
-      <file>dark.qss</file>
-  </qresource>
-</RCC>
-'''
-
-HEADER_SCSS = '''// ---------------------------------------------------------------------------
-//
-//    File created programmatically
-//
-//    WARNING! All changes made in this file will be lost!
-//
-//----------------------------------------------------------------------------
-'''
-
-HEADER_QSS = '''/* ---------------------------------------------------------------------------
-
-    Created by the qtsass compiler
-
-    WARNING! All changes made in this file will be lost!
-
---------------------------------------------------------------------------- */
-'''
-
-PIPE                                = subprocess.PIPE
-STDOUT                              = subprocess.STDOUT
-
-VANILA_LOCAL                        = __localServer__
-AWS_GLOBAL                          = __globalServer__
 
 PYTHON_TAG                          = 'https://docs.anaconda.com/anaconda/reference/release-notes/'
 LICENCE_TAG                         = 'https://github.com/vtta2008/damgteam/blob/master/LICENCE'
@@ -370,7 +312,7 @@ buttonTypes                 = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
 
 urlTypes                    = ['DAMGURL', ]
 
-layoutTypes = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
+layoutTypes                 = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
 
 DB_ATTRIBUTE_TYPE = {
 
@@ -714,15 +656,6 @@ ACTIONS_DATA = dict(TD                  = CONFIG_TDS,
                     EXTRA               = CONFIG_EXTRA,
                     SYSTRAY             = CONFIG_SYSTRAY, )
 
-# Binding config
-QT_BINDINGS             = ['PyQt5', 'PySide2', 'pyqt']
-QT_ABSTRACTIONS         = ['qtpy', 'pyqtgraph', 'Qt']
-QT5_IMPORT_API          = ['QtCore', 'QtGui', 'QtWidgets', 'QtWebEngineWidgets', 'QtWebKitWidgets']
-QT_API_VALUES           = ['pyqt', 'pyqt5', 'pyside2']
-QT_LIB_VALUES           = ['PyQt', 'PyQt5', 'PySide2']
-QT_BINDING              = 'Not set or nonexistent'
-QT_ABSTRACTION          = 'Not set or nonexistent'
-IMAGE_BLACKLIST         = ['base_palette']
 
 PY2 = sys.version[0] == '2'
 
@@ -872,7 +805,7 @@ ANTIALIAS_HIGH_QUALITY      = QPainter.HighQualityAntialiasing
 SMOOTH_PIXMAP_TRANSFORM     = QPainter.SmoothPixmapTransform
 NON_COSMETIC_PEN            = QPainter.NonCosmeticDefaultPen
 
-NO_BRUSH                  = Qt.NoBrush                                                # Brush
+NO_BRUSH                    = Qt.NoBrush                                                # Brush
 
 NO_PEN                      = Qt.NoPen                                                  # Pen
 ROUND_CAP                   = Qt.RoundCap
@@ -893,16 +826,6 @@ TRANSPARENT_MODE            = Qt.TransparentMode
 
 QUEUEDCONNECTION            = Qt.QueuedConnection
 
-# -------------------------------------------------------------------------------------------------------------
-""" Week Day  """
-
-sunday                      = Qt.Sunday
-monday                      = Qt.Monday
-tuesady                     = Qt.Tuesday
-wednesday                   = Qt.Wednesday
-thursday                    = Qt.Thursday
-friday                      = Qt.Friday
-saturday                    = Qt.Saturday
 
 # -------------------------------------------------------------------------------------------------------------
 """ Keyboard and cursor """
@@ -943,46 +866,7 @@ ACTION_MOVE                 = Qt.MoveAction                                     
 
 RELATIVE_SIZE               = Qt.RelativeSize                                           # Size
 
-POSX                        = 0
-POSY                        = 0
 
-
-NODE_ROUND                  = 10
-NODE_BORDER                 = 2
-NODE_REC                    = 30
-NODE_STAMP                  = 25
-
-NODE_HEADER_HEIGHT          = 25
-NODE_FOOTER_HEIGHT          = 25
-
-ATTR_HEIGHT                 = 30
-ATTR_ROUND                  = NODE_ROUND/2
-ATTR_REC                    = NODE_REC/2
-
-RADIUS                      = 10
-COL                         = 10
-ROW                         = 10
-GRID_SIZE                   = 50
-
-FLTR                        = 'flow_left_to_right'
-FRTL                        = 'flow_right_to_left'
-
-MARGIN                      = 20
-ROUNDNESS                   = 0
-THICKNESS                   = 1
-CURRENT_ZOOM                = 1
-
-UNIT                        = 60                                                                # Base Unit
-MARG                        = 5                                                                 # Content margin
-BUFF                        = 10                                                                # Buffer size
-SCAL                        = 1                                                                 # Scale value
-STEP                        = 1                                                                 # Step value changing
-VAL                         = 1                                                                 # Default value
-MIN                         = 0                                                                 # Minimum value
-MAX                         = 1000                                                              # Maximum value
-WMIN                        = 50                                                                # Minimum width
-HMIN                        = 20                                                                # Minimum height
-HFIX                        = 80
 ICONSIZE                    = 32
 ICONBUFFER                  = -1
 BTNTAGSIZE                  = QSize(87, 20)
@@ -1017,94 +901,6 @@ dockR                       = Qt.RightDockWidgetArea
 dockT                       = Qt.TopDockWidgetArea
 dockB                       = Qt.BottomDockWidgetArea
 dockAll                     = Qt.AllDockWidgetAreas
-
-# === PIPE ===
-
-PIPE_WIDTH = 1.2
-PIPE_STYLE_DEFAULT = 'line'
-PIPE_STYLE_DASHED = 'dashed'
-PIPE_STYLE_DOTTED = 'dotted'
-PIPE_DEFAULT_COLOR = (175, 95, 30, 255)
-PIPE_DISABLED_COLOR = (190, 20, 20, 255)
-PIPE_ACTIVE_COLOR = (70, 255, 220, 255)
-PIPE_HIGHLIGHT_COLOR = (232, 184, 13, 255)
-PIPE_SLICER_COLOR = (255, 50, 75)
-#: Style to draw the connection pipes as straight lines.
-PIPE_LAYOUT_STRAIGHT = 0
-#: Style to draw the connection pipes as curved lines.
-PIPE_LAYOUT_CURVED = 1
-#: Style to draw the connection pipes as angled lines.
-PIPE_LAYOUT_ANGLE = 2
-
-# === PORT ===
-
-#: Connection type for input ports.
-IN_PORT = 'in'
-#: Connection type for output ports.
-OUT_PORT = 'out'
-
-PORT_DEFAULT_SIZE = 22.0
-PORT_DEFAULT_COLOR = (49, 115, 100, 255)
-PORT_DEFAULT_BORDER_COLOR = (29, 202, 151, 255)
-PORT_ACTIVE_COLOR = (14, 45, 59, 255)
-PORT_ACTIVE_BORDER_COLOR = (107, 166, 193, 255)
-PORT_HOVER_COLOR = (17, 43, 82, 255)
-PORT_HOVER_BORDER_COLOR = (136, 255, 35, 255)
-PORT_FALLOFF = 15.0
-
-# === NODE ===
-
-NODE_WIDTH = 170
-NODE_HEIGHT = 80
-NODE_ICON_SIZE = 24
-NODE_SEL_COLOR = (255, 255, 255, 30)
-NODE_SEL_BORDER_COLOR = (254, 207, 42, 255)
-
-# === NODE PROPERTY ===
-
-#: Property type will hidden in the properties bin (default).
-NODE_PROP = 0
-#: Property type represented with a QLabel widget in the properties bin.
-NODE_PROP_QLABEL = 2
-#: Property type represented with a QLineEdit widget in the properties bin.
-NODE_PROP_QLINEEDIT = 3
-#: Property type represented with a QTextEdit widget in the properties bin.
-NODE_PROP_QTEXTEDIT = 4
-#: Property type represented with a QComboBox widget in the properties bin.
-NODE_PROP_QCOMBO = 5
-#: Property type represented with a QCheckBox widget in the properties bin.
-NODE_PROP_QCHECKBOX = 6
-#: Property type represented with a QSpinBox widget in the properties bin.
-NODE_PROP_QSPINBOX = 7
-#: Property type represented with a ColorPicker widget in the properties bin.
-NODE_PROP_COLORPICKER = 8
-#: Property type represented with a Slider widget in the properties bin.
-NODE_PROP_SLIDER = 9
-
-# === NODE VIEWER ===
-
-VIEWER_BG_COLOR = (35, 35, 35)
-VIEWER_GRID_COLOR = (45, 45, 45)
-VIEWER_GRID_OVERLAY = True
-VIEWER_GRID_SIZE = 20
-
-SCENE_AREA = 8000.0
-
-DRAG_DROP_ID = 'n0deGraphQT'
-
-# === PATHS ===
-
-BASE_PATH = os.path.dirname(os.path.abspath(__file__))
-ICON_PATH = os.path.join(BASE_PATH, 'widgets', 'icons')
-ICON_DOWN_ARROW = os.path.join(ICON_PATH, 'down_arrow.png')
-ICON_NODE_BASE = os.path.join(ICON_PATH, 'node_base.png')
-
-# === DRAW STACK ORDER ===
-
-Z_VAL_PIPE = -1
-Z_VAL_NODE = 1
-Z_VAL_PORT = 2
-Z_VAL_NODE_WIDGET = 3
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -1221,86 +1017,6 @@ class ColorLibs(dict):
 
 colorLibs                           = ColorLibs()
 
-
-
-
-class DarkPalette(object):
-    """Theme variables."""
-
-    # Color
-    COLOR_BACKGROUND_LIGHT          = colorLibs.COLOR_BACKGROUND_LIGHT
-    COLOR_BACKGROUND_NORMAL         = colorLibs.COLOR_BACKGROUND_NORMAL
-    COLOR_BACKGROUND_DARK           = colorLibs.COLOR_BACKGROUND_DARK
-
-    COLOR_FOREGROUND_LIGHT          = colorLibs.COLOR_FOREGROUND_LIGHT
-    COLOR_FOREGROUND_NORMAL         = colorLibs.COLOR_FOREGROUND_NORMAL
-    COLOR_FOREGROUND_DARK           = colorLibs.COLOR_FOREGROUND_DARK
-
-    COLOR_SELECTION_LIGHT           = colorLibs.COLOR_SELECTION_LIGHT
-    COLOR_SELECTION_NORMAL          = colorLibs.COLOR_SELECTION_NORMAL
-    COLOR_SELECTION_DARK            = colorLibs.COLOR_SELECTION_DARK
-
-    OPACITY_TOOLTIP                 = 230
-
-    # Size
-    SIZE_BORDER_RADIUS              = '4px'
-
-    # Borders
-    BORDER_LIGHT                    = '1px solid $COLOR_BACKGROUND_LIGHT'
-    BORDER_NORMAL                   = '1px solid $COLOR_BACKGROUND_NORMAL'
-    BORDER_DARK                     = '1px solid $COLOR_BACKGROUND_DARK'
-
-    BORDER_SELECTION_LIGHT          = '1px solid $COLOR_SELECTION_LIGHT'
-    BORDER_SELECTION_NORMAL         = '1px solid $COLOR_SELECTION_NORMAL'
-    BORDER_SELECTION_DARK           = '1px solid $COLOR_SELECTION_DARK'
-
-    # Example of additional widget specific variables
-    W_STATUS_BAR_BACKGROUND_COLOR   = COLOR_SELECTION_DARK
-
-    # Paths
-    PATH_RESOURCES = "':/qss_icons'"
-
-    @classmethod
-    def to_dict(cls, colors_only=False):
-        """Convert variables to dictionary."""
-        order = [
-            'COLOR_BACKGROUND_LIGHT',
-            'COLOR_BACKGROUND_NORMAL',
-            'COLOR_BACKGROUND_DARK',
-            'COLOR_FOREGROUND_LIGHT',
-            'COLOR_FOREGROUND_NORMAL',
-            'COLOR_FOREGROUND_DARK',
-            'COLOR_SELECTION_LIGHT',
-            'COLOR_SELECTION_NORMAL',
-            'COLOR_SELECTION_DARK',
-            'OPACITY_TOOLTIP',
-            'SIZE_BORDER_RADIUS',
-            'BORDER_LIGHT',
-            'BORDER_NORMAL',
-            'BORDER_DARK',
-            'BORDER_SELECTION_LIGHT',
-            'BORDER_SELECTION_NORMAL',
-            'BORDER_SELECTION_DARK',
-            'W_STATUS_BAR_BACKGROUND_COLOR',
-            'PATH_RESOURCES',
-        ]
-        dic = OrderedDict()
-        for var in order:
-            value = getattr(cls, var)
-
-            if colors_only:
-                if not var.startswith('COLOR'):
-                    value = None
-
-            if value:
-                dic[var] = value
-
-        return dic
-
-    @classmethod
-    def color_palette(cls):
-        """Return the ordered colored palette dictionary."""
-        return cls.to_dict(colors_only=True)
 
 cfgData = {
     'icon': iconCfg,
@@ -1819,8 +1535,8 @@ class ConfigServer(Cfg):
     def __init__(self):
         Cfg.__init__(self)
 
-        self.add('vanila'           , VANILA_LOCAL)
-        self.add('AWS'              , AWS_GLOBAL)
+        self.add('vanila'           , __localServer__)
+        self.add('AWS'              , __globalServer__)
 
         if globalSetting.printCfgInfo:
             if globalSetting.printServerInfo:
@@ -2187,328 +1903,12 @@ class ConfigPipeline(Cfg):
             self.appInfo.pop(key, None)
 
 
-if platform.system() == 'Darwin':
 
-    # MacOs sysInfo
-    pass
-
-
-elif platform.system() == 'Linux':
-
-    def check_permission():
-        euid = os.geteuid()
-        if euid != 0:
-            print('Script not started as root. Running sudo..')
-            args = ['sudo', sys.executable] + sys.argv + [os.environ]
-            # the next line replaces the currently-running process with the sudo
-            os.execlpe('sudo', *args)
-
-    def sh(cmd, in_shell=False, get_str=True):
-        output = subprocess.check_output(cmd, shell=in_shell)
-        if get_str:
-            return str(output, 'utf-8')
-        return output
-
-
-    class Hwinfo:
-        @classmethod
-        def product(cls):
-            """
-            detect information about product
-            """
-            cmd = 'dmidecode -s system-product-name | head -1'
-            output = sh(cmd, True)
-            return Info('Product', output.strip())
-
-        @classmethod
-        def distro(cls):
-            """
-            detect information about distribution
-            """
-            cmd = 'lsb_release -sirc'
-            output = sh(cmd, True)
-            return Info('Distro', output.strip().replace('\n', ' '))
-
-        @classmethod
-        def kernel(cls):
-            """
-            detect information about kernel
-            """
-            cmd = ['uname', '-or']
-            output = sh(cmd)
-            return Info('Kernel', output.strip())
-
-        @classmethod
-        def processor(cls):
-            """
-            detect information about CPU
-            """
-            cmd = 'dmidecode -s processor-version | head -1'
-            output = sh(cmd, True)
-            return Info('Processor', output.strip())
-
-        @classmethod
-        def baseboard(cls):
-            """
-            detect information about baseboard
-            """
-            vendor = sh('cat /sys/devices/virtual/dmi/id/board_vendor', True)
-            name = sh('cat /sys/devices/virtual/dmi/id/board_name', True)
-            chipset = sh('lspci | grep ISA | sed -e "s/.*: //" -e "s/LPC.*//" -e "s/Controller.*//"', True)
-            desc = vendor + name + chipset
-            return Info('BaseBoard', desc.replace('\n', ' ', 2).strip())
-
-        def __init__(self):
-            """
-            execute shell command and get information about hardware
-            """
-            infos = [
-                Hwinfo.product(), Hwinfo.distro(), Hwinfo.kernel(),
-                Hwinfo.processor(), Hwinfo.baseboard(), Rom(),
-                Memory(), Disk(), OnboardDevice()
-            ]
-            self.info_list = infos
-
-        def __str__(self):
-            return ''.join([i.msg() for i in self.info_list])
-
-
-    class Info:
-        """
-        represent any hardware information
-        """
-        WIDTH = 10
-        INDENT = '│──'
-
-        def __init__(self, name, desc):
-            self.name = name
-            self.desc = desc
-            self.subInfo = []
-
-        def msg(self):
-            """
-            generate the message to print
-            """
-            if self.desc == 'noop':
-                return ''
-            msg = []
-            margin = ' ' * (Info.WIDTH - len(self.name))
-            main_msg = '{0}{1}: {2}\n'.format(self.name, margin, self.desc)
-            msg.append(main_msg)
-            sub_msg = [ self.indent_subInfo(i) for i in self.subInfo if i]
-            if sub_msg:
-                sub_msg[-1] = sub_msg[-1].replace('│', '└')
-            return ''.join(msg + sub_msg)
-
-        def addSubInfo(self, subInfo):
-            self.subInfo.append(subInfo)
-
-        def indent_subInfo(self, line):
-            return Info.INDENT + line
-
-        def __str__(self):
-
-            return  '"name": {0}, "description": {1}'.format(self.name, self.desc)
-
-
-    class Rom(Info):
-
-        def __init__(self):
-            self.rom_list = self.roms()
-            Info.__init__(self, 'Rom', self.getDesc() if self.rom_list else 'noop')
-
-        def getDesc(self):
-            roms = [self.transform(i) for i in self.rom_list]
-            roms_msg = ['{0} {1}'.format(i['VENDOR'], i['MODEL']) for i in roms]
-            return ' '.join(roms_msg)
-
-        def transform(self, line):
-            rom = {}
-            for line in re.split(r'(?<=") ', line):
-                if '=' in line:
-                    key, value = line.split('=')
-                    if key in 'VENDOR' or key in 'MODEL':
-                        rom[key] = value.replace('"', '').strip()
-            return rom
-        def roms(self):
-            cmd = """lsblk -dP -o VENDOR,TYPE,MODEL | grep 'TYPE="rom"'"""
-            try:
-                output = sh(cmd, True)
-                rom_list = [x for x in output.split('\n') if x]
-                return rom_list
-            except Exception:
-                # no rom
-                return []
-
-
-    class OnboardDevice(Info):
-
-        def __init__(self):
-            self.ob_devices = self.onboardDevices()
-            Info.__init__(self, 'Onboard', '' if self.ob_devices else 'noop')
-            info = [self.obToStr(i) for i in self.ob_devices]
-            for i in info:
-                self.addSubInfo(i)
-
-        def onboardDevices(self):
-            cmd = ['dmidecode', '-t', '41']
-            parsing = False
-            ob_list = []
-            splitter = ': '
-            attrs = ['Reference Designation', 'Type']
-            with subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                                  bufsize = 1, universal_newlines = True) as p:
-                for i in p.stdout:
-                    line = i.strip()
-                    if not parsing and line == 'Onboard Device':
-                        parsing = True
-                        ob = {}
-                    if parsing and splitter in line:
-                        (key, value) = line.split(splitter, 1)
-                        if key in attrs:
-                            ob[key] = value
-                    elif parsing and not line:
-                        parsing = False
-                        ob_list.append(ob)
-            return ob_list
-
-        def obToStr(self, ob):
-            tvalue = ob['Type']
-            desvalue = ob['Reference Designation']
-            ret = '{0}: {1}\n'.format(tvalue, desvalue)
-            return ret
-
-
-    class Disk(Info):
-
-        def __init__(self):
-            self.disks = self.diskList()
-            Info.__init__(self, 'Disks', '{0} {1} GB Total'.format(' '.join(self.disks), self.countSize()))
-            self.details = self.disksDetail(self.disks)
-            detail_strs = [ self.extractDiskDetail(i) for i in self.details]
-            for i in detail_strs:
-                self.addSubInfo(i)
-
-        def countSize(self):
-            sum = 0
-            for i in self.disks:
-                cmd = 'blockdev --getsize64 ' + i
-                output = sh(cmd, True)
-                sum += int(output) // (10 ** 9)
-            return sum
-        def diskList(self):
-            """
-            find out how many disk in this machine
-            """
-            sds = sh('ls -1d /dev/sd[a-z]', in_shell=True)
-            sd_list = [x for x in sds.split('\n') if x]
-            return sd_list
-
-        def disksDetail(self, sd_list):
-            cmd = ['smartctl', '-i']
-            parsing = False
-            splitter = ':'
-            disk_list = []
-            try:
-                for i in sd_list:
-                    new_cmd = cmd[:]
-                    new_cmd.append(i)
-                    with subprocess.Popen(new_cmd, stdout=subprocess.PIPE,
-                                          bufsize = 1, universal_newlines=True) as p:
-                        for j in p.stdout:
-                            line = j.strip()
-                            if not parsing and 'START OF INFORMATION' in line:
-                                parsing = True
-                                disk = {}
-                            if parsing and splitter in line:
-                                key, value = line.split(splitter, 1)
-                                value = value.strip()
-                                if key in 'Model Family':
-                                    disk['model'] = value
-                                elif key in 'Device Model':
-                                    disk['device'] = value
-                                elif key in 'User Capacity':
-                                    p = re.compile('\[.*\]')
-                                    m = p.search(value)
-                                    disk['capacity'] = m.group()
-                            elif parsing and not line:
-                                parsing = False
-                                disk['node'] = i
-                                disk_list.append(disk)
-            except Exception:
-                pass
-            return disk_list
-
-        def extractDiskDetail(self, disk):
-            line = '{node}: {device} {capacity}\n'.format(
-                node=disk['node'], device=disk['device'],
-                capacity=disk['capacity'])
-            return line
-
-
-    class Memory(Info):
-
-        def __init__(self):
-            self.memory = self.memory()
-            Info.__init__(self, 'Memory', self.getDesc(self.memory))
-            detail_strs = [ self.extractMemDetail(i) for i in self.memory]
-            for i in detail_strs:
-                self.addSubInfo(i)
-
-        def memory(self):
-            cmd = ['dmidecode', '-t', 'memory']
-            parsing = False
-            splitter = ': '
-            attrs = ['Size', 'Type', 'Speed', 'Manufacturer', 'Locator']
-            mem_list = []
-            with subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                                  bufsize = 1, universal_newlines = True) as p:
-                for i in p.stdout:
-                    line = i.strip()
-                    if not parsing and line == 'Memory Device':
-                        parsing = True
-                        mem = {}
-                    if parsing and splitter in line:
-                        (key, value) = line.split(splitter, 1)
-                        if key in attrs:
-                            mem[key] = value
-
-                    # read a empty, end the parsing
-                    elif parsing and not line:
-                        parsing = False
-                        mem_list.append(mem)
-            return mem_list
-
-        def extractMemDetail(self, mem):
-            # maybe no memory in this slot
-            if 'Unknown' in mem['Type'] and 'No Module Installed' in mem['Size']:
-                return ''
-            line = '{slot}: {manufa} {type} {speed}\n'.format(
-                slot=mem['Locator'], manufa=mem['Manufacturer'],
-                type=mem['Type'], speed=mem['Speed'])
-            return line
-
-        def getDesc(self, mem_list):
-            mem_size = [self.convertMemSize(i['Size']) for i in mem_list]
-            total = sum(mem_size)
-            return '{0} MB Total'.format(total)
-
-        def convertMemSize(self, size_str):
-            (size, unit) = size_str.split(' ', 1);
-            try:
-                return int(size)
-            except ValueError:
-                return 0
-
-
-    check_permission()
-    print(Hwinfo())
-
-
-else:
-
+if platform.system() == 'Windows':
     import wmi
 
+    PIPE                        = subprocess.PIPE
+    STDOUT                      = subprocess.STDOUT
     runs                        = subprocess.Popen
     sysKey                      = 'SYSTEMINFO'
     optKey1                     = 'OS Configuration'
@@ -2798,13 +2198,7 @@ else:
 
             return info
 
-
-dirInfo                            = ConfigDirectory()
-pthInfo                            = ConfigPath()
 iconInfo                           = ConfigIcon()
-appInfo                            = ConfigApps()
-urlInfo                            = ConfigUrl()
-plmInfo                            = ConfigPipeline(iconInfo, appInfo, urlInfo, dirInfo, pthInfo)
 
 if not os.path.exists(LOCAL_DB):
     from PLM.cores.sqls.sqlPreset import PresetDB

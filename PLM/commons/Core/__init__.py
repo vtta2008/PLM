@@ -20,7 +20,7 @@ from .IODevice          import IODevice
 from .Point             import Point
 from .Process           import Process
 from .Rect              import Rect, RectF
-from .Runnable          import Runnable, Worker
+from .Runnable          import Runnable
 from .Settings          import Settings
 from .Size              import Size
 from .TextSteam         import TextStream

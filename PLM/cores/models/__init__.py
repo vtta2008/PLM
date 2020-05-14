@@ -20,8 +20,7 @@ from .Task              import Task
 from .Team              import Team
 from .Temporary         import Temporary
 from .Threads           import PcMonitor
-from .Workers           import ConfigTaskWorker
-
+from .Worker            import Worker
 
 
 # -------------------------------------------------------------------------------------------------------------

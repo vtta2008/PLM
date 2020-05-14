@@ -72,7 +72,7 @@ class ConnectStatus(GroupGrid):
                 MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                 sys.exit()
             else:
-                self.parent.signals.emit('sysNotify', ['Offline', 'Can not connect to Server', 'crit', 500])
+                self.parent.grabber.emit('sysNotify', ['Offline', 'Can not connect to Server', 'crit', 500])
                 self.serverIcon         = Conection('Disconnected', stt, self)
         else:
             if r.status_code == 200:

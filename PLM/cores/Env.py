@@ -19,20 +19,20 @@ import os, sys, subprocess
 from PLM.commons                           import DAMG
 
 
-
-class EnvironmentVariable(DAMG):
+class Env(DAMG):
 
     key                            = 'EnvironmentVariable'
-    _data                          = dict()
+    _data                          = {}
 
     for k,v in os.environ.items():
         _data[k]                   = v
-    _paths                         = os.getenv('PATH')
+
+    PATH                         = os.getenv('PATH')
 
     def __init__(self):
-        super(EnvironmentVariable, self).__init__()
+        super(Env, self).__init__()
 
-        pths = [p for p in os.getenv('PATH').split(';')[0:]]
+        pths = [p.replace('\\', '/') for p in self.PATH.split(';')[0:]]
 
         for p in pths:
             if os.path.exists(p):
@@ -81,7 +81,7 @@ class EnvironmentVariable(DAMG):
         for k, v in os.environ.items():
             self._data[k]                               = v
 
-        self._paths                                     = os.getenv('PATH')
+        self.PATH                                     = os.getenv('PATH')
 
     def add_to_PATH(self, val):
         self.create_envVariable('PATH', sys.path.insert(-1, val))
