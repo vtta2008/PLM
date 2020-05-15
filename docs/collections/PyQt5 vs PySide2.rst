@@ -34,6 +34,7 @@ should ensure its viability and increase it's popularity going forward.
 
 
 Note                                    PyQt5	                    PySide2
+::
 - Current stable version (2019-06-23)	5.12	                    5.12
 - First stable release	                Apr 2016	                Jul 2018
 - Developed by	                        Riverbank Computing Ltd.	Qt
