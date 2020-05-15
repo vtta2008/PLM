@@ -103,14 +103,11 @@ PySide2/Qt5 source code will already cover this for you.
     *   PySide2 is available for Python3 and Python 2.7, but Python 2.7 builds are only available for 64 bit versions of MacOS
         and Linux. Windows 32 bit is supported on Python 2 only.
 
-4. UI files
+#. UI files
 
 Both packages use slightly different approaches for loading .ui files exported from Qt Creator/Designer. PyQt5 provides
 the uic submodule which can be used to load UI files directly, to produce an object. This feels pretty Pythonic (if you
 ignore the camelCase).
-
-PYTHON
-------
 
 .. code-block:: python
 
