@@ -1190,11 +1190,10 @@ class ConfigPython(Cfg):
     def install_python_package_required(self, pk, reqs):
 
         pk = 1
-
         if pk in reqs.keys():
             ver                         = reqs[pk]
             conReq                      = ver[0]
-            if conReq == '=' or conReq == '<=':
+            if conReq == '==' or conReq == '<=':
                 subprocess.Popen('python -m pip install {0}={1} --user'.format(pk, ver), shell=True).wait()
             elif conReq == '>=':
                 subprocess.Popen('python -m pip install {0} --user --upgrade'.format(pk, ver), shell=True).wait()

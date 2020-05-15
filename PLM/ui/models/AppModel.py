@@ -13,36 +13,22 @@ Description:
 from PLM import globalSetting
 
 # Python
-import os, sys, requests, ctypes
-try:
-    from ctypes.wintypes                import HRESULT
-except ImportError:
-    from ctypes                         import HRESULT
-finally:
-    from ctypes                         import wintypes
+import os, sys, requests
 
 # PLM
 from PLM.cores                          import Loggers, sqlUtils, StyleSheet, ThreadManager
+from PLM.cores.models                   import Worker
 from PLM.configs                        import (__version__, __appname__, __organization__, __website__, __localServer__,
-                                                STAY_ON_TOP, SERVER_CONNECT_FAIL, PLMAPPID, )
+                                                STAY_ON_TOP, SERVER_CONNECT_FAIL,
+                                                ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
+                                                ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
+                                                ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath, ConfigFonts, )
 from PLM.commons.Widgets                import Application, MessageBox
 from PLM.commons.Gui                    import LogoIcon
 
 from PLM.utils                          import clean_file_ext
 from PLM.ui.layouts                     import SplashUI
 from PLM.ui.tools.Browser               import Browser
-
-
-PCWSTR                                  = ctypes.c_wchar_p
-AppUserModelID                          = ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID
-AppUserModelID.argtypes                 = [PCWSTR]
-AppUserModelID.restype                  = HRESULT
-hresult                                 = AppUserModelID(PLMAPPID)
-lpBuffer                                = wintypes.LPWSTR()
-appID                                   = lpBuffer.value
-AppUserModelID(ctypes.cast(ctypes.byref(lpBuffer), wintypes.LPWSTR))
-ctypes.windll.kernel32.LocalFree(lpBuffer)
-
 
 
 class AppModel(Application):
@@ -106,26 +92,29 @@ class AppModel(Application):
                 self.sys_message(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', None)
                 sys.exit()
 
+        self.threadManager              = ThreadManager(self)
         self.splash                     = SplashUI(self)
         self.splash.start()
 
-        self.iconInfo                   = self.splash.iconInfo
-        self.appInfo                    = self.splash.appInfo
-        self.urlInfo                    = self.splash.urlInfo
-        self.dirInfo                    = self.splash.dirInfo
-        self.pthInfo                    = self.splash.pthInfo
-        self.plmInfo                    = self.splash.plmInfo
-        self.deviceInfo                 = self.splash.deviceInfo
-        self.pythonInfo                 = self.splash.pythonInfo
-        self.avatarInfo                 = self.splash.avatarInfo
-        self.logoInfo                   = self.splash.logoInfo
-        self.imageInfo                  = self.splash.imageInfo
-        self.envInfo                    = self.splash.envInfo
-        self.serverInfo                 = self.splash.serverInfo
-        self.formatInfo                 = self.splash.formatInfo
-        self.fontInfo                   = self.splash.fontInfo
+        worker                          = Worker(self.runConfigs)
+        self.threadManager.globalInstance().start(worker)
 
-        self.threadManager              = ThreadManager(self)
+        # self.iconInfo                   = self.splash.iconInfo
+        # self.appInfo                    = self.splash.appInfo
+        # self.urlInfo                    = self.splash.urlInfo
+        # self.dirInfo                    = self.splash.dirInfo
+        # self.pthInfo                    = self.splash.pthInfo
+        # self.plmInfo                    = self.splash.plmInfo
+        # self.deviceInfo                 = self.splash.deviceInfo
+        # self.pythonInfo                 = self.splash.pythonInfo
+        # self.avatarInfo                 = self.splash.avatarInfo
+        # self.logoInfo                   = self.splash.logoInfo
+        # self.imageInfo                  = self.splash.imageInfo
+        # self.envInfo                    = self.splash.envInfo
+        # self.serverInfo                 = self.splash.serverInfo
+        # self.formatInfo                 = self.splash.formatInfo
+        # self.fontInfo                   = self.splash.fontInfo
+
         self.database                   = sqlUtils()
 
     def sys_message(self, parent=None, title="auto", level="auto", message="test message", btn='ok', flag=None):
@@ -354,6 +343,66 @@ class AppModel(Application):
 
     def setRegistLayout(self, bool):
         globalSetting.registLayout = bool
+
+    def runConfigs(self):
+
+        words = ['Python', 'Directories', 'File Paths', 'Urls & Links', 'Environment Variable', 'Icons', 'Avatars',
+                 'Logo', 'Images', 'Servers', 'Formats', 'Fonts', 'Local Devices', 'Installed Apps', 'Pipeline Functions']
+
+        configs = [ConfigPython, ConfigDirectory, ConfigPath, ConfigUrl, ConfigEnvVar, ConfigIcon, ConfigAvatar,
+                   ConfigLogo, ConfigImage, ConfigServer, ConfigFormats, ConfigFonts, ConfigMachine, ConfigApps,
+                   ConfigPipeline]
+
+        for i in range(len(words)):
+            if not i == (len(words) - 1):
+                # self.splash.setText('Config {0}'.format(words[i]))
+                if i == 0:
+                    self.pythonInfo = configs[i]()
+                elif i == 1:
+                    self.dirInfo    = configs[i]()
+                elif i == 2:
+                    self.pthInfo    = configs[i]()
+                elif i == 3:
+                    self.urlInfo    = configs[i]()
+                elif i == 4:
+                    self.envInfo    = configs[i]()
+                elif i == 5:
+                    self.iconInfo   = configs[i]()
+                elif i == 6:
+                    self.avatarInfo = configs[i]()
+                elif i == 7:
+                    self.logoInfo   = configs[i]()
+                elif i == 8:
+                    self.imageInfo  = configs[i]()
+                elif i == 9:
+                    self.serverInfo = configs[i]()
+                elif i == 10:
+                    self.formatInfo = configs[i]()
+                elif i == 11:
+                    self.fontInfo   = configs[i]()
+                elif i == 12:
+                    self.deviceInfo = configs[i]()
+                elif i == 13:
+                    self.appInfo    = configs[i]()
+                # self.splash.setProgress(1)
+            else:
+                self.splash.setText('Config {0}'.format('Pipeline Functions'))
+                if self.iconInfo and self.appInfo and self.urlInfo and self.dirInfo and self.pthInfo:
+                    self.plmInfo = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
+                    # self.splash.setProgress(2)
+                else:
+                    print('Can not conducting Pipeline Functions configurations, some of other configs has not been done yet.')
+                    self.app.exit()
+
+        check = True
+
+        for info in [self.pythonInfo, self.dirInfo, self.pthInfo, self.urlInfo, self.envInfo, self.iconInfo,
+                     self.avatarInfo, self.logoInfo, self.imageInfo, self.serverInfo, self.formatInfo,
+                     self.fontInfo, self.deviceInfo, self.appInfo, self.plmInfo]:
+            if not info:
+                check = False
+
+        globalSetting.setCfgAll(check)
 
     @property
     def login(self):

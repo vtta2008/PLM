@@ -25,7 +25,7 @@ from PLM                import __envKey__
 from PLM.commons.Core   import EventLoop, Timer
 from PLM.cores.Errors   import EnsureValueError
 
-from .pathUtils         import get_file_path
+from .paths             import get_file_path
 
 # -------------------------------------------------------------------------------------------------------------
 """ Destop tool """

@@ -19,19 +19,13 @@ from math import sin, cos, pi, ceil
 from PyQt5.QtWidgets                    import QApplication
 
 # PLM
-from PLM                                import globalSetting
 from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, SPLASHSCREEN,
                                                 splashImagePth, colorLibs, ANTIALIAS, TRANSPARENT, NO_PEN, AUTO_COLOR,
-                                                DAMG_LOGO_DIR, TEXT_NORMAL,
-                                                ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
-                                                ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
-                                                ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath, ConfigFonts)
+                                                DAMG_LOGO_DIR, TEXT_NORMAL)
 
 from PLM.commons.Widgets                import SplashScreen, MessageBox
 from PLM.commons.Gui                    import Pixmap, Image, Font, FontMetrics, Palette, Painter, Pen
 from PLM.commons.Core                   import Timer, Rect
-from PLM.cores                          import ThreadManager
-from PLM.cores.models                   import Worker
 
 
 class SplashUI(SplashScreen):
@@ -120,9 +114,6 @@ class SplashUI(SplashScreen):
         self.setPixmap(self.splashPix)
         self.setMask(self.splashPix.mask())
 
-        # load thread manager
-        self.threadManager              = ThreadManager(self)
-
         # set new font
         self.setFont(self.currentFont)
 
@@ -143,9 +134,6 @@ class SplashUI(SplashScreen):
         # after update size, need to move to center spot of the screen
         self.updatePosition()
 
-        self.runConfigs()
-
-
     def start(self):
 
         self.show()
@@ -153,9 +141,6 @@ class SplashUI(SplashScreen):
         if not self.timer.isActive():
             self.timer.start()
             self._count = 0
-
-        # worker = Worker(self.runConfigs)
-        # self.threadManager.start(worker)
 
     def stop(self):
 
@@ -176,73 +161,6 @@ class SplashUI(SplashScreen):
         x = self.screen.width()/2 - self.width()/2
         y = self.screen.height()/2 - self.height()/2
         self.move(x, y)
-
-    def runConfigs(self):
-
-        words = ['Python', 'Directories', 'File Paths', 'Urls & Links', 'Environment Variable', 'Icons', 'Avatars',
-                 'Logo', 'Images', 'Servers', 'Formats', 'Fonts', 'Local Devices', 'Installed Apps', 'Pipeline Functions']
-
-        configs = [ConfigPython, ConfigDirectory, ConfigPath, ConfigUrl, ConfigEnvVar, ConfigIcon, ConfigAvatar,
-                   ConfigLogo, ConfigImage, ConfigServer, ConfigFormats, ConfigFonts, ConfigMachine, ConfigApps,
-                   ConfigPipeline]
-
-        for i in range(len(words)):
-            if not i == (len(words) - 1):
-                self.setText('Config {0}'.format(words[i]))
-                if i == 0:
-                    self.pythonInfo = configs[i]()
-                elif i == 1:
-                    self.dirInfo    = configs[i]()
-                elif i == 2:
-                    self.pthInfo    = configs[i]()
-                elif i == 3:
-                    self.urlInfo    = configs[i]()
-                elif i == 4:
-                    self.envInfo    = configs[i]()
-                elif i == 5:
-                    self.iconInfo   = configs[i]()
-                elif i == 6:
-                    self.avatarInfo = configs[i]()
-                elif i == 7:
-                    self.logoInfo   = configs[i]()
-                elif i == 8:
-                    self.imageInfo  = configs[i]()
-                elif i == 9:
-                    self.serverInfo = configs[i]()
-                elif i == 10:
-                    self.formatInfo = configs[i]()
-                elif i == 11:
-                    self.fontInfo   = configs[i]()
-                elif i == 12:
-                    self.deviceInfo = configs[i]()
-                elif i == 13:
-                    self.appInfo    = configs[i]()
-                self.setProgress(1)
-            else:
-                self.setText('Config {0}'.format('Pipeline Functions'))
-                if self.iconInfo and self.appInfo and self.urlInfo and self.dirInfo and self.pthInfo:
-                    self.plmInfo = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
-                    self.setProgress(2)
-                else:
-                    print('Can not conducting Pipeline Functions configurations, some of other configs has not been done yet.')
-                    self.app.exit()
-
-            self.app.processEvents()
-
-            self._cfgCount += 1
-
-        check = False
-
-        if self.cfgCount == len(words):
-            for info in [self.pythonInfo, self.dirInfo, self.pthInfo, self.urlInfo, self.envInfo, self.iconInfo,
-                         self.avatarInfo, self.logoInfo, self.imageInfo, self.serverInfo, self.formatInfo,
-                         self.fontInfo, self.deviceInfo, self.appInfo, self.plmInfo]:
-                if not info:
-                    check = False
-                else:
-                    check = True
-
-        globalSetting.setCfgAll(check)
 
     def rotate(self):
         self._count += 1

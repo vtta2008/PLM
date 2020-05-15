@@ -12,7 +12,7 @@ Description:
 
 
 from .Loggers                   import Loggers
-from .Env                       import Env
+from PLM.cores.Handlers.EnvHandler import EnvHandler
 from .sqls                      import sqlUtils, sqlPreset
 from .StyleSheet                import StyleSheet
 from .ThreadManager             import ThreadManager

@@ -19,18 +19,18 @@ import os, sys, subprocess
 from PLM.commons                           import DAMG
 
 
-class Env(DAMG):
+class EnvHandler(DAMG):
 
-    key                            = 'EnvironmentVariable'
-    _data                          = {}
+    key                                     = 'EnvHandler'
+    _data                                   = {}
 
     for k,v in os.environ.items():
-        _data[k]                   = v
+        _data[k]                            = v
 
-    PATH                         = os.getenv('PATH')
+    PATH                                    = os.getenv('PATH')
 
     def __init__(self):
-        super(Env, self).__init__()
+        super(EnvHandler, self).__init__()
 
         pths = [p.replace('\\', '/') for p in self.PATH.split(';')[0:]]
 

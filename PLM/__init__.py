@@ -19,15 +19,10 @@ Description:
 """ Import """
 
 # Python
-import os
-import subprocess
-import json
-import yaml
-import pprint
+import os, subprocess, json, yaml, pprint
 
 # -------------------------------------------------------------------------------------------------------------
 """ Metadatas """
-
 
 __envKey__                          = "PLM"
 __appName__                         = "Pipeline Manager (PLM)"
@@ -707,9 +702,9 @@ class ModesGlb(ConfigGlb):
     _dataTypeSaving                             = 'json'
     _splashLoadingMode                          = 'progress'
 
-    loadingMode                                 = ['loading', 'progress']
-    bindingMode                                 = ['PyQt5', 'PySide2']
-    savingMode                                  = ['json', 'yaml']
+    loading_options                             = ['loading', 'progress']
+    binding_options                             = ['PyQt5', 'PySide2']
+    saving_options                              = ['json', 'yaml']
 
     def __init__(self):
         ConfigGlb.__init__(self)
@@ -719,11 +714,11 @@ class ModesGlb(ConfigGlb):
         return self._allowLocalMode
 
     @property
-    def qtBindingMode(self):
+    def bindingMode(self):
         return self._qtBindingMode
 
     @property
-    def switchQtBindingMode(self):
+    def switchBindingMode(self):
         return self._switchQtBindingMode
 
     @property
@@ -761,14 +756,14 @@ class ModesGlb(ConfigGlb):
     @splashLoadingMode.setter
     def splashLoadingMode(self, val):
         if self.allModeSwitchAble and self.switchSplashLoadingMode:
-            if val in self.loadingMode:
+            if val in self.loading_options:
                 self._splashLoadingMode         = val
 
     @dataTypeSaving.setter
     def dataTypeSaving(self, val):
         if self.allModeSwitchAble and self.switchDataTypeSavingMode:
-            if val in self.savingMode:
-                self._dataTypeSaving        = val
+            if val in self.saving_options:
+                self._dataTypeSaving            = val
 
     @switchDataTypeSavingMode.setter
     def switchDataTypeSavingMode(self, val):
@@ -778,13 +773,13 @@ class ModesGlb(ConfigGlb):
     def switchLoginMode(self, val):
         self._switchLoginMode                   = val
 
-    @switchQtBindingMode.setter
+    @switchBindingMode.setter
     def switchQtBindingMode(self, val):
         self._switchQtBindingMode               = val
 
-    @qtBindingMode.setter
-    def qtBindingMode(self, val):
-        if self.allModeSwitchAble and self.switchQtBindingMode:
+    @bindingMode.setter
+    def bindingMode(self, val):
+        if self.allModeSwitchAble and self.switchBindingMode:
             if val in self.bindingMode:
                 self._qtBindingMode             = val
 
@@ -894,7 +889,6 @@ class SignalGlb(ErrorsGlb):
 
 
 class GlobalBase(SignalGlb):
-
 
     def __init__(self):
         SignalGlb.__init__(self)

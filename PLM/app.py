@@ -27,7 +27,7 @@ class PLM(AppModel):
     def __init__(self):
         AppModel.__init__(self)
 
-        print(self.libraryPaths())
+        print(1)
 
         self.layoutManager              = LayoutManager(self.threadManager, self)
         self.layoutManager.registLayout(self.browser)
@@ -44,8 +44,6 @@ class PLM(AppModel):
 
         self.connectServer              = self.checkConnectServer()
         userData                        = self.checkUserData()
-
-        # self.logger.info('Start app')
 
         if userData:
             if self.connectServer:
