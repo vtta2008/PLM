@@ -2,30 +2,23 @@ PIPELINE MANAGER (PLM)
 ######################
 
 .. sidebar:: DAMGTEAM PROFILE
+    :subtitle: PLM
 
-    .. Topic:: PLM
+    :Name: Pipeline Manager
+    :Built: `Python 3 <https://www.python.org/>`_, PyQt5/PySide2 (optional)
+    :Authors: `Trinh Do <www.dot.damgteam.com>`_, `Duong Minh Duc <www.up.damgteam.com>`_
+    :Version: 13.0.0 Beta
+    :Platforms: Windows (planned for cross-platform)
 
-        :Name: Pipeline Manager
 
-        :Built: `Python 3 <https://www.python.org/>`_, PyQt5/PySide2 (optional)
+.. sidebar:: DAMGTEAM PROFILE
+    :subtitle: VanilaServer (test server)
 
-        :Authors: `Trinh Do <www.dot.damgteam.com>`_, `Duong Minh Duc <www.up.damgteam.com>`_
-
-        :Version: 13.0.0 Beta
-
-        :Platforms: Windows (planned for cross-platform)
-
-    .. Topic:: VanilaServer (test server)
-
-        :Name: VanilaServer
-
-        :Built: NodeJs
-
-        :Authors: `Trinh Do <www.dot.damgteam.com>`_, `Duong Minh Duc <www.up.damgteam.com>`_
-
-        :Version: NA
-
-        :Platforms: cross-platform
+    :Name: VanilaServer
+    :Built: NodeJs
+    :Authors: `Trinh Do <www.dot.damgteam.com>`_, `Duong Minh Duc <www.up.damgteam.com>`_
+    :Version: NA
+    :Platforms: cross-platform
 
 
 INTRODUCTION
@@ -39,14 +32,14 @@ INTRODUCTION
 
 .. note::
 
-    Due to VFX Reference Platform and the large invention, we need to stay with python 2.7 but expect to migrate to python
-    3 in 2019 (Delayed to 2020). See `details <http://www.vfxplatform.com>`_
+    Due to VFX Reference Platform and the large invention, we need to stay with python 2.7 but expect to migrate to
+    python 3 in 2019 (Delayed to 2020). See `details <http://www.vfxplatform.com>`_
 
 .. warning::
 
-        - Some of stuff is planned but not built yet, please do not expected much.
+    - Some of stuff is planned but not built yet, please do not expected much.
 
-        - Things could be changed along development process.
+    - Things could be changed along development process.
 
 .. topic:: Prerequisite
 
@@ -174,4 +167,9 @@ INTRODUCTION
 
 .. note::
 
-    - For VMM for maya, remember to configure the path once it is opened in Maya. (sadly, the author has stopped developing the plugin.)
+    - For VMM for maya, remember to configure the path once it is opened in Maya. (sadly, the author has stopped
+      developing the plugin.
+
+.. topic:: Screenshot
+
+    update later
