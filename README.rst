@@ -1,9 +1,7 @@
 PIPELINE MANAGER (PLM)
 ######################
 
-.. sidebar:: PROFILE
-
-    :Subtitle: DAMGTEAM
+.. sidebar:: DAMGTEAM PROFILE
 
     .. Topic:: PLM
 
