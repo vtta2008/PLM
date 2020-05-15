@@ -8,39 +8,65 @@ PyQt5 vs PySide2: What's the difference between the two Python Qt libraries?
 If you start building Python application with Qt5 you'll soon discover that there are in fact two packages which you
 can use to do this — PyQt5 and PySide2.
 
-In this short guide I'll run through why exactly this is, whether you need to care (spoiler: you really don't), what the few differences are and how to work around them. By the end you should be comfortable re-using code examples from both PyQt5 and PySide2 tutorials to build your apps, regardless of which package you're using yourself.
+In this short guide I'll run through why exactly this is, whether you need to care (spoiler: you really don't), what the
+few differences are and how to work around them. By the end you should be comfortable re-using code examples from both
+PyQt5 and PySide2 tutorials to build your apps, regardless of which package you're using yourself.
 
 Background
-Why are there two packages?
+----------
 
-PyQt has been developed by Phil Thompson of Riverbank Computing Ltd. for a very long time — supporting versions of Qt going back to 2.x. Back in 2009 Nokia, who owned the Qt toolkit at the time, wanted to have Python bindings for Qt available under the LGPL license (like Qt itself). Unable to come to agreement with Riverbank (who would lose money from this, so fair enough) they then released their own bindings as PySide (also, fair enough).
+1. Why are there two packages?
+
+PyQt has been developed by Phil Thompson of Riverbank Computing Ltd. for a very long time — supporting versions of Qt
+going back to 2.x. Back in 2009 Nokia, who owned the Qt toolkit at the time, wanted to have Python bindings for Qt
+available under the LGPL license (like Qt itself). Unable to come to agreement with Riverbank (who would lose money
+from this, so fair enough) they then released their own bindings as PySide (also, fair enough).
 
 Edit: it's called PySide because "side" is Finnish for "binder" — thanks to Renato Araujo Oliveira Filho in the comments.
 
-The two interfaces were comparable at first but PySide ultimately development lagged behind PyQt. This was particularly noticeable following the release of Qt 5 — the Qt5 version of PyQt (PyQt5) was available from mid-2016, while the first stable release of PySide2 was 2 years later.
+The two interfaces were comparable at first but PySide ultimately development lagged behind PyQt. This was particularly
+noticeable following the release of Qt 5 — the Qt5 version of PyQt (PyQt5) was available from mid-2016, while the first
+stable release of PySide2 was 2 years later.
 
-It is this delay which explains why many Qt 5 on Python examples use PyQt5 rather than PySide2 — it's not necessarily better, but it existed. However, the Qt project has recently adopted PySide as the official Qt for Python release which should ensure its viability and increase it's popularity going forward.
+It is this delay which explains why many Qt 5 on Python examples use PyQt5 rather than PySide2 — it's not necessarily
+better, but it existed. However, the Qt project has recently adopted PySide as the official Qt for Python release which
+should ensure its viability and increase it's popularity going forward.
 
-PyQt5	PySide2
-Current stable version (2019-06-23)	5.12	5.12
-First stable release	Apr 2016	Jul 2018
-Developed by	Riverbank Computing Ltd.	Qt
-License	GPL or commercial	LGPL
-Platforms	Python 3	Python 3 and Python 2.7 (Linux and MacOS only)
-Which should you use? Well, honestly, it doesn't really matter.
 
-Both packages are wrapping the same library — Qt5 — and so have 99.9% identical APIs (see below for the few differences). Code that is written for one can often be used as-is with other, simply changing the imports from PyQt5 to PySide2. Anything you learn for one library will be easily applied to a project using the other.
+Note                                    PyQt5	                    PySide2
+- Current stable version (2019-06-23)	5.12	                    5.12
+- First stable release	                Apr 2016	                Jul 2018
+- Developed by	                        Riverbank Computing Ltd.	Qt
+- License	                            GPL or commercial	        LGPL
+- Platforms	                            Python 3	                Python 3 and Python 2.7 (Linux and MacOS only)
 
-Also, no matter with one you choose to use, it's worth familiarising yourself with the other so you can make the best use of all available online resources — using PyQt5 tutorials to build your PySide2 applications for example, and vice versa.
+*Which should you use? Well, honestly, it doesn't really matter.
 
-In this short chapter I'll run through the few notable differences between the two packages and explain how to write code which works seamlessly with both. After reading this you should be able to take any PyQt5 example online and convert it to work with PySide2.
+Both packages are wrapping the same library — Qt5 — and so have 99.9% identical APIs (see below for the few differences).
+Code that is written for one can often be used as-is with other, simply changing the imports from PyQt5 to PySide2.
+Anything you learn for one library will be easily applied to a project using the other.
+
+Also, no matter with one you choose to use, it's worth familiarising yourself with the other so you can make the best
+use of all available online resources — using PyQt5 tutorials to build your PySide2 applications for example, and vice
+versa.
+
+In this short chapter I'll run through the few notable differences between the two packages and explain how to write
+code which works seamlessly with both. After reading this you should be able to take any PyQt5 example online and
+convert it to work with PySide2.
 
 Licensing
-The key difference in the two versions — in fact the entire reason PySide2 exists — is licensing. PyQt5 is available under a GPL or commercial license, and PySide2 under a LGPL license.
+The key difference in the two versions — in fact the entire reason PySide2 exists — is licensing. PyQt5 is available
+under a GPL or commercial license, and PySide2 under a LGPL license.
 
-If you are planning to release your software itself under the GPL, or you are developing software which will not be distributed, the GPL requirement of PyQt5 is unlikely to be an issue. However, if you plan to distribute your software without distributing the source you will either need to purchase a commercial license from Riverbank for PyQt5 or use PySide2.
+If you are planning to release your software itself under the GPL, or you are developing software which will not be
+distributed, the GPL requirement of PyQt5 is unlikely to be an issue. However, if you plan to distribute your software
+without distributing the source you will either need to purchase a commercial license from Riverbank for PyQt5 or use
+PySide2.
 
-The LGPL license does not require you to share the source code of your own applications, even if they are bundled with PySide2. You only need to ensure that the source code covered by the LGPL is made available, including modifications you have made to it, if any. In normal use there will not be any modifications and the standard distributions of PySide2/Qt5 source code will already cover this for you.
+The LGPL license does not require you to share the source code of your own applications, even if they are bundled with
+PySide2. You only need to ensure that the source code covered by the LGPL is made available, including modifications
+you have made to it, if any. In normal use there will not be any modifications and the standard distributions of
+PySide2/Qt5 source code will already cover this for you.
 
 Qt itself is available under a Qt Commercial License, GPL 2.0, GPL 3.0 and LGPL 3.0 licenses.
 
