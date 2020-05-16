@@ -37,10 +37,6 @@ class PLM(AppModel):
 
         self.mainUI, self.sysTray, self.shortcutCMD, self.signIn, self.signUp, self.forgotPW = self.layoutManager.mains
 
-        for layout in [self.mainUI, self.sysTray, self.signIn, self.signUp, self.forgotPW]:
-            layout.signals._emitable = True
-            layout.signals.connect('loginChanged', self.loginChanged)
-
         self.connectServer              = self.checkConnectServer()
         userData                        = self.checkUserData()
 

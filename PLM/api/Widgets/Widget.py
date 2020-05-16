@@ -10,7 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from PLM                                    import __copyright__
 from PLM.api.Widgets.io_widgets             import QWidget
-from PLM.api.Gui import AppIcon
+from PLM.api.Gui                            import AppIcon
+from PLM.cores                              import AppSettings
 
 
 class Widget(QWidget):
@@ -26,6 +27,7 @@ class Widget(QWidget):
         self.parent                         = parent
         self.setWindowIcon(AppIcon(32, self.key))
         self.setWindowTitle(self.key)
+        self.settings = AppSettings(self)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

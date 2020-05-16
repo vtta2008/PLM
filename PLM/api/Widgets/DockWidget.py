@@ -16,7 +16,7 @@ from .io_widgets                            import QTextEdit, QDockWidget
 from PLM.api.Gui.io_gui                     import QTextTableFormat, QTextCharFormat
 from PLM.configs                            import right, datetTimeStamp
 from PLM.plugins.SignalManager              import SignalManager
-from PLM.cores.app_settings import AppSettings
+from PLM.cores.Settings.app_settings import AppSettings
 
 # -------------------------------------------------------------------------------------------------------------
 """ Dock widget """

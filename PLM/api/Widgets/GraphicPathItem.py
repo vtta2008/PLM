@@ -14,7 +14,7 @@ Description:
 from PLM                                    import __copyright__
 from PLM.api.Widgets.io_widgets             import QGraphicsPathItem
 from PLM.plugins.SignalManager              import SignalManager
-from PLM.cores.app_settings import AppSettings
+from PLM.cores.Settings.app_settings import AppSettings
 
 
 class GraphicPathItem(QGraphicsPathItem):

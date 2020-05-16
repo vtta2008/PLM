@@ -16,7 +16,7 @@ from .Handlers                  import EnvHandler, FileHandler
 from .data                      import sqlUtils, PresetDB
 from .StyleSheet                import StyleSheet
 from .ThreadManager             import ThreadManager
-from .app_settings              import AppSettings
+from PLM.cores.Settings         import AppSettings, RegSettings
 
 
 # -------------------------------------------------------------------------------------------------------------

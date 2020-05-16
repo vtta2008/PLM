@@ -17,13 +17,13 @@ import sys
 # PyQt5
 
 from PyQt5.QtWidgets        import QAction, QFileDialog, QInputDialog, QLineEdit
-from PyQt5.QtCore           import QSettings
 
 # PLM
-from PLM.cores              import AppSettings
+from PLM.cores              import AppSettings, RegSettings
+from PLM.api.Core           import Settings
 from PLM.api.Widgets        import Widget, GridLayout, MenuBar
 from PLM.ui.components      import SettingOutput, SettingInput
-from PLM.configs            import SETTING_FILEPTH, __appname__, __organization__
+from PLM.configs            import __appname__, __organization__, NATIVE, APP_SETTING, SYS_SCOPE
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -31,22 +31,27 @@ from PLM.configs            import SETTING_FILEPTH, __appname__, __organization_
 
 class SettingUI(Widget):
 
-    key                     = 'AppSetting'
+    key                     = 'SettingUI'
+
+    regInfo                 = None
+    regValue                = None
 
     def __init__(self, parent=None):
         super(SettingUI, self).__init__(parent)
 
 
-        self.setWindowTitle("Application Settings")
+        self.setWindowTitle("App Settings")
+
 
         self.parent         = parent
-        self.menubar        = MenuBar(self)
-        self.regValue       = SettingOutput(self.settings)
-        self.regInfo        = SettingInput(self.settings)
         self.settings       = AppSettings(self)
+        regSetting          = RegSettings(NATIVE, SYS_SCOPE, __organization__, self.parent)
+        self.regValue       = SettingOutput(self.settings)
+        self.regInfo        = SettingInput(regSetting)
+        self.layout         = GridLayout()
+        self.menubar        = MenuBar(self)
         self.createMenus()
 
-        self.layout         = GridLayout()
         self.layout.addWidget(self.menubar, 0, 0, 1, 1)
         self.layout.addWidget(self.regInfo, 1, 0, 1, 1)
         self.layout.addWidget(self.regValue, 2, 0, 1, 1)
@@ -54,11 +59,26 @@ class SettingUI(Widget):
         self.setLayout(self.layout)
 
         self.autoRefreshAct.setChecked(True)
-        self.fallbacksAct.setChecked(True)
+        # self.fallbacksAct.setChecked(True)
+
 
         self.setSettingsObject(self.settings)
 
-        self.fallbacksAct.setEnabled(True)
+    def openSettings(self):
+        if self.regInfo is None:
+            self.regInfo = SettingInput(parent=self)
+
+        if self.regInfo.exe_():
+            settings = RegSettings(self.regInfo.format(), self.regInfo.scope(),
+                                   self.regInfo.organization(), self.regInfo.application())
+
+            self.setSettingsObject(settings)
+            self.fallbacksAct.setEnabled(True)
+
+
+        #
+        # self.regInfo = SettingInput(self.settings)
+
 
     def openIniFile(self):
         if not os.path.exists(self.settings.settingFile):
@@ -67,7 +87,7 @@ class SettingUI(Widget):
             if fileName:
                 self.settings._settingFile = fileName
         else:
-            self.settings._settingFile = SETTING_FILEPTH['app']
+            self.settings._settingFile = APP_SETTING
             self.setSettingsObject(self.settings)
             self.fallbacksAct.setEnabled(False)
 
@@ -75,17 +95,15 @@ class SettingUI(Widget):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open Property List", '', "Property List Files (*.plist)")
 
         if fileName:
-            self.settings.set_format(QSettings.NativeFormat)
+            self.settings.set_format(NATIVE)
             self.setSettingsObject(self.settings)
             self.fallbacksAct.setEnabled(False)
 
     def openRegistryPath(self):
-        path, ok = QInputDialog.getText(self, "Open Registry Path",
-                                        "Enter the path in the Windows registry:", QLineEdit.Normal,
-                                        'HKEY_CURRENT_USER\\Software\\{0}\\{1}'.format(__organization__, __appname__))
+        path, ok = QInputDialog.getText(self, "Registry", "Enter the path in the Windows registry:", QLineEdit.Normal, 'HKEY_CURRENT_USER\\Software\\{0}\\{1}'.format(__organization__, __appname__))
 
         if ok and path != '':
-            settings = QSettings(path, QSettings.NativeFormat)
+            settings = Settings(path, NATIVE)
             self.setSettingsObject(settings)
             self.fallbacksAct.setEnabled(False)
 
@@ -143,10 +161,6 @@ class SettingUI(Widget):
             niceName += " (read only)"
 
         self.setWindowTitle("%s - Settings Editor" % niceName)
-
-    def setting_mode(self, filename, fm, parent):
-        pass
-
 
 
 # -------------------------------------------------------------------------------------------------------------

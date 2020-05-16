@@ -1,27 +1,27 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: Settings.py
+Script Name: 
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
-    
+
 
 """
 # -------------------------------------------------------------------------------------------------------------
 from PLM import __copyright__
-from .io_core import QSettings
+from .io_widgets import QTableWidget
 
 
-class Settings(QSettings):
+class TableWidget(QTableWidget):
 
-    Type                                    = 'DAMGSETTING'
-    key                                     = 'Settings'
-    name                                    = 'DAMG Setting'
-    _coyright                               = __copyright__()
+    Type                                    = 'DAMGUI'
+    key                                     = 'TabWidget'
+    _name                                   = 'DAMG Tab Widget'
+    _copyright                              = __copyright__()
 
     def __init__(self, *__args):
-        super(Settings, self).__init__(*__args)
+        super(TableWidget, self).__init__(*__args)
 
     @property
     def copyright(self):
@@ -35,7 +35,6 @@ class Settings(QSettings):
     def name(self, val):
         self._name                          = val
 
-
 # -------------------------------------------------------------------------------------------------------------
-# Created by panda on 1/17/2020 - 11:00 AM
-# © 2017 - 2019 DAMGteam. All rights reserved
+# Created by Trinh Do on 5/6/2020 - 3:13 AM
+# © 2017 - 2020 DAMGteam. All rights reserved

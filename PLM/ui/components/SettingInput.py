@@ -9,9 +9,13 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PyQt5.QtCore import QSettings, Qt
-from PyQt5.QtWidgets import QTableWidget, QAbstractItemView, QHeaderView, QTableWidgetItem
-from PLM.api.Widgets import Widget, ComboBox, Label, GroupGrid, GridLayout
+
+from PyQt5.QtWidgets        import QAbstractItemView, QHeaderView, QTableWidgetItem
+
+from PLM.api.Widgets        import Widget, ComboBox, Label, GroupGrid, GridLayout, TableWidget
+from PLM.configs            import INI, NATIVE, USER_SCOPE, SYS_SCOPE, ITEMENABLE
+from PLM.cores              import RegSettings
+
 
 class SettingInput(Widget):
 
@@ -43,15 +47,15 @@ class SettingInput(Widget):
         for cb in [self.formatComboBox, self.scopeComboBox, self.organizationComboBox, self.applicationComboBox]:
             cb.currentIndexChanged.connect(self.updateLocationsTable)
 
-        formatLabel = Label({'txt': "&Format: ", 'setBuddy': self.formatComboBox})
-        scopeLabel = Label({'txt': "&Scope:", 'setBuddy': self.scopeComboBox})
-        organizationLabel = Label({'txt': "&Organization:", 'setBuddy': self.organizationComboBox})
-        applicationLabel = Label({'txt': "&Application:", 'setBuddy': self.applicationComboBox})
+        formatLabel         = Label({'txt': "&Format: ", 'setBuddy': self.formatComboBox})
+        scopeLabel          = Label({'txt': "&Scope:", 'setBuddy': self.scopeComboBox})
+        organizationLabel   = Label({'txt': "&Organization:", 'setBuddy': self.organizationComboBox})
+        applicationLabel    = Label({'txt': "&Application:", 'setBuddy': self.applicationComboBox})
 
-        grpBox = GroupGrid("Setting Locations")
-        grid = grpBox.layout
+        grpBox              = GroupGrid("Setting Locations")
+        grid                = grpBox.layout
 
-        self.locationsTable = QTableWidget()
+        self.locationsTable = TableWidget()
         self.locationsTable.setSelectionMode(QAbstractItemView.SingleSelection)
         self.locationsTable.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.locationsTable.setEditTriggers(QAbstractItemView.NoEditTriggers)
@@ -85,15 +89,15 @@ class SettingInput(Widget):
 
     def format(self):
         if self.formatComboBox.currentIndex() == 0:
-            return QSettings.NativeFormat
+            return NATIVE
         else:
-            return QSettings.IniFormat
+            return INI
 
     def scope(self):
         if self.scopeComboBox.currentIndex() == 0:
-            return QSettings.UserScope
+            return USER_SCOPE
         else:
-            return QSettings.SystemScope
+            return SYS_SCOPE
 
     def organization(self):
         return self.organizationComboBox.currentText()
@@ -111,23 +115,20 @@ class SettingInput(Widget):
 
         for i in range(2):
             if i == 0:
-                if self.scope() == QSettings.SystemScope:
+                if self.scope() == SYS_SCOPE:
                     continue
-                actualScope = QSettings.UserScope
+                actualScope = USER_SCOPE
             else:
-                actualScope = QSettings.SystemScope
+                actualScope = SYS_SCOPE
 
             for j in range(2):
                 if j == 0:
                     if not self.application():
                         continue
 
-                    actualApplication = self.application()
-                else:
-                    actualApplication = ''
+                actApp = self.application()
 
-                settings = QSettings(self.format(), actualScope,
-                                     self.organization(), actualApplication)
+                settings = RegSettings(self.format(), actualScope, self.organization(), actApp)
 
                 row = self.locationsTable.rowCount()
                 self.locationsTable.setRowCount(row + 1)
@@ -149,8 +150,8 @@ class SettingInput(Widget):
                     item1.setText("Read-only fallback")
 
                 if disable:
-                    item0.setFlags(item0.flags() & ~Qt.ItemIsEnabled)
-                    item1.setFlags(item1.flags() & ~Qt.ItemIsEnabled)
+                    item0.setFlags(item0.flags() & ~ITEMENABLE)
+                    item1.setFlags(item1.flags() & ~ITEMENABLE)
 
                 self.locationsTable.setItem(row, 0, item0)
                 self.locationsTable.setItem(row, 1, item1)

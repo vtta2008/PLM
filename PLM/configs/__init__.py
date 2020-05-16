@@ -84,7 +84,7 @@ CORES_DIR           = os.path.join(ROOT, 'cores').replace('\\', '/')
 BASE_DIR            = os.path.join(CORES_DIR, 'base').replace('\\', '/')
 LOGGER_DIR          = os.path.join(CORES_DIR, 'Loggers').replace('\\', '/')
 MODELS_DIR          = os.path.join(CORES_DIR, 'models').replace('\\', '/')
-SQL_DIR             = os.path.join(CORES_DIR, 'sqls').replace('\\', '/')
+SQL_DIR             = os.path.join(CORES_DIR, 'data').replace('\\', '/')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' resources '''

@@ -37,6 +37,7 @@ from .SplashScreen      import SplashScreen
 from .StatusBar         import StatusBar
 from .SystemTrayIcon    import SystemTrayIcon
 from .TabBar            import TabBar
+from .TableWidget       import TableWidget
 from .TabWidget         import TabWidget
 from .TextEdit          import TextEdit
 from .ToolBar           import ToolBar

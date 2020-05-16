@@ -22,7 +22,7 @@ from PLM.api.Core                       import Settings
 
 class AppSettings(Settings):
 
-    key                                 = 'Settings'
+    key                                 = 'AppSettings'
 
     _settingEnable                      = False
 

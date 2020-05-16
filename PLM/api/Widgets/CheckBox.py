@@ -16,7 +16,7 @@ from PLM                                    import __copyright__
 from .io_widgets                            import QCheckBox
 from PLM.utils                              import check_preset
 from PLM.plugins.SignalManager              import SignalManager
-from PLM.cores.app_settings import AppSettings
+from PLM.cores.Settings.app_settings import AppSettings
 
 class CheckBox(QCheckBox):
 

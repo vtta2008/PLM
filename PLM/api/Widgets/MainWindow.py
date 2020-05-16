@@ -12,7 +12,7 @@ from PLM                                    import __copyright__
 from PLM.api.Widgets.io_widgets             import QMainWindow
 from PLM.cores                              import Loggers
 from PLM.plugins.SignalManager              import SignalManager
-from PLM.cores.app_settings                 import AppSettings
+from PLM.cores.Settings.app_settings import AppSettings
 
 # -------------------------------------------------------------------------------------------------------------
 """ Main window layout preset """
