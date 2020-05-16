@@ -12,9 +12,9 @@ Description:
 
 import os
 
-from PLM.commons                            import DAMG
-from PLM.ui.framework import ByteArray, Url
-from PLM.ui.framework import NetworkRequest
+from PLM.api.damg                           import DAMG
+from PLM.api.Core                           import ByteArray, Url
+from PLM.api.Network                        import NetworkRequest
 
 
 class Channel(DAMG):

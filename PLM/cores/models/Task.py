@@ -12,12 +12,12 @@ Description:
 
 # Python
 import os, json
-from playsound import playsound
+from playsound                              import playsound
 
 # PLM
 from PLM.cores.base                         import BaseType
 from PLM.configs                            import SOUND_DIR, TASK_DIR
-from PLM.ui.framework import DateTime
+from PLM.api.Core                           import DateTime
 
 # -------------------------------------------------------------------------------------------------------------
 """ Task class """

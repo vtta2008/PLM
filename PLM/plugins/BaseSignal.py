@@ -8,9 +8,9 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import globals, Signal, Slot
-from PLM.ui.framework.damg import DAMG, DAMGDICT
-from PLM.cores                               import Loggers
+from PLM                                    import globals, Signal, Slot
+from PLM.api.damg                           import DAMG, DAMGDICT
+from PLM.cores                              import Loggers
 
 # -------------------------------------------------------------------------------------------------------------
 """ Signal class: setup all the signal which will be using. """

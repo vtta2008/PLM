@@ -12,7 +12,7 @@ Description:
 
 import validators, re
 from collections            import OrderedDict
-from PLM.commons            import DAMGDICT, DAMGLIST
+from PLM.api.damg           import DAMGDICT, DAMGLIST
 from PLM.configs            import actionTypes, buttonTypes, urlTypes
 
 

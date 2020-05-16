@@ -11,11 +11,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 import platform, subprocess, os, sys
-from PLM.configs        import __pkgsReq__
 
-from psutil             import cpu_percent, virtual_memory, disk_usage
-from GPUtil             import getGPUs
-from .converts         import byte2gb, mb2gb
+from psutil                 import cpu_percent, virtual_memory, disk_usage
+from GPUtil                 import getGPUs
+from .converts              import byte2gb, mb2gb
 
 
 def obj_properties_setting(directory, mode):

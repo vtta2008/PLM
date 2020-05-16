@@ -10,7 +10,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.commons import DAMG
+from PLM.api.damg import DAMG
+
 
 class ServerProfile(DAMG):
 

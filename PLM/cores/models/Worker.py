@@ -18,8 +18,8 @@ import sys, traceback
 from PyQt5.QtCore                           import pyqtSignal
 
 # PLM
-from PLM.commons                            import DAMG
-from PLM.ui.framework import Runnable
+from PLM.api.damg                           import DAMG
+from PLM.api.Core                           import Runnable
 
 
 

@@ -11,12 +11,7 @@ Description:
 """ Import """
 
 # Python
-import os
-import sys
 import logging
-import traceback
-import linecache
-
 
 # PLM
 from PLM.configs                    import LOG_FORMAT, DT_FORMAT, LOCAL_LOG
@@ -115,26 +110,6 @@ class Loggers(logging.Logger):
 
     def report(self, mess, **kwargs):
         self.trace(StyleMessage(mess, **kwargs))
-
-    def drop_exception(self):
-        exc_type, exc_obj, tb = sys.exc_info()
-
-        if exc_obj is None:
-            exc_obj = self.logID
-
-        lineno = traceback.tb_lineno(traceback)
-        filename = os.path.basename(__file__)
-        linecache.checkcache(filename)
-        line = linecache.getline(filename, lineno, globals())
-
-        self.report("\n"
-                    "--------------------------------------------------------------------------------- \n"
-                        "Tracking from:   {0} \n"
-                        "At line number:  {1} \n"
-                        "Details code:    {2} \n"
-                        "{3} \n"
-                    "--------------------------------------------------------------------------------- \n".format(
-            os.path.basename(filename), lineno, line.strip(), exc_obj))
 
 
 # -------------------------------------------------------------------------------------------------------------

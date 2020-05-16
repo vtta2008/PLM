@@ -15,7 +15,7 @@ import json
 
 # PLM
 from PLM.configs                    import __plmWiki__, plmCfg
-from PLM.ui.framework.Widgets import GroupVBox, MenuBar
+from PLM.api.Widgets import GroupVBox, MenuBar
 from PLM.utils                      import is_string
 
 with open(plmCfg, 'r') as f:

@@ -17,7 +17,7 @@ import requests, sys
 
 # PLM
 from PLM.configs                            import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
-from PLM.ui.framework.Widgets import GroupGrid, Label, MessageBox
+from PLM.api.Widgets import GroupGrid, Label, MessageBox
 from PLM.ui.framework import Timer
 from PLM.commons                            import DAMGLIST
 from PLM.ui.base                            import Conection

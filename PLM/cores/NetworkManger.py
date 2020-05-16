@@ -15,7 +15,7 @@ Description:
 import sys
 
 
-from PLM.ui.framework.Widgets import MessageBox
+from PLM.api.Widgets import MessageBox
 from PLM.ui.framework import NetworkAccessManager
 from PLM.cores.models                       import DownloadChannel
 from PLM.configs                            import ERROR_APPLICATION

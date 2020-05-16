@@ -13,8 +13,8 @@ Description:
 """ Import """
 
 # PLM
-from PLM.ui.framework.Widgets import Widget, VBoxLayout
-from PLM.ui.framework.Gui import AppIcon
+from PLM.api.Widgets import Widget, VBoxLayout
+from PLM.api.Gui import AppIcon
 from PLM.ui.components                  import HeaderCheckBoxes, FooterCheckBoxes, BodyCheckBoxes
 
 # -------------------------------------------------------------------------------------------------------------

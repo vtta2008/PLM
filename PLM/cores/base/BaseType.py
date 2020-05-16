@@ -12,8 +12,8 @@ Description:
 
 from PyQt5.QtCore               import pyqtSignal
 
-from PLM.commons                import DAMG, DAMGDICT
-from PLM.ui.framework import Date, Time, Timer
+from PLM.api.damg               import DAMG, DAMGDICT
+from PLM.api.Core               import Date, Time, Timer
 
 
 class BaseType(DAMG):

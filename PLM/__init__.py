@@ -20,22 +20,22 @@ Description:
 
 # Python
 import os, subprocess, logging
-from PLM.commons.Version import Version
-from PLM.commons.Global import Global
+from .version                       import Version
+from .globals                       import Global
 
 # -------------------------------------------------------------------------------------------------------------
 """ Metadatas """
 
 __envKey__                          = "PLM"
 __appName__                         = "Pipeline Manager (PLM)"
-__name__                            = __appName__
-__file__                            = __appName__
 __version__                         = Version()
+
+__apiName__                         = "DAMG API"
 __apiVersion__                      = Version(0, 0, 1)
 
 
 def __copyright__():
-    return 'Copyright (C) DAMGTEAM.'
+    return 'Copyright (C) DAMGTEAM. All right reserved.'
 
 
 logging.basicConfig()
@@ -65,7 +65,7 @@ else:
 finally:
     globals.cfgable = True
 
-logger.info("{0} version {1} under api version {0}".format(__appName__, __version__, __apiVersion__))
+logger.info("{0} v{1}".format(__appName__, __version__))
 
 if globals.qtBindingMode == 'PyQt5':
 
@@ -74,55 +74,14 @@ if globals.qtBindingMode == 'PyQt5':
     except ImportError:
         subprocess.Popen('python -m pip install {0}={1} --user'.format(globals.qtBindingMode, globals.qtVersion), shell=True).wait()
     finally:
-        from PyQt5.QtCore       import (QObject, QByteArray, QDate, QDateTime, QEventLoop, QFile, QFileInfo, QIODevice,
-                                        QPoint, QProcess, QRect, QRectF, QRunnable, QSettings, QSize, QTextStream, QThread,
-                                        QThreadPool, QTime, QTimer, QTimeZone, QUrl, )
-
-        from PyQt5.QtGui        import (QBrush, QColor, QCursor, QFont, QFontMetrics, QIcon, QImage, QIntValidator,
-                                        QKeySequence, QPaintDevice, QPainter, QPainterPath, QPalette, QPen, QPixmap,
-                                        QPolygon, QTransform, )
-
-        from PyQt5.QtNetwork    import (QNetworkAccessManager, QNetworkCookie, QNetworkCookieJar, QNetworkReply,
-                                        QNetworkRequest, )
-
-        from PyQt5.QtWidgets    import (QAction, QWidgetAction, QApplication, QVBoxLayout, QHBoxLayout, QPushButton,
-                                        QToolButton, QCheckBox, QComboBox, QDockWidget, QGraphicsItem, QGraphicsPathItem,
-                                        QGraphicsObject, QGraphicsScene, QGraphicsView, QGridLayout, QGroupBox,
-                                        QItemDelegate, QLabel, QLineEdit, QMainWindow, QMenu, QMenuBar, QMessageBox,
-                                        QPlainTextEdit, QProgressBar, QRubberBand, QSplashScreen, QStatusBar,
-                                        QSystemTrayIcon, QTabBar, QTabWidget, QTextEdit, QToolBar, QUndoCommand, QWidget)
-
-
-        from PyQt5.QtCore       import pyqtSlot as Slot, pyqtSignal as Signal, pyqtProperty as Property
-
-
+        from PyQt5.QtCore import pyqtSlot as Slot, pyqtSignal as Signal, pyqtProperty as Property
 elif globals.qtBindingMode == 'PySide2':
-
     try:
         import PySide2
     except ImportError:
         subprocess.Popen('python -m pip install {0}={1} --user'.format(globals.qtBindingMode, globals.qtVersion), shell=True).wait()
     finally:
-        from PySide2.QtCore     import (QObject, QByteArray, QDate, QDateTime, QEventLoop, QFile, QFileInfo, QIODevice,
-                                        QPoint, QProcess, QRect, QRectF, QRunnable, QSettings, QSize, QTextStream, QThread,
-                                        QThreadPool, QTime, QTimer, QTimeZone, QUrl, )
-
-        from PySide2.QtGui      import (QBrush, QColor, QCursor, QFont, QFontMetrics, QIcon, QImage, QIntValidator,
-                                        QKeySequence, QPaintDevice, QPainter, QPainterPath, QPalette, QPen, QPixmap,
-                                        QPolygon, QTransform, )
-
-        from PySide2.QtNetwork  import (QNetworkAccessManager, QNetworkCookie, QNetworkCookieJar, QNetworkReply,
-                                        QNetworkRequest, )
-
-        from PySide2.QtWidgets  import (QAction, QWidgetAction, QApplication, QVBoxLayout, QHBoxLayout, QPushButton,
-                                        QToolButton, QCheckBox, QComboBox, QDockWidget, QGraphicsItem, QGraphicsPathItem,
-                                        QGraphicsObject, QGraphicsScene, QGraphicsView, QGridLayout, QGroupBox,
-                                        QItemDelegate, QLabel, QLineEdit, QMainWindow, QMenu, QMenuBar, QMessageBox,
-                                        QPlainTextEdit, QProgressBar, QRubberBand, QSplashScreen, QStatusBar,
-                                        QSystemTrayIcon, QTabBar, QTabWidget, QTextEdit, QToolBar, QUndoCommand, QWidget)
-
-        from PySide2.QtCore     import Slot, Signal, Property
-
+        from PySide2.QtCore import Slot, Signal, Property
 
 
 # -------------------------------------------------------------------------------------------------------------

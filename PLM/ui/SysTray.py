@@ -13,8 +13,8 @@ Description:
 
 # PLM
 from PLM.configs                        import __appSlogan__, __appname__
-from PLM.ui.framework.Widgets import SystemTrayIcon
-from PLM.ui.framework.Gui import LogoIcon
+from PLM.api.Widgets import SystemTrayIcon
+from PLM.api.Gui import LogoIcon
 from PLM.ui.components                  import SysTrayIconMenu
 from PLM.cores.EventManager import EventManager
 from PLM.ui.models.ActionManager        import ActionManager

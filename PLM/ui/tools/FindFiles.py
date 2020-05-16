@@ -21,10 +21,10 @@ from PyQt5.QtWidgets                import (QAbstractItemView, QApplication, QCo
                                             QTableWidgetItem, )
 
 from PLM.configs                    import SiPoExp, SiPoPre
-from PLM.ui.framework.Widgets import Button
-from PLM.ui.framework.Widgets import Label
-from PLM.ui.framework.Widgets import Widget
-from PLM.ui.framework.Gui import AppIcon
+from PLM.api.Widgets import Button
+from PLM.api.Widgets import Label
+from PLM.api.Widgets import Widget
+from PLM.api.Gui import AppIcon
 
 
 class FindFiles(Widget):

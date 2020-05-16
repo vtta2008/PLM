@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.ui.framework.Widgets import GroupGrid, Label, CheckBox, PlainTextEdit
+from PLM.api.Widgets import GroupGrid, Label, CheckBox, PlainTextEdit
 from PLM.utils import str2bool
 
 class BaseDetails(GroupGrid):

@@ -12,7 +12,7 @@ Description:
 import datetime
 
 from PLM.cores.models.Threads       import PcMonitor
-from PLM.ui.framework.Widgets import LCDNumber, GroupGrid, Label
+from PLM.api.Widgets import LCDNumber, GroupGrid, Label
 from PLM.ui.framework import Timer
 
 

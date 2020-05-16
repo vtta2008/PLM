@@ -14,8 +14,8 @@ Description:
 import platform
 
 # PLM
-from PLM.commons                        import DAMG, DAMGDICT
-from PLM.ui.framework import TextStream, File, QssFile
+from PLM.api.damg                       import DAMG, DAMGDICT
+from PLM.api.Core                       import TextStream, File, QssFile
 from PLM.configs                        import colorLibs
 from PLM.cores                          import Loggers
 from PLM.plugins                        import Qt

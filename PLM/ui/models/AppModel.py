@@ -23,8 +23,8 @@ from PLM.configs                        import (__version__, __appname__, __orga
                                                 ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
                                                 ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
                                                 ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath, ConfigFonts, )
-from PLM.ui.framework.Widgets import Application, MessageBox
-from PLM.ui.framework.Gui import LogoIcon
+from PLM.api.Widgets import Application, MessageBox
+from PLM.api.Gui import LogoIcon
 
 from PLM.utils                          import clean_file_ext
 from PLM.ui.layouts                     import SplashUI

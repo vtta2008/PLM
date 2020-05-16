@@ -11,7 +11,7 @@ Description:
 
 from PyQt5.QtCore import QSettings, Qt
 from PyQt5.QtWidgets import QTableWidget, QAbstractItemView, QHeaderView, QTableWidgetItem
-from PLM.ui.framework.Widgets import Widget, ComboBox, Label, GroupGrid, GridLayout
+from PLM.api.Widgets import Widget, ComboBox, Label, GroupGrid, GridLayout
 
 class SettingInput(Widget):
 

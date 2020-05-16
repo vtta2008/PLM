@@ -23,8 +23,8 @@ from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, SP
                                                 splashImagePth, colorLibs, ANTIALIAS, TRANSPARENT, NO_PEN, AUTO_COLOR,
                                                 DAMG_LOGO_DIR, TEXT_NORMAL)
 
-from PLM.ui.framework.Widgets import SplashScreen, MessageBox
-from PLM.ui.framework.Gui import Pixmap, Image, Font, FontMetrics, Palette, Painter, Pen
+from PLM.api.Widgets import SplashScreen, MessageBox
+from PLM.api.Gui import Pixmap, Image, Font, FontMetrics, Palette, Painter, Pen
 from PLM.ui.framework import Timer, Rect
 
 

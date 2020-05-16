@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # PLM
-from PLM.ui.framework import ThreadPool
+from PLM.api.Core                           import ThreadPool
 
 
 

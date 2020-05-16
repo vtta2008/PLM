@@ -9,8 +9,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.ui.framework.Widgets import GroupGrid, CheckBox, Label
-from PLM.commons                            import DAMGLIST, DAMGDICT
+from PLM.api.Widgets import GroupGrid, CheckBox, Label
+from PLM.api.damg                            import DAMGLIST, DAMGDICT
 from PLM.utils                              import str2bool
 
 class BodyCheckBoxes(GroupGrid):

@@ -11,9 +11,9 @@ Description:
 from PyQt5.QtCore                       import pyqtProperty, pyqtSignal, pyqtSlot
 
 
-from PLM.ui.framework.Widgets import Widget
+from PLM.api.Widgets import Widget
 from PLM.ui.framework import Time, Timer, Size, Point
-from PLM.ui.framework.Gui import Painter, Brush, Color, Pen, Polygon
+from PLM.api.Gui import Painter, Brush, Color, Pen, Polygon
 from PLM.configs                        import ASPEC_RATIO, ANTIALIAS, NO_PEN
 
 

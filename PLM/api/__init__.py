@@ -6,12 +6,13 @@ Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
+    Application Programming Interface.
+    The API will handle QtFramework and impliment metadata into all object.
+
 """
 # -------------------------------------------------------------------------------------------------------------
 
 
-from .Global            import Global
-from .Version           import Version
 
 
 

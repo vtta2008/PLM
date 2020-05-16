@@ -15,7 +15,7 @@ Description:
 from PyQt5.QtCore                           import pyqtSignal
 
 # PLM
-from PLM.ui.framework import Thread
+from PLM.api.Core                           import Thread
 from PLM.utils                              import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
 
 

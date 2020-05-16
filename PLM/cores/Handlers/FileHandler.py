@@ -9,8 +9,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from PLM.api.damg               import DAMG
 
-from PLM.commons import DAMG
 
 class FileHandler(DAMG):
 

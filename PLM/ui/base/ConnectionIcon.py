@@ -9,8 +9,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.ui.framework.Gui import Image, Pixmap
-from PLM.ui.framework.Widgets import Label
+from PLM.api.Gui import Image, Pixmap
+from PLM.api.Widgets import Label
 from PLM.utils                      import get_app_icon
 from PLM.configs                    import AUTO_COLOR, center
 

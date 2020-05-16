@@ -10,7 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.commons                            import DAMGDICT
+from PLM.api.damg                           import DAMGDICT
 
 class BaseStorage(DAMGDICT):
 

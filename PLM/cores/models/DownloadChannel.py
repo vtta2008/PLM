@@ -13,8 +13,8 @@ Description:
 import time
 
 from PLM.cores.base                         import Channel
-from PLM.ui.framework import File, FileInfo, DownloadFile, IODevice
-from PLM.ui.framework.Widgets import MessageBox
+from PLM.api.Core                           import File, FileInfo, DownloadFile, IODevice
+from PLM.api.Widgets                        import MessageBox
 from PLM.configs                            import ASK_OVERWRITE
 from PLM.utils                              import autoRename, wait
 

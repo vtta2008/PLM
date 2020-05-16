@@ -74,42 +74,5 @@ __googleVN__            = "https://www.google.com.vn"
 __googleNZ__            = "https://www.google.co.nz"
 
 # -------------------------------------------------------------------------------------------------------------
-""" Metadata """
-
-VERSION                 = "{0} v{1}.{2}-{3}".format(__project__, __version__, __verType__, __reverType__)
-COPYRIGHT               = "{0} software (c) 2017-2018 {1}. All rights reserved.".format(__appname__, __organization__)
-PLUGINVERSION           = "{0}.13.cfg.{1}".format(__appname__, __cfgVersion__)
-PLMAPPID                = "{0}.{1}.{2}.{3}".format(__organizationName__, __productName__, __subProduct__, __version__)
-
-API_MAJOR_VERSION       = 0.69
-API_REVISION            = 0
-API_VERSION             = float('%s%s' % (API_MAJOR_VERSION, API_REVISION))
-API_VERSION_AS_STRING   = '%.02f.%d' % (API_MAJOR_VERSION, API_REVISION)
-PLATFORM                = 'Windows'
-API_MINIMUM             = 0.64
-
-# ----------------------------------------------------------------------------------------------------------- #
-""" Setup.py options """
-
-__email__               = __emails__
-__packages_dir__        = ["", 'appData', 'bin', 'core', 'imgs', 'plugins', 'scripts', 'ui', 'utils']
-__download__            = "https://github.com/vtta2008/PipelineTool/releases"
-__description__         = "This applications can be used to build, manage, and optimise film making pipelines."
-__readme__              = "README.rst"
-__pkgsReq__             = ['wmi', 'winshell', 'PyQt5', 'pip', 'appdirs', 'deprecate', 'msgpack', 'pyqtwebengine',
-                           'pandas', 'wheel', 'argparse', 'green', 'python-resize-image', 'pywin32', 'gputil',
-                           'playsound', ]
-__modules__             = []
-__classifiers__         = [
-                            "Development Status :: 3 - Production/Unstable",
-                            "Environment :: X11 Applications :: Qt",
-                            "Environment :: Win64 (MS Windows)",
-                            "Intended Audience :: Freelance Artist :: small VFX studio",
-                            "License :: OSI Approved :: MIT License", "Operating System :: Microsoft :: Windows",
-                            "Programming Language :: Python :: 3.6",
-                            "Topic :: Software Development :: pipeline-framework :: Application :: vfx :: customization :: optimization :: research-project",
-                            ]
-
-# -------------------------------------------------------------------------------------------------------------
 # Created by panda on 13/05/2019 - 9:50 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

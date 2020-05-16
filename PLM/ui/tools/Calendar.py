@@ -23,9 +23,9 @@ from PyQt5.QtWidgets            import (QApplication, QCalendarWidget, QCheckBox
 
 # Plt
 from PLM.configs                        import SiPoMin
-from PLM.ui.framework.Widgets import GridLayout
-from PLM.ui.framework.Widgets import Widget
-from PLM.ui.framework.Gui import AppIcon
+from PLM.api.Widgets import GridLayout
+from PLM.api.Widgets import Widget
+from PLM.api.Gui import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Clendar """

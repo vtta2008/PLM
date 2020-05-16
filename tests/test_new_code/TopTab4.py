@@ -22,9 +22,9 @@ from PyQt5.QtWidgets        import QApplication
 
 # PLM
 from bin.dependencies.damg.damg import DAMG
-from PLM.ui.framework.Widgets import Widget
-from PLM.ui.framework.Widgets import GridLayout
-from PLM.ui.framework.Widgets import GroupGrid
+from PLM.api.Widgets import Widget
+from PLM.api.Widgets import GridLayout
+from PLM.api.Widgets import GroupGrid
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab4 """

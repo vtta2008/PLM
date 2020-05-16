@@ -21,12 +21,12 @@ from PyQt5.QtWidgets            import (QFileDialog, QApplication, QGroupBox, QS
 
 # PLM
 from PLM.configs                    import ASPEC_RATIO, SMOOTH_TRANS
-from PLM.ui.framework.Widgets import GridLayout
-from PLM.ui.framework.Widgets import Button
-from PLM.ui.framework.Widgets import Label
-from PLM.ui.framework.Widgets import Widget
-from PLM.ui.framework.Widgets import HBoxLayout
-from PLM.ui.framework.Gui import AppIcon
+from PLM.api.Widgets import GridLayout
+from PLM.api.Widgets import Button
+from PLM.api.Widgets import Label
+from PLM.api.Widgets import Widget
+from PLM.api.Widgets import HBoxLayout
+from PLM.api.Gui import AppIcon
 
 class ScreenShot(Widget):
 
