@@ -1,3 +1,4 @@
+
 PYTHON SOFTWARE PROJECS STRUCTURE
 #################################
 
