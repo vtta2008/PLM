@@ -13,8 +13,8 @@ Description:
 
 # PLM
 from PLM.configs                        import SiPoMin
-from PLM.api.Widgets import MainWindow, ToolBar, GroupHBox
-from PLM.ui.framework import Size
+from PLM.api.Widgets                    import MainWindow, ToolBar, GroupHBox
+from PLM.api.Core                       import Size
 from PLM.utils                          import str2bool, bool2str
 from PLM.cores.Errors                   import ToolbarNameError
 

@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM import __copyright__
+from PLM                                    import __copyright__
 from PLM.api.Widgets.io_widgets             import QLabel, QLCDNumber
 from PLM.api.Gui                            import Font, Pixmap
 from PLM.api.Core                           import TimeZone, Time, Date
@@ -126,20 +126,9 @@ class LCDNumber(QLCDNumber):
         QLCDNumber.__init__(self)
 
         self.parent                         = parent
-        self.settings                       = AppSettings(self)
-        self.signals                        = SignalManager(self)
         self.time                           = Time()
         self.zone                           = TimeZone()
         self.date                           = Date()
-
-    def setValue(self, key, value):
-        return self.settings.initSetValue(key, value, self.key)
-
-    def getValue(self, key, decode=None):
-        if decode is None:
-            return self.settings.initValue(key, self.key)
-        else:
-            return self.settings.initValue(key, self.key, decode)
 
     @property
     def copyright(self):

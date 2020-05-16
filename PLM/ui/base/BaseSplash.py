@@ -21,7 +21,7 @@ from PLM.configs                            import (ERROR_APPLICATION, FRAMELESS
                                                     )
 from PLM.api.Widgets import SplashScreen, MessageBox, ProgressBar
 from PLM.api.Gui import Font, Palette, Image, Pen, Painter, FontMetrics
-from PLM.ui.framework import Timer
+from PLM.api.Core import Timer
 from PLM.cores                              import Loggers, StyleSheet
 
 

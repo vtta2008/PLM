@@ -20,25 +20,30 @@ from PyQt5.QtWidgets        import QAction, QFileDialog, QInputDialog, QLineEdit
 from PyQt5.QtCore           import QSettings
 
 # PLM
-from PLM.api.Widgets import Widget, GridLayout, MenuBar
-from PLM.ui.components            import SettingOutput, SettingInput
+from PLM.cores              import AppSettings
+from PLM.api.Widgets        import Widget, GridLayout, MenuBar
+from PLM.ui.components      import SettingOutput, SettingInput
 from PLM.configs            import SETTING_FILEPTH, __appname__, __organization__
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Setting Manager """
 
-class AppSetting(Widget):
+class SettingUI(Widget):
 
     key                     = 'AppSetting'
 
     def __init__(self, parent=None):
-        super(AppSetting, self).__init__(parent)
+        super(SettingUI, self).__init__(parent)
+
+
+        self.setWindowTitle("Application Settings")
 
         self.parent         = parent
         self.menubar        = MenuBar(self)
         self.regValue       = SettingOutput(self.settings)
         self.regInfo        = SettingInput(self.settings)
-
+        self.settings       = AppSettings(self)
         self.createMenus()
 
         self.layout         = GridLayout()
@@ -51,12 +56,8 @@ class AppSetting(Widget):
         self.autoRefreshAct.setChecked(True)
         self.fallbacksAct.setChecked(True)
 
-        self.setWindowTitle("Application Settings")
-
-    def openSettings(self):
-        if not self.settings:
-            self.settings = QSettings(self.regInfo.format(), self.regInfo.scope(), self.regInfo.organization(), self.regInfo.application())
         self.setSettingsObject(self.settings)
+
         self.fallbacksAct.setEnabled(True)
 
     def openIniFile(self):
@@ -89,6 +90,7 @@ class AppSetting(Widget):
             self.fallbacksAct.setEnabled(False)
 
     def createActions(self):
+
         self.openSettingsAct        = QAction("&Open Application Settings...", self, shortcut="Ctrl+O", triggered=self.openSettings)
         self.openIniFileAct         = QAction("&Open INI File...", self, shortcut="Ctrl+N", triggered=self.openIniFile)
         self.openPropertyListAct    = QAction("&Open Mac Property List...", self, shortcut="Ctrl+P", triggered=self.openPropertyList)
@@ -110,6 +112,7 @@ class AppSetting(Widget):
     def createMenus(self):
         self.createActions()
         self.fileMenu               = self.menubar.addMenu("&File")
+
         self.fileMenu.addAction(self.openSettingsAct)
         self.fileMenu.addAction(self.openIniFileAct)
         self.fileMenu.addAction(self.openPropertyListAct)

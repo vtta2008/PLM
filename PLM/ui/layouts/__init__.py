@@ -10,7 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from .AppSetting            import AppSetting
+from .SettingUI            import SettingUI
 from .Configurations        import Configurations
 from .ForgotPassword        import ForgotPassword
 from .InfoWidget            import InfoWidget

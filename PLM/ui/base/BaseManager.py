@@ -12,7 +12,7 @@ Description:
 
 # PLM
 from PLM.cores.models                   import DateLine, Task, Project, Team, Organisation, Temporary
-from PLM.ui.framework import DateTime
+from PLM.api.Core import DateTime
 from PLM.api.Widgets import Widget, Button, VBoxLayout, HBoxLayout
 from PLM.api.Gui import AppIcon
 from PLM.ui.base                        import BaseInfo, BaseDetails

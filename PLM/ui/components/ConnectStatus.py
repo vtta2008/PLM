@@ -16,11 +16,11 @@ from PLM import globals
 import requests, sys
 
 # PLM
-from PLM.configs                            import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
-from PLM.api.Widgets import GroupGrid, Label, MessageBox
-from PLM.ui.framework import Timer
-from PLM.commons                            import DAMGLIST
-from PLM.ui.base                            import Conection
+from PLM.configs                        import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
+from PLM.api.Widgets                    import GroupGrid, Label, MessageBox
+from PLM.api.Core                       import Timer
+from PLM.api.damg                       import DAMGLIST
+from PLM.ui.base                        import Conection
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """

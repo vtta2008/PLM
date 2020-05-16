@@ -24,7 +24,7 @@ from PLM.api.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, use
                              Label, MessageBox, GroupGrid, )
 from PLM.api.Gui import AppIcon
 from PLM.utils                  import bool2str
-from PLM.cores.sqls.sqlUtils    import sqlUtils
+from PLM.cores.data    import sqlUtils
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """

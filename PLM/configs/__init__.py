@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 # Python
-import os, subprocess, sys, re, platform, pkg_resources, winshell, socket, uuid, json, yaml
+import os, subprocess, sys, re, platform, pkg_resources, winshell, socket, uuid, json, yaml, pprint
 
 # PLM
 from PLM                            import globals, ROOT, ROOT_APP
@@ -19,7 +19,10 @@ from .metadatas                     import (__appname__, __organizationName__, _
                                             __plmWiki__, __localServer__, __homepage__, __appname__,
                                             __organization__, __organizationID__, __organizationName__, __globalServer__,
                                             __google__, __appSlogan__, __localServerAutho__, __version__, __website__,)
-from .constants                     import WAIT_LAYOUT_COMPLETE, ASK_OVERWRITE, SERVER_CONNECT_FAIL
+from .constants                     import (WAIT_LAYOUT_COMPLETE, ASK_OVERWRITE, SERVER_CONNECT_FAIL, ERROR_APPLICATION,
+                                            PW_UNMATCH, PYTHON_TAG, VERSION_TAG, LICENCE_TAG, USER_CHECK_REQUIRED,
+                                            SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, PLM_ABOUT, ERROR_LAYOUT_COMPONENT,
+                                            SYSTRAY_UNAVAI, )
 
 # PyQt5
 from PyQt5.QtCore                   import Qt, QSize, QEvent, QSettings, QDateTime
@@ -932,12 +935,14 @@ statusTips                          = {}
 
 def read_file(fileName):
 
-    filePth = os.path.join(DOCS_DIR, fileName)
+    filePth = os.path.join(RAWS_DIR, fileName)
 
     if os.path.exists(filePth):
         with open(filePth) as f:
             data = f.read()
         return data
+    else:
+        print("File not found: {0}".format(filePth))
 
 
 ABOUT               = read_file('ABOUT')
@@ -2132,7 +2137,7 @@ if platform.system() == 'Windows':
 iconInfo                           = ConfigIcon()
 
 if not os.path.exists(LOCAL_DB):
-    from PLM.cores.sqls.sqlPreset import PresetDB
+    from PLM.cores.data import PresetDB
     localDB = PresetDB(filename=LOCAL_DB)
 
 # -------------------------------------------------------------------------------------------------------------

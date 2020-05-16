@@ -13,7 +13,7 @@ import datetime
 
 from PLM.cores.models.Threads       import PcMonitor
 from PLM.api.Widgets import LCDNumber, GroupGrid, Label
-from PLM.ui.framework import Timer
+from PLM.api.Core import Timer
 
 
 class DigitalClock(LCDNumber):

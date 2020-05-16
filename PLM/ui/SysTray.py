@@ -13,10 +13,10 @@ Description:
 
 # PLM
 from PLM.configs                        import __appSlogan__, __appname__
-from PLM.api.Widgets import SystemTrayIcon
-from PLM.api.Gui import LogoIcon
+from PLM.api.Widgets                    import SystemTrayIcon
+from PLM.api.Gui                        import LogoIcon
 from PLM.ui.components                  import SysTrayIconMenu
-from PLM.cores.EventManager import EventManager
+from PLM.cores.EventManager             import EventManager
 from PLM.ui.models.ActionManager        import ActionManager
 from PLM.cores                          import sqlUtils
 
@@ -40,7 +40,6 @@ class SysTray(SystemTrayIcon):
             self.username = 'DemoUser'
 
         self.rightClickMenu             = SysTrayIconMenu(self.actionManager, self.parent)
-        self.rightClickMenu.signals.connect('command', self.parent.command)
 
         self.setIcon(LogoIcon('Logo'))
         self.setToolTip(__appSlogan__)

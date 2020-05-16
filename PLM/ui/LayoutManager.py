@@ -13,7 +13,7 @@ Description:
 
 # PLM
 from PLM.configs                        import SiPoMin, ELIDE_RIGHT
-from PLM.commons                        import DAMG, DAMGLIST
+from PLM.api.damg                       import DAMG, DAMGLIST
 
 from PLM.ui.models.ActionManager        import ActionManager
 from PLM.ui.models.ButtonManager        import ButtonManager
@@ -26,7 +26,7 @@ from PLM.ui.PipelineManager             import PipelineManager
 from PLM.ui.SysTray                     import SysTray
 from PLM.ui.tools                       import (Calendar, Calculator, EnglishDictionary, FindFiles, ImageViewer,
                                                 NoteReminder, ScreenShot, TextEditor)
-from PLM.ui.layouts                     import (ForgotPassword, SignUp, SignIn, InfoWidget, VFXProject, AppSetting,
+from PLM.ui.layouts                     import (ForgotPassword, SignUp, SignIn, InfoWidget, VFXProject, SettingUI,
                                                 UserSetting, Preferences, Configurations)
 
 class LayoutManager(DAMG):
@@ -131,7 +131,6 @@ class LayoutManager(DAMG):
         layouts = [self.mainUI, self.sysTray, self.shortcutCMD, self.signin, self.signup, self.forgotPW]
 
         for layout in layouts:
-            layout.settings._settingEnable = True
             self.registLayout(layout)
         return layouts
 
@@ -149,14 +148,13 @@ class LayoutManager(DAMG):
                     self.references, self.version]
 
         for layout in layouts:
-            layout.settings._settingEnable = True
             self.registLayout(layout)
 
         return layouts
 
     def settingLayouts(self):
 
-        self.settingUI                      = AppSetting()
+        self.settingUI                      = SettingUI()
         self.userSetting                    = UserSetting()
 
         self.mainUI.midTabDock.tabs.tab2.avatarGrp.setApp(self)

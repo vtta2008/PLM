@@ -18,7 +18,7 @@ import math
 from PyQt5.QtCore                               import Qt
 
 # PLM
-from PLM.commons                                import DAMGLIST
+from PLM.api.damg                                import DAMGLIST
 from PLM.api.Widgets import LineEdit
 from PLM.api.Widgets import GridLayout
 from PLM.api.Widgets import Widget

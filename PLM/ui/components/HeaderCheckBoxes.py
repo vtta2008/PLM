@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 from PLM.api.Widgets import GroupGrid, CheckBox, Label
-from PLM.commons                import DAMGLIST, DAMGDICT
+from PLM.api.damg                import DAMGLIST, DAMGDICT
 from PLM.utils                  import str2bool
 
 class HeaderCheckBoxes(GroupGrid):

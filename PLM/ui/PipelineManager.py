@@ -10,9 +10,9 @@ Description:
 
 # PLM
 from PLM.configs                        import __homepage__, __appname__, dockT, dockB
-from PLM.commons                        import DAMGDICT
-from PLM.api.Widgets import MainWindow, Widget, GridLayout
-from PLM.api.Gui import LogoIcon
+from PLM.api.damg                       import DAMGDICT
+from PLM.api.Widgets                    import MainWindow, Widget, GridLayout
+from PLM.api.Gui                        import LogoIcon
 from .components                        import (Footer, MainStatusBar, MenubarDock, ToolBarDock, NetworkStatusDock,
                                                 BotTabDock, NotificationDock, MidTabDock)
 from .models.ButtonManager              import ButtonManager

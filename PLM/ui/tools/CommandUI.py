@@ -9,8 +9,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.api.Widgets import LineEdit
-from PLM.api.Widgets import ShortCut
+from PLM.api.Widgets                import LineEdit
+from PLM.api.Widgets                import ShortCut
 from PLM.configs                    import FRAMELESS, KEY_RETURN
 
 class CommandUI(LineEdit):

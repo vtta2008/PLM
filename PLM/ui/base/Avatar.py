@@ -15,7 +15,7 @@ import os, shutil, sqlite3
 from PyQt5.QtWidgets            import QFileDialog
 
 # PLM
-from PLM.ui.framework import Size
+from PLM.api.Core import Size
 from PLM.api.Gui import Image, Pixmap
 from PLM.api.Widgets import Label, GroupBox, Button, VBoxLayout
 from PLM.cores                  import sqlUtils

@@ -12,7 +12,7 @@ from PyQt5.QtCore                       import pyqtProperty, pyqtSignal, pyqtSlo
 
 
 from PLM.api.Widgets import Widget
-from PLM.ui.framework import Time, Timer, Size, Point
+from PLM.api.Core import Time, Timer, Size, Point
 from PLM.api.Gui import Painter, Brush, Color, Pen, Polygon
 from PLM.configs                        import ASPEC_RATIO, ANTIALIAS, NO_PEN
 

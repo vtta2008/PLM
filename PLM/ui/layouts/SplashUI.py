@@ -25,7 +25,7 @@ from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, SP
 
 from PLM.api.Widgets import SplashScreen, MessageBox
 from PLM.api.Gui import Pixmap, Image, Font, FontMetrics, Palette, Painter, Pen
-from PLM.ui.framework import Timer, Rect
+from PLM.api.Core import Timer, Rect
 
 
 class SplashUI(SplashScreen):

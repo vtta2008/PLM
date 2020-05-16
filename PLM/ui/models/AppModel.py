@@ -96,25 +96,9 @@ class AppModel(Application):
         self.splash                     = SplashUI(self)
         self.splash.start()
 
-        worker                          = Worker(self.runConfigs)
-        self.threadManager.globalInstance().start(worker)
-
-        # self.iconInfo                   = self.splash.iconInfo
-        # self.appInfo                    = self.splash.appInfo
-        # self.urlInfo                    = self.splash.urlInfo
-        # self.dirInfo                    = self.splash.dirInfo
-        # self.pthInfo                    = self.splash.pthInfo
-        # self.plmInfo                    = self.splash.plmInfo
-        # self.deviceInfo                 = self.splash.deviceInfo
-        # self.pythonInfo                 = self.splash.pythonInfo
-        # self.avatarInfo                 = self.splash.avatarInfo
-        # self.logoInfo                   = self.splash.logoInfo
-        # self.imageInfo                  = self.splash.imageInfo
-        # self.envInfo                    = self.splash.envInfo
-        # self.serverInfo                 = self.splash.serverInfo
-        # self.formatInfo                 = self.splash.formatInfo
-        # self.fontInfo                   = self.splash.fontInfo
-
+        # worker                          = Worker(self.runConfigs)
+        # self.threadManager.globalInstance().start(worker)
+        self.runConfigs()
         self.database                   = sqlUtils()
 
     def sys_message(self, parent=None, title="auto", level="auto", message="test message", btn='ok', flag=None):
@@ -205,25 +189,25 @@ class AppModel(Application):
 
         if cmdData.code == 'os.startfile':
             func = os.startfile
-            arg = cmdData.value
+            arg = cmdData.value or cmdData['value']
         elif cmdData.code == 'os.system':
             func = os.system
-            arg = cmdData.value
+            arg = cmdData.value or cmdData['value']
         elif cmdData.code == 'showUI':
             func = self.showUI
-            arg = cmdData.key
+            arg = cmdData.key or cmdData['value']
         elif cmdData.code == 'openURL':
             func = self.openURL
-            arg = cmdData.value
+            arg = cmdData.value or cmdData['value']
         elif cmdData.code == 'shortcut':
             func = self.shortcut
-            arg = cmdData.value
+            arg = cmdData.value or cmdData['value']
         elif cmdData.code == 'appEvent':
             func = self.appEvent
-            arg = cmdData.key
+            arg = cmdData.key or cmdData['value']
         elif cmdData.code == 'stylesheet':
             func = self.changeStyleSheet
-            arg = cmdData.value
+            arg = cmdData.value or cmdData['value']
         else:
             if cmdData.value == 'CleanPyc':
                 func = clean_file_ext

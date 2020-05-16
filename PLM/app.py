@@ -28,8 +28,6 @@ class PLM(AppModel):
     def __init__(self):
         AppModel.__init__(self)
 
-        print(1)
-
         self.layoutManager              = LayoutManager(self.threadManager, self)
         self.layoutManager.registLayout(self.browser)
         self.layoutManager.buildLayouts()

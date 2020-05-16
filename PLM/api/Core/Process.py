@@ -8,6 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+import os
 from PLM import __copyright__
 from .io_core import QProcess
 

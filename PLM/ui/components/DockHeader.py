@@ -34,7 +34,7 @@ class MidTabDock(BaseDock):
         super(MidTabDock, self).__init__(parent)
 
         self.buttonManager              = ButtonManager(self.parent)
-        self.tabs                       = MidTab(self.buttonManager, self.parent)
+        self.tabs                       = MidTab(self.buttonManager, self)
         self.setWidget(self.tabs)
 
 

@@ -12,10 +12,11 @@ Description:
 
 
 from .Loggers                   import Loggers
-from PLM.cores.Handlers import EnvHandler
+from .Handlers                  import EnvHandler, FileHandler
 from .data                      import sqlUtils, PresetDB
 from .StyleSheet                import StyleSheet
 from .ThreadManager             import ThreadManager
+from .app_settings              import AppSettings
 
 
 # -------------------------------------------------------------------------------------------------------------

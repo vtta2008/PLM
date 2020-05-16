@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from PLM                                    import __copyright__
 from PLM.api.Widgets.io_widgets             import QToolBar
-
+from PLM.cores                              import AppSettings
 
 class ToolBar(QToolBar):
 
@@ -24,6 +24,7 @@ class ToolBar(QToolBar):
         super(ToolBar, self).__init__(parent)
 
         self.parent                         = parent
+        self.settings                       = AppSettings(self)
 
     def add_action(self, action):
         self.actions.append(action)
@@ -32,6 +33,15 @@ class ToolBar(QToolBar):
     def add_actions(self, actions):
         for action in actions:
             self.add_action(action)
+
+    def setValue(self, key, value):
+        return self.settings.initSetValue(key, value, self.key)
+
+    def getValue(self, key, decode=None):
+        if decode is None:
+            return self.settings.initValue(key, self.key)
+        else:
+            return self.settings.initValue(key, self.key, decode)
 
     @property
     def copyright(self):
