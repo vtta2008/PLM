@@ -50,42 +50,6 @@ def batch_obj_properties_setting(listObj, mode):
         else:
             print('Could not find the specific path: %s' % obj)
 
-def install_py_packages(name):
-    """
-    Install python package via command prompt
-    :param name: name of component
-    :return:
-    """
-    # print('Using pip to install %s' % name)
-    if os.path.exists(name):
-        subprocess.Popen('python %s install' % name)
-    else:
-        subprocess.Popen('python -m pip install %s' % name, shell=True).wait()
-
-def install_require_package(package=__pkgsReq__):
-    try:
-        import package
-    except ImportError as err:
-        print("installing {0}".format(package))
-        command = "start python -m pip install {0}".format(package)
-        p = subprocess.Popen(command, stdout=subprocess.PIPE, shell=True)
-        (output, err) = p.communicate()
-        status = p.wait()
-        print("Command output: {0}".format(output))
-
-def uninstall_all_required_package():
-    for pkg in __pkgsReq__:
-        try:
-            subprocess.Popen("python -m pip uninstall %s" % pkg)
-        except FileNotFoundError:
-            subprocess.Popen("pip uninstall %s" % pkg)
-            __pkgsReq__.remove(pkg)
-
-    if len(__pkgsReq__)==0:
-        return True
-    else:
-        return False
-
 # -------------------------------------------------------------------------------------------------------------
 """ Command Prompt """
 
@@ -113,6 +77,24 @@ def run_cmd(pth):
 def open_cmd():
     return os.system("start /wait cmd")
 
+
+def install_pyPackage(name=None, version=None):
+
+    if name:
+        if not version:
+            subprocess.Popen('python -m pip install {0} --user --upgrade'.format(name), shell=True).wait()
+        else:
+            subprocess.Popen('python -m pip install {0}={1} --user'.format(name, version), shell=True).wait()
+    else:
+        print("Cannot find package name: {0}".format(name))
+
+
+def uninstall_pyPackage(name=None):
+
+    if name:
+        subprocess.Popen('python -m pip uninstall {0}'.format(name), shell=True).wait()
+    else:
+        print("Cannot find package name: {0}".format(name))
 
 # -------------------------------------------------------------------------------------------------------------
 """ PC performance """
@@ -156,6 +138,8 @@ def get_disk_free():
 def get_disk_useage():
     disk = disk_usage('/')
     return disk.percent
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

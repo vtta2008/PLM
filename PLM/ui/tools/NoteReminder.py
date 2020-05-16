@@ -12,7 +12,6 @@ Description:
 """ Import """
 
 # Python
-import sys
 
 # PyQt5
 from PyQt5.QtCore                   import QFile, QRegExp, QTextCodec, QTextStream
@@ -20,10 +19,10 @@ from PyQt5.QtWidgets                import (QAction, QApplication, QComboBox, QD
                                             QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
 
 # Plm
-from PLM.commons.Widgets.GridLayout import GridLayout
-from PLM.commons.Widgets.Label      import Label
-from PLM.commons.Widgets.Widget     import Widget
-from PLM.commons.Gui                import AppIcon
+from PLM.ui.framework.Widgets import GridLayout
+from PLM.ui.framework.Widgets import Label
+from PLM.ui.framework.Widgets import Widget
+from PLM.ui.framework.Gui import AppIcon
 
 
 def codec_name(codec):

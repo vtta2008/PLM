@@ -11,7 +11,7 @@ Description:
 from __future__ import absolute_import, unicode_literals
 
 from PyQt5.QtGui                import QIntValidator
-from PLM.commons.Widgets        import GroupGrid, LineEdit, Label
+from PLM.ui.framework.Widgets import GroupGrid, LineEdit, Label
 from .Avatar                    import InfoPicture
 
 class BaseInfo(GroupGrid):

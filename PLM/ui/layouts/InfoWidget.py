@@ -10,8 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 from PLM.configs            import (SiPoMin, PLM_ABOUT, CODEOFCONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCES, VERSION)
-from PLM.commons.Widgets    import Widget, GridLayout, Label, Button
-from PLM.commons.Gui             import AppIcon
+from PLM.ui.framework.Widgets import Widget, GridLayout, Label, Button
+from PLM.ui.framework.Gui import AppIcon
 
 class InfoWidget(Widget):
 

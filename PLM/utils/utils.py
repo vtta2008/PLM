@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # Python
-import os, sys, winshell, yaml, json, re
+import os, winshell, yaml, json, re
 
 from PIL                import Image
 from functools          import partial
@@ -22,7 +22,7 @@ from PyQt5.QtCore       import pyqtSignal, pyqtSlot
 
 # PLM
 from PLM                import __envKey__
-from PLM.commons.Core   import EventLoop, Timer
+from PLM.ui.framework import EventLoop, Timer
 from PLM.cores.Errors   import EnsureValueError
 
 from .paths             import get_file_path

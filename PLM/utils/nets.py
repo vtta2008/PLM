@@ -12,7 +12,7 @@ Description:
 
 from urllib                     import parse
 from cgi                        import parse_header
-from PLM.commons.Core           import Url, FileInfo
+from PLM.ui.framework import Url, FileInfo
 
 
 def filenameFromHeader(header):

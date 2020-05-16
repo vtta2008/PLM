@@ -8,14 +8,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import globalSetting
-""" Import """
-
-# PyQt5
-from PyQt5.QtCore                            import pyqtSignal, pyqtSlot
-
-# PLM
-from PLM.commons.damg                        import DAMG, DAMGDICT
+from PLM import globals, Signal, Slot
+from PLM.ui.framework.damg import DAMG, DAMGDICT
 from PLM.cores                               import Loggers
 
 # -------------------------------------------------------------------------------------------------------------
@@ -28,13 +22,13 @@ class BaseSignal(DAMG):
 
     _emitable                                = False
 
-    commandSig                               = pyqtSignal(str, name='command')
-    loginChangedSig                          = pyqtSignal(bool, name='loginChanged')
-    updateAvatarSig                          = pyqtSignal(str, name='updateAvatar')
+    commandSig                               = Signal(str, name='command')
+    loginChangedSig                          = Signal(bool, name='loginChanged')
+    updateAvatarSig                          = Signal(str, name='updateAvatar')
 
-    commandSlot                              = pyqtSlot(str, name='command')
-    loginChangedSlot                         = pyqtSlot(bool, name='loginChanged')
-    updateAvatarSlot                         = pyqtSlot(str, name='updateAvatar')
+    commandSlot                              = Slot(str, name='command')
+    loginChangedSlot                         = Slot(bool, name='loginChanged')
+    updateAvatarSlot                         = Slot(str, name='updateAvatar')
 
     _signals                                 = DAMGDICT()
     _slots                                   = DAMGDICT()
@@ -66,12 +60,12 @@ class BaseSignal(DAMG):
         self._slots.update()
 
     def getSignal(self, key):
-        if globalSetting.printSignalReceive:
+        if globals.printSignalReceive:
             self.logger.info('{0} get signal: {1}'.format(self.parent.key, key))
         return self.signals.get(key)
 
     def getSlot(self, key):
-        if globalSetting.tracks.getSlot:
+        if globals.tracks.getSlot:
             self.logger.info('{0} get slot: {1}'.format(self.parent.key, key))
         return self.slots.get(key)
 
@@ -80,12 +74,12 @@ class BaseSignal(DAMG):
             signal                           = self.getSignal(key)
             signal.emit(arg)
         else:
-            if globalSetting.emittable:
+            if globals.emittable:
                 self.logger.info('EmittableError: {0} is not allowed to emit'.format(self.key))
             return
 
     def connect(self, key, target):
-        if globalSetting.autoChangeEmittable:
+        if globals.autoChangeEmittable:
             self._emitable                   = True
         else:
             self.logger.info('SignalConnectArror: {0} is not allowed to connect'.format(self.key))

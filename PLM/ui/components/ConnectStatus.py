@@ -9,7 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import globalSetting
+from PLM import globals
 """ Import """
 
 # Python
@@ -17,8 +17,8 @@ import requests, sys
 
 # PLM
 from PLM.configs                            import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
-from PLM.commons.Widgets                    import GroupGrid, Label, MessageBox
-from PLM.commons.Core                       import Timer
+from PLM.ui.framework.Widgets import GroupGrid, Label, MessageBox
+from PLM.ui.framework import Timer
 from PLM.commons                            import DAMGLIST
 from PLM.ui.base                            import Conection
 
@@ -68,7 +68,7 @@ class ConnectStatus(GroupGrid):
         try:
             r = requests.get(__localServer__)
         except requests.exceptions.ConnectionError:
-            if not globalSetting.allowLocalMode:
+            if not globals.allowLocalMode:
                 MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                 sys.exit()
             else:
@@ -119,7 +119,7 @@ class ConnectStatus(GroupGrid):
             try:
                 r                       = requests.get(__localServer__)
             except Exception:
-                if not globalSetting.allowLocalMode:
+                if not globals.allowLocalMode:
                     MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                     sys.exit()
                 else:

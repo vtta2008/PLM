@@ -18,12 +18,12 @@ from PyQt5.QtWidgets                    import QTextEdit
 
 # PLM
 from PLM.configs                        import JSON_DIR
-from PLM.commons.Widgets.Button         import Button
-from PLM.commons.Widgets.Label          import Label
-from PLM.commons.Widgets.LineEdit       import LineEdit
-from PLM.commons.Widgets.GridLayout     import GridLayout
-from PLM.commons.Widgets.Widget         import Widget
-from PLM.commons.Gui                    import AppIcon
+from PLM.ui.framework.Widgets import Button
+from PLM.ui.framework.Widgets import Label
+from PLM.ui.framework.Widgets import LineEdit
+from PLM.ui.framework.Widgets import GridLayout
+from PLM.ui.framework.Widgets import Widget
+from PLM.ui.framework.Gui import AppIcon
 
 class EnglishDictionary(Widget):
 

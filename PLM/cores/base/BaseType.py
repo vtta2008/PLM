@@ -13,7 +13,7 @@ Description:
 from PyQt5.QtCore               import pyqtSignal
 
 from PLM.commons                import DAMG, DAMGDICT
-from PLM.commons.Core           import Date, Time, Timer
+from PLM.ui.framework import Date, Time, Timer
 
 
 class BaseType(DAMG):

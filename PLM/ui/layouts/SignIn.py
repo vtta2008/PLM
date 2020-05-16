@@ -20,9 +20,9 @@ from functools                  import partial
 # PLM
 from PLM.configs                import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
 from PLM.plugins.SignalManager import SignalManager
-from PLM.commons.Widgets        import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label,
-                                        Label, MessageBox, GroupGrid, )
-from PLM.commons.Gui            import AppIcon
+from PLM.ui.framework.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label,
+                                      Label, MessageBox, GroupGrid, )
+from PLM.ui.framework.Gui import AppIcon
 from PLM.utils                  import bool2str
 from PLM.cores.sqls.sqlUtils    import sqlUtils
 

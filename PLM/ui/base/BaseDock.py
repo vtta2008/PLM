@@ -11,7 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from PLM.commons.Widgets                import DockWidget
+from PLM.ui.framework.Widgets import DockWidget
 from PLM.configs                        import FRAMELESS, dockAll
 
 class BaseDock(DockWidget):

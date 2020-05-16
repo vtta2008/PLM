@@ -23,9 +23,9 @@ from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, SP
                                                 splashImagePth, colorLibs, ANTIALIAS, TRANSPARENT, NO_PEN, AUTO_COLOR,
                                                 DAMG_LOGO_DIR, TEXT_NORMAL)
 
-from PLM.commons.Widgets                import SplashScreen, MessageBox
-from PLM.commons.Gui                    import Pixmap, Image, Font, FontMetrics, Palette, Painter, Pen
-from PLM.commons.Core                   import Timer, Rect
+from PLM.ui.framework.Widgets import SplashScreen, MessageBox
+from PLM.ui.framework.Gui import Pixmap, Image, Font, FontMetrics, Palette, Painter, Pen
+from PLM.ui.framework import Timer, Rect
 
 
 class SplashUI(SplashScreen):

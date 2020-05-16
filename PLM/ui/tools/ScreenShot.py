@@ -13,7 +13,6 @@ Description:
 """ Import """
 
 # Python
-import sys
 
 # PyQt5
 from PyQt5.QtCore               import QDir, QTimer
@@ -22,12 +21,12 @@ from PyQt5.QtWidgets            import (QFileDialog, QApplication, QGroupBox, QS
 
 # PLM
 from PLM.configs                    import ASPEC_RATIO, SMOOTH_TRANS
-from PLM.commons.Widgets.GridLayout import GridLayout
-from PLM.commons.Widgets.Button     import Button
-from PLM.commons.Widgets.Label      import Label
-from PLM.commons.Widgets.Widget     import Widget
-from PLM.commons.Widgets.BoxLayout  import HBoxLayout
-from PLM.commons.Gui                import AppIcon
+from PLM.ui.framework.Widgets import GridLayout
+from PLM.ui.framework.Widgets import Button
+from PLM.ui.framework.Widgets import Label
+from PLM.ui.framework.Widgets import Widget
+from PLM.ui.framework.Widgets import HBoxLayout
+from PLM.ui.framework.Gui import AppIcon
 
 class ScreenShot(Widget):
 

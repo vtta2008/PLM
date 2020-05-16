@@ -12,8 +12,8 @@ Description:
 """ Import """
 
 from PLM.commons                    import DAMGLIST
-from PLM.commons.Gui                import AppIcon
-from PLM.commons.Widgets            import TabWidget, VBoxLayout
+from PLM.ui.framework.Gui import AppIcon
+from PLM.ui.framework.Widgets import TabWidget, VBoxLayout
 from PLM.ui.components.BotTab1      import BotTab1
 from PLM.ui.components.BotTab2      import BotTab2
 

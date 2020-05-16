@@ -18,7 +18,7 @@ from playsound                          import playsound
 # PLM
 from PLM.cores.base                     import BaseType
 from PLM.configs                        import SOUND_DIR, ORG_DIR
-from PLM.commons.Core                   import DateTime
+from PLM.ui.framework import DateTime
 
 # -------------------------------------------------------------------------------------------------------------
 """ Organisation class """

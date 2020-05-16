@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM.commons.Widgets import GridLayout, GroupBox, LineEdit, Button, Label
+from PLM.ui.framework.Widgets import GridLayout, GroupBox, LineEdit, Button, Label
 
 class Location(GroupBox):
 

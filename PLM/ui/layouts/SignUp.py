@@ -25,9 +25,9 @@ from PLM.configs            import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_
 from PLM.utils              import (check_blank, check_match, get_avatar_image, getToken, getUnix, getTime, getDate,
                                     get_local_pc_info, get_user_location)
 from PLM.plugins.SignalManager import SignalManager
-from PLM.commons.Widgets    import (Widget, GridLayout, Label, Button, LineEdit, ComboBox, MessageBox, CheckBox,
-                                    GroupGrid)
-from PLM.commons.Gui        import AppIcon
+from PLM.ui.framework.Widgets import (Widget, GridLayout, Label, Button, LineEdit, ComboBox, MessageBox, CheckBox,
+                                      GroupGrid)
+from PLM.ui.framework.Gui import AppIcon
 
 
 # -------------------------------------------------------------------------------------------------------------

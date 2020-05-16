@@ -14,7 +14,7 @@ Description:
 # Python
 import sys
 
-from PLM.commons.Widgets                import MessageBox, ProgressBar
+from PLM.ui.framework.Widgets import MessageBox, ProgressBar
 from PLM.configs                        import ERROR_LAYOUT_COMPONENT
 from PLM.cores                          import StyleSheet
 

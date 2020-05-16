@@ -10,7 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-from PLM import globalSetting
+from PLM import globals
 
 # Python
 import os, sys, requests
@@ -23,8 +23,8 @@ from PLM.configs                        import (__version__, __appname__, __orga
                                                 ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
                                                 ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
                                                 ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath, ConfigFonts, )
-from PLM.commons.Widgets                import Application, MessageBox
-from PLM.commons.Gui                    import LogoIcon
+from PLM.ui.framework.Widgets import Application, MessageBox
+from PLM.ui.framework.Gui import LogoIcon
 
 from PLM.utils                          import clean_file_ext
 from PLM.ui.layouts                     import SplashUI
@@ -87,7 +87,7 @@ class AppModel(Application):
         serverReady                     = self.checkConnectServer()
 
         if not serverReady:
-            if not globalSetting.allowLocalMode:
+            if not globals.allowLocalMode:
                 print(SERVER_CONNECT_FAIL)
                 self.sys_message(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', None)
                 sys.exit()
@@ -172,7 +172,7 @@ class AppModel(Application):
         try:
             r = requests.get(self._server, verify=self.getVerify(), headers=self.getHeaders(), cookies=self.getCookies())
         except Exception:
-            if not globalSetting.modes.allowLocalMode:
+            if not globals.modes.allowLocalMode:
                 self.splash.finish(self.sys_message(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', STAY_ON_TOP))
                 sys.exit()
             else:
@@ -333,16 +333,16 @@ class AppModel(Application):
         self.exit()
 
     def setRecieveSignal(self, bool):
-        globalSetting.recieveSignal = bool
+        globals.recieveSignal = bool
 
     def setBlockSignal(self, bool):
-        globalSetting.blockSignal = bool
+        globals.blockSignal = bool
 
     def setTrackCommand(self, bool):
-        globalSetting.command = bool
+        globals.command = bool
 
     def setRegistLayout(self, bool):
-        globalSetting.registLayout = bool
+        globals.registLayout = bool
 
     def runConfigs(self):
 
@@ -402,7 +402,7 @@ class AppModel(Application):
             if not info:
                 check = False
 
-        globalSetting.setCfgAll(check)
+        globals.setCfgAll(check)
 
     @property
     def login(self):

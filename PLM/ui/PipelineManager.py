@@ -11,8 +11,8 @@ Description:
 # PLM
 from PLM.configs                        import __homepage__, __appname__, dockT, dockB
 from PLM.commons                        import DAMGDICT
-from PLM.commons.Widgets                import MainWindow, Widget, GridLayout
-from PLM.commons.Gui                    import LogoIcon
+from PLM.ui.framework.Widgets import MainWindow, Widget, GridLayout
+from PLM.ui.framework.Gui import LogoIcon
 from .components                        import (Footer, MainStatusBar, MenubarDock, ToolBarDock, NetworkStatusDock,
                                                 BotTabDock, NotificationDock, MidTabDock)
 from .models.ButtonManager              import ButtonManager

@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.commons.Widgets    import Widget, GridLayout, CheckBox
+from PLM.ui.framework.Widgets import Widget, GridLayout, CheckBox
 from PLM.commons            import DAMGDICT, DAMGLIST
 from PLM.utils              import str2bool
 

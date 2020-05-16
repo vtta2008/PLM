@@ -19,11 +19,11 @@ from PyQt5.QtCore                               import Qt
 
 # PLM
 from PLM.commons                                import DAMGLIST
-from PLM.commons.Widgets.LineEdit               import LineEdit
-from PLM.commons.Widgets.GridLayout             import GridLayout
-from PLM.commons.Widgets.Widget                 import Widget
-from PLM.commons.Widgets.Button                 import ToolButton
-from PLM.commons.Gui                            import AppIcon
+from PLM.ui.framework.Widgets import LineEdit
+from PLM.ui.framework.Widgets import GridLayout
+from PLM.ui.framework.Widgets import Widget
+from PLM.ui.framework.Widgets import ToolButton
+from PLM.ui.framework.Gui import AppIcon
 
 
 class Calculator(Widget):

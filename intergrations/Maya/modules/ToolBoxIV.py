@@ -48,9 +48,9 @@ logger.setLevel(logging.DEBUG)
 # -------------------------------------------------------------------------------------------------------------
 # While Qt.py lets us abstract the actual Qt library, there are a few things it cannot do yet
 # and a few support libraries we need that we have to import manually.
-if Qt.__binding__ == 'PySide':
+if Qt.__qtBinding__ == 'PySide':
     logger.debug('Using PySide with shiboken')
-elif Qt.__binding__.startswith('PyQt'):
+elif Qt.__qtBinding__.startswith('PyQt'):
     logger.debug('Using PyQt with sip')
 else:
     logger.debug('Using PySide2 with shiboken2')

@@ -19,9 +19,9 @@ from math import ceil
 from PLM.configs                            import (ERROR_APPLICATION, FRAMELESS, SPLASHSCREEN, TRANSPARENT, TEXT_NORMAL,
                                                     colorLibs, ANTIALIAS, DAMG_LOGO_DIR, NO_PEN, ERROR_LAYOUT_COMPONENT,
                                                     )
-from PLM.commons.Widgets                    import SplashScreen, MessageBox, ProgressBar
-from PLM.commons.Gui                        import Font, Pixmap, Palette, Image, Pen, Painter, FontMetrics
-from PLM.commons.Core                       import Timer
+from PLM.ui.framework.Widgets import SplashScreen, MessageBox, ProgressBar
+from PLM.ui.framework.Gui import Font, Palette, Image, Pen, Painter, FontMetrics
+from PLM.ui.framework import Timer
 from PLM.cores                              import Loggers, StyleSheet
 
 

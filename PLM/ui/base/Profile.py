@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.commons.Widgets import GroupGrid, LineEdit, Button, Label
+from PLM.ui.framework.Widgets import GroupGrid, LineEdit, Button, Label
 
 class Profile(GroupGrid):
 

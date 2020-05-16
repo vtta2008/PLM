@@ -17,7 +17,7 @@ import sqlite3 as lite
 
 # PLM
 from PLM.configs                    import LOCAL_DB, DB_ATTRIBUTE_TYPE
-from PLM.commons.Core               import Timer, Date
+from PLM.ui.framework import Timer, Date
 from PLM.commons                    import DAMG, DAMGLIST, DAMGDICT
 
 

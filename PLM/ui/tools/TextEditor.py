@@ -25,11 +25,9 @@ from PyQt5.QtWidgets            import (QAction, QActionGroup, QApplication, QCo
 
 # PLM
 from PLM.cores                          import Loggers
-from PLM.commons.Widgets.Widget         import Widget
-from PLM.commons.Widgets.MainWindow     import MainWindow
-from PLM.commons.Gui                    import AppIcon
-
-from PLM.ui.rcs                 import TextEditor_rc
+from PLM.ui.framework.Widgets import Widget
+from PLM.ui.framework.Widgets import MainWindow
+from PLM.ui.framework.Gui import AppIcon
 
 if sys.platform.startswith('darwin'):
     rsrcPath = ":/images/mac"

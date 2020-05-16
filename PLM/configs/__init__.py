@@ -10,19 +10,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 # Python
-import os
-import re
-import sys
-import subprocess
-import platform
-import pkg_resources
-import winshell
-import socket
-import uuid
+import os, subprocess, sys, re, platform, pkg_resources, winshell, socket, uuid, json, yaml
 
 # PLM
-from PLM                            import globalSetting, ROOT, ROOT_APP, Cfg
-
+from PLM                            import globals, ROOT, ROOT_APP
 from .metadatas                     import (__appname__, __organizationName__, __localServer__, __globalServer__,
                                             __homepage__, __plmWiki__, __google__, __googleNZ__, __googleVN__,
                                             __plmWiki__, __localServer__, __pkgsReq__, __homepage__, __appname__,
@@ -161,7 +152,7 @@ INTERGRATIONS_DIR   = os.path.join(ROOT_APP, 'intergrations').replace('\\', '/')
 # -------------------------------------------------------------------------------------------------------------
 ''' common '''
 
-COMMONS_DIR         = os.path.join(ROOT, 'commons').replace('\\', '/')
+COMMONS_DIR         = os.path.join(ROOT, 'api').replace('\\', '/')
 CORE_DIR            = os.path.join(COMMONS_DIR, 'Core').replace('\\', '/')
 DAMG_DIR            = os.path.join(COMMONS_DIR, 'damg').replace('\\', '/')
 GUI_DIR             = os.path.join(COMMONS_DIR, 'Gui').replace('\\', '/')
@@ -1017,25 +1008,6 @@ class ColorLibs(dict):
 
 colorLibs                           = ColorLibs()
 
-
-cfgData = {
-    'icon': iconCfg,
-    'apps': appsCfg,
-    'url': urlCfg,
-    'dir': dirCfg,
-    'pth': pthCfg,
-    'plm': plmCfg,
-    'logo': logoCfg,
-    'pc': pcCfg,
-    'py': pythonCfg,
-    'avatar': avatarCfg,
-    'img': imageCfg,
-    'env': envVarCfg,
-    'server': serverCfg,
-    'fmt': fmtCfg,
-    'font': fontCfg,
-}
-
 iconMissing                         = []
 toolTips                            = {}
 statusTips                          = {}
@@ -1063,6 +1035,51 @@ LINKS               = read_file('LINKS')
 REFERENCES          = read_file('REFERENCES')
 QUESTIONS           = read_file('QUESTION')
 VERSION             = read_file('VERSION')
+
+
+class Cfg(dict):
+
+    key                             = 'ConfigBase'
+    _filePath                       = None
+
+    def __init__(self):
+        dict.__init__(self)
+
+        self.update()
+
+    def save_data(self):
+        if not self.filePath:
+            return
+
+        if os.path.exists(self.filePath):
+            try:
+                os.remove(self.filePath)
+            except FileNotFoundError:
+                pass
+
+        with open(self.filePath, 'w+') as f:
+            if globals.dataTypeSaving == 'json':
+                json.dump(self, f, indent=4)
+            elif globals.dataTypeSaving == 'yaml':
+                yaml.dump(self, f, default_flow_style=False)
+            else:
+                # will update more data type library later if need
+                pass
+        return True
+
+    def pprint(self):
+        return pprint.pprint(self)
+
+    def add(self, key, value):
+        self[key]                   = value
+
+    @property
+    def filePath(self):
+        return self._filePath
+
+    @filePath.setter
+    def filePath(self, val):
+        self._filePath              = val
 
 
 class ConfigPython(Cfg):
@@ -1150,12 +1167,12 @@ class ConfigPython(Cfg):
             # untubu
             self.check_package_required(self.utuRequires)
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printPythonInfo:
+        if globals.printCfgInfo:
+            if globals.printPythonInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.savePythonInfo:
+        if globals.saveCfgInfo:
+            if globals.savePythonInfo:
                 self.save_data()
 
     def check_package_required(self, pkgs):
@@ -1238,12 +1255,12 @@ class ConfigApps(Cfg):
                 name, _ = os.path.splitext(os.path.basename(lnk.lnk_filepath))
                 self[str(name)] = lnk.path
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printAppInfo:
+        if globals.printCfgInfo:
+            if globals.printAppInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.saveAppInfo:
+        if globals.saveCfgInfo:
+            if globals.saveAppInfo:
                 self.save_data()
 
 
@@ -1289,12 +1306,12 @@ class ConfigPath(Cfg):
         self.add('VAR_SCSS_PTH'     , VAR_SCSS_PTH)
         self.add('SETTING_FILEPTH'  , SETTING_FILEPTH)
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printPthInfo:
+        if globals.printCfgInfo:
+            if globals.printPthInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.savePthInfo:
+        if globals.saveCfgInfo:
+            if globals.savePthInfo:
                 self.save_data()
 
 
@@ -1410,12 +1427,12 @@ class ConfigDirectory(Cfg):
                     os.umask(original_umask)
                 os.chmod(path, mode)
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printDirInfo:
+        if globals.printCfgInfo:
+            if globals.printDirInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.saveDirInfo:
+        if globals.saveCfgInfo:
+            if globals.saveDirInfo:
                 self.save_data()
 
 
@@ -1431,12 +1448,12 @@ class ConfigAvatar(Cfg):
             for name in names:
                 self[name.split('.avatar')[0]] = os.path.join(root, name).replace('\\', '/')
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printAvatarInfo:
+        if globals.printCfgInfo:
+            if globals.printAvatarInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.saveAvatarInfo:
+        if globals.saveCfgInfo:
+            if globals.saveAvatarInfo:
                 self.save_data()
 
 
@@ -1462,12 +1479,12 @@ class ConfigLogo(Cfg):
         self.add('DAMGTEAM', damgLogos)
         self.add('PLM', plmLogos)
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printAvatarInfo:
+        if globals.printCfgInfo:
+            if globals.printAvatarInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.saveAvatarInfo:
+        if globals.saveCfgInfo:
+            if globals.saveAvatarInfo:
                 self.save_data()
 
 
@@ -1483,12 +1500,12 @@ class ConfigImage(Cfg):
             for name in names:
                 self.add(name.split('.node')[0], os.path.join(root, name).replace('\\', '/'))
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printImgInfo:
+        if globals.printCfgInfo:
+            if globals.printImgInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.saveImgInfo:
+        if globals.saveCfgInfo:
+            if globals.saveImgInfo:
                 self.save_data()
 
 
@@ -1510,12 +1527,12 @@ class ConfigIcon(Cfg):
             d = ds[i]
             self.add(k, self.get_icons(d))
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printIconInfo:
+        if globals.printCfgInfo:
+            if globals.printIconInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.saveIconInfo:
+        if globals.saveCfgInfo:
+            if globals.saveIconInfo:
                 self.save_data()
 
     def get_icons(self, dir):
@@ -1537,12 +1554,12 @@ class ConfigServer(Cfg):
         self.add('vanila'           , __localServer__)
         self.add('AWS'              , __globalServer__)
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printServerInfo:
+        if globals.printCfgInfo:
+            if globals.printServerInfo:
                 self.pprint(self)
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.saveServerInfo:
+        if globals.saveCfgInfo:
+            if globals.saveServerInfo:
                 self.save_data()
 
 
@@ -1556,20 +1573,20 @@ class ConfigEnvVar(Cfg):
         for k, v in os.environ.items():
             self[k]                     = v.replace('\\', '/')
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printEnvInfo:
+        if globals.printCfgInfo:
+            if globals.printEnvInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.saveEnvInfo:
+        if globals.saveCfgInfo:
+            if globals.saveEnvInfo:
                 self.save_data()
 
     def update(self):
         for k, v in os.environ.items():
             self[k]                     = v.replace('\\', '/')
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.saveEnvInfo:
+        if globals.saveCfgInfo:
+            if globals.saveEnvInfo:
                 self.save_data()
 
 
@@ -1590,12 +1607,12 @@ class ConfigUrl(Cfg):
         self.add('google vn'        , __googleVN__)
         self.add('google nz'        , __googleNZ__)
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printUrlInfo:
+        if globals.printCfgInfo:
+            if globals.printUrlInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.saveUrlInfo:
+        if globals.saveCfgInfo:
+            if globals.saveUrlInfo:
                 self.save_data()
 
 
@@ -1616,12 +1633,12 @@ class ConfigTypes(Cfg):
         self['CPUTYPE'] = CPUTYPE
         self['DRIVETYPE'] = DRIVETYPE
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printTypeInfo:
+        if globals.printCfgInfo:
+            if globals.printTypeInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.saveTypeInfo:
+        if globals.saveCfgInfo:
+            if globals.saveTypeInfo:
                 self.save_data()
 
 
@@ -1642,12 +1659,12 @@ class ConfigFormats(Cfg):
         self.add('dt datetTimeStamp' , datetTimeStamp)
         self.add('IMGEXT ext', IMGEXT)
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printFmtInfo:
+        if globals.printCfgInfo:
+            if globals.printFmtInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.saveFmtInfo:
+        if globals.saveCfgInfo:
+            if globals.saveFmtInfo:
                 self.save_data()
 
 
@@ -1682,12 +1699,12 @@ class ConfigFonts(Cfg):
             self[family]    = fontStyle
 
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printFontInfo:
+        if globals.printCfgInfo:
+            if globals.printFontInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.saveFontInfo:
+        if globals.saveCfgInfo:
+            if globals.saveFontInfo:
                 self.save_data()
 
 
@@ -1887,12 +1904,12 @@ class ConfigPipeline(Cfg):
                 statustip = statusTips[key]
                 self.add(key, CommandData(key, icon, tooltip, statustip, value, valueType, arg, code))
 
-        if globalSetting.printCfgInfo:
-            if globalSetting.printPlmInfo:
+        if globals.printCfgInfo:
+            if globals.printPlmInfo:
                 self.pprint()
 
-        if globalSetting.saveCfgInfo:
-            if globalSetting.savePlmInfo:
+        if globals.saveCfgInfo:
+            if globals.savePlmInfo:
                 self.save_data()
 
     def del_key(self, key):
@@ -1954,12 +1971,12 @@ if platform.system() == 'Windows':
             self['keyboard']    = self.keyboardInfo()
             self['mice']        = self.miceInfo()
 
-            if globalSetting.printCfgInfo:
-                if globalSetting.printPcInfo:
+            if globals.printCfgInfo:
+                if globals.printPcInfo:
                     self.pprint()
 
-            if globalSetting.saveCfgInfo:
-                if globalSetting.savePcInfo:
+            if globals.saveCfgInfo:
+                if globals.savePcInfo:
                     self.save_data()
 
         def osInfo(self, **info):

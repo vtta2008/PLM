@@ -15,7 +15,7 @@ import platform
 
 # PLM
 from PLM.commons                        import DAMG, DAMGDICT
-from PLM.commons.Core                   import TextStream, File, QssFile
+from PLM.ui.framework import TextStream, File, QssFile
 from PLM.configs                        import colorLibs
 from PLM.cores                          import Loggers
 from PLM.plugins                        import Qt
@@ -47,17 +47,17 @@ class StyleSheet(DAMG):
     def getStyleSheet(self, style):
         if style == 'dark':
             # self.logger.info("Loading darkstyle_rc")
-            from PLM.ui.rcs             import darkstyle_rc
+            pass
         else:
             if Qt.__binding__ == 'PyQt5':
                 # self.logger.info("Loading pyqt5_style_rc")
-                from PLM.ui.rcs         import pyqt5_style_rc
+                pass
             elif Qt.__binding__ == 'PySide2':
                 # self.logger.info("Loading pyside2_style_rc")
-                from PLM.ui.rcs         import pyside2_style_rc
+                pass
             else:
                 # self.logger.info("Loading pyqtgraph_style_rc")
-                from PLM.ui.rcs         import pyqtgraph_style_rc
+                pass
 
         self._filename                  = QssFile(style)
         self._filename.open(File.ReadOnly | File.Text)

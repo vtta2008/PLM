@@ -5,6 +5,7 @@ Script Name: PLM.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
+
     This script is master file of Pipeline Manager
 
 """
@@ -12,9 +13,9 @@ Description:
 """ import """
 
 # PLM
-from PLM.ui.models                      import AppModel
-from PLM.ui.LayoutManager               import LayoutManager
-from PLM.configs                        import SYSTRAY_UNAVAI, KEY_RELEASE
+from PLM.ui.models                         import AppModel
+from PLM.ui.LayoutManager                  import LayoutManager
+from PLM.configs                           import SYSTRAY_UNAVAI, KEY_RELEASE
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """

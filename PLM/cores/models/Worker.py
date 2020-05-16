@@ -19,7 +19,7 @@ from PyQt5.QtCore                           import pyqtSignal
 
 # PLM
 from PLM.commons                            import DAMG
-from PLM.commons.Core                       import Runnable
+from PLM.ui.framework import Runnable
 
 
 

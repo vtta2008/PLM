@@ -13,7 +13,7 @@ Description:
 
 
 # PLM
-from PLM.commons.Widgets                        import GroupBox, GridLayout, Widget, GroupGrid
+from PLM.ui.framework.Widgets import GroupBox, GridLayout, Widget, GroupGrid
 from PLM.ui.base                                import TaskInfo, TaskFilter
 from PLM.utils                                  import get_file_path
 from PLM.configs                                import TASK_DIR

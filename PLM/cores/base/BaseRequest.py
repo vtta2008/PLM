@@ -13,8 +13,8 @@ Description:
 import time
 
 from PLM.utils                              import is_url, format_bytes, bytes2str
-from PLM.commons.Network                    import NetworkRequest, NetworkReply, NetworkCookie, NetworkCookieJar
-from PLM.commons.Core                       import Url
+from PLM.ui.framework import NetworkRequest, NetworkReply, NetworkCookie, NetworkCookieJar
+from PLM.ui.framework import Url
 from PLM.cores.Loggers                      import Loggers
 
 

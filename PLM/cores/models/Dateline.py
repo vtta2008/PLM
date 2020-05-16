@@ -12,7 +12,7 @@ Description:
 
 # PLM
 from PLM.commons                    import DAMG
-from PLM.commons.Core               import Date, Time, DateTime
+from PLM.ui.framework import Date, Time, DateTime
 
 class DateLine(DAMG):
 

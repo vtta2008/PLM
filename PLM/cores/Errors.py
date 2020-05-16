@@ -12,7 +12,6 @@ Description:
 
 # PLM
 from PLM.commons                    import DAMGERROR
-from PLM.commons.Network            import NetworkReply
 
 
 class NodePropertyError(DAMGERROR): pass

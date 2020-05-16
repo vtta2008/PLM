@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.commons.Widgets    import GroupGrid, LineEdit, Button, Label, MessageBox
+from PLM.ui.framework.Widgets import GroupGrid, LineEdit, Button, Label, MessageBox
 from PLM.utils              import text_to_hex, check_match
 from PLM.configs            import PW_BLANK, PW_UNMATCH
 

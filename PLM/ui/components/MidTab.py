@@ -13,8 +13,8 @@ import requests
 # PLM
 from PLM.configs                import __localServer__
 from PLM.commons                import DAMGLIST
-from PLM.commons.Widgets        import TabWidget, VBoxLayout
-from PLM.commons.Gui            import AppIcon
+from PLM.ui.framework.Widgets import TabWidget, VBoxLayout
+from PLM.ui.framework.Gui import AppIcon
 from .MidTab1                   import MidTab1
 from .MidTab2                   import MidTab2
 from .MidTab3                   import MidTab3

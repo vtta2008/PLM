@@ -12,8 +12,8 @@ Description:
 import datetime
 
 from PLM.cores.models.Threads       import PcMonitor
-from PLM.commons.Widgets            import LCDNumber, GroupGrid, Label
-from PLM.commons.Core               import Timer
+from PLM.ui.framework.Widgets import LCDNumber, GroupGrid, Label
+from PLM.ui.framework import Timer
 
 
 class DigitalClock(LCDNumber):
