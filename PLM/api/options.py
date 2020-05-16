@@ -16,8 +16,6 @@ Description:
 # PLM
 from PLM import __copyright__
 
-if __name__ == '__main__':
-    pass
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

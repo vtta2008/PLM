@@ -376,7 +376,8 @@ IMPORTANT
        the __slots__ declaration.
 
     #. __slots__ are implemented at the class level by creating descriptors (Implementing Descriptors) for each variable
-       name. As a result, class attributes cannot be used to set default values for instance variables defined by __slots__; otherwise, the class attribute would overwrite the descriptor assignment.
+       name. As a result, class attributes cannot be used to set default values for instance variables defined by __slots__;
+       otherwise, the class attribute would overwrite the descriptor assignment.
 
     #. The action of a __slots__ declaration is not limited to the class where it is defined. __slots__ declared in
        parents are available in child classes. However, child subclasses will get a __dict__ and __weakref__ unless
@@ -420,6 +421,7 @@ IMPORTANT
 
     def __hash__(self):
         return hash((self.name, self.nick, self.color))
+
 
 .. note::
 

@@ -1,5 +1,5 @@
 PROJECT MANAGEMENT FUNDAMENTAL - HOW TO CONSTRUCT A PYTHON PROJECT
-==================================================================
+##################################################################
 
 Whether you are working on some machine learning/AI project, building web apps in Flask or just writing some quick
 Python script, it’s always useful to have some template for your project that satisfies all your needs, namely:
@@ -8,73 +8,137 @@ static code analysis setup, CI/CD tooling, Dockerization of your app and on top 
 here I bring you exactly that in this "Ultimate" all-purpose setup for your Python projects.
 
 Here is my repository with full source code and docs: https://github.com/MartinHeinz/python-project-blueprint
+
 Directory Structure
+-------------------
 
 When I was writing this kind of an article for Golang (here), I had a hard time figuring out ideal project structure,
 with Python however, it’s pretty simple:
 
+.. code-block:: python
+
+    |- blueprint  # Our source code - name of the application/module
+        |- app.py
+        |- __init__.py
+        |- __main__.py
+        |- resources
+    |- tests
+        |- conftest.py
+        |- context.py
+        |- __init__.py
+        |- test_app.py
+    |- .github  # GitHub Actions
+        |- workflows
+            |- build-test.yml
+            |- push.yml
+    |- Makefile
+    |- configure_project.sh
+    |- setup.cfg
+    |- pytest.ini
+    |- requirements.txt
+    |- dev.Dockerfile
+    |- prod.Dockerfile
+
 Let’s outline what we have here, starting from the top:
 
-blueprint - This is our source code directory, which should be named by your application or package you are working on.
-Inside we have the usual __init__.py file signifying that it's a Python package, next there is __main__.py which is
-used when we want to run our application directly with python -m blueprint. Last source file here is the app.py which
-is here really just for demonstration purposes. In real project instead of this app.py you would have few top level
-source files and more directories (internal packages). We will get to contents of these files a little later. Finally,
-we also have resources directory here, which is used for any static content your application might need, e.g. images,
-keystore, etc.
+    -   blueprint - This is our source code directory, which should be named by your application or package you are working on.
+        Inside we have the usual __init__.py file signifying that it's a Python package, next there is __main__.py which is
+        used when we want to run our application directly with python -m blueprint. Last source file here is the app.py which
+        is here really just for demonstration purposes. In real project instead of this app.py you would have few top level
+        source files and more directories (internal packages). We will get to contents of these files a little later. Finally,
+        we also have resources directory here, which is used for any static content your application might need, e.g. images,
+        keystore, etc.
 
-tests - In this directory resides our test suite. I'm not gonna go into too much detail here as we will dedicate whole
-section to testing, but just briefly:
+    -   tests - In this directory resides our test suite. I'm not gonna go into too much detail here as we will dedicate whole
+        section to testing, but just briefly:
 
-    test_app.py is a test file corresponding to app.py in source directory
+            #.  test_app.py is a test file corresponding to app.py in source directory
 
-    conftest.py is probably familiar to you if you ever used Pytest - it's a file used for specifying Pytest fixtures,
-    hooks or loading external plugins.
+            #.  conftest.py is probably familiar to you if you ever used Pytest - it's a file used for specifying Pytest
+                fixtures, hooks or loading external plugins.
 
-    context.py helps with imports of source code files from blueprint directory by manipulating class path. We will
-    see how that works in sec.
+            #.  context.py helps with imports of source code files from blueprint directory by manipulating class path.
+                We will see how that works in sec.
 
-.github - This is the last directory we have in this project. It holds configurations for GitHub Actions which we use
-for CI/CD. We have two files, first of them - build-test.yml is responsible for building, testing and linting our
-source code on every push. Second file - push.yml pushes our built application to GitHub Package Registry every
-time we create tag/release on GitHub. More on this in a separate blog post.
+    -   .github - This is the last directory we have in this project. It holds configurations for GitHub Actions which we use
+        for CI/CD. We have two files, first of them - build-test.yml is responsible for building, testing and linting our
+        source code on every push. Second file - push.yml pushes our built application to GitHub Package Registry every
+        time we create tag/release on GitHub. More on this in a separate blog post.
 
-Makefile - Apart from directories, we also have a few top-level files in our project, first of them - Makefile contains
-target that will help us automate commonly performed tasks like building, testing, linting or cleaning our project.
+    -   Makefile - Apart from directories, we also have a few top-level files in our project, first of them - Makefile contains
+        target that will help us automate commonly performed tasks like building, testing, linting or cleaning our project.
 
-configure_project.sh - This one is a convenience script that sets up a project for you. It essentially renames and
-substitutes dummy values in this project template for real values like name of your project or name of your package.
-Pretty handy, right?
+    -   configure_project.sh - This one is a convenience script that sets up a project for you. It essentially renames and
+        substitutes dummy values in this project template for real values like name of your project or name of your package.
+        Pretty handy, right?
 
 Rest of the files we have here are configuration files for all tools we will use in this project. Let’s jump over to
 the next section and explore what they do and what’s in them.
 
 Config Files
+------------
+
 One thing that can get pretty messy when setting up Python project is the config file soup that you will end up with
 when you use a bunch of tools like, pylint, coverage.py, flake8 and so on. Each of these tools would like to have its
 own file, usually something like .flake8 or .coveragerc, which creates lots of unnecessary clutter in the root of your
 project. To avoid this, I merged all these files into single one - setup.cfg:
 
+.. code-block:: BASH
+
+    [flake8]
+    exclude =
+        .git,
+        __pycache__,
+        .pytest_cache,
+        venv
+
+    ignore =
+        # Put Error/Style codes here e.g. H301
+
+    max-line-length = 120
+    max-complexity = 10
+
+    [bandit]
+    targets: blueprint
+
+    [coverage:run]
+    branch = True
+    omit =
+        */__main__.py
+        */tests/*
+        */venv/*
+
+    [coverage:report]
+    exclude_lines =
+        pragma: no cover
+        if __name__ == .__main__.:
+
+    [coverage:html]
+    directory = reports
+
+    [pylint]
+    ...  '# 100 lines of config'
+
 In case you are not familiar with all of the tools used here, I will give quick description:
 
-Flake8 — is a tool for enforcing code style in your projects — in other words — it’s linter similar to pylint, which we
-will use as well. Why use both? It’s true that they overlap, but both of them have some rules that the other doesn’t,
-so in my experience it’s worth to use them both.
+    -   Flake8 - is a tool for enforcing code style in your projects — in other words — it’s linter similar to pylint, which we
+        will use as well. Why use both? It’s true that they overlap, but both of them have some rules that the other doesn’t,
+        so in my experience it’s worth to use them both.
 
-Bandit — is a tool for finding common security issues in Python code. It works by creating AST (abstract syntax tree)
-from your code and running plugins against its nodes. Developers are generally not security experts and also all of us
-make mistakes here-and-there, so it’s always nice to have a tool that can spot at least some of those security mistakes
-for us.
+    -   Bandit - is a tool for finding common security issues in Python code. It works by creating AST (abstract syntax tree)
+        from your code and running plugins against its nodes. Developers are generally not security experts and also all of us
+        make mistakes here-and-there, so it’s always nice to have a tool that can spot at least some of those security mistakes
+        for us.
 
-Coverage.py — is a tool for measuring code coverage of Python programs. It gets triggered when we run our test suite
-with Pytest and generates coverage report from the test run. These reports can be in the form of terminal output, but
-also XML format which then can be consumed by CI tools.
+    -   Coverage.py - is a tool for measuring code coverage of Python programs. It gets triggered when we run our test suite
+        with Pytest and generates coverage report from the test run. These reports can be in the form of terminal output, but
+        also XML format which then can be consumed by CI tools.
 
 With that out of the way, let’s go over what we have in setup.cfg. For Flake8 we define exclusion patterns so that we
 don't lint code that we don't care about. Below that is an empty ignore section in case we need to ignore some rule
 globally. We also set max line length to 120, as keeping line length to 80 is in my opinion unreasonable with the size
 of today's screens. Final line sets McCabe complexity threshold to 10, if you are not familiar with cyclomatic
-complexity you can find out more here.
+complexity you can find out more `here <https://en.wikipedia.org/wiki/Cyclomatic_complexity>`_.
 
 Next up is Bandit, all we configure here is target directory, which is the name of our package. We do this so that we
 can avoid specifying targets on the command line.
@@ -95,6 +159,17 @@ We went through all the tools in setup.cfg but there is one more that cannot be 
 even though Pytest docs tell you that you can use setup.cfg, it's not exactly true... As per this issue, the option to
 use setup.cfg is being deprecated and there are some bugs like interpolation errors, that won't be fixed, therefore we
 will also need pytest.ini file for configuration of Pytest:
+
+.. code-block:: BASH
+
+    [pytest]
+    addopts = --color=yes --cov=blueprint --cov-report=xml --cov-report=term -ra
+    filterwarnings =
+    log_cli = 1
+    log_cli_level = INFO
+    log_cli_format = %(asctime)s [%(levelname)8s] %(message)s (%(filename)s:%(lineno)s)
+    log_cli_date_format = %Y-%m-%d %H:%M:%S
+
 
 The first thing we do here is set a bunch of command line arguments — we enable colors in terminal output, then we
 enable coverage reporting for blueprint directory, after that we enable both generations of XML and stdout ( term)
@@ -120,14 +195,33 @@ will explore those in a separate article where we will talk about CI/CD and depl
 files out already in GitHub repository here - https://github.com/MartinHeinz/python-project-blueprint/blob/master/dev.Dockerfile.
 
 Actual Source Code
+------------------
+
 We have done quite a lot without even mentioning the source code of our application, but I think it’s time to look at
 those few lines of code that are in the project skeleton:
+
+.. code-block:: python
+
+    '# app.py'
+    class Blueprint:
+
+        @staticmethod
+        def run():
+            print("Hello World...")
 
 Only actual source code in this blueprint is this one class with a static method. This is really on needed so that we
 can run something, get some output and test it. This also works as entrypoint to the whole application. In a real
 project, you could use the run() method to initialize your application or web server.
 
 So, how do we actually run this piece of code?
+
+.. code-block:: python
+
+    # __main__.py
+    from .app import Blueprint
+
+    if __name__ == '__main__':
+        Blueprint.run()
 
 This short snippet in a specially named file __main__.py is what we need in our project so that we can run the whole
 package using python -m blueprint. The nice thing about this file and it's contents is that it will only be run with
@@ -138,10 +232,26 @@ There’s one more special file in our package and that’s the __init__.py file
 it only to tell Python that the directory is a package. Here, however, we will use it to export classes, variables and
 functions from our package.
 
+.. code-block:: python
+
+    '# __init__.py'
+    from .app import Blueprint
+
+
 Without this one line above you wouldn’t be able to call Blueprint.run() from outside of this package. This way we can
 avoid people using internal parts of our code that should not be exposed.
 
 That’s all for the code of our package, but what about the tests? First, let’s look at the context.py
+
+.. code-block:: python
+
+    '# context.py'
+    import sys
+    import os
+    sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+    import blueprint  '# noqa # pylint: disable=unused-import, wrong-import-position'
+
 
 Normally when you use someone's package, then you import it like import blueprint or from blueprint import Blueprint,
 to imitate this in our tests and therefore make it as close as possible to real usage we use context.py file to import
@@ -152,8 +262,47 @@ named 'blueprint', so this one line is a little bit of insurance policy.
 
 Now, let’s see the example test:
 
+.. code-block:: python
+
+    '# test_app.py'
+    from .context import blueprint
+
+
+    def test_app(capsys, example_fixture):
+    '# pylint: disable=W0612,W0613'
+        blueprint.Blueprint.run()
+        captured = capsys.readouterr()
+
+        assert "Hello World..." in captured.out
+
+
+
 What we have here is just a single test that checks the standard output of Blueprint.run() using built-in Pytest fixture
 called capsys (capture system output). So, what happens when we run the test suite?
+
+.. code-block:: python
+
+    ~ $ pytest
+    =========================================================== test session starts ============================================================
+    collected 1 item
+
+    tests/test_app.py::test_app
+    -------------------------------------------------------------- live log setup --------------------------------------------------------------
+    2020-01-04 12:22:00 [    INFO] Setting Up Example Fixture... (conftest.py:9)
+    PASSED                                                                                                                               [100%]
+    ------------------------------------------------------------ live log teardown -------------------------------------------------------------
+    2020-01-04 12:22:00 [    INFO] Tearing Down Example Fixture... (conftest.py:11)
+
+
+    ----------- coverage: platform linux, python 3.7.5-final-0 -----------
+    Name                    Stmts   Miss Branch BrPart  Cover
+    ---------------------------------------------------------
+    blueprint/__init__.py       1      0      0      0   100%
+    blueprint/app.py            3      0      0      0   100%
+    ---------------------------------------------------------
+    TOTAL                       4      0      0      0   100%
+    Coverage XML written to file coverage.xml
+
 
 I trimmed a few lines from the output so that you can better see the relevant parts of it. What’s to note here? Well,
 our test passed! Other than that, we can see coverage report and we can also see that the report got written to
@@ -163,16 +312,57 @@ from conftest.py. What is that about?
 You might have noticed that apart from capsys fixture, we also used example_fixture in parameters of our small test.
 This fixture resides in conftest.py as should all custom fixtures we make:
 
+.. code-block:: python
+
+    '# conftest.py'
+    import logging
+    import pytest
+
+    LOGGER = logging.getLogger(__name__)
+
+
+    @pytest.fixture(scope='function')
+    def example_fixture():
+        LOGGER.info("Setting Up Example Fixture...")
+        yield
+        LOGGER.info("Tearing Down Example Fixture...")
+
 As the name implies, this really is just an example fixture. All it does is log one message, then it lets the test run
 and finally, it logs one more message. The nice thing about conftest.py file is that it gets automatically discovered by
 Pytest, so you don’t even need to import it to your test files. If you want to find out more about it, then you can
 check out my previous post about Pytest here or docs here.
 
 One Command for Everything
+--------------------------
 
 It would be quite laborious if we were to run each of our tools separately and had to remember their arguments, even
 though they are always the same. Also, it would be equally annoying if later we decided to put all these tools into
 CI/CD (next article!), right? So, let’s simplify things with Makefile:
+
+.. code-block:: BASH
+
+    MODULE := blueprint
+    BLUE='\033[0;34m'
+    NC='\033[0m' # No Color
+
+    run:
+        @python -m $(MODULE)
+
+    test:
+        @pytest
+
+    lint:
+        @echo "\n${BLUE}Running Pylint against source and test files...${NC}\n"
+        @pylint --rcfile=setup.cfg **/*.py
+        @echo "\n${BLUE}Running Flake8 against source and test files...${NC}\n"
+        @flake8
+        @echo "\n${BLUE}Running Bandit against source files...${NC}\n"
+        @bandit -r --ini setup.cfg
+
+    clean:
+        rm -rf .pytest_cache .coverage .pytest_cache coverage.xml
+
+    .PHONY: clean test
 
 In this Makefile we have 4 targets. First of them - run runs our application using __main__.py we created in the root
 of our source folder. Next, test just runs pytest. It's that simple thanks to all the configs in pytest.ini. The longest
@@ -183,6 +373,7 @@ which will be useful in CI/CD. Last target in this file is clean, which well... 
 files generated by previously mentioned tools.
 
 Conclusion
+----------
 
 In this article we’ve built project skeleton, that’s ready to be used for any kind of Python project you might be
 working on or thinking about, so if you want to play with or dig a little deeper, then check out the source code which
@@ -194,7 +385,4 @@ In the future, we will look into adding CI/CD into the mix with GitHub Actions a
 Dockerize our project and create both debuggable and optimized production ready Docker images and add some more code
 quality tooling using CodeClimate and SonarCloud.
 
-References
-==========
-Heinz, M. (2020, January 15). Ultimate setup for your next Python project.
-Retrieved from https://towardsdatascience.com/ultimate-setup-for-your-next-python-project-179bda8a7c2c
+
