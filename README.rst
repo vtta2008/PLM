@@ -1,7 +1,7 @@
 PIPELINE MANAGER (PLM)
 ######################
 
-.. sidebar:: DAMGTEAM PROFILE
+.. sidebar::
     :subtitle: PIPELINE MANAGER (PLM)
 
     :Name: Pipeline Manager
@@ -11,7 +11,7 @@ PIPELINE MANAGER (PLM)
     :Platforms: Windows (planned for cross-platform)
 
 
-.. sidebar:: DAMGTEAM PROFILE
+.. sidebar::
     :subtitle: VanilaServer (test server)
 
     :Name: VanilaServer
