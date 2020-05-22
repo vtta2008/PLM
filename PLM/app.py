@@ -12,10 +12,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
+from PLM.configs import SYSTRAY_UNAVAI, KEY_RELEASE
+from PLM.ui.LayoutManager import LayoutManager
 # PLM
-from PLM.ui.models                         import AppModel
-from PLM.ui.LayoutManager                  import LayoutManager
-from PLM.configs                           import SYSTRAY_UNAVAI, KEY_RELEASE
+from PLM.ui.models import AppModel
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """

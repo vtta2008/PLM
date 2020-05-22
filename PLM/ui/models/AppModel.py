@@ -87,10 +87,9 @@ class AppModel(Application):
         serverReady                     = self.checkConnectServer()
 
         if not serverReady:
-            if not globals.allowLocalMode:
-                print(SERVER_CONNECT_FAIL)
-                self.sys_message(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', None)
-                sys.exit()
+            print(SERVER_CONNECT_FAIL)
+            self.sys_message(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', None)
+            sys.exit()
 
         self.threadManager              = ThreadManager(self)
         self.splash                     = SplashUI(self)
