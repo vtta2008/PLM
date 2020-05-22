@@ -1,7 +1,7 @@
 PIPELINE MANAGER (PLM)
 ######################
 
-.. sidebar::
+.. sidebar:: APP
     :subtitle: PIPELINE MANAGER (PLM)
 
     :Name: Pipeline Manager
@@ -11,7 +11,7 @@ PIPELINE MANAGER (PLM)
     :Platforms: Windows (planned for cross-platform)
 
 
-.. sidebar::
+.. sidebar:: SERVER
     :subtitle: VanilaServer (test server)
 
     :Name: VanilaServer
