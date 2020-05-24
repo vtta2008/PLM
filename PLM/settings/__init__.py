@@ -11,7 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from .globalSettings        import GlobalSettings
 from .appSettings           import AppSettings
 from .registrySettings      import RegSettings
 

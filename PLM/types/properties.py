@@ -61,14 +61,14 @@ class DamgProperty(PropertyType):
             type                        = obj.__class__
 
         self.value                      = self.__get.__get__(obj, type)()
-        # glbData[self.__name__]          = self.value
+        glbData[self.__name__]          = self.value
         return self.value
 
     def __set__(self, obj, value):
         if obj is None:
             return self
         self.value                      = self.__set.__get__(obj)(value)
-        # glbData[self.__name__]          = self.value
+        glbData[self.__name__]          = self.value
         return self.value
 
     def __delete__(self, obj):

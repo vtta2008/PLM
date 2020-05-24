@@ -93,11 +93,24 @@ logoCfg                                 = create_path(CFG_DIR, 'logo.cfg')
 fontCfg                                 = create_path(CFG_DIR, 'fonts.cfg')
 settingCfg                              = create_path(CFG_DIR, 'settings.cfg')
 formatCfg                               = create_path(CFG_DIR, 'formats.cfg')
+uiKeyCfg                                = create_path(CFG_DIR, 'uiKey.cfg')
 
 APP_SETTING                             = create_path(SETTING_DIR, 'PLM.ini')
 USER_SETTING                            = create_path(SETTING_DIR, 'user.ini')
 FORMAT_SETTING                          = create_path(SETTING_DIR, 'format.ini')
 UNIX_SETTING                            = create_path(SETTING_DIR, 'unix.ini')
+
+
+factors                                 = ['Organisation', 'Project', 'Department', 'Team', 'Task', ]
+
+factorActs                              = ['New', 'Config', 'Edit', 'Remove']
+
+FACTOR_KEYS                             = []
+
+for f in factors:
+    FACTOR_KEYS.append(f)
+    for act in factorActs:
+        FACTOR_KEYS.append('{0} {1}'.format(act, f))
 
 
 class Cfg(dict):
@@ -329,8 +342,9 @@ class Pths(Cfg):
     splashImagePth                          = create_path(IMAGE_DIR, 'splash.png')
     fontCfg                                 = fontCfg
     serverCfg                               = create_path(CFG_DIR, 'server.cfg')
-    formatCfg                               = formatCfg
 
+    uiKeyCfg                                = uiKeyCfg
+    formatCfg                               = formatCfg
     settingCfg                              = settingCfg
 
     APP_SETTING                             = APP_SETTING
@@ -588,6 +602,173 @@ class Fmts(Cfg):
         super(Fmts, self).__init__()
 
         self.__dict__.update()
+
+
+class TrackKeys(Cfg):
+
+    key                                 = 'TrackKeys'
+    _filePath                           = None
+
+    pVERSION = dict(adobe=["CC 2017", "CC 2018", "CC 2019", "CC 2020", "CC 2021"],
+                    autodesk=["2017", "2018", "2019", "2020", "2021"],
+                    allegorithmic=[],
+                    foundry=["11.1v1", "11.2v1", "4.0v1", "4.1v1", "2.6v3", "4.6v1", "12.0v1",
+                             '3.5v2', '3.2v4', '2.6v3'],
+                    pixologic=["4R6", "4R7", "4R8", '2018', '2019', '2020', '2021'],
+                    sizefx=['16.5.439', '16.5.496', '17.5.425', '18.0.327'],
+                    office=['2017', "2018", "2019", "2020"],
+                    jetbrains=['2017.3.3', '2018.1', ],
+                    wonderUnit=[],
+                    anaconda=[], )
+
+    pPACKAGE = dict(
+        adobe=["Adobe Photoshop", "Adobe Illustrator", "Adobe Audition", "Adobe After Effects",
+               "Adobe Premiere Pro", "Adobe Media Encoder", ],
+        autodesk=["Autodesk Maya", "Autodesk Mudbox", "Maya", "Mudbox", "3ds Max", "AutoCAD"],
+        allegorithmic=['Substance Painter', 'Substance Designer'],
+        foundry=['Hiero', 'Mari', 'NukeStudio', 'NukeX', 'Katana', ],
+        pixologic=['ZBrush'],
+        sizefx=['Houdini FX', ],
+        office=['Word', 'Excel', 'PowerPoint', 'Wordpad'],
+        jetbrains=['JetBrains PyCharm', ],
+        wonderUnit=['Storyboarder', 'Krita (x64)', 'Krita (x32)'],
+        anaconda=['Spyder', 'QtDesigner', 'Git Bash']
+    )
+
+    windowApps = ['Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout',
+                  'Snipping Tool', ] + pPACKAGE['anaconda'] + pPACKAGE['office']
+
+    TOOL_UI_KEYS = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer',
+                    'NoteReminder', 'ScreenShot', 'TextEditor', ]
+
+    def __init__(self):
+        super(TrackKeys, self).__init__()
+
+        self.__dict__.update()
+
+    def generate_key_packages(self, *info):
+        keyPackage = []
+        for k in self.pPACKAGE:
+            for name in self.pPACKAGE[k]:
+                if len(self.pVERSION[k]) == 0:
+                    key = name
+                    keyPackage.append(key)
+                else:
+                    for ver in self.pVERSION[k]:
+                        if name == 'Hiero' or name == 'HieroPlayer' or name == 'NukeX':
+                            key = name + " " + ver
+                        else:
+                            if not ver or ver == []:
+                                key = name
+                            else:
+                                key = name + " " + ver
+                        keyPackage.append(key)
+
+        info = keyPackage + self.windowApps
+
+        return info
+
+    def generate_config(self, key):
+
+        info = []
+
+        for k in self.KEYPACKAGE:
+            for t in self.pTRACK[key]:
+                if t in k:
+                    info.append(k)
+
+        return list(sorted(set(info)))
+
+class Uis(Cfg):
+
+    key                                 = 'Uis'
+    _filePath                           = uiKeyCfg
+
+    APP_EVENT_KEYS = ['ShowAll', 'HideAll', 'CloseAll', 'SwitchAccount', 'LogIn', 'LogOut', 'Quit',
+                      'Exit', 'ChangePassword', 'UpdateAvatar', ]
+
+    STYLESHEET_KEYS = ['bright', 'dark', 'charcoal', 'nuker', ]
+
+    STYLE_KEYS = []
+
+    OPEN_DIR_KEYS = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppDataFolder',
+                     'PreferenceFolder', ]
+
+    OPEN_URL_KEYS = ['pythonTag', 'licenceTag', 'versionTag', 'PLM wiki']
+
+    SYS_CMD_KEYS = ['Command Prompt', 'cmd', ]
+
+    SHORTCUT_KEYS = ['Copy', 'Cut', 'Paste', 'Delete', 'Find', 'Rename']
+
+    APP_FUNCS_KEYS = ['ReConfig', 'CleanPyc', 'Debug', 'Maximize', 'Minimize', 'Restore', ] + \
+                     FACTOR_KEYS + APP_EVENT_KEYS + STYLESHEET_KEYS + STYLE_KEYS + OPEN_DIR_KEYS + \
+                     OPEN_URL_KEYS + SYS_CMD_KEYS + SHORTCUT_KEYS
+
+
+    UI_ELEMENT_KEYS = ['BotTab', 'ConnectStatus', 'GridLayout', 'MainMenuSection', 'MainToolBar',
+                       'MainToolBarSection', 'Notification', 'StatusBar', 'TopTab', 'TopTab1',
+                       'TopTab2', 'TopTab3', 'UserSetting', ]
+
+    MAIN_UI_KEYS = ['SysTray', 'PipelineManager', 'ForgotPassword', 'SignIn', 'SignUp', 'SignOut',
+                    'CommandUI', ]
+
+    INFO_UI_KEYS = ['About', 'CodeOfConduct', 'Contributing', 'Credit', 'Version', 'AppLicence',
+                    'PythonLicence', 'OrgInfo', 'References', ]
+
+    PROJ_UI_KEYS = ['ProjectManager', 'PreProductionProj', 'ProductionProj', 'PostProductionPrj',
+                    'VFXProj', 'ResearchProject', ]
+
+    ORG_UI_KEYS = ['OrganisationManager', ]
+
+    TASK_UI_KEYS = ['TaskManager', ]
+
+    TEAM_UI_KEYS = ['TeamManager', ]
+
+    DEPA_UI_KEYS = ['DepartmentManager']
+
+    SETTING_UI_KEYS = ['Configurations', 'Preferences', 'SettingUI', 'glbSettings', 'UserSetting',
+                       'BrowserSetting', 'ProjSetting', 'OrgSetting', 'TaskSetting', 'TeamSetting']
+
+    LIBRARY_UI_KEYS = ['UserLibrary', 'HDRILibrary', 'TextureLibrary', 'AlphaLibrary', ]
+
+    TOOL_UI_KEYS = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer',
+                    'NoteReminder', 'ScreenShot', 'TextEditor', ]
+
+    PLUGIN_UI_KEY = ['PluginManager', 'NodeGraph', 'Browser', 'Messenger', 'QtDesigner']
+
+    FORM_KEY = ['ContactUs', 'InviteFriend', 'ReportBug', ]
+
+    APP_UI_KEYS = MAIN_UI_KEYS + INFO_UI_KEYS + PROJ_UI_KEYS + ORG_UI_KEYS + TASK_UI_KEYS + \
+                  TEAM_UI_KEYS + SETTING_UI_KEYS + LIBRARY_UI_KEYS + TOOL_UI_KEYS + \
+                  PLUGIN_UI_KEY + FORM_KEY
+
+    KEYDETECT = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url",
+                 "Changelog", "Settings"]
+
+    tracker = TrackKeys()
+
+    def __init__(self):
+        super(Uis, self).__init__()
+
+        self.KEYPACKAGE         = self.tracker.generate_key_packages()
+
+        # Toolbar _data
+        self.TD                 = self.tracker.generate_config('TDS'),  # TD artist
+        self.VFX                = self.tracker.generate_config('VFX'),  # VFX artist
+        self.ART                = self.tracker.generate_config('ART'),  # 2D artist
+        self.PRE                = self.tracker.generate_config('PRE'),  # Preproduction
+        self.TEXTURE            = self.tracker.generate_config('TEXTURE'),  # ShadingTD artist
+        self.POST               = self.tracker.generate_config('POST'),  # Post production
+
+        # Tab 1 sections _data
+        self.OFFICE             = self.tracker.generate_config('Office'),  # Paper work department
+        self.DEV                = self.tracker.generate_config('Dev') + ['Command Prompt'],  # Rnd - Research and development
+        self.TOOLS              = self.tracker.generate_config('Tools') + self.TOOL_UI_KEYS,  # useful/custom tools
+        self.EXTRA              = self.tracker.generate_config('Extra'),  # Extra tools
+        self.SYSTRAY            = self.tracker.generate_config('sysTray') + ['Exit', 'SignIn'],  # System tray tools
+
+        self.__dict__.update()
+
 
 
 # -------------------------------------------------------------------------------------------------------------

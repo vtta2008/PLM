@@ -13,7 +13,7 @@ Description:
 
 # PLM
 from PLM                        import glbSettings
-from .baseConfigs               import Pys, Urls, Lgs, Fnts, Dirs, Pths, Ics, Apps, Sts, Fmts
+from .baseConfigs               import Pys, Urls, Lgs, Fnts, Dirs, Pths, Ics, Apps, Sts, Fmts, Uis
 
 
 
@@ -192,6 +192,23 @@ class ConfigFormats(Fmts):
             if glbSettings.saveFmtInfo:
                 self.save_data()
 
+
+class ConfigUiKeys(Uis):
+
+    key                                 = 'ConfigUiKeys'
+
+    def __iter__(self):
+        super(ConfigUiKeys, self).__iter__()
+
+        self.__dict__.update()
+
+        if glbSettings.printCfgInfo:
+            if glbSettings.printUiKeyInfo:
+                self.pprint()
+
+        if glbSettings.saveCfgInfo:
+            if glbSettings.saveUiKeyInfo:
+                self.save_data()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

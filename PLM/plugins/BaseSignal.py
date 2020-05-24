@@ -8,8 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import Signal, Slot
-from PLM.settings import globalSettings
+from PLM import Signal, Slot, globalSettings
 from PLM.api.damg                           import DAMG, DAMGDICT
 from PLM.Loggers                            import Loggers
 

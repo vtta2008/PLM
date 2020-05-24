@@ -79,11 +79,12 @@ class ReportGlb(ObjectGlb):
     _printSettingInfo                   = False
     _printSignalReceive                 = False
     _printFontInfo                      = False
-
+    _printUiKeyInfo                     = False
 
     def __init__(self):
         super(ReportGlb, self).__init__()
 
+        self.__dict__.update()
 
 
     @DamgProperty
@@ -173,6 +174,11 @@ class ReportGlb(ObjectGlb):
     @DamgProperty
     def printFontInfo(self):
         return self._printFontInfo
+
+    @DamgProperty
+    def printUiKeyInfo(self):
+        return self._printUiKeyInfo
+
 
     # @printFontInfo.setter
     # def printFontInfo(self, val):
@@ -284,6 +290,7 @@ class RecordGlb(ReportGlb):
     _savePlmInfo                        = True
     _savePcInfo                         = True
     _saveSettingInfo                    = True
+    _saveUiKeyInfo                      = True
 
     def __init__(self):
         super(RecordGlb, self).__init__()
@@ -349,6 +356,10 @@ class RecordGlb(ReportGlb):
     @DamgProperty
     def saveSettingInfo(self):
         return self._saveSettingInfo
+
+    @DamgProperty
+    def saveUiKeyInfo(self):
+        return self._saveUiKeyInfo
 
     # @saveFontInfo.setter
     # def saveFontInfo(self, val):
@@ -567,6 +578,13 @@ class GlobalBase(SignalGlb):
 
     def setCfgAble(self, val):
         self._cfgable                   = val
+
+
+
+class GlobalSettings(GlobalBase):
+
+    def __init__(self):
+        super(GlobalSettings, self).__init__()
 
 
 # -------------------------------------------------------------------------------------------------------------

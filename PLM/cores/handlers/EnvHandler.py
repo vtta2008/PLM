@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM.settings import globalSettings
+from PLM import globalSettings
 
 """ Import """
 

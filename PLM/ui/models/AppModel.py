@@ -10,7 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-from PLM.settings import globalSettings
+from PLM import globalSettings
 
 # Python
 import os, sys, requests

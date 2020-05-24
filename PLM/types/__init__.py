@@ -51,6 +51,17 @@ CMD_VALUE_TYPE                  = { 'dir'                   : 'directory',
                                     'shortcut'              : 'shortcut',
                                     'uiKey'                 : 'PLM Layout Key', }
 
+actionTypes                    = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction', 'DAMGExecutingAction',
+                                  'DAMGOpenBrowserAction', 'DAMGWIDGETACTION']
+
+buttonTypes                     = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
+
+
+urlTypes                        = ['DAMGURL', 'Url', 'url']
+
+
+layoutTypes                     = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
+
 
 from .version                   import Version
 from .properties                import DamgProperty

@@ -23,8 +23,10 @@ import os, sys, subprocess
 from termcolor                      import cprint
 
 # PLM
-from .settings                      import GlobalSettings
-from .types                         import Version
+from .configs.utils                 import current_directory, directory_name, path_exists, parent_dir, create_path
+from .globalSettings                import GlobalSettings
+from .types                         import Version, DamgProperty
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Metadatas """
@@ -36,34 +38,10 @@ __version__                         = Version()
 __apiName__                         = "DAMG API"
 __apiVersion__                      = Version(0, 0, 1)
 
-# -------------------------------------------------------------------------------------------------------------
-""" utilities function """
+TRADE_MARK                          = '™'
 
 def __copyright__():
     return 'Copyright (C) DAMGTEAM. All right reserved.'
-
-def path_exists(path):
-    if not os.path.exists(path):
-        cprint("PathNotExistsed: {0}".format(path), 'red', attrs=['blink'])
-    return os.path.exists(path)
-
-def create_path(*args):
-    path                            = os.path.abspath(os.path.join(*args)).replace('\\', '/')
-    path_exists(path)
-    return path
-
-def current_directory():
-    path                            = os.path.abspath(os.getcwd()).replace('\\', '/')
-    path_exists(path)
-    return path
-
-def parent_dir(path):
-    path                            = os.path.abspath(os.path.join(path, os.pardir)).replace('\\', '/')
-    path_exists(path)
-    return path
-
-def directory_name(path):
-    return os.path.basename(path)
 
 
 # get current directory path

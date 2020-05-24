@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from ...settings import globalSettings
+from ... import globalSettings
 
 """ Import """
 
