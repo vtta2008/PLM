@@ -9,23 +9,24 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import GLobalSetting
-import subprocess
+from PLM import qtBinding
 
-if GLobalSetting.qtBinding == 'PyQt5':
-    from PyQt5.QtWidgets    import (QAction, QWidgetAction, QApplication, QVBoxLayout, QHBoxLayout, QPushButton,
-                                    QToolButton, QCheckBox, QComboBox, QDockWidget, QGraphicsItem, QGraphicsPathItem,
-                                    QGraphicsObject, QGraphicsScene, QGraphicsView, QGridLayout, QGroupBox, QItemDelegate,
-                                    QLabel, QLCDNumber, QLineEdit, QMainWindow, QMenu, QMenuBar, QMessageBox,
-                                    QPlainTextEdit, QProgressBar, QRubberBand, QSplashScreen, QStatusBar, QSystemTrayIcon,
-                                    QTabBar, QTabWidget, QTextEdit, QToolBar, QUndoCommand, QWidget, QTableWidget, )
-elif GLobalSetting.qtBinding == 'PySide2':
-    from PySide2.QtWidgets  import (QAction, QWidgetAction, QApplication, QVBoxLayout, QHBoxLayout, QPushButton,
-                                    QToolButton, QCheckBox, QComboBox, QDockWidget, QGraphicsItem, QGraphicsPathItem,
-                                    QGraphicsObject, QGraphicsScene, QGraphicsView, QGridLayout, QGroupBox, QItemDelegate,
-                                    QLabel, QLCDNumber, QLineEdit, QMainWindow, QMenu, QMenuBar, QMessageBox,
-                                    QPlainTextEdit, QProgressBar, QRubberBand, QSplashScreen, QStatusBar, QSystemTrayIcon,
-                                    QTabBar, QTabWidget, QTextEdit, QToolBar, QUndoCommand, QWidget, QTableWidget, )
+if qtBinding == 'PyQt5':
+    from PyQt5.QtWidgets    import (QApplication, QAction, QShortcut, QWidgetAction, QVBoxLayout, QHBoxLayout,
+                                    QPushButton, QToolButton, QCheckBox, QComboBox, QDockWidget, QGraphicsItem,
+                                    QGraphicsObject, QGraphicsPathItem, QGraphicsScene, QGraphicsView, QGridLayout,
+                                    QGroupBox, QItemDelegate, QLabel, QTextEdit, QLCDNumber, QLineEdit, QMainWindow,
+                                    QMenu, QMenuBar, QMessageBox, QPlainTextEdit, QProgressBar, QRubberBand,
+                                    QSplashScreen, QStatusBar, QSystemTrayIcon, QTabBar, QTabWidget, QTableWidget,
+                                    QToolBar, QUndoCommand, QWidget, )
+elif qtBinding == 'PySide2':
+    from PySide2.QtWidgets import (QApplication, QAction, QShortcut, QWidgetAction, QVBoxLayout, QHBoxLayout,
+                                    QPushButton, QToolButton, QCheckBox, QComboBox, QDockWidget, QGraphicsItem,
+                                    QGraphicsObject, QGraphicsPathItem, QGraphicsScene, QGraphicsView, QGridLayout,
+                                    QGroupBox, QItemDelegate, QLabel, QTextEdit, QLCDNumber, QLineEdit, QMainWindow,
+                                    QMenu, QMenuBar, QMessageBox, QPlainTextEdit, QProgressBar, QRubberBand,
+                                    QSplashScreen, QStatusBar, QSystemTrayIcon, QTabBar, QTabWidget, QTableWidget,
+                                    QToolBar, QUndoCommand, QWidget, )
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

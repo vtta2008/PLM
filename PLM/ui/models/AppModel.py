@@ -10,19 +10,18 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-from PLM import GLobalSetting
+from PLM.settings import globalSettings
 
 # Python
 import os, sys, requests
 
 # PLM
 from PLM.cores                          import Loggers, sqlUtils, StyleSheet, ThreadManager
-from PLM.cores.models                   import Worker
 from PLM.configs                        import (__version__, __appname__, __organization__, __website__, __localServer__,
                                                 STAY_ON_TOP, SERVER_CONNECT_FAIL,
-                                                ConfigPython, ConfigUrl, ConfigApps, ConfigPipeline, ConfigIcon,
+                                                ConfigPython, ConfigUrls, ConfigApps, ConfigPipeline, ConfigIcons,
                                                 ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
-                                                ConfigServer, ConfigFormats, ConfigDirectory, ConfigPath, ConfigFonts, )
+                                                ConfigServer, ConfigFormats, ConfigDirs, ConfigPths, ConfigFonts, )
 from PLM.api.Widgets import Application, MessageBox
 from PLM.api.Gui import LogoIcon
 
@@ -155,7 +154,7 @@ class AppModel(Application):
         try:
             r = requests.get(self._server, verify=self.getVerify(), headers=self.getHeaders(), cookies=self.getCookies())
         except Exception:
-            if not GLobalSetting.modes.allowLocalMode:
+            if not globalSettings.modes.allowLocalMode:
                 self.splash.finish(self.sys_message(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', STAY_ON_TOP))
                 sys.exit()
             else:
@@ -316,23 +315,23 @@ class AppModel(Application):
         self.exit()
 
     def setRecieveSignal(self, bool):
-        GLobalSetting.recieveSignal = bool
+        globalSettings.recieveSignal = bool
 
     def setBlockSignal(self, bool):
-        GLobalSetting.blockSignal = bool
+        globalSettings.blockSignal = bool
 
     def setTrackCommand(self, bool):
-        GLobalSetting.command = bool
+        globalSettings.command = bool
 
     def setRegistLayout(self, bool):
-        GLobalSetting.registLayout = bool
+        globalSettings.registLayout = bool
 
     def runConfigs(self):
 
         words = ['Python', 'Directories', 'File Paths', 'Urls & Links', 'Environment Variable', 'Icons', 'Avatars',
                  'Logo', 'Images', 'Servers', 'Formats', 'Fonts', 'Local Devices', 'Installed Apps', 'Pipeline Functions']
 
-        configs = [ConfigPython, ConfigDirectory, ConfigPath, ConfigUrl, ConfigEnvVar, ConfigIcon, ConfigAvatar,
+        configs = [ConfigPython, ConfigDirs, ConfigPths, ConfigUrls, ConfigEnvVar, ConfigIcons, ConfigAvatar,
                    ConfigLogo, ConfigImage, ConfigServer, ConfigFormats, ConfigFonts, ConfigMachine, ConfigApps,
                    ConfigPipeline]
 
@@ -385,7 +384,7 @@ class AppModel(Application):
             if not info:
                 check = False
 
-        GLobalSetting.setCfgAll(check)
+        globalSettings.setCfgAll(check)
 
     @property
     def login(self):

@@ -12,10 +12,10 @@ Description:
 """ Import """
 
 # Python
-import sys, logging, traceback, pdb
+import sys, logging, pdb, traceback
 
 # PLM
-from .Formatters import OneLineExceptionFormatter
+from .Formatters                            import OneLineExceptionFormatter
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -50,6 +50,20 @@ class StreamHandler(logging.StreamHandler):
     def update(self):
         self.setFormatter(self.get_formatter())
         self.setLevel(self.logLevel)
+
+    def exception_handler(self, exc_type, exc_value, exc_traceback):
+
+        if hasattr(sys, 'ps1') or not sys.stderr.isatty():
+            exception = sys.__excepthook__(exc_type, exc_value, exc_traceback)
+        else:
+            exception = traceback.format_exception(exc_type, exc_value, exc_traceback)
+
+        if exc_traceback:
+            pdb.post_mortem(exc_traceback)
+
+        return exception
+
+
 
 
 class FileHandler(logging.FileHandler):

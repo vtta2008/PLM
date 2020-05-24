@@ -8,9 +8,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import GLobalSetting, Signal, Slot
+from PLM                                    import Signal, Slot
+from PLM.settings import globalSettings
 from PLM.api.damg                           import DAMG, DAMGDICT
-from PLM.cores                              import Loggers
+from PLM.Loggers                            import Loggers
 
 # -------------------------------------------------------------------------------------------------------------
 """ Signal class: setup all the signal which will be using. """
@@ -60,12 +61,12 @@ class BaseSignal(DAMG):
         self._slots.update()
 
     def getSignal(self, key):
-        if GLobalSetting.printSignalReceive:
+        if globalSettings.printSignalReceive:
             self.logger.info('{0} get signal: {1}'.format(self.parent.key, key))
         return self.signals.get(key)
 
     def getSlot(self, key):
-        if GLobalSetting.tracks.getSlot:
+        if globalSettings.tracks.getSlot:
             self.logger.info('{0} get slot: {1}'.format(self.parent.key, key))
         return self.slots.get(key)
 
@@ -74,12 +75,12 @@ class BaseSignal(DAMG):
             signal                           = self.getSignal(key)
             signal.emit(arg)
         else:
-            if GLobalSetting.emittable:
+            if globalSettings.emittable:
                 self.logger.info('EmittableError: {0} is not allowed to emit'.format(self.key))
             return
 
     def connect(self, key, target):
-        if GLobalSetting.autoChangeEmittable:
+        if globalSettings.autoChangeEmittable:
             self._emitable                   = True
         else:
             self.logger.info('SignalConnectArror: {0} is not allowed to connect'.format(self.key))

@@ -14,11 +14,16 @@ Description:
 import os
 
 # PLM
-from PLM                                import GLobalSetting
-from PLM.configs                        import APP_SETTING, INI, NATIVE, INVALID, SYS_SCOPE, USER_SCOPE
+from PLM.configs                        import ConfigSettings
 from PLM.api.Core                       import Settings
 
-
+settingInfo                             = ConfigSettings()
+APP_SETTING                             = settingInfo.APP_SETTING
+INI                                     = settingInfo.INI
+NATIVE                                  = settingInfo.NATIVE
+INVAILD                                 = settingInfo.INVAILD
+SYS_SCOPE                               = settingInfo.SYS_SCOPE
+USER_SCOPE                              = settingInfo.USER_SCOPE
 
 class AppSettings(Settings):
 
@@ -33,9 +38,7 @@ class AppSettings(Settings):
     modes                               = APP_SETTING
     _mode                               = 'app'
 
-    keyFixedOld                         = '  '
-
-    def __init__(self, parent=None, filename=APP_SETTING, fm=INI):
+    def __init__(self, parent=None, filename = APP_SETTING, fm=INI):
         super(AppSettings, self).__init__(filename, fm)
 
         self.parent                     = parent
@@ -87,7 +90,7 @@ class AppSettings(Settings):
             else:
                 oldValue = self.value(key)
                 if not value == oldValue:
-                    if GLobalSetting.printSettingInfo:
+                    if glbSettings.printSettingInfo:
                         print('{0}: set {1} - {2} - {3}.'.format(self.key, key, value, grpChecked))
                     self.setValue(key, value)
 
@@ -106,7 +109,7 @@ class AppSettings(Settings):
                     value = self.value(key)
                 else:
                     value = self.value(key, decode)
-                if GLobalSetting.printSettingInfo:
+                if glbSettings.printSettingInfo:
                     print('{0}: get value from key: {1}, value: {2}, at group: {3}.'.format(self.key, key, value, grpChecked))
                 return value
 
@@ -149,7 +152,7 @@ class AppSettings(Settings):
         elif fm == 'native':
             _format = NATIVE
         else:
-            _format = INVALID
+            _format = INVAILD
         self.setDefaultFormat(_format)
         return _format
 

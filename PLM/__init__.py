@@ -19,13 +19,12 @@ Description:
 """ Import """
 
 # Python
-import os, sys, traceback, subprocess
+import os, sys, subprocess
 from termcolor                      import cprint
 
 # PLM
-from .version                       import Version
-from .GLobalSetting                 import GlobalSetting
-from .decoration                    import DamgProp
+from .settings                      import GlobalSettings
+from .types                         import Version
 
 # -------------------------------------------------------------------------------------------------------------
 """ Metadatas """
@@ -43,12 +42,6 @@ __apiVersion__                      = Version(0, 0, 1)
 def __copyright__():
     return 'Copyright (C) DAMGTEAM. All right reserved.'
 
-def exception_handler(exc_type, exc_value, exc_traceback):
-    if hasattr(sys, 'ps1') or not sys.stderr.isatty():
-        return sys.__excepthook__(exc_type, exc_value, exc_traceback)
-    else:
-        return traceback.format_exception(exc_type, exc_value, exc_traceback)
-
 def path_exists(path):
     if not os.path.exists(path):
         cprint("PathNotExistsed: {0}".format(path), 'red', attrs=['blink'])
@@ -64,7 +57,7 @@ def current_directory():
     path_exists(path)
     return path
 
-def parent_directory(path):
+def parent_dir(path):
     path                            = os.path.abspath(os.path.join(path, os.pardir)).replace('\\', '/')
     path_exists(path)
     return path
@@ -72,18 +65,12 @@ def parent_directory(path):
 def directory_name(path):
     return os.path.basename(path)
 
-# -------------------------------------------------------------------------------------------------------------
-""" setting up hook and output """
-
-# Exception hook
-sys.excepthook                      = exception_handler
-PIPE                                = subprocess.PIPE
 
 # get current directory path
 cwd                                 = current_directory()
 
-if directory_name(cwd) == directory_name(parent_directory(cwd)) == __envKey__:
-    ROOT_APP                        = parent_directory(cwd)
+if directory_name(cwd) == directory_name(parent_dir(cwd)) == __envKey__:
+    ROOT_APP                        = parent_dir(cwd)
     ROOT                            = cwd
 else:
     if directory_name(cwd) == __envKey__:
@@ -97,35 +84,37 @@ else:
             sys.exit(__copyright__())
         else:
             ROOT                    = os.getenv(__envKey__)
-            ROOT_APP                = parent_directory(ROOT)
+            ROOT_APP                = parent_dir(ROOT)
 
 cprint("{0} v{1}".format(__appName__, __version__), 'cyan')
 
-glbSetting                          = GlobalSetting()
+glbSettings                         = GlobalSettings()
+PIPE                                = subprocess.PIPE
+qtBinding                           = glbSettings.qtBinding
 
 try:
     os.getenv(__envKey__)
 except KeyError:
     process = subprocess.Popen('SetX {0} {1}'.format(__envKey__, ROOT), stdout=PIPE, stderr=PIPE, shell=True).wait()
 else:
-    if os.getenv(__envKey__)   != ROOT:
+    if os.getenv(__envKey__) != ROOT:
         subprocess.Popen('SetX {0} {1}'.format(__envKey__, ROOT), stdout=PIPE, stderr=PIPE, shell=True).wait()
 finally:
-    glbSetting.cfgable = True
+    glbSettings.cfgable = True
 
 
-if glbSetting.qtBinding == 'PyQt5':
+if glbSettings.qtBinding == 'PyQt5':
     try:
         import PyQt5
     except ImportError:
-        subprocess.Popen('python -m pip install {0}={1} --user'.format(GLobalSetting.qtBinding, GLobalSetting.qtVersion), shell=True).wait()
+        subprocess.Popen('python -m pip install {0}={1} --user'.format(glbSettings.qtBinding, glbSettings.qtVersion), shell=True).wait()
     finally:
         from PyQt5.QtCore import pyqtSlot as Slot, pyqtSignal as Signal, pyqtProperty as Property
-elif glbSetting.qtBinding == 'PySide2':
+elif glbSettings.qtBinding == 'PySide2':
     try:
         import PySide2
     except ImportError:
-        subprocess.Popen('python -m pip install {0}={1} --user'.format(GLobalSetting.qtBinding, GLobalSetting.qtVersion), shell=True).wait()
+        subprocess.Popen('python -m pip install {0}={1} --user'.format(glbSettings.qtBinding, glbSettings.qtVersion), shell=True).wait()
     finally:
         from PySide2.QtCore import Slot, Signal, Property
 

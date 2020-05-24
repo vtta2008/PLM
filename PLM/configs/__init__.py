@@ -10,284 +10,54 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 # Python
-import os, subprocess, sys, re, platform, pkg_resources, winshell, socket, uuid, json, yaml, pprint
+import os
 
 # PLM
-from PLM                            import GLobalSetting, ROOT, ROOT_APP, create_path
+from PLM                                    import create_path, glbSettings, ROOT
+from PLM.types                              import CMD_VALUE_TYPE
+from .baseConfigs                           import Cmds, Pls
+from .modelConfigs                          import (ConfigDirs, ConfigPths, ConfigIcons, ConfigUrls, ConfigApps,
+                                                    ConfigPython, ConfigLogos, ConfigFonts, ConfigSettings,
+                                                    ConfigFormats)
 
-from .metadatas                     import (__appname__, __organizationName__, __localServer__, __globalServer__,
-                                            __homepage__, __plmWiki__, __google__, __googleNZ__, __googleVN__,
-                                            __plmWiki__, __localServer__, __homepage__, __appname__,
-                                            __organization__, __organizationID__, __organizationName__, __globalServer__,
-                                            __google__, __appSlogan__, __localServerAutho__, __version__, __website__,)
-
-from .constants                     import (WAIT_LAYOUT_COMPLETE, ASK_OVERWRITE, SERVER_CONNECT_FAIL, ERROR_APPLICATION,
-                                            PW_UNMATCH, PYTHON_TAG, VERSION_TAG, LICENCE_TAG, USER_CHECK_REQUIRED,
-                                            SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, PLM_ABOUT, ERROR_LAYOUT_COMPONENT,
-                                            SYSTRAY_UNAVAI, )
-
-from PLM.api.Core                   import Size, Settings, DateTime
-
+from PLM.api.Core                           import Size, DateTime
+from PLM.api.Gui                            import Painter, Font, Color
 
 # PyQt5
-from PyQt5.QtCore                   import Qt, QEvent
-from PyQt5.QtGui                    import QPainter, QFont, QColor
-from PyQt5.QtWidgets                import (QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy,
-                                            QLineEdit, QPlainTextEdit, QAbstractItemView, QStyle, QApplication, )
+from PyQt5.QtCore                           import Qt, QEvent
 
-# -------------------------------------------------------------------------------------------------------------
-''' configs '''
-LOCALAPPDATA                        = os.getenv('LOCALAPPDATA')
-
-APPDATA_DAMG                        = create_path(LOCALAPPDATA, __organizationName__)
-APPDATA_PLM                         = create_path(APPDATA_DAMG, __appname__)
-
-LIBRARY_DIR                         = create_path(APPDATA_DAMG, 'libraries')
-
-CFG_DIR                             = create_path(APPDATA_PLM, '.configs')
-TMP_DIR                             = create_path(APPDATA_PLM, '.tmp')
-CACHE_DIR                           = create_path(APPDATA_PLM, '.cache')
-PREF_DIR                            = create_path(APPDATA_PLM, 'preferences')
-
-SETTING_DIR                         = CFG_DIR
-LOG_DIR                             = CFG_DIR
-TASK_DIR                            = create_path(CFG_DIR, 'task')
-TEAM_DIR                            = create_path(CFG_DIR, 'team')
-PRJ_DIR                             = create_path(CFG_DIR, 'project')
-ORG_DIR                             = create_path(CFG_DIR, 'organisation')
-USER_LOCAL_DATA                     = create_path(CFG_DIR, 'userLocal')
-
-DB_DIR                              = APPDATA_PLM
-
-# -------------------------------------------------------------------------------------------------------------
-''' docs '''
-
-DOCS_DIR                            = create_path(ROOT_APP, 'docs')
-RAWS_DIR                            = create_path(DOCS_DIR, 'raws')
-TEMPLATE_DIR                        = create_path(DOCS_DIR, 'template')
-TEMPLATE_LICENSE                    = create_path(TEMPLATE_DIR, 'LICENSE')
-
-# -------------------------------------------------------------------------------------------------------------
-''' integrations '''
-
-INTERGRATIONS_DIR                   = create_path(ROOT_APP, 'intergrations')
-
-# -------------------------------------------------------------------------------------------------------------
-''' common '''
-
-COMMONS_DIR                         = create_path(ROOT, 'api')
-CORE_DIR                            = create_path(COMMONS_DIR, 'Core')
-DAMG_DIR                            = create_path(COMMONS_DIR, 'damg')
-GUI_DIR                             = create_path(COMMONS_DIR, 'Gui')
-NETWORK_DIR                         = create_path(COMMONS_DIR, 'Network')
-WIDGET_DIR                          = create_path(COMMONS_DIR, 'Widgets')
-
-# -------------------------------------------------------------------------------------------------------------
-''' cores '''
-
-CORES_DIR                           = create_path(ROOT, 'cores')
-BASE_DIR                            = create_path(CORES_DIR, 'base')
-LOGGER_DIR                          = create_path(CORES_DIR, 'Loggers')
-MODELS_DIR                          = create_path(CORES_DIR, 'models')
-SQL_DIR                             = create_path(CORES_DIR, 'data')
-
-# -------------------------------------------------------------------------------------------------------------
-''' resources '''
-
-RESOURCES_DIR                       = create_path(ROOT, 'resources')
-AVATAR_DIR                          = create_path(RESOURCES_DIR, 'avatar')
-DESIGN_DIR                          = create_path(RESOURCES_DIR, 'design')
-FONT_DIR                            = create_path(RESOURCES_DIR, 'fonts')
-
-ICON_DIR                            = create_path(RESOURCES_DIR, 'icons')
-TAG_ICON_DIR                        = create_path(ICON_DIR, 'tags')
-
-NODE_ICON_DIR                       = create_path(ICON_DIR, 'nodes')
-
-WEB_ICON_DIR                        = create_path(ICON_DIR, 'web')
-WEB_ICON_16                         = create_path(WEB_ICON_DIR, 'x16')
-WEB_ICON_24                         = create_path(WEB_ICON_DIR, 'x24')
-WEB_ICON_32                         = create_path(WEB_ICON_DIR, 'x32')
-WEB_ICON_48                         = create_path(WEB_ICON_DIR, 'x48')
-WEB_ICON_64                         = create_path(WEB_ICON_DIR, 'x64')
-WEB_ICON_128                        = create_path(WEB_ICON_DIR, 'x128')
-
-ICON_DIR_12                         = create_path(ICON_DIR, 'x12')
-ICON_DIR_16                         = create_path(ICON_DIR, 'x16')
-ICON_DIR_24                         = create_path(ICON_DIR, 'x24')
-ICON_DIR_32                         = create_path(ICON_DIR, 'x32')
-ICON_DIR_48                         = create_path(ICON_DIR, 'x48')
-ICON_DIR_64                         = create_path(ICON_DIR, 'x64')
-
-IMAGE_DIR                           = create_path(RESOURCES_DIR, 'images')
-
-JSON_DIR                            = create_path(RESOURCES_DIR, 'json')
-
-LOGO_DIR                            = create_path(RESOURCES_DIR, 'logo')
-DAMG_LOGO_DIR                       = create_path(LOGO_DIR, 'DAMGTEAM')
-PLM_LOGO_DIR                        = create_path(LOGO_DIR, 'PLM')
-
-SOUND_DIR                           = create_path(RESOURCES_DIR, 'sound')
-
-# -------------------------------------------------------------------------------------------------------------
-''' ui '''
-
-UI_DIR                              = create_path(ROOT, 'ui')
-UI_BASE_DIR                         = create_path(UI_DIR, 'base')
-UI_COMPONENTS_DIR                   = create_path(UI_DIR, 'components')
-UI_LAYOUTS_DIR                      = create_path(UI_DIR, 'layouts')
-UI_MODELS_DIR                       = create_path(UI_DIR, 'models')
-UI_RCS_DIR                          = create_path(UI_DIR, 'rcs')
-UI_TOOLS_DIR                        = create_path(UI_DIR, 'tools')
-
-# -------------------------------------------------------------------------------------------------------------
-''' utils '''
-
-UTILS_DIR                           = create_path(ROOT, 'utils')
-
-# -------------------------------------------------------------------------------------------------------------
-''' scripts '''
-
-REQUIREMENTS_DIR                    = create_path(ROOT_APP, 'requirements')
-
-# -------------------------------------------------------------------------------------------------------------
-''' scripts '''
-
-SCRIPTS_DIR                         = create_path(ROOT, 'scripts')
-CSS_DIR                             = create_path(SCRIPTS_DIR, 'css')
-HTML_DIR                            = create_path(SCRIPTS_DIR, 'html')
-JS_DIR                              = create_path(SCRIPTS_DIR, 'js')
-QSS_DIR                             = create_path(SCRIPTS_DIR, 'qss')
-
-# -------------------------------------------------------------------------------------------------------------
-''' plugins '''
-
-PLUGIN_DIR                          = create_path(ROOT, 'plugins')
-
-# -------------------------------------------------------------------------------------------------------------
-''' test '''
-
-TEST_DIR                            = create_path(ROOT_APP, 'tests')
-
-# -------------------------------------------------------------------------------------------------------------
-""" config file """
-
-evnInfoCfg                          = create_path(CFG_DIR, 'envs.cfg')
-iconCfg                             = create_path(CFG_DIR, 'icons.cfg')
-avatarCfg                           = create_path(CFG_DIR, 'avatars.cfg')
-logoCfg                             = create_path(CFG_DIR, 'logo.cfg')
-webIconCfg                          = create_path(CFG_DIR, 'webIcon.cfg')
-nodeIconCfg                         = create_path(CFG_DIR, 'nodeIcons.cfg')
-imageCfg                            = create_path(CFG_DIR, 'images.cfg')
-tagCfg                              = create_path(CFG_DIR, 'tags.cfg')
-pythonCfg                           = create_path(CFG_DIR, 'python.cfg')
-plmCfg                              = create_path(CFG_DIR, 'pipeline.cfg')
-appsCfg                             = create_path(CFG_DIR, 'installed.cfg')
-envVarCfg                           = create_path(CFG_DIR, 'envVar.cfg')
-dirCfg                              = create_path(CFG_DIR, 'dirs.cfg')
-pthCfg                              = create_path(CFG_DIR, 'paths.cfg')
-pcCfg                               = create_path(CFG_DIR, 'pc.cfg')
-urlCfg                              = create_path(CFG_DIR, 'url.cfg')
-typeCfg                             = create_path(CFG_DIR, 'types.cfg')
-userCfg                             = create_path(CFG_DIR, 'user.cfg')
-serverCfg                           = create_path(CFG_DIR, 'server.cfg')
-fmtCfg                              = create_path(CFG_DIR, 'formats.cfg')
-PLMconfig                           = create_path(CFG_DIR, 'PLM.cfg')
-sceneGraphCfg                       = create_path(CFG_DIR, 'sceneGraph.cfg')
-fontCfg                             = create_path(CFG_DIR, 'fonts.cfg')
-
-splashImagePth                      = create_path(IMAGE_DIR, 'splash.png')
+from PyQt5.QtWidgets                        import (QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame,
+                                                    QSizePolicy, QLineEdit, QPlainTextEdit, QAbstractItemView, QStyle, )
 
 # -------------------------------------------------------------------------------------------------------------
 """ setting file """
 
-APP_SETTING                                 = create_path(SETTING_DIR, 'PLM.ini')
-USER_SETTING                                = create_path(SETTING_DIR, 'user.ini')
-FORMAT_SETTING                              = create_path(SETTING_DIR, 'format.ini')
-UNIX_SETTING                                = create_path(SETTING_DIR, 'unix.ini')
-
-LOCAL_DB                                    = create_path(DB_DIR, 'local.db')
-LOCAL_LOG                                   = create_path(LOG_DIR, 'PLM.logs')
-
-QSS_PATH                                    = create_path(QSS_DIR, 'dark.qss')
-MAIN_SCSS_PTH                               = create_path(QSS_DIR, 'main.scss')
-STYLE_SCSS_PTH                              = create_path(QSS_DIR, '_styles.scss')
-VAR_SCSS_PTH                                = create_path(QSS_DIR, '_variables.scss')
-
-SETTING_FILEPTH = dict( app                 = APP_SETTING,
-                        user                = USER_SETTING,
-                        unix                = UNIX_SETTING,
-                        format              = FORMAT_SETTING, )
-
-actionTypes                                 = [ 'DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction', 'DAMGExecutingAction',
+actionTypes                                 = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction', 'DAMGExecutingAction',
                                                 'DAMGOpenBrowserAction', 'DAMGWIDGETACTION']
+
 buttonTypes                                 = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
+
 
 urlTypes                                    = ['DAMGURL', 'Url', 'url']
 
+
 layoutTypes                                 = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
-
-
-DB_ATTRIBUTE_TYPE = {
-                    'int_auto_increment'    : 'INTERGER PRIMARY KEY AUTOINCREMENT, ',
-                    'int_primary_key'       : 'INT PRIMARY KEY, ',
-                    'text_not_null'         : 'TEXT NOT NULL, ',
-                    'text'                  : 'TEXT, ',
-                    'bool'                  : 'BOOL, ',
-                    'varchar'               : 'VARCHAR, ',
-                    'varchar_20'            : 'VACHAR(20,)  ', }
-
-
-CMD_VALUE_TYPE = {  'dir'                   : 'directory',
-                    'pth'                   : 'path',
-                    'url'                   : 'link',
-                    'func'                  : 'function',
-                    'cmd'                   : 'commandPrompt',
-                    'event'                 : 'PLM Event',
-                    'stylesheet'            : 'PLMstylesheet',
-                    'shortcut'              : 'shortcut',
-                    'uiKey'                 : 'PLM Layout Key', }
-
-
-RAMTYPE                                 = { 0: 'Unknown', 1: 'Other', 2: 'DRAM', 3: 'Synchronous DRAM', 4: 'Cache DRAM', 
-                                            5: 'EDO', 6: 'EDRAM', 7: 'VRAM', 8: 'SRAM', 9: 'RAM', 10: 'ROM', 11: 'Flash',
-                                            12: 'EEPROM', 13: 'FEPROM', 14: 'EPROM', 15: 'CDRAM', 16: '3DRAM', 17: 'SDRAM',
-                                            18: 'SGRAM', 19: 'RDRAM', 20: 'DDR', 21: 'DDR2', 22: 'DDR2 FB-DIMM', 24: 'DDR3',
-                                            25: 'FBD2', }
-
-
-FORMFACTOR                              = { 0: 'Unknown', 1: 'Other', 2: 'SIP', 3: 'DIP', 4: 'ZIP', 5: 'SOJ', 6: 'Proprietary',
-                                            7: 'SIMM', 8: 'DIMM', 9: 'TSOP', 10: 'PGA', 11: 'RIMM', 12: 'SODIMM', 13: 'SRIMM',
-                                            14: 'SMD', 15: 'SSMP', 16: 'QFP', 17: 'TQFP', 18: 'SOIC', 19: 'LCC', 20: 'PLCC',
-                                            21: 'BGA', 22: 'FPBGA', 23: 'LGA', 24: 'FB-DIMM', }
-
-
-CPUTYPE                                 = { 1: 'Other', 2: 'Unknown', 3: 'Central Processor', 4: 'Math Processor',
-                                            5: 'DSP Processor', 6: 'Video Processor', }
-
-
-DRIVETYPE                               = { 0 : "Unknown", 1 : "No Root Directory", 2 : "Removable Disk", 
-                                            3 : "Local Disk", 4 : "Network Drive", 5 : "Compact Disc", 6 : "RAM Disk", }
-
-
-
 
 
 # --------------------------------------------------------------------------------------------------------------
 """ Combine data package """
 
-pVERSION            = dict(
-                            adobe       = ["CC 2017", "CC 2018", "CC 2019", "CC 2020", "CC 2021"],
-                            autodesk    = ["2017", "2018", "2019", "2020", "2021"],
-                            allegorithmic = [],
-                            foundry     = ["11.1v1", "11.2v1", "4.0v1", "4.1v1", "2.6v3", "4.6v1", "12.0v1", '3.5v2', '3.2v4', '2.6v3'],
-                            pixologic   = ["4R6", "4R7", "4R8", '2018', '2019', '2020', '2021'],
-                            sizefx      = ['16.5.439', '16.5.496', '17.5.425', '18.0.327'],
-                            office      = ['2017', "2018", "2019", "2020"],
-                            jetbrains   = ['2017.3.3', '2018.1', ],
-                            wonderUnit  = [],
-                            anaconda    = [],
-                            )
+pVERSION            = dict( adobe           = ["CC 2017", "CC 2018", "CC 2019", "CC 2020", "CC 2021"],
+                            autodesk        = ["2017", "2018", "2019", "2020", "2021"],
+                            allegorithmic   = [],
+                            foundry         = ["11.1v1", "11.2v1", "4.0v1", "4.1v1", "2.6v3", "4.6v1", "12.0v1",
+                                               '3.5v2', '3.2v4', '2.6v3'],
+                            pixologic       = ["4R6", "4R7", "4R8", '2018', '2019', '2020', '2021'],
+                            sizefx          = ['16.5.439', '16.5.496', '17.5.425', '18.0.327'],
+                            office          = ['2017', "2018", "2019", "2020"],
+                            jetbrains       = ['2017.3.3', '2018.1', ],
+                            wonderUnit      = [],
+                            anaconda        = [], )
 
 pPACKAGE            = dict(
                             adobe       = ["Adobe Photoshop", "Adobe Illustrator", "Adobe Audition", "Adobe After Effects",
@@ -358,7 +128,7 @@ TEAM_UI_KEYS                            = ['TeamManager', ]
 
 DEPA_UI_KEYS                            = ['DepartmentManager']
 
-SETTING_UI_KEYS                         = ['Configurations', 'Preferences', 'SettingUI', 'GlobalSetting', 'UserSetting',
+SETTING_UI_KEYS                         = ['Configurations', 'Preferences', 'SettingUI', 'glbSettings', 'UserSetting',
                                            'BrowserSetting', 'ProjSetting', 'OrgSetting', 'TaskSetting', 'TeamSetting']
 
 LIBRARY_UI_KEYS                         = ['UserLibrary', 'HDRILibrary', 'TextureLibrary', 'AlphaLibrary', ]
@@ -479,70 +249,33 @@ SYS_OPTS                                = ["Host Name", "OS Name", "OS Version",
                                            "System Model", "System type", "BIOS Version", "Domain", "Windows Directory",
                                            "Total Physical Memory", "Available Physical Memory", "Logon Server"]
 
+
+
 notKeys                                 = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__',
                                            '__cached__', '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR',
                                            'SETTING_DIR', 'DB_DIR', 'LOG_DIR', 'QSS_DIR', 'RCS_DIR', 'SCSS_DIR',
                                            '__appname__', 'subprocess', 'unicode_literals', 'absolute_import',
                                            '__organization__']
 
+
 IGNORE_ICONS                            = ['Widget', 'bright', 'dark', 'charcoal', 'nuker', 'TopTab1', 'TopTab2',
                                            'Organisation', 'Project', 'Team', 'Task', 'ShowAll','ItemWidget',
                                            'BaseManager', 'SettingInput', 'QueryPage', 'SysTray', 'Footer', 'BotTab1',
                                            'BotTab2', 'Cmd', 'User', 'Tracking']
 
-INI                                     = Settings.IniFormat
-NATIVE                                  = Settings.NativeFormat
-INVALID                                 = Settings.InvalidFormat
-SYS_SCOPE                               = Settings.SystemScope
-USER_SCOPE                              = Settings.UserScope
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" Format """
-
-LOG_FORMAT = dict(
-
-    fullOpt                             = "%(levelname)s: %(asctime)s %(name)s, line %(lineno)s: %(message)s",
-    rlm                                 = "(relativeCreated:d) (levelname): (message)",
-    tlm1                                = "{asctime:[{lvelname}: :{message}",
-    tnlm1                               = "%(asctime)s  %(name)-22s  %(levelname)-8s %(message)s",
-    tlm2                                = '%(asctime)s|%(levelname)s|%(message)s|',
-    tnlm2                               = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
-)
-
-DT_FORMAT = dict(
-
-    dmyhms                              = "%d/%m/%Y %H:%M:%S",
-    mdhm                                = "'%m-%d %H:%M'",
-    fullOpt                             = '(%d/%m/%Y %H:%M:%S)',
-)
-
-ST_FORMAT = dict(
-
-    ini                                 = INI,
-    native                              = NATIVE,
-    invalid                             = INVALID,
-)
-
-ST_SCOPE = dict(
-
-    sys                                 = SYS_SCOPE,
-    user                                = USER_SCOPE,
-
-)
 
 datetTimeStamp                          = DateTime.currentDateTime().toString("hh:mm - dd MMMM yy")             # datestamp
 
 
-IMGEXT                                  = "All Files (*);;Img Files (*.jpg);;Img Files (*.png)"
+
 
 
 # -------------------------------------------------------------------------------------------------------------
 """ Font & Text """
 
-TEXT_BOLD                   = QFont.Bold
-TEXT_NORMAL                 = QFont.Normal
-MONO_SPACE                  = QFont.Monospace
+TEXT_BOLD                   = Font.Bold
+TEXT_NORMAL                 = Font.Normal
+MONO_SPACE                  = Font.Monospace
 
 TEXT_MENEOMIC               = Qt.TextShowMnemonic
 
@@ -626,11 +359,11 @@ AUTO_COLOR                  = Qt.AutoColor
 # -------------------------------------------------------------------------------------------------------------
 """ Drawing """
 
-ANTIALIAS                   = QPainter.Antialiasing                                     # Painter
-ANTIALIAS_TEXT              = QPainter.TextAntialiasing
-ANTIALIAS_HIGH_QUALITY      = QPainter.HighQualityAntialiasing
-SMOOTH_PIXMAP_TRANSFORM     = QPainter.SmoothPixmapTransform
-NON_COSMETIC_PEN            = QPainter.NonCosmeticDefaultPen
+ANTIALIAS                   = Painter.Antialiasing                                     # Painter
+ANTIALIAS_TEXT              = Painter.TextAntialiasing
+ANTIALIAS_HIGH_QUALITY      = Painter.HighQualityAntialiasing
+SMOOTH_PIXMAP_TRANSFORM     = Painter.SmoothPixmapTransform
+NON_COSMETIC_PEN            = Painter.NonCosmeticDefaultPen
 
 NO_BRUSH                    = Qt.NoBrush                                                # Brush
 
@@ -733,9 +466,9 @@ dockAll                     = Qt.AllDockWidgetAreas
 # -------------------------------------------------------------------------------------------------------------
 """ setting """
 
-PRS = dict( password    = QLineEdit.Password,       center = center ,   left  = left   ,    right  = right,
-            spmax       = SiPoMax           ,       sppre  = SiPoPre,   spexp = SiPoExp,    spign  = SiPoIgn,
-            expanding   = QSizePolicy.Expanding,    spmin  = SiPoMin,)
+PRS =       dict(password    = QLineEdit.Password,       center = center ,   left  = left   ,    right  = right,
+                 spmax       = SiPoMax           ,       sppre  = SiPoPre,   spexp = SiPoExp,    spign  = SiPoIgn,
+                 expanding   = QSizePolicy.Expanding,    spmin  = SiPoMin,)
 
 """ PLM project base """
 
@@ -753,93 +486,95 @@ PRJ_INFO = dict( APPS               = ["maya", "zbrush", "mari", "nuke", "photos
                  FX                 = ["scenes", "sourceimages", "images", "cache", "reference", "alembic"],
                  ANIM               = ["scenes", "sourceimages", "images", "movie", "alembic"],)
 
-FIX_KEYS = dict( TextEditor         = 'TextEditor', NoteReminder = 'NoteReminder',  Calculator  = 'Calculator',  Calendar  = 'Calendar',
-                 EnglishDictionary  = 'EnglishDictionary',    FindFiles    = 'FindFiles',      ImageViewer = 'ImageViewer', NodeGraph = 'NodeGraph',
-                 Screenshot         = 'Screenshot', )
+FIX_KEYS = dict( TextEditor         = 'TextEditor', NoteReminder = 'NoteReminder',  Calculator  = 'Calculator',
+                 Calendar           = 'Calendar', EnglishDictionary  = 'EnglishDictionary',    FindFiles    = 'FindFiles',
+                 ImageViewer        = 'ImageViewer', NodeGraph = 'NodeGraph', Screenshot = 'Screenshot', )
 
 
 class ColorLibs(dict):
 
     key                             = 'ColorLibs'
 
-    DAMG_LOGO_COLOR                 = QColor(0, 114, 188, 255)
+    DAMG_LOGO_COLOR                 = Color(0, 114, 188, 255)
 
     # Basic color
-    WHITE                           = QColor(Qt.white)
-    LIGHTGRAY                       = QColor(Qt.lightGray)
-    GRAY                            = QColor(Qt.gray)
-    DARKGRAY                        = QColor(Qt.darkGray)
-    BLACK                           = QColor(Qt.black)
-    RED                             = QColor(Qt.red)
-    GREEN                           = QColor(Qt.green)
-    BLUE                            = QColor(Qt.blue)
-    DARKRED                         = QColor(Qt.darkRed)
-    DARKGREEN                       = QColor(Qt.darkGreen)
-    DARKBLUE                        = QColor(Qt.darkBlue)
-    CYAN                            = QColor(Qt.cyan)
-    MAGENTA                         = QColor(Qt.magenta)
-    YELLOW                          = QColor(Qt.yellow)
-    DARKCYAN                        = QColor(Qt.darkCyan)
-    DARKMAGENTA                     = QColor(Qt.darkMagenta)
-    DARKYELLOW                      = QColor(Qt.darkYellow)
+    WHITE                           = Color(Qt.white)
+    LIGHTGRAY                       = Color(Qt.lightGray)
+    GRAY                            = Color(Qt.gray)
+    DARKGRAY                        = Color(Qt.darkGray)
+    BLACK                           = Color(Qt.black)
+    RED                             = Color(Qt.red)
+    GREEN                           = Color(Qt.green)
+    BLUE                            = Color(Qt.blue)
+    DARKRED                         = Color(Qt.darkRed)
+    DARKGREEN                       = Color(Qt.darkGreen)
+    DARKBLUE                        = Color(Qt.darkBlue)
+    CYAN                            = Color(Qt.cyan)
+    MAGENTA                         = Color(Qt.magenta)
+    YELLOW                          = Color(Qt.yellow)
+    DARKCYAN                        = Color(Qt.darkCyan)
+    DARKMAGENTA                     = Color(Qt.darkMagenta)
+    DARKYELLOW                      = Color(Qt.darkYellow)
 
     # Dark Palette color
-    COLOR_BACKGROUND_LIGHT          = QColor('#505F69')
-    COLOR_BACKGROUND_NORMAL         = QColor('#32414B')
-    COLOR_BACKGROUND_DARK           = QColor('#19232D')
+    COLOR_BACKGROUND_LIGHT          = Color('#505F69')
+    COLOR_BACKGROUND_NORMAL         = Color('#32414B')
+    COLOR_BACKGROUND_DARK           = Color('#19232D')
 
-    COLOR_FOREGROUND_LIGHT          = QColor('#F0F0F0')
-    COLOR_FOREGROUND_NORMAL         = QColor('#AAAAAA')
-    COLOR_FOREGROUND_DARK           = QColor('#787878')
+    COLOR_FOREGROUND_LIGHT          = Color('#F0F0F0')
+    COLOR_FOREGROUND_NORMAL         = Color('#AAAAAA')
+    COLOR_FOREGROUND_DARK           = Color('#787878')
 
-    COLOR_SELECTION_LIGHT           = QColor('#148CD2')
-    COLOR_SELECTION_NORMAL          = QColor('#1464A0')
-    COLOR_SELECTION_DARK            = QColor('#14506E')
+    COLOR_SELECTION_LIGHT           = Color('#148CD2')
+    COLOR_SELECTION_NORMAL          = Color('#1464A0')
+    COLOR_SELECTION_DARK            = Color('#14506E')
 
     # Nice color
-    blush                           = QColor(246, 202, 203, 255)
-    petal                           = QColor(247, 170, 189, 255)
-    petunia                         = QColor(231, 62, 151, 255)
-    deep_pink                       = QColor(229, 2, 120, 255)
-    melon                           = QColor(241, 118, 110, 255)
-    pomegranate                     = QColor(178, 27, 32, 255)
-    poppy_red                       = QColor(236, 51, 39, 255)
-    orange_red                      = QColor(240, 101, 53, 255)
-    olive                           = QColor(174, 188, 43, 255)
-    spring                          = QColor(227, 229, 121, 255)
-    yellow                          = QColor(255, 240, 29, 255)
-    mango                           = QColor(254, 209, 26, 255)
-    cantaloupe                      = QColor(250, 176, 98, 255)
-    tangelo                         = QColor(247, 151, 47, 255)
-    burnt_orange                    = QColor(236, 137, 36, 255)
-    bright_orange                   = QColor(242, 124, 53, 255)
-    moss                            = QColor(176, 186, 39, 255)
-    sage                            = QColor(212, 219, 145, 255)
-    apple                           = QColor(178, 215, 140, 255)
-    grass                           = QColor(111, 178, 68, 255)
-    forest                          = QColor(69, 149, 62, 255)
-    peacock                         = QColor(21, 140, 167, 255)
-    teal                            = QColor(24, 157, 193, 255)
-    aqua                            = QColor(153, 214, 218, 255)
-    violet                          = QColor(55, 52, 144, 255)
-    deep_blue                       = QColor(15, 86, 163, 255)
-    hydrangea                       = QColor(150, 191, 229, 255)
-    sky                             = QColor(139, 210, 244, 255)
-    dusk                            = QColor(16, 102, 162, 255)
-    midnight                        = QColor(14, 90, 131, 255)
-    seaside                         = QColor(87, 154, 188, 255)
-    poolside                        = QColor(137, 203, 225, 255)
-    eggplant                        = QColor(86, 5, 79, 255)
-    lilac                           = QColor(222, 192, 219, 255)
-    chocolate                       = QColor(87, 43, 3, 255)
-    blackout                        = QColor(19, 17, 15, 255)
-    stone                           = QColor(125, 127, 130, 255)
-    gravel                          = QColor(181, 182, 185, 255)
-    pebble                          = QColor(217, 212, 206, 255)
-    sand                            = QColor(185, 172, 151, 255)
+    blush                           = Color(246, 202, 203, 255)
+    petal                           = Color(247, 170, 189, 255)
+    petunia                         = Color(231, 62, 151, 255)
+    deep_pink                       = Color(229, 2, 120, 255)
+    melon                           = Color(241, 118, 110, 255)
+    pomegranate                     = Color(178, 27, 32, 255)
+    poppy_red                       = Color(236, 51, 39, 255)
+    orange_red                      = Color(240, 101, 53, 255)
+    olive                           = Color(174, 188, 43, 255)
+    spring                          = Color(227, 229, 121, 255)
+    yellow                          = Color(255, 240, 29, 255)
+    mango                           = Color(254, 209, 26, 255)
+    cantaloupe                      = Color(250, 176, 98, 255)
+    tangelo                         = Color(247, 151, 47, 255)
+    burnt_orange                    = Color(236, 137, 36, 255)
+    bright_orange                   = Color(242, 124, 53, 255)
+    moss                            = Color(176, 186, 39, 255)
+    sage                            = Color(212, 219, 145, 255)
+    apple                           = Color(178, 215, 140, 255)
+    grass                           = Color(111, 178, 68, 255)
+    forest                          = Color(69, 149, 62, 255)
+    peacock                         = Color(21, 140, 167, 255)
+    teal                            = Color(24, 157, 193, 255)
+    aqua                            = Color(153, 214, 218, 255)
+    violet                          = Color(55, 52, 144, 255)
+    deep_blue                       = Color(15, 86, 163, 255)
+    hydrangea                       = Color(150, 191, 229, 255)
+    sky                             = Color(139, 210, 244, 255)
+    dusk                            = Color(16, 102, 162, 255)
+    midnight                        = Color(14, 90, 131, 255)
+    seaside                         = Color(87, 154, 188, 255)
+    poolside                        = Color(137, 203, 225, 255)
+    eggplant                        = Color(86, 5, 79, 255)
+    lilac                           = Color(222, 192, 219, 255)
+    chocolate                       = Color(87, 43, 3, 255)
+    blackout                        = Color(19, 17, 15, 255)
+    stone                           = Color(125, 127, 130, 255)
+    gravel                          = Color(181, 182, 185, 255)
+    pebble                          = Color(217, 212, 206, 255)
+    sand                            = Color(185, 172, 151, 255)
 
     def __init__(self):
         super(ColorLibs, self).__init__()
+
+        self.__dict__.update()
 
 
 colorLibs                           = ColorLibs()
@@ -848,12 +583,14 @@ iconMissing                         = []
 toolTips                            = {}
 statusTips                          = {}
 
+
 # -------------------------------------------------------------------------------------------------------------
 """ Config qssPths from text file """
 
+
 def read_file(fileName):
 
-    filePth = create_path(RAWS_DIR, fileName)
+    filePth = create_path(ROOT, 'docs', 'raws', fileName)
 
     if os.path.exists(filePth):
         with open(filePth) as f:
@@ -863,734 +600,34 @@ def read_file(fileName):
         print("File not found: {0}".format(filePth))
 
 
-ABOUT               = read_file('ABOUT')
-CODEOFCONDUCT       = read_file('CODEOFCONDUCT')
-CONTRIBUTING        = read_file('CONTRIBUTING')
-COPYRIGHT           = read_file('COPYRIGHT')
-CREDIT              = read_file('CREDIT')
-LICENCE             = read_file('LICENSE')
-LINKS               = read_file('LINKS')
-REFERENCES          = read_file('REFERENCES')
-QUESTIONS           = read_file('QUESTION')
-VERSION             = read_file('VERSION')
 
+ABOUT                               = read_file('ABOUT')
+CODEOFCONDUCT                       = read_file('CODEOFCONDUCT')
+CONTRIBUTING                        = read_file('CONTRIBUTING')
+COPYRIGHT                           = read_file('COPYRIGHT')
+CREDIT                              = read_file('CREDIT')
+LICENCE                             = read_file('LICENSE')
+LINKS                               = read_file('LINKS')
+REFERENCES                          = read_file('REFERENCES')
+QUESTIONS                           = read_file('QUESTION')
+VERSION                             = read_file('VERSION')
 
-class Cfg(dict):
 
-    key                             = 'ConfigBase'
-    _filePath                       = None
 
-    def __init__(self):
-        dict.__init__(self)
-
-        self.update()
-
-    def save_data(self):
-        if not self.filePath:
-            return
-
-        if os.path.exists(self.filePath):
-            try:
-                os.remove(self.filePath)
-            except FileNotFoundError:
-                pass
-
-        with open(self.filePath, 'w+') as f:
-            if GLobalSetting.formatSaving == 'json':
-                json.dump(self, f, indent=4)
-            elif GLobalSetting.formatSaving == 'yaml':
-                yaml.dump(self, f, default_flow_style=False)
-            else:
-                # will update more data type library later if need
-                pass
-        return True
-
-    def pprint(self):
-        return pprint.pprint(self)
-
-    def add(self, key, value):
-        self[key]                   = value
-
-    @property
-    def filePath(self):
-        return self._filePath
-
-    @filePath.setter
-    def filePath(self, val):
-        self._filePath              = val
-
-
-class ConfigPython(Cfg):
-
-    key                         = 'ConfigPython'
-    _filePath                   = pythonCfg
-
-    pkgsRequires = {
-
-        'cx_Freeze'             : ['>=', '6.1.0'],
-        'pytest'                : ['>=', '5.3.2'],
-        'pytest-cov'            : ['>=', '2.8.1'],
-        'msgpack'               : ['>=', '0.6.2'],
-        'pip'                   : ['>=', '19.3.1'],
-        'PyQtWebEngine'         : ['>=', '5.14.0'],
-        'PyQt5-sip'             : ['>=', '12.7.0'],
-        'winshell'              : ['>=', '0.6.0'],
-        'helpdev'               : ['>=', '0.6.10'],
-        'deprecate'             : ['>=', '1.0.5'],
-        'argparse'              : ['>=', '1.4.0'],
-        'green'                 : ['>=', '3.1.0'],
-        'GPUtil'                : ['>=', '1.4.0'],
-        'playsound'             : ['>=', '1.2.2'],
-        'python-resize-image'   : ['>=', '1.1.19'],
-        'sphinx'                : ['>=', '3.0.2'],
-        'sphinx_rtd_theme'      : ['>=', '0.4.3'],
-        'reportlab'             : ['>=', '3.5.42'],
-        'zopfli'                : ['>=', '0.1.6'],
-        'fs'                    : ['>=', '2.4.11'],
-    }
-
-    winRequires = {
-
-        'WMI'                   : ['>=', '1.4.9']
-
-    }
-
-
-    macRequires = {}
-
-    utuRequires = {}
-
-    pyqt5Required = {
-
-        'PyQt5'                 : ['>=', '5.14.1'],
-        'PyQtWebEngine'         : ['>=', '5.14.0'],
-        'PyQt5-sip'             : ['>=', '12.7.0'],
-
-    }
-
-    pyside2Required = {
-
-        'Pyside2'               : ['>=', '5.14.1'],
-        'shiboken2'             : ['>=', '5.14.1'],
-
-    }
-
-
-    def __init__(self):
-        Cfg.__init__(self)
-
-        self['python']              = platform.python_build()
-        self['python version']      = platform.python_version()
-
-        pths                        = [p for p in os.getenv('PATH').split(';')[0:]]
-        sys.path                    = [p for p in sys.path]
-
-        for p in pths:
-            if os.path.exists(p):
-                if not p in sys.path:
-                    sys.path.insert(-1, p)
-
-        for py in pkg_resources.working_set:
-            self[py.project_name]   = py.version
-
-        self.check_package_required(self.pkgsRequires)
-
-        if platform.system() == 'Windows':
-            # microsoft windows
-            self.check_package_required(self.winRequires)
-        elif platform.system() == 'Darwin':
-            # mac os
-            self.check_package_required(self.macRequires)
-        else:
-            # untubu
-            self.check_package_required(self.utuRequires)
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printPythonInfo:
-                self.pprint()
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.savePythonInfo:
-                self.save_data()
-
-    def check_package_required(self, pkgs):
-
-        for pk, ver in pkgs.items():
-            if pk not in self.keys():
-                self.install_python_package_required(pk, pkgs)
-            else:
-                conReq = ver[0]
-                verReq = ver[1]
-                verCur = self[pk]
-
-                major, minor, micro     = self.get_version_info(verCur)
-                v1, v2, v3              = self.get_version_info(verReq)
-
-                if conReq == '=>':
-                    if v1 != major or v2 != minor or v3 != micro:
-                        self.install_python_package_required(pk, pkgs)
-                elif conReq == '>=':
-                    if not v1 >= major or not v2 >= minor or not v3 >= micro:
-                        self.install_python_package_required(pk, pkgs)
-                elif conReq == '<=':
-                    if not v1 <= major or not v2 <= minor or not v3 <= micro:
-                        self.install_python_package_required(pk, pkgs)
-                elif conReq == '<':
-                    if not v1 < major or not v2 < minor or not v3 < micro:
-                        self.install_python_package_required(pk, pkgs)
-                elif conReq == '>':
-                    if not v1 > major or not v2 > minor or not v3 > micro:
-                        self.install_python_package_required(pk, pkgs)
-
-    def install_python_package_required(self, pk, reqs):
-
-        pk = 1
-        if pk in reqs.keys():
-            ver                         = reqs[pk]
-            conReq                      = ver[0]
-            if conReq == '==' or conReq == '<=':
-                subprocess.Popen('python -m pip install {0}={1} --user'.format(pk, ver), shell=True).wait()
-            elif conReq == '>=':
-                subprocess.Popen('python -m pip install {0} --user --upgrade'.format(pk, ver), shell=True).wait()
-            else:
-                subprocess.Popen('python -m pip install {0}={1} --user'.format(pk, ver), shell=True).wait()
-
-    def get_version_info(self, ver):
-
-        if len(ver.split('.')) == 1:
-            major               = int(ver.split('.')[0])
-            minor               = 0
-            micro               = 0
-        elif len(ver.split('.')) == 2:
-            major               = int(ver.split('.')[0])
-            minor               = int(ver.split('.')[1])
-            micro               = 0
-        else:
-            major               = int(ver.split('.')[0])
-            minor               = int(ver.split('.')[1])
-            micro               = int(ver.split('.')[2])
-
-        return major, minor, micro
-
-
-class ConfigApps(Cfg):
-
-    key                         = 'ConfigApps'
-    _filePath                   = appsCfg
-
-    def __init__(self):
-        Cfg.__init__(self)
-
-        shortcuts               = {}
-        programs                = winshell.programs(common=1)
-
-        for paths, dirs, names in os.walk(programs):
-            relpath = paths[len(programs) + 1:]
-            shortcuts.setdefault(relpath, []).extend([winshell.shortcut(create_path(paths, n)) for n in names])
-
-        for relpath, lnks in sorted(shortcuts.items()):
-            for lnk in lnks:
-                name, _ = os.path.splitext(os.path.basename(lnk.lnk_filepath))
-                self[str(name)] = lnk.path
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printAppInfo:
-                self.pprint()
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.saveAppInfo:
-                self.save_data()
-
-
-class ConfigPath(Cfg):
-
-    key                             = 'ConfigPath'
-    _filePath                       = pthCfg
-
-    def __init__(self):
-        Cfg.__init__(self)
-
-        self.add('evnInfoCfg'       , evnInfoCfg)
-        self.add('iconCfg'          , iconCfg)
-        self.add('avatarCfg'        , avatarCfg)
-        self.add('logoCfg'          , logoCfg)
-        self.add('webIconCfg'       , webIconCfg)
-        self.add('nodeIconCfg'      , nodeIconCfg)
-        self.add('imageCfg'         , imageCfg)
-        self.add('tagCfg'           , tagCfg)
-        self.add('pythonCfg'        , pythonCfg)
-        self.add('plmCfg'           , plmCfg)
-        self.add('appsCfg'          , appsCfg)
-        self.add('envVarCfg'        , envVarCfg)
-        self.add('dirCfg'           , dirCfg)
-        self.add('pthCfg'           , pthCfg)
-        self.add('deviceCfg'        , pcCfg)
-        self.add('urlCfg'           , urlCfg)
-        self.add('userCfg'          , userCfg)
-        self.add('PLMconfig'        , PLMconfig)
-        self.add('sceneGraphCfg'    , sceneGraphCfg)
-        self.add('splashImagePth'   , splashImagePth)
-        self.add('fontCfg'          , fontCfg)
-
-        self.add('APP_SETTING'      , APP_SETTING)
-        self.add('USER_SETTING'     , USER_SETTING)
-        self.add('FORMAT_SETTING'   , FORMAT_SETTING)
-        self.add('UNIX_SETTING'     , UNIX_SETTING)
-        self.add('LOCAL_DB'         , LOCAL_DB)
-        self.add('LOCAL_LOG'        , LOCAL_LOG)
-        self.add('QSS_PATH'         , QSS_PATH)
-        self.add('MAIN_SCSS_PTH'    , MAIN_SCSS_PTH)
-        self.add('STYLE_SCSS_PTH'   , STYLE_SCSS_PTH)
-        self.add('VAR_SCSS_PTH'     , VAR_SCSS_PTH)
-        self.add('SETTING_FILEPTH'  , SETTING_FILEPTH)
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printPthInfo:
-                self.pprint()
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.savePthInfo:
-                self.save_data()
-
-
-class ConfigDirectory(Cfg):
-
-    key                             = 'ConfigDirectory'
-    _filePath                       = dirCfg
-
-    def __init__(self):
-        Cfg.__init__(self)
-
-        self.add('ROOT', ROOT)
-        self.add('ROOT_APP', ROOT_APP)
-
-        self.add('LIBRARY_DIR', LIBRARY_DIR)
-
-        self.add('APPDATA_DAMG', APPDATA_DAMG)
-        self.add('APPDATA_PLM', APPDATA_PLM)
-        self.add('CFG_DIR', CFG_DIR)
-        self.add('TMP_DIR', TMP_DIR)
-        self.add('CACHE_DIR', CACHE_DIR)
-        self.add('PREF_DIR', PREF_DIR)
-        self.add('SETTING_DIR', SETTING_DIR)
-        self.add('TASK_DIR', TASK_DIR)
-        self.add('TEAM_DIR', TEAM_DIR)
-        self.add('PRJ_DIR', PRJ_DIR)
-        self.add('ORG_DIR', ORG_DIR)
-        self.add('USER_LOCAL_DATA', USER_LOCAL_DATA)
-        self.add('DB_DIR', DB_DIR)
-
-        self.add('DOCS_DIR', DOCS_DIR)
-        self.add('TEMPLATE_DIR', TEMPLATE_DIR)
-        self.add('TEMPLATE_LICENSE', TEMPLATE_LICENSE)
-
-        self.add('INTERGRATIONS_DIR', INTERGRATIONS_DIR)
-
-        self.add('COMMONS_DIR', COMMONS_DIR)
-        self.add('CORE_DIR', CORE_DIR)
-        self.add('DAMG_DIR', DAMG_DIR)
-        self.add('GUI_DIR', GUI_DIR)
-        self.add('NETWORK_DIR', NETWORK_DIR)
-        self.add('WIDGET_DIR', WIDGET_DIR)
-
-        self.add('CORES_DIR', CORES_DIR)
-        self.add('BASE_DIR', BASE_DIR)
-        self.add('LOGGER_DIR', LOGGER_DIR)
-        self.add('MODELS_DIR', MODELS_DIR)
-        self.add('SQL_DIR', SQL_DIR)
-
-        self.add('RESOURCES_DIR', RESOURCES_DIR)
-        self.add('AVATAR_DIR', AVATAR_DIR)
-        self.add('DESIGN_DIR', DESIGN_DIR)
-        self.add('FONT_DIR', FONT_DIR)
-
-        self.add('ICON_DIR', ICON_DIR)
-        self.add('TAG_ICON_DIR', TAG_ICON_DIR)
-        self.add('NODE_ICON_DIR', NODE_ICON_DIR)
-        self.add('WEB_ICON_DIR', WEB_ICON_DIR)
-        self.add('WEB_ICON_16', WEB_ICON_16)
-        self.add('WEB_ICON_24', WEB_ICON_24)
-        self.add('WEB_ICON_32', WEB_ICON_32)
-        self.add('WEB_ICON_48', WEB_ICON_48)
-        self.add('WEB_ICON_64', WEB_ICON_64)
-        self.add('WEB_ICON_128', WEB_ICON_128)
-        self.add('ICON_DIR_12', ICON_DIR_12)
-        self.add('ICON_DIR_16', ICON_DIR_16)
-        self.add('ICON_DIR_24', ICON_DIR_24)
-        self.add('ICON_DIR_32', ICON_DIR_32)
-        self.add('ICON_DIR_48', ICON_DIR_48)
-        self.add('ICON_DIR_64', ICON_DIR_64)
-
-        self.add('IMAGE_DIR', IMAGE_DIR)
-        self.add('JSON_DIR', JSON_DIR)
-        self.add('LOGO_DIR', LOGO_DIR)
-        self.add('DAMG_LOGO_DIR', DAMG_LOGO_DIR)
-        self.add('PLM_LOGO_DIR', PLM_LOGO_DIR)
-        self.add('SOUND_DIR', SOUND_DIR)
-
-        self.add('SCRIPTS_DIR', SCRIPTS_DIR)
-        self.add('CSS_DIR', CSS_DIR)
-        self.add('HTML_DIR', HTML_DIR)
-        self.add('JS_DIR', JS_DIR)
-        self.add('QSS_DIR', QSS_DIR)
-
-        self.add('UI_DIR', UI_DIR)
-        self.add('UI_BASE_DIR', UI_BASE_DIR)
-        self.add('UI_COMPONENTS_DIR', UI_COMPONENTS_DIR)
-        self.add('UI_LAYOUTS_DIR', UI_LAYOUTS_DIR)
-        self.add('UI_MODELS_DIR', UI_MODELS_DIR)
-        self.add('UI_RCS_DIR', UI_RCS_DIR)
-        self.add('UI_TOOLS_DIR', UI_TOOLS_DIR)
-
-        self.add('UTILS_DIR', UTILS_DIR)
-
-        self.add('PLUGIN_DIR', PLUGIN_DIR)
-
-        self.add('TEST_DIR', TEST_DIR)
-
-        self.add('ConfigFolder', CFG_DIR)
-        self.add('IconFolder', ICON_DIR)
-        self.add('SettingFolder', SETTING_DIR)
-        self.add('AppDataFolder', LOCALAPPDATA)
-        self.add('PreferenceFolder', PREF_DIR)
-
-        mode = 0o770
-        for path in self.values():
-            if not os.path.exists(path):
-                head, tail              = os.path.split(path)
-                try:
-                    original_umask = os.umask(0)
-                    os.makedirs(path, mode)
-                finally:
-                    os.umask(original_umask)
-                os.chmod(path, mode)
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printDirInfo:
-                self.pprint()
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.saveDirInfo:
-                self.save_data()
-
-
-class ConfigAvatar(Cfg):
-
-    key                         = 'ConfigAvatar'
-    _filePath                   = avatarCfg
-
-    def __init__(self):
-        Cfg.__init__(self)
-
-        for root, dirs, names in os.walk(AVATAR_DIR, topdown=False):
-            for name in names:
-                self[name.split('.avatar')[0]] = create_path(root, name)
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printAvatarInfo:
-                self.pprint()
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.saveAvatarInfo:
-                self.save_data()
-
-
-class ConfigLogo(Cfg):
-
-    key                                 = 'ConfigLogo'
-    _filePath                           = logoCfg
-
-    def __init__(self):
-        Cfg.__init__(self)
-
-        damgLogos                       = dict()
-        plmLogos                        = dict()
-
-        for root, dirs, names in os.walk(DAMG_LOGO_DIR, topdown=False):
-            for name in names:
-                damgLogos[name.split('.png')[0]] = create_path(root, name)
-
-        for root, dirs, names in os.walk(PLM_LOGO_DIR, topdown=False):
-            for name in names:
-                plmLogos[name.split('.png')[0]] = create_path(root, name)
-
-        self.add('DAMGTEAM', damgLogos)
-        self.add('PLM', plmLogos)
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printAvatarInfo:
-                self.pprint()
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.saveAvatarInfo:
-                self.save_data()
-
-
-class ConfigImage(Cfg):
-
-    key                                 = 'ConfigImage'
-    _filePath                           = imageCfg
-
-    def __init__(self):
-        Cfg.__init__(self)
-
-        for root, dirs, names, in os.walk(IMAGE_DIR, topdown=False):
-            for name in names:
-                self.add(name.split('.node')[0], create_path(root, name))
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printImgInfo:
-                self.pprint()
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.saveImgInfo:
-                self.save_data()
-
-
-class ConfigIcon(Cfg):
-
-    key                                 = 'ConfigIcon'
-    _filePath                           = iconCfg
-
-    def __init__(self):
-        Cfg.__init__(self)
-
-        ks = ['icon12', 'icon16', 'icon24', 'icon32', 'icon48', 'icon64', 'node', 'tag', 'web16', 'web24', 'web32',
-              'web48', 'web64', 'web128']
-        ds = [ICON_DIR_12, ICON_DIR_16, ICON_DIR_24, ICON_DIR_32, ICON_DIR_48, ICON_DIR_64, NODE_ICON_DIR, TAG_ICON_DIR,
-              WEB_ICON_16, WEB_ICON_24, WEB_ICON_32, WEB_ICON_48, WEB_ICON_64, WEB_ICON_128]
-
-        for i in range(len(ks)):
-            k = ks[i]
-            d = ds[i]
-            self.add(k, self.get_icons(d))
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printIconInfo:
-                self.pprint()
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.saveIconInfo:
-                self.save_data()
-
-    def get_icons(self, dir):
-        icons = dict()
-        for root, dirs, names in os.walk(dir, topdown=False):
-            for name in names:
-                icons[name.split('.icon')[0]] = create_path(root, name)
-        return icons
-
-
-class ConfigServer(Cfg):
-
-    key                             = 'ConfigServer'
-    _filePath                       = serverCfg
-
-    def __init__(self):
-        Cfg.__init__(self)
-
-        self.add('vanila'           , __localServer__)
-        self.add('AWS'              , __globalServer__)
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printServerInfo:
-                self.pprint(self)
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.saveServerInfo:
-                self.save_data()
-
-
-class ConfigEnvVar(Cfg):
-
-    key                                 = 'ConfigEnvVar'
-    _filePath                           = envVarCfg
-
-    def __init__(self):
-        Cfg.__init__(self)
-        for k, v in os.environ.items():
-            self[k]                     = v
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printEnvInfo:
-                self.pprint()
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.saveEnvInfo:
-                self.save_data()
-
-    def update(self):
-        for k, v in os.environ.items():
-            self[k]                     = v
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.saveEnvInfo:
-                self.save_data()
-
-
-class ConfigUrl(Cfg):
-
-    key                             = 'ConfigUrl'
-    _filePath                       = urlCfg
-
-    def __init__(self):
-        Cfg.__init__(self)
-
-        self.add('homepage'         , __homepage__)
-        self.add('pythonTag'        , PYTHON_TAG)
-        self.add('licenceTag'       , LICENCE_TAG)
-        self.add('versionTag'       , VERSION_TAG)
-        self.add('PLM wiki'         , __plmWiki__)
-        self.add('goole'            , __google__)
-        self.add('google vn'        , __googleVN__)
-        self.add('google nz'        , __googleNZ__)
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printUrlInfo:
-                self.pprint()
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.saveUrlInfo:
-                self.save_data()
-
-
-class ConfigTypes(Cfg):
-
-    key                     = 'ConfigTypes'
-    _filePath               = typeCfg
-
-    def __init__(self):
-        Cfg.__init__(self)
-
-        self['actionTypes'] = actionTypes
-        self['layoutTypes'] = layoutTypes
-        self['DB_ATTRIBUTE_TYPE'] = DB_ATTRIBUTE_TYPE
-        self['CMD_VALUE_TYPE'] = CMD_VALUE_TYPE
-        self['RAMTYPE'] = RAMTYPE
-        self['FORMFACTOR'] = FORMFACTOR
-        self['CPUTYPE'] = CPUTYPE
-        self['DRIVETYPE'] = DRIVETYPE
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printTypeInfo:
-                self.pprint()
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.saveTypeInfo:
-                self.save_data()
-
-
-class ConfigFormats(Cfg):
-
-    key                     = 'ConfigFormats'
-    _filePath               = fmtCfg
-
-    def __init__(self):
-        Cfg.__init__(self)
-
-        self.add('INI'      , INI)
-        self.add('NATIVE', NATIVE)
-        self.add('INVALID', INVALID)
-        self.add('LOG_FORMAT', LOG_FORMAT)
-        self.add('DT_FORMAT' , DT_FORMAT)
-        self.add('ST_FORMAT'  , ST_FORMAT)
-        self.add('dt datetTimeStamp' , datetTimeStamp)
-        self.add('IMGEXT ext', IMGEXT)
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printFmtInfo:
-                self.pprint()
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.saveFmtInfo:
-                self.save_data()
-
-
-class ConfigFonts(Cfg):
-
-    key                     = 'ConfigFonts'
-    _filePath               = fontCfg
-
-    def __init__(self):
-        Cfg.__init__(self)
-
-        from PyQt5.QtGui    import QFontDatabase
-        self.fontData       = QFontDatabase()
-
-        installedFont       = self.update_installed_fonts()
-        filePths            = []
-
-        for root, dirs, fontPth in os.walk(FONT_DIR, topdown=False):
-            for filename in fontPth:
-                filePths.append(create_path(root, filename))  # Add to file list.
-
-        for pth in filePths:
-            fontName        = os.path.basename(pth).split('.')[0]
-            if not fontName in installedFont:
-                self.fontData.addApplicationFont(pth)
-
-        for family in self.fontData.families():
-            fontStyle       = []
-            for style in self.fontData.styles(family):
-                fontStyle.append(style)
-
-            self[family]    = fontStyle
-
-
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printFontInfo:
-                self.pprint()
-
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.saveFontInfo:
-                self.save_data()
-
-
-    def update_installed_fonts(self):
-        fonts               = []
-        for family in self.fontData.families():
-            for font in self.fontData.styles(family):
-                fonts.append(font)
-        return fonts
-
-
-class CommandData(dict):
-
-    key                             = 'CommandData'
-
-    def __init__(self, key=None, icon=None, tooltip=None, statustip=None,
-                       value=None, valueType=None, arg=None, code=None):
-        super(CommandData, self).__init__()
-
-        self.key                    = key
-        self.icon                   = icon
-        self.toolTip                = tooltip
-        self.statusTip              = statustip
-        self.value                  = value
-        self.valueType              = valueType
-        self.arg                    = arg
-        self.code                   = code
-
-        ks = ['key', 'icon', 'tooltip', 'statustip', 'value', 'valueType', 'arg', 'code']
-        vs = [key, icon, tooltip, statustip, value, valueType, arg, code]
-
-        for i in range(len(ks)):
-            self[ks[i]]             = vs[i]
-
-
-class ConfigPipeline(Cfg):
+class ConfigPipeline(Pls):
 
     key                         = 'ConfigPipeline'
-    _filePath                   = plmCfg
 
-    def __init__(self, iconInfo, appInfo, urlInfo, dirInfo, pthInfo):
-        Cfg.__init__(self)
 
-        self.iconInfo           = iconInfo
-        self.appInfo            = appInfo
-        self.urlInfo            = urlInfo
-        self.dirInfo            = dirInfo
-        self.pthInfo            = pthInfo
+    dirInfo                     = ConfigDirs()
+    pthInfo                     = ConfigPths()
+    iconInfo                    = ConfigIcons()
+    appInfo                     = ConfigApps()
+    urlInfo                     = ConfigUrls()
+
+
+    def __init__(self):
+        super(ConfigPipeline, self).__init__()
 
         removeKeys              = []
         launchAppKeys           = []
@@ -1655,7 +692,7 @@ class ConfigPipeline(Cfg):
 
             tooltip = toolTips[key]
             statustip = statusTips[key]
-            self.add(key, CommandData(key, icon, tooltip, statustip, value, valueType, arg, code))
+            self.add(key, Cmds(key, icon, tooltip, statustip, value, valueType, arg, code))
 
         for key in functionKeys:
 
@@ -1720,7 +757,7 @@ class ConfigPipeline(Cfg):
 
             tooltip = toolTips[key]
             statustip = statusTips[key]
-            self.add(key, CommandData(key, icon, tooltip, statustip, value, valueType, arg, code))
+            self.add(key, Cmds(key, icon, tooltip, statustip, value, valueType, arg, code))
 
         for key in layoutKeys:
             if not key in launchAppKeys:
@@ -1740,14 +777,14 @@ class ConfigPipeline(Cfg):
 
                 tooltip = toolTips[key]
                 statustip = statusTips[key]
-                self.add(key, CommandData(key, icon, tooltip, statustip, value, valueType, arg, code))
+                self.add(key, Cmds(key, icon, tooltip, statustip, value, valueType, arg, code))
 
-        if GLobalSetting.printCfgInfo:
-            if GLobalSetting.printPlmInfo:
+        if glbSettings.printCfgInfo:
+            if glbSettings.printPlmInfo:
                 self.pprint()
 
-        if GLobalSetting.saveCfgInfo:
-            if GLobalSetting.savePlmInfo:
+        if glbSettings.saveCfgInfo:
+            if glbSettings.savePlmInfo:
                 self.save_data()
 
     def del_key(self, key):
@@ -1758,305 +795,6 @@ class ConfigPipeline(Cfg):
 
 
 
-if platform.system() == 'Windows':
-    import wmi
-
-    PIPE                        = subprocess.PIPE
-    STDOUT                      = subprocess.STDOUT
-    runs                        = subprocess.Popen
-    sysKey                      = 'SYSTEMINFO'
-    optKey1                     = 'OS Configuration'
-    igCase                      = re.IGNORECASE
-    scr                         = runs(sysKey, stdin=PIPE, stdout=PIPE).communicate()[0].decode('utf-8')
-    optInfo1                    = re.findall("{0}:\w*(.*?)\n".format(optKey1), scr, igCase)
-    com                         = wmi.WMI()
-    operatingSys                = com.Win32_OperatingSystem()
-    computerSys                 = com.Win32_ComputerSystem()
-    biosSys                     = com.Win32_BIOS()
-    baseBoardSys                = com.Win32_BaseBoard()
-    processorSys                = com.Win32_Processor()
-    displaySys                  = com.Win32_DisplayControllerConfiguration()
-    memorySys                   = com.Win32_PhysicalMemory()
-    logicalDiskSys              = com.Win32_LogicalDisk()
-    cdromSys                    = com.Win32_CDROMDrive()
-    diskDriveSys                = com.Win32_DiskDrive()
-    pciSys                      = com.Win32_IDEController()
-    networkSys                  = com.Win32_NetworkAdapter()
-    keyboardSys                 = com.Win32_Keyboard()
-    miceSys                     = com.Win32_PointingDevice()
-    totalRam                    = computerSys[0].TotalPhysicalMemory
-
-    class ConfigMachine(Cfg):
-
-        key                     = 'ConfigMachine'
-        _filePath               = pcCfg
-
-        usbCount = dvdCount = hddCount = pttCount = gpuCount = pciCount = keyboardCount = netCount = ramCount = 1
-        miceCount = cpuCount = biosCount = osCount = screenCount = 1
-
-        def __init__(self):
-            super(ConfigMachine, self).__init__()
-
-            self['os']          = self.osInfo()
-            self['bios']        = self.biosInfo()
-            self['cpu']         = self.cpuInfo()
-            self['gpu']         = self.gpuInfo()
-            self['monitors']    = self.screenInfo()
-            self['ram']         = self.ramInfo()
-            self['drivers']     = self.driverInfo()
-            self['PCIs']        = self.pciInfo()
-            self['network']     = self.networkInfo()
-            self['keyboard']    = self.keyboardInfo()
-            self['mice']        = self.miceInfo()
-
-            if GLobalSetting.printCfgInfo:
-                if GLobalSetting.printPcInfo:
-                    self.pprint()
-
-            if GLobalSetting.saveCfgInfo:
-                if GLobalSetting.savePcInfo:
-                    self.save_data()
-
-        def osInfo(self, **info):
-            for o in operatingSys:
-                ops = {}
-                key = 'os {0}'.format(self.osCount)
-                ops['brand'] = o.Manufacturer
-                ops['os name'] = o.Caption
-                ops['device name'] = computerSys[0].DNSHostName
-                ops['device type'] = [item.strip() for item in optInfo1][0]
-                ops['registered email'] = o.RegisteredUser
-                ops['organisation'] = o.Organization
-                ops['version'] = o.Version
-                ops['os architecture'] = o.OSArchitecture
-                ops['serial number'] = o.SerialNumber
-                ops['mac adress'] = ':'.join(re.findall('..', '%012x' % uuid.getnode()))
-                info[key] = ops
-                self.osCount += 1
-            return info
-
-        def biosInfo(self, **info):
-            for b in biosSys:
-                bios = {}
-                key = 'bios {0}'.format(self.biosCount)
-                bios['brand'] = computerSys[0].Manufacturer
-                bios['name'] = b.Manufacturer
-                bios['model'] = baseBoardSys[0].Product
-                bios['type'] = computerSys[0].SystemType
-                bios['version'] = b.BIOSVersion
-                bios['sockets'] = computerSys[0].NumberOfProcessors
-                info[key] = bios
-                self.biosCount += 1
-            return info
-
-        def cpuInfo(self, **info):
-            for c in processorSys:
-                cpu = {}
-                key = 'cpu {0}'.format(self.cpuCount)
-                cpu['name'] = c.Name
-                cpu['cores'] = c.NumberOfCores
-                cpu['threads'] = c.NumberOfLogicalProcessors
-                cpu['family'] = c.Caption
-                cpu['max speed'] = '{0} GHz'.format(int(c.MaxClockSpeed) / 1000)
-                cpu['type'] = CPUTYPE[c.ProcessorType]
-                cpu['l2 size'] = '{0} MB'.format(c.L2CacheSize)
-                cpu['l3 size'] = '{0} MB'.format(c.L3CacheSize)
-                info[key] = cpu
-                self.cpuCount += 1
-            return info
-
-        def gpuInfo(self, **info):
-            for g in displaySys:
-                gpu = {}
-                key = 'gpu {0}'.format(self.gpuCount)
-                gpu['name'] = g.Name
-                gpu['refresh rate'] = g.RefreshRate
-                gpu['bit rate'] = g.BitsPerPixel
-                info[key] = gpu
-                self.gpuCount += 1
-            return info
-
-        def screenInfo(self, **info):
-
-            allScreens = QApplication.screens()
-
-            for index, screen_no in enumerate(allScreens):
-                screenInfo = {}
-                key = 'screen {0}'.format(self.screenCount)
-                screen = allScreens[index]
-                screenInfo['resolution'] = '{0}x{1}'.format(screen.size().width(), screen.size().height())
-                screenInfo['depth'] = screen.depth()
-                screenInfo['serial'] = screen.serialNumber()
-                screenInfo['brand'] = screen.manufacturer()
-                screenInfo['model'] = screen.model()
-                screenInfo['name'] = screen.name()
-                screenInfo['dpi'] = screen.physicalDotsPerInch()
-                info[key] = screenInfo
-                self.screenCount += 1
-            return info
-
-        def ramInfo(self, **info):
-            rams = []
-            for r in memorySys:
-                ram = {}
-                key = 'ram {0}'.format(self.ramCount)
-                ram['capacity'] = '{0} GB'.format(round(int(r.Capacity) / (1024.0 ** 3)))
-                ram['bus'] = r.ConfiguredClockSpeed
-                ram['location'] = r.DeviceLocator
-                ram['form'] = FORMFACTOR[r.FormFactor]
-                ram['type'] = RAMTYPE[r.MemoryType]
-                ram['part number'] = r.PartNumber
-                rams.append(ram['capacity'])
-                info[key] = ram
-                self.ramCount += 1
-
-            info['total'] = '{0} GB'.format(round(int(totalRam) / (1024.0 ** 3)))
-            info['details'] = rams
-            info['rams'] = len(memorySys)
-            return info
-
-        def driverInfo(self, **info):
-            for physical_disk in diskDriveSys:
-
-                try:
-                    physical_disk.associators("Win32_DiskDriveToDiskPartition")
-                except Exception:
-                    print('Error occur due to the use of multi thread')
-                    import psutil
-                    disk = {}
-                    key = 'Hard Drive'
-                    for partition in psutil.disk_partitions():
-                        disk[partition.mountpoint] = (partition.fstype, partition.device)
-                    info[key] = disk
-                else:
-                    if physical_disk.associators("Win32_DiskDriveToDiskPartition") == []:
-                        disk = {}
-                        key = 'USB drive {0}'.format(self.usbCount)
-                        disk['brand'] = (physical_disk.PNPDeviceID).replace('SCSI\\DISK&VEN_', '').split('&PROD')[0]
-                        disk['index'] = physical_disk.Index
-                        disk['name'] = physical_disk.Name.replace('\\\\.\\', '')
-                        disk['model'] = physical_disk.Model
-                        disk['partition'] = physical_disk.Partitions
-                        disk['size'] = '0 GB'
-                        disk['type'] = DRIVETYPE[2]
-                        for d in logicalDiskSys:
-                            if d.DriveType == 2:
-                                disk['path'] = '{0}/'.format(d.Caption)
-
-                        disk['firmware'] = physical_disk.FirmwareRevision
-                        info[key] = disk
-                        self.usbCount += 1
-                    else:
-                        for partition in physical_disk.associators("Win32_DiskDriveToDiskPartition"):
-                            if partition.associators("Win32_LogicalDiskToPartition") == []:
-                                disk = {}
-                                key = 'partition {0}'.format(self.pttCount)
-                                disk['brand'] = (physical_disk.PNPDeviceID).replace('SCSI\\DISK&VEN_', '').split('&PROD')[0]
-                                disk['firmware'] = physical_disk.FirmwareRevision
-                                disk['index'] = '{0} - {1}'.format(partition.DiskIndex, partition.Index)
-                                disk['name'] = partition.Name
-                                disk['model'] = physical_disk.Model
-                                disk['partition'] = partition.Caption
-                                disk['size'] = '{0} GB'.format(round(int(partition.size) / (1024.0 ** 3)))
-                                disk['block'] = '{0} MB'.format(round(int(partition.NumberOfBlocks) / (1024.0 ** 2)))
-                                disk['offset'] = '{0} GB'.format(round(int(partition.StartingOffset) / (1024.0 ** 3)))
-                                disk['type'] = partition.Type
-                                info[key] = disk
-                                self.pttCount += 1
-                            else:
-                                for logical_disk in partition.associators("Win32_LogicalDiskToPartition"):
-                                    disk = {}
-                                    key = 'harddrive {0}'.format(self.hddCount)
-                                    disk['brand'] = \
-                                    (physical_disk.PNPDeviceID).replace('SCSI\\DISK&VEN_', '').split('&PROD')[0]
-                                    disk['path'] = '{0}/'.format(logical_disk.Caption)
-                                    disk['index'] = physical_disk.Index
-                                    disk['name'] = '{0} ({1})'.format(logical_disk.VolumeName, logical_disk.Caption)
-                                    disk['model'] = physical_disk.Model
-                                    disk['partition'] = partition.Caption
-                                    disk['size'] = '{0} GB'.format(round(int(logical_disk.size) / (1024.0 ** 3)))
-                                    disk['free size'] = '{0} GB'.format(round(int(logical_disk.FreeSpace) / (1024.0 ** 3)))
-                                    disk['type'] = DRIVETYPE[logical_disk.DriveType]
-                                    disk['firmware'] = physical_disk.FirmwareRevision
-                                    disk['setup type'] = logical_disk.FileSystem
-                                    info[key] = disk
-                                    self.hddCount += 1
-
-            if not cdromSys is []:
-                disk = {}
-                key = 'CD drive {0}'.format(self.dvdCount)
-                disk['brand'] = (cdromSys[0].DeviceID).replace('SCSI\\DISK&VEN_', '').split('&PROD')[0]
-                disk['path'] = '{0}/'.format(cdromSys[0].Drive)
-                disk['index'] = cdromSys[0].Id
-                disk['name'] = cdromSys[0].Name
-                disk['model'] = cdromSys[0].Caption
-                disk['type'] = cdromSys[0].MediaType
-                info[key] = disk
-                self.dvdCount += 1
-
-            return info
-
-        def pciInfo(self, **info):
-            for p in pciSys:
-                pci = {}
-                key = 'PCI rack {0}'.format(self.pciCount)
-                pci['name'] = p.Name
-                pci['id'] = p.DeviceID
-                pci['status'] = p.Status
-                info[key] = pci
-                self.pciCount += 1
-            return info
-
-        def networkInfo(self, **info):
-            info['LAN ip'] = socket.gethostbyname(socket.gethostname())
-            for n in networkSys:
-                if n.AdapterType:
-                    network = {}
-                    key = 'network device {0}'.format(self.netCount)
-                    network['name'] = n.Name
-                    network['brand'] = n.Manufacturer
-                    network['id'] = n.DeviceID
-                    network['uid'] = n.GUID
-                    network['index'] = n.Index
-                    network['MacAdress'] = n.MACAddress
-                    network['connect id'] = n.NetConnectionID
-                    network['service name'] = n.ServiceName
-                    network['speed'] = n.Speed
-                    network['type'] = n.AdapterType
-                    network['type id'] = n.AdapterTypeID
-                    info[key] = network
-                    self.netCount += 1
-            return info
-
-        def keyboardInfo(self, **info):
-            for k in keyboardSys:
-                keyboard = {}
-                key = 'keyboard {0}'.format(self.keyboardCount)
-                keyboard['name'] = k.Name
-                keyboard['id'] = k.DeviceID
-                keyboard['status'] = k.Status
-                info[key] = keyboard
-                self.keyboardCount += 1
-            return info
-
-        def miceInfo(self, **info):
-            for m in miceSys:
-                mice = {}
-                key = 'mice {0}'.format(self.miceCount)
-                mice['brand'] = m.Manufacturer
-                mice['name'] = m.Name
-                mice['id'] = m.DeviceID
-                mice['status'] = m.Status
-                info[key] = mice
-                self.miceCount += 1
-
-            return info
-
-iconInfo                           = ConfigIcon()
-
-if not os.path.exists(LOCAL_DB):
-    from PLM.cores.data import PresetDB
-    localDB = PresetDB(filename=LOCAL_DB)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 10:45 PM

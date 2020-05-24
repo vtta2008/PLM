@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import GLobalSetting
+from PLM.settings import globalSettings
 
 """ Import """
 
@@ -45,21 +45,21 @@ class EnvHandler(DAMG):
         try:
             os.getenv(key)
         except KeyError:
-            if GLobalSetting.checks.report:
+            if globalSettings.checks.report:
                 print('{0} is not existed, create new environment configKey.'.format(key))
             subprocess.Popen('SetX {0} {1}'.format(key, value), shell=True).wait()
         else:
             if os.getenv(key) is None:
-                if GLobalSetting.checks.report:
+                if globalSettings.checks.report:
                     print('{0} has value as None, assign showLayout_new value {1}'.format(key, value))
                 subprocess.Popen('SetX {0} {1}'.format(key, value), shell=True).wait()
             else:
                 if os.getenv(key) != value:
-                    if GLobalSetting.checks.report:
+                    if globalSettings.checks.report:
                         print('{0} has different value, edit to: {1}'.format(key, value))
                     subprocess.Popen('SetX {0} {1}'.format(key, value), shell=True).wait()
                 else:
-                    if GLobalSetting.checks.report:
+                    if globalSettings.checks.report:
                         print('{0} has already been set to {1}'.format(key, value))
 
         self.update()
@@ -71,7 +71,7 @@ class EnvHandler(DAMG):
             print('EnvKeyError: {0} does not exist'.format(envKey))
             pass
         else:
-            if GLobalSetting.checks.report:
+            if globalSettings.checks.report:
                 print('Delete environment configKey: {0}'.format(envKey))
             subprocess.Popen('REG delete HKCU\Environment /F /V {0}'.format(envKey), shell=True).wait()
 

@@ -20,8 +20,8 @@ from .DockWidget        import DockStamp, DockWidget, NoteStamp
 from .GraphicItem       import GraphicItem
 from .GraphicsObject    import GraphicsObject
 from .GraphicPathItem   import GraphicPathItem
-from .GraphicsScene      import GraphicsScene
-from .GraphicsView       import GraphicsView
+from .GraphicsScene     import GraphicsScene
+from .GraphicsView      import GraphicsView
 from .GridLayout        import GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
 from .GroupBox          import GroupBox, GroupGrid, GroupHBox, GroupVBox
 from .ItemDelegate      import ItemDelegate

@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # Python
-import json, inspect
+import json
 
 # PLM
 from PLM import __copyright__

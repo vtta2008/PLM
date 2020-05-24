@@ -11,19 +11,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-
-# PLM
-from .damg                      import DAMG
-
-class API(DAMG):
-
-    key                         = 'API'
-
-    def __init__(self):
-        super(API, self).__init__()
-
-
+from .globalSettings        import GlobalSettings
+from .appSettings           import AppSettings
+from .registrySettings      import RegSettings
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

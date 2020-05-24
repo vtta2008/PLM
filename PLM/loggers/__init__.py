@@ -1,22 +1,23 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: 
+Script Name: __init__.py.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
-
+    
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
 
-# Python
 
-# PLM
-from PLM import __copyright__
+from . import Loggers
+
+Loggers.install()
+
+from .Loggers import Loggers
 
 
 # -------------------------------------------------------------------------------------------------------------
-# Created by Trinh Do on 5/6/2020 - 3:13 AM
-# © 2017 - 2020 DAMGteam. All rights reserved
+# Created by panda on 1/16/2020 - 7:44 PM
+# © 2017 - 2019 DAMGteam. All rights reserved

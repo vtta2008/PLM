@@ -18,36 +18,35 @@ from termcolor                          import cprint
 
 
 # PLM
-from PLM.types.baseType import BaseInfo, construct_class, Iterator, Reserved
+from .baseType                          import BaseInfo, construct_class, Iterator, Reserved
 
 
-infoDoc                             = 'PLM documentations'
+infoDoc                                 = 'PLM documentations'
 
 # -------------------------------------------------------------------------------------------------------------
 """ Type Version """
 
-__majorVersion__                    = 13
-__minorVersion__                    = 0
-__microVersion__                    = 1
+__majorVersion__                        = 13
+__minorVersion__                        = 0
+__microVersion__                        = 1
 
-versionContent                      = (__majorVersion__, __minorVersion__, __microVersion__)
-versionInfo                         = BaseInfo(versionContent)
-versionInfo.key                     = 'VersionInfo'
-versionInfo.Type                    = 'DAMGVERSIONINFO'
-versionDataInfo                     = {'doc': infoDoc, 'name': 'Version', 'module': 'PLM'}
-versionConstruct                    = construct_class(versionInfo, versionDataInfo)
-
+versionContent                          = (__majorVersion__, __minorVersion__, __microVersion__)
+versionInfo                             = BaseInfo(versionContent)
+versionInfo.key                         = 'VersionInfo'
+versionInfo.Type                        = 'DAMGVERSIONINFO'
+versionDataInfo                         = {'doc': infoDoc, 'name': 'Version', 'module': 'PLM'}
+versionConstruct                        = construct_class(versionInfo, versionDataInfo)
 
 
 class VersionType(type):
 
-    key                             = 'VersionType'
-    Type                            = 'DAMGVERSION'
+    key                                 = 'VersionType'
+    Type                                = 'DAMGVERSION'
 
-    _step                           = 1
-    _majo_step                      = 1
-    _mino_step                      = 1
-    _micro_step                     = 1
+    _step                               = 1
+    _majo_step                          = 1
+    _mino_step                          = 1
+    _micro_step                         = 1
 
     def __new__(cls, *args, **kwargs):
         newType = type.__new__(VersionType, 'Version', (VersionType,), versionConstruct)
@@ -96,60 +95,97 @@ class VersionType(type):
 
     @majo_step.setter
     def majo_step(self, val):
-        self._majo_step                 = val
+        self._majo_step                     = val
 
     @mino_step.setter
     def mino_step(self, val):
-        self._mino_step                 = val
+        self._mino_step                     = val
 
     @micro_step.setter
     def micro_step(self, val):
-        self._micro_step                = val
+        self._micro_step                    = val
 
     @step.setter
     def step(self, val):
-        self._step                      = val
+        self._step                          = val
 
 
-    __version__                         = '.'.join(str(i) for i in versionInfo)
+    __version__                             = '.'.join(str(i) for i in versionInfo)
 
-    __qualname__                        = 'Version'
+    __qualname__                            = 'Version'
 
+
+
+# -------------------------------------------------------------------------------------------------------------
+""" Type Property """
+
+
+propertyContent                         = ()
+propertyInfo                            = BaseInfo(propertyContent)
+propertyInfo.key                        = 'PropertyInfo'
+propertyInfo.Type                       = 'DAMGPROPERTYINFO'
+propertyDataInfo                        = {'doc': infoDoc, 'name': 'Version', 'module': 'PLM'}
+propertyConstruct                       = construct_class(propertyInfo, propertyDataInfo)
+
+# print(glbProps.__dict__)
+
+class PropertyType(type):
+
+    key                                 = 'PropertyType'
+    Type                                = 'DAMGPROPERTY'
+
+    def __new__(cls, *args, **kwargs):
+        newType = type.__new__(PropertyType, 'PropData', (PropertyType,), propertyConstruct)
+        return newType
+
+    def __init__(self):
+        self.__new__()
+        super(PropertyType, self).__init__(self, PropertyType)
+
+    def __bases__(cls):
+        return type.__new__(PropertyType, 'PropData', (PropertyType, ), propertyConstruct)
+
+    def __str__(self):
+        return self.__str__
+
+    def __call__(self):
+        return isinstance(self, type)
 
 
 # -------------------------------------------------------------------------------------------------------------
 """ Type PropertyData """
 
 
-cwd                                  = os.path.abspath(os.getcwd())
-par                                  = os.path.abspath(os.path.join(cwd, os.pardir))
-bindir                               = os.path.join(par, 'bin')
-propFile                             = os.path.join(bindir, 'global.properties').replace('\\', '/')
-p                                    = Properties()
+cwd                                     = os.path.abspath(os.getcwd())
+par                                     = os.path.abspath(os.path.join(cwd, os.pardir))
+bindir                                  = os.path.join(par, 'bin')
+propFile                                = os.path.join(bindir, 'global.properties').replace('\\', '/')
+p                                       = Properties()
 
 if not os.path.exists(propFile) or not os.path.isfile(propFile):
-    cprint("WARNING: Could not find property file")
-    propContent                      = None
-    propDataContent                  = tuple()
+    cprint("WARNING: Could not find property file", color='red', attrs=['bold', ])
+    propDataContent                     = tuple()
 else:
-    propContent                      = p.load(open(propFile))
-    propDataContent                  = (k for k in propContent.keys())
+    p.load(open(propFile))
+    p.list()
+    propDataContent                     = (k for k in p.keys())
 
-propDataInfo                         = BaseInfo(propDataContent)
-propDataInfo.key                     = 'PropDataInfo'
-propDataInfo.Type                    = 'DAMGPROPDATAINFO'
-propDataDataInfo                     = {'doc': infoDoc, 'name': 'Version', 'module': 'PLM'}
-propDataConstruct                    = construct_class(propDataInfo, propDataDataInfo)
-
+propDataInfo                            = BaseInfo(propDataContent)
+propDataInfo.key                        = 'PropDataInfo'
+propDataInfo.Type                       = 'DAMGPROPDATAINFO'
+propDataDataInfo                        = {'doc': infoDoc, 'name': 'Version', 'module': 'PLM'}
+propDataConstruct                       = construct_class(propDataInfo, propDataDataInfo)
 
 
 class PropDataType(type):
 
-    key                             = 'PropDataType'
-    Type                            = 'DAMGPROPDATA'
+    key                                 = 'PropDataType'
+    Type                                = 'DAMGPROPDATA'
 
-    _default                        = dict()
-    _missing                        = list()
+    _values                             = list()
+    _keys                               = list()
+    _default                            = dict()
+    _missing                            = list()
 
     def __new__(cls, *args, **kwargs):
         newType = type.__new__(PropDataType, 'PropData', (PropDataType,), propDataConstruct)
@@ -158,8 +194,6 @@ class PropDataType(type):
     def __init__(self):
         self.__new__()
         super(PropDataType, self).__init__(self, PropDataType)
-
-
 
     def __bases__(cls):
         return type.__new__(PropDataType, 'PropData', (PropDataType, ), propDataConstruct)
@@ -262,20 +296,14 @@ class PropDataType(type):
             else:
                 return True
 
-    def __contains__(self, item):
-        return len(self._keys) > 0
+    def findProp(self, name):
+        return name in self._keys
 
-    def __len__(self):
-        return len(self._keys)
-
-    def __iter__(self):
-        return Iterator(self)
-
-    def __reversed__(self):
-        return Reserved(self)
+    def setter(self, setter):
+        return self.__class__
 
     def __eq__(self, other):
-        our_key = self.key_values()
+        our_key = self.key_values
         return (our_key == other.key_values if our_key and isinstance(other, PropDataType) else NotImplemented)
 
     def __ge__(self, other):
@@ -301,24 +329,52 @@ class PropDataType(type):
     def __repr__(self):
         return self.render_properties(*self.repr_properties)
 
-    def __hash__(self):
-        return hash(PropDataType) ^ hash(self.key_values)
+    def __set__(self, obj, name, value):
+        setattr(obj, name, value)
 
+    def __setitem__(self, name, value):
+
+        if not self.findProp(name):
+            self._keys.append(name)
+            self._values.append(value)
+        else:
+            index = self._keys.index(name)
+            self._values[index] = value
+
+    def __getattribute__(self, name):
+        if hasattr(self, name):
+            self.__getitem__(name)
+
+    def __getitem__(self, name):
+        if self.findProp(name):
+            return self._values[self._keys.index(name)]
+        else:
+            return KeyError("{0} does not exists".format(name))
+
+    def __iter__(self):
+        return Iterator(self)
+
+    def __reversed__(self):
+        return Reserved(self)
+
+    def __len__(self):
+        return len(self._keys)
+
+    def __sizeof__(self):
+        pass
 
     @property
     def default(self):
-
         """
         A set of default property data under dict type. They are settings and values of global settings. All the default
         data is stored in a property file and would be updated in realtime.
         :return: A dict of default global setting, keys are setting name function and values are values had been set to.
         """
-
-        if propContent:
-            for k, v in propContent.items():
-                self._default[k]                = v
+        if p:
+            for k, v in p.items():
+                self._default[k]                    = v
         else:
-            self._default                       = {}
+            self._default                           = {}
 
         return self._default
 
@@ -326,13 +382,29 @@ class PropDataType(type):
     def missing(self):
         return self._missing
 
+    @property
+    def keys(self):
+        return self._keys
+
+    @property
+    def values(self):
+        return self._values
+
+    @values.setter
+    def values(self, val):
+        self._values                                = val
+
+    @keys.setter
+    def keys(self, val):
+        self._keys                                  = val
+
     @default.setter
     def default(self, val):
-        self._default                           = val
+        self._default                               = val
 
     @missing.setter
     def missing(self, val):
-        self._missing                           = val
+        self._missing                               = val
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

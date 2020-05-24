@@ -163,7 +163,6 @@ def set_property(obj, name, value):
     is intentional: :func:`set_property()` is meant to be used by extensions of
     the `property-manager` project and by user defined setter methods.
     """
-    logger.spam("Setting value of %s property to %r ..", format_property(obj, name), value)
     obj.__dict__[name] = value
 
 
@@ -177,7 +176,6 @@ def clear_property(obj, name):
     is intentional: :func:`clear_property()` is meant to be used by extensions
     of the `property-manager` project and by user defined deleter methods.
     """
-    logger.spam("Clearing value of %s property ..", format_property(obj, name))
     obj.__dict__.pop(name, None)
 
 

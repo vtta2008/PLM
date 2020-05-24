@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # Python
-import json, enum
+import json, enum, logging
 
 
 
@@ -68,33 +68,27 @@ class LogLevel(enum.IntEnum):
     Fatal                           = 50
 
     @classmethod
-    def getbyname(cls, name):
+    def getbyname(cls, name: str):
         lookup = { level.name.lower(): level for level in cls }
         return lookup[name.lower()]
 
     @classmethod
     def getnames(cls):
-        levels = list(cls)
-        levels.sort(key = lambda level: int(level))
+
+        levels                      = list(cls)
+        levels.sort(key             = lambda level: int(level))
         return [ level.name for level in levels ]
 
     @classmethod
-    def getbyverbosity(cls, intvalue):
+    def getbyverbosity(cls, value: int):
         maxvalue = max(int(level) for level in cls)
 
-        if intvalue > maxvalue:
-            intvalue = maxvalue
+        if value > maxvalue:
+            value = maxvalue
 
-        return cls(intvalue)
+        return cls(value)
 
-
-
-lvlNames = ['SILENT', 'SPAM', 'DEBUG', 'VERBOSE', 'NORMAL', 'NOTICE', 'TRACE', 'SUCCESS',
-                    'ERROR', 'CRITICAL', 'FATAL']
-
-lvlNumbers = [LogLevel.Silent, LogLevel.Spam, LogLevel.Debug, LogLevel.Verbose, LogLevel.Normal,
-              LogLevel.Notice, LogLevel.Trace, LogLevel.Success, LogLevel.Error, LogLevel.Critical,
-              LogLevel.Fatal]
+logMissings                         = ['spam', 'verbose', 'notice', 'success']
 
 
 # -------------------------------------------------------------------------------------------------------------

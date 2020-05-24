@@ -10,14 +10,14 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-from PLM import glbSetting
+from PLM import qtBinding
 
 
-if glbSetting.qtBinding == 'PyQt5':
+if qtBinding == 'PyQt5':
     from PyQt5.QtCore           import (QObject, QByteArray, QDate, QDateTime, QEventLoop, QFile, QFileInfo, QIODevice,
                                         QPoint, QProcess, QRect, QRectF, QRunnable, QSettings, QSize, QTextStream, QThread,
                                         QThreadPool, QTime, QTimer, QTimeZone, QUrl, )
-elif glbSetting.qtBinding == 'PySide2':
+elif qtBinding == 'PySide2':
     from PySide2.QtCore         import (QObject, QByteArray, QDate, QDateTime, QEventLoop, QFile, QFileInfo, QIODevice,
                                         QPoint, QProcess, QRect, QRectF, QRunnable, QSettings, QSize, QTextStream, QThread,
                                         QThreadPool, QTime, QTimer, QTimeZone, QUrl, )

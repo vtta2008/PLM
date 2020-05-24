@@ -10,7 +10,9 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 from PLM import __copyright__
-from .io_core import QByteArray
+
+from .io_core                   import QByteArray
+
 
 class ByteArray(QByteArray):
 
@@ -32,7 +34,7 @@ class ByteArray(QByteArray):
 
     @name.setter
     def name(self, val):
-        self._name = val
+        self._name              = val
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM
