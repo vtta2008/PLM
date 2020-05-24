@@ -17,10 +17,10 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-
 # Python
 import os, sys, subprocess
 from termcolor                      import cprint
+from pyjavaproperties               import Properties
 
 # PLM
 from .globalSettings                import GlobalSettings
@@ -85,6 +85,12 @@ else:
             ROOT                    = os.getenv(__envKey__)
             ROOT_APP                = parent_dir(ROOT)
 
+
+bindir                              = os.path.join(ROOT_APP, 'bin')
+propFile                            = os.path.join(bindir, 'text.properties').replace('\\', '/')
+p                                   = Properties()
+p.load(open(propFile))
+p.list()
 
 LOCALAPPDATA                            = os.getenv('LOCALAPPDATA')
 USER_DIR                                = parent_dir(os.getenv('HOME'))

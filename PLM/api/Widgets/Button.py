@@ -14,7 +14,7 @@ Description:
 from PLM                                    import __copyright__
 
 from .io_widgets                            import QPushButton, QToolButton
-from PLM.api.Gui import AppIcon, TagIcon
+from PLM.api.Gui                            import AppIcon, TagIcon
 from PLM.utils                              import check_preset
 from PLM.plugins.SignalManager              import SignalManager
 from PLM.settings                           import AppSettings
@@ -31,11 +31,13 @@ class Button(QPushButton):
     _copyright                              = __copyright__()
 
     def __init__(self, preset={}, parent=None):
-        QPushButton.__init__(self)
+        super(Button, self).__init__(parent)
+
         self.parent                         = parent
         self.settings                       = AppSettings(self)
         self.signals = SignalManager(self)
         self.preset                         = preset
+
         if check_preset(self.preset):
             self.buildUI()
 

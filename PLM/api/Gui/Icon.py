@@ -17,7 +17,7 @@ import os
 from .io_gui                                import QIcon
 from PLM                                    import __copyright__
 from PLM.utils                              import get_app_icon, get_tag_icon, get_logo_icon
-from PLM.configs                            import iconInfo, IGNORE_ICONS
+from PLM.configs                            import IGNORE_ICONS, ConfigIcons
 from PLM.api.Core                           import Size
 from PLM.cores.Errors                       import IconNotFound
 
@@ -27,10 +27,10 @@ class Icon(QIcon):
     key                                     = 'Icon'
     _name                                   = 'DAMG Icon'
     _copyright                              = __copyright__()
-    iconInfo                                = iconInfo
+    iconInfo                                = ConfigIcons()
 
     def __init__(self, *__args):
-        QIcon.__init__(self)
+        super(Icon, self).__init__(*__args)
 
     @property
     def copyright(self):

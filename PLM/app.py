@@ -12,7 +12,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
-from PLM.configs                        import SYSTRAY_UNAVAI, KEY_RELEASE
+from PLM                                import p
 from PLM.ui.LayoutManager               import LayoutManager
 
 # PLM
@@ -51,7 +51,7 @@ class PLM(AppModel):
                 else:
                     if statusCode == 200:
                         if not self.sysTray.isSystemTrayAvailable():
-                            self.logger.report(SYSTRAY_UNAVAI)
+                            self.logger.report(p['SYSTRAY_UNAVAI'])
                             self.exitEvent()
                         else:
                             self.loginChanged(True)
@@ -77,7 +77,7 @@ class PLM(AppModel):
     def notify(self, receiver, event):
 
         # press tab to show shortcut command ui
-        if event.type() == KEY_RELEASE:
+        if event.type() == p['KEY_RELEASE']:
             if self.login and event.key() == 16777217:
                 pos = self.cursor.pos()
                 self.shortcutCMD.show()

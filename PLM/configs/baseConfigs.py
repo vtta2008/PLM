@@ -736,19 +736,19 @@ class Uis(Cfg):
         self.KEYPACKAGE         = self.tracker.generate_key_packages()
 
         # Toolbar _data
-        self.TD                 = self.tracker.generate_config('TDS'),  # TD artist
-        self.VFX                = self.tracker.generate_config('VFX'),  # VFX artist
-        self.ART                = self.tracker.generate_config('ART'),  # 2D artist
-        self.PRE                = self.tracker.generate_config('PRE'),  # Preproduction
-        self.TEXTURE            = self.tracker.generate_config('TEXTURE'),  # ShadingTD artist
-        self.POST               = self.tracker.generate_config('POST'),  # Post production
+        self.CONFIG_TD                 = self.tracker.generate_config('TDS'),  # TD artist
+        self.CONFIG_VFX                = self.tracker.generate_config('VFX'),  # VFX artist
+        self.CONFIG_ART                = self.tracker.generate_config('ART'),  # 2D artist
+        self.CONFIG_PRE                = self.tracker.generate_config('PRE'),  # Preproduction
+        self.CONFIG_TEXTURE            = self.tracker.generate_config('TEXTURE'),  # ShadingTD artist
+        self.CONFIG_POST               = self.tracker.generate_config('POST'),  # Post production
 
         # Tab 1 sections _data
-        self.OFFICE             = self.tracker.generate_config('Office'),  # Paper work department
-        self.DEV                = self.tracker.generate_config('Dev') + ['Command Prompt'],  # Rnd - Research and development
-        self.TOOLS              = self.tracker.generate_config('Tools') + self.TOOL_UI_KEYS,  # useful/custom tools
-        self.EXTRA              = self.tracker.generate_config('Extra'),  # Extra tools
-        self.SYSTRAY            = self.tracker.generate_config('sysTray') + ['Exit', 'SignIn'],  # System tray tools
+        self.CONFIG_OFFICE             = self.tracker.generate_config('Office'),  # Paper work department
+        self.CONFIG_DEV                = self.tracker.generate_config('Dev') + ['Command Prompt'],  # Rnd - Research and development
+        self.CONFIG_TOOLS              = self.tracker.generate_config('Tools') + self.TOOL_UI_KEYS,  # useful/custom tools
+        self.CONFIG_EXTRA              = self.tracker.generate_config('Extra'),  # Extra tools
+        self.CONFIG_SYSTRAY            = self.tracker.generate_config('sysTray') + ['Exit', 'SignIn'],  # System tray tools
 
         self.__dict__.update()
 

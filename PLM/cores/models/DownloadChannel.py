@@ -11,11 +11,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 import time
-
+from PLM                                    import p
 from PLM.cores.base                         import Channel
 from PLM.api.Core                           import File, FileInfo, DownloadFile, IODevice
 from PLM.api.Widgets                        import MessageBox
-from PLM.configs                            import ASK_OVERWRITE
 from PLM.utils                              import autoRename, wait
 
 
@@ -56,7 +55,7 @@ class DownloadChannel(Channel):
         if self.file.exists():
 
             msgBox                          = MessageBox(self.networkManager.app.desktop(), 'File Existsed', 'warning',
-                                                         ASK_OVERWRITE, ['Overwrite', 'Rename'])
+                                                         p['ASK_OVERWRITE'], ['Overwrite', 'Rename'])
             if self.resumable:
                 msgBox.setDefaultButton(msgBox.addBtn('Resume'))
 

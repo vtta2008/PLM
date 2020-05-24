@@ -15,10 +15,8 @@ Description:
 from PLM.configs                        import SiPoMin, ELIDE_RIGHT
 from PLM.api.damg                       import DAMG, DAMGLIST
 
-from PLM.ui.models.ActionManager        import ActionManager
-from PLM.ui.models.ButtonManager        import ButtonManager
-from PLM.ui.models.RegistryLayout       import RegistryLayout
-from PLM.cores.EventManager import EventManager
+from PLM.ui.models                      import ActionManager, ButtonManager, RegistryLayout
+from PLM.cores.EventManager             import EventManager
 
 from PLM.ui.base                        import BaseManager, ImageAvatar, PixAvatar
 from PLM.ui.tools                       import CommandUI

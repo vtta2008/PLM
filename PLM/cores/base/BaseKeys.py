@@ -18,14 +18,15 @@ from functools                          import partial
 
 # PLM
 from .BaseStorage                       import BaseStorage
-from PLM.api.Widgets import Action, Button
+from PLM.api.Widgets                    import Action, Button
 from PLM.utils                          import is_string, is_action, is_button
 from PLM.cores.Errors                   import ActionKeyConfigError, ActionRegisterError, ButtonRegisterError
-from PLM.configs                        import (BTNTAGSIZE, TAGBTNSIZE)
+from PLM.configs                        import (BTNTAGSIZE, TAGBTNSIZE, ConfigPipeline, ConfigUiKeys)
 
 
-with open(plmCfg, 'r') as f:
-    plmInfo = json.load(f)
+plmInfo                                 = ConfigPipeline()
+uiKey                                   = ConfigUiKeys()
+
 
 
 class BaseKeys(BaseStorage):
@@ -35,28 +36,28 @@ class BaseKeys(BaseStorage):
     # Actions
     appActions                          = ['AppSetting', 'Configurations', 'Preferences', 'Organisation', 'Project', 'Team', 'Task', 'Exit']
     goActions                           = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppDataFolder', 'PreferenceFolder', ]
-    editActions                         = SHORTCUT_KEYS
+    editActions                         = uiKey.SHORTCUT_KEYS
     viewActions                         = ['ShowAll']
-    stylesheetActions                   = STYLESHEET_KEYS
-    officeActions                       = ['TextEditor', 'NoteReminder'] + [k for k in CONFIG_OFFICE if k in plmInfo.keys()]
+    stylesheetActions                   = uiKey.STYLESHEET_KEYS
+    officeActions                       = ['TextEditor', 'NoteReminder'] + [k for k in uiKey.CONFIG_OFFICE if k in plmInfo.keys()]
 
-    devActions                          = [k for k in CONFIG_DEV if k in plmInfo.keys() and not k in ['QtDesigner']]
-    toolsActions                        = [k for k in CONFIG_TOOLS if k in plmInfo.keys()] + ['CleanPyc', 'ReConfig', 'Debug', ] + devActions
+    devActions                          = [k for k in uiKey.CONFIG_DEV if k in plmInfo.keys() and not k in ['QtDesigner']]
+    toolsActions                        = [k for k in uiKey.CONFIG_TOOLS if k in plmInfo.keys()] + ['CleanPyc', 'ReConfig', 'Debug', ] + devActions
 
-    pluginActions                       = PLUGIN_UI_KEY
-    formActions                         = FORM_KEY
+    pluginActions                       = uiKey.PLUGIN_UI_KEY
+    formActions                         = uiKey.FORM_KEY
 
-    libActions                          = LIBRARY_UI_KEYS
+    libActions                          = uiKey.LIBRARY_UI_KEYS
     helpActions                         = ['PLM wiki', 'About', 'CodeOfConduct', 'Contributing', 'Credit', 'References',
                                            'Version', 'FeedBack', ] + formActions
 
-    artActions                          = [k for k in CONFIG_ART if k in plmInfo.keys()]
-    tdActions                           = [k for k in CONFIG_TDS if k in plmInfo.keys()]
-    vfxActions                          = [k for k in CONFIG_VFX if k in plmInfo.keys()]
-    texActions                          = [k for k in CONFIG_TEX if k in plmInfo.keys()]
-    postActions                         = [k for k in CONFIG_POST if k in plmInfo.keys()]
-    preActions                          = [k for k in CONFIG_PRE if k in plmInfo.keys()]
-    extraActions                        = [k for k in CONFIG_EXTRA if k in plmInfo.keys()]
+    artActions                          = [k for k in uiKey.CONFIG_ART if k in plmInfo.keys()]
+    tdActions                           = [k for k in uiKey.CONFIG_TDS if k in plmInfo.keys()]
+    vfxActions                          = [k for k in uiKey.CONFIG_VFX if k in plmInfo.keys()]
+    texActions                          = [k for k in uiKey.CONFIG_TEX if k in plmInfo.keys()]
+    postActions                         = [k for k in uiKey.CONFIG_POST if k in plmInfo.keys()]
+    preActions                          = [k for k in uiKey.CONFIG_PRE if k in plmInfo.keys()]
+    extraActions                        = [k for k in uiKey.CONFIG_EXTRA if k in plmInfo.keys()]
 
     sysTrayActions                      = ['Minimize', 'Restore', 'Maximize', 'Snipping Tool', 'ScreenShot', 'Exit', 'SignIn']
 
@@ -125,7 +126,7 @@ class BaseKeys(BaseStorage):
         return self.action(key, parent)
 
     def createButton(self, key, parent):
-        if key in OPEN_URL_KEYS:
+        if key in uiKey.OPEN_URL_KEYS:
             return self.openUrlButton(key, parent)
         else:
             return self.button(key, parent)

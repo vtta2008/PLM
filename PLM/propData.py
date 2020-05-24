@@ -16,18 +16,8 @@ import os
 from pyjavaproperties               import Properties
 from humanfriendly.text             import concatenate, pluralize
 
-# PLM
 
-from PLM.types.objectType import PropDataType
-
-cwd                                 = os.path.abspath(os.getcwd())
-par                                 = os.path.abspath(os.path.join(cwd, os.pardir))
-bindir                              = os.path.join(par, 'bin')
-propFile                            = os.path.join(bindir, 'global.properties').replace('\\', '/')
-p                                   = Properties()
-
-
-class PropData(PropDataType):
+class PropData(object):
 
     _keys                           = []
     _values                         = []

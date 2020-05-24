@@ -14,7 +14,7 @@ import os
 
 # PLM
 from .winConfigs                            import ConfigPcs
-from .baseConfigs                           import Pys, Urls, Lgs, Fnts, Dirs, Pths, Ics, Apps, Sts, Fmts, Uis, Clrs, Pls, Cmds
+from .baseConfigs                           import Pys, Urls, Lgs, Fnts, Dirs, Pths, Ics, Apps, Fmts, Uis, Clrs, Pls, Cmds
 
 from PLM                                    import glbSettings, create_path, ROOT
 from PLM.types                              import CMD_VALUE_TYPE
