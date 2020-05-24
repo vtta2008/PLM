@@ -11,10 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 
-from . import Loggers
-
-Loggers.install()
-
 from .Loggers import Loggers
 
 

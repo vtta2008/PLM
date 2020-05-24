@@ -10,8 +10,6 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-from PLM.types import DamgProperty
-
 
 class ObjectGlb(object):
 
@@ -29,29 +27,29 @@ class ObjectGlb(object):
 
         self.__dict__.update()
 
-    @DamgProperty
+    @property
     def name(self):
         return self._name
 
-    @DamgProperty
+    @property
     def copyright(self):
         return self._copyright
 
-    @DamgProperty
+    @property
     def cfgable(self):
         return self._cfgable
 
-    @DamgProperty
+    @property
     def cfgAll(self):
         return self._cfgAll
 
-    # @cfgAll.setter
-    # def cfgAll(self, val):
-    #     self._cfgAll                    = val
-    #
-    # @cfgable.setter
-    # def cfgable(self, val):
-    #     self._cfgable                   = val
+    @cfgAll.setter
+    def cfgAll(self, val):
+        self._cfgAll                    = val
+
+    @cfgable.setter
+    def cfgable(self, val):
+        self._cfgable                   = val
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -80,6 +78,7 @@ class ReportGlb(ObjectGlb):
     _printSignalReceive                 = False
     _printFontInfo                      = False
     _printUiKeyInfo                     = False
+    _printColorInfo                     = False
 
     def __init__(self):
         super(ReportGlb, self).__init__()
@@ -87,186 +86,189 @@ class ReportGlb(ObjectGlb):
         self.__dict__.update()
 
 
-    @DamgProperty
+    @property
     def printCfgInfo(self):
         return self._printCfgInfo
 
-    @DamgProperty
+    @property
     def printPthInfo(self):
         return self._printPthInfo
 
-    @DamgProperty
+    @property
     def printPythonInfo(self):
         return self._printPythonInfo
 
-    @DamgProperty
+    @property
     def printAppInfo(self):
         return self._printAppInfo
 
-    @DamgProperty
+    @property
     def printDirInfo(self):
         return self._printDirInfo
 
-    @DamgProperty
+    @property
     def printAvatarInfo(self):
         return self._printAvatarInfo
 
-    @DamgProperty
+    @property
     def printLogoInfo(self):
         return self._printLogoInfo
 
-    @DamgProperty
+    @property
     def printImgInfo(self):
         return self._printImgInfo
 
-    @DamgProperty
+    @property
     def saveImgInfo(self):
         return self._saveImgInfo
 
-    @DamgProperty
+    @property
     def printIconInfo(self):
         return self._printIconInfo
 
-    @DamgProperty
+    @property
     def printEnvInfo(self):
         return self._printEnvInfo
 
-    @DamgProperty
+    @property
     def saveEnvInfo(self):
         return self._saveEnvInfo
 
-    @DamgProperty
+    @property
     def printServerInfo(self):
         return self._printServerInfo
 
-    @DamgProperty
+    @property
     def printUrlInfo(self):
         return self._printUrlInfo
 
-    @DamgProperty
+    @property
     def printTypeInfo(self):
         return self._printTypeInfo
 
-    @DamgProperty
+    @property
     def printFmtInfo(self):
         return self._printFmtInfo
 
-    @DamgProperty
+    @property
     def saveFmtInfo(self):
         return self._saveFmtInfo
 
-    @DamgProperty
+    @property
     def printPlmInfo(self):
         return self._printPlmInfo
 
-    @DamgProperty
+    @property
     def printPcInfo(self):
         return self._printPcInfo
 
-    @DamgProperty
+    @property
     def printSettingInfo(self):
         return self._printSettingInfo
 
-    @DamgProperty
+    @property
     def printSignalReceive(self):
         return self._printSignalReceive
 
-    @DamgProperty
+    @property
     def printFontInfo(self):
         return self._printFontInfo
 
-    @DamgProperty
+    @property
     def printUiKeyInfo(self):
         return self._printUiKeyInfo
 
+    @property
+    def printColorInfo(self):
+        return self._printColorInfo
 
-    # @printFontInfo.setter
-    # def printFontInfo(self, val):
-    #     self._printFontInfo             = val
-    #
-    # @printSignalReceive.setter
-    # def printSignalReceive(self, val):
-    #     self._printSignalReceive        = val
-    #
-    # @printSettingInfo.setter
-    # def printSettingInfo(self, val):
-    #     self._printSettingInfo          = val
-    #
-    # @printPcInfo.setter
-    # def printPcInfo(self, val):
-    #     self._printPcInfo               = val
-    #
-    # @printPlmInfo.setter
-    # def printPlmInfo(self, val):
-    #     self._printPlmInfo              = val
-    #
-    # @saveFmtInfo.setter
-    # def saveFmtInfo(self, val):
-    #     self._saveFmtInfo               = val
-    #
-    # @printFmtInfo.setter
-    # def printFmtInfo(self, val):
-    #     self._printFmtInfo              = val
-    #
-    # @printTypeInfo.setter
-    # def printTypeInfo(self, val):
-    #     self._printTypeInfo             = val
-    #
-    # @printUrlInfo.setter
-    # def printUrlInfo(self, val):
-    #     self._printUrlInfo              = val
-    #
-    # @printServerInfo.setter
-    # def printServerInfo(self, val):
-    #     self._printServerInfo           = val
-    #
-    # @saveEnvInfo.setter
-    # def saveEnvInfo(self, val):
-    #     self._saveEnvInfo               = val
-    #
-    # @printEnvInfo.setter
-    # def printEnvInfo(self, val):
-    #     self._printEnvInfo              = val
-    #
-    # @printIconInfo.setter
-    # def printIconInfo(self, val):
-    #     self._printIconInfo             = val
-    #
-    # @saveImgInfo.setter
-    # def saveImgInfo(self, val):
-    #     self._saveImgInfo               = val
-    #
-    # @printImgInfo.setter
-    # def printImgInfo(self, val):
-    #     self._printImgInfo              = val
-    #
-    # @printLogoInfo.setter
-    # def printLogoInfo(self, val):
-    #     self._printLogoInfo             = val
-    #
-    # @printAvatarInfo.setter
-    # def printAvatarInfo(self, val):
-    #     self._printAvatarInfo           = val
-    #
-    # @printDirInfo.setter
-    # def printDirInfo(self, val):
-    #     self._printDirInfo              = val
-    #
-    # @printAppInfo.setter
-    # def printAppInfo(self, val):
-    #     self.printAppInfo               = val
-    #
-    # @printPythonInfo.setter
-    # def printPythonInfo(self, val):
-    #     self._printPythonInfo           = val
-    #
-    # @printPthInfo.setter
-    # def printPthInfo(self, val):
-    #     self._printPthInfo              = val
-    #
-    # @printCfgInfo.setter
-    # def printCfgInfo(self, val):
-    #     self._printCfgInfo              = val
+    @printFontInfo.setter
+    def printFontInfo(self, val):
+        self._printFontInfo             = val
+
+    @printSignalReceive.setter
+    def printSignalReceive(self, val):
+        self._printSignalReceive        = val
+
+    @printSettingInfo.setter
+    def printSettingInfo(self, val):
+        self._printSettingInfo          = val
+
+    @printPcInfo.setter
+    def printPcInfo(self, val):
+        self._printPcInfo               = val
+
+    @printPlmInfo.setter
+    def printPlmInfo(self, val):
+        self._printPlmInfo              = val
+
+    @saveFmtInfo.setter
+    def saveFmtInfo(self, val):
+        self._saveFmtInfo               = val
+
+    @printFmtInfo.setter
+    def printFmtInfo(self, val):
+        self._printFmtInfo              = val
+
+    @printTypeInfo.setter
+    def printTypeInfo(self, val):
+        self._printTypeInfo             = val
+
+    @printUrlInfo.setter
+    def printUrlInfo(self, val):
+        self._printUrlInfo              = val
+
+    @printServerInfo.setter
+    def printServerInfo(self, val):
+        self._printServerInfo           = val
+
+    @saveEnvInfo.setter
+    def saveEnvInfo(self, val):
+        self._saveEnvInfo               = val
+
+    @printEnvInfo.setter
+    def printEnvInfo(self, val):
+        self._printEnvInfo              = val
+
+    @printIconInfo.setter
+    def printIconInfo(self, val):
+        self._printIconInfo             = val
+
+    @saveImgInfo.setter
+    def saveImgInfo(self, val):
+        self._saveImgInfo               = val
+
+    @printImgInfo.setter
+    def printImgInfo(self, val):
+        self._printImgInfo              = val
+
+    @printLogoInfo.setter
+    def printLogoInfo(self, val):
+        self._printLogoInfo             = val
+
+    @printAvatarInfo.setter
+    def printAvatarInfo(self, val):
+        self._printAvatarInfo           = val
+
+    @printDirInfo.setter
+    def printDirInfo(self, val):
+        self._printDirInfo              = val
+
+    @printAppInfo.setter
+    def printAppInfo(self, val):
+        self.printAppInfo               = val
+
+    @printPythonInfo.setter
+    def printPythonInfo(self, val):
+        self._printPythonInfo           = val
+
+    @printPthInfo.setter
+    def printPthInfo(self, val):
+        self._printPthInfo              = val
+
+    @printCfgInfo.setter
+    def printCfgInfo(self, val):
+        self._printCfgInfo              = val
 
 
 
@@ -291,131 +293,136 @@ class RecordGlb(ReportGlb):
     _savePcInfo                         = True
     _saveSettingInfo                    = True
     _saveUiKeyInfo                      = True
+    _saveColorInfo                      = True
 
     def __init__(self):
         super(RecordGlb, self).__init__()
 
         self.__dict__.update()
 
-    @DamgProperty
+    @property
     def saveServerInfo(self):
         return self._saveServerInfo
 
-    @DamgProperty
+    @property
     def saveCfgInfo(self):
         return self._saveCfgInfo
 
-    @DamgProperty
+    @property
     def savePthInfo(self):
         return self._savePthInfo
 
-    @DamgProperty
+    @property
     def savePythonInfo(self):
         return self._savePythonInfo
 
-    @DamgProperty
+    @property
     def saveAppInfo(self):
         return self._saveAppInfo
 
-    @DamgProperty
+    @property
     def saveDirInfo(self):
         return self._saveDirInfo
 
-    @DamgProperty
+    @property
     def saveAvatarInfo(self):
         return self._saveAvatarInfo
 
-    @DamgProperty
+    @property
     def saveLogoInfo(self):
         return self._saveLogoInfo
 
-    @DamgProperty
+    @property
     def saveUrlInfo(self):
         return self._saveUrlInfo
 
-    @DamgProperty
+    @property
     def saveTypeInfo(self):
         return self._saveTypeInfo
 
-    @DamgProperty
+    @property
     def savePlmInfo(self):
         return self._savePlmInfo
 
-    @DamgProperty
+    @property
     def savePcInfo(self):
         return self._savePcInfo
 
-    @DamgProperty
+    @property
     def saveIconInfo(self):
         return self._saveIconInfo
 
-    @DamgProperty
+    @property
     def saveFontInfo(self):
         return self._saveFontInfo
 
-    @DamgProperty
+    @property
     def saveSettingInfo(self):
         return self._saveSettingInfo
 
-    @DamgProperty
+    @property
     def saveUiKeyInfo(self):
         return self._saveUiKeyInfo
 
-    # @saveFontInfo.setter
-    # def saveFontInfo(self, val):
-    #     self._saveFontInfo              = val
-    #
-    # @saveLogoInfo.setter
-    # def saveLogoInfo(self, val):
-    #     self._saveLogoInfo              = val
-    #
-    # @saveAvatarInfo.setter
-    # def saveAvatarInfo(self, val):
-    #     self._saveAvatarInfo            = val
-    #
-    # @saveDirInfo.setter
-    # def saveDirInfo(self, val):
-    #     self._saveDirInfo               = val
-    #
-    # @saveAppInfo.setter
-    # def saveAppInfo(self, val):
-    #     self._saveAppInfo               = val
-    #
-    # @saveIconInfo.setter
-    # def saveIconInfo(self, val):
-    #     self._saveIconInfo              = val
-    #
-    # @savePcInfo.setter
-    # def savePcInfo(self, val):
-    #     self._savePcInfo                = val
-    #
-    # @savePlmInfo.setter
-    # def savePlmInfo(self, val):
-    #     self._savePlmInfo               = val
-    #
-    # @saveTypeInfo.setter
-    # def saveTypeInfo(self, val):
-    #     self._saveTypeInfo              = val
-    #
-    # @saveUrlInfo.setter
-    # def saveUrlInfo(self, val):
-    #     self._saveUrlInfo               = val
-    #
-    # @saveServerInfo.setter
-    # def saveServerInfo(self, val):
-    #     self._saveServerInfo            = val
-    #
-    # @savePythonInfo.setter
-    # def savePythonInfo(self, val):
-    #     self._savePythonInfo            = val
-    #
-    # @savePthInfo.setter
-    # def savePthInfo(self, val):
-    #     self._savePthInfo               = val
-    #
-    # @saveCfgInfo.setter
-    # def saveCfgInfo(self, val):
-    #     self._saveCfgInfo               = val
+    @property
+    def saveColorInfo(self):
+        return self._saveColorInfo
+
+    @saveFontInfo.setter
+    def saveFontInfo(self, val):
+        self._saveFontInfo              = val
+
+    @saveLogoInfo.setter
+    def saveLogoInfo(self, val):
+        self._saveLogoInfo              = val
+
+    @saveAvatarInfo.setter
+    def saveAvatarInfo(self, val):
+        self._saveAvatarInfo            = val
+
+    @saveDirInfo.setter
+    def saveDirInfo(self, val):
+        self._saveDirInfo               = val
+
+    @saveAppInfo.setter
+    def saveAppInfo(self, val):
+        self._saveAppInfo               = val
+
+    @saveIconInfo.setter
+    def saveIconInfo(self, val):
+        self._saveIconInfo              = val
+
+    @savePcInfo.setter
+    def savePcInfo(self, val):
+        self._savePcInfo                = val
+
+    @savePlmInfo.setter
+    def savePlmInfo(self, val):
+        self._savePlmInfo               = val
+
+    @saveTypeInfo.setter
+    def saveTypeInfo(self, val):
+        self._saveTypeInfo              = val
+
+    @saveUrlInfo.setter
+    def saveUrlInfo(self, val):
+        self._saveUrlInfo               = val
+
+    @saveServerInfo.setter
+    def saveServerInfo(self, val):
+        self._saveServerInfo            = val
+
+    @savePythonInfo.setter
+    def savePythonInfo(self, val):
+        self._savePythonInfo            = val
+
+    @savePthInfo.setter
+    def savePthInfo(self, val):
+        self._savePthInfo               = val
+
+    @saveCfgInfo.setter
+    def saveCfgInfo(self, val):
+        self._saveCfgInfo               = val
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -437,15 +444,15 @@ class ModesGlb(RecordGlb):
 
         self.__dict__.update()
 
-    @DamgProperty
+    @property
     def qtBinding(self):
         return self._qtBinding
 
-    @DamgProperty
+    @property
     def formatSaving(self):
         return self._formatSaving
 
-    @DamgProperty
+    @property
     def qtVersion(self):
         return self._qtVersion
 
@@ -513,53 +520,53 @@ class SignalGlb(ErrorsGlb):
 
         self.__dict__.update()
 
-    @DamgProperty
+    @property
     def emittable(self):
         return self._emittable
 
-    @DamgProperty
+    @property
     def autoChangeEmittable(self):
         return self._autoChangeEmittable
 
-    @DamgProperty
+    @property
     def trackRecieveSignal(self):
         return self._trackRecieveSignal
 
-    @DamgProperty
+    @property
     def trackBlockSignal(self):
         return self._trackBlockSignal
 
-    @DamgProperty
+    @property
     def trackCommand(self):
         return self._trackCommand
 
-    @DamgProperty
+    @property
     def trackRegistLayout(self):
         return self._trackRegistLayout
 
-    # @trackRegistLayout.setter
-    # def trackRegistLayout(self, val):
-    #     self._trackRegistLayout         = val
-    #
-    # @trackCommand.setter
-    # def trackCommand(self, val):
-    #     self._trackCommand              = val
-    #
-    # @trackBlockSignal.setter
-    # def trackBlockSignal(self, val):
-    #     self._trackBlockSignal          = val
-    #
-    # @trackRecieveSignal.setter
-    # def trackRecieveSignal(self, val):
-    #     self._trackRecieveSignal        = val
-    #
-    # @autoChangeEmittable.setter
-    # def autoChangeEmittable(self, val):
-    #     self._autoChangeEmittable       = val
-    #
-    # @emittable.setter
-    # def emittable(self, val):
-    #     self._emittable                 = val
+    @trackRegistLayout.setter
+    def trackRegistLayout(self, val):
+        self._trackRegistLayout         = val
+
+    @trackCommand.setter
+    def trackCommand(self, val):
+        self._trackCommand              = val
+
+    @trackBlockSignal.setter
+    def trackBlockSignal(self, val):
+        self._trackBlockSignal          = val
+
+    @trackRecieveSignal.setter
+    def trackRecieveSignal(self, val):
+        self._trackRecieveSignal        = val
+
+    @autoChangeEmittable.setter
+    def autoChangeEmittable(self, val):
+        self._autoChangeEmittable       = val
+
+    @emittable.setter
+    def emittable(self, val):
+        self._emittable                 = val
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -64,8 +64,6 @@ layoutTypes                     = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
 
 
 from .version                   import Version
-from .properties                import DamgProperty
-from .propData                  import PropData
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

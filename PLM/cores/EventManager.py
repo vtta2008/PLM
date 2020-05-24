@@ -13,7 +13,7 @@ Description:
 
 from PyQt5.QtGui                import QWheelEvent
 
-from PLM.api.damg                import DAMGDICT, DAMG
+from PLM.api.damg               import DAMGDICT, DAMG
 from PLM.cores.base             import BaseStorage
 
 

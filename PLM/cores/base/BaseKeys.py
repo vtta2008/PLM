@@ -21,10 +21,7 @@ from .BaseStorage                       import BaseStorage
 from PLM.api.Widgets import Action, Button
 from PLM.utils                          import is_string, is_action, is_button
 from PLM.cores.Errors                   import ActionKeyConfigError, ActionRegisterError, ButtonRegisterError
-from PLM.configs                        import (OPEN_URL_KEYS, CONFIG_DEV, CONFIG_TOOLS, CONFIG_OFFICE, CONFIG_TDS,
-                                                CONFIG_ART, CONFIG_TEX, CONFIG_POST, CONFIG_VFX, CONFIG_PRE,
-                                                CONFIG_EXTRA, LIBRARY_UI_KEYS, SHORTCUT_KEYS, STYLESHEET_KEYS,
-                                                PLUGIN_UI_KEY, FORM_KEY, BTNTAGSIZE, TAGBTNSIZE, plmCfg)
+from PLM.configs                        import (BTNTAGSIZE, TAGBTNSIZE)
 
 
 with open(plmCfg, 'r') as f:

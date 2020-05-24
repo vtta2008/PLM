@@ -13,7 +13,7 @@ Description:
 
 # Python
 import logging, copy, html
-from .logConfigs                    import COLOR_ESCAPES, RESET_ESCAPE, LOG_COLORS, COLORS
+from .configs                    import COLOR_ESCAPES, RESET_ESCAPE, LOG_COLORS, COLORS
 
 # -------------------------------------------------------------------------------------------------------------
 """ Fomatter """

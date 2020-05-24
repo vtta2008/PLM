@@ -14,8 +14,8 @@ Description:
 import os
 
 # PLM
-from PLM.configs                        import ConfigSettings
 from PLM.api.Core                       import Settings
+from .configs                           import ConfigSettings
 
 settingInfo                             = ConfigSettings()
 APP_SETTING                             = settingInfo.APP_SETTING

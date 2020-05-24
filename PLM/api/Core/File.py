@@ -16,8 +16,8 @@ from .io_core import QFile
 import os
 
 # PLM
-from PLM.configs                            import QSS_DIR
-
+from PLM                                    import ROOT, create_path
+QSS_DIR                                     = create_path(ROOT, 'scripts', 'qss')
 
 class FileBase(QFile):
 

@@ -17,7 +17,7 @@ from .io_widgets                            import QPushButton, QToolButton
 from PLM.api.Gui import AppIcon, TagIcon
 from PLM.utils                              import check_preset
 from PLM.plugins.SignalManager              import SignalManager
-from PLM.cores.Settings.app_settings        import AppSettings
+from PLM.settings                           import AppSettings
 
 
 # -------------------------------------------------------------------------------------------------------------

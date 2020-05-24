@@ -152,43 +152,6 @@ def construct_class(infoObj, infoData, **info):
     return info
 
 
-def set_property(obj, name, value):
-    """
-    Set or override the value of a property.
-    :param obj: The object that owns the property.
-    :param name: The name of the property (a string).
-    :param value: The new value for the property.
-    This function directly modifies the :attr:`~object.__dict__` of the given
-    object and as such it avoids any interaction with object properties. This
-    is intentional: :func:`set_property()` is meant to be used by extensions of
-    the `property-manager` project and by user defined setter methods.
-    """
-    obj.__dict__[name] = value
-
-
-def clear_property(obj, name):
-    """
-    Clear the assigned or cached value of a property.
-    :param obj: The object that owns the property.
-    :param name: The name of the property (a string).
-    This function directly modifies the :attr:`~object.__dict__` of the given
-    object and as such it avoids any interaction with object properties. This
-    is intentional: :func:`clear_property()` is meant to be used by extensions
-    of the `property-manager` project and by user defined deleter methods.
-    """
-    obj.__dict__.pop(name, None)
-
-
-def format_property(obj, name):
-    """
-    Format an object property's dotted name.
-    :param obj: The object that owns the property.
-    :param name: The name of the property (a string).
-    :returns: The dotted path (a string).
-    """
-    return "%s.%s" % (obj.__class__.__name__, name)
-
-
 
 
 

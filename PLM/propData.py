@@ -18,7 +18,7 @@ from humanfriendly.text             import concatenate, pluralize
 
 # PLM
 
-from .objectType                    import PropDataType
+from PLM.types.objectType import PropDataType
 
 cwd                                 = os.path.abspath(os.getcwd())
 par                                 = os.path.abspath(os.path.join(cwd, os.pardir))
@@ -34,10 +34,7 @@ class PropData(PropDataType):
     _data                           = dict()
 
     def __init__(self, **kwargs):
-        """
-        Initialize a :class:`PropertyManager` object.
-        :param kwargs: Any keyword arguments are passed on to :func:`set_properties()`.
-        """
+
         super(PropData, self).__init__(**kwargs)
 
         self.set_properties(**kwargs)

@@ -11,14 +11,17 @@ Description:
 """ Import """
 
 # Python
-import time
-import datetime
+import time, datetime, os
 import sqlite3 as lite
 
 # PLM
-from PLM.configs                    import LOCAL_DB, DB_ATTRIBUTE_TYPE
+from PLM                            import create_path, __appName__, __organization__
+from PLM.types                      import DB_ATTRIBUTE_TYPE
 from PLM.api.Core                   import Timer, Date
 from PLM.api.damg                   import DAMG, DAMGLIST, DAMGDICT
+
+LOCAL_DB                            = create_path(os.getenv('LOCALAPPDATA'), __organization__, __appName__, 'local.db')
+
 
 
 def get_datetime():

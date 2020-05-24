@@ -13,7 +13,6 @@ Description:
 # PyQt5
 from PLM                                    import __copyright__
 from .io_widgets                            import QAction, QWidgetAction
-from PLM.utils                              import check_preset
 from PLM.plugins.SignalManager              import SignalManager
 from PLM.settings                           import AppSettings
 from PLM.api.Gui                            import AppIcon
@@ -62,7 +61,7 @@ class Action(QAction):
         self.signals                        = SignalManager(self)
 
         self.preset                         = preset
-        if check_preset(self.preset):
+        if not self.preset == {} or self.preset:
             self.buildUI()
 
     def buildUI(self):

@@ -8,29 +8,32 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+""" Import """
 
+# Python
+from io                                             import BytesIO as StringIO
+from string                                         import Template
 import base64
-from io                         import BytesIO as StringIO
-from string                     import Template
 
+renderers = []
 
-renderers                       = []
+try:
+    import cv2
+    import numpy
 
-import cv2, numpy
+    def render_opencv(img, fmt="png"):
+        if not isinstance(img, numpy.ndarray):
+            return None
 
-def render_opencv(img, fmt="png"):
-    if not isinstance(img, numpy.ndarray):
-        return None
+        retval, buf = cv2.imencode(".%s" % fmt, img)
+        if not retval:
+            return None
 
-    retval, buf = cv2.imencode(".{0}".format(fmt), img)
+        return buf, "image/%s" % fmt
 
-    if not retval:
-        return None
-
-    return buf, "image/%s" % fmt
-
-renderers.append(render_opencv)
-
+    renderers.append(render_opencv)
+except ImportError:
+    pass
 
 try:
     from PIL import Image
@@ -70,7 +73,6 @@ except ImportError:
 
 
 class VisualRecord(object):
-
     def __init__(self, title="", imgs=None, footnotes="", fmt="png"):
         self.title = title
         self.fmt = fmt
@@ -86,6 +88,7 @@ class VisualRecord(object):
         self.footnotes = footnotes
 
     def render_images(self):
+
         rendered = []
 
         for img in self.imgs:
@@ -100,26 +103,26 @@ class VisualRecord(object):
                     break
 
         return "".join(
-            Template('<img src="qssPths:$mime;base64,$qssPths" />').substitute({
-                "qssPths": base64.b64encode(data).decode(), "mime": mime }) for data, mime in rendered)
+            Template('<img src="data:$mime;base64,$data" />').substitute({
+                "data": base64.b64encode(data).decode(),
+                "mime": mime
+            }) for data, mime in rendered)
 
     def render_footnotes(self):
         if not self.footnotes:
             return ""
 
-        return Template("<pre>$footnotes</pre>").substitute({ "footnotes": self.footnotes })
+        return Template("<pre>$footnotes</pre>").substitute({
+            "footnotes": self.footnotes
+        })
 
     def __str__(self):
         t = Template(
-
             """
             <h4>$title</h4>
             $imgs
             $footnotes
-            <hr/>
-            
-            """
-        )
+            <hr/>""")
 
         return t.substitute({
             "title": self.title,

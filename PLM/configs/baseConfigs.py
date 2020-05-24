@@ -16,8 +16,8 @@ import os, sys, platform, json, yaml, pprint, winshell, pkg_resources
 
 # PLM
 from PLM                                import ROOT, ROOT_APP, glbSettings, create_path, parent_dir
-from PLM.api.Gui                        import FontDataBase
-from PLM.api.Core                       import Settings
+from PLM.api.Gui                        import FontDataBase, Color
+from PLM.api.Core.io_core               import Qt
 from PLM.cores.data                     import PresetDB
 from .metadatas                         import (__appname__, __organizationName__, )
 
@@ -36,6 +36,8 @@ PREF_DIR                                = create_path(APPDATA_PLM, 'preferences'
 SETTING_DIR                             = CFG_DIR
 DB_DIR                                  = APPDATA_PLM
 LOG_DIR                                 = CFG_DIR
+
+LOCAL_LOG                               = create_path(LOG_DIR, 'PLM.logs')
 
 RESOURCES_DIR                           = create_path(ROOT, 'resources')
 
@@ -94,6 +96,7 @@ fontCfg                                 = create_path(CFG_DIR, 'fonts.cfg')
 settingCfg                              = create_path(CFG_DIR, 'settings.cfg')
 formatCfg                               = create_path(CFG_DIR, 'formats.cfg')
 uiKeyCfg                                = create_path(CFG_DIR, 'uiKey.cfg')
+colorCfg                                = create_path(CFG_DIR, 'colors.cfg')
 
 APP_SETTING                             = create_path(SETTING_DIR, 'PLM.ini')
 USER_SETTING                            = create_path(SETTING_DIR, 'user.ini')
@@ -111,6 +114,7 @@ for f in factors:
     FACTOR_KEYS.append(f)
     for act in factorActs:
         FACTOR_KEYS.append('{0} {1}'.format(act, f))
+
 
 
 class Cfg(dict):
@@ -180,6 +184,82 @@ class Cmds(dict):
 
         for i in range(len(ks)):
             self[ks[i]]             = vs[i]
+
+
+class TrackKeys(Cfg):
+
+    key                                 = 'TrackKeys'
+    _filePath                           = None
+
+    pVERSION = dict(adobe=["CC 2017", "CC 2018", "CC 2019", "CC 2020", "CC 2021"],
+                    autodesk=["2017", "2018", "2019", "2020", "2021"],
+                    allegorithmic=[],
+                    foundry=["11.1v1", "11.2v1", "4.0v1", "4.1v1", "2.6v3", "4.6v1", "12.0v1",
+                             '3.5v2', '3.2v4', '2.6v3'],
+                    pixologic=["4R6", "4R7", "4R8", '2018', '2019', '2020', '2021'],
+                    sizefx=['16.5.439', '16.5.496', '17.5.425', '18.0.327'],
+                    office=['2017', "2018", "2019", "2020"],
+                    jetbrains=['2017.3.3', '2018.1', ],
+                    wonderUnit=[],
+                    anaconda=[], )
+
+    pPACKAGE = dict(
+        adobe=["Adobe Photoshop", "Adobe Illustrator", "Adobe Audition", "Adobe After Effects",
+               "Adobe Premiere Pro", "Adobe Media Encoder", ],
+        autodesk=["Autodesk Maya", "Autodesk Mudbox", "Maya", "Mudbox", "3ds Max", "AutoCAD"],
+        allegorithmic=['Substance Painter', 'Substance Designer'],
+        foundry=['Hiero', 'Mari', 'NukeStudio', 'NukeX', 'Katana', ],
+        pixologic=['ZBrush'],
+        sizefx=['Houdini FX', ],
+        office=['Word', 'Excel', 'PowerPoint', 'Wordpad'],
+        jetbrains=['JetBrains PyCharm', ],
+        wonderUnit=['Storyboarder', 'Krita (x64)', 'Krita (x32)'],
+        anaconda=['Spyder', 'QtDesigner', 'Git Bash']
+    )
+
+    windowApps = ['Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout',
+                  'Snipping Tool', ] + pPACKAGE['anaconda'] + pPACKAGE['office']
+
+    TOOL_UI_KEYS = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer',
+                    'NoteReminder', 'ScreenShot', 'TextEditor', ]
+
+    def __init__(self):
+        super(TrackKeys, self).__init__()
+
+        self.__dict__.update()
+
+    def generate_key_packages(self, *info):
+        keyPackage = []
+        for k in self.pPACKAGE:
+            for name in self.pPACKAGE[k]:
+                if len(self.pVERSION[k]) == 0:
+                    key = name
+                    keyPackage.append(key)
+                else:
+                    for ver in self.pVERSION[k]:
+                        if name == 'Hiero' or name == 'HieroPlayer' or name == 'NukeX':
+                            key = name + " " + ver
+                        else:
+                            if not ver or ver == []:
+                                key = name
+                            else:
+                                key = name + " " + ver
+                        keyPackage.append(key)
+
+        info = keyPackage + self.windowApps
+
+        return info
+
+    def generate_config(self, key):
+
+        info = []
+
+        for k in self.KEYPACKAGE:
+            for t in self.pTRACK[key]:
+                if t in k:
+                    info.append(k)
+
+        return list(sorted(set(info)))
 
 
 class Dirs(Cfg):
@@ -342,6 +422,7 @@ class Pths(Cfg):
     splashImagePth                          = create_path(IMAGE_DIR, 'splash.png')
     fontCfg                                 = fontCfg
     serverCfg                               = create_path(CFG_DIR, 'server.cfg')
+    colorCfg                                = colorCfg
 
     uiKeyCfg                                = uiKeyCfg
     formatCfg                               = formatCfg
@@ -354,7 +435,7 @@ class Pths(Cfg):
 
     LOCAL_DB                                = create_path(DB_DIR, 'local.db')
 
-    LOCAL_LOG                               = create_path(LOG_DIR, 'PLM.logs')
+    LOCAL_LOG                               = LOCAL_LOG
 
     QSS_PATH                                = create_path(QSS_DIR, 'dark.qss')
 
@@ -369,29 +450,6 @@ class Pths(Cfg):
 
         if not os.path.exists(self.LOCAL_DB):
             PresetDB(filename=self.LOCAL_DB)
-
-
-class Sts(Cfg):
-
-    key                                 = 'Sts'
-    _filePath                           = settingCfg
-
-    APP_SETTING                         = APP_SETTING
-    USER_SETTING                        = USER_SETTING
-    FORMAT_SETTING                      = FORMAT_SETTING
-    UNIX_SETTING                        = UNIX_SETTING
-
-    SYS_SCOPE                           = Settings.SystemScope,
-    USER_SCOPE                          = Settings.UserScope,
-
-    INI                                 = Settings.IniFormat,
-    NATIVE                              = Settings.NativeFormat,
-    INVAILD                             = Settings.InvalidFormat,
-
-    def __iter__(self):
-        super(Sts, self).__iter__()
-
-        self.__dict__.update()
 
 
 class Ics(Cfg):
@@ -604,81 +662,6 @@ class Fmts(Cfg):
         self.__dict__.update()
 
 
-class TrackKeys(Cfg):
-
-    key                                 = 'TrackKeys'
-    _filePath                           = None
-
-    pVERSION = dict(adobe=["CC 2017", "CC 2018", "CC 2019", "CC 2020", "CC 2021"],
-                    autodesk=["2017", "2018", "2019", "2020", "2021"],
-                    allegorithmic=[],
-                    foundry=["11.1v1", "11.2v1", "4.0v1", "4.1v1", "2.6v3", "4.6v1", "12.0v1",
-                             '3.5v2', '3.2v4', '2.6v3'],
-                    pixologic=["4R6", "4R7", "4R8", '2018', '2019', '2020', '2021'],
-                    sizefx=['16.5.439', '16.5.496', '17.5.425', '18.0.327'],
-                    office=['2017', "2018", "2019", "2020"],
-                    jetbrains=['2017.3.3', '2018.1', ],
-                    wonderUnit=[],
-                    anaconda=[], )
-
-    pPACKAGE = dict(
-        adobe=["Adobe Photoshop", "Adobe Illustrator", "Adobe Audition", "Adobe After Effects",
-               "Adobe Premiere Pro", "Adobe Media Encoder", ],
-        autodesk=["Autodesk Maya", "Autodesk Mudbox", "Maya", "Mudbox", "3ds Max", "AutoCAD"],
-        allegorithmic=['Substance Painter', 'Substance Designer'],
-        foundry=['Hiero', 'Mari', 'NukeStudio', 'NukeX', 'Katana', ],
-        pixologic=['ZBrush'],
-        sizefx=['Houdini FX', ],
-        office=['Word', 'Excel', 'PowerPoint', 'Wordpad'],
-        jetbrains=['JetBrains PyCharm', ],
-        wonderUnit=['Storyboarder', 'Krita (x64)', 'Krita (x32)'],
-        anaconda=['Spyder', 'QtDesigner', 'Git Bash']
-    )
-
-    windowApps = ['Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout',
-                  'Snipping Tool', ] + pPACKAGE['anaconda'] + pPACKAGE['office']
-
-    TOOL_UI_KEYS = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer',
-                    'NoteReminder', 'ScreenShot', 'TextEditor', ]
-
-    def __init__(self):
-        super(TrackKeys, self).__init__()
-
-        self.__dict__.update()
-
-    def generate_key_packages(self, *info):
-        keyPackage = []
-        for k in self.pPACKAGE:
-            for name in self.pPACKAGE[k]:
-                if len(self.pVERSION[k]) == 0:
-                    key = name
-                    keyPackage.append(key)
-                else:
-                    for ver in self.pVERSION[k]:
-                        if name == 'Hiero' or name == 'HieroPlayer' or name == 'NukeX':
-                            key = name + " " + ver
-                        else:
-                            if not ver or ver == []:
-                                key = name
-                            else:
-                                key = name + " " + ver
-                        keyPackage.append(key)
-
-        info = keyPackage + self.windowApps
-
-        return info
-
-    def generate_config(self, key):
-
-        info = []
-
-        for k in self.KEYPACKAGE:
-            for t in self.pTRACK[key]:
-                if t in k:
-                    info.append(k)
-
-        return list(sorted(set(info)))
-
 class Uis(Cfg):
 
     key                                 = 'Uis'
@@ -766,6 +749,94 @@ class Uis(Cfg):
         self.TOOLS              = self.tracker.generate_config('Tools') + self.TOOL_UI_KEYS,  # useful/custom tools
         self.EXTRA              = self.tracker.generate_config('Extra'),  # Extra tools
         self.SYSTRAY            = self.tracker.generate_config('sysTray') + ['Exit', 'SignIn'],  # System tray tools
+
+        self.__dict__.update()
+
+
+class Clrs(Cfg):
+
+    key                             = 'CLrs'
+    _filePath                       = colorCfg
+
+    DAMG_LOGO_COLOR = Color(0, 114, 188, 255)
+
+    # Basic color
+    WHITE = Color(Qt.white)
+    LIGHTGRAY = Color(Qt.lightGray)
+    GRAY = Color(Qt.gray)
+    DARKGRAY = Color(Qt.darkGray)
+    BLACK = Color(Qt.black)
+    RED = Color(Qt.red)
+    GREEN = Color(Qt.green)
+    BLUE = Color(Qt.blue)
+    DARKRED = Color(Qt.darkRed)
+    DARKGREEN = Color(Qt.darkGreen)
+    DARKBLUE = Color(Qt.darkBlue)
+    CYAN = Color(Qt.cyan)
+    MAGENTA = Color(Qt.magenta)
+    YELLOW = Color(Qt.yellow)
+    DARKCYAN = Color(Qt.darkCyan)
+    DARKMAGENTA = Color(Qt.darkMagenta)
+    DARKYELLOW = Color(Qt.darkYellow)
+
+    # Dark Palette color
+    COLOR_BACKGROUND_LIGHT = Color('#505F69')
+    COLOR_BACKGROUND_NORMAL = Color('#32414B')
+    COLOR_BACKGROUND_DARK = Color('#19232D')
+
+    COLOR_FOREGROUND_LIGHT = Color('#F0F0F0')
+    COLOR_FOREGROUND_NORMAL = Color('#AAAAAA')
+    COLOR_FOREGROUND_DARK = Color('#787878')
+
+    COLOR_SELECTION_LIGHT = Color('#148CD2')
+    COLOR_SELECTION_NORMAL = Color('#1464A0')
+    COLOR_SELECTION_DARK = Color('#14506E')
+
+    # Nice color
+    blush = Color(246, 202, 203, 255)
+    petal = Color(247, 170, 189, 255)
+    petunia = Color(231, 62, 151, 255)
+    deep_pink = Color(229, 2, 120, 255)
+    melon = Color(241, 118, 110, 255)
+    pomegranate = Color(178, 27, 32, 255)
+    poppy_red = Color(236, 51, 39, 255)
+    orange_red = Color(240, 101, 53, 255)
+    olive = Color(174, 188, 43, 255)
+    spring = Color(227, 229, 121, 255)
+    yellow = Color(255, 240, 29, 255)
+    mango = Color(254, 209, 26, 255)
+    cantaloupe = Color(250, 176, 98, 255)
+    tangelo = Color(247, 151, 47, 255)
+    burnt_orange = Color(236, 137, 36, 255)
+    bright_orange = Color(242, 124, 53, 255)
+    moss = Color(176, 186, 39, 255)
+    sage = Color(212, 219, 145, 255)
+    apple = Color(178, 215, 140, 255)
+    grass = Color(111, 178, 68, 255)
+    forest = Color(69, 149, 62, 255)
+    peacock = Color(21, 140, 167, 255)
+    teal = Color(24, 157, 193, 255)
+    aqua = Color(153, 214, 218, 255)
+    violet = Color(55, 52, 144, 255)
+    deep_blue = Color(15, 86, 163, 255)
+    hydrangea = Color(150, 191, 229, 255)
+    sky = Color(139, 210, 244, 255)
+    dusk = Color(16, 102, 162, 255)
+    midnight = Color(14, 90, 131, 255)
+    seaside = Color(87, 154, 188, 255)
+    poolside = Color(137, 203, 225, 255)
+    eggplant = Color(86, 5, 79, 255)
+    lilac = Color(222, 192, 219, 255)
+    chocolate = Color(87, 43, 3, 255)
+    blackout = Color(19, 17, 15, 255)
+    stone = Color(125, 127, 130, 255)
+    gravel = Color(181, 182, 185, 255)
+    pebble = Color(217, 212, 206, 255)
+    sand = Color(185, 172, 151, 255)
+
+
+    def __init__(self):
+        super(Clrs, self).__init__()
 
         self.__dict__.update()
 

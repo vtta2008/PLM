@@ -13,16 +13,13 @@ Description:
 import os
 
 # PLM
-from PLM                                    import ROOT
-from .utils                                 import create_path
-from .baseConfigs                           import Cmds, Pls
-from .modelConfigs                          import (ConfigDirs, ConfigPths, ConfigIcons, ConfigUrls, ConfigApps,
-                                                    ConfigPython, ConfigLogos, ConfigFonts, ConfigSettings,
-                                                    ConfigFormats, ConfigUiKeys, )
-from .pipelineConfigs                       import ConfigPipeline
+from .winConfigs                            import ConfigPcs
+from .baseConfigs                           import Pys, Urls, Lgs, Fnts, Dirs, Pths, Ics, Apps, Sts, Fmts, Uis, Clrs, Pls, Cmds
 
+from PLM                                    import glbSettings, create_path, ROOT
+from PLM.types                              import CMD_VALUE_TYPE
 from PLM.api.Core                           import Size, DateTime
-from PLM.api.Gui                            import Painter, Font, Color
+from PLM.api.Gui                            import Painter, Font
 
 # PyQt5
 from PyQt5.QtCore                           import Qt, QEvent
@@ -31,37 +28,28 @@ from PyQt5.QtWidgets                        import (QGraphicsItem, QGraphicsView
                                                     QSizePolicy, QLineEdit, QPlainTextEdit, QAbstractItemView, QStyle, )
 
 
-
-SYS_OPTS                                = ["Host Name", "OS Name", "OS Version", "Product ID", "System Manufacturer",
-                                           "System Model", "System type", "BIOS Version", "Domain", "Windows Directory",
-                                           "Total Physical Memory", "Available Physical Memory", "Logon Server"]
-
+SYS_OPTS                                    = ["Host Name", "OS Name", "OS Version", "Product ID", "System Manufacturer",
+                                                "System Model", "System type", "BIOS Version", "Domain", "Windows Directory",
+                                                "Total Physical Memory", "Available Physical Memory", "Logon Server"]
 
 
-notKeys                                 = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__',
-                                           '__cached__', '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR',
-                                           'SETTING_DIR', 'DB_DIR', 'LOG_DIR', 'QSS_DIR', 'RCS_DIR', 'SCSS_DIR',
-                                           '__appname__', 'subprocess', 'unicode_literals', 'absolute_import',
-                                           '__organization__']
+
+notKeys                                      = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__',
+                                                '__cached__', '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR',
+                                                'SETTING_DIR', 'DB_DIR', 'LOG_DIR', 'QSS_DIR', 'RCS_DIR', 'SCSS_DIR',
+                                                '__appname__', 'subprocess', 'unicode_literals', 'absolute_import',
+                                                '__organization__']
 
 
-IGNORE_ICONS                            = ['Widget', 'bright', 'dark', 'charcoal', 'nuker', 'TopTab1', 'TopTab2',
-                                           'Organisation', 'Project', 'Team', 'Task', 'ShowAll','ItemWidget',
-                                           'BaseManager', 'SettingInput', 'QueryPage', 'SysTray', 'Footer', 'BotTab1',
-                                           'BotTab2', 'Cmd', 'User', 'Tracking']
+IGNORE_ICONS                                = [ 'Widget', 'bright', 'dark', 'charcoal', 'nuker', 'TopTab1', 'TopTab2',
+                                                'Organisation', 'Project', 'Team', 'Task', 'ShowAll','ItemWidget',
+                                                'BaseManager', 'SettingInput', 'QueryPage', 'SysTray', 'Footer', 'BotTab1',
+                                                'BotTab2', 'Cmd', 'User', 'Tracking']
 
 
-datetTimeStamp                          = DateTime.currentDateTime().toString("hh:mm - dd MMMM yy")             # datestamp
+datetTimeStamp                              = DateTime.currentDateTime().toString("hh:mm - dd MMMM yy")             # datestamp
 
 
-# -------------------------------------------------------------------------------------------------------------
-""" Font & Text """
-
-TEXT_BOLD                   = Font.Bold
-TEXT_NORMAL                 = Font.Normal
-MONO_SPACE                  = Font.Monospace
-
-TEXT_MENEOMIC               = Qt.TextShowMnemonic
 
 # -------------------------------------------------------------------------------------------------------------
 """ Event """
@@ -70,8 +58,7 @@ NO_WRAP                     = QPlainTextEdit.NoWrap
 NO_FRAME                    = QPlainTextEdit.NoFrame
 ELIDE_RIGHT                 = Qt.ElideRight
 ELIDE_NONE                  = Qt.ElideNone
-KEY_PRESS                   = QEvent.KeyPress
-KEY_RELEASE                 = QEvent.KeyRelease
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Window state """
@@ -174,6 +161,15 @@ QUEUEDCONNECTION            = Qt.QueuedConnection
 # -------------------------------------------------------------------------------------------------------------
 """ Keyboard and cursor """
 
+TEXT_BOLD                   = Font.Bold
+TEXT_NORMAL                 = Font.Normal
+MONO_SPACE                  = Font.Monospace
+
+TEXT_MENEOMIC               = Qt.TextShowMnemonic
+
+
+KEY_PRESS                   = QEvent.KeyPress
+KEY_RELEASE                 = QEvent.KeyRelease
 KEY_ALT                     = Qt.Key_Alt
 KEY_DEL                     = Qt.Key_Delete
 KEY_TAB                     = Qt.Key_Tab
@@ -275,95 +271,6 @@ FIX_KEYS = dict( TextEditor         = 'TextEditor', NoteReminder = 'NoteReminder
                  ImageViewer        = 'ImageViewer', NodeGraph = 'NodeGraph', Screenshot = 'Screenshot', )
 
 
-class ColorLibs(dict):
-
-    key                             = 'ColorLibs'
-
-    DAMG_LOGO_COLOR                 = Color(0, 114, 188, 255)
-
-    # Basic color
-    WHITE                           = Color(Qt.white)
-    LIGHTGRAY                       = Color(Qt.lightGray)
-    GRAY                            = Color(Qt.gray)
-    DARKGRAY                        = Color(Qt.darkGray)
-    BLACK                           = Color(Qt.black)
-    RED                             = Color(Qt.red)
-    GREEN                           = Color(Qt.green)
-    BLUE                            = Color(Qt.blue)
-    DARKRED                         = Color(Qt.darkRed)
-    DARKGREEN                       = Color(Qt.darkGreen)
-    DARKBLUE                        = Color(Qt.darkBlue)
-    CYAN                            = Color(Qt.cyan)
-    MAGENTA                         = Color(Qt.magenta)
-    YELLOW                          = Color(Qt.yellow)
-    DARKCYAN                        = Color(Qt.darkCyan)
-    DARKMAGENTA                     = Color(Qt.darkMagenta)
-    DARKYELLOW                      = Color(Qt.darkYellow)
-
-    # Dark Palette color
-    COLOR_BACKGROUND_LIGHT          = Color('#505F69')
-    COLOR_BACKGROUND_NORMAL         = Color('#32414B')
-    COLOR_BACKGROUND_DARK           = Color('#19232D')
-
-    COLOR_FOREGROUND_LIGHT          = Color('#F0F0F0')
-    COLOR_FOREGROUND_NORMAL         = Color('#AAAAAA')
-    COLOR_FOREGROUND_DARK           = Color('#787878')
-
-    COLOR_SELECTION_LIGHT           = Color('#148CD2')
-    COLOR_SELECTION_NORMAL          = Color('#1464A0')
-    COLOR_SELECTION_DARK            = Color('#14506E')
-
-    # Nice color
-    blush                           = Color(246, 202, 203, 255)
-    petal                           = Color(247, 170, 189, 255)
-    petunia                         = Color(231, 62, 151, 255)
-    deep_pink                       = Color(229, 2, 120, 255)
-    melon                           = Color(241, 118, 110, 255)
-    pomegranate                     = Color(178, 27, 32, 255)
-    poppy_red                       = Color(236, 51, 39, 255)
-    orange_red                      = Color(240, 101, 53, 255)
-    olive                           = Color(174, 188, 43, 255)
-    spring                          = Color(227, 229, 121, 255)
-    yellow                          = Color(255, 240, 29, 255)
-    mango                           = Color(254, 209, 26, 255)
-    cantaloupe                      = Color(250, 176, 98, 255)
-    tangelo                         = Color(247, 151, 47, 255)
-    burnt_orange                    = Color(236, 137, 36, 255)
-    bright_orange                   = Color(242, 124, 53, 255)
-    moss                            = Color(176, 186, 39, 255)
-    sage                            = Color(212, 219, 145, 255)
-    apple                           = Color(178, 215, 140, 255)
-    grass                           = Color(111, 178, 68, 255)
-    forest                          = Color(69, 149, 62, 255)
-    peacock                         = Color(21, 140, 167, 255)
-    teal                            = Color(24, 157, 193, 255)
-    aqua                            = Color(153, 214, 218, 255)
-    violet                          = Color(55, 52, 144, 255)
-    deep_blue                       = Color(15, 86, 163, 255)
-    hydrangea                       = Color(150, 191, 229, 255)
-    sky                             = Color(139, 210, 244, 255)
-    dusk                            = Color(16, 102, 162, 255)
-    midnight                        = Color(14, 90, 131, 255)
-    seaside                         = Color(87, 154, 188, 255)
-    poolside                        = Color(137, 203, 225, 255)
-    eggplant                        = Color(86, 5, 79, 255)
-    lilac                           = Color(222, 192, 219, 255)
-    chocolate                       = Color(87, 43, 3, 255)
-    blackout                        = Color(19, 17, 15, 255)
-    stone                           = Color(125, 127, 130, 255)
-    gravel                          = Color(181, 182, 185, 255)
-    pebble                          = Color(217, 212, 206, 255)
-    sand                            = Color(185, 172, 151, 255)
-
-    def __init__(self):
-        super(ColorLibs, self).__init__()
-
-        self.__dict__.update()
-
-
-colorLibs                           = ColorLibs()
-
-
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -394,7 +301,393 @@ REFERENCES                          = read_file('REFERENCES')
 QUESTIONS                           = read_file('QUESTION')
 VERSION                             = read_file('VERSION')
 
+class ConfigColors(Clrs):
 
+    key                             = 'ConfigColors'
+
+    def __init__(self):
+        super(ConfigColors, self).__init__()
+
+        self.__dict__.update()
+
+        if glbSettings.printCfgInfo:
+            if glbSettings.printColorInfo:
+                self.pprint()
+
+        if glbSettings.saveCfgInfo:
+            if glbSettings.saveColorInfo:
+                self.save_data()
+
+
+class ConfigDirs(Dirs):
+
+
+    key                             = 'ConfigDirs'
+
+
+    def __init__(self):
+        super(ConfigDirs, self).__init__()
+
+        self.__dict__.update()
+
+        if glbSettings.printCfgInfo:
+            if glbSettings.printDirInfo:
+                self.pprint()
+
+        if glbSettings.saveCfgInfo:
+            if glbSettings.saveDirInfo:
+                self.save_data()
+
+
+
+class ConfigPths(Pths):
+
+    key                             = 'ConfigPths'
+
+    def __init__(self):
+        super(ConfigPths, self).__init__()
+
+        self.__dict__.update()
+
+        if glbSettings.printCfgInfo:
+            if glbSettings.printPthInfo:
+                self.pprint()
+
+        if glbSettings.saveCfgInfo:
+            if glbSettings.savePthInfo:
+                self.save_data()
+
+
+
+class ConfigIcons(Ics):
+
+    key                                 = 'ConfigIcons'
+
+    def __init__(self):
+        super(ConfigIcons, self).__init__()
+
+        if glbSettings.printCfgInfo:
+            if glbSettings.printIconInfo:
+                self.pprint()
+
+        if glbSettings.saveCfgInfo:
+            if glbSettings.saveIconInfo:
+                self.save_data()
+
+
+
+class ConfigApps(Apps):
+
+    key                         = 'ConfigApps'
+
+    def __init__(self):
+        super(ConfigApps, self).__init__()
+
+        if glbSettings.printCfgInfo:
+            if glbSettings.printAppInfo:
+                self.pprint()
+
+        if glbSettings.saveCfgInfo:
+            if glbSettings.saveAppInfo:
+                self.save_data()
+
+
+
+class ConfigPython(Pys):
+
+    key                         = 'ConfigPython'
+
+    def __init__(self):
+        super(ConfigPython, self).__init__()
+
+
+        if glbSettings.printCfgInfo:
+            if glbSettings.printPythonInfo:
+                self.pprint()
+
+        if glbSettings.saveCfgInfo:
+            if glbSettings.savePythonInfo:
+                self.save_data()
+
+
+
+class ConfigUrls(Urls):
+
+    key                             = 'ConfigUrls'
+
+    def __init__(self):
+        super(ConfigUrls, self).__init__()
+
+        if glbSettings.printCfgInfo:
+            if glbSettings.printUrlInfo:
+                self.pprint()
+
+        if glbSettings.saveCfgInfo:
+            if glbSettings.saveUrlInfo:
+                self.save_data()
+
+
+
+class ConfigLogos(Lgs):
+
+    key                                 = 'ConfigLogos'
+
+    def __init__(self):
+        super(ConfigLogos, self).__init__()
+
+        if glbSettings.printCfgInfo:
+            if glbSettings.printAvatarInfo:
+                self.pprint()
+
+        if glbSettings.saveCfgInfo:
+            if glbSettings.saveAvatarInfo:
+                self.save_data()
+
+
+
+class ConfigFonts(Fnts):
+
+    key                                 = 'ConfigFonts'
+
+    def __init__(self):
+        super(ConfigFonts, self).__init__()
+
+        if glbSettings.printCfgInfo:
+            if glbSettings.printFontInfo:
+                self.pprint()
+
+        if glbSettings.saveCfgInfo:
+            if glbSettings.saveFontInfo:
+                self.save_data()
+
+
+class ConfigFormats(Fmts):
+
+    key                                 = 'ConfigFormats'
+
+    def __iter__(self):
+        super(ConfigFormats, self).__iter__()
+
+        if glbSettings.printCfgInfo:
+            if glbSettings.printFmtInfo:
+                self.pprint()
+
+        if glbSettings.saveCfgInfo:
+            if glbSettings.saveFmtInfo:
+                self.save_data()
+
+
+class ConfigUiKeys(Uis):
+
+    key                                 = 'ConfigUiKeys'
+
+    def __iter__(self):
+        super(ConfigUiKeys, self).__iter__()
+
+        self.__dict__.update()
+
+        if glbSettings.printCfgInfo:
+            if glbSettings.printUiKeyInfo:
+                self.pprint()
+
+        if glbSettings.saveCfgInfo:
+            if glbSettings.saveUiKeyInfo:
+                self.save_data()
+
+
+iconMissing                     = []
+toolTips                        = {}
+statusTips                      = {}
+
+
+class ConfigPipeline(Pls):
+
+    key                         = 'ConfigPipeline'
+
+    dirInfo                     = ConfigDirs()
+    pthInfo                     = ConfigPths()
+    iconInfo                    = ConfigIcons()
+    appInfo                     = ConfigApps()
+    urlInfo                     = ConfigUrls()
+    uiKeyInfo                   = ConfigUiKeys()
+
+
+    def __init__(self):
+        super(ConfigPipeline, self).__init__()
+
+        removeKeys              = []
+        launchAppKeys           = []
+
+        KEYDETECT               = self.uiKeyInfo.KEYDETECT
+        KEYPACKAGE              = self.uiKeyInfo.KEYPACKAGE
+        OPEN_URL_KEYS           = self.uiKeyInfo.OPEN_URL_KEYS
+        SYS_CMD_KEYS            = self.uiKeyInfo.SYS_CMD_KEYS
+        OPEN_DIR_KEYS           = self.uiKeyInfo.OPEN_DIR_KEYS
+        APP_EVENT_KEYS          = self.uiKeyInfo.APP_EVENT_KEYS
+        STYLESHEET_KEYS         = self.uiKeyInfo.STYLESHEET_KEYS
+        SHORTCUT_KEYS           = self.uiKeyInfo.SHORTCUT_KEYS
+
+        functionKeys            = self.uiKeyInfo.APP_FUNCS_KEYS
+        layoutKeys              = self.uiKeyInfo.APP_UI_KEYS
+
+
+        for key in self.appInfo:
+            if 'NukeX' in key:
+                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --nukex"
+            elif 'Hiero' in key:
+                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " --hiero"
+            elif 'UVLayout' in key:
+                self.appInfo[key] = '"' + self.appInfo[key] + '"' + " -launch"
+
+        for key in KEYDETECT:
+            for k in self.appInfo:
+                if key in k:
+                    removeKeys.append(k)
+
+        for k in removeKeys:
+            self.del_key(k)
+
+        self.appInfo.update()
+
+        for k in KEYPACKAGE:
+            for key in self.appInfo.keys():
+                if k in key:
+                    launchAppKeys.append(key)
+
+        qtDesigner = create_path(os.getenv('PROGRAMDATA'), 'Anaconda3', 'Library', 'bin', 'designer.exe')
+        davinciPth = create_path(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
+
+        eVal       = [qtDesigner, davinciPth]
+        eKeys      = ['QtDesigner', 'Davinci Resolve']
+
+        for i in range(len(eVal)):
+            if os.path.exists(eVal[i]):
+                self.appInfo[eKeys[i]] = eVal[i]
+                launchAppKeys.append(eKeys[i])
+
+        for key in launchAppKeys:
+            try:
+                icon = self.iconInfo['icon32'][key]
+            except KeyError:
+                icon = key
+                iconMissing.append(key)
+            finally:
+                toolTips[key] = 'Launch {0}'.format(key)
+                statusTips[key] = 'Launch {0}: {1}'.format(key, self.appInfo[key])
+                value = self.appInfo[key]
+                valueType = CMD_VALUE_TYPE['pth']
+                arg = value
+                if 'NukeX' in key:
+                    code = 'os.system'
+                elif 'Hiero' in key:
+                    code = 'os.system'
+                elif 'UVLayout' in key:
+                    code = 'os.system'
+                else:
+                    code = 'os.startfile'
+
+            tooltip = toolTips[key]
+            statustip = statusTips[key]
+            self.add(key, Cmds(key, icon, tooltip, statustip, value, valueType, arg, code))
+
+        for key in functionKeys:
+
+            try:
+                icon = self.iconInfo['tag'][key]
+            except KeyError:
+                try:
+                    icon = self.iconInfo['icon32'][key]
+                except KeyError:
+                    icon = key
+                    iconMissing.append(key)
+            finally:
+                if key in OPEN_URL_KEYS:
+                    toolTips[key] = 'Go to {0} website'.format(key)
+                    statusTips[key] = 'Open URL: {0}'.format(self.urlInfo[key])
+                    value = self.urlInfo[key]
+                    valueType = CMD_VALUE_TYPE['url']
+                    arg = value
+                    code = 'openURL'
+                elif key in SYS_CMD_KEYS:
+                    toolTips[key] = 'Open command prompt'
+                    statusTips[key] = 'Open command prompt'
+                    value = 'start /wait cmd'
+                    valueType = CMD_VALUE_TYPE['cmd']
+                    arg = value
+                    code = 'os.system'
+                elif key in OPEN_DIR_KEYS:
+                    toolTips[key] = 'Open {0} folder'.format(key.replace('Folder', ''))
+                    statusTips[key] = 'Open {0} folder'.format(key.replace('Folder', ''))
+                    value = self.dirInfo[key]
+                    valueType = CMD_VALUE_TYPE['dir']
+                    arg = value
+                    code = 'os.startfile'
+                elif key in APP_EVENT_KEYS:
+                    toolTips[key] = 'Release PLM Event: {0}'.format(key)
+                    statusTips[key] = 'Activate Event: {0}'.format(key)
+                    value = key
+                    valueType = CMD_VALUE_TYPE['event']
+                    arg = key
+                    code = 'appEvent'
+                elif key in STYLESHEET_KEYS:
+                    toolTips[key] = 'Load stylesheet: {0}'.format(key)
+                    statusTips[key] = 'Load stylesheet: {0}'.format(key)
+                    value = key
+                    valueType = CMD_VALUE_TYPE['stylesheet']
+                    arg = value
+                    code = 'stylesheet'
+                elif key in SHORTCUT_KEYS:
+                    toolTips[key] = key
+                    statusTips[key] = key
+                    value = key
+                    valueType = CMD_VALUE_TYPE['shortcut']
+                    arg = value
+                    code = 'shortcut'
+                else:
+                    toolTips[key] = 'Execute function: {0}'.format(key)
+                    statusTips[key] = 'Execute function: {0}'.format(key)
+                    value = key
+                    valueType = CMD_VALUE_TYPE['func']
+                    arg = value
+                    code = 'function'
+
+            tooltip = toolTips[key]
+            statustip = statusTips[key]
+            self.add(key, Cmds(key, icon, tooltip, statustip, value, valueType, arg, code))
+
+        for key in layoutKeys:
+            if not key in launchAppKeys:
+                # print(key)
+                try:
+                    icon = self.iconInfo['icon32'][key]
+                except KeyError:
+                    icon = key
+                    iconMissing.append(key)
+                finally:
+                    toolTips[key] = 'Show: {0}'.format(key)
+                    statusTips[key] = 'Show: {0}'.format(key)
+                    value = key
+                    valueType = CMD_VALUE_TYPE['uiKey']
+                    arg = value
+                    code = 'showUI'
+
+                tooltip = toolTips[key]
+                statustip = statusTips[key]
+                self.add(key, Cmds(key, icon, tooltip, statustip, value, valueType, arg, code))
+
+        if glbSettings.printCfgInfo:
+            if glbSettings.printPlmInfo:
+                self.pprint()
+
+        if glbSettings.saveCfgInfo:
+            if glbSettings.savePlmInfo:
+                self.save_data()
+
+    def del_key(self, key):
+        try:
+            del self.appInfo[key]
+        except KeyError:
+            self.appInfo.pop(key, None)
 
 
 # -------------------------------------------------------------------------------------------------------------
