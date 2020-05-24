@@ -9,128 +9,41 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+""" Import """
+from PLM.types.baseType import BaseInfo, construct_class
 
+__majorVersion__                    = 13
+__minorVersion__                    = 0
+__microVersion__                    = 1
 
-__majorVersion__                        = 13
-__minorVersion__                        = 0
-__microVersion__                        = 1
+infoDoc                             = 'PLM documentations'
+infoName                            = 'Version'
+infoModule                          = 'PLM'
 
+content                             = (__majorVersion__, __minorVersion__, __microVersion__)
+data                                = {'doc': infoDoc, 'name': infoName, 'module': infoModule}
+versionConstruct                    = construct_class(BaseInfo(content), data)
 
-
-class BaseTuple(tuple):
-
-    Type                                = 'DAMGTUPLE'
-    key                                 = 'BaseTuple'
-    _name                               = 'DAMG Base Tuple'
-    _copyright                          = 'Copyright (C) 2017 - 2020 by DAMGTEAM.'
-
-    def __new__(cls, *args):
-        cls.args                        = args
-
-        return tuple.__new__(BaseTuple, tuple(cls.args))
-
-    def __bases__(self):
-        return tuple(BaseTuple, tuple(self.args))
-
-    def __call__(self):
-
-        """ Make object callable """
-
-        if isinstance(self, object):
-            return True
-        else:
-            return False
-
-    @property
-    def copyright(self):
-        return self._copyright
-
-    @property
-    def name(self):
-        return self._name
-
-    @name.setter
-    def name(self, newName):
-        self._name                      = newName
-
-
-
-class VersionTuple(BaseTuple):
-
-    key                                 = 'VersionTuple'
-
-    def __init__(self, *args, **kwargs):
-        BaseTuple.__new__(self)
-
-        self.metadata                   = kwargs
-        self.args                       = args
-
-
-
-class VersionInfo(VersionTuple):
-
-
-    Type                            = 'DAMGVERSIONINFO'
-    key                             = '__version_info__'
-
-
-    def __new__(self):
-
-        self._MAJOR                 = __majorVersion__
-        self._MINOR                 = __minorVersion__
-        self._MICRO                 = __microVersion__
-
-        return tuple.__new__(VersionInfo, (self._MAJOR, self._MINOR, self._MICRO))
-
-    def __bases__(self):
-        return tuple(VersionInfo, tuple(self.major_version, self.minor_version, self.micro_version))
-
-    @property
-    def major_version(self):
-        return self._MAJOR
-
-    @property
-    def minor_version(self):
-        return self._MINOR
-
-    @property
-    def micro_version(self):
-        return self._MINOR
-
-    @major_version.setter
-    def major_version(self, newVal):
-        self._MAJOR = newVal
-
-    @minor_version.setter
-    def minor_version(self, newVal):
-        self._MINOR = newVal
-
-    @micro_version.setter
-    def micro_version(self, newVal):
-        self._MINOR = newVal
-
-
-
-version_info = VersionInfo()
-
-
-
-version_construct_class = dict(
-
-    __version_info__                = version_info,
-    __doc__                         = 'PLM documentations',
-    __name__                        = 'version',
-    __module__                      = 'PLM',
-    __type__                        = 'version: {0}'.format('.'.join(str(i) for i in version_info)),
-    __str__                         = '.'.join(str(i) for i in version_info)
-
-)
+# version_info                        = BaseInfo(versionContent)
+# type_info                           = 'Version: {0}'.format('.'.join(str(i) for i in version_info))
+# str_info                            = '.'.join(str(i) for i in version_info)
+#
+# version_construct_class = dict(
+#
+#     __version_info__                = version_info,
+#     __doc__                         = 'PLM documentations',
+#     __name__                        = 'Version',
+#     __module__                      = 'PLM',
+#     __type__                        = type_info,
+#     __str__                         = str_info
+#
+# )
 
 
 class VersionType(type):
 
     key                             = 'VersionType'
-    Type                            = 'DamgVersion'
+    Type                            = 'DAMGVERSION'
 
     _step                           = 1
     _majo_step                      = 1
@@ -138,7 +51,7 @@ class VersionType(type):
     _micro_step                     = 1
 
     def __new__(cls, *args, **kwargs):
-        newType = type.__new__(VersionType, 'version', (VersionType,), version_construct_class)
+        newType = type.__new__(VersionType, 'Version', (VersionType,), versionConstruct)
         return newType
 
     def __init__(self):
@@ -155,7 +68,7 @@ class VersionType(type):
         return self._micro_step + self._step
 
     def __bases__(cls):
-        return type.__new__(VersionType, 'version', (VersionType,), version_construct_class)
+        return type.__new__(VersionType, 'Version', (VersionType,), versionConstruct)
 
     def __str__(self):
         return self.__str__
@@ -184,29 +97,29 @@ class VersionType(type):
 
     @majo_step.setter
     def majo_step(self, val):
-        self._majo_step             = val
+        self._majo_step                 = val
 
     @mino_step.setter
     def mino_step(self, val):
-        self._mino_step             = val
+        self._mino_step                 = val
 
     @micro_step.setter
     def micro_step(self, val):
-        self._micro_step            = val
+        self._micro_step                = val
 
     @step.setter
     def step(self, val):
-        self._step                  = val
+        self._step                      = val
 
 
-    __version__                 = '.'.join(str(i) for i in version_info)
+    __version__                         = '.'.join(str(i) for i in version_info)
 
-    __qualname__                = 'version'
+    __qualname__                        = 'Version'
 
 
 class Version(VersionType):
 
-    key                         = 'version'
+    key                                 = 'Version'
 
     def __init__(self, major=__majorVersion__, minor=__minorVersion__, micro=__minorVersion__):
         super(Version, self).__init__(major, minor, micro)

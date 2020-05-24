@@ -18,32 +18,13 @@ import json, inspect
 from PLM import __copyright__
 
 
+class ObjectEncoder(json.JSONEncoder):
 
-class Iterator(object):
+    def default(self, o):
+        if isinstance(o, set):
+            return tuple(o)
 
-    """ Make object Iterable """
-
-    def __init__(self, sorted_dict):
-
-        self._dict                      = sorted_dict
-        self._keys                      = sorted(self._dict.keys())
-        self._nr_items                  = len(self._keys)
-        self._idx                       = 0
-
-    def __iter__(self):
-        return self
-
-    def next(self):
-        if self._idx >= self._nr_items:
-            raise StopIteration
-
-        key                             = self._keys[self._idx]
-        value                           = self._dict[key]
-        self._idx += 1
-
-        return key, value
-
-    __next__                            = next
+        return super(ObjectEncoder, self).default(o)
 
 
 # -------------------------------------------------------------------------------------------------------------

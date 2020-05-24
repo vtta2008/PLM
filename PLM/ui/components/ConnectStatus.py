@@ -9,7 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import globals
+from PLM import GLobalSetting
 """ Import """
 
 # Python
@@ -68,7 +68,7 @@ class ConnectStatus(GroupGrid):
         try:
             r = requests.get(__localServer__)
         except requests.exceptions.ConnectionError:
-            if not globals.allowLocalMode:
+            if not GLobalSetting.allowLocalMode:
                 MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                 sys.exit()
             else:
@@ -119,7 +119,7 @@ class ConnectStatus(GroupGrid):
             try:
                 r                       = requests.get(__localServer__)
             except Exception:
-                if not globals.allowLocalMode:
+                if not GLobalSetting.allowLocalMode:
                     MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
                     sys.exit()
                 else:
@@ -136,7 +136,7 @@ class ConnectStatus(GroupGrid):
         else:
             if r.status_code == 200:
                 self._server            = __globalServer__
-                self.setMode('Global')
+                self.setMode('GlobalSetting')
                 self._connectServer     = True
             else:
                 self.setMode('Off')

@@ -12,16 +12,33 @@ Description:
 """ Import """
 
 # Python
-import json
-import enum
+import json, enum
+
+
+
+COLORS                              = ['black', 'red', 'green', 'yellow', 'blue', 'purple', 'cyan', 'white']
+
+
+COLOR_ESCAPES                       = {color: '\033[{}m'.format(i) for i, color in enumerate(COLORS, start=30)}
+
+
+RESET_ESCAPE                        = '\033[0m'
+
+
+LOG_COLORS                          = { 'SILENT': 'gray', 'SPAM': 'white', 'DEBUG': 'cyan', 'VERBOSE': 'purple',
+                                        'NORMAL': 'white', 'NOTICE': 'orange', 'TRACE': 'yellow', 'SUCCESS': 'blue',
+                                        'ERROR': 'red', 'CRITICAL': 'red', 'FATAL': 'red', 'VDEBUG': 'white',
+                                        'WARNING': 'yellow', }
+
+
 
 class Encoder(json.JSONEncoder):
 
-    def default(self, o):
-        if isinstance(o, set):
-            return tuple(o)
+    def default(self, obj):
+        if isinstance(obj, set):
+            return tuple(obj)
 
-        return super(Encoder, self).default(o)
+        return super(Encoder, self).default(obj)
 
 
 class StyleMessage(object):
@@ -39,11 +56,16 @@ class StyleMessage(object):
 class LogLevel(enum.IntEnum):
 
     Silent                          = 0
+    Spam                            = 5
     Debug                           = 10
+    Verbose                         = 15
     Normal                          = 20
+    Notice                          = 25
     Trace                           = 30
+    Success                         = 35
     Error                           = 40
-    Critical                        = 50
+    Critical                        = 45
+    Fatal                           = 50
 
     @classmethod
     def getbyname(cls, name):
@@ -59,9 +81,20 @@ class LogLevel(enum.IntEnum):
     @classmethod
     def getbyverbosity(cls, intvalue):
         maxvalue = max(int(level) for level in cls)
+
         if intvalue > maxvalue:
             intvalue = maxvalue
+
         return cls(intvalue)
+
+
+
+lvlNames = ['SILENT', 'SPAM', 'DEBUG', 'VERBOSE', 'NORMAL', 'NOTICE', 'TRACE', 'SUCCESS',
+                    'ERROR', 'CRITICAL', 'FATAL']
+
+lvlNumbers = [LogLevel.Silent, LogLevel.Spam, LogLevel.Debug, LogLevel.Verbose, LogLevel.Normal,
+              LogLevel.Notice, LogLevel.Trace, LogLevel.Success, LogLevel.Error, LogLevel.Critical,
+              LogLevel.Fatal]
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -14,7 +14,7 @@ Description:
 import os
 
 # PLM
-from PLM                                import globals
+from PLM                                import GLobalSetting
 from PLM.configs                        import APP_SETTING, INI, NATIVE, INVALID, SYS_SCOPE, USER_SCOPE
 from PLM.api.Core                       import Settings
 
@@ -87,7 +87,7 @@ class AppSettings(Settings):
             else:
                 oldValue = self.value(key)
                 if not value == oldValue:
-                    if globals.printSettingInfo:
+                    if GLobalSetting.printSettingInfo:
                         print('{0}: set {1} - {2} - {3}.'.format(self.key, key, value, grpChecked))
                     self.setValue(key, value)
 
@@ -106,7 +106,7 @@ class AppSettings(Settings):
                     value = self.value(key)
                 else:
                     value = self.value(key, decode)
-                if globals.printSettingInfo:
+                if GLobalSetting.printSettingInfo:
                     print('{0}: get value from key: {1}, value: {2}, at group: {3}.'.format(self.key, key, value, grpChecked))
                 return value
 

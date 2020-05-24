@@ -10,29 +10,27 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 import base64
-from io import BytesIO as StringIO
-from string import Template
+from io                         import BytesIO as StringIO
+from string                     import Template
 
-__version__ = "1.0"
-renderers = []
 
-try:
-    import cv2
-    import numpy
+renderers                       = []
 
-    def render_opencv(img, fmt="png"):
-        if not isinstance(img, numpy.ndarray):
-            return None
+import cv2, numpy
 
-        retval, buf = cv2.imencode(".%s" % fmt, img)
-        if not retval:
-            return None
+def render_opencv(img, fmt="png"):
+    if not isinstance(img, numpy.ndarray):
+        return None
 
-        return buf, "image/%s" % fmt
+    retval, buf = cv2.imencode(".{0}".format(fmt), img)
 
-    renderers.append(render_opencv)
-except ImportError:
-    pass
+    if not retval:
+        return None
+
+    return buf, "image/%s" % fmt
+
+renderers.append(render_opencv)
+
 
 try:
     from PIL import Image
@@ -103,25 +101,25 @@ class VisualRecord(object):
 
         return "".join(
             Template('<img src="qssPths:$mime;base64,$qssPths" />').substitute({
-                "qssPths": base64.b64encode(data).decode(),
-                "mime": mime
-            }) for data, mime in rendered)
+                "qssPths": base64.b64encode(data).decode(), "mime": mime }) for data, mime in rendered)
 
     def render_footnotes(self):
         if not self.footnotes:
             return ""
 
-        return Template("<pre>$footnotes</pre>").substitute({
-            "footnotes": self.footnotes
-        })
+        return Template("<pre>$footnotes</pre>").substitute({ "footnotes": self.footnotes })
 
     def __str__(self):
         t = Template(
+
             """
             <h4>$title</h4>
             $imgs
             $footnotes
-            <hr/>""")
+            <hr/>
+            
+            """
+        )
 
         return t.substitute({
             "title": self.title,

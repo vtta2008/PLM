@@ -10,14 +10,14 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-from PLM import globals
+from PLM import glbSetting
 
 
-if globals.qtBindingMode == 'PyQt5':
+if glbSetting.qtBinding == 'PyQt5':
         from PyQt5.QtGui        import (QBrush, QColor, QCursor, QFont, QFontMetrics, QIcon, QImage,
                                         QIntValidator, QKeySequence, QPaintDevice, QPainter, QPainterPath, QPalette, QPen, QPixmap,
                                         QPolygon, QTransform, QTextTableFormat, QTextCharFormat, )
-elif globals.qtBindingMode == 'PySide2':
+elif glbSetting.qtBinding == 'PySide2':
         from PySide2.QtGui      import (QBrush, QColor, QCursor, QFont, QFontMetrics, QIcon, QImage,
                                         QIntValidator, QKeySequence, QPaintDevice, QPainter, QPainterPath, QPalette, QPen, QPixmap,
                                         QPolygon, QTransform, QTextFormat, QTextCharFormat, )

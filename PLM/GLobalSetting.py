@@ -10,34 +10,35 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
+from .decoration import DamgProp
 
 
 class ObjectGlb(object):
 
     key                                 = 'GlobalSetting'
-    Type                                = 'DAMG Global Setting'
-    _name                               = 'DAMG Global Setting'
+    Type                                = 'DAMG GlobalSetting Setting'
+    _name                               = 'DAMG GlobalSetting Setting'
     _copyright                          = 'Copyright (C) DAMGTEAM.'
 
-    _cfgable = False
-    _cfgAll = False
+    _cfgable                            = False
+    _cfgAll                             = False
 
     def __init__(self):
         object.__init__(self)
 
-    @property
+    @DamgProp
     def name(self):
         return self._name
 
-    @property
+    @DamgProp
     def copyright(self):
         return self._copyright
 
-    @property
+    @DamgProp
     def cfgable(self):
         return self._cfgable
 
-    @property
+    @DamgProp
     def cfgAll(self):
         return self._cfgAll
 
@@ -54,7 +55,7 @@ class ObjectGlb(object):
 """ Config global """
 
 
-class reportGlb(ObjectGlb):
+class ReportGlb(ObjectGlb):
 
     _printCfgInfo                       = True
     _printPthInfo                       = False
@@ -77,93 +78,93 @@ class reportGlb(ObjectGlb):
     _printFontInfo                      = False
 
     def __init__(self):
-        ObjectGlb.__init__(self)
+        super(ReportGlb, self).__init__()
 
-    @property
+    @DamgProp
     def printCfgInfo(self):
         return self._printCfgInfo
 
-    @property
+    @DamgProp
     def printPthInfo(self):
         return self._printPthInfo
 
-    @property
+    @DamgProp
     def printPythonInfo(self):
         return self._printPythonInfo
 
-    @property
+    @DamgProp
     def printAppInfo(self):
         return self._printAppInfo
 
-    @property
+    @DamgProp
     def printDirInfo(self):
         return self._printDirInfo
 
-    @property
+    @DamgProp
     def printAvatarInfo(self):
         return self._printAvatarInfo
 
-    @property
+    @DamgProp
     def printLogoInfo(self):
         return self._printLogoInfo
 
-    @property
+    @DamgProp
     def printImgInfo(self):
         return self._printImgInfo
 
-    @property
+    @DamgProp
     def saveImgInfo(self):
         return self._saveImgInfo
 
-    @property
+    @DamgProp
     def printIconInfo(self):
         return self._printIconInfo
 
-    @property
+    @DamgProp
     def printEnvInfo(self):
         return self._printEnvInfo
 
-    @property
+    @DamgProp
     def saveEnvInfo(self):
         return self._saveEnvInfo
 
-    @property
+    @DamgProp
     def printServerInfo(self):
         return self._printServerInfo
 
-    @property
+    @DamgProp
     def printUrlInfo(self):
         return self._printUrlInfo
 
-    @property
+    @DamgProp
     def printTypeInfo(self):
         return self._printTypeInfo
 
-    @property
+    @DamgProp
     def printFmtInfo(self):
         return self._printFmtInfo
 
-    @property
+    @DamgProp
     def saveFmtInfo(self):
         return self._saveFmtInfo
 
-    @property
+    @DamgProp
     def printPlmInfo(self):
         return self._printPlmInfo
 
-    @property
+    @DamgProp
     def printPcInfo(self):
         return self._printPcInfo
 
-    @property
+    @DamgProp
     def printSettingInfo(self):
         return self._printSettingInfo
 
-    @property
+    @DamgProp
     def printSignalReceive(self):
         return self._printSignalReceive
 
-    @property
+    @DamgProp
     def printFontInfo(self):
         return self._printFontInfo
 
@@ -256,7 +257,7 @@ class reportGlb(ObjectGlb):
         self._printCfgInfo              = val
 
 
-class RecordGlb(reportGlb):
+class RecordGlb(ReportGlb):
 
     _saveFontInfo                       = True
     _saveCfgInfo                        = True
@@ -277,61 +278,61 @@ class RecordGlb(reportGlb):
     _savePcInfo                         = True
 
     def __init__(self):
-        reportGlb.__init__(self)
+        super(RecordGlb, self).__init__()
 
-    @property
+    @DamgProp
     def saveServerInfo(self):
         return self._saveServerInfo
 
-    @property
+    @DamgProp
     def saveCfgInfo(self):
         return self._saveCfgInfo
 
-    @property
+    @DamgProp
     def savePthInfo(self):
         return self._savePthInfo
 
-    @property
+    @DamgProp
     def savePythonInfo(self):
         return self._savePythonInfo
 
-    @property
+    @DamgProp
     def saveAppInfo(self):
         return self._saveAppInfo
 
-    @property
+    @DamgProp
     def saveDirInfo(self):
         return self._saveDirInfo
 
-    @property
+    @DamgProp
     def saveAvatarInfo(self):
         return self._saveAvatarInfo
 
-    @property
+    @DamgProp
     def saveLogoInfo(self):
         return self._saveLogoInfo
 
-    @property
+    @DamgProp
     def saveUrlInfo(self):
         return self._saveUrlInfo
 
-    @property
+    @DamgProp
     def saveTypeInfo(self):
         return self._saveTypeInfo
 
-    @property
+    @DamgProp
     def savePlmInfo(self):
         return self._savePlmInfo
 
-    @property
+    @DamgProp
     def savePcInfo(self):
         return self._savePcInfo
 
-    @property
+    @DamgProp
     def saveIconInfo(self):
         return self._saveIconInfo
 
-    @property
+    @DamgProp
     def saveFontInfo(self):
         return self._saveFontInfo
 
@@ -398,26 +399,26 @@ class RecordGlb(reportGlb):
 
 class ModesGlb(RecordGlb):
 
-    _qtBindingMode                      = 'PyQt5'
+    _qtBinding                          = 'PyQt5'
     _qtVersion                          = '5.14.1'
-    _dataTypeSaving                     = 'json'
+    _formatSaving                       = 'json'
 
     loading_options                     = ['loading', 'progress']
     binding_options                     = ['PyQt5', 'PySide2']
     saving_options                      = ['json', 'yaml']
 
     def __init__(self):
-        RecordGlb.__init__(self)
+        super(ModesGlb, self).__init__()
 
-    @property
-    def qtBindingMode(self):
-        return self._qtBindingMode
+    @DamgProp
+    def qtBinding(self):
+        return self._qtBinding
 
-    @property
-    def dataTypeSaving(self):
-        return self._dataTypeSaving
+    @DamgProp
+    def formatSaving(self):
+        return self._formatSaving
 
-    @property
+    @DamgProp
     def qtVersion(self):
         return self._qtVersion
 
@@ -425,15 +426,15 @@ class ModesGlb(RecordGlb):
     def qtVersion(self, val):
         self._qtVersion                 = val
 
-    @dataTypeSaving.setter
-    def dataTypeSaving(self, val):
+    @formatSaving.setter
+    def formatSaving(self, val):
         if val in self.saving_options:
-            self._dataTypeSaving        = val
+            self._formatSaving        = val
 
-    @qtBindingMode.setter
-    def qtBindingMode(self, val):
-        if val in self.qtBindingMode:
-            self._qtBindingMode         = val
+    @qtBinding.setter
+    def qtBinding(self, val):
+        if val in self.qtBinding:
+            self._qtBinding             = val
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -442,8 +443,8 @@ class ModesGlb(RecordGlb):
 
 class ErrorsGlb(ModesGlb):
 
-    _allowAllErrors = True
-    _actionRegisterError = True
+    _allowAllErrors                     = True
+    _actionRegisterError                = True
 
     def __init__(self):
         ModesGlb.__init__(self)
@@ -471,63 +472,63 @@ class ErrorsGlb(ModesGlb):
 
 class SignalGlb(ErrorsGlb):
 
-    _emittable = False
-    _autoChangeEmittable = True
-    _trackRecieveSignal = False
-    _trackBlockSignal = False
-    _trackCommand = False
-    _trackRegistLayout = False
+    _emittable                          = False
+    _autoChangeEmittable                = True
+    _trackRecieveSignal                 = False
+    _trackBlockSignal                   = False
+    _trackCommand                       = False
+    _trackRegistLayout                  = False
 
     def __init__(self):
-        ErrorsGlb.__init__(self)
+        super(SignalGlb, self).__init__()
 
-    @property
+    @DamgProp
     def emittable(self):
         return self._emittable
 
-    @property
+    @DamgProp
     def autoChangeEmittable(self):
         return self._autoChangeEmittable
 
-    @property
+    @DamgProp
     def trackRecieveSignal(self):
         return self._trackRecieveSignal
 
-    @property
+    @DamgProp
     def trackBlockSignal(self):
         return self._trackBlockSignal
 
-    @property
+    @DamgProp
     def trackCommand(self):
         return self._trackCommand
 
-    @property
+    @DamgProp
     def trackRegistLayout(self):
         return self._trackRegistLayout
 
     @trackRegistLayout.setter
     def trackRegistLayout(self, val):
-        self._trackRegistLayout = val
+        self._trackRegistLayout         = val
 
     @trackCommand.setter
     def trackCommand(self, val):
-        self._trackCommand = val
+        self._trackCommand              = val
 
     @trackBlockSignal.setter
     def trackBlockSignal(self, val):
-        self._trackBlockSignal = val
+        self._trackBlockSignal          = val
 
     @trackRecieveSignal.setter
     def trackRecieveSignal(self, val):
-        self._trackRecieveSignal = val
+        self._trackRecieveSignal        = val
 
     @autoChangeEmittable.setter
     def autoChangeEmittable(self, val):
-        self._autoChangeEmittable = val
+        self._autoChangeEmittable       = val
 
     @emittable.setter
     def emittable(self, val):
-        self._emittable = val
+        self._emittable                 = val
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -537,20 +538,21 @@ class SignalGlb(ErrorsGlb):
 class GlobalBase(SignalGlb):
 
     def __init__(self):
-        SignalGlb.__init__(self)
+        super(GlobalBase, self).__init__()
 
     def setCfgAll(self, val):
-        self._cfgAll = val
+        self._cfgAll                    = val
 
 
 # -------------------------------------------------------------------------------------------------------------
 
 
-class Global(GlobalBase):
+class GlobalSetting(GlobalBase):
 
     def __init__(self):
-        GlobalBase.__init__(self)
+        super(GlobalSetting, self).__init__()
 
+        print(dir(self))
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

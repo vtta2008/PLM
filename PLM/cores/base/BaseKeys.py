@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import globals
+from PLM import GLobalSetting
 """ Import """
 
 # Python
@@ -78,11 +78,11 @@ class BaseKeys(BaseStorage):
         ActionKeyConfigError('Key is not in plmInfo: {0}'.format(key))
 
     def actionRegisterError(self, key):
-        if globals.actionRegisterError:
+        if GLobalSetting.actionRegisterError:
             ActionRegisterError('This action is already registered: {0}'.format(key))
 
     def buttonRegisterError(self, key):
-        if globals.checks.buttonRegisterError:
+        if GLobalSetting.checks.buttonRegisterError:
             ButtonRegisterError('This button is already registered: {0}'.format(key))
 
     def createActions(self, keys, parent):

@@ -14,7 +14,7 @@ Description:
 import platform
 
 # PLM
-from PLM                                import globals
+from PLM                                import GLobalSetting
 from PLM.api.damg                       import DAMG, DAMGDICT
 from PLM.api.Core                       import TextStream, File, QssFile
 from PLM.configs                        import colorLibs
@@ -50,10 +50,10 @@ class StyleSheet(DAMG):
             self.logger.info("Loading darkstyle_rc")
             from PLM.ui.rcs import darkstyle_rc
         else:
-            if globals.qtBindingMode == 'PyQt5':
+            if GLobalSetting.qtBindingMode == 'PyQt5':
                 self.logger.info("Loading pyqt5_style_rc")
                 from PLM.ui.rcs import pyqt5_style_rc
-            elif globals.qtBindingMode == 'PySide2':
+            elif GLobalSetting.qtBindingMode == 'PySide2':
                 self.logger.info("Loading pyside2_style_rc")
                 from PLM.ui.rcs import pyside2_style_rc
             else:

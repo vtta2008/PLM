@@ -10,7 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-from PLM import globals
+from PLM import GLobalSetting
 
 # Python
 import os, sys, requests
@@ -155,7 +155,7 @@ class AppModel(Application):
         try:
             r = requests.get(self._server, verify=self.getVerify(), headers=self.getHeaders(), cookies=self.getCookies())
         except Exception:
-            if not globals.modes.allowLocalMode:
+            if not GLobalSetting.modes.allowLocalMode:
                 self.splash.finish(self.sys_message(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', STAY_ON_TOP))
                 sys.exit()
             else:
@@ -316,16 +316,16 @@ class AppModel(Application):
         self.exit()
 
     def setRecieveSignal(self, bool):
-        globals.recieveSignal = bool
+        GLobalSetting.recieveSignal = bool
 
     def setBlockSignal(self, bool):
-        globals.blockSignal = bool
+        GLobalSetting.blockSignal = bool
 
     def setTrackCommand(self, bool):
-        globals.command = bool
+        GLobalSetting.command = bool
 
     def setRegistLayout(self, bool):
-        globals.registLayout = bool
+        GLobalSetting.registLayout = bool
 
     def runConfigs(self):
 
@@ -385,7 +385,7 @@ class AppModel(Application):
             if not info:
                 check = False
 
-        globals.setCfgAll(check)
+        GLobalSetting.setCfgAll(check)
 
     @property
     def login(self):

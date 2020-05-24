@@ -13,501 +13,409 @@ Description:
 import os, subprocess, sys, re, platform, pkg_resources, winshell, socket, uuid, json, yaml, pprint
 
 # PLM
-from PLM                            import globals, ROOT, ROOT_APP
+from PLM                            import GLobalSetting, ROOT, ROOT_APP, create_path
+
 from .metadatas                     import (__appname__, __organizationName__, __localServer__, __globalServer__,
                                             __homepage__, __plmWiki__, __google__, __googleNZ__, __googleVN__,
                                             __plmWiki__, __localServer__, __homepage__, __appname__,
                                             __organization__, __organizationID__, __organizationName__, __globalServer__,
                                             __google__, __appSlogan__, __localServerAutho__, __version__, __website__,)
+
 from .constants                     import (WAIT_LAYOUT_COMPLETE, ASK_OVERWRITE, SERVER_CONNECT_FAIL, ERROR_APPLICATION,
                                             PW_UNMATCH, PYTHON_TAG, VERSION_TAG, LICENCE_TAG, USER_CHECK_REQUIRED,
                                             SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, PLM_ABOUT, ERROR_LAYOUT_COMPONENT,
                                             SYSTRAY_UNAVAI, )
 
+from PLM.api.Core                   import Size, Settings, DateTime
+
+
 # PyQt5
-from PyQt5.QtCore                   import Qt, QSize, QEvent, QSettings, QDateTime
+from PyQt5.QtCore                   import Qt, QEvent
 from PyQt5.QtGui                    import QPainter, QFont, QColor
 from PyQt5.QtWidgets                import (QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame, QSizePolicy,
                                             QLineEdit, QPlainTextEdit, QAbstractItemView, QStyle, QApplication, )
 
 # -------------------------------------------------------------------------------------------------------------
 ''' configs '''
-LOCALAPPDATA        = os.getenv('LOCALAPPDATA')
+LOCALAPPDATA                        = os.getenv('LOCALAPPDATA')
 
-APPDATA_DAMG        = os.path.join(LOCALAPPDATA, __organizationName__).replace('\\', '/')
-APPDATA_PLM         = os.path.join(APPDATA_DAMG, __appname__).replace('\\', '/')
+APPDATA_DAMG                        = create_path(LOCALAPPDATA, __organizationName__)
+APPDATA_PLM                         = create_path(APPDATA_DAMG, __appname__)
 
-LIBRARY_DIR         = os.path.join(APPDATA_DAMG, 'libraries').replace('\\', '/')
+LIBRARY_DIR                         = create_path(APPDATA_DAMG, 'libraries')
 
-CFG_DIR             = os.path.join(APPDATA_PLM, '.configs').replace('\\', '/')
-TMP_DIR             = os.path.join(APPDATA_PLM, '.tmp').replace('\\', '/')
-CACHE_DIR           = os.path.join(APPDATA_PLM, '.cache').replace('\\', '/')
-PREF_DIR            = os.path.join(APPDATA_PLM, 'preferences').replace('\\', '/')
+CFG_DIR                             = create_path(APPDATA_PLM, '.configs')
+TMP_DIR                             = create_path(APPDATA_PLM, '.tmp')
+CACHE_DIR                           = create_path(APPDATA_PLM, '.cache')
+PREF_DIR                            = create_path(APPDATA_PLM, 'preferences')
 
-SETTING_DIR         = CFG_DIR
-LOG_DIR             = CFG_DIR
-TASK_DIR            = os.path.join(CFG_DIR, 'task').replace('\\', '/')
-TEAM_DIR            = os.path.join(CFG_DIR, 'team').replace('\\', '/')
-PRJ_DIR             = os.path.join(CFG_DIR, 'project').replace('\\', '/')
-ORG_DIR             = os.path.join(CFG_DIR, 'organisation').replace('\\', '/')
-USER_LOCAL_DATA     = os.path.join(CFG_DIR, 'userLocal').replace('\\', '/')
+SETTING_DIR                         = CFG_DIR
+LOG_DIR                             = CFG_DIR
+TASK_DIR                            = create_path(CFG_DIR, 'task')
+TEAM_DIR                            = create_path(CFG_DIR, 'team')
+PRJ_DIR                             = create_path(CFG_DIR, 'project')
+ORG_DIR                             = create_path(CFG_DIR, 'organisation')
+USER_LOCAL_DATA                     = create_path(CFG_DIR, 'userLocal')
 
-DB_DIR              = APPDATA_PLM
+DB_DIR                              = APPDATA_PLM
 
 # -------------------------------------------------------------------------------------------------------------
 ''' docs '''
 
-DOCS_DIR            = os.path.join(ROOT_APP, 'docs').replace('\\', '/')
-RAWS_DIR            = os.path.join(DOCS_DIR, 'raws').replace('\\', '/')
-TEMPLATE_DIR        = os.path.join(DOCS_DIR, 'template').replace('\\', '/')
-TEMPLATE_LICENSE    = os.path.join(TEMPLATE_DIR, 'LICENSE').replace('\\', '/')
+DOCS_DIR                            = create_path(ROOT_APP, 'docs')
+RAWS_DIR                            = create_path(DOCS_DIR, 'raws')
+TEMPLATE_DIR                        = create_path(DOCS_DIR, 'template')
+TEMPLATE_LICENSE                    = create_path(TEMPLATE_DIR, 'LICENSE')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' integrations '''
 
-INTERGRATIONS_DIR   = os.path.join(ROOT_APP, 'intergrations').replace('\\', '/')
+INTERGRATIONS_DIR                   = create_path(ROOT_APP, 'intergrations')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' common '''
 
-COMMONS_DIR         = os.path.join(ROOT, 'api').replace('\\', '/')
-CORE_DIR            = os.path.join(COMMONS_DIR, 'Core').replace('\\', '/')
-DAMG_DIR            = os.path.join(COMMONS_DIR, 'damg').replace('\\', '/')
-GUI_DIR             = os.path.join(COMMONS_DIR, 'Gui').replace('\\', '/')
-NETWORK_DIR         = os.path.join(COMMONS_DIR, 'Network').replace('\\', '/')
-WIDGET_DIR          = os.path.join(COMMONS_DIR, 'Widgets').replace('\\', '/')
+COMMONS_DIR                         = create_path(ROOT, 'api')
+CORE_DIR                            = create_path(COMMONS_DIR, 'Core')
+DAMG_DIR                            = create_path(COMMONS_DIR, 'damg')
+GUI_DIR                             = create_path(COMMONS_DIR, 'Gui')
+NETWORK_DIR                         = create_path(COMMONS_DIR, 'Network')
+WIDGET_DIR                          = create_path(COMMONS_DIR, 'Widgets')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' cores '''
 
-CORES_DIR           = os.path.join(ROOT, 'cores').replace('\\', '/')
-BASE_DIR            = os.path.join(CORES_DIR, 'base').replace('\\', '/')
-LOGGER_DIR          = os.path.join(CORES_DIR, 'Loggers').replace('\\', '/')
-MODELS_DIR          = os.path.join(CORES_DIR, 'models').replace('\\', '/')
-SQL_DIR             = os.path.join(CORES_DIR, 'data').replace('\\', '/')
+CORES_DIR                           = create_path(ROOT, 'cores')
+BASE_DIR                            = create_path(CORES_DIR, 'base')
+LOGGER_DIR                          = create_path(CORES_DIR, 'Loggers')
+MODELS_DIR                          = create_path(CORES_DIR, 'models')
+SQL_DIR                             = create_path(CORES_DIR, 'data')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' resources '''
 
-RESOURCES_DIR       = os.path.join(ROOT, 'resources').replace('\\', '/')
-AVATAR_DIR          = os.path.join(RESOURCES_DIR, 'avatar').replace('\\', '/')
-DESIGN_DIR          = os.path.join(RESOURCES_DIR, 'design').replace('\\', '/')
-FONT_DIR            = os.path.join(RESOURCES_DIR, 'fonts').replace('\\', '/')
+RESOURCES_DIR                       = create_path(ROOT, 'resources')
+AVATAR_DIR                          = create_path(RESOURCES_DIR, 'avatar')
+DESIGN_DIR                          = create_path(RESOURCES_DIR, 'design')
+FONT_DIR                            = create_path(RESOURCES_DIR, 'fonts')
 
-ICON_DIR            = os.path.join(RESOURCES_DIR, 'icons').replace('\\', '/')
-TAG_ICON_DIR        = os.path.join(ICON_DIR, 'tags').replace('\\', '/')
+ICON_DIR                            = create_path(RESOURCES_DIR, 'icons')
+TAG_ICON_DIR                        = create_path(ICON_DIR, 'tags')
 
-NODE_ICON_DIR       = os.path.join(ICON_DIR, 'nodes').replace('\\', '/')
+NODE_ICON_DIR                       = create_path(ICON_DIR, 'nodes')
 
-WEB_ICON_DIR        = os.path.join(ICON_DIR, 'web').replace('\\', '/')
-WEB_ICON_16         = os.path.join(WEB_ICON_DIR, 'x16').replace('\\', '/')
-WEB_ICON_24         = os.path.join(WEB_ICON_DIR, 'x24').replace('\\', '/')
-WEB_ICON_32         = os.path.join(WEB_ICON_DIR, 'x32').replace('\\', '/')
-WEB_ICON_48         = os.path.join(WEB_ICON_DIR, 'x48').replace('\\', '/')
-WEB_ICON_64         = os.path.join(WEB_ICON_DIR, 'x64').replace('\\', '/')
-WEB_ICON_128        = os.path.join(WEB_ICON_DIR, 'x128').replace('\\', '/')
+WEB_ICON_DIR                        = create_path(ICON_DIR, 'web')
+WEB_ICON_16                         = create_path(WEB_ICON_DIR, 'x16')
+WEB_ICON_24                         = create_path(WEB_ICON_DIR, 'x24')
+WEB_ICON_32                         = create_path(WEB_ICON_DIR, 'x32')
+WEB_ICON_48                         = create_path(WEB_ICON_DIR, 'x48')
+WEB_ICON_64                         = create_path(WEB_ICON_DIR, 'x64')
+WEB_ICON_128                        = create_path(WEB_ICON_DIR, 'x128')
 
-ICON_DIR_12         = os.path.join(ICON_DIR, 'x12').replace('\\', '/')
-ICON_DIR_16         = os.path.join(ICON_DIR, 'x16').replace('\\', '/')
-ICON_DIR_24         = os.path.join(ICON_DIR, 'x24').replace('\\', '/')
-ICON_DIR_32         = os.path.join(ICON_DIR, 'x32').replace('\\', '/')
-ICON_DIR_48         = os.path.join(ICON_DIR, 'x48').replace('\\', '/')
-ICON_DIR_64         = os.path.join(ICON_DIR, 'x64').replace('\\', '/')
+ICON_DIR_12                         = create_path(ICON_DIR, 'x12')
+ICON_DIR_16                         = create_path(ICON_DIR, 'x16')
+ICON_DIR_24                         = create_path(ICON_DIR, 'x24')
+ICON_DIR_32                         = create_path(ICON_DIR, 'x32')
+ICON_DIR_48                         = create_path(ICON_DIR, 'x48')
+ICON_DIR_64                         = create_path(ICON_DIR, 'x64')
 
-IMAGE_DIR           = os.path.join(RESOURCES_DIR, 'images').replace('\\', '/')
+IMAGE_DIR                           = create_path(RESOURCES_DIR, 'images')
 
-JSON_DIR            = os.path.join(RESOURCES_DIR, 'json').replace('\\', '/')
+JSON_DIR                            = create_path(RESOURCES_DIR, 'json')
 
-LOGO_DIR            = os.path.join(RESOURCES_DIR, 'logo').replace('\\', '/')
-DAMG_LOGO_DIR       = os.path.join(LOGO_DIR, 'DAMGTEAM').replace('\\', '/')
-PLM_LOGO_DIR        = os.path.join(LOGO_DIR, 'PLM').replace('\\', '/')
+LOGO_DIR                            = create_path(RESOURCES_DIR, 'logo')
+DAMG_LOGO_DIR                       = create_path(LOGO_DIR, 'DAMGTEAM')
+PLM_LOGO_DIR                        = create_path(LOGO_DIR, 'PLM')
 
-SOUND_DIR           = os.path.join(RESOURCES_DIR, 'sound').replace('\\', '/')
+SOUND_DIR                           = create_path(RESOURCES_DIR, 'sound')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' ui '''
 
-UI_DIR              = os.path.join(ROOT, 'ui').replace('\\', '/')
-UI_BASE_DIR         = os.path.join(UI_DIR, 'base').replace('\\', '/')
-UI_COMPONENTS_DIR   = os.path.join(UI_DIR, 'components').replace('\\', '/')
-UI_LAYOUTS_DIR      = os.path.join(UI_DIR, 'layouts').replace('\\', '/')
-UI_MODELS_DIR       = os.path.join(UI_DIR, 'models').replace('\\', '/')
-UI_RCS_DIR          = os.path.join(UI_DIR, 'rcs').replace('\\', '/')
-UI_TOOLS_DIR        = os.path.join(UI_DIR, 'tools').replace('\\', '/')
+UI_DIR                              = create_path(ROOT, 'ui')
+UI_BASE_DIR                         = create_path(UI_DIR, 'base')
+UI_COMPONENTS_DIR                   = create_path(UI_DIR, 'components')
+UI_LAYOUTS_DIR                      = create_path(UI_DIR, 'layouts')
+UI_MODELS_DIR                       = create_path(UI_DIR, 'models')
+UI_RCS_DIR                          = create_path(UI_DIR, 'rcs')
+UI_TOOLS_DIR                        = create_path(UI_DIR, 'tools')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' utils '''
 
-UTILS_DIR           = os.path.join(ROOT, 'utils').replace('\\', '/')
+UTILS_DIR                           = create_path(ROOT, 'utils')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' scripts '''
 
-REQUIREMENTS_DIR    = os.path.join(ROOT_APP, 'requirements').replace('\\', '/')
+REQUIREMENTS_DIR                    = create_path(ROOT_APP, 'requirements')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' scripts '''
 
-SCRIPTS_DIR         = os.path.join(ROOT, 'scripts').replace('\\', '/')
-CSS_DIR             = os.path.join(SCRIPTS_DIR, 'css').replace('\\', '/')
-HTML_DIR            = os.path.join(SCRIPTS_DIR, 'html').replace('\\', '/')
-JS_DIR              = os.path.join(SCRIPTS_DIR, 'js').replace('\\', '/')
-QSS_DIR             = os.path.join(SCRIPTS_DIR, 'qss').replace('\\', '/')
+SCRIPTS_DIR                         = create_path(ROOT, 'scripts')
+CSS_DIR                             = create_path(SCRIPTS_DIR, 'css')
+HTML_DIR                            = create_path(SCRIPTS_DIR, 'html')
+JS_DIR                              = create_path(SCRIPTS_DIR, 'js')
+QSS_DIR                             = create_path(SCRIPTS_DIR, 'qss')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' plugins '''
 
-PLUGIN_DIR          = os.path.join(ROOT, 'plugins').replace('\\', '/')
+PLUGIN_DIR                          = create_path(ROOT, 'plugins')
 
 # -------------------------------------------------------------------------------------------------------------
 ''' test '''
 
-TEST_DIR            = os.path.join(ROOT_APP, 'tests').replace('\\', '/')
+TEST_DIR                            = create_path(ROOT_APP, 'tests')
 
 # -------------------------------------------------------------------------------------------------------------
 """ config file """
 
-evnInfoCfg                          = os.path.join(CFG_DIR, 'envs.cfg')
-iconCfg                             = os.path.join(CFG_DIR, 'icons.cfg')
-avatarCfg                           = os.path.join(CFG_DIR, 'avatars.cfg')
-logoCfg                             = os.path.join(CFG_DIR, 'logo.cfg')
-webIconCfg                          = os.path.join(CFG_DIR, 'webIcon.cfg')
-nodeIconCfg                         = os.path.join(CFG_DIR, 'nodeIcons.cfg')
-imageCfg                            = os.path.join(CFG_DIR, 'images.cfg')
-tagCfg                              = os.path.join(CFG_DIR, 'tags.cfg')
-pythonCfg                           = os.path.join(CFG_DIR, 'python.cfg')
-plmCfg                              = os.path.join(CFG_DIR, 'pipeline.cfg')
-appsCfg                             = os.path.join(CFG_DIR, 'installed.cfg')
-envVarCfg                           = os.path.join(CFG_DIR, 'envVar.cfg')
-dirCfg                              = os.path.join(CFG_DIR, 'dirs.cfg')
-pthCfg                              = os.path.join(CFG_DIR, 'paths.cfg')
-pcCfg                               = os.path.join(CFG_DIR, 'pc.cfg')
-urlCfg                              = os.path.join(CFG_DIR, 'url.cfg')
-typeCfg                             = os.path.join(CFG_DIR, 'types.cfg')
-userCfg                             = os.path.join(CFG_DIR, 'user.cfg')
-serverCfg                           = os.path.join(CFG_DIR, 'server.cfg')
-fmtCfg                              = os.path.join(CFG_DIR, 'formats.cfg')
-PLMconfig                           = os.path.join(CFG_DIR, 'PLM.cfg')
-sceneGraphCfg                       = os.path.join(CFG_DIR, 'sceneGraph.cfg')
-fontCfg                             = os.path.join(CFG_DIR, 'fonts.cfg')
+evnInfoCfg                          = create_path(CFG_DIR, 'envs.cfg')
+iconCfg                             = create_path(CFG_DIR, 'icons.cfg')
+avatarCfg                           = create_path(CFG_DIR, 'avatars.cfg')
+logoCfg                             = create_path(CFG_DIR, 'logo.cfg')
+webIconCfg                          = create_path(CFG_DIR, 'webIcon.cfg')
+nodeIconCfg                         = create_path(CFG_DIR, 'nodeIcons.cfg')
+imageCfg                            = create_path(CFG_DIR, 'images.cfg')
+tagCfg                              = create_path(CFG_DIR, 'tags.cfg')
+pythonCfg                           = create_path(CFG_DIR, 'python.cfg')
+plmCfg                              = create_path(CFG_DIR, 'pipeline.cfg')
+appsCfg                             = create_path(CFG_DIR, 'installed.cfg')
+envVarCfg                           = create_path(CFG_DIR, 'envVar.cfg')
+dirCfg                              = create_path(CFG_DIR, 'dirs.cfg')
+pthCfg                              = create_path(CFG_DIR, 'paths.cfg')
+pcCfg                               = create_path(CFG_DIR, 'pc.cfg')
+urlCfg                              = create_path(CFG_DIR, 'url.cfg')
+typeCfg                             = create_path(CFG_DIR, 'types.cfg')
+userCfg                             = create_path(CFG_DIR, 'user.cfg')
+serverCfg                           = create_path(CFG_DIR, 'server.cfg')
+fmtCfg                              = create_path(CFG_DIR, 'formats.cfg')
+PLMconfig                           = create_path(CFG_DIR, 'PLM.cfg')
+sceneGraphCfg                       = create_path(CFG_DIR, 'sceneGraph.cfg')
+fontCfg                             = create_path(CFG_DIR, 'fonts.cfg')
 
-splashImagePth                      = os.path.join(IMAGE_DIR, 'splash.png')
+splashImagePth                      = create_path(IMAGE_DIR, 'splash.png')
 
 # -------------------------------------------------------------------------------------------------------------
 """ setting file """
 
-APP_SETTING                         = os.path.join(SETTING_DIR, 'PLM.ini')
-USER_SETTING                        = os.path.join(SETTING_DIR, 'user.ini')
-FORMAT_SETTING                      = os.path.join(SETTING_DIR, 'format.ini')
-UNIX_SETTING                        = os.path.join(SETTING_DIR, 'unix.ini')
+APP_SETTING                                 = create_path(SETTING_DIR, 'PLM.ini')
+USER_SETTING                                = create_path(SETTING_DIR, 'user.ini')
+FORMAT_SETTING                              = create_path(SETTING_DIR, 'format.ini')
+UNIX_SETTING                                = create_path(SETTING_DIR, 'unix.ini')
 
-LOCAL_DB                            = os.path.join(DB_DIR, 'local.db')
-LOCAL_LOG                           = os.path.join(LOG_DIR, 'PLM.logs')
+LOCAL_DB                                    = create_path(DB_DIR, 'local.db')
+LOCAL_LOG                                   = create_path(LOG_DIR, 'PLM.logs')
 
-QSS_PATH                            = os.path.join(QSS_DIR, 'dark.qss')
-MAIN_SCSS_PTH                       = os.path.join(QSS_DIR, 'main.scss')
-STYLE_SCSS_PTH                      = os.path.join(QSS_DIR, '_styles.scss')
-VAR_SCSS_PTH                        = os.path.join(QSS_DIR, '_variables.scss')
+QSS_PATH                                    = create_path(QSS_DIR, 'dark.qss')
+MAIN_SCSS_PTH                               = create_path(QSS_DIR, 'main.scss')
+STYLE_SCSS_PTH                              = create_path(QSS_DIR, '_styles.scss')
+VAR_SCSS_PTH                                = create_path(QSS_DIR, '_variables.scss')
 
-SETTING_FILEPTH = dict(app          = APP_SETTING,
-                       user         = USER_SETTING,
-                       unix         = UNIX_SETTING,
-                       format       = FORMAT_SETTING)
+SETTING_FILEPTH = dict( app                 = APP_SETTING,
+                        user                = USER_SETTING,
+                        unix                = UNIX_SETTING,
+                        format              = FORMAT_SETTING, )
 
-actionTypes                 = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction', 'DAMGExecutingAction',
-                                'DAMGOpenBrowserAction', 'DAMGWIDGETACTION']
+actionTypes                                 = [ 'DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction', 'DAMGExecutingAction',
+                                                'DAMGOpenBrowserAction', 'DAMGWIDGETACTION']
+buttonTypes                                 = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
 
-buttonTypes                 = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
+urlTypes                                    = ['DAMGURL', 'Url', 'url']
 
-urlTypes                    = ['DAMGURL', ]
+layoutTypes                                 = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
 
-layoutTypes                 = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
 
 DB_ATTRIBUTE_TYPE = {
-
-    'int_auto_increment'    : 'INTERGER PRIMARY KEY AUTOINCREMENT, ',
-    'int_primary_key'       : 'INT PRIMARY KEY, ',
-    'text_not_null'         : 'TEXT NOT NULL, ',
-    'text'                  : 'TEXT, ',
-    'bool'                  : 'BOOL, ',
-    'varchar'               : 'VARCHAR, ',
-    'varchar_20'            : 'VACHAR(20,)  ',
-
-}
+                    'int_auto_increment'    : 'INTERGER PRIMARY KEY AUTOINCREMENT, ',
+                    'int_primary_key'       : 'INT PRIMARY KEY, ',
+                    'text_not_null'         : 'TEXT NOT NULL, ',
+                    'text'                  : 'TEXT, ',
+                    'bool'                  : 'BOOL, ',
+                    'varchar'               : 'VARCHAR, ',
+                    'varchar_20'            : 'VACHAR(20,)  ', }
 
 
-CMD_VALUE_TYPE = {
-
-    'dir'                   : 'directory',
-    'pth'                   : 'path',
-    'url'                   : 'link',
-    'func'                  : 'function',
-    'cmd'                   : 'commandPrompt',
-    'event'                 : 'PLM Event',
-    'stylesheet'            : 'PLMstylesheet',
-    'shortcut'              : 'shortcut',
-    'uiKey'                 : 'PLM Layout Key',
-}
+CMD_VALUE_TYPE = {  'dir'                   : 'directory',
+                    'pth'                   : 'path',
+                    'url'                   : 'link',
+                    'func'                  : 'function',
+                    'cmd'                   : 'commandPrompt',
+                    'event'                 : 'PLM Event',
+                    'stylesheet'            : 'PLMstylesheet',
+                    'shortcut'              : 'shortcut',
+                    'uiKey'                 : 'PLM Layout Key', }
 
 
-RAMTYPE = {
-    0: 'Unknown',
-    1: 'Other',
-    2: 'DRAM',
-    3: 'Synchronous DRAM',
-    4: 'Cache DRAM',
-    5: 'EDO',
-    6: 'EDRAM',
-    7: 'VRAM',
-    8: 'SRAM',
-    9: 'RAM',
-    10: 'ROM',
-    11: 'Flash',
-    12: 'EEPROM',
-    13: 'FEPROM',
-    14: 'EPROM',
-    15: 'CDRAM',
-    16: '3DRAM',
-    17: 'SDRAM',
-    18: 'SGRAM',
-    19: 'RDRAM',
-    20: 'DDR',
-    21: 'DDR2',
-    22: 'DDR2 FB-DIMM',
-    24: 'DDR3',
-    25: 'FBD2',
-}
+RAMTYPE                                 = { 0: 'Unknown', 1: 'Other', 2: 'DRAM', 3: 'Synchronous DRAM', 4: 'Cache DRAM', 
+                                            5: 'EDO', 6: 'EDRAM', 7: 'VRAM', 8: 'SRAM', 9: 'RAM', 10: 'ROM', 11: 'Flash',
+                                            12: 'EEPROM', 13: 'FEPROM', 14: 'EPROM', 15: 'CDRAM', 16: '3DRAM', 17: 'SDRAM',
+                                            18: 'SGRAM', 19: 'RDRAM', 20: 'DDR', 21: 'DDR2', 22: 'DDR2 FB-DIMM', 24: 'DDR3',
+                                            25: 'FBD2', }
 
 
-FORMFACTOR = {
-    0: 'Unknown',
-    1: 'Other',
-    2: 'SIP',
-    3: 'DIP',
-    4: 'ZIP',
-    5: 'SOJ',
-    6: 'Proprietary',
-    7: 'SIMM',
-    8: 'DIMM',
-    9: 'TSOP',
-    10: 'PGA',
-    11: 'RIMM',
-    12: 'SODIMM',
-    13: 'SRIMM',
-    14: 'SMD',
-    15: 'SSMP',
-    16: 'QFP',
-    17: 'TQFP',
-    18: 'SOIC',
-    19: 'LCC',
-    20: 'PLCC',
-    21: 'BGA',
-    22: 'FPBGA',
-    23: 'LGA',
-    24: 'FB-DIMM',
-}
+FORMFACTOR                              = { 0: 'Unknown', 1: 'Other', 2: 'SIP', 3: 'DIP', 4: 'ZIP', 5: 'SOJ', 6: 'Proprietary',
+                                            7: 'SIMM', 8: 'DIMM', 9: 'TSOP', 10: 'PGA', 11: 'RIMM', 12: 'SODIMM', 13: 'SRIMM',
+                                            14: 'SMD', 15: 'SSMP', 16: 'QFP', 17: 'TQFP', 18: 'SOIC', 19: 'LCC', 20: 'PLCC',
+                                            21: 'BGA', 22: 'FPBGA', 23: 'LGA', 24: 'FB-DIMM', }
 
 
-CPUTYPE = {
-
-    1: 'Other',
-    2: 'Unknown',
-    3: 'Central Processor',
-    4: 'Math Processor',
-    5: 'DSP Processor',
-    6: 'Video Processor',
-}
+CPUTYPE                                 = { 1: 'Other', 2: 'Unknown', 3: 'Central Processor', 4: 'Math Processor',
+                                            5: 'DSP Processor', 6: 'Video Processor', }
 
 
-DRIVETYPE = {
-  0 : "Unknown",
-  1 : "No Root Directory",
-  2 : "Removable Disk",
-  3 : "Local Disk",
-  4 : "Network Drive",
-  5 : "Compact Disc",
-  6 : "RAM Disk"
-}
+DRIVETYPE                               = { 0 : "Unknown", 1 : "No Root Directory", 2 : "Removable Disk", 
+                                            3 : "Local Disk", 4 : "Network Drive", 5 : "Compact Disc", 6 : "RAM Disk", }
 
 
-# --------------------------------------------------------------------------------------------------------------
-""" Autodesk data """
 
-autodeskVer         = ["2017", "2018", "2019", "2020", "2021"]
-autodeskApp         = ["Autodesk Maya", "Autodesk Mudbox", "Maya", "Mudbox", "3ds Max", "AutoCAD"]
 
-# --------------------------------------------------------------------------------------------------------------
-""" Adobe data """
-
-adobeVer            = ["CC 2017", "CC 2018", "CC 2019", "CC 2020", "CC 2021"]
-adobeApp            = ["Adobe Photoshop", "Adobe Illustrator", "Adobe Audition", "Adobe After Effects",
-                       "Adobe Premiere Pro", "Adobe Media Encoder", ]
-
-# --------------------------------------------------------------------------------------------------------------
-""" Foundry data """
-
-foundryVer          = ["11.1v1", "11.2v1", "4.0v1", "4.1v1", "2.6v3", "4.6v1", "12.0v1", '3.5v2', '3.2v4', '2.6v3']
-foundryApp          = ['Hiero', 'Mari', 'NukeStudio', 'NukeX', 'Katana',]
-
-# --------------------------------------------------------------------------------------------------------------
-""" Pixologic data """
-
-pixologiVer         = ["4R6", "4R7", "4R8", '2018', '2019', '2020', '2021']
-pixologiApp         = ['ZBrush' ]
-
-# --------------------------------------------------------------------------------------------------------------
-""" Allegorithmic data """
-
-allegorithmicVer    = [ ]
-allegorithmicApp    = ['Substance Painter', 'Substance Designer']
-
-# --------------------------------------------------------------------------------------------------------------
-""" SideFX data """
-
-sizefxVer           = ['16.5.439', '16.5.496', '17.5.425', '18.0.327']
-sizefxApp           = ['Houdini FX', ]
-
-# --------------------------------------------------------------------------------------------------------------
-""" Microsoft Office data """
-
-officeVer           = ['2017', "2018", "2019", "2020"]
-officeApp           = ['Word', 'Excel', 'PowerPoint', 'Wordpad']
-
-# --------------------------------------------------------------------------------------------------------------
-""" JetBrains data """
-
-jetbrainsVer        = ['2017.3.3', '2018.1', ]
-jetbrainsApp        = ['JetBrains PyCharm', ]
-
-# --------------------------------------------------------------------------------------------------------------
-""" Wonder Unit """
-
-wonderUnitVer       = [ ]
-wonderUniApp        = ['Storyboarder', 'Krita (x64)', 'Krita (x32)' ]
-
-# --------------------------------------------------------------------------------------------------------------
-""" another app data """
-
-anacondaApps        = ['Spyder', 'QtDesigner', 'Git Bash']
-mcOfficeApps        = ['Word', 'Excel', 'PowerPoint']
-windowApps          = ['Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout', 'Snipping Tool', ] + anacondaApps + mcOfficeApps
 
 # --------------------------------------------------------------------------------------------------------------
 """ Combine data package """
 
-pVERSION = dict(adobe=adobeVer, autodesk=autodeskVer, allegorithmic = allegorithmicVer, foundry=foundryVer,
-                pixologic=pixologiVer, sizefx=sizefxVer, office=officeVer, jetbrains=jetbrainsVer, wonderUnit=wonderUnitVer, )
+pVERSION            = dict(
+                            adobe       = ["CC 2017", "CC 2018", "CC 2019", "CC 2020", "CC 2021"],
+                            autodesk    = ["2017", "2018", "2019", "2020", "2021"],
+                            allegorithmic = [],
+                            foundry     = ["11.1v1", "11.2v1", "4.0v1", "4.1v1", "2.6v3", "4.6v1", "12.0v1", '3.5v2', '3.2v4', '2.6v3'],
+                            pixologic   = ["4R6", "4R7", "4R8", '2018', '2019', '2020', '2021'],
+                            sizefx      = ['16.5.439', '16.5.496', '17.5.425', '18.0.327'],
+                            office      = ['2017', "2018", "2019", "2020"],
+                            jetbrains   = ['2017.3.3', '2018.1', ],
+                            wonderUnit  = [],
+                            anaconda    = [],
+                            )
 
-pPACKAGE = dict(adobe=adobeApp, autodesk=autodeskApp, allegorithmic = allegorithmicApp, foundry=foundryApp,
-                pixologic=pixologiApp, sizefx=sizefxApp, office=officeApp, jetbrains=jetbrainsApp, wonderUnit=wonderUniApp,)
+pPACKAGE            = dict(
+                            adobe       = ["Adobe Photoshop", "Adobe Illustrator", "Adobe Audition", "Adobe After Effects",
+                                           "Adobe Premiere Pro", "Adobe Media Encoder", ],
+                            autodesk    = ["Autodesk Maya", "Autodesk Mudbox", "Maya", "Mudbox", "3ds Max", "AutoCAD"],
+                            allegorithmic = ['Substance Painter', 'Substance Designer'],
+                            foundry     = ['Hiero', 'Mari', 'NukeStudio', 'NukeX', 'Katana',],
+                            pixologic   = ['ZBrush' ],
+                            sizefx      = ['Houdini FX', ],
+                            office      = ['Word', 'Excel', 'PowerPoint', 'Wordpad'],
+                            jetbrains   = ['JetBrains PyCharm', ],
+                            wonderUnit  = ['Storyboarder', 'Krita (x64)', 'Krita (x32)' ],
+                            anaconda    = ['Spyder', 'QtDesigner', 'Git Bash']
+                            )
+
+windowApps                              = ['Sublime Text 2', 'Sublime Text 3', 'Wordpad', 'Headus UVLayout',
+                                           'Snipping Tool', ] + pPACKAGE['anaconda'] + pPACKAGE['office']
 
 # --------------------------------------------------------------------------------------------------------------
 """ Tracking configKey """
 
-TRACK_TDS           = ['Maya', 'ZBrush', 'Houdini', '3Ds Max', 'Mudbox', 'BLender']
 
-TRACK_VFX           = ['NukeX', 'After Effects', 'Katana']
+KEYDETECT                               = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url",
+                                           "Changelog", "Settings"]
 
-TRACK_ART           = ['Photoshop', 'Illustrator', 'Krita (x64)', 'Krita (x32)']
 
-TRACK_PRE           = ['Storyboarder', 'Illustrator']
+pTRACK              = dict(
+                            TDS         = ['Maya', 'ZBrush', 'Houdini', '3Ds Max', 'Mudbox', 'BLender'],
+                            VFX         = ['NukeX', 'After Effects', 'Katana'],
+                            ART         = ['Photoshop', 'Illustrator', 'Krita (x64)', 'Krita (x32)'],
+                            PRE         = ['Storyboarder', 'Illustrator'],
+                            TEXTURE     = ['Mari', 'Substance Painter'] + ['Photoshop', 'Illustrator', 'Krita (x64)',
+                                                                           'Krita (x32)'],
+                            POST        = ['Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro', 'NukeStudio'],
 
-TRACK_TEX           = ['Mari', 'Substance Painter'] + TRACK_ART
+                            Office      = ['Word', 'Excel', 'PowerPoint', 'Wordpad'],
+                            Dev         = ['Sublime Text', 'QtDesigner', 'Git Bash', 'Command Prompt', 'CodeBlocks'],
+                            Tools       = ['Calculator', 'Calendar', 'ContactUs', 'EnglishDictionary', 'FeedBack',
+                                           'ReportBug', 'FindFiles', 'ImageViewer', 'InviteFriend', 'Messenger',
+                                           'NoteReminder', 'ScreenShot', 'TextEditor', 'PluginManager', 'NodeGraph',
+                                           'Browser', ],
+                            Extra       = ['ReConfig', 'CleanPyc', 'Debug', 'Snipping Tool'],
+                            sysTray     = ['Snipping Tool', 'ScreenShot', 'Maximize', 'Minimize', 'Restore', 'Exit', ],
+                            )
 
-TRACK_POST          = ['Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro', 'NukeStudio']
-
-TRACK_OFFICE        = ['Word', 'Excel', 'PowerPoint', 'Wordpad']
-
-TRACK_DEV           = ['Sublime Text', 'QtDesigner', 'Git Bash', 'Command Prompt']
-
-TRACK_TOOLS         = ['Calculator', 'Calendar', 'ContactUs', 'EnglishDictionary', 'FeedBack', 'ReportBug', 'FindFiles',
-                       'ImageViewer', 'InviteFriend', 'Messenger', 'NoteReminder', 'ScreenShot', 'TextEditor',
-                       'PluginManager', 'NodeGraph', 'Browser', ]
-
-TRACK_EXTRA         = ['ReConfig', 'CleanPyc', 'Debug', 'Snipping Tool']
-
-TRACK_SYSTRAY       = ['Snipping Tool', 'ScreenShot', 'Maximize', 'Minimize', 'Restore', 'Exit', ]
-
-KEYDETECT           = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url", "Changelog", "Settings"]
-
-# --------------------------------------------------------------------------------------------------------------
-""" Combine Tracking configKey """
-
-pTRACK = dict(TDS=TRACK_TDS, VFX=TRACK_VFX, ART=TRACK_ART, PRE = TRACK_PRE, TEXTURE = TRACK_TEX, POST = TRACK_POST,
-              Office=TRACK_OFFICE, Dev=TRACK_DEV, Tools=TRACK_TOOLS, Extra=TRACK_EXTRA, sysTray=TRACK_SYSTRAY, )
 
 # --------------------------------------------------------------------------------------------------------------
 """ PLM Layout Key """
 
-UI_ELEMENT_KEYS     = ['BotTab', 'ConnectStatus', 'GridLayout', 'MainMenuSection', 'MainToolBar', 'MainToolBarSection',
-                       'Notification','StatusBar', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting', ]
+UI_ELEMENT_KEYS                         = ['BotTab', 'ConnectStatus', 'GridLayout', 'MainMenuSection', 'MainToolBar',
+                                           'MainToolBarSection', 'Notification','StatusBar', 'TopTab', 'TopTab1',
+                                           'TopTab2', 'TopTab3', 'UserSetting', ]
 
-MAIN_UI_KEYS        = ['SysTray', 'PipelineManager', 'ForgotPassword', 'SignIn', 'SignUp', 'SignOut', 'CommandUI', ]
+MAIN_UI_KEYS                            = ['SysTray', 'PipelineManager', 'ForgotPassword', 'SignIn', 'SignUp', 'SignOut',
+                                           'CommandUI', ]
 
-INFO_UI_KEYS        = ['About', 'CodeOfConduct', 'Contributing', 'Credit', 'Version', 'AppLicence', 'PythonLicence',
-                       'OrgInfo', 'References', ]
+INFO_UI_KEYS                            = ['About', 'CodeOfConduct', 'Contributing', 'Credit', 'Version', 'AppLicence',
+                                           'PythonLicence', 'OrgInfo', 'References', ]
 
-PROJ_UI_KEYS        = ['ProjectManager', 'PreProductionProj', 'ProductionProj', 'PostProductionPrj', 'VFXProj',
-                       'ResearchProject', ]
+PROJ_UI_KEYS                            = ['ProjectManager', 'PreProductionProj', 'ProductionProj', 'PostProductionPrj',
+                                           'VFXProj', 'ResearchProject', ]
 
-ORG_UI_KEYS         = ['OrganisationManager', ]
+ORG_UI_KEYS                             = ['OrganisationManager', ]
 
-TASK_UI_KEYS        = ['TaskManager', ]
+TASK_UI_KEYS                            = ['TaskManager', ]
 
-TEAM_UI_KEYS        = ['TeamManager', ]
+TEAM_UI_KEYS                            = ['TeamManager', ]
 
-DEPA_UI_KEYS        = ['DepartmentManager']
+DEPA_UI_KEYS                            = ['DepartmentManager']
 
-SETTING_UI_KEYS     = ['Configurations', 'Preferences', 'AppSetting', 'GlobalSetting', 'UserSetting', 'BrowserSetting',
-                       'ProjSetting', 'OrgSetting', 'TaskSetting', 'TeamSetting']
+SETTING_UI_KEYS                         = ['Configurations', 'Preferences', 'SettingUI', 'GlobalSetting', 'UserSetting',
+                                           'BrowserSetting', 'ProjSetting', 'OrgSetting', 'TaskSetting', 'TeamSetting']
 
-LIBRARY_UI_KEYS     = ['UserLibrary', 'HDRILibrary', 'TextureLibrary', 'AlphaLibrary', ]
+LIBRARY_UI_KEYS                         = ['UserLibrary', 'HDRILibrary', 'TextureLibrary', 'AlphaLibrary', ]
 
-TOOL_UI_KEYS        = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'NoteReminder',
-                       'ScreenShot', 'TextEditor', ]
+TOOL_UI_KEYS                            = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer',
+                                           'NoteReminder', 'ScreenShot', 'TextEditor', ]
 
-PLUGIN_UI_KEY       = ['PluginManager', 'NodeGraph', 'Browser', 'Messenger', 'QtDesigner']
+PLUGIN_UI_KEY                           = ['PluginManager', 'NodeGraph', 'Browser', 'Messenger', 'QtDesigner']
 
-FORM_KEY            = ['ContactUs', 'InviteFriend', 'ReportBug', ]
+FORM_KEY                                = ['ContactUs', 'InviteFriend', 'ReportBug', ]
 
-APP_UI_KEYS         = MAIN_UI_KEYS + INFO_UI_KEYS + PROJ_UI_KEYS + ORG_UI_KEYS + TASK_UI_KEYS + TEAM_UI_KEYS + \
-                      SETTING_UI_KEYS + LIBRARY_UI_KEYS + TOOL_UI_KEYS + PLUGIN_UI_KEY + FORM_KEY
+APP_UI_KEYS                             = MAIN_UI_KEYS + INFO_UI_KEYS + PROJ_UI_KEYS + ORG_UI_KEYS + TASK_UI_KEYS + \
+                                          TEAM_UI_KEYS + SETTING_UI_KEYS + LIBRARY_UI_KEYS + TOOL_UI_KEYS + \
+                                          PLUGIN_UI_KEY + FORM_KEY
 
 # --------------------------------------------------------------------------------------------------------------
 """ PLM Function key """
 
-factors             = ['Organisation', 'Project', 'Department', 'Team', 'Task', ]
-factorActs          = ['New', 'Config', 'Edit', 'Remove']
+factors                                 = ['Organisation', 'Project', 'Department', 'Team', 'Task', ]
 
-FACTOR_KEYS         = []
+factorActs                              = ['New', 'Config', 'Edit', 'Remove']
+
+FACTOR_KEYS                             = []
+
+
 for f in factors:
     FACTOR_KEYS.append(f)
     for act in factorActs:
         FACTOR_KEYS.append('{0} {1}'.format(act, f))
 
-APP_EVENT_KEYS      = ['ShowAll', 'HideAll', 'CloseAll', 'SwitchAccount', 'LogIn', 'LogOut', 'Quit', 'Exit',
-                       'ChangePassword', 'UpdateAvatar',]
 
-STYLESHEET_KEYS     = ['bright', 'dark', 'charcoal', 'nuker', ]
+APP_EVENT_KEYS                          = ['ShowAll', 'HideAll', 'CloseAll', 'SwitchAccount', 'LogIn', 'LogOut', 'Quit',
+                                           'Exit', 'ChangePassword', 'UpdateAvatar',]
 
-STYLE_KEYS          = []
+STYLESHEET_KEYS                         = ['bright', 'dark', 'charcoal', 'nuker', ]
 
-OPEN_DIR_KEYS       = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppDataFolder', 'PreferenceFolder', ]
+STYLE_KEYS                              = []
 
-OPEN_URL_KEYS       = ['pythonTag', 'licenceTag', 'versionTag', 'PLM wiki']
+OPEN_DIR_KEYS                           = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppDataFolder',
+                                           'PreferenceFolder', ]
 
-SYS_CMD_KEYS        = ['Command Prompt', 'cmd', ]
+OPEN_URL_KEYS                           = ['pythonTag', 'licenceTag', 'versionTag', 'PLM wiki']
 
-SHORTCUT_KEYS       = ['Copy', 'Cut', 'Paste', 'Delete', 'Find', 'Rename']
+SYS_CMD_KEYS                            = ['Command Prompt', 'cmd', ]
 
-APP_FUNCS_KEYS      = ['ReConfig', 'CleanPyc', 'Debug', 'Maximize', 'Minimize', 'Restore', ] + FACTOR_KEYS + \
-                      APP_EVENT_KEYS + STYLESHEET_KEYS + STYLE_KEYS + OPEN_DIR_KEYS + OPEN_URL_KEYS + SYS_CMD_KEYS + \
-                      SHORTCUT_KEYS
+SHORTCUT_KEYS                           = ['Copy', 'Cut', 'Paste', 'Delete', 'Find', 'Rename']
+
+
+APP_FUNCS_KEYS                          = ['ReConfig', 'CleanPyc', 'Debug', 'Maximize', 'Minimize', 'Restore', ] + \
+                                          FACTOR_KEYS + APP_EVENT_KEYS + STYLESHEET_KEYS + STYLE_KEYS + OPEN_DIR_KEYS + \
+                                          OPEN_URL_KEYS + SYS_CMD_KEYS + SHORTCUT_KEYS
 
 # --------------------------------------------------------------------------------------------------------------
 """ Store key data """
 
-def generate_key_packages(*args):
+
+def generate_key_packages(*info):
     keyPackage = []
     for k in pPACKAGE:
         for name in pPACKAGE[k]:
@@ -525,99 +433,109 @@ def generate_key_packages(*args):
                             key = name + " " + ver
                     keyPackage.append(key)
 
-    args = keyPackage + windowApps
-    return args
+    info = keyPackage + windowApps
 
-KEYPACKAGE      = generate_key_packages()
+    return info
 
-def generate_config(key, *args):
-    keys = []
+
+
+KEYPACKAGE                              = generate_key_packages()
+
+
+
+def generate_config(key):
+
+    info                                = []
+
     for k in KEYPACKAGE:
         for t in pTRACK[key]:
             if t in k:
-                keys.append(k)
-    return list(sorted(set(keys)))
+                info.append(k)
 
-# Toolbar _data
-CONFIG_TDS      = generate_config('TDS')                            # TD artist
-CONFIG_VFX      = generate_config('VFX')                            # VFX artist
-CONFIG_ART      = generate_config('ART')                            # 2D artist
-CONFIG_PRE      = generate_config('PRE')                            # Preproduction
-CONFIG_TEX      = generate_config('TEXTURE')                        # ShadingTD artist
-CONFIG_POST     = generate_config('POST')                           # Post production
-
-# Tab 1 sections _data
-CONFIG_OFFICE   = generate_config('Office')                         # Paper work department
-CONFIG_DEV      = generate_config('Dev') + ['Command Prompt']       # Rnd - Research and development
-CONFIG_TOOLS    = generate_config('Tools') + TOOL_UI_KEYS           # useful/custom tool supporting for the whole pipeline
-CONFIG_EXTRA    = generate_config('Extra')                          # Extra tool may be considering to use
-CONFIG_SYSTRAY  = generate_config('sysTray') + ['Exit', 'SignIn']
-
-ACTIONS_DATA = dict(TD                  = CONFIG_TDS,
-                    VFX                 = CONFIG_VFX,
-                    ART                 = CONFIG_ART,
-                    PRE                 = CONFIG_PRE,
-                    TEXTURE             = CONFIG_TEX,
-                    POST                = CONFIG_POST,
-                    OFFICE              = CONFIG_OFFICE,
-                    DEV                 = CONFIG_DEV,
-                    TOOLS               = CONFIG_TOOLS,
-                    EXTRA               = CONFIG_EXTRA,
-                    SYSTRAY             = CONFIG_SYSTRAY, )
+    return list(sorted(set(info)))
 
 
-PY2 = sys.version[0] == '2'
+ACTIONS_DATA = dict(
 
-SYS_OPTS = ["Host Name", "OS Name", "OS Version", "Product ID", "System Manufacturer", "System Model",
-            "System type", "BIOS Version", "Domain", "Windows Directory", "Total Physical Memory",
-            "Available Physical Memory", "Logon Server"]
+                    # Toolbar _data
+                    TD                  = generate_config('TDS'),                           # TD artist
+                    VFX                 = generate_config('VFX'),                           # VFX artist
+                    ART                 = generate_config('ART'),                           # 2D artist
+                    PRE                 = generate_config('PRE'),                           # Preproduction
+                    TEXTURE             = generate_config('TEXTURE'),                       # ShadingTD artist
+                    POST                = generate_config('POST'),                          # Post production
 
-notKeys = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__', '__cached__',
-           '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR', 'SETTING_DIR', 'DB_DIR', 'LOG_DIR',
-           'QSS_DIR', 'RCS_DIR', 'SCSS_DIR', '__appname__', 'subprocess', 'unicode_literals', 'absolute_import',
-           '__organization__']
+                    # Tab 1 sections _data
+                    OFFICE              = generate_config('Office'),                        # Paper work department
+                    DEV                 = generate_config('Dev') + ['Command Prompt'],      # Rnd - Research and development
+                    TOOLS               = generate_config('Tools') + TOOL_UI_KEYS,          # useful/custom tools
+                    EXTRA               = generate_config('Extra'),                         # Extra tools
+                    SYSTRAY             = generate_config('sysTray') + ['Exit', 'SignIn'],  # System tray tools
 
-IGNORE_ICONS = ['Widget', 'bright', 'dark', 'charcoal', 'nuker', 'TopTab1', 'TopTab2', 'Organisation', 'Project',
-                'Team', 'Task', 'ShowAll','ItemWidget', 'BaseManager', 'SettingInput', 'QueryPage', 'SysTray', 'Footer',
-                'BotTab1', 'BotTab2', 'Cmd', 'User', 'Tracking']
+                    )
 
-INI                         = QSettings.IniFormat
-NATIVE                      = QSettings.NativeFormat
-INVALID                     = QSettings.InvalidFormat
-SYS_SCOPE                   = QSettings.SystemScope
-USER_SCOPE                  = QSettings.UserScope
+
+SYS_OPTS                                = ["Host Name", "OS Name", "OS Version", "Product ID", "System Manufacturer",
+                                           "System Model", "System type", "BIOS Version", "Domain", "Windows Directory",
+                                           "Total Physical Memory", "Available Physical Memory", "Logon Server"]
+
+notKeys                                 = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__',
+                                           '__cached__', '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR',
+                                           'SETTING_DIR', 'DB_DIR', 'LOG_DIR', 'QSS_DIR', 'RCS_DIR', 'SCSS_DIR',
+                                           '__appname__', 'subprocess', 'unicode_literals', 'absolute_import',
+                                           '__organization__']
+
+IGNORE_ICONS                            = ['Widget', 'bright', 'dark', 'charcoal', 'nuker', 'TopTab1', 'TopTab2',
+                                           'Organisation', 'Project', 'Team', 'Task', 'ShowAll','ItemWidget',
+                                           'BaseManager', 'SettingInput', 'QueryPage', 'SysTray', 'Footer', 'BotTab1',
+                                           'BotTab2', 'Cmd', 'User', 'Tracking']
+
+INI                                     = Settings.IniFormat
+NATIVE                                  = Settings.NativeFormat
+INVALID                                 = Settings.InvalidFormat
+SYS_SCOPE                               = Settings.SystemScope
+USER_SCOPE                              = Settings.UserScope
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Format """
 
 LOG_FORMAT = dict(
 
-    fullOpt                 = "%(levelname)s: %(asctime)s %(name)s, line %(lineno)s: %(message)s",
-    rlm                     = "(relativeCreated:d) (levelname): (message)",
-    tlm1                    = "{asctime:[{lvelname}: :{message}",
-    tnlm1                   = "%(asctime)s  %(name)-22s  %(levelname)-8s %(message)s",
-    tlm2                    = '%(asctime)s|%(levelname)s|%(message)s|',
-    tnlm2                   = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+    fullOpt                             = "%(levelname)s: %(asctime)s %(name)s, line %(lineno)s: %(message)s",
+    rlm                                 = "(relativeCreated:d) (levelname): (message)",
+    tlm1                                = "{asctime:[{lvelname}: :{message}",
+    tnlm1                               = "%(asctime)s  %(name)-22s  %(levelname)-8s %(message)s",
+    tlm2                                = '%(asctime)s|%(levelname)s|%(message)s|',
+    tnlm2                               = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 )
 
 DT_FORMAT = dict(
 
-    dmyhms                  = "%d/%m/%Y %H:%M:%S",
-    mdhm                    = "'%m-%d %H:%M'",
-    fullOpt                 = '(%d/%m/%Y %H:%M:%S)',
+    dmyhms                              = "%d/%m/%Y %H:%M:%S",
+    mdhm                                = "'%m-%d %H:%M'",
+    fullOpt                             = '(%d/%m/%Y %H:%M:%S)',
 )
 
 ST_FORMAT = dict(
 
-    ini                     = INI,
-    native                  = NATIVE,
-    invalid                 = INVALID,
+    ini                                 = INI,
+    native                              = NATIVE,
+    invalid                             = INVALID,
 )
 
-datetTimeStamp = QDateTime.currentDateTime().toString("hh:mm - dd MMMM yy")             # datestamp
+ST_SCOPE = dict(
+
+    sys                                 = SYS_SCOPE,
+    user                                = USER_SCOPE,
+
+)
+
+datetTimeStamp                          = DateTime.currentDateTime().toString("hh:mm - dd MMMM yy")             # datestamp
 
 
-IMGEXT = "All Files (*);;Img Files (*.jpg);;Img Files (*.png)"
+IMGEXT                                  = "All Files (*);;Img Files (*.jpg);;Img Files (*.png)"
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Font & Text """
@@ -778,10 +696,10 @@ RELATIVE_SIZE               = Qt.RelativeSize                                   
 
 ICONSIZE                    = 32
 ICONBUFFER                  = -1
-BTNTAGSIZE                  = QSize(87, 20)
-TAGBTNSIZE                  = QSize(87-1, 20-1)
-BTNICONSIZE                 = QSize(ICONSIZE, ICONSIZE)
-ICONBTNSIZE                 = QSize(ICONSIZE+ICONBUFFER, ICONSIZE+ICONBUFFER)
+BTNTAGSIZE                  = Size(87, 20)
+TAGBTNSIZE                  = Size(87-1, 20-1)
+BTNICONSIZE                 = Size(ICONSIZE, ICONSIZE)
+ICONBTNSIZE                 = Size(ICONSIZE+ICONBUFFER, ICONSIZE+ICONBUFFER)
 
 ignoreARM                   = Qt.IgnoreAspectRatio
 
@@ -935,7 +853,7 @@ statusTips                          = {}
 
 def read_file(fileName):
 
-    filePth = os.path.join(RAWS_DIR, fileName)
+    filePth = create_path(RAWS_DIR, fileName)
 
     if os.path.exists(filePth):
         with open(filePth) as f:
@@ -978,9 +896,9 @@ class Cfg(dict):
                 pass
 
         with open(self.filePath, 'w+') as f:
-            if globals.dataTypeSaving == 'json':
+            if GLobalSetting.formatSaving == 'json':
                 json.dump(self, f, indent=4)
-            elif globals.dataTypeSaving == 'yaml':
+            elif GLobalSetting.formatSaving == 'yaml':
                 yaml.dump(self, f, default_flow_style=False)
             else:
                 # will update more data type library later if need
@@ -1064,8 +982,8 @@ class ConfigPython(Cfg):
         self['python']              = platform.python_build()
         self['python version']      = platform.python_version()
 
-        pths                        = [p.replace('\\', '/') for p in os.getenv('PATH').split(';')[0:]]
-        sys.path                    = [p.replace('\\', '/') for p in sys.path]
+        pths                        = [p for p in os.getenv('PATH').split(';')[0:]]
+        sys.path                    = [p for p in sys.path]
 
         for p in pths:
             if os.path.exists(p):
@@ -1087,12 +1005,12 @@ class ConfigPython(Cfg):
             # untubu
             self.check_package_required(self.utuRequires)
 
-        if globals.printCfgInfo:
-            if globals.printPythonInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printPythonInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.savePythonInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.savePythonInfo:
                 self.save_data()
 
     def check_package_required(self, pkgs):
@@ -1168,19 +1086,19 @@ class ConfigApps(Cfg):
 
         for paths, dirs, names in os.walk(programs):
             relpath = paths[len(programs) + 1:]
-            shortcuts.setdefault(relpath, []).extend([winshell.shortcut(os.path.join(paths, n)) for n in names])
+            shortcuts.setdefault(relpath, []).extend([winshell.shortcut(create_path(paths, n)) for n in names])
 
         for relpath, lnks in sorted(shortcuts.items()):
             for lnk in lnks:
                 name, _ = os.path.splitext(os.path.basename(lnk.lnk_filepath))
                 self[str(name)] = lnk.path
 
-        if globals.printCfgInfo:
-            if globals.printAppInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printAppInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.saveAppInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.saveAppInfo:
                 self.save_data()
 
 
@@ -1226,12 +1144,12 @@ class ConfigPath(Cfg):
         self.add('VAR_SCSS_PTH'     , VAR_SCSS_PTH)
         self.add('SETTING_FILEPTH'  , SETTING_FILEPTH)
 
-        if globals.printCfgInfo:
-            if globals.printPthInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printPthInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.savePthInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.savePthInfo:
                 self.save_data()
 
 
@@ -1347,12 +1265,12 @@ class ConfigDirectory(Cfg):
                     os.umask(original_umask)
                 os.chmod(path, mode)
 
-        if globals.printCfgInfo:
-            if globals.printDirInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printDirInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.saveDirInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.saveDirInfo:
                 self.save_data()
 
 
@@ -1366,14 +1284,14 @@ class ConfigAvatar(Cfg):
 
         for root, dirs, names in os.walk(AVATAR_DIR, topdown=False):
             for name in names:
-                self[name.split('.avatar')[0]] = os.path.join(root, name).replace('\\', '/')
+                self[name.split('.avatar')[0]] = create_path(root, name)
 
-        if globals.printCfgInfo:
-            if globals.printAvatarInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printAvatarInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.saveAvatarInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.saveAvatarInfo:
                 self.save_data()
 
 
@@ -1390,21 +1308,21 @@ class ConfigLogo(Cfg):
 
         for root, dirs, names in os.walk(DAMG_LOGO_DIR, topdown=False):
             for name in names:
-                damgLogos[name.split('.png')[0]] = os.path.join(root, name).replace('\\', '/')
+                damgLogos[name.split('.png')[0]] = create_path(root, name)
 
         for root, dirs, names in os.walk(PLM_LOGO_DIR, topdown=False):
             for name in names:
-                plmLogos[name.split('.png')[0]] = os.path.join(root, name).replace('\\', '/')
+                plmLogos[name.split('.png')[0]] = create_path(root, name)
 
         self.add('DAMGTEAM', damgLogos)
         self.add('PLM', plmLogos)
 
-        if globals.printCfgInfo:
-            if globals.printAvatarInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printAvatarInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.saveAvatarInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.saveAvatarInfo:
                 self.save_data()
 
 
@@ -1418,14 +1336,14 @@ class ConfigImage(Cfg):
 
         for root, dirs, names, in os.walk(IMAGE_DIR, topdown=False):
             for name in names:
-                self.add(name.split('.node')[0], os.path.join(root, name).replace('\\', '/'))
+                self.add(name.split('.node')[0], create_path(root, name))
 
-        if globals.printCfgInfo:
-            if globals.printImgInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printImgInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.saveImgInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.saveImgInfo:
                 self.save_data()
 
 
@@ -1447,19 +1365,19 @@ class ConfigIcon(Cfg):
             d = ds[i]
             self.add(k, self.get_icons(d))
 
-        if globals.printCfgInfo:
-            if globals.printIconInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printIconInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.saveIconInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.saveIconInfo:
                 self.save_data()
 
     def get_icons(self, dir):
         icons = dict()
         for root, dirs, names in os.walk(dir, topdown=False):
             for name in names:
-                icons[name.split('.icon')[0]] = os.path.join(root, name).replace('\\', '/')
+                icons[name.split('.icon')[0]] = create_path(root, name)
         return icons
 
 
@@ -1474,12 +1392,12 @@ class ConfigServer(Cfg):
         self.add('vanila'           , __localServer__)
         self.add('AWS'              , __globalServer__)
 
-        if globals.printCfgInfo:
-            if globals.printServerInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printServerInfo:
                 self.pprint(self)
 
-        if globals.saveCfgInfo:
-            if globals.saveServerInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.saveServerInfo:
                 self.save_data()
 
 
@@ -1491,22 +1409,22 @@ class ConfigEnvVar(Cfg):
     def __init__(self):
         Cfg.__init__(self)
         for k, v in os.environ.items():
-            self[k]                     = v.replace('\\', '/')
+            self[k]                     = v
 
-        if globals.printCfgInfo:
-            if globals.printEnvInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printEnvInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.saveEnvInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.saveEnvInfo:
                 self.save_data()
 
     def update(self):
         for k, v in os.environ.items():
-            self[k]                     = v.replace('\\', '/')
+            self[k]                     = v
 
-        if globals.saveCfgInfo:
-            if globals.saveEnvInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.saveEnvInfo:
                 self.save_data()
 
 
@@ -1527,12 +1445,12 @@ class ConfigUrl(Cfg):
         self.add('google vn'        , __googleVN__)
         self.add('google nz'        , __googleNZ__)
 
-        if globals.printCfgInfo:
-            if globals.printUrlInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printUrlInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.saveUrlInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.saveUrlInfo:
                 self.save_data()
 
 
@@ -1553,12 +1471,12 @@ class ConfigTypes(Cfg):
         self['CPUTYPE'] = CPUTYPE
         self['DRIVETYPE'] = DRIVETYPE
 
-        if globals.printCfgInfo:
-            if globals.printTypeInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printTypeInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.saveTypeInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.saveTypeInfo:
                 self.save_data()
 
 
@@ -1579,12 +1497,12 @@ class ConfigFormats(Cfg):
         self.add('dt datetTimeStamp' , datetTimeStamp)
         self.add('IMGEXT ext', IMGEXT)
 
-        if globals.printCfgInfo:
-            if globals.printFmtInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printFmtInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.saveFmtInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.saveFmtInfo:
                 self.save_data()
 
 
@@ -1604,7 +1522,7 @@ class ConfigFonts(Cfg):
 
         for root, dirs, fontPth in os.walk(FONT_DIR, topdown=False):
             for filename in fontPth:
-                filePths.append(os.path.join(root, filename).replace('\\', '/'))  # Add to file list.
+                filePths.append(create_path(root, filename))  # Add to file list.
 
         for pth in filePths:
             fontName        = os.path.basename(pth).split('.')[0]
@@ -1619,12 +1537,12 @@ class ConfigFonts(Cfg):
             self[family]    = fontStyle
 
 
-        if globals.printCfgInfo:
-            if globals.printFontInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printFontInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.saveFontInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.saveFontInfo:
                 self.save_data()
 
 
@@ -1703,8 +1621,8 @@ class ConfigPipeline(Cfg):
                 if k in key:
                     launchAppKeys.append(key)
 
-        qtDesigner = os.path.join(os.getenv('PROGRAMDATA'), 'Anaconda3', 'Library', 'bin', 'designer.exe')
-        davinciPth = os.path.join(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
+        qtDesigner = create_path(os.getenv('PROGRAMDATA'), 'Anaconda3', 'Library', 'bin', 'designer.exe')
+        davinciPth = create_path(os.getenv('PROGRAMFILES'), 'Blackmagic Design', 'DaVinci Resolve', 'resolve.exe')
 
         eVal       = [qtDesigner, davinciPth]
         eKeys      = ['QtDesigner', 'Davinci Resolve']
@@ -1824,12 +1742,12 @@ class ConfigPipeline(Cfg):
                 statustip = statusTips[key]
                 self.add(key, CommandData(key, icon, tooltip, statustip, value, valueType, arg, code))
 
-        if globals.printCfgInfo:
-            if globals.printPlmInfo:
+        if GLobalSetting.printCfgInfo:
+            if GLobalSetting.printPlmInfo:
                 self.pprint()
 
-        if globals.saveCfgInfo:
-            if globals.savePlmInfo:
+        if GLobalSetting.saveCfgInfo:
+            if GLobalSetting.savePlmInfo:
                 self.save_data()
 
     def del_key(self, key):
@@ -1891,12 +1809,12 @@ if platform.system() == 'Windows':
             self['keyboard']    = self.keyboardInfo()
             self['mice']        = self.miceInfo()
 
-            if globals.printCfgInfo:
-                if globals.printPcInfo:
+            if GLobalSetting.printCfgInfo:
+                if GLobalSetting.printPcInfo:
                     self.pprint()
 
-            if globals.saveCfgInfo:
-                if globals.savePcInfo:
+            if GLobalSetting.saveCfgInfo:
+                if GLobalSetting.savePcInfo:
                     self.save_data()
 
         def osInfo(self, **info):

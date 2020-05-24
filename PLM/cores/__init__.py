@@ -11,7 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 
-from .Loggers                   import Loggers
 from .Handlers                  import EnvHandler, FileHandler
 from .data                      import sqlUtils, PresetDB
 from .StyleSheet                import StyleSheet

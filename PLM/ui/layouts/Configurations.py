@@ -34,7 +34,7 @@ class ServerConfig(Widget):
         super(ServerConfig, self).__init__(parent)
 
         serverLabel             = Label({'txt':"Server:"})
-        serverCombo             = ComboBox({'items': ['Local: {}'.format(__localServer__), 'Global: {}'.format(__globalServer__)]})
+        serverCombo             = ComboBox({'items': ['Local: {}'.format(__localServer__), 'GlobalSetting: {}'.format(__globalServer__)]})
         serverLayout            = HBoxLayout({'addWidget': [serverLabel, serverCombo]})
         serverConfigLayout      = VBoxLayout({'addLayout': [serverLayout]})
         serverConfigGroup       = GroupBox("Server configuration", [serverConfigLayout], 'setLayout')

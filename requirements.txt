@@ -1,25 +1,22 @@
 
-cx_Freeze>=6.1
-pytest==5.3.2
-pytest-cov==2.8.1
-msgpack>=0.6.2
-pip>=19.3.1
-winshell>=0.6.0
-helpdev>=0.6.10
-deprecate>=1.0.5
-argparse>=1.4.0
-green>=3.1.0
-GPUtil>=1.4.0
-playsound>=1.2.2
-python-resize-image>=1.1.19
-sphinx == 3.0.2
-sphinx_rtd_theme == 0.4.3
-reportlab == 3.5.42
-zopfli==0.1.6
-fs==2.4.11
-
-WMI>=1.4.9
-
-PyQt5>=5.14.1
-PyQtWebEngine>=5.14.0
-PyQt5-sip>=12.7.0
+cx_Freeze           >= 6.1
+pytest              == 5.3.2
+pytest-cov          == 2.8.1
+msgpack             >= 0.6.2
+pip                 >= 20.1.1
+winshell            >= 0.6.0
+helpdev             >= 0.6.10
+deprecate           >= 1.0.5
+argparse            >= 1.4.0
+green               >= 3.1.0
+GPUtil              >= 1.4.0
+playsound           >= 1.2.2
+python-resize-image >= 1.1.19
+sphinx              == 3.0.2
+sphinx_rtd_theme    == 0.4.3
+reportlab           == 3.5.42
+zopfli              == 0.1.6
+fs                  == 2.4.11
+termcolor           >= 1.1.0
+pyjavaproperties    >= 0.7
+humanfriendly       >= 2.1

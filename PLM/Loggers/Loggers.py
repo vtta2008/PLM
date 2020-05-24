@@ -15,8 +15,9 @@ import logging
 
 # PLM
 from PLM.configs                    import LOG_FORMAT, DT_FORMAT, LOCAL_LOG
-from .BaseLog                       import StyleMessage, LogLevel
+from .logConfigs                    import LogLevel, lvlNames, lvlNumbers
 from .Handlers                      import StreamHandler, FileHandler
+
 
 class Loggers(logging.Logger):
 
@@ -25,9 +26,14 @@ class Loggers(logging.Logger):
     def __init__(self, parent=None, level="debug", fmt=LOG_FORMAT['fullOpt'], dtfmt=DT_FORMAT['fullOpt'], filemode='a+', filename=LOCAL_LOG):
         super(Loggers, self).__init__(parent)
 
-        self._parent = parent
+        self._parent                = parent
+        if not self._parent:
+            logging.getLogger(__name__)
+        else:
+            logging.getLogger(self._parent)
 
-        logging.getLogger(__name__)
+        for i in range(len(lvlNames)):
+            self.addLoggingLevel(levelName=lvlNames[i].lower(), levelNum=lvlNumbers[i])
 
         self.level                  = self.define_level(level)
         self.logLevel               = self.level_config(self.level)
@@ -37,27 +43,37 @@ class Loggers(logging.Logger):
         self.fn                     = filename
         self.fm                     = filemode
 
-        self.addLoggingLevel(levelName='TRACE', levelNum=LogLevel.Trace)
-
         self.sh                     = StreamHandler(self.logLevel, self.fmt, self.dtfmt)
         self.fh                     = FileHandler(self.fn, self.logLevel, self.fmt, self.dtfmt)
         self.addHandler(self.sh)
         self.addHandler(self.fh)
 
-    def define_level(self, logLevel):
+    def define_level(self, logLevel=None):
 
-        if logLevel is None or logLevel == 'not set':
+        if  logLevel == "silent":
             loglvl = logging.NOTSET
-        elif logLevel == "info":
-            loglvl = logging.INFO
-        elif logLevel == "warn":
-            loglvl = logging.WARNING
+        elif logLevel == "spam":
+            loglvl = logging.SPAM
         elif logLevel == "debug":
             loglvl = logging.DEBUG
+        elif logLevel == "verbose":
+            loglvl = logging.VERBOSE
+        elif logLevel == "normal":
+            loglvl = logging.INFO
+        elif logLevel == "notice":
+            loglvl = logging.NOTICE
+        elif logLevel == "trace":
+            loglvl = logging.WARN
+        elif logLevel == "success":
+            loglvl = logging.SUCCESS
         elif logLevel == "error":
             loglvl = logging.ERROR
-        else:
+        elif logLevel == "critical":
+            loglvl = logging.CRITICAL
+        elif logLevel == "fatal":
             loglvl = logging.FATAL
+        else:
+            loglvl = logging.NOTSET
 
         return loglvl
 
@@ -68,11 +84,15 @@ class Loggers(logging.Logger):
         logging_logLevel = {
 
             LogLevel.Silent:    logging.NOTSET,
+            LogLevel.Spam:      logging.SPAM,
             LogLevel.Debug:     logging.DEBUG,
+            LogLevel.Verbose:   logging.VERBOSE,
             LogLevel.Normal:    logging.INFO,
+            LogLevel.Notice:    logging.NOTICE,
             LogLevel.Trace:     logging.WARN,
             LogLevel.Error:     logging.ERROR,
-            LogLevel.Critical:  logging.FATAL,
+            LogLevel.Critical:  logging.CRITICAL,
+            LogLevel.Fatal:     logging.FATAL
 
         }[verbose_level]
 
@@ -97,7 +117,7 @@ class Loggers(logging.Logger):
 
         def logForLevel(self, message, *args, **kwargs):
             if self.isEnabledFor(levelNum):
-                self._log(levelNum, message, args, **kwargs)
+                self._log(levelNum, message, *args, **kwargs)
 
         def logToRoot(message, *args, **kwargs):
             logging.log(levelNum, message, *args, **kwargs)
@@ -107,9 +127,6 @@ class Loggers(logging.Logger):
             setattr(logging, levelName, levelNum)
             setattr(logging.getLoggerClass(), methodName, logForLevel)
             setattr(logging, methodName, logToRoot)
-
-    def report(self, mess, **kwargs):
-        self.trace(StyleMessage(mess, **kwargs))
 
 
 # -------------------------------------------------------------------------------------------------------------

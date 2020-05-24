@@ -9,25 +9,23 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import globals
+from PLM import GLobalSetting
 import subprocess
 
-if globals.qtBindingMode == 'PyQt5':
+if GLobalSetting.qtBinding == 'PyQt5':
     from PyQt5.QtWidgets    import (QAction, QWidgetAction, QApplication, QVBoxLayout, QHBoxLayout, QPushButton,
                                     QToolButton, QCheckBox, QComboBox, QDockWidget, QGraphicsItem, QGraphicsPathItem,
-                                    QGraphicsObject, QGraphicsScene, QGraphicsView, QGridLayout,
-                                    QGroupBox, QItemDelegate, QLabel, QLCDNumber, QLineEdit, QMainWindow, QMenu,
-                                    QMenuBar, QMessageBox, QPlainTextEdit, QProgressBar, QRubberBand, QSplashScreen,
-                                    QStatusBar, QSystemTrayIcon, QTabBar, QTabWidget, QTextEdit, QToolBar, QUndoCommand,
-                                    QWidget, QTableWidget, )
-elif globals.qtBindingMode == 'PySide2':
+                                    QGraphicsObject, QGraphicsScene, QGraphicsView, QGridLayout, QGroupBox, QItemDelegate,
+                                    QLabel, QLCDNumber, QLineEdit, QMainWindow, QMenu, QMenuBar, QMessageBox,
+                                    QPlainTextEdit, QProgressBar, QRubberBand, QSplashScreen, QStatusBar, QSystemTrayIcon,
+                                    QTabBar, QTabWidget, QTextEdit, QToolBar, QUndoCommand, QWidget, QTableWidget, )
+elif GLobalSetting.qtBinding == 'PySide2':
     from PySide2.QtWidgets  import (QAction, QWidgetAction, QApplication, QVBoxLayout, QHBoxLayout, QPushButton,
                                     QToolButton, QCheckBox, QComboBox, QDockWidget, QGraphicsItem, QGraphicsPathItem,
-                                    QGraphicsObject, QGraphicsScene, QGraphicsView, QGridLayout,
-                                    QGroupBox, QItemDelegate, QLabel, QLCDNumber, QLineEdit, QMainWindow, QMenu,
-                                    QMenuBar, QMessageBox, QPlainTextEdit, QProgressBar, QRubberBand, QSplashScreen,
-                                    QStatusBar, QSystemTrayIcon, QTabBar, QTabWidget, QTextEdit, QToolBar, QUndoCommand,
-                                    QWidget, QTableWidget, )
+                                    QGraphicsObject, QGraphicsScene, QGraphicsView, QGridLayout, QGroupBox, QItemDelegate,
+                                    QLabel, QLCDNumber, QLineEdit, QMainWindow, QMenu, QMenuBar, QMessageBox,
+                                    QPlainTextEdit, QProgressBar, QRubberBand, QSplashScreen, QStatusBar, QSystemTrayIcon,
+                                    QTabBar, QTabWidget, QTextEdit, QToolBar, QUndoCommand, QWidget, QTableWidget, )
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

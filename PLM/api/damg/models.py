@@ -84,6 +84,8 @@ class DAMGREGISTER(BaseDict):
                 # Register object to database
                 self.doRegister(obj)
 
+        return obj
+
     def doRegister(self, obj):
         """ Register object to DAMGREGISTER """
 
@@ -91,10 +93,10 @@ class DAMGREGISTER(BaseDict):
         obj = self.generate_obj_profiles(obj)
 
         # Register object to qssPths
-        self.object_names.append(obj.data['ObjectName'])
-        self.object_ids.append(obj.data['ObjectID'])
-        self.object_datetimes.append(obj.data['Datetime'])
-        self.object_keys.append(obj.data['key'])
+        self.object_names.append(obj._data['ObjectName'])
+        self.object_ids.append(obj._data['ObjectID'])
+        self.object_datetimes.append(obj._data['Datetime'])
+        self.object_keys.append(obj._data['key'])
 
         self[obj._name] = [obj.data, obj]
 
@@ -264,7 +266,7 @@ objRegistry = DAMGREGISTER()
 # -------------------------------------------------------------------------------------------------------------
 """ List """
 
-
+@objRegistry.register
 class DAMGLIST(BaseList):
 
     """ Base Damg team dictionary """
@@ -277,7 +279,6 @@ class DAMGLIST(BaseList):
         self._parent                        = parent
         self.listData                       = listData
         self.appendList(listData)
-        objRegistry.register(self)
 
     def appendList(self, lst=[]):
         if len(lst) > 0:
@@ -288,7 +289,7 @@ class DAMGLIST(BaseList):
 # -------------------------------------------------------------------------------------------------------------
 """ Dict """
 
-
+@objRegistry.register
 class DAMGDICT(BaseDict):
 
     """ Base Damg team dictionary """
@@ -301,7 +302,6 @@ class DAMGDICT(BaseDict):
         self._parent                        = parent
         self.dictData                       = dictData
         self.appendDict(self.dictData)
-        objRegistry.register(self)
 
     def appendDict(self, dct={}):
         if not dct == {}:
@@ -312,7 +312,7 @@ class DAMGDICT(BaseDict):
 # -------------------------------------------------------------------------------------------------------------
 """ Error """
 
-
+@objRegistry.register
 class DAMGERROR(BaseError):
 
     """ Base Damg team object. """
@@ -323,13 +323,12 @@ class DAMGERROR(BaseError):
         BaseError.__init__(self)
 
         self._parent                        = parent
-        objRegistry.register(self)
 
 
 # -------------------------------------------------------------------------------------------------------------
 """ Object """
 
-
+@objRegistry.register
 class DAMG(BaseObject):
 
     """ Base Damg team object. """
@@ -340,8 +339,6 @@ class DAMG(BaseObject):
         super(DAMG, self).__init__()
 
         self._parent                        = parent
-        objRegistry.register(self)
-
 
 
 # -------------------------------------------------------------------------------------------------------------
