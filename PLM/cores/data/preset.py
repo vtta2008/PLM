@@ -16,8 +16,6 @@ import re
 import sqlite3 as lite
 
 
-# PLM
-from PLM                            import ROOT
 from PLM.api.damg                   import DAMG
 
 # -------------------------------------------------------------------------------------------------------------
@@ -56,7 +54,7 @@ LTD = dict(
 """ Create database """
 
 
-with open(os.path.join(ROOT, 'configs', 'metadatas.py').replace('\\', '/'), 'rb') as f:
+with open(os.path.join(os.getenv('PLM'), 'configs', 'metadatas.py').replace('\\', '/'), 'rb') as f:
     metadata = f.read().decode('utf-8')
 
 def parse(pattern):

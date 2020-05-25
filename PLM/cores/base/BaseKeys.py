@@ -13,7 +13,6 @@ from ... import globalSettings
 """ Import """
 
 # Python
-import json
 from functools                          import partial
 
 # PLM

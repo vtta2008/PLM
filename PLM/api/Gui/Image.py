@@ -11,9 +11,8 @@ Description:
 """ Import """
 
 # PLM
-from PLM                                    import __copyright__
 from .io_gui                                import QImage, QPixmap
-from PLM.configs                            import AUTO_COLOR
+from PLM.api.qtOption                       import AUTO_COLOR
 
 
 class Image(QImage):
@@ -21,7 +20,6 @@ class Image(QImage):
     Type                                    = 'DAMGIMAGE'
     key                                     = 'Image'
     _name                                   = 'DAMG Image'
-    _copyright                              = __copyright__()
 
     def __init__(self, image=None, parent=None):
         super(Image, self).__init__(image, parent)
@@ -37,10 +35,6 @@ class Image(QImage):
     @property
     def image(self):
         return self._image
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):
@@ -59,7 +53,6 @@ class Pixmap(QPixmap):
     Type                                    = 'DAMGPIXMAP'
     key                                     = 'Pixmap'
     _name                                   = 'DAMG Pixel Map'
-    _copyright                              = __copyright__()
 
     def __init__(self, imgPth=None, flag=AUTO_COLOR, parent=None):
         super(Pixmap, self).__init__(imgPth)
@@ -75,10 +68,6 @@ class Pixmap(QPixmap):
 
     def setImage(self, image, flags):
         return self.fromImage(image, flags)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

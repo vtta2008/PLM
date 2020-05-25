@@ -10,8 +10,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM import __copyright__
 from .io_gui                            import QTransform
 
 
@@ -20,15 +18,10 @@ class Transform(QTransform):
     Type                        = 'DAMGTRANSFORM'
     key                         = 'Transform'
     _name                       = 'DAMG Transform'
-    _copyright                  = __copyright__()
 
-    def __init__(self, *args, **kwargs):
-        QTransform.__init__(*args, **kwargs)
+    def __init__(self, *__args):
+        super(Transform, self).__init__(*__args)
 
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

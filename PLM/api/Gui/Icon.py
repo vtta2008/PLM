@@ -15,26 +15,17 @@ import os
 
 # PLM
 from .io_gui                                import QIcon
-from PLM                                    import __copyright__
 from PLM.utils                              import get_app_icon, get_tag_icon, get_logo_icon
-from PLM.configs                            import IGNORE_ICONS, ConfigIcons
 from PLM.api.Core                           import Size
-from PLM.cores.Errors                       import IconNotFound
 
 class Icon(QIcon):
 
     Type                                    = 'DAMGUI'
     key                                     = 'Icon'
     _name                                   = 'DAMG Icon'
-    _copyright                              = __copyright__()
-    iconInfo                                = ConfigIcons()
 
     def __init__(self, *__args):
         super(Icon, self).__init__(*__args)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def iconName(self):
@@ -51,28 +42,10 @@ class AppIcon(Icon):
     key                                     = 'AppIcon'
     _found                                  = False
 
-    def __init__(self, size=32, name="AboutPlt"):
+    def __init__(self, iconName):
         super(AppIcon, self).__init__(self)
 
-        self.iconSize                       = size
-        self.iconName                       = name
-        key                                 = 'icon{0}'.format(self.iconSize)
-
-        for icon in self.iconInfo[key].keys():
-            if self.iconName == icon:
-                self.iconPth                = get_app_icon(self.iconSize, self.iconName)
-                self._found                 = True
-                break
-            elif os.path.exists(self.iconName):
-                self.iconPth                = self.iconName
-                self._found                 = True
-                break
-
-        if not self._found:
-            if not self.iconName in IGNORE_ICONS:
-                IconNotFound("{0}: Could not find icon name: {1}".format(self.__class__.__name__, self.iconName))
-        else:
-            self.addFile(self.iconPth, Size(self.iconSize, self.iconSize))
+        self.addFile(iconName)
 
 
 

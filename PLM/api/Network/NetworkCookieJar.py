@@ -11,8 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM                                import __copyright__
 from .io_network                import QNetworkCookieJar
 
 
@@ -21,7 +19,6 @@ class NetworkCookieJar(QNetworkCookieJar):
     Type                                = 'DAMGNETWORKCOOKIEJAR'
     key                                 = 'NetworkCookieJar'
     _name                               = 'DAMG Network Cookie Jar'
-    _copyright                          = __copyright__()
 
     def __init__(self, parent):
         super(NetworkCookieJar, self).__init__(parent)
@@ -34,9 +31,6 @@ class NetworkCookieJar(QNetworkCookieJar):
     def name(self, val):
         self._name = val
 
-    @property
-    def copyright(self):
-        return self._copyright
 
 
 

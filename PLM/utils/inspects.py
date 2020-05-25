@@ -12,10 +12,13 @@ Description:
 
 import os, sys, platform, win32api, requests, re, time, datetime, uuid
 
-from PyQt5.QtCore import QSize, QRect, QRectF
+from PLM.api.Core           import Size, Rect, RectF
+from .converts              import str2bool
 
-from PLM.configs import KEYPACKAGE
-from .converts import str2bool
+
+SYS_OPTS                                    = ["Host Name", "OS Name", "OS Version", "Product ID", "System Manufacturer",
+                                                "System Model", "System type", "BIOS Version", "Domain", "Windows Directory",
+                                                "Total Physical Memory", "Available Physical Memory", "Logon Server"]
 
 
 def get_py_env_var(key, path):
@@ -26,37 +29,36 @@ def get_py_env_var(key, path):
             os.environ[key] = path
     except KeyError:
         print('install showLayout_new environment variable')
-        os.environ[key] = path
+        os.environ[key]     = path
     else:
         pass
 
 
 def get_pointer_bounding_box(pointerPos, bbSize):
-    point = pointerPos
-    mbbPos = point
+    point                   = pointerPos
+    mbbPos                  = point
     point.setX(point.x() - bbSize / 2)
     point.setY(point.y() - bbSize / 2)
-    size = QSize(bbSize, bbSize)
-    bb = QRect(mbbPos, size)
-    bb = QRectF(bb)
+    size                    = Size(bbSize, bbSize)
+    bb                      = Rect(mbbPos, size)
+    bb                      = RectF(bb)
     return bb
 
 def get_user_location():
 
-    package = KEYPACKAGE
-    pythonVersion = sys.version
-    windowOS = platform.system()
-    windowVersion = platform.version()
+    pythonVersion           = sys.version
+    windowOS                = platform.system()
+    windowVersion           = platform.version()
 
-    sysOpts = package['sysOpts']
-    cache = os.popen2("SYSTEMINFO")
-    source = cache[1].read()
+    sysOpts                 = SYS_OPTS
+    cache                   = os.popen2("SYSTEMINFO")
+    source                  = cache[1].read()
 
-    sysInfo = {}
+    sysInfo                 = {}
 
-    sysInfo['python'] = pythonVersion
-    sysInfo['os'] = windowOS + "|" + windowVersion
-    sysInfo['pcUser'] = platform.node()
+    sysInfo['python']       = pythonVersion
+    sysInfo['os']           = windowOS + "|" + windowVersion
+    sysInfo['pcUser']       = platform.node()
     sysInfo['operating system'] = platform.system() + "/" + platform.platform()
     sysInfo['python version'] = platform.python_version()
 

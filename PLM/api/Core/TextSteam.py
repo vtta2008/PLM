@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
+
 from .io_core import QTextStream
 
 class TextStream(QTextStream):
@@ -16,15 +16,11 @@ class TextStream(QTextStream):
     Type                                    = 'DAMGTEXTSTREAM'
     key                                     = 'TextStream'
     _name                                   = 'DAMG Text Stream'
-    _copyright                              = __copyright__()
+
 
     def __init__(self, fileName):
         QTextStream.__init__(self)
         self.setDevice(fileName)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

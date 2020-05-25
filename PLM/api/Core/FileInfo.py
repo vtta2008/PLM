@@ -9,7 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
+
 from .io_core import QFileInfo
 
 
@@ -18,16 +18,11 @@ class FileInfo(QFileInfo):
     Type                                = 'DAMGFILEINFO'
     key                                 = 'FileInfo'
     _name                               = 'DAMG File Info'
-    _copyright                          = __copyright__()
     _filePath                           = None
 
     def __init__(self, *__args):
         super(FileInfo, self).__init__(*__args)
 
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

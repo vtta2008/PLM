@@ -10,8 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM                                import __copyright__
+
 from .io_gui                            import QBrush
 
 
@@ -20,7 +19,6 @@ class Brush(QBrush):
     Type                                = 'DAMGBRUSH'
     key                                 = 'Brush'
     _name                               = 'DAMG Brush'
-    _copyright                          = __copyright__()
 
     def __init__(self, *__args):
         super(Brush, self).__init__(*__args)

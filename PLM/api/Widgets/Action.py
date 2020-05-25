@@ -10,10 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PLM                                    import __copyright__
 from .io_widgets                            import QAction, QWidgetAction
-from PLM.plugins.SignalManager              import SignalManager
+from PLM.cores.SignalManager                import SignalManager
 from PLM.settings                           import AppSettings
 from PLM.api.Gui                            import AppIcon
 
@@ -25,7 +23,6 @@ class WidgetAction(QWidgetAction):
     Type                                    = 'DAMGWIDGETACTION'
     key                                     = 'WidgetAction'
     _name                                   = 'DAMG Widget Action'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         QWidgetAction.__init__(self)
@@ -33,11 +30,6 @@ class WidgetAction(QWidgetAction):
         self.parent                         = parent
         self.settings                       = AppSettings(self)
         self.signals                        = SignalManager(self)
-
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):
@@ -52,7 +44,6 @@ class Action(QAction):
     Type                                    = 'DAMGACTION'
     key                                     = 'Action'
     _name                                   = 'DAMG Action'
-    _copyright                              = __copyright__()
 
     def __init__(self, preset={}, parent=None):
         QAction.__init__(self)
@@ -91,10 +82,6 @@ class Action(QAction):
                     self.setObjectName(value)
                 elif key == 'vsb':
                     self.setVisible(value)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

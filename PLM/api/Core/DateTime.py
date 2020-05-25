@@ -9,7 +9,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
 from .io_core import QDateTime
 
 
@@ -18,14 +17,10 @@ class DateTime(QDateTime):
     Type                            = 'DAMGDATETIME'
     key                             = 'DateTime'
     _name                           = 'DAMG DateTime'
-    _copyright                      = __copyright__()
 
     def __init__(self, *__args):
         super(DateTime, self).__init__(*__args)
 
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

@@ -9,7 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
+
 from .io_core import QSettings
 
 
@@ -18,14 +18,10 @@ class Settings(QSettings):
     Type                                    = 'DAMGSETTING'
     key                                     = 'Settings'
     name                                    = 'DAMG Setting'
-    _coyright                               = __copyright__()
 
     def __init__(self, *__args):
         super(Settings, self).__init__(*__args)
 
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

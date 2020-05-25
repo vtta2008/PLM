@@ -8,21 +8,22 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
+
 from PLM.api.Widgets.io_widgets             import QMainWindow
-from PLM.cores                              import Loggers
-from PLM.plugins.SignalManager              import SignalManager
-from PLM.cores.Settings.app_settings import AppSettings
+from PLM.loggers                            import Loggers
+from PLM.cores                              import SignalManager
+from PLM.settings                           import AppSettings
 
 # -------------------------------------------------------------------------------------------------------------
 """ Main window layout preset """
+
 
 class MainWindow(QMainWindow):
 
     Type                        = 'DAMGUI'
     key                         = 'MainWindow'
     _name                       = 'DAMG Main Window'
-    _copyright                  = __copyright__()
+
     _data                       = dict()
 
     def __init__(self, parent=None):
@@ -43,10 +44,6 @@ class MainWindow(QMainWindow):
             return self.settings.initValue(key, self.key)
         else:
             return self.settings.initValue(key, self.key, decode)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

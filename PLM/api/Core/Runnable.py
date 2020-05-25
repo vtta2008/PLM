@@ -11,8 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM                                    import __copyright__
+
 from .io_core import QRunnable
 
 
@@ -22,7 +21,6 @@ class Runnable(QRunnable):
     Type                                    = 'DAMGRUNABLE'
     key                                     = 'Runnable'
     _name                                   = 'DAMG Runnable'
-    _copyright                              = __copyright__()
 
     def __init__(self, task, *args, **kwargs):
         super(Runnable, self).__init__()
@@ -30,10 +28,6 @@ class Runnable(QRunnable):
         self.task                           = task
         self.args                           = args
         self.kwargs                         = kwargs
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

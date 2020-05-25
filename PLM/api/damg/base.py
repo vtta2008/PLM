@@ -14,9 +14,6 @@ Description:
 # Python
 import json
 
-# PLM
-from PLM import __copyright__
-
 
 class ObjectEncoder(json.JSONEncoder):
 
@@ -37,7 +34,6 @@ class BaseList(list):
     key                                 = 'BaseList'
     _name                               = 'DAMG list'
     _count                              = 0
-    _copyright                          = __copyright__()
     _data                               = dict()
 
     def __init__(self):
@@ -91,7 +87,6 @@ class BaseDict(dict):
     key                                 = 'BaseDict'
     _name                               = 'DAMG dict'
     _count                              = 0
-    _copyright                          = __copyright__()
     _data                               = dict()
 
     def __init__(self):
@@ -117,10 +112,6 @@ class BaseDict(dict):
             for k, v in data.items():
                 self.add(k, v)
         self.update()
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def data(self):
@@ -154,7 +145,6 @@ class BaseError(Exception):
     _name                               = 'DAMG error'
     _count                              = 0
     _data                               = dict()
-    _copyright                          = __copyright__()
 
     def __str__(self):
 
@@ -176,10 +166,6 @@ class BaseError(Exception):
             return True
         else:
             return False
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def data(self):

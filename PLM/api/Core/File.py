@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
+
 from .io_core import QFile
 """ Import """
 
@@ -24,15 +24,11 @@ class FileBase(QFile):
     Type                                    = 'DAMGFILE'
     key                                     = 'FileBase'
     _name                                   = 'DAMG File Base'
-    _copyright                              = __copyright__()
     _filePath                               = None
 
     def __init__(self, *__args):
         super(FileBase, self).__init__(*__args)
 
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

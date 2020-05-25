@@ -11,8 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM                            import __copyright__
 from .io_network                import QNetworkRequest
 
 
@@ -21,7 +19,7 @@ class NetworkRequest(QNetworkRequest):
     Type                            = 'DAMGNETWORKREQUEST'
     key                             = 'NetworkRequest'
     _name                           = 'DAMG Network Request'
-    _copyright                      = __copyright__()
+
 
     def __init__(self, *__args):
         super(NetworkRequest, self).__init__(*__args)
@@ -33,10 +31,6 @@ class NetworkRequest(QNetworkRequest):
     @name.setter
     def name(self, val):
         self._name = val
-
-    @property
-    def copyright(self):
-        return self._copyright
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

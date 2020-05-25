@@ -11,8 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM import __copyright__
+
 from .io_gui                            import QPolygon
 
 
@@ -21,14 +20,9 @@ class Polygon(QPolygon):
     Type                                = 'DAMGPOLYGON'
     key                                 = 'Polygon'
     _name                               = 'DAMG Polygon'
-    _copyright                          = __copyright__()
 
     def __init__(self, *__args):
         super(Polygon, self).__init__(*__args)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

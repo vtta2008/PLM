@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 import os
-from PLM import __copyright__
+
 from .io_core import QProcess
 
 
@@ -18,7 +18,6 @@ class Process(QProcess):
     Type                                    = 'DAMGPROCESS'
     key                                     = 'Process'
     _name                                   = 'DAMG Process'
-    __copyright__                           = __copyright__()
 
     def __init__(self, readyReadFn=None, StandardErrorFn=None, StandardOutPutFn=None, finishFn=None, parent=None):
         super(Process, self).__init__(parent)

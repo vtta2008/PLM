@@ -10,13 +10,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PLM                                    import __copyright__
 from .io_widgets                            import QTextEdit, QDockWidget
 from PLM.api.Gui.io_gui                     import QTextTableFormat, QTextCharFormat
-from PLM.configs                            import right, datetTimeStamp
-from PLM.plugins.SignalManager              import SignalManager
-from PLM.cores.Settings.app_settings import AppSettings
+from PLM.api.qtOption                       import right, datetTimeStamp
+from PLM.cores.SignalManager                import SignalManager
+from PLM.settings                           import AppSettings
 
 # -------------------------------------------------------------------------------------------------------------
 """ Dock widget """
@@ -53,7 +51,6 @@ class DockWidget(QDockWidget):
     Type                                    = 'DAMGUI'
     key                                     = 'DockWidget'
     _name                                   = 'DAMG Dock Widget'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         QDockWidget.__init__(self)
@@ -70,10 +67,6 @@ class DockWidget(QDockWidget):
             return self.settings.initValue(key, self.key)
         else:
             return self.settings.initValue(key, self.key, decode)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

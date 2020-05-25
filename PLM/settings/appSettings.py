@@ -15,15 +15,7 @@ import os
 
 # PLM
 from PLM.api.Core                       import Settings
-from .configs                           import ConfigSettings
-
-settingInfo                             = ConfigSettings()
-APP_SETTING                             = settingInfo.APP_SETTING
-INI                                     = settingInfo.INI
-NATIVE                                  = settingInfo.NATIVE
-INVAILD                                 = settingInfo.INVAILD
-SYS_SCOPE                               = settingInfo.SYS_SCOPE
-USER_SCOPE                              = settingInfo.USER_SCOPE
+from PLM                                import glbSettings, APP_SETTING
 
 class AppSettings(Settings):
 

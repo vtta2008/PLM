@@ -9,7 +9,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
 from .io_core import QTimer
 
 
@@ -19,16 +18,13 @@ class Timer(QTimer):
     Type                                = 'DAMGTIMER'
     key                                 = 'Timer'
     _name                               = 'DAMG Timer'
-    _copyright                          = __copyright__
+
 
     def __init__(self, parent=None):
         super(Timer, self).__init__(parent)
 
         self.parent                     = parent
 
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

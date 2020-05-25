@@ -11,7 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 import time
-from PLM                                    import p
+from PLM                                    import prop1 as p
 from PLM.cores.base                         import Channel
 from PLM.api.Core                           import File, FileInfo, DownloadFile, IODevice
 from PLM.api.Widgets                        import MessageBox

@@ -9,7 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
+
 from .io_core import QPoint
 
 class Point(QPoint):
@@ -17,15 +17,10 @@ class Point(QPoint):
     Type                                    = 'DAMGPOINT'
     key                                     = 'Point'
     _name                                   = 'DAMG Point'
-    _copyright                              = __copyright__()
 
     def __init__(self, *__args):
         super(Point, self).__init__(*__args)
 
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

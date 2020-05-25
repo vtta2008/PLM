@@ -21,7 +21,7 @@ class NetworkReply(QNetworkReply):
     Type                                = 'DAMGNETWORKREPLY'
     key                                 = 'NetworkReply'
     _name                               = 'DAMG Network Reply'
-    _copyright                          = __copyright__()
+
 
     def __init__(self, parent):
         super(NetworkReply, self).__init__(parent)
@@ -33,10 +33,6 @@ class NetworkReply(QNetworkReply):
     @name.setter
     def name(self, val):
         self._name = val
-
-    @property
-    def copyright(self):
-        return self._copyright
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: GraphicItem.py
+Script Name: GraphicsItem.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
@@ -11,18 +11,17 @@ Description:
 """ Import """
 
 # PyQt5
-from PLM                                    import __copyright__
+
 from PLM.api.Widgets.io_widgets             import QGraphicsItem
-from PLM.plugins.SignalManager              import SignalManager
-from PLM.cores.Settings.app_settings import AppSettings
+from PLM.cores.SignalManager                import SignalManager
+from PLM.settings                           import AppSettings
 
 
-class GraphicItem(QGraphicsItem):
+class GraphicsItem(QGraphicsItem):
 
     Type                                    = 'DAMGGRAPHICVIEW'
     key                                     = 'GraphicView'
     _name                                   = 'DAMG Graphic View'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         QGraphicsItem.__init__(self)
@@ -39,10 +38,6 @@ class GraphicItem(QGraphicsItem):
             return self.settings.initValue(key, self.key)
         else:
             return self.settings.initValue(key, self.key, decode)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

@@ -10,8 +10,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM                                import __copyright__
 from .io_gui                            import QCursor
 
 class Cursor(QCursor):
@@ -19,15 +17,11 @@ class Cursor(QCursor):
     Type                                = 'DAMGCURSOR'
     key                                 = 'Cursor'
     _name                               = 'DAMG Cursor'
-    _copyright                          = __copyright__()
 
     def __init__(self, parent=None):
         QCursor.__init__(self)
         self.parent                     = parent
 
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

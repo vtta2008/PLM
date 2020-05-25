@@ -10,8 +10,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM import __copyright__
 from .io_gui                            import QKeySequence
 
 
@@ -20,14 +18,10 @@ class KeySequence(QKeySequence):
     Type                        = 'DAMGPAINTERPATH'
     key                         = 'PainterPath'
     _name                       = 'DAMG Painter Path'
-    _copyright                  = __copyright__()
 
-    def __init__(self, *args, **kwargs):
-        QKeySequence.__init__(*args, **kwargs)
+    def __init__(self, *__args):
+        super(KeySequence, self).__init__(*__args)
 
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

@@ -11,9 +11,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 import validators, re
+
 from collections            import OrderedDict
 from PLM.api.damg           import DAMGDICT, DAMGLIST
-from PLM.configs            import actionTypes, buttonTypes, urlTypes
+from PLM                    import actionTypes, buttonTypes, urlTypes
 
 
 from PyQt5.QtWidgets        import QPushButton, QToolButton, QWidgetAction, QAction, QActionGroup

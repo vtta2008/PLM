@@ -30,6 +30,18 @@ LOG_COLORS                          = { 'SILENT': 'gray', 'SPAM': 'white', 'DEBU
                                         'ERROR': 'red', 'CRITICAL': 'red', 'FATAL': 'red', 'VDEBUG': 'white',
                                         'WARNING': 'yellow', }
 
+LoggingFullOpt                      = "%(levelname)s: %(asctime)s %(name)s, line %(lineno)s: %(message)s",
+LoggingRelative                     = "(relativeCreated:d) (levelname): (message)",
+LoggingSimpleFmt1                   = "{asctime:[{lvelname}: :{message}",
+LoggingSimpleFmt2                   = '%(asctime)s|%(levelname)s|%(message)s|',
+LoggingDistance1                    = "%(asctime)s  %(name)-22s  %(levelname)-8s %(message)s",
+LoggingDistance2                    = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+
+
+DATETIME_dmyhms                     = "%d/%m/%Y %H:%M:%S",
+DATETIME_mdhm                       = "'%m-%d %H:%M'",
+DATETIME_fullOpt                    = '(%d/%m/%Y %H:%M:%S)',
+
 
 
 class Encoder(json.JSONEncoder):

@@ -260,6 +260,7 @@ class DAMGREGISTER(BaseDict):
     def LISTcount(self, newVal):
         self._LISTcount                     = newVal
 
+
 objRegistry = DAMGREGISTER()
 
 

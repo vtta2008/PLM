@@ -31,15 +31,7 @@ from .paths             import get_file_path
 """ Destop tool """
 
 def qualname(obj):
-    """Get the fully qualified name of an object.
-    Based on twisted.python.reflect.fullyQualifiedName.
-    Should work with:
-        - functools.partial objects
-        - functions
-        - classes
-        - methods
-        - modules
-    """
+
     if isinstance(obj, partial):
         obj = obj.func
 
@@ -56,13 +48,7 @@ def qualname(obj):
         return repr(obj)
 
 def get_repr(obj, constructor=False, **attrs):
-    """Get a suitable __repr__ string for an object.
-    Args:
-        obj: The object to get a repr for.
-        constructor: If True, show the Foo(one=1, two=2) form instead of
-                     <Foo one=1 two=2>.
-        attrs: The attributes to add.
-    """
+
     cls = qualname(obj.__class__)
     parts = []
     items = sorted(attrs.items())
@@ -77,7 +63,7 @@ def get_repr(obj, constructor=False, **attrs):
             return '<{}>'.format(cls)
 
 def ensure_valid(obj) -> None:
-    """Ensure a Qt object with an .isValid() method is valid."""
+
     if not obj.isValid():
         raise EnsureValueError(obj)
 
@@ -87,12 +73,8 @@ def wait(msec):
     loop.exec_()
 
 def create_shotcut(target, icon, shortcut, description):
-    winshell.CreateShortcut(
-        Path=os.path.join(winshell.desktop(), shortcut),
-        Target=target,
-        Icon=(icon, 0),
-        Description=description
-    )
+    winshell.CreateShortcut( Path=os.path.join(winshell.desktop(), shortcut), Target=target, Icon=(icon, 0),
+                             Description=description )
 
 def create_folder(pth, mode=0o770):
     if not pth or os.path.exists(pth):

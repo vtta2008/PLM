@@ -11,16 +11,15 @@ Description:
 """ Import """
 
 # Python
-import logging, os
+import logging
 
 # PLM
-from PLM                            import create_path, __organization__, __appName__
-from .configs                       import LogLevel
-from .Handlers                      import StreamHandler, FileHandler
+from PLM                            import LOCAL_LOG
+from .configs                       import LogLevel, LoggingFullOpt, DATETIME_fullOpt
+from .handlers                      import StreamHandler, FileHandler
 
-fmt                                 = "%(levelname)s: %(asctime)s %(name)s, line %(lineno)s: %(message)s"
-dtfmt                               = '(%d/%m/%Y %H:%M:%S)'
-LOCAL_LOG                           = create_path(os.getenv('LOCALAPPDATA'), __organization__, __appName__, '.configs', 'PLM.log')
+
+
 
 
 class Loggers(logging.Logger):
@@ -29,7 +28,8 @@ class Loggers(logging.Logger):
     key                             = 'PLM super logger'
 
 
-    def __init__(self, parent=None, level="debug", formatter=fmt, datetimeFormatter=dtfmt, filemode='a+', filename=LOCAL_LOG):
+    def __init__(self, parent=None, level="debug", formatter=LoggingFullOpt, datetimeFormatter=DATETIME_fullOpt,
+                 filemode='a+', filename=LOCAL_LOG):
         super(Loggers, self).__init__(parent)
 
         self.parent                 = parent

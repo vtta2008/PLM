@@ -10,11 +10,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PLM                                    import __copyright__
 from PLM.api.Widgets.io_widgets             import QGraphicsPathItem
-from PLM.plugins.SignalManager              import SignalManager
-from PLM.cores.Settings.app_settings import AppSettings
+from PLM.cores.SignalManager                import SignalManager
+from PLM.settings                           import AppSettings
 
 
 class GraphicPathItem(QGraphicsPathItem):
@@ -22,7 +20,6 @@ class GraphicPathItem(QGraphicsPathItem):
     Type                                    = 'DAMGGRAPHICVIEW'
     key                                     = 'GraphicView'
     _name                                   = 'DAMG Graphic View'
-    _copyright                              = __copyright__()
 
     def __init__(self, *__args):
         QGraphicsPathItem.__init__(self)
@@ -38,10 +35,6 @@ class GraphicPathItem(QGraphicsPathItem):
             return self.settings.initValue(key, self.key)
         else:
             return self.settings.initValue(key, self.key, decode)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

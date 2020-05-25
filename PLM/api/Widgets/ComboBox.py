@@ -10,20 +10,16 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PLM                                    import __copyright__
-
 from .io_widgets                            import QComboBox
 from PLM.utils                              import check_preset
-from PLM.plugins.SignalManager              import SignalManager
-from PLM.cores.Settings.app_settings import AppSettings
+from PLM.cores.SignalManager                import SignalManager
+from PLM.settings                           import AppSettings
 
 class ComboBox(QComboBox):
 
     Type                                    = 'DAMGUI'
     key                                     = 'ComboBox'
     _name                                   = 'DAMG Combo Box'
-    _copyright                              = __copyright__()
 
     def __init__(self, preset={}, parent=None):
         QComboBox.__init__(self)
@@ -44,10 +40,6 @@ class ComboBox(QComboBox):
             return self.settings.initValue(key, self.key)
         else:
             return self.settings.initValue(key, self.key, decode)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

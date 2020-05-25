@@ -11,8 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM                                import __copyright__
 from .io_core import QThread
 
 
@@ -21,7 +19,6 @@ class Thread(QThread):
     Type                                = 'DAMGTHREAD'
     key                                 = 'BaseThread'
     _name                               = 'DAMG Thread'
-    _copyright                          = __copyright__()
 
     _running                            = True
 
@@ -36,10 +33,6 @@ class Thread(QThread):
 
     def stop_running(self):
         self._running                       = False
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

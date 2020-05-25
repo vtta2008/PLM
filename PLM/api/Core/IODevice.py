@@ -12,7 +12,6 @@ Description:
 """ Import """
 
 # PLM
-from PLM import __copyright__
 from .io_core import QIODevice
 
 
@@ -21,15 +20,10 @@ class IODevice(QIODevice):
     Type                                = 'DAMGIODEVICE'
     key                                 = 'IODevice'
     _name                               = 'DAMG IO Device'
-    _copyright                          = __copyright__()
 
     def __init__(self, obj=None):
         super(IODevice, self).__init__(obj)
 
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

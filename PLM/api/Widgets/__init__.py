@@ -17,7 +17,7 @@ from .Button            import Button, ToolButton
 from .CheckBox          import CheckBox
 from .ComboBox          import ComboBox
 from .DockWidget        import DockStamp, DockWidget, NoteStamp
-from .GraphicItem       import GraphicItem
+from .GraphicsItem       import GraphicsItem
 from .GraphicsObject    import GraphicsObject
 from .GraphicPathItem   import GraphicPathItem
 from .GraphicsScene     import GraphicsScene

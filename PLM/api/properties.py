@@ -19,7 +19,6 @@ from humanfriendly import coerce_boolean
 from humanfriendly.tables import format_rst_table
 from humanfriendly.text import compact, concatenate, format, pluralize
 
-
 basestring = str
 
 # PLM

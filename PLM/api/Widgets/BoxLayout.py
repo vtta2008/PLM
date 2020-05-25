@@ -10,12 +10,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PLM                                    import __copyright__
 from .io_widgets                            import QVBoxLayout, QHBoxLayout
 from PLM.utils                              import check_preset
-from PLM.plugins.SignalManager              import SignalManager
-from PLM.cores.Settings.app_settings import AppSettings
+from PLM.cores.SignalManager                import SignalManager
+from PLM.settings                           import AppSettings
 
 
 class HBoxLayout(QHBoxLayout):
@@ -23,7 +21,6 @@ class HBoxLayout(QHBoxLayout):
     Type                                    = 'DAMGUI'
     key                                     = 'HBoxLayout'
     _name                                   = 'DAMG H Box Layout'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None, preset={}):
         QHBoxLayout.__init__(self)
@@ -48,10 +45,6 @@ class HBoxLayout(QHBoxLayout):
                 print("{0}: Unrecognise configKey: {1}".format(__name__, key))
 
     @property
-    def copyright(self):
-        return self._copyright
-
-    @property
     def name(self):
         return self._name
 
@@ -65,7 +58,6 @@ class VBoxLayout(QVBoxLayout):
     Type                                    = 'DAMGUI'
     key                                     = 'VBoxLayout'
     _name                                   = 'DAMG V Box Layout'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None, preset={}):
         QVBoxLayout.__init__(self)
@@ -88,10 +80,6 @@ class VBoxLayout(QVBoxLayout):
                 self.setStretch(value, 0)
             else:
                 print("Unrecognise configKey: {}".format(key))
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

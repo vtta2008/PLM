@@ -16,8 +16,7 @@ import os
 from .winConfigs                            import ConfigPcs
 from .baseConfigs                           import Pys, Urls, Lgs, Fnts, Dirs, Pths, Ics, Apps, Fmts, Uis, Clrs, Pls, Cmds
 
-from PLM                                    import glbSettings, create_path, ROOT
-from PLM.types                              import CMD_VALUE_TYPE
+from PLM                                    import glbSettings, create_path, ROOT, CMD_VALUE_TYPE
 from PLM.api.Core                           import Size, DateTime
 from PLM.api.Gui                            import Painter, Font
 
@@ -27,10 +26,6 @@ from PyQt5.QtCore                           import Qt, QEvent
 from PyQt5.QtWidgets                        import (QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame,
                                                     QSizePolicy, QLineEdit, QPlainTextEdit, QAbstractItemView, QStyle, )
 
-
-SYS_OPTS                                    = ["Host Name", "OS Name", "OS Version", "Product ID", "System Manufacturer",
-                                                "System Model", "System type", "BIOS Version", "Domain", "Windows Directory",
-                                                "Total Physical Memory", "Available Physical Memory", "Logon Server"]
 
 
 
@@ -47,164 +42,7 @@ IGNORE_ICONS                                = [ 'Widget', 'bright', 'dark', 'cha
                                                 'BotTab2', 'Cmd', 'User', 'Tracking']
 
 
-datetTimeStamp                              = DateTime.currentDateTime().toString("hh:mm - dd MMMM yy")             # datestamp
 
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" Event """
-
-NO_WRAP                     = QPlainTextEdit.NoWrap
-NO_FRAME                    = QPlainTextEdit.NoFrame
-ELIDE_RIGHT                 = Qt.ElideRight
-ELIDE_NONE                  = Qt.ElideNone
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" Window state """
-
-StateNormal                 = Qt.WindowNoState
-StateMax                    = Qt.WindowMaximized
-StateMin                    = Qt.WindowMinimized
-State_Selected              = QStyle.State_Selected
-
-# -------------------------------------------------------------------------------------------------------------
-""" Nodegraph setting variables """
-
-ASPEC_RATIO                 = Qt.KeepAspectRatio
-SMOOTH_TRANS                = Qt.SmoothTransformation
-SCROLLBAROFF                = Qt.ScrollBarAlwaysOff                                     # Scrollbar
-SCROLLBARON                 = Qt.ScrollBarAlwaysOn
-SCROLLBARNEED               = Qt.ScrollBarAsNeeded
-
-WORD_WRAP                   = Qt.TextWordWrap
-INTERSECT_ITEM_SHAPE        = Qt.IntersectsItemShape
-CONTAIN_ITEM_SHAPE          = Qt.ContainsItemShape
-MATCH_EXACTLY               = Qt.MatchExactly
-DRAG_ONLY                   = QAbstractItemView.DragOnly
-
-# -------------------------------------------------------------------------------------------------------------
-""" UI flags """
-
-ITEMENABLE                  = Qt.ItemIsEnabled
-ITEMMOVEABLE                = QGraphicsItem.ItemIsMovable
-ITEMSENDGEOCHANGE           = QGraphicsItem.ItemSendsGeometryChanges
-ITEMSCALECHANGE             = QGraphicsItem.ItemScaleChange
-ITEMPOSCHANGE               = QGraphicsItem.ItemPositionChange
-DEVICECACHE                 = QGraphicsItem.DeviceCoordinateCache
-SELECTABLE                  = QGraphicsItem.ItemIsSelectable
-MOVEABLE                    = QGraphicsItem.ItemIsMovable
-FOCUSABLE                   = QGraphicsItem.ItemIsFocusable
-PANEL                       = QGraphicsItem.ItemIsPanel
-
-NOINDEX                     = QGraphicsScene.NoIndex                                    # Scene
-
-RUBBER_DRAG                 = QGraphicsView.RubberBandDrag                              # Viewer
-RUBBER_REC                  = QRubberBand.Rectangle
-POS_CHANGE                  = QGraphicsItem.ItemPositionChange
-
-NODRAG                      = QGraphicsView.NoDrag
-NOFRAME                     = QGraphicsView.NoFrame
-ANCHOR_NO                   = QGraphicsView.NoAnchor
-
-ANCHOR_UNDERMICE            = QGraphicsView.AnchorUnderMouse
-ANCHOR_CENTER               = QGraphicsView.AnchorViewCenter
-
-CACHE_BG                    = QGraphicsView.CacheBackground
-
-UPDATE_VIEWRECT             = QGraphicsView.BoundingRectViewportUpdate
-UPDATE_FULLVIEW             = QGraphicsView.FullViewportUpdate
-UPDATE_SMARTVIEW            = QGraphicsView.SmartViewportUpdate
-UPDATE_BOUNDINGVIEW         = QGraphicsView.BoundingRectViewportUpdate
-UPDATE_MINIMALVIEW          = QGraphicsView.MinimalViewportUpdate
-
-STAY_ON_TOP                 = Qt.WindowStaysOnTopHint
-STRONG_FOCUS                = Qt.StrongFocus
-SPLASHSCREEN                = Qt.SplashScreen
-FRAMELESS                   = Qt.FramelessWindowHint
-CUSTOMIZE                   = Qt.CustomizeWindowHint
-CLOSEBTN                    = Qt.WindowCloseButtonHint
-MINIMIZEBTN                 = Qt.WindowMinimizeButtonHint
-AUTO_COLOR                  = Qt.AutoColor
-
-# -------------------------------------------------------------------------------------------------------------
-""" Drawing """
-
-ANTIALIAS                   = Painter.Antialiasing                                     # Painter
-ANTIALIAS_TEXT              = Painter.TextAntialiasing
-ANTIALIAS_HIGH_QUALITY      = Painter.HighQualityAntialiasing
-SMOOTH_PIXMAP_TRANSFORM     = Painter.SmoothPixmapTransform
-NON_COSMETIC_PEN            = Painter.NonCosmeticDefaultPen
-
-NO_BRUSH                    = Qt.NoBrush                                                # Brush
-
-NO_PEN                      = Qt.NoPen                                                  # Pen
-ROUND_CAP                   = Qt.RoundCap
-ROUND_JOIN                  = Qt.RoundJoin
-
-PATTERN_SOLID               = Qt.SolidPattern                                           # Pattern
-
-LINE_SOLID                  = Qt.SolidLine                                              # Line
-LINE_DASH                   = Qt.DashLine
-LINE_DOT                    = Qt.DotLine
-LINE_DASH_DOT               = Qt.DashDotDotLine
-
-TRANSPARENT                 = Qt.transparent
-TRANSPARENT_MODE            = Qt.TransparentMode
-
-# -------------------------------------------------------------------------------------------------------------
-""" Meta Object """
-
-QUEUEDCONNECTION            = Qt.QueuedConnection
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" Keyboard and cursor """
-
-TEXT_BOLD                   = Font.Bold
-TEXT_NORMAL                 = Font.Normal
-MONO_SPACE                  = Font.Monospace
-
-TEXT_MENEOMIC               = Qt.TextShowMnemonic
-
-
-KEY_PRESS                   = QEvent.KeyPress
-KEY_RELEASE                 = QEvent.KeyRelease
-KEY_ALT                     = Qt.Key_Alt
-KEY_DEL                     = Qt.Key_Delete
-KEY_TAB                     = Qt.Key_Tab
-KEY_SHIFT                   = Qt.Key_Shift
-KEY_CTRL                    = Qt.Key_Control
-KEY_BACKSPACE               = Qt.Key_Backspace
-KEY_ENTER                   = Qt.Key_Enter
-KEY_RETURN                  = Qt.Key_Return
-KEY_F                       = Qt.Key_F
-KEY_S                       = Qt.Key_S
-ALT_MODIFIER                = Qt.AltModifier
-CTRL_MODIFIER               = Qt.ControlModifier
-SHIFT_MODIFIER              = Qt.ShiftModifier
-NO_MODIFIER                 = Qt.NoModifier
-CLOSE_HAND_CUSOR            = Qt.ClosedHandCursor
-SIZEF_CURSOR                = Qt.SizeFDiagCursor
-
-windows                     = os.name = 'nt'
-DMK                         = Qt.AltModifier if windows else CTRL_MODIFIER
-
-MOUSE_LEFT                  = Qt.LeftButton
-MOUSE_RIGHT                 = Qt.RightButton
-MOUSE_MIDDLE                = Qt.MiddleButton
-NO_BUTTON                   = Qt.NoButton
-
-ARROW_NONE                  = Qt.NoArrow                                                # Cursor
-CURSOR_ARROW                = Qt.ArrowCursor
-CURSOR_SIZEALL              = Qt.SizeAllCursor
-
-ACTION_MOVE                 = Qt.MoveAction                                             # Action
-
-# -------------------------------------------------------------------------------------------------------------
-""" Set number """
-
-RELATIVE_SIZE               = Qt.RelativeSize                                           # Size
 
 
 ICONSIZE                    = 32
@@ -214,41 +52,13 @@ TAGBTNSIZE                  = Size(87-1, 20-1)
 BTNICONSIZE                 = Size(ICONSIZE, ICONSIZE)
 ICONBTNSIZE                 = Size(ICONSIZE+ICONBUFFER, ICONSIZE+ICONBUFFER)
 
-ignoreARM                   = Qt.IgnoreAspectRatio
 
-scrollAsNeed                = Qt.ScrollBarAsNeeded
-scrollOff                   = Qt.ScrollBarAlwaysOff
-scrollOn                    = Qt.ScrollBarAlwaysOn
-
-SiPoMin                     = QSizePolicy.Minimum                                               # Size policy
-SiPoMax                     = QSizePolicy.Maximum
-SiPoExp                     = QSizePolicy.Expanding
-SiPoPre                     = QSizePolicy.Preferred
-SiPoIgn                     = QSizePolicy.Ignored
-
-frameStyle                  = QFrame.Sunken | QFrame.Panel
-
-center                      = Qt.AlignCenter                                                    # Alignment
-right                       = Qt.AlignRight
-left                        = Qt.AlignLeft
-top                         = Qt.AlignTop
-bottom                      = Qt.AlignBottom
-hori                        = Qt.Horizontal
-vert                        = Qt.Vertical
-
-dockL                       = Qt.LeftDockWidgetArea                                             # Docking area
-dockR                       = Qt.RightDockWidgetArea
-dockT                       = Qt.TopDockWidgetArea
-dockB                       = Qt.BottomDockWidgetArea
-dockAll                     = Qt.AllDockWidgetAreas
 
 
 # -------------------------------------------------------------------------------------------------------------
 """ setting """
 
-PRS =       dict(password    = QLineEdit.Password,       center = center ,   left  = left   ,    right  = right,
-                 spmax       = SiPoMax           ,       sppre  = SiPoPre,   spexp = SiPoExp,    spign  = SiPoIgn,
-                 expanding   = QSizePolicy.Expanding,    spmin  = SiPoMin,)
+
 
 """ PLM project base """
 
@@ -301,6 +111,8 @@ REFERENCES                          = read_file('REFERENCES')
 QUESTIONS                           = read_file('QUESTION')
 VERSION                             = read_file('VERSION')
 
+
+
 class ConfigColors(Clrs):
 
     key                             = 'ConfigColors'
@@ -319,69 +131,25 @@ class ConfigColors(Clrs):
                 self.save_data()
 
 
-class ConfigDirs(Dirs):
-
-
-    key                             = 'ConfigDirs'
-
-
-    def __init__(self):
-        super(ConfigDirs, self).__init__()
-
-        self.__dict__.update()
-
-        if glbSettings.printCfgInfo:
-            if glbSettings.printDirInfo:
-                self.pprint()
-
-        if glbSettings.saveCfgInfo:
-            if glbSettings.saveDirInfo:
-                self.save_data()
-
-
-
-class ConfigPths(Pths):
-
-    key                             = 'ConfigPths'
-
-    def __init__(self):
-        super(ConfigPths, self).__init__()
-
-        self.__dict__.update()
-
-        if glbSettings.printCfgInfo:
-            if glbSettings.printPthInfo:
-                self.pprint()
-
-        if glbSettings.saveCfgInfo:
-            if glbSettings.savePthInfo:
-                self.save_data()
-
-
-
-class ConfigIcons(Ics):
-
-    key                                 = 'ConfigIcons'
-
-    def __init__(self):
-        super(ConfigIcons, self).__init__()
-
-        if glbSettings.printCfgInfo:
-            if glbSettings.printIconInfo:
-                self.pprint()
-
-        if glbSettings.saveCfgInfo:
-            if glbSettings.saveIconInfo:
-                self.save_data()
-
-
-
 class ConfigApps(Apps):
 
     key                         = 'ConfigApps'
 
     def __init__(self):
         super(ConfigApps, self).__init__()
+
+        shortcuts = {}
+        programs = winshell.programs(common=1)
+
+        for paths, dirs, names in os.walk(programs):
+            relpath = paths[len(programs) + 1:]
+            shortcuts.setdefault(relpath, []).extend([winshell.shortcut(create_path(paths, n)) for n in names])
+
+        for relpath, lnks in sorted(shortcuts.items()):
+            for lnk in lnks:
+                name, _ = os.path.splitext(os.path.basename(lnk.lnk_filepath))
+                self[str(name)] = lnk.path
+
 
         if glbSettings.printCfgInfo:
             if glbSettings.printAppInfo:

@@ -11,8 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM import __copyright__
+
 from .io_gui                            import QPainter
 
 
@@ -21,15 +20,10 @@ class Painter(QPainter):
     Type                        = 'DAMGPAINTER'
     key                         = 'Painter'
     _name                       = 'DAMG Painter'
-    _copyright                  = __copyright__()
 
     def __init__(self):
         super(Painter, self).__init__()
 
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

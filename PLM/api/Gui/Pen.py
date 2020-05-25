@@ -10,8 +10,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM import __copyright__
 from .io_gui                            import QPen
 
 
@@ -20,15 +18,10 @@ class Pen(QPen):
     Type                                = 'DAMGPEN'
     key                                 = 'Pen'
     _name                               = 'DAMG Pen'
-    _copyright                          = __copyright__()
 
     def __init__(self, *__args):
         super(Pen, self).__init__(*__args)
 
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

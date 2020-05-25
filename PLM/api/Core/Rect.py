@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
+
 from .io_core import QRect, QRectF
 
 # PLM
@@ -18,14 +18,10 @@ class Rect(QRect):
     Type                        = 'DAMGRECT'
     key                         = 'Rect'
     _name                       = 'DAMG Rect'
-    _copyright                  = __copyright__()
 
     def __init__(self, *__args):
         super(Rect, self).__init__(*__args)
 
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):
@@ -41,14 +37,10 @@ class RectF(QRectF):
     Type                        = 'DAMGRECTF'
     key                         = 'RectF'
     _name                       = 'DAMG RectF'
-    _copyright                  = __copyright__()
+
 
     def __init__(self, *__args):
         super(RectF, self).__init__(*__args)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

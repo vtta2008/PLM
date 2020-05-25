@@ -10,20 +10,16 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PLM                                    import __copyright__
-
 from .io_widgets                            import QCheckBox
 from PLM.utils                              import check_preset
-from PLM.plugins.SignalManager              import SignalManager
-from PLM.cores.Settings.app_settings import AppSettings
+from PLM.cores.SignalManager                import SignalManager
+from PLM.settings                           import AppSettings
 
 class CheckBox(QCheckBox):
 
     Type                                    = 'DAMGUI'
     key                                     = 'CheckBox'
     _name                                   = 'DAMG Check Box'
-    _copyright                              = __copyright__()
 
     def __init__(self, txt=None, preset={}, parent=None):
         QCheckBox.__init__(self)
@@ -53,10 +49,6 @@ class CheckBox(QCheckBox):
             return self.settings.initValue(key, self.key)
         else:
             return self.settings.initValue(key, self.key, decode)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

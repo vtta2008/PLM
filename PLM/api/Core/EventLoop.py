@@ -9,7 +9,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
 from .io_core import QEventLoop
 
 class EventLoop(QEventLoop):
@@ -17,14 +16,10 @@ class EventLoop(QEventLoop):
     Type                                = 'DAMGEVENTLOOP'
     key                                 = 'EventLoop'
     _name                               = 'DAMG Event Loop'
-    _copyright                          = __copyright__()
 
     def __init__(self, parent=None):
         super(EventLoop, self).__init__(parent)
 
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

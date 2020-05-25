@@ -11,8 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM                                import __copyright__
 from .io_gui                            import QFontMetrics
 
 class FontMetrics(QFontMetrics):
@@ -20,7 +18,6 @@ class FontMetrics(QFontMetrics):
     Type                            = 'DAMGFONTMETRICS'
     key                             = 'FontMetrics'
     _name                           = 'DAMG Font Metrics'
-    _copyright                      = __copyright__()
 
     def __init__(self, *__args):
         super(FontMetrics, self).__init__(*__args)
@@ -28,10 +25,6 @@ class FontMetrics(QFontMetrics):
     @property
     def name(self):
         return self._name
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @name.setter
     def name(self, val):

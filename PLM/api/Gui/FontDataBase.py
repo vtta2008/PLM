@@ -10,8 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-
-from PLM import __copyright__
+_
 from .io_gui import QFontDatabase
 
 
@@ -20,7 +19,6 @@ class FontDataBase(QFontDatabase):
     Type                                = 'DAMGFONTDATABASE'
     key                                 = 'FontDataBase'
     _name                               = 'DAMG Font Database'
-    _copyright                          = __copyright__()
 
     def __init__(self, app=None):
         super(FontDataBase, self).__init__(self)
@@ -32,10 +30,6 @@ class FontDataBase(QFontDatabase):
     @property
     def name(self):
         return self._name
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @name.setter
     def name(self, val):

@@ -11,8 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM                                import __copyright__
 from .io_gui                            import QColor
 
 
@@ -21,14 +19,9 @@ class Color(QColor):
     Type                                = 'DAMGCOLOR'
     key                                 = 'Color'
     _name                               = 'DAMG Color'
-    _copyright                          = __copyright__()
 
     def __init__(self, *__args):
         super(Color, self).__init__(*__args)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

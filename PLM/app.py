@@ -12,7 +12,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
-from PLM                                import p
+from PLM                                import prop2 as p
 from PLM.ui.LayoutManager               import LayoutManager
 
 # PLM
@@ -28,6 +28,7 @@ class PLM(AppModel):
     key                                 = 'PLM'
 
     def __init__(self):
+
         AppModel.__init__(self)
 
         self.layoutManager              = LayoutManager(self.threadManager, self)

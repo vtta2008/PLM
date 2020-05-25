@@ -15,8 +15,8 @@ class ObjectGlb(object):
 
 
     key                                 = 'GlobalSettings'
-    Type                                = 'DAMG GlobalSettings Setting'
-    _name                               = 'DAMG GlobalSettings Setting'
+    Type                                = 'DAMG Global Setting'
+    _name                               = 'DAMG Global Setting'
     _copyright                          = 'Copyright (C) DAMGTEAM.'
 
     _cfgable                            = False

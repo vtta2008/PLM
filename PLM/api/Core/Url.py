@@ -11,8 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PLM                                    import __copyright__
+
 from .io_core import QUrl
 
 
@@ -21,15 +20,10 @@ class Url(QUrl):
     Type                                = 'DAMGURL'
     key                                 = 'Timer'
     _name                               = 'DAMG Timer'
-    _copyright                          = __copyright__
 
     def __init__(self, *__args):
         super(Url, self).__init__(*__args)
 
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

@@ -10,8 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from PyQt5.QtCore               import pyqtSignal
-
+from PLM                        import Signal
 from PLM.api.damg               import DAMG, DAMGDICT
 from PLM.api.Core               import Date, Time, Timer
 
@@ -28,7 +27,7 @@ class BaseType(DAMG):
     minutes                     = 0
     seconds                     = 0
 
-    countdown                   = pyqtSignal(str, name='CountDown')
+    countdown                   = Signal(str, name='CountDown')
     play_alarm                  = True
 
     dataForm                    = DAMGDICT()

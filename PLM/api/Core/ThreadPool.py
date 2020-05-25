@@ -9,7 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
+
 from .io_core import QThreadPool
 
 
@@ -18,7 +18,7 @@ class ThreadPool(QThreadPool):
     Type                                    = 'DAMGTHREADPOOL'
     key                                     = 'BaseThreadPool'
     _name                                   = 'DAMG Thread Pool'
-    _copyright                              = __copyright__()
+
 
 
     def __init__(self, parent=None):
@@ -26,9 +26,6 @@ class ThreadPool(QThreadPool):
 
         self.parent                         = parent
 
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

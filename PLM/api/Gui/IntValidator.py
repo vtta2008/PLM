@@ -11,8 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PLM                                    import __copyright__
 from .io_gui                                import QIntValidator
 
 
@@ -21,15 +19,10 @@ class IntValidator(QIntValidator):
     Type                                    = 'DAMGIMAGE'
     key                                     = 'Image'
     _name                                   = 'DAMG Image'
-    _copyright                              = __copyright__()
 
-    def __init__(self, *args, **kwargs):
-        super(IntValidator, self).__init__(*args, **kwargs)
+    def __init__(self, *__args):
+        super(IntValidator, self).__init__(*__args)
 
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

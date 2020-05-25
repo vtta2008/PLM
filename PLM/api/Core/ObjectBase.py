@@ -11,7 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 import json, inspect
-from PLM                                import __copyright__
 from .io_core                           import QObject
 
 
@@ -49,7 +48,6 @@ class BaseObject(QObject):
     _name                               = 'DAMG object'
     _count                              = 0
     _data                               = dict()
-    _copyright                          = __copyright__()
 
     def __init__(self):
         QObject.__init__(self)
@@ -69,10 +67,6 @@ class BaseObject(QObject):
             return True
         else:
             return False
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def data(self):

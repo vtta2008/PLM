@@ -11,8 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PLM                                    import __copyright__
+
 from .io_core import QTimeZone
 
 class TimeZone(QTimeZone):
@@ -20,15 +19,10 @@ class TimeZone(QTimeZone):
     Type                                    = 'DAMGTIMEZONE'
     key                                     = 'TimeZone'
     _name                                   = 'DAMG Time Zone'
-    _copyright                              = __copyright__
 
     def __init__(self, *__args):
         super(TimeZone, self).__init__(*__args)
 
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

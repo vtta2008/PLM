@@ -19,6 +19,7 @@ from .IODevice          import IODevice
 from .ObjectBase        import BaseObject
 from .Point             import Point
 from .Process           import Process
+from .Qt                import Qt
 from .Rect              import Rect, RectF
 from .Runnable          import Runnable
 from .Settings          import Settings

@@ -10,13 +10,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PLM                                    import __copyright__
 
 from .io_widgets                            import QPushButton, QToolButton
 from PLM.api.Gui                            import AppIcon, TagIcon
 from PLM.utils                              import check_preset
-from PLM.plugins.SignalManager              import SignalManager
+from PLM.cores.SignalManager                import SignalManager
 from PLM.settings                           import AppSettings
 
 
@@ -28,7 +26,6 @@ class Button(QPushButton):
     Type                                    = 'DAMGBUTTON'
     key                                     = 'Button'
     _name                                   = 'DAMG Button'
-    _copyright                              = __copyright__()
 
     def __init__(self, preset={}, parent=None):
         super(Button, self).__init__(parent)
@@ -74,10 +71,6 @@ class Button(QPushButton):
             return self.settings.initValue(key, self.key, decode)
 
     @property
-    def copyright(self):
-        return self._copyright
-
-    @property
     def name(self):
         return self._name
 
@@ -91,7 +84,6 @@ class ToolButton(QToolButton):
     Type                                    = 'DAMGTOOLBUTTON'
     key                                     = 'ToolButton'
     _name                                   = 'DAMG Tool Button'
-    _copyright                              = __copyright__()
 
     def __init__(self, text, parent=None):
         QToolButton.__init__(self)
@@ -106,10 +98,6 @@ class ToolButton(QToolButton):
 
     def getValue(self, key):
         return self.settings.initValue(key, self.key)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

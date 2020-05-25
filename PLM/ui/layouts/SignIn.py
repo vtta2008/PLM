@@ -19,7 +19,7 @@ from functools                  import partial
 
 # PLM
 from PLM.configs                import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
-from PLM.plugins.SignalManager import SignalManager
+from PLM.cores.SignalManager import SignalManager
 from PLM.api.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label,
                              Label, MessageBox, GroupGrid, )
 from PLM.api.Gui import AppIcon

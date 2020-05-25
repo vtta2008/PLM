@@ -11,8 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM                        import __copyright__
 from .io_network                import QNetworkAccessManager
 
 class NetworkAccessManager(QNetworkAccessManager):
@@ -20,7 +18,6 @@ class NetworkAccessManager(QNetworkAccessManager):
     Type                        = 'DAMGNETWORKACESSMANAGER'
     key                         = 'NetworkAccessManager'
     _name                       = 'DAMG Network Access Manager'
-    _copyright                  = __copyright__()
 
     def __init__(self, parent=None):
         super(NetworkAccessManager, self).__init__(parent)
@@ -32,10 +29,6 @@ class NetworkAccessManager(QNetworkAccessManager):
     @name.setter
     def name(self, val):
         self._name              = val
-
-    @property
-    def copyright(self):
-        return self._copyright
 
 
 

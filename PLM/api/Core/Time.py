@@ -9,7 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
+
 from .io_core import QTime
 
 
@@ -18,15 +18,12 @@ class Time(QTime):
     Type                                    = 'DAMGTIME'
     key                                     = 'Time'
     _name                                   = 'DAMG Time'
-    _copyright                              = __copyright__
+
 
 
     def __init__(self, *__args):
         super(Time, self).__init__(*__args)
 
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

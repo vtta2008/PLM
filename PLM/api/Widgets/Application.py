@@ -12,12 +12,10 @@ Description:
 
 # Python
 import sys
-
-# PyQt5
-from PLM                                    import __copyright__
+_
 from .io_widgets                            import QApplication
-from PLM.plugins.SignalManager              import SignalManager
-from PLM.cores.Settings.app_settings import AppSettings
+from PLM.cores.SignalManager                import SignalManager
+from PLM.settings                           import AppSettings
 
 
 
@@ -26,7 +24,6 @@ class Application(QApplication):
     Type                                    = 'DAMGAPPLICATION'
     key                                     = 'Application'
     _name                                   = 'DAMG Application'
-    _copyright                              = __copyright__()
 
     def __init__(self):
         super(Application, self).__init__(sys.argv)
@@ -34,10 +31,6 @@ class Application(QApplication):
         self.settings                   = AppSettings(self)
         self.signals                    = SignalManager(self)
 
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

@@ -12,15 +12,12 @@ Description:
 """ Import """
 
 # Python
-import os
-from PLM                        import glbSettings, create_path
-from PLM.types                  import CMD_VALUE_TYPE
-from .baseConfigs               import Pls, Cmds
-from .                          import ConfigDirs, ConfigPths, ConfigIcons, ConfigApps, ConfigUrls, ConfigUiKeys
 
+# PLM
+from PLM import __copyright__
 
-
-
+if __name__ == '__main__':
+    pass
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

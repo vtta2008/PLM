@@ -9,7 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
+
 from .io_core import QSize
 
 
@@ -18,14 +18,10 @@ class Size(QSize):
     Type                                    = 'DAMGSIZE'
     key                                     = 'Size'
     _name                                   = 'DAMG Size'
-    _copyright                              = __copyright__()
 
     def __init__(self, *__args):
         super(Size, self).__init__(*__args)
 
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):
