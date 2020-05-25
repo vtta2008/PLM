@@ -18,7 +18,7 @@ if qtBinding == 'PyQt5':
                                     QGroupBox, QItemDelegate, QLabel, QTextEdit, QLCDNumber, QLineEdit, QMainWindow,
                                     QMenu, QMenuBar, QMessageBox, QPlainTextEdit, QProgressBar, QRubberBand,
                                     QSplashScreen, QStatusBar, QSystemTrayIcon, QTabBar, QTabWidget, QTableWidget,
-                                    QToolBar, QUndoCommand, QWidget, )
+                                    QToolBar, QUndoCommand, QWidget, QSizePolicy, )
 elif qtBinding == 'PySide2':
     from PySide2.QtWidgets import (QApplication, QAction, QShortcut, QWidgetAction, QVBoxLayout, QHBoxLayout,
                                     QPushButton, QToolButton, QCheckBox, QComboBox, QDockWidget, QGraphicsItem,
@@ -26,7 +26,7 @@ elif qtBinding == 'PySide2':
                                     QGroupBox, QItemDelegate, QLabel, QTextEdit, QLCDNumber, QLineEdit, QMainWindow,
                                     QMenu, QMenuBar, QMessageBox, QPlainTextEdit, QProgressBar, QRubberBand,
                                     QSplashScreen, QStatusBar, QSystemTrayIcon, QTabBar, QTabWidget, QTableWidget,
-                                    QToolBar, QUndoCommand, QWidget, )
+                                    QToolBar, QUndoCommand, QWidget, QSizePolicy, )
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

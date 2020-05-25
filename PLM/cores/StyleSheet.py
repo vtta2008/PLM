@@ -14,11 +14,11 @@ Description:
 import platform
 
 # PLM
-from PLM import globalSettings
-from PLM.api.damg                       import DAMG, DAMGDICT
-from PLM.api.Core                       import TextStream, File, QssFile
-from PLM.configs                        import colorLibs
-from PLM.cores                          import Loggers
+from bin import settings
+from PLM.api.qtOption import COLOR_BACKGROUND_NORMAL
+from PLM.api.damg import DAMG, DAMGDICT
+from PLM.api.Core import TextStream, File, QssFile
+from PLM.loggers import Loggers
 
 
 # def set_register(obj, stylesheet=None, update=True):
@@ -48,9 +48,9 @@ class StyleSheet(DAMG):
         if style == 'dark':
             self.logger.info("Loading darkstyle_rc")
         else:
-            if globalSettings.qtBindingMode == 'PyQt5':
+            if settings.qtBindingMode == 'PyQt5':
                 self.logger.info("Loading pyqt5_style_rc")
-            elif globalSettings.qtBindingMode == 'PySide2':
+            elif settings.qtBindingMode == 'PySide2':
                 self.logger.info("Loading pyside2_style_rc")
             else:
                 # self.logger.info("Loading pyqtgraph_style_rc")
@@ -74,7 +74,7 @@ class StyleSheet(DAMG):
                 text-align: center;
                 height: 12px;
             }
-            '''.format(colorLibs.COLOR_BACKGROUND_NORMAL)
+            '''.format(COLOR_BACKGROUND_NORMAL)
             stylesheet += mac_fix
         return stylesheet
 

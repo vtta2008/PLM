@@ -8,10 +8,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QLineEdit
-from PLM.api.Gui                            import IntValidator
-from PLM.configs                            import PRS
+
+from .io_widgets import QLineEdit
+from PLM.api.Gui import IntValidator
+from PLM.api.qtOption import PRS
 
 
 class LineEdit(QLineEdit):
@@ -19,7 +19,6 @@ class LineEdit(QLineEdit):
     Type                                    = 'DAMGUI'
     key                                     = 'LineEdit'
     _name                                   = 'DAMG Line Edit'
-    _copyright                              = __copyright__()
 
     def __init__(self, preset=None, parent=None):
         QLineEdit.__init__(self)
@@ -37,10 +36,6 @@ class LineEdit(QLineEdit):
             return self.settings.initValue(key, self.key)
         else:
             return self.settings.initValue(key, self.key, decode)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

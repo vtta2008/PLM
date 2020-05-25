@@ -12,20 +12,22 @@ Description:
 
 
 # PLM
-from PLM.configs                        import SiPoMin, ELIDE_RIGHT
+from PLM.api.qtOption                   import SiPoMin, ELIDE_RIGHT
 from PLM.api.damg                       import DAMG, DAMGLIST
 
-from PLM.ui.models                      import ActionManager, ButtonManager, RegistryLayout
-from PLM.cores.EventManager             import EventManager
+from PLM.cores                          import EventManager
 
 from PLM.ui.base                        import BaseManager, ImageAvatar, PixAvatar
-from PLM.ui.tools                       import CommandUI
-from PLM.ui.PipelineManager             import PipelineManager
-from PLM.ui.SysTray                     import SysTray
-from PLM.ui.tools                       import (Calendar, Calculator, EnglishDictionary, FindFiles, ImageViewer,
-                                                NoteReminder, ScreenShot, TextEditor)
 from PLM.ui.layouts                     import (ForgotPassword, SignUp, SignIn, InfoWidget, VFXProject, SettingUI,
                                                 UserSetting, Preferences, Configurations)
+from PLM.ui.models                      import ActionManager, ButtonManager, RegistryLayout, CommandUI
+from .PipelineManager                   import PipelineManager
+from .SysTray                           import SysTray
+
+
+from PLM.ui.tools                       import (Calendar, Calculator, EnglishDictionary, FindFiles, ImageViewer,
+                                                NoteReminder, ScreenShot, TextEditor)
+
 
 class LayoutManager(DAMG):
 
@@ -221,7 +223,7 @@ class LayoutManager(DAMG):
 
     def globalLayoutSetting(self):
 
-        from PLM.configs import ConfigFonts
+        from PLM import ConfigFonts
         self.fontInfo                         = ConfigFonts()
 
         for layout in self.layouts():

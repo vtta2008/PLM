@@ -10,41 +10,13 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from .io_widgets                            import QTextEdit, QDockWidget
-from PLM.api.Gui.io_gui                     import QTextTableFormat, QTextCharFormat
-from PLM.api.qtOption                       import right, datetTimeStamp
-from PLM.cores.SignalManager                import SignalManager
+from .io_widgets                            import QDockWidget
+from PLM.cores                              import SignalManager
 from PLM.settings                           import AppSettings
 
 # -------------------------------------------------------------------------------------------------------------
 """ Dock widget """
 
-class NoteStamp(QTextTableFormat):
-    def __init__(self):
-        super(NoteStamp, self).__init__()
-        self.setBorder(1)
-        self.setCellPadding(4)
-        self.setAlignment(right)
-
-
-class DockStamp(QTextEdit):
-
-    def __init__(self, parent=None):
-        super(DockStamp, self).__init__(parent)
-
-        self.buildStamp()
-
-    def buildStamp(self):
-
-        cursor                          = self.textCursor()
-        frame                           = cursor.currentFrame()
-        frameFormat                     = frame.frameFormat()
-        frameFormat.setPadding(1)
-        frame.setFrameFormat(frameFormat)
-
-        cursor.insertTable(1, 1, NoteStamp())
-        cursor.insertText(datetTimeStamp, QTextCharFormat())
-        self.resize(250, 100)
 
 class DockWidget(QDockWidget):
 

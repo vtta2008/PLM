@@ -11,7 +11,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 import time
-from PLM                                    import prop1 as p
+
+from PLM.configs                            import propText as p
+
 from PLM.cores.base                         import Channel
 from PLM.api.Core                           import File, FileInfo, DownloadFile, IODevice
 from PLM.api.Widgets                        import MessageBox
@@ -70,7 +72,7 @@ class DownloadChannel(Channel):
                 self.file.resize(0)
             else:
                 self._filePath               = autoRename(self.filePath)
-                self.file                   = File(self.filePath)
+                self.file                    = File(self.filePath)
 
     def retry(self):
         """ Start download from breakpoint or from beginning (if not resume supported)"""

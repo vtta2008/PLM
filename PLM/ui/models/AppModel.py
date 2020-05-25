@@ -9,25 +9,31 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
-from PLM import globalSettings
+__globalServer__        = "https://server.damgteam.com"
+__globalServerCheck__   = "https://server.damgteam.com/check"
+__globalServerAutho__   = "https://server.damgteam.com/auth"
+
+__localPort__           = "20987"
+__localHost__           = "http://localhost:"
+__localServer__         = "{0}{1}".format(__localHost__, __localPort__)
+__localServerCheck__    = "{0}/check".format(__localServer__)
+__localServerAutho__    = "{0}/auth".format(__localServer__)
 
 # Python
 import os, sys, requests
 
 # PLM
-from PLM.cores                          import Loggers, sqlUtils, StyleSheet, ThreadManager
-from PLM.configs                        import (__version__, __appname__, __organization__, __website__, __localServer__,
-                                                STAY_ON_TOP, SERVER_CONNECT_FAIL,
-                                                ConfigPython, ConfigUrls, ConfigApps, ConfigPipeline, ConfigIcons,
-                                                ConfigAvatar, ConfigLogo, ConfigImage, ConfigEnvVar, ConfigMachine,
-                                                ConfigServer, ConfigFormats, ConfigDirs, ConfigPths, ConfigFonts, )
+from PLM.loggers import Loggers
+from PLM.cores import sqlUtils, StyleSheet, ThreadManager
+from PLM import __version__, __appName__, __organization__, glbSettings
+from PLM.api.qtOption import STAY_ON_TOP
+from PLM.configs import propText as p, ConfigUrls, ConfigApps, ConfigPipeline, ConfigIcons
 from PLM.api.Widgets import Application, MessageBox
 from PLM.api.Gui import LogoIcon
 
-from PLM.utils                          import clean_file_ext
-from PLM.ui.layouts                     import SplashUI
-from PLM.ui.tools.Browser               import Browser
+from PLM.utils import clean_file_ext
+from PLM.ui.layouts import SplashUI
+from PLM.ui.tools import Browser
 
 
 class AppModel(Application):
@@ -75,10 +81,10 @@ class AppModel(Application):
         self.set_styleSheet('dark')
 
         self.setOrganizationName(__organization__)
-        self.setApplicationName(__appname__)
+        self.setApplicationName(__appName__)
         self.setOrganizationDomain(__website__)
         self.setApplicationVersion(__version__)
-        self.setApplicationDisplayName(__appname__)
+        self.setApplicationDisplayName(__appName__)
 
         if not self._server:
             self._server                = self.configServer()
@@ -86,8 +92,8 @@ class AppModel(Application):
         serverReady                     = self.checkConnectServer()
 
         if not serverReady:
-            print(SERVER_CONNECT_FAIL)
-            self.sys_message(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', None)
+            print(p['SERVER_CONNECT_FAIL'])
+            self.sys_message(None, 'Connection Failed', 'critical', p['SERVER_CONNECT_FAIL'], 'close', None)
             sys.exit()
 
         self.threadManager              = ThreadManager(self)
@@ -154,8 +160,8 @@ class AppModel(Application):
         try:
             r = requests.get(self._server, verify=self.getVerify(), headers=self.getHeaders(), cookies=self.getCookies())
         except Exception:
-            if not globalSettings.modes.allowLocalMode:
-                self.splash.finish(self.sys_message(self, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close', STAY_ON_TOP))
+            if not glbSettings.allowLocalMode:
+                self.splash.finish(self.sys_message(self, 'Connection Failed', 'critical', p['SERVER_CONNECT_FAIL'], 'close', STAY_ON_TOP))
                 sys.exit()
             else:
                 self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
@@ -315,25 +321,23 @@ class AppModel(Application):
         self.exit()
 
     def setRecieveSignal(self, bool):
-        globalSettings.recieveSignal = bool
+        glbSettings.recieveSignal = bool
 
     def setBlockSignal(self, bool):
-        globalSettings.blockSignal = bool
+        glbSettings.blockSignal = bool
 
     def setTrackCommand(self, bool):
-        globalSettings.command = bool
+        glbSettings.command = bool
 
     def setRegistLayout(self, bool):
-        globalSettings.registLayout = bool
+        glbSettings.registLayout = bool
 
     def runConfigs(self):
 
         words = ['Python', 'Directories', 'File Paths', 'Urls & Links', 'Environment Variable', 'Icons', 'Avatars',
                  'Logo', 'Images', 'Servers', 'Formats', 'Fonts', 'Local Devices', 'Installed Apps', 'Pipeline Functions']
 
-        configs = [ConfigPython, ConfigDirs, ConfigPths, ConfigUrls, ConfigEnvVar, ConfigIcons, ConfigAvatar,
-                   ConfigLogo, ConfigImage, ConfigServer, ConfigFormats, ConfigFonts, ConfigMachine, ConfigApps,
-                   ConfigPipeline]
+        configs = [ConfigUrls, ConfigIcons, ConfigApps, ConfigPipeline]
 
         for i in range(len(words)):
             if not i == (len(words) - 1):
@@ -384,7 +388,7 @@ class AppModel(Application):
             if not info:
                 check = False
 
-        globalSettings.setCfgAll(check)
+        glbSettings.setCfgAll(check)
 
     @property
     def login(self):

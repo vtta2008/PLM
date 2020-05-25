@@ -13,7 +13,6 @@ Description:
 
 from .Calculator                import Calculator
 from .Calendar                  import Calendar
-from .CommandUI                 import CommandUI
 from .EnglishDictionary         import EnglishDictionary
 from .FindFiles                 import FindFiles
 from .ImageViewer               import ImageViewer

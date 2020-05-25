@@ -12,8 +12,10 @@ Description:
 """ Import """
 
 
+
+from PLM.cores                          import ThreadManager
 from PLM.ui.base                        import BaseDock
-from PLM.cores.ThreadManager            import ThreadManager
+from PLM.ui.models                      import ActionManager, ButtonManager
 from .MainMenuBar                       import MainMenuBar
 from .MainToolBar                       import MainToolBar
 from .ConnectStatus                     import ConnectStatus
@@ -21,8 +23,6 @@ from .BotTab                            import BotTab
 from .MidTab                            import MidTab
 from .Notification                      import Notification
 
-from PLM.ui.models.ActionManager        import ActionManager
-from PLM.ui.models.ButtonManager        import ButtonManager
 
 
 class MidTabDock(BaseDock):

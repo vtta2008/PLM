@@ -8,8 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QPlainTextEdit
+from .io_widgets import QPlainTextEdit
 
 
 class PlainTextEdit(QPlainTextEdit):
@@ -17,7 +16,6 @@ class PlainTextEdit(QPlainTextEdit):
     Type                                    = 'DAMGPLAINTEXTEDIT'
     key                                     = 'PlainTextEdit'
     _name                                   = 'DAMG Plain Text Edit'
-    _copyright                              = __copyright__()
 
     def __init__(self, preset=None, parent=None):
         QPlainTextEdit.__init__(self)

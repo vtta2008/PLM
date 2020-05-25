@@ -12,8 +12,8 @@ Description:
 
 # PyQt5
 
-from PLM.api.Widgets.io_widgets             import QGraphicsItem
-from PLM.cores.SignalManager                import SignalManager
+from .io_widgets                            import QGraphicsItem
+from PLM.cores                              import SignalManager
 from PLM.settings                           import AppSettings
 
 

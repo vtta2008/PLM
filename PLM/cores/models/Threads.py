@@ -12,11 +12,9 @@ Description:
 """ Import """
 
 # PyQt5
-from PyQt5.QtCore                           import pyqtSignal
-
-# PLM
-from PLM.api.Core                           import Thread
-from PLM.utils                              import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
+from PLM import Signal
+from PLM.api.Core import Thread
+from PLM.utils import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -27,10 +25,10 @@ class PcMonitor(Thread):
 
     key                                     = 'PcMonitor'
 
-    cpu                                     = pyqtSignal(str, name='CPU')
-    ram                                     = pyqtSignal(str, name='RAM')
-    gpu                                     = pyqtSignal(str, name='GPU')
-    disk                                    = pyqtSignal(str, name='DISK')
+    cpu                                     = Signal(str, name='CPU')
+    ram                                     = Signal(str, name='RAM')
+    gpu                                     = Signal(str, name='GPU')
+    disk                                    = Signal(str, name='DISK')
 
     def __init__(self, parent):
         super(PcMonitor, self).__init__(parent)

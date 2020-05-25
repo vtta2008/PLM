@@ -20,10 +20,8 @@ from PyQt5.QtWidgets                import (QAbstractItemView, QApplication, QCo
                                             QHBoxLayout, QWidget, QHeaderView, QProgressDialog, QTableWidget,
                                             QTableWidgetItem, )
 
-from PLM.configs                    import SiPoExp, SiPoPre
-from PLM.api.Widgets import Button
-from PLM.api.Widgets import Label
-from PLM.api.Widgets import Widget
+from PLM.api.qtOption import SiPoExp, SiPoPre
+from PLM.api.Widgets import Button, Label, Widget
 from PLM.api.Gui import AppIcon
 
 

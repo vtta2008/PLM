@@ -11,8 +11,9 @@ Description:
 
 from PLM.api.Gui import Image, Pixmap
 from PLM.api.Widgets import Label
-from PLM.utils                      import get_app_icon
-from PLM.configs                    import AUTO_COLOR, center
+from PLM.api.qtOption import AUTO_COLOR, center
+from PLM.utils import get_app_icon
+
 
 class ConnectionImage(Image):
 

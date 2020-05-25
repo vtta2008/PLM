@@ -12,11 +12,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ import """
 
-from PLM                                import prop2 as p
-from PLM.ui.LayoutManager               import LayoutManager
-
-# PLM
+from PLM.configs                        import propText as p
 from PLM.ui.models                      import AppModel
+from PLM.ui                             import LayoutManager
 
 
 # -------------------------------------------------------------------------------------------------------------

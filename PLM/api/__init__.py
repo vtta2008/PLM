@@ -13,7 +13,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 
-from .version           import Version
 from .properties        import DamgProperty
 from .propManager       import DamgPropManager
 

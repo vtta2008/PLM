@@ -12,9 +12,9 @@ Description:
 
 # Python
 import sys
-_
+
 from .io_widgets                            import QApplication
-from PLM.cores.SignalManager                import SignalManager
+from PLM.cores                              import SignalManager
 from PLM.settings                           import AppSettings
 
 

@@ -27,7 +27,7 @@ from PyQt5.QtCore               import (qDebug, qInstallMessageHandler, QtInfoMs
 from PyQt5.QtGui                import QTextCursor
 
 # PLM
-from PLM.configs                import SiPoMin
+from PLM.api.qtOption import SiPoMin
 from PLM.api.Widgets import GridLayout, Detector, Widget
 
 # -------------------------------------------------------------------------------------------------------------

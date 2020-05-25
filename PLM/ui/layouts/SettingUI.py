@@ -19,12 +19,13 @@ import sys
 from PyQt5.QtWidgets        import QAction, QFileDialog, QInputDialog, QLineEdit
 
 # PLM
-from PLM.cores              import AppSettings, RegSettings
+from PLM import __appName__, __organization__
+from PLM.settings           import AppSettings, RegSettings
+from PLM.configs            import APP_SETTING
 from PLM.api.Core           import Settings
 from PLM.api.Widgets        import Widget, GridLayout, MenuBar
+from PLM.api.qtOption       import NATIVE, SYS_SCOPE
 from PLM.ui.components      import SettingOutput, SettingInput
-from PLM.configs            import __appname__, __organization__, NATIVE, APP_SETTING, SYS_SCOPE
-
 
 # -------------------------------------------------------------------------------------------------------------
 """ Setting Manager """
@@ -100,7 +101,8 @@ class SettingUI(Widget):
             self.fallbacksAct.setEnabled(False)
 
     def openRegistryPath(self):
-        path, ok = QInputDialog.getText(self, "Registry", "Enter the path in the Windows registry:", QLineEdit.Normal, 'HKEY_CURRENT_USER\\Software\\{0}\\{1}'.format(__organization__, __appname__))
+        path, ok = QInputDialog.getText(self, "Registry", "Enter the path in the Windows registry:", QLineEdit.Normal,
+                                        'HKEY_CURRENT_USER\\Software\\{0}\\{1}'.format(__organization__, __appName__))
 
         if ok and path != '':
             settings = Settings(path, NATIVE)

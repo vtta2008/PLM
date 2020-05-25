@@ -8,10 +8,9 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QMessageBox
-from PLM.api.Gui                    import AppIcon
-from PLM.api.damg                   import DAMGDICT
+
+from .io_widgets import QMessageBox
+from PLM.api.damg import DAMGDICT
 
 
 class MessageBox(QMessageBox):
@@ -19,7 +18,6 @@ class MessageBox(QMessageBox):
     Type                            = 'DAMGUI'
     key                             = 'Widget'
     _name                           = 'DAMG Widget'
-    _copyright                      = __copyright__()
 
     buttons                         = DAMGDICT()
 
@@ -85,6 +83,7 @@ class MessageBox(QMessageBox):
         if self._level in icons.keys():
             return icons[self._level]
         else:
+            from PLM.api.Gui import AppIcon
             AppIcon(self._level)
 
     def getBtnSetting(self, btn):
@@ -111,11 +110,6 @@ class MessageBox(QMessageBox):
         )
 
         return buttons[btn]
-
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

@@ -15,6 +15,7 @@ from .data                      import sqlUtils, PresetDB
 from .handlers                  import EnvHandler, FileHandler
 from .models                    import (DateLine, DownloadChannel, Organisation, Project, ServerProfile, Task, Team,
                                         Temporary, Worker, PcMonitor)
+from .EventManager              import EventManager
 from .StyleSheet                import StyleSheet
 from .ThreadManager             import ThreadManager
 from .SignalManager             import SignalManager

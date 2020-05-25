@@ -9,8 +9,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QSplashScreen
+
+from .io_widgets import QSplashScreen
 
 
 class SplashScreen(QSplashScreen):
@@ -18,17 +18,11 @@ class SplashScreen(QSplashScreen):
     Type                                    = 'DAMGSPLASHSCREEN'
     key                                     = 'SplashScreen'
     _name                                   = 'DAMG Splash Screen'
-    _copyright                              = __copyright__()
 
     def __init__(self, app=None):
         QSplashScreen.__init__(self)
 
         self.app                            = app
-
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

@@ -13,11 +13,11 @@ Description:
 
 
 # PLM
-from PLM.api.Widgets import GroupBox, GridLayout, Widget, GroupGrid
-from PLM.ui.base                                import TaskInfo, TaskFilter
-from PLM.utils                                  import get_file_path
-from PLM.configs                                import TASK_DIR
-from PLM.api.damg                                import DAMGLIST
+from PLM import GroupBox, GridLayout, Widget, GroupGrid
+from PLM import TaskInfo, TaskFilter
+from PLM import get_file_path
+from PLM import TASK_DIR
+from PLM import DAMGLIST
 
 # -------------------------------------------------------------------------------------------------------------
 """ TopTab1 """

@@ -9,11 +9,25 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QLabel, QLCDNumber
-from PLM.api.Gui                            import Font, Pixmap
-from PLM.api.Core                           import TimeZone, Time, Date
-from PLM.configs                            import PRS
+from .io_widgets import QLabel, QLCDNumber
+from .LineEdit import LineEdit
+from .SizePolicy import SizePolicy
+from PLM.api.Gui import Font, Pixmap
+from PLM.api.Core import TimeZone, Time, Date, Qt
+
+SiPoMin                     = SizePolicy.Minimum                                               # Size policy
+SiPoMax                     = SizePolicy.Maximum
+SiPoExp                     = SizePolicy.Expanding
+SiPoPre                     = SizePolicy.Preferred
+SiPoIgn                     = SizePolicy.Ignored
+
+center                      = Qt.AlignCenter                                                    # Alignment
+right                       = Qt.AlignRight
+left                        = Qt.AlignLeft
+
+PRS = dict( password    = LineEdit.Password,       center = center ,   left  = left   ,    right  = right,
+            spmax       = SiPoMax           ,      sppre  = SiPoPre,   spexp = SiPoExp,    spign  = SiPoIgn,
+            expanding   = SizePolicy.Expanding,    spmin  = SiPoMin,)
 
 # -------------------------------------------------------------------------------------------------------------
 class Label(QLabel):
@@ -21,7 +35,6 @@ class Label(QLabel):
     Type                                    = 'DAMGUI'
     key                                     = 'Label'
     _name                                   = 'DAMG Label'
-    _copyright                              = __copyright__()
 
     def __init__(self, preset=None, parent=None):
         QLabel.__init__(self)
@@ -78,11 +91,6 @@ class Label(QLabel):
                 self.setStyleSheet(value)
             else:
                 print("PresetKeyError at {0}: No such key registed in preset: {1}: {2}".format(__name__, key, value))
-
-    @property
-    def copyright(self):
-        return self._copyright
-
     @property
     def name(self):
         return self._name
@@ -97,14 +105,9 @@ class TextLabel(QLabel):
     Type                                = 'DAMGUI'
     key                                 = 'LCDNumber'
     _name                               = 'DAMG LCD Number'
-    _copyright                          = __copyright__()
 
     def __init__(self, parent=None, elideMode=None):
         super(TextLabel, self).__init__(parent)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):
@@ -120,7 +123,6 @@ class LCDNumber(QLCDNumber):
     Type                                    = 'DAMGUI'
     key                                     = 'LCDNumber'
     _name                                   = 'DAMG LCD Number'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         QLCDNumber.__init__(self)
@@ -129,10 +131,6 @@ class LCDNumber(QLCDNumber):
         self.time                           = Time()
         self.zone                           = TimeZone()
         self.date                           = Date()
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

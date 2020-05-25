@@ -8,10 +8,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
-
-from PLM.api.damg                                        import DAMGDICT, DAMGLIST
+from PLM.api.damg import DAMGDICT, DAMGLIST
 from PLM.api.Widgets import GroupGrid, CheckBox, Label
 from PLM.utils import str2bool
 

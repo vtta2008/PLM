@@ -8,9 +8,9 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QMenuBar, QMenu
-from PLM.api.damg                           import DAMGDICT
+
+from .io_widgets import QMenuBar, QMenu
+from PLM.api.damg import DAMGDICT
 
 
 class Menu(QMenu):
@@ -18,7 +18,6 @@ class Menu(QMenu):
     Type                                    = 'DAMGMENU'
     key                                     = 'Menu'
     _name                                   = 'DAMG Menu'
-    _copyright                              = __copyright__()
 
     def __init__(self, title="", parent=None):
         QMenu.__init__(self)
@@ -36,10 +35,6 @@ class Menu(QMenu):
             return self.settings.initValue(key, self.key, decode)
 
     @property
-    def copyright(self):
-        return self._copyright
-
-    @property
     def name(self):
         return self._name
 
@@ -52,7 +47,6 @@ class MenuBar(QMenuBar):
     Type                                    = 'DAMGUI'
     key                                     = 'MenuBar'
     _name                                   = 'DAMG Menu Bar'
-    _copyright                              = __copyright__()
     menus                                   = DAMGDICT()
 
     def __init__(self, parent=None):
@@ -65,10 +59,6 @@ class MenuBar(QMenuBar):
 
     def getValue(self, key):
         return self.settings.initValue(key, self.key)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

@@ -14,8 +14,8 @@ import json
 
 from PLM.api.Core import Date, Time
 from PLM.api.Widgets import GroupBox, VBoxLayout, Label
-from PLM.cores                                  import sqlUtils
-from PLM.cores.models                           import DateLine, Task
+from PLM.cores import sqlUtils
+from PLM.cores.models import DateLine, Task
 
 
 

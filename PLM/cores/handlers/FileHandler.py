@@ -9,7 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM.api.damg               import DAMG
+from PLM.api.damg import DAMG
 
 
 class FileHandler(DAMG):

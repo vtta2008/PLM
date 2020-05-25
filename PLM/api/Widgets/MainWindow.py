@@ -9,10 +9,10 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.api.Widgets.io_widgets             import QMainWindow
-from PLM.loggers                            import Loggers
-from PLM.cores                              import SignalManager
-from PLM.settings                           import AppSettings
+from .io_widgets import QMainWindow
+from PLM.loggers import Loggers
+from PLM.cores import SignalManager
+from PLM.settings import AppSettings
 
 # -------------------------------------------------------------------------------------------------------------
 """ Main window layout preset """

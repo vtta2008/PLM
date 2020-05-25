@@ -11,9 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PLM
-from PLM                                import __copyright__
-from .io_network                import QNetworkReply
+from .io_network                        import QNetworkReply
 
 
 class NetworkReply(QNetworkReply):

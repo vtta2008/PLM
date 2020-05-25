@@ -8,8 +8,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
-from PLM.api.Widgets.io_widgets             import QGridLayout
+
+from .io_widgets import QGridLayout
 
 
 class GridLayout(QGridLayout):
@@ -17,16 +17,11 @@ class GridLayout(QGridLayout):
     Type                                    = 'DAMGUI'
     key                                     = 'GridLayout'
     _name                                   = 'DAMG Grid Layout'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         QGridLayout.__init__(self)
 
         self.parent                         = parent
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

@@ -8,37 +8,22 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Organisation """
+""" Organisation Profile """
 
 __organization__        = "DAMGTEAM"
 __organizationID__      = "DAMG"
 __organizationName__    = 'DAMGTEAM'
-__groupname__           = "DAMGTEAM"
-__orgSlogan__           = "desire design"
-
+__organizationDomain__  = "www.damgteam.com"
+__slogan__              = "Comprehensive Solution"
 
 # -------------------------------------------------------------------------------------------------------------
-""" Application """
+""" Product Profile """
 
-__project__             = "PLM"
-__softwareName__        = "Pipeline Manager"
-__productName__         = "PipelineManager"
-__subProduct__          = "PLM"
-__appSlogan__           = "Comprehensive Solution"
+__productID__           = "PLM"
 __appname__             = "Pipeline Manager (PLM)"
-__appShortcut__         = "Plm.ink"
-
-__majorVersion__        = "13"
-__minorVersion__        = "0"
-__microVersion__        = "1"
-
-__cfgVersion__          = "0.8.6"
-__verType__             = "Dev"
-__reverType__           = "2"
-
-__about__               = "About Pipeline Manager"
+__appSlogan__           = ""
+__appDescription__      = ""
 __homepage__            = "https://pipeline.damgteam.com"
-
 
 # -------------------------------------------------------------------------------------------------------------
 """ Authors """
@@ -66,6 +51,8 @@ __localHost__           = "http://localhost:"
 __localServer__         = "{0}{1}".format(__localHost__, __localPort__)
 __localServerCheck__    = "{0}/check".format(__localServer__)
 __localServerAutho__    = "{0}/auth".format(__localServer__)
+
+
 
 
 # -------------------------------------------------------------------------------------------------------------

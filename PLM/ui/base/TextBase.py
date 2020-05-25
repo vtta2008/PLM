@@ -11,10 +11,10 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.api.Widgets import TextLabel
-from PLM.api.Gui import Painter
-from PLM.configs import ELIDE_RIGHT, ELIDE_NONE, SiPoPre, SiPoMin, TEXT_MENEOMIC
-from PLM.utils import get_repr, ensure_valid
+from PLM import TextLabel
+from PLM import Painter
+from PLM import ELIDE_RIGHT, ELIDE_NONE, SiPoPre, SiPoMin, TEXT_MENEOMIC
+from PLM import get_repr, ensure_valid
 
 class TextBase(TextLabel):
 

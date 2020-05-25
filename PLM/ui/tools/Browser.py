@@ -28,8 +28,8 @@ from PyQt5.QtWidgets            import (QAction, QApplication, QLineEdit, QMainW
 from PyQt5.QtNetwork            import QNetworkProxyFactory, QNetworkRequest
 
 # PLM
-from PLM.api.Widgets import Widget
-from PLM.api.Widgets import VBoxLayout
+from PLM import Widget
+from PLM import VBoxLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Web browser """

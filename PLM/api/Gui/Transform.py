@@ -28,8 +28,8 @@ class Transform(QTransform):
         return self._name
 
     @name.setter
-    def name(self, newName):
-        self._name = newName
+    def name(self, val):
+        self._name              = val
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/12/2019 - 1:48 AM

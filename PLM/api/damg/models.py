@@ -337,7 +337,7 @@ class DAMG(BaseObject):
     key                                     = "DAMG"
 
     def __init__(self, parent=None, **kwargs):
-        super(DAMG, self).__init__()
+        super(DAMG, self).__init__(**kwargs)
 
         self._parent                        = parent
 

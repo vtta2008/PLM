@@ -8,8 +8,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
-from PLM.api.Widgets.io_widgets             import QGraphicsView
+
+from .io_widgets import QGraphicsView
 
 
 class GraphicsView(QGraphicsView):
@@ -17,16 +17,11 @@ class GraphicsView(QGraphicsView):
     Type                                    = 'DAMGGRAPHICSVIEW'
     key                                     = 'GraphicsView'
     _name                                   = 'DAMG Graphics View'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         super(GraphicsView, self).__init__(parent)
 
         self.parent                         = parent
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

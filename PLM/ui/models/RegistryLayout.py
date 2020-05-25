@@ -10,8 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 import datetime, time
-from PLM.api.damg                import DAMGDICT, DAMGLIST, DAMG
-from PLM.configs                import layoutTypes
+from PLM import DAMGDICT, DAMGLIST, DAMG
+from PLM import layoutTypes
 
 
 class InspectLayout(DAMG):

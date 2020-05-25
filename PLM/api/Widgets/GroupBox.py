@@ -8,12 +8,14 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
-from PLM.api.Widgets.io_widgets             import QGroupBox
-from PLM.configs                            import WAIT_LAYOUT_COMPLETE
+from .io_widgets                            import QGroupBox
+from PLM.configs                            import propText as p
 from .BoxLayout                             import VBoxLayout, HBoxLayout
 from .GridLayout                            import GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
 from .Label                                 import Label
+
+
+WAIT_LAYOUT_COMPLETE = p['WAIT_LAYOUT_COMPLETE']
 
 # -------------------------------------------------------------------------------------------------------------
 """ Groupbox presets """
@@ -23,16 +25,11 @@ class GroupBoxBase(QGroupBox):
     Type                                    = 'DAMGGROUPBOX'
     key                                     = 'GroupBoxBase'
     _name                                   = 'DAMG Group Box Base'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         QGroupBox.__init__(self)
 
         self.parent                         = parent
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

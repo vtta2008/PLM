@@ -11,9 +11,7 @@ Description:
 """ Import """
 
 from .io_widgets                            import QVBoxLayout, QHBoxLayout
-from PLM.utils                              import check_preset
-from PLM.cores.SignalManager                import SignalManager
-from PLM.settings                           import AppSettings
+from PLM.cores                              import SignalManager
 
 
 class HBoxLayout(QHBoxLayout):
@@ -28,7 +26,8 @@ class HBoxLayout(QHBoxLayout):
         self.settings                       = AppSettings(self)
         self.signals                        = SignalManager(self)
         self.preset                         = preset
-        if check_preset(self.preset):
+
+        if self.preset and not {}:
             self.buildUI()
 
     def buildUI(self):
@@ -61,11 +60,11 @@ class VBoxLayout(QVBoxLayout):
 
     def __init__(self, parent=None, preset={}):
         QVBoxLayout.__init__(self)
-        self.parent                         = parent
-        # self.settings                       = SettingManager(self)
 
+        self.parent                         = parent
         self.preset                         = preset
-        if check_preset(self.preset):
+
+        if self.preset and not {}:
             self.buildUI()
 
     def buildUI(self):

@@ -10,25 +10,19 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# PyQt5
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QItemDelegate
+from .io_widgets import QItemDelegate
 
 class ItemDelegate(QItemDelegate):
 
     key                                     = 'ItemDelegate'
     Type                                    = 'DAMGITEMDELEGATE'
     _name                                   = 'DAMG Item Delegate'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         super(ItemDelegate, self).__init__(parent)
 
         self.parent                         = parent
 
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

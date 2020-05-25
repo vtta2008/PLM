@@ -8,10 +8,9 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
 
-from PyQt5.QtGui                import QIntValidator
-from PLM.api.Widgets import GroupGrid, LineEdit, Label
+from PLM.api.Gui                import IntValidator
+from PLM.api.Widgets            import GroupGrid, LineEdit, Label
 from .Avatar                    import InfoPicture
 
 class BaseInfo(GroupGrid):
@@ -75,7 +74,7 @@ class BaseInfo(GroupGrid):
 
         for le in [self.yearS, self.monthS, self.dayS, self.hourS, self.minuteS, self.secondS,
                    self.yearE, self.monthE, self.dayE, self.hourE, self.minuteE, self.secondE]:
-            le.setValidator(QIntValidator())
+            le.setValidator(IntValidator())
 
     def createLabels(self):
         self.layout.addWidget(Label({'txt': 'Name: '}), 0, 0, 1, 1)

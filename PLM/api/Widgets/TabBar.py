@@ -8,8 +8,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QTabBar
+
+from .io_widgets import QTabBar
 
 
 class TabBar(QTabBar):
@@ -17,15 +17,10 @@ class TabBar(QTabBar):
     Type                                    = 'DAMGUI'
     key                                     = 'TabBar'
     _name                                   = 'DAMG Tab Bar'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         super(TabBar, self).__init__(parent)
         self.parent                         = parent
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

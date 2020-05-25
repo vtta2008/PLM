@@ -11,8 +11,7 @@ Description:
 """ Import """
 
 from .io_widgets                            import QCheckBox
-from PLM.utils                              import check_preset
-from PLM.cores.SignalManager                import SignalManager
+from PLM.cores                              import SignalManager
 from PLM.settings                           import AppSettings
 
 class CheckBox(QCheckBox):
@@ -35,7 +34,7 @@ class CheckBox(QCheckBox):
         self.stateChanged.connect(self.saveState)
 
         self.preset                         = preset
-        if check_preset(self.preset):
+        if self.preset and not {}:
             self.buildUI()
 
     def saveState(self):

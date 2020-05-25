@@ -12,9 +12,7 @@ Description:
 
 
 from .io_widgets                            import QPushButton, QToolButton
-from PLM.api.Gui                            import AppIcon, TagIcon
-from PLM.utils                              import check_preset
-from PLM.cores.SignalManager                import SignalManager
+from PLM.cores                              import SignalManager
 from PLM.settings                           import AppSettings
 
 
@@ -32,13 +30,16 @@ class Button(QPushButton):
 
         self.parent                         = parent
         self.settings                       = AppSettings(self)
-        self.signals = SignalManager(self)
+        self.signals                        = SignalManager(self)
         self.preset                         = preset
 
-        if check_preset(self.preset):
+        if self.preset and not {}:
             self.buildUI()
 
     def buildUI(self):
+
+        from PLM.api.Gui import AppIcon, TagIcon
+
         for key, value in self.preset.items():
             if key == 'txt':
                 self.setText(value)

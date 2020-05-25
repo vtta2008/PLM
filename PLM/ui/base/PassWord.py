@@ -10,8 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 from PLM.api.Widgets import GroupGrid, LineEdit, Button, Label, MessageBox
-from PLM.utils              import text_to_hex, check_match
-from PLM.configs            import PW_BLANK, PW_UNMATCH
+from PLM.utils import text_to_hex, check_match
+from PLM.configs import propText as p
 
 class PassWord(GroupGrid):
 
@@ -42,15 +42,15 @@ class PassWord(GroupGrid):
         confirm_pass    = text_to_hex(self.cfgPW.text())
 
         if len(old_pass) == 0 or len(new_pass) == 0 or len(confirm_pass) == 0:
-            MessageBox(self, title='Failed', level='critical', message=PW_BLANK, btn='ok')
+            MessageBox(self, title='Failed', level='critical', message=p['PW_BLANK'], btn='ok')
             return
         elif new_pass is not confirm_pass:
-            MessageBox(self, title='Failed', level='critical', message=PW_UNMATCH, btn='ok')
+            MessageBox(self, title='Failed', level='critical', message=p['PW_UNMATCH'], btn='ok')
             return
         else:
             checkPass = check_match(self.username, old_pass)
             if not checkPass:
-                MessageBox(self, title='Failed', level='critical', message=PW_UNMATCH, btn='ok')
+                MessageBox(self, title='Failed', level='critical', message=p['PW_UNMATCH'], btn='ok')
                 return
             else:
                 new_pass = text_to_hex(self.newPW.text())

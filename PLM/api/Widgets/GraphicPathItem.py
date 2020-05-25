@@ -10,8 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from PLM.api.Widgets.io_widgets             import QGraphicsPathItem
-from PLM.cores.SignalManager                import SignalManager
+from .io_widgets                            import QGraphicsPathItem
+from PLM.cores                              import SignalManager
 from PLM.settings                           import AppSettings
 
 

@@ -15,9 +15,9 @@ import os, json
 from playsound                              import playsound
 
 # PLM
-from PLM.cores.base                         import BaseType
-from PLM.configs                            import SOUND_DIR, TASK_DIR
-from PLM.api.Core                           import DateTime
+from PLM.cores.base import BaseType
+from PLM.configs import SOUND_DIR, TASK_DIR
+from PLM.api.Core import DateTime
 
 # -------------------------------------------------------------------------------------------------------------
 """ Task class """

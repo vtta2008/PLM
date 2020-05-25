@@ -14,8 +14,17 @@ Description:
 import os
 
 # PLM
+from PLM                                import glbSettings
 from PLM.api.Core                       import Settings
-from PLM                                import glbSettings, APP_SETTING
+from PLM.configs                        import APP_SETTING
+
+INI = Settings.IniFormat
+NATIVE = Settings.NativeFormat
+INVAILD = Settings.InvalidFormat
+
+SYS_SCOPE = Settings.SystemScope
+USER_SCOPE = Settings.UserScope
+
 
 class AppSettings(Settings):
 

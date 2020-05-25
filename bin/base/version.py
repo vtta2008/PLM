@@ -1,25 +1,72 @@
 # -*- coding: utf-8 -*-
 """
 
-Script Name: 
+Script Name: baseVersion.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
+    This is how we construct a version object type.
 
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from PLM.cores.base.typeInfo            import BaseInfo, construct_class
+from .obj import BaseTuple
 
-__majorVersion__                        = 13
-__minorVersion__                        = 0
-__microVersion__                        = 1
 
+class TypeTuple(BaseTuple):
+
+    key                                 = 'TypeTuple'
+
+    def __init__(self, *args, **kwargs):
+        BaseTuple.__new__(self)
+
+        self.kwargs                     = kwargs
+        self.args                       = args
+
+
+class BaseInfo(TypeTuple):
+
+    Type                                = 'DAMGTYPEINFO'
+    key                                 = 'TypeInfo'
+
+    def __new__(self, content=tuple()):
+        self.content                    = content
+        return tuple.__new__(BaseInfo, self.content)
+
+    def __bases__(self):
+        if self.content:
+            return tuple(BaseInfo, self.content)
+        else:
+            return tuple(BaseInfo, tuple())
+
+
+def version_original():
+    return (13, 0, 0)
+
+
+def construct_class(infoObj, infoData, **info):
+
+    obj                                 = infoObj
+    doc_info                            = infoData['doc']
+    name_info                           = infoData['name']
+    module_info                         = infoData['module']
+    str_info                            = '.'.join(str(i) for i in obj)
+    type_info                           = '{0}: {1}'.format(name_info, str_info)
+    infoKey                             = '__{0}__info__'.format(name_info.lower())
+
+    info[infoKey]                       = obj
+    info['__doc__']                     = doc_info
+    info['__name__']                    = name_info
+    info['__module__']                  = module_info
+    info['__type__']                    = type_info
+    info['__str__']                     = str_info
+
+    return info
 
 infoDoc                                 = 'PLM documentations'
-versionContent                          = (__majorVersion__, __minorVersion__, __microVersion__)
+versionContent                          = version_original()
 versionInfo                             = BaseInfo(versionContent)
 versionInfo.key                         = 'VersionInfo'
 versionInfo.Type                        = 'DAMGVERSIONINFO'
@@ -27,9 +74,9 @@ versionDataInfo                         = {'doc': infoDoc, 'name': 'Version', 'm
 versionConstruct                        = construct_class(versionInfo, versionDataInfo)
 
 
-class VersionType(type):
+class VersionBase(type):
 
-    key                                 = 'VersionType'
+    key                                 = 'VersionBase'
     Type                                = 'DAMGVERSION'
 
     _step                               = 1
@@ -38,12 +85,12 @@ class VersionType(type):
     _micro_step                         = 1
 
     def __new__(cls, *args, **kwargs):
-        newType = type.__new__(VersionType, 'Version', (VersionType,), versionConstruct)
+        newType = type.__new__(VersionBase, 'Version', (VersionBase,), versionConstruct)
         return newType
 
-    def __init__(self):
-        self.__new__()
-        super(VersionType, self).__init__(self, VersionType)
+    def __init__(self, *args, **kwargs):
+        self.__new__(*args, **kwargs)
+        super(VersionBase, self).__init__(self, VersionBase, *args, **kwargs)
 
     def increase_majo_step(self):
         return self._majo_step + self._step
@@ -55,7 +102,7 @@ class VersionType(type):
         return self._micro_step + self._step
 
     def __bases__(cls):
-        return type.__new__(VersionType, 'Version', (VersionType,), versionConstruct)
+        return type.__new__(VersionBase, 'Version', (VersionBase,), versionConstruct)
 
     def __str__(self):
         return self.__str__
@@ -102,56 +149,6 @@ class VersionType(type):
     __version__                             = '.'.join(str(i) for i in versionInfo)
 
     __qualname__                            = 'Version'
-
-
-class Version(VersionType):
-
-    key                                 = 'Version'
-
-    def __init__(self, major=__majorVersion__, minor=__minorVersion__, micro=__microVersion__):
-        super(Version, self).__init__(major, minor, micro)
-
-        assert(isinstance(major, int))
-        assert(isinstance(minor, int))
-        assert(isinstance(micro, int))
-
-        self._major                     = major
-        self._minor                     = minor
-        self._micro                     = micro
-
-    @staticmethod
-    def fromString(string):
-        major, minor, micro             = string.split('.')
-        return Version(major, minor, micro)
-
-    def __str__(self):
-        return '{0}.{1}.{2}'.format(self.major, self.minor, self.micro)
-
-    def __eq__(self, other):
-        return all([self.major == other.major, self.minor == other.minor, self.micro == other.micro])
-
-    def __ge__(self, other):
-        lhs                             = int("".join([str(self.major), str(self.minor), str(self.micro)]))
-        rhs                             = int("".join([str(other.major), str(other.minor), str(other.micro)]))
-        return lhs >= rhs
-
-    def __gt__(self, other):
-        lhs                             = int("".join([str(self.major), str(self.minor), str(self.micro)]))
-        rhs                             = int("".join([str(other.major), str(other.minor), str(other.micro)]))
-        return lhs >= rhs
-
-    @property
-    def major(self):
-        return self._major
-
-    @property
-    def minor(self):
-        return self._minor
-
-    @property
-    def micro(self):
-        return self._micro
-
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

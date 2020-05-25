@@ -11,8 +11,7 @@ Description:
 """ Import """
 
 from .io_widgets                            import QComboBox
-from PLM.utils                              import check_preset
-from PLM.cores.SignalManager                import SignalManager
+from PLM.cores                              import SignalManager
 from PLM.settings                           import AppSettings
 
 class ComboBox(QComboBox):
@@ -29,7 +28,7 @@ class ComboBox(QComboBox):
         self.signals = SignalManager(self)
         self.preset                         = preset
 
-        if check_preset(self.preset):
+        if self.preset and not {}:
             self.buildUI()
 
     def setValue(self, key, value):

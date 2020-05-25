@@ -43,7 +43,6 @@ DATETIME_mdhm                       = "'%m-%d %H:%M'",
 DATETIME_fullOpt                    = '(%d/%m/%Y %H:%M:%S)',
 
 
-
 class Encoder(json.JSONEncoder):
 
     def default(self, obj):

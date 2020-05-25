@@ -10,93 +10,108 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-from .Gui import Color, Font, Painter
-from .Core import Qt, DateTime
-from .Widgets import LineEdit, GraphicsItem, GraphicsScene, GraphicsView, PlainTextEdit, RubberBand
+from PLM import qtBinding
 import os
 
+if qtBinding == 'PyQt5':
+    from PyQt5.QtWidgets        import (QFrame, QStyle, QAbstractItemView, QSizePolicy, QLineEdit, QPlainTextEdit,
+                                        QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand)
+    from PyQt5.QtCore           import QEvent, QSettings, QSize, Qt, QDateTime
+    from PyQt5.QtGui            import QColor, QPainter, QFont
+elif qtBinding == 'PySide2':
+    from PySide2.QtWidgets      import (QFrame, QStyle, QAbstractItemView, QSizePolicy, QLineEdit, QPlainTextEdit,
+                                        QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand)
+    from PySide2.QtCore         import QEvent, QSettings, QSize, Qt, QDateTime
+    from PySide2.Gui            import QColor, QPainter, QFont
 
-from PyQt5.QtWidgets import QSizePolicy, QFrame, QStyle, QAbstractItemView
-from PyQt5.QtCore import QEvent
+
+ICONSIZE                    = 32
+ICONBUFFER                  = -1
+BTNTAGSIZE                  = QSize(87, 20)
+TAGBTNSIZE                  = QSize(87-1, 20-1)
+BTNICONSIZE                 = QSize(ICONSIZE, ICONSIZE)
+ICONBTNSIZE                 = QSize(ICONSIZE+ICONBUFFER, ICONSIZE+ICONBUFFER)
 
 
-DAMG_LOGO_COLOR         = Color(0, 114, 188, 255)
+DAMG_LOGO_COLOR             = QColor(0, 114, 188, 255)
+
 
 # Basic color
-WHITE                   = Color(Qt.white)
-LIGHTGRAY               = Color(Qt.lightGray)
-GRAY                    = Color(Qt.gray)
-DARKGRAY                = Color(Qt.darkGray)
-BLACK                   = Color(Qt.black)
-RED                     = Color(Qt.red)
-GREEN                   = Color(Qt.green)
-BLUE                    = Color(Qt.blue)
-DARKRED                 = Color(Qt.darkRed)
-DARKGREEN               = Color(Qt.darkGreen)
-DARKBLUE                = Color(Qt.darkBlue)
-CYAN                    = Color(Qt.cyan)
-MAGENTA                 = Color(Qt.magenta)
-YELLOW                  = Color(Qt.yellow)
-DARKCYAN                = Color(Qt.darkCyan)
-DARKMAGENTA             = Color(Qt.darkMagenta)
-DARKYELLOW              = Color(Qt.darkYellow)
+WHITE                       = QColor(Qt.white)
+LIGHTGRAY                   = QColor(Qt.lightGray)
+GRAY                        = QColor(Qt.gray)
+DARKGRAY                    = QColor(Qt.darkGray)
+BLACK                       = QColor(Qt.black)
+RED                         = QColor(Qt.red)
+GREEN                       = QColor(Qt.green)
+BLUE                        = QColor(Qt.blue)
+DARKRED                     = QColor(Qt.darkRed)
+DARKGREEN                   = QColor(Qt.darkGreen)
+DARKBLUE                    = QColor(Qt.darkBlue)
+CYAN                        = QColor(Qt.cyan)
+MAGENTA                     = QColor(Qt.magenta)
+YELLOW                      = QColor(Qt.yellow)
+DARKCYAN                    = QColor(Qt.darkCyan)
+DARKMAGENTA                 = QColor(Qt.darkMagenta)
+DARKYELLOW                  = QColor(Qt.darkYellow)
 
 # Dark Palette color
-COLOR_BACKGROUND_LIGHT = Color('#505F69')
-COLOR_BACKGROUND_NORMAL = Color('#32414B')
-COLOR_BACKGROUND_DARK = Color('#19232D')
+Color_BACKGROUND_LIGHT      = QColor('#505F69')
+COLOR_BACKGROUND_NORMAL     = QColor('#32414B')
+COLOR_BACKGROUND_DARK       = QColor('#19232D')
 
-COLOR_FOREGROUND_LIGHT = Color('#F0F0F0')
-COLOR_FOREGROUND_NORMAL = Color('#AAAAAA')
-COLOR_FOREGROUND_DARK = Color('#787878')
+COLOR_FOREGROUND_LIGHT      = QColor('#F0F0F0')
+COLOR_FOREGROUND_NORMAL     = QColor('#AAAAAA')
+COLOR_FOREGROUND_DARK       = QColor('#787878')
 
-COLOR_SELECTION_LIGHT = Color('#148CD2')
-COLOR_SELECTION_NORMAL = Color('#1464A0')
-COLOR_SELECTION_DARK = Color('#14506E')
+COLOR_SELECTION_LIGHT       = QColor('#148CD2')
+COLOR_SELECTION_NORMAL      = QColor('#1464A0')
+COLOR_SELECTION_DARK        = QColor('#14506E')
 
 # Nice color
-blush               = Color(246, 202, 203, 255)
-petal               = Color(247, 170, 189, 255)
-petunia             = Color(231, 62, 151, 255)
-deep_pink           = Color(229, 2, 120, 255)
-melon               = Color(241, 118, 110, 255)
-pomegranate         = Color(178, 27, 32, 255)
-poppy_red           = Color(236, 51, 39, 255)
-orange_red          = Color(240, 101, 53, 255)
-olive               = Color(174, 188, 43, 255)
-spring              = Color(227, 229, 121, 255)
-yellow              = Color(255, 240, 29, 255)
-mango               = Color(254, 209, 26, 255)
-cantaloupe          = Color(250, 176, 98, 255)
-tangelo             = Color(247, 151, 47, 255)
-burnt_orange        = Color(236, 137, 36, 255)
-bright_orange       = Color(242, 124, 53, 255)
-moss                = Color(176, 186, 39, 255)
-sage                = Color(212, 219, 145, 255)
-apple               = Color(178, 215, 140, 255)
-grass               = Color(111, 178, 68, 255)
-forest              = Color(69, 149, 62, 255)
-peacock             = Color(21, 140, 167, 255)
-teal                = Color(24, 157, 193, 255)
-aqua                = Color(153, 214, 218, 255)
-violet              = Color(55, 52, 144, 255)
-deep_blue           = Color(15, 86, 163, 255)
-hydrangea           = Color(150, 191, 229, 255)
-sky                 = Color(139, 210, 244, 255)
-dusk                = Color(16, 102, 162, 255)
-midnight            = Color(14, 90, 131, 255)
-seaside             = Color(87, 154, 188, 255)
-poolside            = Color(137, 203, 225, 255)
-eggplant            = Color(86, 5, 79, 255)
-lilac               = Color(222, 192, 219, 255)
-chocolate           = Color(87, 43, 3, 255)
-blackout            = Color(19, 17, 15, 255)
-stone               = Color(125, 127, 130, 255)
-gravel              = Color(181, 182, 185, 255)
-pebble              = Color(217, 212, 206, 255)
-sand                = Color(185, 172, 151, 255)
+blush                       = QColor(246, 202, 203, 255)
+petal                       = QColor(247, 170, 189, 255)
+petunia                     = QColor(231, 62, 151, 255)
+deep_pink                   = QColor(229, 2, 120, 255)
+melon                       = QColor(241, 118, 110, 255)
+pomegranate                 = QColor(178, 27, 32, 255)
+poppy_red                   = QColor(236, 51, 39, 255)
+orange_red                  = QColor(240, 101, 53, 255)
+olive                       = QColor(174, 188, 43, 255)
+spring                      = QColor(227, 229, 121, 255)
+yellow                      = QColor(255, 240, 29, 255)
+mango                       = QColor(254, 209, 26, 255)
+cantaloupe                  = QColor(250, 176, 98, 255)
+tangelo                     = QColor(247, 151, 47, 255)
+burnt_orange                = QColor(236, 137, 36, 255)
+bright_orange               = QColor(242, 124, 53, 255)
+moss                        = QColor(176, 186, 39, 255)
+sage                        = QColor(212, 219, 145, 255)
+apple                       = QColor(178, 215, 140, 255)
+grass                       = QColor(111, 178, 68, 255)
+forest                      = QColor(69, 149, 62, 255)
+peacock                     = QColor(21, 140, 167, 255)
+teal                        = QColor(24, 157, 193, 255)
+aqua                        = QColor(153, 214, 218, 255)
+violet                      = QColor(55, 52, 144, 255)
+deep_blue                   = QColor(15, 86, 163, 255)
+hydrangea                   = QColor(150, 191, 229, 255)
+sky                         = QColor(139, 210, 244, 255)
+dusk                        = QColor(16, 102, 162, 255)
+midnight                    = QColor(14, 90, 131, 255)
+seaside                     = QColor(87, 154, 188, 255)
+poolside                    = QColor(137, 203, 225, 255)
+eggplant                    = QColor(86, 5, 79, 255)
+lilac                       = QColor(222, 192, 219, 255)
+chocolate                   = QColor(87, 43, 3, 255)
+blackout                    = QColor(19, 17, 15, 255)
+stone                       = QColor(125, 127, 130, 255)
+gravel                      = QColor(181, 182, 185, 255)
+pebble                      = QColor(217, 212, 206, 255)
+sand                        = QColor(185, 172, 151, 255)
 
 
+ignoreARM                   = Qt.IgnoreAspectRatio
 
 scrollAsNeed                = Qt.ScrollBarAsNeeded
 scrollOff                   = Qt.ScrollBarAlwaysOff
@@ -118,15 +133,6 @@ bottom                      = Qt.AlignBottom
 hori                        = Qt.Horizontal
 vert                        = Qt.Vertical
 
-
-datetTimeStamp                              = DateTime.currentDateTime().toString("hh:mm - dd MMMM yy")             # datestamp
-
-
-PRS =       dict(password    = LineEdit.Password,       center = center ,   left  = left   ,    right  = right,
-                 spmax       = SiPoMax           ,       sppre  = SiPoPre,   spexp = SiPoExp,    spign  = SiPoIgn,
-                 expanding   = QSizePolicy.Expanding,    spmin  = SiPoMin,)
-
-
 dockL                       = Qt.LeftDockWidgetArea                                             # Docking area
 dockR                       = Qt.RightDockWidgetArea
 dockT                       = Qt.TopDockWidgetArea
@@ -134,120 +140,127 @@ dockB                       = Qt.BottomDockWidgetArea
 dockAll                     = Qt.AllDockWidgetAreas
 
 
+datetTimeStamp               = QDateTime.currentDateTime().toString("hh:mm - dd MMMM yy")             # datestamp
+
+
+PRS =       dict(password    = QLineEdit.Password,       center = center ,   left  = left   ,    right  = right,
+                 spmax       = SiPoMax           ,       sppre  = SiPoPre,   spexp = SiPoExp,    spign  = SiPoIgn,
+                 expanding   = QSizePolicy.Expanding,    spmin  = SiPoMin,)
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Event """
 
-NO_WRAP                     = PlainTextEdit.NoWrap
-NO_FRAME                    = PlainTextEdit.NoFrame
-ELIDE_RIGHT                 = Qt.ElideRight
-ELIDE_NONE                  = Qt.ElideNone
+NO_WRAP                      = QPlainTextEdit.NoWrap
+NO_FRAME                     = QPlainTextEdit.NoFrame
+ELIDE_RIGHT                  = Qt.ElideRight
+ELIDE_NONE                   = Qt.ElideNone
 
 
 # -------------------------------------------------------------------------------------------------------------
 """ Window state """
 
-StateNormal                 = Qt.WindowNoState
-StateMax                    = Qt.WindowMaximized
-StateMin                    = Qt.WindowMinimized
-State_Selected              = QStyle.State_Selected
+StateNormal                  = Qt.WindowNoState
+StateMax                     = Qt.WindowMaximized
+StateMin                     = Qt.WindowMinimized
+State_Selected               = QStyle.State_Selected
 
 # -------------------------------------------------------------------------------------------------------------
 """ Nodegraph setting variables """
 
-ASPEC_RATIO                 = Qt.KeepAspectRatio
-SMOOTH_TRANS                = Qt.SmoothTransformation
-SCROLLBAROFF                = Qt.ScrollBarAlwaysOff                                     # Scrollbar
-SCROLLBARON                 = Qt.ScrollBarAlwaysOn
-SCROLLBARNEED               = Qt.ScrollBarAsNeeded
+ASPEC_RATIO                  = Qt.KeepAspectRatio
+SMOOTH_TRANS                 = Qt.SmoothTransformation
+SCROLLBAROFF                 = Qt.ScrollBarAlwaysOff                                     # Scrollbar
+SCROLLBARON                  = Qt.ScrollBarAlwaysOn
+SCROLLBARNEED                = Qt.ScrollBarAsNeeded
 
-WORD_WRAP                   = Qt.TextWordWrap
-INTERSECT_ITEM_SHAPE        = Qt.IntersectsItemShape
-CONTAIN_ITEM_SHAPE          = Qt.ContainsItemShape
-MATCH_EXACTLY               = Qt.MatchExactly
-DRAG_ONLY                   = QAbstractItemView.DragOnly
+WORD_WRAP                    = Qt.TextWordWrap
+INTERSECT_ITEM_SHAPE         = Qt.IntersectsItemShape
+CONTAIN_ITEM_SHAPE           = Qt.ContainsItemShape
+MATCH_EXACTLY                = Qt.MatchExactly
+DRAG_ONLY                    = QAbstractItemView.DragOnly
 
 # -------------------------------------------------------------------------------------------------------------
 """ UI flags """
 
-ITEMENABLE                  = Qt.ItemIsEnabled
-ITEMMOVEABLE                = GraphicsItem.ItemIsMovable
-ITEMSENDGEOCHANGE           = GraphicsItem.ItemSendsGeometryChanges
-ITEMSCALECHANGE             = GraphicsItem.ItemScaleChange
-ITEMPOSCHANGE               = GraphicsItem.ItemPositionChange
-DEVICECACHE                 = GraphicsItem.DeviceCoordinateCache
-SELECTABLE                  = GraphicsItem.ItemIsSelectable
-MOVEABLE                    = GraphicsItem.ItemIsMovable
-FOCUSABLE                   = GraphicsItem.ItemIsFocusable
-PANEL                       = GraphicsItem.ItemIsPanel
+ITEMENABLE                   = Qt.ItemIsEnabled
+ITEMMOVEABLE                 = QGraphicsItem.ItemIsMovable
+ITEMSENDGEOCHANGE            = QGraphicsItem.ItemSendsGeometryChanges
+ITEMSCALECHANGE              = QGraphicsItem.ItemScaleChange
+ITEMPOSCHANGE                = QGraphicsItem.ItemPositionChange
+DEVICECACHE                  = QGraphicsItem.DeviceCoordinateCache
+SELECTABLE                   = QGraphicsItem.ItemIsSelectable
+MOVEABLE                     = QGraphicsItem.ItemIsMovable
+FOCUSABLE                    = QGraphicsItem.ItemIsFocusable
+PANEL                        = QGraphicsItem.ItemIsPanel
 
-NOINDEX                     = GraphicsScene.NoIndex                                    # Scene
+NOINDEX                      = QGraphicsScene.NoIndex                                    # Scene
 
-RUBBER_DRAG                 = GraphicsView.RubberBandDrag                              # Viewer
-RUBBER_REC                  = RubberBand.Rectangle
-POS_CHANGE                  = GraphicsItem.ItemPositionChange
+RUBBER_DRAG                  = QGraphicsView.RubberBandDrag                              # Viewer
+RUBBER_REC                   = QRubberBand.Rectangle
+POS_CHANGE                   = QGraphicsItem.ItemPositionChange
 
-NODRAG                      = GraphicsView.NoDrag
-NOFRAME                     = GraphicsView.NoFrame
-ANCHOR_NO                   = GraphicsView.NoAnchor
+NODRAG                       = QGraphicsView.NoDrag
+NOFRAME                      = QGraphicsView.NoFrame
+ANCHOR_NO                    = QGraphicsView.NoAnchor
 
-ANCHOR_UNDERMICE            = GraphicsView.AnchorUnderMouse
-ANCHOR_CENTER               = GraphicsView.AnchorViewCenter
+ANCHOR_UNDERMICE             = QGraphicsView.AnchorUnderMouse
+ANCHOR_CENTER                = QGraphicsView.AnchorViewCenter
 
-CACHE_BG                    = GraphicsView.CacheBackground
+CACHE_BG                     = QGraphicsView.CacheBackground
 
-UPDATE_VIEWRECT             = GraphicsView.BoundingRectViewportUpdate
-UPDATE_FULLVIEW             = GraphicsView.FullViewportUpdate
-UPDATE_SMARTVIEW            = GraphicsView.SmartViewportUpdate
-UPDATE_BOUNDINGVIEW         = GraphicsView.BoundingRectViewportUpdate
-UPDATE_MINIMALVIEW          = GraphicsView.MinimalViewportUpdate
+UPDATE_VIEWRECT              = QGraphicsView.BoundingRectViewportUpdate
+UPDATE_FULLVIEW              = QGraphicsView.FullViewportUpdate
+UPDATE_SMARTVIEW             = QGraphicsView.SmartViewportUpdate
+UPDATE_BOUNDINGVIEW          = QGraphicsView.BoundingRectViewportUpdate
+UPDATE_MINIMALVIEW           = QGraphicsView.MinimalViewportUpdate
 
-STAY_ON_TOP                 = Qt.WindowStaysOnTopHint
-STRONG_FOCUS                = Qt.StrongFocus
-SPLASHSCREEN                = Qt.SplashScreen
-FRAMELESS                   = Qt.FramelessWindowHint
-CUSTOMIZE                   = Qt.CustomizeWindowHint
-CLOSEBTN                    = Qt.WindowCloseButtonHint
-MINIMIZEBTN                 = Qt.WindowMinimizeButtonHint
-AUTO_COLOR                  = Qt.AutoColor
+STAY_ON_TOP                  = Qt.WindowStaysOnTopHint
+STRONG_FOCUS                 = Qt.StrongFocus
+SPLASHSCREEN                 = Qt.SplashScreen
+FRAMELESS                    = Qt.FramelessWindowHint
+CUSTOMIZE                    = Qt.CustomizeWindowHint
+CLOSEBTN                     = Qt.WindowCloseButtonHint
+MINIMIZEBTN                  = Qt.WindowMinimizeButtonHint
+AUTO_COLOR                   = Qt.AutoColor
 
 # -------------------------------------------------------------------------------------------------------------
 """ Drawing """
 
-ANTIALIAS                   = Painter.Antialiasing                                     # Painter
-ANTIALIAS_TEXT              = Painter.TextAntialiasing
-ANTIALIAS_HIGH_QUALITY      = Painter.HighQualityAntialiasing
-SMOOTH_PIXMAP_TRANSFORM     = Painter.SmoothPixmapTransform
-NON_COSMETIC_PEN            = Painter.NonCosmeticDefaultPen
+ANTIALIAS                    = QPainter.Antialiasing                                     # Painter
+ANTIALIAS_TEXT               = QPainter.TextAntialiasing
+ANTIALIAS_HIGH_QUALITY       = QPainter.HighQualityAntialiasing
+SMOOTH_PIXMAP_TRANSFORM      = QPainter.SmoothPixmapTransform
+NON_COSMETIC_PEN             = QPainter.NonCosmeticDefaultPen
 
-NO_BRUSH                    = Qt.NoBrush                                                # Brush
+NO_BRUSH                     = Qt.NoBrush                                                # Brush
 
-NO_PEN                      = Qt.NoPen                                                  # Pen
-ROUND_CAP                   = Qt.RoundCap
-ROUND_JOIN                  = Qt.RoundJoin
+NO_PEN                       = Qt.NoPen                                                  # Pen
+ROUND_CAP                    = Qt.RoundCap
+ROUND_JOIN                   = Qt.RoundJoin
 
-PATTERN_SOLID               = Qt.SolidPattern                                           # Pattern
+PATTERN_SOLID                = Qt.SolidPattern                                           # Pattern
 
-LINE_SOLID                  = Qt.SolidLine                                              # Line
-LINE_DASH                   = Qt.DashLine
-LINE_DOT                    = Qt.DotLine
-LINE_DASH_DOT               = Qt.DashDotDotLine
+LINE_SOLID                   = Qt.SolidLine                                              # Line
+LINE_DASH                    = Qt.DashLine
+LINE_DOT                     = Qt.DotLine
+LINE_DASH_DOT                = Qt.DashDotDotLine
 
-TRANSPARENT                 = Qt.transparent
-TRANSPARENT_MODE            = Qt.TransparentMode
+TRANSPARENT                  = Qt.transparent
+TRANSPARENT_MODE             = Qt.TransparentMode
 
 # -------------------------------------------------------------------------------------------------------------
 """ Meta Object """
 
-QUEUEDCONNECTION            = Qt.QueuedConnection
+QUEUEDCONNECTION             = Qt.QueuedConnection
 
 
 # -------------------------------------------------------------------------------------------------------------
 """ Keyboard and cursor """
 
-TEXT_BOLD                   = Font.Bold
-TEXT_NORMAL                 = Font.Normal
-MONO_SPACE                  = Font.Monospace
+TEXT_BOLD                   = QFont.Bold
+TEXT_NORMAL                 = QFont.Normal
+MONO_SPACE                  = QFont.Monospace
 
 TEXT_MENEOMIC               = Qt.TextShowMnemonic
 
@@ -291,7 +304,11 @@ ignoreARM                   = Qt.IgnoreAspectRatio
 
 RELATIVE_SIZE               = Qt.RelativeSize                                           # Size
 
-
+INI                         = QSettings.IniFormat
+NATIVE                      = QSettings.NativeFormat
+INVALID                     = QSettings.InvalidFormat
+SYS_SCOPE                   = QSettings.SystemScope
+USER_SCOPE                  = QSettings.UserScope
 
 
 

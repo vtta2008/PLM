@@ -9,19 +9,27 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import globalSettings
 
-""" Import """
+__globalServer__        = "https://server.damgteam.com"
+__globalServerCheck__   = "https://server.damgteam.com/check"
+__globalServerAutho__   = "https://server.damgteam.com/auth"
+
+__localPort__           = "20987"
+__localHost__           = "http://localhost:"
+__localServer__         = "{0}{1}".format(__localHost__, __localPort__)
+__localServerCheck__    = "{0}/check".format(__localServer__)
+__localServerAutho__    = "{0}/auth".format(__localServer__)
 
 # Python
 import requests, sys
 
 # PLM
-from PLM.configs                        import __localServer__, __globalServer__, __google__, SERVER_CONNECT_FAIL
-from PLM.api.Widgets                    import GroupGrid, Label, MessageBox
-from PLM.api.Core                       import Timer
-from PLM.api.damg                       import DAMGLIST
-from PLM.ui.base                        import Conection
+from PLM import glbSettings
+from PLM.configs import propText as p
+from PLM.api.Widgets import GroupGrid, Label, MessageBox
+from PLM.api.Core import Timer
+from PLM.api.damg import DAMGLIST
+from PLM.ui.base import Conection
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """
@@ -69,8 +77,8 @@ class ConnectStatus(GroupGrid):
         try:
             r = requests.get(__localServer__)
         except requests.exceptions.ConnectionError:
-            if not globalSettings.allowLocalMode:
-                MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+            if not glbSettings.allowLocalMode:
+                MessageBox(None, 'Connection Failed', 'critical', p['SERVER_CONNECT_FAIL'], 'close')
                 sys.exit()
             else:
                 self.parent.grabber.emit('sysNotify', ['Offline', 'Can not connect to Server', 'crit', 500])
@@ -88,7 +96,7 @@ class ConnectStatus(GroupGrid):
         stt = 'Internet Connection Status'
 
         try:
-            r = requests.get(__google__)
+            r = requests.get("www.google.com")
         except requests.ConnectionError:
             self.parent.signals.emit('sysNotify', ['Offline', 'Can not connect to Internet', 'crit', 500])
             self.internetIcon           = Conection('Disconnected', stt, self)
@@ -120,8 +128,8 @@ class ConnectStatus(GroupGrid):
             try:
                 r                       = requests.get(__localServer__)
             except Exception:
-                if not globalSettings.allowLocalMode:
-                    MessageBox(None, 'Connection Failed', 'critical', SERVER_CONNECT_FAIL, 'close')
+                if not glbSettings.allowLocalMode:
+                    MessageBox(None, 'Connection Failed', 'critical', p['SERVER_CONNECT_FAIL'], 'close')
                     sys.exit()
                 else:
                     self.setMode('Off')

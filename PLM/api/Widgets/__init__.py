@@ -16,8 +16,8 @@ from .BoxLayout         import VBoxLayout, HBoxLayout
 from .Button            import Button, ToolButton
 from .CheckBox          import CheckBox
 from .ComboBox          import ComboBox
-from .DockWidget        import DockStamp, DockWidget, NoteStamp
-from .GraphicsItem       import GraphicsItem
+from .DockWidget        import DockWidget
+from .GraphicsItem      import GraphicsItem
 from .GraphicsObject    import GraphicsObject
 from .GraphicPathItem   import GraphicPathItem
 from .GraphicsScene     import GraphicsScene
@@ -33,6 +33,7 @@ from .MessageBox        import MessageBox
 from .PlainTextEdit     import PlainTextEdit, Detector
 from .ProgressBar       import ProgressBar
 from .RubberBand        import RubberBand
+from .SizePolicy        import SizePolicy
 from .SplashScreen      import SplashScreen
 from .StatusBar         import StatusBar
 from .SystemTrayIcon    import SystemTrayIcon

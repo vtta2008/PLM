@@ -1,86 +1,266 @@
 # -*- coding: utf-8 -*-
-'''
+"""
 
 Script Name: path.py
 Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
-'''
+
+"""
 # -------------------------------------------------------------------------------------------------------------
+""" Import """
 
 # Python
-import os
-
+import os, winshell
+from termcolor                          import cprint
 # PLM
-from .winConfigs                            import ConfigPcs
-from .baseConfigs                           import Pys, Urls, Lgs, Fnts, Dirs, Pths, Ics, Apps, Fmts, Uis, Clrs, Pls, Cmds
+from .baseConfigs                       import Cmds, Cfg, TrackKeys
+from PLM                                import (glbSettings, create_path, parent_dir, ROOT, ROOT_APP, __organization__,
+                                                __appName__)
 
-from PLM                                    import glbSettings, create_path, ROOT, CMD_VALUE_TYPE
-from PLM.api.Core                           import Size, DateTime
-from PLM.api.Gui                            import Painter, Font
+notKeys                                  = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__',
+                                            '__cached__', '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR',
+                                            'SETTING_DIR', 'DB_DIR', 'LOG_DIR', 'QSS_DIR', 'RCS_DIR', 'SCSS_DIR',
+                                            '__appname__', 'subprocess', 'unicode_literals', 'absolute_import',
+                                            '__organization__']
 
-# PyQt5
-from PyQt5.QtCore                           import Qt, QEvent
+IGNORE_ICONS                            = [ 'Widget', 'bright', 'dark', 'charcoal', 'nuker', 'TopTab1', 'TopTab2',
+                                            'Organisation', 'Project', 'Team', 'Task', 'ShowAll','ItemWidget',
+                                            'BaseManager', 'SettingInput', 'QueryPage', 'SysTray', 'Footer', 'BotTab1',
+                                            'BotTab2', 'Cmd', 'User', 'Tracking']
 
-from PyQt5.QtWidgets                        import (QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QFrame,
-                                                    QSizePolicy, QLineEdit, QPlainTextEdit, QAbstractItemView, QStyle, )
+RAM_TYPE                                = { 0: 'Unknown', 1: 'Other', 2: 'DRAM', 3: 'Synchronous DRAM', 4: 'Cache DRAM',
+                                            5: 'EDO', 6: 'EDRAM', 7: 'VRAM', 8: 'SRAM', 9: 'RAM', 10: 'ROM', 11: 'Flash',
+                                            12: 'EEPROM', 13: 'FEPROM', 14: 'EPROM', 15: 'CDRAM', 16: '3DRAM', 17: 'SDRAM',
+                                            18: 'SGRAM', 19: 'RDRAM', 20: 'DDR', 21: 'DDR2', 22: 'DDR2 FB-DIMM', 24: 'DDR3',
+                                            25: 'FBD2', }
 
+FORM_FACTOR                             = { 0: 'Unknown', 1: 'Other', 2: 'SIP', 3: 'DIP', 4: 'ZIP', 5: 'SOJ', 6: 'Proprietary',
+                                            7: 'SIMM', 8: 'DIMM', 9: 'TSOP', 10: 'PGA', 11: 'RIMM', 12: 'SODIMM', 13: 'SRIMM',
+                                            14: 'SMD', 15: 'SSMP', 16: 'QFP', 17: 'TQFP', 18: 'SOIC', 19: 'LCC', 20: 'PLCC',
+                                            21: 'BGA', 22: 'FPBGA', 23: 'LGA', 24: 'FB-DIMM', }
 
+CPU_TYPE                                = { 1: 'Other', 2: 'Unknown', 3: 'Central Processor', 4: 'Math Processor', 5: 'DSP Processor',
+                                            6: 'Video Processor', }
 
+DRIVE_TYPE                              = { 0 : "Unknown", 1 : "No Root Directory", 2 : "Removable Disk", 3 : "Local Disk",
+                                            4 : "Network Drive", 5 : "Compact Disc", 6 : "RAM Disk", }
 
-notKeys                                      = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__',
-                                                '__cached__', '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR',
-                                                'SETTING_DIR', 'DB_DIR', 'LOG_DIR', 'QSS_DIR', 'RCS_DIR', 'SCSS_DIR',
-                                                '__appname__', 'subprocess', 'unicode_literals', 'absolute_import',
-                                                '__organization__']
+DB_ATTRIBUTE_TYPE                       = { 'int_auto_increment'    : 'INTERGER PRIMARY KEY AUTOINCREMENT, ',
+                                            'int_primary_key'       : 'INT PRIMARY KEY, ',
+                                            'text_not_null'         : 'TEXT NOT NULL, ',
+                                            'text'                  : 'TEXT, ',
+                                            'bool'                  : 'BOOL, ',
+                                            'varchar'               : 'VARCHAR, ',
+                                            'varchar_20'            : 'VACHAR(20,)  ', }
 
+CMD_VALUE_TYPE                          = { 'dir'                   : 'directory',
+                                            'pth'                   : 'path',
+                                            'url'                   : 'link',
+                                            'func'                  : 'function',
+                                            'cmd'                   : 'commandPrompt',
+                                            'event'                 : 'PLM Event',
+                                            'stylesheet'            : 'PLMstylesheet',
+                                            'shortcut'              : 'shortcut',
+                                            'uiKey'                 : 'PLM Layout Key', }
 
-IGNORE_ICONS                                = [ 'Widget', 'bright', 'dark', 'charcoal', 'nuker', 'TopTab1', 'TopTab2',
-                                                'Organisation', 'Project', 'Team', 'Task', 'ShowAll','ItemWidget',
-                                                'BaseManager', 'SettingInput', 'QueryPage', 'SysTray', 'Footer', 'BotTab1',
-                                                'BotTab2', 'Cmd', 'User', 'Tracking']
-
-
-
-
-
-ICONSIZE                    = 32
-ICONBUFFER                  = -1
-BTNTAGSIZE                  = Size(87, 20)
-TAGBTNSIZE                  = Size(87-1, 20-1)
-BTNICONSIZE                 = Size(ICONSIZE, ICONSIZE)
-ICONBTNSIZE                 = Size(ICONSIZE+ICONBUFFER, ICONSIZE+ICONBUFFER)
-
-
-
-
-# -------------------------------------------------------------------------------------------------------------
-""" setting """
-
-
-
-""" PLM project base """
-
-PRJ_INFO = dict( APPS               = ["maya", "zbrush", "mari", "nuke", "photoshop", "houdini", "after effects"],
-                 MASTER             = ["assets", "sequences", "deliverables", "docs", "editorial", "sound", "rcs", "RnD"],
-                 TASKS              = ["art", "plt_model", "rigging", "surfacing"],
-                 SEQTASKS           = ["anim", "comp", "fx", "layout", "lighting"],
-                 ASSETS             = {"heroObj": ["washer", "dryer"], "environment": [], "props": []},
-                 STEPS              = ["publish", "review", "work"],
-                 MODELING           = ["scenes", "fromZ", "toZ", "objImport", "objExport", "movie"],
-                 RIGGING            = ["scenes", "reference"],
-                 SURFACING          = ["scenes", "sourceimages", "images", "movie"],
-                 LAYOUT             = ["scenes", "sourceimages", "images", "movie", "alembic"],
-                 LIGHTING           = ["scenes", "sourceimages", "images", "cache", "reference"],
-                 FX                 = ["scenes", "sourceimages", "images", "cache", "reference", "alembic"],
-                 ANIM               = ["scenes", "sourceimages", "images", "movie", "alembic"],)
-
-FIX_KEYS = dict( TextEditor         = 'TextEditor', NoteReminder = 'NoteReminder',  Calculator  = 'Calculator',
-                 Calendar           = 'Calendar', EnglishDictionary  = 'EnglishDictionary',    FindFiles    = 'FindFiles',
-                 ImageViewer        = 'ImageViewer', NodeGraph = 'NodeGraph', Screenshot = 'Screenshot', )
+actionTypes                             = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction',
+                                           'DAMGExecutingAction', 'DAMGOpenBrowserAction', 'DAMGWIDGETACTION']
+buttonTypes                             = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
+urlTypes                                = ['DAMGURL', 'Url', 'url']
+layoutTypes                             = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
 
 
+
+LOCALAPPDATA                            = os.getenv('LOCALAPPDATA')
+
+
+APPDATA_DAMG                            = create_path(LOCALAPPDATA, __organization__)
+APPDATA_PLM                             = create_path(APPDATA_DAMG, __appName__)
+CFG_DIR                                 = create_path(APPDATA_PLM, '.configs')
+TMP_DIR                                 = create_path(APPDATA_PLM, '.tmp')
+CACHE_DIR                               = create_path(APPDATA_PLM, '.cache')
+PREF_DIR                                = create_path(APPDATA_PLM, 'preferences')
+SETTING_DIR                             = CFG_DIR
+DB_DIR                                  = APPDATA_PLM
+LOG_DIR                                 = CFG_DIR
+TASK_DIR                                = create_path(CFG_DIR, 'task')
+TEAM_DIR                                = create_path(CFG_DIR, 'team')
+PRJ_DIR                                 = create_path(CFG_DIR, 'project')
+ORG_DIR                                 = create_path(CFG_DIR, 'organisation')
+
+
+
+APPDATA_DAMG                            = create_path(LOCALAPPDATA, __organization__)
+APPDATA_PLM                             = create_path(APPDATA_DAMG, __appName__)
+
+
+USER_DIR                                = parent_dir(os.getenv('HOME'))
+
+
+APP_SETTING                             = create_path(SETTING_DIR, 'PLM.ini')
+USER_SETTING                            = create_path(SETTING_DIR, 'user.ini')
+FORMAT_SETTING                          = create_path(SETTING_DIR, 'format.ini')
+UNIX_SETTING                            = create_path(SETTING_DIR, 'unix.ini')
+LOCAL_LOG                               = create_path(LOG_DIR, 'PLM.logs')
+
+
+
+
+BIN_DIR                                 = create_path(ROOT_APP, 'bin')
+DESIGN_DIR                              = create_path(BIN_DIR, 'design')
+FONT_DIR                                = create_path(BIN_DIR, 'fonts')
+JSON_DIR                                = create_path(BIN_DIR, 'json')
+LANGUAGE_DIR                            = create_path(BIN_DIR, 'language')
+PROFILE_DIR                             = create_path(BIN_DIR, 'profile')
+SOUND_DIR                               = create_path(BIN_DIR, 'sound')
+
+
+
+INTERGRATIONS_DIR                       = create_path(ROOT_APP, 'intergrations')
+BLENDER_DIR                             = create_path(INTERGRATIONS_DIR, 'Blender')
+HOUDINI_DIR                             = create_path(INTERGRATIONS_DIR, 'Houdini')
+MARI_DIR                                = create_path(INTERGRATIONS_DIR, 'Mari')
+MAYA_DIR                                = create_path(INTERGRATIONS_DIR, 'Maya')
+MUDBOX_DIR                              = create_path(INTERGRATIONS_DIR, 'Mudbox')
+NUKE_DIR                                = create_path(INTERGRATIONS_DIR, 'Nuke')
+SUBSTANCES_DIR                          = create_path(INTERGRATIONS_DIR, 'Substances')
+ZBRUSH_DIR                              = create_path(INTERGRATIONS_DIR, 'ZBrush')
+Others_DIR                              = create_path(INTERGRATIONS_DIR, 'Others')
+
+
+
+RESOURCES_DIR                           = create_path(ROOT, 'resources')
+AVATAR_DIR                              = create_path(RESOURCES_DIR, 'avatar')
+ICON_DIR                                = create_path(RESOURCES_DIR, 'icons')
+
+NODE_ICON_DIR                           = create_path(ICON_DIR, 'nodes')
+TAG_ICON_DIR                            = create_path(ICON_DIR, 'tags')
+WEB_ICON_DIR                            = create_path(ICON_DIR, 'web')
+
+WEB_ICON_16                             = create_path(WEB_ICON_DIR, 'x16')
+WEB_ICON_24                             = create_path(WEB_ICON_DIR, 'x24')
+WEB_ICON_32                             = create_path(WEB_ICON_DIR, 'x32')
+WEB_ICON_48                             = create_path(WEB_ICON_DIR, 'x48')
+WEB_ICON_64                             = create_path(WEB_ICON_DIR, 'x64')
+WEB_ICON_128                            = create_path(WEB_ICON_DIR, 'x128')
+
+ICON_DIR_12                             = create_path(ICON_DIR, 'x12')
+ICON_DIR_16                             = create_path(ICON_DIR, 'x16')
+ICON_DIR_24                             = create_path(ICON_DIR, 'x24')
+ICON_DIR_32                             = create_path(ICON_DIR, 'x32')
+ICON_DIR_48                             = create_path(ICON_DIR, 'x48')
+ICON_DIR_64                             = create_path(ICON_DIR, 'x64')
+
+IMAGE_DIR                               = create_path(RESOURCES_DIR, 'images')
+LOGO_DIR                                = create_path(RESOURCES_DIR, 'logo')
+
+ORG_LOGO_DIR                            = create_path(LOGO_DIR, 'DAMGTEAM')
+APP_LOGO_DIR                            = create_path(LOGO_DIR, 'PLM')
+
+
+SCRIPTS_DIR                             = create_path(ROOT, 'scripts')
+
+QSS_DIR                                 = create_path(SCRIPTS_DIR, 'qss')
+
+
+
+
+
+USER_LOCAL_DATA                         = create_path(CFG_DIR, 'userLocal')
+
+LIBRARY_DIR                             = create_path(USER_DIR, 'UserLibraries')
+
+
+
+DOCS_DIR                                = create_path(ROOT_APP, 'docs')
+RAWS_DIR                                = create_path(DOCS_DIR, 'raws')
+DOCS_READING_DIR                        = create_path(DOCS_DIR, 'reading')
+TEMPLATE_DIR                            = create_path(DOCS_DIR, 'template')
+TEMPLATE_LICENSE                        = create_path(TEMPLATE_DIR, 'LICENSE')
+
+
+
+API_DIR                                 = create_path(ROOT, 'api')
+CORE_DIR                                = create_path(API_DIR, 'Core')
+DAMG_DIR                                = create_path(API_DIR, 'damg')
+GUI_DIR                                 = create_path(API_DIR, 'Gui')
+NETWORK_DIR                             = create_path(API_DIR, 'Network')
+WIDGET_DIR                              = create_path(API_DIR, 'Widgets')
+
+CONFIGS_DIR                             = create_path(ROOT, 'configs')
+
+CORES_DIR                               = create_path(ROOT, 'cores')
+CORES_BASE_DIR                          = create_path(CORES_DIR, 'base')
+CORES_DATA_DIR                          = create_path(CORES_DIR, 'data')
+CORES_HANDLERS_DIR                      = create_path(CORES_DIR, 'handlers')
+CORES_MODELS_DIR                        = create_path(CORES_DIR, 'models')
+CORES_SETTINGS_DIR                      = create_path(CORES_DIR, 'settings')
+
+LOGGER_DIR                              = create_path(ROOT, 'loggers')
+PLUGINS_DIR                             = create_path(ROOT, 'plugins')
+
+
+
+
+
+
+
+
+SCRIPTS_DIR                             = create_path(ROOT, 'scripts')
+CSS_DIR                                 = create_path(SCRIPTS_DIR, 'css')
+HTML_DIR                                = create_path(SCRIPTS_DIR, 'html')
+JS_DIR                                  = create_path(SCRIPTS_DIR, 'js')
+
+SETTINGS_DIR                            = create_path(ROOT, 'settings')
+TYPES_DIR                               = create_path(ROOT, 'types')
+
+UI_DIR                                  = create_path(ROOT, 'ui')
+UI_BASE_DIR                             = create_path(UI_DIR, 'base')
+UI_COMPONENTS_DIR                       = create_path(UI_DIR, 'components')
+UI_LAYOUTS_DIR                          = create_path(UI_DIR, 'layouts')
+UI_MODELS_DIR                           = create_path(UI_DIR, 'models')
+UI_RCS_DIR                              = create_path(UI_DIR, 'rcs')
+UI_TOOLS_DIR                            = create_path(UI_DIR, 'tools')
+
+UTILS_DIR                               = create_path(ROOT, 'utils')
+TESTS_DIR                               = create_path(ROOT_APP, 'tests')
+
+evnInfoCfg                              = create_path(CFG_DIR, 'envs.cfg')
+avatarCfg                               = create_path(CFG_DIR, 'avatars.cfg')
+webIconCfg                              = create_path(CFG_DIR, 'webIcon.cfg')
+nodeIconCfg                             = create_path(CFG_DIR, 'nodeIcons.cfg')
+imageCfg                                = create_path(CFG_DIR, 'images.cfg')
+tagCfg                                  = create_path(CFG_DIR, 'tags.cfg')
+envVarCfg                               = create_path(CFG_DIR, 'envVar.cfg')
+userCfg                                 = create_path(CFG_DIR, 'user.cfg')
+PLMconfig                               = create_path(CFG_DIR, 'PLM.cfg')
+sceneGraphCfg                           = create_path(CFG_DIR, 'sceneGraph.cfg')
+splashImagePth                          = create_path(IMAGE_DIR, 'splash.png')
+serverCfg                               = create_path(CFG_DIR, 'server.cfg')
+
+LOCAL_DB                                = create_path(DB_DIR, 'local.db')
+
+
+ks                                      = ['icon12', 'icon16', 'icon24', 'icon32', 'icon48', 'icon64', 'node', 'tag',
+                                           'web16', 'web24', 'web32', 'web48', 'web64', 'web128']
+
+ds                                      = [ICON_DIR_12, ICON_DIR_16, ICON_DIR_24, ICON_DIR_32, ICON_DIR_48, ICON_DIR_64,
+                                           NODE_ICON_DIR, TAG_ICON_DIR, WEB_ICON_16, WEB_ICON_24, WEB_ICON_32,
+                                           WEB_ICON_48, WEB_ICON_64, WEB_ICON_128]
+
+IMAGE_ext                               = "All Files (*);;Img Files (*.jpg);;Img Files (*.png)"
+
+factors                                 = ['Organisation', 'Project', 'Department', 'Team', 'Task', ]
+factorActs                              = ['New', 'Config', 'Edit', 'Remove']
+
+FACTOR_KEYS                             = []
+
+for f in factors:
+    FACTOR_KEYS.append(f)
+    for act in factorActs:
+        FACTOR_KEYS.append('{0} {1}'.format(act, f))
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -89,15 +269,14 @@ FIX_KEYS = dict( TextEditor         = 'TextEditor', NoteReminder = 'NoteReminder
 
 def read_file(fileName):
 
-    filePth = create_path(ROOT, 'docs', 'raws', fileName)
+    filePth = create_path(RAWS_DIR, fileName)
 
     if os.path.exists(filePth):
         with open(filePth) as f:
             data = f.read()
         return data
     else:
-        print("File not found: {0}".format(filePth))
-
+        cprint("PathNotExistsed: {0}".format(filePth), 'red', attrs=['blink'])
 
 
 ABOUT                               = read_file('ABOUT')
@@ -107,31 +286,30 @@ COPYRIGHT                           = read_file('COPYRIGHT')
 CREDIT                              = read_file('CREDIT')
 LICENCE                             = read_file('LICENSE')
 LINKS                               = read_file('LINKS')
-REFERENCES                          = read_file('REFERENCES')
 QUESTIONS                           = read_file('QUESTION')
 VERSION                             = read_file('VERSION')
 
+from pyjavaproperties import Properties
+
+propText = Properties()
+propText.load(open(create_path(BIN_DIR, 'text.properties')))
 
 
-class ConfigColors(Clrs):
+class ConfigUrls(Cfg):
 
-    key                             = 'ConfigColors'
+    key                             = 'ConfigUrl'
 
     def __init__(self):
-        super(ConfigColors, self).__init__()
+        Cfg.__init__(self)
 
-        self.__dict__.update()
-
-        if glbSettings.printCfgInfo:
-            if glbSettings.printColorInfo:
-                self.pprint()
-
-        if glbSettings.saveCfgInfo:
-            if glbSettings.saveColorInfo:
-                self.save_data()
+        self.add('homepage'         , "https://pipeline.damgteam.com")
+        self.add('pythonTag'        , 'https://docs.anaconda.com/anaconda/reference/release-notes/')
+        self.add('licenceTag'       , 'https://github.com/vtta2008/damgteam/blob/master/LICENCE')
+        self.add('versionTag'       , 'https://github.com/vtta2008/damgteam/blob/master/bin/docs/rst/version.rst')
+        self.add('PLM wiki'         , "https://github.com/vtta2008/PipelineTool/wiki")
 
 
-class ConfigApps(Apps):
+class ConfigApps(dict):
 
     key                         = 'ConfigApps'
 
@@ -151,116 +329,95 @@ class ConfigApps(Apps):
                 self[str(name)] = lnk.path
 
 
-        if glbSettings.printCfgInfo:
-            if glbSettings.printAppInfo:
-                self.pprint()
+class ConfigIcons(Cfg):
 
-        if glbSettings.saveCfgInfo:
-            if glbSettings.saveAppInfo:
-                self.save_data()
-
-
-
-class ConfigPython(Pys):
-
-    key                         = 'ConfigPython'
+    key                                 = 'ConfigIcons'
 
     def __init__(self):
-        super(ConfigPython, self).__init__()
+        dict.__init__(self)
+
+        ks = ['icon12', 'icon16', 'icon24', 'icon32', 'icon48', 'icon64', 'node', 'tag', 'web16', 'web24', 'web32',
+              'web48', 'web64', 'web128']
+        ds = [ICON_DIR_12, ICON_DIR_16, ICON_DIR_24, ICON_DIR_32, ICON_DIR_48, ICON_DIR_64, NODE_ICON_DIR, TAG_ICON_DIR,
+              WEB_ICON_16, WEB_ICON_24, WEB_ICON_32, WEB_ICON_48, WEB_ICON_64, WEB_ICON_128]
+
+        for i in range(len(ks)):
+            k = ks[i]
+            d = ds[i]
+            self.add(k, self.get_icons(d))
+
+    def get_icons(self, dir):
+        icons = dict()
+        for root, dirs, names in os.walk(dir, topdown=False):
+            for name in names:
+                icons[name.split('.icon')[0]] = os.path.join(root, name).replace('\\', '/')
+        return icons
 
 
-        if glbSettings.printCfgInfo:
-            if glbSettings.printPythonInfo:
-                self.pprint()
+class ConfigUiKeys(Cfg):
 
-        if glbSettings.saveCfgInfo:
-            if glbSettings.savePythonInfo:
-                self.save_data()
+    key                 = 'ConfigUiKeys'
 
+    APP_EVENT_KEYS      = [ 'ShowAll', 'HideAll', 'CloseAll', 'SwitchAccount', 'LogIn', 'LogOut', 'Quit', 'Exit',
+                            'ChangePassword', 'UpdateAvatar', ]
 
+    STYLESHEET_KEYS     = ['bright', 'dark', 'charcoal', 'nuker', ]
+    STYLE_KEYS          = []
+    OPEN_DIR_KEYS       = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppDataFolder', 'PreferenceFolder', ]
+    OPEN_URL_KEYS       = ['pythonTag', 'licenceTag', 'versionTag', 'PLM wiki']
+    SYS_CMD_KEYS        = ['Command Prompt', 'cmd', ]
+    SHORTCUT_KEYS       = ['Copy', 'Cut', 'Paste', 'Delete', 'Find', 'Rename']
 
-class ConfigUrls(Urls):
+    APP_FUNCS_KEYS      = ['ReConfig', 'CleanPyc', 'Debug', 'Maximize', 'Minimize', 'Restore', ] + FACTOR_KEYS + \
+                          APP_EVENT_KEYS + STYLESHEET_KEYS + STYLE_KEYS + OPEN_DIR_KEYS + OPEN_URL_KEYS + SYS_CMD_KEYS + \
+                          SHORTCUT_KEYS
 
-    key                             = 'ConfigUrls'
+    UI_ELEMENT_KEYS     = ['BotTab', 'ConnectStatus', 'GridLayout', 'MainMenuSection', 'MainToolBar', 'MainToolBarSection',
+                           'Notification', 'StatusBar', 'TopTab', 'TopTab1', 'TopTab2', 'TopTab3', 'UserSetting', ]
+    MAIN_UI_KEYS        = ['SysTray', 'PipelineManager', 'ForgotPassword', 'SignIn', 'SignUp', 'SignOut', 'CommandUI', ]
+    INFO_UI_KEYS        = ['About', 'CodeOfConduct', 'Contributing', 'Credit', 'Version', 'AppLicence', 'PythonLicence',
+                           'OrgInfo', 'References', ]
+    PROJ_UI_KEYS        = ['ProjectManager', 'PreProductionProj', 'ProductionProj', 'PostProductionPrj', 'VFXProj',
+                           'ResearchProject', ]
+    ORG_UI_KEYS         = ['OrganisationManager', ]
+    TASK_UI_KEYS        = ['TaskManager', ]
+    TEAM_UI_KEYS        = ['TeamManager', ]
+    DEPA_UI_KEYS        = ['DepartmentManager']
+    SETTING_UI_KEYS     = ['Configurations', 'Preferences', 'SettingUI', 'glbSettings', 'UserSetting', 'BrowserSetting',
+                           'ProjSetting', 'OrgSetting', 'TaskSetting', 'TeamSetting']
+    LIBRARY_UI_KEYS     = ['UserLibrary', 'HDRILibrary', 'TextureLibrary', 'AlphaLibrary', ]
+    TOOL_UI_KEYS        = ['Calculator', 'Calendar', 'EnglishDictionary', 'FindFiles', 'ImageViewer', 'NoteReminder',
+                           'ScreenShot', 'TextEditor', ]
+    PLUGIN_UI_KEY       = ['PluginManager', 'NodeGraph', 'Browser', 'Messenger', 'QtDesigner']
+    FORM_KEY            = ['ContactUs', 'InviteFriend', 'ReportBug', ]
+    KEYDETECT           = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url", "Changelog", "Settings"]
+
+    APP_UI_KEYS         = MAIN_UI_KEYS + INFO_UI_KEYS + PROJ_UI_KEYS + ORG_UI_KEYS + TASK_UI_KEYS + TEAM_UI_KEYS + \
+                          SETTING_UI_KEYS + LIBRARY_UI_KEYS + TOOL_UI_KEYS + PLUGIN_UI_KEY + FORM_KEY
+
+    tracker             = TrackKeys()
 
     def __init__(self):
-        super(ConfigUrls, self).__init__()
+        super(ConfigUiKeys, self).__init__()
 
-        if glbSettings.printCfgInfo:
-            if glbSettings.printUrlInfo:
-                self.pprint()
+        self.KEYPACKAGE = self.tracker.generate_key_packages()
 
-        if glbSettings.saveCfgInfo:
-            if glbSettings.saveUrlInfo:
-                self.save_data()
+        # Toolbar _data
+        self.CONFIG_TDS     = self.tracker.generate_config('TDS')                               # TD & animators
+        self.CONFIG_VFX     = self.tracker.generate_config('VFX')                               # VFX
+        self.CONFIG_ART     = self.tracker.generate_config('ART')                               # 2D
+        self.CONFIG_PRE     = self.tracker.generate_config('PRE')                               # Preproduction
+        self.CONFIG_TEX     = self.tracker.generate_config('TEXTURE')                           # ShadingTD
+        self.CONFIG_POST    = self.tracker.generate_config('POST')                              # Post production
 
-
-
-class ConfigLogos(Lgs):
-
-    key                                 = 'ConfigLogos'
-
-    def __init__(self):
-        super(ConfigLogos, self).__init__()
-
-        if glbSettings.printCfgInfo:
-            if glbSettings.printAvatarInfo:
-                self.pprint()
-
-        if glbSettings.saveCfgInfo:
-            if glbSettings.saveAvatarInfo:
-                self.save_data()
-
-
-
-class ConfigFonts(Fnts):
-
-    key                                 = 'ConfigFonts'
-
-    def __init__(self):
-        super(ConfigFonts, self).__init__()
-
-        if glbSettings.printCfgInfo:
-            if glbSettings.printFontInfo:
-                self.pprint()
-
-        if glbSettings.saveCfgInfo:
-            if glbSettings.saveFontInfo:
-                self.save_data()
-
-
-class ConfigFormats(Fmts):
-
-    key                                 = 'ConfigFormats'
-
-    def __iter__(self):
-        super(ConfigFormats, self).__iter__()
-
-        if glbSettings.printCfgInfo:
-            if glbSettings.printFmtInfo:
-                self.pprint()
-
-        if glbSettings.saveCfgInfo:
-            if glbSettings.saveFmtInfo:
-                self.save_data()
-
-
-class ConfigUiKeys(Uis):
-
-    key                                 = 'ConfigUiKeys'
-
-    def __iter__(self):
-        super(ConfigUiKeys, self).__iter__()
+        # Tab 1 sections _data
+        self.CONFIG_OFFICE  = self.tracker.generate_config('Office')                            # Office
+        self.CONFIG_DEV     = self.tracker.generate_config('Dev') + ['Command Prompt'],         # Rnd
+        self.CONFIG_TOOLS   = self.tracker.generate_config('Tools') + self.TOOL_UI_KEYS,        # useful/custom tools
+        self.CONFIG_EXTRA   = self.tracker.generate_config('Extra'),                            # Extra tools
+        self.CONFIG_SYSTRAY = self.tracker.generate_config('sysTray') + ['Exit', 'SignIn'],     # System tray tools
 
         self.__dict__.update()
-
-        if glbSettings.printCfgInfo:
-            if glbSettings.printUiKeyInfo:
-                self.pprint()
-
-        if glbSettings.saveCfgInfo:
-            if glbSettings.saveUiKeyInfo:
-                self.save_data()
 
 
 iconMissing                     = []
@@ -268,17 +425,22 @@ toolTips                        = {}
 statusTips                      = {}
 
 
-class ConfigPipeline(Pls):
+class ConfigPipeline(Cfg):
 
     key                         = 'ConfigPipeline'
 
-    dirInfo                     = ConfigDirs()
-    pthInfo                     = ConfigPths()
-    iconInfo                    = ConfigIcons()
     appInfo                     = ConfigApps()
-    urlInfo                     = ConfigUrls()
     uiKeyInfo                   = ConfigUiKeys()
+    iconInfo                    = ConfigIcons()
+    urlInfo                     = ConfigUrls()
 
+    dirInfo                 = {
+                                'ConfigFolder': CFG_DIR,
+                                'IconFolder': ICON_DIR,
+                                'SettingFolder': SETTINGS_DIR,
+                                'AppDataFolder': APPDATA_PLM,
+                                'PreferenceFolder': PREF_DIR,
+                                }
 
     def __init__(self):
         super(ConfigPipeline, self).__init__()
@@ -442,14 +604,6 @@ class ConfigPipeline(Pls):
                 tooltip = toolTips[key]
                 statustip = statusTips[key]
                 self.add(key, Cmds(key, icon, tooltip, statustip, value, valueType, arg, code))
-
-        if glbSettings.printCfgInfo:
-            if glbSettings.printPlmInfo:
-                self.pprint()
-
-        if glbSettings.saveCfgInfo:
-            if glbSettings.savePlmInfo:
-                self.save_data()
 
     def del_key(self, key):
         try:

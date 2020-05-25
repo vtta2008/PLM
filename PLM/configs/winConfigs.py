@@ -15,7 +15,7 @@ import subprocess, re, uuid, socket
 from wmi                    import WMI
 
 
-from PLM                    import CPU_TYPE, RAM_TYPE, FORM_FACTOR, DRIVE_TYPE
+from .                      import CPU_TYPE, RAM_TYPE, FORM_FACTOR, DRIVE_TYPE
 from PLM.api.Widgets        import Application
 
 PIPE                        = subprocess.PIPE

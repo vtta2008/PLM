@@ -12,9 +12,9 @@ Description:
 """ Import """
 
 # Plt
-from PLM.api.Widgets import Widget, GridLayout
-from PLM.api.Gui import AppIcon
-from PLM.ui.base import Profile, Location, Avatar, PassWord
+from PLM import Widget, GridLayout
+from PLM import AppIcon
+from PLM import Profile, Location, Avatar, PassWord
 
 # ----------------------------------------------------------------------------------------------------------- #
 """ User setting layout """

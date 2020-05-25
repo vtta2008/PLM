@@ -16,13 +16,14 @@ import os, sys
 from math import ceil
 
 # PLM
-from PLM.configs                            import (ERROR_APPLICATION, FRAMELESS, SPLASHSCREEN, TRANSPARENT, TEXT_NORMAL,
-                                                    colorLibs, ANTIALIAS, DAMG_LOGO_DIR, NO_PEN, ERROR_LAYOUT_COMPONENT,
-                                                    )
-from PLM.api.Widgets import SplashScreen, MessageBox, ProgressBar
-from PLM.api.Gui import Font, Palette, Image, Pen, Painter, FontMetrics
-from PLM.api.Core import Timer
-from PLM.cores                              import Loggers, StyleSheet
+from PLM.configs                        import ORG_LOGO_DIR, propText as p
+from PLM.api.qtOption                   import (FRAMELESS, SPLASHSCREEN, TRANSPARENT, TEXT_NORMAL, ANTIALIAS, NO_PEN,
+                                                peacock, DAMG_LOGO_COLOR, DARKBLUE, deep_blue)
+from PLM.api.Widgets                    import SplashScreen, MessageBox, ProgressBar
+from PLM.api.Gui                        import Font, Palette, Image, Pen, Painter, FontMetrics
+from PLM.api.Core                       import Timer
+from PLM.loggers                        import Loggers
+from PLM.cores                          import StyleSheet
 
 
 
@@ -37,7 +38,7 @@ class LoadingBar(ProgressBar):
         self.parent                     = parent
 
         if not self.parent:
-            MessageBox(self, 'Loading Layout Component', 'critical', ERROR_LAYOUT_COMPONENT)
+            MessageBox(self, 'Loading Layout Component', 'critical', p['ERROR_LAYOUT_COMPONENT'])
             sys.exit()
         else:
             self.num                    = self.parent.num
@@ -66,7 +67,7 @@ class BaseSplash(SplashScreen):
 
     _innerRadius                            = 70
 
-    _mainColor                              = colorLibs.deep_blue
+    _mainColor                              = deep_blue
     _brushColor                             = None
 
     _bufferH                                = 100
@@ -82,9 +83,9 @@ class BaseSplash(SplashScreen):
     _fontAttr                               = TEXT_NORMAL
     _currentFont                            = Font(_fontFamily, _fontSize, _fontAttr)
 
-    _textColor                              = colorLibs.peacock
-    _penColor                               = colorLibs.DARKBLUE
-    _textBrushColor                         = colorLibs.DAMG_LOGO_COLOR
+    _textColor                              = peacock
+    _penColor                               = DARKBLUE
+    _textBrushColor                         = DAMG_LOGO_COLOR
 
     _text                                   = 'Running Configurations'
     _pText                                  = '0%'
@@ -120,11 +121,11 @@ class BaseSplash(SplashScreen):
         self.app = app
 
         if not app:
-            MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
+            MessageBox(self, 'Application Error', 'critical', p['ERROR_APPLICATION'])
             sys.exit()
 
         if not self.logo:
-            self.logo                       = Image(os.path.join(DAMG_LOGO_DIR, '96x96.png'))
+            self.logo                       = Image(os.path.join(ORG_LOGO_DIR, '96x96.png'))
 
         # set logger
         self.logger                         = Loggers(self)
@@ -199,7 +200,7 @@ class BaseSplash(SplashScreen):
 
     def processEvents(self):
         if not self.app:
-            MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
+            MessageBox(self, 'Application Error', 'critical', p['ERROR_APPLICATION'])
             sys.exit()
         else:
             return self.app.processEvents()

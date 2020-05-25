@@ -14,17 +14,11 @@ Description:
 # Python
 import math
 
-# PyQt5
-from PyQt5.QtCore                               import Qt
-
 # PLM
-from PLM.api.damg                                import DAMGLIST
-from PLM.api.Widgets import LineEdit
-from PLM.api.Widgets import GridLayout
-from PLM.api.Widgets import Widget
-from PLM.api.Widgets import ToolButton
+from PLM.api.damg import DAMGLIST
+from PLM.api.Widgets import LineEdit, GridLayout, Widget, ToolButton
 from PLM.api.Gui import AppIcon
-
+from PLM.api.Core import Qt
 
 class Calculator(Widget):
 

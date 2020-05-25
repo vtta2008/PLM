@@ -8,10 +8,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QSystemTrayIcon
-from PLM.api.Gui                            import AppIcon
-from PLM.cores                              import Loggers
+
+from .io_widgets import QSystemTrayIcon
+from PLM.api.Gui import AppIcon
+from PLM.loggers import Loggers
 
 
 
@@ -20,7 +20,6 @@ class SystemTrayIcon(QSystemTrayIcon):
     Type                                    = 'DAMGUI'
     key                                     = 'SystemTrayIcon'
     _name                                   = 'DAMG System Tray Icon'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         super(SystemTrayIcon, self).__init__(parent)
@@ -38,10 +37,6 @@ class SystemTrayIcon(QSystemTrayIcon):
             return self.settings.initValue(key, self.key)
         else:
             return self.settings.initValue(key, self.key, decode)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

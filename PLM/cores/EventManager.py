@@ -10,27 +10,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 
-
-from PyQt5.QtGui                import QWheelEvent
-
-from PLM.api.damg               import DAMGDICT, DAMG
-from PLM.cores.base             import BaseStorage
-
-
-class WheelEvent(DAMG):
-
-    key                 = 'WheelEvent'
-    Type                = 'DAMGEVENT'
-
-    def eventFilter(self, object, event):
-        if type(event) == QWheelEvent:
-            if event.delta() > 0:
-                print("wheel up")
-            else:
-                print("wheel down")
-            event.accept()
-            return True
-        return False
+from .base                      import BaseStorage
+from PLM.api.damg               import DAMGDICT
+from PLM.api.Gui                import WheelEvent
 
 
 class EventManager(BaseStorage):
@@ -42,6 +24,16 @@ class EventManager(BaseStorage):
 
         self.parent         = parent
         self.wheelEvent     = WheelEvent()
+
+    def eventFilter(self, object, event):
+        if type(event) == WheelEvent:
+            if event.delta() > 0:
+                print("wheel up")
+            else:
+                print("wheel down")
+            event.accept()
+            return True
+        return False
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 6/11/2019 - 5:25 PM

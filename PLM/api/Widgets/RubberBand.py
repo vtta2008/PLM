@@ -8,8 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QRubberBand
+from .io_widgets import QRubberBand
 
 
 class RubberBand(QRubberBand):
@@ -17,16 +16,9 @@ class RubberBand(QRubberBand):
     Type                                    = 'DAMGGRAPHICVIEW'
     key                                     = 'GraphicView'
     _name                                   = 'DAMG Graphic View'
-    _copyright                              = __copyright__()
 
-    def __init__(self, shape, parent=None):
-        QRubberBand.__init__(self, shape, parent)
-
-        self.parent                         = parent
-
-    @property
-    def copyright(self):
-        return self._copyright
+    def __init__(self,*__args):
+        super(RubberBand, self).__init__(*__args)
 
     @property
     def name(self):

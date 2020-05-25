@@ -14,12 +14,10 @@ Description:
 # Python
 import sys, traceback
 
-# PyQt5
-from PyQt5.QtCore                           import pyqtSignal
-
 # PLM
-from PLM.api.damg                           import DAMG
-from PLM.api.Core                           import Runnable
+from PLM import Signal
+from PLM.api.damg import DAMG
+from PLM.api.Core import Runnable
 
 
 
@@ -28,13 +26,13 @@ class Grabber(DAMG):
     key                                 = 'Grabber'
 
     # report when error occur
-    error                               = pyqtSignal(tuple, name='Error')
+    error                               = Signal(tuple, name='Error')
 
     # send out result
-    result                              = pyqtSignal(object, name='result')
+    result                              = Signal(object, name='result')
 
     # realtime performance
-    progress                            = pyqtSignal(int, name='progress')
+    progress                            = Signal(int, name='progress')
 
     def __init__(self, parent=None):
         super(Grabber, self).__init__(parent)

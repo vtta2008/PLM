@@ -19,13 +19,12 @@ from math import sin, cos, pi, ceil
 from PyQt5.QtWidgets                    import QApplication
 
 # PLM
-from PLM.configs                        import (ERROR_APPLICATION, FRAMELESS, SPLASHSCREEN,
-                                                splashImagePth, colorLibs, ANTIALIAS, TRANSPARENT, NO_PEN, AUTO_COLOR,
-                                                DAMG_LOGO_DIR, TEXT_NORMAL)
-
-from PLM.api.Widgets import SplashScreen, MessageBox
-from PLM.api.Gui import Pixmap, Image, Font, FontMetrics, Palette, Painter, Pen
-from PLM.api.Core import Timer, Rect
+from PLM.api.qtOption                   import (FRAMELESS, SPLASHSCREEN,ANTIALIAS, TRANSPARENT, NO_PEN, AUTO_COLOR,
+                                                TEXT_NORMAL, DAMG_LOGO_COLOR, peacock, DARKBLUE, deep_blue)
+from PLM.api.Widgets                    import SplashScreen, MessageBox
+from PLM.api.Gui                        import Pixmap, Image, Font, FontMetrics, Palette, Painter, Pen
+from PLM.api.Core                       import Timer, Rect
+from PLM.configs                        import splashImagePth, ORG_LOGO_DIR, propText as p
 
 
 class SplashUI(SplashScreen):
@@ -44,7 +43,7 @@ class SplashUI(SplashScreen):
 
     _innerRadius                        = 70
 
-    _mainColor                          = colorLibs.deep_blue
+    _mainColor                          = deep_blue
     _brushColor                         = None
 
     _bufferH                            = 100
@@ -78,9 +77,9 @@ class SplashUI(SplashScreen):
     _fontAttr                           = TEXT_NORMAL
     _currentFont                        = Font(_fontFamily, _fontSize, _fontAttr)
 
-    _textColor                          = colorLibs.peacock
-    _penColor                           = colorLibs.DARKBLUE
-    _textBrushColor                     = colorLibs.DAMG_LOGO_COLOR
+    _textColor                          = peacock
+    _penColor                           = DARKBLUE
+    _textBrushColor                     = DAMG_LOGO_COLOR
 
     _text                               = 'Running Configurations'
     _pText                              = '0%'
@@ -97,7 +96,7 @@ class SplashUI(SplashScreen):
         self.app                        = app
 
         if not self.app:
-            MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
+            MessageBox(self, 'Application Error', 'critical', p['ERROR_APPLICATION'])
             sys.exit()
 
         # setting 100% transperiency background
@@ -176,7 +175,7 @@ class SplashUI(SplashScreen):
         painter.fillRect(event.rect(), TRANSPARENT)
 
         # Indicating DAMG logo
-        self.logo                       = Image(os.path.join(DAMG_LOGO_DIR, '96x96.png'))
+        self.logo                       = Image(os.path.join(ORG_LOGO_DIR, '96x96.png'))
         self.logoRect                   = Rect(self.width() / 2 - self.logo.width() / 2,
                                                 self.height() / 2 - self.logo.height() / 2,
                                                 self.logo.width(), self.logo.height())

@@ -15,9 +15,9 @@ import os
 from PyQt5.QtCore               import pyqtSignal
 from PyQt5.QtWidgets            import QApplication
 
-from PLM.cores import Loggers
-from PLM.api.Widgets import Menu, WidgetAction, Action, LineEdit
-from PLM.api.Gui import Icon
+from PLM import Loggers
+from PLM import Menu, WidgetAction, Action, LineEdit
+from PLM import Icon
 
 
 class ScriptAction(Action):

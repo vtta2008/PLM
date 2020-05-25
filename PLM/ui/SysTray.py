@@ -12,13 +12,13 @@ Description:
 """ Import """
 
 # PLM
-from PLM.configs                        import __appSlogan__, __appname__
-from PLM.api.Widgets                    import SystemTrayIcon
-from PLM.api.Gui                        import LogoIcon
-from PLM.ui.components                  import SysTrayIconMenu
-from PLM.cores.EventManager             import EventManager
-from PLM.ui.models.ActionManager        import ActionManager
-from PLM.cores                          import sqlUtils
+from PLM import __appSlogan__, __appname__
+from PLM import SystemTrayIcon
+from PLM import LogoIcon
+from PLM import SysTrayIconMenu
+from PLM import EventManager
+from PLM import ActionManager
+from PLM import sqlUtils
 
 
 # -------------------------------------------------------------------------------------------------------------

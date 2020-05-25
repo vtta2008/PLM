@@ -14,12 +14,9 @@ Description:
 import logging
 
 # PLM
-from PLM                            import LOCAL_LOG
-from .configs                       import LogLevel, LoggingFullOpt, DATETIME_fullOpt
+from PLM.configs                    import LOCAL_LOG
+from .configs                       import LoggingFullOpt, DATETIME_fullOpt, LogLevel
 from .handlers                      import StreamHandler, FileHandler
-
-
-
 
 
 class Loggers(logging.Logger):
@@ -49,8 +46,8 @@ class Loggers(logging.Logger):
         self.addLoggingLevel(levelName='VERBOSE', levelNum=LogLevel.Verbose)
         self.addLoggingLevel(levelName='SUCCESS', levelNum=LogLevel.Success)
 
-        self.streamHld              = StreamHandler(self.verboseLvl, self.formatter, self.datetimeFormatter)
-        self.fileHld                = FileHandler(self.filename, self.verboseLvl, self.formatter, self.datetimeFormatter)
+        self.streamHld              = StreamHandler(self.logLevel, self.formatter, self.datetimeFormatter)
+        self.fileHld                = FileHandler(self.filename, self.logLevel, self.formatter, self.datetimeFormatter)
 
         self.addHandler(self.streamHld)
         self.addHandler(self.fileHld)
@@ -87,13 +84,13 @@ class Loggers(logging.Logger):
     def level_config(self, verbosity_loglevel):
 
         logConfigs = {LogLevel.Silent: logging.NOTSET,
-                      LogLevel.Spam: logging.SPAM,
+                      LogLevel.Spam: logging.INFO,
                       LogLevel.Debug: logging.DEBUG,
-                      LogLevel.Verbose: logging.VERBOSE,
+                      LogLevel.Verbose: logging.DEBUG,
                       LogLevel.Normal: logging.INFO,
                       LogLevel.Notice: logging.WARN,
-                      LogLevel.Trace: logging.TRACE,
-                      LogLevel.Success: logging.SUCCESS,
+                      LogLevel.Trace: logging.WARN,
+                      LogLevel.Success: logging.INFO,
                       LogLevel.Error: logging.ERROR,
                       LogLevel.Critical: logging.CRITICAL,
                       LogLevel.Fatal: logging.FATAL}

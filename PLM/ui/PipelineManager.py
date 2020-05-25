@@ -9,15 +9,16 @@ Description:
 """ Import """
 
 # PLM
-from PLM.configs                        import __homepage__, __appname__, dockT, dockB
-from PLM.api.damg                       import DAMGDICT
-from PLM.api.Widgets                    import MainWindow, Widget, GridLayout
-from PLM.api.Gui                        import LogoIcon
+from PLM import __homepage__, __appname__
+from PLM import DAMGDICT
+from PLM import MainWindow, Widget, GridLayout
+from PLM import LogoIcon
+
+from PLM.api.qtOption                   import dockT, dockB
 from .components                        import (Footer, MainStatusBar, MenubarDock, ToolBarDock, NetworkStatusDock,
                                                 BotTabDock, NotificationDock, MidTabDock)
-from .models.ButtonManager              import ButtonManager
-from .models.ActionManager              import ActionManager
-from PLM.cores.ThreadManager            import ThreadManager
+from .models                            import ButtonManager, ActionManager
+from PLM.cores                          import ThreadManager
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Tool main layout """

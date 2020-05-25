@@ -16,7 +16,7 @@ import re
 import sqlite3 as lite
 
 
-from PLM.api.damg                   import DAMG
+from PLM.api.damg import DAMG
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """

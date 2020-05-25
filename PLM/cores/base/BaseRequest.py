@@ -12,10 +12,10 @@ Description:
 
 import time
 
-from PLM.utils                              import is_url, format_bytes, bytes2str
-from PLM.api.Network                        import NetworkRequest, NetworkReply, NetworkCookie, NetworkCookieJar
-from PLM.api.Core                           import Url
-from PLM.loggers                            import Loggers
+from PLM.utils import is_url, format_bytes, bytes2str
+from PLM.api.Network import NetworkRequest, NetworkReply, NetworkCookie, NetworkCookieJar
+from PLM.api.Core import Url
+from PLM.loggers import Loggers
 
 
 class HTTPrequest(NetworkRequest):

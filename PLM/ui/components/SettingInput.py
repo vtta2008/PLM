@@ -12,9 +12,9 @@ Description:
 
 from PyQt5.QtWidgets        import QAbstractItemView, QHeaderView, QTableWidgetItem
 
-from PLM.api.Widgets        import Widget, ComboBox, Label, GroupGrid, GridLayout, TableWidget
-from PLM.configs            import INI, NATIVE, USER_SCOPE, SYS_SCOPE, ITEMENABLE
-from PLM.cores              import RegSettings
+from PLM import Widget, ComboBox, Label, GroupGrid, GridLayout, TableWidget
+from PLM import INI, NATIVE, USER_SCOPE, SYS_SCOPE, ITEMENABLE
+from PLM import RegSettings
 
 
 class SettingInput(Widget):

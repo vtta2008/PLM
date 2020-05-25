@@ -8,16 +8,15 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QToolBar
-from PLM.cores                              import AppSettings
+
+from .io_widgets import QToolBar
+from PLM.settings import AppSettings
 
 class ToolBar(QToolBar):
 
     Type                                    = 'DAMGUI'
     key                                     = 'ToolBar'
     _name                                   = 'DAMG Tool Bar'
-    _copyright                              = __copyright__()
     actions                                 = []
 
     def __init__(self, parent=None):
@@ -42,10 +41,6 @@ class ToolBar(QToolBar):
             return self.settings.initValue(key, self.key)
         else:
             return self.settings.initValue(key, self.key, decode)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

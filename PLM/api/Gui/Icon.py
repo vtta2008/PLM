@@ -11,12 +11,12 @@ Description:
 """ Import """
 
 # Python
-import os
 
 # PLM
 from .io_gui                                import QIcon
-from PLM.utils                              import get_app_icon, get_tag_icon, get_logo_icon
+from PLM.utils                              import get_tag_icon, get_logo_icon, get_app_icon
 from PLM.api.Core                           import Size
+
 
 class Icon(QIcon):
 
@@ -32,8 +32,8 @@ class Icon(QIcon):
         return self._name
 
     @iconName.setter
-    def iconName(self, newName):
-        self._name                          = newName
+    def iconName(self, val):
+        self._name                          = val
 
 
 
@@ -42,11 +42,8 @@ class AppIcon(Icon):
     key                                     = 'AppIcon'
     _found                                  = False
 
-    def __init__(self, iconName):
-        super(AppIcon, self).__init__(self)
-
-        self.addFile(iconName)
-
+    def __init__(self, size=32, iconName=None):
+        super(AppIcon, self).__init__(get_app_icon(size, iconName))
 
 
 class LogoIcon(Icon):

@@ -8,8 +8,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import __copyright__
-from PLM.api.Widgets.io_widgets             import QGraphicsScene
+
+from .io_widgets                            import QGraphicsScene
 
 
 
@@ -18,7 +18,6 @@ class GraphicsScene(QGraphicsScene):
     Type                                    = 'DAMGGRAPHICSScene'
     key                                     = 'GraphicsScene'
     _name                                   = 'DAMG Graphic Scene'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         super(GraphicsScene, self).__init__(parent)
@@ -33,10 +32,6 @@ class GraphicsScene(QGraphicsScene):
             return self.settings.initValue(key, self.key)
         else:
             return self.settings.initValue(key, self.key, decode)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

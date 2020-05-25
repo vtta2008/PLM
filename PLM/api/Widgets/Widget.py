@@ -8,10 +8,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QWidget
-from PLM.api.Gui                            import AppIcon
-from PLM.cores                              import AppSettings
+
+from .io_widgets import QWidget
+from PLM.api.Gui import AppIcon
+from PLM.settings import AppSettings
 
 
 class Widget(QWidget):
@@ -19,7 +19,6 @@ class Widget(QWidget):
     Type                                    = 'DAMGWIDGET'
     key                                     = 'Widget'
     _name                                   = 'DAMG Widget'
-    _copyright                              = __copyright__()
 
     def __init__(self, parent=None):
         super(Widget, self).__init__(parent)
@@ -37,10 +36,6 @@ class Widget(QWidget):
             return self.settings.initValue(key, self.key)
         else:
             return self.settings.initValue(key, self.key, decode)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

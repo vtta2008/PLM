@@ -8,8 +8,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QUndoCommand
+
+from .io_widgets import QUndoCommand
 
 
 class UndoCommand(QUndoCommand):
@@ -17,14 +17,9 @@ class UndoCommand(QUndoCommand):
     Type                    = 'DAMGCOMMAND'
     key                     = 'UndoCommand'
     _name                   = 'DAMG Undo Command'
-    _copyright              = __copyright__()
 
     def __init__(self):
         QUndoCommand.__init__(self)
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

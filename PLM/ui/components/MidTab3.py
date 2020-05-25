@@ -19,10 +19,10 @@ from PyQt5.QtGui                        import QTextCursor
 
 
 # PLM
-from PLM.api.damg                        import DAMGLIST
-from PLM.configs                        import SCROLLBAROFF, NO_WRAP
-from PLM.api.Widgets import Widget, PlainTextEdit, ShortCut, VBoxLayout, StatusBar
-from PLM.api.Core import Process
+from PLM import DAMGLIST
+from PLM import SCROLLBAROFF, NO_WRAP
+from PLM import Widget, PlainTextEdit, ShortCut, VBoxLayout, StatusBar
+from PLM import Process
 
 
 class MidTab3(Widget):

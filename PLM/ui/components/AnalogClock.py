@@ -11,10 +11,10 @@ Description:
 from PyQt5.QtCore                       import pyqtProperty, pyqtSignal, pyqtSlot
 
 
-from PLM.api.Widgets import Widget
-from PLM.api.Core import Time, Timer, Size, Point
-from PLM.api.Gui import Painter, Brush, Color, Pen, Polygon
-from PLM.configs                        import ASPEC_RATIO, ANTIALIAS, NO_PEN
+from PLM import Widget
+from PLM import Time, Timer, Size, Point
+from PLM import Painter, Brush, Color, Pen, Polygon
+from PLM import ASPEC_RATIO, ANTIALIAS, NO_PEN
 
 
 class AnalogClock(Widget):

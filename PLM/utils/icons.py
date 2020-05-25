@@ -11,7 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 import os
 
-from PLM.configs        import (LOGO_DIR, WEB_ICON_DIR, TAG_ICON_DIR, AVATAR_DIR, USER_LOCAL_DATA, ICON_DIR)
+from PLM.configs        import LOGO_DIR, WEB_ICON_DIR, TAG_ICON_DIR, AVATAR_DIR, USER_LOCAL_DATA, ICON_DIR
 from .utils             import get_file_path
 
 

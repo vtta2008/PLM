@@ -9,8 +9,8 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM                                    import __copyright__
-from PLM.api.Widgets.io_widgets             import QTextEdit
+
+from .io_widgets import QTextEdit
 
 
 class TextEdit(QTextEdit):
@@ -18,15 +18,10 @@ class TextEdit(QTextEdit):
     Type                                    = 'DAMGUI'
     key                                     = 'TextEdit'
     _name                                   = 'DAMG Text Edit'
-    _copyright                              = __copyright__()
+
 
     def __init__(self, *__args):
         super(TextEdit, self).__init__(*__args)
-
-
-    @property
-    def copyright(self):
-        return self._copyright
 
     @property
     def name(self):

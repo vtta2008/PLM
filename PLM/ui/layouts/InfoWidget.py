@@ -9,9 +9,9 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.configs            import (SiPoMin, PLM_ABOUT, CODEOFCONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCES, VERSION)
-from PLM.api.Widgets import Widget, GridLayout, Label, Button
-from PLM.api.Gui import AppIcon
+from PLM import (SiPoMin, PLM_ABOUT, CODEOFCONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCES, VERSION)
+from PLM import Widget, GridLayout, Label, Button
+from PLM import AppIcon
 
 class InfoWidget(Widget):
 

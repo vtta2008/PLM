@@ -13,6 +13,7 @@ Description:
 from .ActionManager         import ActionManager
 from .AppModel              import AppModel
 from .ButtonManager         import ButtonManager
+from .CommandUI             import CommandUI
 from .RegistryLayout        import RegistryLayout
 
 # -------------------------------------------------------------------------------------------------------------

@@ -10,9 +10,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from PLM                        import Signal
-from PLM.api.damg               import DAMG, DAMGDICT
-from PLM.api.Core               import Date, Time, Timer
+from PLM import Signal
+from PLM.api.damg import DAMG, DAMGDICT
+from PLM.api.Core import Date, Time, Timer
 
 
 class BaseType(DAMG):
