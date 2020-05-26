@@ -12,11 +12,11 @@ Description:
 """ Import """
 
 # PLM
-from PLM import SiPoMin
-from PLM import MainWindow, ToolBar, GroupHBox
-from PLM import Size
-from PLM import str2bool, bool2str
-from PLM import ToolbarNameError
+from PLM.api.qtOption import SiPoMin
+from PLM.api.Widgets import MainWindow, ToolBar, GroupHBox
+from PLM.api.Core import Size
+from PLM.utils import str2bool, bool2str
+from PLM.cores.Errors import ToolbarNameError
 
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """

@@ -18,13 +18,13 @@ import sys, requests
 from functools                  import partial
 
 # PLM
-from PLM import SIGNUP, PW_BLANK, USER_BLANK, PW_WRONG, __localServerAutho__
-from PLM import SignalManager
-from PLM import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label,
-                 Label, MessageBox, GroupGrid, )
-from PLM import AppIcon
-from PLM import bool2str
-from PLM import sqlUtils
+from PLM import __localServerAutho__
+from PLM.configs import propText as p
+from PLM.cores import SignalManager, sqlUtils
+from PLM.api.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label, Label, MessageBox, GroupGrid, )
+from PLM.api.Gui import AppIcon
+from PLM.utils import bool2str
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sign In Layout """
@@ -76,7 +76,7 @@ class SignIn(Widget):
         loginGrid.addWidget(forgot_pw_btn, 3, 0, 1, 3)
         loginGrid.addWidget(cancel_btn, 3, 3, 1, 3)
 
-        signupGrid.addWidget(Label({'txt': SIGNUP}), 0, 0, 1, 6)
+        signupGrid.addWidget(Label({'txt': p['SIGNUP']}), 0, 0, 1, 6)
         signupGrid.addWidget(signupBtn, 1, 0, 1, 6)
 
         self.layout.addWidget(loginGrp, 0, 0, 1, 1)
@@ -95,10 +95,10 @@ class SignIn(Widget):
         pass_word = str(self.pwTF.text())
 
         if username == "" or username is None:
-            MessageBox(self, 'Login Failed', 'critical', USER_BLANK)
+            MessageBox(self, 'Login Failed', 'critical', p['USER_BLANK'])
             return
         elif pass_word == "" or pass_word is None:
-            MessageBox(self, 'Login Failed', 'critical', PW_BLANK)
+            MessageBox(self, 'Login Failed', 'critical', p['PW_BLANK'])
             return
 
         password = str(pass_word)
@@ -122,7 +122,7 @@ class SignIn(Widget):
             self.signals.emit('loginChanged', True)
         else:
             self.db.remove_data("curUser")
-            MessageBox(self, 'Login Failed', 'critical', PW_WRONG)
+            MessageBox(self, 'Login Failed', 'critical', p['PW_WRONG'])
             return
 
     def loginChanged(self, login):

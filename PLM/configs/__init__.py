@@ -288,6 +288,7 @@ LICENCE                             = read_file('LICENSE')
 LINKS                               = read_file('LINKS')
 QUESTIONS                           = read_file('QUESTION')
 VERSION                             = read_file('VERSION')
+REFERENCES                          = read_file('REFERENCES')
 
 from pyjavaproperties import Properties
 

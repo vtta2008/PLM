@@ -9,10 +9,10 @@ Description:
 """ Import """
 
 # PLM
-from PLM import __homepage__, __appname__
-from PLM import DAMGDICT
-from PLM import MainWindow, Widget, GridLayout
-from PLM import LogoIcon
+from PLM import __homepage__, __appName__
+from PLM.api.damg import DAMGDICT
+from PLM.api.Widgets import MainWindow, Widget, GridLayout
+from PLM.api.Gui import LogoIcon
 
 from PLM.api.qtOption                   import dockT, dockB
 from .components                        import (Footer, MainStatusBar, MenubarDock, ToolBarDock, NetworkStatusDock,
@@ -26,7 +26,7 @@ from PLM.cores                          import ThreadManager
 class PipelineManager(MainWindow):
 
     key                                 = 'PipelineManager'
-    _name                               = __appname__
+    _name                               = __appName__
     toolBars                            = DAMGDICT()
     menus                               = DAMGDICT()
     _count                              = 0
@@ -35,8 +35,8 @@ class PipelineManager(MainWindow):
         super(PipelineManager, self).__init__(parent)
 
         self.url                        = __homepage__
-        self.setObjectName(self._name)
-        self.setWindowTitle(__appname__)
+        self.setObjectName(self.name)
+        self.setWindowTitle(self.name)
         self.setWindowIcon(LogoIcon('PLM'))
 
         self.actionManager              = ActionManager(self.parent)

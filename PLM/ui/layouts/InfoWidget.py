@@ -9,14 +9,15 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM import (SiPoMin, PLM_ABOUT, CODEOFCONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCES, VERSION)
-from PLM import Widget, GridLayout, Label, Button
-from PLM import AppIcon
+from PLM.api.qtOption import SiPoMin
+from PLM.configs import ABOUT, CODEOFCONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCES, VERSION
+from PLM.api.Widgets import Widget, GridLayout, Label, Button
+from PLM.api.Gui import AppIcon
 
 class InfoWidget(Widget):
 
     content = dict(
-        About               = PLM_ABOUT,
+        About               = ABOUT,
         CodeOfConduct       = CODEOFCONDUCT,
         Contributing        = CONTRIBUTING,
         Credit              = CREDIT,

@@ -14,9 +14,9 @@ Description:
 # Python
 import sys
 
-from PLM import MessageBox, ProgressBar
-from PLM import ERROR_LAYOUT_COMPONENT
-from PLM import StyleSheet
+from PLM.api.Widgets import MessageBox, ProgressBar
+from PLM.configs import propText as p
+from PLM.cores import StyleSheet
 
 
 
@@ -31,7 +31,7 @@ class LoadingBar(ProgressBar):
         self.parent                     = parent
 
         if not self.parent:
-            MessageBox(self, 'Loading Layout Component', 'critical', ERROR_LAYOUT_COMPONENT)
+            MessageBox(self, 'Loading Layout Component', 'critical', p['ERROR_LAYOUT_COMPONENT'])
             sys.exit()
         else:
             self.num                    = self.parent.num

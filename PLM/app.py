@@ -11,7 +11,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ import """
-
+import sys
 from PLM.configs                        import propText as p
 from PLM.ui.models                      import AppModel
 from PLM.ui                             import LayoutManager
@@ -26,8 +26,7 @@ class PLM(AppModel):
     key                                 = 'PLM'
 
     def __init__(self):
-
-        AppModel.__init__(self)
+        super(PLM, self).__init__(sys.argv)
 
         self.layoutManager              = LayoutManager(self.threadManager, self)
         self.layoutManager.registLayout(self.browser)

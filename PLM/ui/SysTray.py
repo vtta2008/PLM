@@ -12,13 +12,12 @@ Description:
 """ Import """
 
 # PLM
-from PLM import __appSlogan__, __appname__
-from PLM import SystemTrayIcon
-from PLM import LogoIcon
-from PLM import SysTrayIconMenu
-from PLM import EventManager
-from PLM import ActionManager
-from PLM import sqlUtils
+from PLM import __appSlogan__, __appName__
+from PLM.api.Widgets import SystemTrayIcon
+from PLM.api.Gui import LogoIcon
+from PLM.ui.components import SysTrayIconMenu
+from PLM.cores import EventManager, sqlUtils
+from PLM.ui.models import ActionManager
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -61,7 +60,7 @@ class SysTray(SystemTrayIcon):
         self.showMessage('Log out', "{0} Loged out".format(self.username), self.Information, 500)
 
     def close_event(self):
-        self.showMessage('Notice', "{0} will keep running in the system tray.".format(__appname__), self.Information, 500)
+        self.showMessage('Notice', "{0} will keep running in the system tray.".format(__appName__), self.Information, 500)
 
     def loginChanged(self, login):
         self._login = login

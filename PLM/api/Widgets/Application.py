@@ -10,13 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-import sys
-
 from .io_widgets                            import QApplication
-from PLM.cores                              import SignalManager
-from PLM.settings                           import AppSettings
-
 
 
 class Application(QApplication):
@@ -25,12 +19,8 @@ class Application(QApplication):
     key                                     = 'Application'
     _name                                   = 'DAMG Application'
 
-    def __init__(self):
-        super(Application, self).__init__(sys.argv)
-
-        self.settings                   = AppSettings(self)
-        self.signals                    = SignalManager(self)
-
+    def __init__(self, *__args):
+        super(Application, self).__init__(*__args)
 
     @property
     def name(self):

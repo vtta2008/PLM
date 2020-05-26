@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM import StatusBar
+from PLM.api.Widgets import StatusBar
 
 class MainStatusBar(StatusBar):
 

@@ -10,16 +10,12 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-# Python
-import json
-
 # PLM
-from PLM import __plmWiki__, plmCfg
-from PLM import GroupVBox, MenuBar
-from PLM import is_string
+from PLM import __plmWiki__
+from PLM.api.Widgets import GroupVBox, MenuBar
+from PLM.utils import is_string
 
-with open(plmCfg, 'r') as f:
-    plmInfo = json.load(f)
+
 
 class MainMenuBar(GroupVBox):
 

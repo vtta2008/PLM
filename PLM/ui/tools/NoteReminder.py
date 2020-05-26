@@ -19,10 +19,8 @@ from PyQt5.QtWidgets                import (QAction, QApplication, QComboBox, QD
                                             QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
 
 # Plm
-from PLM import GridLayout
-from PLM import Label
-from PLM import Widget
-from PLM import AppIcon
+from PLM.api.Widgets import GridLayout, Label, Widget
+from PLM.api.Gui import AppIcon
 
 
 def codec_name(codec):

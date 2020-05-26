@@ -43,6 +43,18 @@ __appDescription__      = ""
 __homepage__            = "https://pipeline.damgteam.com"
 
 __version__             = Version()
+__plmWiki__             = "https://github.com/vtta2008/PipelineTool/wiki"
+
+__globalServer__        = "https://server.damgteam.com"
+__globalServerCheck__   = "https://server.damgteam.com/check"
+__globalServerAutho__   = "https://server.damgteam.com/auth"
+
+__localPort__           = "20987"
+__localHost__           = "http://localhost:"
+__localServer__         = "{0}{1}".format(__localHost__, __localPort__)
+__localServerCheck__    = "{0}/check".format(__localServer__)
+__localServerAutho__    = "{0}/auth".format(__localServer__)
+
 
 def path_exists(path):
     return os.path.exists(path)

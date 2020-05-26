@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM import BaseKeys
+from PLM.cores.base import BaseKeys
 
 class ButtonManager(BaseKeys):
 

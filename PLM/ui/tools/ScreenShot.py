@@ -20,13 +20,9 @@ from PyQt5.QtGui                import QPixmap
 from PyQt5.QtWidgets            import (QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox, QLabel)
 
 # PLM
-from PLM import ASPEC_RATIO, SMOOTH_TRANS
-from PLM import GridLayout
-from PLM import Button
-from PLM import Label
-from PLM import Widget
-from PLM import HBoxLayout
-from PLM import AppIcon
+from PLM.api.qtOption import ASPEC_RATIO, SMOOTH_TRANS
+from PLM.api.Widgets import GridLayout, Button, Label, Widget, HBoxLayout
+from PLM.api.Gui import AppIcon
 
 class ScreenShot(Widget):
 

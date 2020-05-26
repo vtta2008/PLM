@@ -12,7 +12,7 @@ Description:
 from PyQt5.QtWidgets import QTreeWidget, QHeaderView, QStyle, QAbstractItemView, QTreeWidgetItem
 from PyQt5.QtGui import QIcon
 from PyQt5.QtCore import QTimer, QSize, QEvent, Qt
-from PLM import VariantDelegate
+from .ValiantDelegate import VariantDelegate
 
 class SettingOutput(QTreeWidget):
 

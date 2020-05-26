@@ -17,17 +17,15 @@ import sys
 from functools import partial
 
 # PyQt5
-from PyQt5.QtGui            import QPixmap, QImage
 from PyQt5.QtWidgets        import (QFileDialog)
 
 # Plm
-from PLM import WAIT_LAYOUT_COMPLETE, PW_UNMATCH, USER_CHECK_REQUIRED, QUESTIONS
-from PLM import (check_blank, check_match, get_avatar_image, getToken, getUnix, getTime, getDate,
-                 get_local_pc_info, get_user_location)
-from PLM import SignalManager
-from PLM import (Widget, GridLayout, Label, Button, LineEdit, ComboBox, MessageBox, CheckBox,
-                 GroupGrid)
-from PLM import AppIcon
+from PLM.configs import propText as p
+from PLM.utils import (check_blank, check_match, get_avatar_image, getToken, getUnix, getTime, getDate, get_local_pc_info,
+                       get_user_location)
+from PLM.cores import SignalManager
+from PLM.api.Widgets import (Widget, GridLayout, Label, Button, LineEdit, ComboBox, MessageBox, CheckBox, GroupGrid)
+from PLM.api.Gui import AppIcon, Pixmap, Image
 
 
 # -------------------------------------------------------------------------------------------------------------
@@ -137,10 +135,10 @@ class SignUp(Widget):
         self.serSection     = GroupGrid("Security Question")
         questions_grid      = self.serSection.layout
 
-        self.ques1          = ComboBox({'items': [str(i) for i in QUESTIONS.split('\n')]})
+        self.ques1          = ComboBox({'items': [str(i) for i in p['QUESTIONS'].split('\n')]})
         self.answ2          = LineEdit()
 
-        self.ques2          = ComboBox({'items': [str(i) for i in QUESTIONS.split('\n')]})
+        self.ques2          = ComboBox({'items': [str(i) for i in p['QUESTIONS'].split('\n')]})
         self.answ1          = LineEdit()
 
         questions_grid.addWidget(Label({'txt':'Question 1'}), 0, 0, 1, 3)
@@ -157,7 +155,7 @@ class SignUp(Widget):
         self.btnSection     = GroupGrid()
         btn_grid            = self.btnSection.layout
 
-        self.user_agree_checkBox = CheckBox(txt=USER_CHECK_REQUIRED)
+        self.user_agree_checkBox = CheckBox(txt=p['USER_CHECK_REQUIRED'])
         okBtn               = Button({'txt':'Create Account', 'tt':'Confirm to create an account', 'cl': self.createBtnClicked})
         cancelBtn           = Button({'txt':'Cancel', 'tt':'Go back to Login stage', 'cl': partial(self.signals.emit, 'showLayout', 'SignIn', 'SignIn')})
         quitBtn             = Button({'txt': 'Quit', 'tt': 'Quit the application', 'cl': sys.exit})
@@ -173,13 +171,13 @@ class SignUp(Widget):
         self.rawAvatarPth, _ = QFileDialog.getOpenFileName(self, "Your Avatar", os.path.join('imgs', 'avatar'), "All Files (*);;Img Files (*.jpg)", options=options)
 
         if self.rawAvatarPth:
-            self.userAvatar.setPixmap(QPixmap.fromImage(QImage(self.rawAvatarPth)))
+            self.userAvatar.setPixmap(Pixmap.fromImage(Image(self.rawAvatarPth)))
             self.userAvatar.update()
 
     def createBtnClicked(self):
         if self.check_all_conditions():
             self.generate_user_data()
-            MessageBox(self, "Failed", "information", WAIT_LAYOUT_COMPLETE, 'ok')
+            MessageBox(self, "Failed", "information", p['WAIT_LAYOUT_COMPLETE'], 'ok')
             return
 
     def collect_input(self):
@@ -258,7 +256,7 @@ class SignUp(Widget):
         check_pass          = check_match(password, confirm)
 
         if not check_pass:
-            MessageBox(self, "Warning", PW_UNMATCH, MessageBox.Retry)
+            MessageBox(self, "Warning", p['PW_UNMATCH'], MessageBox.Retry)
             return False
 
         return True

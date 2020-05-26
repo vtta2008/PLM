@@ -25,7 +25,7 @@ import os, sys, requests
 # PLM
 from PLM.loggers import Loggers
 from PLM.cores import sqlUtils, StyleSheet, ThreadManager
-from PLM import __version__, __appName__, __organization__, glbSettings
+from PLM import __version__, __appName__, __organization__, __organizationDomain__, glbSettings
 from PLM.api.qtOption import STAY_ON_TOP
 from PLM.configs import propText as p, ConfigUrls, ConfigApps, ConfigPipeline, ConfigIcons
 from PLM.api.Widgets import Application, MessageBox
@@ -67,8 +67,8 @@ class AppModel(Application):
 
     _appID                              = None
 
-    def __init__(self):
-        Application.__init__(self)
+    def __init__(self, *__args):
+        super(AppModel, self).__init__(*__args)
 
         self.setWindowIcon(LogoIcon("DAMG"))
         self.logger                     = Loggers(__name__)
@@ -82,7 +82,7 @@ class AppModel(Application):
 
         self.setOrganizationName(__organization__)
         self.setApplicationName(__appName__)
-        self.setOrganizationDomain(__website__)
+        self.setOrganizationDomain(__organizationDomain__)
         self.setApplicationVersion(__version__)
         self.setApplicationDisplayName(__appName__)
 
