@@ -12,24 +12,24 @@ Description:
 """ Import """
 
 from .io_gui import QWheelEvent
-
-class WheelEvent(QWheelEvent):
-
-    Type                        = 'DAMGWHEELEVENT'
-    key                         = 'WheelEvent'
-    _name                       = 'DAMG Wheel Event'
-
-    def __init__(self, *__args):
-        super(WheelEvent, self).__init__(*__args)
+from PLM.api.damg import DAMG
 
 
-    @property
-    def name(self):
-        return self._name
+class WheelEvent(DAMG):
 
-    @name.setter
-    def name(self, val):
-        self._name              = val
+    key                 = 'WheelEvent'
+    Type                = 'DAMGEVENT'
+    _name               = 'DAMG Wheel Event'
+
+    def eventFilter(self, object, event):
+        if type(event) == QWheelEvent:
+            if event.delta() > 0:
+                print("wheel up")
+            else:
+                print("wheel down")
+            event.accept()
+            return True
+        return False
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

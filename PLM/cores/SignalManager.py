@@ -38,7 +38,7 @@ class SignalManager(DAMG):
         super(SignalManager, self).__init__(parent)
 
         self.parent                          = parent
-        self.logger                          = Loggers(self.__class__.__name__)
+        self.logger                          = Loggers()
 
         self._signals.add('command'          , self.commandSig)
         self._signals.add('loginChanged'     , self.loginChangedSig)

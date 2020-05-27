@@ -20,7 +20,7 @@ from functools import partial
 from PyQt5.QtWidgets        import (QFileDialog)
 
 # Plm
-from PLM.configs import propText as p
+from PLM.configs import propText as p, QUESTIONS
 from PLM.utils import (check_blank, check_match, get_avatar_image, getToken, getUnix, getTime, getDate, get_local_pc_info,
                        get_user_location)
 from PLM.cores import SignalManager
@@ -135,10 +135,10 @@ class SignUp(Widget):
         self.serSection     = GroupGrid("Security Question")
         questions_grid      = self.serSection.layout
 
-        self.ques1          = ComboBox({'items': [str(i) for i in p['QUESTIONS'].split('\n')]})
+        self.ques1          = ComboBox({'items': [str(i) for i in QUESTIONS.split('\n')]})
         self.answ2          = LineEdit()
 
-        self.ques2          = ComboBox({'items': [str(i) for i in p['QUESTIONS'].split('\n')]})
+        self.ques2          = ComboBox({'items': [str(i) for i in QUESTIONS.split('\n')]})
         self.answ1          = LineEdit()
 
         questions_grid.addWidget(Label({'txt':'Question 1'}), 0, 0, 1, 3)

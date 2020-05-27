@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 from .io_widgets                            import QCheckBox
-from PLM.cores                              import SignalManager
+from PLM.cores.SignalManager                import SignalManager
 from PLM.settings                           import AppSettings
 
 class CheckBox(QCheckBox):
@@ -24,8 +24,8 @@ class CheckBox(QCheckBox):
         QCheckBox.__init__(self)
 
         self.parent                         = parent
-        self.settings = AppSettings(self)
-        self.signals = SignalManager(self)
+        self.settings                       = AppSettings(self)
+        self.signals                        = SignalManager(self)
 
         self.txt                            = txt
 

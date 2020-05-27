@@ -19,6 +19,7 @@ from .ImageViewer               import ImageViewer
 from .NoteReminder              import NoteReminder
 from .ScreenShot                import ScreenShot
 from .TextEditor                import TextEditor
+from .Browser                   import Browser
 
 
 # -------------------------------------------------------------------------------------------------------------

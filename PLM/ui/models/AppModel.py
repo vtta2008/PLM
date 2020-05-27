@@ -23,17 +23,20 @@ __localServerAutho__    = "{0}/auth".format(__localServer__)
 import os, sys, requests
 
 # PLM
-from PLM.loggers import Loggers
-from PLM.cores import sqlUtils, StyleSheet, ThreadManager
-from PLM import __version__, __appName__, __organization__, __organizationDomain__, glbSettings
-from PLM.api.qtOption import STAY_ON_TOP
-from PLM.configs import propText as p, ConfigUrls, ConfigApps, ConfigPipeline, ConfigIcons
-from PLM.api.Widgets import Application, MessageBox
-from PLM.api.Gui import LogoIcon
 
-from PLM.utils import clean_file_ext
-from PLM.ui.layouts import SplashUI
-from PLM.ui.tools import Browser
+from PLM                                import __version__, __appName__, __organization__, __organizationDomain__, glbSettings
+
+from PLM.configs                        import propText as p, ConfigPipeline
+from PLM.api.qtOption                   import STAY_ON_TOP
+from PLM.loggers                        import Loggers
+from PLM.cores                          import sqlUtils, StyleSheet, ThreadManager
+from PLM.cores.models                   import Worker
+from PLM.api.Widgets                    import Application, MessageBox
+from PLM.api.Gui                        import LogoIcon
+from PLM.settings                       import AppSettings
+from PLM.utils                          import clean_file_ext
+from PLM.ui.layouts.SplashUI            import SplashUI
+from PLM.ui.tools                       import Browser
 
 
 class AppModel(Application):
@@ -71,8 +74,9 @@ class AppModel(Application):
         super(AppModel, self).__init__(*__args)
 
         self.setWindowIcon(LogoIcon("DAMG"))
-        self.logger                     = Loggers(__name__)
+        self.logger                     = Loggers()
         self.browser                    = Browser()
+        self.settings                   = AppSettings(self)
         self.settings._settingEnable    = True
         self.setCursorFlashTime(1000)
         self.setQuitOnLastWindowClosed(False)
@@ -100,8 +104,8 @@ class AppModel(Application):
         self.splash                     = SplashUI(self)
         self.splash.start()
 
-        # worker                          = Worker(self.runConfigs)
-        # self.threadManager.globalInstance().start(worker)
+        worker                          = Worker(self.runConfigs)
+        self.threadManager.globalInstance().start(worker)
         self.runConfigs()
         self.database                   = sqlUtils()
 
@@ -334,61 +338,64 @@ class AppModel(Application):
 
     def runConfigs(self):
 
-        words = ['Python', 'Directories', 'File Paths', 'Urls & Links', 'Environment Variable', 'Icons', 'Avatars',
-                 'Logo', 'Images', 'Servers', 'Formats', 'Fonts', 'Local Devices', 'Installed Apps', 'Pipeline Functions']
+        self.plmInfo = ConfigPipeline()
+        self.splash.setText('Config {0}'.format('Pipeline'))
 
-        configs = [ConfigUrls, ConfigIcons, ConfigApps, ConfigPipeline]
-
-        for i in range(len(words)):
-            if not i == (len(words) - 1):
-                # self.splash.setText('Config {0}'.format(words[i]))
-                if i == 0:
-                    self.pythonInfo = configs[i]()
-                elif i == 1:
-                    self.dirInfo    = configs[i]()
-                elif i == 2:
-                    self.pthInfo    = configs[i]()
-                elif i == 3:
-                    self.urlInfo    = configs[i]()
-                elif i == 4:
-                    self.envInfo    = configs[i]()
-                elif i == 5:
-                    self.iconInfo   = configs[i]()
-                elif i == 6:
-                    self.avatarInfo = configs[i]()
-                elif i == 7:
-                    self.logoInfo   = configs[i]()
-                elif i == 8:
-                    self.imageInfo  = configs[i]()
-                elif i == 9:
-                    self.serverInfo = configs[i]()
-                elif i == 10:
-                    self.formatInfo = configs[i]()
-                elif i == 11:
-                    self.fontInfo   = configs[i]()
-                elif i == 12:
-                    self.deviceInfo = configs[i]()
-                elif i == 13:
-                    self.appInfo    = configs[i]()
-                # self.splash.setProgress(1)
-            else:
-                self.splash.setText('Config {0}'.format('Pipeline Functions'))
-                if self.iconInfo and self.appInfo and self.urlInfo and self.dirInfo and self.pthInfo:
-                    self.plmInfo = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
-                    # self.splash.setProgress(2)
-                else:
-                    print('Can not conducting Pipeline Functions configurations, some of other configs has not been done yet.')
-                    self.app.exit()
-
-        check = True
-
-        for info in [self.pythonInfo, self.dirInfo, self.pthInfo, self.urlInfo, self.envInfo, self.iconInfo,
-                     self.avatarInfo, self.logoInfo, self.imageInfo, self.serverInfo, self.formatInfo,
-                     self.fontInfo, self.deviceInfo, self.appInfo, self.plmInfo]:
-            if not info:
-                check = False
-
-        glbSettings.setCfgAll(check)
+    #     words = ['Python', 'Directories', 'File Paths', 'Urls & Links', 'Environment Variable', 'Icons', 'Avatars',
+    #              'Logo', 'Images', 'Servers', 'Formats', 'Fonts', 'Local Devices', 'Installed Apps', 'Pipeline Functions']
+    #
+    #     configs = [ConfigUrls, ConfigIcons, ConfigApps, ConfigPipeline]
+    #
+    #     for i in range(len(words)):
+    #         if not i == (len(words) - 1):
+    #             # self.splash.setText('Config {0}'.format(words[i]))
+    #             if i == 0:
+    #                 self.pythonInfo = configs[i]()
+    #             elif i == 1:
+    #                 self.dirInfo    = configs[i]()
+    #             elif i == 2:
+    #                 self.pthInfo    = configs[i]()
+    #             elif i == 3:
+    #                 self.urlInfo    = configs[i]()
+    #             elif i == 4:
+    #                 self.envInfo    = configs[i]()
+    #             elif i == 5:
+    #                 self.iconInfo   = configs[i]()
+    #             elif i == 6:
+    #                 self.avatarInfo = configs[i]()
+    #             elif i == 7:
+    #                 self.logoInfo   = configs[i]()
+    #             elif i == 8:
+    #                 self.imageInfo  = configs[i]()
+    #             elif i == 9:
+    #                 self.serverInfo = configs[i]()
+    #             elif i == 10:
+    #                 self.formatInfo = configs[i]()
+    #             elif i == 11:
+    #                 self.fontInfo   = configs[i]()
+    #             elif i == 12:
+    #                 self.deviceInfo = configs[i]()
+    #             elif i == 13:
+    #                 self.appInfo    = configs[i]()
+    #             # self.splash.setProgress(1)
+    #         else:
+    #             self.splash.setText('Config {0}'.format('Pipeline Functions'))
+    #             if self.iconInfo and self.appInfo and self.urlInfo and self.dirInfo and self.pthInfo:
+    #                 self.plmInfo = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
+    #                 # self.splash.setProgress(2)
+    #             else:
+    #                 print('Can not conducting Pipeline Functions configurations, some of other configs has not been done yet.')
+    #                 self.app.exit()
+    #
+    #     check = True
+    #
+    #     for info in [self.pythonInfo, self.dirInfo, self.pthInfo, self.urlInfo, self.envInfo, self.iconInfo,
+    #                  self.avatarInfo, self.logoInfo, self.imageInfo, self.serverInfo, self.formatInfo,
+    #                  self.fontInfo, self.deviceInfo, self.appInfo, self.plmInfo]:
+    #         if not info:
+    #             check = False
+    #
+    #     glbSettings.setCfgAll(check)
 
     @property
     def login(self):

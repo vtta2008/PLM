@@ -42,9 +42,6 @@ class Loggers(logging.Logger):
         self.filemode               = filemode
 
         self.addLoggingLevel(levelName='TRACE', levelNum=LogLevel.Trace)
-        self.addLoggingLevel(levelName='SPAM', levelNum=LogLevel.Spam)
-        self.addLoggingLevel(levelName='VERBOSE', levelNum=LogLevel.Verbose)
-        self.addLoggingLevel(levelName='SUCCESS', levelNum=LogLevel.Success)
 
         self.streamHld              = StreamHandler(self.logLevel, self.formatter, self.datetimeFormatter)
         self.fileHld                = FileHandler(self.filename, self.logLevel, self.formatter, self.datetimeFormatter)
@@ -54,50 +51,37 @@ class Loggers(logging.Logger):
 
     def define_level(self, logLevel):
 
-        if logLevel == "silent":
+        if logLevel is None or logLevel == 'not set':
             loglvl = logging.NOTSET
-        elif logLevel == "spam":
-            loglvl = logging.SPAM
+        elif logLevel == "info":
+            loglvl = logging.INFO
+        elif logLevel == "warn":
+            loglvl = logging.WARNING
         elif logLevel == "debug":
             loglvl = logging.DEBUG
-        elif logLevel == "verbose":
-            loglvl = logging.VERBOSE
-        elif logLevel == "normal":
-            loglvl = logging.INFO
-        elif logLevel == "notice":
-            loglvl = logging.WARNING
-        elif logLevel == "trace":
-            loglvl = logging.TRACE
-        elif logLevel == "success":
-            loglvl = logging.SUCCESS
         elif logLevel == "error":
             loglvl = logging.ERROR
-        elif logLevel == "Critical":
-            loglvl = logging.CRITICAL
-        elif logLevel == "Fatal":
-            loglvl = logging.FATAL
         else:
-            loglvl = logging.NOTSET
+            loglvl = logging.FATAL
 
         return loglvl
 
     def level_config(self, verbosity_loglevel):
 
-        logConfigs = {LogLevel.Silent: logging.NOTSET,
-                      LogLevel.Spam: logging.INFO,
-                      LogLevel.Debug: logging.DEBUG,
-                      LogLevel.Verbose: logging.DEBUG,
-                      LogLevel.Normal: logging.INFO,
-                      LogLevel.Notice: logging.WARN,
-                      LogLevel.Trace: logging.WARN,
-                      LogLevel.Success: logging.INFO,
-                      LogLevel.Error: logging.ERROR,
-                      LogLevel.Critical: logging.CRITICAL,
-                      LogLevel.Fatal: logging.FATAL}
-
         verbose_level = LogLevel.getbyverbosity(verbosity_loglevel)
 
-        return logConfigs[verbose_level]
+        logging_logLevel = {
+
+            LogLevel.Silent:    logging.NOTSET,
+            LogLevel.Debug:     logging.DEBUG,
+            LogLevel.Normal:    logging.INFO,
+            LogLevel.Trace:     logging.WARN,
+            LogLevel.Error:     logging.ERROR,
+            LogLevel.Critical:  logging.FATAL,
+
+        }[verbose_level]
+
+        return logging_logLevel
 
     def addLoggingLevel(self, levelName, levelNum, methodName=None):
 
@@ -118,7 +102,7 @@ class Loggers(logging.Logger):
 
         def logForLevel(self, message, *args, **kwargs):
             if self.isEnabledFor(levelNum):
-                self._log(levelNum, message, *args, **kwargs)
+                self._log(levelNum, message, args, **kwargs)
 
         def logToRoot(message, *args, **kwargs):
             logging.log(levelNum, message, *args, **kwargs)

@@ -67,39 +67,29 @@ class StyleMessage(object):
 class LogLevel(enum.IntEnum):
 
     Silent                          = 0
-    Spam                            = 5
     Debug                           = 10
-    Verbose                         = 15
     Normal                          = 20
-    Notice                          = 25
     Trace                           = 30
-    Success                         = 35
     Error                           = 40
-    Critical                        = 45
-    Fatal                           = 50
+    Critical                        = 50
 
     @classmethod
-    def getbyname(cls, name: str):
+    def getbyname(cls, name):
         lookup = { level.name.lower(): level for level in cls }
         return lookup[name.lower()]
 
     @classmethod
     def getnames(cls):
-
-        levels                      = list(cls)
-        levels.sort(key             = lambda level: int(level))
+        levels = list(cls)
+        levels.sort(key = lambda level: int(level))
         return [ level.name for level in levels ]
 
     @classmethod
-    def getbyverbosity(cls, value: int):
+    def getbyverbosity(cls, intvalue):
         maxvalue = max(int(level) for level in cls)
-
-        if value > maxvalue:
-            value = maxvalue
-
-        return cls(value)
-
-logMissings                         = ['spam', 'verbose', 'notice', 'success']
+        if intvalue > maxvalue:
+            intvalue = maxvalue
+        return cls(intvalue)
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -12,7 +12,7 @@ Description:
 
 
 from .io_widgets                            import QPushButton, QToolButton
-from PLM.cores                              import SignalManager
+from PLM.cores.SignalManager                import SignalManager
 from PLM.settings                           import AppSettings
 
 

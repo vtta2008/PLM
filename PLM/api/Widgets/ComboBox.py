@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 from .io_widgets                            import QComboBox
-from PLM.cores                              import SignalManager
+from PLM.cores.SignalManager                import SignalManager
 from PLM.settings                           import AppSettings
 
 class ComboBox(QComboBox):

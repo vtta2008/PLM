@@ -30,36 +30,23 @@ class StreamHandler(logging.StreamHandler):
         self.fmt                            = fmt                                       # Formatter
         self.dtfmt                          = dtfmt                                     # Datetime Fommater
         self.logLevel                       = level                                     # Log level
-        self.update()
+        self.setFormatter(self.get_formatter())
+        self.setLevel(self.logLevel)
 
     def get_formatter(self):
         return logging.Formatter(self.fmt, self.dtfmt)
 
-    def set_formatter(self, formatter):
-        self.fmt                            = formatter
-        self.update()
-
-    def set_datetimeFormatter(self, formatter):
-        self.dtfmt                          = formatter
-        self.update()
-
-    def set_lever(self, level):
-        self.logLevel                       = level
-        self.update()
-
-    def update(self):
-        self.setFormatter(self.get_formatter())
-        self.setLevel(self.logLevel)
-
-    def exception_handler(self, exc_type, exc_value, exc_traceback):
+    def exception_handler(self, exc_type, exc_value, tb):
 
         if hasattr(sys, 'ps1') or not sys.stderr.isatty():
-            exception = sys.__excepthook__(exc_type, exc_value, exc_traceback)
+            exception = sys.__excepthook__(exc_type, exc_value, tb)
         else:
-            exception = traceback.format_exception(exc_type, exc_value, exc_traceback)
+            exception = traceback.format_exception(exc_type, exc_value, tb)
 
-        if exc_traceback:
-            pdb.post_mortem(exc_traceback)
+        if tb is None:
+            pass
+        else:
+            pdb.post_mortem(tb)
 
         return exception
 
@@ -75,26 +62,11 @@ class FileHandler(logging.FileHandler):
         self.fmt                            = fmt                                        # Formatter
         self.dtfmt                          = dtfmt                                      # Datetime Fommater
         self.logLevel                       = level                                      # Log level
-        self.update()
+        self.setFormatter(self.get_formatter())
+        self.setLevel(self.logLevel)
 
     def get_formatter(self):
         return OneLineExceptionFormatter(self.fmt, self.dtfmt)
-
-    def set_filename(self, filename):
-        self.fn                             = filename
-        self.update()
-
-    def set_formatter(self, formatter):
-        self.fmt                            = formatter
-        self.update()
-
-    def set_lever(self, level):
-        self.logLevel                       = level
-        self.update()
-
-    def update(self):
-        self.setFormatter(self.get_formatter())
-        self.setLevel(self.logLevel)
 
 
 # -------------------------------------------------------------------------------------------------------------

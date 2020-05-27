@@ -11,7 +11,7 @@ Description:
 
 from .io_widgets import QMainWindow
 from PLM.loggers import Loggers
-from PLM.cores import SignalManager
+from PLM.cores.SignalManager import SignalManager
 from PLM.settings import AppSettings
 
 # -------------------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
         self.parent             = parent
         self.settings           = AppSettings(self)
         self.signals            = SignalManager(self)
-        self.logger             = Loggers(self.__class__.__name__)
+        self.logger             = Loggers()
 
         self.setWindowTitle(self.key)
 

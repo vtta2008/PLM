@@ -11,9 +11,9 @@ Description:
 """ Import """
 
 from .io_widgets                            import QAction, QWidgetAction
-from PLM.cores                              import SignalManager
+from PLM.cores.SignalManager                import SignalManager
 from PLM.settings                           import AppSettings
-from PLM.api.Gui                            import Icon
+from PLM.api.Gui                            import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Action presets """

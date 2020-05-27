@@ -223,8 +223,8 @@ class LayoutManager(DAMG):
 
     def globalLayoutSetting(self):
 
-        from PLM import ConfigFonts
-        self.fontInfo                         = ConfigFonts()
+        # from PLM import ConfigFonts
+        # self.fontInfo                         = ConfigFonts()
 
         for layout in self.layouts():
             # print(layout.key)

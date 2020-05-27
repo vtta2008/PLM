@@ -91,7 +91,7 @@ class SplashUI(SplashScreen):
     _rMargin                            = 10
 
     def __init__(self, app=None):
-        super(SplashUI, self).__init__(app)
+        super(SplashUI, self).__init__(self)
 
         self.app                        = app
 

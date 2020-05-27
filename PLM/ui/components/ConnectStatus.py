@@ -96,7 +96,7 @@ class ConnectStatus(GroupGrid):
         stt = 'Internet Connection Status'
 
         try:
-            r = requests.get("www.google.com")
+            r = requests.get("http://www.google.com")
         except requests.ConnectionError:
             self.parent.signals.emit('sysNotify', ['Offline', 'Can not connect to Internet', 'crit', 500])
             self.internetIcon           = Conection('Disconnected', stt, self)

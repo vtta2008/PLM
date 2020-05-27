@@ -16,8 +16,7 @@ import os, winshell
 from termcolor                          import cprint
 # PLM
 from .baseConfigs                       import Cmds, Cfg, TrackKeys
-from PLM                                import (glbSettings, create_path, parent_dir, ROOT, ROOT_APP, __organization__,
-                                                __appName__)
+from PLM                                import (create_path, parent_dir, ROOT, ROOT_APP, __organization__, __appName__)
 
 notKeys                                  = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__',
                                             '__cached__', '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR',
@@ -71,10 +70,7 @@ buttonTypes                             = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
 urlTypes                                = ['DAMGURL', 'Url', 'url']
 layoutTypes                             = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
 
-
-
 LOCALAPPDATA                            = os.getenv('LOCALAPPDATA')
-
 
 APPDATA_DAMG                            = create_path(LOCALAPPDATA, __organization__)
 APPDATA_PLM                             = create_path(APPDATA_DAMG, __appName__)
@@ -90,23 +86,16 @@ TEAM_DIR                                = create_path(CFG_DIR, 'team')
 PRJ_DIR                                 = create_path(CFG_DIR, 'project')
 ORG_DIR                                 = create_path(CFG_DIR, 'organisation')
 
-
-
 APPDATA_DAMG                            = create_path(LOCALAPPDATA, __organization__)
 APPDATA_PLM                             = create_path(APPDATA_DAMG, __appName__)
 
-
 USER_DIR                                = parent_dir(os.getenv('HOME'))
-
 
 APP_SETTING                             = create_path(SETTING_DIR, 'PLM.ini')
 USER_SETTING                            = create_path(SETTING_DIR, 'user.ini')
 FORMAT_SETTING                          = create_path(SETTING_DIR, 'format.ini')
 UNIX_SETTING                            = create_path(SETTING_DIR, 'unix.ini')
 LOCAL_LOG                               = create_path(LOG_DIR, 'PLM.logs')
-
-
-
 
 BIN_DIR                                 = create_path(ROOT_APP, 'bin')
 DESIGN_DIR                              = create_path(BIN_DIR, 'design')
@@ -115,8 +104,6 @@ JSON_DIR                                = create_path(BIN_DIR, 'json')
 LANGUAGE_DIR                            = create_path(BIN_DIR, 'language')
 PROFILE_DIR                             = create_path(BIN_DIR, 'profile')
 SOUND_DIR                               = create_path(BIN_DIR, 'sound')
-
-
 
 INTERGRATIONS_DIR                       = create_path(ROOT_APP, 'intergrations')
 BLENDER_DIR                             = create_path(INTERGRATIONS_DIR, 'Blender')
@@ -128,8 +115,6 @@ NUKE_DIR                                = create_path(INTERGRATIONS_DIR, 'Nuke')
 SUBSTANCES_DIR                          = create_path(INTERGRATIONS_DIR, 'Substances')
 ZBRUSH_DIR                              = create_path(INTERGRATIONS_DIR, 'ZBrush')
 Others_DIR                              = create_path(INTERGRATIONS_DIR, 'Others')
-
-
 
 RESOURCES_DIR                           = create_path(ROOT, 'resources')
 AVATAR_DIR                              = create_path(RESOURCES_DIR, 'avatar')
@@ -159,28 +144,19 @@ LOGO_DIR                                = create_path(RESOURCES_DIR, 'logo')
 ORG_LOGO_DIR                            = create_path(LOGO_DIR, 'DAMGTEAM')
 APP_LOGO_DIR                            = create_path(LOGO_DIR, 'PLM')
 
-
 SCRIPTS_DIR                             = create_path(ROOT, 'scripts')
 
 QSS_DIR                                 = create_path(SCRIPTS_DIR, 'qss')
 
-
-
-
-
 USER_LOCAL_DATA                         = create_path(CFG_DIR, 'userLocal')
 
 LIBRARY_DIR                             = create_path(USER_DIR, 'UserLibraries')
-
-
 
 DOCS_DIR                                = create_path(ROOT_APP, 'docs')
 RAWS_DIR                                = create_path(DOCS_DIR, 'raws')
 DOCS_READING_DIR                        = create_path(DOCS_DIR, 'reading')
 TEMPLATE_DIR                            = create_path(DOCS_DIR, 'template')
 TEMPLATE_LICENSE                        = create_path(TEMPLATE_DIR, 'LICENSE')
-
-
 
 API_DIR                                 = create_path(ROOT, 'api')
 CORE_DIR                                = create_path(API_DIR, 'Core')
@@ -200,13 +176,6 @@ CORES_SETTINGS_DIR                      = create_path(CORES_DIR, 'settings')
 
 LOGGER_DIR                              = create_path(ROOT, 'loggers')
 PLUGINS_DIR                             = create_path(ROOT, 'plugins')
-
-
-
-
-
-
-
 
 SCRIPTS_DIR                             = create_path(ROOT, 'scripts')
 CSS_DIR                                 = create_path(SCRIPTS_DIR, 'css')
@@ -241,7 +210,6 @@ splashImagePth                          = create_path(IMAGE_DIR, 'splash.png')
 serverCfg                               = create_path(CFG_DIR, 'server.cfg')
 
 LOCAL_DB                                = create_path(DB_DIR, 'local.db')
-
 
 ks                                      = ['icon12', 'icon16', 'icon24', 'icon32', 'icon48', 'icon64', 'node', 'tag',
                                            'web16', 'web24', 'web32', 'web48', 'web64', 'web128']
@@ -278,7 +246,6 @@ def read_file(fileName):
     else:
         cprint("PathNotExistsed: {0}".format(filePth), 'red', attrs=['blink'])
 
-
 ABOUT                               = read_file('ABOUT')
 CODEOFCONDUCT                       = read_file('CODEOFCONDUCT')
 CONTRIBUTING                        = read_file('CONTRIBUTING')
@@ -294,7 +261,6 @@ from pyjavaproperties import Properties
 
 propText = Properties()
 propText.load(open(create_path(BIN_DIR, 'text.properties')))
-
 
 class ConfigUrls(Cfg):
 

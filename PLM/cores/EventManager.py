@@ -23,7 +23,7 @@ class EventManager(BaseStorage):
         DAMGDICT.__init__(self)
 
         self.parent         = parent
-        self.wheelEvent     = WheelEvent()
+        self.wheelEvent     = WheelEvent(self)
 
     def eventFilter(self, object, event):
         if type(event) == WheelEvent:

@@ -42,7 +42,7 @@ __appSlogan__           = ""
 __appDescription__      = ""
 __homepage__            = "https://pipeline.damgteam.com"
 
-__version__             = Version()
+__version__             = "13.0.1"
 __plmWiki__             = "https://github.com/vtta2008/PipelineTool/wiki"
 
 __globalServer__        = "https://server.damgteam.com"
