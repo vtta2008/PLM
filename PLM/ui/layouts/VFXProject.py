@@ -17,10 +17,10 @@ Description:
 from functools import partial
 
 # PyQt5
-from PyQt5.QtWidgets            import (QGroupBox, QInputDialog, QComboBox, QFileDialog, QListWidget, QListWidgetItem)
+from PySide2.QtWidgets            import (QGroupBox, QInputDialog, QComboBox, QFileDialog, QListWidget, QListWidgetItem)
 
 # PLM
-from PLM.api.Widgets import Widget, Label, HBoxLayout, Button, GridLayout, LineEdit, VBoxLayout
+from bin.Widgets import Widget, Label, HBoxLayout, Button, GridLayout, LineEdit, VBoxLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Sub class """

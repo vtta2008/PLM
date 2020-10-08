@@ -12,8 +12,8 @@ Description:
 """ Import """
 
 # PyQt5
-from PLM import Signal
-from PLM.api.Core import Thread
+
+from bin.Core import Thread, Signal
 from PLM.utils import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
 
 

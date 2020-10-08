@@ -18,13 +18,13 @@ import os, glob
 from functools import partial
 
 # PyQt5
-from PyQt5                          import QtSql
-from PyQt5.QtCore                   import Qt, QDir, pyqtSignal
-from PyQt5.QtGui                    import QPixmap, QTransform, QIcon
-from PyQt5.QtWidgets                import QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout
+from PySide2                          import QtSql
+from PySide2.QtCore                   import Qt, QDir, Signal
+from PySide2.QtGui                    import QPixmap, QTransform, QIcon
+from PySide2.QtWidgets                import QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout
 
-from PLM.api.Widgets import Widget
-from PLM.api.Gui import AppIcon
+from bin.Widgets import Widget
+from bin.Gui import AppIcon
 from PLM.utils import get_screen_resolution
 from PLM.configs import LOCAL_DB
 
@@ -35,18 +35,18 @@ from PLM.configs import LOCAL_DB
 
 class ImageViewing(QGraphicsView):
 
-    viewerCloseSig          = pyqtSignal(bool)
-    viewRealImageSizeSig    = pyqtSignal(bool)
-    toggleFullscreenSig     = pyqtSignal(bool)
-    vertMaxSig              = pyqtSignal(bool)
-    horizMaxSig             = pyqtSignal(bool)
-    zoomInSig               = pyqtSignal(bool)
-    zoomOutSig              = pyqtSignal(bool)
-    zoomResetSig            = pyqtSignal(bool)
-    rotateImgSig            = pyqtSignal(int)
-    dirBrowseSig            = pyqtSignal(int)
-    fitViewSig              = pyqtSignal(bool)
-    goToLocationSig         = pyqtSignal(bool)
+    viewerCloseSig          = Signal(bool)
+    viewRealImageSizeSig    = Signal(bool)
+    toggleFullscreenSig     = Signal(bool)
+    vertMaxSig              = Signal(bool)
+    horizMaxSig             = Signal(bool)
+    zoomInSig               = Signal(bool)
+    zoomOutSig              = Signal(bool)
+    zoomResetSig            = Signal(bool)
+    rotateImgSig            = Signal(int)
+    dirBrowseSig            = Signal(int)
+    fitViewSig              = Signal(bool)
+    goToLocationSig         = Signal(bool)
 
     def emit_close(self):
         self.viewerCloseSig.emit(True)
@@ -121,7 +121,7 @@ class ImageViewing(QGraphicsView):
 
 class ViewerWindow(QMainWindow):
 
-    resizeSig = pyqtSignal(int, int)
+    resizeSig = Signal(int, int)
 
     def resizeEvent(self, resizeEvent):
         width = self.frameGeometry().width()

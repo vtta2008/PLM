@@ -12,7 +12,7 @@ Description:
 
 import os, sys, platform, win32api, requests, re, time, datetime, uuid
 
-from PLM.api.Core           import Size, Rect, RectF
+from bin.Core import Size, Rect, RectF
 from .converts              import str2bool
 
 

@@ -12,12 +12,12 @@ Description:
 from collections                import defaultdict
 import os
 
-from PyQt5.QtCore               import pyqtSignal
-from PyQt5.QtWidgets            import QApplication
+from PySide2.QtCore               import Signal
+from PySide2.QtWidgets            import QApplication
 
 from PLM.loggers import Loggers
-from PLM.api.Widgets import Menu, WidgetAction, Action, LineEdit
-from PLM.api.Gui import Icon
+from bin.Widgets import Menu, WidgetAction, Action, LineEdit
+from bin.Gui import Icon
 
 
 class ScriptAction(Action):
@@ -136,7 +136,7 @@ class ScriptAction(Action):
 class ScriptsMenu(Menu):
 
     key                         = 'ScriptsMenu'
-    updated                     = pyqtSignal(Menu)
+    updated                     = Signal(Menu)
 
     searchbar                   = None
     update_action               = None

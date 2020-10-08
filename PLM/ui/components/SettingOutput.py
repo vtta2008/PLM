@@ -9,9 +9,9 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PyQt5.QtWidgets import QTreeWidget, QHeaderView, QStyle, QAbstractItemView, QTreeWidgetItem
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import QTimer, QSize, QEvent, Qt
+from PySide2.QtWidgets import QTreeWidget, QHeaderView, QStyle, QAbstractItemView, QTreeWidgetItem
+from PySide2.QtGui import QIcon
+from PySide2.QtCore import QTimer, QSize, QEvent, Qt
 from .ValiantDelegate import VariantDelegate
 
 class SettingOutput(QTreeWidget):

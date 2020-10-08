@@ -12,8 +12,8 @@ from __future__ import absolute_import, unicode_literals
 
 import json
 
-from PLM.api.Core import Date, Time
-from PLM.api.Widgets import GroupBox, VBoxLayout, Label
+from bin.Core import Date, Time
+from bin.Widgets import GroupBox, VBoxLayout, Label
 from PLM.cores import sqlUtils
 from PLM.cores.models import DateLine, Task
 

@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 import datetime, time
-from PLM.api.damg import DAMGDICT, DAMGLIST, DAMG
+from bin.damg import DAMGDICT, DAMGLIST, DAMG
 from PLM.configs import layoutTypes
 
 

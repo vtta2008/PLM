@@ -16,7 +16,7 @@ from bin import settings
 import os, sys, subprocess
 
 # PLM
-from PLM.api.damg                           import DAMG
+from bin.damg import DAMG
 
 
 class EnvHandler(DAMG):

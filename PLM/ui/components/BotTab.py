@@ -11,9 +11,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from PLM.api.damg import DAMGLIST
-from PLM.api.Gui import AppIcon
-from PLM.api.Widgets import TabWidget, VBoxLayout
+from bin.damg import DAMGLIST
+from bin.Gui import AppIcon
+from bin.Widgets import TabWidget, VBoxLayout
 from PLM.ui.components import BotTab1, BotTab2
 
 # -------------------------------------------------------------------------------------------------------------

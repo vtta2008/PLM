@@ -16,14 +16,14 @@ import sys
 
 # PyQt5
 
-from PyQt5.QtWidgets        import QAction, QFileDialog, QInputDialog, QLineEdit
+from PySide2.QtWidgets        import QAction, QFileDialog, QInputDialog, QLineEdit
 
 # PLM
 from PLM import __appName__, __organization__
-from PLM.settings           import AppSettings, RegSettings
+from bin.settings import AppSettings, RegSettings
 from PLM.configs            import APP_SETTING
-from PLM.api.Core           import Settings
-from PLM.api.Widgets        import Widget, GridLayout, MenuBar
+from bin.Core import Settings
+from bin.Widgets import Widget, GridLayout, MenuBar
 from PLM.api.qtOption       import NATIVE, SYS_SCOPE
 from PLM.ui.components      import SettingOutput, SettingInput
 

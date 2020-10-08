@@ -14,15 +14,15 @@ Description:
 import os, shlex, getpass, socket
 
 # PyQt5
-from PyQt5.QtCore                       import QSysInfo, QStandardPaths, Qt, QEvent
-from PyQt5.QtGui                        import QTextCursor
+from PySide2.QtCore                       import QSysInfo, QStandardPaths, Qt, QEvent
+from PySide2.QtGui                        import QTextCursor
 
 
 # PLM
-from PLM.api.damg import DAMGLIST
+from bin.damg import DAMGLIST
 from PLM.api.qtOption import SCROLLBAROFF, NO_WRAP
-from PLM.api.Widgets import Widget, PlainTextEdit, ShortCut, VBoxLayout, StatusBar
-from PLM.api.Core import Process
+from bin.Widgets import Widget, PlainTextEdit, ShortCut, VBoxLayout, StatusBar
+from bin.Core import Process
 
 
 class MidTab3(Widget):

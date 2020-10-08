@@ -13,12 +13,12 @@ Description:
 import validators, re
 
 from collections            import OrderedDict
-from PLM.api.damg           import DAMGDICT, DAMGLIST
+from bin.damg import DAMGDICT, DAMGLIST
 from PLM.configs            import actionTypes, buttonTypes, urlTypes
 
 
-from PyQt5.QtWidgets        import QPushButton, QToolButton, QWidgetAction, QAction, QActionGroup
-from PyQt5.QtCore           import QUrl, QUrlQuery
+from PySide2.QtWidgets        import QPushButton, QToolButton, QWidgetAction, QAction, QActionGroup
+from PySide2.QtCore           import QUrl, QUrlQuery
 
 
 def detect_url(s):

@@ -26,9 +26,9 @@ import requests, sys
 # PLM
 from PLM import glbSettings
 from PLM.configs import propText as p
-from PLM.api.Widgets import GroupGrid, Label, MessageBox
-from PLM.api.Core import Timer
-from PLM.api.damg import DAMGLIST
+from bin.Widgets import GroupGrid, Label, MessageBox
+from bin.Core import Timer
+from bin.damg import DAMGLIST
 from PLM.ui.base import Conection
 
 # -------------------------------------------------------------------------------------------------------------

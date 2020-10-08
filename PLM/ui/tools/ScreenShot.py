@@ -15,14 +15,14 @@ Description:
 # Python
 
 # PyQt5
-from PyQt5.QtCore               import QDir, QTimer
-from PyQt5.QtGui                import QPixmap
-from PyQt5.QtWidgets            import (QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox, QLabel)
+from PySide2.QtCore               import QDir, QTimer
+from PySide2.QtGui                import QPixmap
+from PySide2.QtWidgets            import (QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox, QLabel)
 
 # PLM
 from PLM.api.qtOption import ASPEC_RATIO, SMOOTH_TRANS
-from PLM.api.Widgets import GridLayout, Button, Label, Widget, HBoxLayout
-from PLM.api.Gui import AppIcon
+from bin.Widgets import GridLayout, Button, Label, Widget, HBoxLayout
+from bin.Gui import AppIcon
 
 class ScreenShot(Widget):
 

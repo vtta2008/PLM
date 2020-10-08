@@ -14,12 +14,12 @@ import json, os
 from difflib                            import get_close_matches
 
 # PyQt5
-from PyQt5.QtWidgets                    import QTextEdit
+from PySide2.QtWidgets                    import QTextEdit
 
 # PLM
 from PLM.configs import JSON_DIR
-from PLM.api.Widgets import Button, Label, LineEdit, GridLayout, Widget
-from PLM.api.Gui import AppIcon
+from bin.Widgets import Button, Label, LineEdit, GridLayout, Widget
+from bin.Gui import AppIcon
 
 class EnglishDictionary(Widget):
 

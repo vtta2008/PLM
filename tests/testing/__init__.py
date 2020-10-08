@@ -14,7 +14,11 @@ import sys
 import time
 from threading import Thread, current_thread
 
+import os
 
+pprint.pprint(os.getenv('PATH'))
+
+C:\Users\dapco\AppData\Roaming\Python\Python37\Scripts
 
 def do_something_with_exception():
     pprint.pprint(sys.exc_info())

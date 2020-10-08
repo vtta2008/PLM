@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM.api.Widgets import GroupGrid
+from bin.Widgets import GroupGrid
 
 
 class FooterCheckBoxes(GroupGrid):

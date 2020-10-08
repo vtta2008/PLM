@@ -12,10 +12,10 @@ Description:
 """ Import """
 
 # PtQt5
-from PyQt5.QtWidgets        import (QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit)
+from PySide2.QtWidgets        import (QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit)
 
 # PLM
-from PLM.api.Widgets import Widget, VBoxLayout, Label, GroupBox, LineEdit
+from bin.Widgets import Widget, VBoxLayout, Label, GroupBox, LineEdit
 
 
 class ForgotPassword(Widget):

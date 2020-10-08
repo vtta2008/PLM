@@ -19,7 +19,7 @@ from playsound import playsound
 # PLM
 from PLM.cores.base import BaseType
 from PLM.configs import SOUND_DIR, PRJ_DIR
-from PLM.api.Core import DateTime
+from bin.Core import DateTime
 
 class Project(BaseType):
 

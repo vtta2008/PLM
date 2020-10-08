@@ -31,9 +31,10 @@ from PLM.api.qtOption                   import STAY_ON_TOP
 from PLM.loggers                        import Loggers
 from PLM.cores                          import sqlUtils, StyleSheet, ThreadManager
 from PLM.cores.models                   import Worker
-from PLM.api.Widgets                    import Application, MessageBox
-from PLM.api.Gui                        import LogoIcon
-from PLM.settings                       import AppSettings
+from bin.Widgets import Application, MessageBox
+from bin.Gui import LogoIcon
+from bin.settings import AppSettings
+from bin.models import SignalManager
 from PLM.utils                          import clean_file_ext
 from PLM.ui.layouts.SplashUI            import SplashUI
 from PLM.ui.tools                       import Browser
@@ -75,6 +76,7 @@ class AppModel(Application):
 
         self.setWindowIcon(LogoIcon("DAMG"))
         self.logger                     = Loggers()
+        self.signals                    = SignalManager(self)
         self.browser                    = Browser()
         self.settings                   = AppSettings(self)
         self.settings._settingEnable    = True

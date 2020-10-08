@@ -9,8 +9,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.api.Widgets import Widget, GridLayout, CheckBox
-from PLM.api.damg import DAMGDICT, DAMGLIST
+from bin.Widgets import Widget, GridLayout, CheckBox
+from bin.damg import DAMGDICT, DAMGLIST
 from PLM.utils import str2bool
 
 class BotTab1(Widget):

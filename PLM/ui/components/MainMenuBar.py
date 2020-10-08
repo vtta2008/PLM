@@ -12,7 +12,7 @@ Description:
 
 # PLM
 from PLM import __plmWiki__
-from PLM.api.Widgets import GroupVBox, MenuBar
+from bin.Widgets import GroupVBox, MenuBar
 from PLM.utils import is_string
 
 

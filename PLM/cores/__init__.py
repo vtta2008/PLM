@@ -18,7 +18,6 @@ from .models                    import (DateLine, DownloadChannel, Organisation,
 from .EventManager              import EventManager
 from .StyleSheet                import StyleSheet
 from .ThreadManager             import ThreadManager
-from .SignalManager             import SignalManager
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/16/2020 - 4:41 AM

@@ -15,10 +15,10 @@ Description:
 import math
 
 # PLM
-from PLM.api.damg import DAMGLIST
-from PLM.api.Widgets import LineEdit, GridLayout, Widget, ToolButton
-from PLM.api.Gui import AppIcon
-from PLM.api.Core import Qt
+from bin.damg import DAMGLIST
+from bin.Widgets import LineEdit, GridLayout, Widget, ToolButton
+from bin.Gui import AppIcon
+from bin.Core import Qt
 
 class Calculator(Widget):
 

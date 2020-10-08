@@ -12,8 +12,8 @@ Description:
 
 import re, json
 from distutils.version import LooseVersion
-from PyQt5.QtGui import QKeySequence
-from PyQt5.QtCore import qVersion
+from PySide2.QtGui import QKeySequence
+from PySide2.QtCore import qVersion
 
 
 def setup_context_menu(graph):

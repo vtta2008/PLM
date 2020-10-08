@@ -14,7 +14,10 @@ Description:
 # Python
 import os, winshell
 from termcolor                          import cprint
+from pyjavaproperties                   import Properties
+
 # PLM
+from bin                                import BIN_ROOT
 from .baseConfigs                       import Cmds, Cfg, TrackKeys
 from PLM                                import (create_path, parent_dir, ROOT, ROOT_APP, __organization__, __appName__)
 
@@ -97,26 +100,17 @@ FORMAT_SETTING                          = create_path(SETTING_DIR, 'format.ini')
 UNIX_SETTING                            = create_path(SETTING_DIR, 'unix.ini')
 LOCAL_LOG                               = create_path(LOG_DIR, 'PLM.logs')
 
-BIN_DIR                                 = create_path(ROOT_APP, 'bin')
-DESIGN_DIR                              = create_path(BIN_DIR, 'design')
-FONT_DIR                                = create_path(BIN_DIR, 'fonts')
-JSON_DIR                                = create_path(BIN_DIR, 'json')
-LANGUAGE_DIR                            = create_path(BIN_DIR, 'language')
-PROFILE_DIR                             = create_path(BIN_DIR, 'profile')
-SOUND_DIR                               = create_path(BIN_DIR, 'sound')
+BIN_DIR                                 = BIN_ROOT
 
-INTERGRATIONS_DIR                       = create_path(ROOT_APP, 'intergrations')
-BLENDER_DIR                             = create_path(INTERGRATIONS_DIR, 'Blender')
-HOUDINI_DIR                             = create_path(INTERGRATIONS_DIR, 'Houdini')
-MARI_DIR                                = create_path(INTERGRATIONS_DIR, 'Mari')
-MAYA_DIR                                = create_path(INTERGRATIONS_DIR, 'Maya')
-MUDBOX_DIR                              = create_path(INTERGRATIONS_DIR, 'Mudbox')
-NUKE_DIR                                = create_path(INTERGRATIONS_DIR, 'Nuke')
-SUBSTANCES_DIR                          = create_path(INTERGRATIONS_DIR, 'Substances')
-ZBRUSH_DIR                              = create_path(INTERGRATIONS_DIR, 'ZBrush')
-Others_DIR                              = create_path(INTERGRATIONS_DIR, 'Others')
+BIN_DATA_DIR                            = create_path(BIN_DIR, 'data')
+DESIGN_DIR                              = create_path(BIN_DATA_DIR, 'design')
+FONT_DIR                                = create_path(BIN_DATA_DIR, 'fonts')
+JSON_DIR                                = create_path(BIN_DATA_DIR, 'json')
+LANGUAGE_DIR                            = create_path(BIN_DATA_DIR, 'language')
+PROFILE_DIR                             = create_path(BIN_DATA_DIR, 'profile')
 
-RESOURCES_DIR                           = create_path(ROOT, 'resources')
+RESOURCES_DIR                           = create_path(BIN_DATA_DIR, 'resources')
+
 AVATAR_DIR                              = create_path(RESOURCES_DIR, 'avatar')
 ICON_DIR                                = create_path(RESOURCES_DIR, 'icons')
 
@@ -144,9 +138,14 @@ LOGO_DIR                                = create_path(RESOURCES_DIR, 'logo')
 ORG_LOGO_DIR                            = create_path(LOGO_DIR, 'DAMGTEAM')
 APP_LOGO_DIR                            = create_path(LOGO_DIR, 'PLM')
 
-SCRIPTS_DIR                             = create_path(ROOT, 'scripts')
+SCRIPTS_DIR                             = create_path(BIN_DATA_DIR, 'scripts')
 
+CSS_DIR                                 = create_path(SCRIPTS_DIR, 'css')
+HTML_DIR                                = create_path(SCRIPTS_DIR, 'html')
+JS_DIR                                  = create_path(SCRIPTS_DIR, 'js')
 QSS_DIR                                 = create_path(SCRIPTS_DIR, 'qss')
+
+SOUND_DIR                               = create_path(BIN_DATA_DIR, 'sound')
 
 USER_LOCAL_DATA                         = create_path(CFG_DIR, 'userLocal')
 
@@ -177,11 +176,6 @@ CORES_SETTINGS_DIR                      = create_path(CORES_DIR, 'settings')
 LOGGER_DIR                              = create_path(ROOT, 'loggers')
 PLUGINS_DIR                             = create_path(ROOT, 'plugins')
 
-SCRIPTS_DIR                             = create_path(ROOT, 'scripts')
-CSS_DIR                                 = create_path(SCRIPTS_DIR, 'css')
-HTML_DIR                                = create_path(SCRIPTS_DIR, 'html')
-JS_DIR                                  = create_path(SCRIPTS_DIR, 'js')
-
 SETTINGS_DIR                            = create_path(ROOT, 'settings')
 TYPES_DIR                               = create_path(ROOT, 'types')
 
@@ -195,6 +189,19 @@ UI_TOOLS_DIR                            = create_path(UI_DIR, 'tools')
 
 UTILS_DIR                               = create_path(ROOT, 'utils')
 TESTS_DIR                               = create_path(ROOT_APP, 'tests')
+
+
+INTERGRATIONS_DIR                       = create_path(ROOT_APP, 'intergrations')
+BLENDER_DIR                             = create_path(INTERGRATIONS_DIR, 'Blender')
+HOUDINI_DIR                             = create_path(INTERGRATIONS_DIR, 'Houdini')
+MARI_DIR                                = create_path(INTERGRATIONS_DIR, 'Mari')
+MAYA_DIR                                = create_path(INTERGRATIONS_DIR, 'Maya')
+MUDBOX_DIR                              = create_path(INTERGRATIONS_DIR, 'Mudbox')
+NUKE_DIR                                = create_path(INTERGRATIONS_DIR, 'Nuke')
+SUBSTANCES_DIR                          = create_path(INTERGRATIONS_DIR, 'Substances')
+ZBRUSH_DIR                              = create_path(INTERGRATIONS_DIR, 'ZBrush')
+Others_DIR                              = create_path(INTERGRATIONS_DIR, 'Others')
+
 
 evnInfoCfg                              = create_path(CFG_DIR, 'envs.cfg')
 avatarCfg                               = create_path(CFG_DIR, 'avatars.cfg')
@@ -257,9 +264,7 @@ QUESTIONS                           = read_file('QUESTION')
 VERSION                             = read_file('VERSION')
 REFERENCES                          = read_file('REFERENCES')
 
-from pyjavaproperties import Properties
-
-propText = Properties()
+propText                            = Properties()
 propText.load(open(create_path(BIN_DIR, 'text.properties')))
 
 class ConfigUrls(Cfg):

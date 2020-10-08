@@ -11,7 +11,11 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ import """
+
+# Python
 import sys
+
+# PLM
 from PLM.configs                        import propText as p
 from PLM.ui.models                      import AppModel
 from PLM.ui                             import LayoutManager
@@ -49,7 +53,7 @@ class PLM(AppModel):
                 else:
                     if statusCode == 200:
                         if not self.sysTray.isSystemTrayAvailable():
-                            self.logger.report(p['SYSTRAY_UNAVAI'])
+                            self.logger.report(p['SYSTRAY_UNAVAILABLE'])
                             self.exitEvent()
                         else:
                             self.loginChanged(True)

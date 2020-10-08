@@ -13,7 +13,7 @@ Description:
 
 # PLM
 from PLM.api.qtOption                   import SiPoMin, ELIDE_RIGHT
-from PLM.api.damg                       import DAMG, DAMGLIST
+from bin.damg import DAMG, DAMGLIST
 
 from PLM.cores                          import EventManager
 

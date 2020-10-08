@@ -9,12 +9,12 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PyQt5.QtCore import QRegExp, Qt, QByteArray, QDate, QDateTime, QPoint, QRect, QSize, QTime
-from PyQt5.QtGui import QRegExpValidator, QValidator, QColor
-from PyQt5.QtWidgets import QStyleOptionViewItem, QStyle
+from PySide2.QtCore import QRegExp, Qt, QByteArray, QDate, QDateTime, QPoint, QRect, QSize, QTime
+from PySide2.QtGui import QRegExpValidator, QValidator, QColor
+from PySide2.QtWidgets import QStyleOptionViewItem, QStyle
 
 
-from PLM.api.Widgets import LineEdit, ItemDelegate
+from bin.Widgets import LineEdit, ItemDelegate
 
 
 

@@ -14,13 +14,13 @@ Description:
 # Python
 
 # PyQt5
-from PyQt5.QtCore                   import QFile, QRegExp, QTextCodec, QTextStream
-from PyQt5.QtWidgets                import (QAction, QApplication, QComboBox, QDialog, QDialogButtonBox, QFileDialog,
+from PySide2.QtCore                   import QFile, QRegExp, QTextCodec, QTextStream
+from PySide2.QtWidgets                import (QAction, QApplication, QComboBox, QDialog, QDialogButtonBox, QFileDialog,
                                             QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
 
 # Plm
-from PLM.api.Widgets import GridLayout, Label, Widget
-from PLM.api.Gui import AppIcon
+from bin.Widgets import GridLayout, Label, Widget
+from bin.Gui import AppIcon
 
 
 def codec_name(codec):

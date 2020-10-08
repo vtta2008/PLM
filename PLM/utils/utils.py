@@ -16,13 +16,11 @@ import os, winshell, yaml, json, re
 from PIL                import Image
 from functools          import partial
 from resizeimage        import resizeimage
-
-# PyQt5
-from PyQt5.QtCore       import pyqtSignal, pyqtSlot
+from PySide2.QtCore     import Signal, Slot
 
 # PLM
 from PLM                import __envKey__
-from PLM.api.Core       import EventLoop, Timer
+from bin.Core           import EventLoop, Timer
 from PLM.cores.Errors   import EnsureValueError
 
 from .paths             import get_file_path
@@ -96,27 +94,27 @@ def create_signal(argType=None, name=None):
 
     if not name or name is None:
         if argType is None:
-            return pyqtSignal()
+            return Signal()
         else:
-            return pyqtSignal(argType)
+            return Signal(argType)
     else:
         if argType is None:
-            return pyqtSignal(name=name)
+            return Signal(name=name)
         else:
-            return pyqtSignal(argType, name=name)
+            return Signal(argType, name=name)
 
 def create_slot(argType=None, name=None):
 
     if not name or name is None:
         if argType is None:
-            return pyqtSlot()
+            return Slot()
         else:
-            return pyqtSlot(argType)
+            return Slot(argType)
     else:
         if argType is None:
-            return pyqtSlot(name=name)
+            return Slot(name=name)
         else:
-            return pyqtSlot(argType, name=name)
+            return Slot(argType, name=name)
 
 def create_signal_slot(argType, name):
     signal = create_signal(argType, name)

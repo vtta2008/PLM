@@ -16,14 +16,14 @@ import sys, os
 from math import sin, cos, pi, ceil
 
 # PyQt5
-from PyQt5.QtWidgets                    import QApplication
+from PySide2.QtWidgets                    import QApplication
 
 # PLM
 from PLM.api.qtOption                   import (FRAMELESS, SPLASHSCREEN,ANTIALIAS, TRANSPARENT, NO_PEN, AUTO_COLOR,
                                                 TEXT_NORMAL, DAMG_LOGO_COLOR, peacock, DARKBLUE, deep_blue)
-from PLM.api.Widgets                    import SplashScreen, MessageBox
-from PLM.api.Gui                        import Pixmap, Image, Font, FontMetrics, Palette, Painter, Pen
-from PLM.api.Core                       import Timer, Rect
+from bin.Widgets import SplashScreen, MessageBox
+from bin.Gui import Pixmap, Image, Font, FontMetrics, Palette, Painter, Pen
+from bin.Core import Timer, Rect
 from PLM.configs                        import splashImagePth, ORG_LOGO_DIR, propText as p
 
 

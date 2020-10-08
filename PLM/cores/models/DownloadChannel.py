@@ -15,8 +15,8 @@ import time
 from PLM.configs                            import propText as p
 
 from PLM.cores.base                         import Channel
-from PLM.api.Core                           import File, FileInfo, DownloadFile, IODevice
-from PLM.api.Widgets                        import MessageBox
+from bin.Core import File, FileInfo, DownloadFile, IODevice
+from bin.Widgets import MessageBox
 from PLM.utils                              import autoRename, wait
 
 

@@ -12,9 +12,9 @@ import requests
 
 # PLM
 from PLM import __localServer__
-from PLM.api.damg import DAMGLIST
-from PLM.api.Widgets import TabWidget, VBoxLayout
-from PLM.api.Gui import AppIcon
+from bin.damg import DAMGLIST
+from bin.Widgets import TabWidget, VBoxLayout
+from bin.Gui import AppIcon
 from .MidTab1                   import MidTab1
 from .MidTab2                   import MidTab2
 from .MidTab3                   import MidTab3

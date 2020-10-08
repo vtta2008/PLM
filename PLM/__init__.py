@@ -29,31 +29,31 @@ TRADE_MARK                          = '™'
 # -------------------------------------------------------------------------------------------------------------
 """ Metadatas """
 
-__organization__        = "DAMGTEAM"
-__organizationID__      = "DAMG"
-__organizationName__    = 'DAMGTEAM'
-__organizationDomain__  = "www.damgteam.com"
-__slogan__              = "Comprehensive Solution"
+__organization__                    = "DAMGTEAM"
+__organizationID__                  = "DAMG"
+__organizationName__                = 'DAMGTEAM'
+__organizationDomain__              = "www.damgteam.com"
+__slogan__                          = "Comprehensive Solution"
 
-__envKey__              = "PLM"
-__productID__           = __envKey__
-__appName__             = "Pipeline Manager (PLM)"
-__appSlogan__           = ""
-__appDescription__      = ""
-__homepage__            = "https://pipeline.damgteam.com"
+__envKey__                          = "PLM"
+__productID__                       = __envKey__
+__appName__                         = "Pipeline Manager (PLM)"
+__appSlogan__                       = ""
+__appDescription__                  = ""
+__homepage__                        = "https://pipeline.damgteam.com"
 
-__version__             = "13.0.1"
-__plmWiki__             = "https://github.com/vtta2008/PipelineTool/wiki"
+__version__                         = "13.0.1"
+__plmWiki__                         = "https://github.com/vtta2008/PipelineTool/wiki"
 
-__globalServer__        = "https://server.damgteam.com"
-__globalServerCheck__   = "https://server.damgteam.com/check"
-__globalServerAutho__   = "https://server.damgteam.com/auth"
+__globalServer__                    = "https://server.damgteam.com"
+__globalServerCheck__               = "https://server.damgteam.com/check"
+__globalServerAutho__               = "https://server.damgteam.com/auth"
 
-__localPort__           = "20987"
-__localHost__           = "http://localhost:"
-__localServer__         = "{0}{1}".format(__localHost__, __localPort__)
-__localServerCheck__    = "{0}/check".format(__localServer__)
-__localServerAutho__    = "{0}/auth".format(__localServer__)
+__localPort__                       = "20987"
+__localHost__                       = "http://localhost:"
+__localServer__                     = "{0}{1}".format(__localHost__, __localPort__)
+__localServerCheck__                = "{0}/check".format(__localServer__)
+__localServerAutho__                = "{0}/auth".format(__localServer__)
 
 
 def path_exists(path):
@@ -98,10 +98,9 @@ else:
             ROOT_APP                = parent_dir(ROOT)
 
 glbSettings                         = GlobalSettings()
-qtBinding                           = glbSettings.qtBinding
 
-textProp                                = create_path(ROOT_APP, 'bin', 'text.properties')
-glbProp                                 = create_path(ROOT_APP, 'bin', 'global.properties')
+textProp                            = create_path(ROOT_APP, 'bin', 'text.properties')
+glbProp                             = create_path(ROOT_APP, 'bin', 'global.properties')
 
 cprint("{0} v{1}".format(__appName__, __version__), 'cyan')
 
@@ -116,22 +115,6 @@ else:
         subprocess.Popen('SetX {0} {1}'.format(__envKey__, ROOT), stdout=PIPE, stderr=PIPE, shell=True).wait()
 finally:
     glbSettings.cfgable = True
-
-
-if glbSettings.qtBinding == 'PyQt5':
-    try:
-        import PyQt5
-    except ImportError:
-        subprocess.Popen('python -m pip install {0}={1} --user'.format(glbSettings.qtBinding, glbSettings.qtVersion), shell=True).wait()
-    finally:
-        from PyQt5.QtCore import pyqtSlot as Slot, pyqtSignal as Signal, pyqtProperty as Property
-elif glbSettings.qtBinding == 'PySide2':
-    try:
-        import PySide2
-    except ImportError:
-        subprocess.Popen('python -m pip install {0}={1} --user'.format(glbSettings.qtBinding, glbSettings.qtVersion), shell=True).wait()
-    finally:
-        from PySide2.QtCore import Slot, Signal, Property
 
 
 # -------------------------------------------------------------------------------------------------------------

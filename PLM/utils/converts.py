@@ -10,7 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PyQt5.QtGui    import QColor
+from PySide2.QtGui    import QColor
 from .utils         import generate_alternative_color
 from .types         import is_string, is_bool, is_list, is_none, is_number
 

@@ -10,19 +10,13 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-from PLM import qtBinding
+
 import os
 
-if qtBinding == 'PyQt5':
-    from PyQt5.QtWidgets        import (QFrame, QStyle, QAbstractItemView, QSizePolicy, QLineEdit, QPlainTextEdit,
-                                        QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand)
-    from PyQt5.QtCore           import QEvent, QSettings, QSize, Qt, QDateTime
-    from PyQt5.QtGui            import QColor, QPainter, QFont
-elif qtBinding == 'PySide2':
-    from PySide2.QtWidgets      import (QFrame, QStyle, QAbstractItemView, QSizePolicy, QLineEdit, QPlainTextEdit,
-                                        QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand)
-    from PySide2.QtCore         import QEvent, QSettings, QSize, Qt, QDateTime
-    from PySide2.Gui            import QColor, QPainter, QFont
+from PySide2.QtWidgets      import (QFrame, QStyle, QAbstractItemView, QSizePolicy, QLineEdit, QPlainTextEdit,
+                                    QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand)
+from PySide2.QtCore         import QEvent, QSettings, QSize, Qt, QDateTime
+from PySide2.QtGui          import QColor, QPainter, QFont
 
 
 ICONSIZE                    = 32

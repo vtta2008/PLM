@@ -9,8 +9,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.api.Gui                import IntValidator
-from PLM.api.Widgets            import GroupGrid, LineEdit, Label
+from bin.Gui import IntValidator
+from bin.Widgets import GroupGrid, LineEdit, Label
 from .Avatar                    import InfoPicture
 
 class BaseInfo(GroupGrid):

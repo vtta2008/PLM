@@ -20,9 +20,10 @@ from functools                  import partial
 # PLM
 from PLM import __localServerAutho__
 from PLM.configs import propText as p
-from PLM.cores import SignalManager, sqlUtils
-from PLM.api.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label, Label, MessageBox, GroupGrid, )
-from PLM.api.Gui import AppIcon
+from PLM.cores import sqlUtils
+from bin.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label, Label, MessageBox, GroupGrid, )
+from bin.Gui import AppIcon
+from bin.models import SignalManager
 from PLM.utils import bool2str
 
 

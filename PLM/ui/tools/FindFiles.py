@@ -14,15 +14,15 @@ Description:
 
 import sys
 
-from PyQt5.QtCore                   import (QDir, QIODevice, QFile, QFileInfo, Qt, QTextStream, QUrl)
-from PyQt5.QtGui                    import QDesktopServices
-from PyQt5.QtWidgets                import (QAbstractItemView, QApplication, QComboBox, QFileDialog, QGridLayout,
+from PySide2.QtCore                   import (QDir, QIODevice, QFile, QFileInfo, Qt, QTextStream, QUrl)
+from PySide2.QtGui                    import QDesktopServices
+from PySide2.QtWidgets                import (QAbstractItemView, QApplication, QComboBox, QFileDialog, QGridLayout,
                                             QHBoxLayout, QWidget, QHeaderView, QProgressDialog, QTableWidget,
                                             QTableWidgetItem, )
 
 from PLM.api.qtOption import SiPoExp, SiPoPre
-from PLM.api.Widgets import Button, Label, Widget
-from PLM.api.Gui import AppIcon
+from bin.Widgets import Button, Label, Widget
+from bin.Gui import AppIcon
 
 
 class FindFiles(Widget):

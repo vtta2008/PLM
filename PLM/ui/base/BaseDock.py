@@ -11,7 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from PLM.api.Widgets import DockWidget
+from bin.Widgets import DockWidget
 from PLM.api.qtOption import FRAMELESS, dockAll
 
 class BaseDock(DockWidget):

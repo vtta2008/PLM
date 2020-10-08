@@ -22,8 +22,6 @@ from .inspects          import (getToken, getUnix, getTime, getDate, get_local_p
                                 get_screen_resolution, get_pointer_bounding_box, check_blank, check_match,
                                 check_preset)
 
-from .icons             import get_app_icon, get_avatar_image, get_avatar_image, get_logo_icon, get_tag_icon
-
 from .nodes             import setup_context_menu
 
 from .paths             import get_file_path

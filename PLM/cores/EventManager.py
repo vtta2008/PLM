@@ -11,8 +11,8 @@ Description:
 
 
 from .base                      import BaseStorage
-from PLM.api.damg               import DAMGDICT
-from PLM.api.Gui                import WheelEvent
+from bin.damg import DAMGDICT
+from bin.Gui import WheelEvent
 
 
 class EventManager(BaseStorage):

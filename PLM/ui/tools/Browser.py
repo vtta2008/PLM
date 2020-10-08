@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 
@@ -16,28 +15,28 @@ import sys
 
 # PyQt5
 try:
-    from PyQt5.QtWebKitWidgets import QWebView as QWebEngineView
-    from PyQt5.QtWebKitWidgets import QWebPage as QWebEnginePage
+    from PySide2.QtWebKitWidgets import QWebView as QWebEngineView
+    from PySide2.QtWebKitWidgets import QWebPage as QWebEnginePage
 except ImportError:
-    from PyQt5.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
+    from PySide2.QtWebEngineWidgets import QWebEngineView, QWebEnginePage
 
-from PyQt5.QtCore               import QFile, QIODevice, Qt, QTextStream, QUrl, pyqtSignal
-from PyQt5.QtWidgets            import (QAction, QApplication, QLineEdit, QMainWindow, QSizePolicy, QStyle, QTextEdit,
+from PySide2.QtCore               import QFile, QIODevice, Qt, QTextStream, QUrl, Signal
+from PySide2.QtWidgets            import (QAction, QApplication, QLineEdit, QMainWindow, QSizePolicy, QStyle, QTextEdit,
                                         QStatusBar)
 
-from PyQt5.QtNetwork            import QNetworkProxyFactory, QNetworkRequest
+from PySide2.QtNetwork            import QNetworkProxyFactory, QNetworkRequest
 
 # PLM
-from PLM.api.Widgets import Widget, VBoxLayout
+from bin.Widgets import Widget, VBoxLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Web browser """
 
 class WebBrowser(QMainWindow):
 
-    adjTitle                    = pyqtSignal(str)
-    setProg                     = pyqtSignal(int)
-    finishLoad                  = pyqtSignal(str)
+    adjTitle                    = Signal(str)
+    setProg                     = Signal(int)
+    finishLoad                  = Signal(str)
 
     def __init__(self, url, parent=None):
         super(WebBrowser, self).__init__(parent)

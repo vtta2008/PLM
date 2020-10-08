@@ -17,8 +17,8 @@ import sqlite3 as lite
 # PLM
 from PLM                            import create_path, __appName__, __organization__
 from PLM.configs                    import DB_ATTRIBUTE_TYPE
-from PLM.api.Core                   import Timer, Date
-from PLM.api.damg                   import DAMG, DAMGLIST, DAMGDICT
+from bin.Core import Timer, Date
+from bin.damg import DAMG, DAMGLIST, DAMGDICT
 
 
 LOCAL_DB                            = create_path(os.getenv('LOCALAPPDATA'), __organization__, __appName__, 'local.db')

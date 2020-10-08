@@ -11,8 +11,8 @@ Description:
 """ Import """
 
 # PLM
-from PLM.api.damg                   import DAMG
-from PLM.api.Core                   import Date, Time, DateTime
+from bin.damg import DAMG
+from bin.Core import Date, Time, DateTime
 
 class DateLine(DAMG):
 

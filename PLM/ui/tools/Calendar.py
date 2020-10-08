@@ -15,16 +15,16 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore               import QDate, QLocale, Qt
-from PyQt5.QtGui                import QFont, QTextCharFormat
-from PyQt5.QtWidgets            import (QApplication, QCalendarWidget, QCheckBox,
+from PySide2.QtCore               import QDate, QLocale, Qt
+from PySide2.QtGui                import QFont, QTextCharFormat
+from PySide2.QtWidgets            import (QApplication, QCalendarWidget, QCheckBox,
                                         QComboBox, QDateEdit, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
                                         QLayout)
 
 # Plt
 from PLM.api.qtOption import SiPoMin
-from PLM.api.Widgets import GridLayout, Widget
-from PLM.api.Gui import AppIcon
+from bin.Widgets import GridLayout, Widget
+from bin.Gui import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Clendar """

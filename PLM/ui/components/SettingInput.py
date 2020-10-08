@@ -10,11 +10,11 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 
-from PyQt5.QtWidgets        import QAbstractItemView, QHeaderView, QTableWidgetItem
+from PySide2.QtWidgets        import QAbstractItemView, QHeaderView, QTableWidgetItem
 
-from PLM.api.Widgets import Widget, ComboBox, Label, GroupGrid, GridLayout, TableWidget
+from bin.Widgets import Widget, ComboBox, Label, GroupGrid, GridLayout, TableWidget
 from PLM.api.qtOption import INI, NATIVE, USER_SCOPE, SYS_SCOPE, ITEMENABLE
-from PLM.settings import RegSettings
+from bin.settings import RegSettings
 
 
 class SettingInput(Widget):

@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.api.Widgets            import LineEdit, ShortCut
+from bin.Widgets import LineEdit, ShortCut
 from PLM.api.qtOption           import FRAMELESS, KEY_RETURN
 
 class CommandUI(LineEdit):

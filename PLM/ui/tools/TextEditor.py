@@ -15,18 +15,18 @@ Description:
 import sys
 
 # PyQt5
-from PyQt5.QtCore               import QFile, QFileInfo, Qt, QTextCodec
-from PyQt5.QtGui                import (QFont, QFontDatabase, QFontInfo, QIcon, QKeySequence, QPixmap, QTextBlockFormat,
+from PySide2.QtCore               import QFile, QFileInfo, Qt, QTextCodec
+from PySide2.QtGui                import (QFont, QFontDatabase, QFontInfo, QIcon, QKeySequence, QPixmap, QTextBlockFormat,
                                         QTextCharFormat,
                                         QTextCursor, QTextDocumentWriter, QTextListFormat)
-from PyQt5.QtPrintSupport       import QPrintDialog, QPrinter, QPrintPreviewDialog
-from PyQt5.QtWidgets            import (QAction, QActionGroup, QApplication, QColorDialog, QComboBox, QFileDialog,
+from PySide2.QtPrintSupport       import QPrintDialog, QPrinter, QPrintPreviewDialog
+from PySide2.QtWidgets            import (QAction, QActionGroup, QApplication, QColorDialog, QComboBox, QFileDialog,
                                         QFontComboBox, QMenu, QMessageBox, QTextEdit, QToolBar, QHBoxLayout)
 
 # PLM
 from PLM.loggers import Loggers
-from PLM.api.Widgets import Widget, MainWindow
-from PLM.api.Gui import AppIcon
+from bin.Widgets import Widget, MainWindow
+from bin.Gui import AppIcon
 
 if sys.platform.startswith('darwin'):
     rsrcPath = ":/images/mac"

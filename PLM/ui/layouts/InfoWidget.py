@@ -11,8 +11,8 @@ Description:
 
 from PLM.api.qtOption import SiPoMin
 from PLM.configs import ABOUT, CODEOFCONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCES, VERSION
-from PLM.api.Widgets import Widget, GridLayout, Label, Button
-from PLM.api.Gui import AppIcon
+from bin.Widgets import Widget, GridLayout, Label, Button
+from bin.Gui import AppIcon
 
 class InfoWidget(Widget):
 

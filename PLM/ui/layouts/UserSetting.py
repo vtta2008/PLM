@@ -12,8 +12,8 @@ Description:
 """ Import """
 
 # Plt
-from PLM.api.Widgets import Widget, GridLayout
-from PLM.api.Gui import AppIcon
+from bin.Widgets import Widget, GridLayout
+from bin.Gui import AppIcon
 from PLM.ui.base import Profile, Location, Avatar, PassWord
 
 # ----------------------------------------------------------------------------------------------------------- #

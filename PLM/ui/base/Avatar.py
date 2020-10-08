@@ -12,15 +12,15 @@ Description:
 import os, shutil, sqlite3
 
 # PyQt5
-from PyQt5.QtWidgets            import QFileDialog
+from PySide2.QtWidgets            import QFileDialog
 
 # PLM
-from PLM.api.Core import Size
-from PLM.api.Gui import Image, Pixmap
-from PLM.api.Widgets import Label, GroupBox, Button, VBoxLayout
+from bin.Core import Size
+from bin.Gui import Image, Pixmap
+from bin.Widgets import Label, GroupBox, Button, VBoxLayout
 from PLM.api.qtOption import AUTO_COLOR, center, ASPEC_RATIO
 from PLM.cores.data import sqlUtils
-from PLM.utils import get_avatar_image
+from bin.utils import get_avatar_image
 from PLM.configs import USER_LOCAL_DATA
 
 

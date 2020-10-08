@@ -11,7 +11,7 @@ Description:
 
 
 from PLM.cores.base import BaseType
-from PLM.api.Core import DateTime
+from bin.Core import DateTime
 
 
 class Temporary(BaseType):

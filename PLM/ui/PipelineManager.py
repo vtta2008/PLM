@@ -10,9 +10,9 @@ Description:
 
 # PLM
 from PLM import __homepage__, __appName__
-from PLM.api.damg import DAMGDICT
-from PLM.api.Widgets import MainWindow, Widget, GridLayout
-from PLM.api.Gui import LogoIcon
+from bin.damg import DAMGDICT
+from bin.Widgets import MainWindow, Widget, GridLayout
+from bin.Gui import LogoIcon
 
 from PLM.api.qtOption                   import dockT, dockB
 from .components                        import (Footer, MainStatusBar, MenubarDock, ToolBarDock, NetworkStatusDock,

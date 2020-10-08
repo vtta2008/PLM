@@ -17,15 +17,16 @@ import sys
 from functools import partial
 
 # PyQt5
-from PyQt5.QtWidgets        import (QFileDialog)
+from PySide2.QtWidgets        import (QFileDialog)
 
 # Plm
 from PLM.configs import propText as p, QUESTIONS
-from PLM.utils import (check_blank, check_match, get_avatar_image, getToken, getUnix, getTime, getDate, get_local_pc_info,
+from PLM.utils import (check_blank, check_match, getToken, getUnix, getTime, getDate, get_local_pc_info,
                        get_user_location)
-from PLM.cores import SignalManager
-from PLM.api.Widgets import (Widget, GridLayout, Label, Button, LineEdit, ComboBox, MessageBox, CheckBox, GroupGrid)
-from PLM.api.Gui import AppIcon, Pixmap, Image
+from bin.utils import get_avatar_image
+from bin.models import SignalManager
+from bin.Widgets import (Widget, GridLayout, Label, Button, LineEdit, ComboBox, MessageBox, CheckBox, GroupGrid)
+from bin.Gui import AppIcon, Pixmap, Image
 
 
 # -------------------------------------------------------------------------------------------------------------

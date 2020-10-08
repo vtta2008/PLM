@@ -16,7 +16,7 @@ from wmi                    import WMI
 
 
 from .                      import CPU_TYPE, RAM_TYPE, FORM_FACTOR, DRIVE_TYPE
-from PLM.api.Widgets        import Application
+from bin.Widgets            import Application
 
 PIPE                        = subprocess.PIPE
 STDOUT                      = subprocess.STDOUT
