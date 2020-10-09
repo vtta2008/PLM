@@ -96,6 +96,16 @@ UNIX_SETTING                            = create_path(SETTING_DIR, 'unix.ini')
 LOCAL_LOG                               = create_path(LOG_DIR, 'PLM.logs')
 
 BIN_DIR                                 = BIN_ROOT
+BIN_BASE_DIR                            = create_path(BIN_DIR, 'base')
+BIN_CORE_DIR                            = create_path(BIN_DIR, 'Core')
+BIN_DAMG_DIR                            = create_path(BIN_DIR, 'damg')
+BIN_GUI_DIR                             = create_path(BIN_DIR, 'Gui')
+BIN_WIDGET_DIR                          = create_path(BIN_DIR, 'Widgets')
+BIN_NETWORK_DIR                         = create_path(BIN_DIR, 'Network')
+
+BIN_MODEL_DIR                           = create_path(BIN_DIR, 'models')
+BIN_SETTING_DIR                         = create_path(BIN_DIR, 'settings')
+BIN_VERSION_DIR                         = create_path(BIN_DIR, 'version')
 
 BIN_DATA_DIR                            = create_path(BIN_DIR, 'data')
 DESIGN_DIR                              = create_path(BIN_DATA_DIR, 'design')
@@ -186,16 +196,16 @@ UTILS_DIR                               = create_path(ROOT, 'utils')
 TESTS_DIR                               = create_path(ROOT_APP, 'tests')
 
 
-INTERGRATIONS_DIR                       = create_path(ROOT_APP, 'intergrations')
-BLENDER_DIR                             = create_path(INTERGRATIONS_DIR, 'Blender')
-HOUDINI_DIR                             = create_path(INTERGRATIONS_DIR, 'Houdini')
-MARI_DIR                                = create_path(INTERGRATIONS_DIR, 'Mari')
-MAYA_DIR                                = create_path(INTERGRATIONS_DIR, 'Maya')
-MUDBOX_DIR                              = create_path(INTERGRATIONS_DIR, 'Mudbox')
-NUKE_DIR                                = create_path(INTERGRATIONS_DIR, 'Nuke')
-SUBSTANCES_DIR                          = create_path(INTERGRATIONS_DIR, 'Substances')
-ZBRUSH_DIR                              = create_path(INTERGRATIONS_DIR, 'ZBrush')
-Others_DIR                              = create_path(INTERGRATIONS_DIR, 'Others')
+HUB_DIR                                 = create_path(ROOT_APP, 'ToolHub')
+BLENDER_DIR                             = create_path(HUB_DIR, 'Blender')
+HOUDINI_DIR                             = create_path(HUB_DIR, 'Houdini')
+MARI_DIR                                = create_path(HUB_DIR, 'Mari')
+MAYA_DIR                                = create_path(HUB_DIR, 'Maya')
+MUDBOX_DIR                              = create_path(HUB_DIR, 'Mudbox')
+NUKE_DIR                                = create_path(HUB_DIR, 'Nuke')
+SUBSTANCES_DIR                          = create_path(HUB_DIR, 'Substances')
+ZBRUSH_DIR                              = create_path(HUB_DIR, 'ZBrush')
+Others_DIR                              = create_path(HUB_DIR, 'Others')
 
 
 evnInfoCfg                              = create_path(CFG_DIR, 'envs.cfg')
@@ -271,9 +281,9 @@ class ConfigUrls(Cfg):
         Cfg.__init__(self)
 
         self.add('homepage'         , "https://pipeline.damgteam.com")
-        self.add('pythonTag'        , 'https://docs.anaconda.com/anaconda/reference/release-notes/')
-        self.add('licenceTag'       , 'https://github.com/vtta2008/damgteam/blob/master/LICENCE')
-        self.add('versionTag'       , 'https://github.com/vtta2008/damgteam/blob/master/bin/docs/rst/version.rst')
+        self.add('python'           , 'https://docs.anaconda.com/anaconda/reference/release-notes/')
+        self.add('licence'          , 'https://github.com/vtta2008/damgteam/blob/master/LICENCE')
+        self.add('version'          , 'https://github.com/vtta2008/damgteam/blob/master/bin/docs/rst/version.rst')
         self.add('PLM wiki'         , "https://github.com/vtta2008/PipelineTool/wiki")
 
 
@@ -318,7 +328,13 @@ class ConfigIcons(Cfg):
         icons = dict()
         for root, dirs, names in os.walk(dir, topdown=False):
             for name in names:
-                icons[name.split('.icon')[0]] = os.path.join(root, name).replace('\\', '/')
+                if '.icon.png' in name:
+                    icons[name.split('.icon')[0]] = os.path.join(root, name).replace('\\', '/')
+                elif '.tag.png' in name:
+                    icons[name.split('.tag')[0]] = os.path.join(root, name).replace('\\', '/')
+                else:
+                    icons[name.split('.png')[0]] = os.path.join(root, name).replace('\\', '/')
+
         return icons
 
 
@@ -332,7 +348,7 @@ class ConfigUiKeys(Cfg):
     STYLESHEET_KEYS     = ['bright', 'dark', 'charcoal', 'nuker', ]
     STYLE_KEYS          = []
     OPEN_DIR_KEYS       = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppDataFolder', 'PreferenceFolder', ]
-    OPEN_URL_KEYS       = ['pythonTag', 'licenceTag', 'versionTag', 'PLM wiki']
+    OPEN_URL_KEYS       = ['python', 'licence', 'version', 'PLM wiki']
     SYS_CMD_KEYS        = ['Command Prompt', 'cmd', ]
     SHORTCUT_KEYS       = ['Copy', 'Cut', 'Paste', 'Delete', 'Find', 'Rename']
 
@@ -400,15 +416,14 @@ class ConfigPipeline(Cfg):
     appInfo                     = ConfigApps()
     uiKeyInfo                   = ConfigUiKeys()
     iconInfo                    = ConfigIcons()
+
     urlInfo                     = ConfigUrls()
 
-    dirInfo                 = {
-                                'ConfigFolder': CFG_DIR,
-                                'IconFolder': ICON_DIR,
-                                'SettingFolder': SETTINGS_DIR,
-                                'AppDataFolder': APPDATA_PLM,
-                                'PreferenceFolder': PREF_DIR,
-                                }
+    dirInfo                     = { 'ConfigFolder': CFG_DIR,
+                                    'IconFolder': ICON_DIR,
+                                    'SettingFolder': SETTINGS_DIR,
+                                    'AppDataFolder': APPDATA_PLM,
+                                    'PreferenceFolder': PREF_DIR, }
 
     def __init__(self):
         super(ConfigPipeline, self).__init__()

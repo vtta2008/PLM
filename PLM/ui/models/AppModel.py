@@ -27,14 +27,14 @@ import os, sys, requests
 from PLM                                import __version__, __appName__, __organization__, __organizationDomain__, glbSettings
 
 from PLM.configs                        import propText as p, ConfigPipeline
-from PLM.options import STAY_ON_TOP
+from PLM.options                        import STAY_ON_TOP
 from PLM.loggers                        import Loggers
 from PLM.cores                          import sqlUtils, StyleSheet, ThreadManager
 from PLM.cores.models                   import Worker
-from bin.Widgets import Application, MessageBox
-from bin.Gui import LogoIcon
-from bin.settings import AppSettings
-from bin.models import SignalManager
+from bin.Widgets                        import Application, MessageBox
+from bin.Gui                            import LogoIcon
+from bin.settings                       import AppSettings
+from bin.models                         import SignalManager
 from PLM.utils                          import clean_file_ext
 from PLM.ui.layouts.SplashUI            import SplashUI
 from PLM.ui.tools                       import Browser

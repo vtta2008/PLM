@@ -13,16 +13,17 @@ Description:
 # Python
 
 
-# PyQt5
+# PySide2
 from PySide2.QtCore               import QDate, QSize, Qt, Signal
 from PySide2.QtGui                import QIcon
 from PySide2.QtWidgets            import (QCheckBox, QDateTimeEdit, QGridLayout, QGroupBox,
-                                        QHBoxLayout, QLabel, QLineEdit, QListView, QListWidget, QListWidgetItem, QPushButton,
-                                        QSpinBox, QStackedWidget, QVBoxLayout)
+                                          QHBoxLayout, QLabel, QLineEdit, QListView, QListWidget, QListWidgetItem,
+                                          QPushButton, QSpinBox, QStackedWidget, QVBoxLayout)
 
 # PLM
-from PLM import __globalServer__, __localServer__
-from bin.Widgets import (GroupBox, Label, HBoxLayout, ComboBox, VBoxLayout, LineEdit, Button, Widget, CheckBox, )
+from PLM                          import __globalServer__, __localServer__
+from bin.Widgets                    import (GroupBox, Label, HBoxLayout, ComboBox, VBoxLayout, LineEdit, Button,
+                                            Widget, CheckBox, )
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """

@@ -20,7 +20,7 @@ class SplashScreen(QSplashScreen):
     _name                                   = 'DAMG Splash Screen'
 
     def __init__(self, *__args):
-        QSplashScreen.__init__(*__args)
+        QSplashScreen.__init__(self)
 
     @property
     def name(self):

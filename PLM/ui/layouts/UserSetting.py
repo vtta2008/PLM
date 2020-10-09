@@ -33,7 +33,7 @@ class UserSetting(Widget):
 
     def buildUI(self):
 
-        self.avatarGrp                 = Avatar(self)
+        self.avatarGrp              = Avatar(self)
         self.password               = PassWord(self)
         self.profile                = Profile(self)
         self.location               = Location(self)

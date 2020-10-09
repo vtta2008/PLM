@@ -17,16 +17,16 @@ import sys
 # PyQt5
 from PySide2.QtCore               import QFile, QFileInfo, Qt, QTextCodec
 from PySide2.QtGui                import (QFont, QFontDatabase, QFontInfo, QIcon, QKeySequence, QPixmap, QTextBlockFormat,
-                                        QTextCharFormat,
-                                        QTextCursor, QTextDocumentWriter, QTextListFormat)
+                                         QTextCharFormat, QTextCursor, QTextDocumentWriter, QTextListFormat)
 from PySide2.QtPrintSupport       import QPrintDialog, QPrinter, QPrintPreviewDialog
 from PySide2.QtWidgets            import (QAction, QActionGroup, QApplication, QColorDialog, QComboBox, QFileDialog,
                                         QFontComboBox, QMenu, QMessageBox, QTextEdit, QToolBar, QHBoxLayout)
 
 # PLM
-from PLM.loggers import Loggers
 from bin.Widgets import Widget, MainWindow
 from bin.Gui import AppIcon
+
+from PLM.ui.rcs import TextEditor_rc
 
 if sys.platform.startswith('darwin'):
     rsrcPath = ":/images/mac"
