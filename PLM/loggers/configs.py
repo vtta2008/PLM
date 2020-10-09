@@ -54,14 +54,15 @@ class Encoder(json.JSONEncoder):
 
 class StyleMessage(object):
 
-    def __init__(self, message, **kwargs):
+    def __init__(self, title, message, **kwargs):
         super(StyleMessage, self).__init__()
+        self.title                  = title
         self.message                = message
         self.kwargs                 = kwargs
 
     def __str__(self):
         s = Encoder().encode(self.kwargs)
-        return 'message: >>> {0} >>> {1}'.format(self.message, s)
+        return '{0}: >>> {1} >>> {2}'.format(self.title, self.message, s)
 
 
 class LogLevel(enum.IntEnum):

@@ -346,7 +346,7 @@ class AppModel(Application):
     #     words = ['Python', 'Directories', 'File Paths', 'Urls & Links', 'Environment Variable', 'Icons', 'Avatars',
     #              'Logo', 'Images', 'Servers', 'Formats', 'Fonts', 'Local Devices', 'Installed Apps', 'Pipeline Functions']
     #
-    #     configs = [ConfigUrls, ConfigIcons, ConfigApps, ConfigPipeline]
+    #     configs = [CfgUrls, CfgIcons, CfgApps, ConfigPipeline]
     #
     #     for i in range(len(words)):
     #         if not i == (len(words) - 1):

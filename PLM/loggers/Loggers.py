@@ -15,7 +15,7 @@ import logging
 
 # PLM
 from PLM.configs                    import LOCAL_LOG
-from .configs                       import LoggingFullOpt, DATETIME_fullOpt, LogLevel
+from .configs                       import LoggingFullOpt, DATETIME_fullOpt, LogLevel, StyleMessage
 from .handlers                      import StreamHandler, FileHandler
 
 
@@ -39,13 +39,13 @@ class Loggers(logging.Logger):
         self.filename               = filename
         self.filemode               = filemode
 
+        self.addLoggingLevel(levelName='TRACE', levelNum=LogLevel.Trace)
+
         self.streamHld              = StreamHandler(self.logLevel, self.formatter, self.datetimeFormatter)
         self.fileHld                = FileHandler(self.filename, self.logLevel, self.formatter, self.datetimeFormatter)
 
         self.addHandler(self.streamHld)
         self.addHandler(self.fileHld)
-
-        self.addLoggingLevel(levelName='TRACE', levelNum=LogLevel.Trace)
 
     def define_level(self, logLevel):
 
@@ -77,9 +77,9 @@ class Loggers(logging.Logger):
             LogLevel.Error:     logging.ERROR,
             LogLevel.Critical:  logging.FATAL,
 
-        }
+        }[verbose_level]
 
-        return logging_logLevel[verbose_level]
+        return logging_logLevel
 
     def addLoggingLevel(self, levelName, levelNum, methodName=None):
 
@@ -111,6 +111,23 @@ class Loggers(logging.Logger):
             setattr(logging.getLoggerClass(), methodName, logForLevel)
             setattr(logging, methodName, logToRoot)
 
+    def report(self, info, **kwargs):
+        return self.trace(StyleMessage(info, **kwargs))
+
+
+    # def drop_exception(self):
+    #     exc_type, exc_obj, tb = sys.exc_info()
+    #
+    #     traceback.print_tb(tb, limit=1, file=sys.stdout)
+    #     traceback.print_exception(exc_type, exc_obj, tb, limit=2, file=sys.stdout)
+    #     traceback.print_exc()
+    #
+    #     formatted_lines = traceback.format_exc().splitlines()
+    #     print(formatted_lines[0], formatted_lines[-1], repr(traceback.format_exception(exc_type, exc_obj, tb)))
+    #
+    #     extract_tb = repr(traceback.extract_tb(tb))
+    #     formatTb = repr(traceback.format_tb(tb))
+    #     lineNo = tb.tb_lineno
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 15/06/2018 - 6:49 PM

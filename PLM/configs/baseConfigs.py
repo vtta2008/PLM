@@ -12,25 +12,36 @@ Description:
 """ Import """
 
 # Python
-import pprint
+import pprint, json
+from bin.damg                           import DAMGDICT
 
 
-class Cfg(dict):
+class Cfg(DAMGDICT):
 
     key                                 = 'ConfigBase'
 
     def __init__(self):
-        dict.__init__(self)
+        DAMGDICT.__init__(self)
+
 
     def print(self):
         pprint.pprint(self)
 
-    def add(self, key, value):
-        self[key]                   = value
+
+    def saveConfigData(self, filePth):
+        with open(filePth, 'w+') as f:
+            json.dump(self, f, indent=4)
+
+        print('data saved: {0}'.format(filePth))
+
+    def removeKey(self, key):
+        try:
+            del self[key]
+        except KeyError:
+            self.pop(key, None)
 
 
-
-class Cmds(dict):
+class Cmds(Cfg):
 
     key                             = 'Cmds'
 
@@ -51,7 +62,7 @@ class Cmds(dict):
         vs = [key, icon, tooltip, statustip, value, valueType, arg, code]
 
         for i in range(len(ks)):
-            self[ks[i]]             = vs[i]
+            self.add(ks[i], vs[i])
 
         self.update()
 
@@ -60,14 +71,14 @@ class TrackKeys(Cfg):
 
     key                             = 'TrackKeys'
 
-    TRACK_ART = ['Photoshop', 'Illustrator', 'Krita (x64)', 'Krita (x32)']
+    TRACK_ART                       = ['Photoshop', 'Illustrator', 'Krita (x64)', 'Krita (x32)']
 
-    KEYDETECT = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url", "Changelog", "Settings"]
+    KEYDETECT                       = ["Non-commercial", "Uninstall", "Verbose", "License", "Skype", ".url", "Changelog", "Settings"]
 
 
     pTRACK   = dict(TDS             = ['Maya', 'ZBrush', 'Houdini', '3Ds Max', 'Mudbox', 'BLender'],
                     VFX             = ['NukeX', 'After Effects', 'Katana'],
-                    ART             = ['Photoshop', 'Illustrator', 'Krita (x64)', 'Krita (x32)'],
+                    ART             = TRACK_ART,
                     PRE             = ['Storyboarder', 'Illustrator'],
                     TEXTURE         = ['Mari', 'Substance Painter'] + TRACK_ART,
                     POST            = ['Davinci Resolve', 'Hiero', 'HieroPlayer', 'Premiere Pro', 'NukeStudio'],
@@ -119,7 +130,7 @@ class TrackKeys(Cfg):
 
         self.__dict__.update()
 
-    def generate_key_packages(self, *info):
+    def generate_key_packages(self):
         keyPackage = []
         for k in self.pPACKAGE:
             for name in self.pPACKAGE[k]:
@@ -137,7 +148,7 @@ class TrackKeys(Cfg):
                                 key = name + " " + ver
                         keyPackage.append(key)
 
-        info = keyPackage + self.windowApps
+        info = keyPackage + self.windowApps + self.TOOL_UI_KEYS
 
         return info
 
@@ -145,12 +156,12 @@ class TrackKeys(Cfg):
 
         info = []
 
-        for k in self.KEYPACKAGE:
-            for t in self.pTRACK[key]:
-                if t in k:
-                    info.append(k)
+        for k in self.pTRACK[key]:
+            for a in self.KEYPACKAGE:
+                if k in a:
+                    info.append(a)
 
-        return list(sorted(set(info)))
+        return info
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

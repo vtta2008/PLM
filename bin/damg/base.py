@@ -49,10 +49,6 @@ class BaseList(list):
             return False
 
     @property
-    def copyright(self):
-        return self._copyright
-
-    @property
     def data(self):
         return self._data
 

@@ -21,6 +21,13 @@ from bin                                import BIN_ROOT
 from .baseConfigs                       import Cmds, Cfg, TrackKeys
 from PLM                                import create_path, parent_dir, ROOT, ROOT_APP, __organization__, __appName__
 
+
+iconMissing                             = []
+toolTips                                = {}
+statusTips                              = {}
+
+
+
 notKeys                                  = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__',
                                             '__cached__', '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR',
                                             'SETTING_DIR', 'DB_DIR', 'LOG_DIR', 'QSS_DIR', 'RCS_DIR', 'SCSS_DIR',
@@ -76,18 +83,20 @@ CFG_DIR                                 = create_path(APPDATA_PLM, '.configs')
 TMP_DIR                                 = create_path(APPDATA_PLM, '.tmp')
 CACHE_DIR                               = create_path(APPDATA_PLM, '.cache')
 PREF_DIR                                = create_path(APPDATA_PLM, 'preferences')
-SETTING_DIR                             = CFG_DIR
+SETTING_DIR                             = create_path(CFG_DIR, 'settings')
 DB_DIR                                  = APPDATA_PLM
 LOG_DIR                                 = CFG_DIR
 TASK_DIR                                = create_path(CFG_DIR, 'task')
 TEAM_DIR                                = create_path(CFG_DIR, 'team')
 PRJ_DIR                                 = create_path(CFG_DIR, 'project')
 ORG_DIR                                 = create_path(CFG_DIR, 'organisation')
+USER_LOCAL_DATA                         = create_path(CFG_DIR, 'userLocal')
 
 APPDATA_DAMG                            = create_path(LOCALAPPDATA, __organization__)
 APPDATA_PLM                             = create_path(APPDATA_DAMG, __appName__)
 
 USER_DIR                                = parent_dir(os.getenv('HOME'))
+LIBRARY_DIR                             = create_path(APPDATA_DAMG, 'libraries')
 
 APP_SETTING                             = create_path(SETTING_DIR, 'PLM.ini')
 USER_SETTING                            = create_path(SETTING_DIR, 'user.ini')
@@ -152,10 +161,6 @@ QSS_DIR                                 = create_path(SCRIPTS_DIR, 'qss')
 
 SOUND_DIR                               = create_path(BIN_DATA_DIR, 'sound')
 
-USER_LOCAL_DATA                         = create_path(CFG_DIR, 'userLocal')
-
-LIBRARY_DIR                             = create_path(USER_DIR, 'UserLibraries')
-
 DOCS_DIR                                = create_path(ROOT_APP, 'docs')
 RAWS_DIR                                = create_path(DOCS_DIR, 'raws')
 DOCS_READING_DIR                        = create_path(DOCS_DIR, 'reading')
@@ -163,26 +168,16 @@ TEMPLATE_DIR                            = create_path(DOCS_DIR, 'template')
 TEMPLATE_LICENSE                        = create_path(TEMPLATE_DIR, 'LICENSE')
 
 API_DIR                                 = create_path(ROOT, 'api')
-CORE_DIR                                = create_path(API_DIR, 'Core')
-DAMG_DIR                                = create_path(API_DIR, 'damg')
-GUI_DIR                                 = create_path(API_DIR, 'Gui')
-NETWORK_DIR                             = create_path(API_DIR, 'Network')
-WIDGET_DIR                              = create_path(API_DIR, 'Widgets')
-
-CONFIGS_DIR                             = create_path(ROOT, 'configs')
+PLM_CFG_DIR                             = create_path(ROOT, 'configs')
 
 CORES_DIR                               = create_path(ROOT, 'cores')
 CORES_BASE_DIR                          = create_path(CORES_DIR, 'base')
 CORES_DATA_DIR                          = create_path(CORES_DIR, 'data')
 CORES_HANDLERS_DIR                      = create_path(CORES_DIR, 'handlers')
 CORES_MODELS_DIR                        = create_path(CORES_DIR, 'models')
-CORES_SETTINGS_DIR                      = create_path(CORES_DIR, 'settings')
 
 LOGGER_DIR                              = create_path(ROOT, 'loggers')
 PLUGINS_DIR                             = create_path(ROOT, 'plugins')
-
-SETTINGS_DIR                            = create_path(ROOT, 'settings')
-TYPES_DIR                               = create_path(ROOT, 'types')
 
 UI_DIR                                  = create_path(ROOT, 'ui')
 UI_BASE_DIR                             = create_path(UI_DIR, 'base')
@@ -195,7 +190,6 @@ UI_TOOLS_DIR                            = create_path(UI_DIR, 'tools')
 UTILS_DIR                               = create_path(ROOT, 'utils')
 TESTS_DIR                               = create_path(ROOT_APP, 'tests')
 
-
 HUB_DIR                                 = create_path(ROOT_APP, 'ToolHub')
 BLENDER_DIR                             = create_path(HUB_DIR, 'Blender')
 HOUDINI_DIR                             = create_path(HUB_DIR, 'Houdini')
@@ -205,21 +199,19 @@ MUDBOX_DIR                              = create_path(HUB_DIR, 'Mudbox')
 NUKE_DIR                                = create_path(HUB_DIR, 'Nuke')
 SUBSTANCES_DIR                          = create_path(HUB_DIR, 'Substances')
 ZBRUSH_DIR                              = create_path(HUB_DIR, 'ZBrush')
-Others_DIR                              = create_path(HUB_DIR, 'Others')
 
-
-evnInfoCfg                              = create_path(CFG_DIR, 'envs.cfg')
+iconCfg                                 = create_path(CFG_DIR, 'icons.cfg')
 avatarCfg                               = create_path(CFG_DIR, 'avatars.cfg')
 webIconCfg                              = create_path(CFG_DIR, 'webIcon.cfg')
 nodeIconCfg                             = create_path(CFG_DIR, 'nodeIcons.cfg')
 imageCfg                                = create_path(CFG_DIR, 'images.cfg')
 tagCfg                                  = create_path(CFG_DIR, 'tags.cfg')
-envVarCfg                               = create_path(CFG_DIR, 'envVar.cfg')
 userCfg                                 = create_path(CFG_DIR, 'user.cfg')
-PLMconfig                               = create_path(CFG_DIR, 'PLM.cfg')
+plmCfg                                  = create_path(CFG_DIR, 'PLM.cfg')
 sceneGraphCfg                           = create_path(CFG_DIR, 'sceneGraph.cfg')
 splashImagePth                          = create_path(IMAGE_DIR, 'splash.png')
 serverCfg                               = create_path(CFG_DIR, 'server.cfg')
+cfgFilePths                             = create_path(CFG_DIR, 'cfgFile.cfg')
 
 LOCAL_DB                                = create_path(DB_DIR, 'local.db')
 
@@ -273,7 +265,7 @@ propText                            = Properties()
 propText.load(open(create_path(BIN_DIR, 'text.properties')))
 
 
-class ConfigUrls(Cfg):
+class CfgUrls(Cfg):
 
     key                             = 'ConfigUrl'
 
@@ -287,12 +279,12 @@ class ConfigUrls(Cfg):
         self.add('PLM wiki'         , "https://github.com/vtta2008/PipelineTool/wiki")
 
 
-class ConfigApps(dict):
+class CfgApps(Cfg):
 
-    key                         = 'ConfigApps'
+    key                         = 'CfgApps'
 
     def __init__(self):
-        super(ConfigApps, self).__init__()
+        super(CfgApps, self).__init__()
 
         shortcuts = {}
         programs = winshell.programs(common=1)
@@ -307,17 +299,12 @@ class ConfigApps(dict):
                 self[str(name)] = lnk.path
 
 
-class ConfigIcons(Cfg):
+class CfgIcons(Cfg):
 
-    key                                 = 'ConfigIcons'
+    key                                 = 'CfgIcons'
 
     def __init__(self):
-        dict.__init__(self)
-
-        ks = ['icon12', 'icon16', 'icon24', 'icon32', 'icon48', 'icon64', 'node', 'tag', 'web16', 'web24', 'web32',
-              'web48', 'web64', 'web128']
-        ds = [ICON_DIR_12, ICON_DIR_16, ICON_DIR_24, ICON_DIR_32, ICON_DIR_48, ICON_DIR_64, NODE_ICON_DIR, TAG_ICON_DIR,
-              WEB_ICON_16, WEB_ICON_24, WEB_ICON_32, WEB_ICON_48, WEB_ICON_64, WEB_ICON_128]
+        super(CfgIcons, self).__init__()
 
         for i in range(len(ks)):
             k = ks[i]
@@ -326,6 +313,7 @@ class ConfigIcons(Cfg):
 
     def get_icons(self, dir):
         icons = dict()
+
         for root, dirs, names in os.walk(dir, topdown=False):
             for name in names:
                 if '.icon.png' in name:
@@ -363,10 +351,11 @@ class ConfigUiKeys(Cfg):
                            'OrgInfo', 'References', ]
     PROJ_UI_KEYS        = ['ProjectManager', 'PreProductionProj', 'ProductionProj', 'PostProductionPrj', 'VFXProj',
                            'ResearchProject', ]
+
     ORG_UI_KEYS         = ['OrganisationManager', ]
     TASK_UI_KEYS        = ['TaskManager', ]
     TEAM_UI_KEYS        = ['TeamManager', ]
-    DEPA_UI_KEYS        = ['DepartmentManager']
+
     SETTING_UI_KEYS     = ['Configurations', 'Preferences', 'SettingUI', 'glbSettings', 'UserSetting', 'BrowserSetting',
                            'ProjSetting', 'OrgSetting', 'TaskSetting', 'TeamSetting']
     LIBRARY_UI_KEYS     = ['UserLibrary', 'HDRILibrary', 'TextureLibrary', 'AlphaLibrary', ]
@@ -396,32 +385,41 @@ class ConfigUiKeys(Cfg):
 
         # Tab 1 sections _data
         self.CONFIG_OFFICE  = self.tracker.generate_config('Office')                            # Office
-        self.CONFIG_DEV     = self.tracker.generate_config('Dev') + ['Command Prompt'],         # Rnd
-        self.CONFIG_TOOLS   = self.tracker.generate_config('Tools') + self.TOOL_UI_KEYS,        # useful/custom tools
-        self.CONFIG_EXTRA   = self.tracker.generate_config('Extra'),                            # Extra tools
-        self.CONFIG_SYSTRAY = self.tracker.generate_config('sysTray') + ['Exit', 'SignIn'],     # System tray tools
+        self.CONFIG_DEV     = self.tracker.generate_config('Dev') + ['Command Prompt']          # Rnd
+        self.CONFIG_TOOLS   = self.tracker.generate_config('Tools') + self.TOOL_UI_KEYS         # useful/custom tools
+        self.CONFIG_EXTRA   = self.tracker.generate_config('Extra')                             # Extra tools
+        self.CONFIG_SYSTRAY = self.tracker.generate_config('sysTray') + ['Exit', 'SignIn']      # System tray tools
 
         self.__dict__.update()
 
 
-iconMissing                     = []
-toolTips                        = {}
-statusTips                      = {}
+class CfgFiles(Cfg):
+
+    key = 'CfgFiles'
+
+    def __init__(self):
+        super(CfgFiles, self).__init__()
+
+        ks = ['avatar', 'webIcon', 'nodeIcon', 'image', 'tag', 'user', 'PLM', 'sceneGraph', 'splash', 'server', 'icon',
+              'file', 'localDB']
+        vs = [iconCfg, avatarCfg, webIconCfg, nodeIconCfg, imageCfg, tagCfg, userCfg, plmCfg, sceneGraphCfg,
+              splashImagePth, serverCfg, cfgFilePths, LOCAL_DB]
+
+        for i in range(len(ks)):
+            self.add(ks[i], vs[i])
 
 
 class ConfigPipeline(Cfg):
 
     key                         = 'ConfigPipeline'
 
-    appInfo                     = ConfigApps()
+    appInfo                     = CfgApps()
     uiKeyInfo                   = ConfigUiKeys()
-    iconInfo                    = ConfigIcons()
-
-    urlInfo                     = ConfigUrls()
-
+    iconInfo                    = CfgIcons()
+    urlInfo                     = CfgUrls()
     dirInfo                     = { 'ConfigFolder': CFG_DIR,
                                     'IconFolder': ICON_DIR,
-                                    'SettingFolder': SETTINGS_DIR,
+                                    'SettingFolder': SETTING_DIR,
                                     'AppDataFolder': APPDATA_PLM,
                                     'PreferenceFolder': PREF_DIR, }
 
@@ -458,7 +456,7 @@ class ConfigPipeline(Cfg):
                     removeKeys.append(k)
 
         for k in removeKeys:
-            self.del_key(k)
+            self.appInfo.removeKey(k)
 
         self.appInfo.update()
 
@@ -570,7 +568,6 @@ class ConfigPipeline(Cfg):
 
         for key in layoutKeys:
             if not key in launchAppKeys:
-                # print(key)
                 try:
                     icon = self.iconInfo['icon32'][key]
                 except KeyError:
@@ -588,11 +585,7 @@ class ConfigPipeline(Cfg):
                 statustip = statusTips[key]
                 self.add(key, Cmds(key, icon, tooltip, statustip, value, valueType, arg, code))
 
-    def del_key(self, key):
-        try:
-            del self.appInfo[key]
-        except KeyError:
-            self.appInfo.pop(key, None)
+
 
 
 # -------------------------------------------------------------------------------------------------------------

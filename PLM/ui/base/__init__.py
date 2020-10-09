@@ -19,8 +19,11 @@ from .ConnectionIcon        import Conection
 from .Location              import Location
 from .PassWord              import PassWord
 from .Profile               import Profile
+from .SplashProperty        import SplashProperty
 from .TaskFilter            import TaskFilter
 from .TaskInfo              import TaskInfo
+from .TextBase              import TextBase
+from .UrlText               import UrlText
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 2/12/2019 - 7:34 AM

@@ -10,22 +10,25 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+""" Import """
 
-from PLM import TextLabel
-from PLM import Painter
-from PLM import ELIDE_RIGHT, ELIDE_NONE, SiPoPre, SiPoMin, TEXT_MENEOMIC
-from PLM import get_repr, ensure_valid
+
+from bin.Widgets                import TextLabel
+from bin.Gui                    import Painter
+from PLM.options                import ELIDE_RIGHT, ELIDE_NONE, SiPoPre, SiPoMin, TEXT_MENEOMIC
+from PLM.utils                  import get_repr, ensure_valid
+
 
 class TextBase(TextLabel):
 
-    key = 'TextBase'
+    key                         = 'TextBase'
 
     def __init__(self, parent=None, elidemode=ELIDE_RIGHT):
         super(TextBase, self).__init__(parent)
 
         self.setSizePolicy(SiPoPre, SiPoMin)
-        self._elidemode = elidemode
-        self._elided_text = ''
+        self._elidemode         = elidemode
+        self._elided_text       = ''
 
     def __repr__(self):
         return get_repr(self, text=self.text())
@@ -37,9 +40,9 @@ class TextBase(TextLabel):
 
     def _update_elided_text(self, width):
         if self.text():
-            self._elided_text = self.fontMetrics().elidedText(self.text(), self._elidemode, width, TEXT_MENEOMIC)
+            self._elided_text   = self.fontMetrics().elidedText(self.text(), self._elidemode, width, TEXT_MENEOMIC)
         else:
-            self._elided_text = ''
+            self._elided_text   = ''
 
     def resizeEvent(self, e):
         super(TextBase, self).resizeEvent()

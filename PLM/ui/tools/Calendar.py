@@ -15,16 +15,16 @@ Description:
 import sys
 
 # PyQt5
-from PySide2.QtCore               import QDate, QLocale, Qt
+from PySide2.QtCore               import QLocale, Qt
 from PySide2.QtGui                import QFont, QTextCharFormat
-from PySide2.QtWidgets            import (QApplication, QCalendarWidget, QCheckBox,
-                                        QComboBox, QDateEdit, QGridLayout, QGroupBox, QHBoxLayout, QLabel,
-                                        QLayout)
+from PySide2.QtWidgets            import (QApplication, QCalendarWidget, QCheckBox, QComboBox, QDateEdit, QGridLayout,
+                                          QGroupBox, QHBoxLayout, QLabel, QLayout)
 
 # Plt
-from PLM.options import SiPoMin
-from bin.Widgets import GridLayout, Widget
-from bin.Gui import AppIcon
+from PLM.options                  import SiPoMin
+from bin.Core                     import Date
+from bin.Widgets                  import GridLayout, Widget
+from bin.Gui                      import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Clendar """
@@ -90,8 +90,7 @@ class Calendar(Widget):
 
     def weekdayFormatChanged(self):
         format = QTextCharFormat()
-        format.setForeground(Qt.GlobalColor(self.weekdayColorCombo.itemData(
-                    self.weekdayColorCombo.currentIndex())))
+        format.setForeground(Qt.GlobalColor(self.weekdayColorCombo.itemData(self.weekdayColorCombo.currentIndex())))
 
         self.calendar.setWeekdayTextFormat(Qt.Monday, format)
         self.calendar.setWeekdayTextFormat(Qt.Tuesday, format)
@@ -101,8 +100,7 @@ class Calendar(Widget):
 
     def weekendFormatChanged(self):
         format = QTextCharFormat()
-        format.setForeground(Qt.GlobalColor(self.weekendColorCombo.itemData(
-                    self.weekendColorCombo.currentIndex())))
+        format.setForeground(Qt.GlobalColor(self.weekendColorCombo.itemData(self.weekendColorCombo.currentIndex())))
 
         self.calendar.setWeekdayTextFormat(Qt.Saturday, format)
         self.calendar.setWeekdayTextFormat(Qt.Sunday, format)
@@ -122,7 +120,7 @@ class Calendar(Widget):
 
     def reformatCalendarPage(self):
         if self.firstFridayCheckBox.isChecked():
-            firstFriday = QDate(self.calendar.yearShown(), self.calendar.monthShown(), 1)
+            firstFriday = Date(self.calendar.yearShown(), self.calendar.monthShown(), 1)
 
             while firstFriday.dayOfWeek() != Qt.Friday:
                 firstFriday = firstFriday.addDays(1)
@@ -134,7 +132,7 @@ class Calendar(Widget):
 
         # May 1st in Red takes precedence.
         if self.mayFirstCheckBox.isChecked():
-            mayFirst = QDate(self.calendar.yearShown(), 5, 1)
+            mayFirst = Date(self.calendar.yearShown(), 5, 1)
 
             mayFirstFormat = QTextCharFormat()
             mayFirstFormat.setForeground(Qt.red)
@@ -145,8 +143,8 @@ class Calendar(Widget):
         self.previewGroupBox = QGroupBox("Preview")
 
         self.calendar = QCalendarWidget()
-        self.calendar.setMinimumDate(QDate(1900, 1, 1))
-        self.calendar.setMaximumDate(QDate(3000, 1, 1))
+        self.calendar.setMinimumDate(Date(1900, 1, 1))
+        self.calendar.setMaximumDate(Date(3000, 1, 1))
         self.calendar.setGridVisible(True)
         self.calendar.currentPageChanged.connect(self.reformatCalendarPage)
 
@@ -177,7 +175,8 @@ class Calendar(Widget):
 
         for country in countries:
             lang = lang_country[country][0]
-            label = "{0} - {1}".format((u' '.join(lang).encode('Utf-8').strip()), country)
+            print(type(lang))
+            label = "{0} - {1}".format(lang, country)
             locale = lang_country[country][2]
 
             if self.locale().language() == lang and self.locale().country() == country:

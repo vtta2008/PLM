@@ -16,15 +16,15 @@ import sys
 
 # PyQt5
 
-from PySide2.QtWidgets        import QAction, QFileDialog, QInputDialog, QLineEdit
+from PySide2.QtWidgets      import QAction, QFileDialog, QInputDialog, QLineEdit
 
 # PLM
-from PLM import __appName__, __organization__
-from bin.settings import AppSettings, RegSettings
+from PLM                    import __appName__, __organization__
+from bin.settings           import AppSettings, RegSettings
 from PLM.configs            import APP_SETTING
-from bin.Core import Settings
-from bin.Widgets import Widget, GridLayout, MenuBar
-from PLM.options import NATIVE, SYS_SCOPE
+from bin.Core               import Settings
+from bin.Widgets            import Widget, GridLayout, MenuBar
+from PLM.options            import NATIVE, SYS_SCOPE
 from PLM.ui.components      import SettingOutput, SettingInput
 
 # -------------------------------------------------------------------------------------------------------------
@@ -51,6 +51,7 @@ class SettingUI(Widget):
         self.regInfo        = SettingInput(regSetting)
         self.layout         = GridLayout()
         self.menubar        = MenuBar(self)
+
         self.createMenus()
 
         self.layout.addWidget(self.menubar, 0, 0, 1, 1)
@@ -77,9 +78,7 @@ class SettingUI(Widget):
             self.fallbacksAct.setEnabled(True)
 
 
-        #
-        # self.regInfo = SettingInput(self.settings)
-
+        self.regInfo = SettingInput(self.settings)
 
     def openIniFile(self):
         if not os.path.exists(self.settings.settingFile):

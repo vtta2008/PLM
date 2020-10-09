@@ -30,7 +30,7 @@ class BaseKeys(BaseStorage):
     key                                 = 'KeyBase'
 
     # Actions
-    appActions                          = ['AppSetting', 'Configurations', 'Preferences', 'Organisation', 'Project', 'Team', 'Task', 'Exit']
+    appActions                          = ['SettingUI', 'Configurations', 'Preferences', 'Organisation', 'Project', 'Team', 'Task', 'Exit']
     goActions                           = ['ConfigFolder', 'IconFolder', 'SettingFolder', 'AppDataFolder', 'PreferenceFolder', ]
     editActions                         = uiKey.SHORTCUT_KEYS
     viewActions                         = ['ShowAll']

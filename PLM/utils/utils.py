@@ -75,6 +75,7 @@ def create_shotcut(target, icon, shortcut, description):
                              Description=description )
 
 def create_folder(pth, mode=0o770):
+
     if not pth or os.path.exists(pth):
         return []
 
