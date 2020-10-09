@@ -18,23 +18,9 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-import pkg_resources, subprocess
-
-PIPE = subprocess.PIPE
-
-installed_packages = pkg_resources.working_set
-
-installed_packages_list = sorted(["%s" % (i.key) for i in installed_packages])
 
 
-for pkg in installed_packages_list:
-    print('start upgrade {0}'.format(pkg))
-    subprocess.Popen('python -m pip install {0} --user --upgrade'.format(pkg), stdout=PIPE, stderr=PIPE, shell=True).wait()
-    print('-----------------------------------------------------------------------------------------------------')
 
-    print('finished')
-
-print('done')
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 1/16/2020 - 7:11 PM

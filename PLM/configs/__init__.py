@@ -19,18 +19,13 @@ from pyjavaproperties                   import Properties
 # PLM
 from bin                                import BIN_ROOT
 from .baseConfigs                       import Cmds, Cfg, TrackKeys
-from PLM                                import (create_path, parent_dir, ROOT, ROOT_APP, __organization__, __appName__)
+from PLM                                import create_path, parent_dir, ROOT, ROOT_APP, __organization__, __appName__
 
 notKeys                                  = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__',
                                             '__cached__', '__builtins__', 'os', '__envKey__', 'cfgdir', 'CFG_DIR',
                                             'SETTING_DIR', 'DB_DIR', 'LOG_DIR', 'QSS_DIR', 'RCS_DIR', 'SCSS_DIR',
                                             '__appname__', 'subprocess', 'unicode_literals', 'absolute_import',
                                             '__organization__']
-
-IGNORE_ICONS                            = [ 'Widget', 'bright', 'dark', 'charcoal', 'nuker', 'TopTab1', 'TopTab2',
-                                            'Organisation', 'Project', 'Team', 'Task', 'ShowAll','ItemWidget',
-                                            'BaseManager', 'SettingInput', 'QueryPage', 'SysTray', 'Footer', 'BotTab1',
-                                            'BotTab2', 'Cmd', 'User', 'Tracking']
 
 RAM_TYPE                                = { 0: 'Unknown', 1: 'Other', 2: 'DRAM', 3: 'Synchronous DRAM', 4: 'Cache DRAM',
                                             5: 'EDO', 6: 'EDRAM', 7: 'VRAM', 8: 'SRAM', 9: 'RAM', 10: 'ROM', 11: 'Flash',
@@ -266,6 +261,7 @@ REFERENCES                          = read_file('REFERENCES')
 
 propText                            = Properties()
 propText.load(open(create_path(BIN_DIR, 'text.properties')))
+
 
 class ConfigUrls(Cfg):
 

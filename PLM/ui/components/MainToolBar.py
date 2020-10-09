@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # PLM
-from PLM.api.qtOption import SiPoMin
+from PLM.options import SiPoMin
 from bin.Widgets import MainWindow, ToolBar, GroupHBox
 from bin.Core import Size
 from PLM.utils import str2bool, bool2str

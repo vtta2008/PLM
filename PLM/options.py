@@ -16,7 +16,7 @@ import os
 from PySide2.QtWidgets      import (QFrame, QStyle, QAbstractItemView, QSizePolicy, QLineEdit, QPlainTextEdit,
                                     QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand)
 from PySide2.QtCore         import QEvent, QSettings, QSize, Qt, QDateTime
-from PySide2.QtGui          import QColor, QPainter, QFont
+from PySide2.QtGui          import QColor, QPainter, QFont, QTextCursor
 
 
 ICONSIZE                    = 32
@@ -289,6 +289,9 @@ NO_BUTTON                   = Qt.NoButton
 ARROW_NONE                  = Qt.NoArrow                                                # Cursor
 CURSOR_ARROW                = Qt.ArrowCursor
 CURSOR_SIZEALL              = Qt.SizeAllCursor
+MOVE_OPERATION              = QTextCursor.MoveOperation
+MOVE_ANCHOR                 = QTextCursor.MoveMode.MoveAnchor
+KEEP_ANCHOR                 = QTextCursor.MoveMode.KeepAnchor
 
 ACTION_MOVE                 = Qt.MoveAction                                             # Action
 

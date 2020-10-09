@@ -27,7 +27,7 @@ import os, sys, requests
 from PLM                                import __version__, __appName__, __organization__, __organizationDomain__, glbSettings
 
 from PLM.configs                        import propText as p, ConfigPipeline
-from PLM.api.qtOption                   import STAY_ON_TOP
+from PLM.options import STAY_ON_TOP
 from PLM.loggers                        import Loggers
 from PLM.cores                          import sqlUtils, StyleSheet, ThreadManager
 from PLM.cores.models                   import Worker

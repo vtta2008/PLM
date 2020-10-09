@@ -20,7 +20,7 @@ from PySide2.QtWidgets                import (QAbstractItemView, QApplication, Q
                                             QHBoxLayout, QWidget, QHeaderView, QProgressDialog, QTableWidget,
                                             QTableWidgetItem, )
 
-from PLM.api.qtOption import SiPoExp, SiPoPre
+from PLM.options import SiPoExp, SiPoPre
 from bin.Widgets import Button, Label, Widget
 from bin.Gui import AppIcon
 

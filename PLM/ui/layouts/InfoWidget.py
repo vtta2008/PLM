@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PLM.api.qtOption import SiPoMin
+from PLM.options import SiPoMin
 from PLM.configs import ABOUT, CODEOFCONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCES, VERSION
 from bin.Widgets import Widget, GridLayout, Label, Button
 from bin.Gui import AppIcon

@@ -40,7 +40,7 @@ class SysTray(SystemTrayIcon):
 
         self.rightClickMenu             = SysTrayIconMenu(self.actionManager, self.parent)
 
-        self.setIcon(LogoIcon('Logo'))
+        self.setIcon(LogoIcon('PLM'))
         self.setToolTip(__appSlogan__)
         self.activated.connect(self.sys_tray_icon_activated)
         self.setContextMenu(self.rightClickMenu)

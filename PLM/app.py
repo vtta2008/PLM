@@ -20,7 +20,6 @@ from PLM.configs                        import propText as p
 from PLM.ui.models                      import AppModel
 from PLM.ui                             import LayoutManager
 
-
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 

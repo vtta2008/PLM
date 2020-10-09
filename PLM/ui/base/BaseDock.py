@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 from bin.Widgets import DockWidget
-from PLM.api.qtOption import FRAMELESS, dockAll
+from PLM.options import FRAMELESS, dockAll
 
 class BaseDock(DockWidget):
 

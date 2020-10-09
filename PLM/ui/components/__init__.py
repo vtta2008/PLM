@@ -14,8 +14,8 @@ Description:
 
 from .BodyCheckBoxes        import BodyCheckBoxes
 from .BotTab                import BotTab
-from .BotTab1               import BotTab1
-from .BotTab2               import BotTab2
+# from .BotTab1               import BotTab1
+# from .BotTab2               import BotTab2
 from .ConnectStatus         import ConnectStatus
 from .DockHeader            import ToolBarDock, MenubarDock, NetworkStatusDock, BotTabDock, NotificationDock, MidTabDock
 from .Footer                import Footer

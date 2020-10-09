@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 from bin.Widgets import LineEdit, ShortCut
-from PLM.api.qtOption           import FRAMELESS, KEY_RETURN
+from PLM.options import FRAMELESS, KEY_RETURN
 
 class CommandUI(LineEdit):
 

@@ -15,10 +15,10 @@ Description:
 import sys
 
 
-from PLM import MessageBox
-from PLM import NetworkAccessManager
-from PLM import DownloadChannel
-from PLM import ERROR_APPLICATION
+from bin.Widgets import MessageBox
+from bin.Network import NetworkAccessManager
+from PLM.cores import DownloadChannel
+from PLM.configs import propText as p
 
 
 class NetworkManger(NetworkAccessManager):
@@ -29,7 +29,7 @@ class NetworkManger(NetworkAccessManager):
         super(NetworkManger, self).__init__(app)
 
         if not app:
-            MessageBox(self, 'Application Error', 'critical', ERROR_APPLICATION)
+            MessageBox(self, 'Application Error', 'critical', p.ERROR_APPLICATION)
             sys.exit()
 
         self.app                            = app

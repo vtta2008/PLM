@@ -21,8 +21,7 @@ from PySide2.QtWidgets        import (QFileDialog)
 
 # Plm
 from PLM.configs import propText as p, QUESTIONS
-from PLM.utils import (check_blank, check_match, getToken, getUnix, getTime, getDate, get_local_pc_info,
-                       get_user_location)
+from PLM.utils import (check_blank, check_match, getToken, getUnix, getTime, getDate)
 from bin.utils import get_avatar_image
 from bin.models import SignalManager
 from bin.Widgets import (Widget, GridLayout, Label, Button, LineEdit, ComboBox, MessageBox, CheckBox, GroupGrid)
@@ -46,6 +45,7 @@ class SignUp(Widget):
         self.setLayout(self.layout)
 
     def buildUI(self):
+
         self.avatar_section()
         self.account_section()
         self.profile_section()
@@ -232,14 +232,9 @@ class SignUp(Widget):
 
         token               = getToken()
         timelog             = getTime()
-        sysInfo             = get_user_location()
-        productID           = sysInfo['Product ID']
-        ip, cityIP, countryIP = get_local_pc_info()
         unix                = getUnix()
         datelog             = getDate()
-        pcOS                = sysInfo['os']
-        pcUser              = sysInfo['pcUser']
-        pcPython            = sysInfo['python']
+
 
         if not os.path.exists(self.rawAvatarPth):
             avatar = get_avatar_image('default')
@@ -247,8 +242,8 @@ class SignUp(Widget):
             avatar = self.rawAvatarPth
 
         data = [regInput[0], regInput[1], regInput[3], regInput[4], title, regInput[5], regInput[6], regInput[7],
-                regInput[8], regInput[9], regInput[10], regInput[11], token, timelog, productID, ip, cityIP, countryIP, unix, question1, regInput[12], question2,
-                regInput[13], datelog, pcOS, pcUser, pcPython, avatar]
+                regInput[8], regInput[9], regInput[10], regInput[11], token, timelog, unix, question1, regInput[12],
+                question2, regInput[13], datelog, avatar]
         return data
 
     def check_pw_matching(self):

@@ -14,6 +14,7 @@ from PySide2.QtGui    import QColor
 from .utils         import generate_alternative_color
 from .types         import is_string, is_bool, is_list, is_none, is_number
 
+
 def format_bytes(size):
     # 2**10 = 1024
     power = 2**10
@@ -23,6 +24,7 @@ def format_bytes(size):
         size /= power
         n += 1
     return power_labels[n]+'bytes', size
+
 
 def tuple2Qcolor(data=None, alternate=False, av=20):
     if len(data) == 3:
@@ -48,8 +50,10 @@ def tuple2Qcolor(data=None, alternate=False, av=20):
 def text_to_utf8(input):
     return input.encode('utf-8')
 
+
 def text_to_hex(text):
     return ''.join(["%02X" % ord(x) for x in str(text)])
+
 
 def hex_to_text(hex):
     bytes = []
@@ -59,8 +63,10 @@ def hex_to_text(hex):
     outPut = ''.join(bytes)
     return outPut
 
+
 def str2bool(arg):
     return str(arg).lower() in ['true', 1, '1', 'ok', '2']
+
 
 def bool2str(arg):
     if arg:
@@ -68,17 +74,22 @@ def bool2str(arg):
     else:
         return "False"
 
+
 def byte2mb(byte):
     return round(byte/1048576)
+
 
 def byte2gb(byte):
     return round(byte/1073741824)
 
+
 def mb2gb(mb):
     return round(mb/1024)
 
+
 def bytes2str(s):
     return str(s, 'utf-8')
+
 
 def auto_convert(value):
     """
@@ -97,6 +108,7 @@ def auto_convert(value):
     if atype == 'int':
         return int(value)
     return value
+
 
 def attr_type(value):
     """

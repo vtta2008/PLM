@@ -20,7 +20,7 @@ from PySide2.QtGui                import QPixmap
 from PySide2.QtWidgets            import (QFileDialog, QApplication, QGroupBox, QSpinBox, QCheckBox, QLabel)
 
 # PLM
-from PLM.api.qtOption import ASPEC_RATIO, SMOOTH_TRANS
+from PLM.options import ASPEC_RATIO, SMOOTH_TRANS
 from bin.Widgets import GridLayout, Button, Label, Widget, HBoxLayout
 from bin.Gui import AppIcon
 

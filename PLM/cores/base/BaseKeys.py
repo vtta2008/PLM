@@ -8,8 +8,6 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from bin import settings
-
 """ Import """
 
 # Python
@@ -17,7 +15,7 @@ from functools                          import partial
 
 # PLM
 from .BaseStorage                       import BaseStorage
-from bin.Widgets import Action, Button
+from bin.Widgets                        import Action, Button
 from PLM.utils                          import is_string, is_action, is_button
 from PLM.cores.Errors                   import ActionKeyConfigError, ActionRegisterError, ButtonRegisterError
 from PLM.configs                        import ConfigPipeline, ConfigUiKeys
@@ -72,15 +70,13 @@ class BaseKeys(BaseStorage):
         self.parent                     = parent
 
     def keyConfigError(self, key):
-        ActionKeyConfigError('Key is not in plmInfo: {0}'.format(key))
+        return ActionKeyConfigError('Key is not in plmInfo: {0}'.format(key))
 
     def actionRegisterError(self, key):
-        if settings.actionRegisterError:
-            ActionRegisterError('This action is already registered: {0}'.format(key))
+        return ActionRegisterError('This action is already registered: {0}'.format(key))
 
     def buttonRegisterError(self, key):
-        if settings.checks.buttonRegisterError:
-            ButtonRegisterError('This button is already registered: {0}'.format(key))
+        return ButtonRegisterError('This button is already registered: {0}'.format(key))
 
     def createActions(self, keys, parent):
         actions = []
@@ -159,7 +155,7 @@ class BaseKeys(BaseStorage):
             return button
 
     def openUrlButton(self, key, parent):
-        from PLM.api.qtOption import BTNTAGSIZE, TAGBTNSIZE
+        from PLM.options import BTNTAGSIZE, TAGBTNSIZE
         button = Button({'icon': plmInfo[key]['icon'],
                          'stt': plmInfo[key]['statustip'],
                          'tt': plmInfo[key]['tooltip'],

@@ -10,8 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 from PySide2.QtWidgets                      import QSystemTrayIcon
-from bin.Gui import AppIcon
-from PLM.loggers import Loggers
+from bin.Gui                                import AppIcon
 
 
 
@@ -25,7 +24,6 @@ class SystemTrayIcon(QSystemTrayIcon):
         super(SystemTrayIcon, self).__init__(parent)
 
         self.parent                         = parent
-        self.logger                         = Loggers(self)
 
         self.setIcon(AppIcon(32, self.key))
 

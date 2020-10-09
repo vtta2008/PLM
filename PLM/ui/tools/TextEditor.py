@@ -210,7 +210,7 @@ class TextEdit(MainWindow):
 
         menu.addSeparator()
 
-        grp = QActionGroup(self, triggered=self.textAlign)
+        grp = QActionGroup(self) #, triggered=self.textAlign)
 
         # Make sure the alignLeft is always left of the alignRight.
         if QApplication.isLeftToRight():
@@ -545,7 +545,7 @@ class TextEditor(Widget):
 
     def __init__(self, parent=None):
         super(TextEditor, self).__init__(parent)
-        self.logger = Loggers(self)
+        # self.logger = Loggers(self)
         self.setWindowIcon(AppIcon(32, 'TextEditor'))
 
         self.layout = QHBoxLayout()

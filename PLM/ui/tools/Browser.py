@@ -80,7 +80,7 @@ class WebBrowser(QMainWindow):
         effectMenu.addAction("Highlight all links", self.highlightAllLinks)
 
         self.rotateAction = QAction(self.style().standardIcon(QStyle.SP_FileDialogDetailedView), "Turn images upside down",
-                                    self, checkable=True, toggled=self.rotateImages)
+                                    self, checkable=True) #, toggled=self.rotateImages)
         effectMenu.addAction(self.rotateAction)
 
         toolsMenu = self.menuBar().addMenu("&Tools")

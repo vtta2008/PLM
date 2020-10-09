@@ -27,7 +27,7 @@ from PySide2.QtCore               import (qDebug, qInstallMessageHandler, QtInfo
 from PySide2.QtGui                import QTextCursor
 
 # PLM
-from PLM.api.qtOption import SiPoMin
+from PLM.options import SiPoMin
 from bin.Widgets import GridLayout, Detector, Widget
 
 # -------------------------------------------------------------------------------------------------------------

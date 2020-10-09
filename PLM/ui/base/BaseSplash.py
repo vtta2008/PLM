@@ -17,8 +17,8 @@ from math import ceil
 
 # PLM
 from PLM.configs                        import ORG_LOGO_DIR, propText as p
-from PLM.api.qtOption                   import (FRAMELESS, SPLASHSCREEN, TRANSPARENT, TEXT_NORMAL, ANTIALIAS, NO_PEN,
-                                                peacock, DAMG_LOGO_COLOR, DARKBLUE, deep_blue)
+from PLM.options import (FRAMELESS, SPLASHSCREEN, TRANSPARENT, TEXT_NORMAL, ANTIALIAS, NO_PEN,
+                         peacock, DAMG_LOGO_COLOR, DARKBLUE, deep_blue)
 from bin.Widgets import SplashScreen, MessageBox, ProgressBar
 from bin.Gui import Font, Palette, Image, Pen, Painter, FontMetrics
 from bin.Core import Timer

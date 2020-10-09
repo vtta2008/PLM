@@ -18,7 +18,7 @@ from PySide2.QtWidgets            import QFileDialog
 from bin.Core import Size
 from bin.Gui import Image, Pixmap
 from bin.Widgets import Label, GroupBox, Button, VBoxLayout
-from PLM.api.qtOption import AUTO_COLOR, center, ASPEC_RATIO
+from PLM.options import AUTO_COLOR, center, ASPEC_RATIO
 from PLM.cores.data import sqlUtils
 from bin.utils import get_avatar_image
 from PLM.configs import USER_LOCAL_DATA

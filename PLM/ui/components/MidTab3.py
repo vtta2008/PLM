@@ -20,7 +20,7 @@ from PySide2.QtGui                        import QTextCursor
 
 # PLM
 from bin.damg import DAMGLIST
-from PLM.api.qtOption import SCROLLBAROFF, NO_WRAP
+from PLM.options import SCROLLBAROFF, NO_WRAP, MOVE_ANCHOR, MOVE_OPERATION
 from bin.Widgets import Widget, PlainTextEdit, ShortCut, VBoxLayout, StatusBar
 from bin.Core import Process
 
@@ -80,7 +80,7 @@ class MidTab3(Widget):
 
     def cursorEnd(self):
         self.cmdField.setPlainText(self.getUsername())
-        self.cursor.movePosition(11, 0)
+        self.cursor.movePosition(MOVE_OPERATION.Left, MOVE_ANCHOR, 10)
         self.cmdField.setTextCursor(self.cursor)
         self.cmdField.setFocus()
 

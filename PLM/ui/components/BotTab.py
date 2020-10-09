@@ -14,7 +14,8 @@ Description:
 from bin.damg import DAMGLIST
 from bin.Gui import AppIcon
 from bin.Widgets import TabWidget, VBoxLayout
-from PLM.ui.components import BotTab1, BotTab2
+from .BotTab1 import BotTab1
+from .BotTab2 import BotTab2
 
 # -------------------------------------------------------------------------------------------------------------
 """ Bot Tab """

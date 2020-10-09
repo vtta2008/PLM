@@ -11,7 +11,7 @@ Description:
 
 from bin.Gui import Image, Pixmap
 from bin.Widgets import Label
-from PLM.api.qtOption import AUTO_COLOR, center
+from PLM.options import AUTO_COLOR, center
 from bin.utils import get_app_icon
 
 

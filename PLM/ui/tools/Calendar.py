@@ -22,7 +22,7 @@ from PySide2.QtWidgets            import (QApplication, QCalendarWidget, QCheckB
                                         QLayout)
 
 # Plt
-from PLM.api.qtOption import SiPoMin
+from PLM.options import SiPoMin
 from bin.Widgets import GridLayout, Widget
 from bin.Gui import AppIcon
 
@@ -160,21 +160,28 @@ class Calendar(Widget):
 
         curLocaleIndex = -1
         lang_country = {}
-        for lid in range(QLocale.C, QLocale.LastLanguage + 1):
-            lang = (QLocale(lid).nativeLanguageName())
-            country = u' '.join(QLocale(lid).nativeCountryName()).encode('utf-8').strip()
-            lang_country[country] = [lang, lid]
-            lid += 1
+
+        locales = QLocale.matchingLocales(QLocale.AnyLanguage, QLocale.AnyScript, QLocale.AnyCountry)
+
+        id = 0
+        for i in locales:
+            l = i.nativeLanguageName()
+            s = QLocale.scriptToString(i.script())
+            c = i.nativeCountryName()
+            if not l == "" and not c == "":
+                lang_country[c] = [l, s, id]
+            id += 1
 
         countries = sorted(list(set([c for c in lang_country])))
         countries.remove(countries[0])
+
         for country in countries:
             lang = lang_country[country][0]
-            label = "%s - %s" % ((u' '.join(lang).encode('Utf-8').strip()), country)
-            locale = QLocale(lang_country[country][1])
+            label = "{0} - {1}".format((u' '.join(lang).encode('Utf-8').strip()), country)
+            locale = lang_country[country][2]
 
             if self.locale().language() == lang and self.locale().country() == country:
-                curLocaleIndex = lang_country[country][1]
+                curLocaleIndex = lang_country[country][2]
 
             self.localeCombo.addItem(label, locale)
 

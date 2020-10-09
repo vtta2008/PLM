@@ -79,7 +79,7 @@ class SignalManager(DAMG):
     def emit(self, key, arg):
         if self.emitable:
             signal                           = self.getSignal(key)
-            signal.emit(arg)
+            # signal.emit(arg)
         else:
             return self.logger.info('EmittableError: {0} is not allowed to emit'.format(self.key))
 

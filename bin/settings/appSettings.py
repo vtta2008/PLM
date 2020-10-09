@@ -91,7 +91,7 @@ class AppSettings(Settings):
             else:
                 oldValue = self.value(key)
                 if not value == oldValue:
-                    if not self.glbSettings and self.glbSettings.printSettingInfo:
+                    if self.glbSettings and self.glbSettings.printSettingInfo:
                         print('{0}: set {1} - {2} - {3}.'.format(self.key, key, value, grpChecked))
                     self.setValue(key, value)
 
@@ -110,7 +110,7 @@ class AppSettings(Settings):
                     value = self.value(key)
                 else:
                     value = self.value(key, decode)
-                if not self.glbSettings and self.glbSettings.printSettingInfo:
+                if self.glbSettings and self.glbSettings.printSettingInfo:
                     print('{0}: get value from key: {1}, value: {2}, at group: {3}.'.format(self.key, key, value, grpChecked))
                 return value
 

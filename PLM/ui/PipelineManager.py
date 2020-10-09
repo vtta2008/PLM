@@ -14,7 +14,7 @@ from bin.damg import DAMGDICT
 from bin.Widgets import MainWindow, Widget, GridLayout
 from bin.Gui import LogoIcon
 
-from PLM.api.qtOption                   import dockT, dockB
+from PLM.options import dockT, dockB
 from .components                        import (Footer, MainStatusBar, MenubarDock, ToolBarDock, NetworkStatusDock,
                                                 BotTabDock, NotificationDock, MidTabDock)
 from .models                            import ButtonManager, ActionManager

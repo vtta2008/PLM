@@ -19,8 +19,8 @@ from math import sin, cos, pi, ceil
 from PySide2.QtWidgets                    import QApplication
 
 # PLM
-from PLM.api.qtOption                   import (FRAMELESS, SPLASHSCREEN,ANTIALIAS, TRANSPARENT, NO_PEN, AUTO_COLOR,
-                                                TEXT_NORMAL, DAMG_LOGO_COLOR, peacock, DARKBLUE, deep_blue)
+from PLM.options import (FRAMELESS, SPLASHSCREEN, ANTIALIAS, TRANSPARENT, NO_PEN, AUTO_COLOR,
+                         TEXT_NORMAL, DAMG_LOGO_COLOR, peacock, DARKBLUE, deep_blue)
 from bin.Widgets import SplashScreen, MessageBox
 from bin.Gui import Pixmap, Image, Font, FontMetrics, Palette, Painter, Pen
 from bin.Core import Timer, Rect

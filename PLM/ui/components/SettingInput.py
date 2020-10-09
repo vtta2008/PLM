@@ -13,7 +13,7 @@ Description:
 from PySide2.QtWidgets        import QAbstractItemView, QHeaderView, QTableWidgetItem
 
 from bin.Widgets import Widget, ComboBox, Label, GroupGrid, GridLayout, TableWidget
-from PLM.api.qtOption import INI, NATIVE, USER_SCOPE, SYS_SCOPE, ITEMENABLE
+from PLM.options import INI, NATIVE, USER_SCOPE, SYS_SCOPE, ITEMENABLE
 from bin.settings import RegSettings
 
 

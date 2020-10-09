@@ -11,7 +11,7 @@ Description:
 
 from PySide2.QtWidgets                      import QLineEdit
 from bin.Gui import IntValidator
-from PLM.api.qtOption import PRS
+from PLM.options import PRS
 
 
 class LineEdit(QLineEdit):

@@ -10,28 +10,53 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-import os, sys, platform, win32api, requests, re, time, datetime, uuid
+import os, sys, platform, sysconfig, win32api, requests, time, datetime, uuid, pkg_resources
+from time                       import gmtime, strftime
 
-from bin.Core import Size, Rect, RectF
-from .converts              import str2bool
-
-
-SYS_OPTS                                    = ["Host Name", "OS Name", "OS Version", "Product ID", "System Manufacturer",
-                                                "System Model", "System type", "BIOS Version", "Domain", "Windows Directory",
-                                                "Total Physical Memory", "Available Physical Memory", "Logon Server"]
+from bin.Core                   import Size, Rect, RectF
+from .converts                  import str2bool
 
 
-def get_py_env_var(key, path):
-    try:
-        pth = os.getenv(key)
-        if pth == None or pth == '':
-            print('install showLayout_new environment variable')
-            os.environ[key] = path
-    except KeyError:
-        print('install showLayout_new environment variable')
-        os.environ[key]     = path
+installed_packages              = pkg_resources.working_set
+
+
+
+def get_python_info():
+
+    if (sys.executable == ""):
+        executable = "NA"
     else:
-        pass
+        executable = sys.executable
+
+    return {"timelog": strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime()),
+              "version": sysconfig.get_python_version(),
+              'major': sys.version_info[0], 'minor': sys.version_info[1], 'micro': sys.version_info[2],
+              "release level": sys.version_info[3], "serial": sys.version_info[5], 'executable': executable,
+              "standard lib": sysconfig.get_path('stdlib')}
+
+
+def get_system_info():
+
+    return {"timelog": strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime()),
+            "os": [platform.system(), sys.platform],
+            "pc name": platform.uname()[1],
+            "architrecture": platform.architecture(),
+            "processor": {'family': platform.processor(), 'number of cpu': os.cpu_count()},
+            "pid": os.getpid(),
+            "osVersion": platform.uname()[3],
+            "hexVersion": sys.hexversion,
+            "apiVersion": sys.api_version, }
+
+
+def installed_pkgs():
+    return sorted([str(pkg.key) for pkg in installed_packages])
+
+
+def get_pkgs_info():
+    info = {}
+    for pkg in installed_packages:
+        info[pkg.key]       = pkg.version
+    return info
 
 
 def get_pointer_bounding_box(pointerPos, bbSize):
@@ -44,32 +69,30 @@ def get_pointer_bounding_box(pointerPos, bbSize):
     bb                      = RectF(bb)
     return bb
 
-def get_user_location():
 
-    pythonVersion           = sys.version
-    windowOS                = platform.system()
-    windowVersion           = platform.version()
+def get_all_path_from_dir(directory):
+    """
+        This function will generate the file names in a directory
+        tree by walking the tree either top-down or bottom-up. For each
+        directory in the tree rooted at directory top (including top itself),
+        it yields a 3-tuple (dirpath, dirnames, filenames).
+    """
+    filePths = []   # List which will store all of the full file paths.
+    dirPths = []    # List which will store all of the full folder paths.
 
-    sysOpts                 = SYS_OPTS
-    cache                   = os.popen2("SYSTEMINFO")
-    source                  = cache[1].read()
+    # Walk the tree.
+    for root, directories, files in os.walk(directory, topdown=False):
+        for filename in files:
+            filePths.append(os.path.join(root, filename).replace('\\', '/'))  # Add to file list.
+        for folder in directories:
+            dirPths.append(os.path.join(root, folder).replace('\\', '/')) # Add to folder list.
 
-    sysInfo                 = {}
+    return [filePths, dirPths]
 
-    sysInfo['python']       = pythonVersion
-    sysInfo['os']           = windowOS + "|" + windowVersion
-    sysInfo['pcUser']       = platform.node()
-    sysInfo['operating system'] = platform.system() + "/" + platform.platform()
-    sysInfo['python version'] = platform.python_version()
 
-    values = {}
+def get_file_path(directory):
+    return get_all_path_from_dir(directory)[0]
 
-    for opt in sysOpts:
-        values[opt] = [item.strip() for item in re.findall("%s:\w*(.*?)\n" % (opt), source, re.IGNORECASE)][0]
-    for item in values:
-        sysInfo[item] = values[item]
-
-    return sysInfo
 
 def get_screen_resolution():
     resW = win32api.GetSystemMetrics(0)
@@ -84,18 +107,6 @@ def get_window_taskbar_size():
     tbW = resW
     return tbW, tbH
 
-def get_local_pc_info():
-    r = requests.get('https://api.ipdata.co').json()
-    info = dict()
-    for key in r:
-        k = (str(key))
-        for c in ['ip', 'city', 'country_name']:
-            if k == c:
-                info[k] = str(r[key])
-            else:
-                info[k] = 'unknown'
-
-    return info['ip'], info['city'], info['country_name']
 
 def get_layout_size(layout):
     sizeW = layout.frameGeometry().width()
@@ -127,11 +138,6 @@ def getToken():
 
 def getUnix():
     return (str(uuid.uuid4())).split('-')[-1]
-
-
-
-
-
 
 def check_odd(num):
     return str2bool(num%2)

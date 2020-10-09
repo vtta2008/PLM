@@ -15,7 +15,7 @@ import platform
 
 # PLM
 from bin import settings
-from PLM.api.qtOption import COLOR_BACKGROUND_NORMAL
+from PLM.options import COLOR_BACKGROUND_NORMAL
 from bin.damg import DAMG, DAMGDICT
 from bin.Core import TextStream, File, QssFile
 from PLM.loggers import Loggers

@@ -31,8 +31,6 @@ class Loggers(logging.Logger):
 
         self.parent                 = parent
 
-        logging.getLogger(__name__)
-
         self.level                  = self.define_level(level)
         self.logLevel               = self.level_config(self.level)
 
@@ -41,13 +39,13 @@ class Loggers(logging.Logger):
         self.filename               = filename
         self.filemode               = filemode
 
-        self.addLoggingLevel(levelName='TRACE', levelNum=LogLevel.Trace)
-
         self.streamHld              = StreamHandler(self.logLevel, self.formatter, self.datetimeFormatter)
         self.fileHld                = FileHandler(self.filename, self.logLevel, self.formatter, self.datetimeFormatter)
 
         self.addHandler(self.streamHld)
         self.addHandler(self.fileHld)
+
+        self.addLoggingLevel(levelName='TRACE', levelNum=LogLevel.Trace)
 
     def define_level(self, logLevel):
 
@@ -79,9 +77,9 @@ class Loggers(logging.Logger):
             LogLevel.Error:     logging.ERROR,
             LogLevel.Critical:  logging.FATAL,
 
-        }[verbose_level]
+        }
 
-        return logging_logLevel
+        return logging_logLevel[verbose_level]
 
     def addLoggingLevel(self, levelName, levelNum, methodName=None):
 
@@ -89,13 +87,13 @@ class Loggers(logging.Logger):
             methodName = levelName.lower()
 
         if hasattr(logging, levelName):
-            self.info('{0} registered (level)'.format(levelName))
+            # self.info('{0} registered (level)'.format(levelName))
             regisable = False
         elif hasattr(logging, methodName):
-            self.info('{0} registered (method)'.format(methodName))
+            # self.info('{0} registered (method)'.format(methodName))
             regisable = False
         elif hasattr(logging.getLoggerClass(), methodName):
-            self.info('{0} registered (class)'.format(methodName))
+            # self.info('{0} registered (class)'.format(methodName))
             regisable = False
         else:
             regisable = True
