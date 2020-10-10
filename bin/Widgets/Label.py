@@ -79,7 +79,7 @@ class Label(QLabel):
                 self.setScaledContents(value)
             elif key == 'sfs':
                 self.setFixedSize(value[0], value[1])
-            elif key == 'setBuddy':
+            elif key == 'buddy':
                 self.setBuddy(value)
             elif key == 'link':
                 self.setOpenExternalLinks(value)

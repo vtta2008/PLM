@@ -49,18 +49,25 @@ class ComboBox(QComboBox):
         self._name                      = newName
 
     def buildUI(self):
-        for key, value in self.preset.items():
-            if key == 'items':
-                for item in value:
-                    self.addItem(item)
-            elif key == 'editable':
-                self.setEditable(value)
-            elif key == 'curIndex':
-                self.setCurrentIndex(value)
-            elif key == 'setObjName':
-                self.setObjectName(value)
+        for k, v in self.preset.items():
+            if k == 'items':
+                for i in v:
+                    self.addItem(i)
+            elif k == '2items':
+                for i in v:
+                    self.addItem(i[0], i[1])
+            elif k == 'editable':
+                self.setEditable(v)
+            elif k == 'curIndex':
+                self.setCurrentIndex(v)
+            elif k == 'curIndexChange':
+                self.currentIndexChanged.connect(v)
+            elif k == 'setObjName':
+                self.setObjectName(v)
+            elif k =='itemData':
+                self.itemData(v)
             else:
-                print("PresetKeyError: There is no key in preset: {}".format(key))
+                print("PresetKeyError: There is no key in preset: {}".format(k))
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 6:55 PM

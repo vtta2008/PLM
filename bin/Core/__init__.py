@@ -17,6 +17,7 @@ from .EventLoop         import EventLoop
 from .File              import File, QssFile, DownloadFile
 from .FileInfo          import FileInfo
 from .IODevice          import IODevice
+from .Locale            import Locale
 from .ObjectBase        import BaseObject
 from .Point             import Point
 from .Process           import Process

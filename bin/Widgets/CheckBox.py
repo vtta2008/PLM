@@ -37,6 +37,18 @@ class CheckBox(QCheckBox):
         if self.preset and not {}:
             self.buildUI()
 
+    def buildUI(self):
+        for k, v in self.preset.items():
+            if k == 'check':
+                self.setChecked(v)
+            elif k == 'indexChange':
+                self.currentIndexChanged.connect(v)
+            elif k == 'toggle':
+                self.toggled.connect(v)
+
+            else:
+                print("PresetKeyError: There is no key in preset: {}".format(k))
+
     def saveState(self):
         self.setValue('checkState', self.checkState())
 

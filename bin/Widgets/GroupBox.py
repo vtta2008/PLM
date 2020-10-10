@@ -18,6 +18,7 @@ from pyjavaproperties                       import Properties
 from PySide2.QtWidgets                      import QGroupBox
 
 from bin                                    import BIN_ROOT
+from .ComboBox                              import ComboBox
 from .BoxLayout                             import VBoxLayout, HBoxLayout
 from .GridLayout                            import GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
 from .Label                                 import Label
@@ -48,6 +49,7 @@ class GroupBoxBase(QGroupBox):
     @name.setter
     def name(self, newName):
         self._name                      = newName
+
 
 class GroupBox(GroupBoxBase):
 
@@ -97,6 +99,7 @@ class GroupBox(GroupBoxBase):
         if not title is None or not title:
             self.setTitle(title)
 
+
 class GroupGrid(GroupBoxBase):
 
     key = 'GroupGrid'
@@ -108,6 +111,21 @@ class GroupGrid(GroupBoxBase):
         self.setTitle(self._title)
         self.layout = GridLayout(self)
         self.setLayout(self.layout)
+
+class GroupCombo(GroupBoxBase):
+
+    key = 'GroupCombo'
+
+    def __init__(self, title="", parent=None):
+        super(GroupCombo, self).__init__(parent)
+
+        self.grid = GridLayout(self)
+
+        self._title = title
+        self.setTitle(self._title)
+        self.layout = ComboBox()
+        self.setLayout(self.grid)
+
 
 class GroupVBox(GroupBoxBase):
 

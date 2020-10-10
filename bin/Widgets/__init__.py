@@ -14,8 +14,10 @@ from .Action            import Action, ShortCut, WidgetAction
 from .Application       import Application
 from .BoxLayout         import VBoxLayout, HBoxLayout
 from .Button            import Button, ToolButton
+from .CalendarWidget    import CalendarWidget
 from .CheckBox          import CheckBox
 from .ComboBox          import ComboBox
+from .DateEdit          import DateEdit
 from .DockWidget        import DockWidget
 from .GraphicsItem      import GraphicsItem
 from .GraphicsObject    import GraphicsObject
@@ -23,7 +25,7 @@ from .GraphicPathItem   import GraphicPathItem
 from .GraphicsScene     import GraphicsScene
 from .GraphicsView      import GraphicsView
 from .GridLayout        import GridLayout, AutoPreset1, AutoPreset2, AutoPreset3
-from .GroupBox          import GroupBox, GroupGrid, GroupHBox, GroupVBox
+from .GroupBox          import GroupBox, GroupCombo, GroupGrid, GroupHBox, GroupVBox
 from .ItemDelegate      import ItemDelegate
 from .Label             import Label, TextLabel, LCDNumber, user_pass_label
 from .LineEdit          import LineEdit

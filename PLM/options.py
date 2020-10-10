@@ -14,10 +14,32 @@ Description:
 import os
 
 from PySide2.QtWidgets      import (QFrame, QStyle, QAbstractItemView, QSizePolicy, QLineEdit, QPlainTextEdit,
-                                    QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand)
+                                    QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QCalendarWidget, )
 from PySide2.QtCore         import QEvent, QSettings, QSize, Qt, QDateTime
 from PySide2.QtGui          import QColor, QPainter, QFont, QTextCursor
 
+
+SingleSelection             = QCalendarWidget.SingleSelection
+NoSelection                 = QCalendarWidget.NoSelection
+SingleLetterDay             = QCalendarWidget.SingleLetterDayNames
+ShortDay                    = QCalendarWidget.ShortDayNames
+LongDay                     = QCalendarWidget.LongDayNames
+NoHoriHeader                = QCalendarWidget.NoHorizontalHeader
+NoVertHeader                = QCalendarWidget.NoVerticalHeader
+IsoWeekNum                  = QCalendarWidget.ISOWeekNumbers
+SelectMode                  = QCalendarWidget.SelectionMode
+HoriHeaderFm                = QCalendarWidget.HorizontalHeaderFormat
+VertHeaderFm                = QCalendarWidget.VerticalHeaderFormat
+
+DayOfWeek                   = Qt.DayOfWeek
+
+Sunday                      = Qt.Sunday
+Monday                      = Qt.Monday
+Tuesday                     = Qt.Tuesday
+Wednesday                   = Qt.Wednesday
+Thursday                    = Qt.Thursday
+Friday                      = Qt.Friday
+Saturday                    = Qt.Saturday
 
 ICONSIZE                    = 32
 ICONBUFFER                  = -1
@@ -31,6 +53,9 @@ DAMG_LOGO_COLOR             = QColor(0, 114, 188, 255)
 
 
 # Basic color
+
+GlobalColor                 = Qt.GlobalColor
+
 WHITE                       = QColor(Qt.white)
 LIGHTGRAY                   = QColor(Qt.lightGray)
 GRAY                        = QColor(Qt.gray)
