@@ -22,7 +22,7 @@ from PLM.cores.base import BaseType
 from PLM.configs import SOUND_DIR, TEAM_DIR
 
 
-
+# noinspection PyChainedComparisons
 class Team(BaseType):
 
     key                                 = 'Team'

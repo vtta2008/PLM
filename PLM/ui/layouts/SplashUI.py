@@ -23,15 +23,39 @@ from PLM.options                        import ANTIALIAS, TRANSPARENT, NO_PEN, A
 from PLM.configs                        import ORG_LOGO_DIR
 from PLM.ui.base                        import BaseSplash
 from bin.Gui                            import Image, Painter, Pen
-from bin.Core                           import Timer, Rect
+from bin.Core                           import Timer, Rect, Slot
+
+# class Worker(DAMG):
+#
+#     finished = Signal()
+#
+#     updateText = Signal(str, str)
+#
+#     @Slot(str, int)
+#     def updateText(self, txt, ptxt):
+#         """ send data to a function to change the text """
+#
+#         print("work started")
+#         self.updateText.emit(txt, ptxt)
+#         print("update finished")
+#         self.finished.emit()
 
 
 class SplashUI(BaseSplash):
 
     key                                 = 'SplashUI'
+    _running                            = False
 
     def __init__(self, app=None):
         super(SplashUI, self).__init__(app)
+
+        # Setup worker on a different therad than main
+        # self.thread = QThread()
+        # self.thread.start()
+
+        # create worker and move it off the main thread
+        # self.worker = Worker()
+        # self.worker.moveToThread(self.thread)
 
         # Setup timer for counting
         self.timer = Timer(self)
@@ -41,6 +65,7 @@ class SplashUI(BaseSplash):
     def updateTimer(self):
         self.timer.setInterval(1000 / (self.numOfitems * self.revolutionPerSec))
 
+    @Slot()
     def rotate(self):
         self._count += 1
         if self._count > self._numOfitems:
@@ -83,23 +108,27 @@ class SplashUI(BaseSplash):
                                 self.height() / 2 + self.innerR * sin(2 * pi * i / self.num) - (self.itemR / 2),
                                 self.itemR, self.itemR)
 
-        # adjust setting of painter for writing text
-        painter.setPen(self.textColor)
-        painter.setFont(self.currentFont)
-        painter.setBrush(self.textBrushColor)
-
-        # text line 1: current config which is being configured.
-        self.writeNewText(painter, self.text, 1)
-
-        # text line 2: the percentage of configurations progress
-        self.writeNewText(painter, self.pText, 2)
+        # # adjust setting of painter for writing text
+        # painter.setPen(self.textColor)
+        # painter.setFont(self.currentFont)
+        # painter.setBrush(self.textBrushColor)
+        #
+        # # text line 1: current config which is being configured.
+        # self.writeNewText(painter, self.text, 1)
+        #
+        # # text line 2: the percentage of configurations progress
+        # self.writeNewText(painter, self.pText, 2)
 
         painter.end()
 
+
+    @Slot(str)
     def setText(self, text):
         self._text = text
 
-    def setProgress(self, val):
+
+    @Slot(int)
+    def setPText(self, val):
         value = val * 100 / self.num
         for i in range(int(value)):
             self._currentP += 1
@@ -111,8 +140,29 @@ class SplashUI(BaseSplash):
                     self._pText = '{0}%'.format(str(self.currentP))
 
 
-if __name__ == '__main__':
+    def start(self):
+        """ start counting when show """
+        if self.isHidden():
+            self.show()
 
+        if not self.timer.isActive():
+            print('start counting')
+            self.timer.start()
+            self._count = 0
+
+
+    def stop(self):
+
+        """ hide the layout and stop counting """
+
+        print('stop counting')
+        if self.timer.isActive():
+            self.timer.stop()
+            self._count = 0
+
+
+
+if __name__ == '__main__':
     app = QApplication(sys.argv)
     ui = SplashUI(app)
     ui.start()

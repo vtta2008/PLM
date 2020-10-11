@@ -22,7 +22,7 @@ from humanfriendly.text import compact, concatenate, format, pluralize
 basestring = str
 
 # PLM
-from PLM.loggers import Loggers
+from bin.loggers import DamgLogger
 
 
 SPHINX_ACTIVE = 'sphinx' in sys.modules
@@ -58,7 +58,7 @@ RESETTABLE_CACHED_PROPERTY_NOTE = compact(""" To clear the cached value you can 
 RESETTABLE_WRITABLE_PROPERTY_NOTE = compact(""" To reset it to its default (computed) value you can use :keyword:`del` or :func:`delattr()`. """)
 
 
-logger = Loggers(__name__)
+logger = DamgLogger(__name__)
 
 
 def set_property(obj, name, value):

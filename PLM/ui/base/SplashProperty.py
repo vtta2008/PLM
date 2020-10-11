@@ -74,6 +74,8 @@ class SplashProperty(SplashScreen):
     _lMargin                            = 10
     _rMargin                            = 10
 
+    _running                            = False
+
     def __init__(self, app=None):
         SplashScreen.__init__(self)
 
@@ -233,6 +235,14 @@ class SplashProperty(SplashScreen):
     @property
     def currentP(self):
         return self._currentP
+
+    @property
+    def running(self):
+        return self._running
+
+    @running.setter
+    def running(self, val):
+        self._running                   = val
 
     @pText.setter
     def pText(self, val):

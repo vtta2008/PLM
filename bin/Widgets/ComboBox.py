@@ -14,6 +14,7 @@ from PySide2.QtWidgets                      import QComboBox
 from bin.models                             import SignalManager
 from bin.settings                           import AppSettings
 
+
 class ComboBox(QComboBox):
 
     Type                                    = 'DAMGUI'
@@ -24,8 +25,8 @@ class ComboBox(QComboBox):
         QComboBox.__init__(self)
 
         self.parent                         = parent
-        self.settings = AppSettings(self)
-        self.signals = SignalManager(self)
+        self.settings                       = AppSettings(self)
+        self.signals                        = SignalManager(self)
         self.preset                         = preset
 
         if self.preset and not {}:
@@ -67,7 +68,7 @@ class ComboBox(QComboBox):
             elif k =='itemData':
                 self.itemData(v)
             else:
-                print("PresetKeyError: There is no key in preset: {}".format(k))
+                print("PresetKeyError: There is no key in preset: {0}".format(k))
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 6:55 PM

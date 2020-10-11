@@ -10,12 +10,12 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from PLM import PLM
+from PLM.app import app
 
 
 def test_app(capsys, example_fixture):
     # pylint: disable=W0612,W0613
-    PLM.run()
+    app.run()
     captured = capsys.readouterr()
 
     assert "Hello World..." in captured.out

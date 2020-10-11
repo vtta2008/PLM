@@ -16,9 +16,13 @@ Description:
 import sys
 
 # PLM
+from bin.Core                           import Signal
 from PLM.configs                        import propText as p
 from PLM.ui.models                      import AppModel
 from PLM.ui                             import LayoutManager
+from bin.loggers import DamgLogger
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
@@ -28,9 +32,13 @@ class PLM(AppModel):
 
     key                                 = 'PLM'
 
+    updateTxt                           = Signal(str)
+    updatepTxt                          = Signal(int)
+
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
 
+        self.logger                     = DamgLogger()
         self.layoutManager              = LayoutManager(self.threadManager, self)
         self.layoutManager.registLayout(self.browser)
         self.layoutManager.buildLayouts()
@@ -41,42 +49,42 @@ class PLM(AppModel):
         self.mainUI, self.sysTray, self.shortcutCMD, self.signIn, self.signUp, self.forgotPW = self.layoutManager.mains
 
         self.connectServer              = self.checkConnectServer()
-        userData                        = self.checkUserData()
 
+
+        userData                        = self.checkUserData()
         if userData:
             if self.connectServer:
                 statusCode              = self.serverAuthorization()
                 if not statusCode:
                     self.mainUI.show()
-                    self.splash.finish(self.mainUI)
+                    # self.splash.finish(self.mainUI)
                 else:
                     if statusCode == 200:
                         if not self.sysTray.isSystemTrayAvailable():
-                            self.logger.report(p['SYSTRAY_UNAVAILABLE'])
+                            self.logger.debug(p['SYSTRAY_UNAVAILABLE'])
                             self.exitEvent()
                         else:
                             self.loginChanged(True)
                             self.sysTray.log_in()
                             self.mainUI.show()
-                            self.splash.finish(self.mainUI)
+                            # self.splash.finish(self.mainUI)
                     else:
                         self.signIn.show()
                         self.splash.finish(self.signIn)
             else:
                 self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
                 self.mainUI.show()
-                self.splash.finish(self.mainUI)
+                # self.splash.finish(self.mainUI)
         else:
             if self.connectServer:
                 self.signIn.show()
-                self.splash.finish(self.signIn)
+                # self.splash.finish(self.signIn)
             else:
                 self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
                 self.mainUI.show()
-                self.splash.finish(self.mainUI)
+                # self.splash.finish(self.mainUI)
 
     def notify(self, receiver, event):
-
         # press tab to show shortcut command ui
         if event.type() == p['KEY_RELEASE']:
             if self.login and event.key() == 16777217:

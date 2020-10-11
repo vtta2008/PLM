@@ -35,24 +35,6 @@ class BaseSplash(SplashProperty):
         # after update size, need to move to center spot of the screen
         self.moveToCenter()
 
-    def start(self):
-        """ show the layout and start counting """
-
-        self.show()
-
-        if not self.timer.isActive():
-            self.timer.start()
-            self._count = 0
-
-    def stop(self):
-        """ hide the layout and stop counting """
-
-        self.hide()
-
-        if self.timer.isActive():
-            self.timer.stop()
-            self._count = 0
-
     def writeNewText(self, painter=None, text='', line=1):
 
         """ this function is to write a new text, it requires current instance painter and the content """

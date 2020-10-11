@@ -91,7 +91,6 @@ class PipelineManager(MainWindow):
 
         self.layout.addWidget(self.footer, 9, 0, 1, 9)
 
-
     @property
     def count(self):
         return self._count

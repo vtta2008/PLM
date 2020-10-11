@@ -17,9 +17,7 @@ import platform
 from PLM.options            import COLOR_BACKGROUND_NORMAL
 from bin.damg               import DAMG, DAMGDICT
 from bin.Core               import TextStream, File, QssFile
-from PLM.loggers            import Loggers
-from PLM.plugins            import Qt
-
+from bin.loggers import DamgLogger
 
 
 class StyleSheet(DAMG):
@@ -32,24 +30,25 @@ class StyleSheet(DAMG):
     def __init__(self, app=None):
         super(StyleSheet, self).__init__()
 
-        self.logger                     = Loggers()
+        self.logger                     = DamgLogger()
         self.app                        = app
 
 
     def getStyleSheet(self, style):
         if style == 'dark':
             # self.logger.info("Loading darkstyle_rc")
-            from PLM.ui.rcs import darkstyle_rc
+            pass
+        elif style == 'PyQt5':
+            # self.logger.info("Loading pyqt5_style_rc")
+            pass
+        elif style == 'PySide2':
+            # self.logger.info("Loading pyside2_style_rc")
+            pass
+        elif style == 'pyqtgraph':
+            # self.logger.info("Loading pyqtgraph_style_rc")
+            pass
         else:
-            if Qt.__binding__ == 'PyQt5':
-                # self.logger.info("Loading pyqt5_style_rc")
-                from PLM.ui.rcs import pyqt5_style_rc
-            elif Qt.__binding__ == 'PySide2':
-                # self.logger.info("Loading pyside2_style_rc")
-                from PLM.ui.rcs import pyside2_style_rc
-            else:
-                # self.logger.info("Loading pyqtgraph_style_rc")
-                from PLM.ui.rcs import pyqtgraph_style_rc
+            style = None
 
         self._filename                  = QssFile(style)
         self._filename.open(File.ReadOnly | File.Text)

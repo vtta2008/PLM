@@ -11,7 +11,7 @@ Description:
 
 from bin.Widgets import LineEdit, ShortCut
 from PLM.options import FRAMELESS, KEY_RETURN
-from PLM.loggers import Loggers
+from bin.loggers import DamgLogger
 
 class CommandUI(LineEdit):
 
@@ -22,7 +22,7 @@ class CommandUI(LineEdit):
 
         self.parent             = parent
         self.resize(250, 25)
-        self.logger             = Loggers(self)
+        self.logger             = DamgLogger(self)
 
         self.setWindowFlags(FRAMELESS)
         self.addAction(ShortCut(shortcut='Esc', trigger=self.hide, parent=self))

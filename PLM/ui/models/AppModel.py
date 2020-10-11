@@ -24,19 +24,16 @@ import os, sys, requests
 
 # PLM
 
-from PLM                                import __version__, __appName__, __organization__, __organizationDomain__, glbSettings
+from PLM                                import __version__, __appName__, __organization__, __organizationDomain__
 
 from PLM.configs                        import propText as p, ConfigPipeline
-from PLM.options                        import STAY_ON_TOP
-from PLM.loggers                        import Loggers
+from bin.loggers import DamgLogger
 from PLM.cores                          import sqlUtils, StyleSheet, ThreadManager
-from PLM.cores.models                   import Worker
 from bin.Widgets                        import Application, MessageBox
 from bin.Gui                            import LogoIcon
 from bin.settings                       import AppSettings
 from bin.models                         import SignalManager
 from PLM.utils                          import clean_file_ext
-from PLM.ui.layouts.SplashUI            import SplashUI
 from PLM.ui.tools                       import Browser
 
 
@@ -54,8 +51,7 @@ class AppModel(Application):
     eventManager                        = None
     layoutManager                       = None
 
-    appInfo                             = None
-    plmInfo                             = None
+    plmInfo                             = ConfigPipeline()
     layouts                             = None
 
     token                               = None
@@ -69,17 +65,19 @@ class AppModel(Application):
     signUp                              = None
     forgotPW                            = None
 
-    _appID                              = None
-
     def __init__(self, *__args):
         super(AppModel, self).__init__(*__args)
 
         self.setWindowIcon(LogoIcon("DAMG"))
-        self.logger                     = Loggers()
+        self.logger                     = DamgLogger()
+        self.logger.trace("test logger")
         self.signals                    = SignalManager(self)
         self.browser                    = Browser()
         self.settings                   = AppSettings(self)
         self.settings._settingEnable    = True
+
+        self.database                   = sqlUtils()
+
         self.setCursorFlashTime(1000)
         self.setQuitOnLastWindowClosed(False)
         self.setDesktopSettingsAware(True)
@@ -103,13 +101,6 @@ class AppModel(Application):
             sys.exit()
 
         self.threadManager              = ThreadManager(self)
-        self.splash                     = SplashUI(self)
-        self.splash.start()
-
-        worker                          = Worker(self.runConfigs)
-        self.threadManager.globalInstance().start(worker)
-        self.runConfigs()
-        self.database                   = sqlUtils()
 
     def sys_message(self, parent=None, title="auto", level="auto", message="test message", btn='ok', flag=None):
         messBox = MessageBox(parent, title, level, message, btn, flag)
@@ -122,7 +113,7 @@ class AppModel(Application):
 
     def clearStyleSheet(self):
         self._styleSheetData            = None
-        self.setStyleSheet(self._styleSheetData)
+        self.setStyleSheet(' ')
         self.settings.initSetValue('styleSheet', None, self.key)
 
     def changeStyleSheet(self, style):
@@ -164,22 +155,15 @@ class AppModel(Application):
 
     def serverAuthorization(self):
         try:
-            r = requests.get(self._server, verify=self.getVerify(), headers=self.getHeaders(), cookies=self.getCookies())
+            r = requests.get(self._server, verify=self.verify, headers=self.getHeaders(), cookies=self.getCookies())
         except Exception:
-            if not glbSettings.allowLocalMode:
-                self.splash.finish(self.sys_message(self, 'Connection Failed', 'critical', p['SERVER_CONNECT_FAIL'], 'close', STAY_ON_TOP))
-                sys.exit()
-            else:
-                self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
-                return False
+            self.sys_message(self, 'Offline', p['SERVER_CONNECT_FAIL'], 'crit', 500)
+            sys.exit()
         else:
             return r.status_code
 
     def configServer(self):
         return __localServer__
-
-    def getVerify(self):
-        return self._verify
 
     def setVerify(self, val):
         self._verify                    = val
@@ -326,79 +310,6 @@ class AppModel(Application):
     def exitEvent(self):
         self.exit()
 
-    def setRecieveSignal(self, bool):
-        glbSettings.recieveSignal = bool
-
-    def setBlockSignal(self, bool):
-        glbSettings.blockSignal = bool
-
-    def setTrackCommand(self, bool):
-        glbSettings.command = bool
-
-    def setRegistLayout(self, bool):
-        glbSettings.registLayout = bool
-
-    def runConfigs(self):
-
-        self.plmInfo = ConfigPipeline()
-        self.splash.setText('Config {0}'.format('Pipeline'))
-
-    #     words = ['Python', 'Directories', 'File Paths', 'Urls & Links', 'Environment Variable', 'Icons', 'Avatars',
-    #              'Logo', 'Images', 'Servers', 'Formats', 'Fonts', 'Local Devices', 'Installed Apps', 'Pipeline Functions']
-    #
-    #     configs = [CfgUrls, CfgIcons, CfgApps, ConfigPipeline]
-    #
-    #     for i in range(len(words)):
-    #         if not i == (len(words) - 1):
-    #             # self.splash.setText('Config {0}'.format(words[i]))
-    #             if i == 0:
-    #                 self.pythonInfo = configs[i]()
-    #             elif i == 1:
-    #                 self.dirInfo    = configs[i]()
-    #             elif i == 2:
-    #                 self.pthInfo    = configs[i]()
-    #             elif i == 3:
-    #                 self.urlInfo    = configs[i]()
-    #             elif i == 4:
-    #                 self.envInfo    = configs[i]()
-    #             elif i == 5:
-    #                 self.iconInfo   = configs[i]()
-    #             elif i == 6:
-    #                 self.avatarInfo = configs[i]()
-    #             elif i == 7:
-    #                 self.logoInfo   = configs[i]()
-    #             elif i == 8:
-    #                 self.imageInfo  = configs[i]()
-    #             elif i == 9:
-    #                 self.serverInfo = configs[i]()
-    #             elif i == 10:
-    #                 self.formatInfo = configs[i]()
-    #             elif i == 11:
-    #                 self.fontInfo   = configs[i]()
-    #             elif i == 12:
-    #                 self.deviceInfo = configs[i]()
-    #             elif i == 13:
-    #                 self.appInfo    = configs[i]()
-    #             # self.splash.setProgress(1)
-    #         else:
-    #             self.splash.setText('Config {0}'.format('Pipeline Functions'))
-    #             if self.iconInfo and self.appInfo and self.urlInfo and self.dirInfo and self.pthInfo:
-    #                 self.plmInfo = ConfigPipeline(self.iconInfo, self.appInfo, self.urlInfo, self.dirInfo, self.pthInfo)
-    #                 # self.splash.setProgress(2)
-    #             else:
-    #                 print('Can not conducting Pipeline Functions configurations, some of other configs has not been done yet.')
-    #                 self.app.exit()
-    #
-    #     check = True
-    #
-    #     for info in [self.pythonInfo, self.dirInfo, self.pthInfo, self.urlInfo, self.envInfo, self.iconInfo,
-    #                  self.avatarInfo, self.logoInfo, self.imageInfo, self.serverInfo, self.formatInfo,
-    #                  self.fontInfo, self.deviceInfo, self.appInfo, self.plmInfo]:
-    #         if not info:
-    #             check = False
-    #
-    #     glbSettings.setCfgAll(check)
-
     @property
     def login(self):
         return self._login
@@ -406,10 +317,6 @@ class AppModel(Application):
     @property
     def styleSheetData(self):
         return self._styleSheetData
-
-    @property
-    def appID(self):
-        return self._appID
 
     @property
     def server(self):
@@ -426,10 +333,6 @@ class AppModel(Application):
     @login.setter
     def login(self, val):
         self._login                     = val
-
-    @appID.setter
-    def appID(self, val):
-        self._appID                     = val
 
     @server.setter
     def server(self, val):

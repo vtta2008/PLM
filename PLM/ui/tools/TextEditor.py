@@ -545,7 +545,7 @@ class TextEditor(Widget):
 
     def __init__(self, parent=None):
         super(TextEditor, self).__init__(parent)
-        # self.logger = Loggers(self)
+        # self.logger = DamgLogger(self)
         self.setWindowIcon(AppIcon(32, 'TextEditor'))
 
         self.layout = QHBoxLayout()

@@ -15,7 +15,7 @@ import time
 from PLM.utils import is_url, format_bytes, bytes2str
 from bin.Network import NetworkRequest, NetworkReply, NetworkCookie, NetworkCookieJar
 from bin.Core import Url
-from PLM.loggers import Loggers
+from bin.loggers import DamgLogger
 
 
 class HTTPrequest(NetworkRequest):
@@ -25,7 +25,7 @@ class HTTPrequest(NetworkRequest):
     def __init__(self, manager=None, url=None, header=False, opt=None):
         super(HTTPrequest, self).__init__(url)
 
-        self.logger                         = Loggers(self)
+        self.logger                         = DamgLogger(self)
         self.networkManager                 = manager
         self.header                         = header
         self.urlInfo                        = self.networkManager.app.urlInfo
@@ -84,7 +84,7 @@ class CookieRequest(NetworkRequest):
     def __init__(self, manager=None, server=None, verify=None, header=None, cookie=None):
         super(CookieRequest, self).__init__(server)
 
-        self.logger                         = Loggers(self)
+        self.logger                         = DamgLogger(self)
         self.networkManager                 = manager
         self.serverInfo                     = self.networkManager.app.serverInfo
         self._server                        = server
@@ -143,7 +143,7 @@ class AuthRequest(NetworkRequest):
         super(AuthRequest, self).__init__(server)
 
         self.auth                           = 0
-        self.logger                         = Loggers(self)
+        self.logger                         = DamgLogger(self)
         self.networkManager                 = manager
         self.serverInfo                     = self.networkManager.app.serverInfo
         self.username                       = username

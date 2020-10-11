@@ -106,11 +106,6 @@ class LayoutManager(DAMG):
             except AttributeError:
                 self.noShowHideAttrs.append(layout)
 
-        self.mainUI.botTabDock.tabs.botTab1.recieveSignalCB.stateChanged.connect(self.parent.setRecieveSignal)
-        self.mainUI.botTabDock.tabs.botTab1.blockSignalCB.stateChanged.connect(self.parent.setBlockSignal)
-        self.mainUI.botTabDock.tabs.botTab1.commandCB.stateChanged.connect(self.parent.setTrackCommand)
-        self.mainUI.botTabDock.tabs.botTab1.registLayoutCB.stateChanged.connect(self.parent.setRegistLayout)
-
         layouts = []
         for listLayout in [self.mains, self.infos, self.setts, self.tools, self.prjs]:
             layouts = layouts + listLayout

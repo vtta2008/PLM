@@ -310,6 +310,7 @@ class PthScanner(BaseScan):
     def __init__(self, parent=None):
         super(PthScanner, self).__init__(parent)
 
+
     def timelog(self, info, **kwargs):
         pass
 
@@ -466,11 +467,8 @@ class ConfigPipeline(Cfg):
     uiKeyInfo                   = ConfigUiKeys()
     iconInfo                    = CfgIcons()
     urlInfo                     = CfgUrls()
-    dirInfo                     = { 'ConfigFolder': CFG_DIR,
-                                    'IconFolder': ICON_DIR,
-                                    'SettingFolder': SETTING_DIR,
-                                    'AppDataFolder': APPDATA_PLM,
-                                    'PreferenceFolder': PREF_DIR, }
+    dirInfo                     = {'ConfigFolder': CFG_DIR, 'IconFolder': ICON_DIR, 'SettingFolder': SETTING_DIR,
+                                    'AppDataFolder': APPDATA_PLM, 'PreferenceFolder': PREF_DIR, }
 
     scanDir                     = DirScanner()
     scanPth                     = PthScanner()

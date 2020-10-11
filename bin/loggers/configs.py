@@ -15,7 +15,6 @@ Description:
 import json, enum
 
 
-
 COLORS                              = ['black', 'red', 'green', 'yellow', 'blue', 'purple', 'cyan', 'white']
 
 
@@ -30,17 +29,15 @@ LOG_COLORS                          = { 'SILENT': 'gray', 'SPAM': 'white', 'DEBU
                                         'ERROR': 'red', 'CRITICAL': 'red', 'FATAL': 'red', 'VDEBUG': 'white',
                                         'WARNING': 'yellow', }
 
-LoggingFullOpt                      = "%(levelname)s: %(asctime)s %(name)s, line %(lineno)s: %(message)s",
-LoggingRelative                     = "(relativeCreated:d) (levelname): (message)",
-LoggingSimpleFmt1                   = "{asctime:[{lvelname}: :{message}",
-LoggingSimpleFmt2                   = '%(asctime)s|%(levelname)s|%(message)s|',
-LoggingDistance1                    = "%(asctime)s  %(name)-22s  %(levelname)-8s %(message)s",
-LoggingDistance2                    = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+TextFullOpt                         = "%(levelname)s: %(asctime)s \n %(name)s, line %(lineno)s: \n %(message)s \n"
+TextRelative                        = "(relativeCreated:d) (levelname): (message)"
+TextSimple1                         = "{asctime:[{lvelname}: :{message}"
+TextSimple2                         = '%(asctime)s|%(levelname)s|%(message)s|'
+TextDistance1                       = "%(asctime)s  %(name)-22s  %(levelname)-8s %(message)s"
+TextDistance2                       = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 
-
-DATETIME_dmyhms                     = "%d/%m/%Y %H:%M:%S",
-DATETIME_mdhm                       = "'%m-%d %H:%M'",
-DATETIME_fullOpt                    = '(%d/%m/%Y %H:%M:%S)',
+DatetimFullOpt                      = "%d/%m/%Y %H:%M:%S"
+DatetimeMDHM                        = "'%m-%d %H:%M'"
 
 
 class Encoder(json.JSONEncoder):
@@ -64,33 +61,6 @@ class StyleMessage(object):
         s = Encoder().encode(self.kwargs)
         return '{0}: >>> {1} >>> {2}'.format(self.title, self.message, s)
 
-
-class LogLevel(enum.IntEnum):
-
-    Silent                          = 0
-    Debug                           = 10
-    Normal                          = 20
-    Trace                           = 30
-    Error                           = 40
-    Critical                        = 50
-
-    @classmethod
-    def getbyname(cls, name):
-        lookup = { level.name.lower(): level for level in cls }
-        return lookup[name.lower()]
-
-    @classmethod
-    def getnames(cls):
-        levels = list(cls)
-        levels.sort(key = lambda level: int(level))
-        return [ level.name for level in levels ]
-
-    @classmethod
-    def getbyverbosity(cls, intvalue):
-        maxvalue = max(int(level) for level in cls)
-        if intvalue > maxvalue:
-            intvalue = maxvalue
-        return cls(intvalue)
 
 
 # -------------------------------------------------------------------------------------------------------------
