@@ -22,8 +22,7 @@ from humanfriendly.text import compact, concatenate, format, pluralize
 basestring = str
 
 # PLM
-from bin.loggers import test_logger
-
+from bin.loggers.models.tests import test_logger
 
 SPHINX_ACTIVE = 'sphinx' in sys.modules
 

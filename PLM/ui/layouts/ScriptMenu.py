@@ -15,7 +15,7 @@ import os
 from PySide2.QtCore               import Signal
 from PySide2.QtWidgets            import QApplication
 
-from bin.loggers import test_logger
+from bin.loggers.models.tests import test_logger
 from bin.Widgets import Menu, WidgetAction, Action, LineEdit
 from bin.Gui import Icon
 

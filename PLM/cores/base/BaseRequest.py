@@ -15,7 +15,7 @@ import time
 from PLM.utils import is_url, format_bytes, bytes2str
 from bin.Network import NetworkRequest, NetworkReply, NetworkCookie, NetworkCookieJar
 from bin.Core import Url
-from bin.loggers import test_logger
+from bin.loggers.models.tests import test_logger
 
 
 class HTTPrequest(NetworkRequest):

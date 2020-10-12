@@ -101,7 +101,7 @@ class DAMGREGISTER(BaseDict):
         self[obj._name] = [obj.data, obj]
 
         # Report register complete.
-        # print('{0} registed'.format(obj.name))
+        # print('{0} registed'.fmt(obj.name))
         return True
 
     def deRegister(self, obj):

@@ -20,9 +20,7 @@ from bin.Core                           import Signal
 from PLM.configs                        import propText as p
 from PLM.ui.models                      import AppModel
 from PLM.ui                             import LayoutManager
-from bin.loggers import test_logger
-
-
+from bin.loggers.models.tests import test_logger
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """

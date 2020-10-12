@@ -182,7 +182,7 @@ class TextEdit(MainWindow):
         self.menuBar().addMenu(menu)
 
         self.actionTextBold = QAction(
-            QIcon.fromTheme('format-text-bold', QIcon(rsrcPath + '/textbold.png')), "&Bold", self,
+            QIcon.fromTheme('fmt-text-bold', QIcon(rsrcPath + '/textbold.png')), "&Bold", self,
             priority=QAction.LowPriority, shortcut=Qt.CTRL + Qt.Key_B, triggered=self.textBold, checkable=True)
         bold = QFont()
         bold.setBold(True)
@@ -191,7 +191,7 @@ class TextEdit(MainWindow):
         menu.addAction(self.actionTextBold)
 
         self.actionTextItalic = QAction(
-            QIcon.fromTheme('format-text-italic', QIcon(rsrcPath + '/textitalic.png')), "&Italic", self,
+            QIcon.fromTheme('fmt-text-italic', QIcon(rsrcPath + '/textitalic.png')), "&Italic", self,
             priority=QAction.LowPriority, shortcut=Qt.CTRL + Qt.Key_I, triggered=self.textItalic, checkable=True)
         italic = QFont()
         italic.setItalic(True)
@@ -200,7 +200,7 @@ class TextEdit(MainWindow):
         menu.addAction(self.actionTextItalic)
 
         self.actionTextUnderline = QAction(
-            QIcon.fromTheme('format-text-underline', QIcon(rsrcPath + '/textunder.png')), "&Underline", self,
+            QIcon.fromTheme('fmt-text-underline', QIcon(rsrcPath + '/textunder.png')), "&Underline", self,
             priority=QAction.LowPriority, shortcut=Qt.CTRL + Qt.Key_U, triggered=self.textUnderline, checkable=True)
         underline = QFont()
         underline.setUnderline(True)
@@ -214,15 +214,15 @@ class TextEdit(MainWindow):
 
         # Make sure the alignLeft is always left of the alignRight.
         if QApplication.isLeftToRight():
-            self.actionAlignLeft = QAction(QIcon.fromTheme('format-justify-left', QIcon(rsrcPath + '/textleft.png')), "&Left", grp)
-            self.actionAlignCenter = QAction(QIcon.fromTheme('format-justify-center', QIcon(rsrcPath + '/textcenter.png')), "C&enter", grp)
-            self.actionAlignRight = QAction(QIcon.fromTheme('format-justify-right', QIcon(rsrcPath + '/textright.png')), "&Right", grp)
+            self.actionAlignLeft = QAction(QIcon.fromTheme('fmt-justify-left', QIcon(rsrcPath + '/textleft.png')), "&Left", grp)
+            self.actionAlignCenter = QAction(QIcon.fromTheme('fmt-justify-center', QIcon(rsrcPath + '/textcenter.png')), "C&enter", grp)
+            self.actionAlignRight = QAction(QIcon.fromTheme('fmt-justify-right', QIcon(rsrcPath + '/textright.png')), "&Right", grp)
         else:
-            self.actionAlignRight = QAction(QIcon.fromTheme('format-justify-right', QIcon(rsrcPath + '/textright.png')), "&Right", grp)
-            self.actionAlignCenter = QAction(QIcon.fromTheme('format-justify-center', QIcon(rsrcPath + '/textcenter.png')), "C&enter", grp)
-            self.actionAlignLeft = QAction(QIcon.fromTheme('format-justify-left', QIcon(rsrcPath + '/textleft.png')), "&Left", grp)
+            self.actionAlignRight = QAction(QIcon.fromTheme('fmt-justify-right', QIcon(rsrcPath + '/textright.png')), "&Right", grp)
+            self.actionAlignCenter = QAction(QIcon.fromTheme('fmt-justify-center', QIcon(rsrcPath + '/textcenter.png')), "C&enter", grp)
+            self.actionAlignLeft = QAction(QIcon.fromTheme('fmt-justify-left', QIcon(rsrcPath + '/textleft.png')), "&Left", grp)
 
-        self.actionAlignJustify = QAction(QIcon.fromTheme('format-justify-fill', QIcon(rsrcPath + '/textjustify.png')), "&Justify", grp)
+        self.actionAlignJustify = QAction(QIcon.fromTheme('fmt-justify-fill', QIcon(rsrcPath + '/textjustify.png')), "&Justify", grp)
 
         self.actionAlignLeft.setShortcut(Qt.CTRL + Qt.Key_L)
         self.actionAlignLeft.setCheckable(True)

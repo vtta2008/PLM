@@ -27,7 +27,7 @@ import os, sys, requests
 from PLM                                import __version__, __appName__, __organization__, __organizationDomain__
 
 from PLM.configs                        import propText as p, ConfigPipeline
-from bin.loggers import test_logger
+from bin.loggers.models.tests import test_logger
 from PLM.cores                          import sqlUtils, StyleSheet, ThreadManager
 from bin.Widgets                        import Application, MessageBox
 from bin.Gui                            import LogoIcon

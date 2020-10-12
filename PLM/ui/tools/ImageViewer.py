@@ -237,7 +237,7 @@ class ImageInitUI(ViewerWindow):
             else:
                 self.oldImage()
         else:
-            # print("Unsupported file format")
+            # print("Unsupported file fmt")
             # sys.exit(1)
             pass
 

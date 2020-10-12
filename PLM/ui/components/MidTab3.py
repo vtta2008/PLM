@@ -209,7 +209,7 @@ class MidTab3(Widget):
                     pass
                 else:
                     if os.path.isdir(command_argument):
-                        # print('{0} is dir'.format(command_argument))
+                        # print('{0} is dir'.fmt(command_argument))
                         check = True
                         for char in command_argument:
                             if not char == '.':
@@ -222,14 +222,14 @@ class MidTab3(Widget):
                             else:
                                 self.command_not_found(cmd)
                         else:
-                            # print('{0} is not dir'.format(command_argument))
+                            # print('{0} is not dir'.fmt(command_argument))
                             pass
                     else:
                         if os.path.exists(command_argument):
-                            # print('{0} is path'.format(command_argument))
+                            # print('{0} is path'.fmt(command_argument))
                             self._cwd = command_argument
                         else:
-                            # print('{0} is path but not exists'.format(command_argument))
+                            # print('{0} is path but not exists'.fmt(command_argument))
                             pth = os.path.join(self._cwd, command_argument)
                             # print(pth, self._cwd)
                             if os.path.exists(pth):
@@ -307,7 +307,7 @@ class MidTab3(Widget):
         self.cursorEnd()
 
     def updateWorkingDirectory(self, pth=os.getcwd()):
-        # print('Working Dir: {0}'.format(pth))
+        # print('Working Dir: {0}'.fmt(pth))
         fixName = os.path.basename(pth)
         fixPath = os.path.dirname(pth)
         self._cwd = os.path.join(fixPath, fixName).replace('\\', '/')

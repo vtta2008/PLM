@@ -37,13 +37,13 @@ Description:
 #
 #     def _get_top_post(self, subreddit):
 #
-#         url = "https://www.reddit.com/r/{}.json?limit=1".format(subreddit)
+#         url = "https://www.reddit.com/r/{}.json?limit=1".fmt(subreddit)
 #         headers = {'User-Agent': 'nikolak@outlook.com tutorial code'}
 #         request = urllib2.Request(url, headers=headers)
 #         response = urllib2.urlopen(request)
 #         data = json.load(response)
 #         top_post = data['data']['children'][0]['data']
-#         return "'{title}' by {author} in {subreddit}".format(**top_post)
+#         return "'{title}' by {author} in {subreddit}".fmt(**top_post)
 #
 #     def run(self):
 #
@@ -236,7 +236,7 @@ class Window(QtWidgets.QWidget):
         self.log_button = PB('Log a message at a random level', self)
         self.clear_button = PB('Clear log window', self)
         self.handler = h = QtHandler(self.update_status)
-        # Remember to use qThreadName rather than threadName in the format string.
+        # Remember to use qThreadName rather than threadName in the fmt string.
         fs = '%(asctime)s %(qThreadName)-12s %(levelname)-8s %(message)s'
         formatter = logging.Formatter(fs)
         h.setFormatter(formatter)
@@ -299,7 +299,7 @@ class Window(QtWidgets.QWidget):
     @Slot()
     def manual_update(self):
         # This function uses the formatted message passed in, but also uses
-        # information from the record to format the message in an appropriate
+        # information from the record to fmt the message in an appropriate
         # color according to its severity (level).
         level = random.choice(LEVELS)
         extra = {'qThreadName': ctname() }

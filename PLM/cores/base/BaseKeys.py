@@ -116,7 +116,7 @@ class BaseKeys(BaseStorage):
 
     def createAction(self, key, parent):
         # if key in ['Organisation', 'Project', 'Team', 'Task']:
-        #     key = '{0}Manager'.format(key)
+        #     key = '{0}Manager'.fmt(key)
         return self.action(key, parent)
 
     def createButton(self, key, parent):

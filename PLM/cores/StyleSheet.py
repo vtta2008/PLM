@@ -17,7 +17,7 @@ import platform
 from PLM.options            import COLOR_BACKGROUND_NORMAL
 from bin.damg               import DAMG, DAMGDICT
 from bin.Core               import TextStream, File, QssFile
-from bin.loggers import test_logger
+from bin.loggers.models.tests import test_logger
 
 
 class StyleSheet(DAMG):

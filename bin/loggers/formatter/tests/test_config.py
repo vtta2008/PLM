@@ -36,7 +36,7 @@ def test_build_from_dictionary(test_logger):
         'formatters': {
             'colored': {
                 '()': 'colorlog.ColoredFormatter',
-                'format':
+                'fmt':
                     "%(log_color)s%(levelname)s:%(name)s:%(message)s:dict",
             }
         },

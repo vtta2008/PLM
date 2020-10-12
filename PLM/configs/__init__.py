@@ -101,9 +101,13 @@ LIBRARY_DIR                             = create_path(APPDATA_DAMG, 'libraries')
 
 APP_SETTING                             = create_path(SETTING_DIR, 'PLM.ini')
 USER_SETTING                            = create_path(SETTING_DIR, 'user.ini')
-FORMAT_SETTING                          = create_path(SETTING_DIR, 'format.ini')
+FORMAT_SETTING                          = create_path(SETTING_DIR, 'fmt.ini')
 UNIX_SETTING                            = create_path(SETTING_DIR, 'unix.ini')
-LOCAL_LOG                               = create_path(LOG_DIR, 'PLM.logs')
+
+APP_LOG                                 = create_path(LOG_DIR, 'PLM.log')
+USER_LOG                                = create_path(LOG_DIR, 'user.log')
+SERVER_LOG                              = create_path(LOG_DIR, 'server.log')
+UNIX_LOG                                = create_path(LOG_DIR, 'unix.log')
 
 BIN_DIR                                 = BIN_ROOT
 BIN_BASE_DIR                            = create_path(BIN_DIR, 'base')

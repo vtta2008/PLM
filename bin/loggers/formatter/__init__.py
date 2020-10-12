@@ -6,32 +6,17 @@ Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
-    Test the colorlog.logging module.
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from bin.loggers import models
-import logging
-
-# test_logger = models.basicConfig()
 
 
-
-def test_logging_module(test_logger):
-    test_logger(logging)
-
-
-def test_colorlog_module(test_logger):
-    test_logger(models)
+from .colorlog import (default_log_colors, ColoredFormatter, DamgFormatter, TTYColoredFormatter, escape_codes,
+                       parse_colors, )
 
 
-def test_colorlog_basicConfig(test_logger):
-    models.basicConfig()
-    test_logger(models.getLogger())
-
-
-# test_logging_module(test_logger=test_logger)
-
+from .logging import (basicConfig, root, getLogger, log, debug, info, warning, error, exception, critical,
+                      StreamHandler, FileHandler)
 
 
 # -------------------------------------------------------------------------------------------------------------

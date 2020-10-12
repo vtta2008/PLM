@@ -10,12 +10,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import
-
 import functools
 import logging
 
-from bin.loggers.models import ColoredFormatter
+from .colorlog import ColoredFormatter
 
 
 BASIC_FORMAT = "%(log_color)s%(levelname)s%(reset)s:%(name)s:%(message)s"
@@ -30,10 +28,10 @@ def basicConfig(style='%', log_colors=None, reset=True, secondary_log_colors=Non
 
     try:
         stream = logging.root.handlers[0]
-        stream.setFormatter(ColoredFormatter( textFormat=kwargs.get('format', BASIC_FORMAT),
-                                              datetimeFormat=kwargs.get('datefmt', None),
-                                              style=style, log_colors=log_colors, reset=reset,
-                                              secondary_log_colors=secondary_log_colors ))
+        stream.setFormatter(ColoredFormatter(fmt=kwargs.get('fmt', BASIC_FORMAT),
+                                             datefmt=kwargs.get('datefmt', None),
+                                             style=style, logColors=log_colors, reset=reset,
+                                             secondLogColors=secondary_log_colors))
     finally:
         logging._releaseLock()
 
@@ -52,6 +50,7 @@ def ensure_configured(func):
 
 root            = logging.root
 getLogger       = logging.getLogger
+
 debug           = ensure_configured(logging.debug)
 info            = ensure_configured(logging.info)
 warning         = ensure_configured(logging.warning)
@@ -60,6 +59,16 @@ critical        = ensure_configured(logging.critical)
 log             = ensure_configured(logging.log)
 exception       = ensure_configured(logging.exception)
 
+NOTSET          = ensure_configured(logging.NOTSET)
+DEBUG           = ensure_configured(logging.DEBUG)
+INFO            = ensure_configured(logging.INFO)
+WARN            = ensure_configured(logging.WARN)
+WARNING         = ensure_configured(logging.WARNING)
+ERROR           = ensure_configured(logging.ERROR)
+CRITICAL        = ensure_configured(logging.CRITICAL)
+FATAL           = ensure_configured(logging.FATAL)
+
+Logger          = logging.Logger
 StreamHandler   = logging.StreamHandler
 FileHandler     = logging.FileHandler
 

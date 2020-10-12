@@ -9,7 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from bin.loggers.models import *
+from bin.loggers.colorlog import *
 
 def test_exports():
     assert {

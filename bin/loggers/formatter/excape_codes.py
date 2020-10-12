@@ -23,16 +23,18 @@ except ImportError:
 else:
     colorama.init(strip=False)
 
-__all__ = ('escape_codes', 'parse_colors', 'esc')
 
 def esc(*x):
     return '\033[' + ';'.join(x) + 'm'
 
+
 # The initial list of escape codes
 escape_codes = {'reset': esc('0'), 'bold': esc('01'), 'thin': esc('02')}
 
+
 # The color names
 COLORS = ['black', 'red', 'green', 'yellow', 'blue', 'purple', 'cyan', 'white']
+
 
             # Foreground without prefix
 PREFIXES = [('3', ''), ('01;3', 'bold_'), ('02;3', 'thin_'),
@@ -50,10 +52,11 @@ def parse_colors(sequence):
     try:
         ''.join(escape_codes[n] for n in sequence.split(',') if n)
     except KeyError:
-        print('getting keyerror here')
-        print('sequence: ', sequence)
-        print('type: ', type(sequence))
-        print("split ','", sequence.split(','))
+        # print('getting keyerror here')
+        # print('sequence: ', sequence)
+        # print('type: ', type(sequence))
+        # print("split ','", sequence.split(','))
+        pass
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -22,3 +22,4 @@ termcolor           >= 1.1.0
 pyjavaproperties    >= 0.7
 humanfriendly       >= 8.2
 validators          >= 0.18.1
+colorama            >= 0.4.3

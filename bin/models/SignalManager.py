@@ -68,12 +68,12 @@ class SignalManager(DAMG):
 
     def getSignal(self, key):
         # if glbSettings.printSignalReceive:
-        #     self.logger.info('{0} get signal: {1}'.format(self.parent.key, key))
+        #     self.logger.info('{0} get signal: {1}'.fmt(self.parent.key, key))
         return self.signals.get(key)
 
     def getSlot(self, key):
         # if glbSettings.tracks.getSlot:
-        #     self.logger.info('{0} get slot: {1}'.format(self.parent.key, key))
+        #     self.logger.info('{0} get slot: {1}'.fmt(self.parent.key, key))
         return self.slots.get(key)
 
     def emit(self, key, arg):

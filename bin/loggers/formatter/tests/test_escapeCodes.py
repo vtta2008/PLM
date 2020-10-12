@@ -11,7 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """Test the colorlog.escape_codes module."""
 
-from bin.loggers.models import escape_codes, parse_colors, esc
+from bin.loggers.colorlog.excape_codes import escape_codes, parse_colors, esc
 
 import pytest
 
@@ -64,9 +64,6 @@ def test_parse_multiple_colors():
 def test_parse_invalid_colors():
     with pytest.raises(KeyError):
         parse_colors('false')
-
-
-test_rainbow()
 
 
 # -------------------------------------------------------------------------------------------------------------

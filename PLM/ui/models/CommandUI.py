@@ -11,7 +11,8 @@ Description:
 
 from bin.Widgets import LineEdit, ShortCut
 from PLM.options import FRAMELESS, KEY_RETURN
-from bin.loggers import test_logger
+from bin.loggers.models.tests import test_logger
+
 
 class CommandUI(LineEdit):
 

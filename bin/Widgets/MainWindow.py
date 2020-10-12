@@ -10,7 +10,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 from PySide2.QtWidgets                      import QMainWindow
-from bin.loggers import test_logger
+from bin.loggers.models.tests import test_logger
 from bin.models.SignalManager import SignalManager
 from bin.settings import AppSettings
 
