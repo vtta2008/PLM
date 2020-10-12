@@ -9,10 +9,11 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
+from __future__ import absolute_import
+
 import logging, enum
 
-
+__all__ = ('DamgLogger', )
 
 class LogLevel(enum.IntEnum):
 
@@ -48,10 +49,7 @@ class BaseLogger(logging.Logger):
 
     _name                           = None
     _level                          = None
-    _file                           = None
-    _stream                         = None
-    _textFormat                     = None
-    _datetimeFormat                 = None
+
 
     logLevel = {LogLevel.Silent: logging.NOTSET,
                 LogLevel.Debug: logging.DEBUG,
@@ -73,13 +71,13 @@ class BaseLogger(logging.Logger):
             methodName = levelName.lower()
 
         if hasattr(logging, levelName):
-            # self.info('{0} registered (level)'.format(levelName))
+            # print('{0} registered (level)'.format(levelName))
             regisable = False
         elif hasattr(logging, methodName):
-            # self.info('{0} registered (method)'.format(methodName))
+            # print('{0} registered (method)'.format(methodName))
             regisable = False
         elif hasattr(logging.getLoggerClass(), methodName):
-            # self.info('{0} registered (class)'.format(methodName))
+            # print('{0} registered (class)'.format(methodName))
             regisable = False
         else:
             regisable = True
@@ -92,6 +90,7 @@ class BaseLogger(logging.Logger):
             logging.log(levelNum, message, *args, **kwargs)
 
         if regisable:
+            print('begin adding level name: {0}'.format(levelName))
             logging.addLevelName(levelNum, levelName)
             setattr(logging, levelName, levelNum)
             setattr(logging.getLoggerClass(), methodName, logForLevel)
@@ -113,7 +112,7 @@ class BaseLogger(logging.Logger):
             verbose_level = logging.FATAL
 
         verbose_level = LogLevel.getbyverbosity(verbose_level)
-
+        print('versobs log level: {0}'.format(verbose_level))
         return self.logLevel[verbose_level]
 
     @property
@@ -124,54 +123,6 @@ class BaseLogger(logging.Logger):
     def level(self):
         return self._level
 
-    @property
-    def file(self):
-        return self._file
-
-    @property
-    def textFormat(self):
-        return self._textFormat
-
-    @property
-    def datetimeFormat(self):
-        return self._datetimeFormat
-
-    @property
-    def mode(self):
-        return self._mode
-
-    @property
-    def encoding(self):
-        return self._encoding
-
-    @property
-    def delay(self):
-        return self._delay
-
-    @property
-    def stream(self):
-        return self._stream
-
-    @stream.setter
-    def stream(self, val):
-        self._stream                = val
-
-    @delay.setter
-    def delay(self, val):
-        self._delay                 = val
-
-    @encoding.setter
-    def encoding(self, val):
-        self._encoding              = val
-
-    @mode.setter
-    def mode(self, val):
-        self._mode                  = val
-
-    @file.setter
-    def file(self, val):
-        self._file                  = val
-
     @name.setter
     def name(self, val):
         self._name                  = val
@@ -180,13 +131,27 @@ class BaseLogger(logging.Logger):
     def level(self, val):
         self._level                 = val
 
-    @textFormat.setter
-    def textFormat(self, val):
-        self._textFormat            = val
 
-    @datetimeFormat.setter
-    def datetimeFormat(self, val):
-        self._datetimeFormat        = val
+class DamgLogger(BaseLogger):
+
+    key                             = 'DamgLogger'
+
+    def __init__(self, name=None, level='debug'):
+
+        if not name:
+            self._name              = __name__
+        else:
+            self._name              = name
+
+        self._level                 = self.config_logLevel(level)
+
+        super(DamgLogger, self).__init__(self.name, self.level)
+
+        self.parent                 = logging.getLogger(self.name)
+        self.setLevel(self.level)
+
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

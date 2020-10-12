@@ -11,8 +11,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 
-from .DamgLogger import DamgLogger
-from .handlers import LogThread
+from .testLogger                        import DamgLogger
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 1/16/2020 - 7:44 PM

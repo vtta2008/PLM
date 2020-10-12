@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # Python
-import json, enum
+import json
 
 
 COLORS                              = ['black', 'red', 'green', 'yellow', 'blue', 'purple', 'cyan', 'white']
@@ -24,11 +24,6 @@ COLOR_ESCAPES                       = {color: '\033[{}m'.format(i) for i, color 
 RESET_ESCAPE                        = '\033[0m'
 
 
-LOG_COLORS                          = { 'SILENT': 'gray', 'SPAM': 'white', 'DEBUG': 'cyan', 'VERBOSE': 'purple',
-                                        'NORMAL': 'white', 'NOTICE': 'orange', 'TRACE': 'yellow', 'SUCCESS': 'blue',
-                                        'ERROR': 'red', 'CRITICAL': 'red', 'FATAL': 'red', 'VDEBUG': 'white',
-                                        'WARNING': 'yellow', }
-
 TextFullOpt                         = "%(levelname)s: %(asctime)s \n %(name)s, line %(lineno)s: \n %(message)s \n"
 TextRelative                        = "(relativeCreated:d) (levelname): (message)"
 TextSimple1                         = "{asctime:[{lvelname}: :{message}"
@@ -36,8 +31,41 @@ TextSimple2                         = '%(asctime)s|%(levelname)s|%(message)s|'
 TextDistance1                       = "%(asctime)s  %(name)-22s  %(levelname)-8s %(message)s"
 TextDistance2                       = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 
-DatetimFullOpt                      = "%d/%m/%Y %H:%M:%S"
+DatetimeFullOpt                     = "%d/%m/%Y %H:%M:%S"
 DatetimeMDHM                        = "'%m-%d %H:%M'"
+
+
+colorTextFormat          = { 'NOTSET': '%(log_color)s%(msg)s',
+                            'DEBUG': '%(levelname)s: %(asctime)s \n %(name)s, line %(lineno)s: \n %(log_color)s%(msg)s \n (%(module)s:%(lineno)d)',
+                            'INFO': '%(log_color)s%(msg)s (%(module)s:%(lineno)d)',
+                            'WARNING': '%(log_color)sWARN: %(msg)s (%(module)s:%(lineno)d)',
+                            'ERROR': '%(log_color)sERROR: %(msg)s (%(module)s:%(lineno)d)',
+                            'CRITICAL': '%(log_color)sCRIT: %(msg)s (%(module)s:%(lineno)d)',}
+
+
+colorDatetimeFormat     = "%d/%m/%Y %H:%M:%S"
+
+
+logColors               = { 'NOTSET': 'gray',
+                            'DEBUG': 'cyan',
+                            'INFO': 'green',
+                            'TRACE': 'yellow',
+                            'ERROR': 'orange',
+                            'CRITICAL': 'red',}
+
+secondLogColors         = { 'NOTSET': 'gray',
+                            'SPAM': 'white',
+                            'DEBUG': 'cyan',
+                            'VERBOSE': 'purple',
+                            'NORMAL': 'white',
+                            'NOTICE': 'green',
+                            'TRACE': 'yellow',
+                            'SUCCESS': 'blue',
+                            'ERROR': 'orange',
+                            'CRITICAL': 'red',
+                            'FATAL': 'red',
+                            'VDEBUG': 'white',
+                            'WARNING': 'yellow', }
 
 
 class Encoder(json.JSONEncoder):

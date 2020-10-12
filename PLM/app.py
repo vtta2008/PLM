@@ -20,7 +20,7 @@ from bin.Core                           import Signal
 from PLM.configs                        import propText as p
 from PLM.ui.models                      import AppModel
 from PLM.ui                             import LayoutManager
-from bin.loggers import DamgLogger
+from bin.loggers import testLogger
 
 
 
@@ -38,7 +38,7 @@ class PLM(AppModel):
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
 
-        self.logger                     = DamgLogger()
+        self.logger                     = testLogger()
         self.layoutManager              = LayoutManager(self.threadManager, self)
         self.layoutManager.registLayout(self.browser)
         self.layoutManager.buildLayouts()
