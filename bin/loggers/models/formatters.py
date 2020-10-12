@@ -12,14 +12,19 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
 
-import logging, sys
+import sys
 
-from bin.loggers.models.excape_codes import escape_codes, parse_colors
+from bin.loggers.models                     import logging
+from bin.loggers.models.excape_codes        import escape_codes, parse_colors, esc
 
-__all__ = ('escape_codes', 'default_log_colors', 'ColoredFormatter', 'DamgFormatter', 'TTYColoredFormatter')
+
+__all__ = ('escape_codes', 'default_log_colors', 'ColoredFormatter', 'DamgFormatter', 'TTYColoredFormatter',
+           'parse_colors', 'esc')
+
 
 # The default colors to use for the debug levels
 default_log_colors = {'DEBUG': 'white', 'INFO': 'green', 'WARNING': 'yellow', 'ERROR': 'red', 'CRITICAL': 'bold_red', }
+
 
 # The default format to use for each style
 default_formats = {'%': '%(log_color)s%(levelname)s:%(name)s:%(message)s',
@@ -62,7 +67,8 @@ class ColoredFormatter(logging.Formatter):
     _datetimeFormat                     = None
 
 
-    def __init__(self, textFormat, datetimeFormat, style, log_colors, reset, secondary_log_colors):
+    def __init__(self, textFormat=None, datetimeFormat=None,
+                 style='%', log_colors=None, reset=True, secondary_log_colors=None):
         """
         Set the format and colors the ColoredFormatter will use.
 

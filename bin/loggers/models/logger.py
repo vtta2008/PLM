@@ -11,7 +11,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
 
-import logging, enum
+import enum
+from bin.loggers.models             import logging
 
 __all__ = ('DamgLogger', )
 
@@ -112,7 +113,7 @@ class BaseLogger(logging.Logger):
             verbose_level = logging.FATAL
 
         verbose_level = LogLevel.getbyverbosity(verbose_level)
-        print('versobs log level: {0}'.format(verbose_level))
+        # print('versbose log level: {0}'.format(verbose_level))
         return self.logLevel[verbose_level]
 
     @property

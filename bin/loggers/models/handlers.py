@@ -11,7 +11,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 from __future__ import absolute_import
 
-import sys, pdb, traceback, logging, os
+import sys, pdb, traceback
+from bin.loggers.models     import logging
 
 __all__ = ('DamgHandler', )
 
@@ -27,9 +28,6 @@ class BaseHandler(logging.FileHandler):
         super(BaseHandler, self).__init__(filename, mode, encoding, delay)
 
         # self.setStream(sys.stdout)
-
-
-
 
     @property
     def file(self):

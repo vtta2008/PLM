@@ -27,7 +27,7 @@ import os, sys, requests
 from PLM                                import __version__, __appName__, __organization__, __organizationDomain__
 
 from PLM.configs                        import propText as p, ConfigPipeline
-from bin.loggers import testLogger
+from bin.loggers import test_logger
 from PLM.cores                          import sqlUtils, StyleSheet, ThreadManager
 from bin.Widgets                        import Application, MessageBox
 from bin.Gui                            import LogoIcon
@@ -69,7 +69,7 @@ class AppModel(Application):
         super(AppModel, self).__init__(*__args)
 
         self.setWindowIcon(LogoIcon("DAMG"))
-        self.logger                     = testLogger()
+        self.logger                     = test_logger()
         self.logger.trace("test logger")
         self.signals                    = SignalManager(self)
         self.browser                    = Browser()

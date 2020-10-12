@@ -23,7 +23,7 @@ except ImportError:
 else:
     colorama.init(strip=False)
 
-__all__ = ('escape_codes', 'parse_colors')
+__all__ = ('escape_codes', 'parse_colors', 'esc')
 
 def esc(*x):
     return '\033[' + ';'.join(x) + 'm'
@@ -47,7 +47,13 @@ PREFIXES = [('3', ''), ('01;3', 'bold_'), ('02;3', 'thin_'),
 def parse_colors(sequence):
     """Return escape codes from a color sequence."""
     # print('Get input sequence: ', sequence, type(sequence))
-    return ''.join(escape_codes[n] for n in sequence.split(',') if n)
+    try:
+        ''.join(escape_codes[n] for n in sequence.split(',') if n)
+    except KeyError:
+        print('getting keyerror here')
+        print('sequence: ', sequence)
+        print('type: ', type(sequence))
+        print("split ','", sequence.split(','))
 
 
 # -------------------------------------------------------------------------------------------------------------

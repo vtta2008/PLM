@@ -17,7 +17,7 @@ import platform
 from PLM.options            import COLOR_BACKGROUND_NORMAL
 from bin.damg               import DAMG, DAMGDICT
 from bin.Core               import TextStream, File, QssFile
-from bin.loggers import testLogger
+from bin.loggers import test_logger
 
 
 class StyleSheet(DAMG):
@@ -30,7 +30,7 @@ class StyleSheet(DAMG):
     def __init__(self, app=None):
         super(StyleSheet, self).__init__()
 
-        self.logger                     = testLogger()
+        self.logger                     = test_logger()
         self.app                        = app
 
 

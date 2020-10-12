@@ -31,41 +31,39 @@ TextSimple2                         = '%(asctime)s|%(levelname)s|%(message)s|'
 TextDistance1                       = "%(asctime)s  %(name)-22s  %(levelname)-8s %(message)s"
 TextDistance2                       = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 
-DatetimeFullOpt                     = "%d/%m/%Y %H:%M:%S"
-DatetimeMDHM                        = "'%m-%d %H:%M'"
+
+dmYHMS                              = "%d/%m/%Y %H:%M:%S"
+mdHM                                = "'%m-%d %H:%M'"
 
 
-colorTextFormat          = { 'NOTSET': '%(log_color)s%(msg)s',
-                            'DEBUG': '%(levelname)s: %(asctime)s \n %(name)s, line %(lineno)s: \n %(log_color)s%(msg)s \n (%(module)s:%(lineno)d)',
-                            'INFO': '%(log_color)s%(msg)s (%(module)s:%(lineno)d)',
-                            'WARNING': '%(log_color)sWARN: %(msg)s (%(module)s:%(lineno)d)',
-                            'ERROR': '%(log_color)sERROR: %(msg)s (%(module)s:%(lineno)d)',
-                            'CRITICAL': '%(log_color)sCRIT: %(msg)s (%(module)s:%(lineno)d)',}
+colorTextFormat                     = {'NOTSET': '%(log_color)s%(msg)s',
+                                        'DEBUG': '%(levelname)s: %(asctime)s \n %(name)s, line %(lineno)s: \n %(log_color)s%(msg)s \n (%(module)s:%(lineno)d)',
+                                        'INFO': '%(log_color)s%(msg)s (%(module)s:%(lineno)d)',
+                                        'WARNING': '%(log_color)sWARN: %(msg)s (%(module)s:%(lineno)d)',
+                                        'ERROR': '%(log_color)sERROR: %(msg)s (%(module)s:%(lineno)d)',
+                                        'CRITICAL': '%(log_color)sCRIT: %(msg)s (%(module)s:%(lineno)d)',}
 
 
-colorDatetimeFormat     = "%d/%m/%Y %H:%M:%S"
+logColors                           = { 'NOTSET': 'gray',
+                                        'DEBUG': 'cyan',
+                                        'INFO': 'green',
+                                        'TRACE': 'yellow',
+                                        'ERROR': 'orange',
+                                        'CRITICAL': 'red',}
 
-
-logColors               = { 'NOTSET': 'gray',
-                            'DEBUG': 'cyan',
-                            'INFO': 'green',
-                            'TRACE': 'yellow',
-                            'ERROR': 'orange',
-                            'CRITICAL': 'red',}
-
-secondLogColors         = { 'NOTSET': 'gray',
-                            'SPAM': 'white',
-                            'DEBUG': 'cyan',
-                            'VERBOSE': 'purple',
-                            'NORMAL': 'white',
-                            'NOTICE': 'green',
-                            'TRACE': 'yellow',
-                            'SUCCESS': 'blue',
-                            'ERROR': 'orange',
-                            'CRITICAL': 'red',
-                            'FATAL': 'red',
-                            'VDEBUG': 'white',
-                            'WARNING': 'yellow', }
+secondLogColors                     = { 'NOTSET': 'gray',
+                                        'SPAM': 'white',
+                                        'DEBUG': 'cyan',
+                                        'VERBOSE': 'purple',
+                                        'NORMAL': 'white',
+                                        'NOTICE': 'green',
+                                        'TRACE': 'yellow',
+                                        'SUCCESS': 'blue',
+                                        'ERROR': 'orange',
+                                        'CRITICAL': 'red',
+                                        'FATAL': 'red',
+                                        'VDEBUG': 'white',
+                                        'WARNING': 'yellow', }
 
 
 class Encoder(json.JSONEncoder):
