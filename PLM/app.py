@@ -17,9 +17,10 @@ import sys
 
 # PLM
 from bin.Core                           import Signal
-from PLM.configs                        import propText as p
+from PLM.configs                        import configPropText
 from PLM.ui.models                      import AppModel
 from PLM.ui                             import LayoutManager
+p = configPropText()
 
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """

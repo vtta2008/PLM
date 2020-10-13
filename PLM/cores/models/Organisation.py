@@ -17,7 +17,6 @@ from playsound                          import playsound
 
 # PLM
 from PLM.cores.base import BaseType
-from PLM.configs import SOUND_DIR, ORG_DIR
 from bin.Core import DateTime
 
 # -------------------------------------------------------------------------------------------------------------

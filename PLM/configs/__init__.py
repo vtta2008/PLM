@@ -15,10 +15,8 @@ Description:
 
 from .ConfigVersion import ConfiguredFile, DiscardDefaultIfSpecifiedAppendAction
 
-import os, winshell, inflection
+import os, winshell
 from termcolor                          import cprint
-from pyjavaproperties                   import Properties
-from click import prompt
 
 # PLM
 from .baseConfigs                       import Cmds, Cfg, TrackKeys
@@ -28,11 +26,16 @@ from PLM                                import (create_path, ROOT, ROOT_APP, APP
                                                 TASK_DIR, TEAM_DIR, PRJ_DIR, ORG_DIR, USER_LOCAL_DATA, LIBRARY_DIR,
                                                 LOCAL_DB)
 
-
 iconMissing                             = []
 toolTips                                = {}
 statusTips                              = {}
 
+
+actionTypes                             = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction',
+                                           'DAMGExecutingAction', 'DAMGOpenBrowserAction', 'DAMGWIDGETACTION']
+buttonTypes                             = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
+urlTypes                                = ['DAMGURL', 'Url', 'url']
+layoutTypes                             = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
 
 
 notKeys                                  = ['__name__', '__doc__', '__package__', '__loader__', '__spec__', '__file__',
@@ -58,13 +61,6 @@ CPU_TYPE                                = { 1: 'Other', 2: 'Unknown', 3: 'Centra
 DRIVE_TYPE                              = { 0 : "Unknown", 1 : "No Root Directory", 2 : "Removable Disk", 3 : "Local Disk",
                                             4 : "Network Drive", 5 : "Compact Disc", 6 : "RAM Disk", }
 
-DB_ATTRIBUTE_TYPE                       = { 'int_auto_increment'    : 'INTERGER PRIMARY KEY AUTOINCREMENT, ',
-                                            'int_primary_key'       : 'INT PRIMARY KEY, ',
-                                            'text_not_null'         : 'TEXT NOT NULL, ',
-                                            'text'                  : 'TEXT, ',
-                                            'bool'                  : 'BOOL, ',
-                                            'varchar'               : 'VARCHAR, ',
-                                            'varchar_20'            : 'VACHAR(20,)  ', }
 
 CMD_VALUE_TYPE                          = { 'dir'                   : 'directory',
                                             'pth'                   : 'path',
@@ -76,11 +72,7 @@ CMD_VALUE_TYPE                          = { 'dir'                   : 'directory
                                             'shortcut'              : 'shortcut',
                                             'uiKey'                 : 'PLM Layout Key', }
 
-actionTypes                             = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction',
-                                           'DAMGExecutingAction', 'DAMGOpenBrowserAction', 'DAMGWIDGETACTION']
-buttonTypes                             = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
-urlTypes                                = ['DAMGURL', 'Url', 'url']
-layoutTypes                             = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
+
 
 
 BIN_DIR                                 = create_path(ROOT_APP, 'bin')
@@ -240,8 +232,12 @@ QUESTIONS                           = read_file('QUESTION')
 VERSION                             = read_file('VERSION')
 REFERENCES                          = read_file('REFERENCES')
 
-propText                            = Properties()
-propText.load(open(create_path(BIN_DIR, 'text.properties')))
+def configPropText():
+
+    from pyjavaproperties               import Properties
+    propText                            = Properties()
+    propText.load(open(create_path(BIN_DIR, 'text.properties')))
+    return propText
 
 
 appDataSpot = [APPDATA_DAMG, APPDATA_PLM, CFG_DIR, TMP_DIR, CACHE_DIR, PREF_DIR, SETTING_DIR, DB_DIR,

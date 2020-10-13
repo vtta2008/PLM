@@ -13,12 +13,16 @@ Description:
 import validators, re
 
 from collections            import OrderedDict
-from bin.damg import DAMGDICT, DAMGLIST
-from PLM.configs            import actionTypes, buttonTypes, urlTypes
+from bin.damg               import DAMGDICT, DAMGLIST
 
+from PySide2.QtWidgets       import QPushButton, QToolButton, QWidgetAction, QAction, QActionGroup
+from PySide2.QtCore          import QUrl, QUrlQuery
 
-from PySide2.QtWidgets        import QPushButton, QToolButton, QWidgetAction, QAction, QActionGroup
-from PySide2.QtCore           import QUrl, QUrlQuery
+actionTypes                             = ['DAMGACTION', 'DAMGShowLayoutAction', 'DAMGStartFileAction',
+                                           'DAMGExecutingAction', 'DAMGOpenBrowserAction', 'DAMGWIDGETACTION']
+buttonTypes                             = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
+urlTypes                                = ['DAMGURL', 'Url', 'url']
+layoutTypes                             = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
 
 
 def detect_url(s):

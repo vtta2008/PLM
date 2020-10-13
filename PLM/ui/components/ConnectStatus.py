@@ -25,7 +25,8 @@ import requests, sys
 
 # PLM
 from PLM import glbSettings
-from PLM.configs import propText as p
+from PLM.configs import configPropText
+p = configPropText()
 from bin.Widgets import GroupGrid, Label, MessageBox
 from bin.Core import Timer
 from bin.damg import DAMGLIST

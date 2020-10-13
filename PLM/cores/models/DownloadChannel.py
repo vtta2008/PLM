@@ -10,9 +10,10 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-import time
-
-from PLM.configs                            import propText as p
+import time, os
+from PLM import ROOT_APP
+from pyjavaproperties               import Properties
+p                                   = Properties().load(open(os.path.join(ROOT_APP, 'bin', 'text.properties')))
 
 from PLM.cores.base                         import Channel
 from bin.Core import File, FileInfo, DownloadFile, IODevice

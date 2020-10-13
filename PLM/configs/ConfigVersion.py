@@ -11,7 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-import argparse._AppendAction as  _AppendAction
+import argparse
 from PLM.cores.Errors       import VersionNotFoundException
 from PLM                    import VERSION_LOG
 from difflib                import unified_diff
@@ -19,7 +19,7 @@ from bin.loggers            import DamgLogger
 logger = DamgLogger(__name__, filepth=VERSION_LOG)
 
 
-class DiscardDefaultIfSpecifiedAppendAction(_AppendAction):
+class DiscardDefaultIfSpecifiedAppendAction(argparse._AppendAction):
 
     """
     Fixes bug http://bugs.python.org/issue16399 for 'append' action

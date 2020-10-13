@@ -26,7 +26,8 @@ import os, sys, requests
 
 from PLM                                import __version__, __appName__, __organization__, __organizationDomain__, APP_LOG
 
-from PLM.configs                        import propText as p, ConfigPipeline
+from PLM.configs                        import configPropText, ConfigPipeline
+p = configPropText()
 from bin.loggers                        import DamgLogger
 from PLM.cores                          import sqlUtils, StyleSheet, ThreadManager
 from bin.Widgets                        import Application, MessageBox

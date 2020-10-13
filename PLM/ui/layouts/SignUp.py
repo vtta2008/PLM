@@ -20,7 +20,8 @@ from functools import partial
 from PySide2.QtWidgets        import (QFileDialog)
 
 # Plm
-from PLM.configs import propText as p, QUESTIONS
+from PLM.configs import configPropText, QUESTIONS
+p = configPropText()
 from PLM.utils import (check_blank, check_match, getToken, getUnix, getTime, getDate)
 from bin.utils import get_avatar_image
 from bin.models import SignalManager

@@ -21,7 +21,7 @@ Description:
 # Python
 import os, sys, subprocess
 from termcolor                      import cprint
-# from version                        import
+from PLM                            import version
 from bin.settings                   import GlobalSettings
 
 TRADE_MARK                          = '™'
@@ -42,7 +42,7 @@ __appSlogan__                       = ""
 __appDescription__                  = ""
 __homepage__                        = "https://pipeline.damgteam.com"
 
-__version__                         = str(Version())
+__version__                         = version.__version__
 __plmWiki__                         = "https://github.com/vtta2008/PipelineTool/wiki"
 
 __globalServer__                    = "https://server.damgteam.com"
@@ -117,6 +117,8 @@ finally:
     glbSettings.cfgable = True
 
 # Directory
+
+SOUND_DIR                               = create_path(ROOT_APP, 'bin', 'data', 'sound')
 
 LOCALAPPDATA                            = os.getenv('LOCALAPPDATA')
 

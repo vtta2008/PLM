@@ -15,7 +15,7 @@ import time, datetime, os
 import sqlite3 as lite
 
 # PLM
-from PLM.configs                    import DB_ATTRIBUTE_TYPE, LOCAL_DB
+from PLM                            import LOCAL_DB
 from bin.Core import Timer, Date
 from bin.damg import DAMG, DAMGLIST, DAMGDICT
 
@@ -32,6 +32,16 @@ def getDate():
 def getTime():
     datetimeLog = get_datetime()
     return datetimeLog.split('||')[1]
+
+
+DB_ATTRIBUTE_TYPE                       = { 'int_auto_increment'    : 'INTERGER PRIMARY KEY AUTOINCREMENT, ',
+                                            'int_primary_key'       : 'INT PRIMARY KEY, ',
+                                            'text_not_null'         : 'TEXT NOT NULL, ',
+                                            'text'                  : 'TEXT, ',
+                                            'bool'                  : 'BOOL, ',
+                                            'varchar'               : 'VARCHAR, ',
+                                            'varchar_20'            : 'VACHAR(20,)  ', }
+
 
 
 class sqlUtils(DAMG):

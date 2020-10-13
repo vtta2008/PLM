@@ -19,7 +19,7 @@ from bin.Core                       import DateTime
 
 # PLM
 from PLM.cores.base import BaseType
-from PLM.configs import SOUND_DIR, TEAM_DIR
+from PLM import SOUND_DIR, TEAM_DIR
 
 
 # noinspection PyChainedComparisons

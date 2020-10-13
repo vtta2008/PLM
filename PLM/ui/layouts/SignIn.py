@@ -19,7 +19,8 @@ from functools                  import partial
 
 # PLM
 from PLM import __localServerAutho__
-from PLM.configs import propText as p
+from PLM.configs import configPropText
+p = configPropText()
 from PLM.cores import sqlUtils
 from bin.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label, Label, MessageBox, GroupGrid, )
 from bin.Gui import AppIcon

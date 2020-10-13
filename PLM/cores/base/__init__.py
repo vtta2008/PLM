@@ -9,7 +9,6 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from .BaseKeys          import BaseKeys
 from .BaseRequest       import HTTPrequest, CookieRequest, AuthRequest
 from .BaseType          import BaseType
 from .BaseStorage       import BaseStorage

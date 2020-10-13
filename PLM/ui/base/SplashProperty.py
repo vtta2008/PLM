@@ -20,7 +20,8 @@ from PLM.options                        import (FRAMELESS, SPLASHSCREEN, TRANSPA
 
 from bin.Widgets                        import SplashScreen, MessageBox
 from bin.Gui                            import Pixmap, Font, Palette
-from PLM.configs                        import splashImagePth, propText as p
+from PLM.configs                        import splashImagePth, configPropText
+p = configPropText()
 
 
 
