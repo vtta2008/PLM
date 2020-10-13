@@ -12,25 +12,45 @@ Description:
 import logging
 from pathlib import Path
 from shutil import rmtree
-
-from PLM.api.commands import venv, verification, shell
+from PLM.options import COMMIT_TEMPLATE, TAG_TEMPLATE
+from plumbum import local
 from PLM.utils import mktmpdir
-
+from PLM.api.inspect import run_test_command, has_signing_key
+from PLM.api.models import create_venv, install
 log = logging.getLogger(__name__)
+
+
+def commit_version_change(context):
+    # TODO: signed commits?
+    dry_run(COMMIT_TEMPLATE % (context.new_version, context.module_name), context.dry_run)
+    dry_run('git push', context.dry_run)
+
+
+def tag_and_push(context):
+    """Tags your git repo with the new version number"""
+
+    tag_option = '--annotate'
+    if has_signing_key(context):
+        tag_option = '--sign'
+
+    dry_run(TAG_TEMPLATE % (tag_option, context.new_version, context.new_version), context.dry_run, )
+    dry_run('git push --tags', context.dry_run)
 
 
 def build_distributions(context):
     """Builds package distributions"""
+
     rmtree('dist', ignore_errors=True)
 
-    build_package_command = 'python setup.py clean sdist bdist_wheel'
-    result = shell.dry_run(build_package_command, context.dry_run)
-    packages = Path('dist').files() if not context.dry_run else "nothing"
+    build_package_command   = 'python setup.py clean sdist bdist_wheel'
+    result                  = dry_run(build_package_command, context.dry_run)
+    packages                = Path('dist').files() if not context.dry_run else "nothing"
 
     if not result:
         raise Exception('Error building packages: %s' % result)
     else:
         log.info('Built %s' % ', '.join(packages))
+
     return packages
 
 
@@ -40,12 +60,12 @@ def install_package(context):
 
     if not context.dry_run and build_distributions(context):
         with mktmpdir() as tmp_dir:
-            venv.create_venv(tmp_dir=tmp_dir)
+            create_venv(tmp_dir=tmp_dir)
             for distribution in Path('dist').files():
                 try:
-                    venv.install(distribution, tmp_dir)
+                    install(distribution, tmp_dir)
                     log.info('Successfully installed %s', distribution)
-                    if context.test_command and verification.run_test_command(context):
+                    if context.test_command and run_test_command(context):
                         log.info(
                             'Successfully ran test command: %s', context.test_command
                         )
@@ -67,7 +87,7 @@ def upload_package(context):
         if context.pypi:
             upload_args += ' -r %s' % context.pypi
 
-        upload_result = shell.dry_run(upload_args, context.dry_run)
+        upload_result = dry_run(upload_args, context.dry_run)
         if not context.dry_run and not upload_result:
             raise Exception('Error uploading: %s' % upload_result)
         else:
@@ -81,7 +101,7 @@ def upload_package(context):
 def install_from_pypi(context):
     """Attempts to install your package from pypi."""
 
-    tmp_dir = venv.create_venv()
+    tmp_dir = create_venv()
     install_cmd = '%s/bin/pip install %s' % (tmp_dir, context.module_name)
 
     package_index = 'pypi'
@@ -90,7 +110,7 @@ def install_from_pypi(context):
         package_index = context.pypi
 
     try:
-        result = shell.dry_run(install_cmd, context.dry_run)
+        result = dry_run(install_cmd, context.dry_run)
         if not context.dry_run and not result:
             log.error(
                 'Failed to install %s from %s', context.module_name, package_index
@@ -104,6 +124,20 @@ def install_from_pypi(context):
         error_msg = 'Error installing %s from %s' % (context.module_name, package_index)
         log.exception(error_msg)
         raise Exception(error_msg, e)
+
+
+def dry_run(command, dry_run):
+    """Executes a shell command unless the dry run option is set"""
+    if not dry_run:
+        cmd_parts = command.split(' ')
+        # http://plumbum.readthedocs.org/en/latest/local_commands.html#run-and-popen
+        return local[cmd_parts[0]](cmd_parts[1:])
+    else:
+        log.info('Dry run of %s, skipping' % command)
+    return True
+
+
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM
 # © 2017 - 2020 DAMGteam. All rights reserved

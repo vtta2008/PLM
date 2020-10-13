@@ -23,7 +23,7 @@ import types
 from io import StringIO
 
 # PyQt5
-from PySide2.QtCore               import (qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg)
+from PySide2.QtCore               import qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg
 from PySide2.QtGui                import QTextCursor
 
 # PLM
@@ -90,7 +90,7 @@ class BotTab2(Widget):
         self.mode = QtInfoMsg
         self.console = Console()
         self.buildUI()
-        qInstallMessageHandler(self.message_handler)
+        # qInstallMessageHandler(self.message_handler)
         self.setLayout(self.console)
 
     def buildUI(self):

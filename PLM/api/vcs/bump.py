@@ -10,20 +10,20 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-import ast, tempfile, semantic_version, attr, click, re, textwrap
+import semantic_version, attr, click, re, textwrap
 from configparser import RawConfigParser
+import ast, tempfile
 from pathlib import Path
 from plumbum.cmd import diff
+
+
 from bin.loggers import DamgLogger
 from PLM import APP_LOG
 logger = DamgLogger(__file__, filepth=APP_LOG)
 
+
 @attr.s
 class BumpVersion(object):
-
-    DRAFT_OPTIONS = ['--dry-run', '--verbose', '--no-commit', '--no-tag', '--allow-dirty',]
-
-    STAGE_OPTIONS = ['--verbose', '--allow-dirty', '--no-commit', '--no-tag']
 
     current_version = attr.ib()
 
@@ -105,6 +105,7 @@ class BumpVersion(object):
     def current_version(self, module_name):
         return extract_attribute(module_name, '__version__')
 
+
     @classmethod
     def get_new_version(self, module_name, current_version, no_input, major=False, minor=False, patch=False):
         proposed_new_version = self.increment(current_version, major=major, minor=minor, patch=patch)
@@ -147,6 +148,7 @@ class BumpVersion(object):
         logger.info('Bumped version from %s to %s' % (context.current_version, context.new_version))
 
 
+
 # TODO: leverage bumpversion
 def extract_attribute(module_name, attribute_name):
     """Extract metatdata property from a module"""
@@ -181,6 +183,7 @@ def has_attribute(module_name, attribute_name):
     """Is this attribute present?"""
     init_file = '%s/__init__.py' % module_name
     return any([attribute_name in init_line for init_line in open(init_file).readlines()])
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

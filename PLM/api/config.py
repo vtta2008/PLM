@@ -11,19 +11,12 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
+import inflection, attr, os, toml, click, io
 from pathlib import Path
-import io, os
-import attr, click, inflection, toml
-from PLM.api.version import BumpVersion
-from PLM.api.commands import debug, info, note
-from PLM import CFG_DIR, __envKey__
-from PLM.api import prompt
-
-AUTH_TOKEN_ENVVAR = 'GITHUB_AUTH_TOKEN'
-DEFAULT_CONFIG_FILE = os.path.join(CFG_DIR, 'default.cfg')
-PROJECT_CONFIG_FILE = os.path.join(DEFAULT_CONFIG_FILE, '.{0}.toml'.format(__envKey__))
-DEFAULT_RELEASES_DIRECTORY = 'docs/releases'
-
+from PLM import __envKey__
+from PLM.options import DEFAULT_CONFIG_FILE, AUTH_TOKEN_ENVVAR, PROJECT_CONFIG_FILE, DEFAULT_RELEASES_DIRECTORY
+from .vcs import choose_labels, BumpVersion
+from .inspect import info, note, debug
 
 
 
@@ -34,8 +27,7 @@ def configure_labels(github_labels):
         labels_keyed_by_name[label['name']] = label
 
     # TODO: streamlined support for github defaults: enhancement, bug
-    changelog_worthy_labels = prompt.choose_labels(
-        [properties['name'] for _, properties in labels_keyed_by_name.items()])
+    changelog_worthy_labels = choose_labels([properties['name'] for _, properties in labels_keyed_by_name.items()])
 
     # TODO: apply description transform in labels_prompt function
     described_labels = {}
@@ -149,6 +141,7 @@ class Project(object):
 DEFAULTS = {'changelog': 'CHANGELOG.md', 'readme': 'README.md', 'github_auth_token': None, }
 
 
+
 class Config:
     """Deprecated"""
 
@@ -171,6 +164,7 @@ class Config:
         self.current_version = current_version
 
 
+
 def project_config():
     """Deprecated"""
 
@@ -183,6 +177,7 @@ def project_config():
         return DEFAULTS
 
     return toml.load(io.open(config_path)) or {}
+
 
 
 def store_settings(settings):

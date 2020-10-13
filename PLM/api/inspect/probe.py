@@ -15,35 +15,15 @@ from os.path import exists
 from plumbum import local
 from plumbum.cmd import git
 from plumbum.commands import CommandNotFound
+from PLM.cores.Errors import ProbeException
+from PLM.options import TOOLS, README_EXTENSIONS, TEST_RUNNERS
 
-from PLM.api.version import has_attribute
 
-
-class ProbeException(Exception):
-    pass
-
+from PLM.api.vcs import has_attribute
 
 log = logging.getLogger(__name__)
 
 
-TOOLS = ['git', 'diff', 'python']
-
-TEST_RUNNERS = ['pytest', 'nose', 'tox']
-
-README_EXTENSIONS = [
-    '.md',
-    '.rst',
-    '.txt',
-    '' '.wiki',
-    '.rdoc',
-    '.org',
-    '.pod',
-    '.creole',
-    '.textile',
-]
-
-class ProbeException(Exception):
-    pass
 
 def report_and_raise(probe_name, probe_result, failure_msg):
     """Logs the probe result and raises on failure"""
@@ -127,6 +107,7 @@ def probe_project(python_module):
         and has_readme()
         and has_changelog()
     )
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

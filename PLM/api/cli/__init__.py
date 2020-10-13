@@ -9,12 +9,12 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-
+""" Import """
 import os, contextlib, click, requests_cache
-
-from PLM.api.commands import stage as stage_command, status as status_command, publish as publish_command
-
-from PLM.api import __version__
+from PLM.api.models import publish as publish_command
+from PLM.api.inspect import stage as stage_command, status as status_command
+from .packaging import build_distributions
+from PLM import __version__
 
 
 VERSION = 'changes {}'.format(__version__)
@@ -46,6 +46,8 @@ def print_version(context, param, value):
 
     click.echo(VERSION)
     context.exit()
+
+
 
 
 @click.option('--dry-run', help='Prints (instead of executing) the operations to be performed.', is_flag=True, default=False,)
@@ -102,6 +104,8 @@ def publish(repo_directory):
 
 
 main.add_command(publish)
+
+
 
 
 # -------------------------------------------------------------------------------------------------------------

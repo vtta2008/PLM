@@ -47,6 +47,17 @@ def highlight(message):
 def error(message):
     echo(message, 'error')
 
+
+from .probe import (report_and_raise, has_setup, has_tools, has_binary, has_readme, has_metadata, has_signing_key,
+                    probe_project, has_changelog, has_test_runner, has_tools, has_binary)
+
+from .stage import discard, status, stage
+
+
+from .verification import run_tests, run_test_command, get_test_runner, get_test_runner
+
+
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM
 # © 2017 - 2020 DAMGteam. All rights reserved

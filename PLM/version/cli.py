@@ -18,7 +18,7 @@ from configparser import ConfigParser, RawConfigParser, NoOptionError
 from .VCS import Git, Mercurial
 from ._version import VersionConfig, NumericVersionPartConfiguration, ConfiguredVersionPartConfiguration
 
-from PLM.version import __version__, __title__
+from PLM import __version__, __title__
 from PLM.cores.Errors import IncompleteVersionRepresentationException, MissingValueForSerializationException, WorkingDirectoryIsDirtyException
 from PLM.configs import ConfiguredFile, DiscardDefaultIfSpecifiedAppendAction
 from PLM.utils import keyvaluestring, prefixed_environ

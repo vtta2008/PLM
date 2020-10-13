@@ -19,12 +19,10 @@ import sys
 from PySide2.QtWidgets      import QAction, QFileDialog, QInputDialog, QLineEdit
 
 # PLM
-from PLM                    import __appName__, __organization__
+from PLM                    import __appName__, __organization__, APP_SETTING
 from bin.settings           import AppSettings, RegSettings
-from PLM                    import APP_SETTING
-from bin.Core               import Settings
 from bin.Widgets            import Widget, GridLayout, MenuBar
-from PLM.options            import NATIVE, SYS_SCOPE
+from PLM.options            import NATIVE, SYS_SCOPE, INI
 from PLM.ui.components      import SettingOutput, SettingInput
 
 # -------------------------------------------------------------------------------------------------------------
@@ -45,7 +43,7 @@ class SettingUI(Widget):
 
 
         self.parent         = parent
-        self.settings       = AppSettings(self)
+        self.settings       = AppSettings(self, APP_SETTING, INI)
         regSetting          = RegSettings(NATIVE, SYS_SCOPE, __organization__, self.parent)
         self.regValue       = SettingOutput(self.settings)
         self.regInfo        = SettingInput(regSetting)
@@ -63,31 +61,27 @@ class SettingUI(Widget):
         self.autoRefreshAct.setChecked(True)
         # self.fallbacksAct.setChecked(True)
 
-
         self.setSettingsObject(self.settings)
 
     def openSettings(self):
+
         if self.regInfo is None:
             self.regInfo = SettingInput(parent=self)
 
-        if self.regInfo.exe_():
-            settings = RegSettings(self.regInfo.format(), self.regInfo.scope(),
-                                   self.regInfo.organization(), self.regInfo.application())
+        settings = RegSettings(self.regInfo.format(), self.regInfo.scope(), self.regInfo.organization(), self.regInfo.application())
 
-            self.setSettingsObject(settings)
-            self.fallbacksAct.setEnabled(True)
+        self.setSettingsObject(settings)
+        self.fallbacksAct.setEnabled(True)
 
-
-        self.regInfo = SettingInput(self.settings)
 
     def openIniFile(self):
         if not os.path.exists(self.settings.settingFile):
             fileName, _ = QFileDialog.getOpenFileName(self, "Open INI File", '', "INI Files (*.ini *.conf)")
 
             if fileName:
-                self.settings._settingFile = fileName
+                self.settings.setPath(INI, SYS_SCOPE, fileName)
         else:
-            self.settings._settingFile = APP_SETTING
+            self.settings.setPath(INI, SYS_SCOPE, APP_SETTING)
             self.setSettingsObject(self.settings)
             self.fallbacksAct.setEnabled(False)
 
@@ -95,7 +89,7 @@ class SettingUI(Widget):
         fileName, _ = QFileDialog.getOpenFileName(self, "Open Property List", '', "Property List Files (*.plist)")
 
         if fileName:
-            self.settings.set_format(NATIVE)
+            self.settings.setPath(NATIVE, SYS_SCOPE, fileName)
             self.setSettingsObject(self.settings)
             self.fallbacksAct.setEnabled(False)
 
@@ -104,8 +98,8 @@ class SettingUI(Widget):
                                         'HKEY_CURRENT_USER\\Software\\{0}\\{1}'.format(__organization__, __appName__))
 
         if ok and path != '':
-            settings = Settings(path, NATIVE)
-            self.setSettingsObject(settings)
+            self.settings.setPath(INI, SYS_SCOPE, path)
+            self.setSettingsObject(self.settings)
             self.fallbacksAct.setEnabled(False)
 
     def createActions(self):
@@ -129,6 +123,7 @@ class SettingUI(Widget):
         self.autoRefreshAct.triggered.connect(self.refreshAct.setDisabled)
 
     def createMenus(self):
+
         self.createActions()
         self.fileMenu               = self.menubar.addMenu("&File")
 

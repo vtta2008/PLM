@@ -123,34 +123,36 @@ class ConnectStatus(GroupGrid):
         self._mode                      = mode
 
     def getServer(self):
+        """ Now only have local server """
+
+        # try:
+        #     r                           = requests.get(__globalServer__)
+        # except Exception:
         try:
-            r                           = requests.get(__globalServer__)
+            r                       = requests.get(__localServer__)
         except Exception:
-            try:
-                r                       = requests.get(__localServer__)
-            except Exception:
-                if not glbSettings.allowLocalMode:
-                    MessageBox(None, 'Connection Failed', 'critical', p['SERVER_CONNECT_FAIL'], 'close')
-                    sys.exit()
-                else:
-                    self.setMode('Off')
-                    self._connectServer = False
-            else:
-                if r.status_code == 200:
-                    self._server        = __localServer__
-                    self.setMode('Local')
-                    self._connectServer = True
-                else:
-                    self.setMode('Off')
-                    self._connectServer = False
-        else:
-            if r.status_code == 200:
-                self._server            = __globalServer__
-                self.setMode('GlobalSettings')
-                self._connectServer     = True
+            if not glbSettings.allowLocalMode:
+                MessageBox(None, 'Connection Failed', 'critical', p['SERVER_CONNECT_FAIL'], 'close')
+                sys.exit()
             else:
                 self.setMode('Off')
-                self._connectServer     = True
+                self._connectServer = False
+        else:
+            if r.status_code == 200:
+                self._server        = __localServer__
+                self.setMode('Local')
+                self._connectServer = True
+            else:
+                self.setMode('Off')
+                self._connectServer = False
+        # else:
+        #     if r.status_code == 200:
+        #         self._server            = __globalServer__
+        #         self.setMode('GlobalSettings')
+        #         self._connectServer     = True
+        #     else:
+        #         self.setMode('Off')
+        #         self._connectServer     = True
 
         return self._server
 

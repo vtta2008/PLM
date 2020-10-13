@@ -21,20 +21,23 @@ from PySide2.QtWidgets            import (QCheckBox, QDateTimeEdit, QGridLayout,
                                           QPushButton, QSpinBox, QStackedWidget, QVBoxLayout)
 
 # PLM
-from PLM                          import __globalServer__, __localServer__
-from bin.Widgets                    import (GroupBox, Label, HBoxLayout, ComboBox, VBoxLayout, LineEdit, Button,
+from PLM                           import __localServer__
+from bin.Widgets                   import (GroupBox, Label, HBoxLayout, ComboBox, VBoxLayout, LineEdit, Button,
                                             Widget, CheckBox, )
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """
 
+
 class ServerConfig(Widget):
+
+    key                         = 'ServerConfig'
 
     def __init__(self, parent=None):
         super(ServerConfig, self).__init__(parent)
 
         serverLabel             = Label({'txt':"Server:"})
-        serverCombo             = ComboBox({'items': ['Local: {}'.format(__localServer__), 'GlobalSettings: {}'.format(__globalServer__)]})
+        serverCombo             = ComboBox({'items': ['Local: {}'.format(__localServer__), 'GlobalSettings: {}']})
         serverLayout            = HBoxLayout({'addWidget': [serverLabel, serverCombo]})
         serverConfigLayout      = VBoxLayout({'addLayout': [serverLayout]})
         serverConfigGroup       = GroupBox("Server configuration", [serverConfigLayout], 'setLayout')
@@ -61,6 +64,8 @@ class ServerConfig(Widget):
 """ Update """
 
 class UpdatePage(Widget):
+
+    key                     = 'UpdatePage'
 
     def __init__(self, parent=None):
         super(UpdatePage, self).__init__(parent)
