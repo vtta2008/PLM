@@ -82,6 +82,36 @@ class EnsureValueError(ValueError):
             err += ": {}".format(self.reason)
         super(EnsureValueError, self).__init__(err)
 
+
+class BumpVersionException(Exception):
+    """Custom base class for all BumpVersion exception types."""
+
+
+class IncompleteVersionRepresentationException(BumpVersionException):
+    def __init__(self, message):
+        self.message = message
+
+
+class MissingValueForSerializationException(BumpVersionException):
+    def __init__(self, message):
+        self.message = message
+
+
+class WorkingDirectoryIsDirtyException(BumpVersionException):
+    def __init__(self, message):
+        self.message = message
+
+
+class MercurialDoesNotSupportSignedTagsException(BumpVersionException):
+    def __init__(self, message):
+        self.message = message
+
+
+class VersionNotFoundException(BumpVersionException):
+    """A version number was not found in a source file."""
+
+
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 4/12/2019 - 1:22 AM
 # © 2017 - 2018 DAMGteam. All rights reserved

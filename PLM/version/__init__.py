@@ -9,12 +9,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-""" Import """
 
-
-from .profile           import ServerProfile
-from .server            import Server
-from .setting           import Setting
+__version__ = "13.0.0"
+__license__ = "Apache"
+__title__ = "PLM"
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

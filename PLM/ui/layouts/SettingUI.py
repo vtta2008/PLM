@@ -21,7 +21,7 @@ from PySide2.QtWidgets      import QAction, QFileDialog, QInputDialog, QLineEdit
 # PLM
 from PLM                    import __appName__, __organization__
 from bin.settings           import AppSettings, RegSettings
-from PLM.configs            import APP_SETTING
+from PLM                    import APP_SETTING
 from bin.Core               import Settings
 from bin.Widgets            import Widget, GridLayout, MenuBar
 from PLM.options            import NATIVE, SYS_SCOPE

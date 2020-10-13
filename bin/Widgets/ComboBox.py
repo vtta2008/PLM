@@ -13,6 +13,9 @@ Description:
 from PySide2.QtWidgets                      import QComboBox
 from bin.models                             import SignalManager
 from bin.settings                           import AppSettings
+from bin.loggers    import DamgLogger
+from PLM import APP_LOG
+
 
 
 class ComboBox(QComboBox):
@@ -27,6 +30,7 @@ class ComboBox(QComboBox):
         self.parent                         = parent
         self.settings                       = AppSettings(self)
         self.signals                        = SignalManager(self)
+        self.logger = DamgLogger(self, filepth=APP_LOG)
         self.preset                         = preset
 
         if self.preset and not {}:
@@ -68,7 +72,7 @@ class ComboBox(QComboBox):
             elif k =='itemData':
                 self.itemData(v)
             else:
-                print("PresetKeyError: There is no key in preset: {0}".format(k))
+                self.logger.error("PresetKeyError: There is no key in preset: {0}".format(k))
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 27/10/2019 - 6:55 PM

@@ -198,7 +198,7 @@ def getTime():
     time = '%s:%s' % (str(t.tm_hour), str(t.tm_min))
     return time
 
-def createLog(apps, event='log in', data=MAINVAR):
+def createLog(apps, event='logger in', data=MAINVAR):
     SCRPTH = getScrPth(MAINVAR)
 
     d = getDate()

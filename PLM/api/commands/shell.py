@@ -6,27 +6,25 @@ Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
-    Test the colorlog.logging module.
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from bin.loggers import colorlog
 import logging
 
+from plumbum import local
+
+log = logging.getLogger(__name__)
 
 
-def test_logging_module(test_logger):
-    test_logger(logging)
-
-
-def test_colorlog_module(test_logger):
-    test_logger(colorlog)
-
-
-def test_colorlog_basicConfig(test_logger):
-    colorlog.basicConfig()
-    test_logger(colorlog.getLogger())
-
+def dry_run(command, dry_run):
+    """Executes a shell command unless the dry run option is set"""
+    if not dry_run:
+        cmd_parts = command.split(' ')
+        # http://plumbum.readthedocs.org/en/latest/local_commands.html#run-and-popen
+        return local[cmd_parts[0]](cmd_parts[1:])
+    else:
+        log.info('Dry run of %s, skipping' % command)
+    return True
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

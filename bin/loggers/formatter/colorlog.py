@@ -74,7 +74,7 @@ class ColoredFormatter(logging.Formatter):
         :Parameters:
         - fmt (str): The fmt string to use
         - datefmt (str): A fmt string for the date
-        - logColors (dict): A mapping of log level names to color names
+        - logColors (dict): A mapping of logger level names to color names
         - reset (bool): Implicitly append a color reset to all records unless False
         - style ('%' or '{' or '$'): The fmt style to use.
         - secondLogColors (dict): Map secondary ``log_color`` attributes.
@@ -109,7 +109,7 @@ class ColoredFormatter(logging.Formatter):
         record                      = ColoredRecord(record)
         record.log_color            = self.color(self.logColors, record.levelname)
 
-        # Set secondary log colors
+        # Set secondary logger colors
         if self.secondLogColors:
             for name, log_colors in self.secondLogColors.items():
                 color = self.color(log_colors, record.levelname)
@@ -146,9 +146,9 @@ class DamgFormatter(ColoredFormatter):
         ``colorlog.ColoredFormatter`` constructor.
 
         :Parameters:
-        - fmt (dict): A mapping of log levels (represented as strings, e.g. 'WARNING') to different formatters.
+        - fmt (dict): A mapping of logger levels (represented as strings, e.g. 'WARNING') to different formatters.
         - datefmt (str): A fmt string for the date
-        - logColors (dict): A mapping of log level names to color names
+        - logColors (dict): A mapping of logger level names to color names
         - reset (bool): Implicitly append a color reset to all records unless False
         - style ('%' or '{' or '$'): The fmt style to use.
         - secondLogColors (dict): Map secondary ``log_color`` attributes.
@@ -180,7 +180,7 @@ class DamgFormatter(ColoredFormatter):
 
     def format(self, record):
 
-        """Customize the message format based on the log level."""
+        """Customize the message format based on the logger level."""
         self._fmt                   = self.formats.get(record.levelname)
         self.datefmt                = self.dateformats.get(record.levelname)
 

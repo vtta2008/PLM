@@ -16,14 +16,14 @@ import enum, json
 
 
 fmt = dict (
-                    NOTSET   = '%(name)s:[%(levelname)s]:: >>> %(msg)s <<< %(module)s:%(funcName)s:line %(lineno)s::%(asctime)s',
-                    DEBUG    = '%(name)s:[%(levelname)s]:: """ %(msg)s """ %(module)s:%(funcName)s:line %(lineno)s::%(asctime)s',
-                    INFO     = '%(name)s:[%(levelname)s]:: """ %(msg)s """ %(module)s:%(funcName)s:line %(lineno)s::%(asctime)s',
-                    TRACE    = '%(name)s:[%(levelname)s]:: """ %(msg)s """ %(module)s:%(funcName)s:line %(lineno)s::%(asctime)s',
-                    WARNING  = '%(name)s:[%(levelname)s]:: """ %(msg)s """ %(module)s:%(funcName)s:line %(lineno)s::%(asctime)s',
-                    ERROR    = '%(name)s:[%(levelname)s]::%(asctime)s::\n -> %(msg)s \n %(module)s:%(funcName)s:line %(lineno)s',
-                    CRITICAL = '%(name)s:[%(levelname)s]:: """ %(msg)s """ %(module)s:%(funcName)s:line %(lineno)s::%(asctime)s',
-                  )
+    NOTSET   = '%(name)s:[%(levelname)s]:: >>> %(msg)s <<< %(module)s:%(funcName)s:line %(lineno)s::%(asctime)s',
+    DEBUG    = '%(name)s:[%(levelname)s]:: """ %(msg)s """ %(module)s:%(funcName)s:line %(lineno)s::%(asctime)s',
+    INFO     = '%(name)s:[%(levelname)s]:: """ %(msg)s """ %(module)s:%(funcName)s:line %(lineno)s::%(asctime)s',
+    TRACE    = '%(name)s:[%(levelname)s]:: """ %(msg)s """ %(module)s:%(funcName)s:line %(lineno)s::%(asctime)s',
+    WARNING  = '%(name)s:[%(levelname)s]:: """ %(msg)s """ %(module)s:%(funcName)s:line %(lineno)s::%(asctime)s',
+    ERROR    = '%(name)s:[%(levelname)s]::%(asctime)s::\n -> %(msg)s \n %(module)s:%(funcName)s:line %(lineno)s',
+    CRITICAL = '%(name)s:[%(levelname)s]:: """ %(msg)s """ %(module)s:%(funcName)s:line %(lineno)s::%(asctime)s',
+    )
 
 datefmt     = dict (
                     NOTSET   = "%d/%m/%Y %H:%M:%S",
@@ -72,9 +72,6 @@ logColorOpts  = {'fmt': fmt,
                 'logColors': logColors,
                 'reset': [True, False],
                 'secondLogColors': secondLogColors}
-
-
-
 
 
 class Encoder(json.JSONEncoder):
@@ -158,6 +155,7 @@ mdHM                                = "'%m-%d %H:%M'"
 
 
 plainText = "%(levelname)s: %(asctime)s %(name)s, line %(lineno)s: %(message)s"
+
 fmt1                                = { 'NOTSET': '%(log_color)s%(msg)s (%(module)s:%(lineno)d)',
                                         'DEBUG': '%(log_color)s %(levelname)s::%(reset)s %(log_color)s[%(name)s]: \n line %(lineno)s >>> %(reset)s %(message)s \n :: %(asctime)s ',
                                         'INFO': '%(levelname)s: %(asctime)s \n %(name)s, line %(lineno)s: \n %(log_color)s%(msg)s \n (%(module)s:%(lineno)d)' ,

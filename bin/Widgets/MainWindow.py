@@ -10,9 +10,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 from PySide2.QtWidgets                      import QMainWindow
-from bin.loggers.models.tests import test_logger
-from bin.models.SignalManager import SignalManager
-from bin.settings import AppSettings
+from PLM                                    import APP_LOG
+from bin.loggers                            import DamgLogger
+from bin.models.SignalManager               import SignalManager
+from bin.settings                           import AppSettings
 
 # -------------------------------------------------------------------------------------------------------------
 """ Main window layout preset """
@@ -32,7 +33,7 @@ class MainWindow(QMainWindow):
         self.parent             = parent
         self.settings           = AppSettings(self)
         self.signals            = SignalManager(self)
-        self.logger             = test_logger()
+        self.logger             = DamgLogger(self, filepth=APP_LOG)
 
         self.setWindowTitle(self.key)
 

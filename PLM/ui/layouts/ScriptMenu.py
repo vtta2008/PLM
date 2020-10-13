@@ -15,7 +15,7 @@ import os
 from PySide2.QtCore               import Signal
 from PySide2.QtWidgets            import QApplication
 
-from bin.loggers.models.tests import test_logger
+from bin.loggers import DamgLogger
 from bin.Widgets import Menu, WidgetAction, Action, LineEdit
 from bin.Gui import Icon
 
@@ -146,7 +146,7 @@ class ScriptsMenu(Menu):
     def __init__(self, *args, **kwargs):
         Menu.__init__(self, *args, **kwargs)
 
-        self.logger             = test_logger(__name__)
+        self.logger             = DamgLogger(self)
 
         parent                  = kwargs.get("parent", None)            # Automatically add it to the parent menu
         if parent:

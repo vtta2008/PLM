@@ -16,7 +16,7 @@ from bin.loggers.handler 		import DamgHandler
 from bin.options 				import logColorOpts, LogLevel
 
 
-class DamgLogger(logging.RootLogger):
+class DamgLogger(logging.Logger):
 
 	key 					= 'DamgLogger'
 
@@ -31,16 +31,15 @@ class DamgLogger(logging.RootLogger):
 	def __init__(self, name=None, level='DEBUG', filepth=None):
 
 		if not name:
-			self.name 		= __name__
+			self.name 		= __file__
 		else:
 			self.name 		= name
 
 		super(DamgLogger, self).__init__(level)
 
-		# ::TODO:: Adding TRACE level is not working
 		vbTrace 			= self.lvlValue('TRACE')
 		TRACE 				= self.config_logLevel(vbTrace)
-		self.addLoggingLevel(levelNum=TRACE, levelName='TRACE')
+		self.addLogLvl(levelNum=TRACE, levelName='TRACE')
 
 		self.parent 		= logging.getLogger(self.name)
 		self.level 			= level
@@ -63,7 +62,6 @@ class DamgLogger(logging.RootLogger):
 		import pdb, traceback
 
 		if hasattr(sys, 'ps1') or not sys.stderr.isatty():
-			self.critical('Type: {0}, \nValue: {1}'.format(exc_type, exc_value))
 			return sys.__excepthook__(exc_type, exc_value, exc_tb)
 
 		self.error('Uncaught exception: \nType: {0}, \nValue: {1}'.format(exc_type, exc_value),)
@@ -75,7 +73,7 @@ class DamgLogger(logging.RootLogger):
 
 		return exception
 
-	def addLoggingLevel(self, levelName, levelNum, methodName=None):
+	def addLogLvl(self, levelName, levelNum, methodName=None):
 
 		if not methodName or methodName is None:
 			methodName = levelName.lower()
@@ -105,10 +103,11 @@ class DamgLogger(logging.RootLogger):
 			setattr(logging, levelName, levelNum)
 			setattr(logging.getLoggerClass(), methodName, logForLevel)
 			setattr(logging, methodName, logToRoot)
+			self.info(methodName, levelName, levelNum)
 
 	def lvlName(self, lvl):
 
-		name_levels = {
+		return  {
 			logging.FATAL: 'FATAL',
 			logging.CRITICAL: 'CRITICAL',
 			logging.ERROR: 'ERROR',
@@ -116,46 +115,32 @@ class DamgLogger(logging.RootLogger):
 			logging.INFO: 'INFO',
 			logging.DEBUG: 'DEBUG',
 			logging.NOTSET: 'NOTSET',
-		}
-
-		return name_levels[lvl]
+		}[lvl]
 
 	def lvlValue(self, lvl):
 
 		if lvl in ['FATAL', 'Fatal']:
-			verbose_level = logging.FATAL
+			return logging.FATAL
 		elif lvl in ['DEBUG', 'Debug']:
-			verbose_level = logging.DEBUG
+			return logging.DEBUG
 		elif lvl in ['INFO', 'Info']:
-			verbose_level = logging.INFO
+			return logging.INFO
+		elif lvl in ['Trace', 'TRACE']:
+			return LogLevel.Trace
 		elif lvl in ['WARN', 'WARNING', 'Warn', 'Warning']:
-			verbose_level = logging.WARNING
+			return logging.WARNING
 		elif lvl in ['ERROR', 'Error']:
-			verbose_level = logging.ERROR
+			return logging.ERROR
 		elif lvl in ['CRITICAL', 'Critical']:
-			verbose_level = logging.CRITICAL
+			return logging.CRITICAL
 		else:
-			verbose_level = logging.NOTSET
-
-		return verbose_level
+			return logging.NOTSET
 
 	def config_logLevel(self, level):
-		verboseLvl = self.lvlValue(level)
-		loggingLvl = LogLevel.getbyverbosity(verboseLvl)
+		loggingLvl = LogLevel.getbyverbosity(level)
 		return self.logLevel[loggingLvl]
 
 
-
-if __name__ == '__main__':
-
-	lvls = ['DEBUG', 'INFO', 'TRACE', 'WARNING', 'ERROR', 'CRITICAL']
-
-	testLogger = DamgLogger(__file__, 'DEBUG', 'testlogger.log')
-
-	testLogger.Trace('test trace')
-	#
-	# for level in lvls:
-	# 	testLogger.log(testLogger.lvlValue(level), 'This is a test log of {0}'.format(level))
 
 
 # -------------------------------------------------------------------------------------------------------------

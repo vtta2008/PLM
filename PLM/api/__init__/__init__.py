@@ -9,16 +9,15 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
+from .models import Version
 
 
-def test_example():
-    """Tests the usage example from the README"""
-    from bin.loggers import colorlog
+# This is API version
+__version__ = Version('Incremental', 0, 0, 1)
+__title__ = 'API'
 
-    handler = colorlog.StreamHandler()
-    handler.setFormatter(colorlog.ColoredFormatter('%(log_color)s%(levelname)s:%(name)s:%(message)s'))
-    logger = colorlog.getLogger('example')
-    logger.addHandler(handler)
+
+__all__ = ['__version__']
 
 
 # -------------------------------------------------------------------------------------------------------------

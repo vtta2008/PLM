@@ -116,7 +116,6 @@ def get_gpu_total():
 
 def get_gpu_useage():
     gpus = getGPUs()
-    print(gpus)
     used = 0.0
     for gpu in gpus:
         used += float(gpu.memoryUsed/gpu.memoryTotal*100)

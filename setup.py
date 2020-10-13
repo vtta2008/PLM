@@ -19,8 +19,8 @@ from setuptools                 import find_packages
 from cx_Freeze                  import setup, Executable
 
 # PLM
-from PLM import LICENCE, COPYRIGHT, __pkgsReq__
-from PLM import Version
+from PLM.configs import LICENCE, COPYRIGHT
+
 
 os.environ['TCL_LIBRARY']       = "C:/ProgramData/Anaconda3/tcl/tcl8.6"
 os.environ['TK_LIBRARY']        = "C:/ProgramData/Anaconda3/tcl/tk8.6"

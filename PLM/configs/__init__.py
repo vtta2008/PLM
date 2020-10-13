@@ -12,15 +12,21 @@ Description:
 """ Import """
 
 # Python
-import os, winshell
+
+from .ConfigVersion import ConfiguredFile, DiscardDefaultIfSpecifiedAppendAction
+
+import os, winshell, inflection
 from termcolor                          import cprint
 from pyjavaproperties                   import Properties
+from click import prompt
 
 # PLM
-from bin                                import BIN_ROOT
 from .baseConfigs                       import Cmds, Cfg, TrackKeys
 from .baseScan                          import BaseScan
-from PLM                                import create_path, parent_dir, ROOT, ROOT_APP, __organization__, __appName__
+from PLM                                import (create_path, ROOT, ROOT_APP, APPDATA_DAMG, APPDATA_PLM,
+                                                CFG_DIR, TMP_DIR, CACHE_DIR, PREF_DIR, SETTING_DIR, DB_DIR, LOG_DIR,
+                                                TASK_DIR, TEAM_DIR, PRJ_DIR, ORG_DIR, USER_LOCAL_DATA, LIBRARY_DIR,
+                                                LOCAL_DB)
 
 
 iconMissing                             = []
@@ -76,40 +82,8 @@ buttonTypes                             = ['DAMGBUTTON', 'DAMGTOOLBUTTON']
 urlTypes                                = ['DAMGURL', 'Url', 'url']
 layoutTypes                             = ['DAMGUI', 'DAMGWIDGET', ] + actionTypes
 
-LOCALAPPDATA                            = os.getenv('LOCALAPPDATA')
 
-APPDATA_DAMG                            = create_path(LOCALAPPDATA, __organization__)
-APPDATA_PLM                             = create_path(APPDATA_DAMG, __appName__)
-CFG_DIR                                 = create_path(APPDATA_PLM, '.configs')
-TMP_DIR                                 = create_path(APPDATA_PLM, '.tmp')
-CACHE_DIR                               = create_path(APPDATA_PLM, '.cache')
-PREF_DIR                                = create_path(APPDATA_PLM, 'preferences')
-SETTING_DIR                             = create_path(CFG_DIR, 'settings')
-DB_DIR                                  = APPDATA_PLM
-LOG_DIR                                 = CFG_DIR
-TASK_DIR                                = create_path(CFG_DIR, 'task')
-TEAM_DIR                                = create_path(CFG_DIR, 'team')
-PRJ_DIR                                 = create_path(CFG_DIR, 'project')
-ORG_DIR                                 = create_path(CFG_DIR, 'organisation')
-USER_LOCAL_DATA                         = create_path(CFG_DIR, 'userLocal')
-
-APPDATA_DAMG                            = create_path(LOCALAPPDATA, __organization__)
-APPDATA_PLM                             = create_path(APPDATA_DAMG, __appName__)
-
-USER_DIR                                = parent_dir(os.getenv('HOME'))
-LIBRARY_DIR                             = create_path(APPDATA_DAMG, 'libraries')
-
-APP_SETTING                             = create_path(SETTING_DIR, 'PLM.ini')
-USER_SETTING                            = create_path(SETTING_DIR, 'user.ini')
-FORMAT_SETTING                          = create_path(SETTING_DIR, 'fmt.ini')
-UNIX_SETTING                            = create_path(SETTING_DIR, 'unix.ini')
-
-APP_LOG                                 = create_path(LOG_DIR, 'PLM.log')
-USER_LOG                                = create_path(LOG_DIR, 'user.log')
-SERVER_LOG                              = create_path(LOG_DIR, 'server.log')
-UNIX_LOG                                = create_path(LOG_DIR, 'unix.log')
-
-BIN_DIR                                 = BIN_ROOT
+BIN_DIR                                 = create_path(ROOT_APP, 'bin')
 BIN_BASE_DIR                            = create_path(BIN_DIR, 'base')
 BIN_CORE_DIR                            = create_path(BIN_DIR, 'Core')
 BIN_DAMG_DIR                            = create_path(BIN_DIR, 'damg')
@@ -218,7 +192,7 @@ splashImagePth                          = create_path(IMAGE_DIR, 'splash.png')
 serverCfg                               = create_path(CFG_DIR, 'server.cfg')
 cfgFilePths                             = create_path(CFG_DIR, 'cfgFile.cfg')
 
-LOCAL_DB                                = create_path(DB_DIR, 'local.db')
+
 
 ks                                      = ['icon12', 'icon16', 'icon24', 'icon32', 'icon48', 'icon64', 'node', 'tag',
                                            'web16', 'web24', 'web32', 'web48', 'web64', 'web128']
@@ -269,7 +243,6 @@ REFERENCES                          = read_file('REFERENCES')
 propText                            = Properties()
 propText.load(open(create_path(BIN_DIR, 'text.properties')))
 
-a = [APP_SETTING, USER_SETTING, FORMAT_SETTING, UNIX_SETTING, LOCAL_LOG]
 
 appDataSpot = [APPDATA_DAMG, APPDATA_PLM, CFG_DIR, TMP_DIR, CACHE_DIR, PREF_DIR, SETTING_DIR, DB_DIR,
                LOG_DIR, TASK_DIR, TEAM_DIR, PRJ_DIR, ORG_DIR, USER_LOCAL_DATA, LIBRARY_DIR]
@@ -317,7 +290,6 @@ class PthScanner(BaseScan):
 
     def timelog(self, info, **kwargs):
         pass
-
 
 class CfgUrls(Cfg):
 

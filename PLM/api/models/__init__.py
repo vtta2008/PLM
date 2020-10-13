@@ -9,16 +9,10 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from bin.loggers.colorlog import *
 
-def test_exports():
-    assert {
-        'ColoredFormatter', 'default_log_colors', 'escape_codes',
-        'basicConfig', 'root', 'getLogger', 'debug', 'info', 'warning',
-        'error', 'exception', 'critical', 'log', 'exception'
-    } < set(globals())
+from .repository import generate_changelog
 
-test_exports()
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

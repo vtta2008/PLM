@@ -47,10 +47,10 @@ class SettingInput(Widget):
         for cb in [self.formatComboBox, self.scopeComboBox, self.organizationComboBox, self.applicationComboBox]:
             cb.currentIndexChanged.connect(self.updateLocationsTable)
 
-        formatLabel         = Label({'txt': "&Format: ", 'setBuddy': self.formatComboBox})
-        scopeLabel          = Label({'txt': "&Scope:", 'setBuddy': self.scopeComboBox})
-        organizationLabel   = Label({'txt': "&Organization:", 'setBuddy': self.organizationComboBox})
-        applicationLabel    = Label({'txt': "&Application:", 'setBuddy': self.applicationComboBox})
+        formatLabel         = Label({'txt': "&Format: ", 'buddy': self.formatComboBox})
+        scopeLabel          = Label({'txt': "&Scope:", 'buddy': self.scopeComboBox})
+        organizationLabel   = Label({'txt': "&Organization:", 'buddy': self.organizationComboBox})
+        applicationLabel    = Label({'txt': "&Application:", 'buddy': self.applicationComboBox})
 
         grpBox              = GroupGrid("Setting Locations")
         grid                = grpBox.layout

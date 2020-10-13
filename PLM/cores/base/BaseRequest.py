@@ -15,7 +15,7 @@ import time
 from PLM.utils import is_url, format_bytes, bytes2str
 from bin.Network import NetworkRequest, NetworkReply, NetworkCookie, NetworkCookieJar
 from bin.Core import Url
-from bin.loggers.models.tests import test_logger
+from bin.loggers import DamgLogger
 
 
 class HTTPrequest(NetworkRequest):
@@ -25,7 +25,7 @@ class HTTPrequest(NetworkRequest):
     def __init__(self, manager=None, url=None, header=False, opt=None):
         super(HTTPrequest, self).__init__(url)
 
-        self.logger                         = test_logger(self)
+        self.logger                         = DamgLogger(self)
         self.networkManager                 = manager
         self.header                         = header
         self.urlInfo                        = self.networkManager.app.urlInfo

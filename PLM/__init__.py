@@ -21,7 +21,7 @@ Description:
 # Python
 import os, sys, subprocess
 from termcolor                      import cprint
-from bin.version                    import Version
+# from version                        import
 from bin.settings                   import GlobalSettings
 
 TRADE_MARK                          = '™'
@@ -42,7 +42,7 @@ __appSlogan__                       = ""
 __appDescription__                  = ""
 __homepage__                        = "https://pipeline.damgteam.com"
 
-__version__                         = "13.0.1"
+__version__                         = str(Version())
 __plmWiki__                         = "https://github.com/vtta2008/PipelineTool/wiki"
 
 __globalServer__                    = "https://server.damgteam.com"
@@ -116,6 +116,42 @@ else:
 finally:
     glbSettings.cfgable = True
 
+# Directory
+
+LOCALAPPDATA                            = os.getenv('LOCALAPPDATA')
+
+APPDATA_DAMG                            = create_path(LOCALAPPDATA, __organization__)
+APPDATA_PLM                             = create_path(APPDATA_DAMG, __appName__)
+
+CFG_DIR                                 = create_path(APPDATA_PLM, '.configs')
+TMP_DIR                                 = create_path(APPDATA_PLM, '.tmp')
+CACHE_DIR                               = create_path(APPDATA_PLM, '.cache')
+PREF_DIR                                = create_path(APPDATA_PLM, 'preferences')
+SETTING_DIR                             = create_path(CFG_DIR, 'settings')
+DB_DIR                                  = APPDATA_PLM
+LOG_DIR                                 = CFG_DIR
+TASK_DIR                                = create_path(CFG_DIR, 'task')
+TEAM_DIR                                = create_path(CFG_DIR, 'team')
+PRJ_DIR                                 = create_path(CFG_DIR, 'project')
+ORG_DIR                                 = create_path(CFG_DIR, 'organisation')
+USER_LOCAL_DATA                         = create_path(CFG_DIR, 'userLocal')
+USER_DIR                                = parent_dir(os.getenv('HOME'))
+LIBRARY_DIR                             = create_path(APPDATA_DAMG, 'libraries')
+
+# Filepath
+
+APP_SETTING                             = create_path(SETTING_DIR, 'PLM.ini')
+USER_SETTING                            = create_path(SETTING_DIR, 'user.ini')
+FORMAT_SETTING                          = create_path(SETTING_DIR, 'fmt.ini')
+UNIX_SETTING                            = create_path(SETTING_DIR, 'unix.ini')
+
+APP_LOG                                 = create_path(LOG_DIR, 'PLM.log')
+USER_LOG                                = create_path(LOG_DIR, 'user.log')
+SERVER_LOG                              = create_path(LOG_DIR, 'server.log')
+VERSION_LOG                             = create_path(LOG_DIR, 'version.log')
+UNIX_LOG                                = create_path(LOG_DIR, 'unix.log')
+
+LOCAL_DB                                = create_path(DB_DIR, 'local.db')
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/16/2020 - 2:15 AM

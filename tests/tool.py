@@ -10,13 +10,17 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-
 import subprocess
+import pkg_resources
 
-PIPE = subprocess.PIPE
+installed_packages = pkg_resources.working_set
+installed = sorted(["%s" % i.key for i in installed_packages])
 
-subprocess.Popen("python -m PLM", stdout=PIPE, stderr=PIPE, shell=True).wait()
+for p in installed:
+    cmd = "pip install {0} --upgrade".format(p)
+    subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=True).wait()
 
+print('finish')
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM
