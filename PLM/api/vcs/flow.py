@@ -9,83 +9,21 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-import logging
-
-import click
+import click, attr
 import pkg_resources
 from jinja2 import Template
 import difflib
 from pathlib import Path
 import bumpversion
-from PLM.api.models import generate_changelog
-from PLM.api.config import project_config, store_settings
-from .packaging import ( build_distributions, install_from_pypi, install_package, upload_package,)
-from PLM.api.vcs import (create_github_release, upload_release_distributions, BumpVersion, project_settings,
-                         release_from_pull_requests)
-from PLM.api.inspect import highlight, note, STYLES, debug, error, info, run_tests
-from .packaging import tag_and_push, commit_version_change
+
+from PLM.api.configs import highlight, note, STYLES, debug, error, info
+
+from PLM.api.vcs import BumpVersion, project_settings, release_from_pull_requests
+
+import logging
+from enum import Enum
 log = logging.getLogger(__name__)
 
-
-def publish(context):
-    """Publishes the project"""
-    commit_version_change(context)
-
-    if context.github:
-        # github token
-        project_settings = project_config(context.module_name)
-        if not project_settings['gh_token']:
-            click.echo('You need a GitHub token for changes to create a release.')
-            click.pause(
-                'Press [enter] to launch the GitHub "New personal access '
-                'token" page, to create a token for changes.'
-            )
-            click.launch('https://github.com/settings/tokens/new')
-            project_settings['gh_token'] = click.prompt('Enter your changes token')
-
-            store_settings(context.module_name, project_settings)
-        description = click.prompt('Describe this release')
-
-        upload_url = create_github_release(
-            context, project_settings['gh_token'], description
-        )
-
-        upload_release_distributions(
-            context,
-            project_settings['gh_token'],
-            build_distributions(context),
-            upload_url,
-        )
-
-        click.pause('Press [enter] to review and update your new release')
-        click.launch(
-            '{0}/releases/tag/{1}'.format(context.repo_url, context.new_version)
-        )
-    else:
-        tag_and_push(context)
-
-
-def perform_release(context):
-    """Executes the release process."""
-    try:
-        run_tests()
-
-        if not context.skip_changelog:
-            generate_changelog(context)
-
-        BumpVersion.increment_version(context)
-
-        build_distributions(context)
-
-        install_package(context)
-
-        upload_package(context)
-
-        install_from_pypi(context)
-
-        publish(context)
-    except Exception:
-        log.exception('Error releasing')
 
 
 def status():
@@ -241,6 +179,81 @@ def stage(draft, release_name='', release_description=''):
                     release_notes_path.write_text(release_notes, encoding='utf-8')
         else:
             release_notes_path.write_text(release_notes, encoding='utf-8')
+
+
+@attr.s
+class PullRequest(object):
+
+    number = attr.ib()
+    title = attr.ib()
+    description = attr.ib()
+    author = attr.ib()
+    body = attr.ib()
+    user = attr.ib()
+    labels = attr.ib(default=attr.Factory(list))
+
+    @property
+    def description(self):
+        return self.body
+
+    @property
+    def author(self):
+        return self.user['login']
+
+    @property
+    def label_names(self):
+        return [label['name'] for label in self.labels]
+
+    @classmethod
+    def from_github(cls, api_response):
+        return cls(**{k.name: api_response[k.name] for k in attr.fields(cls)})
+
+    @classmethod
+    def from_number(cls, number):
+        pass
+
+
+class ReleaseType(str, Enum):
+
+    NO_CHANGE = 'no-changes'
+    BREAKING_CHANGE = 'breaking'
+    FEATURE = 'feature'
+    FIX = 'fix'
+
+
+@attr.s
+class Release(object):
+
+    release_date        = attr.ib()
+    version             = attr.ib()
+    description         = attr.ib(default=attr.Factory(str))
+    name                = attr.ib(default=attr.Factory(str))
+    notes               = attr.ib(default=attr.Factory(dict))
+    release_file_path   = attr.ib(default='')
+    bumpversion_part    = attr.ib(default=None)
+    release_type        = attr.ib(default=None)
+
+    @property
+    def title(self):
+        return '{version} ({release_date})'.format(version=self.version, release_date=self.release_date) + ((' ' + self.name) if self.name else '')
+
+    @property
+    def release_note_filename(self):
+        return '{version}-{release_date}'.format(version=self.version, release_date=self.release_date) + (('-' + self.name) if self.name else '')
+
+    @classmethod
+    def generate_notes(cls, project_labels, pull_requests_since_latest_version):
+        for label, properties in project_labels.items():
+
+            pull_requests_with_label = [pull_request for pull_request in pull_requests_since_latest_version
+                if label in pull_request.label_names]
+
+            project_labels[label]['pull_requests'] = pull_requests_with_label
+
+        return project_labels
+
+
+
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM
 # © 2017 - 2020 DAMGteam. All rights reserved

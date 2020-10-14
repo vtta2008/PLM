@@ -9,11 +9,11 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from pathlib import Path
-import cached_property
+
+import cached_property, shlex, attr, requests, uritemplate, giturlparse, semantic_version
 from plumbum.cmd import git as git_command
-import shlex
-import attr, requests, uritemplate, giturlparse, semantic_version
+from pathlib import Path
+from .flow import PullRequest
 from PLM.options import (GITHUB_MERGED_PULL_REQUEST, EXT_TO_MIME_TYPE, IS_WINDOWS, ISSUE_ENDPOINT, LABELS_ENDPOINT,
                          RELEASES_ENDPOINT)
 

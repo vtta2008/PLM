@@ -6,6 +6,8 @@ Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
+    This is API configurations, all the options/setting or constant which need for running the code of API section
+    will be here
 
 """
 # -------------------------------------------------------------------------------------------------------------
@@ -14,9 +16,49 @@ Description:
 import inflection, attr, os, toml, click, io
 from pathlib import Path
 from PLM import __envKey__
-from PLM.options import DEFAULT_CONFIG_FILE, AUTH_TOKEN_ENVVAR, PROJECT_CONFIG_FILE, DEFAULT_RELEASES_DIRECTORY
-from .vcs import choose_labels, BumpVersion
-from .inspect import info, note, debug
+from PLM.options import DEFAULT_CONFIG_FILE, AUTH_TOKEN_ENVVAR, PROJECT_CONFIG_FILE, DEFAULT_RELEASES_DIRECTORY, DEFAULTS
+
+from .probe import (report_and_raise, has_setup, has_binary, has_tools, has_test_runner, has_changelog, has_readme,
+                    has_metadata, has_signing_key, probe_project, get_test_runner, run_tests, run_test_command)
+
+from PLM.api.vcs import choose_labels, BumpVersion
+
+
+STYLES = {
+    'debug': {'fg': 'blue'},
+    'info': {'fg': 'green', 'bold': True},
+    'highlight': {'fg': 'cyan', 'bold': True},
+    'note': {'fg': 'blue', 'bold': True},
+    'error': {'fg': 'red', 'bold': True},
+}
+
+
+def echo(message, style):
+    click.secho(str(message), **STYLES[style])
+
+
+def debug(message):
+    echo('{}...'.format(message), 'debug')
+
+
+def info(message):
+    echo('{}...'.format(message), 'info')
+
+
+def note(message):
+    echo(message, 'note')
+
+
+def note_style(message):
+    return click.style(message, **STYLES['note'])
+
+
+def highlight(message):
+    return click.style(message, **STYLES['highlight'])
+
+
+def error(message):
+    echo(message, 'error')
 
 
 
@@ -137,11 +179,6 @@ class Project(object):
 
 
 
-# TODO: borg legacy
-DEFAULTS = {'changelog': 'CHANGELOG.md', 'readme': 'README.md', 'github_auth_token': None, }
-
-
-
 class Config:
     """Deprecated"""
 
@@ -182,8 +219,6 @@ def project_config():
 
 def store_settings(settings):
     pass
-
-
 
 
 # -------------------------------------------------------------------------------------------------------------

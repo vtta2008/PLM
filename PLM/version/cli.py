@@ -230,7 +230,7 @@ def _load_configuration(config_file, explicit_config, defaults):
         config_content = config_fp.read()
         config_newlines = config_fp.newlines
 
-    # TODO: this is a DEBUG level log
+    # TODO: this is a DEBUG level logger
     logger.info(config_content)
     config.read_string(config_content)
     log_config = io.StringIO()
@@ -376,7 +376,7 @@ def _setup_versionconfig(known_args, part_configs):
             part_configs=part_configs,
         )
     except sre_constants.error:
-        # TODO: use re.error here mayhaps, also: should we log?
+        # TODO: use re.error here mayhaps, also: should we logger?
         sys.exit(1)
     return version_config
 

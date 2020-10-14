@@ -10,9 +10,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-import semantic_version, attr, click, re, textwrap
+import semantic_version, attr, click, re, textwrap, ast, tempfile
 from configparser import RawConfigParser
-import ast, tempfile
 from pathlib import Path
 from plumbum.cmd import diff
 

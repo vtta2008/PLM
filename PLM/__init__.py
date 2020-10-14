@@ -51,9 +51,8 @@ from termcolor                      import cprint
 from PLM                            import version
 from bin.settings                   import GlobalSettings
 
+
 TRADE_MARK                          = '™'
-
-
 
 
 def path_exists(path):
@@ -147,11 +146,11 @@ USER_SETTING                            = create_path(SETTING_DIR, 'user.ini')
 FORMAT_SETTING                          = create_path(SETTING_DIR, 'fmt.ini')
 UNIX_SETTING                            = create_path(SETTING_DIR, 'unix.ini')
 
-APP_LOG                                 = create_path(LOG_DIR, 'PLM.log')
-USER_LOG                                = create_path(LOG_DIR, 'user.log')
-SERVER_LOG                              = create_path(LOG_DIR, 'server.log')
-VERSION_LOG                             = create_path(LOG_DIR, 'version.log')
-UNIX_LOG                                = create_path(LOG_DIR, 'unix.log')
+APP_LOG                                 = create_path(LOG_DIR, 'PLM.logger')
+USER_LOG                                = create_path(LOG_DIR, 'user.logger')
+SERVER_LOG                              = create_path(LOG_DIR, 'server.logger')
+VERSION_LOG                             = create_path(LOG_DIR, 'version.logger')
+UNIX_LOG                                = create_path(LOG_DIR, 'unix.logger')
 
 LOCAL_DB                                = create_path(DB_DIR, 'local.db')
 

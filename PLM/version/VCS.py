@@ -12,13 +12,12 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-
 import errno, os, subprocess
-from tempfile import NamedTemporaryFile
+from tempfile               import NamedTemporaryFile
+from PLM.cores.Errors       import WorkingDirectoryIsDirtyException, MercurialDoesNotSupportSignedTagsException
+from PLM                    import VERSION_LOG
+from bin.loggers            import DamgLogger
 
-from PLM.cores.Errors import WorkingDirectoryIsDirtyException, MercurialDoesNotSupportSignedTagsException
-from PLM import VERSION_LOG
-from bin.loggers import DamgLogger
 logger = DamgLogger(__name__, filepth=VERSION_LOG)
 
 

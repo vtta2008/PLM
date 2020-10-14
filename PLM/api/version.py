@@ -6,6 +6,7 @@ Author: Do Trinh/Jimmy - 3D artist.
 
 Description:
 
+    This script is to create version for API.
 
 """
 # -------------------------------------------------------------------------------------------------------------

@@ -5,14 +5,14 @@ PIPELINE MANAGER (PLM)
     :subtitle: PIPELINE MANAGER (PLM)
 
     :Name: Pipeline Manager
-    :Built: `Python 3 <https://www.python.org/>`_, PyQt5/PySide2 (optional)
+    :Built: `Python 3 <https://www.python.org/>`_, PySide2
     :Authors: `Trinh Do <www.dot.damgteam.com>`_, `Duong Minh Duc <www.up.damgteam.com>`_
     :Version: 13.0.0 Beta
     :Platforms: Windows (planned for cross-platform)
 
 
 .. sidebar:: SERVER
-    :subtitle: VanilaServer (test server)
+    :subtitle: VanilaServer (local server)
 
     :Name: VanilaServer
     :Built: NodeJs
@@ -24,7 +24,7 @@ PIPELINE MANAGER (PLM)
 INTRODUCTION
 ------------
 
-.. Topic:: PLM
+.. Topic:: Pipeline Manager (PLM) v13.0.0
 
     This application aimed to build, manage, and optimise vfx pipelines using Python 3 and PyQt5/PySide2. The current
     version is compatible with Windows 10. The idea is managing and setup a workplace for everyone and handling

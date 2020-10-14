@@ -13,10 +13,11 @@ import logging
 from pathlib import Path
 from shutil import rmtree
 from PLM.options import COMMIT_TEMPLATE, TAG_TEMPLATE
-from plumbum import local
+
+from .probe import run_test_command, has_signing_key
+from .consoles import create_venv, dry_run
 from PLM.utils import mktmpdir
-from PLM.api.inspect import run_test_command, has_signing_key
-from PLM.api.models import create_venv, install
+from PLM.api.vcs import install
 log = logging.getLogger(__name__)
 
 
@@ -125,16 +126,6 @@ def install_from_pypi(context):
         log.exception(error_msg)
         raise Exception(error_msg, e)
 
-
-def dry_run(command, dry_run):
-    """Executes a shell command unless the dry run option is set"""
-    if not dry_run:
-        cmd_parts = command.split(' ')
-        # http://plumbum.readthedocs.org/en/latest/local_commands.html#run-and-popen
-        return local[cmd_parts[0]](cmd_parts[1:])
-    else:
-        log.info('Dry run of %s, skipping' % command)
-    return True
 
 
 

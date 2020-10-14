@@ -16,24 +16,15 @@ from enum import Enum
 from plumbum import local
 from pathlib import Path
 from datetime import date
-from plumbum.cmd import virtualenv
 
-from PLM.api.inspect import note, error
-from PLM.api.inspect import info
-from .bump                import BumpVersion
+from PLM.api import note, error, info
+from .bump import BumpVersion
 from .git import git, GitHubRepository
 from bin.loggers import DamgLogger
 from PLM import APP_LOG
 logger = DamgLogger(__file__, filepth=APP_LOG)
 
 
-def create_venv(tmp_dir=None):
-    if not tmp_dir:
-        tmp_dir = tempfile.mkdtemp()
-
-    virtualenv('--no-site-packages', tmp_dir)
-
-    return tmp_dir
 
 
 def install(package_name, venv_dir):
@@ -82,81 +73,6 @@ def publish():
         repository.create_release(release)
 
         info('Published release {}'.format(release.version))
-
-
-
-
-@attr.s
-class PullRequest(object):
-
-    number = attr.ib()
-    title = attr.ib()
-    description = attr.ib()
-    author = attr.ib()
-    body = attr.ib()
-    user = attr.ib()
-    labels = attr.ib(default=attr.Factory(list))
-
-    @property
-    def description(self):
-        return self.body
-
-    @property
-    def author(self):
-        return self.user['login']
-
-    @property
-    def label_names(self):
-        return [label['name'] for label in self.labels]
-
-    @classmethod
-    def from_github(cls, api_response):
-        return cls(**{k.name: api_response[k.name] for k in attr.fields(cls)})
-
-    @classmethod
-    def from_number(cls, number):
-        pass
-
-
-
-class ReleaseType(str, Enum):
-
-    NO_CHANGE = 'no-changes'
-    BREAKING_CHANGE = 'breaking'
-    FEATURE = 'feature'
-    FIX = 'fix'
-
-
-@attr.s
-class Release(object):
-
-    release_date        = attr.ib()
-    version             = attr.ib()
-    description         = attr.ib(default=attr.Factory(str))
-    name                = attr.ib(default=attr.Factory(str))
-    notes               = attr.ib(default=attr.Factory(dict))
-    release_file_path   = attr.ib(default='')
-    bumpversion_part    = attr.ib(default=None)
-    release_type        = attr.ib(default=None)
-
-    @property
-    def title(self):
-        return '{version} ({release_date})'.format(version=self.version, release_date=self.release_date) + ((' ' + self.name) if self.name else '')
-
-    @property
-    def release_note_filename(self):
-        return '{version}-{release_date}'.format(version=self.version, release_date=self.release_date) + (('-' + self.name) if self.name else '')
-
-    @classmethod
-    def generate_notes(cls, project_labels, pull_requests_since_latest_version):
-        for label, properties in project_labels.items():
-
-            pull_requests_with_label = [pull_request for pull_request in pull_requests_since_latest_version
-                if label in pull_request.label_names]
-
-            project_labels[label]['pull_requests'] = pull_requests_with_label
-
-        return project_labels
 
 
 

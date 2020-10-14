@@ -370,7 +370,8 @@ README_EXTENSIONS = ['.md', '.rst', '.txt', '.wiki', '.rdoc', '.org', '.pod', '.
 
 GITHUB_MERGED_PULL_REQUEST = re.compile(r'^([0-9a-f]{5,40}) Merge pull request #(\w+)')
 
-
+# TODO: borg legacy
+DEFAULTS = {'changelog': 'CHANGELOG.md', 'readme': 'README.md', 'github_auth_token': None, }
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

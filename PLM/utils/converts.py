@@ -10,7 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from PySide2.QtGui    import QColor
+from bin.Gui        import Color
 from .utils         import generate_alternative_color
 from .types         import is_string, is_bool, is_list, is_none, is_number
 
@@ -26,24 +26,24 @@ def format_bytes(size):
     return power_labels[n]+'bytes', size
 
 
-def tuple2Qcolor(data=None, alternate=False, av=20):
+def tuple2Color(data=None, alternate=False, av=20):
     if len(data) == 3:
-        color = QColor(data[0], data[1], data[2])
+        color = Color(data[0], data[1], data[2])
         if alternate:
             mult = generate_alternative_color(color, av)
-            color = QColor(max(0, data[0]-(av*mult)), max(0, data[1]-(av*mult)), max(0, data[2]-(av*mult)))
+            color = Color(max(0, data[0]-(av*mult)), max(0, data[1]-(av*mult)), max(0, data[2]-(av*mult)))
         return color
     elif len(data) == 4:
-        color = QColor(data[0], data[1], data[2], data[3])
+        color = Color(data[0], data[1], data[2], data[3])
         if alternate:
             mult = generate_alternative_color(color, av)
-            color = QColor(max(0, data[0]-(av*mult)), max(0, data[1]-(av*mult)), max(0, data[2]-(av*mult)), data[3])
+            color = Color(max(0, data[0]-(av*mult)), max(0, data[1]-(av*mult)), max(0, data[2]-(av*mult)), data[3])
         return color
     else:
         print('ColorNotRecognize: Can only be [R, G, B] or [R, G, B, A], Using default color !', data)
-        color = QColor(120, 120, 120)
+        color = Color(120, 120, 120)
         if alternate:
-            color = QColor(120-av, 120-av, 120-av)
+            color = Color(120-av, 120-av, 120-av)
         return color
 
 
@@ -141,6 +141,7 @@ def attr_type(value):
             if type(value) is int:
                 return 'int'
     return 'unknown'
+
 
 def list_attr_types(s):
     """
