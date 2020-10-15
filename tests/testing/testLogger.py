@@ -10,26 +10,16 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
-from bin.loggers.models import ColoredFormatter, StreamHandler
+import pkg_resources, subprocess
+
+all_pkgs = pkg_resources.working_set
+pkg_names = sorted(["%s" % (i.key) for i in all_pkgs])
+for pkg in pkg_names:
+    p = subprocess.Popen('pip install {0} --upgrade --user'.format(pkg), stdout = subprocess.PIPE)
+    txt = p.communicate()[0].decode('utf8')
+    print(txt)
 
 
-formatter = ColoredFormatter(
-	format="%(log_color)s%(levelname)-8s%(reset)s %(blue)s%(message)s",
-	dtFormat=None,
-	reset=True,
-	logColors={
-		'DEBUG':    'cyan',
-		'INFO':     'green',
-		'WARNING':  'yellow',
-		'ERROR':    'red',
-		'CRITICAL': 'red,bg_white',
-	},
-	secondLogColors={},
-	style='%'
-)
-
-handler = StreamHandler()
-handler.setFormatter(formatter)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM

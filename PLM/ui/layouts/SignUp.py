@@ -24,7 +24,7 @@ from PLM.configs import configPropText, QUESTIONS
 p = configPropText()
 from PLM.utils import (check_blank, check_match, getToken, getUnix, getTime, getDate)
 from bin.utils import get_avatar_image
-from bin.models import SignalManager
+from bin.models import DamgSignals
 from bin.Widgets import (Widget, GridLayout, Label, Button, LineEdit, ComboBox, MessageBox, CheckBox, GroupGrid)
 from bin.Gui import AppIcon, Pixmap, Image
 
@@ -40,7 +40,7 @@ class SignUp(Widget):
         super(SignUp, self).__init__(parent)
 
         self.setWindowIcon(AppIcon(32, "SignUp"))
-        self.signals = SignalManager(self)
+        self.signals = DamgSignals(self)
         self.layout = GridLayout()
         self.buildUI()
         self.setLayout(self.layout)

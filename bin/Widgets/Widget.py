@@ -13,7 +13,6 @@ from PySide2.QtWidgets                      import QWidget
 from bin.Gui                                import AppIcon
 from bin.settings                           import AppSettings
 
-
 class Widget(QWidget):
 
     Type                                    = 'DAMGWIDGET'

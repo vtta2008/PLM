@@ -30,7 +30,7 @@ def get_python_info():
 
     return {"timelog": strftime("%a, %d %b %Y %H:%M:%S +0000", gmtime()),
               "version": sysconfig.get_python_version(),
-              'major': sys.version_info[0], 'minor': sys.version_info[1], 'micro': sys.version_info[2],
+              'major': sys.version_info[0], 'minor': sys.version_info[1], 'patch': sys.version_info[2],
               "release level": sys.version_info[3], "serial": sys.version_info[5], 'executable': executable,
               "standard lib": sysconfig.get_path('stdlib')}
 

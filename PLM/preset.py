@@ -11,12 +11,13 @@ Description:
 """ Import """
 
 # Python
-import os
 import re
 import sqlite3 as lite
 
-
 from bin.damg import DAMG
+
+from PLM import LOCAL_DB, METADATA, __version__
+
 
 # -------------------------------------------------------------------------------------------------------------
 """ Resource database """
@@ -54,8 +55,10 @@ LTD = dict(
 """ Create database """
 
 
-with open(os.path.join(os.getenv('PLM'), 'configs', 'metadatas.py').replace('\\', '/'), 'rb') as f:
+
+with open(METADATA, 'rb') as f:
     metadata = f.read().decode('utf-8')
+
 
 def parse(pattern):
     return re.search(pattern, metadata).group(1).replace('"', '').strip()
@@ -64,26 +67,22 @@ def parse(pattern):
 
 class PresetDB(DAMG):
 
-    key = "Resource DB"
+    key = "PresetDB"
+    conn = lite.connect(LOCAL_DB)
+    cur = conn.cursor()
 
-    def __init__(self, filename='local.db', parent=None):
-        super(PresetDB, self).__init__(parent)
-
-        self.fn = filename
-        self.conn = lite.connect(self.fn)
-        self.cur = self.conn.cursor()
+    def __init__(self):
+        super(PresetDB, self).__init__()
 
         for tn in TN:
             self.create_table(tn)
 
         orgname = parse(r'__organization__\s+=\s+(.*)')
-        appname = parse(r'__softwareName__\s+=\s+(.*)')
-        domain = parse(r'__website__\s+=\s+(.*)')
-        version = parse(r'__version__\s+=\s+(.*)')
+        appname = parse(r'__appname__\s+=\s+(.*)')
+        domain = parse(r'__homepage__\s+=\s+(.*)')
+        version = __version__
         author = parse(r'__author__\s+=\s+(.*)')
         display = parse(r'__appname__\s+=\s+(.*)')
-
-        print(orgname, appname, domain, version, author, display)
 
         self.cur.execute("SELECT * FROM metadata")
         self.cur.fetchall()
@@ -102,11 +101,12 @@ class PresetDB(DAMG):
         return cmd
 
     def create_table(self, tn = TN[0]):
+        print('create table: {0}'.format(tn))
         cmd = self.generate_command(tn)
         self.cur.execute("CREATE TABLE IF NOT EXISTS `{0}` ({1})".format(tn, cmd))
         self.conn.commit()
 
-
+PresetDB()
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/06/2018 - 3:58 AM

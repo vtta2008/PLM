@@ -11,12 +11,12 @@ Description:
 """ Import """
 import setuptools
 
-import PLM
+from PLM import __appName__, __version__
 
 
 setuptools.setup(
-    name='myproject',
-    version=PLM.__version__,
+    name=__appName__,
+    version=__version__,
     description='Does stuff',
     url='https://github.com/me/myproject',
     packages=['myproject'],

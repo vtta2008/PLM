@@ -1,32 +1,16 @@
+pip                 >= 20.2.3
 PySide2             >= 5.15.1
 Shiboken2           >= 5.15.1
-cx_Freeze           >= 6.2
-pytest              >= 6.1.1
-pytest-cov          >= 2.10.1
+PyQtWebEngine       >= 5.15.1
 msgpack             >= 1.0.0
-pip                 >= 20.2.3
 winshell            >= 0.6
-helpdev             >= 0.7.1
+semantic_version    >= 2.8.5
 deprecate           >= 1.0.5
-argparse            >= 1.4.0
-green               >= 3.2.2
 GPUtil              >= 1.4.0
 playsound           >= 1.2.2
-python-resize-image >= 1.1.19
-sphinx              >= 3.2.1
-sphinx_rtd_theme    >= 0.4.3
-reportlab           >= 3.5.53
-zopfli              >= 0.1.7
-fs                  >= 2.4.11
 termcolor           >= 1.1.0
 pyjavaproperties    >= 0.7
-humanfriendly       >= 8.2
-validators          >= 0.18.1
 colorama            >= 0.4.3
+python-resize-image >= 1.1.19
+validators          >= 0.18.1
 
-plumbum
-semantic_version
-inflection
-giturlparse
-request_cache
-cache-property

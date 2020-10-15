@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 from PySide2.QtWidgets                      import QGraphicsItem
-from bin.models                             import SignalManager
+from bin.models                             import DamgSignals
 from bin.settings                           import AppSettings
 
 
@@ -26,7 +26,7 @@ class GraphicsItem(QGraphicsItem):
 
         self.parent                         = parent
         self.settings                       = AppSettings(self)
-        self.signals                        = SignalManager()
+        self.signals                        = DamgSignals()
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

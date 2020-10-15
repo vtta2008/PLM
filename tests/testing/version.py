@@ -14,68 +14,56 @@ from __future__ import division, absolute_import
 
 import warnings
 
-try:
-    _cmp = cmp
-except NameError:
-    def _cmp(a, b):
-        """
-        Compare two objects.
-        Returns a negative number if C{a < b}, zero if they are equal, and a
-        positive number if C{a > b}.
-        """
-        if a < b:
-            return -1
-        elif a == b:
-            return 0
-        else:
-            return 1
+def _has_leading_zero(value):
+    return (value and value[0] == '0' and value.isdigit() and value != '0')
+
+def _cmp(a, b):
+    """
+    Compare two objects.
+    Returns a negative number if C{a < b}, zero if they are equal, and a
+    positive number if C{a > b}.
+    """
+    if a < b:
+        return -1
+    elif a == b:
+        return 0
+    else:
+        return 1
 
 def _comparable(klass):
 
     """ C{__eq__}, C{__lt__}, etc. methods are added to the class,
     relying on C{__cmp__} to implement their comparisons. """
 
-    def __eq__(self, other):
-        c = self.__cmp__(other)
-        if c is NotImplemented:
-            return c
-        return c == 0
-
     def __ne__(self, other):
-        c = self.__cmp__(other)
-        if c is NotImplemented:
-            return c
-        return c != 0
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return tuple(self) != tuple(other)
 
     def __lt__(self, other):
-        c = self.__cmp__(other)
-        if c is NotImplemented:
-            return c
-        return c < 0
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self.precedence_key < other.precedence_key
 
     def __le__(self, other):
-        c = self.__cmp__(other)
-        if c is NotImplemented:
-            return c
-        return c <= 0
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self.precedence_key <= other.precedence_key
 
     def __gt__(self, other):
-        c = self.__cmp__(other)
-        if c is NotImplemented:
-            return c
-        return c > 0
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self.precedence_key > other.precedence_key
 
     def __ge__(self, other):
-        c = self.__cmp__(other)
-        if c is NotImplemented:
-            return c
-        return c >= 0
+        if not isinstance(other, self.__class__):
+            return NotImplemented
+        return self.precedence_key >= other.precedence_key
 
     klass.__lt__ = __lt__
     klass.__gt__ = __gt__
     klass.__le__ = __le__
     klass.__ge__ = __ge__
-    klass.__eq__ = __eq__
     klass.__ne__ = __ne__
     return klass
 
@@ -105,7 +93,7 @@ class IncomparableVersions(TypeError):
 @_comparable
 class Version(object):
 
-    def __init__(self, package, major, minor, micro, release_candidate=None,
+    def __init__(self, package, major, minor, patch, release_candidate=None,
                  prerelease=None, post=None, dev=None):
 
         if release_candidate and prerelease:
@@ -118,23 +106,22 @@ class Version(object):
                           DeprecationWarning, stacklevel=2)
 
         if major == "NEXT":
-            if minor or micro or release_candidate or post or dev:
+            if minor or patch or release_candidate or post or dev:
                 raise ValueError(("When using NEXT, all other values except "
                                   "Package must be 0."))
 
         self.package = package
         self.major = major
         self.minor = minor
-        self.micro = micro
+        self.micro = patch
         self.release_candidate = release_candidate
         self.post = post
         self.dev = dev
 
     @property
     def prerelease(self):
-        warnings.warn(("Accessing incremental.Version.prerelease was "
-                       "deprecated in Incremental 16.9.0. Use "
-                       "Version.release_candidate instead."),
+        warnings.warn(("Accessing incremental.Version.prerelease was deprecated in Incremental 16.9.0. "
+                       "Use Version.release_candidate instead."),
                       DeprecationWarning, stacklevel=2),
         return self.release_candidate
 

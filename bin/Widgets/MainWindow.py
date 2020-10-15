@@ -12,7 +12,7 @@ Description:
 from PySide2.QtWidgets                      import QMainWindow
 from PLM                                    import APP_LOG
 from bin.loggers                            import DamgLogger
-from bin.models.SignalManager               import SignalManager
+from bin.models.DamgSignals               import DamgSignals
 from bin.settings                           import AppSettings
 
 # -------------------------------------------------------------------------------------------------------------
@@ -32,7 +32,7 @@ class MainWindow(QMainWindow):
 
         self.parent             = parent
         self.settings           = AppSettings(self)
-        self.signals            = SignalManager(self)
+        self.signals            = DamgSignals(self)
         self.logger             = DamgLogger(self, filepth=APP_LOG)
 
         self.setWindowTitle(self.key)

@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 from PySide2.QtWidgets                      import QVBoxLayout, QHBoxLayout
-from bin.models                             import SignalManager
+from bin.models                             import DamgSignals
 from bin.settings                           import AppSettings
 
 class HBoxLayout(QHBoxLayout):
@@ -24,7 +24,7 @@ class HBoxLayout(QHBoxLayout):
         QHBoxLayout.__init__(self)
         self.parent                         = parent
         self.settings                       = AppSettings(self)
-        self.signals                        = SignalManager(self)
+        self.signals                        = DamgSignals(self)
         self.preset                         = preset
 
         if self.preset and not {}:

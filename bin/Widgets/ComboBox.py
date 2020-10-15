@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 from PySide2.QtWidgets                      import QComboBox
-from bin.models                             import SignalManager
+from bin.models                             import DamgSignals
 from bin.settings                           import AppSettings
 from bin.loggers    import DamgLogger
 from PLM import APP_LOG
@@ -29,7 +29,7 @@ class ComboBox(QComboBox):
 
         self.parent                         = parent
         self.settings                       = AppSettings(self)
-        self.signals                        = SignalManager(self)
+        self.signals                        = DamgSignals(self)
         self.logger = DamgLogger(self, filepth=APP_LOG)
         self.preset                         = preset
 

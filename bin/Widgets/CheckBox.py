@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 from PySide2.QtWidgets                      import QCheckBox
-from bin.models.SignalManager import SignalManager
+from bin.models.DamgSignals import DamgSignals
 from bin.settings import AppSettings
 
 class CheckBox(QCheckBox):
@@ -25,7 +25,7 @@ class CheckBox(QCheckBox):
 
         self.parent                         = parent
         self.settings                       = AppSettings(self)
-        self.signals                        = SignalManager(self)
+        self.signals                        = DamgSignals(self)
 
         self.txt                            = txt
 

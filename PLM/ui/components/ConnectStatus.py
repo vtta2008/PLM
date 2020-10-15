@@ -52,7 +52,7 @@ class ConnectStatus(GroupGrid):
         self._server                    = self.getServer()
         self.modeStatus                 = Label({'txt': self._mode, 'sst': 'Operating Mode Status'})
         self.updateTimer                = Timer()
-
+        self.notify                     = self.parent.signals.notify
         self.updateTimer.setParent(self)
         self.updateTimer.timeout.connect(self.update_icon)
 
@@ -99,11 +99,11 @@ class ConnectStatus(GroupGrid):
         try:
             r = requests.get("http://www.google.com")
         except requests.ConnectionError:
-            self.parent.signals.emit('sysNotify', ['Offline', 'Can not connect to Internet', 'crit', 500])
+            self.notify.emit('Offline', 'Can not connect to Internet', 'crit', 500)
             self.internetIcon           = Conection('Disconnected', stt, self)
             self._connectInternet       = False
         else:
-            self.parent.signals.emit('sysNotify', ['Online', 'Internet connected', 'info', 500])
+            self.notify.emit('Online', 'Internet connected', 'info', 500)
             self.internetIcon           = Conection('Connected', stt, self)
             self._connectInternet       = True
 

@@ -18,7 +18,7 @@ from .types             import is_button, is_string, is_action, is_url, url_vali
 
 from .nets              import filenameFromUrl, filenameFromHeader
 
-from .converts          import str2bool, text_to_hex, bool2str, byte2gb, tuple2Qcolor, bytes2str, format_bytes
+from .converts          import str2bool, text_to_hex, bool2str, byte2gb, tuple2Color, bytes2str, format_bytes
 
 from .inspects          import (getToken, getUnix, getTime, getDate, get_screen_resolution, get_pointer_bounding_box,
                                 check_blank, check_match, check_preset)

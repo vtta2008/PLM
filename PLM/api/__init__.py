@@ -36,7 +36,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 
-from .version import Version
+from tests.version import Version
 
 # This is API version
 __version__ = Version('Incremental', 0, 0, 1)

@@ -12,7 +12,7 @@ Description:
 
 
 from PySide2.QtWidgets                      import QPushButton, QToolButton
-from bin.models.SignalManager               import SignalManager
+from bin.models.DamgSignals               import DamgSignals
 from bin.settings                           import AppSettings
 
 
@@ -30,7 +30,7 @@ class Button(QPushButton):
 
         self.parent                         = parent
         self.settings                       = AppSettings(self)
-        self.signals                        = SignalManager(self)
+        self.signals                        = DamgSignals(self)
         self.preset                         = preset
 
         if self.preset and not {}:
@@ -91,7 +91,7 @@ class ToolButton(QToolButton):
 
         self.parent                         = parent
         self.settings                       = AppSettings(self)
-        self.signals                        = SignalManager(self)
+        self.signals                        = DamgSignals(self)
         self.setText(text)
 
     def setValue(self, key, value):

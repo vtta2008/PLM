@@ -11,7 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 
-from .data                      import sqlUtils, PresetDB
+from .data                      import sqlUtils
 from .handlers                  import EnvHandler, FileHandler
 from .models                    import (DateLine, DownloadChannel, Organisation, Project, ServerProfile, Task, Team,
                                         Temporary, Worker, PcMonitor)

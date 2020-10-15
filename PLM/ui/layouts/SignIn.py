@@ -18,13 +18,14 @@ import sys, requests
 from functools                  import partial
 
 # PLM
-from PLM import __localServerAutho__
+from PLM import __localServerAutho__, APP_LOG
 from PLM.configs import configPropText
 p = configPropText()
 from PLM.cores import sqlUtils
+from bin.loggers import DamgLogger
 from bin.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label, Label, MessageBox, GroupGrid, )
 from bin.Gui import AppIcon
-from bin.models import SignalManager
+from bin.models import DamgSignals
 from PLM.utils import bool2str
 
 
@@ -37,14 +38,13 @@ class SignIn(Widget):
     _login = False
 
     def __init__(self, parent=None):
-
         super(SignIn, self).__init__(parent)
 
         self.setWindowIcon(AppIcon(32, "SignIn"))
         self.setFixedSize(400, 300)
         self.setWindowTitle('Sign In')
-
-        self.signals            = SignalManager(self)
+        self.logger             = DamgLogger(self, filepth=APP_LOG)
+        self.signals            = DamgSignals(self)
         self.layout             = GridLayout()
         self.db                 = sqlUtils()
         self.buildUI()
@@ -121,7 +121,7 @@ class SignIn(Widget):
 
             self.db.remove_data("curUser")
             self.db.update_user_login(username, token, cookie, bool2str(check))
-            self.signals.emit('loginChanged', True)
+            self.signals.loginChangedSig.emit(True)
         else:
             self.db.remove_data("curUser")
             MessageBox(self, 'Login Failed', 'critical', p['PW_WRONG'])

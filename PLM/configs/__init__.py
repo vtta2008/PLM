@@ -26,6 +26,7 @@ from PLM                                import (create_path, ROOT, ROOT_APP, APP
                                                 TASK_DIR, TEAM_DIR, PRJ_DIR, ORG_DIR, USER_LOCAL_DATA, LIBRARY_DIR,
                                                 LOCAL_DB)
 
+
 iconMissing                             = []
 toolTips                                = {}
 statusTips                              = {}
@@ -71,7 +72,6 @@ CMD_VALUE_TYPE                          = { 'dir'                   : 'directory
                                             'stylesheet'            : 'PLMstylesheet',
                                             'shortcut'              : 'shortcut',
                                             'uiKey'                 : 'PLM Layout Key', }
-
 
 
 
@@ -233,11 +233,12 @@ VERSION                             = read_file('VERSION')
 REFERENCES                          = read_file('REFERENCES')
 
 def configPropText():
-
     from pyjavaproperties               import Properties
     propText                            = Properties()
     propText.load(open(create_path(BIN_DIR, 'text.properties')))
     return propText
+
+
 
 
 appDataSpot = [APPDATA_DAMG, APPDATA_PLM, CFG_DIR, TMP_DIR, CACHE_DIR, PREF_DIR, SETTING_DIR, DB_DIR,
@@ -286,6 +287,7 @@ class PthScanner(BaseScan):
 
     def timelog(self, info, **kwargs):
         pass
+
 
 class CfgUrls(Cfg):
 

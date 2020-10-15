@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 from PySide2.QtWidgets                      import QGraphicsPathItem
-from bin.models                             import SignalManager
+from bin.models                             import DamgSignals
 from bin.settings                           import AppSettings
 
 
@@ -25,7 +25,7 @@ class GraphicPathItem(QGraphicsPathItem):
         QGraphicsPathItem.__init__(self)
 
         self.settings                       = AppSettings(self)
-        self.signals                        = SignalManager()
+        self.signals                        = DamgSignals()
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

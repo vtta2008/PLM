@@ -11,7 +11,6 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 
 
-from .preset            import PresetDB
 from .sqlUtils          import sqlUtils
 
 

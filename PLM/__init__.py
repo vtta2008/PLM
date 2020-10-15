@@ -39,21 +39,20 @@ __localServer__                     = "{0}{1}".format(__localHost__, __localPort
 __localServerCheck__                = "{0}/check".format(__localServer__)
 __localServerAutho__                = "{0}/auth".format(__localServer__)
 
-__version__                         = "13.0.0"
+from .version import appVersion
+
+__version__                         = appVersion.version_string
 __license__                         = "Apache"
 __title__                           = "PLM"
 
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 # Python
-import os, sys, subprocess
+import os, sys
 from termcolor                      import cprint
-from PLM                            import version
-from bin.settings                   import GlobalSettings
-
+from subprocess                     import PIPE, Popen
 
 TRADE_MARK                          = '™'
-
 
 def path_exists(path):
     return os.path.exists(path)
@@ -76,44 +75,44 @@ def parent_dir(path):
 def directory_name(path):
     return os.path.basename(path)
 
-# get current directory path
+
+# setting up environment variable
+
+cprint("{0} v{1}".format(__appName__, __version__), 'cyan')
 cwd                                 = current_directory()
+cfgable                             = False
 
-if directory_name(cwd) == directory_name(parent_dir(cwd)) == __envKey__:
-    ROOT_APP                        = parent_dir(cwd)
-    ROOT                            = cwd
+if not directory_name(cwd) == __envKey__:
+    cprint("Wrong root path. Current directory: {0}".format(cwd), 'red', attrs=['underline', 'blink'])
+    sys.exit()
 else:
-    if directory_name(cwd) == __envKey__:
-        ROOT_APP                    = cwd
-        ROOT                        = create_path(ROOT_APP, __envKey__)
+    if directory_name(parent_dir(cwd)) == __envKey__:
+        ROOT_APP                = parent_dir(cwd)
+        ROOT                    = cwd
     else:
-        try:
-            os.getenv(__envKey__)
-        except KeyError:
-            cprint("Wrong root path. Current directory: {0}".format(cwd), 'red', attrs=['underline', 'blink'])
-            sys.exit()
-        else:
-            ROOT                    = os.getenv(__envKey__)
-            ROOT_APP                = parent_dir(ROOT)
+        ROOT_APP                = cwd
+        ROOT                    = create_path(cwd, __envKey__)
 
+import PySide2
+qtPluginDir = create_path(parent_dir(PySide2.__file__), 'plugins/platforms')
+os.environ['QT_PLUGIN_PATH'] = qtPluginDir
+
+if __envKey__ not in os.environ:
+    p = Popen('SetX {0} {1}'.format(__envKey__, ROOT), stdout=PIPE)
+    txt = p.communicate()[0].decode('utf8')
+
+else:
+    if os.getenv(__envKey__).replace('\\', '/') != ROOT:
+        p = Popen('SetX {0} {1}'.format(__envKey__, ROOT), stdout=PIPE)
+        txt = p.communicate()[0].decode('utf8')
+        print(txt)
+
+
+from bin.settings                   import GlobalSettings
 glbSettings                         = GlobalSettings()
 
 textProp                            = create_path(ROOT_APP, 'bin', 'text.properties')
 glbProp                             = create_path(ROOT_APP, 'bin', 'global.properties')
-
-cprint("{0} v{1}".format(__appName__, __version__), 'cyan')
-
-PIPE                                = subprocess.PIPE
-
-try:
-    os.getenv(__envKey__)
-except KeyError:
-    process = subprocess.Popen('SetX {0} {1}'.format(__envKey__, ROOT), stdout=PIPE, stderr=PIPE, shell=True).wait()
-else:
-    if os.getenv(__envKey__) != ROOT:
-        subprocess.Popen('SetX {0} {1}'.format(__envKey__, ROOT), stdout=PIPE, stderr=PIPE, shell=True).wait()
-finally:
-    glbSettings.cfgable = True
 
 # Directory
 
@@ -146,13 +145,16 @@ USER_SETTING                            = create_path(SETTING_DIR, 'user.ini')
 FORMAT_SETTING                          = create_path(SETTING_DIR, 'fmt.ini')
 UNIX_SETTING                            = create_path(SETTING_DIR, 'unix.ini')
 
-APP_LOG                                 = create_path(LOG_DIR, 'PLM.logger')
-USER_LOG                                = create_path(LOG_DIR, 'user.logger')
-SERVER_LOG                              = create_path(LOG_DIR, 'server.logger')
-VERSION_LOG                             = create_path(LOG_DIR, 'version.logger')
-UNIX_LOG                                = create_path(LOG_DIR, 'unix.logger')
+APP_LOG                                 = create_path(LOG_DIR, 'PLM.log')
+USER_LOG                                = create_path(LOG_DIR, 'user.log')
+SERVER_LOG                              = create_path(LOG_DIR, 'server.log')
+VERSION_LOG                             = create_path(LOG_DIR, 'version.log')
+UNIX_LOG                                = create_path(LOG_DIR, 'unix.log')
 
 LOCAL_DB                                = create_path(DB_DIR, 'local.db')
+METADATA                                = create_path(ROOT, 'configs/metadatas.py')
+
+
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/16/2020 - 2:15 AM

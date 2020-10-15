@@ -16,10 +16,9 @@ Description:
 import sys
 
 # PLM
-from bin.Core                           import Signal
-from PLM.configs                        import configPropText
 from PLM.ui.models                      import AppModel
 from PLM.ui                             import LayoutManager
+from PLM.configs                        import configPropText
 p = configPropText()
 
 # -------------------------------------------------------------------------------------------------------------
@@ -29,9 +28,6 @@ p = configPropText()
 class PLM(AppModel):
 
     key                                 = 'PLM'
-
-    updateTxt                           = Signal(str)
-    updatepTxt                          = Signal(int)
 
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
@@ -46,8 +42,6 @@ class PLM(AppModel):
         self.mainUI, self.sysTray, self.shortcutCMD, self.signIn, self.signUp, self.forgotPW = self.layoutManager.mains
 
         self.connectServer              = self.checkConnectServer()
-
-
         userData                        = self.checkUserData()
         if userData:
             if self.connectServer:
@@ -74,7 +68,9 @@ class PLM(AppModel):
                 # self.splash.finish(self.mainUI)
         else:
             if self.connectServer:
-                self.signIn.show()
+                print('here?')
+                self.signInEvent()
+                # self.signIn.show()
                 # self.splash.finish(self.signIn)
             else:
                 self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
@@ -106,6 +102,16 @@ class PLM(AppModel):
                         receiver.restoreGeometry(geometry)
 
         return super(PLM, self).notify(receiver, event)
+
+
+    def run(self):
+        """
+        avoids some QThread messages in the shell on exit, cancel all running tasks avoid QThread/QTimer error messages,
+        on exit
+        """
+        self.exec_()
+        self.deleteLater()
+
 
 
 if __name__ == '__main__':

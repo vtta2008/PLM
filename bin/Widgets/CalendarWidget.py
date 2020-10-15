@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 from PySide2.QtWidgets          import QCalendarWidget
-from bin.models.SignalManager   import SignalManager
+from bin.models.DamgSignals   import DamgSignals
 from bin.settings               import AppSettings
 
 
@@ -29,7 +29,7 @@ class CalendarWidget(QCalendarWidget):
 
         self.parent = parent
         self.settings = AppSettings(self)
-        self.signals = SignalManager(self)
+        self.signals = DamgSignals(self)
 
     def setValue(self, key, value):
         return self.settings.initSetValue(key, value, self.key)

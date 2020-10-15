@@ -1,39 +1,30 @@
 
-    SHORT FILM PIPELINE
-    ===================
+    ABOUT DAMGTEAM
+    ==============
 
-    This application can be used to build, manage, and optimise film making pipelines. The latest version is compatible
-    with Windows 10 and may run on earlier versions. It does not run in Maya 2016 or lower.
+    The team was found in early 2010, we were students in Omega School of design specialisng in Digital Animation Motion
+    Graphic which the name DAMG is stand for. We start working together in freelancer land.
 
-    Due to VFX Reference Platform and the large invention, we need to stay with python 2.7 but expect to migrate to python 3 in 2019.
-    Details are here: <http://www.vfxplatform.com>
+    We are Trinh Do, Duong Minh Duc. Currenty Do am 3D artist and Duc is working as full-stack developer. In 2017 when
+    I was in the last year of my study in Media Design School. One of my lectures - Oliver Hilbert - has seed on me the
+    idea about pipeline, and it inspires me making PLM project.
 
-    REQUIREMENTS
-    ============
+    ABOUT PIPELINE MANAGER
+    ======================
 
-        - Python 3.6 for Windows
-        - Maya 2017 and/or Maya 2018
-        - Vray 3.6.
-        - Phoenix FD 3.0.
-        - VMM for maya.
-        - Houdini.
-        - Mari.
-        - Mari extension.
-        - Nuke.
-        - ZBrush,
-        - Davinci Resolve,
+    This application aimed to build, manage, and optimise vfx pipelines using Python 3 and PyQt5/PySide2. The current
+    version is compatible with Windows 10. The idea is managing and setup a workplace for everyone and handling
+    communication between all department throughout PLM. The main intension of this project is to create a online pipline
+    which is suitable for a group working online together.
 
-    NOTE:
+    Intension Features:
 
-        - You can install Photoshop, Premiere, After Effects or anything you want with Adobe Creative Cloud.
-        - For VMM for maya, remember to configure the path once it is opened in Maya. (sadly, the author has stopped developing the plugin.)
+        - Pipeline designer
+        - Auto config software bundle by.
+        - Flexible user configurations.
+        - Optional use PyQt5 or PySide2 for layout.
+        - Flexible implimentation.
+        - Realtime monitoring PC performance.
+        - Tools for planning, scheduling, tasking and supervising with reminder.
 
-    LIBRARY SUPPORT
-    ===============
-
-    I spent many years to build this library for texturing and referencing. The library is now freely availalbe to everyone.
-    You may also find the following libraries useful, You will need an mediafie account to be able to download.
-
-        - ALPHA library <https://www.mediafire.com/#21br3oz8gf44j>
-        - HDRI library <https://www.mediafire.com/#33moon9n0qagc>
-        - TEXTURE library <https://www.mediafire.com/#v5t32j935afg7>
+    PLM was started from Zero, so it takes time.

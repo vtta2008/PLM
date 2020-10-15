@@ -33,7 +33,7 @@ from PLM.cores                          import sqlUtils, StyleSheet, ThreadManag
 from bin.Widgets                        import Application, MessageBox
 from bin.Gui                            import LogoIcon
 from bin.settings                       import AppSettings
-from bin.models                         import SignalManager
+from bin.models                         import DamgSignals
 from PLM.utils                          import clean_file_ext
 from PLM.ui.tools                       import Browser
 
@@ -71,7 +71,7 @@ class AppModel(Application):
 
         self.setWindowIcon(LogoIcon("DAMG"))
         self.logger                     = DamgLogger(self, filepth=APP_LOG)
-        self.signals                    = SignalManager(self)
+        self.signals                    = DamgSignals(self)
         self.browser                    = Browser()
         self.settings                   = AppSettings(self)
         self.settings._settingEnable    = True
@@ -119,16 +119,6 @@ class AppModel(Application):
     def changeStyleSheet(self, style):
         self.clearStyleSheet()
         self.set_styleSheet(style)
-
-    def run(self):
-
-        """
-        avoids some QThread messages in the shell on exit, cancel all running tasks avoid QThread/QTimer error messages,
-        on exit
-
-        """
-        self.exec_()
-        self.deleteLater()
 
     def checkUserData(self):
         try:

@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 from PySide2.QtWidgets                      import QAction, QWidgetAction
-from bin.models.SignalManager               import SignalManager
+from bin.models.DamgSignals               import DamgSignals
 from bin.settings                           import AppSettings
 from bin.Gui                                import AppIcon
 
@@ -29,7 +29,7 @@ class WidgetAction(QWidgetAction):
 
         self.parent                         = parent
         self.settings                       = AppSettings(self)
-        self.signals                        = SignalManager(self)
+        self.signals                        = DamgSignals(self)
 
     @property
     def name(self):
@@ -49,7 +49,7 @@ class Action(QAction):
         QAction.__init__(self)
         self.parent                         = parent
         self.settings                       = AppSettings(self)
-        self.signals                        = SignalManager(self)
+        self.signals                        = DamgSignals(self)
 
         self.preset                         = preset
         if not self.preset == {} or self.preset:
@@ -101,7 +101,7 @@ class ShortCut(Action):
 
         self.parent                      = parent
         self.settings                    = AppSettings(self)
-        self.signals                     = SignalManager(self)
+        self.signals                     = DamgSignals(self)
 
         if text is not None:
             self.setText(text)

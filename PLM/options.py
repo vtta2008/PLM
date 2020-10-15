@@ -11,8 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-import os, semantic_version, re, sys
-from PLM import CFG_DIR, __envKey__
+import os
 
 from PySide2.QtWidgets      import (QFrame, QStyle, QAbstractItemView, QSizePolicy, QLineEdit, QPlainTextEdit,
                                     QGraphicsItem, QGraphicsView, QGraphicsScene, QRubberBand, QCalendarWidget, )
@@ -54,7 +53,6 @@ DAMG_LOGO_COLOR             = QColor(0, 114, 188, 255)
 
 
 # Basic color
-
 GlobalColor                 = Qt.GlobalColor
 
 WHITE                       = QColor(Qt.white)
@@ -333,45 +331,6 @@ INVALID                     = QSettings.InvalidFormat
 SYS_SCOPE                   = QSettings.SystemScope
 USER_SCOPE                  = QSettings.UserScope
 
-
-AUTH_TOKEN_ENVVAR = 'GITHUB_AUTH_TOKEN'
-
-DEFAULT_CONFIG_FILE = os.path.join(CFG_DIR, 'default.cfg')
-
-PROJECT_CONFIG_FILE = os.path.join(DEFAULT_CONFIG_FILE, '.{0}.toml'.format(__envKey__))
-
-DEFAULT_RELEASES_DIRECTORY = 'docs/releases'
-
-IS_WINDOWS = 'win32' in str(sys.platform).lower()
-
-DRAFT_OPTIONS = ['--dry-run', '--verbose', '--no-commit', '--no-tag', '--allow-dirty', ]
-
-STAGE_OPTIONS = ['--verbose', '--allow-dirty', '--no-commit', '--no-tag']
-
-COMMIT_TEMPLATE = 'git commit --message="%s" %s/__init__.py CHANGELOG.md'
-
-TAG_TEMPLATE = 'git tag %s %s --message="%s"'
-
-EXT_TO_MIME_TYPE = {'.gz': 'application/x-gzip', '.whl': 'application/zip', '.zip': 'application/zip', }
-
-ISSUE_ENDPOINT = 'https://api.github.com/repos{/owner}{/repo}/issues{/number}'
-
-LABELS_ENDPOINT = 'https://api.github.com/repos{/owner}{/repo}/labels'
-
-RELEASES_ENDPOINT = 'https://api.github.com/repos{/owner}{/repo}/releases'
-
-VERSION_ZERO = semantic_version.Version('0.0.0')
-
-TOOLS = ['git', 'diff', 'python']
-
-TEST_RUNNERS = ['pytest', 'nose', 'tox']
-
-README_EXTENSIONS = ['.md', '.rst', '.txt', '.wiki', '.rdoc', '.org', '.pod', '.creole', '.textile',]
-
-GITHUB_MERGED_PULL_REQUEST = re.compile(r'^([0-9a-f]{5,40}) Merge pull request #(\w+)')
-
-# TODO: borg legacy
-DEFAULTS = {'changelog': 'CHANGELOG.md', 'readme': 'README.md', 'github_auth_token': None, }
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by Trinh Do on 5/6/2020 - 3:13 AM
