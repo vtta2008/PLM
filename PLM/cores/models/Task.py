@@ -17,7 +17,7 @@ from playsound                              import playsound
 # PLM
 from PLM.cores.base import BaseType
 from PLM import SOUND_DIR, TASK_DIR
-from bin.Core import DateTime
+from pyPLM.Core import DateTime
 
 # -------------------------------------------------------------------------------------------------------------
 """ Task class """

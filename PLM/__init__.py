@@ -39,9 +39,9 @@ __localServer__                     = "{0}{1}".format(__localHost__, __localPort
 __localServerCheck__                = "{0}/check".format(__localServer__)
 __localServerAutho__                = "{0}/auth".format(__localServer__)
 
-from .version import appVersion
+from .version import plmVersion
 
-__version__                         = appVersion.version_string
+__version__                         = plmVersion.version_string
 __license__                         = "Apache"
 __title__                           = "PLM"
 
@@ -108,11 +108,11 @@ else:
         print(txt)
 
 
-from bin.settings                   import GlobalSettings
-glbSettings                         = GlobalSettings()
+from pyPLM.settings import GlobalSettings
+glbSettings                             = GlobalSettings()
 
-textProp                            = create_path(ROOT_APP, 'bin', 'text.properties')
-glbProp                             = create_path(ROOT_APP, 'bin', 'global.properties')
+textProp                                = create_path(ROOT_APP, 'bin', 'text.properties')
+glbProp                                 = create_path(ROOT_APP, 'bin', 'global.properties')
 
 # Directory
 

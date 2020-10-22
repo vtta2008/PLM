@@ -16,8 +16,8 @@ from pyjavaproperties               import Properties
 p                                   = Properties().load(open(os.path.join(ROOT_APP, 'bin', 'text.properties')))
 
 from PLM.cores.base                         import Channel
-from bin.Core import File, FileInfo, DownloadFile, IODevice
-from bin.Widgets import MessageBox
+from pyPLM.Core import File, FileInfo, DownloadFile, IODevice
+from pyPLM.Widgets import MessageBox
 from PLM.utils                              import autoRename, wait
 
 

@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from bin.Widgets import GroupGrid
+from pyPLM.Widgets import GroupGrid
 
 
 class FooterCheckBoxes(GroupGrid):

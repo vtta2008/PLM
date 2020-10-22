@@ -17,7 +17,7 @@ from playsound                          import playsound
 
 # PLM
 from PLM.cores.base import BaseType
-from bin.Core import DateTime
+from pyPLM.Core import DateTime
 
 # -------------------------------------------------------------------------------------------------------------
 """ Organisation class """

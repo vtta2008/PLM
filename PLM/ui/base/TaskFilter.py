@@ -9,8 +9,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from bin.damg import DAMGDICT, DAMGLIST
-from bin.Widgets import GroupGrid, CheckBox, Label
+from pyPLM.damg import DAMGDICT, DAMGLIST
+from pyPLM.Widgets import GroupGrid, CheckBox, Label
 from PLM.utils import str2bool
 
 

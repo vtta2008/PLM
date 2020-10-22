@@ -11,9 +11,9 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from bin.damg import DAMGLIST
-from bin.Gui import AppIcon
-from bin.Widgets import TabWidget, VBoxLayout
+from pyPLM.damg import DAMGLIST
+from pyPLM.Gui import AppIcon
+from pyPLM.Widgets import TabWidget, VBoxLayout
 from .BotTab1 import BotTab1
 from .BotTab2 import BotTab2
 

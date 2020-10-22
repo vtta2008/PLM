@@ -14,7 +14,7 @@ Description:
 import re
 import sqlite3 as lite
 
-from bin.damg import DAMG
+from pyPLM.damg import DAMG
 
 from PLM import LOCAL_DB, METADATA, __version__
 

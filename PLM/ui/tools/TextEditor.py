@@ -23,10 +23,8 @@ from PySide2.QtWidgets            import (QAction, QActionGroup, QApplication, Q
                                         QFontComboBox, QMenu, QMessageBox, QTextEdit, QToolBar, QHBoxLayout)
 
 # PLM
-from bin.Widgets import Widget, MainWindow
-from bin.Gui import AppIcon
-
-from PLM.ui.rcs import TextEditor_rc
+from pyPLM.Widgets import Widget, MainWindow
+from pyPLM.Gui import AppIcon
 
 if sys.platform.startswith('darwin'):
     rsrcPath = ":/images/mac"

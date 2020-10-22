@@ -15,7 +15,7 @@ from functools                          import partial
 
 # PLM
 from PLM.cores.base.BaseStorage import BaseStorage
-from bin.Widgets                        import Action, Button
+from pyPLM.Widgets import Action, Button
 from PLM.utils                          import is_string, is_action, is_button
 from PLM.cores.Errors                   import ActionKeyConfigError, ActionRegisterError, ButtonRegisterError
 from PLM.configs                        import ConfigPipeline, ConfigUiKeys

@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # PLM
-from bin.damg import DAMGERROR
+from pyPLM.damg import DAMGERROR
 
 
 class NodePropertyError(DAMGERROR): pass

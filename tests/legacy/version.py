@@ -11,16 +11,10 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-import logging
-import re
-import sre_constants
-import string
-
-from PLM.cores.Errors import MissingValueForSerializationException, IncompleteVersionRepresentationException
 from PLM.utils import keyvaluestring
 
 from PLM import VERSION_LOG
-from bin.loggers import DamgLogger
+from pyPLM.loggers import DamgLogger
 logger = DamgLogger(__name__, filepth=VERSION_LOG)
 
 

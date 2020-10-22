@@ -15,7 +15,7 @@ import os, json
 from playsound import playsound
 
 # PyQt5
-from bin.Core                       import DateTime
+from pyPLM.Core import DateTime
 
 # PLM
 from PLM.cores.base import BaseType

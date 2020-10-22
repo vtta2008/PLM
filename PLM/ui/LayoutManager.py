@@ -13,7 +13,7 @@ Description:
 
 # PLM
 from PLM.options import SiPoMin, ELIDE_RIGHT
-from bin.damg import DAMG, DAMGLIST
+from pyPLM.damg import DAMG, DAMGLIST
 
 from PLM.cores                          import EventManager
 
@@ -124,6 +124,9 @@ class LayoutManager(DAMG):
         self.shortcutCMD                    = CommandUI(parent=self.parent)
 
         layouts = [self.mainUI, self.sysTray, self.shortcutCMD, self.signin, self.signup, self.forgotPW]
+
+        self.signin.signals.loginChangedSig.connect(self.parent.appEvent)
+
 
         for layout in layouts:
             self.registLayout(layout)

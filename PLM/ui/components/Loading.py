@@ -14,7 +14,7 @@ Description:
 # Python
 import sys
 
-from bin.Widgets import MessageBox, ProgressBar
+from pyPLM.Widgets import MessageBox, ProgressBar
 from PLM.configs import configPropText
 p = configPropText()
 from PLM.cores import StyleSheet

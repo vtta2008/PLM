@@ -22,8 +22,8 @@ from PySide2.QtWidgets            import (QCheckBox, QDateTimeEdit, QGridLayout,
 
 # PLM
 from PLM                           import __localServer__
-from bin.Widgets                   import (GroupBox, Label, HBoxLayout, ComboBox, VBoxLayout, LineEdit, Button,
-                                            Widget, CheckBox, )
+from pyPLM.Widgets import (GroupBox, Label, HBoxLayout, ComboBox, VBoxLayout, LineEdit, Button,
+                           Widget, CheckBox, )
 
 # -------------------------------------------------------------------------------------------------------------
 """ Server """

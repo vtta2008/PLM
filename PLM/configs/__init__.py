@@ -76,17 +76,6 @@ CMD_VALUE_TYPE                          = { 'dir'                   : 'directory
 
 
 BIN_DIR                                 = create_path(ROOT_APP, 'bin')
-BIN_BASE_DIR                            = create_path(BIN_DIR, 'base')
-BIN_CORE_DIR                            = create_path(BIN_DIR, 'Core')
-BIN_DAMG_DIR                            = create_path(BIN_DIR, 'damg')
-BIN_GUI_DIR                             = create_path(BIN_DIR, 'Gui')
-BIN_WIDGET_DIR                          = create_path(BIN_DIR, 'Widgets')
-BIN_NETWORK_DIR                         = create_path(BIN_DIR, 'Network')
-
-BIN_MODEL_DIR                           = create_path(BIN_DIR, 'models')
-BIN_SETTING_DIR                         = create_path(BIN_DIR, 'settings')
-BIN_VERSION_DIR                         = create_path(BIN_DIR, 'version')
-
 BIN_DATA_DIR                            = create_path(BIN_DIR, 'data')
 DESIGN_DIR                              = create_path(BIN_DATA_DIR, 'design')
 FONT_DIR                                = create_path(BIN_DATA_DIR, 'fonts')
@@ -232,6 +221,7 @@ QUESTIONS                           = read_file('QUESTION')
 VERSION                             = read_file('VERSION')
 REFERENCES                          = read_file('REFERENCES')
 
+
 def configPropText():
     from pyjavaproperties               import Properties
     propText                            = Properties()
@@ -239,14 +229,10 @@ def configPropText():
     return propText
 
 
-
-
 appDataSpot = [APPDATA_DAMG, APPDATA_PLM, CFG_DIR, TMP_DIR, CACHE_DIR, PREF_DIR, SETTING_DIR, DB_DIR,
                LOG_DIR, TASK_DIR, TEAM_DIR, PRJ_DIR, ORG_DIR, USER_LOCAL_DATA, LIBRARY_DIR]
 
-binSpot = [BIN_DIR, BIN_BASE_DIR, BIN_CORE_DIR, BIN_DAMG_DIR, BIN_GUI_DIR, BIN_WIDGET_DIR,
-           BIN_NETWORK_DIR, BIN_MODEL_DIR, BIN_SETTING_DIR, BIN_VERSION_DIR, BIN_DATA_DIR, DESIGN_DIR,
-           FONT_DIR, JSON_DIR, LANGUAGE_DIR, PROFILE_DIR, RESOURCES_DIR, ]
+binSpot = [BIN_DIR, BIN_DATA_DIR, DESIGN_DIR, FONT_DIR, JSON_DIR, LANGUAGE_DIR, PROFILE_DIR, RESOURCES_DIR, ]
 
 iconSpot = [AVATAR_DIR, ICON_DIR, NODE_ICON_DIR, TAG_ICON_DIR, WEB_ICON_DIR, WEB_ICON_16, WEB_ICON_24,
             WEB_ICON_32, WEB_ICON_48, WEB_ICON_64, WEB_ICON_128, ICON_DIR_12, ICON_DIR_16, ICON_DIR_24,

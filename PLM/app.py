@@ -35,12 +35,10 @@ class PLM(AppModel):
         self.layoutManager              = LayoutManager(self.threadManager, self)
         self.layoutManager.registLayout(self.browser)
         self.layoutManager.buildLayouts()
+        self.mainUI, self.sysTray, self.shortcutCMD, self.signIn, self.signUp, self.forgotPW = self.layoutManager.mains
         self.layoutManager.globalLayoutSetting()
 
         self.layouts                    = self.layoutManager.register
-
-        self.mainUI, self.sysTray, self.shortcutCMD, self.signIn, self.signUp, self.forgotPW = self.layoutManager.mains
-
         self.connectServer              = self.checkConnectServer()
         userData                        = self.checkUserData()
         if userData:
@@ -68,7 +66,7 @@ class PLM(AppModel):
                 # self.splash.finish(self.mainUI)
         else:
             if self.connectServer:
-                print('here?')
+                # print('here?')
                 self.signInEvent()
                 # self.signIn.show()
                 # self.splash.finish(self.signIn)

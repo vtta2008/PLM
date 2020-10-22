@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from bin.Widgets import GridLayout, GroupBox, LineEdit, Button, Label
+from pyPLM.Widgets import GridLayout, GroupBox, LineEdit, Button, Label
 
 class Location(GroupBox):
 

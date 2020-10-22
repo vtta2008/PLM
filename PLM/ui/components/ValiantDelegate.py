@@ -14,7 +14,7 @@ from PySide2.QtGui import QRegExpValidator, QValidator, QColor
 from PySide2.QtWidgets import QStyleOptionViewItem, QStyle
 
 
-from bin.Widgets import LineEdit, ItemDelegate
+from pyPLM.Widgets import LineEdit, ItemDelegate
 
 
 

@@ -13,8 +13,8 @@ Description:
 """ Import """
 
 
-from bin.Widgets                import TextLabel
-from bin.Gui                    import Painter
+from pyPLM.Widgets import TextLabel
+from pyPLM.Gui import Painter
 from PLM.options                import ELIDE_RIGHT, ELIDE_NONE, SiPoPre, SiPoMin, TEXT_MENEOMIC
 from PLM.utils                  import get_repr, ensure_valid
 

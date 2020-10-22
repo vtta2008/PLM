@@ -11,7 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from bin.Widgets import DockWidget
+from pyPLM.Widgets import DockWidget
 from PLM.options import FRAMELESS, dockAll
 
 class BaseDock(DockWidget):

@@ -21,8 +21,8 @@ from PySide2.QtWidgets            import (QFileDialog, QApplication, QGroupBox, 
 
 # PLM
 from PLM.options import ASPEC_RATIO, SMOOTH_TRANS
-from bin.Widgets import GridLayout, Button, Label, Widget, HBoxLayout
-from bin.Gui import AppIcon
+from pyPLM.Widgets import GridLayout, Button, Label, Widget, HBoxLayout
+from pyPLM.Gui import AppIcon
 
 class ScreenShot(Widget):
 

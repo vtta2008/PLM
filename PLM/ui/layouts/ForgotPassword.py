@@ -15,7 +15,7 @@ Description:
 from PySide2.QtWidgets        import (QDialogButtonBox, QFormLayout, QGroupBox, QLineEdit)
 
 # PLM
-from bin.Widgets import Widget, VBoxLayout, Label, GroupBox, LineEdit
+from pyPLM.Widgets import Widget, VBoxLayout, Label, GroupBox, LineEdit
 
 
 class ForgotPassword(Widget):

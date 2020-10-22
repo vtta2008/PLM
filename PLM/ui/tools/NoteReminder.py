@@ -19,8 +19,8 @@ from PySide2.QtWidgets                import (QAction, QApplication, QComboBox, 
                                             QGridLayout, QMainWindow, QMenu, QMessageBox, QTextEdit)
 
 # Plm
-from bin.Widgets import GridLayout, Label, Widget
-from bin.Gui import AppIcon
+from pyPLM.Widgets import GridLayout, Label, Widget
+from pyPLM.Gui import AppIcon
 
 
 def codec_name(codec):

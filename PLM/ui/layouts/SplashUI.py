@@ -22,8 +22,8 @@ from PySide2.QtWidgets                  import QApplication
 from PLM.options                        import ANTIALIAS, TRANSPARENT, NO_PEN, AUTO_COLOR
 from PLM.configs                        import ORG_LOGO_DIR
 from PLM.ui.base                        import BaseSplash
-from bin.Gui                            import Image, Painter, Pen
-from bin.Core                           import Timer, Rect, Slot
+from pyPLM.Gui import Image, Painter, Pen
+from pyPLM.Core import Timer, Rect, Slot
 
 # class Worker(DAMG):
 #

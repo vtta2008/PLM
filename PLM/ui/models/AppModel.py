@@ -28,12 +28,12 @@ from PLM                                import __version__, __appName__, __organ
 
 from PLM.configs                        import configPropText, ConfigPipeline
 p = configPropText()
-from bin.loggers                        import DamgLogger
+from pyPLM.Core import Slot
+from pyPLM.loggers import DamgLogger
 from PLM.cores                          import sqlUtils, StyleSheet, ThreadManager
-from bin.Widgets                        import Application, MessageBox
-from bin.Gui                            import LogoIcon
-from bin.settings                       import AppSettings
-from bin.models                         import DamgSignals
+from pyPLM.Widgets import Application, MessageBox
+from pyPLM.Gui import LogoIcon
+from pyPLM.settings import AppSettings
 from PLM.utils                          import clean_file_ext
 from PLM.ui.tools                       import Browser
 
@@ -71,7 +71,6 @@ class AppModel(Application):
 
         self.setWindowIcon(LogoIcon("DAMG"))
         self.logger                     = DamgLogger(self, filepth=APP_LOG)
-        self.signals                    = DamgSignals(self)
         self.browser                    = Browser()
         self.settings                   = AppSettings(self)
         self.settings._settingEnable    = True
@@ -228,6 +227,7 @@ class AppModel(Application):
         else:
             return ui.show()
 
+    @Slot(bool, name='loginChanged')
     def loginChanged(self, val):
         self._login = val
 
@@ -255,6 +255,7 @@ class AppModel(Application):
     def hideAll(self):
         return self.closeAll()
 
+    @Slot(str, name='appEvent')
     def appEvent(self, event):
         if event == 'ShowAll':
             self.showAll()
@@ -272,30 +273,46 @@ class AppModel(Application):
             self.exitEvent()
         elif event == 'Exit':
             self.exitEvent()
+        elif event == 'ForgotPassword':
+            self.forgotPasswordEvent()
         elif event == 'ChangePassword':
             pass
         else:
             pass
 
     def signInEvent(self):
-        self.switchAccountEvent()
+        return self.signOutEvent()
 
     def signOutEvent(self):
+
         self.loginChanged(False)
-        self.signIn.show()
+
         for layout in [self.mainUI, self.signUp, self.forgotPW] + self.layoutManager.infos + \
                       self.layoutManager.setts + self.layoutManager.tools + self.layoutManager.prjs:
             layout.hide()
 
+        return self.signIn.show()
+
     def signUpEvent(self):
+
         self.loginChanged(False)
-        self.signUp.show()
+
         for layout in [self.mainUI, self.signUp, self.forgotPW] + self.layoutManager.infos + \
                       self.layoutManager.setts + self.layoutManager.tools + self.layoutManager.prjs:
             layout.hide()
+
+        return self.signUp.show()
 
     def switchAccountEvent(self):
         self.signOutEvent()
+
+    def forgotPasswordEvent(self):
+
+        for layout in [self.mainUI, self.signUp, self.signIn] + self.layoutManager.infos + \
+                      self.layoutManager.setts + self.layoutManager.tools + self.layoutManager.prjs:
+            layout.hide()
+
+        return self.forgotPW.show()
 
     def exitEvent(self):
         self.exit()

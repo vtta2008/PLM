@@ -10,10 +10,10 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-import os, sys, platform, sysconfig, win32api, requests, time, datetime, uuid, pkg_resources
+import os, sys, platform, sysconfig, win32api, time, datetime, uuid, pkg_resources
 from time                       import gmtime, strftime
 
-from bin.Core                   import Size, Rect, RectF
+# from pyPLM.Core                 import Size, Rect, RectF
 from .converts                  import str2bool
 
 
@@ -59,15 +59,15 @@ def get_pkgs_info():
     return info
 
 
-def get_pointer_bounding_box(pointerPos, bbSize):
-    point                   = pointerPos
-    mbbPos                  = point
-    point.setX(point.x() - bbSize / 2)
-    point.setY(point.y() - bbSize / 2)
-    size                    = Size(bbSize, bbSize)
-    bb                      = Rect(mbbPos, size)
-    bb                      = RectF(bb)
-    return bb
+# def get_pointer_bounding_box(pointerPos, bbSize):
+#     point                   = pointerPos
+#     mbbPos                  = point
+#     point.setX(point.x() - bbSize / 2)
+#     point.setY(point.y() - bbSize / 2)
+#     size                    = Size(bbSize, bbSize)
+#     bb                      = Rect(mbbPos, size)
+#     bb                      = RectF(bb)
+#     return bb
 
 
 def get_all_path_from_dir(directory):
@@ -141,12 +141,6 @@ def getUnix():
 
 def check_odd(num):
     return str2bool(num%2)
-
-def check_preset(data):
-    if data == {}:
-        pass
-    else:
-        return True
 
 def check_blank(data):
     if len(data) == 0 or data == "" or data is None:

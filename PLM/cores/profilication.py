@@ -13,7 +13,7 @@ Description:
 
 import requests
 
-from bin.damg                       import DAMG
+from pyPLM.damg import DAMG
 
 
 class NetworkInfo(DAMG):

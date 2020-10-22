@@ -11,8 +11,8 @@ Description:
 
 from PLM.options import SiPoMin
 from PLM.configs import ABOUT, CODEOFCONDUCT, CONTRIBUTING, CREDIT, LICENCE, REFERENCES, VERSION
-from bin.Widgets import Widget, GridLayout, Label, Button
-from bin.Gui import AppIcon
+from pyPLM.Widgets import Widget, GridLayout, Label, Button
+from pyPLM.Gui import AppIcon
 
 class InfoWidget(Widget):
 

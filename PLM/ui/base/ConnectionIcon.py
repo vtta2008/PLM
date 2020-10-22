@@ -9,10 +9,10 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from bin.Gui import Image, Pixmap
-from bin.Widgets import Label
+from pyPLM.Gui import Image, Pixmap
+from pyPLM.Widgets import Label
 from PLM.options import AUTO_COLOR, center
-from bin.utils import get_app_icon
+from pyPLM.configs import get_app_icon
 
 
 class ConnectionImage(Image):

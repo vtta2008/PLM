@@ -15,7 +15,9 @@ import argparse
 from PLM.cores.Errors       import VersionNotFoundException
 from PLM                    import VERSION_LOG
 from difflib                import unified_diff
-from bin.loggers            import DamgLogger
+from pyPLM.loggers import DamgLogger
+
+
 logger = DamgLogger(__name__, filepth=VERSION_LOG)
 
 

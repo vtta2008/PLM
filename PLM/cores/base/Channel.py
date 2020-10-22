@@ -12,9 +12,9 @@ Description:
 
 import os
 
-from bin.damg import DAMG
-from bin.Core import ByteArray, Url
-from bin.Network import NetworkRequest
+from pyPLM.damg import DAMG
+from pyPLM.Core import ByteArray, Url
+from pyPLM.Network import NetworkRequest
 
 
 class Channel(DAMG):

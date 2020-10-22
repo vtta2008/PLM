@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from bin.Widgets import GroupGrid, LineEdit, Button, Label
+from pyPLM.Widgets import GroupGrid, LineEdit, Button, Label
 
 class Profile(GroupGrid):
 

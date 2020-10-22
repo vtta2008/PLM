@@ -24,10 +24,10 @@ from PLM.options import (SiPoMin, center, SingleSelection, NoSelection, DayOfWee
                          Thursday, Friday, Saturday, SingleLetterDay, LongDay, ShortDay, NoHoriHeader, NoVertHeader,
                          IsoWeekNum, SelectMode, HoriHeaderFm, VertHeaderFm, TEXT_BOLD, GlobalColor, GREEN, BLUE, RED,
                          BLACK, MAGENTA)
-from bin.Core   import Date, Locale
-from bin.Widgets import (GridLayout, Widget, GroupGrid, CalendarWidget, GroupCombo, Label, ComboBox, CheckBox,
-                         HBoxLayout, DateEdit)
-from bin.Gui    import AppIcon
+from pyPLM.Core import Date, Locale
+from pyPLM.Widgets import (GridLayout, Widget, GroupGrid, CalendarWidget, GroupCombo, Label, ComboBox, CheckBox,
+                           HBoxLayout, DateEdit)
+from pyPLM.Gui import AppIcon
 
 
 # -------------------------------------------------------------------------------------------------------------

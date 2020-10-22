@@ -9,8 +9,8 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from bin.Widgets import GroupGrid, CheckBox, Label
-from bin.damg import DAMGLIST, DAMGDICT
+from pyPLM.Widgets import GroupGrid, CheckBox, Label
+from pyPLM.damg import DAMGLIST, DAMGDICT
 from PLM.utils import str2bool
 
 class HeaderCheckBoxes(GroupGrid):

@@ -14,7 +14,7 @@ Description:
 # PyQt5
 
 # Plt
-from bin.Widgets import Widget, GridLayout, GroupBox, GroupGrid
+from pyPLM.Widgets import Widget, GridLayout, GroupBox, GroupGrid
 from PLM.ui.base import Avatar
 from PLM.cores import sqlUtils
 

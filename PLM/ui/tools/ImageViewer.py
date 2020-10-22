@@ -23,8 +23,8 @@ from PySide2.QtCore                   import Qt, QDir, Signal
 from PySide2.QtGui                    import QPixmap, QTransform, QIcon
 from PySide2.QtWidgets                import QMainWindow, QApplication, QGraphicsScene, QGraphicsView, QMenu, QFileDialog, QHBoxLayout
 
-from bin.Widgets import Widget
-from bin.Gui import AppIcon
+from pyPLM.Widgets import Widget
+from pyPLM.Gui import AppIcon
 from PLM.utils import get_screen_resolution
 from PLM.configs import LOCAL_DB
 

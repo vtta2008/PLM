@@ -15,9 +15,9 @@ import time, datetime, os
 import sqlite3 as lite
 
 # PLM
-from PLM                            import LOCAL_DB
-from bin.Core import Timer, Date
-from bin.damg import DAMG, DAMGLIST, DAMGDICT
+# from PLM                            import LOCAL_DB
+# from PLM.Core                       import Timer, Date
+# from PLM.damg                       import DAMG, DAMGLIST, DAMGDICT
 
 
 
@@ -43,24 +43,24 @@ DB_ATTRIBUTE_TYPE                       = { 'int_auto_increment'    : 'INTERGER 
                                             'varchar_20'            : 'VACHAR(20,)  ', }
 
 
-
-class sqlUtils(DAMG):
+class sqlUtils:
 
     key                                 = 'LocalDatabase'
-    _dbPath                             = LOCAL_DB
+    _dbPath                             = os.path.join(os.getenv('LOCALAPPDATA'), 'DAMGTEAM', 'Pipeline Manager (PLM)', 'local.db')
     conn                                = lite.connect(_dbPath)
     conn.text_factory                   = str
     cur                                 = conn.cursor()
-    tableNames                          = DAMGLIST()
-    tables                              = DAMGDICT()
+    tableNames                          = list()
+    tables                              = dict()
     db_types                            = DB_ATTRIBUTE_TYPE
 
     def __init__(self, parent=None):
-        super(sqlUtils, self).__init__(parent)
+        super(sqlUtils, self).__init__()
 
-        self.date                       = Date()
-        self.time                       = Timer()
-        self.update()
+        self.parent                       = parent
+        # self.date                       = Date()
+        # self.time                       = Timer()
+        # self.update()
 
     def update(self):
         self.tableNames = self.tableList()

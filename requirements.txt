@@ -13,4 +13,5 @@ pyjavaproperties    >= 0.7
 colorama            >= 0.4.3
 python-resize-image >= 1.1.19
 validators          >= 0.18.1
+click               >= 7.1.2
 

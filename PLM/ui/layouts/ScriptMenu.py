@@ -15,9 +15,9 @@ import os
 from PySide2.QtCore               import Signal
 from PySide2.QtWidgets            import QApplication
 
-from bin.loggers import DamgLogger
-from bin.Widgets import Menu, WidgetAction, Action, LineEdit
-from bin.Gui import Icon
+from pyPLM.loggers import DamgLogger
+from pyPLM.Widgets import Menu, WidgetAction, Action, LineEdit
+from pyPLM.Gui import Icon
 
 
 class ScriptAction(Action):

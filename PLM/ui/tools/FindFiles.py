@@ -21,8 +21,8 @@ from PySide2.QtWidgets                import (QAbstractItemView, QApplication, Q
                                             QTableWidgetItem, )
 
 from PLM.options import SiPoExp, SiPoPre
-from bin.Widgets import Button, Label, Widget
-from bin.Gui import AppIcon
+from pyPLM.Widgets import Button, Label, Widget
+from pyPLM.Gui import AppIcon
 
 
 class FindFiles(Widget):

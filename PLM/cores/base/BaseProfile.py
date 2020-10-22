@@ -11,9 +11,7 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-import requests
-
-from bin.damg                   import DAMGDICT
+from pyPLM.damg import DAMGDICT
 
 
 class BaseProfile(DAMGDICT):

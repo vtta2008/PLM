@@ -13,7 +13,7 @@ Description:
 import validators, re
 
 from collections            import OrderedDict
-from bin.damg               import DAMGDICT, DAMGLIST
+from pyPLM.damg import DAMGDICT, DAMGLIST
 
 from PySide2.QtWidgets       import QPushButton, QToolButton, QWidgetAction, QAction, QActionGroup
 from PySide2.QtCore          import QUrl, QUrlQuery

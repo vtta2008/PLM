@@ -13,9 +13,9 @@ Description:
 import time
 
 from PLM.utils import is_url, format_bytes, bytes2str
-from bin.Network import NetworkRequest, NetworkReply, NetworkCookie, NetworkCookieJar
-from bin.Core import Url
-from bin.loggers import DamgLogger
+from pyPLM.Network import NetworkRequest, NetworkReply, NetworkCookie, NetworkCookieJar
+from pyPLM.Core import Url
+from pyPLM.loggers import DamgLogger
 
 
 class HTTPrequest(NetworkRequest):

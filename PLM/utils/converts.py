@@ -10,7 +10,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from bin.Gui        import Color
+from pyPLM.Gui import Color
 from .utils         import generate_alternative_color
 from .types         import is_string, is_bool, is_list, is_none, is_number
 

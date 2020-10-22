@@ -12,7 +12,7 @@ Description:
 """ Import """
 
 # PLM
-from bin.Widgets import Widget, Label, GridLayout
+from pyPLM.Widgets import Widget, Label, GridLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Footer """

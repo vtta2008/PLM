@@ -9,9 +9,9 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from bin.Widgets import LineEdit, ShortCut
+from pyPLM.Widgets import LineEdit, ShortCut
 from PLM.options import FRAMELESS, KEY_RETURN
-from bin.loggers import DamgLogger
+from pyPLM.loggers import DamgLogger
 from PLM import APP_LOG
 
 class CommandUI(LineEdit):

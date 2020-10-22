@@ -23,12 +23,12 @@ import types
 from io import StringIO
 
 # PyQt5
-from PySide2.QtCore               import qDebug, qInstallMessageHandler, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg
+from PySide2.QtCore               import qDebug, QtInfoMsg, QtWarningMsg, QtCriticalMsg, QtFatalMsg
 from PySide2.QtGui                import QTextCursor
 
 # PLM
 from PLM.options import SiPoMin
-from bin.Widgets import GridLayout, Detector, Widget
+from pyPLM.Widgets import GridLayout, Detector, Widget
 
 # -------------------------------------------------------------------------------------------------------------
 """ Processing User Input """

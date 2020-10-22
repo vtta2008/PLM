@@ -12,9 +12,9 @@ Description:
 
 # PLM
 from PLM.cores.models                   import DateLine, Task, Project, Team, Organisation, Temporary
-from bin.Core import DateTime
-from bin.Widgets import Widget, Button, VBoxLayout, HBoxLayout
-from bin.Gui import AppIcon
+from pyPLM.Core import DateTime
+from pyPLM.Widgets import Widget, Button, VBoxLayout, HBoxLayout
+from pyPLM.Gui import AppIcon
 from .BaseDetails                       import BaseDetails
 from .BaseInfo                          import BaseInfo
 

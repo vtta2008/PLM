@@ -12,9 +12,9 @@ Description:
 
 from PySide2.QtWidgets        import QAbstractItemView, QHeaderView, QTableWidgetItem
 
-from bin.Widgets import Widget, ComboBox, Label, GroupGrid, GridLayout, TableWidget
+from pyPLM.Widgets import Widget, ComboBox, Label, GroupGrid, GridLayout, TableWidget
 from PLM.options import INI, NATIVE, USER_SCOPE, SYS_SCOPE, ITEMENABLE
-from bin.settings import RegSettings
+from pyPLM.settings import RegSettings
 
 
 class SettingInput(Widget):

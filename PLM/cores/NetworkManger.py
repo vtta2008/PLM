@@ -15,8 +15,8 @@ Description:
 import sys
 
 
-from bin.Widgets import MessageBox
-from bin.Network import NetworkAccessManager
+from pyPLM.Widgets import MessageBox
+from pyPLM.Network import NetworkAccessManager
 from PLM.cores import DownloadChannel
 from PLM.configs import propText as p
 

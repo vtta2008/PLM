@@ -9,7 +9,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from bin.damg import DAMG
+from pyPLM.damg import DAMG
 
 
 class FileHandler(DAMG):

@@ -11,17 +11,13 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-import logging
-import pytest
-
-LOGGER = logging.getLogger(__name__)
+import os
 
 
-@pytest.fixture(scope='function')
-def example_fixture():
-    LOGGER.info("Setting Up Example Fixture...")
-    yield
-    LOGGER.info("Tearing Down Example Fixture...")
+a = os.path.dirname(__file__).replace('\\', '/')
+b = os.path.abspath(os.path.join(a, os.pardir))
+
+print(b)
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/16/2020 - 2:18 AM

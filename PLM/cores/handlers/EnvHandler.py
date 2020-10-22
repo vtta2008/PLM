@@ -8,7 +8,7 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from bin import settings
+from pyPLM import settings
 
 """ Import """
 
@@ -16,7 +16,7 @@ from bin import settings
 import os, sys, subprocess
 
 # PLM
-from bin.damg import DAMG
+from pyPLM.damg import DAMG
 
 
 class EnvHandler(DAMG):

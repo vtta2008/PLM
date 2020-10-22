@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from bin.Widgets import GroupGrid, LineEdit, Button, Label, MessageBox
+from pyPLM.Widgets import GroupGrid, LineEdit, Button, Label, MessageBox
 from PLM.utils import text_to_hex, check_match
 from PLM.configs import configPropText
 p = configPropText()

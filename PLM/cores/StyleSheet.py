@@ -16,9 +16,9 @@ import platform
 # PLM
 from PLM.options            import COLOR_BACKGROUND_NORMAL
 from PLM                    import APP_LOG
-from bin.damg               import DAMG, DAMGDICT
-from bin.Core               import TextStream, File, QssFile
-from bin.loggers            import DamgLogger
+from pyPLM.damg import DAMG, DAMGDICT
+from pyPLM.Core import TextStream, File, QssFile
+from pyPLM.loggers import DamgLogger
 
 
 class StyleSheet(DAMG):
@@ -36,21 +36,17 @@ class StyleSheet(DAMG):
 
     def getStyleSheet(self, style):
         if style == 'dark':
-            from PLM.ui.rcs import darkstyle_rc
             # self.logger.info("Loading darkstyle_rc")
-            pass
+            from PLM.ui.rcs import darkstyle_rc
         elif style == 'PyQt5':
-            from PLM.ui.rcs import pyqt5_style_rc
             # self.logger.info("Loading pyqt5_style_rc")
-            pass
+            from PLM.ui.rcs import pyqt5_style_rc
         elif style == 'PySide2':
-            from PLM.ui.rcs import pyside2_style_rc
             # self.logger.info("Loading pyside2_style_rc")
-            pass
+            from PLM.ui.rcs import pyside2_style_rc
         elif style == 'pyqtgraph':
-            from PLM.ui.rcs import pyqtgraph_style_rc
             # self.logger.info("Loading pyqtgraph_style_rc")
-            pass
+            from PLM.ui.rcs import pyqtgraph_style_rc
         else:
             style = None
 

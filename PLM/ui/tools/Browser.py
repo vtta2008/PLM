@@ -27,7 +27,7 @@ from PySide2.QtWidgets            import (QAction, QApplication, QLineEdit, QMai
 from PySide2.QtNetwork            import QNetworkProxyFactory, QNetworkRequest
 
 # PLM
-from bin.Widgets import Widget, VBoxLayout
+from pyPLM.Widgets import Widget, VBoxLayout
 
 # -------------------------------------------------------------------------------------------------------------
 """ Pipeline Web browser """

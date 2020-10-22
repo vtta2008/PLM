@@ -10,8 +10,8 @@ Description:
 # -------------------------------------------------------------------------------------------------------------
 """ Import """
 
-from bin.damg import DAMG, DAMGDICT
-from bin.Core import Date, Time, Timer, Signal
+from pyPLM.damg import DAMG, DAMGDICT
+from pyPLM.Core import Date, Time, Timer, Signal
 
 
 class BaseType(DAMG):

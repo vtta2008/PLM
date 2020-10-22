@@ -18,8 +18,8 @@ import sys
 from PLM.options                        import (FRAMELESS, SPLASHSCREEN, TRANSPARENT, TEXT_NORMAL, DAMG_LOGO_COLOR,
                                                 peacock, DARKBLUE, deep_blue)
 
-from bin.Widgets                        import SplashScreen, MessageBox
-from bin.Gui                            import Pixmap, Font, Palette
+from pyPLM.Widgets import SplashScreen, MessageBox
+from pyPLM.Gui import Pixmap, Font, Palette
 from PLM.configs                        import splashImagePth, configPropText
 p = configPropText()
 

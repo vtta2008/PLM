@@ -22,10 +22,10 @@ from PLM import __localServerAutho__, APP_LOG
 from PLM.configs import configPropText
 p = configPropText()
 from PLM.cores import sqlUtils
-from bin.loggers import DamgLogger
-from bin.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label, Label, MessageBox, GroupGrid, )
-from bin.Gui import AppIcon
-from bin.models import DamgSignals
+from pyPLM.loggers import DamgLogger
+from pyPLM.Widgets import (Widget, GridLayout, LineEdit, CheckBox, Button, user_pass_label, Label, MessageBox, GroupGrid, )
+from pyPLM.Gui import AppIcon
+from pyPLM.models import DamgSignals
 from PLM.utils import bool2str
 
 
@@ -93,6 +93,7 @@ class SignIn(Widget):
             self.signals.showLayout('ForgotPassword', 'show')
 
     def signInClicked(self):
+        self.logger.info('login clicked')
         username = str(self.userTF.text())
         pass_word = str(self.pwTF.text())
 
@@ -104,7 +105,7 @@ class SignIn(Widget):
             return
 
         password = str(pass_word)
-
+        self.logger.info('send request to server to check account')
         r = requests.post(__localServerAutho__, verify=False, data={'user': username, 'pwd': password})
 
         if r.status_code == 200:

@@ -18,8 +18,8 @@ from PySide2.QtWidgets                    import QTextEdit
 
 # PLM
 from PLM.configs import JSON_DIR
-from bin.Widgets import Button, Label, LineEdit, GridLayout, Widget
-from bin.Gui import AppIcon
+from pyPLM.Widgets import Button, Label, LineEdit, GridLayout, Widget
+from pyPLM.Gui import AppIcon
 
 class EnglishDictionary(Widget):
 

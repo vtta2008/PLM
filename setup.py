@@ -11,17 +11,17 @@ Description:
 """ Import """
 import setuptools
 
-from PLM import __appName__, __version__
+from PLM import __version__
 
 
 setuptools.setup(
-    name=__appName__,
+    name='PLM',
     version=__version__,
     description='Does stuff',
     url='https://github.com/me/myproject',
-    packages=['myproject'],
+    packages=['PLM'],
     entry_points={
-        'console_scripts': ['my-script = myproject.cli:entry_point'],
+        'console_scripts': ['damgteam = PLM.cli:entry_point'],
     },
 )
 

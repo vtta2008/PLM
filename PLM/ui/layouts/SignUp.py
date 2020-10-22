@@ -23,10 +23,10 @@ from PySide2.QtWidgets        import (QFileDialog)
 from PLM.configs import configPropText, QUESTIONS
 p = configPropText()
 from PLM.utils import (check_blank, check_match, getToken, getUnix, getTime, getDate)
-from bin.utils import get_avatar_image
-from bin.models import DamgSignals
-from bin.Widgets import (Widget, GridLayout, Label, Button, LineEdit, ComboBox, MessageBox, CheckBox, GroupGrid)
-from bin.Gui import AppIcon, Pixmap, Image
+from pyPLM.configs import get_avatar_image
+from pyPLM.models import DamgSignals
+from pyPLM.Widgets import (Widget, GridLayout, Label, Button, LineEdit, ComboBox, MessageBox, CheckBox, GroupGrid)
+from pyPLM.Gui import AppIcon, Pixmap, Image
 
 
 # -------------------------------------------------------------------------------------------------------------

@@ -22,7 +22,6 @@
         - Pipeline designer
         - Auto config software bundle by.
         - Flexible user configurations.
-        - Optional use PyQt5 or PySide2 for layout.
         - Flexible implimentation.
         - Realtime monitoring PC performance.
         - Tools for planning, scheduling, tasking and supervising with reminder.

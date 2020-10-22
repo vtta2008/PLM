@@ -13,7 +13,7 @@ Description:
 
 # Python
 import pprint, json
-from bin.damg                           import DAMGDICT
+from pyPLM.damg import DAMGDICT
 
 
 class Cfg(DAMGDICT):

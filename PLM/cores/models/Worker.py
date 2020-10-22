@@ -15,8 +15,8 @@ Description:
 import sys, traceback
 
 # PLM
-from bin.damg import DAMG
-from bin.Core import Runnable, Signal
+from pyPLM.damg import DAMG
+from pyPLM.Core import Runnable, Signal
 
 
 

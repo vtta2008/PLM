@@ -13,7 +13,7 @@ Description:
 
 import os
 
-from bin.damg import DAMGLIST, DAMG
+from pyPLM.damg import DAMGLIST, DAMG
 
 
 class BaseScan(DAMG):
@@ -49,8 +49,6 @@ class BaseScan(DAMG):
                 else:
                     self._missing.append(d)
                     print('Detect path not exists: {0}'.format(d.replace('\\', '/')))
-
-        self.update()
 
     def fixDir(self):
         for d in self.missing:

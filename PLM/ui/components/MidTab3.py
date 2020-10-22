@@ -19,10 +19,10 @@ from PySide2.QtGui                        import QTextCursor
 
 
 # PLM
-from bin.damg import DAMGLIST
+from pyPLM.damg import DAMGLIST
 from PLM.options import SCROLLBAROFF, NO_WRAP, MOVE_ANCHOR, MOVE_OPERATION
-from bin.Widgets import Widget, PlainTextEdit, ShortCut, VBoxLayout, StatusBar
-from bin.Core import Process
+from pyPLM.Widgets import Widget, PlainTextEdit, ShortCut, VBoxLayout, StatusBar
+from pyPLM.Core import Process
 
 
 class MidTab3(Widget):

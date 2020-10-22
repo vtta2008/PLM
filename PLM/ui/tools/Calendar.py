@@ -21,9 +21,9 @@ from PySide2.QtWidgets              import (QApplication, QCalendarWidget, QChec
 
 # Plt
 from PLM.options                    import SiPoMin
-from bin.Widgets                    import GridLayout
-from bin.Widgets                    import Widget
-from bin.Gui                        import AppIcon
+from pyPLM.Widgets import GridLayout
+from pyPLM.Widgets import Widget
+from pyPLM.Gui import AppIcon
 
 # -------------------------------------------------------------------------------------------------------------
 """ Clendar """

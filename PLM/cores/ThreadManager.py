@@ -11,7 +11,7 @@ Description:
 """ Import """
 
 # PLM
-from bin.Core import ThreadPool
+from pyPLM.Core import ThreadPool
 
 
 

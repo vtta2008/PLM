@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from bin.Widgets import StatusBar
+from pyPLM.Widgets import StatusBar
 
 class MainStatusBar(StatusBar):
 
