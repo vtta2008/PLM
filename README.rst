@@ -206,4 +206,4 @@ PIPELINE SOFTWARE BUNDLE
 
 .. topic:: Screenshot
 
-    update later
+    ..image:: https://github.com/vtta2008/PLM/blob/master/bin/screenshots/layout.PNG
