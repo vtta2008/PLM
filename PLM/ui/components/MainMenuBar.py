@@ -27,7 +27,7 @@ class MainMenuBar(GroupVBox):
         self._parent                = parent
         self.actionManger           = actionManager
         self.url                    = __plmWiki__
-        self.setTitle('Main Menu')
+        # self.setTitle('Main Menu')
         self.menubar                = MenuBar(self)
         self.menus                  = self.menubar.menus
         self.layout.addWidget(self.menubar)
