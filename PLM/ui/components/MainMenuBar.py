@@ -17,7 +17,7 @@ from PLM.utils import is_string
 
 
 
-class MainMenuBar(GroupVBox):
+class MainMenuBar(MenuBar):
 
     key                             = 'MainMenuBar'
 
@@ -27,10 +27,6 @@ class MainMenuBar(GroupVBox):
         self._parent                = parent
         self.actionManger           = actionManager
         self.url                    = __plmWiki__
-        # self.setTitle('Main Menu')
-        self.menubar                = MenuBar(self)
-        self.menus                  = self.menubar.menus
-        self.layout.addWidget(self.menubar)
         self.buildMenu()
 
     def buildMenu(self):
@@ -132,9 +128,9 @@ class MainMenuBar(GroupVBox):
         self.add_actions(menu, actions[7:])
         return menu
 
-    def addMenu(self, menu):
-        if is_string(menu):
-            return self.menubar.addMenu(menu)
+    # def addMenu(self, menu):
+    #     if is_string(menu):
+    #         return self.menubar.addMenu(menu)
 
     def add_actions(self, menu, actions):
         for action in actions:

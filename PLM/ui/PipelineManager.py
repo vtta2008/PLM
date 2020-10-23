@@ -9,12 +9,12 @@ Description:
 """ Import """
 
 # PLM
-from PLM import __homepage__, __appName__
-from pyPLM.damg import DAMGDICT
-from pyPLM.Widgets import MainWindow, Widget, GridLayout
-from pyPLM.Gui import LogoIcon
+from PLM                                import __homepage__, __appName__
+from pyPLM.damg                         import DAMGDICT
+from pyPLM.Widgets                      import MainWindow, Widget, GridLayout
+from pyPLM.Gui                          import LogoIcon
 
-from .components                        import (MainStatusBar, MidTab, BotTab, MainHeader)
+from .components                        import MainStatusBar, MidTab, BotTab, MainHeader
 from .models                            import ButtonManager, ActionManager
 from PLM.cores                          import ThreadManager
 
@@ -61,7 +61,6 @@ class PipelineManager(MainWindow):
         self.tbs                        = self.header.toolBar.tbs
         self.updating                   = self.header.connectStatus.updating
         self.server                     = self.header.connectStatus.server
-        self.mode                       = self.header.connectStatus.mode
         self.connectServer              = self.header.connectStatus.connectServer
         self.connectInternet            = self.header.connectStatus.connectInternet
 

@@ -33,12 +33,12 @@ class BaseScan(DAMG):
 
     def scanAndFix(self):
         self.scan(self.alldirs, True)
-        if 'Dir' in self.key:
-            return print('finish scanning directories')
-        elif 'Pth' in self.key:
-            return print('finish scanning paths')
-        else:
-            return print('finish scanning')
+        # if 'Dir' in self.key:
+        #     return print('finish scanning directories')
+        # elif 'Pth' in self.key:
+        #     return print('finish scanning paths')
+        # else:
+        #     return print('finish scanning')
 
 
     def scan(self, dirs=[], fix=False):

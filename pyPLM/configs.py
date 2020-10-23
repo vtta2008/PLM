@@ -13,7 +13,6 @@ Description:
 import os
 
 BIN_ROOT = os.path.join(os.path.abspath(os.path.join(os.path.dirname(__file__), os.pardir)), 'bin')
-print(BIN_ROOT, os.path.exists(BIN_ROOT))
 
 BIN_DATA                        = os.path.join(BIN_ROOT, 'data')
 BIN_SCRIPTS                     = os.path.join(BIN_DATA, 'scripts')

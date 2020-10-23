@@ -227,7 +227,7 @@ class LayoutManager(DAMG):
         for layout in self.layouts():
             # print(layout.key)
             try:
-                layout.setContentMargin(0, 0, 0, 0)
+                layout.setContentMargin(1, 1, 1, 1)
             except AttributeError:
                 pass
 
@@ -237,7 +237,7 @@ class LayoutManager(DAMG):
                 pass
 
             try:
-                layout.setSpacing(0)
+                layout.setSpacing(1)
             except AttributeError:
                 pass
 
@@ -251,7 +251,7 @@ class LayoutManager(DAMG):
                 layout.setMovable(True)
                 layout.setElideMode(ELIDE_RIGHT)
                 layout.setUsesScrollButtons(True)
-                pass
+
 
     def updateAvatar(self, pth):
 

@@ -14,9 +14,11 @@ from .BaseDetails           import BaseDetails
 from .BaseDock              import BaseDock
 from .BaseInfo              import BaseInfo
 from .BaseKeys              import BaseKeys
+from .BaseLCD               import DigitalClock, DigitalDate
 from .BaseManager           import BaseManager
 from .BaseSplash            import BaseSplash
 from .ConnectionIcon        import Conection
+from .DateTimeLayout        import DateTimeLayout
 from .Location              import Location
 from .PassWord              import PassWord
 from .Profile               import Profile

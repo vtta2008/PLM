@@ -21,7 +21,7 @@ from PLM.ui.components.MainToolBar import MainToolBar
 from PLM.ui.components.ConnectStatus import ConnectStatus
 from PLM.ui.components.BotTab import BotTab
 from PLM.ui.components.MidTab import MidTab
-from PLM.ui.components.Notification import Notification
+from tests.legacy.Notification import Notification
 
 
 

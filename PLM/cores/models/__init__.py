@@ -19,7 +19,7 @@ from .Project           import Project
 from .Task              import Task
 from .Team              import Team
 from .Temporary         import Temporary
-from .Threads           import PcMonitor
+from .Threads           import PcMonitor, ConnectMonitor
 from .Worker            import Worker
 
 

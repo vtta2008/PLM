@@ -13,13 +13,32 @@ Description:
 
 # PyQt5
 
-from pyPLM.Core import Thread, Signal
+from pyPLM.Core import Thread, Signal, Timer
 from PLM.utils import get_ram_useage, get_cpu_useage, get_gpu_useage, get_disk_useage
 
 
 # -------------------------------------------------------------------------------------------------------------
 """ Threads """
 
+
+class ConnectMonitor(Thread):
+
+    key                                     = 'ConnectMonitor'
+    updateServer                            = Signal(name='update server')
+    updateInternet                          = Signal(name='update internet')
+
+    def run(self):
+
+        def update():
+            self.updateServer.emit()
+            self.updateInternet.emit()
+
+
+        if self.running:
+            timer = Timer()
+            timer.timeout.connect(update)
+            timer.start(1000)
+            self.exec_()
 
 class PcMonitor(Thread):
 
@@ -30,25 +49,29 @@ class PcMonitor(Thread):
     gpu                                     = Signal(str, name='GPU')
     disk                                    = Signal(str, name='DISK')
 
-    def __init__(self, parent):
-        super(PcMonitor, self).__init__(parent)
-
-        self.parent                         = parent
-        if self.parent:
-            self.setParent(self.parent)
-
     def run(self):
-        if self.running:
 
-            cpu                             = str(get_cpu_useage())
-            ram                             = str(get_ram_useage())
-            gpu                             = str(get_gpu_useage())
-            disk                            = str(get_disk_useage())
+        def update():
+
+            cpu = str(get_cpu_useage())
+            ram = str(get_ram_useage())
+            gpu = str(get_gpu_useage())
+            disk = str(get_disk_useage())
 
             self.cpu.emit(cpu)
             self.ram.emit(ram)
             self.gpu.emit(gpu)
             self.disk.emit(disk)
+
+        if self.running:
+
+            timer = Timer()
+            timer.timeout.connect(update)
+            timer.start(1000)
+            self.exec_()
+
+
+
 
 
 # -------------------------------------------------------------------------------------------------------------
