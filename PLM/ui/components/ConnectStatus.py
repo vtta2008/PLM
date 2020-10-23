@@ -27,8 +27,7 @@ import requests, sys
 from PLM                                import glbSettings
 from PLM.configs                        import configPropText
 p = configPropText()
-from pyPLM.Widgets                      import GroupHBox, MessageBox
-from pyPLM.Core                         import Timer
+from pyPLM.Widgets                      import GroupHBox, MessageBox, Widget, HBoxLayout
 from pyPLM.damg                         import DAMGLIST
 from PLM.cores.models                   import ConnectMonitor
 from PLM.ui.base                        import Conection
@@ -36,7 +35,7 @@ from PLM.ui.base                        import Conection
 # -------------------------------------------------------------------------------------------------------------
 """ Server Status Layout """
 
-class ConnectStatus(GroupHBox):
+class ConnectStatus(Widget):
 
     key                                 = 'ConnectStatus'
     _updating                           = False
@@ -49,12 +48,15 @@ class ConnectStatus(GroupHBox):
         super(ConnectStatus, self).__init__(parent=parent)
 
         self.parent                     = parent
+
+        self.layout                     = HBoxLayout(self)
         self._server                    = self.getServer()
 
         worker                          = ConnectMonitor(self)
         worker.updateServer.connect(self.server_status)
-        worker.updateInternet.connect(self.internet_status())
+        worker.updateInternet.connect(self.internet_status)
         worker.start()
+
         self.server_status()
         self.internet_status()
 
@@ -62,6 +64,7 @@ class ConnectStatus(GroupHBox):
         self.layout.addWidget(self.internetIcon)
 
         self.labels.appendList([self.serverIcon, self.internetIcon])
+        self.setLayout(self.layout)
 
     def server_status(self):
 

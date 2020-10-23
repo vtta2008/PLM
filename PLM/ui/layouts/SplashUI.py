@@ -19,26 +19,17 @@ from math import sin, cos, pi
 from PySide2.QtWidgets                  import QApplication
 
 # PLM
+from PLM                                import PRJ_DIR, DEFAULT_PROJECT_PATH, APP_LOG
+from PLM.utils                          import get_file_path, create_datetime
+from PLM.cores.models                   import SplashMonitor, Project
 from PLM.options                        import ANTIALIAS, TRANSPARENT, NO_PEN, AUTO_COLOR
 from PLM.configs                        import ORG_LOGO_DIR
 from PLM.ui.base                        import BaseSplash
-from pyPLM.Gui import Image, Painter, Pen
-from pyPLM.Core import Timer, Rect, Slot
+from pyPLM.loggers                      import DamgLogger
+from pyPLM.Gui                          import Image, Painter, Pen
+from pyPLM.Core                         import Rect, Slot, DateTime, Date, Time
 
-# class Worker(DAMG):
-#
-#     finished = Signal()
-#
-#     updateText = Signal(str, str)
-#
-#     @Slot(str, int)
-#     def updateText(self, txt, ptxt):
-#         """ send data to a function to change the text """
-#
-#         print("work started")
-#         self.updateText.emit(txt, ptxt)
-#         print("update finished")
-#         self.finished.emit()
+
 
 
 class SplashUI(BaseSplash):
@@ -49,21 +40,36 @@ class SplashUI(BaseSplash):
     def __init__(self, app=None):
         super(SplashUI, self).__init__(app)
 
-        # Setup worker on a different therad than main
-        # self.thread = QThread()
-        # self.thread.start()
+        self.app                        = app
+        self.logger                     = DamgLogger(__name__, 'DEBUG', APP_LOG)
+        self.start()
+        worker = SplashMonitor(self)
+        worker.rotate.connect(self.rotate)
+        worker.start()
 
-        # create worker and move it off the main thread
-        # self.worker = Worker()
-        # self.worker.moveToThread(self.thread)
+        # self.run_preconfig_task()
 
-        # Setup timer for counting
-        self.timer = Timer(self)
-        self.timer.timeout.connect(self.rotate)
-        self.updateTimer()
+        # worker.stop_running()
+        # worker.terminate()
 
-    def updateTimer(self):
-        self.timer.setInterval(1000 / (self.numOfitems * self.revolutionPerSec))
+    def run_preconfig_task(self):
+        self.setText('Preconfig Projects')
+        self.preconfig_projects()
+        self.setPText('20')
+
+    def preconfig_projects(self):
+        projects = get_file_path(PRJ_DIR, '.projects')
+        print(projects)
+
+        if len(projects) == 0:
+            self.createDefaultProjects()
+
+    def createDefaultProjects(self):
+        startdate = create_datetime(0, 0, 0, 5, 8, 2017)
+        enddate = create_datetime(23, 59, 59, 5, 8, 2022)
+        prj = Project('Default', 'Default', 'free', 'Default', DEFAULT_PROJECT_PATH, None, startdate, enddate)
+        print(prj)
+        return prj
 
     @Slot()
     def rotate(self):
@@ -108,58 +114,35 @@ class SplashUI(BaseSplash):
                                 self.height() / 2 + self.innerR * sin(2 * pi * i / self.num) - (self.itemR / 2),
                                 self.itemR, self.itemR)
 
-        # # adjust setting of painter for writing text
-        # painter.setPen(self.textColor)
-        # painter.setFont(self.currentFont)
-        # painter.setBrush(self.textBrushColor)
-        #
-        # # text line 1: current config which is being configured.
-        # self.writeNewText(painter, self.text, 1)
-        #
-        # # text line 2: the percentage of configurations progress
-        # self.writeNewText(painter, self.pText, 2)
+        # adjust setting of painter for writing text
+        painter.setPen(self.textColor)
+        painter.setFont(self.currentFont)
+        painter.setBrush(self.textBrushColor)
+
+        # text line 1: current config which is being configured.
+        self.writeNewText(painter, self.text, 1)
+
+        # text line 2: the percentage of configurations progress
+        self.writeNewText(painter, self.pText, 2)
 
         painter.end()
-
 
     @Slot(str)
     def setText(self, text):
         self._text = text
 
-
     @Slot(int)
     def setPText(self, val):
-        value = val * 100 / self.num
-        for i in range(int(value)):
-            self._currentP += 1
-            self._pText = '{0}%'.format(str(self.currentP))
-
-            if self.currentP == 96:
-                for i in range(4):
-                    self._currentP += 1
-                    self._pText = '{0}%'.format(str(self.currentP))
-
+        for i in range(int(val)):
+            if self.currentP < 100:
+                self._currentP += 1
+                self._pText = '{0}%'.format(str(self.currentP))
+            else:
+                self.logger.info("The number showing in Splash screen is already 100.")
 
     def start(self):
-        """ start counting when show """
         if self.isHidden():
             self.show()
-
-        if not self.timer.isActive():
-            print('start counting')
-            self.timer.start()
-            self._count = 0
-
-
-    def stop(self):
-
-        """ hide the layout and stop counting """
-
-        print('stop counting')
-        if self.timer.isActive():
-            self.timer.stop()
-            self._count = 0
-
 
 
 if __name__ == '__main__':

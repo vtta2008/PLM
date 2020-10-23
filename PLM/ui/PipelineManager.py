@@ -71,14 +71,21 @@ class PipelineManager(MainWindow):
         self.layout.addWidget(self.footer, 10, 0, 6, 9)
         self.setStatusBar(self.statusBar)
 
+        self.body.setFixedHeight(400)
+        self.updateSize()
+
     def resizeEvent(self, event):
+        self.updateSize()
+        # print('header: {0}, body: {1}, footer: {2}'.format(self.header.height(), self.body.height(), self.footer.height()))
+        super(PipelineManager, self).resizeEvent(event)
+
+    def updateSize(self):
         bodySize = self.body.size()
         baseW = bodySize.width()
         baseH = bodySize.height()
 
-        self.header.resize(baseW, baseH/4)
-        self.footer.resize(baseW, baseH*3/4)
-        super(PipelineManager, self).resizeEvent(event)
+        self.header.resize(baseW, baseH / 4)
+        self.footer.resize(baseW, baseH * 3 / 4)
 
     @property
     def count(self):

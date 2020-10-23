@@ -31,6 +31,9 @@ from PLM.ui                             import LayoutManager
 from PLM.configs                        import configPropText
 p = configPropText()
 
+from PLM.ui.layouts                     import SplashUI
+
+
 # -------------------------------------------------------------------------------------------------------------
 """ Operation """
 
@@ -42,6 +45,7 @@ class PLM(AppModel):
     def __init__(self):
         super(PLM, self).__init__(sys.argv)
 
+        self.splash                     = SplashUI(self)
         self.layoutManager              = LayoutManager(self.threadManager, self)
         self.layoutManager.registLayout(self.browser)
         self.layoutManager.buildLayouts()
@@ -56,7 +60,7 @@ class PLM(AppModel):
                 statusCode              = self.serverAuthorization()
                 if not statusCode:
                     self.mainUI.show()
-                    # self.splash.finish(self.mainUI)
+                    self.splash.finish(self.mainUI)
                 else:
                     if statusCode == 200:
                         if not self.sysTray.isSystemTrayAvailable():
@@ -66,24 +70,24 @@ class PLM(AppModel):
                             self.loginChanged(True)
                             self.sysTray.log_in()
                             self.mainUI.show()
-                            # self.splash.finish(self.mainUI)
+                            self.splash.finish(self.mainUI)
                     else:
                         self.signIn.show()
                         self.splash.finish(self.signIn)
             else:
                 self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
                 self.mainUI.show()
-                # self.splash.finish(self.mainUI)
+                self.splash.finish(self.mainUI)
         else:
             if self.connectServer:
                 # print('here?')
                 self.signInEvent()
-                # self.signIn.show()
-                # self.splash.finish(self.signIn)
+                self.signIn.show()
+                self.splash.finish(self.signIn)
             else:
                 self.sysNotify('Offline', 'Can not connect to Server', 'crit', 500)
                 self.mainUI.show()
-                # self.splash.finish(self.mainUI)
+                self.splash.finish(self.mainUI)
 
     def notify(self, receiver, event):
         # press tab to show shortcut command ui
@@ -110,7 +114,6 @@ class PLM(AppModel):
                         receiver.restoreGeometry(geometry)
 
         return super(PLM, self).notify(receiver, event)
-
 
     def run(self):
         """

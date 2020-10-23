@@ -21,7 +21,7 @@ from PySide2.QtCore     import Signal, Slot
 
 # PLM
 from PLM                import __envKey__
-from pyPLM.Core import EventLoop, Timer
+from pyPLM.Core         import EventLoop, Timer
 from PLM.cores.Errors   import EnsureValueError
 
 from .paths             import get_file_path

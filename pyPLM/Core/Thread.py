@@ -28,6 +28,9 @@ class Thread(QThread):
         self.args = args
         self.kwargs = kwargs
 
+    def __del__(self):
+        self.wait()
+
     def start_running(self):
         self._running                       = True
 

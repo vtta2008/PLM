@@ -32,13 +32,20 @@ def get_all_path_from_dir(directory):
     return [filePths, dirPths]
 
 
-def get_file_path(directory):
-    DirectoryError("{0} is not exists.".format(directory))
-    return get_all_path_from_dir(directory)[0]
+def get_file_path(directory, filter=None):
+    if not os.path.exists(directory):
+        return DirectoryError("{0} is not exists.".format(directory))
+    else:
+        if not filter:
+            return get_all_path_from_dir(directory)[0]
+        else:
+            return [f for f in get_all_path_from_dir(directory)[0] if filter in f]
 
 def get_folder_path(directory):
-    DirectoryError("{0} is not exists.".format(directory))
-    return get_all_path_from_dir(directory)[1]
+    if not os.path.exists(directory):
+        return DirectoryError("{0} is not exists.".format(directory))
+    else:
+        return get_all_path_from_dir(directory)[1]
 
 def get_base_folder(path):
     return os.path.dirname(path)

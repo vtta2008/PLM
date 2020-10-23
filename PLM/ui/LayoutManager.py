@@ -252,7 +252,6 @@ class LayoutManager(DAMG):
                 layout.setElideMode(ELIDE_RIGHT)
                 layout.setUsesScrollButtons(True)
 
-
     def updateAvatar(self, pth):
 
         self.mainUI.midTabDock.tabs.tab2.avatarGrp.avatar.imageAvatar = ImageAvatar(pth)

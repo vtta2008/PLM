@@ -15,6 +15,43 @@ import platform, subprocess, os, sys
 from psutil                 import cpu_percent, virtual_memory, disk_usage
 from GPUtil                 import getGPUs
 from .converts              import byte2gb, mb2gb
+from pyPLM.Core             import DateTime, Date, Time
+
+def create_datetime(hour=0, minute=0, second=0, day=1, month=1, year=None):
+
+    if not year:
+        year = int(Date().currentDate().year())
+    elif year < 99:
+        year = int("20{0}".format(year))
+    else:
+        year = int(year)
+
+    if month > 12:
+        raise IndexError('Expect month smaller than 12: {0}'.format(month))
+
+    if month in [1, 3, 5, 7, 8, 10, 12]:
+        days = 31
+    elif month in [2]:
+        days = 28
+    else:
+        days = 30
+
+    if day > days:
+        raise IndexError('Expect day smaller than (0): {1}'.format(days, day))
+
+    if hour > 24:
+        raise IndexError('Expect hour smaller than 24: {0}'.format(hour))
+
+    if minute > 60:
+        raise IndexError('Expect minute smaller than 60: {0}'.format(minute))
+
+    if second > 60:
+        raise IndexError('Expect second smaller than 60: {0}'.format(second))
+
+    date = Date(year, month, day)
+    time = Time(hour, minute, second)
+
+    return DateTime(date, time)
 
 
 def obj_properties_setting(directory, mode):

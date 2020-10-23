@@ -21,7 +21,7 @@ from PLM.cores.Errors import ToolbarNameError
 # -------------------------------------------------------------------------------------------------------------
 """ ToolBar """
 
-class MainToolBar(GroupHBox):
+class MainToolBar(MainWindow):
 
     key                                 = 'MainToolBar'
     toolBars                            = dict()
@@ -32,8 +32,6 @@ class MainToolBar(GroupHBox):
 
         self.parent                     = parent
         self.actionManager              = actionManager
-        self.mainLayout                 = MainWindow(self.parent)
-        self.layout.addWidget(self.mainLayout)
 
         self.tdToolBar                  = self.build_toolBar("TD")
         self.compToolBar                = self.build_toolBar("VFX")
@@ -131,9 +129,6 @@ class MainToolBar(GroupHBox):
                 i += 1
         w = i*32
         self.setMinimumWidth(w)
-
-    def addToolBar(self, toolbar):
-        self.mainLayout.addToolBar(toolbar)
 
     @property
     def count(self):

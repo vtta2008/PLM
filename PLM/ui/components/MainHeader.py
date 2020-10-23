@@ -34,10 +34,9 @@ class MainHeader(Widget):
         self.currentProject             = CurrentProject(self.parent)
 
         self.layout.addWidget(self.menuBar, 0, 0, 1, 9)
-        self.layout.addWidget(self.connectStatus, 1, 0, 1, 2)
-        self.layout.addWidget(self.currentProject, 1, 2, 1, 4)
-
-        self.layout.addWidget(self.toolBar, 2, 0, 1, 9)
+        self.layout.addWidget(self.toolBar, 1, 0, 1, 9)
+        self.layout.addWidget(self.connectStatus, 2, 0, 1, 2)
+        self.layout.addWidget(self.currentProject, 2, 2, 1, 4)
 
         self.setLayout(self.layout)
 

@@ -40,6 +40,8 @@ class ConnectMonitor(Thread):
             timer.start(1000)
             self.exec_()
 
+
+
 class PcMonitor(Thread):
 
     key                                     = 'PcMonitor'
@@ -70,6 +72,28 @@ class PcMonitor(Thread):
             timer.start(1000)
             self.exec_()
 
+
+
+class SplashMonitor(Thread):
+
+    key                                     = 'SplashMonitor'
+
+    numOfitems                              = 15
+    revolutionPerSec                        = 1.57079632679489661923
+
+    rotate                                  = Signal(name='rotate')
+
+    def run(self):
+
+        def update():
+            self.rotate.emit()
+
+        if self.running:
+
+            timer = Timer()
+            timer.timeout.connect(update)
+            timer.start(1000 / (self.numOfitems * self.revolutionPerSec))
+            self.exec_()
 
 
 

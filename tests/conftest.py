@@ -14,10 +14,7 @@ Description:
 import os
 
 
-a = os.path.dirname(__file__).replace('\\', '/')
-b = os.path.abspath(os.path.join(a, os.pardir))
-
-print(b)
+print(os.path.expanduser('~/documents'))
 
 # -------------------------------------------------------------------------------------------------------------
 # Created by panda on 3/16/2020 - 2:18 AM

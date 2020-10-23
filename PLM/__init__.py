@@ -138,8 +138,12 @@ USER_LOCAL_DATA                         = create_path(CFG_DIR, 'userLocal')
 USER_DIR                                = parent_dir(os.getenv('HOME'))
 LIBRARY_DIR                             = create_path(APPDATA_DAMG, 'libraries')
 
-# Filepath
+# User
+USER_DOCUMENTS_DIR                      = os.path.expanduser('~/documents')
+PROJECTS_PATH                           = create_path(USER_DOCUMENTS_DIR, 'PLM/projects')
+DEFAULT_PROJECT_PATH                    = create_path(PROJECTS_PATH, 'defaults')
 
+# Filepath
 APP_SETTING                             = create_path(SETTING_DIR, 'PLM.ini')
 USER_SETTING                            = create_path(SETTING_DIR, 'user.ini')
 FORMAT_SETTING                          = create_path(SETTING_DIR, 'fmt.ini')

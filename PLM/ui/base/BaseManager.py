@@ -11,10 +11,11 @@ Description:
 """ Import """
 
 # PLM
-from PLM.cores.models                   import DateLine, Task, Project, Team, Organisation, Temporary
-from pyPLM.Core import DateTime
-from pyPLM.Widgets import Widget, Button, VBoxLayout, HBoxLayout
-from pyPLM.Gui import AppIcon
+from PLM.cores.models                   import Task, Project, Team, Organisation, Temporary
+from PLM.utils                          import create_datetime
+from pyPLM.Core                         import DateTime
+from pyPLM.Widgets                      import Widget, Button, VBoxLayout, HBoxLayout
+from pyPLM.Gui                          import AppIcon
 from .BaseDetails                       import BaseDetails
 from .BaseInfo                          import BaseInfo
 
@@ -82,7 +83,7 @@ class BaseManager(Widget):
         mo                  = int(self.baseInfo.monthE.text())
         d                   = int(self.baseInfo.dayE.text())
 
-        enddate             = DateLine(h, m, s, d, mo, y)
+        enddate             = create_datetime(h, m, s, d, mo, y)
 
         id                  = self.baseInfo.id.text()
         name                = self.baseInfo.name.text()

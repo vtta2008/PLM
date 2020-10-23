@@ -8,14 +8,15 @@ Description:
 
 """
 # -------------------------------------------------------------------------------------------------------------
-from __future__ import absolute_import, unicode_literals
+""" Import """
 
 import json
 
 from pyPLM.Core import Date, Time
 from pyPLM.Widgets import GroupBox, VBoxLayout, Label
 from PLM.cores import sqlUtils
-from PLM.cores.models import DateLine, Task
+from PLM.cores.models import Task
+from PLM.utils import create_datetime
 
 
 
@@ -56,10 +57,10 @@ class TaskInfo(GroupBox):
         self._month                             = int(self._data['enddate'].split('/')[1])
         self._year                              = int(self._data['enddate'].split('/')[2])
 
-        self.start                              = DateLine(Time.currentTime().hour(), Time.currentTime().minute(),
-                                                           Time.currentTime().second(), Date.currentDate().day(),
-                                                           Date.currentDate().month(), Date.currentDate().year())
-        self.end                                = DateLine(self._hour, self._minute, self._second, self._day, self._month, self._year)
+        self.start                              = create_datetime(Time.currentTime().hour(), Time.currentTime().minute(),
+                                                                  Time.currentTime().second(), Date.currentDate().day(),
+                                                                  Date.currentDate().month(), Date.currentDate().year())
+        self.end                                = create_datetime(self._hour, self._minute, self._second, self._day, self._month, self._year)
 
         try:
             self.username = [self.database.query_table('curUser')[0]]
