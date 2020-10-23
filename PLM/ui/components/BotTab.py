@@ -34,10 +34,9 @@ class BotTab(TabWidget):
     def buildUI(self):
 
         self.botTab1                    = BotTab1(self.parent)
-        self.botTab2                    = BotTab2(self.parent)
 
-        self.tabs                       = DAMGLIST(listData=[self.botTab1, self.botTab2])
-        self.tabNames                   = DAMGLIST(listData=['Tracking', 'Debug'])
+        self.tabs                       = DAMGLIST(listData=[self.botTab1, ])
+        self.tabNames                   = DAMGLIST(listData=['Console', ])
 
         for layout in self.tabs:
             self.addTab(layout, AppIcon(32, self.tabNames[self.tabs.index(layout)]), self.tabNames[self.tabs.index(layout)])

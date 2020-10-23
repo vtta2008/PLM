@@ -17,7 +17,7 @@ from pyPLM.Widgets import TabWidget, VBoxLayout
 from pyPLM.Gui import AppIcon
 from .MidTab1                   import MidTab1
 from .MidTab2                   import MidTab2
-from .MidTab3                   import MidTab3
+from .BotTab1                   import BotTab1
 
 # -------------------------------------------------------------------------------------------------------------
 """ Tab Layout """
@@ -40,11 +40,9 @@ class MidTab(TabWidget):
 
         self.tab1               = MidTab1(self.buttonManager, self)
         self.tab2               = MidTab2(self.buttonManager, self)
-        self.tab3               = MidTab3(self.buttonManager, self)
 
-
-        self.tabs               = DAMGLIST(listData=[self.tab1, self.tab2, self.tab3])
-        self.tabNames           = DAMGLIST(listData=['Common', 'User', 'Cmd'])
+        self.tabs               = DAMGLIST(listData=[self.tab1, self.tab2])
+        self.tabNames           = DAMGLIST(listData=['Common', 'User'])
 
         for tab in self.tabs:
             if tab.key == 'TopTab2':

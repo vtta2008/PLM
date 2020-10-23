@@ -14,9 +14,7 @@ from pyPLM.damg import DAMGDICT
 from pyPLM.Widgets import MainWindow, Widget, GridLayout
 from pyPLM.Gui import LogoIcon
 
-from PLM.options import dockT, dockB
-from .components                        import (Footer, MainStatusBar, MenubarDock, ToolBarDock, NetworkStatusDock,
-                                                BotTabDock, NotificationDock, MidTabDock)
+from .components                        import (MainStatusBar, MidTab, BotTab, MainHeader)
 from .models                            import ButtonManager, ActionManager
 from PLM.cores                          import ThreadManager
 
@@ -52,44 +50,36 @@ class PipelineManager(MainWindow):
 
     def buildUI(self):
 
-        self.dockMenu                   = MenubarDock(self.parent)
-        self.dockNetwork                = NetworkStatusDock(self.parent)
-        self.dockToolBar                = ToolBarDock(self.parent)
-        self.menus                      = self.dockMenu.menuBar.menus
-        self.toolBars                   = self.dockToolBar.toolBar.toolBars
-        self.mns                        = self.dockMenu.menuBar.mns
-        self.tbs                        = self.dockToolBar.toolBar.tbs
-        self.updating                   = self.dockNetwork.status.updating
-        self.server                     = self.dockNetwork.status.server
-        self.mode                       = self.dockNetwork.status.mode
-        self.connectServer              = self.dockNetwork.status.connectServer
-        self.connectInternet            = self.dockNetwork.status.connectInternet
-        self.topDockArea                = MainWindow(self.parent)
-
-        self.addDockWidget(dockT, self.dockMenu)
-        self.addDockWidget(dockT, self.dockNetwork)
-        self.topDockArea.addDockWidget(dockT, self.dockToolBar)
-
-        self.midTabDock                 = MidTabDock(self.parent)
-        self.midDockArea                = MainWindow(self.parent)
-        self.midDockArea.addDockWidget(dockT, self.midTabDock)
-
-        self.botTabDock                 = BotTabDock(self.parent)
-        self.notificationDock           = NotificationDock(self.parent)
-        self.botDockArea                = MainWindow(self.parent)
-        self.botDockArea.addDockWidget(dockB, self.botTabDock)
-        self.botDockArea.addDockWidget(dockB, self.notificationDock)
-
-        self.footer                     = Footer(self.buttonManager, self.threadManager, self)
+        self.header                     = MainHeader(self.parent)
+        self.body                       = MidTab(self.buttonManager, self)
+        self.footer                     = BotTab(self)
         self.statusBar                  = MainStatusBar(self)
+
+        self.menus                      = self.header.menuBar.menus
+        self.toolBars                   = self.header.toolBar.toolBars
+        self.mns                        = self.header.menuBar.mns
+        self.tbs                        = self.header.toolBar.tbs
+        self.updating                   = self.header.connectStatus.updating
+        self.server                     = self.header.connectStatus.server
+        self.mode                       = self.header.connectStatus.mode
+        self.connectServer              = self.header.connectStatus.connectServer
+        self.connectInternet            = self.header.connectStatus.connectInternet
+
+        self.layouts                    = [self.header, self.body, self.footer, self.statusBar]
+
+        self.layout.addWidget(self.header, 0, 0, 2, 9)
+        self.layout.addWidget(self.body, 2, 0, 8, 9)
+        self.layout.addWidget(self.footer, 10, 0, 6, 9)
         self.setStatusBar(self.statusBar)
-        self.layouts                    = [self.footer, self.statusBar]
 
-        self.layout.addWidget(self.topDockArea, 0, 0, 2, 9)
-        self.layout.addWidget(self.midDockArea, 2, 0, 4, 9)
-        self.layout.addWidget(self.botDockArea, 6, 0, 3, 9)
+    def resizeEvent(self, event):
+        bodySize = self.body.size()
+        baseW = bodySize.width()
+        baseH = bodySize.height()
 
-        self.layout.addWidget(self.footer, 9, 0, 1, 9)
+        self.header.resize(baseW, baseH/4)
+        self.footer.resize(baseW, baseH*3/4)
+        super(PipelineManager, self).resizeEvent(event)
 
     @property
     def count(self):

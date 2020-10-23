@@ -67,38 +67,38 @@ class LayoutManager(DAMG):
         self.prjs                       = self.projectLayouts()
         self.plugins                    = self.pluginsLayouts()
 
-        tbcbs                           = self.preferences.header.toolBarCBs
-        tbs                             = self.mainUI.tbs
-        cncbs                           = self.preferences.header.connectCBs
-        cns                             = self.mainUI.dockNetwork.status.labels
-        mncbs                           = self.preferences.header.menuCBs
-        mns                             = self.mainUI.mns
-        ntcbs                           = self.preferences.body.notificationCBs
-        nts                             = self.mainUI.notificationDock.notify.labels
-
-        for i in range(len(tbs)):
-            cb = tbcbs[i+1]
-            tb = tbs[i]
-            cb.stateChanged.connect(tb.setVisible)
-        tbcbs[0].stateChanged.connect(self.mainUI.setVisible)
-
-        for i in range(1, len(mns)):
-            cb = mncbs[i+1]
-            mn = mns[i]
-            cb.stateChanged.connect(mn.setEnabled)
-        mncbs[0].stateChanged.connect(self.mainUI.dockMenu.setVisible)
-
-        for i in range(len(cns)):
-            cb = cncbs[i+1]
-            lb = cns[i]
-            cb.stateChanged.connect(lb.setVisible)
-        cncbs[0].stateChanged.connect(self.mainUI.dockNetwork.status.setVisible)
-
-        for i in range(len(nts)):
-            cb = ntcbs[i+1]
-            lb = nts[i]
-            cb.stateChanged.connect(lb.setVisible)
-        ntcbs[0].stateChanged.connect(self.mainUI.notificationDock.notify.setVisible)
+        # tbcbs                           = self.preferences.header.toolBarCBs
+        # tbs                             = self.mainUI.tbs
+        # cncbs                           = self.preferences.header.connectCBs
+        # cns                             = self.mainUI.header.connectStatus.labels
+        # mncbs                           = self.preferences.header.menuCBs
+        # mns                             = self.mainUI.mns
+        # ntcbs                           = self.preferences.body.notificationCBs
+        # nts                             = self.mainUI.notificationDock.notify.labels
+        #
+        # for i in range(len(tbs)):
+        #     cb = tbcbs[i+1]
+        #     tb = tbs[i]
+        #     cb.stateChanged.connect(tb.setVisible)
+        # tbcbs[0].stateChanged.connect(self.mainUI.setVisible)
+        #
+        # for i in range(1, len(mns)):
+        #     cb = mncbs[i+1]
+        #     mn = mns[i]
+        #     cb.stateChanged.connect(mn.setEnabled)
+        # mncbs[0].stateChanged.connect(self.mainUI.header.menuBar.setVisible)
+        #
+        # for i in range(len(cns)):
+        #     cb = cncbs[i+1]
+        #     lb = cns[i]
+        #     cb.stateChanged.connect(lb.setVisible)
+        # cncbs[0].stateChanged.connect(self.mainUI.header.connectStatus.setVisible)
+        #
+        # for i in range(len(nts)):
+        #     cb = ntcbs[i+1]
+        #     lb = nts[i]
+        #     cb.stateChanged.connect(lb.setVisible)
+        # ntcbs[0].stateChanged.connect(self.mainUI.notificationDock.notify.setVisible)
 
         for layout in self.layouts():
             try:
@@ -155,7 +155,7 @@ class LayoutManager(DAMG):
         self.settingUI                      = SettingUI()
         self.userSetting                    = UserSetting()
 
-        self.mainUI.midTabDock.tabs.tab2.avatarGrp.setApp(self)
+        self.mainUI.body.tab2.avatarGrp.setApp(self)
         self.userSetting.avatarGrp.setApp(self)
 
         layouts = [self.settingUI, self.userSetting]

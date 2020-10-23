@@ -16,12 +16,12 @@ Description:
 from PLM.cores                          import ThreadManager
 from PLM.ui.base                        import BaseDock
 from PLM.ui.models                      import ActionManager, ButtonManager
-from .MainMenuBar                       import MainMenuBar
-from .MainToolBar                       import MainToolBar
-from .ConnectStatus                     import ConnectStatus
-from .BotTab                            import BotTab
-from .MidTab                            import MidTab
-from .Notification                      import Notification
+from PLM.ui.components.MainMenuBar import MainMenuBar
+from PLM.ui.components.MainToolBar import MainToolBar
+from PLM.ui.components.ConnectStatus import ConnectStatus
+from PLM.ui.components.BotTab import BotTab
+from PLM.ui.components.MidTab import MidTab
+from PLM.ui.components.Notification import Notification
 
 
 

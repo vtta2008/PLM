@@ -19,6 +19,7 @@ from .CheckBox          import CheckBox
 from .ComboBox          import ComboBox
 from .DateEdit          import DateEdit
 from .DockWidget        import DockWidget
+from .Frame             import Frame
 from .GraphicsItem      import GraphicsItem
 from .GraphicsObject    import GraphicsObject
 from .GraphicPathItem   import GraphicPathItem
@@ -37,6 +38,7 @@ from .ProgressBar       import ProgressBar
 from .RubberBand        import RubberBand
 from .SizePolicy        import SizePolicy
 from .SplashScreen      import SplashScreen
+from .Splitter          import Splitter
 from .StatusBar         import StatusBar
 from .SystemTrayIcon    import SystemTrayIcon
 from .TabBar            import TabBar

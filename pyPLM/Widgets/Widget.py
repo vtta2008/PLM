@@ -20,7 +20,7 @@ class Widget(QWidget):
     _name                                   = 'DAMG Widget'
 
     def __init__(self, parent=None):
-        super(Widget, self).__init__(parent)
+        super(Widget, self).__init__()
 
         self.parent                         = parent
         self.setWindowIcon(AppIcon(32, self.key))

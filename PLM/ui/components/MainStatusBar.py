@@ -9,7 +9,7 @@ Description:
 """
 # -------------------------------------------------------------------------------------------------------------
 
-from pyPLM.Widgets import StatusBar
+from pyPLM.Widgets import StatusBar, VBoxLayout
 
 class MainStatusBar(StatusBar):
 
@@ -21,7 +21,8 @@ class MainStatusBar(StatusBar):
         super(MainStatusBar, self).__init__(parent)
 
         self.parent = parent
-
+        self.layout = VBoxLayout(self)
+        self.setLayout(self.layout)
 
 
 
